@@ -26,7 +26,7 @@ generation and so on. So you can fill out those things yourself.
 # Current Features
 
 - Chunk based rendering and meshing
-- Multi Threaded - World Gen and Chunk Creation hapeen in workers
+- Multi Threaded - World Gen and Chunk Creation happens in workers
 - Ambient Occulsion - Nice shadows for the voxel 
 - - Please thank this guy for it: https://twitter.com/iced_coffee_dev
 - Infinite Generation
