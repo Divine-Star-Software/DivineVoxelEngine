@@ -184,10 +184,9 @@ export class Player {
     if (camPick) {
       if (camPick.hit) {
         const point = camPick.pickedPoint;
-console.log(point);
-
+/* console.log(point);
 console.log(camPick.faceId);
-console.log(camPick.pickedMesh);
+console.log(camPick.pickedMesh); */
         if (point && camPick.pickedMesh && camPick.faceId !== undefined) {
           const x = Math.floor(point.x);
           const y = Math.floor(point.y);
@@ -200,9 +199,10 @@ console.log(camPick.pickedMesh);
           this.lookingAtBlock = true;
           this.playerCube.position.z = z + 0.5;
         
+          let normal : BABYLON.Vector3 = BABYLON.Vector3.Zero();
           try {
-            const normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-            console.log(normal);
+            normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
+          //  console.log(normal);
             if (normal.x == 1) {
               if (this.breaking) {
                 this.playerCube.position.x = x - 0.4;
@@ -319,6 +319,7 @@ console.log(camPick.pickedMesh);
               return;
             }
           } catch (error: any) {
+            console.log(normal)
             console.log(error);
           }
 
@@ -432,6 +433,7 @@ console.log(camPick.pickedMesh);
     this._setUpPlayerCamera();
 
     document.addEventListener("click", (event: MouseEvent) => {
+      if(!this.active)return;
       if (event.button == 2) {
         if (!this.placing) return;
         if (this.lookingAtBlock) {
@@ -454,10 +456,10 @@ console.log(camPick.pickedMesh);
           }
 
 
+          //need to create into a promise to make sure not too many updates are set at once 
           this.active = false;
           setTimeout(() => {
             this.active = true;
-  
           }, 50);
         }
       }

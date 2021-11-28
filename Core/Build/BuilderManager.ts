@@ -2,7 +2,7 @@ import type { DivineStar } from "../DivineStar";
 import { ChunkBuilder } from "./ChunkBuilder.js";
 
 export class BuilderManager {
-  numBuilders = 6;
+  numBuilders = 4;
   count = 0;
   runningBlockUpdate = false;
 

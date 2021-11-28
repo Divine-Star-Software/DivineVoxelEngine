@@ -102,6 +102,6 @@ export class PlayerWatcher {
 
       }
 
-    }, 200);
+    }, 100);
   }
 }

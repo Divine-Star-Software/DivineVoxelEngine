@@ -1,4 +1,5 @@
 import { BitArray } from "./Util/ByteArray.js";
+import { InfoByte } from "./Util/InfoByte.js";
 
 
 
@@ -9,6 +10,9 @@ export class Util {
         return [chunkpositionZ, chunkpositionX];
       }
 
+      getInfoByte(number : number = 0) {
+        return new InfoByte(number);
+      }
 
       getBitArray(nums : number[]) {
         return new BitArray(nums);

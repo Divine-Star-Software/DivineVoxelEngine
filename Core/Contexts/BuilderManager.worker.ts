@@ -39,7 +39,7 @@ export class BuilderManagerWorker {
  //   console.log(chunkTemplate[0]);
     const positions = new Uint16Array(chunkTemplate[0]);
   //  console.log(positions);
-    const faces = new Uint8Array(chunkTemplate[1]);
+    const indicies = new Uint8Array(chunkTemplate[1]);
     const blocks = new Uint16Array(chunkTemplate[2]);
     const groups = new Float32Array(chunkTemplate[3]);
     const ambientOcclusion = new Float32Array(chunkTemplate[4]);
@@ -48,11 +48,11 @@ export class BuilderManagerWorker {
       chunkX,
       chunkZ,
       positions.buffer,
-      faces.buffer,
+      indicies.buffer,
       blocks.buffer,
       groups.buffer,
       ambientOcclusion.buffer
     ]),
-      [positions.buffer, faces.buffer, blocks.buffer,ambientOcclusion.buffer];
+      [positions.buffer, indicies.buffer, blocks.buffer,ambientOcclusion.buffer];
   }
 }

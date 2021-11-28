@@ -2,13 +2,16 @@ import type { Util } from "Global/Util.helper.js";
 import { BitArray } from "Global/Util/ByteArray.js";
 import { MeshData } from "Meta/Util.types.js";
 import { Chunk } from "Meta/WorldData/World.types.js";
-import { MeshBuilder } from "./Meshes/MeshBuilder.js";
-import type { WorldData } from "./WorldData/WorldData.js";
-import { PlayerWatcher } from "./WorldGen/PlayerWatcher.js";
+import { MeshBuilder } from "../Meshes/MeshBuilder.js";
+import type { WorldData } from "../WorldData/WorldData.js";
+import { PlayerWatcher } from "../WorldGen/PlayerWatcher.js";
+import {ChunkOcculsionCalcuation} from "./Functions/ChunkOcculsionCalculation.js"
+
 
 export class ChunkProcessor {
   worldBottomY = 0;
   worldTopY = 256;
+  chunkOcculsionCalcuation  = ChunkOcculsionCalcuation;
 
   //wip
   greedyMeshingEnabled = false;
@@ -73,7 +76,6 @@ export class ChunkProcessor {
         chunk[x][z + 1][y] == chunk[x][z][y]
       ) {
         goodToGo = true;
-
       }
     }
 
@@ -148,27 +150,19 @@ export class ChunkProcessor {
     let failed = false;
 
     for (let i = z; i <= 16; i++) {
-
-
       let done = false;
       width = 0;
       for (let k = x; k <= 16; k++) {
         let addMember = false;
- 
-      
-          if (chunk[k ]) {
-            if (chunk[k][i]) {
-              if (chunk[k ][i][y] == groupBlock) {
-         
-                  addMember = true;
-                } else {
-               
-                }
-              
-            }
-          
-        }  
 
+        if (chunk[k]) {
+          if (chunk[k][i]) {
+            if (chunk[k][i][y] == groupBlock) {
+              addMember = true;
+            } else {
+            }
+          }
+        }
 
         if (addMember) {
           visitedVoxels[k] ??= [];
@@ -186,7 +180,7 @@ export class ChunkProcessor {
           if (widthCalculated) {
             if (calculatedWidth != width) {
               done = true;
-            //  console.log(calculatedWidth,width,i,k);
+              //  console.log(calculatedWidth,width,i,k);
               break;
             }
           }
@@ -198,16 +192,15 @@ export class ChunkProcessor {
       }
       calculatedDepth++;
     }
-  
+
     if (failed) {
-    
       return false;
     }
-    if(calculatedWidth == 0 ||  calculatedDepth == 0) {
+    if (calculatedWidth == 0 || calculatedDepth == 0) {
       return false;
     }
 
-   // console.log(calculatedWidth,calculatedDepth);
+    // console.log(calculatedWidth,calculatedDepth);
 
     /*     for (let i = x; i < 16; i++) {
       width++;
@@ -260,7 +253,7 @@ export class ChunkProcessor {
       y,
       z,
       0,
-      calculatedWidth ,
+      calculatedWidth,
       calculatedDepth
     );
 
@@ -278,6 +271,7 @@ export class ChunkProcessor {
     const amientOcculusionTemplate: number[] = [];
     const greedyGroupsTemplate: number[] = [];
     const visitedVoxels: number[][][] = [];
+    
 
     for (const x of chunk.keys()) {
       if (!chunk[x]) {
@@ -664,29 +658,6 @@ export class ChunkProcessor {
     ];
   }
 
-  _occulusion = (
-    chunk: number[][][],
-    chunkX: number,
-    chunkZ: number,
-    blockX: number,
-    blockY: number,
-    blockZ: number,
-    x: number,
-    y: number,
-    z: number
-  ) => {
-    if (!chunk[blockX + x]) {
-      return 1;
-    }
-    if (!chunk[blockX + x][blockZ + z]) {
-      return 1;
-    }
-    if (!chunk[blockX + x][blockZ + z][blockY + y]) {
-      return 1;
-    }
-
-    return 0.75;
-  };
 
   _buildAmbientOcclusion(
     chunk: number[][][],
@@ -703,21 +674,21 @@ export class ChunkProcessor {
       /*       amientOcculusionTemplate.push(1,1,.5,.5,1,1);
       return; */
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
+        this.chunkOcculsionCalcuation(this.worldData,  chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, -1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1)
       );
     }
 
@@ -726,21 +697,21 @@ export class ChunkProcessor {
       /*    amientOcculusionTemplate.push(1,1,.5,.5,1,1);
       return; */
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, -1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, -1)
       );
     }
     // +y
@@ -750,21 +721,21 @@ export class ChunkProcessor {
       // curCell.ao[2] = [1.0, 1.0, 0.5, 0.5];
 
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, -1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1)
       );
     }
 
@@ -773,21 +744,21 @@ export class ChunkProcessor {
       /*       amientOcculusionTemplate.push(1,1,.5,.5,1,1);
       return; */
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 1)
       );
     }
 
@@ -797,21 +768,21 @@ export class ChunkProcessor {
       return; */
 
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, 1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 1)
       );
     }
 
@@ -820,21 +791,21 @@ export class ChunkProcessor {
       /*     amientOcculusionTemplate.push(1,1,.5,.5,1,1);
       return; */
       amientOcculusionTemplate.push(
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
 
-        this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
-          this._occulusion(chunk, chunkX, chunkZ, x, y, z, 1, -1, -1)
+        this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
+          this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1)
       );
     }
   }

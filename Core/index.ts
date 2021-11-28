@@ -184,6 +184,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const max = 10;
   let count = max;
 
+
   setInterval(() => {
 
     

@@ -5,7 +5,7 @@ import { BlockManager } from "./Blocks/BlockManager.js";
 import { BuilderManagerWorker } from "./BuilderManager.worker.js";
 
 
-import { ChunkProcessor } from "./ChunkProcessor.js";
+import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { ChunkMap } from "./Chunks/ChunkMap.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { PlayerWatcher } from "./WorldGen/PlayerWatcher.js";

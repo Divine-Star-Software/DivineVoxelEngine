@@ -1,9 +1,13 @@
 import type { Util } from "Global/Util.helper";
+import type { InfoByte } from "Global/Util/InfoByte";
 import { MeshData } from "Meta/Util.types";
 import type { MeshBuilder } from "../Meshes/MeshBuilder";
 
 export class ChunkMeshBuilder {
-  constructor(private meshBuilder: MeshBuilder, private UTIL: Util) {}
+  infoByte : InfoByte;
+  constructor(private meshBuilder: MeshBuilder, private UTIL: Util) {
+    this.infoByte = this.UTIL.getInfoByte();
+  }
 
   buildChunkMesh(
     chunkX: number,
@@ -19,6 +23,7 @@ export class ChunkMeshBuilder {
 
     const uvs: number[] = [];
     const colors: number[] = [];
+    
     let newIndex = 0;
 
     /**# Template structure
@@ -42,6 +47,8 @@ export class ChunkMeshBuilder {
       const groupOrientation = chunkGroups[i + 5];
       const width = chunkGroups[i + 6];
       const depth = chunkGroups[i + 7];
+
+
 
    //   console.log(faceNum, groupBlock, x, y, z, groupOrientation, width, depth);
       newIndex = this.meshBuilder.getBoxFace(
@@ -78,7 +85,7 @@ export class ChunkMeshBuilder {
       // this._calculateColor(colors, chunkAmbientOcculusion, j);
     }
 
-
+    const infoByte =  this.infoByte;
 
     let k = 0;
     let j = 0;
@@ -88,12 +95,13 @@ export class ChunkMeshBuilder {
       const y = chunkPositions[i + 1];
       const z = chunkPositions[i + 2];
 
-      const faceBit = this.UTIL.getBitArray([chunkFaces[k]]);
+      infoByte.setNumberValue(chunkFaces[k]);
+
       const block = chunkBlocks[i];
 
       //   console.log(faceBit.getBit(0));
 
-      if (faceBit.getBit(0)) {
+      if (infoByte.getBit(0)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
@@ -107,7 +115,7 @@ export class ChunkMeshBuilder {
         j += 4;
       }
 
-      if (faceBit.getBit(1)) {
+      if (infoByte.getBit(1)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
@@ -121,7 +129,7 @@ export class ChunkMeshBuilder {
         j += 4;
       }
 
-      if (faceBit.getBit(2)) {
+      if (infoByte.getBit(2)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
@@ -135,7 +143,7 @@ export class ChunkMeshBuilder {
         j += 4;
       }
 
-      if (faceBit.getBit(3)) {
+      if (infoByte.getBit(3)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
@@ -149,7 +157,7 @@ export class ChunkMeshBuilder {
         j += 4;
       }
 
-      if (faceBit.getBit(4)) {
+      if (infoByte.getBit(4)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
@@ -163,7 +171,7 @@ export class ChunkMeshBuilder {
         j += 4;
       }
 
-      if (faceBit.getBit(5)) {
+      if (infoByte.getBit(5)) {
         newIndex = this.meshBuilder.getBoxFace(
           positions,
           indices,
