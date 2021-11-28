@@ -180,11 +180,11 @@ export class Player {
     this.camRay = camRay;
 
     const camPick = this.hitbox.getScene().pickWithRay(this.camRay);
- 
+
     if (camPick) {
       if (camPick.hit) {
         const point = camPick.pickedPoint;
-/* console.log(point);
+        /* console.log(point);
 console.log(camPick.faceId);
 console.log(camPick.pickedMesh); */
         if (point && camPick.pickedMesh && camPick.faceId !== undefined) {
@@ -198,11 +198,11 @@ console.log(camPick.pickedMesh); */
 
           this.lookingAtBlock = true;
           this.playerCube.position.z = z + 0.5;
-        
-          let normal : BABYLON.Vector3 = BABYLON.Vector3.Zero();
+
+          let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
           try {
             normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-          //  console.log(normal);
+            //  console.log(normal);
             if (normal.x == 1) {
               if (this.breaking) {
                 this.playerCube.position.x = x - 0.4;
@@ -319,14 +319,13 @@ console.log(camPick.pickedMesh); */
               return;
             }
           } catch (error: any) {
-            console.log(normal)
-            console.log(error);
+          //  console.log(normal);
+         //   console.log(error);
           }
 
           this.blockLookingAtPosition.z = z;
           //    console.log(this.blockLookingAtPosition);
-        } 
-
+        }
       } else {
         this.lookingAtBlock = false;
         this.playerCube.isVisible = false;
@@ -433,7 +432,7 @@ console.log(camPick.pickedMesh); */
     this._setUpPlayerCamera();
 
     document.addEventListener("click", (event: MouseEvent) => {
-      if(!this.active)return;
+      if (!this.active) return;
       if (event.button == 2) {
         if (!this.placing) return;
         if (this.lookingAtBlock) {
@@ -455,8 +454,7 @@ console.log(camPick.pickedMesh); */
             );
           }
 
-
-          //need to create into a promise to make sure not too many updates are set at once 
+          //need to create into a promise to make sure not too many updates are set at once
           this.active = false;
           setTimeout(() => {
             this.active = true;
@@ -543,6 +541,7 @@ console.log(camPick.pickedMesh); */
     );
 
     scene.registerBeforeRender(() => {
+  
       let forwardSpeed = 0;
       let sideSpeed = 0;
 
@@ -558,20 +557,20 @@ console.log(camPick.pickedMesh); */
       if (this.moveLeft) {
         sideSpeed = -0.1;
       }
-      const forward = this.camera
+      /*       const forward = this.camera
         .getTarget()
         .subtract(this.camera.position)
-        .normalize();
+        .normalize(); */
+      const forward = this.camera.getDirection(new BABYLON.Vector3(0, 0, 1));
       forward.y = 0;
       const right = BABYLON.Vector3.Cross(
         forward,
         this.camera.upVector
       ).normalize();
       right.y = 0;
-      const move = forward
-        .scale(forwardSpeed)
-        .subtract(right.scale(sideSpeed))
-        .subtract(this.camera.upVector.scale(0));
+      const move = forward.scale(forwardSpeed).subtract(right.scale(sideSpeed))
+      .subtract(this.camera.upVector.scale(0));
+
 
       this.velocity.x = move.x;
       this.velocity.z = move.z;
