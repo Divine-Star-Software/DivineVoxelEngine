@@ -4,7 +4,6 @@ import { AnimationComm } from "./AnimationComm.js";
 import { BlockManager } from "./Blocks/BlockManager.js";
 import { BuilderManagerWorker } from "./BuilderManager.worker.js";
 
-
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { ChunkMap } from "./Chunks/ChunkMap.js";
 import { WorldData } from "./WorldData/WorldData.js";
@@ -16,13 +15,12 @@ const builderManager = new BuilderManagerWorker();
 builderManager.setMainThreadCom(<any>worker);
 
 const chunkMap = new ChunkMap();
-const worldData = new WorldData(builderManager,chunkMap,UTIL);
+const worldData = new WorldData(builderManager, chunkMap, UTIL);
 const playerWatcher = new PlayerWatcher(worldData);
 
 const blockManager = new BlockManager();
-const chunkProccesor = new ChunkProcessor(worldData, playerWatcher,UTIL);
+const chunkProccesor = new ChunkProcessor(worldData, playerWatcher, UTIL);
 worldData.setChunkProcessor(chunkProccesor);
-
 
 (worker as any).worldData = worldData;
 (worker as any).playerWatcher = playerWatcher;
@@ -30,7 +28,7 @@ worldData.setChunkProcessor(chunkProccesor);
 (worker as any).chunkProccesor = chunkProccesor;
 const start = () => {
   let chunkNum = 20;
-  let totalChunks = (chunkNum * 16) - 144;
+  let totalChunks = chunkNum * 16 - 144;
   for (let i = -144; i < totalChunks; i += 16) {
     for (let k = -144; k < totalChunks; k += 16) {
       worldData.generateChunk(i, k);
@@ -43,18 +41,14 @@ const start = () => {
       if (!chunk) continue;
 
       const template = chunkProccesor.makeChunkTemplate(chunk, i, k);
- 
-
 
       // sendChunkData("new", i, k, data);
       builderManager.requestChunkBeBuilt(i, k, template);
- //     animationComm.sendChunkTemplateUpdate(i,k,template[1],template[2]);
+      //     animationComm.sendChunkTemplateUpdate(i,k,template[1],template[2]);
     }
   }
 
-
   playerWatcher.startWatchingPlayer();
-
 };
 
 function sendAnimationData(chunkX: number, chunkZ: number, uvs: number[]) {
@@ -107,42 +101,23 @@ addEventListener("message", (event: MessageEvent) => {
 
   if (message == "block-add") {
     const chunkXZ = UTIL.calculateGameZone(eventData[1], eventData[3]);
-    const newChunk = worldData.requestBlockAdd(
+    worldData.requestBlockAdd(
       chunkXZ[0],
       chunkXZ[1],
       eventData[1],
       eventData[2],
       eventData[3]
     );
-    if (newChunk) {
-      const template = chunkProccesor.makeChunkTemplate(
-        newChunk,
-        chunkXZ[0],
-        chunkXZ[1]
-      );
-      builderManager.requestChunkBeBuilt(chunkXZ[0], chunkXZ[1], template);
-
-    }
   }
   if (message == "block-remove") {
     const chunkXZ = UTIL.calculateGameZone(eventData[1], eventData[3]);
-    const newChunk = worldData.requestBlockRemove(
+    worldData.requestBlockRemove(
       chunkXZ[0],
       chunkXZ[1],
       eventData[1],
       eventData[2],
       eventData[3]
     );
-    if (newChunk) {
-      console.log("block removed");
-      const template = chunkProccesor.makeChunkTemplate(
-        newChunk,
-        chunkXZ[0],
-        chunkXZ[1]
-      );
-      builderManager.requestChunkBeBuilt(chunkXZ[0], chunkXZ[1], template);
-
-    }
   }
 
   if (eventData == "start") {
@@ -150,11 +125,9 @@ addEventListener("message", (event: MessageEvent) => {
     return;
   }
 
-  if(message  == "block-data-recieve") {
-
+  if (message == "block-data-recieve") {
     const blockData = eventData[1];
     console.log(blockData);
-
   }
 
   if (message == "connect-builder") {
@@ -164,7 +137,7 @@ addEventListener("message", (event: MessageEvent) => {
 
   if (message == "connect-animator") {
     const port = event.ports[0];
-//    animationComm.setPort(port);
+    //    animationComm.setPort(port);
   }
   if (message == "connect-player") {
     playerWatcher.setPlayerSharedArrays(
@@ -173,5 +146,4 @@ addEventListener("message", (event: MessageEvent) => {
       event.data[3]
     );
   }
-
 });

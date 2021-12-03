@@ -72,30 +72,22 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   camera.fov = 1.5;
   camera.minZ = 0.01;
-  camera.angularSensibility = 5000;
+  camera.angularSensibility = 4000;
   camera.maxZ = 500;
   scene.activeCamera = camera;
   //  camera.setTarget(BABYLON.Vector3.Zero());
 
   camera.attachControl(canvas, true);
 
-  /*   const light = new BABYLON.HemisphericLight(
+    const light = new BABYLON.HemisphericLight(
     "light1",
     new BABYLON.Vector3(0, 1, 0),
     scene
   );
   // light.specular = new BABYLON.Color3(.5,.5,.5);
-  light.intensity = 0.1;
+  light.intensity = 1;
   light.specular = new BABYLON.Color3(0, 0, 0);
 
-  const light2 = new BABYLON.HemisphericLight(
-    "light2",
-    new BABYLON.Vector3(0, -1, 0),
-    scene
-  );
-  // light.specular = new BABYLON.Color3(.5,.5,.5);
-  light2.intensity = 0.1;
-  light2.specular = new BABYLON.Color3(0, 0, 0);  */
 
   /*     var sunLight = new BABYLON.DirectionalLight(
     "DirectionalLight", 

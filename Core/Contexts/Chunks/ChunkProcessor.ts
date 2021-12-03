@@ -674,37 +674,19 @@ export class ChunkProcessor {
       /*       amientOcculusionTemplate.push(1,1,.5,.5,1,1);
       return; */
       amientOcculusionTemplate.push(
-
-
-
-
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1),
-
-   
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
-  
- 
 
-
-        
         this.chunkOcculsionCalcuation(this.worldData,  chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
-
-
-
- 
-
-
       );
     }
 
@@ -740,15 +722,12 @@ export class ChunkProcessor {
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1)
@@ -763,15 +742,12 @@ export class ChunkProcessor {
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 0) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 1)
@@ -786,29 +762,15 @@ export class ChunkProcessor {
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, 1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, 1),
-
-
-   
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, 1),
-
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, 1) *
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, 1)
-
-
-
-
-
-
-
-    
       );
     }
 
@@ -820,15 +782,12 @@ export class ChunkProcessor {
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, -1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 0, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, -1, 1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, 1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 1, -1),
-
         this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, 0, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 0, -1, -1) *
           this.chunkOcculsionCalcuation(this.worldData, chunk, chunkX, chunkZ, x, y, z, 1, -1, -1)

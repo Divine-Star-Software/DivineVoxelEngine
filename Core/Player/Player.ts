@@ -319,8 +319,8 @@ console.log(camPick.pickedMesh); */
               return;
             }
           } catch (error: any) {
-          //  console.log(normal);
-         //   console.log(error);
+            //  console.log(normal);
+            //   console.log(error);
           }
 
           this.blockLookingAtPosition.z = z;
@@ -364,12 +364,12 @@ console.log(camPick.pickedMesh); */
     //cameraCrossHairMaterial.disableLighting = true;
     const crossHairVertical = BABYLON.MeshBuilder.CreatePlane(
       "plane",
-      { width: 0.01, height: 0.5 },
+      { width: 0.01, height: 0.25 },
       this.hitbox.getScene()
     );
     const crossHairHorizontal = BABYLON.MeshBuilder.CreatePlane(
       "plane",
-      { width: 0.5, height: 0.01 },
+      { width: 0.25, height: 0.01 },
       this.hitbox.getScene()
     );
 
@@ -377,9 +377,10 @@ console.log(camPick.pickedMesh); */
     crossHairHorizontal.isPickable = false;
 
     crossHairVertical.parent = this.camera;
-    crossHairVertical.position.z = 10;
+
     crossHairHorizontal.parent = this.camera;
-    crossHairHorizontal.position.z = 10;
+    crossHairVertical.position.z = 5;
+    crossHairHorizontal.position.z = 5;
 
     crossHairVertical.material = cameraCrossHairMaterial;
     crossHairHorizontal.material = cameraCrossHairMaterial;
@@ -390,11 +391,12 @@ console.log(camPick.pickedMesh); */
   createPlayer(scene: BABYLON.Scene, camera: BABYLON.FreeCamera) {
     this.hitbox = BABYLON.MeshBuilder.CreateBox(
       "player-this.hitbox",
-      { width: 0.7, height: 1.5, depth: 0.7 },
+      { width: 0.7, height: 2, depth: 0.7 },
       scene
     );
-    this.camera = camera;
 
+    this.camera = camera;
+   // this.camera.position.y = 1;
     this.hitbox.checkCollisions = true;
     this.hitbox.ellipsoid = new BABYLON.Vector3(0.45, 0.9, 0.45);
     this.hitbox.isPickable = false;
@@ -425,9 +427,8 @@ console.log(camPick.pickedMesh); */
 
     const camNode = new BABYLON.TransformNode("camnode", scene);
     camera.parent = camNode;
-
     camNode.parent = this.hitbox;
-
+    
     this._setUpPlayerCube();
     this._setUpPlayerCamera();
 
@@ -541,7 +542,6 @@ console.log(camPick.pickedMesh); */
     );
 
     scene.registerBeforeRender(() => {
-  
       let forwardSpeed = 0;
       let sideSpeed = 0;
 
@@ -568,9 +568,10 @@ console.log(camPick.pickedMesh); */
         this.camera.upVector
       ).normalize();
       right.y = 0;
-      const move = forward.scale(forwardSpeed).subtract(right.scale(sideSpeed))
-      .subtract(this.camera.upVector.scale(0));
-
+      const move = forward
+        .scale(forwardSpeed)
+        .subtract(right.scale(sideSpeed))
+        .subtract(this.camera.upVector.scale(0));
 
       this.velocity.x = move.x;
       this.velocity.z = move.z;

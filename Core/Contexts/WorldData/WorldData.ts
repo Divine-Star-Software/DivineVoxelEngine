@@ -10,20 +10,20 @@ export class WorldData {
   renderDistance = 20;
 
   private chunkProccesor: ChunkProcessor;
-  worldGen : WorldGen;
+  worldGen: WorldGen;
 
-  playerWatcher : PlayerWatcher;
+  playerWatcher: PlayerWatcher;
   chunks: Record<number, Record<number, Chunk>> = {};
 
   constructor(
     private builderManager: BuilderManagerWorker,
-    public chunkMap : ChunkMap,
+    public chunkMap: ChunkMap,
     private UTIL: Util
   ) {
-  this.worldGen   = new WorldGen(this.chunkMap);
+    this.worldGen = new WorldGen(this.chunkMap);
   }
 
-  setPlayerWatcher(playerWatcher : PlayerWatcher) {
+  setPlayerWatcher(playerWatcher: PlayerWatcher) {
     this.playerWatcher = playerWatcher;
   }
 
@@ -54,8 +54,11 @@ export class WorldData {
             i,
             previousMaxChunkRebuild
           );
-          this.builderManager.requestChunkBeBuilt(i, previousMaxChunkRebuild, template);
-
+          this.builderManager.requestChunkBeBuilt(
+            i,
+            previousMaxChunkRebuild,
+            template
+          );
         }
       }
       for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
@@ -64,7 +67,7 @@ export class WorldData {
         }
         if (this.chunks[i][removeChunkZ]) {
           this.builderManager.requestChunkBeRemoved(i, removeChunkZ);
-      
+
           delete this.chunks[i][removeChunkZ];
         }
         if (!this.chunks[i][newChunkZ]) {
@@ -75,12 +78,8 @@ export class WorldData {
             newChunkZ
           );
           this.builderManager.requestChunkBeBuilt(i, newChunkZ, template);
-
         }
       }
-
-
-
     }
     if (direction == "south") {
       const removeChunkZ = chunkZ + (this.renderDistance / 2) * 16;
@@ -92,7 +91,7 @@ export class WorldData {
         }
         if (this.chunks[i][removeChunkZ]) {
           this.builderManager.requestChunkBeRemoved(i, removeChunkZ);
-      
+
           delete this.chunks[i][removeChunkZ];
         }
         if (!this.chunks[i][newChunkZ]) {
@@ -103,7 +102,6 @@ export class WorldData {
             newChunkZ
           );
           this.builderManager.requestChunkBeBuilt(i, newChunkZ, template);
- 
         }
       }
     }
@@ -112,9 +110,6 @@ export class WorldData {
       const newChunkX = chunkX + (this.renderDistance / 2) * 16 + 16;
       const removeChunkX = chunkX - (this.renderDistance / 2) * 16 + 16;
       const previousMaxChunkRebuild = newChunkX - 16;
-      
-
-
 
       for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
         if (!this.chunks[newChunkX]) {
@@ -129,7 +124,6 @@ export class WorldData {
             i
           );
           this.builderManager.requestChunkBeBuilt(newChunkX, i, template);
-
         }
       }
       for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
@@ -144,12 +138,13 @@ export class WorldData {
             previousMaxChunkRebuild,
             i
           );
-          this.builderManager.requestChunkBeBuilt(previousMaxChunkRebuild, i, template);
- 
+          this.builderManager.requestChunkBeBuilt(
+            previousMaxChunkRebuild,
+            i,
+            template
+          );
         }
       }
-
-
 
       for (const checkChunkX of Object.keys(this.chunks)) {
         const chunkXNum = parseInt(checkChunkX);
@@ -173,8 +168,6 @@ export class WorldData {
       const newChunkX = chunkX - (this.renderDistance / 2) * 16;
       const previousMaxChunkRebuild = newChunkX + 16;
 
-
-
       for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
         if (!this.chunks[newChunkX]) {
           this.chunks[newChunkX] = [];
@@ -188,7 +181,6 @@ export class WorldData {
             i
           );
           this.builderManager.requestChunkBeBuilt(newChunkX, i, template);
-
         }
       }
       for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
@@ -203,8 +195,11 @@ export class WorldData {
             previousMaxChunkRebuild,
             i
           );
-          this.builderManager.requestChunkBeBuilt(previousMaxChunkRebuild, i, template);
-
+          this.builderManager.requestChunkBeBuilt(
+            previousMaxChunkRebuild,
+            i,
+            template
+          );
         }
       }
       for (const checkChunkX of Object.keys(this.chunks)) {
@@ -259,13 +254,85 @@ export class WorldData {
       chunk[relativeX][relativeZ] ??= [];
 
       chunk[relativeX][relativeZ][y] = blockId;
-      return chunk;
+
+      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
+
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        chunkX,
+        chunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
     } else if (!chunk[relativeX][relativeZ][y]) {
       chunk[relativeX][relativeZ][y] = blockId;
-      return chunk;
+
+      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
+
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        chunkX,
+        chunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
     }
 
     return false;
+  }
+
+  _checkNearbyChunksToRebuild(
+    chunkX: number,
+    chunkZ: number,
+    relativeX: number,
+    relativeZ: number
+  ) {
+    buildChunkX0: if (relativeX == 0) {
+      const newChunkX = chunkX - 16;
+      const newChunkZ = chunkZ;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX0;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkX15: if (relativeX == 15) {
+      const newChunkX = chunkX + 16;
+      const newChunkZ = chunkZ;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX15;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkZ0: if (relativeZ == 0) {
+      const newChunkX = chunkX;
+      const newChunkZ = chunkZ - 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkZ0;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkZ15: if (relativeZ == 15) {
+      const newChunkX = chunkX;
+      const newChunkZ = chunkZ + 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkZ15;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
   }
 
   _getRelativeChunkPosition(
@@ -309,11 +376,21 @@ export class WorldData {
     const relativePOS = this._getRelativeChunkPosition(chunkX, chunkZ, x, y, z);
     const relativeX = relativePOS[0];
     const relativeZ = relativePOS[1];
-    console.log(relativeX, relativeZ);
+
     if (!chunk[relativeX]) return false;
     if (!chunk[relativeX][relativeZ]) return false;
     if (chunk[relativeX][relativeZ][y]) {
       delete chunk[relativeX][relativeZ][y];
+
+      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
+
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        chunkX,
+        chunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+
       return chunk;
     } else {
       return false;
