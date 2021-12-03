@@ -333,6 +333,54 @@ export class WorldData {
       );
       this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
     }
+    buildChunkX15Z15: if (relativeZ == 15 && relativeX == 15) {
+      const newChunkX = chunkX + 16;
+      const newChunkZ = chunkZ + 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX15Z15;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkX0Z0: if (relativeZ == 0 && relativeX == 0) {
+      const newChunkX = chunkX - 16;
+      const newChunkZ = chunkZ - 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX0Z0;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkX15Z0: if (relativeZ == 0 && relativeX == 15) {
+      const newChunkX = chunkX + 16;
+      const newChunkZ = chunkZ - 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX15Z0;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
+    buildChunkX0Z15: if (relativeZ == 15 && relativeX == 0) {
+      const newChunkX = chunkX - 16;
+      const newChunkZ = chunkZ + 16;
+      const chunk = this.getChunk(newChunkX, newChunkZ);
+      if (!chunk) break buildChunkX0Z15;
+      const template = this.chunkProccesor.makeChunkTemplate(
+        chunk,
+        newChunkX,
+        newChunkZ
+      );
+      this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+    }
   }
 
   _getRelativeChunkPosition(
