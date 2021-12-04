@@ -11,7 +11,7 @@
 
 __WARNING:__
 Very early development. It is very bugy and broken. Please don't download and complain that
-it does not work. As of this writing this project is only about a week old.
+it does not work. As of this writing this project is only about two weeks old.
 
 # What is this?
 
