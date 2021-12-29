@@ -62,7 +62,7 @@ The voxel themselves will just store a sky light level and a block light level. 
 
 ## Registering Blocks
 
-Blocks will have to be registered in the worker’s that the data is needed. For instance the world generator will need to know what the voxels textures index is and how to calculate it. While the logic operator will need to know what blocks need logic updates and the actual logic that runs them. 
+Blocks will have to be registered in the workers that the data is needed. For instance the world generator will need to know what the voxels textures index is and how to calculate it. While the logic operator will need to know what blocks need logic updates and the actual logic that runs them. 
 
 The way the main rendering currently works is based on creating “chunk templates” or the bare minimum amount of information needed to represent the chunk visually. The chunk template is generated in the world worker and sent to a chunk builder worker. The chunk builder worker will generate the necessary data from the template to build a mesh for the chunk. 
 
