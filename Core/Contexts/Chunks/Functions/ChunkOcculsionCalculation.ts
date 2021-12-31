@@ -1,5 +1,37 @@
 import type { WorldData } from "Core/Contexts/WorldData/WorldData";
+import { GetRealtiveChunkData } from "./GetRelativeChunkData.js";
 
+export function ChunkOcculsionCalcuation(
+  worldData: WorldData,
+  chunk: number[][][],
+  chunkX: number,
+  chunkZ: number,
+  blockX: number,
+  blockY: number,
+  blockZ: number,
+  x: number,
+  y: number,
+  z: number
+) {
+  const check = GetRealtiveChunkData(
+    worldData,
+    chunk,
+    chunkX,
+    chunkZ,
+    blockX,
+    blockY,
+    blockZ,
+    x,
+    y,
+    z
+  );
+  if (!check) {
+    return 1;
+  }
+  return 0.75;
+}
+
+/* 
 export function ChunkOcculsionCalcuation(
   worldData: WorldData,
   chunk: number[][][],
@@ -380,3 +412,4 @@ export function ChunkOcculsionCalcuation(
   }
   return 0.75;
 }
+ */

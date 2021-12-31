@@ -254,26 +254,24 @@ export class WorldData {
       chunk[relativeX][relativeZ] ??= [];
 
       chunk[relativeX][relativeZ][y] = blockId;
-
-      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
-
       const template = this.chunkProccesor.makeChunkTemplate(
         chunk,
         chunkX,
         chunkZ
       );
       this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+
+      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
     } else if (!chunk[relativeX][relativeZ][y]) {
       chunk[relativeX][relativeZ][y] = blockId;
-
-      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
-
       const template = this.chunkProccesor.makeChunkTemplate(
         chunk,
         chunkX,
         chunkZ
       );
       this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+
+      this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
     }
 
     return false;

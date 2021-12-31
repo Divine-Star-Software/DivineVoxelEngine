@@ -191,9 +191,9 @@ export class MeshBuilder {
     height: number = 0.5
   ) {
  //  let uv = 2;
-  let uv =  Math.floor(Math.random() * 5) ;
+  //let uv =  Math.floor(Math.random() * 5) ;
    let numIndices = 0;
-    //let uv = 1.0;
+    let uv = 2;
     let perc;
     let bottomStart;
     let leftStart;
