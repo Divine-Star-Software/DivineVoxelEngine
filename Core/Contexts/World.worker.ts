@@ -1,7 +1,6 @@
 import { MeshData } from "Meta/Util.types.js";
 import { Util } from "../../Global/Util.helper.js";
-import { AnimationComm } from "./AnimationComm.js";
-import { BlockManager } from "./Blocks/BlockManager.js";
+import { VoxelManager } from "./Voxel/VoxelManager.js";
 import { BuilderManagerWorker } from "./BuilderManager.worker.js";
 
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -18,7 +17,7 @@ const chunkMap = new ChunkMap();
 const worldData = new WorldData(builderManager, chunkMap, UTIL);
 const playerWatcher = new PlayerWatcher(worldData);
 
-const blockManager = new BlockManager();
+const blockManager = new VoxelManager();
 const chunkProccesor = new ChunkProcessor(worldData, playerWatcher, UTIL);
 worldData.setChunkProcessor(chunkProccesor);
 
@@ -135,10 +134,6 @@ addEventListener("message", (event: MessageEvent) => {
     builderManager.addBuilder(port);
   }
 
-  if (message == "connect-animator") {
-    const port = event.ports[0];
-    //    animationComm.setPort(port);
-  }
   if (message == "connect-player") {
     playerWatcher.setPlayerSharedArrays(
       event.data[1],

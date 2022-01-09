@@ -53,7 +53,6 @@ export class Player {
       playerDirectionArrayBuffer,
     ];
     this.DS.world.sendPlayerSharedArrays(arrays);
-    this.DS.animationManager.sendPlayerSharedArrays(arrays);
   }
 
   calculateGameZone(positionX: number, positionZ: number) {

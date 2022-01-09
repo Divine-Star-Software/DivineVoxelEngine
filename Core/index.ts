@@ -20,18 +20,13 @@ const DS = new DivineStar();
 DS.world.createWorldWorker();
 DS.builderManager.createBuilders();
 DS.world.sendBlockData(blcokData);
-DS.animationManager.createAnimationWorker();
-DS.animationManager.createAnimators();
+
 
 window.addEventListener("beforeunload", () => {
-  for (const animtor of DS.animationManager.animators) {
-    animtor.terminate();
-  }
   for (const builder of DS.builderManager.builders) {
     builder.terminate();
   }
   DS.world.worldGen.terminate();
-  DS.animationManager.animationWorker.terminate();
 });
 
 //DS.chunkManager.createSharedArrayBuffers();
@@ -156,7 +151,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   DS.player.createPlayer(scene, camera);
 
-  DS.animationManager.startAnimations();
+
 
   let test = true;
   //render loop

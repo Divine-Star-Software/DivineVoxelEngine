@@ -1,6 +1,5 @@
 import type { Util } from "Global/Util.helper.js";
 import { Chunk } from "Meta/WorldData/World.types.js";
-import type { AnimationComm } from "../AnimationComm.js";
 import { BuilderManagerWorker } from "../BuilderManager.worker.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import type { ChunkMap } from "../Chunks/ChunkMap.js";

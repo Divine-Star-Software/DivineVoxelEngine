@@ -1,5 +1,9 @@
 import { PositionMatrix } from "Meta/Util.types";
 
+/**# Mesh Builder
+ * ---
+ * This class handles the actual creation of the mesh. 
+ */
 export class MeshBuilder {
   textureAtlasImageWidth = 16;
   textureAtlasImageHeight = 16;
@@ -190,10 +194,10 @@ export class MeshBuilder {
     depth: number = 0.5,
     height: number = 0.5
   ) {
- //  let uv = 2;
-  //let uv =  Math.floor(Math.random() * 5) ;
+   let uv = 2;
+ // let uv =  Math.floor(Math.random() * 5) ;
    let numIndices = 0;
-    let uv = 2;
+  //  let uv = 2;
     let perc;
     let bottomStart;
     let leftStart;
