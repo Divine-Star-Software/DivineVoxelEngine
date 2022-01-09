@@ -1,11 +1,11 @@
 
-import { BuilderManager } from "./Build/BuilderManager.js";
-import { ChunkMaterial } from "./Build/ChunkMaterial.js";
+import { BuilderManager } from "./Builders/BuilderManager.js";
+import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
 import { ChunkManager } from "./Chunks/ChunkManager.js";
 import { Player } from "./Player/Player.js";
 import { World } from "./World/World.js";
 
-export class DivineStar {
+export class DivineVoxelEngine {
   world: World;
   player: Player;
   chunkManager : ChunkManager;

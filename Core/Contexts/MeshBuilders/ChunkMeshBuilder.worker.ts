@@ -1,6 +1,6 @@
 import { MeshData } from "Meta/Util.types.js";
 import { Util } from "../../../Global/Util.helper.js";
-import { MeshBuilder } from "../Meshes/MeshBuilder.js";
+import { MeshBuilder } from "./Meshes/MeshBuilder.js";
 import { ChunkMeshBuilder } from "./ChunkMeshBuilder.js";
 const UTIL = new Util();
 const meshBuilder = new MeshBuilder();
@@ -46,8 +46,7 @@ const messageFromWorld = (event: MessageEvent) => {
     const chunkPositions = new Uint16Array(data[2]);
     const chunkFaces =new Uint8Array(data[3]);
     const chunkBlocks = new Uint16Array(data[4]);
-    const chunkGroups = new Float32Array(data[5]);
-    const chunkAmbientOcculusion = new Float32Array(data[6]);
+    const chunkAmbientOcculusion = new Float32Array(data[5]);
 
 
 
@@ -57,7 +56,6 @@ const messageFromWorld = (event: MessageEvent) => {
       chunkPositions,
       chunkFaces,
       chunkBlocks,
-      chunkGroups,
       chunkAmbientOcculusion
     );
 

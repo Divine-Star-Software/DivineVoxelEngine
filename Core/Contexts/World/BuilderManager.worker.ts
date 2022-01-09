@@ -41,8 +41,7 @@ export class BuilderManagerWorker {
   //  console.log(positions);
     const indicies = new Uint8Array(chunkTemplate[1]);
     const blocks = new Uint16Array(chunkTemplate[2]);
-    const groups = new Float32Array(chunkTemplate[3]);
-    const ambientOcclusion = new Float32Array(chunkTemplate[4]);
+    const ambientOcclusion = new Float32Array(chunkTemplate[3]);
 
     this.builders[this.count].postMessage([
       chunkX,
@@ -50,7 +49,6 @@ export class BuilderManagerWorker {
       positions.buffer,
       indicies.buffer,
       blocks.buffer,
-      groups.buffer,
       ambientOcclusion.buffer
     ]),
       [positions.buffer, indicies.buffer, blocks.buffer,ambientOcclusion.buffer];

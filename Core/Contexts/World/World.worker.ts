@@ -1,6 +1,6 @@
 import { MeshData } from "Meta/Util.types.js";
-import { Util } from "../../Global/Util.helper.js";
-import { VoxelManager } from "./Voxel/VoxelManager.js";
+import { Util } from "../../../Global/Util.helper.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { BuilderManagerWorker } from "./BuilderManager.worker.js";
 
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -17,7 +17,7 @@ const chunkMap = new ChunkMap();
 const worldData = new WorldData(builderManager, chunkMap, UTIL);
 const playerWatcher = new PlayerWatcher(worldData);
 
-const blockManager = new VoxelManager();
+const voxelManager = new VoxelManager();
 const chunkProccesor = new ChunkProcessor(worldData, playerWatcher, UTIL);
 worldData.setChunkProcessor(chunkProccesor);
 
@@ -49,49 +49,6 @@ const start = () => {
 
   playerWatcher.startWatchingPlayer();
 };
-
-function sendAnimationData(chunkX: number, chunkZ: number, uvs: number[]) {
-  const uvArray = new Float32Array(uvs);
-
-  //@ts-ignore
-  worker.postMessage(
-    ["animation", chunkX, chunkZ, uvArray.buffer],
-    //@ts-ignore
-    [uvArray.buffer]
-  );
-}
-
-function sendChunkData(
-  message: "new" | "update",
-  chunkX: number,
-  chunkZ: number,
-  data: MeshData
-) {
-  const positionArray = new Float32Array(data.positions);
-  const indiciesArray = new Int32Array(data.indices);
-  const colorsArray = new Float32Array(data.colors);
-  const uvArray = new Float32Array(data.uvs);
-
-  //@ts-ignore
-  worker.postMessage(
-    [
-      message,
-      chunkX,
-      chunkZ,
-      positionArray.buffer,
-      indiciesArray.buffer,
-      colorsArray.buffer,
-      uvArray.buffer,
-    ],
-    //@ts-ignore
-    [
-      positionArray.buffer,
-      indiciesArray.buffer,
-      colorsArray.buffer,
-      uvArray.buffer,
-    ]
-  );
-}
 
 addEventListener("message", (event: MessageEvent) => {
   const eventData = event.data;

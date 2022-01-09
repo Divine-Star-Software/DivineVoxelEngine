@@ -1,7 +1,7 @@
 import type { Util } from "Global/Util.helper";
 import type { InfoByte } from "Global/Util/InfoByte";
 import { MeshData } from "Meta/Util.types";
-import type { MeshBuilder } from "../Meshes/MeshBuilder";
+import type { MeshBuilder } from "./Meshes/MeshBuilder";
 
 export class ChunkMeshBuilder {
   infoByte : InfoByte;
@@ -15,7 +15,6 @@ export class ChunkMeshBuilder {
     chunkPositions: Uint16Array,
     chunkFaces: Uint8Array,
     chunkBlocks: Uint16Array,
-    chunkGroups: Float32Array,
     chunkAmbientOcculusion: Float32Array
   ): MeshData {
     const positions: number[] = [];
@@ -38,52 +37,7 @@ export class ChunkMeshBuilder {
      * depth - The depth of the gorup
      */
 
-    for (let i = 0; i < chunkGroups.length; i += 8) {
-      const faceNum = chunkGroups[i];
-      const groupBlock = chunkGroups[i + 1];
-      const x = chunkGroups[i + 2];
-      const y = chunkGroups[i + 3];
-      const z = chunkGroups[i + 4];
-      const groupOrientation = chunkGroups[i + 5];
-      const width = chunkGroups[i + 6];
-      const depth = chunkGroups[i + 7];
 
-
-
-   //   console.log(faceNum, groupBlock, x, y, z, groupOrientation, width, depth);
-      newIndex = this.meshBuilder.getBoxFace(
-        positions,
-        indices,
-        colors,
-        [],
-        "top",
-        { x: x, y: y, z: z },
-        newIndex,
-        width / 2,
-        depth / 2
-      );
-    //  console.log(width,depth);
-      uvs.push(
-        //1
-        0,
-        0,
-        0,
-        //2
-        width,
-        0,
-        0,
-        //3
-        width,
-        depth,
-        0,
-        //4
-        0,
-        depth,
-        0
-      );
-      colors.push(1, 1, 1, 1);
-      // this._calculateColor(colors, chunkAmbientOcculusion, j);
-    }
 
     const infoByte =  this.infoByte;
 

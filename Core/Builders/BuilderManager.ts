@@ -1,4 +1,4 @@
-import type { DivineStar } from "../DivineStar";
+import type { DivineVoxelEngine } from "../DivineVoxelEngine";
 import { ChunkBuilder } from "./ChunkBuilder.js";
 
 export class BuilderManager {
@@ -16,7 +16,7 @@ export class BuilderManager {
   shadowGen: BABYLON.ShadowGenerator;
   chunkMeshes: Record<number, Record<number, BABYLON.Mesh>> = {};
 
-  constructor(private DS: DivineStar) {
+  constructor(private DS: DivineVoxelEngine) {
     /*     const numBuilders = 4;
 
     if(window.navigator.hardwareConcurrency > numBuilders) {

@@ -1,5 +1,5 @@
-import { Util } from "../Global/Util.helper.js";
-import { DivineStar } from "./DivineStar.js";
+import { Util } from "../../Global/Util.helper.js";
+import { DivineVoxelEngine } from "../../Core/DivineVoxelEngine.js";
 
 const blcokData = [
   {
@@ -15,24 +15,24 @@ const blcokData = [
   },
 ];
 
-const DS = new DivineStar();
-(window as any).DS = DS;
-DS.world.createWorldWorker();
-DS.builderManager.createBuilders();
-DS.world.sendBlockData(blcokData);
+const DVE = new DivineVoxelEngine();
+(window as any).DVE = DVE;
+DVE.world.createWorldWorker();
+DVE.builderManager.createBuilders();
+DVE.world.sendBlockData(blcokData);
 
 
 window.addEventListener("beforeunload", () => {
-  for (const builder of DS.builderManager.builders) {
+  for (const builder of DVE.builderManager.builders) {
     builder.terminate();
   }
-  DS.world.worldGen.terminate();
+  DVE.world.worldGen.terminate();
 });
 
 //DS.chunkManager.createSharedArrayBuffers();
 
 window.addEventListener("DOMContentLoaded", async () => {
-  DS.chunkMaterial.setUpImageCreation();
+  DVE.chunkMaterial.setUpImageCreation();
 
   const canvas = document.createElement("canvas");
   canvas.id = "renderCanvas";
@@ -129,9 +129,9 @@ window.addEventListener("DOMContentLoaded", async () => {
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
 
-  DS.player.createPlayerSharedArrays();
-  DS.chunkMaterial.setScene(scene);
-  const combinedTexture = await DS.chunkMaterial.createMaterialTexture([
+  DVE.player.createPlayerSharedArrays();
+  DVE.chunkMaterial.setScene(scene);
+  const combinedTexture = await DVE.chunkMaterial.createMaterialTexture([
     "assets/textures/2.png",
     "assets/textures/5.png",
     "assets/textures/1.png",
@@ -140,16 +140,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 
  
   ]);
-  const material = DS.chunkMaterial.getMaterial(combinedTexture);
+  const material = DVE.chunkMaterial.getMaterial(combinedTexture);
 
-  DS.builderManager.setScene(scene);
+  DVE.builderManager.setScene(scene);
   // DS.builderManager.setShadowGen(shadowGenerator);
-  DS.builderManager.setMaterial(material);
-  DS.builderManager.createBaseChunkMeshes();
+  DVE.builderManager.setMaterial(material);
+  DVE.builderManager.createBaseChunkMeshes();
   //  DS.world.setShadowGen(shadowGenerator);
-  DS.world.startWorldGen();
+  DVE.world.startWorldGen();
 
-  DS.player.createPlayer(scene, camera);
+  DVE.player.createPlayer(scene, camera);
 
 
 
@@ -159,10 +159,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     scene.render();
   });
 
-  (DS as any).UTIL = util;
+  (DVE as any).UTIL = util;
 
   setInterval(() => {
-    DS.player.update();
+    DVE.player.update();
 
     // spotlight.position.x = DS.player.hitbox.position.x - 20;
     // spotlight.position.z = DS.player.hitbox.position.z - 20;
@@ -179,12 +179,12 @@ window.addEventListener("DOMContentLoaded", async () => {
       count = max;
  
       if (test) {
-        DS.chunkMaterial.runAnimations(3);
+        DVE.chunkMaterial.runAnimations(3);
         test = false;
       } else {
         test = true;
         
-        DS.chunkMaterial.runAnimations(4);
+        DVE.chunkMaterial.runAnimations(4);
       }
     } else {
       count--;

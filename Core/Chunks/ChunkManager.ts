@@ -1,10 +1,10 @@
-import type { DivineStar } from "Core/DivineStar";
+import type { DivineVoxelEngine } from "Core/DivineVoxelEngine";
 
 export class ChunkManager {
 
 
 
-    constructor(private DS :DivineStar) {
+    constructor(private DS :DivineVoxelEngine) {
 
 
 

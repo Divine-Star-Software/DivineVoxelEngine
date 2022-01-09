@@ -1,5 +1,4 @@
-import type { WorldData } from "Core/Contexts/WorldData/WorldData";
-
+import type { WorldData } from "Core/Contexts/World/WorldData/WorldData";
 export function GetRealtiveChunkData(
   worldData: WorldData,
   chunk: number[][][],

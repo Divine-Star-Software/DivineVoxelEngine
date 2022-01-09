@@ -35,9 +35,9 @@ generation and so on. So you can fill out those things yourself.
 
 # In Dev
 
-- Greedy Meshing
-- Different Block Types
+- Different Voxel Types
 - Saving Data
+- Lighting System
 
 # Features Looking Ahead 
 

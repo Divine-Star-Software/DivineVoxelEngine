@@ -1,4 +1,4 @@
-import type { DivineStar } from "Core/DivineStar";
+import type { DivineVoxelEngine } from "Core/DivineVoxelEngine";
 import { PositionMatrix } from "Meta/Util.types";
 
 export class Player {
@@ -36,7 +36,7 @@ export class Player {
   bottomRay: BABYLON.Ray;
   camRay: BABYLON.Ray;
 
-  constructor(private DS: DivineStar) {}
+  constructor(private DS: DivineVoxelEngine) {}
 
   createPlayerSharedArrays() {
     const absPositionArrayBuffer = new SharedArrayBuffer(12);

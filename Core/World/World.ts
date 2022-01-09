@@ -1,6 +1,6 @@
-import type { DivineStar } from "Core/DivineStar.js";
+import type { DivineVoxelEngine } from "Core/DivineVoxelEngine.js";
 import { PositionMatrix } from "Meta/Util.types.js";
-import { ChunkBuilder } from "../Build/ChunkBuilder.js";
+import { ChunkBuilder } from "../Builders/ChunkBuilder.js";
 
 export class World {
   runningBlockUpdate = false;
@@ -11,7 +11,7 @@ export class World {
   shadowGen: BABYLON.ShadowGenerator;
   chunkMeshes: Record<number, Record<number, BABYLON.Mesh>> = {};
 
-  constructor(private DS: DivineStar) {}
+  constructor(private DS: DivineVoxelEngine) {}
 
   sendBlockData(data: any) {
     this.worldGen.postMessage(["block-data-recieve", data]);
