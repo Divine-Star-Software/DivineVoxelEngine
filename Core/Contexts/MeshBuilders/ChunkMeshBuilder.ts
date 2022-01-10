@@ -53,15 +53,7 @@ export class ChunkMeshBuilder {
 
    //   console.log(faceBit.getBit(0));
 
-   const exposedFaces = 
-   [
-    infoByte.getBit(0),
-    infoByte.getBit(1),
-    infoByte.getBit(2),
-    infoByte.getBit(3),
-    infoByte.getBit(4),
-    infoByte.getBit(5)
-   ];
+
 
    if (infoByte.getBit(0)) {
     newIndex = this.meshBuilder.getBoxFace(

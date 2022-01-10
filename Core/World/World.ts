@@ -78,7 +78,7 @@ export class World {
 
   createWorldWorker() {
     this.worldGen = new Worker(
-      new URL("../Contexts/World.worker.js", import.meta.url),
+      new URL("../Contexts/World/World.worker.js", import.meta.url),
       {
         type: "module",
       }

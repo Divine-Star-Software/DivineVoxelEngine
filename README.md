@@ -10,12 +10,13 @@
 ---
 
 __WARNING:__
-Very early development. It is very bugy and broken. Please don't download and complain that
-it does not work. As of this writing this project is only about two weeks old.
+Very early development. This is not finalized. Things will keep changing as development goes forward.
 
 # What is this?
 
 A voxel engine written in TypeScript that uses Babylon.Js. 
+
+This is meant to handle only the rendering and creating of meshes. Things like players, mobs, and complex inter-connected logic is up to you. 
 
 # Why?
 
@@ -28,7 +29,7 @@ generation and so on. So you can fill out those things yourself.
 - Chunk based rendering and meshing
 - Multi Threaded - World Gen and Chunk Creation happens in workers
 - Ambient Occulsion - Nice shadows for the voxel 
-- - Please thank this guy for it: https://twitter.com/iced_coffee_dev
+  - Please thank this guy for it: https://twitter.com/iced_coffee_dev
 - Infinite Generation
 - Animated Textures
 - Custom Shaders
@@ -36,15 +37,14 @@ generation and so on. So you can fill out those things yourself.
 # In Dev
 
 - Different Voxel Types
+- Different Voxel Shapes
+- Any easy way to add voxels and shapes. 
 - Saving Data
 - Lighting System
 
 # Features Looking Ahead 
 
 - Lighting System 
-- Water Physics
-- Entities
-- Mob Starter Base
 - Particles 
 
 ## Coming Changes
