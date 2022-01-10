@@ -14,7 +14,7 @@ const shapeManager = new ShapeManager();
 const shapeHelper = new ShapeHelper(UTIL);
 RegisterDefaultShapes(shapeManager, shapeHelper);
 
-const builder = new ChunkMeshBuilder(meshBuilder,shapeManager,UTIL);
+const builder = new ChunkMeshBuilder(meshBuilder, shapeManager, UTIL);
 
 function sendChunkData(chunkX: number, chunkZ: number, data: MeshData) {
  const positionArray = new Float32Array(data.positions);
@@ -47,18 +47,22 @@ const messageFromWorld = (event: MessageEvent) => {
 
  const chunkX = data[0];
  const chunkZ = data[1];
- const chunkPositions = new Uint16Array(data[2]);
- const chunkFaces = new Uint8Array(data[3]);
- const chunkBlocks = new Uint16Array(data[4]);
- const chunkAmbientOcculusion = new Float32Array(data[5]);
+ const positions = new Uint16Array(data[2]);
+ const faces = new Uint8Array(data[3]);
+ const shapes = new Uint16Array(data[4]);
+ const uvs = new Uint16Array(data[5]);
+ const lights = new Float32Array(data[6]);
+ const ao = new Float32Array(data[7]);
 
  const meshData = builder.buildChunkMesh(
   chunkX,
   chunkZ,
-  chunkPositions,
-  chunkFaces,
-  chunkBlocks,
-  chunkAmbientOcculusion
+  positions,
+  faces,
+  shapes,
+  uvs,
+  lights,
+  ao
  );
 
  sendChunkData(chunkX, chunkZ, meshData);

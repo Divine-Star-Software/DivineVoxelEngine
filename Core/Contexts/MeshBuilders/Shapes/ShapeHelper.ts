@@ -1,34 +1,11 @@
-import type { DirectionNames } from "Meta/Util.types";
 import type { ShapeHelperInterface } from "Meta/Voxels/Shapes/ShapeHelper.interface";
-import type { InfoByte } from "Global/Util/InfoByte";
 import type { Util } from "Global/Util.helper";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export class ShapeHelper implements ShapeHelperInterface {
- infoByte: InfoByte;
-
- exposedFaceRecord: Record<DirectionNames, number> = {
-  top: 0,
-  bottom: 1,
-  west: 2,
-  east: 3,
-  north: 4,
-  south: 5,
- };
-
- constructor(private util: Util) {
-  this.infoByte = util.getInfoByte();
- }
-
- isFaceExposexd(
-  voxelExposedFaceEncodedBit: number,
-  faceDirection: DirectionNames
- ) {
-    this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
-  return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
- }
+ constructor(public util: Util) {}
 
  toLinearSpace(r: number, g: number, b: number, a: number) {
   r = Math.pow(r, 2.2);

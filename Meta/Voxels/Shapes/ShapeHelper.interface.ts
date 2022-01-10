@@ -1,6 +1,7 @@
-import { DirectionNames } from "Meta/Util.types";
+import type { Util } from "Global/Util.helper";
 
 export interface ShapeHelperInterface {
+ util : Util;
  toLinearSpace(r: number, g: number, b: number, a: number): number[];
  calculateAOColor(
   colors: number[],
@@ -9,6 +10,5 @@ export interface ShapeHelperInterface {
  ): void;
 
  
- isFaceExposexd(voxelExposedFaceEncodedBit : number,faceDirection : DirectionNames)  : boolean;
 
 }

@@ -16,47 +16,54 @@ export class ChunkMeshBuilder {
  buildChunkMesh(
   chunkX: number,
   chunkZ: number,
-  chunkPositions: Uint16Array,
-  chunkFaces: Uint8Array,
-  chunkBlocks: Uint16Array,
-  chunkAmbientOcculusion: Float32Array
+  positionsTemplate: Uint16Array,
+  faceTemplate: Uint8Array,
+  shapeTemplate: Uint16Array,
+  uvTemplate: Uint16Array,
+  lightTemplate: Float32Array,
+  aoTemplate: Float32Array
  ): MeshData {
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
   const colors: number[] = [];
-  const shape = this.shapeManager.shapes[0];
+
   let indicieIndex = 0;
   let aoIndex = 0;
+  let uvIndex = 0;
   let faceIndex = 0;
+  let shapeIndex = 0;
 
   for (
    let positionIndex = 0;
-   positionIndex < chunkPositions.length;
+   positionIndex < positionsTemplate.length;
    positionIndex += 3
   ) {
-   const x = chunkPositions[positionIndex];
-   const y = chunkPositions[positionIndex + 1];
-   const z = chunkPositions[positionIndex + 2];
+   const x = positionsTemplate[positionIndex];
+   const y = positionsTemplate[positionIndex + 1];
+   const z = positionsTemplate[positionIndex + 2];
 
+   const shapeId = shapeTemplate[shapeTemplate[shapeIndex]];
+   const shape = this.shapeManager.shapes[shapeId];
    const newIndexes = shape.addToChunkMesh({
     postions: positions,
     indices: indices,
     fullColors: [],
     linearColors: colors,
     uvs: uvs,
-    face: chunkFaces[faceIndex],
+    face: faceTemplate[faceIndex],
     indicieIndex: indicieIndex,
-    unTemplate: new Uint16Array(),
-    uvTemplateIndex: 0,
-    lightTemplate: chunkAmbientOcculusion,
+    unTemplate: uvTemplate,
+    uvTemplateIndex: uvIndex,
+    lightTemplate: aoTemplate,
     lightIndex: 0,
-    aoTemplate: chunkAmbientOcculusion,
+    aoTemplate: aoTemplate,
     aoIndex: aoIndex,
     position: { x: x, y: y, z: z },
    });
    indicieIndex = newIndexes.newIndicieIndex;
    aoIndex = newIndexes.newAOIndex;
+   uvIndex = newIndexes.newUVTemplateIndex;
 
    faceIndex++;
   }

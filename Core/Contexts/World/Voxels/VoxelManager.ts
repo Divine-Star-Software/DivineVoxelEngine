@@ -1,17 +1,23 @@
-import { VoxelData } from "Meta/Voxels/Voxel.types";
+import {  VoxelInteface } from "Meta/Voxels/Voxel.types";
 
 
 export class VoxelManager {
 
 
-    voxelData : VoxelData[];
-    voxels : Record<number,VoxelData> = {};
+
+    voxels : Record<string,VoxelInteface> = {};
 
 
 
 
-    registerVoxelData(voxelData : VoxelData[]) {
-        this.voxelData = voxelData;
+    getVoxel(id : string) : VoxelInteface {
+
+        return this.voxels[id];
+    }
+
+
+    registerVoxelData(id : string,voxel : VoxelInteface)  {
+        this.voxels[id] = voxel;
     
     }
 

@@ -1,29 +1,44 @@
+import { DirectionNames } from "Meta/Util.types.js";
 import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
 
-
-
 export class Util {
-    calculateGameZone(positionZ: number, positionX: number) {
-        const chunkpositionZ = (positionZ >> 4) << 4;
-        const chunkpositionX = (positionX >> 4) << 4;
-        return [chunkpositionZ, chunkpositionX];
-      }
+ infoByte = new InfoByte();
+ exposedFaceRecord: Record<DirectionNames, number> = {
+  top: 0,
+  bottom: 1,
+  west: 2,
+  east: 3,
+  north: 4,
+  south: 5,
+ };
 
-      getInfoByte(number : number = 0) {
-        return new InfoByte(number);
-      }
+ isFaceExposexd(
+  voxelExposedFaceEncodedBit: number,
+  faceDirection: DirectionNames
+ ) {
+  this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
+  return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
+ }
 
-      getBitArray(nums : number[]) {
-        return new BitArray(nums);
-      }
+ calculateGameZone(positionZ: number, positionX: number) {
+  const chunkpositionZ = (positionZ >> 4) << 4;
+  const chunkpositionX = (positionX >> 4) << 4;
+  return [chunkpositionZ, chunkpositionX];
+ }
 
-      degtoRad(degrees: number) {
-        return degrees * (Math.PI / 180);
-      }
-      radToDeg(radians: number) {
-        return radians * (180 / Math.PI);
-      }
+ getInfoByte(number: number = 0) {
+  return new InfoByte(number);
+ }
 
+ getBitArray(nums: number[]) {
+  return new BitArray(nums);
+ }
 
+ degtoRad(degrees: number) {
+  return degrees * (Math.PI / 180);
+ }
+ radToDeg(radians: number) {
+  return radians * (180 / Math.PI);
+ }
 }

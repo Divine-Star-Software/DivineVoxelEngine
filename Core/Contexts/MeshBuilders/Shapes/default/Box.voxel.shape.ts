@@ -37,8 +37,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 1,
     data.indicieIndex
    );
- //  const uv = data.unTemplate[data.uvTemplateIndex];
- const uv = 1;
+    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -78,8 +77,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 2,
     data.indicieIndex
    );
- //  const uv = data.unTemplate[data.uvTemplateIndex];
- const uv = 1;
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -119,8 +117,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 2,
     data.indicieIndex
    );
-  // const uv = data.unTemplate[data.uvTemplateIndex];
-  const uv = 1;
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -160,8 +157,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 2,
     data.indicieIndex
    );
- //  const uv = data.unTemplate[data.uvTemplateIndex];
- const uv = 1;
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -201,8 +197,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 2,
     data.indicieIndex
    );
-  // const uv = data.unTemplate[data.uvTemplateIndex];
-  const uv = 1;
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -241,8 +236,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 1,
     data.indicieIndex
    );
- //  const uv = data.unTemplate[data.uvTemplateIndex];
- const uv = 1;
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -260,49 +254,46 @@ export class BoxVoxelShape implements VoxelShapeInterface {
  };
 
  addToChunkMesh(data: VoxelShapeAddData) {
+  data.position.x += this.width;
+  data.position.z += this.depth;
+  data.position.y += this.height;
 
-    data.position.x += this.width;
-    data.position.z += this.depth;
-    data.position.y += this.height;
-
-
-  if (this.shapeHelper.isFaceExposexd(data.face, "top")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "top")) {
    const newData = this.faces[0](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
    data.lightIndex = newData.newLightIndex;
    data.aoIndex = newData.newAOIndex;
- 
   }
-  if (this.shapeHelper.isFaceExposexd(data.face, "bottom")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "bottom")) {
    const newData = this.faces[1](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
    data.lightIndex = newData.newLightIndex;
    data.aoIndex = newData.newAOIndex;
   }
-  if (this.shapeHelper.isFaceExposexd(data.face, "west")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "west")) {
    const newData = this.faces[2](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
    data.lightIndex = newData.newLightIndex;
    data.aoIndex = newData.newAOIndex;
   }
-  if (this.shapeHelper.isFaceExposexd(data.face, "east")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "east")) {
    const newData = this.faces[3](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
    data.lightIndex = newData.newLightIndex;
    data.aoIndex = newData.newAOIndex;
   }
-  if (this.shapeHelper.isFaceExposexd(data.face, "north")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "north")) {
    const newData = this.faces[4](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
    data.lightIndex = newData.newLightIndex;
    data.aoIndex = newData.newAOIndex;
   }
-  if (this.shapeHelper.isFaceExposexd(data.face, "south")) {
+  if (this.shapeHelper.util.isFaceExposexd(data.face, "south")) {
    const newData = this.faces[5](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;

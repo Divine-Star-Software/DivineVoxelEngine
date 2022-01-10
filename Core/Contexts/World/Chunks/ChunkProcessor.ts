@@ -1,4 +1,5 @@
 import type { Util } from "Global/Util.helper.js";
+import { VoxelManager } from "../Voxels/VoxelManager.js";
 import type { WorldData } from "../WorldData/WorldData.js";
 import type { PlayerWatcher } from "../WorldGen/PlayerWatcher.js";
 import {
@@ -14,19 +15,22 @@ export class ChunkProcessor {
 
  constructor(
   private worldData: WorldData,
+  private voxelManager: VoxelManager,
   private playerWatcher: PlayerWatcher,
   private UTIL: Util
  ) {}
 
  makeChunkTemplate(
-  chunk: number[][][],
+  chunk: any[][][],
   chunkX: number,
   chunkZ: number
  ): number[][] {
-  const chunkTemplatePostions: number[] = [];
-  const chunkTemplateFaces: number[] = [];
-  const chunkTemplateBlocks: number[] = [];
-  const amientOcculusionTemplate: number[] = [];
+  const positionTemplate: number[] = [];
+  const faceTemplate: number[] = [];
+  const uvTemplate: number[] = [];
+  const shapeTemplate: number[] = [];
+  const ligtTemplate: number[] = [];
+  const aoTemplate: number[] = [];
 
   for (const x of chunk.keys()) {
    if (!chunk[x]) {
@@ -38,8 +42,18 @@ export class ChunkProcessor {
      continue;
     }
     for (const y of chunk[x][z].keys()) {
-     const block = chunk[x][z][y];
-     if (!block) continue;
+     const voxelData = chunk[x][z][y];
+     if (!voxelData) continue;
+
+     const voxelId = voxelData[0];
+
+     const voxel = this.voxelManager.getVoxel(voxelId);
+
+
+     let addNorth = false;
+     let addSouth = false;
+     let addWest = false;
+     let addEast = false;
 
      const bitArray = this.UTIL.getBitArray([0]);
 
@@ -49,7 +63,7 @@ export class ChunkProcessor {
       BuildAmbientOcclusion(
        this.worldData,
        chunk,
-       amientOcculusionTemplate,
+       aoTemplate,
        chunkX,
        chunkZ,
        x,
@@ -64,7 +78,7 @@ export class ChunkProcessor {
       BuildAmbientOcclusion(
        this.worldData,
        chunk,
-       amientOcculusionTemplate,
+       aoTemplate,
        chunkX,
        chunkZ,
        x,
@@ -75,7 +89,6 @@ export class ChunkProcessor {
      }
 
      if (chunkX + 16 != this.playerWatcher.currentMaxChunkX + x + 1) {
-      //   console.log(chunkX,x);
       //chunk border east
       if (15 == x) {
        const westChunk = this.worldData.getChunk(chunkX + 16, chunkZ);
@@ -85,144 +98,45 @@ export class ChunkProcessor {
          if (westChunk[0][z]) {
           if (westChunk[0][z][y]) {
           } else {
-           //add east
-           bitArray.setBit(2, 1);
-           BuildAmbientOcclusion(
-            this.worldData,
-            chunk,
-            amientOcculusionTemplate,
-            chunkX,
-            chunkZ,
-            x,
-            y,
-            z,
-            "east"
-           );
+           addEast = true;
           }
          }
         }
        } else {
-        //add east
-        bitArray.setBit(2, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "east"
-        );
+        addEast = true;
        }
       } else {
        if (!chunk[x + 1]) {
-        //add east
-        bitArray.setBit(2, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "east"
-        );
+        addEast = true;
        } else if (chunk[x + 1][z]) {
         if (!chunk[x + 1][z][y]) {
-         //add east
-         bitArray.setBit(2, 1);
-         BuildAmbientOcclusion(
-          this.worldData,
-          chunk,
-          amientOcculusionTemplate,
-          chunkX,
-          chunkZ,
-          x,
-          y,
-          z,
-          "east"
-         );
+         addEast = true;
         }
        }
       }
-     } else {
-      //     console.log("max x removed",chunkX,x);
      }
 
      if (chunkX - x != this.playerWatcher.currentMinChunkX) {
       if (0 == x) {
        const westChunk = this.worldData.getChunk(chunkX - 16, chunkZ);
-
        if (westChunk) {
         if (westChunk[15]) {
          if (westChunk[15][z]) {
           if (westChunk[15][z][y]) {
           } else {
-           //add west
-           bitArray.setBit(3, 1);
-           BuildAmbientOcclusion(
-            this.worldData,
-            chunk,
-            amientOcculusionTemplate,
-            chunkX,
-            chunkZ,
-            x,
-            y,
-            z,
-            "west"
-           );
+           addWest = true;
           }
          }
         }
        } else {
-        //add west
-        bitArray.setBit(3, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "west"
-        );
+        addWest = true;
        }
       } else {
        if (!chunk[x - 1]) {
-        //add west
-        bitArray.setBit(3, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "west"
-        );
+        addWest = true;
        } else if (chunk[x - 1][z]) {
         if (!chunk[x - 1][z][y]) {
-         //add west
-         bitArray.setBit(3, 1);
-         BuildAmbientOcclusion(
-          this.worldData,
-          chunk,
-          amientOcculusionTemplate,
-          chunkX,
-          chunkZ,
-          x,
-          y,
-          z,
-          "west"
-         );
+         addWest = true;
         }
        }
       }
@@ -237,65 +151,17 @@ export class ChunkProcessor {
         if (northChunk[x][15]) {
          if (northChunk[x][15][y]) {
          } else {
-          //add north
-          bitArray.setBit(4, 1);
-          BuildAmbientOcclusion(
-           this.worldData,
-           chunk,
-           amientOcculusionTemplate,
-           chunkX,
-           chunkZ,
-           x,
-           y,
-           z,
-           "north"
-          );
+          addNorth = true;
          }
         }
        } else {
-        //add north
-        bitArray.setBit(4, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "north"
-        );
+        addNorth = true;
        }
       } else {
        if (!chunk[x][z - 1]) {
-        //add north
-        bitArray.setBit(4, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "north"
-        );
+        addNorth = true;
        } else if (!chunk[x][z - 1][y]) {
-        //add north
-        bitArray.setBit(4, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "north"
-        );
+        addNorth = true;
        }
       }
      }
@@ -304,88 +170,103 @@ export class ChunkProcessor {
       //chunk border south
       if (15 == z) {
        const southChunk = this.worldData.getChunk(chunkX, chunkZ + 16);
-
        if (southChunk) {
         if (southChunk[x][0]) {
          if (southChunk[x][0][y]) {
          } else {
-          //add south
-          bitArray.setBit(5, 1);
-          BuildAmbientOcclusion(
-           this.worldData,
-           chunk,
-           amientOcculusionTemplate,
-           chunkX,
-           chunkZ,
-           x,
-           y,
-           z,
-           "south"
-          );
+          addSouth = true;
          }
         }
        } else {
-        //add south
-        bitArray.setBit(5, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "south"
-        );
+        addSouth = true;
        }
       } else {
        if (!chunk[x][z + 1]) {
-        //add south
-        bitArray.setBit(5, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "south"
-        );
+        addSouth = true;
        } else if (!chunk[x][z + 1][y]) {
-        //add south
-        bitArray.setBit(5, 1);
-        BuildAmbientOcclusion(
-         this.worldData,
-         chunk,
-         amientOcculusionTemplate,
-         chunkX,
-         chunkZ,
-         x,
-         y,
-         z,
-         "south"
-        );
+        addSouth = true;
        }
       }
      }
 
+     if (addEast) {
+      bitArray.setBit(2, 1);
+      BuildAmbientOcclusion(
+       this.worldData,
+       chunk,
+       aoTemplate,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       "east"
+      );
+     }
+     if (addWest) {
+      bitArray.setBit(3, 1);
+      BuildAmbientOcclusion(
+       this.worldData,
+       chunk,
+       aoTemplate,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       "west"
+      );
+     }
+
+     if (addNorth) {
+      bitArray.setBit(4, 1);
+      BuildAmbientOcclusion(
+       this.worldData,
+       chunk,
+       aoTemplate,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       "north"
+      );
+     }
+     if (addSouth) {
+      bitArray.setBit(5, 1);
+      BuildAmbientOcclusion(
+       this.worldData,
+       chunk,
+       aoTemplate,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       "south"
+      );
+     }
+
      //end of block loop
 
-     chunkTemplateBlocks.push(block);
-     chunkTemplatePostions.push(x, y, z);
-     chunkTemplateFaces.push(bitArray.getDec(0));
+
+     const faces = bitArray.getDec(0);
+     voxel.getUVs(uvTemplate,faces,voxelData);
+     shapeTemplate.push(voxel.getShapeId(voxelData));
+     positionTemplate.push(x, y, z);
+     faceTemplate.push(faces);
     }
    }
   }
 
+
   return [
-   chunkTemplatePostions,
-   chunkTemplateFaces,
-   chunkTemplateBlocks,
-   amientOcculusionTemplate,
+   positionTemplate,
+   faceTemplate,
+   shapeTemplate,
+   uvTemplate,
+   ligtTemplate,
+   aoTemplate,
   ];
  }
 }
