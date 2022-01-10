@@ -5,7 +5,6 @@ import { PositionMatrix } from "Meta/Util.types";
  * This class handles the actual creation of the mesh.
  */
 export class MeshBuilder {
-
  getBoxFace(
   postions: number[],
   indices: number[],
@@ -97,19 +96,15 @@ export class MeshBuilder {
     );
     numIndices = 4;
     uvs.push(
-     //1
      0,
      0,
      uv,
-     //2
      1,
      0,
      uv,
-     //3
      1,
      1,
      uv,
-     //4
      0,
      1,
      uv
@@ -143,24 +138,7 @@ export class MeshBuilder {
     );
 
     numIndices = 4;
-    uvs.push(
-     //1
-     0,
-     0,
-     uv,
-     //2
-     1,
-     0,
-     uv,
-     //3
-     1,
-     1,
-     uv,
-     //4
-     0,
-     1,
-     uv
-    );
+    uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     //  this._getLightLevelColors(Math.floor(Math.random() * 16) + 1, 1, colors);
     break;
    case "south":
@@ -188,19 +166,15 @@ export class MeshBuilder {
     );
     numIndices = 4;
     uvs.push(
-     //1
      0,
      0,
      uv,
-     //2
      1,
      0,
      uv,
-     //3
      1,
      1,
      uv,
-     //4
      0,
      1,
      uv
