@@ -1,6 +1,6 @@
 import type { Util } from "Global/Util.helper.js";
 import { Chunk } from "Meta/WorldData/World.types.js";
-import { BuilderManagerWorker } from "../BuilderManager.worker.js";
+import { BuilderManagerWorker } from "../BuilderManager.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import type { ChunkMap } from "../Chunks/ChunkMap.js";
 import type { PlayerWatcher } from "../WorldGen/PlayerWatcher.js";

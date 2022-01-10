@@ -8,3 +8,10 @@ export type VoxelData  = {
     defaultTextureUV: number[];
     animatedTextuveUVs?: number[];
 }
+
+
+export type VoxelShapeData = {
+
+    
+
+}

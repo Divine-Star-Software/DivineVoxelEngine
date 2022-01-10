@@ -1,7 +1,7 @@
 import { MeshData } from "Meta/Util.types.js";
 import { Util } from "../../../Global/Util.helper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { BuilderManagerWorker } from "./BuilderManager.worker.js";
+import { BuilderManagerWorker } from "./BuilderManager.js";
 
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { ChunkMap } from "./Chunks/ChunkMap.js";

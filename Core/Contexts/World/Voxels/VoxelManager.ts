@@ -15,16 +15,7 @@ export class VoxelManager {
     
     }
 
-    _processBlocks(blockData : VoxelData[]) {
 
-        for(const block of blockData) {
-            if(block.animatedTextuveUVs) {
-                
-            }
-        }
-
-
-    }
 
 
 
