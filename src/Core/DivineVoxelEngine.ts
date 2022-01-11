@@ -1,0 +1,68 @@
+import { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
+import { Util } from "../Global/Util.helper.js";
+import { BuilderManager } from "./Builders/BuilderManager.js";
+import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
+import { ChunkManager } from "./Chunks/ChunkManager.js";
+import { World } from "./World/World.js";
+
+export class DivineVoxelEngine {
+ world = new World(this);
+ chunkManager = new ChunkManager(this);
+ builderManager = new BuilderManager(this);
+ chunkMaterial = new ChunkMaterial();
+ util: Util = new Util();
+
+ constructor() {}
+
+ async $INIT(data: { worldWorkerPath: string; builderWorkerPath: string }) {
+  this.world.createWorldWorker(data.worldWorkerPath);
+  this.builderManager.createBuilderWorker(data.builderWorkerPath);
+
+  await this.world.getBaseWorldData();
+
+  window.addEventListener("beforeunload", () => {
+   for (const builder of this.builderManager.builders) {
+    builder.terminate();
+   }
+   this.world.worker.terminate();
+  });
+ }
+
+ async $SCENEINIT(data: { scene: BABYLON.Scene }) {
+  if (!this.world.baseWorldData) {
+   throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
+  }
+
+  this.chunkMaterial.setScene(data.scene);
+  const textures = this.world.baseWorldData?.texturePaths;
+  const combinedTexture = await this.chunkMaterial.createMaterialTexture(
+   textures
+  );
+  const material = this.chunkMaterial.getMaterial(combinedTexture);
+  this.builderManager.setScene(data.scene);
+  this.builderManager.setMaterial(material);
+  this.builderManager.createBaseChunkMeshes();
+  this.world.startWorldGen();
+
+  const max = 10;
+  let count = max;
+
+  let test = true;
+  setInterval(() => {
+   if (!count) {
+    count = max;
+
+    if (test) {
+     this.chunkMaterial.runAnimations(3);
+     test = false;
+    } else {
+     test = true;
+
+     this.chunkMaterial.runAnimations(4);
+    }
+   } else {
+    count--;
+   }
+  }, 50);
+ }
+}
