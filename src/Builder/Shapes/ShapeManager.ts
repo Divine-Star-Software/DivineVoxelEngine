@@ -1,4 +1,4 @@
-import type { VoxelShapeInterface } from "Meta/Contents/Builder/Shapes/VoxelShape.interface";
+import type { VoxelShapeInterface } from "Meta/Builder/Shapes/VoxelShape.interface";
 
 export class ShapeManager {
  shapes: Record<number, VoxelShapeInterface> = {};

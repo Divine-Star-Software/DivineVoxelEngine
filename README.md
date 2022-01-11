@@ -39,6 +39,19 @@ generation and so on. So you can fill out those things yourself.
 - Saving Data
 - Lighting System
 
+#### Test Out
+
+To see how to use the engine look at the TestWorlds folder.
+
+To test out the demos clone the repo and then run:
+
+```console
+npm i -S
+npm run start
+```
+
+You can change the world demo in **app/index.html**
+
 ##### Change Log
 
 1-10-2022 

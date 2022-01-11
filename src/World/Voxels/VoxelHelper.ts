@@ -1,6 +1,6 @@
 import type { Util } from "Global/Util.helper";
-import type { TextureManagerInterface } from "Meta/Contents/World/Textures/TextureManager.interface";
-import type { VoxelHelperInterface } from "Meta/Contents/World/Voxels/VoxelHelper.interface";
+import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager.interface";
+import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
 
 export class VoxelHelper implements VoxelHelperInterface {
 

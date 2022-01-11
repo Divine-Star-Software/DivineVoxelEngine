@@ -1,4 +1,4 @@
-import { DVEW } from "Meta/Contents/World/DVEW.js";
+import { DVEW } from "Meta/World/DVEW.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";

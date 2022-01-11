@@ -2,9 +2,9 @@
   "name": "dve",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/index.js",
+  "main": "electron/out/index.js",
   "scripts": {
-    "start" : "electron .",
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Divine Star LLC",

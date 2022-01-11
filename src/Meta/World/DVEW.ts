@@ -1,5 +1,5 @@
-import type { VoxelHelperInterface } from "Meta/Contents/World/Voxels/VoxelHelper.interface";
-import type { VoxelManagerInterface } from "Meta/Contents/World/Voxels/VoxelManager.interface";
+import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
+import type { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
 import { BuilderManagerInterface } from "./BuilderManager/BuilderManager";
 import type { TextureManagerInterface } from "./Textures/TextureManager.interface";
 import { WorldDataInterface } from "./WorldData/WorldData.types";

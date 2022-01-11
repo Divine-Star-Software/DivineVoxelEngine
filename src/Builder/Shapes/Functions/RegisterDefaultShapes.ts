@@ -1,4 +1,4 @@
-import type { ShapeHelperInterface } from "Meta/Contents/Builder/Shapes/ShapeHelper.interface";
+import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
 import { BoxVoxelShape } from "../default/Box.voxel.shape.js";
 import type { ShapeManager } from "../ShapeManager";
 

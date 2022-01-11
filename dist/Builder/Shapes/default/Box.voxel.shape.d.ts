@@ -1,5 +1,5 @@
-import type { ShapeHelperInterface } from "Meta/Contents/Builder/Shapes/ShapeHelper.interface";
-import type { VoxelShapeAddData, VoxelShapeAddReturnData, VoxelShapeInterface } from "Meta/Contents/Builder/Shapes/VoxelShape.interface";
+import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
+import type { VoxelShapeAddData, VoxelShapeAddReturnData, VoxelShapeInterface } from "Meta/Builder/Shapes/VoxelShape.interface";
 declare type BoxFaceFunction = (data: VoxelShapeAddData) => VoxelShapeAddReturnData;
 export declare class BoxVoxelShape implements VoxelShapeInterface {
     shapeHelper: ShapeHelperInterface;

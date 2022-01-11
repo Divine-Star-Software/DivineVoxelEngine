@@ -1,9 +1,9 @@
-import type { ShapeHelperInterface } from "Meta/Contents/Builder/Shapes/ShapeHelper.interface";
+import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
 import type {
  VoxelShapeAddData,
  VoxelShapeAddReturnData,
  VoxelShapeInterface,
-} from "Meta/Contents/Builder/Shapes/VoxelShape.interface";
+} from "Meta/Builder/Shapes/VoxelShape.interface";
 
 type BoxFaceFunction = (data: VoxelShapeAddData) => VoxelShapeAddReturnData;
 
@@ -37,7 +37,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 1,
     data.indicieIndex
    );
-    const uv = data.unTemplate[data.uvTemplateIndex];
+   const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
     data.linearColors,
@@ -95,7 +95,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   //add west face
   2: (data: VoxelShapeAddData) => {
    data.postions.push(
-
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
@@ -108,7 +107,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
 
     data.position.x + this.width,
     data.position.y + -this.height,
-    data.position.z + -this.depth,
+    data.position.z + -this.depth
    );
    data.indices.push(
     data.indicieIndex + 2,
@@ -144,15 +143,12 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.position.y + this.height,
     data.position.z + -this.depth,
 
-
     data.position.x + -this.width,
     data.position.y + -this.height,
     data.position.z + -this.depth,
     data.position.x + -this.width,
     data.position.y + -this.height,
-    data.position.z + this.depth,
-
-
+    data.position.z + this.depth
    );
    data.indices.push(
     data.indicieIndex + 2,
@@ -181,11 +177,10 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   //add north face
   4: (data: VoxelShapeAddData) => {
    data.postions.push(
-
     data.position.x + -this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
-    
+
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
@@ -195,7 +190,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
 
     data.position.x + -this.width,
     data.position.y + -this.height,
-    data.position.z + -this.depth,
+    data.position.z + -this.depth
    );
    data.indices.push(
     data.indicieIndex + 2,
@@ -235,8 +230,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.position.z + this.depth,
     data.position.x + this.width,
     data.position.y + -this.height,
-    data.position.z + this.depth,
-
+    data.position.z + this.depth
    );
    data.indices.push(
     data.indicieIndex + 2,
@@ -245,7 +239,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.indicieIndex + 3,
     data.indicieIndex + 2,
     data.indicieIndex
-
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
