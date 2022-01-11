@@ -1,10 +1,8 @@
 export class ChunkMeshBuilder {
-    meshBuilder;
     shapeManager;
     UTIL;
     infoByte;
-    constructor(meshBuilder, shapeManager, UTIL) {
-        this.meshBuilder = meshBuilder;
+    constructor(shapeManager, UTIL) {
         this.shapeManager = shapeManager;
         this.UTIL = UTIL;
         this.infoByte = this.UTIL.getInfoByte();

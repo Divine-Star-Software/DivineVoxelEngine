@@ -15,13 +15,13 @@ export class BuilderManager {
     constructor(DS) {
         this.DS = DS;
         /*     const numBuilders = 4;
-    
-        if(window.navigator.hardwareConcurrency > numBuilders) {
-          //use all possible cores if we can
-          this.numBuilders = window.navigator.hardwareConcurrency * 2
-          ;
-        }]
-         */
+      
+          if(window.navigator.hardwareConcurrency > numBuilders) {
+            //use all possible cores if we can
+            this.numBuilders = window.navigator.hardwareConcurrency * 2
+            ;
+          }]
+           */
     }
     _returnChunkMesh(mesh) {
         mesh.setEnabled(false);
@@ -43,8 +43,9 @@ export class BuilderManager {
         }
     }
     createBuilderWorker(path) {
+        //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",
         for (let i = 0; i < this.numBuilders; i++) {
-            this.builders[i] = new Worker(new URL("../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js", import.meta.url), {
+            this.builders[i] = new Worker(new URL(path, import.meta.url), {
                 type: "module",
             });
             this.builders[i].onerror = (er) => {

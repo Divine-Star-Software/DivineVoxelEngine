@@ -46,7 +46,6 @@ export class ChunkMaterial {
   resolvedImages.push(new Uint8ClampedArray(data));
   for (const image of images) {
    const data = await this._loadImages(image, width, height);
-   console.log(data);
    resolvedImages.push(data);
   }
   resolvedImages.push(new Uint8ClampedArray(data));

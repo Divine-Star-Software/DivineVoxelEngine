@@ -1,13 +1,11 @@
 import type { Util } from "Global/Util.helper";
 import type { InfoByte } from "Global/Util/InfoByte";
 import type { MeshData } from "Meta/Util.types";
-import type { MeshBuilder } from "./Meshes/MeshBuilder";
 import type { ShapeManager } from "./Shapes/ShapeManager";
 
 export class ChunkMeshBuilder {
  infoByte: InfoByte;
  constructor(
-  private meshBuilder: MeshBuilder,
   private shapeManager: ShapeManager,
   private UTIL: Util
  ) {

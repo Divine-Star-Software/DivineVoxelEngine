@@ -3,9 +3,8 @@ const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({
     worldWorkerPath: "../../Test/World1/World/index.js",
-    builderWorkerPath: "",
+    builderWorkerPath: "../../Test/World1/Builder/index.js",
 });
-console.log("h1");
 const readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
@@ -14,7 +13,6 @@ const readyStateCheckInterval = setInterval(function () {
 }, 10);
 //DS.chunkManager.createSharedArrayBuffers();
 const init = async () => {
-    console.log("hhhhh");
     DVE.chunkMaterial.setUpImageCreation();
     const canvas = document.createElement("canvas");
     canvas.id = "renderCanvas";
@@ -60,9 +58,7 @@ const init = async () => {
     scene.fogEnabled = true;
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-    console.log("1");
     DVE.createDefaultPlayer(scene, camera);
-    console.log("2");
     DVE.$SCENEINIT({ scene: scene });
     //render loop
     engine.runRenderLoop(() => {
