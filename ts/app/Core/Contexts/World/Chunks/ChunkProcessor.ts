@@ -1,7 +1,7 @@
 import type { Util } from "Global/Util.helper.js";
 import { VoxelManager } from "../Voxels/VoxelManager.js";
 import type { WorldData } from "../WorldData/WorldData.js";
-import type { PlayerWatcher } from "../WorldGen/PlayerWatcher.js";
+
 import {
  ChunkOcculsionCalcuation,
  BuildAmbientOcclusion,
@@ -16,7 +16,6 @@ export class ChunkProcessor {
  constructor(
   private worldData: WorldData,
   private voxelManager: VoxelManager,
-  private playerWatcher: PlayerWatcher,
   private UTIL: Util
  ) {}
 
@@ -48,7 +47,6 @@ export class ChunkProcessor {
      const voxelId = voxelData[0];
 
      const voxel = this.voxelManager.getVoxel(voxelId);
-
 
      let addNorth = false;
      let addSouth = false;
@@ -88,104 +86,96 @@ export class ChunkProcessor {
       );
      }
 
-     if (chunkX + 16 != this.playerWatcher.currentMaxChunkX + x + 1) {
-      //chunk border east
-      if (15 == x) {
-       const westChunk = this.worldData.getChunk(chunkX + 16, chunkZ);
+     //chunk border east
+     if (15 == x) {
+      const westChunk = this.worldData.getChunk(chunkX + 16, chunkZ);
 
-       if (westChunk) {
-        if (westChunk[0]) {
-         if (westChunk[0][z]) {
-          if (westChunk[0][z][y]) {
-          } else {
-           addWest = true;
-          }
+      if (westChunk) {
+       if (westChunk[0]) {
+        if (westChunk[0][z]) {
+         if (westChunk[0][z][y]) {
+         } else {
+          addWest = true;
          }
         }
-       } else {
+       }
+      } else {
+       addWest = true;
+      }
+     } else {
+      if (!chunk[x + 1]) {
+       addWest = true;
+      } else if (chunk[x + 1][z]) {
+       if (!chunk[x + 1][z][y]) {
         addWest = true;
        }
-      } else {
-       if (!chunk[x + 1]) {
-        addWest = true;
-       } else if (chunk[x + 1][z]) {
-        if (!chunk[x + 1][z][y]) {
-         addWest = true;
-        }
-       }
       }
      }
 
-     if (chunkX - x != this.playerWatcher.currentMinChunkX) {
-      if (0 == x) {
-       const westChunk = this.worldData.getChunk(chunkX - 16, chunkZ);
-       if (westChunk) {
-        if (westChunk[15]) {
-         if (westChunk[15][z]) {
-          if (westChunk[15][z][y]) {
-          } else {
-           addEast = true;
-          }
+     if (0 == x) {
+      const westChunk = this.worldData.getChunk(chunkX - 16, chunkZ);
+      if (westChunk) {
+       if (westChunk[15]) {
+        if (westChunk[15][z]) {
+         if (westChunk[15][z][y]) {
+         } else {
+          addEast = true;
          }
         }
-       } else {
+       }
+      } else {
+       addEast = true;
+      }
+     } else {
+      if (!chunk[x - 1]) {
+       addEast = true;
+      } else if (chunk[x - 1][z]) {
+       if (!chunk[x - 1][z][y]) {
         addEast = true;
        }
-      } else {
-       if (!chunk[x - 1]) {
-        addEast = true;
-       } else if (chunk[x - 1][z]) {
-        if (!chunk[x - 1][z][y]) {
-         addEast = true;
-        }
-       }
       }
      }
 
-     if (chunkZ - z != this.playerWatcher.currentMinChunkZ) {
-      //chunk border north
-      if (0 == z) {
-       const northChunk = this.worldData.getChunk(chunkX, chunkZ - 16);
+     //chunk border north
+     if (0 == z) {
+      const northChunk = this.worldData.getChunk(chunkX, chunkZ - 16);
 
-       if (northChunk) {
-        if (northChunk[x][15]) {
-         if (northChunk[x][15][y]) {
-         } else {
-          addNorth = true;
-         }
+      if (northChunk) {
+       if (northChunk[x][15]) {
+        if (northChunk[x][15][y]) {
+        } else {
+         addNorth = true;
         }
-       } else {
-        addNorth = true;
        }
       } else {
-       if (!chunk[x][z - 1]) {
-        addNorth = true;
-       } else if (!chunk[x][z - 1][y]) {
-        addNorth = true;
-       }
+       addNorth = true;
+      }
+     } else {
+      if (!chunk[x][z - 1]) {
+       addNorth = true;
+      } else if (!chunk[x][z - 1][y]) {
+       addNorth = true;
       }
      }
 
-     if (chunkZ + 16 != this.playerWatcher.currentMaxChunkZ + z + 1) {
-      //chunk border south
-      if (15 == z) {
-       const southChunk = this.worldData.getChunk(chunkX, chunkZ + 16);
-       if (southChunk) {
-        if (southChunk[x][0]) {
-         if (southChunk[x][0][y]) {
-         } else {
-          addSouth = true;
-         }
+     //chunk border south
+     if (15 == z) {
+      const southChunk = this.worldData.getChunk(chunkX, chunkZ + 16);
+      if (southChunk) {
+       if (southChunk[x][0]) {
+        if (southChunk[x][0][y]) {
+        } else {
+         addSouth = true;
         }
-       } else {
-        addSouth = true;
        }
       } else {
-       if (!chunk[x][z + 1]) {
-        addSouth = true;
-       } else if (!chunk[x][z + 1][y]) {
-        addSouth = true;
-       }
+       addSouth = true;
+      }
+     } else {
+      if (!chunk[x][z + 1]) {
+       addSouth = true;
+      } else if (!chunk[x][z + 1][y]) {
+       addSouth = true;
       }
      }
 
@@ -249,16 +239,14 @@ export class ChunkProcessor {
 
      //end of block loop
 
-
      const faces = bitArray.getDec(0);
-     voxel.getUVs(uvTemplate,faces,voxelData);
+     voxel.getUVs(uvTemplate, faces, voxelData);
      shapeTemplate.push(voxel.getShapeId(voxelData));
      positionTemplate.push(x, y, z);
      faceTemplate.push(faces);
     }
    }
   }
-
 
   return [
    positionTemplate,

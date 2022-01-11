@@ -1,10 +1,12 @@
 import { DivineVoxelEngine } from "../../Core/DivineVoxelEngine.js";
+import { Player } from "./Player/Player.js";
 const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({
     worldWorkerPath: "../../Test/World1/World/index.js",
     builderWorkerPath: "../../Test/World1/Builder/index.js",
 });
+const player = new Player(DVE);
 const readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
@@ -58,7 +60,11 @@ const init = async () => {
     scene.fogEnabled = true;
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-    DVE.createDefaultPlayer(scene, camera);
+    player.createPlayerSharedArrays();
+    player.createPlayer(scene, camera);
+    setInterval(() => {
+        player.update();
+    }, 100);
     DVE.$SCENEINIT({ scene: scene });
     //render loop
     engine.runRenderLoop(() => {

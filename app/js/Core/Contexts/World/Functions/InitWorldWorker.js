@@ -1,23 +1,4 @@
-export function InitWorldWorker(DVEW) {
-    const start = () => {
-        let chunkNum = 20;
-        let totalChunks = chunkNum * 16 - 144;
-        for (let i = -144; i < totalChunks; i += 16) {
-            for (let k = -144; k < totalChunks; k += 16) {
-                DVEW.worldData.generateChunk(i, k);
-            }
-        }
-        for (let i = -144; i < totalChunks; i += 16) {
-            for (let k = -144; k < totalChunks; k += 16) {
-                const chunk = DVEW.worldData.getChunk(i, k);
-                if (!chunk)
-                    continue;
-                const template = DVEW.chunkProccesor.makeChunkTemplate(chunk, i, k);
-                DVEW.builderManager.requestChunkBeBuilt(i, k, template);
-            }
-        }
-        DVEW.playerWatcher.startWatchingPlayer();
-    };
+export function InitWorldWorker(DVEW, onReady, onMessage) {
     addEventListener("message", (event) => {
         const eventData = event.data;
         const message = eventData[0];
@@ -35,7 +16,7 @@ export function InitWorldWorker(DVEW) {
             DVEW.worldData.requestBlockRemove(chunkXZ[0], chunkXZ[1], eventData[1], eventData[2], eventData[3]);
         }
         if (eventData == "start") {
-            start();
+            onReady();
             return;
         }
         if (message == "block-data-recieve") {
@@ -46,8 +27,6 @@ export function InitWorldWorker(DVEW) {
             const port = event.ports[0];
             DVEW.builderManager.addBuilder(port);
         }
-        if (message == "connect-player") {
-            DVEW.playerWatcher.setPlayerSharedArrays(event.data[1], event.data[2], event.data[3]);
-        }
+        onMessage(message, eventData);
     });
 }

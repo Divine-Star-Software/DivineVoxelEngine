@@ -1,13 +1,14 @@
-import { ChunkMapInteface } from "Meta/Chunks/ChunkMap.inteface";
-
+import type { DVEW } from "Meta/Contents/World/DVEW";
 export class WorldGen {
- constructor(private chunkMap: ChunkMapInteface) {}
+ constructor(public DVEW: DVEW) {}
 
  chunkDepth = 16;
  chunkWidth = 16;
  chunkHeight = 256;
 
- generateChunk(chunkX: number, chunkZ: number): number[][][] {
+ renderDistance = 20;
+
+ generateChunk(chunkX: number, chunkZ: number): any[][][] {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
@@ -187,7 +188,7 @@ export class WorldGen {
       if (x == 8 && z == 8 && y == 32) {
        returnChunk[x] ??= [];
        returnChunk[x][z] ??= [];
-       returnChunk[x][z][y] = ["dve:debugbox", 0, ""];;
+       returnChunk[x][z][y] = ["dve:debugbox", 0, ""];
       }
      }
     }
@@ -195,5 +196,150 @@ export class WorldGen {
   }
 
   return returnChunk;
+ }
+
+ generateChunkLine(
+  chunkX: number,
+  chunkZ: number,
+  direction: "north" | "east" | "south" | "west"
+ ) {
+  const chunks = this.DVEW.worldData.chunks;
+  if (direction == "north") {
+   const newChunkZ = chunkZ + (this.renderDistance / 2) * 16 + 16;
+   const removeChunkZ = chunkZ - (this.renderDistance / 2) * 16 + 32;
+   const previousMaxChunkRebuild = newChunkZ - 32;
+
+   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
+    if (!chunks[i]) {
+     chunks[i] = [];
+    }
+
+    if (!chunks[i][previousMaxChunkRebuild]) {
+     const newChunk = this.generateChunk(i, previousMaxChunkRebuild);
+     this.DVEW.worldData.setChunk(i, previousMaxChunkRebuild, newChunk);
+     this.DVEW.buildChunk(i, previousMaxChunkRebuild);
+    }
+   }
+   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
+    if (!chunks[i]) {
+     chunks[i] = [];
+    }
+    if (chunks[i][removeChunkZ]) {
+     this.DVEW.removeChunk(i, removeChunkZ);
+    }
+    if (!chunks[i][newChunkZ]) {
+     const newChunk = this.generateChunk(i, newChunkZ);
+     this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
+     this.DVEW.buildChunk(i, newChunkZ);
+    }
+   }
+  }
+  if (direction == "south") {
+   const removeChunkZ = chunkZ + (this.renderDistance / 2) * 16;
+   const newChunkZ = chunkZ - (this.renderDistance / 2) * 16;
+
+   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
+    if (!chunks[i]) {
+     chunks[i] = [];
+    }
+    if (chunks[i][removeChunkZ]) {
+     this.DVEW.removeChunk(i, removeChunkZ);
+    }
+    if (!chunks[i][newChunkZ]) {
+     const newChunk = this.generateChunk(i, newChunkZ);
+     this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
+     this.DVEW.buildChunk(i, newChunkZ);
+    }
+   }
+  }
+
+  if (direction == "east") {
+   const newChunkX = chunkX + (this.renderDistance / 2) * 16 + 16;
+   const removeChunkX = chunkX - (this.renderDistance / 2) * 16 + 16;
+   const previousMaxChunkRebuild = newChunkX - 16;
+
+   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
+    if (!chunks[newChunkX]) {
+     chunks[newChunkX] = [];
+    }
+
+    if (!chunks[newChunkX][i]) {
+     const newChunk = this.generateChunk(newChunkX, i);
+     this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
+     this.DVEW.buildChunk(newChunkX, i);
+    }
+   }
+   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
+    if (!chunks[previousMaxChunkRebuild]) {
+     chunks[previousMaxChunkRebuild] = [];
+    }
+
+    if (!chunks[previousMaxChunkRebuild][i]) {
+     const newChunk = this.generateChunk(previousMaxChunkRebuild, i);
+     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
+     this.DVEW.buildChunk(previousMaxChunkRebuild, i);
+    }
+   }
+
+   for (const checkChunkX of Object.keys(chunks)) {
+    const chunkXNum = parseInt(checkChunkX);
+    if (chunkXNum <= removeChunkX) {
+     for (const chunk of Object.keys(chunks[chunkXNum])) {
+      const chunkZ = parseInt(chunk);
+      chunks[chunkXNum][chunkZ];
+      this.DVEW.builderManager.requestChunkBeRemoved(chunkXNum, chunkZ);
+
+      delete chunks[chunkXNum][chunkZ];
+     }
+     delete chunks[chunkXNum];
+    }
+   }
+
+   delete chunks[removeChunkX];
+  }
+
+  if (direction == "west") {
+   const removeChunkX = chunkX + (this.renderDistance / 2) * 16;
+   const newChunkX = chunkX - (this.renderDistance / 2) * 16;
+   const previousMaxChunkRebuild = newChunkX + 16;
+
+   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
+    if (!chunks[newChunkX]) {
+     chunks[newChunkX] = [];
+    }
+
+    if (!chunks[newChunkX][i]) {
+     const newChunk = this.generateChunk(newChunkX, i);
+     this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
+     this.DVEW.buildChunk(newChunkX, i);
+    }
+   }
+   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
+    if (!chunks[previousMaxChunkRebuild]) {
+     chunks[previousMaxChunkRebuild] = [];
+    }
+
+    if (!chunks[previousMaxChunkRebuild][i]) {
+     const newChunk = this.generateChunk(newChunkX, i);
+     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
+     this.DVEW.buildChunk(previousMaxChunkRebuild, i);
+    }
+   }
+   for (const checkChunkX of Object.keys(chunks)) {
+    const chunkXNum = parseInt(checkChunkX);
+    if (chunkXNum >= removeChunkX) {
+     for (const chunk of Object.keys(chunks[chunkXNum])) {
+      const chunkZ = parseInt(chunk);
+      chunks[chunkXNum][chunkZ];
+      this.DVEW.builderManager.requestChunkBeRemoved(chunkXNum, chunkZ);
+
+      delete chunks[chunkXNum][chunkZ];
+     }
+     delete chunks[chunkXNum];
+    }
+   }
+
+   delete chunks[removeChunkX];
+  }
  }
 }

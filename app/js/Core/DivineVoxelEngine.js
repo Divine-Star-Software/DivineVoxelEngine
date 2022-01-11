@@ -2,11 +2,9 @@ import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./Builders/BuilderManager.js";
 import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
 import { ChunkManager } from "./Chunks/ChunkManager.js";
-import { Player } from "./Player/Player.js";
 import { World } from "./World/World.js";
 export class DivineVoxelEngine {
     world = new World(this);
-    player = new Player(this);
     chunkManager = new ChunkManager(this);
     builderManager = new BuilderManager(this);
     chunkMaterial = new ChunkMaterial();
@@ -16,9 +14,7 @@ export class DivineVoxelEngine {
     async $INIT(data) {
         this.world.createWorldWorker(data.worldWorkerPath);
         this.builderManager.createBuilderWorker(data.builderWorkerPath);
-        const baseWorldData = await this.world.getBaseWorldData();
-        console.log(baseWorldData);
-        console.log("sup");
+        await this.world.getBaseWorldData();
         window.addEventListener("beforeunload", () => {
             for (const builder of this.builderManager.builders) {
                 builder.terminate();
@@ -58,12 +54,5 @@ export class DivineVoxelEngine {
                 count--;
             }
         }, 50);
-    }
-    createDefaultPlayer(scene, camera) {
-        this.player.createPlayerSharedArrays();
-        this.player.createPlayer(scene, camera);
-        setInterval(() => {
-            this.player.update();
-        }, 100);
     }
 }

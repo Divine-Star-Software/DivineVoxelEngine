@@ -1,25 +1,7 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld";
 
-export function InitWorldWorker(DVEW: DivineVoxelEngineWorld) {
- const start = () => {
-  let chunkNum = 20;
-  let totalChunks = chunkNum * 16 - 144;
-  for (let i = -144; i < totalChunks; i += 16) {
-   for (let k = -144; k < totalChunks; k += 16) {
-    DVEW.worldData.generateChunk(i, k);
-   }
-  }
-  for (let i = -144; i < totalChunks; i += 16) {
-   for (let k = -144; k < totalChunks; k += 16) {
-    const chunk = DVEW.worldData.getChunk(i, k);
-    if (!chunk) continue;
-    const template = DVEW.chunkProccesor.makeChunkTemplate(chunk, i, k);
-    DVEW.builderManager.requestChunkBeBuilt(i, k, template);
-   }
-  }
+export function InitWorldWorker(DVEW: DivineVoxelEngineWorld,onReady : Function,onMessage : Function) {
 
-  DVEW.playerWatcher.startWatchingPlayer();
- };
 
  addEventListener("message", (event: MessageEvent) => {
   const eventData = event.data;
@@ -54,7 +36,7 @@ export function InitWorldWorker(DVEW: DivineVoxelEngineWorld) {
   }
 
   if (eventData == "start") {
-   start();
+    onReady();
    return;
   }
 
@@ -68,12 +50,7 @@ export function InitWorldWorker(DVEW: DivineVoxelEngineWorld) {
    DVEW.builderManager.addBuilder(port);
   }
 
-  if (message == "connect-player") {
-   DVEW.playerWatcher.setPlayerSharedArrays(
-    event.data[1],
-    event.data[2],
-    event.data[3]
-   );
-  }
+  onMessage(message,eventData);
+
  });
 }

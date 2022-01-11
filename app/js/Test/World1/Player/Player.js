@@ -103,9 +103,9 @@ export class Player {
             this.playerDirectionArray[0] = 5;
         }
         /*     if (direction.z > -0.6 && direction.z < 0.6 && direction.x < 0) {
-          console.log("west");
-          this.playerDirectionArray[0] = 3;
-        } */
+            console.log("west");
+            this.playerDirectionArray[0] = 3;
+          } */
     }
     async update() {
         if (!this.ready || !this.active)
@@ -154,8 +154,8 @@ export class Player {
             if (camPick.hit) {
                 const point = camPick.pickedPoint;
                 /* console.log(point);
-        console.log(camPick.faceId);
-        console.log(camPick.pickedMesh); */
+            console.log(camPick.faceId);
+            console.log(camPick.pickedMesh); */
                 if (point && camPick.pickedMesh && camPick.faceId !== undefined) {
                     const x = Math.floor(point.x);
                     const y = Math.floor(point.y);
@@ -459,9 +459,9 @@ export class Player {
                 sideSpeed = -0.1;
             }
             /*       const forward = this.camera
-              .getTarget()
-              .subtract(this.camera.position)
-              .normalize(); */
+                 .getTarget()
+                 .subtract(this.camera.position)
+                 .normalize(); */
             const forward = this.camera.getDirection(new BABYLON.Vector3(0, 0, 1));
             forward.y = 0;
             const right = BABYLON.Vector3.Cross(forward, this.camera.upVector).normalize();
