@@ -42,46 +42,10 @@ export function BuildAmbientOcclusion(
  z: number,
  face: "top" | "bottom" | "north" | "east" | "west" | "south"
 ) {
-
  // +x
- if (face == "east") {
+ if (face == "west") {
   amientOcculusionTemplate.push(
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
-    1,
-    0,
-    -1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     1,
-     -1,
-     0
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     1,
-     -1,
-     -1
-    ),
+
    ChunkOcculsionCalcuation(
     worldData,
     chunk,
@@ -190,86 +154,50 @@ export function BuildAmbientOcclusion(
      1,
      -1,
      1
-    )
+    ),
+    ChunkOcculsionCalcuation(
+      worldData,
+      chunk,
+      chunkX,
+      chunkZ,
+      x,
+      y,
+      z,
+      1,
+      0,
+      -1
+     ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       1,
+       -1,
+       0
+      ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       1,
+       -1,
+       -1
+      ),
   );
  }
 
  // -x
- if (face == "west") {
+ if (face == "east") {
   amientOcculusionTemplate.push(
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
-    -1,
-    0,
-    -1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     0
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     -1
-    ),
 
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
-    -1,
-    0,
-    1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     0
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     1
-    ),
 
    ChunkOcculsionCalcuation(
     worldData,
@@ -343,7 +271,81 @@ export function BuildAmbientOcclusion(
      -1,
      1,
      -1
-    )
+    ),
+
+    ChunkOcculsionCalcuation(
+      worldData,
+      chunk,
+      chunkX,
+      chunkZ,
+      x,
+      y,
+      z,
+      -1,
+      0,
+      -1
+     ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       -1,
+       -1,
+       0
+      ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       -1,
+       -1,
+       -1
+      ),
+  
+     ChunkOcculsionCalcuation(
+      worldData,
+      chunk,
+      chunkX,
+      chunkZ,
+      x,
+      y,
+      z,
+      -1,
+      0,
+      1
+     ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       -1,
+       -1,
+       0
+      ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       -1,
+       -1,
+       1
+      ),
   );
  }
  // +y
@@ -657,78 +659,6 @@ export function BuildAmbientOcclusion(
     x,
     y,
     z,
-    -1,
-    0,
-    1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     0,
-     -1,
-     1
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     1
-    ),
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
-    1,
-    0,
-    1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     0,
-     -1,
-     1
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     1,
-     -1,
-     1
-    ),
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
     1,
     0,
     1
@@ -791,6 +721,78 @@ export function BuildAmbientOcclusion(
      z,
      -1,
      1,
+     1
+    ),
+   ChunkOcculsionCalcuation(
+    worldData,
+    chunk,
+    chunkX,
+    chunkZ,
+    x,
+    y,
+    z,
+    -1,
+    0,
+    1
+   ) *
+    ChunkOcculsionCalcuation(
+     worldData,
+     chunk,
+     chunkX,
+     chunkZ,
+     x,
+     y,
+     z,
+     0,
+     -1,
+     1
+    ) *
+    ChunkOcculsionCalcuation(
+     worldData,
+     chunk,
+     chunkX,
+     chunkZ,
+     x,
+     y,
+     z,
+     -1,
+     -1,
+     1
+    ),
+   ChunkOcculsionCalcuation(
+    worldData,
+    chunk,
+    chunkX,
+    chunkZ,
+    x,
+    y,
+    z,
+    1,
+    0,
+    1
+   ) *
+    ChunkOcculsionCalcuation(
+     worldData,
+     chunk,
+     chunkX,
+     chunkZ,
+     x,
+     y,
+     z,
+     0,
+     -1,
+     1
+    ) *
+    ChunkOcculsionCalcuation(
+     worldData,
+     chunk,
+     chunkX,
+     chunkZ,
+     x,
+     y,
+     z,
+     1,
+     -1,
      1
     )
   );
@@ -799,42 +801,7 @@ export function BuildAmbientOcclusion(
  // -z
  if (face == "north") {
   amientOcculusionTemplate.push(
-   ChunkOcculsionCalcuation(
-    worldData,
-    chunk,
-    chunkX,
-    chunkZ,
-    x,
-    y,
-    z,
-    -1,
-    0,
-    -1
-   ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     0,
-     -1,
-     -1
-    ) *
-    ChunkOcculsionCalcuation(
-     worldData,
-     chunk,
-     chunkX,
-     chunkZ,
-     x,
-     y,
-     z,
-     -1,
-     -1,
-     -1
-    ),
+
    ChunkOcculsionCalcuation(
     worldData,
     chunk,
@@ -942,7 +909,43 @@ export function BuildAmbientOcclusion(
      1,
      -1,
      -1
-    )
+    ),
+    ChunkOcculsionCalcuation(
+      worldData,
+      chunk,
+      chunkX,
+      chunkZ,
+      x,
+      y,
+      z,
+      -1,
+      0,
+      -1
+     ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       0,
+       -1,
+       -1
+      ) *
+      ChunkOcculsionCalcuation(
+       worldData,
+       chunk,
+       chunkX,
+       chunkZ,
+       x,
+       y,
+       z,
+       -1,
+       -1,
+       -1
+      ),
   );
  }
 }

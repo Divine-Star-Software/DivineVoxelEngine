@@ -52,8 +52,8 @@ export class ChunkProcessor {
 
      let addNorth = false;
      let addSouth = false;
-     let addWest = false;
      let addEast = false;
+     let addWest = false;
 
      const bitArray = this.UTIL.getBitArray([0]);
 
@@ -98,19 +98,19 @@ export class ChunkProcessor {
          if (westChunk[0][z]) {
           if (westChunk[0][z][y]) {
           } else {
-           addEast = true;
+           addWest = true;
           }
          }
         }
        } else {
-        addEast = true;
+        addWest = true;
        }
       } else {
        if (!chunk[x + 1]) {
-        addEast = true;
+        addWest = true;
        } else if (chunk[x + 1][z]) {
         if (!chunk[x + 1][z][y]) {
-         addEast = true;
+         addWest = true;
         }
        }
       }
@@ -124,19 +124,19 @@ export class ChunkProcessor {
          if (westChunk[15][z]) {
           if (westChunk[15][z][y]) {
           } else {
-           addWest = true;
+           addEast = true;
           }
          }
         }
        } else {
-        addWest = true;
+        addEast = true;
        }
       } else {
        if (!chunk[x - 1]) {
-        addWest = true;
+        addEast = true;
        } else if (chunk[x - 1][z]) {
         if (!chunk[x - 1][z][y]) {
-         addWest = true;
+         addEast = true;
         }
        }
       }
@@ -189,7 +189,7 @@ export class ChunkProcessor {
       }
      }
 
-     if (addEast) {
+     if (addWest) {
       bitArray.setBit(2, 1);
       BuildAmbientOcclusion(
        this.worldData,
@@ -200,10 +200,10 @@ export class ChunkProcessor {
        x,
        y,
        z,
-       "east"
+       "west"
       );
      }
-     if (addWest) {
+     if (addEast) {
       bitArray.setBit(3, 1);
       BuildAmbientOcclusion(
        this.worldData,
@@ -214,7 +214,7 @@ export class ChunkProcessor {
        x,
        y,
        z,
-       "west"
+       "east"
       );
      }
 

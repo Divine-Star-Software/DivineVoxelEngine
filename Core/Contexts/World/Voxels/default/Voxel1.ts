@@ -21,7 +21,7 @@ export class DVEVoxel1 implements VoxelInteface {
   voxelData: any[]
  ): void {
   if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
-   uvs.push(4);
+   uvs.push(3);
   }
   if (
    this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "bottom")
@@ -31,22 +31,22 @@ export class DVEVoxel1 implements VoxelInteface {
   if (
    this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "north")
   ) {
-    uvs.push(4);
+    uvs.push(2);
   }
   if (
    this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "south")
   ) {
-    uvs.push(4);
+    uvs.push(2);
   }
   if (
    this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "east")
   ) {
-    uvs.push(4);
+    uvs.push(2);
   }
   if (
    this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "west")
   ) {
-    uvs.push(4);
+    uvs.push(2);
   }
  }
 }
