@@ -1,0 +1,19 @@
+{
+  "name": "voxeltest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/index.js",
+  "scripts": {
+    "start" : "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "babylonjs": "^4.2.0",
+    "electron": "^15.3.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  }
+}
