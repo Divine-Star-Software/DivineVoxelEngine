@@ -1,5 +1,5 @@
 {
-  "name": "voxeltest",
+  "name": "dve",
   "version": "1.0.0",
   "description": "",
   "main": "backend/index.js",
@@ -7,8 +7,8 @@
     "start" : "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Divine Star LLC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.11.7",
     "babylonjs": "^4.2.0",

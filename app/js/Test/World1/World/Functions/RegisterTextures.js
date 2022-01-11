@@ -4,6 +4,14 @@ export function RegisterTexutres(DVEW) {
         name: "Debug Texture",
         id: "debug",
         frames: 0,
+        varations: {
+            top: true,
+            bottom: true,
+            north: true,
+            south: true,
+            east: true,
+            west: true,
+        },
     });
     DVEW.textureManager.registerTexture("solid", {
         name: "Dream Stone Textures",

@@ -180,7 +180,8 @@ export class WorldGen {
                         if (x == 8 && z == 8 && y == 32) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = block;
+                            returnChunk[x][z][y] = ["dve:debugbox", 0, ""];
+                            ;
                         }
                     }
                 }
