@@ -12,17 +12,18 @@ export class WorldGen {
 
   const returnChunk: any[][][] = [];
 
-  
-  const block = ["dve:voxel1",0,""];
+  let block = ["dve:voxel1", 0, ""];
   let toss = Math.random();
   let spiked = false;
   let crazy = false;
   let hole = false;
   if (toss < 0.2) {
    crazy = true;
+   block = ["dve:voxel2", 0, ""];
   }
   if (toss > 0.2 && toss < 0.4) {
    spiked = true;
+   block = ["dve:voxel2", 0, ""];
   }
   if (toss > 0.4 && toss < 0.6) {
    hole = true;

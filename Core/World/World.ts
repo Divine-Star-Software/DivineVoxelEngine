@@ -13,9 +13,8 @@ export class World {
 
   constructor(private DS: DivineVoxelEngine) {}
 
-  sendBlockData(data: any) {
-    this.worldGen.postMessage(["block-data-recieve", data]);
-  }
+
+
   requestWorldUpdate(
     type: "block-add" | "block-remove",
     position: PositionMatrix
@@ -76,9 +75,10 @@ export class World {
     this.worldGen.postMessage("start");
   }
 
-  createWorldWorker() {
+  createWorldWorker(workerPath : string) {
+    //../Contexts/World/World.worker.js
     this.worldGen = new Worker(
-      new URL("../Contexts/World/World.worker.js", import.meta.url),
+      new URL(workerPath, import.meta.url),
       {
         type: "module",
       }

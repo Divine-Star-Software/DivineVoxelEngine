@@ -55,8 +55,6 @@ const messageFromWorld = (event: MessageEvent) => {
  const ao = new Float32Array(data[7]);
 
  const meshData = builder.buildChunkMesh(
-  chunkX,
-  chunkZ,
   positions,
   faces,
   shapes,

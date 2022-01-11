@@ -61,7 +61,6 @@ export class ChunkMaterial {
       const loadedImage = new Image();
       loadedImage.src = imgPath;
       loadedImage.onload = function () {
-        console.log(imgPath);
         self.context.drawImage(loadedImage, 0, 0, width, height);
         const imgData = self.context.getImageData(0, 0, width, height);
         resolve(imgData.data);
@@ -82,12 +81,8 @@ export class ChunkMaterial {
     for (let i = 0; i < arrays.length; i++) {
       const array = arrays[i];
       const previousArrayIndex = length * i;
-
-   
         combinedImagedata.set(array, previousArrayIndex);
-   
     }
-    console.log(combinedImagedata);
     return combinedImagedata;
   }
 
@@ -125,7 +120,7 @@ export class ChunkMaterial {
 
         float getUVFace(float uv) {
 
-            if(uv == 3.0) {
+            if(uv == 0.0) {
                 return anim1Index;
             }
 

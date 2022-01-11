@@ -1,4 +1,4 @@
-import { Util } from "../../Global/Util.helper.js";
+
 import { DivineVoxelEngine } from "../../Core/DivineVoxelEngine.js";
 
 const blcokData = [
@@ -17,9 +17,12 @@ const blcokData = [
 
 const DVE = new DivineVoxelEngine();
 (window as any).DVE = DVE;
-DVE.world.createWorldWorker();
+
+
+
+DVE.world.createWorldWorker("../../Test/World1/World/index.js");
 DVE.builderManager.createBuilders();
-DVE.world.sendBlockData(blcokData);
+
 
 
 window.addEventListener("beforeunload", () => {
@@ -89,7 +92,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     new BABYLON.Vector3(0, -1, 0),
     scene
   ); */
-  const util = new Util();
+
   /*   var spotlight = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(1, 10, 1), scene);
 	spotlight.position = new BABYLON.Vector3(0, 80, 0);
   //spotlight.radius = util.degtoRad(360);
@@ -134,6 +137,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   const combinedTexture = await DVE.chunkMaterial.createMaterialTexture([
     "assets/textures/2.png",
     "assets/textures/5.png",
+    "assets/textures/dreamstone/grassy-side.png",
+    "assets/textures/dreamstone/grassy-top.png",
+    "assets/textures/dreamstone/default.png",
     "assets/textures/1.png",
     "assets/textures/3.png",
     "assets/textures/4.png",
@@ -159,7 +165,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     scene.render();
   });
 
-  (DVE as any).UTIL = util;
+
 
   setInterval(() => {
     DVE.player.update();

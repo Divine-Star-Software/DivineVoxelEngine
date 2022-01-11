@@ -1,2 +1,2 @@
 
-export type Chunk = number[][][];
+export type Chunk = any[][][];

@@ -1,4 +1,5 @@
 
+import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./Builders/BuilderManager.js";
 import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
 import { ChunkManager } from "./Chunks/ChunkManager.js";
@@ -11,6 +12,7 @@ export class DivineVoxelEngine {
   chunkManager : ChunkManager;
   builderManager : BuilderManager;
   chunkMaterial : ChunkMaterial;
+  util : Util = new Util();
 
   constructor() {
     this.world = new World(this);

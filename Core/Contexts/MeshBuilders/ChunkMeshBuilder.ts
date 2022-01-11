@@ -14,8 +14,6 @@ export class ChunkMeshBuilder {
   this.infoByte = this.UTIL.getInfoByte();
  }
  buildChunkMesh(
-  chunkX: number,
-  chunkZ: number,
   positionsTemplate: Uint16Array,
   faceTemplate: Uint8Array,
   shapeTemplate: Uint16Array,

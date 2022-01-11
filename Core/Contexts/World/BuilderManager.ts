@@ -2,7 +2,7 @@
  * ---
  * Handles communication with the mesh builders thread.
  */
-export class BuilderManagerWorker {
+export class BuilderManager {
  count = 0;
  numBuilders = 0;
 

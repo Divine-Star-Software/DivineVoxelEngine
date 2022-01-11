@@ -1,6 +1,6 @@
 import type { Util } from "Global/Util.helper.js";
 import { Chunk } from "Meta/WorldData/World.types.js";
-import { BuilderManagerWorker } from "../BuilderManager.js";
+import { BuilderManager } from "../BuilderManager.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import type { ChunkMap } from "../Chunks/ChunkMap.js";
 import type { PlayerWatcher } from "../WorldGen/PlayerWatcher.js";
@@ -15,7 +15,7 @@ export class WorldData {
   chunks: Record<number, Record<number, Chunk>> = {};
 
   constructor(
-    private builderManager: BuilderManagerWorker,
+    private builderManager: BuilderManager,
     public chunkMap: ChunkMap,
     private UTIL: Util
   ) {
@@ -40,7 +40,6 @@ export class WorldData {
       const removeChunkZ = chunkZ - (this.renderDistance / 2) * 16 + 32;
       const previousMaxChunkRebuild = newChunkZ - 32;
 
-      console.log(previousMaxChunkRebuild);
       for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
         if (!this.chunks[i]) {
           this.chunks[i] = [];
@@ -252,7 +251,7 @@ export class WorldData {
     if (!chunk[relativeX][relativeZ]) {
       chunk[relativeX][relativeZ] ??= [];
 
-      chunk[relativeX][relativeZ][y] = blockId;
+      chunk[relativeX][relativeZ][y] = ["dve:voxel1",0,""];
       const template = this.chunkProccesor.makeChunkTemplate(
         chunk,
         chunkX,
@@ -262,7 +261,7 @@ export class WorldData {
 
       this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
     } else if (!chunk[relativeX][relativeZ][y]) {
-      chunk[relativeX][relativeZ][y] = blockId;
+      chunk[relativeX][relativeZ][y]  = ["dve:voxel1",0,""];
       const template = this.chunkProccesor.makeChunkTemplate(
         chunk,
         chunkX,
