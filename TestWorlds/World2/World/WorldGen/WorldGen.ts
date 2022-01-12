@@ -1,4 +1,4 @@
-import type { DVEW } from "../../../../dist/Meta/Contents/World/DVEW";
+import type { DVEW } from "../../../../out/Meta/Contents/World/DVEW";
 export class WorldGen {
  constructor(public DVEW: DVEW) {}
 
@@ -8,50 +8,103 @@ export class WorldGen {
 
  renderDistance = 20;
 
- generateChunk(chunkX: number, chunkZ: number): any[][][] {
+ generateChunk(
+  chunkX: number,
+  chunkZ: number,
+  type: string = "default"
+ ): any[][][] {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
 
-  let block = ["dve:voxel1", 0, ""];
-  let startingY = 31;
-  let hole = false;
-  if (Math.abs(chunkX) == 16 && Math.abs(chunkZ) == 16) {
-   startingY = 42;
-   hole = true;
-  }
+  if (type == "pillar") {
+   let pillarBlock = ["dve:dreamstonepillar", 0, ""];
+   let baseBlock = ["dve:voxel1", 0, ""];
+   let baseY = 31;
+   let topY = 50;
+   let hole = false;
 
-  for (let x = 0; x < +this.chunkWidth; x++) {
-   for (let z = 0; z < this.chunkDepth; z++) {
-    for (let y = 0; y < this.chunkHeight; y++) {
-     if (hole) {
-      if (y > 30 && y <= startingY - 4) {
-       if (x > 4 && x < 10) {
-        continue;
-       }
-       if (z > 4 && z < 10) {
-        continue;
+   for (let x = 0; x < +this.chunkWidth; x++) {
+    for (let z = 0; z < this.chunkDepth; z++) {
+     for (let y = 0; y < this.chunkHeight; y++) {
+      if (y < baseY) {
+       returnChunk[x] ??= [];
+       returnChunk[x][z] ??= [];
+       returnChunk[x][z][y] = baseBlock;
+      }
+      if (y == topY) {
+       returnChunk[x] ??= [];
+       returnChunk[x][z] ??= [];
+       returnChunk[x][z][y] = pillarBlock;
+      }
+      if (y >= baseY && y < topY) {
+       if (x % 15 == 0 || z % 15 == 0) {
+        if (x > 0) {
+         if (x % 2 == 0) continue;
+        }
+        if (z > 0) {
+         if (z % 2 == 0) continue;
+        }
+
+        returnChunk[x] ??= [];
+        returnChunk[x][z] ??= [];
+        returnChunk[x][z][y] = pillarBlock;
        }
       }
-     }
-
-     if (y < startingY) {
-      returnChunk[x] ??= [];
-      returnChunk[x][z] ??= [];
-      returnChunk[x][z][y] = block;
      }
     }
    }
   }
 
-  returnChunk[7][7][startingY] = ["dve:debugbox", 0, ""];
-  returnChunk[7][7][startingY + 1] = ["dve:debugbox", 0, ""];
-  returnChunk[7][7][startingY + 2] = ["dve:debugbox", 0, ""];
-  returnChunk[7][7][startingY + 3] = ["dve:debugbox", 0, ""];
-  returnChunk[0][0][startingY] = ["dve:voxel1", 0, ""];
-  returnChunk[0][15][startingY] = ["dve:voxel1", 0, ""];
-  returnChunk[15][15][startingY] = ["dve:voxel1", 0, ""];
-  returnChunk[15][0][startingY] = ["dve:voxel1", 0, ""];
+  if (type == "default") {
+   let topBlock = ["dve:voxel1", 0, ""];
+   let baseBlock = ["dve:dreamstonepillar", 0, ""];
+   let topY = 31;
+   let groundY = 31;
+   let hole = false;
+   if (Math.abs(chunkX) == 16 && Math.abs(chunkZ) == 16) {
+    topY = 42;
+    hole = true;
+   }
+   for (let x = 0; x < +this.chunkWidth; x++) {
+    for (let z = 0; z < this.chunkDepth; z++) {
+     for (let y = 0; y < this.chunkHeight; y++) {
+      if (hole) {
+       if (y > 30 && y <= topY - 4) {
+        if (x > 4 && x < 10) {
+         continue;
+        }
+        if (z > 4 && z < 10) {
+         continue;
+        }
+       }
+      }
+      if (y < groundY) {
+       returnChunk[x] ??= [];
+       returnChunk[x][z] ??= [];
+       returnChunk[x][z][y] = baseBlock;
+       continue;
+      }
+      if (hole) {
+       if (y < topY) {
+        returnChunk[x] ??= [];
+        returnChunk[x][z] ??= [];
+        returnChunk[x][z][y] = topBlock;
+       }
+      }
+     }
+    }
+   }
+
+   returnChunk[7][7][topY] = ["dve:debugbox", 0, ""];
+   returnChunk[7][7][topY + 1] = ["dve:debugbox", 0, ""];
+   returnChunk[7][7][topY + 2] = ["dve:debugbox", 0, ""];
+   returnChunk[7][7][topY + 3] = ["dve:debugbox", 0, ""];
+   returnChunk[0][0][topY] = ["dve:voxel1", 0, ""];
+   returnChunk[0][15][topY] = ["dve:voxel1", 0, ""];
+   returnChunk[15][15][topY] = ["dve:voxel1", 0, ""];
+   returnChunk[15][0][topY] = ["dve:voxel1", 0, ""];
+  }
   return returnChunk;
  }
 }

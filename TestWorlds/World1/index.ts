@@ -1,4 +1,4 @@
-import { DivineVoxelEngine } from "../../dist/Core/DivineVoxelEngine.js";
+import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Player } from "./Player/Player.js";
 
 const DVE = new DivineVoxelEngine();

@@ -1,4 +1,4 @@
-import type { DVEW } from "../../../../dist/Meta/Contents/World/DVEW";
+import type { DVEW } from "../../../../out/Meta/Contents/World/DVEW";
 export class WorldGen {
  constructor(public DVEW: DVEW) {}
 

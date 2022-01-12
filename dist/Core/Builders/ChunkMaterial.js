@@ -230,7 +230,7 @@ export class ChunkMaterial {
                 return;
             effect.setFloat4("vFogInfos", this.scene.fogMode, this.scene.fogStart, this.scene.fogEnd, this.scene.fogDensity);
             effect.setColor3("vFogColor", this.scene.fogColor);
-            effect.setColor4("baseLightColor", new BABYLON.Color3(1, 1, 1), 1);
+            effect.setColor4("baseLightColor", new BABYLON.Color3(0.15, 0.15, 0.15), 1);
         };
         this.material = shaderMaterial;
         return this.material;

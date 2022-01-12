@@ -1,4 +1,4 @@
-import { DivineVoxelEngine } from "../../dist/Core/DivineVoxelEngine.js";
+import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({

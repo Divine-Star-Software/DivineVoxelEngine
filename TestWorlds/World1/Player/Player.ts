@@ -1,5 +1,5 @@
-import type { DivineVoxelEngine } from "../../../dist/Core/DivineVoxelEngine";
-import type { PositionMatrix } from "../../../dist/Meta/Util.types"
+import type { DivineVoxelEngine } from "../../../out/Core/DivineVoxelEngine";
+import type { PositionMatrix } from "../../../out/Meta/Util.types"
 
 export class Player {
  absPositionArray: Float32Array;
