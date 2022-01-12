@@ -1,4 +1,4 @@
-import { DVEW } from "../../out/Meta/Contents/World/DVEW";
+import { DVEW } from "../../out/Meta/World/DVEW";
 
 export function RegisterTexutres(DVEW: DVEW) {
  DVEW.textureManager.defineDefaultTexturePath("assets/textures");

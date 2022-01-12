@@ -8,6 +8,7 @@ export class DebugBox {
         shapeId: 0,
         id: "dve:debugbox",
         substance: "solid",
+        defaultState: ["dve:debugbox", 0]
     };
     hooks = {};
     getShapeId(voxelData) {

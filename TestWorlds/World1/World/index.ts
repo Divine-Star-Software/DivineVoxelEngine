@@ -5,9 +5,9 @@ import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
 const DVEW = new DivineVoxelEngineWorld(self as any);
-
+(self as any).DVEW = DVEW;
 RegisterTexutres(DVEW);
-RegisterVoxels(DVEW);
+RegisterVoxels(DVEW,"global");
 
 
 const worldGen = new WorldGen(DVEW);
@@ -29,6 +29,8 @@ const start = () => {
 };
 
 DVEW.$INIT({
+ voxelPalletMode : "global",
+ 
  onReady: start,
  onMessage: (message: string, data: any[]) => {
   if (message == "connect-player") {

@@ -6,8 +6,10 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 const DVEW = new DivineVoxelEngineWorld(self as any);
 
+(self as any).DVEW = DVEW;
+
 RegisterTexutres(DVEW);
-RegisterVoxels(DVEW);
+RegisterVoxels(DVEW,"global");
 
 const worldGen = new WorldGen(DVEW);
 
@@ -23,10 +25,10 @@ const start = () => {
  const chunk5 = worldGen.generateChunk(0, -16);
  DVEW.worldData.setChunk(0, -16, chunk5);
 
- DVEW.worldData.setChunk(-16, 16, worldGen.generateChunk(-16, 16,"pillar"));
+ DVEW.worldData.setChunk(-16, 16, worldGen.generateChunk(-16, 16, "pillar"));
  DVEW.worldData.setChunk(16, 16, worldGen.generateChunk(16, 16));
- DVEW.worldData.setChunk(16, -16, worldGen.generateChunk(16, -16,"pillar"));
- DVEW.worldData.setChunk(-16, -16, worldGen.generateChunk(-16, -16,));
+ DVEW.worldData.setChunk(16, -16, worldGen.generateChunk(16, -16, "pillar"));
+ DVEW.worldData.setChunk(-16, -16, worldGen.generateChunk(-16, -16));
 
  DVEW.buildChunk(0, 0);
  DVEW.buildChunk(-16, 0);
@@ -41,6 +43,7 @@ const start = () => {
 };
 
 DVEW.$INIT({
+ voxelPalletMode: "global",
  onReady: start,
  onMessage: (message: string, data: any[]) => {},
 });

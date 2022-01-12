@@ -4,7 +4,7 @@ export class BuilderManager {
     numBuilders = 4;
     count = 0;
     runningBlockUpdate = false;
-    maxChunkMeshes = 450;
+    maxChunkMeshes = 500;
     aviableMeshes = [];
     builders = [];
     chunkBuilder = new ChunkBuilder();

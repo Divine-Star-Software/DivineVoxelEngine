@@ -1,26 +1,27 @@
-import type { Util } from "Global/Util.helper.js";
-import { VoxelManager } from "../Voxels/VoxelManager.js";
-import type { WorldData } from "../WorldData/WorldData.js";
+import { VoxelPallet } from "Meta/WorldData/World.types.js";
+import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 
 import {
  ChunkOcculsionCalcuation,
  BuildAmbientOcclusion,
 } from "./Functions/ChunkAO.js";
 
+/**# Chunk Processor
+ * ---
+ * Takes the given world data and generates templates
+ * to build chunk meshes.
+ */
 export class ChunkProcessor {
  worldBottomY = 0;
  worldTopY = 256;
  chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
 
- constructor(
-  private worldData: WorldData,
-  private voxelManager: VoxelManager,
-  private UTIL: Util
- ) {}
+ constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  makeChunkTemplate(
-  chunk: any[][][],
+  chunkVoxels: any[][][],
+  voxelPallet: VoxelPallet,
   chunkX: number,
   chunkZ: number
  ): number[][] {
@@ -31,36 +32,37 @@ export class ChunkProcessor {
   const ligtTemplate: number[] = [];
   const aoTemplate: number[] = [];
 
-  for (const x of chunk.keys()) {
-   if (!chunk[x]) {
+  for (const x of chunkVoxels.keys()) {
+   if (!chunkVoxels[x]) {
     continue;
    }
 
-   for (const z of chunk[x].keys()) {
-    if (!chunk[x][z]) {
+   for (const z of chunkVoxels[x].keys()) {
+    if (!chunkVoxels[x][z]) {
      continue;
     }
-    for (const y of chunk[x][z].keys()) {
-     const voxelData = chunk[x][z][y];
+    for (const y of chunkVoxels[x][z].keys()) {
+     const voxelId = chunkVoxels[x][z][y];
+     if (!voxelId) continue;
+     const voxelData = voxelPallet[voxelId];
      if (!voxelData) continue;
 
-     const voxelId = voxelData[0];
-
-     const voxel = this.voxelManager.getVoxel(voxelId);
+     //   const voxlel =
+     const voxel = this.DVEW.voxelManager.getVoxel(voxelData[0]);
 
      let addNorth = false;
      let addSouth = false;
      let addEast = false;
      let addWest = false;
 
-     const bitArray = this.UTIL.getBitArray([0]);
+     const bitArray = this.DVEW.UTIL.getBitArray([0]);
 
-     if (!chunk[x][z][y + 1]) {
+     if (!chunkVoxels[x][z][y + 1]) {
       //add top
       bitArray.setBit(0, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,
@@ -70,12 +72,12 @@ export class ChunkProcessor {
        "top"
       );
      }
-     if (!chunk[x][z][y - 1] && y != this.worldBottomY) {
+     if (!chunkVoxels[x][z][y - 1] && y != this.worldBottomY) {
       //add bottom
       bitArray.setBit(1, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,
@@ -86,95 +88,86 @@ export class ChunkProcessor {
       );
      }
 
-     //chunk border east
+     //chunk border west
      if (15 == x) {
-      const westChunk = this.worldData.getChunk(chunkX + 16, chunkZ);
-
-      if (westChunk) {
-       if (westChunk[0]) {
-        if (westChunk[0][z]) {
-         if (westChunk[0][z][y]) {
-         } else {
-          addWest = true;
-         }
-        }
+      const westChunkData = this.DVEW.worldData.getChunk(chunkX + 16, chunkZ);
+      if (westChunkData) {
+       const westChunk = westChunkData.voxels;
+       if (westChunk[0] && westChunk[0][z] && westChunk[0][z][y] == undefined) {
+        addWest = true;
        }
       } else {
        addWest = true;
       }
      } else {
-      if (!chunk[x + 1]) {
+      if (!chunkVoxels[x + 1]) {
        addWest = true;
-      } else if (chunk[x + 1][z]) {
-       if (!chunk[x + 1][z][y]) {
+      } else if (chunkVoxels[x + 1][z]) {
+       if (!chunkVoxels[x + 1][z][y]) {
         addWest = true;
        }
       }
      }
 
+     //check border east
      if (0 == x) {
-      const westChunk = this.worldData.getChunk(chunkX - 16, chunkZ);
-      if (westChunk) {
-       if (westChunk[15]) {
-        if (westChunk[15][z]) {
-         if (westChunk[15][z][y]) {
-         } else {
-          addEast = true;
-         }
-        }
+      const eastChunkData = this.DVEW.worldData.getChunk(chunkX - 16, chunkZ);
+      if (eastChunkData) {
+       const eastChunk = eastChunkData.voxels;
+       if (
+        eastChunk[15] &&
+        eastChunk[15][z] &&
+        eastChunk[15][z][y] == undefined
+       ) {
+        addEast = true;
        }
       } else {
        addEast = true;
       }
      } else {
-      if (!chunk[x - 1]) {
+      if (!chunkVoxels[x - 1]) {
        addEast = true;
-      } else if (chunk[x - 1][z]) {
-       if (!chunk[x - 1][z][y]) {
+      } else if (chunkVoxels[x - 1][z]) {
+       if (!chunkVoxels[x - 1][z][y]) {
         addEast = true;
        }
       }
      }
 
      //chunk border north
-     if (0 == z) {
-      const northChunk = this.worldData.getChunk(chunkX, chunkZ - 16);
-
-      if (northChunk) {
-       if (northChunk[x][15]) {
-        if (northChunk[x][15][y]) {
-        } else {
-         addNorth = true;
-        }
+     if (z == 0) {
+      const northChunkData = this.DVEW.worldData.getChunk(chunkX, chunkZ - 16);
+      if (northChunkData) {
+       const northChunk = northChunkData.voxels;
+       if (northChunk[x][15] && northChunk[x][15][y] == undefined) {
+        addNorth = true;
        }
       } else {
        addNorth = true;
       }
      } else {
-      if (!chunk[x][z - 1]) {
+      if (!chunkVoxels[x][z - 1]) {
        addNorth = true;
-      } else if (!chunk[x][z - 1][y]) {
+      } else if (!chunkVoxels[x][z - 1][y]) {
        addNorth = true;
       }
      }
 
      //chunk border south
      if (15 == z) {
-      const southChunk = this.worldData.getChunk(chunkX, chunkZ + 16);
-      if (southChunk) {
-       if (southChunk[x][0]) {
-        if (southChunk[x][0][y]) {
-        } else {
-         addSouth = true;
-        }
+      const southChunkData = this.DVEW.worldData.getChunk(chunkX, chunkZ + 16);
+      if (southChunkData) {
+       const southChunk = southChunkData.voxels;
+       if (southChunk[x][0] && southChunk[x][0][y] == undefined) {
+        addSouth = true;
        }
       } else {
        addSouth = true;
       }
      } else {
-      if (!chunk[x][z + 1]) {
+      if (!chunkVoxels[x][z + 1]) {
        addSouth = true;
-      } else if (!chunk[x][z + 1][y]) {
+      } else if (!chunkVoxels[x][z + 1][y]) {
        addSouth = true;
       }
      }
@@ -182,8 +175,8 @@ export class ChunkProcessor {
      if (addWest) {
       bitArray.setBit(2, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,
@@ -196,8 +189,8 @@ export class ChunkProcessor {
      if (addEast) {
       bitArray.setBit(3, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,
@@ -211,8 +204,8 @@ export class ChunkProcessor {
      if (addNorth) {
       bitArray.setBit(4, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,
@@ -225,8 +218,8 @@ export class ChunkProcessor {
      if (addSouth) {
       bitArray.setBit(5, 1);
       BuildAmbientOcclusion(
-       this.worldData,
-       chunk,
+       this.DVEW.worldData,
+       chunkVoxels,
        aoTemplate,
        chunkX,
        chunkZ,

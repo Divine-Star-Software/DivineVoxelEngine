@@ -1,4 +1,5 @@
-import type { DVEW } from "../../../../out/Meta/Contents/World/DVEW";
+import type { DVEW } from "../../../../out/Meta/World/DVEW";
+import { ChunkData } from "../../../../out/Meta/WorldData/World.types";
 export class WorldGen {
  constructor(public DVEW: DVEW) {}
 
@@ -12,14 +13,23 @@ export class WorldGen {
   chunkX: number,
   chunkZ: number,
   type: string = "default"
- ): any[][][] {
+ ): ChunkData {
+  let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:debugbox:defualt"
+  );
+  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamstone:defualt"
+  );
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamstonepillar:defualt"
+  );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
 
   if (type == "pillar") {
-   let pillarBlock = ["dve:dreamstonepillar", 0, ""];
-   let baseBlock = ["dve:voxel1", 0, ""];
+   let pillarBlock = dreamStonePillar;
+   let baseBlock = dreamstone;
    let baseY = 31;
    let topY = 50;
    let hole = false;
@@ -57,8 +67,8 @@ export class WorldGen {
   }
 
   if (type == "default") {
-   let topBlock = ["dve:voxel1", 0, ""];
-   let baseBlock = ["dve:dreamstonepillar", 0, ""];
+   let topBlock = dreamstone;
+   let baseBlock = dreamStonePillar;
    let topY = 31;
    let groundY = 31;
    let hole = false;
@@ -96,15 +106,17 @@ export class WorldGen {
     }
    }
 
-   returnChunk[7][7][topY] = ["dve:debugbox", 0, ""];
-   returnChunk[7][7][topY + 1] = ["dve:debugbox", 0, ""];
-   returnChunk[7][7][topY + 2] = ["dve:debugbox", 0, ""];
-   returnChunk[7][7][topY + 3] = ["dve:debugbox", 0, ""];
-   returnChunk[0][0][topY] = ["dve:voxel1", 0, ""];
-   returnChunk[0][15][topY] = ["dve:voxel1", 0, ""];
-   returnChunk[15][15][topY] = ["dve:voxel1", 0, ""];
-   returnChunk[15][0][topY] = ["dve:voxel1", 0, ""];
+   returnChunk[7][7][topY] = debugBox;
+   returnChunk[7][7][topY + 1] = debugBox;
+   returnChunk[7][7][topY + 2] = debugBox;
+   returnChunk[7][7][topY + 3] = debugBox;
+   returnChunk[0][0][topY] = dreamstone;
+   returnChunk[0][15][topY] = dreamstone;
+   returnChunk[15][15][topY] = dreamstone;
+   returnChunk[15][0][topY] = dreamstone;
   }
-  return returnChunk;
+  return {
+   voxels: returnChunk,
+  };
  }
 }

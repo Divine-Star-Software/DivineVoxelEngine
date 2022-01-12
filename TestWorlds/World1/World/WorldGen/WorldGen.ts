@@ -1,4 +1,5 @@
-import type { DVEW } from "../../../../out/Meta/Contents/World/DVEW";
+import type { DVEW } from "../../../../out/Meta/World/DVEW";
+import type { ChunkData } from "../../../../out/Meta/WorldData/World.types";
 export class WorldGen {
  constructor(public DVEW: DVEW) {}
 
@@ -8,31 +9,48 @@ export class WorldGen {
 
  renderDistance = 20;
 
- generateChunk(chunkX: number, chunkZ: number): any[][][] {
+ generateChunk(chunkX: number, chunkZ: number): ChunkData {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
 
-  let block = ["dve:voxel1", 0, ""];
+  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamstone:defualt"
+  );
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamstonepillar:defualt"
+  );
+  let dreamGrass = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamgrassblock:defualt"
+  );
+  let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:debugbox:defualt"
+  );
+
+  // debugBox = dreamstone;
+  let block = dreamGrass;
+
   let toss = Math.random();
   let spiked = false;
   let crazy = false;
   let hole = false;
   if (toss < 0.2) {
    crazy = true;
-   block = ["dve:voxel2", 0, ""];
+   block = dreamstone; 
   }
   if (toss > 0.2 && toss < 0.4) {
    spiked = true;
-   block = ["dve:voxel2", 0, ""];
+   block = dreamStonePillar;
   }
   if (toss > 0.4 && toss < 0.6) {
    hole = true;
+   block = dreamstone; 
   }
   let normal = true;
   if (crazy || spiked || hole) {
    normal = false;
   }
+
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
@@ -188,14 +206,16 @@ export class WorldGen {
       if (x == 8 && z == 8 && y == 32) {
        returnChunk[x] ??= [];
        returnChunk[x][z] ??= [];
-       returnChunk[x][z][y] = ["dve:debugbox", 0, ""];
+       returnChunk[x][z][y] = debugBox;
       }
      }
     }
    }
   }
 
-  return returnChunk;
+  return {
+   voxels: returnChunk,
+  };
  }
 
  generateChunkLine(

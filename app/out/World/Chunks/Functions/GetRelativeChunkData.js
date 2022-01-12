@@ -50,9 +50,10 @@ export function GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, blockX, b
                 return false;
             if (!worldData.chunks[chunkX - 16][chunkZ - 16])
                 return false;
-            const southWestChunk = worldData.chunks[chunkX - 16][chunkZ - 16];
-            if (!southWestChunk)
+            const southWestChunkData = worldData.chunks[chunkX - 16][chunkZ - 16];
+            if (!southWestChunkData)
                 return false;
+            const southWestChunk = southWestChunkData.voxels;
             if (southWestChunk[15] &&
                 southWestChunk[15][15] &&
                 southWestChunk[15][15][blockY + y] !== undefined) {
@@ -76,9 +77,10 @@ export function GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, blockX, b
                 return false;
             if (!worldData.chunks[chunkX + 16][chunkZ - 16])
                 return false;
-            const southEastChunk = worldData.chunks[chunkX + 16][chunkZ - 16];
-            if (!southEastChunk)
+            const southEastChunkData = worldData.chunks[chunkX + 16][chunkZ - 16];
+            if (!southEastChunkData)
                 return false;
+            const southEastChunk = southEastChunkData.voxels;
             if (southEastChunk[0] &&
                 southEastChunk[0][15] &&
                 southEastChunk[0][15][blockY + y] !== undefined) {
@@ -102,9 +104,10 @@ export function GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, blockX, b
                 return false;
             if (!worldData.chunks[chunkX - 16][chunkZ + 16])
                 return false;
-            const northWestChunk = worldData.chunks[chunkX - 16][chunkZ + 16];
-            if (!northWestChunk)
+            const northWestChunkData = worldData.chunks[chunkX - 16][chunkZ + 16];
+            if (!northWestChunkData)
                 return false;
+            const northWestChunk = northWestChunkData.voxels;
             if (northWestChunk[15] &&
                 northWestChunk[15][0] &&
                 northWestChunk[15][0][blockY + y] !== undefined) {
@@ -128,9 +131,10 @@ export function GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, blockX, b
                 return false;
             if (!worldData.chunks[chunkX + 16][chunkZ + 16])
                 return false;
-            const northEastChunk = worldData.chunks[chunkX + 16][chunkZ + 16];
-            if (!northEastChunk)
+            const northEastChunkData = worldData.chunks[chunkX + 16][chunkZ + 16];
+            if (!northEastChunkData)
                 return false;
+            const northEastChunk = northEastChunkData.voxels;
             if (northEastChunk[0] &&
                 northEastChunk[0][0] &&
                 northEastChunk[0][0][blockY + y] !== undefined) {
@@ -153,9 +157,10 @@ const checkNorth = (worldData, chunkX, chunkZ, blockX, blockY, x, y) => {
         return false;
     if (!worldData.chunks[chunkX][chunkZ + 16])
         return false;
-    const northChunk = worldData.chunks[chunkX][chunkZ + 16];
-    if (!northChunk)
+    const northChunkData = worldData.chunks[chunkX][chunkZ + 16];
+    if (!northChunkData)
         return false;
+    const northChunk = northChunkData.voxels;
     if (northChunk[blockX + x] &&
         northChunk[blockX + x][0] &&
         northChunk[blockX + x][0][blockY + y] !== undefined) {
@@ -168,9 +173,10 @@ const checkSouth = (worldData, chunkX, chunkZ, blockX, blockY, x, y) => {
         return false;
     if (!worldData.chunks[chunkX][chunkZ - 16])
         return false;
-    const southChunk = worldData.chunks[chunkX][chunkZ - 16];
-    if (!southChunk)
+    const southChunkData = worldData.chunks[chunkX][chunkZ - 16];
+    if (!southChunkData)
         return false;
+    const southChunk = southChunkData.voxels;
     if (southChunk[blockX + x] &&
         southChunk[blockX + x][15] &&
         southChunk[blockX + x][15][blockY + y] !== undefined) {
@@ -181,9 +187,10 @@ const checkSouth = (worldData, chunkX, chunkZ, blockX, blockY, x, y) => {
 const checkEast = (worldData, chunkX, chunkZ, blockY, blockZ, y, z) => {
     if (!worldData.chunks[chunkX + 16])
         return false;
-    const eastChunk = worldData.chunks[chunkX + 16][chunkZ];
-    if (!eastChunk)
+    const eastChunkData = worldData.chunks[chunkX + 16][chunkZ];
+    if (!eastChunkData)
         return false;
+    const eastChunk = eastChunkData.voxels;
     if (eastChunk[0] &&
         eastChunk[0][blockZ + z] &&
         eastChunk[0][blockZ + z][blockY + y] !== undefined) {
@@ -194,9 +201,10 @@ const checkEast = (worldData, chunkX, chunkZ, blockY, blockZ, y, z) => {
 const checkWest = (worldData, chunkX, chunkZ, blockY, blockZ, y, z) => {
     if (!worldData.chunks[chunkX - 16])
         return false;
-    const westChunk = worldData.chunks[chunkX - 16][chunkZ];
-    if (!westChunk)
+    const westChunkData = worldData.chunks[chunkX - 16][chunkZ];
+    if (!westChunkData)
         return false;
+    const westChunk = westChunkData.voxels;
     if (westChunk[15] &&
         westChunk[15][blockZ + z] &&
         westChunk[15][blockZ + z][blockY + y] !== undefined) {

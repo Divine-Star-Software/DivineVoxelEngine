@@ -3,8 +3,9 @@ import { RegisterTexutres } from "../../Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Functions/RegisterVoxels.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 const DVEW = new DivineVoxelEngineWorld(self);
+self.DVEW = DVEW;
 RegisterTexutres(DVEW);
-RegisterVoxels(DVEW);
+RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const start = () => {
     const chunk = worldGen.generateChunk(0, 0);
@@ -32,6 +33,7 @@ const start = () => {
     DVEW.buildChunk(-16, -16);
 };
 DVEW.$INIT({
+    voxelPalletMode: "global",
     onReady: start,
     onMessage: (message, data) => { },
 });

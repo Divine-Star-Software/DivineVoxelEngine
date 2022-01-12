@@ -1,43 +1,38 @@
-export class Dreamestone {
+export class DreamGrassBlock {
     voxelHelper;
     constructor(voxelHelper) {
         this.voxelHelper = voxelHelper;
     }
     data = {
-        name: "Dream Stone",
+        name: "Dream Grass Block",
         shapeId: 0,
-        id: "dve:dreamstone",
+        id: "dve:dreamgrassblock",
         substance: "solid",
-        defaultState: ["dve:dreamstone", 0]
+        defaultState: ["dve:dreamgrassblock", 0]
     };
     hooks = {};
     getShapeId(voxelData) {
         return this.data.shapeId;
     }
     getUVs(uvs, voxelExposedFaceEncodedBit, voxelData) {
-        let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
-        let bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone");
-        let sideUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
+        const uv = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
-            uvs.push(topUV);
-        }
-        else {
-            sideUV = bottomUV;
+            uvs.push(uv);
         }
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "bottom")) {
-            uvs.push(bottomUV);
+            uvs.push(uv);
         }
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "north")) {
-            uvs.push(sideUV);
+            uvs.push(uv);
         }
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "south")) {
-            uvs.push(sideUV);
+            uvs.push(uv);
         }
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "east")) {
-            uvs.push(sideUV);
+            uvs.push(uv);
         }
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "west")) {
-            uvs.push(sideUV);
+            uvs.push(uv);
         }
     }
 }

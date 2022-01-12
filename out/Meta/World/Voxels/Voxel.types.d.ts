@@ -15,6 +15,8 @@ export declare type VoxelData = {
     shapeId: number;
     id: string;
     substance: VoxelSubstanceType;
+    defaultState: any[];
+    states?: any[];
 };
 export interface VoxelInteface {
     data: VoxelData;

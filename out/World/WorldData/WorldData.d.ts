@@ -1,20 +1,17 @@
-import type { Util } from "Global/Util.helper.js";
-import { Chunk } from "Meta/WorldData/World.types.js";
-import { BuilderManager } from "../BuilderManager.js";
-import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
+import type { ChunkVoxels, ChunkData } from "Meta/WorldData/World.types.js";
+import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 export declare class WorldData {
-    private builderManager;
-    private UTIL;
+    private DVEW;
     renderDistance: number;
     private chunkProccesor;
-    chunks: Record<number, Record<number, Chunk>>;
-    constructor(builderManager: BuilderManager, UTIL: Util);
-    setChunkProcessor(chunkProccesor: ChunkProcessor): void;
-    getChunk(chunkX: number, chunkZ: number): Chunk | false;
+    chunks: Record<number, Record<number, ChunkData>>;
+    constructor(DVEW: DivineVoxelEngineWorld);
+    getCurrentWorldDataSize(): number;
+    getChunk(chunkX: number, chunkZ: number): ChunkData | false;
     removeChunk(chunkX: number, chunkZ: number): void;
-    setChunk(chunkX: number, chunkZ: number, chunk: Chunk): void;
-    requestBlockAdd(chunkX: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | Chunk;
+    setChunk(chunkX: number, chunkZ: number, chunk: ChunkData): void;
+    requestBlockAdd(chunkX: number, chunkZ: number, x: number, y: number, z: number, voxelPalletId?: number): false | ChunkVoxels;
     _checkNearbyChunksToRebuild(chunkX: number, chunkZ: number, relativeX: number, relativeZ: number): void;
     _getRelativeChunkPosition(chunkX: number, chunkZ: number, x: number, y: number, z: number): number[];
-    requestBlockRemove(chunkX: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | Chunk;
+    requestBlockRemove(chunkX: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | ChunkVoxels;
 }

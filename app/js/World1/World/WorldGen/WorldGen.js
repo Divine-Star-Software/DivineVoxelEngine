@@ -10,21 +10,27 @@ export class WorldGen {
     generateChunk(chunkX, chunkZ) {
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         const returnChunk = [];
-        let block = ["dve:voxel1", 0, ""];
+        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
+        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
+        let dreamGrass = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrassblock:defualt");
+        let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:debugbox:defualt");
+        // debugBox = dreamstone;
+        let block = dreamGrass;
         let toss = Math.random();
         let spiked = false;
         let crazy = false;
         let hole = false;
         if (toss < 0.2) {
             crazy = true;
-            block = ["dve:voxel2", 0, ""];
+            block = dreamstone;
         }
         if (toss > 0.2 && toss < 0.4) {
             spiked = true;
-            block = ["dve:voxel2", 0, ""];
+            block = dreamStonePillar;
         }
         if (toss > 0.4 && toss < 0.6) {
             hole = true;
+            block = dreamstone;
         }
         let normal = true;
         if (crazy || spiked || hole) {
@@ -181,13 +187,15 @@ export class WorldGen {
                         if (x == 8 && z == 8 && y == 32) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = ["dve:debugbox", 0, ""];
+                            returnChunk[x][z][y] = debugBox;
                         }
                     }
                 }
             }
         }
-        return returnChunk;
+        return {
+            voxels: returnChunk,
+        };
     }
     generateChunkLine(chunkX, chunkZ, direction) {
         const chunks = this.DVEW.worldData.chunks;

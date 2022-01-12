@@ -6,7 +6,7 @@ export class BuilderManager {
  count = 0;
  runningBlockUpdate = false;
 
- maxChunkMeshes = 450;
+ maxChunkMeshes = 500;
  aviableMeshes: BABYLON.Mesh[] = [];
 
  builders: Worker[] = [];

@@ -1,15 +1,14 @@
 export class WorldData {
-    builderManager;
-    UTIL;
+    DVEW;
     renderDistance = 20;
     chunkProccesor;
     chunks = {};
-    constructor(builderManager, UTIL) {
-        this.builderManager = builderManager;
-        this.UTIL = UTIL;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
     }
-    setChunkProcessor(chunkProccesor) {
-        this.chunkProccesor = chunkProccesor;
+    getCurrentWorldDataSize() {
+        const data = JSON.stringify(this.chunks);
+        return new Blob([data]).size;
     }
     getChunk(chunkX, chunkZ) {
         if (!this.chunks[chunkX]) {
@@ -22,28 +21,34 @@ export class WorldData {
             return this.chunks[chunkX][chunkZ];
         }
     }
-    removeChunk(chunkX, chunkZ) {
-    }
+    removeChunk(chunkX, chunkZ) { }
     setChunk(chunkX, chunkZ, chunk) {
         this.chunks[chunkX] ??= {};
         this.chunks[chunkX][chunkZ] = chunk;
     }
-    requestBlockAdd(chunkX, chunkZ, x, y, z, blockId = 1) {
+    requestBlockAdd(chunkX, chunkZ, x, y, z, voxelPalletId = 1) {
         const chunk = this.chunks[chunkX][chunkZ];
         const relativePOS = this._getRelativeChunkPosition(chunkX, chunkZ, x, y, z);
         const relativeX = relativePOS[0];
         const relativeZ = relativePOS[1];
-        if (!chunk[relativeX][relativeZ]) {
-            chunk[relativeX][relativeZ] ??= [];
-            chunk[relativeX][relativeZ][y] = ["dve:voxel1", 0, ""];
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, chunkX, chunkZ);
-            this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+        const chunkVoxels = chunk.voxels;
+        let pallet = chunk.voxelPallet;
+        if (!pallet) {
+            pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+        }
+        if (!chunkVoxels[relativeX][relativeZ]) {
+            chunkVoxels[relativeX][relativeZ] ??= [];
+            chunkVoxels[relativeX][relativeZ][y] = voxelPalletId;
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunkVoxels, pallet, chunkX, chunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
         }
-        else if (!chunk[relativeX][relativeZ][y]) {
-            chunk[relativeX][relativeZ][y] = ["dve:voxel1", 0, ""];
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, chunkX, chunkZ);
-            this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+        else if (!chunkVoxels[relativeX][relativeZ][y]) {
+            chunkVoxels[relativeX][relativeZ][y] = voxelPalletId;
+            console.log("sup");
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunkVoxels, pallet, chunkX, chunkZ);
+            console.log();
+            this.DVEW.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
         }
         return false;
@@ -55,8 +60,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX0;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkX15: if (relativeX == 15) {
             const newChunkX = chunkX + 16;
@@ -64,8 +73,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX15;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkZ0: if (relativeZ == 0) {
             const newChunkX = chunkX;
@@ -73,8 +86,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkZ0;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkZ15: if (relativeZ == 15) {
             const newChunkX = chunkX;
@@ -82,8 +99,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkZ15;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkX15Z15: if (relativeZ == 15 && relativeX == 15) {
             const newChunkX = chunkX + 16;
@@ -91,8 +112,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX15Z15;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkX0Z0: if (relativeZ == 0 && relativeX == 0) {
             const newChunkX = chunkX - 16;
@@ -100,8 +125,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX0Z0;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkX15Z0: if (relativeZ == 0 && relativeX == 15) {
             const newChunkX = chunkX + 16;
@@ -109,8 +138,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX15Z0;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
         buildChunkX0Z15: if (relativeZ == 15 && relativeX == 0) {
             const newChunkX = chunkX - 16;
@@ -118,8 +151,12 @@ export class WorldData {
             const chunk = this.getChunk(newChunkX, newChunkZ);
             if (!chunk)
                 break buildChunkX0Z15;
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, newChunkX, newChunkZ);
-            this.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
+            let pallet = chunk.voxelPallet;
+            if (!pallet) {
+                pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+            }
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, newChunkX, newChunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(newChunkX, newChunkZ, template);
         }
     }
     _getRelativeChunkPosition(chunkX, chunkZ, x, y, z) {
@@ -147,16 +184,21 @@ export class WorldData {
         const relativePOS = this._getRelativeChunkPosition(chunkX, chunkZ, x, y, z);
         const relativeX = relativePOS[0];
         const relativeZ = relativePOS[1];
-        if (!chunk[relativeX])
+        const chunkVoxels = chunk.voxels;
+        let pallet = chunk.voxelPallet;
+        if (!pallet) {
+            pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+        }
+        if (!chunkVoxels[relativeX])
             return false;
-        if (!chunk[relativeX][relativeZ])
+        if (!chunkVoxels[relativeX][relativeZ])
             return false;
-        if (chunk[relativeX][relativeZ][y]) {
-            delete chunk[relativeX][relativeZ][y];
+        if (chunkVoxels[relativeX][relativeZ][y]) {
+            delete chunkVoxels[relativeX][relativeZ][y];
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
-            const template = this.chunkProccesor.makeChunkTemplate(chunk, chunkX, chunkZ);
-            this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
-            return chunk;
+            const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunkVoxels, pallet, chunkX, chunkZ);
+            this.DVEW.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+            return chunkVoxels;
         }
         else {
             return false;

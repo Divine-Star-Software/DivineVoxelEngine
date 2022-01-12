@@ -8,6 +8,7 @@ export class DreamStonePillar {
         shapeId: 0,
         id: "dve:dreamstonepillar",
         substance: "solid",
+        defaultState: ["dve:dreamstonepillar", 0]
     };
     hooks = {};
     getShapeId(voxelData) {

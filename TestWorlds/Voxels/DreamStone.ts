@@ -1,17 +1,18 @@
-import {
-    VoxelData,
-    VoxelInteface,
-   } from "../../out/Meta/Contents/World/Voxels/Voxel.types";
-   import type { VoxelHelperInterface } from "../../out/Meta/Contents/World/Voxels/VoxelHelper.interface";
+import type {
+ VoxelData,
+ VoxelInteface,
+} from "../../out/Meta/World/Voxels/Voxel.types";
+import type { VoxelHelperInterface } from "../../out/Meta/World/Voxels/VoxelHelper.interface";
 
 export class Dreamestone implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
- data: VoxelData = {
-  name: "Voxel 1",
-  shapeId: 0,
-  id: "dve:voxel1",
-  substance: "solid",
- };
+ data  = <VoxelData>{
+   name: "Dream Stone",
+   shapeId: 0,
+   id: "dve:dreamstone",
+   substance:  "solid",
+   defaultState : ["dve:dreamstone",0]
+  };
  hooks = {};
  getShapeId(voxelData: any[]): number {
   return this.data.shapeId;
