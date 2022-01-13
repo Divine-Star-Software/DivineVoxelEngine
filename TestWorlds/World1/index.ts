@@ -93,4 +93,7 @@ const init = async () => {
  engine.runRenderLoop(() => {
   scene.render();
  });
+
+
+ scene.cleanCachedTextureBuffer();
 };
