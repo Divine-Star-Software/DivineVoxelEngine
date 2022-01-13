@@ -52,10 +52,10 @@ The three contexts being
 
 - Main Thread
   - Renders everything using Babylon.Js.
-- World Thread ]
+- World Worker Thread 
   - Holds the world data, voxel data, and does the logic for lighting and so on.
   - All voxels, voxels pallets, and textures must be registered in this thread.
-- Builder Thread 
+- Builder Worker Thread 
   - Holds the voxel shape data. All custom shapes must be registered in this thread.
   - Given a template from the world thread it will generate a chunk mesh data and then send it to the main thread.
 
@@ -113,6 +113,39 @@ const voxelPalletIdRotated = `${voxelid}:${voxelState}`;
 #### Notes
 
 This engine was developed on top of the V8 engine through severing it as an Electron app. So, it may not be computable with all browsers.
+
+#### Terms
+- Voxel
+  - Defined as a discrete element comprising a three-dimensional entity.
+  - Used in the engine to create blocks, half-blocks, plants, and so on.
+  - In the engine they are created as classes and registered with the shape manager. They must have certain functions.
+- Voxel Substance
+  - Each voxel must be defined as a type of substance. 
+  - Solid and transparent voxels are rendered in the same mesh. 
+  - Flora, Fluid, and Magma voxels have seperate meshes. 
+- Voxel Substance Types
+  - Solid
+  - Transparent
+  - Flora
+  - Fluid
+  - Magma
+- Voxel Pallet
+  - A map of voxel state ids to numbers
+  - Used to get the true voxel id for a world or chunk. 
+- Voxel Shape
+  - The actual base mesh shape of a voxel. 
+  - In the engine they are created as classes and registered with the shape manager. They must have certain functions.
+  - They are passed the current chunk meshe's data and populate it with the needed data based on the 
+  chunk template.
+- Chunk Template
+  - Flat typed arrays that are generated from the chunk processor by going through the chunk data.
+  - Represents things such as visible faces, texture uvs, shape ids and so on. 
+  - Face data is stored as an 8 bit number. First 6 bits for each face.
+    - If a voxel is not visible at all it is not sent. 
+- Chunk
+  - A section of the world. 
+  - Default defined as a 16x16x256 area. 
+  - Voxels stored as a 3d array as in chunk\[x\]\[z\]\[y\]
 
 #### Chunk Data
 
