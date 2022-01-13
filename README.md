@@ -46,13 +46,13 @@ npm run start
 
 You can change the world demo in **app/index.html**
 
-One thing to note about the engine is that it runs in three different contents and must be initialized in each. 
+One thing to note about the engine is that it runs in three different contexts and must be initialized in each. 
 
-The three contents being
+The three contexts being
 
 - Main Thread
   - Renders everything using Babylon.Js.
-- World Thread 
+- World Thread ]
   - Holds the world data, voxel data, and does the logic for lighting and so on.
   - All voxels, voxels pallets, and textures must be registered in this thread.
 - Builder Thread 
