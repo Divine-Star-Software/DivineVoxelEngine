@@ -157,6 +157,6 @@ Currently the first number is the voxel id from the global or chunk level voxel 
 
 If the voxel pallet mode is set to per chunk the chunk will have its local pallet map. Which is a way to get the true id and state of the voxel. 
 
-Metrics so far for total world data size is calculated to be at worst ~50 mb for 200 chunks of full blocks. With compression you can store that to be only about 400kb.  
+Metrics so far for total world data size is calculated to be at worst ~500 mb for 200 chunks of full blocks. I tested with different compression formats you can get it down to 50 - 300 kb.
 
  

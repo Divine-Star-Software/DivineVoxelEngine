@@ -4,7 +4,7 @@ import { ShapeHelperInterface } from "./ShapeHelper.interface";
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions
-* @var postions
+* @var positions
 * The chunk mesh indices
 * @var indices
 * The chunk mesh full colors
@@ -40,7 +40,7 @@ import { ShapeHelperInterface } from "./ShapeHelper.interface";
 * @var position: PositionMatrix;
 */
 export type VoxelShapeAddData = {
- postions: number[];
+ positions: number[];
  indices: number[];
  fullColors: number[];
  linearColors: number[];
@@ -78,7 +78,7 @@ export interface VoxelShapeInterface {
   * In the function the voxel shape must be built and added to the chunk mesh.
   *
   * The chunk meshes positions
-  * @param postions
+  * @param positions
   * The chunk mesh indices
   * @param indices
   * The chunk mesh full colors

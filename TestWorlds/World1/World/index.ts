@@ -17,7 +17,8 @@ const start = () => {
  let totalChunks = chunkNum * 16 - 144;
  for (let i = -144; i < totalChunks; i += 16) {
   for (let k = -144; k < totalChunks; k += 16) {
-   const chunk = worldGen.generateChunk(i, k);
+ //  const chunk = worldGen.generateChunkStressTest(i, k);
+ const chunk = worldGen.generateChunkNormal(i, k);
    DVEW.worldData.setChunk(i, k, chunk);
   }
  }
@@ -25,7 +26,7 @@ const start = () => {
   for (let k = -144; k < totalChunks; k += 16) {
     DVEW.buildChunk(i,k);
   }
- }
+ } 
 };
 
 DVEW.$INIT({

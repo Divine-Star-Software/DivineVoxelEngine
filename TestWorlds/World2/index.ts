@@ -22,7 +22,7 @@ const readyStateCheckInterval = setInterval(function () {
 //DS.chunkManager.createSharedArrayBuffers();
 
 const init = async () => {
- DVE.chunkMaterial.setUpImageCreation();
+
 
  const canvas = document.createElement("canvas");
  canvas.id = "renderCanvas";

@@ -27,13 +27,19 @@ export function RegisterTexutres(DVEW: DVEW) {
  });
 
  DVEW.textureManager.registerTexture("solid", {
-    name: "Dream Stone Pillar",
-    id: "dreamstone-pillar",
-    frames: 0,
-    varations: {
-     "side-bottom": true,
-     "side-top": true,
-     "top": true,
-    },
-   });
+  name: "Dream Stone Pillar",
+  id: "dreamstone-pillar",
+  frames: 0,
+  varations: {
+   "side-bottom": true,
+   "side-top": true,
+   top: true,
+  },
+ });
+
+ DVEW.textureManager.registerTexture("flora", {
+  name: "Dream Grass Texture",
+  id: "dreamgrass",
+  frames: 0,
+ });
 }

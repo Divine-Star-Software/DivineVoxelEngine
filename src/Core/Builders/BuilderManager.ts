@@ -1,5 +1,5 @@
 import type { DivineVoxelEngine } from "../DivineVoxelEngine";
-import { ChunkBuilder } from "./ChunkBuilder.js";
+import { ChunkMesh } from "../Render/Meshes/Chunk/ChunkMesh.js";
 
 export class BuilderManager {
  numBuilders = 4;
@@ -10,13 +10,13 @@ export class BuilderManager {
  aviableMeshes: BABYLON.Mesh[] = [];
 
  builders: Worker[] = [];
- chunkBuilder: ChunkBuilder = new ChunkBuilder();
+
  scene: BABYLON.Scene;
  material: BABYLON.ShaderMaterial;
  shadowGen: BABYLON.ShadowGenerator;
  chunkMeshes: Record<number, Record<number, BABYLON.Mesh>> = {};
 
- constructor(private DS: DivineVoxelEngine) {
+ constructor(private DVE: DivineVoxelEngine) {
   /*     const numBuilders = 4;
 
     if(window.navigator.hardwareConcurrency > numBuilders) {
@@ -63,7 +63,7 @@ export class BuilderManager {
    };
 
    const channel = new MessageChannel();
-   const worldWorker = this.DS.world.getWorker();
+   const worldWorker = this.DVE.world.getWorker();
    const builderWorker = this.builders[i];
 
    // Setup the connection: Port 1 is for worker 1
@@ -133,7 +133,7 @@ export class BuilderManager {
   const colors = new Float32Array(data[4]);
   const uvs = new Float32Array(data[5]);
 
-  const newChunk = this.chunkBuilder.rebuildChunkMesh(
+  const newChunk = this.DVE.renderManager.chunkMesh.rebuildChunkMesh(
    chunk,
    chunkX,
    chunkZ,
@@ -154,11 +154,10 @@ export class BuilderManager {
   const indicies = new Int32Array(data[3]);
   const colors = new Float32Array(data[4]);
   const uvs = new Float32Array(data[5]);
-  const newChunk = this.chunkBuilder.makeChunkMesh(
+  const newChunk = this.DVE.renderManager.chunkMesh.makeChunkMesh(
    chunkMesh,
    chunkX,
    chunkZ,
-   this.material,
    positions,
    indicies,
    colors,

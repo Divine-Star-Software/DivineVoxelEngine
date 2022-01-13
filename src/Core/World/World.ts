@@ -1,7 +1,7 @@
 import type { DivineVoxelEngine } from "Core/DivineVoxelEngine.js";
 import { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
 import { PositionMatrix } from "Meta/Util.types.js";
-import { ChunkBuilder } from "../Builders/ChunkBuilder.js";
+import { ChunkMesh } from "../Render/Meshes/Chunk/ChunkMesh.js";
 
 export class World {
  waitingForWolrdData = false;
@@ -9,7 +9,7 @@ export class World {
 
  runningBlockUpdate = false;
  worker: Worker;
- chunkBuilder: ChunkBuilder = new ChunkBuilder();
+ chunkBuilder: ChunkMesh = new ChunkMesh();
  scene: BABYLON.Scene;
  material: BABYLON.MultiMaterial;
  shadowGen: BABYLON.ShadowGenerator;

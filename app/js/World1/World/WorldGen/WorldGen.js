@@ -7,7 +7,26 @@ export class WorldGen {
     chunkWidth = 16;
     chunkHeight = 256;
     renderDistance = 20;
-    generateChunk(chunkX, chunkZ) {
+    generateChunkStressTest(chunkX, chunkZ) {
+        //   this.chunkMap.addChunk(chunkX,chunkZ);
+        const returnChunk = [];
+        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
+        // debugBox = dreamstone;
+        let block = [dreamStonePillar, 0, 1, 1, 1, 1];
+        for (let x = 0; x < +this.chunkWidth; x++) {
+            for (let z = 0; z < this.chunkDepth; z++) {
+                for (let y = 0; y < this.chunkHeight; y++) {
+                    returnChunk[x] ??= [];
+                    returnChunk[x][z] ??= [];
+                    returnChunk[x][z][y] = block;
+                }
+            }
+        }
+        return {
+            voxels: returnChunk,
+        };
+    }
+    generateChunkNormal(chunkX, chunkZ) {
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         const returnChunk = [];
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
@@ -208,7 +227,7 @@ export class WorldGen {
                     chunks[i] = [];
                 }
                 if (!chunks[i][previousMaxChunkRebuild]) {
-                    const newChunk = this.generateChunk(i, previousMaxChunkRebuild);
+                    const newChunk = this.generateChunkNormal(i, previousMaxChunkRebuild);
                     this.DVEW.worldData.setChunk(i, previousMaxChunkRebuild, newChunk);
                     this.DVEW.buildChunk(i, previousMaxChunkRebuild);
                 }
@@ -221,7 +240,7 @@ export class WorldGen {
                     this.DVEW.removeChunk(i, removeChunkZ);
                 }
                 if (!chunks[i][newChunkZ]) {
-                    const newChunk = this.generateChunk(i, newChunkZ);
+                    const newChunk = this.generateChunkNormal(i, newChunkZ);
                     this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
                     this.DVEW.buildChunk(i, newChunkZ);
                 }
@@ -238,7 +257,7 @@ export class WorldGen {
                     this.DVEW.removeChunk(i, removeChunkZ);
                 }
                 if (!chunks[i][newChunkZ]) {
-                    const newChunk = this.generateChunk(i, newChunkZ);
+                    const newChunk = this.generateChunkNormal(i, newChunkZ);
                     this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
                     this.DVEW.buildChunk(i, newChunkZ);
                 }
@@ -253,7 +272,7 @@ export class WorldGen {
                     chunks[newChunkX] = [];
                 }
                 if (!chunks[newChunkX][i]) {
-                    const newChunk = this.generateChunk(newChunkX, i);
+                    const newChunk = this.generateChunkNormal(newChunkX, i);
                     this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
                     this.DVEW.buildChunk(newChunkX, i);
                 }
@@ -263,7 +282,7 @@ export class WorldGen {
                     chunks[previousMaxChunkRebuild] = [];
                 }
                 if (!chunks[previousMaxChunkRebuild][i]) {
-                    const newChunk = this.generateChunk(previousMaxChunkRebuild, i);
+                    const newChunk = this.generateChunkNormal(previousMaxChunkRebuild, i);
                     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
                     this.DVEW.buildChunk(previousMaxChunkRebuild, i);
                 }
@@ -291,7 +310,7 @@ export class WorldGen {
                     chunks[newChunkX] = [];
                 }
                 if (!chunks[newChunkX][i]) {
-                    const newChunk = this.generateChunk(newChunkX, i);
+                    const newChunk = this.generateChunkNormal(newChunkX, i);
                     this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
                     this.DVEW.buildChunk(newChunkX, i);
                 }
@@ -301,7 +320,7 @@ export class WorldGen {
                     chunks[previousMaxChunkRebuild] = [];
                 }
                 if (!chunks[previousMaxChunkRebuild][i]) {
-                    const newChunk = this.generateChunk(newChunkX, i);
+                    const newChunk = this.generateChunkNormal(newChunkX, i);
                     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
                     this.DVEW.buildChunk(previousMaxChunkRebuild, i);
                 }

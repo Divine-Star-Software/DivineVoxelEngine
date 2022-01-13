@@ -1,11 +1,11 @@
-import { ChunkBuilder } from "../Builders/ChunkBuilder.js";
+import { ChunkMesh } from "../Render/Meshes/Chunk/ChunkMesh.js";
 export class World {
     DS;
     waitingForWolrdData = false;
     baseWorldData = null;
     runningBlockUpdate = false;
     worker;
-    chunkBuilder = new ChunkBuilder();
+    chunkBuilder = new ChunkMesh();
     scene;
     material;
     shadowGen;

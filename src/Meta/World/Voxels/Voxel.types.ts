@@ -5,7 +5,7 @@ import { VoxelHelperInterface } from "./VoxelHelper.interface";
  * While the the fluid and magma will chunks will have their own seperate meshes per chunk. 
  * Transparent voxels will not cause the faces of solid voxels next to them to be culled they also have double sided rendering. 
  */
-export type VoxelSubstanceType = "solid" | "transparent" | "fluid" | "magma";
+export type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fluid" | "magma";
 
 /**# Voxel Data
  * ---

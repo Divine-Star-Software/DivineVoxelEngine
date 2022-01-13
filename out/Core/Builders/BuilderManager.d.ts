@@ -1,20 +1,18 @@
 /// <reference types="babylonjs" />
 import type { DivineVoxelEngine } from "../DivineVoxelEngine";
-import { ChunkBuilder } from "./ChunkBuilder.js";
 export declare class BuilderManager {
-    private DS;
+    private DVE;
     numBuilders: number;
     count: number;
     runningBlockUpdate: boolean;
     maxChunkMeshes: number;
     aviableMeshes: BABYLON.Mesh[];
     builders: Worker[];
-    chunkBuilder: ChunkBuilder;
     scene: BABYLON.Scene;
     material: BABYLON.ShaderMaterial;
     shadowGen: BABYLON.ShadowGenerator;
     chunkMeshes: Record<number, Record<number, BABYLON.Mesh>>;
-    constructor(DS: DivineVoxelEngine);
+    constructor(DVE: DivineVoxelEngine);
     _returnChunkMesh(mesh: BABYLON.Mesh): void;
     _getChunkMesh(): BABYLON.Mesh;
     createBaseChunkMeshes(): void;

@@ -9,7 +9,7 @@ export class BoxVoxelShape {
     faces = {
         //add top face
         0: (data) => {
-            data.postions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth);
+            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth);
             data.indices.push(data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex, data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
@@ -23,7 +23,7 @@ export class BoxVoxelShape {
         },
         //add bottom face
         1: (data) => {
-            data.postions.push(data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
+            data.positions.push(data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
@@ -37,7 +37,7 @@ export class BoxVoxelShape {
         },
         //add west face
         2: (data) => {
-            data.postions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth);
+            data.positions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth);
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
@@ -51,7 +51,7 @@ export class BoxVoxelShape {
         },
         //add east face
         3: (data) => {
-            data.postions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
+            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
@@ -65,7 +65,7 @@ export class BoxVoxelShape {
         },
         //add north face
         4: (data) => {
-            data.postions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth);
+            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth);
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
@@ -79,7 +79,7 @@ export class BoxVoxelShape {
         },
         //add south face
         5: (data) => {
-            data.postions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth);
+            data.positions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth);
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);

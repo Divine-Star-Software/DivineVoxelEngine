@@ -1,14 +1,14 @@
 /// <reference types="babylonjs" />
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./Builders/BuilderManager.js";
-import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
 import { ChunkManager } from "./Chunks/ChunkManager.js";
 import { World } from "./World/World.js";
+import { RenderManager } from "./Render/RenderManager.js";
 export declare class DivineVoxelEngine {
     world: World;
+    renderManager: RenderManager;
     chunkManager: ChunkManager;
     builderManager: BuilderManager;
-    chunkMaterial: ChunkMaterial;
     util: Util;
     constructor();
     $INIT(data: {

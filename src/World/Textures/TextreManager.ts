@@ -9,6 +9,7 @@ export class TextureManager implements TextureManagerInterface {
   transparent: "png",
   fluid: "png",
   magma: "png",
+  flora: "png",
  };
 
  textures: Record<VoxelSubstanceType, TextureData[]> = {
@@ -16,6 +17,7 @@ export class TextureManager implements TextureManagerInterface {
   transparent: [],
   fluid: [],
   magma: [],
+  flora: [],
  };
 
  uvTextureMap: Record<VoxelSubstanceType, Record<string, number>> = {
@@ -23,20 +25,30 @@ export class TextureManager implements TextureManagerInterface {
   transparent: {},
   fluid: {},
   magma: {},
+  flora: {},
  };
 
- generateTexturesData(): string[] {
-  let texturePaths: string[] = [];
-
+ generateTexturesData(): Record<VoxelSubstanceType, string[]> {
+  const returnStrings: Record<VoxelSubstanceType, string[]> = {
+   solid: [],
+   transparent: [],
+   magma: [],
+   fluid: [],
+   flora: [],
+  };
   const substances: VoxelSubstanceType[] = [
    "transparent",
    "fluid",
    "solid",
    "magma",
+   "flora",
   ];
 
-  let count = 1;
   for (const substance of substances) {
+   let texturePaths: string[] = [];
+
+   let count = 1;
+
    const extension = this.textureExtension[substance];
    for (const texture of this.textures[substance]) {
     let path: string = texture.path ? texture.path : this.defaultTexturePath;
@@ -58,7 +70,9 @@ export class TextureManager implements TextureManagerInterface {
       count++;
       if (texture.varations) {
        for (const varation of Object.keys(texture.varations)) {
-        this.uvTextureMap[substance][`${texture.id}:${varation}-${i}.${extension}`] = count;
+        this.uvTextureMap[substance][
+         `${texture.id}:${varation}-${i}.${extension}`
+        ] = count;
         for (let i = 1; i < texture.frames; i++) {
          texturePaths.push(
           `${path}/${texture.id}/${varation}-${i}.${extension}`
@@ -70,8 +84,10 @@ export class TextureManager implements TextureManagerInterface {
      }
     }
    }
+
+   returnStrings[substance] = texturePaths;
   }
-  return texturePaths;
+  return returnStrings;
  }
 
  defineDefaultTexturePath(path: string) {

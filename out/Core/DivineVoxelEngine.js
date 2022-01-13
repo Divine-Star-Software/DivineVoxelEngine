@@ -1,13 +1,14 @@
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./Builders/BuilderManager.js";
-import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
 import { ChunkManager } from "./Chunks/ChunkManager.js";
 import { World } from "./World/World.js";
+import { RenderManager } from "./Render/RenderManager.js";
+import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
 export class DivineVoxelEngine {
     world = new World(this);
+    renderManager = new RenderManager();
     chunkManager = new ChunkManager(this);
     builderManager = new BuilderManager(this);
-    chunkMaterial = new ChunkMaterial();
     util = new Util();
     constructor() { }
     async $INIT(data) {
@@ -22,16 +23,7 @@ export class DivineVoxelEngine {
         });
     }
     async $SCENEINIT(data) {
-        if (!this.world.baseWorldData) {
-            throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
-        }
-        this.chunkMaterial.setScene(data.scene);
-        const textures = this.world.baseWorldData?.texturePaths;
-        const combinedTexture = await this.chunkMaterial.createMaterialTexture(textures);
-        const material = this.chunkMaterial.getMaterial(combinedTexture);
-        this.builderManager.setScene(data.scene);
-        this.builderManager.setMaterial(material);
-        this.builderManager.createBaseChunkMeshes();
+        await BuildInitalMeshes(this, data.scene);
         this.world.startWorldGen();
         const max = 10;
         let count = max;
@@ -40,12 +32,12 @@ export class DivineVoxelEngine {
             if (!count) {
                 count = max;
                 if (test) {
-                    this.chunkMaterial.runAnimations(3);
+                    this.renderManager.chunkMaterial.runAnimations(3);
                     test = false;
                 }
                 else {
                     test = true;
-                    this.chunkMaterial.runAnimations(4);
+                    this.renderManager.chunkMaterial.runAnimations(4);
                 }
             }
             else {

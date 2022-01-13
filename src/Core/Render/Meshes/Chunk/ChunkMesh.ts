@@ -1,4 +1,9 @@
-export class ChunkBuilder {
+import type { ChunkMaterial } from "Core/Render/Materials/Chunk/ChunkMaterial";
+
+export class ChunkMesh {
+    constructor(private chunkMaterial : ChunkMaterial) {
+
+    }
     rebuildChunkMesh(
         chunkMesh: BABYLON.Mesh,
         chunkX: number,
@@ -25,11 +30,6 @@ export class ChunkBuilder {
         chunkMesh.position.x = chunkX;
         chunkMesh.position.z = chunkZ;
         chunkMesh.freezeWorldMatrix();
-
-
-  
-
-
         //Babylon throws an error but this functions works
         //So wrapped it in this for now. It works though
         try {
@@ -41,7 +41,6 @@ export class ChunkBuilder {
         chunkMesh: BABYLON.Mesh,
         chunkX: number,
         chunkZ: number,
-        material: BABYLON.ShaderMaterial,
         positions: Float32Array,
         indicies: Int32Array,
         colors: Float32Array,
@@ -55,13 +54,13 @@ export class ChunkBuilder {
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
 
-
+        chunkMesh.alphaIndex = 0;
         chunkVertexData.applyToMesh(chunkMesh, true);
 
         chunkMesh.setVerticesData("myuvs", uvs, false, 3);
         chunkMesh.setVerticesData("colors", colors, false, 4);
 
-        chunkMesh.material = material;
+        chunkMesh.material = this.chunkMaterial.getMaterial();
         chunkMesh.checkCollisions = true;
         chunkMesh.position.x = chunkX;
         chunkMesh.position.z = chunkZ;

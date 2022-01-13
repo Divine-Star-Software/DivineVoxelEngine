@@ -9,7 +9,33 @@ export class WorldGen {
 
  renderDistance = 20;
 
- generateChunk(chunkX: number, chunkZ: number): ChunkData {
+ generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
+  //   this.chunkMap.addChunk(chunkX,chunkZ);
+
+  const returnChunk: any[][][] = [];
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+   "dve:dreamstonepillar:defualt"
+  );
+
+  // debugBox = dreamstone;
+  let block = [dreamStonePillar,0 ,1, 1,1,1];
+
+  for (let x = 0; x < +this.chunkWidth; x++) {
+   for (let z = 0; z < this.chunkDepth; z++) {
+    for (let y = 0; y < this.chunkHeight; y++) {
+     
+     returnChunk[x] ??= [];
+     returnChunk[x][z] ??= [];
+     returnChunk[x][z][y] = block;
+    }
+   }
+  }
+
+  return {
+   voxels: returnChunk,
+  };
+ }
+ generateChunkNormal(chunkX: number, chunkZ: number): ChunkData {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
@@ -28,7 +54,7 @@ export class WorldGen {
   );
 
   // debugBox = dreamstone;
-  let block = [dreamGrass,0];
+  let block = [dreamGrass, 0];
 
   let toss = Math.random();
   let spiked = false;
@@ -36,15 +62,15 @@ export class WorldGen {
   let hole = false;
   if (toss < 0.2) {
    crazy = true;
-   block = [dreamstone,1,1]; 
+   block = [dreamstone, 1, 1];
   }
   if (toss > 0.2 && toss < 0.4) {
    spiked = true;
-   block = [dreamStonePillar,1,1];
+   block = [dreamStonePillar, 1, 1];
   }
   if (toss > 0.4 && toss < 0.6) {
    hole = true;
-   block = [dreamstone,1,1]; 
+   block = [dreamstone, 1, 1];
   }
   let normal = true;
   if (crazy || spiked || hole) {
@@ -206,7 +232,7 @@ export class WorldGen {
       if (x == 8 && z == 8 && y == 32) {
        returnChunk[x] ??= [];
        returnChunk[x][z] ??= [];
-       returnChunk[x][z][y] = [debugBox,1,1];
+       returnChunk[x][z][y] = [debugBox, 1, 1];
       }
      }
     }
@@ -235,7 +261,7 @@ export class WorldGen {
     }
 
     if (!chunks[i][previousMaxChunkRebuild]) {
-     const newChunk = this.generateChunk(i, previousMaxChunkRebuild);
+     const newChunk = this.generateChunkNormal(i, previousMaxChunkRebuild);
      this.DVEW.worldData.setChunk(i, previousMaxChunkRebuild, newChunk);
      this.DVEW.buildChunk(i, previousMaxChunkRebuild);
     }
@@ -248,7 +274,7 @@ export class WorldGen {
      this.DVEW.removeChunk(i, removeChunkZ);
     }
     if (!chunks[i][newChunkZ]) {
-     const newChunk = this.generateChunk(i, newChunkZ);
+     const newChunk = this.generateChunkNormal(i, newChunkZ);
      this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
      this.DVEW.buildChunk(i, newChunkZ);
     }
@@ -266,7 +292,7 @@ export class WorldGen {
      this.DVEW.removeChunk(i, removeChunkZ);
     }
     if (!chunks[i][newChunkZ]) {
-     const newChunk = this.generateChunk(i, newChunkZ);
+     const newChunk = this.generateChunkNormal(i, newChunkZ);
      this.DVEW.worldData.setChunk(i, newChunkZ, newChunk);
      this.DVEW.buildChunk(i, newChunkZ);
     }
@@ -284,7 +310,7 @@ export class WorldGen {
     }
 
     if (!chunks[newChunkX][i]) {
-     const newChunk = this.generateChunk(newChunkX, i);
+     const newChunk = this.generateChunkNormal(newChunkX, i);
      this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
      this.DVEW.buildChunk(newChunkX, i);
     }
@@ -295,7 +321,7 @@ export class WorldGen {
     }
 
     if (!chunks[previousMaxChunkRebuild][i]) {
-     const newChunk = this.generateChunk(previousMaxChunkRebuild, i);
+     const newChunk = this.generateChunkNormal(previousMaxChunkRebuild, i);
      this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
      this.DVEW.buildChunk(previousMaxChunkRebuild, i);
     }
@@ -329,7 +355,7 @@ export class WorldGen {
     }
 
     if (!chunks[newChunkX][i]) {
-     const newChunk = this.generateChunk(newChunkX, i);
+     const newChunk = this.generateChunkNormal(newChunkX, i);
      this.DVEW.worldData.setChunk(newChunkX, i, newChunk);
      this.DVEW.buildChunk(newChunkX, i);
     }
@@ -340,7 +366,7 @@ export class WorldGen {
     }
 
     if (!chunks[previousMaxChunkRebuild][i]) {
-     const newChunk = this.generateChunk(newChunkX, i);
+     const newChunk = this.generateChunkNormal(newChunkX, i);
      this.DVEW.worldData.setChunk(previousMaxChunkRebuild, i, newChunk);
      this.DVEW.buildChunk(previousMaxChunkRebuild, i);
     }

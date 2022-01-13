@@ -29,7 +29,12 @@ export function RegisterTexutres(DVEW) {
         varations: {
             "side-bottom": true,
             "side-top": true,
-            "top": true,
+            top: true,
         },
+    });
+    DVEW.textureManager.registerTexture("flora", {
+        name: "Dream Grass Texture",
+        id: "dreamgrass",
+        frames: 0,
     });
 }

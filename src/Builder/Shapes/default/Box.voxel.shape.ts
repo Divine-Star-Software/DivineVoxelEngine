@@ -15,7 +15,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
  faces: Record<number, BoxFaceFunction> = {
   //add top face
   0: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + -this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
@@ -54,7 +54,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   },
   //add bottom face
   1: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + -this.width,
     data.position.y + -this.height,
     data.position.z + -this.depth,
@@ -94,7 +94,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   },
   //add west face
   2: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
@@ -135,7 +135,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   },
   //add east face
   3: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + -this.width,
     data.position.y + this.height,
     data.position.z + this.depth,
@@ -176,7 +176,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   },
   //add north face
   4: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + -this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
@@ -218,7 +218,7 @@ export class BoxVoxelShape implements VoxelShapeInterface {
   },
   //add south face
   5: (data: VoxelShapeAddData) => {
-   data.postions.push(
+   data.positions.push(
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + this.depth,

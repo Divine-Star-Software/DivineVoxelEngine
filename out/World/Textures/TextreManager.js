@@ -5,29 +5,40 @@ export class TextureManager {
         transparent: "png",
         fluid: "png",
         magma: "png",
+        flora: "png",
     };
     textures = {
         solid: [],
         transparent: [],
         fluid: [],
         magma: [],
+        flora: [],
     };
     uvTextureMap = {
         solid: {},
         transparent: {},
         fluid: {},
         magma: {},
+        flora: {},
     };
     generateTexturesData() {
-        let texturePaths = [];
+        const returnStrings = {
+            solid: [],
+            transparent: [],
+            magma: [],
+            fluid: [],
+            flora: [],
+        };
         const substances = [
             "transparent",
             "fluid",
             "solid",
             "magma",
+            "flora",
         ];
-        let count = 1;
         for (const substance of substances) {
+            let texturePaths = [];
+            let count = 1;
             const extension = this.textureExtension[substance];
             for (const texture of this.textures[substance]) {
                 let path = texture.path ? texture.path : this.defaultTexturePath;
@@ -60,8 +71,9 @@ export class TextureManager {
                     }
                 }
             }
+            returnStrings[substance] = texturePaths;
         }
-        return texturePaths;
+        return returnStrings;
     }
     defineDefaultTexturePath(path) {
         this.defaultTexturePath = path;

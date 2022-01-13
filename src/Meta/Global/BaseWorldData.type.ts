@@ -1,3 +1,5 @@
+import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+
 export type BaseWorldData = {
-    texturePaths: string[];
+    texturePaths: Record<VoxelSubstanceType,string[]>
    };

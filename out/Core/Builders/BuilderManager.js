@@ -1,19 +1,17 @@
-import { ChunkBuilder } from "./ChunkBuilder.js";
 export class BuilderManager {
-    DS;
+    DVE;
     numBuilders = 4;
     count = 0;
     runningBlockUpdate = false;
     maxChunkMeshes = 500;
     aviableMeshes = [];
     builders = [];
-    chunkBuilder = new ChunkBuilder();
     scene;
     material;
     shadowGen;
     chunkMeshes = {};
-    constructor(DS) {
-        this.DS = DS;
+    constructor(DVE) {
+        this.DVE = DVE;
         /*     const numBuilders = 4;
       
           if(window.navigator.hardwareConcurrency > numBuilders) {
@@ -55,7 +53,7 @@ export class BuilderManager {
                 this._handleChunkBuildMessage(event);
             };
             const channel = new MessageChannel();
-            const worldWorker = this.DS.world.getWorker();
+            const worldWorker = this.DVE.world.getWorker();
             const builderWorker = this.builders[i];
             // Setup the connection: Port 1 is for worker 1
             worldWorker.postMessage(["connect-builder"], [channel.port1]);
@@ -119,7 +117,7 @@ export class BuilderManager {
         const indicies = new Int32Array(data[3]);
         const colors = new Float32Array(data[4]);
         const uvs = new Float32Array(data[5]);
-        const newChunk = this.chunkBuilder.rebuildChunkMesh(chunk, chunkX, chunkZ, positions, indicies, colors, uvs);
+        const newChunk = this.DVE.renderManager.chunkMesh.rebuildChunkMesh(chunk, chunkX, chunkZ, positions, indicies, colors, uvs);
         this.runningBlockUpdate = false;
     }
     async _buildNewChunk(chunkX, chunkZ, data) {
@@ -129,7 +127,7 @@ export class BuilderManager {
         const indicies = new Int32Array(data[3]);
         const colors = new Float32Array(data[4]);
         const uvs = new Float32Array(data[5]);
-        const newChunk = this.chunkBuilder.makeChunkMesh(chunkMesh, chunkX, chunkZ, this.material, positions, indicies, colors, uvs);
+        const newChunk = this.DVE.renderManager.chunkMesh.makeChunkMesh(chunkMesh, chunkX, chunkZ, positions, indicies, colors, uvs);
         //chunkMesh.updateFacetData();
         this.chunkMeshes[chunkX] ??= [];
         this.chunkMeshes[chunkX][chunkZ] = newChunk;
