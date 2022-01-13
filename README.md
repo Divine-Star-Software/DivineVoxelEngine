@@ -13,15 +13,9 @@ Very early development. This is not finalized. Things will keep changing as deve
 
 # What is this?
 
-A voxel engine written in TypeScript that uses Babylon.Js.
+A voxel engine written in TypeScript that uses Babylon.Js. This is for Minecraft like games. Meaning it is for rich voxel worlds not sparse ones. Though there are optimizations included for uses of just rendering.
 
-This is meant to handle only the rendering and creating of meshes. Things like players, mobs, and complex inter-connected logic is up to you.
-
-# Why?
-
-Divine Star has several other projects that need to use a voxel engine. So, I am making a
-public version of the engine for creators to use. It will not include things like world
-generation and so on. So you can fill out those things yourself.
+This engine only handles rendering and creating of meshes. Things like players, world generation, mobs, and complex inter-connected logic is up to you.
 
 # Current Features
 
@@ -52,7 +46,50 @@ npm run start
 
 You can change the world demo in **app/index.html**
 
+One thing to note about the engine is that it runs in three different contents and must be initialized in each. 
+
+The three contents being
+
+- Main Thread
+  - Renders everything using Babylon.Js.
+- World Thread 
+  - Holds the world data, voxel data, and does the logic for lighting and so on.
+  - All voxels, voxels pallets, and textures must be registered in this thread.
+- Builder Thread 
+  - Holds the voxel shape data. All custom shapes must be registered in this thread.
+  - Given a template from the world thread it will generate a chunk mesh data and then send it to the main thread.
+
 ##### Change Log
+
+1-12-2022
+
+- Voxel data is now stored in the chunk as a number. This number is used to access the real information about the voxel which is stored in something called a Voxel Pallet.  
+
+  - A voxel pallet can either be "global" or "per-chunk". Global means there is one voxel pallet at a given time for the world generation. While per-chunk means that the voxel pallet is stored with the chunk data. 
+  - Per chunk voxel pallets are good for Minecraft type games where the world data is saved and may have voxels added on later.
+  - Global voxel pallets are good for when the world data is not saved and everything is just generated. 
+
+- A set of functions are being developed to make it easy to develop a voxel pallet. They will in a new class called "WorldGeneration" which is just meant to assist in generating data. 
+
+- If you want to add a block now you have to do different things based on the voxel pallete mode:
+
+  - If it is global you must get the index number from the global voxel pallet and insert that into the chunk voxel data. 
+  - If it is per-chunk first you must check to see if the voxel pallet id exists in the chunk pallet and add it there if it does not exist. Then you get the index number from that which you will then insert into the chunk voxel data. 
+
+The naming convection for voxels and their voxel pallet states is as follows:
+
+```ts
+const voxleParentGroup = "dve";
+const voxelName = "dreamstone";
+const voxelid = `${voxleParentGroup}:${voxelName}`;
+//create palletid for default voxel state
+const voxelPalletIdDefault = `${voxelid}:default`;
+//Add another states like this
+const voxelState = `rotated`;
+const voxelPalletIdRotated = `${voxelid}:${voxelState}`;
+```
+
+ 
 
 1-10-2022 
 
@@ -75,4 +112,18 @@ You can change the world demo in **app/index.html**
 
 #### Notes
 
-This engine was developed on top of the V8 engine through severing it as an Electron app. So, it may not be computable with all browsers. 
+This engine was developed on top of the V8 engine through severing it as an Electron app. So, it may not be computable with all browsers.
+
+#### Chunk Data
+
+The currently loaded chunks are stored in a object with the chunk's X and Z as they keys. Each chunk is an object with several properties. 
+
+The main data it stores are the voxels which is stored as a 3D array. Each voxel is represented by an array of numbers. 
+
+Currently the first number is the voxel id from the global or chunk level voxel pallet map. The second number is used for a voxel state. And finally the three numbers are for the calculated block AO, block light and sky light values. 
+
+If the voxel pallet mode is set to per chunk the chunk will have its local pallet map. Which is a way to get the true id and state of the voxel. 
+
+Metrics so far for total world data size is at calculated to be at worst ~.5 mb for 9 chunks of full blocks. With compressed data you can store that to be only about 1kb or so. 
+
+ 
