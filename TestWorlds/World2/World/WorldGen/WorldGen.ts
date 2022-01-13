@@ -28,8 +28,8 @@ export class WorldGen {
   const returnChunk: any[][][] = [];
 
   if (type == "pillar") {
-   let pillarBlock = dreamStonePillar;
-   let baseBlock = dreamstone;
+   let pillarBlock = [dreamStonePillar, 1, 1];
+   let baseBlock = [dreamstone, 1, 1];
    let baseY = 31;
    let topY = 50;
    let hole = false;
@@ -67,8 +67,8 @@ export class WorldGen {
   }
 
   if (type == "default") {
-   let topBlock = dreamstone;
-   let baseBlock = dreamStonePillar;
+   let topBlock = [dreamstone, 1, 1];
+   let baseBlock = [dreamStonePillar, 1, 1];
    let topY = 31;
    let groundY = 31;
    let hole = false;
@@ -106,14 +106,14 @@ export class WorldGen {
     }
    }
 
-   returnChunk[7][7][topY] = debugBox;
-   returnChunk[7][7][topY + 1] = debugBox;
-   returnChunk[7][7][topY + 2] = debugBox;
-   returnChunk[7][7][topY + 3] = debugBox;
-   returnChunk[0][0][topY] = dreamstone;
-   returnChunk[0][15][topY] = dreamstone;
-   returnChunk[15][15][topY] = dreamstone;
-   returnChunk[15][0][topY] = dreamstone;
+   returnChunk[7][7][topY] = [debugBox, 1, 1];
+   returnChunk[7][7][topY + 1] = [debugBox, 1, 1];
+   returnChunk[7][7][topY + 2] = [debugBox, 1, 1];
+   returnChunk[7][7][topY + 3] = [debugBox, 1, 1];
+   returnChunk[0][0][topY] = [dreamstone, 1, 1];
+   returnChunk[0][15][topY] = [dreamstone, 1, 1];
+   returnChunk[15][15][topY] = [dreamstone, 1, 1];
+   returnChunk[15][0][topY] = [dreamstone, 1, 1];
   }
   return {
    voxels: returnChunk,

@@ -42,7 +42,6 @@ const CreateMainWindow = async () => {
     height: 720,
     frame: true,
     fullscreen: false,
-    menuBarVisible: true,
     webPreferences: {
       preload: path.join(__dirname, "WindowPreload.js"),
       nodeIntegration: false,

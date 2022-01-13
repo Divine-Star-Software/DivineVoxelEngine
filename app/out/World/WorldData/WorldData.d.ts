@@ -7,6 +7,7 @@ export declare class WorldData {
     chunks: Record<number, Record<number, ChunkData>>;
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
+    getCurrentWorldDataString(): string;
     getChunk(chunkX: number, chunkZ: number): ChunkData | false;
     removeChunk(chunkX: number, chunkZ: number): void;
     setChunk(chunkX: number, chunkZ: number, chunk: ChunkData): void;

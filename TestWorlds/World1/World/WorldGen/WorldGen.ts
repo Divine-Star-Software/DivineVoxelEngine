@@ -28,7 +28,7 @@ export class WorldGen {
   );
 
   // debugBox = dreamstone;
-  let block = dreamGrass;
+  let block = [dreamGrass,0];
 
   let toss = Math.random();
   let spiked = false;
@@ -36,15 +36,15 @@ export class WorldGen {
   let hole = false;
   if (toss < 0.2) {
    crazy = true;
-   block = dreamstone; 
+   block = [dreamstone,1,1]; 
   }
   if (toss > 0.2 && toss < 0.4) {
    spiked = true;
-   block = dreamStonePillar;
+   block = [dreamStonePillar,1,1];
   }
   if (toss > 0.4 && toss < 0.6) {
    hole = true;
-   block = dreamstone; 
+   block = [dreamstone,1,1]; 
   }
   let normal = true;
   if (crazy || spiked || hole) {
@@ -206,7 +206,7 @@ export class WorldGen {
       if (x == 8 && z == 8 && y == 32) {
        returnChunk[x] ??= [];
        returnChunk[x][z] ??= [];
-       returnChunk[x][z][y] = debugBox;
+       returnChunk[x][z][y] = [debugBox,1,1];
       }
      }
     }
@@ -302,10 +302,10 @@ export class WorldGen {
    }
 
    for (const checkChunkX of Object.keys(chunks)) {
-    const chunkXNum = parseInt(checkChunkX);
+    const chunkXNum = Number(checkChunkX);
     if (chunkXNum <= removeChunkX) {
      for (const chunk of Object.keys(chunks[chunkXNum])) {
-      const chunkZ = parseInt(chunk);
+      const chunkZ = Number(chunk);
       chunks[chunkXNum][chunkZ];
       this.DVEW.builderManager.requestChunkBeRemoved(chunkXNum, chunkZ);
 
@@ -346,10 +346,10 @@ export class WorldGen {
     }
    }
    for (const checkChunkX of Object.keys(chunks)) {
-    const chunkXNum = parseInt(checkChunkX);
+    const chunkXNum = Number(checkChunkX);
     if (chunkXNum >= removeChunkX) {
      for (const chunk of Object.keys(chunks[chunkXNum])) {
-      const chunkZ = parseInt(chunk);
+      const chunkZ = Number(chunk);
       chunks[chunkXNum][chunkZ];
       this.DVEW.builderManager.requestChunkBeRemoved(chunkXNum, chunkZ);
 

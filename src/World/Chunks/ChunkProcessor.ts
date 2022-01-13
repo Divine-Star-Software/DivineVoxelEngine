@@ -42,13 +42,14 @@ export class ChunkProcessor {
      continue;
     }
     for (const y of chunkVoxels[x][z].keys()) {
-     const voxelId = chunkVoxels[x][z][y];
-     if (!voxelId) continue;
-     const voxelData = voxelPallet[voxelId];
+     const voxelData = chunkVoxels[x][z][y];
      if (!voxelData) continue;
+     const voxelId = voxelData[0];
+     const voxelPalletData = voxelPallet[voxelId];
+     if (!voxelPalletData) continue;
 
      //   const voxlel =
-     const voxel = this.DVEW.voxelManager.getVoxel(voxelData[0]);
+     const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
 
      let addNorth = false;
      let addSouth = false;
@@ -233,8 +234,8 @@ export class ChunkProcessor {
      //end of block loop
 
      const faces = bitArray.getDec(0);
-     voxel.getUVs(uvTemplate, faces, voxelData);
-     shapeTemplate.push(voxel.getShapeId(voxelData));
+     voxel.getUVs(uvTemplate, faces, voxelPalletData);
+     shapeTemplate.push(voxel.getShapeId(voxelPalletData));
      positionTemplate.push(x, y, z);
      faceTemplate.push(faces);
     }

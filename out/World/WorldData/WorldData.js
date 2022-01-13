@@ -10,6 +10,9 @@ export class WorldData {
         const data = JSON.stringify(this.chunks);
         return new Blob([data]).size;
     }
+    getCurrentWorldDataString() {
+        return JSON.stringify(this.chunks);
+    }
     getChunk(chunkX, chunkZ) {
         if (!this.chunks[chunkX]) {
             return false;
@@ -38,14 +41,13 @@ export class WorldData {
         }
         if (!chunkVoxels[relativeX][relativeZ]) {
             chunkVoxels[relativeX][relativeZ] ??= [];
-            chunkVoxels[relativeX][relativeZ][y] = voxelPalletId;
+            chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 1, 1];
             const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunkVoxels, pallet, chunkX, chunkZ);
             this.DVEW.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
         }
         else if (!chunkVoxels[relativeX][relativeZ][y]) {
-            chunkVoxels[relativeX][relativeZ][y] = voxelPalletId;
-            console.log("sup");
+            chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 0, 0];
             const template = this.DVEW.chunkProccesor.makeChunkTemplate(chunkVoxels, pallet, chunkX, chunkZ);
             console.log();
             this.DVEW.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
