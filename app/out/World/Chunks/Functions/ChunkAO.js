@@ -4,9 +4,6 @@ export function ChunkOcculsionCalcuation(worldData, voxelManager, voxel, voxelPa
     if (!check) {
         return 1;
     }
-    if (!check[0]) {
-        return 1;
-    }
     const voxelPalletId = check[0];
     const voxelTrueId = voxelPallet[voxelPalletId][0];
     const checkVoxel = voxelManager.getVoxel(voxelTrueId);

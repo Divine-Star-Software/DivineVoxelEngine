@@ -34,9 +34,7 @@ export function ChunkOcculsionCalcuation(
  if (!check) {
   return 1;
  }
- if (!check[0]) {
-  return 1;
- }
+
 
  const voxelPalletId = check[0];
  const voxelTrueId = voxelPallet[voxelPalletId][0];

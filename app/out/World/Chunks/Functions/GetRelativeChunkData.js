@@ -164,7 +164,7 @@ const checkNorth = (worldData, chunkX, chunkZ, blockX, blockY, x, y) => {
     if (northChunk[blockX + x] &&
         northChunk[blockX + x][0] &&
         northChunk[blockX + x][0][blockY + y] !== undefined) {
-        return 1;
+        return northChunk[blockX + x][0][blockY + y];
     }
     return false;
 };

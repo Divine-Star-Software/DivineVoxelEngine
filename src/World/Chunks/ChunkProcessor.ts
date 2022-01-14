@@ -232,12 +232,14 @@ export class ChunkProcessor {
         addSouth = true;
        } else {
         const voxelData: number = southChunk[x][0][y][0];
+      
         const southVoxel = this.DVEW.voxelManager.getVoxel(
          voxelPallet[voxelData][0]
         );
         if (southVoxel.data.substance !== voxelSubstance) {
          addSouth = true;
         }
+    
        }
       } else {
        addSouth = true;

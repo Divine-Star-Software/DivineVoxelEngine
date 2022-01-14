@@ -190,7 +190,7 @@ const checkNorth = (
   northChunk[blockX + x][0] &&
   northChunk[blockX + x][0][blockY + y] !== undefined
  ) {
-  return 1;
+  return northChunk[blockX + x][0][blockY + y];
  }
  return false;
 };
