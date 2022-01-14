@@ -30,6 +30,10 @@ const start = () => {
  DVEW.worldData.setChunk(16, -16, worldGen.generateChunk(16, -16, "pillar"));
  DVEW.worldData.setChunk(-16, -16, worldGen.generateChunk(-16, -16));
 
+
+ DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -32, "pond"));
+ DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -48, "pond"));
+
  DVEW.buildChunk(0, 0);
  DVEW.buildChunk(-16, 0);
  DVEW.buildChunk(16, 0);
@@ -40,6 +44,9 @@ const start = () => {
  DVEW.buildChunk(16, 16);
  DVEW.buildChunk(16, -16);
  DVEW.buildChunk(-16, -16);
+
+ DVEW.buildChunk(0, -32);
+ DVEW.buildChunk(0, -48);
 };
 
 (async () => {

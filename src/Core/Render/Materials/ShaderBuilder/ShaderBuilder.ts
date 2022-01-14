@@ -1,10 +1,79 @@
 import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
 
+
+import {fluidShaders} from "./Shaders/Fluid/Fluid.shaders.js";
+//https://forum.babylonjs.com/t/mesh-with-custom-shader-material-does-not-cast-shadow/7761/2
+//https://playground.babylonjs.com/#ENPTI9#8
 /**# ShaderBuilder
  *---
  * Helps construct raw text shaders.
  */
 export class ShaderBuilder {
+
+    defaultFloraVertexSahder =  `
+    precision highp float;
+   
+    // Attributes
+    attribute vec3 position;
+    attribute vec3 normal;
+    attribute vec3 myuvs;
+    attribute vec4 colors;
+    // Uniforms
+    uniform mat4 worldViewProjection;
+    uniform mat4 world;                    
+    uniform mat4 view;                    
+    uniform mat4 viewProjection;          
+   
+   
+    varying vec2 vUV2;
+    // Varying
+    varying vec3 vUV;
+    varying vec3 vNormal;
+    varying vec4 vColors;
+   
+   
+   
+    varying float fFogDistance;
+   
+    varying float animIndex;
+   
+    //anims
+    uniform float anim1Index;
+    uniform float anim2Index;
+   
+   
+    uniform float time;
+   
+    float getUVFace(float uv) {
+   
+        if(uv == 0.0) {
+            return anim1Index;
+        }
+   
+        if(uv == 0.0) {
+            return anim2Index;
+        }
+     
+        return uv;
+   
+    }
+   
+   
+    void main(void) {
+        vec3 p = position;
+
+        p.z += cos(float(gl_VertexID) + time) * 0.05;
+        vec4 worldPosition = world * vec4(p, 1.0);
+        fFogDistance = (view * worldPosition).z;
+        gl_Position = viewProjection * worldPosition; 
+   
+   
+        animIndex = getUVFace(myuvs.z);
+        vUV = myuvs;
+        vColors = colors;
+        vNormal = normal;
+    }
+    `;
  defaultVertexSahder =  `
  precision highp float;
 
@@ -36,6 +105,9 @@ export class ShaderBuilder {
  uniform float anim1Index;
  uniform float anim2Index;
 
+
+ uniform float time;
+
  float getUVFace(float uv) {
 
      if(uv == 0.0) {
@@ -53,7 +125,10 @@ export class ShaderBuilder {
 
  void main(void) {
 
-     vec4 worldPosition = world * vec4(position, 1.0);
+    vec3 p = position;
+    p.z += sin(float(gl_VertexID) + time) * 0.2;
+
+     vec4 worldPosition = world * vec4(p, 1.0);
      fFogDistance = (view * worldPosition).z;
      gl_Position = worldViewProjection * vec4(position, 1.0); 
 
@@ -155,6 +230,12 @@ export class ShaderBuilder {
 
 
     getDefaultVertexShader(voxelSubstance : VoxelSubstanceType) {
+        if(voxelSubstance == "flora" ){
+            return this.defaultFloraVertexSahder;
+        }
+        if(voxelSubstance == "fluid" ){
+            return fluidShaders.vertexSahderTop;
+        }
         return this.defaultVertexSahder;
     }
     getDefaultFragmentShader(voxelSubstance : VoxelSubstanceType) {

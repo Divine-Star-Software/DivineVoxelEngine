@@ -5,7 +5,7 @@ export class DreamGrass {
     }
     data = {
         name: "Dream Grass ",
-        shapeId: "FullBoxCross",
+        shapeId: "FullBoxDiagonalIntersection",
         id: "dve:dreamgrass",
         substance: "flora",
         defaultState: ["dve:dreamgrass", 0],

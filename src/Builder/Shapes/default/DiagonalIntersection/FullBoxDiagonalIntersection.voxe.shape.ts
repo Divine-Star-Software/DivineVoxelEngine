@@ -5,8 +5,8 @@ import type {
  VoxelShapeInterface,
 } from "Meta/Builder/Shapes/VoxelShape.interface";
 
-export class FullBoxCrossVoxelShape implements VoxelShapeInterface {
- id = "FullBoxCross";
+export class FullBoxDiagonalIntersection implements VoxelShapeInterface {
+ id = "FullBoxDiagonalIntersection";
  width: number = 0.5;
  depth: number = 0.5;
  height: number = 0.5;

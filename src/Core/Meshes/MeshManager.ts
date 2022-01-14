@@ -11,7 +11,7 @@ export class MeshManager {
    solid: this.DVE.renderManager.chunkMesh,
    transparent: this.DVE.renderManager.chunkMesh,
    flora: this.DVE.renderManager.floraMesh,
-   fluid: this.DVE.renderManager.floraMesh,
+   fluid: this.DVE.renderManager.fluidMesh,
    magma: this.DVE.renderManager.floraMesh,
   };
  }

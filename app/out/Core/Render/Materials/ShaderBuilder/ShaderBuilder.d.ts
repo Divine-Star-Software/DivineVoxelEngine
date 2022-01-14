@@ -4,6 +4,7 @@ import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
  * Helps construct raw text shaders.
  */
 export declare class ShaderBuilder {
+    defaultFloraVertexSahder: string;
     defaultVertexSahder: string;
     defaultFragmentShader: string;
     constructor();

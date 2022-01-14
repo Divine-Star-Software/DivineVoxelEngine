@@ -32,7 +32,6 @@ export class TextureCreator {
         resolvedImages.push(new Uint8ClampedArray(data));
         let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
         const combinedImages = this._combineImageData(totalLength, resolvedImages);
-        console.log(combinedImages);
         const _2DTextureArray = new BABYLON.RawTexture2DArray(combinedImages, width, height, images.length + 2, BABYLON.Engine.TEXTUREFORMAT_RGBA, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
         return _2DTextureArray;
     }

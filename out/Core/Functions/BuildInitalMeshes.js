@@ -11,4 +11,7 @@ export async function BuildInitalMeshes(DVE, scene) {
     const floraTextures = DVE.world.baseWorldData?.texturePaths.flora;
     const combinedFloraTextures = await DVE.renderManager.textureCreator.createMaterialTexture(scene, floraTextures);
     DVE.renderManager.floraMaterial.createMaterial(scene, combinedFloraTextures);
+    const fluidTextures = DVE.world.baseWorldData?.texturePaths.fluid;
+    const combinedFluidTextures = await DVE.renderManager.textureCreator.createMaterialTexture(scene, fluidTextures);
+    DVE.renderManager.fluidMaterial.createMaterial(scene, combinedFluidTextures);
 }

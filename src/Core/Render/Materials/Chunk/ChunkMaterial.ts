@@ -58,6 +58,7 @@ export class ChunkMaterial {
    effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
+
   this.material = shaderMaterial;
   return this.material;
  }

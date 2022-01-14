@@ -9,11 +9,11 @@ export class FloraMaterial {
         return this.material;
     }
     createMaterial(scene, texture) {
-        BABYLON.Effect.ShadersStore["aVertexShader"] =
-            this.renderManager.shaderBuilder.getDefaultVertexShader("solid");
-        BABYLON.Effect.ShadersStore["aFragmentShader"] =
-            this.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
-        const shaderMaterial = new BABYLON.ShaderMaterial("a", scene, "a", {
+        BABYLON.Effect.ShadersStore["floraVertexShader"] =
+            this.renderManager.shaderBuilder.getDefaultVertexShader("flora");
+        BABYLON.Effect.ShadersStore["floraFragmentShader"] =
+            this.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
+        const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
             attributes: ["position", "normal", "myuvs", "colors"],
             uniforms: [
                 "world",
@@ -27,6 +27,7 @@ export class FloraMaterial {
                 "projection",
                 "anim1Index",
                 "arrayTex",
+                "time"
             ],
             needAlphaBlending: true,
             needAlphaTesting: false
@@ -47,6 +48,11 @@ export class FloraMaterial {
             effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
         this.material = shaderMaterial;
+        let time = 0;
+        scene.registerBeforeRender(function () {
+            time += 0.08;
+            shaderMaterial.setFloat("time", time);
+        });
         return this.material;
     }
     runAnimations(num) {

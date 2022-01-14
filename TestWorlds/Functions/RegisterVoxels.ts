@@ -4,6 +4,7 @@ import { DebugBox } from "../Voxels/Solid/DebugBox.js";
 import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
 import type { DVEW } from "../../out/Meta/World/DVEW";
 import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
+import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther.js";
 
 export function RegisterVoxels(
  DVEW: DVEW,
@@ -18,9 +19,14 @@ export function RegisterVoxels(
  DVEW.voxelManager.registerVoxelData(dreamStonePillar);
  const dreamGrassBlock = new DreamGrassBlock(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(dreamGrassBlock);
+
  //flora
  const dreamGrass = new DreamGrass(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(dreamGrass);
+
+ //fluid
+ const liquidDreamEther = new LiquidDreamEther(DVEW.voxelHelper);
+ DVEW.voxelManager.registerVoxelData(liquidDreamEther);
 
  if (voxelPalletMode == "global") {
   //solid
@@ -46,10 +52,16 @@ export function RegisterVoxels(
 
   //flora
   DVEW.worldGeneration.addToGlobalVoxelPallet(
-    `${dreamGrass.data.id}:defualt`,
-    dreamGrass.data.defaultState
-   );
+   `${dreamGrass.data.id}:defualt`,
+   dreamGrass.data.defaultState
+  );
 
- // console.log(DVEW.worldGeneration.getGlobalVoxelPallet());
+  //fluid
+  DVEW.worldGeneration.addToGlobalVoxelPallet(
+   `${liquidDreamEther.data.id}:defualt`,
+   liquidDreamEther.data.defaultState
+  );
+
+  // console.log(DVEW.worldGeneration.getGlobalVoxelPallet());
  }
 }

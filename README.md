@@ -61,6 +61,15 @@ The three contexts being
 
 ##### Change Log
 
+1-14-2022
+
+- Flora and Fluid voxels are now seperate meshes. 
+  - Each chunk is built of at most 4 meshes.
+- Each flora and fluid material has built in shader effects that can be turned on or off. 
+- Voxel can use strings for the shape id. 
+- Voxel has control over it's AO and light calc.
+
+
 1-12-2022
 
 - Voxel data is now stored in the chunk as a number. This number is used to access the real information about the voxel which is stored in something called a Voxel Pallet.  

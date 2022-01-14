@@ -42,4 +42,10 @@ export function RegisterTexutres(DVEW: DVEW) {
   id: "dreamgrass",
   frames: 0,
  });
+
+ DVEW.textureManager.registerTexture("fluid", {
+  name: "Liquid Dream Ether Texture",
+  id: "liquid-dream-ether",
+  frames: 0,
+ });
 }

@@ -27,6 +27,7 @@ export function ChunkOcculsionCalcuation(
   blockX,
   blockY,
   blockZ,
+  
   x,
   y,
   z
