@@ -21,8 +21,8 @@ export class ChunkMeshBuilder {
             const x = positionsTemplate[positionIndex];
             const y = positionsTemplate[positionIndex + 1];
             const z = positionsTemplate[positionIndex + 2];
-            const shapeId = shapeTemplate[shapeTemplate[shapeIndex]];
-            const shape = this.shapeManager.shapes[shapeId];
+            const shapeId = shapeTemplate[shapeIndex];
+            const shape = this.shapeManager.getShape(shapeId);
             const newIndexes = shape.addToChunkMesh({
                 positions: positions,
                 indices: indices,

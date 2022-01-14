@@ -3,7 +3,24 @@ import type { VoxelShapeInterface } from "Meta/Builder/Shapes/VoxelShape.interfa
 export class ShapeManager {
  shapes: Record<number, VoxelShapeInterface> = {};
 
- registerShape(id: number, shapeObject: VoxelShapeInterface) {
-  this.shapes[id] = shapeObject;
+
+ shapeMap : Record<string,number> = {};
+ shapeCount  = 0;
+
+ registerShape( shapeObject: VoxelShapeInterface) {
+  this.shapes[this.shapeCount] = shapeObject;
+  this.shapeMap[shapeObject.id] = this.shapeCount;
+  this.shapeCount++;
+ }
+
+ getShape(shapeId : number) {
+     if(!this.shapes[shapeId]) {
+         console.log(`%sfuck ${shapeId}`,"font-size:20px; color: red;")
+     }
+     return this.shapes[shapeId];
+ }
+
+ getShapeMap() {
+     return this.shapeMap;
  }
 }

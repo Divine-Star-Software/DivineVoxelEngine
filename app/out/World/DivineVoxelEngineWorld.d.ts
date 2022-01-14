@@ -1,4 +1,4 @@
-import { DVEW } from "Meta/World/DVEW.js";
+import type { DVEW } from "Meta/World/DVEW";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -31,5 +31,5 @@ export declare class DivineVoxelEngineWorld implements DVEW {
         voxelPalletMode: "per-chunk" | "global";
         onReady: Function;
         onMessage: (message: string, data: any[]) => void;
-    }): void;
+    }): Promise<void>;
 }

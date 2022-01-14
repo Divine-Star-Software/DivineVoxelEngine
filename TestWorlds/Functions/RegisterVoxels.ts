@@ -1,13 +1,15 @@
-import { Dreamestone } from "../Voxels/DreamStone.js";
-import { DreamGrassBlock } from "../Voxels/DreamGrassBlock.js";
-import { DebugBox } from "../Voxels/DebugBox.js";
-import { DreamStonePillar } from "../Voxels/DreamStonePillar.js";
+import { Dreamestone } from "../Voxels/Solid/DreamStone.js";
+import { DreamGrassBlock } from "../Voxels/Solid/DreamGrassBlock.js";
+import { DebugBox } from "../Voxels/Solid/DebugBox.js";
+import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
 import type { DVEW } from "../../out/Meta/World/DVEW";
+import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
 
 export function RegisterVoxels(
  DVEW: DVEW,
  voxelPalletMode: "global" | "per-chunk"
 ) {
+ //solid
  const debugBlock = new DebugBox(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(debugBlock);
  const dreamStone = new Dreamestone(DVEW.voxelHelper);
@@ -16,7 +18,12 @@ export function RegisterVoxels(
  DVEW.voxelManager.registerVoxelData(dreamStonePillar);
  const dreamGrassBlock = new DreamGrassBlock(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(dreamGrassBlock);
+ //flora
+ const dreamGrass = new DreamGrass(DVEW.voxelHelper);
+ DVEW.voxelManager.registerVoxelData(dreamGrass);
+
  if (voxelPalletMode == "global") {
+  //solid
   DVEW.worldGeneration.addToGlobalVoxelPallet(
    `${debugBlock.data.id}:defualt`,
    debugBlock.data.defaultState
@@ -37,7 +44,12 @@ export function RegisterVoxels(
    dreamGrassBlock.data.defaultState
   );
 
+  //flora
+  DVEW.worldGeneration.addToGlobalVoxelPallet(
+    `${dreamGrass.data.id}:defualt`,
+    dreamGrass.data.defaultState
+   );
 
-  console.log(DVEW.worldGeneration.getGlobalVoxelPallet());
+ // console.log(DVEW.worldGeneration.getGlobalVoxelPallet());
  }
 }

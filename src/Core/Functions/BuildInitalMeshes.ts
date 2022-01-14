@@ -30,11 +30,4 @@ export async function BuildInitalMeshes(
   );
  DVE.renderManager.floraMaterial.createMaterial(scene, combinedFloraTextures);
 
-
-
-
-
- DVE.builderManager.setScene(scene);
- DVE.builderManager.setMaterial(DVE.renderManager.chunkMaterial.getMaterial());
- DVE.builderManager.createBaseChunkMeshes();
 }

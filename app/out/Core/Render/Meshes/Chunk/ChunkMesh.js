@@ -1,9 +1,9 @@
 export class ChunkMesh {
-    chunkMaterial;
-    constructor(chunkMaterial) {
-        this.chunkMaterial = chunkMaterial;
+    material;
+    constructor(material) {
+        this.material = material;
     }
-    rebuildChunkMesh(chunkMesh, chunkX, chunkZ, positions, indicies, colors, uvs) {
+    rebuildMeshGeometory(chunkMesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
         chunkVertexData.positions = positions;
@@ -12,7 +12,7 @@ export class ChunkMesh {
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.applyToMesh(chunkMesh, true);
         chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-        chunkMesh.setVerticesData("colors", colors, false, 4);
+        chunkMesh.setVerticesData("colors", linearcColors, false, 4);
         chunkMesh.unfreezeWorldMatrix();
         chunkMesh.position.x = chunkX;
         chunkMesh.position.z = chunkZ;
@@ -24,18 +24,22 @@ export class ChunkMesh {
         }
         catch (error) { }
     }
-    makeChunkMesh(chunkMesh, chunkX, chunkZ, positions, indicies, colors, uvs) {
+    createTemplateMesh(scene) {
+        const mesh = new BABYLON.Mesh("solid", scene);
+        mesh.alphaIndex = 0;
+        return mesh;
+    }
+    createMeshGeometory(chunkMesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
-        chunkMesh.alphaIndex = 0;
         chunkVertexData.applyToMesh(chunkMesh, true);
         chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-        chunkMesh.setVerticesData("colors", colors, false, 4);
-        chunkMesh.material = this.chunkMaterial.getMaterial();
+        chunkMesh.setVerticesData("colors", linearColors, false, 4);
+        chunkMesh.material = this.material.getMaterial();
         chunkMesh.checkCollisions = true;
         chunkMesh.position.x = chunkX;
         chunkMesh.position.z = chunkZ;

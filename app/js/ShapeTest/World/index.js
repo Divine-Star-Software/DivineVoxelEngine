@@ -32,8 +32,10 @@ const start = () => {
     DVEW.buildChunk(16, -16);
     DVEW.buildChunk(-16, -16);
 };
-DVEW.$INIT({
-    voxelPalletMode: "global",
-    onReady: start,
-    onMessage: (message, data) => { },
-});
+(async () => {
+    await DVEW.$INIT({
+        voxelPalletMode: "global",
+        onReady: start,
+        onMessage: (message, data) => { },
+    });
+})();

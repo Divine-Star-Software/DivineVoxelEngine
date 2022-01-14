@@ -6,13 +6,33 @@ import { VoxelHelperInterface } from "./VoxelHelper.interface";
  * Transparent voxels will not cause the faces of solid voxels next to them to be culled they also have double sided rendering.
  */
 export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fluid" | "magma";
+export declare type VoxelAOCalcData = {
+    exposedFaces: number[];
+    chunkVoxels: any[][][];
+    aoTemplate: number[];
+    chunkX: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+};
+export declare type VoxelUVCalcData = {
+    exposedFaces: number[];
+    chunkVoxels: any[][][];
+    aoTemplate: number[];
+    chunkX: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+};
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.
  */
 export declare type VoxelData = {
     name: string;
-    shapeId: number;
+    shapeId: string;
     id: string;
     substance: VoxelSubstanceType;
     defaultState: any[];
@@ -20,6 +40,7 @@ export declare type VoxelData = {
 };
 export interface VoxelInteface {
     data: VoxelData;
+    trueShapeId: number;
     voxelHelper: VoxelHelperInterface;
     hooks: {
         beforeAdd?: Function;
@@ -38,6 +59,7 @@ export interface VoxelInteface {
      * The voxels data.
      * @param voxelData
      */
-    getUVs(uvs: number[], voxelExposedFaceEncodedBit: number, voxelData: any[]): void;
+    getUVs(uvs: number[], chunkX: number, chunkZ: number, voxelExposedFaceEncodedBit: number, voxelData: any[]): void;
+    getAO(data: VoxelAOCalcData): void;
     getShapeId(voxelData: any[]): number;
 }

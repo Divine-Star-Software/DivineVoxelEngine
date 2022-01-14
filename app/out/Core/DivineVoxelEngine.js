@@ -1,14 +1,14 @@
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./Builders/BuilderManager.js";
-import { ChunkManager } from "./Chunks/ChunkManager.js";
 import { World } from "./World/World.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
+import { MeshManager } from "./Meshes/MeshManager.js";
 export class DivineVoxelEngine {
     world = new World(this);
     renderManager = new RenderManager();
-    chunkManager = new ChunkManager(this);
     builderManager = new BuilderManager(this);
+    meshManager = new MeshManager(this);
     util = new Util();
     constructor() { }
     async $INIT(data) {

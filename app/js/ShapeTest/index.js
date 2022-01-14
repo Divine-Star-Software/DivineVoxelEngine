@@ -49,8 +49,9 @@ const init = async () => {
     camera.attachControl(canvas, true);
     await DVE.$SCENEINIT({ scene: scene });
     const check = () => {
-        if (DVE.builderManager.chunkMeshes[0] &&
-            DVE.builderManager.chunkMeshes[0][0] !== undefined) {
+        if (
+        //@ts-ignore
+        DVE.meshManager.meshes["solid"]["0-0"] !== undefined) {
             Shape1(scene, DVE.renderManager.floraMaterial.getMaterial());
         }
         else {

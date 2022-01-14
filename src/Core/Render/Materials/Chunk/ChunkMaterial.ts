@@ -40,9 +40,8 @@ export class ChunkMaterial {
 
   shaderMaterial.setTexture("arrayTex", texture);
 
-  //shaderMaterial.disableDepthWrite = true;
-  shaderMaterial.needDepthPrePass = true;
-  shaderMaterial.separateCullingPass = true;
+
+ shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();

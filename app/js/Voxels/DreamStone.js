@@ -5,14 +5,15 @@ export class Dreamestone {
     }
     data = {
         name: "Dream Stone",
-        shapeId: 0,
+        shapeId: "Box",
         id: "dve:dreamstone",
         substance: "solid",
         defaultState: ["dve:dreamstone", 0]
     };
     hooks = {};
+    trueShapeId = 0;
     getShapeId(voxelData) {
-        return this.data.shapeId;
+        return this.trueShapeId;
     }
     getUVs(uvs, voxelExposedFaceEncodedBit, voxelData) {
         let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");

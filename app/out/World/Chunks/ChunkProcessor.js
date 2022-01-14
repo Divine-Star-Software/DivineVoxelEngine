@@ -1,4 +1,4 @@
-import { ChunkOcculsionCalcuation, BuildAmbientOcclusion, } from "./Functions/ChunkAO.js";
+import { ChunkOcculsionCalcuation, } from "./Functions/ChunkAO.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -13,13 +13,25 @@ export class ChunkProcessor {
     constructor(DVEW) {
         this.DVEW = DVEW;
     }
-    makeChunkTemplate(chunkVoxels, voxelPallet, chunkX, chunkZ) {
-        const positionTemplate = [];
-        const faceTemplate = [];
-        const uvTemplate = [];
-        const shapeTemplate = [];
-        const ligtTemplate = [];
-        const aoTemplate = [];
+    getBaseTemplate() {
+        return {
+            positionTemplate: [],
+            faceTemplate: [],
+            uvTemplate: [],
+            shapeTemplate: [],
+            ligtTemplate: [],
+            aoTemplate: [],
+        };
+    }
+    makeAllChunkTemplates(chunkVoxels, voxelPallet, chunkX, chunkZ) {
+        const template = {
+            solid: this.getBaseTemplate(),
+            transparent: this.getBaseTemplate(),
+            flora: this.getBaseTemplate(),
+            fluid: this.getBaseTemplate(),
+            magma: this.getBaseTemplate(),
+        };
+        const exposedFaces = [];
         for (const x of chunkVoxels.keys()) {
             if (!chunkVoxels[x]) {
                 continue;
@@ -36,8 +48,12 @@ export class ChunkProcessor {
                     const voxelPalletData = voxelPallet[voxelId];
                     if (!voxelPalletData)
                         continue;
+                    let isExposed = false;
                     //   const voxlel =
                     const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
+                    const voxelSubstance = voxel.data.substance;
+                    const baseTemplate = template[voxel.data.substance];
+                    let addTop = false;
                     let addNorth = false;
                     let addSouth = false;
                     let addEast = false;
@@ -45,13 +61,31 @@ export class ChunkProcessor {
                     const bitArray = this.DVEW.UTIL.getBitArray([0]);
                     if (!chunkVoxels[x][z][y + 1]) {
                         //add top
+                        addTop = true;
+                    }
+                    else {
+                        const voxelData = chunkVoxels[x][z][y + 1][0];
+                        const topVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                        if (topVoxel.data.substance !== voxelSubstance) {
+                            addTop = true;
+                        }
+                    }
+                    if (addTop) {
                         bitArray.setBit(0, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "top");
+                        isExposed = true;
+                        exposedFaces[0] = 1;
+                    }
+                    else {
+                        exposedFaces[0] = 0;
                     }
                     if (!chunkVoxels[x][z][y - 1] && y != this.worldBottomY) {
                         //add bottom
                         bitArray.setBit(1, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "bottom");
+                        isExposed = true;
+                        exposedFaces[1] = 1;
+                    }
+                    else {
+                        exposedFaces[1] = 0;
                     }
                     //chunk border west
                     if (15 == x) {
@@ -145,36 +179,57 @@ export class ChunkProcessor {
                     }
                     if (addWest) {
                         bitArray.setBit(2, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "west");
+                        isExposed = true;
+                        exposedFaces[2] = 1;
+                    }
+                    else {
+                        exposedFaces[2] = 0;
                     }
                     if (addEast) {
                         bitArray.setBit(3, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "east");
+                        isExposed = true;
+                        exposedFaces[3] = 1;
+                    }
+                    else {
+                        exposedFaces[3] = 0;
                     }
                     if (addNorth) {
                         bitArray.setBit(4, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "north");
+                        isExposed = true;
+                        exposedFaces[4] = 1;
+                    }
+                    else {
+                        exposedFaces[4] = 0;
                     }
                     if (addSouth) {
                         bitArray.setBit(5, 1);
-                        BuildAmbientOcclusion(this.DVEW.worldData, chunkVoxels, aoTemplate, chunkX, chunkZ, x, y, z, "south");
+                        isExposed = true;
+                        exposedFaces[5] = 1;
+                    }
+                    else {
+                        exposedFaces[5] = 0;
                     }
                     //end of block loop
+                    if (!isExposed)
+                        continue;
                     const faces = bitArray.getDec(0);
-                    voxel.getUVs(uvTemplate, faces, voxelPalletData);
-                    shapeTemplate.push(voxel.getShapeId(voxelPalletData));
-                    positionTemplate.push(x, y, z);
-                    faceTemplate.push(faces);
+                    voxel.getUVs(baseTemplate.uvTemplate, chunkX, chunkZ, faces, voxelPalletData);
+                    voxel.getAO({
+                        exposedFaces: exposedFaces,
+                        aoTemplate: baseTemplate.aoTemplate,
+                        chunkVoxels: chunkVoxels,
+                        chunkX: chunkX,
+                        chunkZ: chunkZ,
+                        x: x,
+                        y: y,
+                        z: z,
+                    });
+                    baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+                    baseTemplate.positionTemplate.push(x, y, z);
+                    baseTemplate.faceTemplate.push(faces);
                 }
             }
         }
-        return [
-            positionTemplate,
-            faceTemplate,
-            shapeTemplate,
-            uvTemplate,
-            ligtTemplate,
-            aoTemplate,
-        ];
+        return template;
     }
 }

@@ -4,24 +4,12 @@ const face1 = (positions, indices, uvs, colors, position, startingIndices, width
     let uv = 1;
     uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    startingIndices += 4;
-    positions.push(position.x - width, position.y + height, position.z + -depth, position.x + width, position.y + height, position.z + depth, position.x + width, position.y + -height, position.z + depth, position.x - width, position.y + -height, position.z + -depth);
-    indices.push(startingIndices, startingIndices + 2, startingIndices + 3, startingIndices, startingIndices + 1, startingIndices + 2);
-    uv = 1;
-    uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-    colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     return startingIndices + 4;
 };
 const face2 = (positions, indices, uvs, colors, position, startingIndices, width = 0.5, height = 0.5, depth = 0.5) => {
     positions.push(position.x + -width, position.y + height, position.z + depth, position.x + width, position.y + height, position.z + -depth, position.x + width, position.y + -height, position.z + -depth, position.x + -width, position.y + -height, position.z + depth);
     indices.push(startingIndices + 2, startingIndices + 1, startingIndices, startingIndices + 3, startingIndices + 2, startingIndices);
     let uv = 1;
-    uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-    colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    startingIndices += 4;
-    positions.push(position.x + -width, position.y + height, position.z + depth, position.x + width, position.y + height, position.z + -depth, position.x + width, position.y + -height, position.z + -depth, position.x + -width, position.y + -height, position.z + depth);
-    indices.push(startingIndices, startingIndices + 1, startingIndices + 2, startingIndices, startingIndices + 2, startingIndices + 3);
-    uv = 1;
     uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     return startingIndices + 4;

@@ -20,7 +20,7 @@ const readyStateCheckInterval = setInterval(function () {
 
 
 
-const init = async () => {
+const init = async () => {  
  const canvas = document.createElement("canvas");
  canvas.id = "renderCanvas";
  document.body.append(canvas);

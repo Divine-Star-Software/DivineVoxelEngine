@@ -2,5 +2,7 @@ import { DivineVoxelEngineBuilder } from "../../../out/Builder/DivineVoxelEngine
 
 
 const DVEB = new DivineVoxelEngineBuilder();
+(self as any).DVEB = DVEB;
+
 
 DVEB.$INIT((self as any));

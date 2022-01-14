@@ -24,6 +24,8 @@ export class ChunkMeshBuilder {
   const uvs: number[] = [];
   const colors: number[] = [];
 
+
+
   let indicieIndex = 0;
   let aoIndex = 0;
   let uvIndex = 0;
@@ -39,8 +41,8 @@ export class ChunkMeshBuilder {
    const y = positionsTemplate[positionIndex + 1];
    const z = positionsTemplate[positionIndex + 2];
 
-   const shapeId = shapeTemplate[shapeTemplate[shapeIndex]];
-   const shape = this.shapeManager.shapes[shapeId];
+   const shapeId = shapeTemplate[shapeIndex];
+   const shape = this.shapeManager.getShape(shapeId);
    const newIndexes = shape.addToChunkMesh({
     positions: positions,
     indices: indices,

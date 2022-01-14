@@ -23,6 +23,9 @@ export class WorldGen {
   let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamstonepillar:defualt"
   );
+  let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+    "dve:dreamgrass:defualt"
+   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const returnChunk: any[][][] = [];
@@ -105,7 +108,7 @@ export class WorldGen {
      }
     }
    }
-
+   returnChunk[5][5][topY] = [dreamGrasss, 1, 1];
    returnChunk[7][7][topY] = [debugBox, 1, 1];
    returnChunk[7][7][topY + 1] = [debugBox, 1, 1];
    returnChunk[7][7][topY + 2] = [debugBox, 1, 1];

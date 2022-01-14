@@ -1,5 +1,5 @@
 export class Player {
-    DS;
+    DVE;
     absPositionArray;
     chunkPositionArray;
     playerDirectionArray;
@@ -27,8 +27,8 @@ export class Player {
     checkDownCollision = false;
     bottomRay;
     camRay;
-    constructor(DS) {
-        this.DS = DS;
+    constructor(DVE) {
+        this.DVE = DVE;
     }
     createPlayerSharedArrays() {
         const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -42,7 +42,7 @@ export class Player {
             chunkPositionArrayBuffer,
             playerDirectionArrayBuffer,
         ];
-        this.DS.world.sendPlayerSharedArrays(arrays);
+        this.DVE.world.sendPlayerSharedArrays(arrays);
     }
     calculateGameZone(positionX, positionZ) {
         const chunkpositionX = (positionX >> 4) << 4;
@@ -110,7 +110,7 @@ export class Player {
     async update() {
         if (!this.ready || !this.active)
             return;
-        if (this.DS.builderManager.runningBlockUpdate)
+        if (this.DVE.meshManager.runningUpdate)
             return;
         const x = Math.floor(this.hitbox.position.x);
         const y = Math.floor(this.hitbox.position.y);
@@ -362,12 +362,11 @@ export class Player {
                     const x = Math.floor(this.hitbox.position.x);
                     const y = Math.floor(this.hitbox.position.y);
                     const z = Math.floor(this.hitbox.position.z);
-                    console.log(x, y, z, this.blockLookingAtPosition);
                     if (x != this.blockLookingAtPosition.x ||
                         (y != this.blockLookingAtPosition.y &&
                             y != this.blockLookingAtPosition.y + 1) ||
                         this.blockLookingAtPosition.z != z) {
-                        this.DS.world.requestWorldUpdate("block-add", this.blockLookingAtPosition);
+                        this.DVE.world.requestWorldUpdate("block-add", this.blockLookingAtPosition);
                     }
                     //need to create into a promise to make sure not too many updates are set at once
                     this.active = false;
@@ -382,9 +381,8 @@ export class Player {
                 const x = Math.floor(this.hitbox.position.x);
                 const y = Math.floor(this.hitbox.position.y - 1);
                 const z = Math.floor(this.hitbox.position.z);
-                console.log(x, y, z, this.blockLookingAtPosition);
                 if (this.lookingAtBlock) {
-                    this.DS.world.requestWorldUpdate("block-remove", this.blockLookingAtPosition);
+                    this.DVE.world.requestWorldUpdate("block-remove", this.blockLookingAtPosition);
                 }
             }
         });

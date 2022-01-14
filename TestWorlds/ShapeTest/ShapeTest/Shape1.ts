@@ -1,7 +1,5 @@
 import { PositionMatrix } from "../../../out/Meta/Util.types";
 
-
-
 const face1 = (
  positions: number[],
  indices: number[],
@@ -40,125 +38,52 @@ const face1 = (
  let uv = 1;
  uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
  colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
- startingIndices += 4;
- positions.push(
-    position.x - width,
-    position.y + height,
-    position.z + -depth,
-    position.x + width,
-    position.y + height,
-    position.z + depth,
-
-    
-    position.x + width,
-    position.y + -height,
-    position.z + depth,
-  
-    position.x - width,
-    position.y + -height,
-    position.z + -depth
-   );
- 
-   indices.push(
-
-
-    startingIndices,
-    startingIndices + 2,
-    startingIndices + 3,
-
-    
-    startingIndices,
-    startingIndices + 1,
-    startingIndices + 2,
-   );
-    uv = 1;
-   uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
  return startingIndices + 4;
 };
 
 const face2 = (
-    positions: number[],
-    indices: number[],
-    uvs: number[],
-    colors: number[],
-    position: PositionMatrix,
-    startingIndices: number,
-    width: number = 0.5,
-    height: number = 0.5,
-    depth: number = 0.5
-   ) => {
-    positions.push(
-        position.x + -width,
-        position.y + height,
-        position.z + depth,
+ positions: number[],
+ indices: number[],
+ uvs: number[],
+ colors: number[],
+ position: PositionMatrix,
+ startingIndices: number,
+ width: number = 0.5,
+ height: number = 0.5,
+ depth: number = 0.5
+) => {
+ positions.push(
+  position.x + -width,
+  position.y + height,
+  position.z + depth,
 
+  position.x + width,
+  position.y + height,
+  position.z + -depth,
 
-        position.x + width,
-        position.y + height,
-        position.z + -depth,
-    
-        position.x + width,
-        position.y + -height,
-        position.z + -depth,
+  position.x + width,
+  position.y + -height,
+  position.z + -depth,
 
-        
-        position.x + -width,
-        position.y + -height,
-        position.z + depth
-       );
-       indices.push(
-        startingIndices + 2,
-        startingIndices + 1,
-        startingIndices,
-    
-        startingIndices + 3,
-        startingIndices + 2,
-        startingIndices
-       );
-    let uv = 1;
-    uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-    colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    startingIndices += 4;
+  position.x + -width,
+  position.y + -height,
+  position.z + depth
+ );
+ indices.push(
+  startingIndices + 2,
+  startingIndices + 1,
+  startingIndices,
 
-    positions.push(
-        position.x + -width,
-        position.y + height,
-        position.z + depth,
-
-
-        position.x + width,
-        position.y + height,
-        position.z + -depth,
-    
-        position.x + width,
-        position.y + -height,
-        position.z + -depth,
-
-        
-        position.x + -width,
-        position.y + -height,
-        position.z + depth
-       );
-       indices.push(
-        startingIndices,
-        startingIndices + 1,
-        startingIndices + 2,
-    
-        startingIndices,
-        startingIndices + 2,
-        startingIndices + 3,
-       );
-    uv = 1;
-    uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-    colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    
-
-
-   
-    return startingIndices + 4;
-   };
+  startingIndices + 3,
+  startingIndices + 2,
+  startingIndices
+ );
+ let uv = 1;
+ uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+ colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+ return startingIndices + 4;
+};
 
 export function Shape1(
  scene: BABYLON.Scene,
@@ -173,7 +98,14 @@ export function Shape1(
  const uvs: number[] = [];
  const colors: number[] = [];
 
- startingIndices = face1(positions, indices, uvs, colors, position, startingIndices);
+ startingIndices = face1(
+  positions,
+  indices,
+  uvs,
+  colors,
+  position,
+  startingIndices
+ );
  face2(positions, indices, uvs, colors, position, startingIndices);
  const vertexData = new BABYLON.VertexData();
  const normals: number[] = [];
@@ -182,7 +114,6 @@ export function Shape1(
  vertexData.indices = indices;
  vertexData.normals = normals;
  vertexData.colors = colors;
- 
 
  vertexData.applyToMesh(mesh);
 

@@ -1,24 +1,22 @@
-import { ChunkMesh } from "../Render/Meshes/Chunk/ChunkMesh.js";
 export class World {
-    DS;
+    DVE;
     waitingForWolrdData = false;
     baseWorldData = null;
     runningBlockUpdate = false;
     worker;
-    chunkBuilder = new ChunkMesh();
     scene;
     material;
     shadowGen;
     chunkMeshes = {};
-    constructor(DS) {
-        this.DS = DS;
+    constructor(DVE) {
+        this.DVE = DVE;
     }
     requestWorldUpdate(type, position) {
-        this.DS.builderManager.runningBlockUpdate = true;
+        this.DVE.meshManager.runningUpdate = true;
         this.worker.postMessage([type, position.x, position.y, position.z]);
         setTimeout(() => {
-            if (this.DS.builderManager.runningBlockUpdate) {
-                this.DS.builderManager.runningBlockUpdate = false;
+            if (this.DVE.meshManager.runningUpdate) {
+                this.DVE.meshManager.runningUpdate = false;
             }
         }, 10);
     }
@@ -65,7 +63,7 @@ export class World {
         if (message == "remove-chunk") {
             const chunkX = event.data[1];
             const chunkZ = event.data[2];
-            this.DS.builderManager.requestChunkBeRemoved(chunkX, chunkZ);
+            this.DVE.meshManager.requestChunkBeRemoved(`${chunkX}-${chunkZ}`);
         }
         if (message == "set-world-data") {
             this.baseWorldData = event.data[1];

@@ -1,3 +1,4 @@
+import { ChunkTemplate, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import { VoxelPallet } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import { ChunkOcculsionCalcuation } from "./Functions/ChunkAO.js";
@@ -13,5 +14,6 @@ export declare class ChunkProcessor {
     chunkOcculsionCalcuation: typeof ChunkOcculsionCalcuation;
     chunkTemplates: Record<number, Record<number, number[][]>>;
     constructor(DVEW: DivineVoxelEngineWorld);
-    makeChunkTemplate(chunkVoxels: any[][][], voxelPallet: VoxelPallet, chunkX: number, chunkZ: number): number[][];
+    getBaseTemplate(): ChunkTemplate;
+    makeAllChunkTemplates(chunkVoxels: any[][][], voxelPallet: VoxelPallet, chunkX: number, chunkZ: number): FullChunkTemplate;
 }

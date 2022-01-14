@@ -21,7 +21,7 @@ export class DivineVoxelEngineWorld {
     worldGeneration = new WorldGeneration();
     worldData = new WorldData(this);
     textureManager = new TextureManager();
-    voxelHelper = new VoxelHelper(this.UTIL, this.textureManager);
+    voxelHelper = new VoxelHelper(this.UTIL, this.worldData, this.textureManager);
     voxelManager = new VoxelManager();
     chunkProccesor = new ChunkProcessor(this);
     constructor(worker) {
@@ -44,12 +44,12 @@ export class DivineVoxelEngineWorld {
         if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
             pallet = this.worldGeneration.getGlobalVoxelPallet();
         }
-        const template = this.chunkProccesor.makeChunkTemplate(chunk.voxels, pallet, chunkX, chunkZ);
-        this.builderManager.requestChunkBeBuilt(chunkX, chunkZ, template);
+        const template = this.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, chunkX, chunkZ);
+        this.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
         return true;
     }
-    $INIT(data) {
+    async $INIT(data) {
         this.settings.voxelPalletMode = data.voxelPalletMode;
-        InitWorldWorker(this, data.onReady, data.onMessage);
+        await InitWorldWorker(this, data.onReady, data.onMessage);
     }
 }

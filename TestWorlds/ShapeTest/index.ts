@@ -67,8 +67,8 @@ const init = async () => {
 
  const check = () => {
   if (
-   DVE.builderManager.chunkMeshes[0] &&
-   DVE.builderManager.chunkMeshes[0][0] !== undefined
+      //@ts-ignore
+   DVE.meshManager.meshes["solid"]["0-0"] !== undefined
   ) {
    Shape1(
     scene,

@@ -36,7 +36,7 @@ export class Player {
  bottomRay: BABYLON.Ray;
  camRay: BABYLON.Ray;
 
- constructor(private DS: DivineVoxelEngine) {}
+ constructor(private DVE: DivineVoxelEngine) {}
 
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -52,7 +52,7 @@ export class Player {
    chunkPositionArrayBuffer,
    playerDirectionArrayBuffer,
   ];
-  this.DS.world.sendPlayerSharedArrays(arrays);
+  this.DVE.world.sendPlayerSharedArrays(arrays);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -129,7 +129,7 @@ export class Player {
 
  async update() {
   if (!this.ready || !this.active) return;
-  if (this.DS.builderManager.runningBlockUpdate) return;
+  if (this.DVE.meshManager.runningUpdate) return;
 
   const x = Math.floor(this.hitbox.position.x);
   const y = Math.floor(this.hitbox.position.y);
@@ -436,7 +436,7 @@ console.log(camPick.pickedMesh); */
      const y = Math.floor(this.hitbox.position.y);
      const z = Math.floor(this.hitbox.position.z);
 
-     console.log(x, y, z, this.blockLookingAtPosition);
+
 
      if (
       x != this.blockLookingAtPosition.x ||
@@ -444,7 +444,7 @@ console.log(camPick.pickedMesh); */
        y != this.blockLookingAtPosition.y + 1) ||
       this.blockLookingAtPosition.z != z
      ) {
-      this.DS.world.requestWorldUpdate(
+      this.DVE.world.requestWorldUpdate(
        "block-add",
        this.blockLookingAtPosition
       );
@@ -462,9 +462,9 @@ console.log(camPick.pickedMesh); */
     const x = Math.floor(this.hitbox.position.x);
     const y = Math.floor(this.hitbox.position.y - 1);
     const z = Math.floor(this.hitbox.position.z);
-    console.log(x, y, z, this.blockLookingAtPosition);
+
     if (this.lookingAtBlock) {
-     this.DS.world.requestWorldUpdate(
+     this.DVE.world.requestWorldUpdate(
       "block-remove",
       this.blockLookingAtPosition
      );

@@ -2,6 +2,7 @@ import { ChunkMaterial } from "./Materials/Chunk/ChunkMaterial.js";
 import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
 import { ShaderBuilder } from "./Materials/ShaderBuilder/ShaderBuilder.js";
 import { ChunkMesh } from "./Meshes/Chunk/ChunkMesh.js";
+import { FloraMesh } from "./Meshes/Flora/FloraMesh.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 
 export class RenderManager {
@@ -14,6 +15,7 @@ export class RenderManager {
 
 
  chunkMesh: ChunkMesh = new ChunkMesh(this.chunkMaterial);
+ floraMesh : FloraMesh = new FloraMesh(this.floraMaterial);
 
  constructor() {}
 }

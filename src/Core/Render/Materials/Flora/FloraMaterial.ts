@@ -44,9 +44,6 @@ export class FloraMaterial {
 
   shaderMaterial.backFaceCulling = false;
 
-  //shaderMaterial.disableDepthWrite = true;
- //shaderMaterial.needDepthPrePass = true;
-  shaderMaterial.separateCullingPass = true;
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();

@@ -2,19 +2,17 @@
 import type { DivineVoxelEngine } from "Core/DivineVoxelEngine.js";
 import { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
 import { PositionMatrix } from "Meta/Util.types.js";
-import { ChunkMesh } from "../Render/Meshes/Chunk/ChunkMesh.js";
 export declare class World {
-    private DS;
+    private DVE;
     waitingForWolrdData: boolean;
     baseWorldData: BaseWorldData | null;
     runningBlockUpdate: boolean;
     worker: Worker;
-    chunkBuilder: ChunkMesh;
     scene: BABYLON.Scene;
     material: BABYLON.MultiMaterial;
     shadowGen: BABYLON.ShadowGenerator;
     chunkMeshes: Record<number, Record<number, BABYLON.Mesh>>;
-    constructor(DS: DivineVoxelEngine);
+    constructor(DVE: DivineVoxelEngine);
     requestWorldUpdate(type: "block-add" | "block-remove", position: PositionMatrix): void;
     setShadowGen(shadowGen: BABYLON.ShadowGenerator): void;
     getChunkMeshFacetData(chunkX: number, chunkZ: number, faceID: number): false | BABYLON.Vector3;

@@ -5,14 +5,15 @@ export class DreamStonePillar {
     }
     data = {
         name: "Dream Stone Pillar",
-        shapeId: 0,
+        shapeId: "Box",
         id: "dve:dreamstonepillar",
         substance: "solid",
         defaultState: ["dve:dreamstonepillar", 0]
     };
     hooks = {};
+    trueShapeId = 0;
     getShapeId(voxelData) {
-        return this.data.shapeId;
+        return this.trueShapeId;
     }
     getUVs(uvs, voxelExposedFaceEncodedBit, voxelData) {
         let topBottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar", "top");

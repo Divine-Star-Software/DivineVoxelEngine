@@ -2,14 +2,22 @@ export class BuilderManager {
     DVE;
     numBuilders = 4;
     count = 0;
-    runningBlockUpdate = false;
-    maxChunkMeshes = 500;
-    aviableMeshes = [];
     builders = [];
-    scene;
-    material;
-    shadowGen;
-    chunkMeshes = {};
+    buildRequestFunctions = {
+        //chunk meshes
+        0: (chunkKey, chunkX, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("solid", chunkKey, chunkX, chunkZ, data);
+        },
+        1: (chunkKey, chunkX, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkZ, data);
+        },
+        2: (chunkKey, chunkX, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkZ, data);
+        },
+        3: (chunkKey, chunkX, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkZ, data);
+        },
+    };
     constructor(DVE) {
         this.DVE = DVE;
         /*     const numBuilders = 4;
@@ -21,25 +29,6 @@ export class BuilderManager {
           }]
            */
     }
-    _returnChunkMesh(mesh) {
-        mesh.setEnabled(false);
-        //  mesh.dispose();
-        this.aviableMeshes.push(mesh);
-    }
-    _getChunkMesh() {
-        return this.aviableMeshes.pop();
-    }
-    createBaseChunkMeshes() {
-        for (let i = 0; i < this.maxChunkMeshes; i++) {
-            const mesh = new BABYLON.Mesh(`solid`);
-            mesh.setEnabled(false);
-            //   mesh.hasVertexAlpha = true;
-            this.aviableMeshes.push(mesh);
-            //   this.shadowGen.getShadowMap()?.renderList?.push(mesh);
-            //    this.shadowGen.addShadowCaster(mesh);
-            //   mesh.receiveShadows = true;
-        }
-    }
     createBuilderWorker(path) {
         //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",
         for (let i = 0; i < this.numBuilders; i++) {
@@ -50,7 +39,7 @@ export class BuilderManager {
                 console.log(er);
             };
             this.builders[i].onmessage = async (event) => {
-                this._handleChunkBuildMessage(event);
+                this._handleBuildMeshMessage(event);
             };
             const channel = new MessageChannel();
             const worldWorker = this.DVE.world.getWorker();
@@ -61,75 +50,11 @@ export class BuilderManager {
             builderWorker.postMessage(["connect-world"], [channel.port2]);
         }
     }
-    setScene(scene) {
-        this.scene = scene;
-    }
-    setShadowGen(shadowGenerator) {
-        this.shadowGen = shadowGenerator;
-    }
-    setMaterial(material) {
-        this.material = material;
-    }
-    async requestChunkBeRemoved(chunkX, chunkZ) {
-        if (!this.chunkMeshes[chunkX])
-            return;
-        if (!this.chunkMeshes[chunkX][chunkZ])
-            return;
-        const chunkMesh = this.chunkMeshes[chunkX][chunkZ];
-        delete this.chunkMeshes[chunkX][chunkZ];
-        this._returnChunkMesh(chunkMesh);
-    }
-    async updateChunkUVs(chunkX, chunkZ, uvs) {
-        if (this.runningBlockUpdate)
-            return;
-        if (!this.chunkMeshes[chunkX])
-            return;
-        if (!this.chunkMeshes[chunkX][chunkZ])
-            return;
-        if (uvs.length == 0)
-            return;
-        const chunkMesh = this.chunkMeshes[chunkX][chunkZ];
-        if (chunkMesh) {
-            setTimeout(() => {
-                chunkMesh.updateVerticesData(BABYLON.VertexBuffer.UVKind, uvs);
-            }, 0);
-        }
-    }
-    async _handleChunkBuildMessage(event) {
-        const chunkX = event.data[0];
-        const chunkZ = event.data[1];
-        if (!this.chunkMeshes[chunkX]) {
-            this._buildNewChunk(chunkX, chunkZ, event.data);
-        }
-        else {
-            if (!this.chunkMeshes[chunkX][chunkZ]) {
-                this._buildNewChunk(chunkX, chunkZ, event.data);
-            }
-            else {
-                this._updateChunk(chunkX, chunkZ, event.data);
-            }
-        }
-    }
-    async _updateChunk(chunkX, chunkZ, data) {
-        this.runningBlockUpdate = true;
-        const chunk = this.chunkMeshes[chunkX][chunkZ];
-        const positions = new Float32Array(data[2]);
-        const indicies = new Int32Array(data[3]);
-        const colors = new Float32Array(data[4]);
-        const uvs = new Float32Array(data[5]);
-        const newChunk = this.DVE.renderManager.chunkMesh.rebuildChunkMesh(chunk, chunkX, chunkZ, positions, indicies, colors, uvs);
-        this.runningBlockUpdate = false;
-    }
-    async _buildNewChunk(chunkX, chunkZ, data) {
-        const chunkMesh = this._getChunkMesh();
-        chunkMesh.setEnabled(true);
-        const positions = new Float32Array(data[2]);
-        const indicies = new Int32Array(data[3]);
-        const colors = new Float32Array(data[4]);
-        const uvs = new Float32Array(data[5]);
-        const newChunk = this.DVE.renderManager.chunkMesh.makeChunkMesh(chunkMesh, chunkX, chunkZ, positions, indicies, colors, uvs);
-        //chunkMesh.updateFacetData();
-        this.chunkMeshes[chunkX] ??= [];
-        this.chunkMeshes[chunkX][chunkZ] = newChunk;
+    async _handleBuildMeshMessage(event) {
+        const meshType = event.data[0];
+        const chunkX = event.data[1];
+        const chunkZ = event.data[2];
+        const chunkKey = `${chunkX}-${chunkZ}`;
+        this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkZ, event.data);
     }
 }

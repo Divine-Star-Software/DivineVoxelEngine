@@ -5,14 +5,15 @@ export class DebugBox {
     }
     data = {
         name: "Debug Box",
-        shapeId: 0,
+        shapeId: "Box",
         id: "dve:debugbox",
         substance: "solid",
         defaultState: ["dve:debugbox", 0]
     };
+    trueShapeId = 0;
     hooks = {};
     getShapeId(voxelData) {
-        return this.data.shapeId;
+        return this.trueShapeId;
     }
     getUVs(uvs, voxelExposedFaceEncodedBit, voxelData) {
         let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "top");

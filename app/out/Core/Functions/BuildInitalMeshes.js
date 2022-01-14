@@ -11,7 +11,4 @@ export async function BuildInitalMeshes(DVE, scene) {
     const floraTextures = DVE.world.baseWorldData?.texturePaths.flora;
     const combinedFloraTextures = await DVE.renderManager.textureCreator.createMaterialTexture(scene, floraTextures);
     DVE.renderManager.floraMaterial.createMaterial(scene, combinedFloraTextures);
-    DVE.builderManager.setScene(scene);
-    DVE.builderManager.setMaterial(DVE.renderManager.chunkMaterial.getMaterial());
-    DVE.builderManager.createBaseChunkMeshes();
 }

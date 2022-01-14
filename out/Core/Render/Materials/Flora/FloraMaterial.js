@@ -34,9 +34,6 @@ export class FloraMaterial {
         shaderMaterial.fogEnabled = true;
         shaderMaterial.setTexture("arrayTex", texture);
         shaderMaterial.backFaceCulling = false;
-        //shaderMaterial.disableDepthWrite = true;
-        //shaderMaterial.needDepthPrePass = true;
-        shaderMaterial.separateCullingPass = true;
         shaderMaterial.onBind = (mesh) => {
             var effect = shaderMaterial.getEffect();
             if (!effect)

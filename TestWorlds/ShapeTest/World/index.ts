@@ -9,7 +9,7 @@ const DVEW = new DivineVoxelEngineWorld(self as any);
 (self as any).DVEW = DVEW;
 
 RegisterTexutres(DVEW);
-RegisterVoxels(DVEW,"global");
+ RegisterVoxels(DVEW, "global");
 
 const worldGen = new WorldGen(DVEW);
 
@@ -42,8 +42,11 @@ const start = () => {
  DVEW.buildChunk(-16, -16);
 };
 
-DVEW.$INIT({
- voxelPalletMode: "global",
- onReady: start,
- onMessage: (message: string, data: any[]) => {},
-});
+(async () => {
+ await DVEW.$INIT({
+  voxelPalletMode: "global",
+  onReady: start,
+  onMessage: (message: string, data: any[]) => {},
+ });
+})();
+ 
