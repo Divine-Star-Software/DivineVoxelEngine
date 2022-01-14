@@ -39,7 +39,7 @@ const init = async () => {
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     skybox.material = skyboxMaterial;
     skybox.infiniteDistance = true;
-    const camera = new BABYLON.FreeCamera("main", new BABYLON.Vector3(4, 32, 4), scene);
+    const camera = new BABYLON.FreeCamera("main", new BABYLON.Vector3(4, 35, 4), scene);
     camera.setTarget(new BABYLON.Vector3(8, 32, 8));
     camera.fov = 1.5;
     camera.minZ = 0.01;

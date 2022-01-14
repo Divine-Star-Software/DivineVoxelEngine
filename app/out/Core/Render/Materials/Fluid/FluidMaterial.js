@@ -50,7 +50,7 @@ export class FluidMaterial {
         this.material = shaderMaterial;
         let time = 0;
         scene.registerBeforeRender(function () {
-            time += 0.05;
+            time += 0.005;
             shaderMaterial.setFloat("time", time);
         });
         return this.material;

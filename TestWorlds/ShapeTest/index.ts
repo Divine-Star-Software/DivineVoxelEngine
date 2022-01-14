@@ -51,7 +51,7 @@ const init = async () => {
 
  const camera = new BABYLON.FreeCamera(
   "main",
-  new BABYLON.Vector3(4, 32, 4),
+  new BABYLON.Vector3(4, 35, 4),
   scene
  );
  camera.setTarget(new BABYLON.Vector3(8, 32, 8));
