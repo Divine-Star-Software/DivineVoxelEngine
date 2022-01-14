@@ -23,6 +23,7 @@ export class DivineVoxelEngine {
         });
     }
     async $SCENEINIT(data) {
+        data.scene.enableDepthRenderer();
         await BuildInitalMeshes(this, data.scene);
         this.world.startWorldGen();
         const max = 10;

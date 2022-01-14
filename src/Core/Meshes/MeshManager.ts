@@ -45,6 +45,7 @@ export class MeshManager {
  requestChunkBeRemoved(chunkKey: string) {
   for (const substance of Object.keys(this.meshes)) {
    if (this.meshes[substance as VoxelSubstanceType][chunkKey]) {
+    this.meshes[substance as VoxelSubstanceType][chunkKey].dispose();
     delete this.meshes[substance as VoxelSubstanceType][chunkKey];
    }
   }

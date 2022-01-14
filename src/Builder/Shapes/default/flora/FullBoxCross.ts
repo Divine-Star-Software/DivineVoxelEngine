@@ -108,11 +108,8 @@ export class FullBoxCrossVoxelShape implements VoxelShapeInterface {
   data.uvTemplateIndex = newData1.newUVTemplateIndex;
   data.lightIndex = newData1.newLightIndex;
   data.aoIndex = newData1.newAOIndex;
-  console.log(data);
 
   const newData2 = this.faces[1](data);
-
-    console.log(data);
   return {
    newIndicieIndex: newData2.newIndicieIndex,
    newUVTemplateIndex: newData2.newUVTemplateIndex,

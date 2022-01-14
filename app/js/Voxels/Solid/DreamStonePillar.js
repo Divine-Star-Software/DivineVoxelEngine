@@ -45,6 +45,6 @@ export class DreamStonePillar {
         }
     }
     getAO(data) {
-        this.voxelHelper.calculateVoxelAO(data);
+        this.voxelHelper.calculateVoxelAO(data, this);
     }
 }

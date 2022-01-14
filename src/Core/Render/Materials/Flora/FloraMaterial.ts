@@ -39,10 +39,13 @@ export class FloraMaterial {
    needAlphaTesting : false
   });
   shaderMaterial.fogEnabled = true;
+  texture.hasAlpha = true;
 
   shaderMaterial.setTexture("arrayTex", texture);
-
+  shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
   shaderMaterial.backFaceCulling = false;
+ // shaderMaterial.separateCullingPass = false;
+ shaderMaterial.needDepthPrePass = true;
 
 
   shaderMaterial.onBind = (mesh) => {

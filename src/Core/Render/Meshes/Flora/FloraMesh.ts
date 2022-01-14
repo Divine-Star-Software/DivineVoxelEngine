@@ -41,6 +41,7 @@ export class FloraMesh implements VoxelMeshInterface {
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("flora", scene);
   mesh.alphaIndex = 1;
+  mesh.checkCollisions = false;
   return mesh;
  }
 
@@ -68,7 +69,7 @@ export class FloraMesh implements VoxelMeshInterface {
   mesh.setVerticesData("colors", linearColors, false, 4);
 
   mesh.material = this.material.getMaterial();
-  mesh.checkCollisions = true;
+
   mesh.position.x = chunkX;
   mesh.position.z = chunkZ;
   mesh.freezeWorldMatrix();

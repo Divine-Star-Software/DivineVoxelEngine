@@ -36,7 +36,7 @@ export class DivineVoxelEngine {
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
 
-
+ data.scene.enableDepthRenderer();
   await BuildInitalMeshes(this,data.scene);
 
 

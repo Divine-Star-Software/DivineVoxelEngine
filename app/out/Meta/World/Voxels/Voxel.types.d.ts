@@ -1,3 +1,4 @@
+import { VoxelPallet } from "Meta/WorldData/World.types";
 import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
@@ -9,6 +10,7 @@ export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fl
 export declare type VoxelAOCalcData = {
     exposedFaces: number[];
     chunkVoxels: any[][][];
+    voxelPallete: VoxelPallet;
     aoTemplate: number[];
     chunkX: number;
     chunkZ: number;

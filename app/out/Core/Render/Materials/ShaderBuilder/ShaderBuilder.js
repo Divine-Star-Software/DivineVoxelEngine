@@ -123,9 +123,12 @@ export class ShaderBuilder {
   vec4 lightIntensity = vec4(.5,.5,.5,1);
 
 
-
-
   vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
+
+  if (rgb.a < 0.5) {
+    discard;
+}
+
   //mix with supplied vertex colors
   vec4 mixVertex = mix(rgb, vColors , 1.0);
   //apply to texture color
@@ -137,6 +140,8 @@ export class ShaderBuilder {
   vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
 
   gl_FragColor = vec4(finalColor.rgb , mixLight.w );
+
+    
  }
  `;
     constructor() { }

@@ -28,9 +28,11 @@ export class DivineVoxelEngineWorld implements DVEW {
 
  worldData = new WorldData(this);
 
+
  textureManager = new TextureManager();
- voxelHelper = new VoxelHelper(this.UTIL, this.worldData,this.textureManager);
  voxelManager = new VoxelManager();
+ voxelHelper = new VoxelHelper(this.UTIL, this.worldData,this.textureManager,this.voxelManager);
+
 
  chunkProccesor = new ChunkProcessor(this);
 

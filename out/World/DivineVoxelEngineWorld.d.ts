@@ -21,8 +21,8 @@ export declare class DivineVoxelEngineWorld implements DVEW {
     worldGeneration: WorldGeneration;
     worldData: WorldData;
     textureManager: TextureManager;
-    voxelHelper: VoxelHelper;
     voxelManager: VoxelManager;
+    voxelHelper: VoxelHelper;
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
     removeChunk(chunkX: number, chunkZ: number): boolean;

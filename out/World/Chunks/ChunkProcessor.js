@@ -95,6 +95,13 @@ export class ChunkProcessor {
                             if (westChunk[0] && westChunk[0][z] && westChunk[0][z][y] == undefined) {
                                 addWest = true;
                             }
+                            else {
+                                const voxelData = westChunk[0][z][y][0];
+                                const westVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (westVoxel.data.substance !== voxelSubstance) {
+                                    addWest = true;
+                                }
+                            }
                         }
                         else {
                             addWest = true;
@@ -108,6 +115,13 @@ export class ChunkProcessor {
                             if (!chunkVoxels[x + 1][z][y]) {
                                 addWest = true;
                             }
+                            else {
+                                const voxelData = chunkVoxels[x + 1][z][y][0];
+                                const westVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (westVoxel.data.substance !== voxelSubstance) {
+                                    addWest = true;
+                                }
+                            }
                         }
                     }
                     //check border east
@@ -119,6 +133,13 @@ export class ChunkProcessor {
                                 eastChunk[15][z] &&
                                 eastChunk[15][z][y] == undefined) {
                                 addEast = true;
+                            }
+                            else {
+                                const voxelData = eastChunk[15][z][y][0];
+                                const eastVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (eastVoxel.data.substance !== voxelSubstance) {
+                                    addEast = true;
+                                }
                             }
                         }
                         else {
@@ -133,6 +154,13 @@ export class ChunkProcessor {
                             if (!chunkVoxels[x - 1][z][y]) {
                                 addEast = true;
                             }
+                            else {
+                                const voxelData = chunkVoxels[x - 1][z][y][0];
+                                const eastVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (eastVoxel.data.substance !== voxelSubstance) {
+                                    addEast = true;
+                                }
+                            }
                         }
                     }
                     //chunk border north
@@ -142,6 +170,13 @@ export class ChunkProcessor {
                             const northChunk = northChunkData.voxels;
                             if (northChunk[x][15] && northChunk[x][15][y] == undefined) {
                                 addNorth = true;
+                            }
+                            else {
+                                const voxelData = northChunk[x][15][y][0];
+                                const northVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (northVoxel.data.substance !== voxelSubstance) {
+                                    addNorth = true;
+                                }
                             }
                         }
                         else {
@@ -155,6 +190,13 @@ export class ChunkProcessor {
                         else if (!chunkVoxels[x][z - 1][y]) {
                             addNorth = true;
                         }
+                        else {
+                            const voxelData = chunkVoxels[x][z - 1][y][0];
+                            const northVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                            if (northVoxel.data.substance !== voxelSubstance) {
+                                addNorth = true;
+                            }
+                        }
                     }
                     //chunk border south
                     if (15 == z) {
@@ -163,6 +205,13 @@ export class ChunkProcessor {
                             const southChunk = southChunkData.voxels;
                             if (southChunk[x][0] && southChunk[x][0][y] == undefined) {
                                 addSouth = true;
+                            }
+                            else {
+                                const voxelData = southChunk[x][0][y][0];
+                                const southVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                                if (southVoxel.data.substance !== voxelSubstance) {
+                                    addSouth = true;
+                                }
                             }
                         }
                         else {
@@ -175,6 +224,13 @@ export class ChunkProcessor {
                         }
                         else if (!chunkVoxels[x][z + 1][y]) {
                             addSouth = true;
+                        }
+                        else {
+                            const voxelData = chunkVoxels[x][z + 1][y][0];
+                            const southVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                            if (southVoxel.data.substance !== voxelSubstance) {
+                                addSouth = true;
+                            }
                         }
                     }
                     if (addWest) {
@@ -215,9 +271,10 @@ export class ChunkProcessor {
                     const faces = bitArray.getDec(0);
                     voxel.getUVs(baseTemplate.uvTemplate, chunkX, chunkZ, faces, voxelPalletData);
                     voxel.getAO({
+                        chunkVoxels: chunkVoxels,
+                        voxelPallete: voxelPallet,
                         exposedFaces: exposedFaces,
                         aoTemplate: baseTemplate.aoTemplate,
-                        chunkVoxels: chunkVoxels,
                         chunkX: chunkX,
                         chunkZ: chunkZ,
                         x: x,

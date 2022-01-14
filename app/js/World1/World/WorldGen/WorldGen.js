@@ -31,11 +31,14 @@ export class WorldGen {
         const returnChunk = [];
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
         let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
-        let dreamGrass = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrassblock:defualt");
+        let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrassblock:defualt");
         let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:debugbox:defualt");
+        let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrass:defualt");
+        let dreamGrassVoxel = [dreamGrasss, 0, 1, 1, 1, 1];
         // debugBox = dreamstone;
-        let block = [dreamGrass, 0];
+        let block = [dreamGrassBlock, 0];
         let toss = Math.random();
+        let minY = 60;
         let spiked = false;
         let crazy = false;
         let hole = false;
@@ -59,10 +62,15 @@ export class WorldGen {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (crazy) {
-                        if (y < Math.floor(Math.random() * 30)) {
+                        if (y < Math.floor(Math.random() * minY)) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
                             returnChunk[x][z][y] = block;
+                            if (Math.random() > 0.8) {
+                                returnChunk[x] ??= [];
+                                returnChunk[x][z] ??= [];
+                                returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                            }
                         }
                     }
                     if (spiked) {
@@ -87,55 +95,62 @@ export class WorldGen {
                             returnChunk[x][z][y] = block;
                         }
                         if (x == 0 || z == 0 || x == 15 || z == 15) {
-                            if (y == 30) {
+                            if (y == minY) {
+                                returnChunk[x] ??= [];
+                                returnChunk[x][z] ??= [];
+                                returnChunk[x][z][y] = block;
+                            }
+                        }
+                        if (x == 0 || z == 0 || x == 15 || z == 15) {
+                            if (y == minY + 1) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 1 || z == 1 || x == 14 || z == 14) {
-                            if (y == 31) {
+                            if (y == minY + 2) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 2 || z == 2 || x == 13 || z == 13) {
-                            if (y == 32) {
+                            if (y == minY + 4) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 3 || z == 3 || x == 12 || z == 12) {
-                            if (y == 33) {
+                            if (y == minY + 6) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 4 || z == 4 || x == 11 || z == 11) {
-                            if (y == 33) {
+                            if (y == minY + 8) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 5 || z == 5 || x == 10 || z == 10) {
-                            if (y == 34) {
+                            if (y == minY + 10) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
                         if (x == 6 || z == 6 || x == 9 || z == 9) {
-                            if (y == 35) {
+                            if (y == minY + 12) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
                             }
                         }
-                        if (y < 30) {
+                        if (y < minY) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
                             returnChunk[x][z][y] = block;
@@ -143,70 +158,112 @@ export class WorldGen {
                     }
                     if (hole) {
                         if (x == 0 || z == 0 || x == 15 || z == 15) {
-                            if (y == 30) {
+                            if (y == minY) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 1 || z == 1 || x == 14 || z == 14) {
-                            if (y == 29) {
+                            if (y == minY - 1) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 2 || z == 2 || x == 13 || z == 13) {
-                            if (y == 28) {
+                            if (y == minY - 2) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 3 || z == 3 || x == 12 || z == 12) {
-                            if (y == 27) {
+                            if (y == minY - 3) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 4 || z == 4 || x == 11 || z == 11) {
-                            if (y == 26) {
+                            if (y == minY - 4) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 5 || z == 5 || x == 10 || z == 10) {
-                            if (y == 25) {
+                            if (y == minY - 5) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
                         if (x == 6 || z == 6 || x == 9 || z == 9) {
-                            if (y == 24) {
+                            if (y == minY - 6) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
                                 returnChunk[x][z][y] = block;
+                                if (Math.random() > 0.8) {
+                                    returnChunk[x] ??= [];
+                                    returnChunk[x][z] ??= [];
+                                    returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                                }
                             }
                         }
-                        if (y < 23) {
+                        if (y < minY - 7) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
                             returnChunk[x][z][y] = block;
+                            if (Math.random() > 0.8) {
+                                returnChunk[x] ??= [];
+                                returnChunk[x][z] ??= [];
+                                returnChunk[x][z][y + 1] = dreamGrassVoxel;
+                            }
                         }
                     }
                     if (normal) {
-                        if (y < 30) {
+                        if (y < minY) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
                             returnChunk[x][z][y] = block;
                         }
-                        if (x == 8 && z == 8 && y == 32) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = [debugBox, 1, 1];
+                        if (y == minY) {
+                            if (Math.random() > 0.8) {
+                                returnChunk[x] ??= [];
+                                returnChunk[x][z] ??= [];
+                                returnChunk[x][z][y] = dreamGrassVoxel;
+                            }
                         }
                     }
                 }

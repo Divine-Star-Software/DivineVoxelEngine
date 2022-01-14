@@ -73,7 +73,7 @@ export class Dreamestone implements VoxelInteface {
   }
  }
  getAO(data: VoxelAOCalcData): void {
-  this.voxelHelper.calculateVoxelAO(data);
+  this.voxelHelper.calculateVoxelAO(data,this);
  }
 
 }

@@ -37,6 +37,6 @@ export class DreamGrassBlock {
         }
     }
     getAO(data) {
-        this.voxelHelper.calculateVoxelAO(data);
+        this.voxelHelper.calculateVoxelAO(data, this);
     }
 }

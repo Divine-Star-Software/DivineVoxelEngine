@@ -27,6 +27,7 @@ export class FloraMesh {
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("flora", scene);
         mesh.alphaIndex = 1;
+        mesh.checkCollisions = false;
         return mesh;
     }
     createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
@@ -40,7 +41,6 @@ export class FloraMesh {
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearColors, false, 4);
         mesh.material = this.material.getMaterial();
-        mesh.checkCollisions = true;
         mesh.position.x = chunkX;
         mesh.position.z = chunkZ;
         mesh.freezeWorldMatrix();
