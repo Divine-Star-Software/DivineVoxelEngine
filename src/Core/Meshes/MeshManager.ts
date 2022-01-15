@@ -6,17 +6,6 @@ export class MeshManager {
  scene: BABYLON.Scene;
  runningUpdate = false;
 
- constructor(private DVE: DivineVoxelEngine) {
-  this.meshMakes = {
-   solid: this.DVE.renderManager.chunkMesh,
-   transparent: this.DVE.renderManager.chunkMesh,
-   flora: this.DVE.renderManager.floraMesh,
-   fluid: this.DVE.renderManager.fluidMesh,
-   magma: this.DVE.renderManager.floraMesh,
-  };
- }
-
- chunkMeshes: Record<string, BABYLON.Mesh> = {};
 
  meshes: Record<VoxelSubstanceType, Record<string, BABYLON.Mesh>> = {
   solid: {},
@@ -26,7 +15,18 @@ export class MeshManager {
   magma: {},
  };
 
- meshMakes: Record<VoxelSubstanceType, VoxelMeshInterface>;
+ meshMakers: Record<VoxelSubstanceType, VoxelMeshInterface>;
+
+
+ constructor(private DVE: DivineVoxelEngine) {
+  this.meshMakers = {
+   solid: this.DVE.renderManager.solidMesh,
+   transparent: this.DVE.renderManager.solidMesh,
+   flora: this.DVE.renderManager.floraMesh,
+   fluid: this.DVE.renderManager.fluidMesh,
+   magma: this.DVE.renderManager.magmaMesh,
+  };
+ }
 
  handleUpdate(
   type: VoxelSubstanceType,
@@ -66,14 +66,14 @@ export class MeshManager {
   const fullColors = new Float32Array(data[6]);
   const uvs = new Float32Array(data[7]);
 
-  this.meshMakes[type].rebuildMeshGeometory(
+  this.meshMakers[type].rebuildMeshGeometory(
    mesh,
    chunkX,
    chunkZ,
    positions,
    indicies,
    linearColors,
-   linearColors,
+   fullColors,
    uvs
   );
 
@@ -87,7 +87,7 @@ export class MeshManager {
   chunkZ: number,
   data: any
  ) {
-  const mesh = this.meshMakes[type].createTemplateMesh(this.scene);
+  const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
   mesh.setEnabled(true);
 
   const positions = new Float32Array(data[3]);
@@ -96,14 +96,14 @@ export class MeshManager {
   const fullColors = new Float32Array(data[6]);
   const uvs = new Float32Array(data[7]);
 
-  this.meshMakes[type].createMeshGeometory(
+  this.meshMakers[type].createMeshGeometory(
    mesh,
    chunkX,
    chunkZ,
    positions,
    indicies,
    linearColors,
-   linearColors,
+   fullColors,
    uvs
   );
   //chunkMesh.updateFacetData();

@@ -30,9 +30,9 @@ export class LiquidDreamEther implements VoxelInteface {
  ): void {
   let uv = this.voxelHelper.textureManager.getTextureUV(
    "fluid",
-   "liquid-dream-ether"
+   "liquid-dream-ether",
+   "still-1"
   );
-
   if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
    uvs.push(uv);
   }

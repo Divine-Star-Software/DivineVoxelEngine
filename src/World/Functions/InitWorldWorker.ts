@@ -14,8 +14,8 @@ export function InitWorldWorker(
    const message = eventData[0];
 
    if (message == "get-world-data") {
-    const textures = DVEW.textureManager.generateTexturesData();
-    DVEW.worker.postMessage(["set-world-data", { texturePaths: textures }]);
+    const data = DVEW.textureManager.generateTexturesData();
+    DVEW.worker.postMessage(["set-world-data", data]);
    }
 
    if (message == "block-add") {

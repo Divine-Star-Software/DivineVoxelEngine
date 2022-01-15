@@ -208,6 +208,11 @@ export class WorldGen {
                 returnChunk[x][z][y] = block;
             }
         }
+        if (y < minY - 6) {
+            returnChunk[x] ??= [];
+            returnChunk[x][z] ??= [];
+            returnChunk[x][z][y] = block;
+        }
         if (y >= minY - 6 && y <= minY) {
             if (returnChunk[x] &&
                 returnChunk[x][z] &&

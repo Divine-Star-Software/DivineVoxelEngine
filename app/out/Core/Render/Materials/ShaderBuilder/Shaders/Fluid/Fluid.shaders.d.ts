@@ -1,4 +1,6 @@
 export declare const fluidShaders: {
-    vertexSahderTop: string;
-    fragmentShaderTop: string;
+    vertexTop: string;
+    vertexMain: string;
+    fragTop: string;
+    fragMain: string;
 };

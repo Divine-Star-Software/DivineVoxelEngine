@@ -12,12 +12,25 @@ export class FloraMaterial {
 
  createMaterial(
   scene: BABYLON.Scene,
-  texture: BABYLON.RawTexture2DArray
+  texture: BABYLON.RawTexture2DArray,
+  animations: number[][],
+  animationTimes: number[][]
  ): BABYLON.ShaderMaterial {
+  const animData = this.renderManager.animationManager.registerAnimations(
+   "flora",
+   animations,
+   animationTimes
+  );
+
   BABYLON.Effect.ShadersStore["floraVertexShader"] =
-   this.renderManager.shaderBuilder.getDefaultVertexShader("flora");
+   this.renderManager.shaderBuilder.getDefaultVertexShader(
+    "flora",
+    animData.uniformRegisterCode,
+    animData.animationFunctionCode
+   );
   BABYLON.Effect.ShadersStore["floraFragmentShader"] =
    this.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
+
   const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
    attributes: ["position", "normal", "myuvs", "colors"],
    uniforms: [
@@ -32,11 +45,12 @@ export class FloraMaterial {
     "projection",
     "anim1Index",
     "arrayTex",
-    "time"
+    "time",
+    ...animData.uniforms,
    ],
 
    needAlphaBlending: true,
-   needAlphaTesting : false
+   needAlphaTesting: false,
   });
   shaderMaterial.fogEnabled = true;
   texture.hasAlpha = true;
@@ -44,9 +58,8 @@ export class FloraMaterial {
   shaderMaterial.setTexture("arrayTex", texture);
   shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
   shaderMaterial.backFaceCulling = false;
- // shaderMaterial.separateCullingPass = false;
- shaderMaterial.needDepthPrePass = true;
-
+  // shaderMaterial.separateCullingPass = false;
+  shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();
@@ -63,19 +76,20 @@ export class FloraMaterial {
    effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-  this.material = shaderMaterial;
+
 
   let time = 0;
   scene.registerBeforeRender(function () {
-      time += 0.08;
-      shaderMaterial.setFloat("time", time);
+   time += 0.08;
+   shaderMaterial.setFloat("time", time);
   });
+
+  this.material = shaderMaterial;
+
+  this.renderManager.animationManager.registerMaterial("magma",shaderMaterial);
 
   return this.material;
  }
 
- runAnimations(num: number) {
-  this.material.setFloat("anim1Index", num);
-  this.material.setFloat("anim2Index", num - 3);
- }
+
 }

@@ -1,233 +1,154 @@
-import { fluidShaders } from "./Shaders/Fluid/Fluid.shaders.js";
+//Note to self look into these for adding shadows from a light to the custom shaders.
 //https://forum.babylonjs.com/t/mesh-with-custom-shader-material-does-not-cast-shadow/7761/2
 //https://playground.babylonjs.com/#ENPTI9#8
+//shaders
+import { floraShaders } from "./Shaders/Flora/Flora.shader.js";
+import { fluidShaders } from "./Shaders/Fluid/Fluid.shaders.js";
+import { magmaShaders } from "./Shaders/Magma/Solid.shader.js";
+import { solidShaders } from "./Shaders/Solid/Solid.shader.js";
+//shared functions
+import { SharedFogFunctions } from "./Shaders/Shared/Fog/FogShaderFunctions.js";
+import { ShaderNoiseFunctions } from "./Shaders/Shared/Noise/NoiseShaderFunctions.js";
 /**# ShaderBuilder
  *---
  * Helps construct raw text shaders.
  */
 export class ShaderBuilder {
-    defaultFloraVertexSahder = `
-    precision highp float;
-   
-    // Attributes
-    attribute vec3 position;
-    attribute vec3 normal;
-    attribute vec3 myuvs;
-    attribute vec4 colors;
-    // Uniforms
-    uniform mat4 worldViewProjection;
-    uniform mat4 world;                    
-    uniform mat4 view;                    
-    uniform mat4 viewProjection;          
-   
-   
-    varying vec2 vUV2;
-    // Varying
-    varying vec3 vUV;
-    varying vec3 vNormal;
-    varying vec4 vColors;
-   
-   
-   
-    varying float fFogDistance;
-   
-    varying float animIndex;
-   
-    //anims
-    uniform float anim1Index;
-    uniform float anim2Index;
-   
-   
-    uniform float time;
-   
-    float getUVFace(float uv) {
-   
-        if(uv == 0.0) {
-            return anim1Index;
-        }
-   
-        if(uv == 0.0) {
-            return anim2Index;
-        }
-     
-        return uv;
-   
-    }
-   
-   
-    void main(void) {
-        vec3 p = position;
-
-        p.z += cos(float(gl_VertexID) + time) * 0.05;
-        vec4 worldPosition = world * vec4(p, 1.0);
-        fFogDistance = (view * worldPosition).z;
-        gl_Position = viewProjection * worldPosition; 
-   
-   
-        animIndex = getUVFace(myuvs.z);
-        vUV = myuvs;
-        vColors = colors;
-        vNormal = normal;
-    }
-    `;
-    defaultVertexSahder = `
- precision highp float;
-
- // Attributes
- attribute vec3 position;
- attribute vec3 normal;
- attribute vec3 myuvs;
- attribute vec4 colors;
- // Uniforms
- uniform mat4 worldViewProjection;
- uniform mat4 world;                    
- uniform mat4 view;                    
- uniform mat4 viewProjection;          
-
-
- varying vec2 vUV2;
- // Varying
- varying vec3 vUV;
- varying vec3 vNormal;
- varying vec4 vColors;
-
-
-
- varying float fFogDistance;
-
- varying float animIndex;
-
- //anims
- uniform float anim1Index;
- uniform float anim2Index;
-
-
- uniform float time;
-
- float getUVFace(float uv) {
-
-     if(uv == 0.0) {
-         return anim1Index;
-     }
-
-     if(uv == 0.0) {
-         return anim2Index;
-     }
-  
-     return uv;
-
- }
-
-
- void main(void) {
-
-    vec3 p = position;
-    p.z += sin(float(gl_VertexID) + time) * 0.2;
-
-     vec4 worldPosition = world * vec4(p, 1.0);
-     fFogDistance = (view * worldPosition).z;
-     gl_Position = worldViewProjection * vec4(position, 1.0); 
-
-
-     animIndex = getUVFace(myuvs.z);
-     vUV = myuvs;
-     vColors = colors;
-     vNormal = normal;
- }
- `;
-    defaultFragmentShader = `
-
- #define FOGMODE_NONE 0.
- #define FOGMODE_EXP 1.
- #define FOGMODE_EXP2 2.
- #define FOGMODE_LINEAR 3.
- #define E 2.71828
-
-
- precision highp float;
- precision highp sampler2DArray;
-
-
- uniform vec4 vFogInfos;
- uniform vec3 vFogColor;
- varying float fFogDistance;
-
- uniform vec4 baseLightColor;
-
-
- varying vec3 vUV;
- varying vec4 vColors;
- varying vec3 vNormal;
-
- varying float animIndex;
-
- uniform sampler2DArray arrayTex;
-
-
-
- float CalcFogFactor()
- {
-     float fogCoeff = 1.0;
-     float fogStart = vFogInfos.y;
-     float fogEnd = vFogInfos.z;
-     float fogDensity = vFogInfos.w;
-
-     if (FOGMODE_LINEAR == vFogInfos.x)
-     {
-         fogCoeff = (fogEnd - fFogDistance) / (fogEnd - fogStart);
-     }
-     else if (FOGMODE_EXP == vFogInfos.x)
-     {
-         fogCoeff = 1.0 / pow(E, fFogDistance * fogDensity);
-     }
-     else if (FOGMODE_EXP2 == vFogInfos.x)
-     {
-         fogCoeff = 1.0 / pow(E, fFogDistance * fFogDistance * fogDensity * fogDensity);
-     }
-
-     return clamp(fogCoeff, 0.0, 1.0);
- }
-
-
-
-
- void main(void) {
-     gl_FragColor = vec4(0,0,0,0);   
-  vec4 lightIntensity = vec4(.5,.5,.5,1);
-
-
-  vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
-
-  if (rgb.a < 0.5) {
-    discard;
-}
-
-  //mix with supplied vertex colors
-  vec4 mixVertex = mix(rgb, vColors , 1.0);
-  //apply to texture color
-  vec4 newBase = rgb * mixVertex;
-
-  vec4 mixLight  = newBase * baseLightColor;
-
-  float fog = CalcFogFactor();
-  vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
-
-  gl_FragColor = vec4(finalColor.rgb , mixLight.w );
-
-    
- }
- `;
     constructor() { }
-    getDefaultVertexShader(voxelSubstance) {
+    buildFloraVertexSahder(uniformRegister = "", animationFuction = "") {
+        const shader = `
+${floraShaders.vertexTop}
+
+${uniformRegister}
+
+${animationFuction}
+
+${floraShaders.vertexMain}
+`;
+        return shader;
+    }
+    buildFluidVertexShader(uniformRegister = "", animationFuction = "") {
+        const shader = `
+${fluidShaders.vertexTop}
+
+${uniformRegister}
+
+${ShaderNoiseFunctions.fluid}
+
+${animationFuction}
+
+${fluidShaders.vertexMain}
+`;
+        return shader;
+    }
+    buildSolidVertexShader(uniformRegister = "", animationFuction = "") {
+        const shader = `
+${solidShaders.vertexTop}
+
+${uniformRegister}
+
+${animationFuction}
+
+${solidShaders.vertexMain}
+`;
+        return shader;
+    }
+    buildMagmaVertexShader(uniformRegister = "", animationFuction = "") {
+        const shader = `
+${magmaShaders.vertexTop}
+
+${uniformRegister}
+
+${animationFuction}
+
+${magmaShaders.vertexMain}
+`;
+        return shader;
+    }
+    buildSolidFragmentShader() {
+        const shader = `
+${SharedFogFunctions.fogFragConstants}
+
+${solidShaders.fragTop}
+
+${SharedFogFunctions.fogFragVars}
+
+${SharedFogFunctions.fogFragFunction}
+
+${solidShaders.fragMain}
+`;
+        return shader;
+    }
+    buildFluidFragmentShader() {
+        const shader = `
+${SharedFogFunctions.fogFragConstants}
+
+${fluidShaders.fragTop}
+
+${SharedFogFunctions.fogFragVars}
+
+${SharedFogFunctions.fogFragFunction}
+
+${fluidShaders.fragMain}
+`;
+        return shader;
+    }
+    buildFloraFragmentShader() {
+        const shader = `
+${SharedFogFunctions.fogFragConstants}
+
+${floraShaders.fragTop}
+
+${SharedFogFunctions.fogFragVars}
+
+${SharedFogFunctions.fogFragFunction}
+
+${floraShaders.fragMain}
+`;
+        return shader;
+    }
+    buildMagmaFragmentShader() {
+        const shader = `
+${SharedFogFunctions.fogFragConstants}
+
+${magmaShaders.fragTop}
+
+${SharedFogFunctions.fogFragVars}
+
+${SharedFogFunctions.fogFragFunction}
+
+${magmaShaders.fragMain}
+`;
+        return shader;
+    }
+    getDefaultVertexShader(voxelSubstance, uniformRegister = "", animationFuction = "") {
+        if (voxelSubstance == "magma") {
+            return this.buildMagmaVertexShader(uniformRegister, animationFuction);
+        }
         if (voxelSubstance == "flora") {
-            return this.defaultFloraVertexSahder;
+            return this.buildFloraVertexSahder(uniformRegister, animationFuction);
         }
         if (voxelSubstance == "fluid") {
-            return fluidShaders.vertexSahderTop;
+            return this.buildFluidVertexShader(uniformRegister, animationFuction);
         }
-        return this.defaultVertexSahder;
+        if (voxelSubstance == "solid") {
+            return this.buildSolidVertexShader(uniformRegister, animationFuction);
+        }
+        return "";
     }
     getDefaultFragmentShader(voxelSubstance) {
-        return this.defaultFragmentShader;
+        if (voxelSubstance == "solid") {
+            return this.buildSolidFragmentShader();
+        }
+        if (voxelSubstance == "magma") {
+            return this.buildMagmaFragmentShader();
+        }
+        if (voxelSubstance == "fluid") {
+            return this.buildFluidFragmentShader();
+        }
+        if (voxelSubstance == "flora") {
+            return this.buildFloraFragmentShader();
+        }
+        return "";
     }
 }

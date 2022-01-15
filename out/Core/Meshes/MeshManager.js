@@ -2,17 +2,6 @@ export class MeshManager {
     DVE;
     scene;
     runningUpdate = false;
-    constructor(DVE) {
-        this.DVE = DVE;
-        this.meshMakes = {
-            solid: this.DVE.renderManager.chunkMesh,
-            transparent: this.DVE.renderManager.chunkMesh,
-            flora: this.DVE.renderManager.floraMesh,
-            fluid: this.DVE.renderManager.fluidMesh,
-            magma: this.DVE.renderManager.floraMesh,
-        };
-    }
-    chunkMeshes = {};
     meshes = {
         solid: {},
         transparent: {},
@@ -20,7 +9,17 @@ export class MeshManager {
         fluid: {},
         magma: {},
     };
-    meshMakes;
+    meshMakers;
+    constructor(DVE) {
+        this.DVE = DVE;
+        this.meshMakers = {
+            solid: this.DVE.renderManager.solidMesh,
+            transparent: this.DVE.renderManager.solidMesh,
+            flora: this.DVE.renderManager.floraMesh,
+            fluid: this.DVE.renderManager.fluidMesh,
+            magma: this.DVE.renderManager.magmaMesh,
+        };
+    }
     handleUpdate(type, chunkKey, chunkX, chunkZ, data) {
         if (!this.meshes[type][chunkKey]) {
             this._buildNewMesh(type, chunkKey, chunkX, chunkZ, data);
@@ -45,18 +44,18 @@ export class MeshManager {
         const linearColors = new Float32Array(data[5]);
         const fullColors = new Float32Array(data[6]);
         const uvs = new Float32Array(data[7]);
-        this.meshMakes[type].rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, linearColors, uvs);
+        this.meshMakers[type].rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs);
         this.runningUpdate = false;
     }
     async _buildNewMesh(type, chunkKey, chunkX, chunkZ, data) {
-        const mesh = this.meshMakes[type].createTemplateMesh(this.scene);
+        const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
         mesh.setEnabled(true);
         const positions = new Float32Array(data[3]);
         const indicies = new Int32Array(data[4]);
         const linearColors = new Float32Array(data[5]);
         const fullColors = new Float32Array(data[6]);
         const uvs = new Float32Array(data[7]);
-        this.meshMakes[type].createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, linearColors, uvs);
+        this.meshMakers[type].createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs);
         //chunkMesh.updateFacetData();
         this.meshes[type][chunkKey] = mesh;
     }

@@ -4,8 +4,8 @@ export function InitWorldWorker(DVEW, onReady, onMessage) {
             const eventData = event.data;
             const message = eventData[0];
             if (message == "get-world-data") {
-                const textures = DVEW.textureManager.generateTexturesData();
-                DVEW.worker.postMessage(["set-world-data", { texturePaths: textures }]);
+                const data = DVEW.textureManager.generateTexturesData();
+                DVEW.worker.postMessage(["set-world-data", data]);
             }
             if (message == "block-add") {
                 const chunkXZ = DVEW.UTIL.calculateGameZone(eventData[1], eventData[3]);

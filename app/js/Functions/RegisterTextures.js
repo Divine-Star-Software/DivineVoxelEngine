@@ -5,12 +5,12 @@ export function RegisterTexutres(DVEW) {
         id: "debug",
         frames: 0,
         varations: {
-            top: true,
-            bottom: true,
-            north: true,
-            south: true,
-            east: true,
-            west: true,
+            top: { frames: 0 },
+            bottom: { frames: 0 },
+            north: { frames: 0 },
+            south: { frames: 0 },
+            east: { frames: 0 },
+            west: { frames: 0 },
         },
     });
     DVEW.textureManager.registerTexture("solid", {
@@ -18,8 +18,8 @@ export function RegisterTexutres(DVEW) {
         id: "dreamstone",
         frames: 0,
         varations: {
-            "grassy-top": true,
-            "grassy-side": true,
+            "grassy-top": { frames: 0 },
+            "grassy-side": { frames: 0 },
         },
     });
     DVEW.textureManager.registerTexture("solid", {
@@ -27,9 +27,9 @@ export function RegisterTexutres(DVEW) {
         id: "dreamstone-pillar",
         frames: 0,
         varations: {
-            "side-bottom": true,
-            "side-top": true,
-            top: true,
+            "side-bottom": { frames: 0 },
+            "side-top": { frames: 0 },
+            top: { frames: 0 },
         },
     });
     DVEW.textureManager.registerTexture("flora", {
@@ -41,5 +41,12 @@ export function RegisterTexutres(DVEW) {
         name: "Liquid Dream Ether Texture",
         id: "liquid-dream-ether",
         frames: 0,
+        varations: {
+            still: {
+                frames: 6,
+                animKeys: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+                globalFrameTime: 2,
+            },
+        },
     });
 }

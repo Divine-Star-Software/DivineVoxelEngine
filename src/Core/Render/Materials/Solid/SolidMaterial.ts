@@ -1,24 +1,37 @@
 import type { RenderManager } from "Core/Render/RenderManager";
 
-export class ChunkMaterial {
+export class SolidMaterial {
  material: BABYLON.ShaderMaterial;
  context: CanvasRenderingContext2D;
 
-
  constructor(private renderManager: RenderManager) {}
 
-
  getMaterial() {
-   return this.material;
+  return this.material;
  }
 
- createMaterial(scene: BABYLON.Scene,texture: BABYLON.RawTexture2DArray): BABYLON.ShaderMaterial {
-  BABYLON.Effect.ShadersStore["aVertexShader"] =
-   this.renderManager.shaderBuilder.getDefaultVertexShader("solid");
-  BABYLON.Effect.ShadersStore["aFragmentShader"] =
+ createMaterial(
+  scene: BABYLON.Scene,
+  texture: BABYLON.RawTexture2DArray,
+  animations: number[][],
+  animationTimes: number[][]
+ ): BABYLON.ShaderMaterial {
+  const animData = this.renderManager.animationManager.registerAnimations(
+   "solid",
+   animations,
+   animationTimes
+  );
+
+  BABYLON.Effect.ShadersStore["solidVertexShader"] =
+   this.renderManager.shaderBuilder.getDefaultVertexShader(
+    "solid",
+    animData.uniformRegisterCode,
+    animData.animationFunctionCode
+   );
+  BABYLON.Effect.ShadersStore["solidFragmentShader"] =
    this.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
 
-  const shaderMaterial = new BABYLON.ShaderMaterial("a", scene, "a", {
+  const shaderMaterial = new BABYLON.ShaderMaterial("solid", scene, "solid", {
    attributes: ["position", "normal", "myuvs", "colors"],
    uniforms: [
     "world",
@@ -32,6 +45,7 @@ export class ChunkMaterial {
     "projection",
     "anim1Index",
     "arrayTex",
+    ...animData.uniforms,
    ],
    needAlphaBlending: true,
    needAlphaTesting: false,
@@ -40,8 +54,7 @@ export class ChunkMaterial {
 
   shaderMaterial.setTexture("arrayTex", texture);
 
-
- shaderMaterial.needDepthPrePass = true;
+  shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();
@@ -58,13 +71,12 @@ export class ChunkMaterial {
    effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-
   this.material = shaderMaterial;
+
+  this.renderManager.animationManager.registerMaterial("solid",shaderMaterial);
+
   return this.material;
  }
 
- runAnimations(num: number) {
-  this.material.setFloat("anim1Index", num);
-  this.material.setFloat("anim2Index", num - 3);
- }
+
 }

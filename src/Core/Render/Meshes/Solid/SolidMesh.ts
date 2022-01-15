@@ -1,12 +1,12 @@
-import type { ChunkMaterial } from "Core/Render/Materials/Chunk/ChunkMaterial";
+import type { SolidMaterial } from "Core/Render/Materials/Solid/SolidMaterial";
 import { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
 
-export class ChunkMesh  implements VoxelMeshInterface {
-    constructor(private material : ChunkMaterial) {
+export class SolidMesh  implements VoxelMeshInterface {
+    constructor(private material : SolidMaterial) {
 
     }
     rebuildMeshGeometory(
-        chunkMesh: BABYLON.Mesh,
+        mesh: BABYLON.Mesh,
         chunkX: number,
         chunkZ: number,
         positions: Float32Array,
@@ -23,19 +23,19 @@ export class ChunkMesh  implements VoxelMeshInterface {
         chunkVertexData.normals = calculatedNormals;
 
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-        chunkVertexData.applyToMesh(chunkMesh, true);
+        chunkVertexData.applyToMesh(mesh, true);
 
-        chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-        chunkMesh.setVerticesData("colors", linearcColors, false, 4);
+        mesh.setVerticesData("myuvs", uvs, false, 3);
+        mesh.setVerticesData("colors", linearcColors, false, 4);
 
-        chunkMesh.unfreezeWorldMatrix();
-        chunkMesh.position.x = chunkX;
-        chunkMesh.position.z = chunkZ;
-        chunkMesh.freezeWorldMatrix();
+        mesh.unfreezeWorldMatrix();
+        mesh.position.x = chunkX;
+        mesh.position.z = chunkZ;
+        mesh.freezeWorldMatrix();
         //Babylon throws an error but this functions works
         //So wrapped it in this for now. It works though
         try {
-            chunkMesh.updateFacetData();
+            mesh.updateFacetData();
         } catch (error: any) {}
     }
 
@@ -44,11 +44,12 @@ export class ChunkMesh  implements VoxelMeshInterface {
     createTemplateMesh(scene : BABYLON.Scene){
         const mesh = new BABYLON.Mesh("solid", scene);
         mesh.alphaIndex = 0;
+        mesh.checkCollisions = true;
         return mesh;
     }
 
     createMeshGeometory(
-        chunkMesh: BABYLON.Mesh,
+        mesh: BABYLON.Mesh,
         chunkX: number,
         chunkZ: number,
         positions: Float32Array,
@@ -66,17 +67,16 @@ export class ChunkMesh  implements VoxelMeshInterface {
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
 
-        chunkVertexData.applyToMesh(chunkMesh, true);
+        chunkVertexData.applyToMesh(mesh, true);
 
-        chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-        chunkMesh.setVerticesData("colors", linearColors, false, 4);
+        mesh.setVerticesData("myuvs", uvs, false, 3);
+        mesh.setVerticesData("colors", linearColors, false, 4);
 
-        chunkMesh.material = this.material.getMaterial();
-        chunkMesh.checkCollisions = true;
-        chunkMesh.position.x = chunkX;
-        chunkMesh.position.z = chunkZ;
-        chunkMesh.freezeWorldMatrix();
+        mesh.material = this.material.getMaterial();
+        mesh.position.x = chunkX;
+        mesh.position.z = chunkZ;
+        mesh.freezeWorldMatrix();
 
-        return chunkMesh;
+        return mesh;
     }
 }

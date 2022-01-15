@@ -29,6 +29,13 @@ export class TextureManager {
             fluid: [],
             flora: [],
         };
+        const animations = {
+            solid: [],
+            transparent: [],
+            magma: [],
+            fluid: [],
+            flora: [],
+        };
         const substances = [
             "transparent",
             "fluid",
@@ -48,9 +55,26 @@ export class TextureManager {
                     count++;
                     if (texture.varations) {
                         for (const varation of Object.keys(texture.varations)) {
-                            this.uvTextureMap[substance][`${texture.id}:${varation}`] = count;
-                            texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
-                            count++;
+                            const data = texture.varations[varation];
+                            if (data.frames == 0) {
+                                this.uvTextureMap[substance][`${texture.id}:${varation}`] = count;
+                                texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
+                                count++;
+                            }
+                            else {
+                                if (!data.animKeys)
+                                    continue;
+                                for (let i = 1; i <= data.frames; i++) {
+                                    this.uvTextureMap[substance][`${texture.id}:${varation}-${i}`] = count;
+                                    texturePaths.push(`${path}/${texture.id}/${varation}-${i}.${extension}`);
+                                    count++;
+                                }
+                                const trueKeys = [];
+                                for (let i = 0; i < data.animKeys.length; i++) {
+                                    trueKeys.push(this.uvTextureMap[substance][`${texture.id}:${varation}-${data.animKeys[i]}`]);
+                                }
+                                animations[substance].push(trueKeys);
+                            }
                         }
                     }
                 }
@@ -73,6 +97,7 @@ export class TextureManager {
             }
             returnStrings[substance] = texturePaths;
         }
+        console.log(animations);
         return returnStrings;
     }
     defineDefaultTexturePath(path) {

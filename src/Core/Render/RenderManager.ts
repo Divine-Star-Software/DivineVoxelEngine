@@ -1,25 +1,33 @@
-import { ChunkMaterial } from "./Materials/Chunk/ChunkMaterial.js";
-import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
-import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
+import { AnimationManager } from "./Materials/Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Materials/ShaderBuilder/ShaderBuilder.js";
-import { ChunkMesh } from "./Meshes/Chunk/ChunkMesh.js";
+import { TextureCreator } from "./Textures/TextureCreator.js";
+
+//meshes
+import { SolidMesh } from "./Meshes/Solid/SolidMesh.js";
 import { FloraMesh } from "./Meshes/Flora/FloraMesh.js";
 import { FluidMesh } from "./Meshes/Fluid/FluidMesh.js";
-import { TextureCreator } from "./Textures/TextureCreator.js";
+import { MagmaMesh } from "./Meshes/Magma/MagmaMesh.js";
+//materials
+import { SolidMaterial } from "./Materials/Solid/SolidMaterial.js";
+import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
+import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
+import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
 
 export class RenderManager {
  shaderBuilder: ShaderBuilder = new ShaderBuilder();
  textureCreator: TextureCreator = new TextureCreator();
 
+ animationManager: AnimationManager = new AnimationManager();
 
- chunkMaterial: ChunkMaterial = new ChunkMaterial(this);
+ solidMaterial: SolidMaterial = new SolidMaterial(this);
  floraMaterial: FloraMaterial = new FloraMaterial(this);
- fluidMaterial : FluidMaterial = new FluidMaterial(this);
+ fluidMaterial: FluidMaterial = new FluidMaterial(this);
+ magmaMaterial: MagmaMaterial = new MagmaMaterial(this);
 
-
- chunkMesh: ChunkMesh = new ChunkMesh(this.chunkMaterial);
- floraMesh : FloraMesh = new FloraMesh(this.floraMaterial);
- fluidMesh : FluidMesh = new FluidMesh(this.fluidMaterial);
+ solidMesh: SolidMesh = new SolidMesh(this.solidMaterial);
+ floraMesh: FloraMesh = new FloraMesh(this.floraMaterial);
+ fluidMesh: FluidMesh = new FluidMesh(this.fluidMaterial);
+ magmaMesh: MagmaMesh = new MagmaMesh(this.magmaMaterial);
 
  constructor() {}
 }

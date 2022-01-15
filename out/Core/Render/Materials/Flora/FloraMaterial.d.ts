@@ -6,6 +6,5 @@ export declare class FloraMaterial {
     context: CanvasRenderingContext2D;
     constructor(renderManager: RenderManager);
     getMaterial(): BABYLON.ShaderMaterial;
-    createMaterial(scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray): BABYLON.ShaderMaterial;
-    runAnimations(num: number): void;
+    createMaterial(scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
 }

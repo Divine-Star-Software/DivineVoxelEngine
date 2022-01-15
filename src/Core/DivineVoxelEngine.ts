@@ -42,25 +42,5 @@ export class DivineVoxelEngine {
 
   this.world.startWorldGen();
 
-  const max = 10;
-  let count = max;
-
-  let test = true;
-  setInterval(() => {
-   if (!count) {
-    count = max;
-
-    if (test) {
-     this.renderManager.chunkMaterial.runAnimations(3);
-     test = false;
-    } else {
-     test = true;
-
-     this.renderManager.chunkMaterial.runAnimations(4);
-    }
-   } else {
-    count--;
-   }
-  }, 50);
  }
 }

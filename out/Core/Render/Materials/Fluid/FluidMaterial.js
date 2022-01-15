@@ -8,9 +8,10 @@ export class FluidMaterial {
     getMaterial() {
         return this.material;
     }
-    createMaterial(scene, texture) {
+    createMaterial(scene, texture, animations, animationTimes) {
+        const animData = this.renderManager.animationManager.registerAnimations("fluid", animations, animationTimes);
         BABYLON.Effect.ShadersStore["fluidVertexShader"] =
-            this.renderManager.shaderBuilder.getDefaultVertexShader("fluid");
+            this.renderManager.shaderBuilder.getDefaultVertexShader("fluid", animData.uniformRegisterCode, animData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
             this.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
         const shaderMaterial = new BABYLON.ShaderMaterial("fluid", scene, "fluid", {
@@ -25,9 +26,9 @@ export class FluidMaterial {
                 "vFogColor",
                 "baseLightColor",
                 "projection",
-                "anim1Index",
                 "arrayTex",
                 "time",
+                ...animData.uniforms,
             ],
             needAlphaBlending: true,
             needAlphaTesting: false,
@@ -53,6 +54,7 @@ export class FluidMaterial {
             time += 0.005;
             shaderMaterial.setFloat("time", time);
         });
+        this.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
         return this.material;
     }
     runAnimations(num) {

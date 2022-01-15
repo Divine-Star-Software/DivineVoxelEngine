@@ -8,9 +8,10 @@ export class FloraMaterial {
     getMaterial() {
         return this.material;
     }
-    createMaterial(scene, texture) {
+    createMaterial(scene, texture, animations, animationTimes) {
+        const animData = this.renderManager.animationManager.registerAnimations("flora", animations, animationTimes);
         BABYLON.Effect.ShadersStore["floraVertexShader"] =
-            this.renderManager.shaderBuilder.getDefaultVertexShader("flora");
+            this.renderManager.shaderBuilder.getDefaultVertexShader("flora", animData.uniformRegisterCode, animData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["floraFragmentShader"] =
             this.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
         const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
@@ -27,10 +28,11 @@ export class FloraMaterial {
                 "projection",
                 "anim1Index",
                 "arrayTex",
-                "time"
+                "time",
+                ...animData.uniforms,
             ],
             needAlphaBlending: true,
-            needAlphaTesting: false
+            needAlphaTesting: false,
         });
         shaderMaterial.fogEnabled = true;
         texture.hasAlpha = true;
@@ -47,16 +49,13 @@ export class FloraMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
             effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
-        this.material = shaderMaterial;
         let time = 0;
         scene.registerBeforeRender(function () {
             time += 0.08;
             shaderMaterial.setFloat("time", time);
         });
+        this.material = shaderMaterial;
+        this.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
         return this.material;
-    }
-    runAnimations(num) {
-        this.material.setFloat("anim1Index", num);
-        this.material.setFloat("anim2Index", num - 3);
     }
 }

@@ -16,7 +16,7 @@ export class LiquidDreamEther {
         return this.trueShapeId;
     }
     getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        let uv = this.voxelHelper.textureManager.getTextureUV("fluid", "liquid-dream-ether");
+        let uv = this.voxelHelper.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
         if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
             uvs.push(uv);
         }
