@@ -46,9 +46,9 @@ npm run start
 
 You can change the world demo in **app/index.html**
 
-One thing to note about the engine is that it runs in three different contexts and must be initialized in each. 
+One thing to note about the engine is that it runs in four different contexts and must be initialized in each. 
 
-The three contexts being
+The four contexts being
 
 - Main Thread
   - Renders everything using Babylon.Js.
@@ -56,10 +56,20 @@ The three contexts being
   - Holds the world data, voxel data, and does the logic for lighting and so on.
   - All voxels, voxels pallets, and textures must be registered in this thread.
 - Builder Worker Thread 
-  - Holds the voxel shape data. All custom shapes must be registered in this thread.
+  - Holds the voxel shape data. Solid, flora, and magma custom voxel shapes must be registered in this thread.
   - Given a template from the world thread it will generate a chunk mesh data and then send it to the main thread.
+- Fluid Worker Thread 
+  - Holds the fluid voxel shape data. Fluid custom voxel shapes must be registered in this thread.
+  - Given a template from the world thread it will generate the worlds fluid mesh data and then send it to the main thread.
 
 ##### Change Log
+
+1-15-2022
+
+- Fluid voxels are all made into mesh.
+- Fluid meshes are built in their own thread now. 
+- Added back animations. All should work now. 
+- Built out the shader builder and added magma material and mesh.
 
 1-14-2022
 
