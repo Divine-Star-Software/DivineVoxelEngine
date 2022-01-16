@@ -267,10 +267,10 @@ export class WorldGen {
    }
   }
 
-  if(y < minY - 6) {
-    returnChunk[x] ??= [];
-    returnChunk[x][z] ??= [];
-    returnChunk[x][z][y] = block;
+  if (y < minY - 6) {
+   returnChunk[x] ??= [];
+   returnChunk[x][z] ??= [];
+   returnChunk[x][z][y] = block;
   }
 
   if (y >= minY - 6 && y <= minY) {
@@ -629,5 +629,6 @@ export class WorldGen {
 
    delete chunks[removeChunkX];
   }
+  this.DVEW.buildFluidMesh();
  }
 }

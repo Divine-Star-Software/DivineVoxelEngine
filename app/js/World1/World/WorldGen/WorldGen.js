@@ -514,5 +514,6 @@ export class WorldGen {
             }
             delete chunks[removeChunkX];
         }
+        this.DVEW.buildFluidMesh();
     }
 }

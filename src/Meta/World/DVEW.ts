@@ -22,5 +22,6 @@ export interface DVEW {
  }): void;
 
  buildChunk(chunkX: number, chunkZ: number): boolean;
+ buildFluidMesh() : void;
  removeChunk(chunkX: number, chunkZ: number): boolean;
 }

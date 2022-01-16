@@ -29,7 +29,7 @@ export class WorldData {
         this.chunks[chunkX] ??= {};
         this.chunks[chunkX][chunkZ] = chunk;
     }
-    requestBlockAdd(chunkX, chunkZ, x, y, z, voxelPalletId = 1) {
+    requestVoxelAdd(chunkX, chunkZ, x, y, z, voxelPalletId = 1) {
         const chunk = this.chunks[chunkX][chunkZ];
         const relativePOS = this._getRelativeChunkPosition(chunkX, chunkZ, x, y, z);
         const relativeX = relativePOS[0];
@@ -49,13 +49,13 @@ export class WorldData {
         else if (!chunkVoxels[relativeX][relativeZ][y]) {
             chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 0, 0];
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunkVoxels, pallet, chunkX, chunkZ);
-            console.log();
             this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
         }
         return false;
     }
     _checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ) {
+        let updated = false;
         buildChunkX0: if (relativeX == 0) {
             const newChunkX = chunkX - 16;
             const newChunkZ = chunkZ;
@@ -66,6 +66,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -79,6 +80,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -92,6 +94,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -105,6 +108,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -118,6 +122,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -131,6 +136,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -144,6 +150,7 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
         }
@@ -157,8 +164,12 @@ export class WorldData {
             if (!pallet) {
                 pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
             }
+            updated = true;
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, newChunkX, newChunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(newChunkX, newChunkZ, template);
+        }
+        if (updated) {
+            this.DVEW.buildFluidMesh();
         }
     }
     _getRelativeChunkPosition(chunkX, chunkZ, x, y, z) {
@@ -200,6 +211,7 @@ export class WorldData {
             this._checkNearbyChunksToRebuild(chunkX, chunkZ, relativeX, relativeZ);
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunkVoxels, pallet, chunkX, chunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
+            this.DVEW.buildFluidMesh();
             return chunkVoxels;
         }
         else {

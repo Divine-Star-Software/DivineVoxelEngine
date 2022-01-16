@@ -19,5 +19,6 @@ export interface DVEW {
         onMessage: (message: string, data: any[]) => void;
     }): void;
     buildChunk(chunkX: number, chunkZ: number): boolean;
+    buildFluidMesh(): void;
     removeChunk(chunkX: number, chunkZ: number): boolean;
 }

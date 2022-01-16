@@ -22,6 +22,7 @@ const start = () => {
             DVEW.buildChunk(x, z);
         }
     }
+    DVEW.buildFluidMesh();
 };
 (async () => {
     await DVEW.$INIT({

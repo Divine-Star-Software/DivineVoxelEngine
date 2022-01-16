@@ -48,6 +48,10 @@ export class DivineVoxelEngineWorld {
         this.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
         return true;
     }
+    buildFluidMesh() {
+        console.log("hello");
+        this.builderManager.requestFluidMeshBeReBuilt();
+    }
     async $INIT(data) {
         this.settings.voxelPalletMode = data.voxelPalletMode;
         await InitWorldWorker(this, data.onReady, data.onMessage);

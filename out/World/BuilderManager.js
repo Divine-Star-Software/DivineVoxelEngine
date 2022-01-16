@@ -16,6 +16,7 @@ export class BuilderManager {
     mainThreadCom;
     builders = [];
     fluidBuilder;
+    fluidMeshHasBeenUpdated = false;
     setMainThreadCom(worker) {
         this.mainThreadCom = worker;
     }
@@ -28,6 +29,13 @@ export class BuilderManager {
     }
     requestChunkBeRemoved(chunkX, chunkZ) {
         this.mainThreadCom.postMessage(["remove-chunk", chunkX, chunkZ]);
+        this.fluidBuilder.postMessage([2, chunkX, chunkZ]);
+    }
+    requestFluidMeshBeReBuilt() {
+        if (this.fluidMeshHasBeenUpdated) {
+            this.fluidMeshHasBeenUpdated = false;
+            this.fluidBuilder.postMessage([1]);
+        }
     }
     requestFullChunkBeBuilt(chunkX, chunkZ, template) {
         let i = this.voxelBuildOrder.length;
@@ -37,6 +45,7 @@ export class BuilderManager {
             if (baseTemplate.positionTemplate.length == 0)
                 continue;
             if (type == "fluid") {
+                this.fluidMeshHasBeenUpdated = true;
                 const positions = new Uint16Array(baseTemplate.positionTemplate);
                 const faces = new Uint8Array(baseTemplate.faceTemplate);
                 const shapes = new Uint16Array(baseTemplate.shapeTemplate);

@@ -12,9 +12,11 @@ export declare class BuilderManager {
     mainThreadCom: Worker;
     builders: MessagePort[];
     fluidBuilder: MessagePort;
+    fluidMeshHasBeenUpdated: boolean;
     setMainThreadCom(worker: Worker): void;
     addFluidBuilder(port: MessagePort): void;
     addBuilder(port: MessagePort): void;
     requestChunkBeRemoved(chunkX: number, chunkZ: number): void;
+    requestFluidMeshBeReBuilt(): void;
     requestFullChunkBeBuilt(chunkX: number, chunkZ: number, template: FullChunkTemplate): void;
 }

@@ -9,32 +9,29 @@ const DVEW = new DivineVoxelEngineWorld(self as any);
 (self as any).DVEW = DVEW;
 
 RegisterTexutres(DVEW);
- RegisterVoxels(DVEW, "global");
+RegisterVoxels(DVEW, "global");
 
 const worldGen = new WorldGen(DVEW);
 
 const start = () => {
-
-
-
  let startX = -256;
  let startZ = -256;
  let endX = 256;
  let endZ = 256;
 
- for(let x = startX; x < endX; x+=16) {
-    for(let z = startZ; z < endZ; z+=16) {
-        DVEW.worldData.setChunk(x, z, worldGen.generateChunk(x, z));
-
-    }
+ for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   DVEW.worldData.setChunk(x, z, worldGen.generateChunk(x, z));
+  }
  }
 
- for(let x = startX; x < endX; x+=16) {
-    for(let z = startZ; z < endZ; z+=16) {
-        DVEW.buildChunk(x, z);
-    }
+ for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   DVEW.buildChunk(x, z);
+  }
  }
 
+ DVEW.buildFluidMesh();
 };
 
 (async () => {
@@ -44,4 +41,3 @@ const start = () => {
   onMessage: (message: string, data: any[]) => {},
  });
 })();
- 

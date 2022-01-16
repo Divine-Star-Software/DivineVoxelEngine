@@ -1,64 +1,27 @@
 import { ShapeHelper } from "../Shapes/ShapeHelper.js";
 import { ShapeManager } from "../Shapes/ShapeManager.js";
 import { Util } from "../../Global/Util.helper.js";
-import { FluidMeshBuilder } from "./FluildMeshBuilder.js";
+import { FluidMeshBuilder } from "./FluidMeshBuilder.js";
 import { InitWorker } from "./Functions/InitWorker.js";
 
-
 export class DivineVoxelEngineFluidBuilder {
-     
-    util : Util = new Util();
+ util: Util = new Util();
 
-    worker : Worker;
+ worker: Worker;
 
-    shapeHelper : ShapeHelper = new ShapeHelper(this.util);
-    shapeManager : ShapeManager = new ShapeManager();
+ shapeHelper: ShapeHelper = new ShapeHelper(this.util);
+ shapeManager: ShapeManager = new ShapeManager();
 
+ fluidMeshBuilder: FluidMeshBuilder = new FluidMeshBuilder(
+  this.shapeManager,
+  this.util
+ );
 
-    fluidMeshBuilder : FluidMeshBuilder = new FluidMeshBuilder(this.shapeManager,this.util);
+ constructor() {}
 
-    constructor() {
-
-
-    }
-
-    $INIT(worker : Worker) {
-        this.worker = worker;
-        InitWorker(this);
-    }
-
-    regenMesh() {
-
-        const meshData = this.fluidMeshBuilder.generateMesh();
-
-        const positionArray = new Float32Array(meshData.positions);
-        const indiciesArray = new Int32Array(meshData.indices);
-        const linearColorsArray = new Float32Array(meshData.colors);
-        const fullColorsArray = new Float32Array(meshData.colors);
-        const uvArray = new Float32Array(meshData.uvs);
-      
-        //@ts-ignore
-        DVEFB.worker.postMessage(
-         [
-          0,
-          0,
-          0,
-          positionArray.buffer,
-          indiciesArray.buffer,
-          linearColorsArray.buffer,
-          fullColorsArray.buffer,
-          uvArray.buffer,
-         ],
-         //@ts-ignore
-         [
-          positionArray.buffer,
-          indiciesArray.buffer,
-          linearColorsArray.buffer,
-          fullColorsArray.buffer,
-          uvArray.buffer,
-         ]
-        );
-    }
-
+ $INIT(worker: Worker) {
+  this.worker = worker;
+  InitWorker(this);
+ }
 
 }

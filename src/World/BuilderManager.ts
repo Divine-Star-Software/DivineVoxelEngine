@@ -23,6 +23,7 @@ export class BuilderManager {
  builders: MessagePort[] = [];
 
  fluidBuilder: MessagePort;
+ fluidMeshHasBeenUpdated = false;
 
  setMainThreadCom(worker: Worker) {
   this.mainThreadCom = worker;
@@ -39,6 +40,14 @@ export class BuilderManager {
 
  requestChunkBeRemoved(chunkX: number, chunkZ: number) {
   this.mainThreadCom.postMessage(["remove-chunk", chunkX, chunkZ]);
+  this.fluidBuilder.postMessage([2, chunkX, chunkZ]);
+ }
+
+ requestFluidMeshBeReBuilt() {
+  if (this.fluidMeshHasBeenUpdated) {
+   this.fluidMeshHasBeenUpdated = false;
+   this.fluidBuilder.postMessage([1]);
+  }
  }
 
  requestFullChunkBeBuilt(
@@ -53,8 +62,9 @@ export class BuilderManager {
    if (baseTemplate.positionTemplate.length == 0) continue;
 
    if (type == "fluid") {
+    this.fluidMeshHasBeenUpdated = true;
     const positions = new Uint16Array(baseTemplate.positionTemplate);
- 
+
     const faces = new Uint8Array(baseTemplate.faceTemplate);
     const shapes = new Uint16Array(baseTemplate.shapeTemplate);
     const uvs = new Uint16Array(baseTemplate.uvTemplate);
@@ -107,13 +117,11 @@ export class BuilderManager {
       light.buffer,
       ambientOcclusion.buffer,
      ];
-     this.count++;
-     if (this.count >= this.numBuilders) {
-      this.count = 0;
-     }
+    this.count++;
+    if (this.count >= this.numBuilders) {
+     this.count = 0;
+    }
    }
-
-
   }
  }
 }

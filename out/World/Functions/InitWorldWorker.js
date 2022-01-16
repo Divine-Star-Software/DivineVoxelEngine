@@ -20,7 +20,7 @@ export function InitWorldWorker(DVEW, onReady, onMessage) {
             }
             if (message == "block-add") {
                 const chunkXZ = DVEW.UTIL.calculateGameZone(eventData[1], eventData[3]);
-                DVEW.worldData.requestBlockAdd(chunkXZ[0], chunkXZ[1], eventData[1], eventData[2], eventData[3]);
+                DVEW.worldData.requestVoxelAdd(chunkXZ[0], chunkXZ[1], eventData[1], eventData[2], eventData[3]);
             }
             if (message == "block-remove") {
                 const chunkXZ = DVEW.UTIL.calculateGameZone(eventData[1], eventData[3]);

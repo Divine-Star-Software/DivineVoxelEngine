@@ -40,6 +40,8 @@ const start = () => {
  DVEW.buildChunk(16, 16);
  DVEW.buildChunk(16, -16);
  DVEW.buildChunk(-16, -16);
+//@ts-ignore
+DVEW.buildFluidMesh();
 };
 
 DVEW.$INIT({

@@ -28,11 +28,14 @@ export class DivineVoxelEngineWorld implements DVEW {
 
  worldData = new WorldData(this);
 
-
  textureManager = new TextureManager();
  voxelManager = new VoxelManager();
- voxelHelper = new VoxelHelper(this.UTIL, this.worldData,this.textureManager,this.voxelManager);
-
+ voxelHelper = new VoxelHelper(
+  this.UTIL,
+  this.worldData,
+  this.textureManager,
+  this.voxelManager
+ );
 
  chunkProccesor = new ChunkProcessor(this);
 
@@ -68,7 +71,12 @@ export class DivineVoxelEngineWorld implements DVEW {
   return true;
  }
 
-async $INIT(data: {
+ buildFluidMesh() {
+   console.log("hello");
+  this.builderManager.requestFluidMeshBeReBuilt();
+ }
+
+ async $INIT(data: {
   voxelPalletMode: "per-chunk" | "global";
   onReady: Function;
   onMessage: (message: string, data: any[]) => void;
