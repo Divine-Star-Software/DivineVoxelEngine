@@ -7,5 +7,4 @@ export declare class FluidMaterial {
     constructor(renderManager: RenderManager);
     getMaterial(): BABYLON.ShaderMaterial;
     createMaterial(scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
-    runAnimations(num: number): void;
 }

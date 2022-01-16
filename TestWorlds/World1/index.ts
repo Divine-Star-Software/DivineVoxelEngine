@@ -6,7 +6,8 @@ const DVE = new DivineVoxelEngine();
 
 await DVE.$INIT({
  worldWorkerPath: "../../../js/World1/World/index.js",
- builderWorkerPath: "../../../js/World1/Builder/index.js",
+ builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+ fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 
 const player = new Player(DVE);

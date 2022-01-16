@@ -4,7 +4,8 @@ const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({
     worldWorkerPath: "../../../js/World1/World/index.js",
-    builderWorkerPath: "../../../js/World1/Builder/index.js",
+    builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+    fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 const player = new Player(DVE);
 const readyStateCheckInterval = setInterval(function () {

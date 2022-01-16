@@ -12,20 +12,39 @@ export class MeshManager {
     meshMakers;
     constructor(DVE) {
         this.DVE = DVE;
+        //@ts-ignore
         this.meshMakers = {
             solid: this.DVE.renderManager.solidMesh,
             transparent: this.DVE.renderManager.solidMesh,
             flora: this.DVE.renderManager.floraMesh,
-            fluid: this.DVE.renderManager.fluidMesh,
             magma: this.DVE.renderManager.magmaMesh,
         };
     }
     handleUpdate(type, chunkKey, chunkX, chunkZ, data) {
-        if (!this.meshes[type][chunkKey]) {
-            this._buildNewMesh(type, chunkKey, chunkX, chunkZ, data);
+        if (type != "fluid") {
+            if (!this.meshes[type][chunkKey]) {
+                this._buildNewMesh(type, chunkKey, chunkX, chunkZ, data);
+            }
+            else {
+                this._updateMesh(type, chunkKey, chunkX, chunkZ, data);
+            }
         }
         else {
-            this._updateMesh(type, chunkKey, chunkX, chunkZ, data);
+            this._updateFluidMesh(data);
+        }
+    }
+    _updateFluidMesh(data) {
+        const positions = new Float32Array(data[3]);
+        const indicies = new Int32Array(data[4]);
+        const linearColors = new Float32Array(data[5]);
+        const fullColors = new Float32Array(data[6]);
+        const uvs = new Float32Array(data[7]);
+        if (this.DVE.renderManager.fluidMesh.beenCreated) {
+            this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, linearColors, fullColors, uvs);
+        }
+        else {
+            this.DVE.renderManager.fluidMesh.createTemplateMesh(this.scene);
+            this.DVE.renderManager.fluidMesh.createMeshGeometory(positions, indicies, linearColors, fullColors, uvs);
         }
     }
     requestChunkBeRemoved(chunkKey) {

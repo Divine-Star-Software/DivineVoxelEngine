@@ -5,7 +5,7 @@ export class FloraMesh implements VoxelMeshInterface {
  constructor(private material: FloraMaterial) {}
 
  rebuildMeshGeometory(
-  chunkMesh: BABYLON.Mesh,
+  mesh: BABYLON.Mesh,
   chunkX: number,
   chunkZ: number,
   positions: Float32Array,
@@ -22,20 +22,19 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkVertexData.normals = calculatedNormals;
 
   BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-  chunkVertexData.applyToMesh(chunkMesh, true);
+  chunkVertexData.applyToMesh(mesh, true);
 
-  chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-  chunkMesh.setVerticesData("colors", linearcColors, false, 4);
+  mesh.setVerticesData("myuvs", uvs, false, 3);
+  mesh.setVerticesData("colors", linearcColors, false, 4);
 
-  chunkMesh.unfreezeWorldMatrix();
-  chunkMesh.position.x = chunkX;
-  chunkMesh.position.z = chunkZ;
-  chunkMesh.freezeWorldMatrix();
+  mesh.unfreezeWorldMatrix();
   //Babylon throws an error but this functions works
   //So wrapped it in this for now. It works though
   try {
-   chunkMesh.updateFacetData();
+   mesh.updateFacetData();
   } catch (error: any) {}
+
+  mesh.freezeWorldMatrix();
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
@@ -69,9 +68,6 @@ export class FloraMesh implements VoxelMeshInterface {
   mesh.setVerticesData("colors", linearColors, false, 4);
 
   mesh.material = this.material.getMaterial();
-
-  mesh.position.x = chunkX;
-  mesh.position.z = chunkZ;
   mesh.freezeWorldMatrix();
 
   return mesh;

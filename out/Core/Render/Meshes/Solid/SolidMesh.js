@@ -14,15 +14,13 @@ export class SolidMesh {
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearcColors, false, 4);
         mesh.unfreezeWorldMatrix();
-        mesh.position.x = chunkX;
-        mesh.position.z = chunkZ;
-        mesh.freezeWorldMatrix();
         //Babylon throws an error but this functions works
         //So wrapped it in this for now. It works though
         try {
             mesh.updateFacetData();
         }
         catch (error) { }
+        mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("solid", scene);
@@ -41,8 +39,6 @@ export class SolidMesh {
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearColors, false, 4);
         mesh.material = this.material.getMaterial();
-        mesh.position.x = chunkX;
-        mesh.position.z = chunkZ;
         mesh.freezeWorldMatrix();
         return mesh;
     }

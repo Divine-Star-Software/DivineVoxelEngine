@@ -1,6 +1,6 @@
 import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
-import { RegisterTexutres } from "../../Functions/RegisterTextures.js";
-import { RegisterVoxels } from "../../Functions/RegisterVoxels.js";
+import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
+import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
@@ -14,15 +14,15 @@ RegisterTexutres(DVEW);
 const worldGen = new WorldGen(DVEW);
 
 const start = () => {
- const chunk = worldGen.generateChunk(0, 0);
+ const chunk = worldGen.generateChunk(0, 0,"fluid");
  DVEW.worldData.setChunk(0, 0, chunk);
- const chunk2 = worldGen.generateChunk(-16, 0);
+ const chunk2 = worldGen.generateChunk(-16, 0,"fluid");
  DVEW.worldData.setChunk(-16, 0, chunk2);
- const chunk3 = worldGen.generateChunk(16, 0);
+ const chunk3 = worldGen.generateChunk(16, 0,"fluid");
  DVEW.worldData.setChunk(16, 0, chunk3);
- const chunk4 = worldGen.generateChunk(0, 16);
+ const chunk4 = worldGen.generateChunk(0, 16,"fluid");
  DVEW.worldData.setChunk(0, 16, chunk4);
- const chunk5 = worldGen.generateChunk(0, -16);
+ const chunk5 = worldGen.generateChunk(0, -16,"fluid");
  DVEW.worldData.setChunk(0, -16, chunk5);
 
  DVEW.worldData.setChunk(-16, 16, worldGen.generateChunk(-16, 16, "pillar"));
@@ -33,6 +33,14 @@ const start = () => {
 
  DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -32, "pond"));
  DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -48, "pond"));
+
+ DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -32, "pond"));
+ DVEW.worldData.setChunk(0, -48, worldGen.generateChunk(0, -48, "pond"));
+
+ DVEW.worldData.setChunk(16, -32, worldGen.generateChunk(16, -32, "fluid"));
+ DVEW.worldData.setChunk(16, -48, worldGen.generateChunk(16, -48, "fluid"));
+ DVEW.worldData.setChunk(-16, -32, worldGen.generateChunk(-16, -32, "fluid"));
+ DVEW.worldData.setChunk(-16, -48, worldGen.generateChunk(-16, -48, "fluid"));
 
  DVEW.buildChunk(0, 0);
  DVEW.buildChunk(-16, 0);
@@ -47,6 +55,11 @@ const start = () => {
 
  DVEW.buildChunk(0, -32);
  DVEW.buildChunk(0, -48);
+
+ DVEW.buildChunk(16, -32);
+ DVEW.buildChunk(16, -48);
+ DVEW.buildChunk(-16, -32);
+ DVEW.buildChunk(-16, -48);
 };
 
 (async () => {

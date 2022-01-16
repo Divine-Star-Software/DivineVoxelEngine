@@ -10,6 +10,33 @@ export class ChunkProcessor {
     worldTopY = 256;
     chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
     chunkTemplates = {};
+    /**## substance rules
+     * ---
+     * defines substance interactions for face culling/adding.
+     * First is the voxel being tested. The second are its neighbors
+     */
+    substanceRules = {
+        "solid-solid": false,
+        "solid-flora": true,
+        "solid-transparent": true,
+        "solid-fluid": true,
+        "solid-magma": true,
+        "transparent-solid": true,
+        "transparent-flora": true,
+        "transparent-transparent": true,
+        "transparent-fluid": true,
+        "transparent-magma": true,
+        "fluid-solid": false,
+        "fluid-flora": true,
+        "fluid-transparent": true,
+        "fluid-fluid": false,
+        "fluid-magma": true,
+        "magma-solid": false,
+        "magma-flora": true,
+        "magma-transparent": true,
+        "magma-fluid": true,
+        "magma-magma": false,
+    };
     constructor(DVEW) {
         this.DVEW = DVEW;
     }
@@ -48,12 +75,13 @@ export class ChunkProcessor {
                     const voxelPalletData = voxelPallet[voxelId];
                     if (!voxelPalletData)
                         continue;
-                    let isExposed = false;
                     //   const voxlel =
                     const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
                     const voxelSubstance = voxel.data.substance;
                     const baseTemplate = template[voxel.data.substance];
+                    let isExposed = false;
                     let addTop = false;
+                    let addBottom = false;
                     let addNorth = false;
                     let addSouth = false;
                     let addEast = false;
@@ -66,26 +94,22 @@ export class ChunkProcessor {
                     else {
                         const voxelData = chunkVoxels[x][z][y + 1][0];
                         const topVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                        if (topVoxel.data.substance !== voxelSubstance) {
+                        if (this.substanceRules[`${voxelSubstance}-${topVoxel.data.substance}`]) {
                             addTop = true;
                         }
                     }
-                    if (addTop) {
-                        bitArray.setBit(0, 1);
-                        isExposed = true;
-                        exposedFaces[0] = 1;
-                    }
-                    else {
-                        exposedFaces[0] = 0;
-                    }
-                    if (!chunkVoxels[x][z][y - 1] && y != this.worldBottomY) {
+                    if (!chunkVoxels[x][z][y - 1]) {
                         //add bottom
-                        bitArray.setBit(1, 1);
-                        isExposed = true;
-                        exposedFaces[1] = 1;
+                        if (y > this.worldBottomY) {
+                            addBottom = true;
+                        }
                     }
                     else {
-                        exposedFaces[1] = 0;
+                        const voxelData = chunkVoxels[x][z][y - 1][0];
+                        const bottomVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
+                        if (this.substanceRules[`${voxelSubstance}-${bottomVoxel.data.substance}`]) {
+                            addBottom = true;
+                        }
                     }
                     //chunk border west
                     if (15 == x) {
@@ -98,7 +122,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = westChunk[0][z][y][0];
                                 const westVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (westVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${westVoxel.data.substance}`]) {
                                     addWest = true;
                                 }
                             }
@@ -118,7 +142,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = chunkVoxels[x + 1][z][y][0];
                                 const westVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (westVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${westVoxel.data.substance}`]) {
                                     addWest = true;
                                 }
                             }
@@ -137,7 +161,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = eastChunk[15][z][y][0];
                                 const eastVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (eastVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${eastVoxel.data.substance}`]) {
                                     addEast = true;
                                 }
                             }
@@ -157,7 +181,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = chunkVoxels[x - 1][z][y][0];
                                 const eastVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (eastVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${eastVoxel.data.substance}`]) {
                                     addEast = true;
                                 }
                             }
@@ -174,7 +198,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = northChunk[x][15][y][0];
                                 const northVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (northVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${northVoxel.data.substance}`]) {
                                     addNorth = true;
                                 }
                             }
@@ -193,7 +217,7 @@ export class ChunkProcessor {
                         else {
                             const voxelData = chunkVoxels[x][z - 1][y][0];
                             const northVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                            if (northVoxel.data.substance !== voxelSubstance) {
+                            if (this.substanceRules[`${voxelSubstance}-${northVoxel.data.substance}`]) {
                                 addNorth = true;
                             }
                         }
@@ -209,7 +233,7 @@ export class ChunkProcessor {
                             else {
                                 const voxelData = southChunk[x][0][y][0];
                                 const southVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                                if (southVoxel.data.substance !== voxelSubstance) {
+                                if (this.substanceRules[`${voxelSubstance}-${southVoxel.data.substance}`]) {
                                     addSouth = true;
                                 }
                             }
@@ -228,10 +252,26 @@ export class ChunkProcessor {
                         else {
                             const voxelData = chunkVoxels[x][z + 1][y][0];
                             const southVoxel = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelData][0]);
-                            if (southVoxel.data.substance !== voxelSubstance) {
+                            if (this.substanceRules[`${voxelSubstance}-${southVoxel.data.substance}`]) {
                                 addSouth = true;
                             }
                         }
+                    }
+                    if (addTop) {
+                        bitArray.setBit(0, 1);
+                        isExposed = true;
+                        exposedFaces[0] = 1;
+                    }
+                    else {
+                        exposedFaces[0] = 0;
+                    }
+                    if (addBottom) {
+                        bitArray.setBit(1, 1);
+                        isExposed = true;
+                        exposedFaces[1] = 1;
+                    }
+                    else {
+                        exposedFaces[1] = 0;
                     }
                     if (addWest) {
                         bitArray.setBit(2, 1);

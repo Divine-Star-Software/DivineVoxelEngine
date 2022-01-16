@@ -1,16 +1,15 @@
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 
-
 const DVE = new DivineVoxelEngine();
 (window as any).DVE = DVE;
 
 await DVE.$INIT({
  worldWorkerPath: "../../../js/World2/World/index.js",
- builderWorkerPath: "../../../js/World2/Builder/index.js",
+ builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+ fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 
-console.log("%cworld 2","color:cyan; font-size:30px;");
-
+console.log("%cworld 2", "color:cyan; font-size:30px;");
 
 const readyStateCheckInterval = setInterval(function () {
  if (document.readyState === "complete") {
@@ -22,8 +21,6 @@ const readyStateCheckInterval = setInterval(function () {
 //DS.chunkManager.createSharedArrayBuffers();
 
 const init = async () => {
-
-
  const canvas = document.createElement("canvas");
  canvas.id = "renderCanvas";
  document.body.append(canvas);
@@ -67,8 +64,6 @@ const init = async () => {
 
  camera.attachControl(canvas, true);
 
-
-
  const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 400.0 }, scene);
  const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
  skyboxMaterial.backFaceCulling = false;
@@ -79,13 +74,11 @@ const init = async () => {
  skybox.material = skyboxMaterial;
  skybox.infiniteDistance = true;
 
- scene.fogDensity = 0.008
- scene.fogColor = new BABYLON.Color3(99/255,157/255,216/255);
+ scene.fogDensity = 0.008;
+ scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
  scene.fogEnabled = true;
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-
-
 
  DVE.$SCENEINIT({ scene: scene });
 

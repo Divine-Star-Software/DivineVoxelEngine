@@ -1,14 +1,15 @@
 
 import type { FluidMaterial } from "Core/Render/Materials/Fluid/FluidMaterial";
-import { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
 
-export class FluidMesh implements VoxelMeshInterface {
+export class FluidMesh   {
+ 
+  mesh : BABYLON.Mesh;
+
+  beenCreated : boolean = false;
+
  constructor(private material: FluidMaterial) {}
 
  rebuildMeshGeometory(
-  chunkMesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   linearcColors: Float32Array,
@@ -23,39 +24,41 @@ export class FluidMesh implements VoxelMeshInterface {
   chunkVertexData.normals = calculatedNormals;
 
   BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-  chunkVertexData.applyToMesh(chunkMesh, true);
+  chunkVertexData.applyToMesh(this.mesh, true);
 
-  chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-  chunkMesh.setVerticesData("colors", linearcColors, false, 4);
+  this.mesh.setVerticesData("myuvs", uvs, false, 3);
+  this.mesh.setVerticesData("colors", linearcColors, false, 4);
 
-  chunkMesh.unfreezeWorldMatrix();
-  chunkMesh.position.x = chunkX;
-  chunkMesh.position.z = chunkZ;
-  chunkMesh.freezeWorldMatrix();
+  this.mesh.unfreezeWorldMatrix();
   //Babylon throws an error but this functions works
   //So wrapped it in this for now. It works though
   try {
-   chunkMesh.updateFacetData();
+   this.mesh.updateFacetData();
   } catch (error: any) {}
+
+  this.mesh.freezeWorldMatrix();
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  const mesh = new BABYLON.Mesh("flora", scene);
-  mesh.alphaIndex = 1;
-  mesh.checkCollisions = false;
-  return mesh;
+   this.mesh = new BABYLON.Mesh("fluid", scene);
+
+  this.mesh.alphaIndex = 1;
+  this.mesh.checkCollisions = false;
+  return this.mesh;
  }
 
+
+
+
+
  createMeshGeometory(
-  mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   linearColors: Float32Array,
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
+         this.beenCreated = true;
   const chunkVertexData = new BABYLON.VertexData();
 
   const calculatedNormals: number[] = [];
@@ -64,17 +67,14 @@ export class FluidMesh implements VoxelMeshInterface {
   chunkVertexData.indices = indicies;
   chunkVertexData.normals = calculatedNormals;
 
-  chunkVertexData.applyToMesh(mesh, true);
+  chunkVertexData.applyToMesh(this.mesh, true);
 
-  mesh.setVerticesData("myuvs", uvs, false, 3);
-  mesh.setVerticesData("colors", linearColors, false, 4);
+  this.mesh.setVerticesData("myuvs", uvs, false, 3);
+  this.mesh.setVerticesData("colors", linearColors, false, 4);
 
-  mesh.material = this.material.getMaterial();
+  this.mesh.material = this.material.getMaterial();
+  this.mesh.freezeWorldMatrix();
 
-  mesh.position.x = chunkX;
-  mesh.position.z = chunkZ;
-  mesh.freezeWorldMatrix();
-
-  return mesh;
+  return this.mesh;
  }
 }

@@ -5,17 +5,28 @@ export function InitWorldWorker(
  onReady: Function,
  onMessage: Function
 ): Promise<any> {
-
  const prom = new Promise((resolve) => {
-    
+  const readyCheck = () => {
+   if (
+    DVEW.voxelManager.shapMapIsSet() &&
+    DVEW.voxelManager.fluidShapMapIsSet()
+   ) {
+    resolve(true);
+   } else {
+    setTimeout(() => {
+     readyCheck();
+    }, 10);
+   }
+  };
+
   addEventListener("message", (event: MessageEvent) => {
    const eventData = event.data;
 
    const message = eventData[0];
 
    if (message == "get-world-data") {
-    const data = DVEW.textureManager.generateTexturesData();
-    DVEW.worker.postMessage(["set-world-data", data]);
+    const textures = DVEW.textureManager.generateTexturesData();
+    DVEW.worker.postMessage(["set-world-data", textures]);
    }
 
    if (message == "block-add") {
@@ -51,9 +62,21 @@ export function InitWorldWorker(
     port.onmessage = (event: MessageEvent) => {
      if (DVEW.voxelManager.shapMapIsSet()) return;
      if (event.data[0] == "connect-shape-map") {
-         console.log(event.data[1]);
       DVEW.voxelManager.setShapeMap(event.data[1]);
-      resolve(true);
+
+     }
+    };
+   }
+
+   if (message == "connect-fluid-builder") {
+    const port = event.ports[0];
+    DVEW.builderManager.addFluidBuilder(port);
+
+    port.onmessage = (event: MessageEvent) => {
+     if (DVEW.voxelManager.fluidShapMapIsSet()) return;
+     if (event.data[0] == "connect-fluid-shape-map") {
+      DVEW.voxelManager.setFluidShapeMap(event.data[1]);
+
      }
     };
    }

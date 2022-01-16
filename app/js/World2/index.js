@@ -3,7 +3,8 @@ const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({
     worldWorkerPath: "../../../js/World2/World/index.js",
-    builderWorkerPath: "../../../js/World2/Builder/index.js",
+    builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+    fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 console.log("%cworld 2", "color:cyan; font-size:30px;");
 const readyStateCheckInterval = setInterval(function () {

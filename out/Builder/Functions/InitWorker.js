@@ -23,7 +23,7 @@ export function InitWorker(DVEB) {
         const uvs = new Uint16Array(data[6]);
         const lights = new Float32Array(data[7]);
         const ao = new Float32Array(data[8]);
-        const meshData = DVEB.builder.buildChunkMesh(positions, faces, shapes, uvs, lights, ao);
+        const meshData = DVEB.builder.buildChunkMesh(chunkX, chunkZ, positions, faces, shapes, uvs, lights, ao);
         const positionArray = new Float32Array(meshData.positions);
         const indiciesArray = new Int32Array(meshData.indices);
         const linearColorsArray = new Float32Array(meshData.colors);

@@ -4,7 +4,8 @@ const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
 await DVE.$INIT({
     worldWorkerPath: "../../../js/ShapeTest/World/index.js",
-    builderWorkerPath: "../../../js/ShapeTest/Builder/index.js",
+    builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+    fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 const readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {

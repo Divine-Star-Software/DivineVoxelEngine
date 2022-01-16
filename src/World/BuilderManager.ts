@@ -22,8 +22,14 @@ export class BuilderManager {
 
  builders: MessagePort[] = [];
 
+ fluidBuilder: MessagePort;
+
  setMainThreadCom(worker: Worker) {
   this.mainThreadCom = worker;
+ }
+
+ addFluidBuilder(port: MessagePort) {
+  this.fluidBuilder = port;
  }
 
  addBuilder(port: MessagePort) {
@@ -40,41 +46,74 @@ export class BuilderManager {
   chunkZ: number,
   template: FullChunkTemplate
  ) {
-  for (const type of this.voxelBuildOrder) {
+  let i = this.voxelBuildOrder.length;
+  while (i--) {
+   const type = this.voxelBuildOrder[i];
    const baseTemplate = template[type];
    if (baseTemplate.positionTemplate.length == 0) continue;
 
-   const positions = new Uint16Array(baseTemplate.positionTemplate);
-   const faces = new Uint8Array(baseTemplate.faceTemplate);
-   const shapes = new Uint16Array(baseTemplate.shapeTemplate);
-   const uvs = new Uint16Array(baseTemplate.uvTemplate);
-   const light = new Float32Array(baseTemplate.ligtTemplate);
-   const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
+   if (type == "fluid") {
+    const positions = new Uint16Array(baseTemplate.positionTemplate);
+ 
+    const faces = new Uint8Array(baseTemplate.faceTemplate);
+    const shapes = new Uint16Array(baseTemplate.shapeTemplate);
+    const uvs = new Uint16Array(baseTemplate.uvTemplate);
+    const light = new Float32Array(baseTemplate.ligtTemplate);
+    const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
-   this.builders[this.count].postMessage([
-    this.voxelTypeMap[type],
-    chunkX,
-    chunkZ,
-    positions.buffer,
-    faces.buffer,
-    shapes.buffer,
-    uvs.buffer,
-    light.buffer,
-    ambientOcclusion.buffer,
-   ]),
-    [
+    this.fluidBuilder.postMessage([
+     0,
+     chunkX,
+     chunkZ,
      positions.buffer,
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
      light.buffer,
      ambientOcclusion.buffer,
-    ];
+    ]),
+     [
+      positions.buffer,
+      faces.buffer,
+      shapes.buffer,
+      uvs.buffer,
+      light.buffer,
+      ambientOcclusion.buffer,
+     ];
+   } else {
+    const positions = new Uint16Array(baseTemplate.positionTemplate);
+    const faces = new Uint8Array(baseTemplate.faceTemplate);
+    const shapes = new Uint16Array(baseTemplate.shapeTemplate);
+    const uvs = new Uint16Array(baseTemplate.uvTemplate);
+    const light = new Float32Array(baseTemplate.ligtTemplate);
+    const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
-   this.count++;
-   if (this.count >= this.numBuilders) {
-    this.count = 0;
+    this.builders[this.count].postMessage([
+     this.voxelTypeMap[type],
+     chunkX,
+     chunkZ,
+     positions.buffer,
+     faces.buffer,
+     shapes.buffer,
+     uvs.buffer,
+     light.buffer,
+     ambientOcclusion.buffer,
+    ]),
+     [
+      positions.buffer,
+      faces.buffer,
+      shapes.buffer,
+      uvs.buffer,
+      light.buffer,
+      ambientOcclusion.buffer,
+     ];
+     this.count++;
+     if (this.count >= this.numBuilders) {
+      this.count = 0;
+     }
    }
+
+
   }
  }
 }

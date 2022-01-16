@@ -6,7 +6,8 @@ const DVE = new DivineVoxelEngine();
 
 await DVE.$INIT({
  worldWorkerPath: "../../../js/ShapeTest/World/index.js",
- builderWorkerPath: "../../../js/ShapeTest/Builder/index.js",
+ builderWorkerPath: "../../../js/Shared/Builder/builder.js",
+ fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
 
 const readyStateCheckInterval = setInterval(function () {
@@ -67,7 +68,7 @@ const init = async () => {
 
  const check = () => {
   if (
-      //@ts-ignore
+   //@ts-ignore
    DVE.meshManager.meshes["solid"]["0-0"] !== undefined
   ) {
    Shape1(

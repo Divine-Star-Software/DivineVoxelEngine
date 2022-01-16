@@ -39,7 +39,6 @@ export class AnimationManager {
   let animationFunctionCode = `
   float getUVFace(float uv) {
   `;
-  console.log(animationTimes);
   let i = 0;
   for (const anim of animations) {
    const shaderId = `anim${i}`;

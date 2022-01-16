@@ -13,6 +13,12 @@ export declare class ChunkProcessor {
     worldTopY: number;
     chunkOcculsionCalcuation: typeof ChunkOcculsionCalcuation;
     chunkTemplates: Record<number, Record<number, number[][]>>;
+    /**## substance rules
+     * ---
+     * defines substance interactions for face culling/adding.
+     * First is the voxel being tested. The second are its neighbors
+     */
+    substanceRules: Record<string, boolean>;
     constructor(DVEW: DivineVoxelEngineWorld);
     getBaseTemplate(): ChunkTemplate;
     makeAllChunkTemplates(chunkVoxels: any[][][], voxelPallet: VoxelPallet, chunkX: number, chunkZ: number): FullChunkTemplate;

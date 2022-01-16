@@ -3,6 +3,7 @@ export class BuilderManager {
     numBuilders = 4;
     count = 0;
     builders = [];
+    fluidBuilder;
     buildRequestFunctions = {
         //chunk meshes
         0: (chunkKey, chunkX, chunkZ, data) => {
@@ -44,11 +45,35 @@ export class BuilderManager {
             const channel = new MessageChannel();
             const worldWorker = this.DVE.world.getWorker();
             const builderWorker = this.builders[i];
-            // Setup the connection: Port 1 is for worker 1
+            //connect builder to world
             worldWorker.postMessage(["connect-builder"], [channel.port1]);
-            // Setup the connection: Port 2 is for worker 2
+            //connect world to builder
             builderWorker.postMessage(["connect-world"], [channel.port2]);
         }
+    }
+    createFluidBuilderWorker(path) {
+        this.fluidBuilder = new Worker(new URL(path, import.meta.url), {
+            type: "module",
+        });
+        this.fluidBuilder.onerror = (er) => {
+            console.log(er);
+        };
+        this.fluidBuilder.onmessage = async (event) => {
+            this._handlFluideBuildMeshMessage(event);
+        };
+        const channel = new MessageChannel();
+        const worldWorker = this.DVE.world.getWorker();
+        //connect world to fluid builder
+        worldWorker.postMessage(["connect-fludi-builder"], [channel.port1]);
+        //connect fluid builder to world
+        this.fluidBuilder.postMessage(["connect-world"], [channel.port2]);
+    }
+    async _handlFluideBuildMeshMessage(event) {
+        const meshType = event.data[0];
+        const chunkX = event.data[1];
+        const chunkZ = event.data[2];
+        const chunkKey = `${chunkX}-${chunkZ}`;
+        this.DVE.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkZ, event.data);
     }
     async _handleBuildMeshMessage(event) {
         const meshType = event.data[0];

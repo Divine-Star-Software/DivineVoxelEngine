@@ -7,5 +7,5 @@ export declare class ChunkMeshBuilder {
     private UTIL;
     infoByte: InfoByte;
     constructor(shapeManager: ShapeManager, UTIL: Util);
-    buildChunkMesh(positionsTemplate: Uint16Array, faceTemplate: Uint8Array, shapeTemplate: Uint16Array, uvTemplate: Uint16Array, lightTemplate: Float32Array, aoTemplate: Float32Array): MeshData;
+    buildChunkMesh(chunkX: number, chunkZ: number, positionsTemplate: Uint16Array, faceTemplate: Uint8Array, shapeTemplate: Uint16Array, uvTemplate: Uint16Array, lightTemplate: Float32Array, aoTemplate: Float32Array): MeshData;
 }

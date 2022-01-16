@@ -38,10 +38,11 @@ export const fluidShaders =  {
     void main(void) {
         vec3 p = position;
 
-     //   p.y += sin(p.x * 4.0 + time) * sin(p.z * 2.0 + time) * 0.1;
+  //    p.y += sin(p.x * 4.0 + time) * cos(p.z * 2.0 + time) * 0.1;
 
-        float height = fbm(p.xz * 0.08 + time);
-        p.y += height * 0.1 - .2;
+
+      float height = fbm(p.xz * 0.08 + time);
+        p.y += height * 0.1 - .3;
 
         vec4 worldPosition = world * vec4(p, 1.0);
         fFogDistance = (view * worldPosition).z;

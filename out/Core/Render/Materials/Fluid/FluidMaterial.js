@@ -37,7 +37,7 @@ export class FluidMaterial {
         texture.hasAlpha = true;
         shaderMaterial.setTexture("arrayTex", texture);
         shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
-        shaderMaterial.backFaceCulling = false;
+        // shaderMaterial.backFaceCulling = false;
         // shaderMaterial.separateCullingPass = false;
         shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
@@ -56,9 +56,5 @@ export class FluidMaterial {
         });
         this.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
         return this.material;
-    }
-    runAnimations(num) {
-        this.material.setFloat("anim1Index", num);
-        this.material.setFloat("anim2Index", num - 3);
     }
 }

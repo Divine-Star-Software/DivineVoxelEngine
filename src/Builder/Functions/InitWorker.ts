@@ -36,6 +36,8 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
   const ao = new Float32Array(data[8]);
 
   const meshData = DVEB.builder.buildChunkMesh(
+    chunkX,
+    chunkZ,
    positions,
    faces,
    shapes,

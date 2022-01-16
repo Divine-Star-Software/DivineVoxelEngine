@@ -6,18 +6,38 @@ export class VoxelManager implements VoxelManagerInterface {
  shapeMap: Record<string, number> = {};
  shapeMapHasBeenSet = false;
 
+ fluidShapeMap: Record<string, number> = {};
+ fluidShapeMapHasBeenSet = false;
+
  setShapeMap(shapeMap: Record<string, number>) {
   this.shapeMap = shapeMap;
   this.shapeMapHasBeenSet = true;
-
   for (const voxelId of Object.keys(this.voxels)) {
    const voxel = this.voxels[voxelId];
-   voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
+   if (voxel.data.substance !== "fluid") {
+    voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
+   }
+  }
+ }
+
+ setFluidShapeMap(shapeMap: Record<string, number>) {
+     console.log(shapeMap);
+  this.fluidShapeMap = shapeMap;
+  this.fluidShapeMapHasBeenSet = true;
+  for (const voxelId of Object.keys(this.voxels)) {
+   const voxel = this.voxels[voxelId];
+   if (voxel.data.substance === "fluid") {
+    voxel.trueShapeId = this.fluidShapeMap[voxel.data.shapeId];
+   }
   }
  }
 
  shapMapIsSet() {
   return this.shapeMapHasBeenSet;
+ }
+
+ fluidShapMapIsSet() {
+  return this.fluidShapeMapHasBeenSet;
  }
 
  getVoxel(id: string): VoxelInteface {

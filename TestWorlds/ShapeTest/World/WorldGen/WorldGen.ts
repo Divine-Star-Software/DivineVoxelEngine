@@ -31,8 +31,32 @@ export class WorldGen {
    "dve:liquiddreamether:defualt"
   );
   const liquidDreamEtherVoxel = [liquidDreamEther, 1, 1];
+  const dreamStoneVovxel = [dreamstone, 1, 1];
 
   const returnChunk: any[][][] = [];
+  if (type == "fluid") {
+   let baseY = 0;
+   let maxY = 31;
+
+   for (let x = 0; x < +this.chunkWidth; x++) {
+    for (let z = 0; z < this.chunkDepth; z++) {
+     for (let y = 0; y < this.chunkHeight; y++) {
+      if (y > baseY && y <= maxY) {
+       returnChunk[x] ??= [];
+       returnChunk[x][z] ??= [];
+       returnChunk[x][z][y] = liquidDreamEtherVoxel;
+      }
+      if(y == baseY) {
+        returnChunk[x] ??= [];
+        returnChunk[x][z] ??= [];
+        returnChunk[x][z][y] = dreamStoneVovxel;
+      }
+     }
+    }
+   }
+  }
+
+
 
   if (type == "pond") {
    let pillarBlock = [dreamStonePillar, 1, 1];

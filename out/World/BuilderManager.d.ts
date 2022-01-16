@@ -11,7 +11,9 @@ export declare class BuilderManager {
     voxelTypeMap: Record<VoxelSubstanceType, number>;
     mainThreadCom: Worker;
     builders: MessagePort[];
+    fluidBuilder: MessagePort;
     setMainThreadCom(worker: Worker): void;
+    addFluidBuilder(port: MessagePort): void;
     addBuilder(port: MessagePort): void;
     requestChunkBeRemoved(chunkX: number, chunkZ: number): void;
     requestFullChunkBeBuilt(chunkX: number, chunkZ: number, template: FullChunkTemplate): void;

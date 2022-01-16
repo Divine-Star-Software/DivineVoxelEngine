@@ -3,8 +3,7 @@ export async function BuildInitalMeshes(DVE, scene) {
         throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
     }
     await DVE.renderManager.textureCreator.setUpImageCreation();
-    //make chunk meshes
-    console.log(DVE.world.baseWorldData);
+    // console.log(DVE.world.baseWorldData);
     const solidTextures = DVE.world.baseWorldData?.texturePaths.solid;
     const solidAnimations = DVE.world.baseWorldData.textureAnimations.solid;
     const soidAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.solid;

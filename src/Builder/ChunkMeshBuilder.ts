@@ -12,6 +12,8 @@ export class ChunkMeshBuilder {
   this.infoByte = this.UTIL.getInfoByte();
  }
  buildChunkMesh(
+  chunkX : number,
+  chunkZ : number,
   positionsTemplate: Uint16Array,
   faceTemplate: Uint8Array,
   shapeTemplate: Uint16Array,
@@ -37,9 +39,9 @@ export class ChunkMeshBuilder {
    positionIndex < positionsTemplate.length;
    positionIndex += 3
   ) {
-   const x = positionsTemplate[positionIndex];
+   const x = positionsTemplate[positionIndex] + chunkX;
    const y = positionsTemplate[positionIndex + 1];
-   const z = positionsTemplate[positionIndex + 2];
+   const z = positionsTemplate[positionIndex + 2] + chunkZ;
 
    const shapeId = shapeTemplate[shapeIndex];
    const shape = this.shapeManager.getShape(shapeId);
@@ -62,7 +64,7 @@ export class ChunkMeshBuilder {
    indicieIndex = newIndexes.newIndicieIndex;
    aoIndex = newIndexes.newAOIndex;
    uvIndex = newIndexes.newUVTemplateIndex;
-
+   shapeIndex++;
    faceIndex++;
   }
 

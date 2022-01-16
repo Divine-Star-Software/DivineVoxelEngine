@@ -3,26 +3,24 @@ export class FloraMesh {
     constructor(material) {
         this.material = material;
     }
-    rebuildMeshGeometory(chunkMesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
+    rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-        chunkVertexData.applyToMesh(chunkMesh, true);
-        chunkMesh.setVerticesData("myuvs", uvs, false, 3);
-        chunkMesh.setVerticesData("colors", linearcColors, false, 4);
-        chunkMesh.unfreezeWorldMatrix();
-        chunkMesh.position.x = chunkX;
-        chunkMesh.position.z = chunkZ;
-        chunkMesh.freezeWorldMatrix();
+        chunkVertexData.applyToMesh(mesh, true);
+        mesh.setVerticesData("myuvs", uvs, false, 3);
+        mesh.setVerticesData("colors", linearcColors, false, 4);
+        mesh.unfreezeWorldMatrix();
         //Babylon throws an error but this functions works
         //So wrapped it in this for now. It works though
         try {
-            chunkMesh.updateFacetData();
+            mesh.updateFacetData();
         }
         catch (error) { }
+        mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("flora", scene);
@@ -41,8 +39,6 @@ export class FloraMesh {
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearColors, false, 4);
         mesh.material = this.material.getMaterial();
-        mesh.position.x = chunkX;
-        mesh.position.z = chunkZ;
         mesh.freezeWorldMatrix();
         return mesh;
     }
