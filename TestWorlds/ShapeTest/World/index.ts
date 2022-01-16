@@ -9,38 +9,26 @@ const DVEW = new DivineVoxelEngineWorld(self as any);
 (self as any).DVEW = DVEW;
 
 RegisterTexutres(DVEW);
- RegisterVoxels(DVEW, "global");
+RegisterVoxels(DVEW,"global");
 
 const worldGen = new WorldGen(DVEW);
 
 const start = () => {
- const chunk = worldGen.generateChunk(0, 0,"fluid");
+ const chunk = worldGen.generateChunk(0, 0);
  DVEW.worldData.setChunk(0, 0, chunk);
- const chunk2 = worldGen.generateChunk(-16, 0,"fluid");
+ const chunk2 = worldGen.generateChunk(-16, 0);
  DVEW.worldData.setChunk(-16, 0, chunk2);
- const chunk3 = worldGen.generateChunk(16, 0,"fluid");
+ const chunk3 = worldGen.generateChunk(16, 0);
  DVEW.worldData.setChunk(16, 0, chunk3);
- const chunk4 = worldGen.generateChunk(0, 16,"fluid");
+ const chunk4 = worldGen.generateChunk(0, 16);
  DVEW.worldData.setChunk(0, 16, chunk4);
- const chunk5 = worldGen.generateChunk(0, -16,"fluid");
+ const chunk5 = worldGen.generateChunk(0, -16);
  DVEW.worldData.setChunk(0, -16, chunk5);
 
  DVEW.worldData.setChunk(-16, 16, worldGen.generateChunk(-16, 16, "pillar"));
  DVEW.worldData.setChunk(16, 16, worldGen.generateChunk(16, 16));
  DVEW.worldData.setChunk(16, -16, worldGen.generateChunk(16, -16, "pillar"));
  DVEW.worldData.setChunk(-16, -16, worldGen.generateChunk(-16, -16));
-
-
- DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -32, "pond"));
- DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -48, "pond"));
-
- DVEW.worldData.setChunk(0, -32, worldGen.generateChunk(0, -32, "pond"));
- DVEW.worldData.setChunk(0, -48, worldGen.generateChunk(0, -48, "pond"));
-
- DVEW.worldData.setChunk(16, -32, worldGen.generateChunk(16, -32, "fluid"));
- DVEW.worldData.setChunk(16, -48, worldGen.generateChunk(16, -48, "fluid"));
- DVEW.worldData.setChunk(-16, -32, worldGen.generateChunk(-16, -32, "fluid"));
- DVEW.worldData.setChunk(-16, -48, worldGen.generateChunk(-16, -48, "fluid"));
 
  DVEW.buildChunk(0, 0);
  DVEW.buildChunk(-16, 0);
@@ -52,21 +40,10 @@ const start = () => {
  DVEW.buildChunk(16, 16);
  DVEW.buildChunk(16, -16);
  DVEW.buildChunk(-16, -16);
-
- DVEW.buildChunk(0, -32);
- DVEW.buildChunk(0, -48);
-
- DVEW.buildChunk(16, -32);
- DVEW.buildChunk(16, -48);
- DVEW.buildChunk(-16, -32);
- DVEW.buildChunk(-16, -48);
 };
 
-(async () => {
- await DVEW.$INIT({
-  voxelPalletMode: "global",
-  onReady: start,
-  onMessage: (message: string, data: any[]) => {},
- });
-})();
- 
+DVEW.$INIT({
+ voxelPalletMode: "global",
+ onReady: start,
+ onMessage: (message: string, data: any[]) => {},
+});

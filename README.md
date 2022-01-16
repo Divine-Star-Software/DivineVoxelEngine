@@ -144,10 +144,15 @@ This engine was developed on top of the V8 engine through severing it as an Elec
   - Flora, Fluid, and Magma voxels have seperate meshes. 
 - Voxel Substance Types
   - Solid
+    - All solid voxels. By default they check collision. 
   - Transparent
+    - Any voxel that has transparent texture. Part of the same mesh as solid voxels. 
   - Flora
+    - Any plant like voxel. Shader effect for wind is applied.
   - Fluid
+    - Renders as its own mesh. One mesh per world.
   - Magma
+    - Like fluid but no shader effects. Gives off light and is solid.
 - Voxel Pallet
   - A map of voxel state ids to numbers
   - Used to get the true voxel id for a world or chunk. 
