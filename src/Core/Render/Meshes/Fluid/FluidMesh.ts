@@ -9,34 +9,35 @@ export class FluidMesh   {
 
  constructor(private material: FluidMaterial) {}
 
- rebuildMeshGeometory(
+ async rebuildMeshGeometory(
   positions: Float32Array,
   indicies: Int32Array,
   linearcColors: Float32Array,
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
+
   const chunkVertexData = new BABYLON.VertexData();
-  const calculatedNormals: number[] = [];
+ // const calculatedNormals: number[] = [];
 
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
+ // chunkVertexData.normals = calculatedNormals;
 
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+ // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.applyToMesh(this.mesh, true);
 
   this.mesh.setVerticesData("myuvs", uvs, false, 3);
   this.mesh.setVerticesData("colors", linearcColors, false, 4);
 
-  this.mesh.unfreezeWorldMatrix();
+/*   this.mesh.unfreezeWorldMatrix();
   //Babylon throws an error but this functions works
   //So wrapped it in this for now. It works though
   try {
    this.mesh.updateFacetData();
   } catch (error: any) {}
 
-  this.mesh.freezeWorldMatrix();
+  this.mesh.freezeWorldMatrix(); */
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
@@ -51,13 +52,14 @@ export class FluidMesh   {
 
 
 
- createMeshGeometory(
+ async createMeshGeometory(
   positions: Float32Array,
   indicies: Int32Array,
   linearColors: Float32Array,
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
+   console.log("MADE");
          this.beenCreated = true;
   const chunkVertexData = new BABYLON.VertexData();
 

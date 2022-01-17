@@ -23,7 +23,7 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
   const data = event.data;
 
   const eventType = data[0];
-console.log(eventType);
+
   if (eventType == 0) {
    const chunkX = data[1];
    const chunkZ = data[2];
@@ -48,7 +48,6 @@ console.log(eventType);
 
   if (eventType == 1) {
    const meshData = DVEFB.fluidMeshBuilder.generateMesh();
-console.log(meshData);
    const positionArray = new Float32Array(meshData[0]);
    const indiciesArray = new Int32Array(meshData[1]);
    const linearColorsArray = new Float32Array(meshData[2]);

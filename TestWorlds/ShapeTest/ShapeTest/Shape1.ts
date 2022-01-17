@@ -126,7 +126,6 @@ export function Shape1(
 
  //mesh.material.transparencyMode = 0;
 
- console.log(mesh);
  mesh.position.x = 5.5;
  mesh.position.y = 31.5;
  mesh.position.z = 5.5;

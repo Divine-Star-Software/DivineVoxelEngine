@@ -1,13 +1,15 @@
 export class ChunkMeshBuilder {
+    DVEB;
     shapeManager;
     UTIL;
     infoByte;
-    constructor(shapeManager, UTIL) {
+    constructor(DVEB, shapeManager, UTIL) {
+        this.DVEB = DVEB;
         this.shapeManager = shapeManager;
         this.UTIL = UTIL;
         this.infoByte = this.UTIL.getInfoByte();
     }
-    buildChunkMesh(chunkX, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, lightTemplate, aoTemplate) {
+    buildChunkMesh(chunkType, chunkX, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, lightTemplate, aoTemplate) {
         const positions = [];
         const indices = [];
         const uvs = [];
@@ -45,11 +47,29 @@ export class ChunkMeshBuilder {
             shapeIndex++;
             faceIndex++;
         }
-        return {
-            positions: positions,
-            indices: indices,
-            colors: colors,
-            uvs: uvs,
-        };
+        const positionArray = new Float32Array(positions);
+        const indiciesArray = new Int32Array(indices);
+        const linearColorsArray = new Float32Array(colors);
+        const fullColorsArray = new Float32Array(colors);
+        const uvArray = new Float32Array(uvs);
+        //@ts-ignore
+        this.DVEB.worker.postMessage([
+            chunkType,
+            chunkX,
+            chunkZ,
+            positionArray.buffer,
+            indiciesArray.buffer,
+            linearColorsArray.buffer,
+            fullColorsArray.buffer,
+            uvArray.buffer,
+        ], 
+        //@ts-ignore
+        [
+            positionArray.buffer,
+            indiciesArray.buffer,
+            linearColorsArray.buffer,
+            fullColorsArray.buffer,
+            uvArray.buffer,
+        ]);
     }
 }

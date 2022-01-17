@@ -1,3 +1,4 @@
+import { BitArray } from "Global/Util/ByteArray.js";
 import { ChunkTemplate, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
 import { VoxelPallet } from "Meta/WorldData/World.types.js";
@@ -49,8 +50,12 @@ export class ChunkProcessor {
   "magma-fluid": true,
   "magma-magma": false,
  };
+ exposedFaces: number[] = [];
+ constructor(private DVEW: DivineVoxelEngineWorld) {
+  this.bitArray = this.DVEW.UTIL.getBitArray([0]);
+ }
 
- constructor(private DVEW: DivineVoxelEngineWorld) {}
+ bitArray: BitArray;
 
  getBaseTemplate(): ChunkTemplate {
   return {
@@ -77,14 +82,12 @@ export class ChunkProcessor {
    magma: this.getBaseTemplate(),
   };
 
-  const exposedFaces: number[] = [];
-
-  for (const x of chunkVoxels.keys()) {
+  for (let x = 0; x < 16; x++) {
    if (!chunkVoxels[x]) {
     continue;
    }
 
-   for (const z of chunkVoxels[x].keys()) {
+   for (let z = 0; z < 16; z++) {
     if (!chunkVoxels[x][z]) {
      continue;
     }
@@ -94,6 +97,8 @@ export class ChunkProcessor {
      const voxelId = voxelData[0];
      const voxelPalletData = voxelPallet[voxelId];
      if (!voxelPalletData) continue;
+
+     this.bitArray.setDec(0, 0);
 
      //   const voxlel =
      const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
@@ -108,8 +113,6 @@ export class ChunkProcessor {
      let addSouth = false;
      let addEast = false;
      let addWest = false;
-
-     const bitArray = this.DVEW.UTIL.getBitArray([0]);
 
      if (!chunkVoxels[x][z][y + 1]) {
       //add top
@@ -307,55 +310,55 @@ export class ChunkProcessor {
      }
 
      if (addTop) {
-      bitArray.setBit(0, 1);
+      this.bitArray.setBit(0, 1);
       isExposed = true;
-      exposedFaces[0] = 1;
+      this.exposedFaces[0] = 1;
      } else {
-      exposedFaces[0] = 0;
+      this.exposedFaces[0] = 0;
      }
 
      if (addBottom) {
-      bitArray.setBit(1, 1);
+      this.bitArray.setBit(1, 1);
       isExposed = true;
-      exposedFaces[1] = 1;
+      this.exposedFaces[1] = 1;
      } else {
-      exposedFaces[1] = 0;
+      this.exposedFaces[1] = 0;
      }
 
      if (addWest) {
-      bitArray.setBit(2, 1);
+      this.bitArray.setBit(2, 1);
       isExposed = true;
-      exposedFaces[2] = 1;
+      this.exposedFaces[2] = 1;
      } else {
-      exposedFaces[2] = 0;
+      this.exposedFaces[2] = 0;
      }
      if (addEast) {
-      bitArray.setBit(3, 1);
+      this.bitArray.setBit(3, 1);
       isExposed = true;
-      exposedFaces[3] = 1;
+      this.exposedFaces[3] = 1;
      } else {
-      exposedFaces[3] = 0;
+      this.exposedFaces[3] = 0;
      }
 
      if (addNorth) {
-      bitArray.setBit(4, 1);
+      this.bitArray.setBit(4, 1);
       isExposed = true;
-      exposedFaces[4] = 1;
+      this.exposedFaces[4] = 1;
      } else {
-      exposedFaces[4] = 0;
+      this.exposedFaces[4] = 0;
      }
      if (addSouth) {
-      bitArray.setBit(5, 1);
+      this.bitArray.setBit(5, 1);
       isExposed = true;
-      exposedFaces[5] = 1;
+      this.exposedFaces[5] = 1;
      } else {
-      exposedFaces[5] = 0;
+      this.exposedFaces[5] = 0;
      }
 
      //end of block loop
      if (!isExposed) continue;
 
-     const faces = bitArray.getDec(0);
+     const faces = this.bitArray.getDec(0);
      voxel.getUVs(
       baseTemplate.uvTemplate,
       chunkX,
@@ -366,7 +369,7 @@ export class ChunkProcessor {
      voxel.getAO({
       chunkVoxels: chunkVoxels,
       voxelPallete: voxelPallet,
-      exposedFaces: exposedFaces,
+      exposedFaces: this.exposedFaces,
       aoTemplate: baseTemplate.aoTemplate,
       chunkX: chunkX,
       chunkZ: chunkZ,

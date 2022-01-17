@@ -445,10 +445,10 @@ export class WorldGen {
   if (toss < 0.2) {
    crazy = true;
   }
-  if (toss > 0.2 && toss < 0.4) {
+  if (toss > 0.2 && toss < 0.3) {
    spiked = true;
   }
-  if (toss > 0.4 && toss < 0.6) {
+  if (toss > 0.3 && toss < 0.6) {
    hole = true;
   }
   if (toss > 0.6) {

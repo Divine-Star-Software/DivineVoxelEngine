@@ -1,3 +1,4 @@
+import { BitArray } from "Global/Util/ByteArray.js";
 import { ChunkTemplate, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import { VoxelPallet } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
@@ -19,7 +20,9 @@ export declare class ChunkProcessor {
      * First is the voxel being tested. The second are its neighbors
      */
     substanceRules: Record<string, boolean>;
+    exposedFaces: number[];
     constructor(DVEW: DivineVoxelEngineWorld);
+    bitArray: BitArray;
     getBaseTemplate(): ChunkTemplate;
     makeAllChunkTemplates(chunkVoxels: any[][][], voxelPallet: VoxelPallet, chunkX: number, chunkZ: number): FullChunkTemplate;
 }

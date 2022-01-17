@@ -10,7 +10,7 @@ RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const playerWatcher = new PlayerWatcher(worldGen);
 const start = () => {
-    let chunkNum = 20;
+    let chunkNum = 15;
     let totalChunks = chunkNum * 16 - 144;
     for (let i = -144; i < totalChunks; i += 16) {
         for (let k = -144; k < totalChunks; k += 16) {

@@ -60,6 +60,8 @@ export class DivineVoxelEngineWorld implements DVEW {
   if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
    pallet = this.worldGeneration.getGlobalVoxelPallet();
   }
+
+ // let t0= performance.now(); 
   const template = this.chunkProccesor.makeAllChunkTemplates(
    chunk.voxels,
    pallet,
@@ -68,11 +70,13 @@ export class DivineVoxelEngineWorld implements DVEW {
   );
   this.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
 
+ // let t1= performance.now(); 
+ // console.log(t1 - t0);
   return true;
  }
 
  buildFluidMesh() {
-   console.log("hello");
+
   this.builderManager.requestFluidMeshBeReBuilt();
  }
 

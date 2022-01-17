@@ -34,7 +34,6 @@ export class MeshManager {
         }
     }
     _updateFluidMesh(data) {
-        console.log(data);
         const positions = new Float32Array(data[3]);
         const indicies = new Int32Array(data[4]);
         const linearColors = new Float32Array(data[5]);

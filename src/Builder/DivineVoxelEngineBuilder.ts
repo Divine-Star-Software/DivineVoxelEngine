@@ -12,7 +12,7 @@ export class DivineVoxelEngineBuilder {
 
     shapeManager : ShapeManager = new ShapeManager();
     shapeHelper = new ShapeHelper(this.UTIL);
-    builder : ChunkMeshBuilder = new ChunkMeshBuilder(this.shapeManager,this.UTIL);
+    builder : ChunkMeshBuilder = new ChunkMeshBuilder(this,this.shapeManager,this.UTIL);
 
     $INIT(worker : Worker) {
         this.worker = worker;

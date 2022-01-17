@@ -1,17 +1,20 @@
 import type { Util } from "Global/Util.helper";
 import type { InfoByte } from "Global/Util/InfoByte";
 import type { MeshData } from "Meta/Util.types";
+import { DivineVoxelEngineBuilder } from "./DivineVoxelEngineBuilder";
 import type { ShapeManager } from "./Shapes/ShapeManager";
 
 export class ChunkMeshBuilder {
  infoByte: InfoByte;
  constructor(
+  private DVEB : DivineVoxelEngineBuilder,
   private shapeManager: ShapeManager,
   private UTIL: Util
  ) {
   this.infoByte = this.UTIL.getInfoByte();
  }
  buildChunkMesh(
+  chunkType : number,
   chunkX : number,
   chunkZ : number,
   positionsTemplate: Uint16Array,
@@ -20,7 +23,7 @@ export class ChunkMeshBuilder {
   uvTemplate: Uint16Array,
   lightTemplate: Float32Array,
   aoTemplate: Float32Array
- ): MeshData {
+ ) {
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
@@ -68,11 +71,35 @@ export class ChunkMeshBuilder {
    faceIndex++;
   }
 
-  return {
-   positions: positions,
-   indices: indices,
-   colors: colors,
-   uvs: uvs,
-  };
+
+  const positionArray = new Float32Array(positions);
+  const indiciesArray = new Int32Array(indices);
+  const linearColorsArray = new Float32Array(colors);
+  const fullColorsArray = new Float32Array(colors);
+  const uvArray = new Float32Array(uvs);
+
+  //@ts-ignore
+  this.DVEB.worker.postMessage(
+   [
+    chunkType,
+    chunkX,
+    chunkZ,
+    positionArray.buffer,
+    indiciesArray.buffer,
+    linearColorsArray.buffer,
+    fullColorsArray.buffer,
+    uvArray.buffer,
+   ],
+   //@ts-ignore
+   [
+    positionArray.buffer,
+    indiciesArray.buffer,
+    linearColorsArray.buffer,
+    fullColorsArray.buffer,
+    uvArray.buffer,
+   ]
+  );
+
+
  }
 }

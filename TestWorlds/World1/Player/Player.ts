@@ -397,10 +397,10 @@ console.log(camPick.pickedMesh); */
   this.hitbox.isPickable = false;
   //this.hitbox.showBoundingBox = true;
   this.hitbox.isVisible = false;
-  this.hitbox.position.x = 0;
+  this.hitbox.position.x = -56;
 
-  this.hitbox.position.z = 0;
-  this.hitbox.position.y = 300;
+  this.hitbox.position.z = -56;
+  this.hitbox.position.y = 600;
 
   this.bottomRay = new BABYLON.Ray(
    new BABYLON.Vector3(0, 0, 0),

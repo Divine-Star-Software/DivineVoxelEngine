@@ -5,24 +5,24 @@ export class FluidMesh {
     constructor(material) {
         this.material = material;
     }
-    rebuildMeshGeometory(positions, indicies, linearcColors, fullColors, uvs) {
+    async rebuildMeshGeometory(positions, indicies, linearcColors, fullColors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
-        const calculatedNormals = [];
+        // const calculatedNormals: number[] = [];
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
-        chunkVertexData.normals = calculatedNormals;
-        BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+        // chunkVertexData.normals = calculatedNormals;
+        // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.applyToMesh(this.mesh, true);
         this.mesh.setVerticesData("myuvs", uvs, false, 3);
         this.mesh.setVerticesData("colors", linearcColors, false, 4);
-        this.mesh.unfreezeWorldMatrix();
-        //Babylon throws an error but this functions works
-        //So wrapped it in this for now. It works though
-        try {
-            this.mesh.updateFacetData();
-        }
-        catch (error) { }
-        this.mesh.freezeWorldMatrix();
+        /*   this.mesh.unfreezeWorldMatrix();
+          //Babylon throws an error but this functions works
+          //So wrapped it in this for now. It works though
+          try {
+           this.mesh.updateFacetData();
+          } catch (error: any) {}
+        
+          this.mesh.freezeWorldMatrix(); */
     }
     createTemplateMesh(scene) {
         this.mesh = new BABYLON.Mesh("fluid", scene);
@@ -30,7 +30,8 @@ export class FluidMesh {
         this.mesh.checkCollisions = false;
         return this.mesh;
     }
-    createMeshGeometory(positions, indicies, linearColors, fullColors, uvs) {
+    async createMeshGeometory(positions, indicies, linearColors, fullColors, uvs) {
+        console.log("MADE");
         this.beenCreated = true;
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
