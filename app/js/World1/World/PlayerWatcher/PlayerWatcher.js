@@ -1,3 +1,33 @@
+function plotLine3d(x0, y0, z0, x1, y1, z1) {
+    const pooints = [];
+    const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    const dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    const dz = Math.abs(z1 - z0), sz = z0 < z1 ? 1 : -1;
+    let dm = Math.max(dx, dy, dz), i = dm; /* maximum difference */
+    x1 = y1 = z1 = dm / 2; /* error offset */
+    while (true) {
+        /* loop */
+        pooints.push(x0, y0, z0);
+        if (i-- == 0)
+            break;
+        x1 -= dx;
+        if (x1 < 0) {
+            x1 += dm;
+            x0 += sx;
+        }
+        y1 -= dy;
+        if (y1 < 0) {
+            y1 += dm;
+            y0 += sy;
+        }
+        z1 -= dz;
+        if (z1 < 0) {
+            z1 += dm;
+            z0 += sz;
+        }
+    }
+    return pooints;
+}
 /**# Player Watcher
  * ---
  * Keeps track of the players movement and
@@ -6,9 +36,12 @@
  */
 export class PlayerWatcher {
     worldGen;
+    DVEW;
     playerABSPositon;
     playerChunkPosition;
     playerDirection;
+    playerPickPosition;
+    playerStatesArray;
     renderDistance = 20;
     currentMaxChunkX = 160;
     currentMinChunkX = -144;
@@ -16,20 +49,51 @@ export class PlayerWatcher {
     currentMinChunkZ = -144;
     cachedChunkZ = 0;
     cachedChunkX = 0;
-    constructor(worldGen) {
+    playerReach = 4;
+    constructor(worldGen, DVEW) {
         this.worldGen = worldGen;
+        this.DVEW = DVEW;
     }
-    setPlayerSharedArrays(postionBuffer, chunkBuffer, directionBuffer) {
-        this.playerABSPositon = new Float32Array(postionBuffer);
-        this.playerChunkPosition = new Float32Array(chunkBuffer);
-        this.playerDirection = new Uint8Array(directionBuffer);
+    setPlayerSharedArrays(data) {
+        this.playerABSPositon = new Float32Array(data[1]);
+        this.playerChunkPosition = new Float32Array(data[2]);
+        this.playerDirection = new Float32Array(data[3]);
+        this.playerPickPosition = new Float32Array(data[4]);
+        this.playerStatesArray = new Uint8Array(data[5]);
     }
-    startWatchingPlayer() {
+    async startWatchingPlayer() {
         this.cachedChunkX = this.playerChunkPosition[0];
         this.cachedChunkZ = this.playerChunkPosition[1];
-        setInterval(() => {
+        setInterval(async () => {
+            // console.log(this.playerDirection, this.playerABSPositon);
+            const pickVector = [
+                this.playerDirection[0] * this.playerReach + this.playerABSPositon[0],
+                this.playerDirection[1] * this.playerReach + this.playerABSPositon[1],
+                this.playerDirection[2] * this.playerReach + this.playerABSPositon[2],
+            ];
+            const pAbsX = Math.floor(this.playerABSPositon[0]);
+            const pAbsY = Math.floor(this.playerABSPositon[1]);
+            const pAbsZ = Math.floor(this.playerABSPositon[2]);
+            const data = plotLine3d(pAbsX, pAbsY, pAbsZ, Math.floor(pickVector[0]), Math.floor(pickVector[1]), Math.floor(pickVector[2]));
             const chunkX = this.playerChunkPosition[0];
             const chunkZ = this.playerChunkPosition[1];
+            let i = 3;
+            for (i; i < data.length; i += 3) {
+                const voxelData = this.DVEW.worldData.getRealtiveVoxelData(chunkX, chunkZ, data[i], data[i + 1], data[i + 2]);
+                if (voxelData[0]) {
+                    break;
+                }
+            }
+            this.playerPickPosition[0] = data[i];
+            this.playerPickPosition[1] = data[i + 1];
+            this.playerPickPosition[2] = data[i + 2];
+            const voxelData = this.DVEW.worldData.getRealtiveVoxelData(chunkX, chunkZ, pAbsX, pAbsY, pAbsZ, 0, -1, 0);
+            if (voxelData) {
+                this.playerStatesArray[0] = 1;
+            }
+            else {
+                this.playerStatesArray[0] = 0;
+            }
             let movedWest = false;
             let movedEast = false;
             let movedNorth = false;
@@ -83,6 +147,6 @@ export class PlayerWatcher {
             this.cachedChunkZ = chunkZ;
             if (moved) {
             }
-        }, 100);
+        }, 20);
     }
 }

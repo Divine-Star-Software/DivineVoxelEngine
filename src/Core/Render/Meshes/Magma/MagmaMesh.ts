@@ -13,6 +13,7 @@ export class MagmaMesh implements VoxelMeshInterface {
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
+  mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
   const calculatedNormals: number[] = [];
 
@@ -25,13 +26,6 @@ export class MagmaMesh implements VoxelMeshInterface {
 
   mesh.setVerticesData("myuvs", uvs, false, 3);
   mesh.setVerticesData("colors", linearcColors, false, 4);
-
-  mesh.unfreezeWorldMatrix();
-  //Babylon throws an error but this functions works
-  //So wrapped it in this for now. It works though
-  try {
-    mesh.updateFacetData();
-  } catch (error: any) {}
 
   mesh.freezeWorldMatrix();
  }
@@ -58,7 +52,7 @@ export class MagmaMesh implements VoxelMeshInterface {
   BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
+
 
   chunkVertexData.applyToMesh(mesh, true);
 

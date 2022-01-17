@@ -4,6 +4,7 @@ export class MagmaMesh {
         this.material = material;
     }
     rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
+        mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
         chunkVertexData.positions = positions;
@@ -13,13 +14,6 @@ export class MagmaMesh {
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearcColors, false, 4);
-        mesh.unfreezeWorldMatrix();
-        //Babylon throws an error but this functions works
-        //So wrapped it in this for now. It works though
-        try {
-            mesh.updateFacetData();
-        }
-        catch (error) { }
         mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
@@ -34,7 +28,6 @@ export class MagmaMesh {
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
-        chunkVertexData.normals = calculatedNormals;
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("myuvs", uvs, false, 3);
         mesh.setVerticesData("colors", linearColors, false, 4);

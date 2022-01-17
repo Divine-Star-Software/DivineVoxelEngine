@@ -1,10 +1,13 @@
 import type { DivineVoxelEngine } from "../../../out/Core/DivineVoxelEngine";
-import type { PositionMatrix } from "../../../out/Meta/Util.types"
+import type { PositionMatrix } from "../../../out/Meta/Util.types";
 
 export class Player {
  absPositionArray: Float32Array;
  chunkPositionArray: Float32Array;
- playerDirectionArray: Uint8Array;
+ playerDirectionArray: Float32Array;
+ playerPickPosition: Float32Array;
+
+ playerStatesArray: Uint8Array;
 
  cachedVelocity = new BABYLON.Vector3();
 
@@ -41,18 +44,24 @@ export class Player {
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);
   const chunkPositionArrayBuffer = new SharedArrayBuffer(8);
-  const playerDirectionArrayBuffer = new SharedArrayBuffer(1);
-
+  const playerDirectionArrayBuffer = new SharedArrayBuffer(12);
+  const playerPickPositionArrayBuffer = new SharedArrayBuffer(12);
+  const playerStatesArrayBuffer = new SharedArrayBuffer(1);
   this.absPositionArray = new Float32Array(absPositionArrayBuffer);
   this.chunkPositionArray = new Float32Array(chunkPositionArrayBuffer);
-  this.playerDirectionArray = new Uint8Array(playerDirectionArrayBuffer);
+  this.playerDirectionArray = new Float32Array(playerDirectionArrayBuffer);
+  this.playerPickPosition = new Float32Array(playerPickPositionArrayBuffer);
+  //@ts-ignore
+  this.playerStatesArray = new Uint8Array(playerStatesArrayBuffer);
 
   const arrays = [
    absPositionArrayBuffer,
    chunkPositionArrayBuffer,
    playerDirectionArrayBuffer,
+   playerPickPositionArrayBuffer,
+   playerStatesArrayBuffer,
   ];
-  this.DVE.world.sendPlayerSharedArrays(arrays);
+  this.DVE.world.getWorker().postMessage(["connect-player", ...arrays]);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -130,17 +139,27 @@ export class Player {
  async update() {
   if (!this.ready || !this.active) return;
   if (this.DVE.meshManager.runningUpdate) return;
-
-  const x = Math.floor(this.hitbox.position.x);
-  const y = Math.floor(this.hitbox.position.y);
-  const z = Math.floor(this.hitbox.position.z);
+  // console.log(this.playerPickPosition);
 
   const direction = this.camera.getDirection(this.forward);
-  this._getDirection(direction);
 
-  this.absPositionArray[0] = x;
-  this.absPositionArray[1] = y;
-  this.absPositionArray[2] = z;
+  this.playerDirectionArray[0] = direction.x;
+  this.playerDirectionArray[1] = direction.y;
+  this.playerDirectionArray[2] = direction.z;
+  // this._getDirection(direction);
+
+  this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
+  this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
+  this.playerCube.position.z = this.playerPickPosition[2] + 0.5;
+  // console.log(this.camera.getDirection(this.forward));
+
+  const x = Math.floor(this.hitbox.position.x);
+  //  const y = Math.floor(this.hitbox.position.y);
+  const z = Math.floor(this.hitbox.position.z);
+
+  this.absPositionArray[0] = this.hitbox.position.x;
+  this.absPositionArray[1] = this.hitbox.position.y;
+  this.absPositionArray[2] = this.hitbox.position.z;
 
   const chunk = this.calculateGameZone(x, z);
   this.chunkPositionArray[0] = chunk[0];
@@ -159,19 +178,14 @@ export class Player {
   }
 
   if (this.checkDownCollision) {
-   const downPick = this.hitbox.getScene().pickWithRay(this.bottomRay);
-   if (downPick) {
-    if (downPick.hit) {
-     if (downPick.pickedMesh?.name == "solid") {
-      this.jumped = false;
-     }
-    }
+   if (this.playerStatesArray[0]) {
+    this.jumped = false;
    }
 
    this.checkDownCollision = false;
   }
 
-  const camRay = this.camera.getForwardRay(6, undefined, this.hitbox.position);
+/*   const camRay = this.camera.getForwardRay(6, undefined, this.hitbox.position);
   this.camRay = camRay;
 
   const camPick = this.hitbox.getScene().pickWithRay(this.camRay);
@@ -179,24 +193,23 @@ export class Player {
   if (camPick) {
    if (camPick.hit) {
     const point = camPick.pickedPoint;
-    /* console.log(point);
-console.log(camPick.faceId);
-console.log(camPick.pickedMesh); */
     if (point && camPick.pickedMesh && camPick.faceId !== undefined) {
      const x = Math.floor(point.x);
      const y = Math.floor(point.y);
      const z = Math.floor(point.z);
-
+     
      if (!this.playerCube.isVisible) {
       this.playerCube.isVisible = true;
      }
 
-     this.lookingAtBlock = true;
-     this.playerCube.position.z = z + 0.5;
+     this.lookingAtBlock = true; 
+     //   this.playerCube.position.z = z + 0.5;
 
      let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
      try {
       normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
+      //   console.log(normal);
+      return;
       //  console.log(normal);
       if (normal.x == 1) {
        if (this.breaking) {
@@ -322,10 +335,13 @@ console.log(camPick.pickedMesh); */
      //    console.log(this.blockLookingAtPosition);
     }
    } else {
-    this.lookingAtBlock = false;
-    this.playerCube.isVisible = false;
+    // this.lookingAtBlock = false;
+    // this.playerCube.isVisible = false;
    }
-  }
+  } */
+
+
+
  }
 
  _setUpPlayerCube() {
@@ -340,12 +356,15 @@ console.log(camPick.pickedMesh); */
    { size: 1 },
    this.hitbox.getScene()
   );
-  cube.isPickable = false;
+  cube.isPickable = true;
   cube.material = cubeMaterial;
 
   cube.enableEdgesRendering();
   cube.edgesWidth = 0.3;
   cube.edgesColor = new BABYLON.Color4(0, 0, 0, 0.8);
+
+  cube.convertToFlatShadedMesh();
+  cube.updateFacetData();
 
   this.playerCube = cube;
  }
@@ -385,7 +404,7 @@ console.log(camPick.pickedMesh); */
 
  createPlayer(scene: BABYLON.Scene, camera: BABYLON.FreeCamera) {
   this.hitbox = BABYLON.MeshBuilder.CreateBox(
-   "player-this.hitbox",
+   "player-hitbox",
    { width: 0.7, height: 2, depth: 0.7 },
    scene
   );
@@ -400,7 +419,7 @@ console.log(camPick.pickedMesh); */
   this.hitbox.position.x = -56;
 
   this.hitbox.position.z = -56;
-  this.hitbox.position.y = 600;
+  this.hitbox.position.y = 200;
 
   this.bottomRay = new BABYLON.Ray(
    new BABYLON.Vector3(0, 0, 0),
@@ -435,8 +454,6 @@ console.log(camPick.pickedMesh); */
      const x = Math.floor(this.hitbox.position.x);
      const y = Math.floor(this.hitbox.position.y);
      const z = Math.floor(this.hitbox.position.z);
-
-
 
      if (
       x != this.blockLookingAtPosition.x ||

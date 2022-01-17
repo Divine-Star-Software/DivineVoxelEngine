@@ -14,32 +14,20 @@ export class FloraMesh implements VoxelMeshInterface {
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
+  mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
-  const calculatedNormals: number[] = [];
-
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
-
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.applyToMesh(mesh, true);
-
   mesh.setVerticesData("myuvs", uvs, false, 3);
   mesh.setVerticesData("colors", linearcColors, false, 4);
-
-  mesh.unfreezeWorldMatrix();
-  //Babylon throws an error but this functions works
-  //So wrapped it in this for now. It works though
-  try {
-   mesh.updateFacetData();
-  } catch (error: any) {}
-
   mesh.freezeWorldMatrix();
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("flora", scene);
   mesh.alphaIndex = 1;
+  mesh.isPickable = false;
   mesh.checkCollisions = false;
   return mesh;
  }
@@ -56,11 +44,8 @@ export class FloraMesh implements VoxelMeshInterface {
  ) {
   const chunkVertexData = new BABYLON.VertexData();
 
-  const calculatedNormals: number[] = [];
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
 
   chunkVertexData.applyToMesh(mesh, true);
 

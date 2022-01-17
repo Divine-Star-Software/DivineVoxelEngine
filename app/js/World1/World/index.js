@@ -8,7 +8,7 @@ self.DVEW = DVEW;
 RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
-const playerWatcher = new PlayerWatcher(worldGen);
+const playerWatcher = new PlayerWatcher(worldGen, DVEW);
 const start = () => {
     let chunkNum = 15;
     let totalChunks = chunkNum * 16 - 144;
@@ -31,7 +31,7 @@ DVEW.$INIT({
     onReady: start,
     onMessage: (message, data) => {
         if (message == "connect-player") {
-            playerWatcher.setPlayerSharedArrays(data[1], data[2], data[3]);
+            playerWatcher.setPlayerSharedArrays(data);
             playerWatcher.startWatchingPlayer();
         }
     },

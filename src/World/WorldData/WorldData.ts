@@ -1,4 +1,5 @@
 import type { ChunkVoxels, ChunkData } from "Meta/WorldData/World.types.js";
+import { GetRealtiveVoxelData } from "./Functions/GetVoxelData.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 
@@ -8,7 +9,7 @@ export class WorldData {
  private chunkProccesor: ChunkProcessor;
 
  chunks: Record<number, Record<number, ChunkData>> = {};
-
+ getRealtiveVoxelData = GetRealtiveVoxelData;
  constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  getCurrentWorldDataSize() {
@@ -18,6 +19,8 @@ export class WorldData {
  getCurrentWorldDataString() {
   return JSON.stringify(this.chunks);
  }
+
+
 
  getChunk(chunkX: number, chunkZ: number): ChunkData | false {
   if (!this.chunks[chunkX]) {

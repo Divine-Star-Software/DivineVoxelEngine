@@ -1,10 +1,12 @@
 import type { ChunkVoxels, ChunkData } from "Meta/WorldData/World.types.js";
+import { GetRealtiveVoxelData } from "./Functions/GetVoxelData.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 export declare class WorldData {
     private DVEW;
     renderDistance: number;
     private chunkProccesor;
     chunks: Record<number, Record<number, ChunkData>>;
+    getRealtiveVoxelData: typeof GetRealtiveVoxelData;
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;

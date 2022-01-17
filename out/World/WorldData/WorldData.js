@@ -1,8 +1,10 @@
+import { GetRealtiveVoxelData } from "./Functions/GetVoxelData.js";
 export class WorldData {
     DVEW;
     renderDistance = 20;
     chunkProccesor;
     chunks = {};
+    getRealtiveVoxelData = GetRealtiveVoxelData;
     constructor(DVEW) {
         this.DVEW = DVEW;
     }

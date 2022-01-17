@@ -43,6 +43,7 @@ export class FluidMesh   {
  createTemplateMesh(scene: BABYLON.Scene) {
    this.mesh = new BABYLON.Mesh("fluid", scene);
 
+  this.mesh.isPickable = false;
   this.mesh.alphaIndex = 1;
   this.mesh.checkCollisions = false;
   return this.mesh;
