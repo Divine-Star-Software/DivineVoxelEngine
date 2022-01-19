@@ -2,6 +2,7 @@ import type {
     VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
+ VoxelLightCalcData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
 
@@ -38,5 +39,8 @@ export class DreamGrass implements VoxelInteface {
 
  getAO(data: VoxelAOCalcData): void {
     data.aoTemplate.push(1,1,1,1,1,1,1,1);
+ }
+ getLight(data: VoxelLightCalcData): void {
+     this.voxelHelper.calculateVoxelLight(data,this);
  }
 }

@@ -50,7 +50,7 @@ export class BuilderManager {
                 const faces = new Uint8Array(baseTemplate.faceTemplate);
                 const shapes = new Uint16Array(baseTemplate.shapeTemplate);
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
-                const light = new Float32Array(baseTemplate.ligtTemplate);
+                const light = new Float32Array(baseTemplate.lightTemplate);
                 const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.fluidBuilder.postMessage([
                     0,
@@ -77,7 +77,7 @@ export class BuilderManager {
                 const faces = new Uint8Array(baseTemplate.faceTemplate);
                 const shapes = new Uint16Array(baseTemplate.shapeTemplate);
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
-                const light = new Float32Array(baseTemplate.ligtTemplate);
+                const light = new Float32Array(baseTemplate.lightTemplate);
                 const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.builders[this.count].postMessage([
                     this.voxelTypeMap[type],

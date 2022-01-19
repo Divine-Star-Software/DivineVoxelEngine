@@ -7,7 +7,7 @@ export class ChunkBuilder {
         chunkVertexData.normals = calculatedNormals;
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.applyToMesh(chunkMesh, true);
-        chunkMesh.setVerticesData("myuvs", uvs, false, 3);
+        chunkMesh.setVerticesData("cuv3", uvs, false, 3);
         chunkMesh.setVerticesData("colors", colors, false, 4);
         chunkMesh.unfreezeWorldMatrix();
         chunkMesh.position.x = chunkX;
@@ -28,7 +28,7 @@ export class ChunkBuilder {
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
         chunkVertexData.applyToMesh(chunkMesh, true);
-        chunkMesh.setVerticesData("myuvs", uvs, false, 3);
+        chunkMesh.setVerticesData("cuv3", uvs, false, 3);
         chunkMesh.setVerticesData("colors", colors, false, 4);
         chunkMesh.material = material;
         chunkMesh.checkCollisions = true;

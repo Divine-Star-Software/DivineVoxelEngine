@@ -52,7 +52,7 @@ const init = async () => {
     player.createPlayer(scene, camera);
     setInterval(() => {
         player.update();
-    }, 100);
+    }, 10);
     DVE.$SCENEINIT({ scene: scene });
     //render loop
     engine.runRenderLoop(() => {

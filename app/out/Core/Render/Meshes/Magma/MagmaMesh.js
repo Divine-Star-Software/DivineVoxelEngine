@@ -12,7 +12,7 @@ export class MagmaMesh {
         chunkVertexData.normals = calculatedNormals;
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("myuvs", uvs, false, 3);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
         mesh.setVerticesData("colors", linearcColors, false, 4);
         mesh.freezeWorldMatrix();
     }
@@ -29,7 +29,7 @@ export class MagmaMesh {
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("myuvs", uvs, false, 3);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
         mesh.setVerticesData("colors", linearColors, false, 4);
         mesh.material = this.material.getMaterial();
         mesh.freezeWorldMatrix();

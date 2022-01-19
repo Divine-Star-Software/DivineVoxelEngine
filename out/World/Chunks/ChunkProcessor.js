@@ -49,7 +49,7 @@ export class ChunkProcessor {
             faceTemplate: [],
             uvTemplate: [],
             shapeTemplate: [],
-            ligtTemplate: [],
+            lightTemplate: [],
             aoTemplate: [],
         };
     }
@@ -317,6 +317,17 @@ export class ChunkProcessor {
                         voxelPallete: voxelPallet,
                         exposedFaces: this.exposedFaces,
                         aoTemplate: baseTemplate.aoTemplate,
+                        chunkX: chunkX,
+                        chunkZ: chunkZ,
+                        x: x,
+                        y: y,
+                        z: z,
+                    });
+                    voxel.getLight({
+                        voxelPallete: voxelPallet,
+                        voxelData: voxelData,
+                        exposedFaces: this.exposedFaces,
+                        lightTemplate: baseTemplate.lightTemplate,
                         chunkX: chunkX,
                         chunkZ: chunkZ,
                         x: x,

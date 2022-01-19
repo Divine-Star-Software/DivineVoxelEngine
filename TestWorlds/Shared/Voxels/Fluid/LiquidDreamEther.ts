@@ -2,6 +2,7 @@ import type {
  VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
+ VoxelLightCalcData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
 
@@ -64,24 +65,26 @@ export class LiquidDreamEther implements VoxelInteface {
  }
 
  getAO(data: VoxelAOCalcData): void {
-
-  if(data.exposedFaces[0]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[0]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
-  if(data.exposedFaces[1]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[1]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
-  if(data.exposedFaces[2]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[2]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
-  if(data.exposedFaces[3]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[3]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
-  if(data.exposedFaces[4]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[4]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
-  if(data.exposedFaces[5]){
-   data.aoTemplate.push(1,1,1,1);
+  if (data.exposedFaces[5]) {
+   data.aoTemplate.push(1, 1, 1, 1);
   }
+ }
+ getLight(data: VoxelLightCalcData): void {
+  this.voxelHelper.calculateVoxelLight(data, this);
  }
 }

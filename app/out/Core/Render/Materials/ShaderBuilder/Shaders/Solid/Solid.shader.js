@@ -6,8 +6,10 @@ export const solidShaders = {
     // Attributes
     attribute vec3 position;
     attribute vec3 normal;
-    attribute vec3 myuvs;
-    attribute vec4 colors;
+    attribute vec3 cuv3;
+    attribute vec4 linearcColors;
+    attribute vec4 fullcolors;
+
     // Uniforms
     uniform mat4 worldViewProjection;
     uniform mat4 world;                    
@@ -19,8 +21,8 @@ export const solidShaders = {
     // Varying
     varying vec3 vUV;
     varying vec3 vNormal;
-    varying vec4 vColors;
-   
+    varying vec4 lColors;
+    varying vec4 fColors;
    
    
     varying float fFogDistance;
@@ -33,9 +35,10 @@ export const solidShaders = {
          vec4 worldPosition = world * vec4(position, 1.0);
          fFogDistance = (view * worldPosition).z;
          gl_Position = worldViewProjection * vec4(position, 1.0); 
-         animIndex = getUVFace(myuvs.z);
-         vUV = myuvs;
-         vColors = colors;
+         animIndex = getUVFace(cuv3.z);
+         vUV = cuv3;
+         lColors = linearcColors;
+         fColors = fullcolors;
          vNormal = normal;
      }
     
@@ -48,7 +51,8 @@ export const solidShaders = {
    
    
     varying vec3 vUV;
-    varying vec4 vColors;
+    varying vec4 lColors;
+    varying vec4 fColors;
     varying vec3 vNormal;
    
     varying float animIndex;
@@ -68,11 +72,18 @@ export const solidShaders = {
 
 
         //mix with supplied vertex colors
-        vec4 mixVertex = mix(rgb, vColors , 1.0);
+        vec4 mixVertex = mix(rgb, lColors , 1.0);
+
+
+
         //apply to texture color
         vec4 newBase = rgb * mixVertex;
 
-        vec4 mixLight  = newBase * baseLightColor;
+
+        vec4 mixLight  = newBase * baseLightColor * fColors;
+  //  vec4 mixLight = mix(newBase, fColors * baseLightColor , 1.0);
+
+
 
         float fog = CalcFogFactor();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;

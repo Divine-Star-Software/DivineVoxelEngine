@@ -4,7 +4,7 @@
 //shaders
 import { floraShaders } from "./Shaders/Flora/Flora.shader.js";
 import { fluidShaders } from "./Shaders/Fluid/Fluid.shaders.js";
-import { magmaShaders } from "./Shaders/Magma/Solid.shader.js";
+import { magmaShaders } from "./Shaders/Magma/Magma.shader.js";
 import { solidShaders } from "./Shaders/Solid/Solid.shader.js";
 //shared functions
 import { SharedFogFunctions } from "./Shaders/Shared/Fog/FogShaderFunctions.js";

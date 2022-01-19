@@ -8,7 +8,7 @@ export const fluidShaders =  {
     // Attributes
     attribute vec3 position;
     attribute vec3 normal;
-    attribute vec3 myuvs;
+    attribute vec3 cuv3;
     attribute vec4 colors;
     // Uniforms
     uniform mat4 worldViewProjection;
@@ -49,8 +49,8 @@ export const fluidShaders =  {
         gl_Position = viewProjection * worldPosition; 
         
    
-        animIndex = getUVFace(myuvs.z);
-        vUV = myuvs;
+        animIndex = getUVFace(cuv3.z);
+        vUV = cuv3;
         vColors = colors;
         vNormal = normal;
     }

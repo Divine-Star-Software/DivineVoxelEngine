@@ -2,8 +2,6 @@ import type { WorldData } from "World/WorldData/WorldData";
 
 export function GetRealtiveVoxelData(
  this: WorldData,
- chunkX: number,
- chunkZ: number,
  blockX: number,
  blockY: number,
  blockZ: number,
@@ -11,12 +9,18 @@ export function GetRealtiveVoxelData(
  y: number = 0,
  z: number = 0
 ) {
- if(!this.chunks[chunkX])return false;
- if(!this.chunks[chunkX][chunkZ])return false;
+ const chunkX = (blockX >> 4) << 4;
+ const chunkZ = (blockZ >> 4) << 4;
+ if (!this.chunks[chunkX]) return false;
+ if (!this.chunks[chunkX][chunkZ]) return false;
  const chunk = this.chunks[chunkX][chunkZ].voxels;
- [blockX,blockZ] = this._getRelativeChunkPosition(chunkX,chunkZ,blockX,blockY,blockZ);
-
-
+ [blockX, blockZ] = this._getRelativeChunkPosition(
+  chunkX,
+  chunkZ,
+  blockX,
+  blockY,
+  blockZ
+ );
 
  if (blockX > 0 && blockZ > 0 && blockX < 15 && blockZ < 15) {
   return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);

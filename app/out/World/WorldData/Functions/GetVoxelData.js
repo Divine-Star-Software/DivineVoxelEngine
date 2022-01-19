@@ -1,4 +1,6 @@
-export function GetRealtiveVoxelData(chunkX, chunkZ, blockX, blockY, blockZ, x = 0, y = 0, z = 0) {
+export function GetRealtiveVoxelData(blockX, blockY, blockZ, x = 0, y = 0, z = 0) {
+    const chunkX = (blockX >> 4) << 4;
+    const chunkZ = (blockZ >> 4) << 4;
     if (!this.chunks[chunkX])
         return false;
     if (!this.chunks[chunkX][chunkZ])

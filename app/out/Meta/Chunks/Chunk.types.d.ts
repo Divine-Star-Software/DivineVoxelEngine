@@ -4,7 +4,7 @@ export declare type ChunkTemplate = {
     faceTemplate: number[];
     uvTemplate: number[];
     shapeTemplate: number[];
-    ligtTemplate: number[];
+    lightTemplate: number[];
     aoTemplate: number[];
 };
 export declare type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

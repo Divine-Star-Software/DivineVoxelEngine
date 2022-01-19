@@ -40,6 +40,12 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
+   );
+
    this.shapeHelper.calculateAOColor(
     data.linearColors,
     data.aoTemplate,
@@ -80,6 +86,12 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
+   );
+
    this.shapeHelper.calculateAOColor(
     data.linearColors,
     data.aoTemplate,
@@ -99,9 +111,11 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + -this.depth,
+
     data.position.x + this.width,
     data.position.y + this.height,
     data.position.z + this.depth,
+
     data.position.x + this.width,
     data.position.y + -this.height,
     data.position.z + this.depth,
@@ -125,6 +139,11 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.linearColors,
     data.aoTemplate,
     data.aoIndex
+   );
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
    );
 
    return {
@@ -162,6 +181,11 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
+   );
    this.shapeHelper.calculateAOColor(
     data.linearColors,
     data.aoTemplate,
@@ -204,6 +228,11 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
+   );
    this.shapeHelper.calculateAOColor(
     data.linearColors,
     data.aoTemplate,
@@ -243,6 +272,11 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateFullColor(
+    data.fullColors,
+    data.lightTemplate,
+    data.lightIndex
+   );
    this.shapeHelper.calculateAOColor(
     data.linearColors,
     data.aoTemplate,

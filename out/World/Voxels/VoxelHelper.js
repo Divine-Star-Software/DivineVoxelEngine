@@ -10,6 +10,9 @@ export class VoxelHelper {
         this.textureManager = textureManager;
         this.voxelManager = voxelManager;
     }
+    calculateVoxelLight(data, voxel) {
+        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.voxelPallete, data.lightTemplate, data.exposedFaces, data.chunkX, data.chunkZ, data.x, data.y, data.z);
+    }
     calculateVoxelAO(data, voxel) {
         if (data.exposedFaces[0]) {
             BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.chunkVoxels, data.aoTemplate, data.chunkX, data.chunkZ, data.x, data.y, data.z, "top");

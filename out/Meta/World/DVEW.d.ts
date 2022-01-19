@@ -1,3 +1,4 @@
+import type { Util } from "Global/Util.helper";
 import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
 import type { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
 import type { VoxelPallet } from "Meta/WorldData/World.types";
@@ -12,6 +13,7 @@ export interface DVEW {
     worldData: WorldDataInterface;
     worldGeneration: WorldGenerationInterface;
     builderManager: BuilderManagerInterface;
+    UTIL: Util;
     $INIT(data: {
         voxelPalletMode: "per-chunk" | "global";
         globalVoxelPallet?: VoxelPallet;

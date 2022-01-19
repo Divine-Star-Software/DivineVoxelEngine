@@ -1,6 +1,6 @@
 import type { Util } from "Global/Util.helper";
 import { TextureManagerInterface } from "../Textures/TextureManager.interface";
-import { VoxelAOCalcData, VoxelInteface } from "./Voxel.types";
+import type { VoxelAOCalcData, VoxelInteface, VoxelLightCalcData } from "./Voxel.types";
 
 /**# Voxel Helper
  * ---
@@ -11,4 +11,5 @@ export interface VoxelHelperInterface {
 
  textureManager: TextureManagerInterface;
  calculateVoxelAO(data: VoxelAOCalcData, voxel : VoxelInteface): void;
+ calculateVoxelLight(data: VoxelLightCalcData, voxel : VoxelInteface): void;
 }

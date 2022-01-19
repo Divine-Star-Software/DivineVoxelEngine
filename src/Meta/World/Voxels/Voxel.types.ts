@@ -24,6 +24,17 @@ export type VoxelSubstanceType =
  z: number;
 }
 
+export type VoxelLightCalcData ={  exposedFaces: number[];
+    voxelPallete : VoxelPallet;
+    voxelData : any[];
+    lightTemplate: number[];
+    chunkX: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+   }
+
 export type VoxelUVCalcData ={  exposedFaces: number[];
     chunkVoxels: any[][][];
     aoTemplate: number[];
@@ -80,6 +91,7 @@ export interface VoxelInteface {
  ): void;
 
  getAO(data: VoxelAOCalcData): void;
+ getLight(data : VoxelLightCalcData) : void;
 
  getShapeId(voxelData: any[]): number;
 }

@@ -8,7 +8,7 @@ export class DreamGrassBlock {
         shapeId: "Box",
         id: "dve:dreamgrassblock",
         substance: "solid",
-        defaultState: ["dve:dreamgrassblock", 0]
+        defaultState: ["dve:dreamgrassblock", 0],
     };
     hooks = {};
     trueShapeId = 0;
@@ -38,5 +38,8 @@ export class DreamGrassBlock {
     }
     getAO(data) {
         this.voxelHelper.calculateVoxelAO(data, this);
+    }
+    getLight(data) {
+        this.voxelHelper.calculateVoxelLight(data, this);
     }
 }

@@ -15,7 +15,7 @@ export class MagmaMaterial {
         BABYLON.Effect.ShadersStore["magmaFragmentShader"] =
             this.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
         const shaderMaterial = new BABYLON.ShaderMaterial("magma", scene, "magma", {
-            attributes: ["position", "normal", "myuvs", "colors"],
+            attributes: ["position", "normal", "cuv3", "colors"],
             uniforms: [
                 "world",
                 "view",

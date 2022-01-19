@@ -44,4 +44,7 @@ export class DebugBox {
     getAO(data) {
         this.voxelHelper.calculateVoxelAO(data, this);
     }
+    getLight(data) {
+        this.voxelHelper.calculateVoxelLight(data, this);
+    }
 }

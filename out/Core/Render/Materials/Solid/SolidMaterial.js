@@ -15,7 +15,7 @@ export class SolidMaterial {
         BABYLON.Effect.ShadersStore["solidFragmentShader"] =
             this.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
         const shaderMaterial = new BABYLON.ShaderMaterial("solid", scene, "solid", {
-            attributes: ["position", "normal", "myuvs", "colors"],
+            attributes: ["position", "normal", "cuv3", "linearcColors", "colors", "fullcolors"],
             uniforms: [
                 "world",
                 "view",

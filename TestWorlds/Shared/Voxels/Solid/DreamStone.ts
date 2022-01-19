@@ -1,19 +1,20 @@
 import type {
-  VoxelAOCalcData,
+ VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
+ VoxelLightCalcData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
 
 export class Dreamestone implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
- data  = <VoxelData>{
-   name: "Dream Stone",
-   shapeId: "Box",
-   id: "dve:dreamstone",
-   substance:  "solid",
-   defaultState : ["dve:dreamstone",0]
-  };
+ data = <VoxelData>{
+  name: "Dream Stone",
+  shapeId: "Box",
+  id: "dve:dreamstone",
+  substance: "solid",
+  defaultState: ["dve:dreamstone", 0],
+ };
  hooks = {};
  trueShapeId = 0;
  getShapeId(voxelData: any[]): number {
@@ -21,11 +22,11 @@ export class Dreamestone implements VoxelInteface {
  }
  getUVs(
   uvs: number[],
-  chunkX : number,
-  chunkZ : number,
+  chunkX: number,
+  chunkZ: number,
   voxelExposedFaceEncodedBit: number,
   voxelData: any[]
-): void {
+ ): void {
   let topUV = this.voxelHelper.textureManager.getTextureUV(
    "solid",
    "dreamstone",
@@ -73,7 +74,9 @@ export class Dreamestone implements VoxelInteface {
   }
  }
  getAO(data: VoxelAOCalcData): void {
-  this.voxelHelper.calculateVoxelAO(data,this);
+  this.voxelHelper.calculateVoxelAO(data, this);
  }
-
+ getLight(data: VoxelLightCalcData): void {
+  this.voxelHelper.calculateVoxelLight(data, this);
+ }
 }

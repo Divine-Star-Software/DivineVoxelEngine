@@ -4,7 +4,7 @@ export type ChunkTemplate = {
     faceTemplate: number[];
     uvTemplate: number[];
     shapeTemplate: number[];
-    ligtTemplate: number[];
+    lightTemplate: number[];
     aoTemplate: number[];
    };
    

@@ -1,12 +1,17 @@
 import type { ChunkVoxels, ChunkData } from "Meta/WorldData/World.types.js";
 import { GetRealtiveVoxelData } from "./Functions/GetVoxelData.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
+import { InfoByte } from "Global/Util/InfoByte.js";
 export declare class WorldData {
-    private DVEW;
+    DVEW: DivineVoxelEngineWorld;
     renderDistance: number;
     private chunkProccesor;
     chunks: Record<number, Record<number, ChunkData>>;
     getRealtiveVoxelData: typeof GetRealtiveVoxelData;
+    calculdateVoxelLight: typeof CalculateVoxelLight;
+    voxelLightMixCalc: typeof VoxelLightMixCalc;
+    infoByte: InfoByte;
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;

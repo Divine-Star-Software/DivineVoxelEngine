@@ -94,4 +94,21 @@ export class TextureCreator {
   }
   return combinedImagedata;
  }
+
+
+ getTextureBuffer(imgPath : string, width : number,height : number) {
+    const self = this;
+    const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
+     const loadedImage = new Image();
+     loadedImage.src = imgPath;
+     loadedImage.onload = function () {
+      self.context.drawImage(loadedImage, 0, 0, width, height);
+      const imgData = self.context.getImageData(0, 0, width, height);
+      resolve(imgData.data);
+      self.context.clearRect(0,0,width,height);
+     };
+    });
+  
+    return prom;
+ }
 }

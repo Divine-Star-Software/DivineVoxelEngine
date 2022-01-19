@@ -2,6 +2,7 @@ import type {
  VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
+ VoxelLightCalcData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
 
@@ -86,5 +87,8 @@ export class DreamStonePillar implements VoxelInteface {
 
  getAO(data: VoxelAOCalcData): void {
   this.voxelHelper.calculateVoxelAO(data, this);
+ }
+ getLight(data: VoxelLightCalcData): void {
+  this.voxelHelper.calculateVoxelLight(data, this);
  }
 }

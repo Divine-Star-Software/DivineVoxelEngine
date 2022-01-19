@@ -6,8 +6,10 @@ export const magmaShaders = {
     // Attributes
     attribute vec3 position;
     attribute vec3 normal;
-    attribute vec3 myuvs;
+    attribute vec3 cuv3;
     attribute vec4 colors;
+    attribute vec4 fullcolors;
+
     // Uniforms
     uniform mat4 worldViewProjection;
     uniform mat4 world;                    
@@ -20,7 +22,7 @@ export const magmaShaders = {
     varying vec3 vUV;
     varying vec3 vNormal;
     varying vec4 vColors;
-   
+    varying vec4 fColors;
    
    
     varying float fFogDistance;
@@ -33,9 +35,10 @@ export const magmaShaders = {
          vec4 worldPosition = world * vec4(position, 1.0);
          fFogDistance = (view * worldPosition).z;
          gl_Position = worldViewProjection * vec4(position, 1.0); 
-         animIndex = getUVFace(myuvs.z);
-         vUV = myuvs;
+         animIndex = getUVFace(cuv3.z);
+         vUV = cuv3;
          vColors = colors;
+         fColors = fullcolors;
          vNormal = normal;
      }
     
@@ -49,6 +52,7 @@ export const magmaShaders = {
    
     varying vec3 vUV;
     varying vec4 vColors;
+    varying vec4 fColors;
     varying vec3 vNormal;
    
     varying float animIndex;
@@ -69,10 +73,17 @@ export const magmaShaders = {
 
         //mix with supplied vertex colors
         vec4 mixVertex = mix(rgb, vColors , 1.0);
+
+
+
         //apply to texture color
         vec4 newBase = rgb * mixVertex;
+        vec4 newBase2 = newBase * fColors;
 
-        vec4 mixLight  = newBase * baseLightColor;
+        vec4 mixLight  = newBase2 * baseLightColor;
+  //  vec4 mixLight = mix(newBase, fColors * baseLightColor , 1.0);
+
+
 
         float fog = CalcFogFactor();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;

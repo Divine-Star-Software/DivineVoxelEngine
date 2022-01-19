@@ -15,7 +15,7 @@ export class ShapeManager {
 
  getShape(shapeId : number) {
      if(!this.shapes[shapeId]) {
-         console.log(`%sfuck ${shapeId}`,"font-size:20px; color: red;")
+         console.log(`%${shapeId}`,"font-size:20px; color: red;")
      }
      return this.shapes[shapeId];
  }

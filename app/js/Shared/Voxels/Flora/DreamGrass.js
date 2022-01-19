@@ -22,4 +22,7 @@ export class DreamGrass {
     getAO(data) {
         data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);
     }
+    getLight(data) {
+        this.voxelHelper.calculateVoxelLight(data, this);
+    }
 }

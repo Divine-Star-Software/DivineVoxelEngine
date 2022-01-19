@@ -13,7 +13,7 @@ export class FluidMesh {
         // chunkVertexData.normals = calculatedNormals;
         // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
         chunkVertexData.applyToMesh(this.mesh, true);
-        this.mesh.setVerticesData("myuvs", uvs, false, 3);
+        this.mesh.setVerticesData("cuv3", uvs, false, 3);
         this.mesh.setVerticesData("colors", linearcColors, false, 4);
         /*   this.mesh.unfreezeWorldMatrix();
           //Babylon throws an error but this functions works
@@ -41,7 +41,7 @@ export class FluidMesh {
         chunkVertexData.indices = indicies;
         chunkVertexData.normals = calculatedNormals;
         chunkVertexData.applyToMesh(this.mesh, true);
-        this.mesh.setVerticesData("myuvs", uvs, false, 3);
+        this.mesh.setVerticesData("cuv3", uvs, false, 3);
         this.mesh.setVerticesData("colors", linearColors, false, 4);
         this.mesh.material = this.material.getMaterial();
         this.mesh.freezeWorldMatrix();

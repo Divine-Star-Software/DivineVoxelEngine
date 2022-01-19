@@ -34,7 +34,7 @@ export class FluidMaterial {
   BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
    this.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
   const shaderMaterial = new BABYLON.ShaderMaterial("fluid", scene, "fluid", {
-   attributes: ["position", "normal", "myuvs", "colors"],
+   attributes: ["position", "normal", "cuv3", "colors"],
    uniforms: [
     "world",
     "view",

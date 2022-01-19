@@ -1,12 +1,17 @@
 import { GetRealtiveVoxelData } from "./Functions/GetVoxelData.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 export class WorldData {
     DVEW;
     renderDistance = 20;
     chunkProccesor;
     chunks = {};
     getRealtiveVoxelData = GetRealtiveVoxelData;
+    calculdateVoxelLight = CalculateVoxelLight;
+    voxelLightMixCalc = VoxelLightMixCalc;
+    infoByte;
     constructor(DVEW) {
         this.DVEW = DVEW;
+        this.infoByte = this.DVEW.UTIL.getInfoByte();
     }
     getCurrentWorldDataSize() {
         const data = JSON.stringify(this.chunks);

@@ -1,5 +1,84 @@
+import { VoxelInteface } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import type { WorldGen } from "../WorldGen/WorldGen";
+
+function visitAll(
+ gx0: number,
+ gy0: number,
+ gz0: number,
+ gx1: number,
+ gy1: number,
+ gz1: number
+ // visitor: (x: number, y: number, z: number) => {}
+) {
+ const positons = [];
+ var gx0idx = Math.floor(gx0);
+ var gy0idx = Math.floor(gy0);
+ var gz0idx = Math.floor(gz0);
+
+ var gx1idx = Math.floor(gx1);
+ var gy1idx = Math.floor(gy1);
+ var gz1idx = Math.floor(gz1);
+
+ var sx = gx1idx > gx0idx ? 1 : gx1idx < gx0idx ? -1 : 0;
+ var sy = gy1idx > gy0idx ? 1 : gy1idx < gy0idx ? -1 : 0;
+ var sz = gz1idx > gz0idx ? 1 : gz1idx < gz0idx ? -1 : 0;
+
+ var gx = gx0idx;
+ var gy = gy0idx;
+ var gz = gz0idx;
+
+ //Planes for each axis that we will next cross
+ var gxp = gx0idx + (gx1idx > gx0idx ? 1 : 0);
+ var gyp = gy0idx + (gy1idx > gy0idx ? 1 : 0);
+ var gzp = gz0idx + (gz1idx > gz0idx ? 1 : 0);
+
+ //Only used for multiplying up the error margins
+ var vx = gx1 === gx0 ? 1 : gx1 - gx0;
+ var vy = gy1 === gy0 ? 1 : gy1 - gy0;
+ var vz = gz1 === gz0 ? 1 : gz1 - gz0;
+
+ //Error is normalized to vx * vy * vz so we only have to multiply up
+ var vxvy = vx * vy;
+ var vxvz = vx * vz;
+ var vyvz = vy * vz;
+
+ //Error from the next plane accumulators, scaled up by vx*vy*vz
+ // gx0 + vx * rx === gxp
+ // vx * rx === gxp - gx0
+ // rx === (gxp - gx0) / vx
+ var errx = (gxp - gx0) * vyvz;
+ var erry = (gyp - gy0) * vxvz;
+ var errz = (gzp - gz0) * vxvy;
+
+ var derrx = sx * vyvz;
+ var derry = sy * vxvz;
+ var derrz = sz * vxvy;
+
+ do {
+  //  visitor(gx, gy, gz);
+
+  positons.push(gx, gy, gz);
+  if (gx === gx1idx && gy === gy1idx && gz === gz1idx) break;
+
+  //Which plane do we cross first?
+  var xr = Math.abs(errx);
+  var yr = Math.abs(erry);
+  var zr = Math.abs(errz);
+
+  if (sx !== 0 && (sy === 0 || xr < yr) && (sz === 0 || xr < zr)) {
+   gx += sx;
+   errx += derrx;
+  } else if (sy !== 0 && (sz === 0 || yr < zr)) {
+   gy += sy;
+   erry += derry;
+  } else if (sz !== 0) {
+   gz += sz;
+   errz += derrz;
+  }
+ } while (true);
+ return positons;
+}
 
 function plotLine3d(
  x0: number,
@@ -67,7 +146,7 @@ export class PlayerWatcher {
  cachedChunkZ = 0;
  cachedChunkX = 0;
 
- playerReach = 4;
+ playerReach = 8;
 
  constructor(
   private worldGen: WorldGen,
@@ -95,28 +174,37 @@ export class PlayerWatcher {
    ];
 
    const pAbsX = Math.floor(this.playerABSPositon[0]);
-   const pAbsY = Math.floor(this.playerABSPositon[1]);
+   const pAbsY = Math.floor(this.playerABSPositon[1] + 0.5);
    const pAbsZ = Math.floor(this.playerABSPositon[2]);
 
-   const data = plotLine3d(
+   /*    const data = plotLine3d(
     pAbsX,
     pAbsY,
     pAbsZ,
     Math.floor(pickVector[0]),
     Math.floor(pickVector[1]),
     Math.floor(pickVector[2])
+   ); */
+   const data = visitAll(
+    this.playerABSPositon[0],
+    this.playerABSPositon[1],
+    this.playerABSPositon[2],
+    pickVector[0],
+    pickVector[1],
+    pickVector[2]
    );
    const chunkX = this.playerChunkPosition[0];
    const chunkZ = this.playerChunkPosition[1];
-   let i = 3;
+
+   let i = 0;
+   let closestCalc = 0;
+   let closestIndex = 6;
+
    for (i; i < data.length; i += 3) {
-    const voxelData = this.DVEW.worldData.getRealtiveVoxelData(
-     chunkX,
-     chunkZ,
-     data[i],
-     data[i + 1],
-     data[i + 2]
-    );
+    const x = data[i];
+    const y = data[i + 1];
+    const z = data[i + 2];
+    const voxelData = this.DVEW.worldData.getRealtiveVoxelData(x, y, z);
 
     if (voxelData[0]) {
      break;
@@ -126,22 +214,43 @@ export class PlayerWatcher {
    this.playerPickPosition[1] = data[i + 1];
    this.playerPickPosition[2] = data[i + 2];
 
-   const voxelData = this.DVEW.worldData.getRealtiveVoxelData(
-    chunkX,
-    chunkZ,
+   //below player
+   const belowVoxel = this.DVEW.worldData.getRealtiveVoxelData(
     pAbsX,
     pAbsY,
     pAbsZ,
     0,
-    -1,
+    -2,
     0
    );
-   if(voxelData){
-     this.playerStatesArray[0] = 1;
+   if (belowVoxel) {
+    this.playerStatesArray[0] = 1;
    } else {
     this.playerStatesArray[0] = 0;
    }
 
+   const headVoxel = this.DVEW.worldData.getRealtiveVoxelData(
+    pAbsX,
+    pAbsY,
+    pAbsZ,
+    0,
+    0,
+    0
+   );
+   if (headVoxel) {
+    if (
+     this.DVEW.voxelManager.getVoxel(
+      this.DVEW.worldGeneration.getGlobalVoxelPallet()[headVoxel[0]][0]
+     ).data.substance == "fluid"
+    ) {
+        this.playerStatesArray[1] = 1;
+    } else {
+        this.playerStatesArray[1] = 0;
+    }
+   } else {
+    this.playerStatesArray[1] = 0;
+   }
+/* 
    let movedWest = false;
    let movedEast = false;
    let movedNorth = false;
@@ -213,7 +322,7 @@ export class PlayerWatcher {
    this.cachedChunkX = chunkX;
    this.cachedChunkZ = chunkZ;
    if (moved) {
-   }
-  }, 20);
+   } */
+  }, 10);
  }
 }

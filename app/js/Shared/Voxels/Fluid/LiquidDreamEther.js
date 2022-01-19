@@ -56,4 +56,7 @@ export class LiquidDreamEther {
             data.aoTemplate.push(1, 1, 1, 1);
         }
     }
+    getLight(data) {
+        this.voxelHelper.calculateVoxelLight(data, this);
+    }
 }

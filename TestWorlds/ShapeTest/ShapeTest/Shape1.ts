@@ -117,7 +117,7 @@ export function Shape1(
 
  vertexData.applyToMesh(mesh);
 
- mesh.setVerticesData("myuvs", uvs, false, 3);
+ mesh.setVerticesData("cuv3", uvs, false, 3);
  mesh.setVerticesData("colors", colors, false, 3);
 
  mesh.material = chunkMaterial;

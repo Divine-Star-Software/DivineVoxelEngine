@@ -4,7 +4,7 @@ import { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
 export class FloraMesh implements VoxelMeshInterface {
  constructor(private material: FloraMaterial) {}
 
- rebuildMeshGeometory(
+ async rebuildMeshGeometory(
   mesh: BABYLON.Mesh,
   chunkX: number,
   chunkZ: number,
@@ -19,7 +19,7 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
   chunkVertexData.applyToMesh(mesh, true);
-  mesh.setVerticesData("myuvs", uvs, false, 3);
+  mesh.setVerticesData("cuv3", uvs, false, 3);
   mesh.setVerticesData("colors", linearcColors, false, 4);
   mesh.freezeWorldMatrix();
  }
@@ -32,7 +32,7 @@ export class FloraMesh implements VoxelMeshInterface {
   return mesh;
  }
 
- createMeshGeometory(
+ async createMeshGeometory(
   mesh: BABYLON.Mesh,
   chunkX: number,
   chunkZ: number,
@@ -49,7 +49,7 @@ export class FloraMesh implements VoxelMeshInterface {
 
   chunkVertexData.applyToMesh(mesh, true);
 
-  mesh.setVerticesData("myuvs", uvs, false, 3);
+  mesh.setVerticesData("cuv3", uvs, false, 3);
   mesh.setVerticesData("colors", linearColors, false, 4);
 
   mesh.material = this.material.getMaterial();

@@ -7,8 +7,11 @@ export class Player {
  playerDirectionArray: Float32Array;
  playerPickPosition: Float32Array;
 
+ particleSystem : BABYLON.ParticleSystem;
  playerStatesArray: Uint8Array;
-
+ normalFog = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
+ fluidFog = new BABYLON.Color3(150 / 255, 0 / 255, 150 / 255);
+ scene: BABYLON.Scene;
  cachedVelocity = new BABYLON.Vector3();
 
  active = true;
@@ -20,7 +23,7 @@ export class Player {
  hitbox: BABYLON.Mesh;
  jumped = false;
  jumping = false;
- jumpTime = 4;
+ jumpTime = 16;
  speed = 0.1;
  moveForward = false;
  moveBackward = false;
@@ -46,7 +49,7 @@ export class Player {
   const chunkPositionArrayBuffer = new SharedArrayBuffer(8);
   const playerDirectionArrayBuffer = new SharedArrayBuffer(12);
   const playerPickPositionArrayBuffer = new SharedArrayBuffer(12);
-  const playerStatesArrayBuffer = new SharedArrayBuffer(1);
+  const playerStatesArrayBuffer = new SharedArrayBuffer(10);
   this.absPositionArray = new Float32Array(absPositionArrayBuffer);
   this.chunkPositionArray = new Float32Array(chunkPositionArrayBuffer);
   this.playerDirectionArray = new Float32Array(playerDirectionArrayBuffer);
@@ -139,6 +142,22 @@ export class Player {
  async update() {
   if (!this.ready || !this.active) return;
   if (this.DVE.meshManager.runningUpdate) return;
+  if (this.playerStatesArray[1]) {
+   this.scene.fogDensity = 0.6;
+   this.scene.fogColor = this.fluidFog;
+   if(!this.particleSystem.isStarted()){
+   this.particleSystem.start();
+   this.particleSystem.renderingGroupId = 2;
+   }
+  } else {
+   this.scene.fogDensity = 0.008;
+   this.scene.fogColor = this.normalFog;
+   this.particleSystem.renderingGroupId = 0;
+   if(!this.particleSystem.isStopping()){
+    this.particleSystem.stop();
+    }
+
+  }
   // console.log(this.playerPickPosition);
 
   const direction = this.camera.getDirection(this.forward);
@@ -153,12 +172,12 @@ export class Player {
   this.playerCube.position.z = this.playerPickPosition[2] + 0.5;
   // console.log(this.camera.getDirection(this.forward));
 
-  const x = Math.floor(this.hitbox.position.x);
+  const x = Math.round(this.hitbox.position.x);
   //  const y = Math.floor(this.hitbox.position.y);
-  const z = Math.floor(this.hitbox.position.z);
+  const z = Math.round(this.hitbox.position.z);
 
   this.absPositionArray[0] = this.hitbox.position.x;
-  this.absPositionArray[1] = this.hitbox.position.y;
+  this.absPositionArray[1] = this.hitbox.position.y + 0.5;
   this.absPositionArray[2] = this.hitbox.position.z;
 
   const chunk = this.calculateGameZone(x, z);
@@ -166,182 +185,98 @@ export class Player {
   this.chunkPositionArray[1] = chunk[1];
 
   if (this.jumping) {
-   this.velocity.y -= 0.05;
    if (this.jumpCount == 0) {
     this.jumpCount = this.jumpTime;
     this.jumping = false;
    } else {
+    this.velocity.y += 0.08;
     this.jumpCount--;
    }
   } else {
    this.velocity.y = -0.3;
   }
-
-  if (this.checkDownCollision) {
-   if (this.playerStatesArray[0]) {
-    this.jumped = false;
-   }
-
-   this.checkDownCollision = false;
+  if (this.playerStatesArray[0]) {
+   this.jumped = false;
   }
+ }
 
-/*   const camRay = this.camera.getForwardRay(6, undefined, this.hitbox.position);
+ _doAction(action: "break" | "place") {
+  const position = new BABYLON.Vector3(
+   this.hitbox.position.x,
+   this.hitbox.position.y + 0.5,
+   this.hitbox.position.z
+  );
+  const camRay = this.camera.getForwardRay(6, undefined, position);
   this.camRay = camRay;
 
   const camPick = this.hitbox.getScene().pickWithRay(this.camRay);
 
   if (camPick) {
    if (camPick.hit) {
-    const point = camPick.pickedPoint;
-    if (point && camPick.pickedMesh && camPick.faceId !== undefined) {
-     const x = Math.floor(point.x);
-     const y = Math.floor(point.y);
-     const z = Math.floor(point.z);
-     
-     if (!this.playerCube.isVisible) {
-      this.playerCube.isVisible = true;
-     }
+    if (camPick.pickedMesh && camPick.faceId !== undefined) {
+     const x = Math.floor(this.playerCube.position.x);
+     const y = Math.floor(this.playerCube.position.y);
+     const z = Math.floor(this.playerCube.position.z);
 
-     this.lookingAtBlock = true; 
-     //   this.playerCube.position.z = z + 0.5;
-
-     let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
-     try {
-      normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-      //   console.log(normal);
+     if (action == "break") {
+      this.blockLookingAtPosition.x = x;
+      this.blockLookingAtPosition.y = y;
+      this.blockLookingAtPosition.z = z;
       return;
+     }
+     if (action == "place") {
+      console.log(x, y, z);
+      let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
+      normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
       //  console.log(normal);
       if (normal.x == 1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x - 0.4;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x - 1;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
+       this.blockLookingAtPosition.x = x + 1;
+       this.blockLookingAtPosition.y = y;
+       this.blockLookingAtPosition.z = z;
+
        return;
       }
       if (normal.x == -1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x + 0.4;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x - 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x - 1;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
+       this.blockLookingAtPosition.x = x - 1;
+       this.blockLookingAtPosition.y = y;
+       this.blockLookingAtPosition.z = z;
+
        return;
       }
       if (normal.z == 1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z - 0.4;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z - 1;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
+       this.blockLookingAtPosition.x = x;
+       this.blockLookingAtPosition.y = y;
+       this.blockLookingAtPosition.z = z + 1;
+
        return;
       }
       if (normal.z == -1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.4;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z - 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z - 1;
-       }
+       this.blockLookingAtPosition.x = x;
+       this.blockLookingAtPosition.y = y;
+       this.blockLookingAtPosition.z = z - 1;
 
        return;
       }
       if (normal.y == 1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y - 0.4;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y - 1;
-        this.blockLookingAtPosition.z = z;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
+       this.blockLookingAtPosition.x = x;
+       this.blockLookingAtPosition.y = y + 1;
+       this.blockLookingAtPosition.z = z;
+
        return;
       }
       if (normal.y == -1) {
-       if (this.breaking) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y + 0.4;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y;
-        this.blockLookingAtPosition.z = z;
-       }
-       if (this.placing) {
-        this.playerCube.position.x = x + 0.5;
-        this.playerCube.position.y = y - 0.5;
-        this.playerCube.position.z = z + 0.5;
-        this.blockLookingAtPosition.x = x;
-        this.blockLookingAtPosition.y = y - 1;
-        this.blockLookingAtPosition.z = z;
-       }
+       this.blockLookingAtPosition.x = x;
+       this.blockLookingAtPosition.y = y - 1;
+       this.blockLookingAtPosition.z = z;
+
        return;
       }
-     } catch (error: any) {
-      //  console.log(normal);
-      //   console.log(error);
      }
 
-     this.blockLookingAtPosition.z = z;
      //    console.log(this.blockLookingAtPosition);
     }
-   } else {
-    // this.lookingAtBlock = false;
-    // this.playerCube.isVisible = false;
    }
-  } */
-
-
-
+  }
  }
 
  _setUpPlayerCube() {
@@ -353,7 +288,7 @@ export class Player {
   cubeMaterial.alpha = 0.3;
   const cube = BABYLON.MeshBuilder.CreateBox(
    "playerblockdisplay",
-   { size: 1 },
+   { size: 1.1 },
    this.hitbox.getScene()
   );
   cube.isPickable = true;
@@ -365,7 +300,11 @@ export class Player {
 
   cube.convertToFlatShadedMesh();
   cube.updateFacetData();
-
+  const positions = cube.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+  const indicies = cube.getIndices();
+  const calculatedNormals: number[] = [];
+  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+  cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
   this.playerCube = cube;
  }
 
@@ -402,12 +341,70 @@ export class Player {
   crossHairHorizontal.renderingGroupId = 2;
  }
 
+ async _createParticleSystem(scene: BABYLON.Scene) {
+  const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+ this.particleSystem = particleSystem;
+  const buffer = await this.DVE.renderManager.textureCreator.getTextureBuffer(
+   "assets/particlesystems/1.png",
+   8,
+   8
+  );
+
+  //Texture of each particle
+  particleSystem.particleTexture = new BABYLON.RawTexture(
+   new Uint8Array(buffer),
+   8,
+   8,
+   1,
+   scene,
+   false,
+   false,
+   BABYLON.Texture.NEAREST_SAMPLINGMODE
+  );
+
+  particleSystem.isLocal = true;
+  particleSystem.renderingGroupId = 0;
+
+  // Colors of all particles
+  particleSystem.color1 = new BABYLON.Color4(150 / 255, 0 / 255, 150 / 255);
+  particleSystem.color2 = new BABYLON.Color4(150 / 255, 0 / 255, 150 / 255);
+  particleSystem.colorDead = new BABYLON.Color4(150 / 255, 0 / 255, 150 / 255);
+
+  // Size of each particle (random between...
+  particleSystem.minSize = 0.001;
+  particleSystem.maxSize = 0.005;
+
+  // Life time of each particle (random between...
+  particleSystem.minLifeTime = 0.3;
+  particleSystem.maxLifeTime = 1.5;
+
+  // Emission rate
+  particleSystem.emitRate = 200;
+
+  // Speed
+  particleSystem.minEmitPower = 1;
+  particleSystem.maxEmitPower = 3;
+  particleSystem.updateSpeed = 0.005;
+  particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+  // Set the gravity of all particles
+  particleSystem.gravity = new BABYLON.Vector3(-1, 0, 0);
+
+  // Start the particle system
+
+  particleSystem.emitter = this.hitbox;
+ }
+
  createPlayer(scene: BABYLON.Scene, camera: BABYLON.FreeCamera) {
+  this.scene = scene;
+
   this.hitbox = BABYLON.MeshBuilder.CreateBox(
    "player-hitbox",
    { width: 0.7, height: 2, depth: 0.7 },
    scene
   );
+
+  this._createParticleSystem(scene);
 
   this.camera = camera;
   // this.camera.position.y = 1;
@@ -419,7 +416,7 @@ export class Player {
   this.hitbox.position.x = -56;
 
   this.hitbox.position.z = -56;
-  this.hitbox.position.y = 200;
+  this.hitbox.position.y = 300;
 
   this.bottomRay = new BABYLON.Ray(
    new BABYLON.Vector3(0, 0, 0),
@@ -433,59 +430,27 @@ export class Player {
    new BABYLON.Vector3(0, -0.5, 0)
   );
 
-  this.hitbox.onCollideObservable.add((event, state) => {
-   if (this.jumped && !this.jumping) {
-    this.checkDownCollision = true;
-   }
-  });
-
   const camNode = new BABYLON.TransformNode("camnode", scene);
   camera.parent = camNode;
+  camNode.position.y = 0.5;
   camNode.parent = this.hitbox;
 
   this._setUpPlayerCube();
   this._setUpPlayerCamera();
 
   document.addEventListener("click", (event: MouseEvent) => {
-   if (!this.active) return;
    if (event.button == 2) {
-    if (!this.placing) return;
-    if (this.lookingAtBlock) {
-     const x = Math.floor(this.hitbox.position.x);
-     const y = Math.floor(this.hitbox.position.y);
-     const z = Math.floor(this.hitbox.position.z);
+    this._doAction("place");
 
-     if (
-      x != this.blockLookingAtPosition.x ||
-      (y != this.blockLookingAtPosition.y &&
-       y != this.blockLookingAtPosition.y + 1) ||
-      this.blockLookingAtPosition.z != z
-     ) {
-      this.DVE.world.requestWorldUpdate(
-       "block-add",
-       this.blockLookingAtPosition
-      );
-     }
-
-     //need to create into a promise to make sure not too many updates are set at once
-     this.active = false;
-     setTimeout(() => {
-      this.active = true;
-     }, 50);
-    }
+    this.DVE.world.requestWorldUpdate("block-add", this.blockLookingAtPosition);
    }
-   if (event.button == 0) {
-    if (!this.breaking) return;
-    const x = Math.floor(this.hitbox.position.x);
-    const y = Math.floor(this.hitbox.position.y - 1);
-    const z = Math.floor(this.hitbox.position.z);
 
-    if (this.lookingAtBlock) {
-     this.DVE.world.requestWorldUpdate(
-      "block-remove",
-      this.blockLookingAtPosition
-     );
-    }
+   if (event.button == 0) {
+    this._doAction("break");
+    this.DVE.world.requestWorldUpdate(
+     "block-remove",
+     this.blockLookingAtPosition
+    );
    }
   });
 
@@ -518,10 +483,10 @@ export class Player {
       this.moveRight = true;
       break;
      case " ":
-      if (!this.jumped && !this.jumping && this.velocity.y <= -0.3) {
+      if (this.playerStatesArray[0] && !this.jumping) {
        this.jumped = true;
        this.jumping = true;
-       this.velocity.y = 0.18;
+       this.velocity.y += 0.08;
       }
       break;
     }

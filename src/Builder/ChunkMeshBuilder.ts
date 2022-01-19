@@ -27,12 +27,13 @@ export class ChunkMeshBuilder {
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
-  const colors: number[] = [];
-
-
+  const linearColors: number[] = [];
+  const fullColors: number[] = [];
+//console.log(lightTemplate);
 
   let indicieIndex = 0;
   let aoIndex = 0;
+  let lightIndex = 0;
   let uvIndex = 0;
   let faceIndex = 0;
   let shapeIndex = 0;
@@ -51,15 +52,15 @@ export class ChunkMeshBuilder {
    const newIndexes = shape.addToChunkMesh({
     positions: positions,
     indices: indices,
-    fullColors: [],
-    linearColors: colors,
+    fullColors: fullColors,
+    linearColors: linearColors,
     uvs: uvs,
     face: faceTemplate[faceIndex],
     indicieIndex: indicieIndex,
     unTemplate: uvTemplate,
     uvTemplateIndex: uvIndex,
-    lightTemplate: aoTemplate,
-    lightIndex: 0,
+    lightTemplate: lightTemplate,
+    lightIndex: lightIndex,
     aoTemplate: aoTemplate,
     aoIndex: aoIndex,
     position: { x: x, y: y, z: z },
@@ -67,6 +68,7 @@ export class ChunkMeshBuilder {
    indicieIndex = newIndexes.newIndicieIndex;
    aoIndex = newIndexes.newAOIndex;
    uvIndex = newIndexes.newUVTemplateIndex;
+   lightIndex = newIndexes.newLightIndex;
    shapeIndex++;
    faceIndex++;
   }
@@ -74,8 +76,8 @@ export class ChunkMeshBuilder {
 
   const positionArray = new Float32Array(positions);
   const indiciesArray = new Int32Array(indices);
-  const linearColorsArray = new Float32Array(colors);
-  const fullColorsArray = new Float32Array(colors);
+  const linearColorsArray = new Float32Array(linearColors);
+  const fullColorsArray = new Float32Array(fullColors);
   const uvArray = new Float32Array(uvs);
 
   //@ts-ignore

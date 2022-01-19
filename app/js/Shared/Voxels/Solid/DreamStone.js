@@ -8,7 +8,7 @@ export class Dreamestone {
         shapeId: "Box",
         id: "dve:dreamstone",
         substance: "solid",
-        defaultState: ["dve:dreamstone", 0]
+        defaultState: ["dve:dreamstone", 0],
     };
     hooks = {};
     trueShapeId = 0;
@@ -43,5 +43,8 @@ export class Dreamestone {
     }
     getAO(data) {
         this.voxelHelper.calculateVoxelAO(data, this);
+    }
+    getLight(data) {
+        this.voxelHelper.calculateVoxelLight(data, this);
     }
 }

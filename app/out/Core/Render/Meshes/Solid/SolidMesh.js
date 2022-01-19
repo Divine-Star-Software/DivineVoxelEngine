@@ -3,14 +3,15 @@ export class SolidMesh {
     constructor(material) {
         this.material = material;
     }
-    rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
+    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("myuvs", uvs, false, 3);
-        mesh.setVerticesData("colors", linearcColors, false, 4);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
+        mesh.setVerticesData("linearcColors", linearColors, false, 4);
+        mesh.setVerticesData("fullcolors", fullColors, false, 4);
         mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
@@ -20,13 +21,15 @@ export class SolidMesh {
         mesh.checkCollisions = true;
         return mesh;
     }
-    createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
+    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
+        // chunkVertexData.colors = linearColors;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("myuvs", uvs, false, 3);
-        mesh.setVerticesData("colors", linearColors, false, 4);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
+        mesh.setVerticesData("linearcColors", linearColors, false, 4);
+        mesh.setVerticesData("fullcolors", fullColors, false, 4);
         mesh.material = this.material.getMaterial();
         mesh.freezeWorldMatrix();
         return mesh;

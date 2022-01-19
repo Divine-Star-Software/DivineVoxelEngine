@@ -27,7 +27,7 @@ export class FluidMesh   {
  // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.applyToMesh(this.mesh, true);
 
-  this.mesh.setVerticesData("myuvs", uvs, false, 3);
+  this.mesh.setVerticesData("cuv3", uvs, false, 3);
   this.mesh.setVerticesData("colors", linearcColors, false, 4);
 
 /*   this.mesh.unfreezeWorldMatrix();
@@ -72,7 +72,7 @@ export class FluidMesh   {
 
   chunkVertexData.applyToMesh(this.mesh, true);
 
-  this.mesh.setVerticesData("myuvs", uvs, false, 3);
+  this.mesh.setVerticesData("cuv3", uvs, false, 3);
   this.mesh.setVerticesData("colors", linearColors, false, 4);
 
   this.mesh.material = this.material.getMaterial();

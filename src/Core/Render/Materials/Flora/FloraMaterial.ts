@@ -32,7 +32,7 @@ export class FloraMaterial {
    this.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
 
   const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
-   attributes: ["position", "normal", "myuvs", "colors"],
+   attributes: ["position", "normal", "cuv3", "colors"],
    uniforms: [
     "world",
     "view",

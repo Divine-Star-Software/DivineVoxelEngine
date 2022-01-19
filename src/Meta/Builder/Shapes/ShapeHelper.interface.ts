@@ -10,5 +10,9 @@ export interface ShapeHelperInterface {
  ): void;
 
  
-
+ calculateFullColor(
+    fullColors: number[],
+    fullColorTemplate: Float32Array,
+    startIndex: number
+   ): void;
 }

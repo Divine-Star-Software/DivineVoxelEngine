@@ -1,4 +1,13 @@
 ##### Change Log
+1-18-2022
+- Started implementing the lighting system. Meshes use the color set called 'full colors' to colorize. 
+- Added some effects for when the player is in the fluid for the world test. 
+- Added new test world just for lighting.
+
+1-17-2022
+- Normals and facet data are no longar calculated or stored on all of the voxel meshes
+- Implemented a new method for voxel picking for the player example. 
+
 
 1-15-2022
 - Added ocean test world.

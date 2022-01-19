@@ -18,6 +18,17 @@ export declare type VoxelAOCalcData = {
     y: number;
     z: number;
 };
+export declare type VoxelLightCalcData = {
+    exposedFaces: number[];
+    voxelPallete: VoxelPallet;
+    voxelData: any[];
+    lightTemplate: number[];
+    chunkX: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+};
 export declare type VoxelUVCalcData = {
     exposedFaces: number[];
     chunkVoxels: any[][][];
@@ -63,5 +74,6 @@ export interface VoxelInteface {
      */
     getUVs(uvs: number[], chunkX: number, chunkZ: number, voxelExposedFaceEncodedBit: number, voxelData: any[]): void;
     getAO(data: VoxelAOCalcData): void;
+    getLight(data: VoxelLightCalcData): void;
     getShapeId(voxelData: any[]): number;
 }

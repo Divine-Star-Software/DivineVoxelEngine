@@ -71,7 +71,7 @@ export class ChunkMaterial {
         // Attributes
         attribute vec3 position;
         attribute vec3 normal;
-        attribute vec3 myuvs;
+        attribute vec3 cuv3;
         attribute vec4 colors;
         // Uniforms
         uniform mat4 worldViewProjection;
@@ -118,8 +118,8 @@ export class ChunkMaterial {
             gl_Position = worldViewProjection * vec4(position, 1.0); 
 
 
-            animIndex = getUVFace(myuvs.z);
-            vUV = myuvs;
+            animIndex = getUVFace(cuv3.z);
+            vUV = cuv3;
             vColors = colors;
             vNormal = normal;
         }
@@ -202,7 +202,7 @@ export class ChunkMaterial {
         }
         `;
         const shaderMaterial = new BABYLON.ShaderMaterial("a", this.scene, "a", {
-            attributes: ["position", "normal", "myuvs", "colors"],
+            attributes: ["position", "normal", "cuv3", "colors"],
             uniforms: [
                 "world",
                 "view",
