@@ -16,7 +16,7 @@ export declare class BuilderManager {
     setMainThreadCom(worker: Worker): void;
     addFluidBuilder(port: MessagePort): void;
     addBuilder(port: MessagePort): void;
-    requestChunkBeRemoved(chunkX: number, chunkZ: number): void;
+    requestFullChunkBeRemoved(chunkX: number, chunkZ: number): void;
     requestFluidMeshBeReBuilt(): void;
-    requestFullChunkBeBuilt(chunkX: number, chunkZ: number, template: FullChunkTemplate): void;
+    requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
 }

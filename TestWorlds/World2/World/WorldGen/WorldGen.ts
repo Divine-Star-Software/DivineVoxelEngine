@@ -1,5 +1,5 @@
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
-import { ChunkData } from "../../../../out/Meta/WorldData/World.types";
+import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types"
 export class WorldGen {
  constructor(public DVEW: DVEW) {}
 
@@ -116,7 +116,9 @@ export class WorldGen {
    returnChunk[15][0][topY] = [dreamstone, 1, 1];
   }
   return {
-   voxels: returnChunk,
-  };
+    voxels: returnChunk,
+    maxMinHeight: [],
+    heightMap: [],
+   };
  }
 }

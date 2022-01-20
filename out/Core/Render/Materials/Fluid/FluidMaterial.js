@@ -35,6 +35,7 @@ export class FluidMaterial {
         });
         shaderMaterial.fogEnabled = true;
         texture.hasAlpha = true;
+        shaderMaterial.alpha = 0.7;
         shaderMaterial.setTexture("arrayTex", texture);
         shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
         // shaderMaterial.backFaceCulling = false;

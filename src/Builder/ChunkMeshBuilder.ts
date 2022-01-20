@@ -16,6 +16,7 @@ export class ChunkMeshBuilder {
  buildChunkMesh(
   chunkType : number,
   chunkX : number,
+  chunkY : number,
   chunkZ : number,
   positionsTemplate: Uint16Array,
   faceTemplate: Uint8Array,
@@ -85,6 +86,7 @@ export class ChunkMeshBuilder {
    [
     chunkType,
     chunkX,
+    chunkY,
     chunkZ,
     positionArray.buffer,
     indiciesArray.buffer,

@@ -170,6 +170,8 @@ export class WorldGen {
         }
         return {
             voxels: returnChunk,
+            maxMinHeight: [],
+            heightMap: [],
         };
     }
 }

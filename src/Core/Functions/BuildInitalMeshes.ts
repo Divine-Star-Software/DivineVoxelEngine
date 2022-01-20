@@ -9,8 +9,9 @@ export async function BuildInitalMeshes(
  }
 
  await DVE.renderManager.textureCreator.setUpImageCreation();
+ DVE.meshManager.setScene(scene);
 
-// console.log(DVE.world.baseWorldData);
+ // console.log(DVE.world.baseWorldData);
 
  const solidTextures = DVE.world.baseWorldData?.texturePaths.solid;
  const solidAnimations = DVE.world.baseWorldData.textureAnimations.solid;

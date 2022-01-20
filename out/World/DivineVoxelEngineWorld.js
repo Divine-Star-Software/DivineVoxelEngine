@@ -28,26 +28,26 @@ export class DivineVoxelEngineWorld {
         this.worker = worker;
         this.builderManager.setMainThreadCom(this.worker);
     }
-    removeChunk(chunkX, chunkZ) {
-        const chunk = this.worldData.getChunk(chunkX, chunkZ);
+    removeChunk(chunkX, chunkY, chunkZ) {
+        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        this.builderManager.requestChunkBeRemoved(chunkX, chunkZ);
-        this.worldData.removeChunk(chunkX, chunkZ);
+        this.builderManager.requestFullChunkBeRemoved(chunkX, chunkZ);
+        this.worldData.removeChunk(chunkX, chunkY, chunkZ);
         return true;
     }
-    buildChunk(chunkX, chunkZ) {
-        const chunk = this.worldData.getChunk(chunkX, chunkZ);
+    buildChunk(chunkX, chunkY, chunkZ) {
+        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
         let pallet = chunk.voxelPallet;
         if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
             pallet = this.worldGeneration.getGlobalVoxelPallet();
         }
-        // let t0= performance.now(); 
-        const template = this.chunkProccesor.makeAllChunkTemplates(chunk.voxels, pallet, chunkX, chunkZ);
-        this.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
-        // let t1= performance.now(); 
+        // let t0= performance.now();
+        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, pallet, chunkX, chunkY, chunkZ);
+        this.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        // let t1= performance.now();
         // console.log(t1 - t0);
         return true;
     }

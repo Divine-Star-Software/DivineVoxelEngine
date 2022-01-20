@@ -52,15 +52,7 @@ export class InfoByte {
    );
   }
 
-
-  let mask;
-  if (!bitIndex) {
-   mask = 0x0f;
-   return (this.byteValue & mask);
-  } else {
-   mask = 0x0f << bitIndex;
-   return (this.byteValue & mask) >>> bitIndex;
-  }
+  return (this.byteValue & (0x0f << bitIndex)) >> bitIndex;
  }
 
  setHalfByteBits(index: number, value: number) {
@@ -70,16 +62,9 @@ export class InfoByte {
    );
   }
   if (value > 15) {
-   throw new Error(
-    `Value is out range. Must not be greater than 16`
-   );
+   throw new Error(`Value is out range. Must not be greater than 16`);
   }
-  let k = 0;
-  for (let i = index; i < index + 4; i++) {
-   //@ts-ignore
-   this.setBit(i, (value >>> k) & 1);
-   k++;
-  }
+  this.byteValue = (this.byteValue & ~(0xf << index)) | (value << index);
  }
 
  setBit(index: number, value: BinaryNums) {

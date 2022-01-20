@@ -126,7 +126,7 @@ export class PlayerWatcher {
     async startWatchingPlayer() {
         this.cachedChunkX = this.playerChunkPosition[0];
         this.cachedChunkZ = this.playerChunkPosition[1];
-        setInterval(async () => {
+        setInterval(() => {
             // console.log(this.playerDirection, this.playerABSPositon);
             const pickVector = [
                 this.playerDirection[0] * this.playerReach + this.playerABSPositon[0],
@@ -145,8 +145,9 @@ export class PlayerWatcher {
              Math.floor(pickVector[2])
             ); */
             const data = visitAll(this.playerABSPositon[0], this.playerABSPositon[1], this.playerABSPositon[2], pickVector[0], pickVector[1], pickVector[2]);
-            const chunkX = this.playerChunkPosition[0];
-            const chunkZ = this.playerChunkPosition[1];
+            const chunkX = (pAbsX >> 4) << 4;
+            const chunkY = (pAbsY >> 7) << 7;
+            const chunkZ = (pAbsZ >> 4) << 4;
             let i = 0;
             let closestCalc = 0;
             let closestIndex = 6;
@@ -154,23 +155,25 @@ export class PlayerWatcher {
                 const x = data[i];
                 const y = data[i + 1];
                 const z = data[i + 2];
-                const voxelData = this.DVEW.worldData.getRealtiveVoxelData(x, y, z);
-                if (voxelData[0]) {
-                    break;
+                const voxelData = this.DVEW.worldData.getVoxelData(x, y, z);
+                if (voxelData) {
+                    if (voxelData[0]) {
+                        break;
+                    }
                 }
             }
             this.playerPickPosition[0] = data[i];
             this.playerPickPosition[1] = data[i + 1];
             this.playerPickPosition[2] = data[i + 2];
             //below player
-            const belowVoxel = this.DVEW.worldData.getRealtiveVoxelData(pAbsX, pAbsY, pAbsZ, 0, -2, 0);
+            const belowVoxel = this.DVEW.worldData.getVoxelData(pAbsX, pAbsY, pAbsZ, 0, -2, 0);
             if (belowVoxel) {
                 this.playerStatesArray[0] = 1;
             }
             else {
                 this.playerStatesArray[0] = 0;
             }
-            const headVoxel = this.DVEW.worldData.getRealtiveVoxelData(pAbsX, pAbsY, pAbsZ, 0, 0, 0);
+            const headVoxel = this.DVEW.worldData.getVoxelData(pAbsX, pAbsY, pAbsZ, 0, 0, 0);
             if (headVoxel) {
                 if (this.DVEW.voxelManager.getVoxel(this.DVEW.worldGeneration.getGlobalVoxelPallet()[headVoxel[0]][0]).data.substance == "fluid") {
                     this.playerStatesArray[1] = 1;
@@ -183,78 +186,78 @@ export class PlayerWatcher {
                 this.playerStatesArray[1] = 0;
             }
             /*
-               let movedWest = false;
-               let movedEast = false;
-               let movedNorth = false;
-               let movedSouth = false;
-            
-               if (this.cachedChunkX != chunkX) {
-                if (this.cachedChunkX > chunkX) {
-                 movedWest = true;
-                }
-                if (this.cachedChunkX < chunkX) {
-                 movedEast = true;
-                }
-               }
-               if (this.cachedChunkZ != chunkZ) {
-                if (this.cachedChunkZ < chunkZ) {
-                 movedNorth = true;
-                }
-                if (this.cachedChunkZ > chunkZ) {
-                 movedSouth = true;
-                }
-               }
-            
-               let moved = false;
-               if (movedNorth) {
-                moved = true;
-                this.currentMaxChunkZ += 16;
-                this.currentMinChunkZ += 16;
-                //add chunks to the north remove from the south
-                this.worldGen.generateChunkLine(
-                 this.cachedChunkX,
-                 this.cachedChunkZ,
-                 "north"
-                );
-               }
-               if (movedSouth) {
-                moved = true;
-                this.currentMaxChunkZ -= 16;
-                this.currentMinChunkZ -= 16;
-                //add chunks to the south remove from the north
-                this.worldGen.generateChunkLine(
-                 this.cachedChunkX,
-                 this.cachedChunkZ,
-                 "south"
-                );
-               }
-               if (movedWest) {
-                moved = true;
-                this.currentMaxChunkX -= 16;
-                this.currentMinChunkX -= 16;
-                //add chunks to the west remove from the east
-                this.worldGen.generateChunkLine(
-                 this.cachedChunkX,
-                 this.cachedChunkZ,
-                 "west"
-                );
-               }
-               if (movedEast) {
-                moved = true;
-                this.currentMaxChunkX += 16;
-                this.currentMinChunkX += 16;
-                //add chunks to the east remove from te wast
-                this.worldGen.generateChunkLine(
-                 this.cachedChunkX,
-                 this.cachedChunkZ,
-                 "east"
-                );
-               }
-            
-               this.cachedChunkX = chunkX;
-               this.cachedChunkZ = chunkZ;
-               if (moved) {
-               } */
+            let movedWest = false;
+            let movedEast = false;
+            let movedNorth = false;
+            let movedSouth = false;
+         
+            if (this.cachedChunkX != chunkX) {
+             if (this.cachedChunkX > chunkX) {
+              movedWest = true;
+             }
+             if (this.cachedChunkX < chunkX) {
+              movedEast = true;
+             }
+            }
+            if (this.cachedChunkZ != chunkZ) {
+             if (this.cachedChunkZ < chunkZ) {
+              movedNorth = true;
+             }
+             if (this.cachedChunkZ > chunkZ) {
+              movedSouth = true;
+             }
+            }
+         
+            let moved = false;
+            if (movedNorth) {
+             moved = true;
+             this.currentMaxChunkZ += 16;
+             this.currentMinChunkZ += 16;
+             //add chunks to the north remove from the south
+             this.worldGen.generateChunkLine(
+              this.cachedChunkX,
+              this.cachedChunkZ,
+              "north"
+             );
+            }
+            if (movedSouth) {
+             moved = true;
+             this.currentMaxChunkZ -= 16;
+             this.currentMinChunkZ -= 16;
+             //add chunks to the south remove from the north
+             this.worldGen.generateChunkLine(
+              this.cachedChunkX,
+              this.cachedChunkZ,
+              "south"
+             );
+            }
+            if (movedWest) {
+             moved = true;
+             this.currentMaxChunkX -= 16;
+             this.currentMinChunkX -= 16;
+             //add chunks to the west remove from the east
+             this.worldGen.generateChunkLine(
+              this.cachedChunkX,
+              this.cachedChunkZ,
+              "west"
+             );
+            }
+            if (movedEast) {
+             moved = true;
+             this.currentMaxChunkX += 16;
+             this.currentMinChunkX += 16;
+             //add chunks to the east remove from te wast
+             this.worldGen.generateChunkLine(
+              this.cachedChunkX,
+              this.cachedChunkZ,
+              "east"
+             );
+            }
+         
+            this.cachedChunkX = chunkX;
+            this.cachedChunkZ = chunkZ;
+            if (moved) {
+            } */
         }, 10);
     }
 }

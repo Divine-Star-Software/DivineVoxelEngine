@@ -1,7 +1,9 @@
 import type { WorldData } from "World/WorldData/WorldData";
-
-export function GetRealtiveVoxelData(
+export function GetRelativeVoxelData(
  this: WorldData,
+ chunkX: number,
+ chunkY: number,
+ chunkZ: number,
  blockX: number,
  blockY: number,
  blockZ: number,
@@ -9,18 +11,8 @@ export function GetRealtiveVoxelData(
  y: number = 0,
  z: number = 0
 ) {
- const chunkX = (blockX >> 4) << 4;
- const chunkZ = (blockZ >> 4) << 4;
- if (!this.chunks[chunkX]) return false;
- if (!this.chunks[chunkX][chunkZ]) return false;
- const chunk = this.chunks[chunkX][chunkZ].voxels;
- [blockX, blockZ] = this._getRelativeChunkPosition(
-  chunkX,
-  chunkZ,
-  blockX,
-  blockY,
-  blockZ
- );
+ if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return;
+ const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`].voxels;
 
  if (blockX > 0 && blockZ > 0 && blockX < 15 && blockZ < 15) {
   return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
@@ -30,12 +22,12 @@ export function GetRealtiveVoxelData(
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
   }
   if (x < 0) {
-   return checkWest(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
  }
  if (blockX == 15 && blockZ < 15 && blockZ > 0) {
   if (x > 0) {
-   return checkEast(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
   if (x <= 0) {
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
@@ -43,7 +35,7 @@ export function GetRealtiveVoxelData(
  }
  if (blockZ == 0 && blockX > 0 && blockX < 15) {
   if (z < 0) {
-   return checkSouth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
   if (z >= 0) {
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
@@ -51,7 +43,7 @@ export function GetRealtiveVoxelData(
  }
  if (blockZ == 15 && blockX < 15 && blockX > 0) {
   if (z > 0) {
-   return checkNorth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
   if (z <= 0) {
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
@@ -63,15 +55,14 @@ export function GetRealtiveVoxelData(
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
   }
   if (x < 0 && z >= 0) {
-   return checkWest(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
   if (x >= 0 && z < 0) {
-   return checkSouth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
   if (x < 0 && z < 0) {
-   if (!this.chunks[chunkX - 16]) return false;
-   if (!this.chunks[chunkX - 16][chunkZ - 16]) return false;
-   const southWestChunkData = this.chunks[chunkX - 16][chunkZ - 16];
+   const southWestChunkData =
+    this.chunks[`${chunkX - 16}-${chunkZ - 16}-${chunkY}`];
    if (!southWestChunkData) return false;
    const southWestChunk = southWestChunkData.voxels;
    if (
@@ -89,15 +80,14 @@ export function GetRealtiveVoxelData(
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
   }
   if (x > 0 && z >= 0) {
-   return checkEast(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
   if (x <= 0 && z < 0) {
-   return checkSouth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
-  if (x > 0 && z < 0) {
-   if (!this.chunks[chunkX + 16]) return false;
-   if (!this.chunks[chunkX + 16][chunkZ - 16]) return false;
-   const southEastChunkData = this.chunks[chunkX + 16][chunkZ - 16];
+  if (x > 0 && z < 0) { 
+   const southEastChunkData =
+    this.chunks[`${chunkX + 16}-${chunkZ - 16}-${chunkY}`];
    if (!southEastChunkData) return false;
    const southEastChunk = southEastChunkData.voxels;
    if (
@@ -115,15 +105,14 @@ export function GetRealtiveVoxelData(
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
   }
   if (x < 0 && z <= 0) {
-   return checkWest(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
   if (x >= 0 && z > 0) {
-   return checkNorth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
   if (x < 0 && z > 0) {
-   if (!this.chunks[chunkX - 16]) return false;
-   if (!this.chunks[chunkX - 16][chunkZ + 16]) return false;
-   const northWestChunkData = this.chunks[chunkX - 16][chunkZ + 16];
+   const northWestChunkData =
+    this.chunks[`${chunkX - 16}-${chunkZ - +16}-${chunkY}`];
    if (!northWestChunkData) return false;
    const northWestChunk = northWestChunkData.voxels;
    if (
@@ -141,15 +130,175 @@ export function GetRealtiveVoxelData(
    return checkNormal(chunk, blockX, blockY, blockZ, x, y, z);
   }
   if (x > 0 && z <= 0) {
-   return checkEast(this, chunkX, chunkZ, blockY, blockZ, y, z);
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
   }
   if (x <= 0 && z > 0) {
-   return checkNorth(this, chunkX, chunkZ, blockX, blockY, x, y);
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
   if (x > 0 && z > 0) {
-   if (!this.chunks[chunkX + 16]) return false;
-   if (!this.chunks[chunkX + 16][chunkZ + 16]) return false;
-   const northEastChunkData = this.chunks[chunkX + 16][chunkZ + 16];
+   const northEastChunkData =
+    this.chunks[`${chunkX + 16}-${chunkZ + 16}-${chunkY}`];
+   if (!northEastChunkData) return false;
+   const northEastChunk = northEastChunkData.voxels;
+   if (
+    northEastChunk[0] &&
+    northEastChunk[0][0] &&
+    northEastChunk[0][0][blockY + y] !== undefined
+   ) {
+    return northEastChunk[0][0][blockY + y];
+   }
+  }
+ }
+ return false;
+}
+export function GetVoxelData(
+ this: WorldData,
+ blockX: number,
+ blockY: number,
+ blockZ: number,
+ x: number = 0,
+ y: number = 0,
+ z: number = 0
+) {
+ const chunkX = (blockX >> 4) << 4;
+ const chunkY = (blockY >> 7) << 7;
+ const chunkZ = (blockZ >> 4) << 4;
+ const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+ if (!chunk) return false;
+ const chunkVoxels = chunk.voxels;
+ [blockX, blockZ] = this._getRelativeChunkPosition(
+  chunkX,
+  chunkY,
+  chunkZ,
+  blockX,
+  blockY,
+  blockZ
+ );
+
+ if (blockX > 0 && blockZ > 0 && blockX < 15 && blockZ < 15) {
+  return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+ }
+ if (blockX == 0 && blockZ > 0 && blockZ < 15) {
+  if (x >= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+  if (x < 0) {
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+ }
+ if (blockX == 15 && blockZ < 15 && blockZ > 0) {
+  if (x > 0) {
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+  if (x <= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+ }
+ if (blockZ == 0 && blockX > 0 && blockX < 15) {
+  if (z < 0) {
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (z >= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+ }
+ if (blockZ == 15 && blockX < 15 && blockX > 0) {
+  if (z > 0) {
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (z <= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+ }
+ //bottom left corner south west
+ if (blockX == 0 && blockZ == 0) {
+  if (x >= 0 && z >= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+  if (x < 0 && z >= 0) {
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+  if (x >= 0 && z < 0) {
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (x < 0 && z < 0) {
+   const southWestChunkData =
+    this.chunks[`${chunkX - 16}-${chunkZ - 16}-${chunkY}`];
+   if (!southWestChunkData) return false;
+   const southWestChunk = southWestChunkData.voxels;
+   if (
+    southWestChunk[15] &&
+    southWestChunk[15][15] &&
+    southWestChunk[15][15][blockY + y] !== undefined
+   ) {
+    return southWestChunk[15][15][blockY + y];
+   }
+  }
+ }
+ //bottom left corner south east
+ if (blockX == 15 && blockZ == 0) {
+  if (x <= 0 && z >= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+  if (x > 0 && z >= 0) {
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+  if (x <= 0 && z < 0) {
+   return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (x > 0 && z < 0) {
+   const southEastChunkData =
+    this.chunks[`${chunkX + 16}-${chunkZ - 16}-${chunkY}`];
+   if (!southEastChunkData) return false;
+   const southEastChunk = southEastChunkData.voxels;
+   if (
+    southEastChunk[0] &&
+    southEastChunk[0][15] &&
+    southEastChunk[0][15][blockY + y] !== undefined
+   ) {
+    return southEastChunk[0][15][blockY + y];
+   }
+  }
+ }
+ //top left corner north west
+ if (blockX == 0 && blockZ == 15) {
+  if (x >= 0 && z <= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+  if (x < 0 && z <= 0) {
+   return checkWest(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+  if (x >= 0 && z > 0) {
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (x < 0 && z > 0) {
+   const northWestChunkData =
+    this.chunks[`${chunkX - 16}-${chunkZ - +16}-${chunkY}`];
+   if (!northWestChunkData) return false;
+   const northWestChunk = northWestChunkData.voxels;
+   if (
+    northWestChunk[15] &&
+    northWestChunk[15][0] &&
+    northWestChunk[15][0][blockY + y] !== undefined
+   ) {
+    return northWestChunk[15][0][blockY + y];
+   }
+  }
+ }
+ //top right corner north east
+ if (blockX == 15 && blockZ == 15) {
+  if (x <= 0 && z <= 0) {
+   return checkNormal(chunkVoxels, blockX, blockY, blockZ, x, y, z);
+  }
+  if (x > 0 && z <= 0) {
+   return checkEast(this, chunkX, chunkY, chunkZ, blockY, blockZ, y, z);
+  }
+  if (x <= 0 && z > 0) {
+   return checkNorth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
+  }
+  if (x > 0 && z > 0) {
+   const northEastChunkData =
+    this.chunks[`${chunkX + 16}-${chunkZ + 16}-${chunkY}`];
    if (!northEastChunkData) return false;
    const northEastChunk = northEastChunkData.voxels;
    if (
@@ -184,15 +333,14 @@ const checkNormal = (
 const checkNorth = (
  worldData: WorldData,
  chunkX: number,
+ chunkY: number,
  chunkZ: number,
  blockX: number,
  blockY: number,
  x: number,
  y: number
 ) => {
- if (!worldData.chunks[chunkX]) return false;
- if (!worldData.chunks[chunkX][chunkZ + 16]) return false;
- const northChunkData = worldData.chunks[chunkX][chunkZ + 16];
+ const northChunkData = worldData.chunks[`${chunkX}-${chunkZ + 16}-${chunkY}`];
  if (!northChunkData) return false;
  const northChunk = northChunkData.voxels;
  if (
@@ -207,15 +355,14 @@ const checkNorth = (
 const checkSouth = (
  worldData: WorldData,
  chunkX: number,
+ chunkY: number,
  chunkZ: number,
  blockX: number,
  blockY: number,
  x: number,
  y: number
 ) => {
- if (!worldData.chunks[chunkX]) return false;
- if (!worldData.chunks[chunkX][chunkZ - 16]) return false;
- const southChunkData = worldData.chunks[chunkX][chunkZ - 16];
+ const southChunkData = worldData.chunks[`${chunkX}-${chunkZ - 16}-${chunkY}`];
  if (!southChunkData) return false;
  const southChunk = southChunkData.voxels;
  if (
@@ -230,14 +377,14 @@ const checkSouth = (
 const checkEast = (
  worldData: WorldData,
  chunkX: number,
+ chunkY: number,
  chunkZ: number,
  blockY: number,
  blockZ: number,
  y: number,
  z: number
 ) => {
- if (!worldData.chunks[chunkX + 16]) return false;
- const eastChunkData = worldData.chunks[chunkX + 16][chunkZ];
+ const eastChunkData = worldData.chunks[`${chunkX + 16}-${chunkZ}-${chunkY}`];
  if (!eastChunkData) return false;
  const eastChunk = eastChunkData.voxels;
  if (
@@ -252,14 +399,14 @@ const checkEast = (
 const checkWest = (
  worldData: WorldData,
  chunkX: number,
+ chunkY: number,
  chunkZ: number,
  blockY: number,
  blockZ: number,
  y: number,
  z: number
 ) => {
- if (!worldData.chunks[chunkX - 16]) return false;
- const westChunkData = worldData.chunks[chunkX - 16][chunkZ];
+ const westChunkData = worldData.chunks[`${chunkX - 16}-${chunkZ}-${chunkY}`];
  if (!westChunkData) return false;
  const westChunk = westChunkData.voxels;
  if (

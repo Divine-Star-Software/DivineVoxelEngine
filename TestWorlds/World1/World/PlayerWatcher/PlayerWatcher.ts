@@ -164,7 +164,7 @@ export class PlayerWatcher {
  async startWatchingPlayer() {
   this.cachedChunkX = this.playerChunkPosition[0];
   this.cachedChunkZ = this.playerChunkPosition[1];
-  setInterval(async () => {
+  setInterval(() => {
    // console.log(this.playerDirection, this.playerABSPositon);
 
    const pickVector = [
@@ -193,8 +193,9 @@ export class PlayerWatcher {
     pickVector[1],
     pickVector[2]
    );
-   const chunkX = this.playerChunkPosition[0];
-   const chunkZ = this.playerChunkPosition[1];
+   const chunkX = (pAbsX >> 4) << 4;
+   const chunkY = (pAbsY >> 7) << 7;
+   const chunkZ = (pAbsZ >> 4) << 4;
 
    let i = 0;
    let closestCalc = 0;
@@ -204,10 +205,12 @@ export class PlayerWatcher {
     const x = data[i];
     const y = data[i + 1];
     const z = data[i + 2];
-    const voxelData = this.DVEW.worldData.getRealtiveVoxelData(x, y, z);
+    const voxelData = this.DVEW.worldData.getVoxelData(x, y, z);
 
-    if (voxelData[0]) {
-     break;
+    if (voxelData) {
+     if (voxelData[0]) {
+      break;
+     }
     }
    }
    this.playerPickPosition[0] = data[i];
@@ -215,11 +218,14 @@ export class PlayerWatcher {
    this.playerPickPosition[2] = data[i + 2];
 
    //below player
-   const belowVoxel = this.DVEW.worldData.getRealtiveVoxelData(
+
+   const belowVoxel = this.DVEW.worldData.getVoxelData(
     pAbsX,
     pAbsY,
     pAbsZ,
+
     0,
+
     -2,
     0
    );
@@ -229,7 +235,7 @@ export class PlayerWatcher {
     this.playerStatesArray[0] = 0;
    }
 
-   const headVoxel = this.DVEW.worldData.getRealtiveVoxelData(
+   const headVoxel = this.DVEW.worldData.getVoxelData(
     pAbsX,
     pAbsY,
     pAbsZ,
@@ -243,14 +249,14 @@ export class PlayerWatcher {
       this.DVEW.worldGeneration.getGlobalVoxelPallet()[headVoxel[0]][0]
      ).data.substance == "fluid"
     ) {
-        this.playerStatesArray[1] = 1;
+     this.playerStatesArray[1] = 1;
     } else {
-        this.playerStatesArray[1] = 0;
+     this.playerStatesArray[1] = 0;
     }
    } else {
     this.playerStatesArray[1] = 0;
    }
-/* 
+   /* 
    let movedWest = false;
    let movedEast = false;
    let movedNorth = false;

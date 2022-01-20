@@ -13,6 +13,7 @@ export declare type VoxelAOCalcData = {
     voxelPallete: VoxelPallet;
     aoTemplate: number[];
     chunkX: number;
+    chunkY: number;
     chunkZ: number;
     x: number;
     y: number;
@@ -24,6 +25,7 @@ export declare type VoxelLightCalcData = {
     voxelData: any[];
     lightTemplate: number[];
     chunkX: number;
+    chunkY: number;
     chunkZ: number;
     x: number;
     y: number;
@@ -34,6 +36,7 @@ export declare type VoxelUVCalcData = {
     chunkVoxels: any[][][];
     aoTemplate: number[];
     chunkX: number;
+    chunkY: number;
     chunkZ: number;
     x: number;
     y: number;

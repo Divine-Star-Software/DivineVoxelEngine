@@ -1,5 +1,10 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import { WorldGen } from "./WorldGen";
+/**
+ * Note to self for light removel.
+ * When going through the voxels to updated set the voxel 
+ * light level to be the brigthest neighbor minus 1.
+ */
 
 export function LightTest(
  this: WorldGen,

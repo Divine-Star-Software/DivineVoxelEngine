@@ -44,16 +44,16 @@ export class DivineVoxelEngineWorld implements DVEW {
   this.builderManager.setMainThreadCom(<any>this.worker);
  }
 
- removeChunk(chunkX: number, chunkZ: number) {
-  const chunk = this.worldData.getChunk(chunkX, chunkZ);
+ removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  this.builderManager.requestChunkBeRemoved(chunkX, chunkZ);
-  this.worldData.removeChunk(chunkX, chunkZ);
+  this.builderManager.requestFullChunkBeRemoved(chunkX, chunkZ);
+  this.worldData.removeChunk(chunkX, chunkY, chunkZ);
   return true;
  }
 
- buildChunk(chunkX: number, chunkZ: number) {
-  const chunk = this.worldData.getChunk(chunkX, chunkZ);
+ buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
 
   let pallet = <VoxelPallet>chunk.voxelPallet;
@@ -61,22 +61,22 @@ export class DivineVoxelEngineWorld implements DVEW {
    pallet = this.worldGeneration.getGlobalVoxelPallet();
   }
 
- // let t0= performance.now(); 
+  // let t0= performance.now();
   const template = this.chunkProccesor.makeAllChunkTemplates(
-   chunk.voxels,
+   chunk,
    pallet,
    chunkX,
+   chunkY,
    chunkZ
   );
-  this.builderManager.requestFullChunkBeBuilt(chunkX, chunkZ, template);
+  this.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
 
- // let t1= performance.now(); 
- // console.log(t1 - t0);
+  // let t1= performance.now();
+  // console.log(t1 - t0);
   return true;
  }
 
  buildFluidMesh() {
-
   this.builderManager.requestFluidMeshBeReBuilt();
  }
 

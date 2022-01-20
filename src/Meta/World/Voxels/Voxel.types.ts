@@ -13,37 +13,43 @@ export type VoxelSubstanceType =
  | "fluid"
  | "magma";
 
- export type VoxelAOCalcData ={  exposedFaces: number[];
+export type VoxelAOCalcData = {
+ exposedFaces: number[];
  chunkVoxels: any[][][];
- voxelPallete : VoxelPallet;
+ voxelPallete: VoxelPallet;
  aoTemplate: number[];
  chunkX: number;
+ chunkY: number;
  chunkZ: number;
  x: number;
  y: number;
  z: number;
-}
+};
 
-export type VoxelLightCalcData ={  exposedFaces: number[];
-    voxelPallete : VoxelPallet;
-    voxelData : any[];
-    lightTemplate: number[];
-    chunkX: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-   }
+export type VoxelLightCalcData = {
+ exposedFaces: number[];
+ voxelPallete: VoxelPallet;
+ voxelData: any[];
+ lightTemplate: number[];
+ chunkX: number;
+ chunkY: number;
+ chunkZ: number;
+ x: number;
+ y: number;
+ z: number;
+};
 
-export type VoxelUVCalcData ={  exposedFaces: number[];
-    chunkVoxels: any[][][];
-    aoTemplate: number[];
-    chunkX: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-   }
+export type VoxelUVCalcData = {
+ exposedFaces: number[];
+ chunkVoxels: any[][][];
+ aoTemplate: number[];
+ chunkX: number;
+ chunkY: number;
+ chunkZ: number;
+ x: number;
+ y: number;
+ z: number;
+};
 
 /**# Voxel Data
  * ---
@@ -91,7 +97,7 @@ export interface VoxelInteface {
  ): void;
 
  getAO(data: VoxelAOCalcData): void;
- getLight(data : VoxelLightCalcData) : void;
+ getLight(data: VoxelLightCalcData): void;
 
  getShapeId(voxelData: any[]): number;
 }

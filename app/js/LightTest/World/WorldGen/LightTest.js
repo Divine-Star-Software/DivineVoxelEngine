@@ -1,3 +1,8 @@
+/**
+ * Note to self for light removel.
+ * When going through the voxels to updated set the voxel
+ * light level to be the brigthest neighbor minus 1.
+ */
 export function LightTest(chunkVoxels, startX, startZ, startY, radius) {
     if (chunkVoxels[startX] &&
         chunkVoxels[startX][startZ] &&

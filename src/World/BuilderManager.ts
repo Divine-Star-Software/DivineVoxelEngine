@@ -38,7 +38,7 @@ export class BuilderManager {
   this.numBuilders++;
  }
 
- requestChunkBeRemoved(chunkX: number, chunkZ: number) {
+ requestFullChunkBeRemoved(chunkX: number, chunkZ: number) {
   this.mainThreadCom.postMessage(["remove-chunk", chunkX, chunkZ]);
   this.fluidBuilder.postMessage([2, chunkX, chunkZ]);
  }
@@ -52,6 +52,7 @@ export class BuilderManager {
 
  requestFullChunkBeBuilt(
   chunkX: number,
+  chunkY: number,
   chunkZ: number,
   template: FullChunkTemplate
  ) {
@@ -74,6 +75,7 @@ export class BuilderManager {
     this.fluidBuilder.postMessage([
      0,
      chunkX,
+     chunkY,
      chunkZ,
      positions.buffer,
      faces.buffer,
@@ -101,6 +103,7 @@ export class BuilderManager {
     this.builders[this.count].postMessage([
      this.voxelTypeMap[type],
      chunkX,
+     chunkY,
      chunkZ,
      positions.buffer,
      faces.buffer,

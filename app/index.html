@@ -22,6 +22,7 @@
       outline: none;
       display: block;
       border: none;
+
     }
 
     html,
@@ -30,16 +31,29 @@
       height: 100%;
       overflow: hidden;
     }
+    #fps {
+                position: absolute;
+                background-color: black;
+                border: 2px solid purple;
+                text-align: center;
+                font-size: 16px;
+                color: white;
+                top: 0;
+                left : 0;
+                width: 60px;
+                height: 20px;
+                z-index: 1000;
+            }
   </style>
 
 </head>
 
 <body class="default">
-
+  <div id="fps">0</div>
   <script src="./lib/babylon.js"
     type="module"
     defer></script>
-  <script src="./js/LightTest/index.js"
+  <script src="./js/World1/index.js"
     type="module"
     defer></script>
 </body>

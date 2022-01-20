@@ -1,15 +1,18 @@
 import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
 import type { Util } from "Global/Util.helper";
 import { InfoByte } from "Global/Util/InfoByte";
+import { LightByte } from "Global/Util/LightByte";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export class ShapeHelper implements ShapeHelperInterface {
  infoByte: InfoByte;
+ lightByte: LightByte;
 
  constructor(public util: Util) {
   this.infoByte = this.util.getInfoByte();
+  this.lightByte = this.util.getLightByte();
  }
 
  toLinearSpace(r: number, g: number, b: number, a: number) {
@@ -20,67 +23,22 @@ export class ShapeHelper implements ShapeHelperInterface {
   return [r, g, b, a];
  }
 
- lightMap: Record<number, number> = {
-  0: 0.05,
-  1: 0.1,
-  2: 0.2,
-  3: 0.3,
-  4: 0.4,
-  5: 0.45,
-  6: 0.5,
-  7: 0.55,
-  8: 0.6,
-  9: 0.65,
-  10: 0.7,
-  11: 0.75,
-  12: 0.8,
-  13: 0.85,
-  14: 0.9,
-  15: 1,
- };
-
+ lightMap: number[] = [
+  0.05, 0.1, 0.2, 0.3, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85,
+  0.9, 1,
+ ];
  calculateFullColor(
   fullColors: number[],
   fullTemplate: Float32Array,
   startIndex: number
  ) {
-/*   const r = 1;
-  const g = 1;
-  const b = 1;
-  const a = 1;
-  fullColors.push(
-   r,
-   b,
-   g,
-   a,
-
-   r,
-   b,
-   g,
-   a,
-
-   g,
-   b,
-   r,
-   a,
-
-   g,
-   b,
-   r,
-   a
-  );
-
-  const test = []; */
-
   const alpha = 1;
   for (let v = 0; v < 4; v++) {
-   this.infoByte.setNumberValue(fullTemplate[startIndex + v]);
-
-   const w = this.lightMap[this.infoByte.getHalfByteDec(0)];
-   const r = this.lightMap[this.infoByte.getHalfByteDec(4)];
-   const g = this.lightMap[this.infoByte.getHalfByteDec(8)];
-   const b = this.lightMap[this.infoByte.getHalfByteDec(12)];
-//console.log(r,g,b);
+   const values = this.lightByte.getLightValues(fullTemplate[startIndex + v]);
+   const w = this.lightMap[values[0]];
+   const r = this.lightMap[values[1]];
+   const g = this.lightMap[values[2]];
+   const b = this.lightMap[values[3]];
    fullColors.push(r, g, b, alpha);
   }
  }

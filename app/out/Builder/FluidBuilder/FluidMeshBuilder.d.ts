@@ -8,7 +8,7 @@ export declare class FluidMeshBuilder {
     constructor(shapeManager: ShapeManager, UTIL: Util);
     templateMap: Record<string, number[]>;
     savedTemplates: Record<string, any[]>;
-    removeTemplate(chunkX: number, chunkZ: number): void;
+    removeTemplate(chunkX: number, chunkY: number, chunkZ: number): void;
     generateMesh(): number[][];
-    addTemplate(chunkX: number, chunkZ: number, newPositionsTemplate: Uint16Array, newFaceTemplate: Uint8Array, newShapeTemplate: Uint16Array, newUvTemplate: Uint16Array, newLightTemplate: Float32Array, newAoTemplate: Float32Array): void;
+    addTemplate(chunkX: number, chunkY: number, chunkZ: number, newPositionsTemplate: Uint16Array, newFaceTemplate: Uint8Array, newShapeTemplate: Uint16Array, newUvTemplate: Uint16Array, newLightTemplate: Float32Array, newAoTemplate: Float32Array): void;
 }

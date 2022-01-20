@@ -24,7 +24,7 @@ export class DivineVoxelEngine {
         });
     }
     async $SCENEINIT(data) {
-        data.scene.enableDepthRenderer();
+        // data.scene.enableDepthRenderer();
         await BuildInitalMeshes(this, data.scene);
         this.world.startWorldGen();
     }

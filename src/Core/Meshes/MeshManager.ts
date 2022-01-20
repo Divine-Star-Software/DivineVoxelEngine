@@ -26,31 +26,36 @@ export class MeshManager {
   };
  }
 
+ setScene(scene: BABYLON.Scene) {
+  this.scene = scene;
+ }
+
  handleUpdate(
   type: VoxelSubstanceType,
   chunkKey: string,
   chunkX: number,
+  chunkY: number,
   chunkZ: number,
   data: any
  ) {
   if (type != "fluid") {
    if (!this.meshes[type][chunkKey]) {
-    this._buildNewMesh(type, chunkKey, chunkX, chunkZ, data);
+    this._buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
    } else {
-    this._updateMesh(type, chunkKey, chunkX, chunkZ, data);
+    this._updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
    }
   } else {
-    this._updateFluidMesh(data);
+   this._updateFluidMesh(data);
   }
-
  }
 
-  _updateFluidMesh(data: any) {
-  const positions = new Float32Array(data[3]);
-  const indicies = new Int32Array(data[4]);
-  const linearColors = new Float32Array(data[5]);
-  const fullColors = new Float32Array(data[6]);
-  const uvs = new Float32Array(data[7]);
+ _updateFluidMesh(data: any) {
+  this.scene.unfreezeActiveMeshes();
+  const positions = new Float32Array(data[4]);
+  const indicies = new Int32Array(data[5]);
+  const linearColors = new Float32Array(data[6]);
+  const fullColors = new Float32Array(data[7]);
+  const uvs = new Float32Array(data[8]);
   if (this.DVE.renderManager.fluidMesh.beenCreated) {
    this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(
     positions,
@@ -69,6 +74,7 @@ export class MeshManager {
     uvs
    );
   }
+  this.scene.freeActiveMeshes();
  }
 
  requestChunkBeRemoved(chunkKey: string) {
@@ -84,16 +90,18 @@ export class MeshManager {
   type: VoxelSubstanceType,
   chunkKey: string,
   chunkX: number,
+  chunkY: number,
   chunkZ: number,
   data: any
  ) {
+  this.scene.unfreezeActiveMeshes();
   this.runningUpdate = true;
   const mesh = this.meshes[type][chunkKey];
-  const positions = new Float32Array(data[3]);
-  const indicies = new Int32Array(data[4]);
-  const linearColors = new Float32Array(data[5]);
-  const fullColors = new Float32Array(data[6]);
-  const uvs = new Float32Array(data[7]);
+  const positions = new Float32Array(data[4]);
+  const indicies = new Int32Array(data[5]);
+  const linearColors = new Float32Array(data[6]);
+  const fullColors = new Float32Array(data[7]);
+  const uvs = new Float32Array(data[8]);
 
   this.meshMakers[type].rebuildMeshGeometory(
    mesh,
@@ -107,23 +115,26 @@ export class MeshManager {
   );
 
   this.runningUpdate = false;
+  this.scene.freeActiveMeshes();
  }
 
  async _buildNewMesh(
   type: VoxelSubstanceType,
   chunkKey: string,
   chunkX: number,
+  chunkY: number,
   chunkZ: number,
   data: any
  ) {
+  this.scene.unfreezeActiveMeshes();
   const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
   mesh.setEnabled(true);
 
-  const positions = new Float32Array(data[3]);
-  const indicies = new Int32Array(data[4]);
-  const linearColors = new Float32Array(data[5]);
-  const fullColors = new Float32Array(data[6]);
-  const uvs = new Float32Array(data[7]);
+  const positions = new Float32Array(data[4]);
+  const indicies = new Int32Array(data[5]);
+  const linearColors = new Float32Array(data[6]);
+  const fullColors = new Float32Array(data[7]);
+  const uvs = new Float32Array(data[8]);
 
   this.meshMakers[type].createMeshGeometory(
    mesh,
@@ -137,5 +148,6 @@ export class MeshManager {
   );
   //chunkMesh.updateFacetData();
   this.meshes[type][chunkKey] = mesh;
+  this.scene.freeActiveMeshes();
  }
 }

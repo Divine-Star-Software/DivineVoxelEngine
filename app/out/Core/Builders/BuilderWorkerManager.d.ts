@@ -5,7 +5,7 @@ export declare class BuilderWorkerManager {
     count: number;
     builders: Worker[];
     fluidBuilder: Worker;
-    buildRequestFunctions: Record<number, (chunkKey: string, chunkX: number, chunkZ: number, data: any) => void>;
+    buildRequestFunctions: Record<number, (chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any) => void>;
     constructor(DVE: DivineVoxelEngine);
     createBuilderWorker(path: string): void;
     createFluidBuilderWorker(path: string): void;

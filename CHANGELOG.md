@@ -1,4 +1,12 @@
 ##### Change Log
+1-19-2022
+- Decided to add suppourt for vertical chunks. Right now each chunk is 128 meters high. Might also try 64 tall chunks.
+  - This is important to reduce the amount of time to update a big chunk. 
+  - This was decided upon after implementing lighting gradients for the voxels. 
+- Chunks are stored in a hash map of its x-z-y positions now.
+- Created a new object to help decode light values called LightByte. 
+- Added fps tracker for the demo worlds.
+
 1-18-2022
 - Started implementing the lighting system. Meshes use the color set called 'full colors' to colorize. 
 - Added some effects for when the player is in the fluid for the world test. 
@@ -7,7 +15,6 @@
 1-17-2022
 - Normals and facet data are no longar calculated or stored on all of the voxel meshes
 - Implemented a new method for voxel picking for the player example. 
-
 
 1-15-2022
 - Added ocean test world.

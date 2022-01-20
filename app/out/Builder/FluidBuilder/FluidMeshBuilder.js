@@ -9,9 +9,9 @@ export class FluidMeshBuilder {
     }
     templateMap = {};
     savedTemplates = {};
-    removeTemplate(chunkX, chunkZ) {
-        delete this.savedTemplates[`${chunkX}-${chunkZ}`];
-        delete this.templateMap[`${chunkX}-${chunkZ}`];
+    removeTemplate(chunkX, chunkY, chunkZ) {
+        delete this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`];
+        delete this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`];
     }
     generateMesh() {
         const positions = [];
@@ -66,7 +66,7 @@ export class FluidMeshBuilder {
         }
         return [positions, indices, colors, uvs];
     }
-    addTemplate(chunkX, chunkZ, newPositionsTemplate, newFaceTemplate, newShapeTemplate, newUvTemplate, newLightTemplate, newAoTemplate) {
+    addTemplate(chunkX, chunkY, chunkZ, newPositionsTemplate, newFaceTemplate, newShapeTemplate, newUvTemplate, newLightTemplate, newAoTemplate) {
         this.savedTemplates[`${chunkX}-${chunkZ}`] = [
             newPositionsTemplate,
             newFaceTemplate,

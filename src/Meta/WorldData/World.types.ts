@@ -1,10 +1,5 @@
 
-export type ChunkVoxels = any[][][];
 
-export type ChunkData = {
-    voxelPallet  ?:  VoxelPallet;
-    voxels : ChunkVoxels
-}
 
 
 

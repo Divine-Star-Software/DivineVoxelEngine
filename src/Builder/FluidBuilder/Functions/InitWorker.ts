@@ -26,16 +26,18 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
 
   if (eventType == 0) {
    const chunkX = data[1];
-   const chunkZ = data[2];
-   const positions = new Uint16Array(data[3]);
-   const faces = new Uint8Array(data[4]);
-   const shapes = new Uint16Array(data[5]);
-   const uvs = new Uint16Array(data[6]);
-   const lights = new Float32Array(data[7]);
-   const ao = new Float32Array(data[8]);
+   const chunkY = data[2];
+   const chunkZ = data[3];
+   const positions = new Uint16Array(data[4]);
+   const faces = new Uint8Array(data[5]);
+   const shapes = new Uint16Array(data[6]);
+   const uvs = new Uint16Array(data[7]);
+   const lights = new Float32Array(data[8]);
+   const ao = new Float32Array(data[9]);
 
    DVEFB.fluidMeshBuilder.addTemplate(
     chunkX,
+    chunkY,
     chunkZ,
     positions,
     faces,

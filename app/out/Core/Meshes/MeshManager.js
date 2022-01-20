@@ -20,13 +20,16 @@ export class MeshManager {
             magma: this.DVE.renderManager.magmaMesh,
         };
     }
-    handleUpdate(type, chunkKey, chunkX, chunkZ, data) {
+    setScene(scene) {
+        this.scene = scene;
+    }
+    handleUpdate(type, chunkKey, chunkX, chunkY, chunkZ, data) {
         if (type != "fluid") {
             if (!this.meshes[type][chunkKey]) {
-                this._buildNewMesh(type, chunkKey, chunkX, chunkZ, data);
+                this._buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
             }
             else {
-                this._updateMesh(type, chunkKey, chunkX, chunkZ, data);
+                this._updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
             }
         }
         else {
@@ -34,11 +37,12 @@ export class MeshManager {
         }
     }
     _updateFluidMesh(data) {
-        const positions = new Float32Array(data[3]);
-        const indicies = new Int32Array(data[4]);
-        const linearColors = new Float32Array(data[5]);
-        const fullColors = new Float32Array(data[6]);
-        const uvs = new Float32Array(data[7]);
+        this.scene.unfreezeActiveMeshes();
+        const positions = new Float32Array(data[4]);
+        const indicies = new Int32Array(data[5]);
+        const linearColors = new Float32Array(data[6]);
+        const fullColors = new Float32Array(data[7]);
+        const uvs = new Float32Array(data[8]);
         if (this.DVE.renderManager.fluidMesh.beenCreated) {
             this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, linearColors, fullColors, uvs);
         }
@@ -46,6 +50,7 @@ export class MeshManager {
             this.DVE.renderManager.fluidMesh.createTemplateMesh(this.scene);
             this.DVE.renderManager.fluidMesh.createMeshGeometory(positions, indicies, linearColors, fullColors, uvs);
         }
+        this.scene.freeActiveMeshes();
     }
     requestChunkBeRemoved(chunkKey) {
         for (const substance of Object.keys(this.meshes)) {
@@ -55,27 +60,31 @@ export class MeshManager {
             }
         }
     }
-    async _updateMesh(type, chunkKey, chunkX, chunkZ, data) {
+    async _updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data) {
+        this.scene.unfreezeActiveMeshes();
         this.runningUpdate = true;
         const mesh = this.meshes[type][chunkKey];
-        const positions = new Float32Array(data[3]);
-        const indicies = new Int32Array(data[4]);
-        const linearColors = new Float32Array(data[5]);
-        const fullColors = new Float32Array(data[6]);
-        const uvs = new Float32Array(data[7]);
+        const positions = new Float32Array(data[4]);
+        const indicies = new Int32Array(data[5]);
+        const linearColors = new Float32Array(data[6]);
+        const fullColors = new Float32Array(data[7]);
+        const uvs = new Float32Array(data[8]);
         this.meshMakers[type].rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs);
         this.runningUpdate = false;
+        this.scene.freeActiveMeshes();
     }
-    async _buildNewMesh(type, chunkKey, chunkX, chunkZ, data) {
+    async _buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data) {
+        this.scene.unfreezeActiveMeshes();
         const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
         mesh.setEnabled(true);
-        const positions = new Float32Array(data[3]);
-        const indicies = new Int32Array(data[4]);
-        const linearColors = new Float32Array(data[5]);
-        const fullColors = new Float32Array(data[6]);
-        const uvs = new Float32Array(data[7]);
+        const positions = new Float32Array(data[4]);
+        const indicies = new Int32Array(data[5]);
+        const linearColors = new Float32Array(data[6]);
+        const fullColors = new Float32Array(data[7]);
+        const uvs = new Float32Array(data[8]);
         this.meshMakers[type].createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs);
         //chunkMesh.updateFacetData();
         this.meshes[type][chunkKey] = mesh;
+        this.scene.freeActiveMeshes();
     }
 }

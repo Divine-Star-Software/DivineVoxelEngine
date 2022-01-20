@@ -1,13 +1,13 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
-import { ChunkData } from "../../../../out/Meta/WorldData/World.types";
+import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
 import { LightTest } from "./LightTest.js";
 export class WorldGen {
  constructor(public DVEW: DVEW) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
  }
 
- lightTest  = LightTest;
+ lightTest = LightTest;
  infoByte: InfoByte;
 
  chunkDepth = 16;
@@ -57,15 +57,18 @@ export class WorldGen {
      if (y >= baseY && y <= maxY) {
       returnChunk[x] ??= [];
       returnChunk[x][z] ??= [];
-      returnChunk[x][z][y] = JSON.parse(JSON.stringify(dreamStoneVovxel));
+      returnChunk[x][z][y] = [...dreamStoneVovxel];
      }
     }
    }
   }
 
   this.lightTest(returnChunk, 7, 7, 31, 9);
+
   return {
    voxels: returnChunk,
+   maxMinHeight: [],
+   heightMap: [],
   };
  }
 }

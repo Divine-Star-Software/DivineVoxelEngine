@@ -37,7 +37,7 @@ export class WorldGen {
                     if (y >= baseY && y <= maxY) {
                         returnChunk[x] ??= [];
                         returnChunk[x][z] ??= [];
-                        returnChunk[x][z][y] = JSON.parse(JSON.stringify(dreamStoneVovxel));
+                        returnChunk[x][z][y] = [...dreamStoneVovxel];
                     }
                 }
             }
@@ -45,6 +45,8 @@ export class WorldGen {
         this.lightTest(returnChunk, 7, 7, 31, 9);
         return {
             voxels: returnChunk,
+            maxMinHeight: [],
+            heightMap: [],
         };
     }
 }

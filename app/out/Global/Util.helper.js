@@ -1,5 +1,6 @@
 import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
+import { LightByte } from "./Util/LightByte.js";
 export class Util {
     infoByte = new InfoByte();
     exposedFaceRecord = {
@@ -18,6 +19,9 @@ export class Util {
         const chunkpositionZ = (positionZ >> 4) << 4;
         const chunkpositionX = (positionX >> 4) << 4;
         return [chunkpositionZ, chunkpositionX];
+    }
+    getLightByte() {
+        return new LightByte();
     }
     getInfoByte(number = 0) {
         return new InfoByte(number);

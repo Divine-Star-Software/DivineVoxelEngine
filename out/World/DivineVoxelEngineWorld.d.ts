@@ -25,8 +25,8 @@ export declare class DivineVoxelEngineWorld implements DVEW {
     voxelHelper: VoxelHelper;
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
-    removeChunk(chunkX: number, chunkZ: number): boolean;
-    buildChunk(chunkX: number, chunkZ: number): boolean;
+    removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildFluidMesh(): void;
     $INIT(data: {
         voxelPalletMode: "per-chunk" | "global";

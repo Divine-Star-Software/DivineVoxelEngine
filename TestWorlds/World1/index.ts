@@ -75,10 +75,12 @@ const init = async () => {
  }, 10);
 
  DVE.$SCENEINIT({ scene: scene });
-
+ let divFps = document.getElementById("fps");
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
+  //@ts-ignore
+  divFps.innerHTML = engine.getFps().toFixed() + " fps";
  });
 
 

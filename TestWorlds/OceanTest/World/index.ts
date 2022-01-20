@@ -21,13 +21,13 @@ const start = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.worldData.setChunk(x, z, worldGen.generateChunk(x, z));
+   DVEW.worldData.setChunk(x, 0,z, worldGen.generateChunk(x, z));
   }
  }
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, z);
+   DVEW.buildChunk(x, 0,z);
   }
  }
 

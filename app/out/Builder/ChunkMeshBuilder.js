@@ -9,7 +9,7 @@ export class ChunkMeshBuilder {
         this.UTIL = UTIL;
         this.infoByte = this.UTIL.getInfoByte();
     }
-    buildChunkMesh(chunkType, chunkX, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, lightTemplate, aoTemplate) {
+    buildChunkMesh(chunkType, chunkX, chunkY, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, lightTemplate, aoTemplate) {
         const positions = [];
         const indices = [];
         const uvs = [];
@@ -60,6 +60,7 @@ export class ChunkMeshBuilder {
         this.DVEB.worker.postMessage([
             chunkType,
             chunkX,
+            chunkY,
             chunkZ,
             positionArray.buffer,
             indiciesArray.buffer,

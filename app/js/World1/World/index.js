@@ -16,12 +16,14 @@ const start = () => {
         for (let k = -144; k < totalChunks; k += 16) {
             //  const chunk = worldGen.generateChunkStressTest(i, k);
             const chunk = worldGen.generateChunkNormal(i, k);
-            DVEW.worldData.setChunk(i, k, chunk);
+            DVEW.worldData.setChunk(i, 0, k, chunk);
         }
     }
     for (let i = -144; i < totalChunks; i += 16) {
         for (let k = -144; k < totalChunks; k += 16) {
-            DVEW.buildChunk(i, k);
+            (async () => {
+                DVEW.buildChunk(i, 0, k);
+            })();
         }
     }
     DVEW.buildFluidMesh();

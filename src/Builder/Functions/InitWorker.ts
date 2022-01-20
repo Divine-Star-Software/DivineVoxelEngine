@@ -26,12 +26,13 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
    data[0],
    data[1],
    data[2],
-   new Uint16Array(data[3]),
-   new Uint8Array(data[4]),
-   new Uint16Array(data[5]),
+   data[3],
+   new Uint16Array(data[4]),
+   new Uint8Array(data[5]),
    new Uint16Array(data[6]),
-   new Float32Array(data[7]),
-   new Float32Array(data[8])
+   new Uint16Array(data[7]),
+   new Float32Array(data[8]),
+   new Float32Array(data[9])
   );
  };
 }

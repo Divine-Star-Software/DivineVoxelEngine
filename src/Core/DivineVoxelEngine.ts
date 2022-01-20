@@ -36,7 +36,8 @@ export class DivineVoxelEngine implements DVE {
  }
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
-  data.scene.enableDepthRenderer();
+ // data.scene.enableDepthRenderer();
+ 
   await BuildInitalMeshes(this, data.scene);
 
   this.world.startWorldGen();

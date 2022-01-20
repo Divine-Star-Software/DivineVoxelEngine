@@ -6,14 +6,14 @@ export class BuilderWorkerManager {
     fluidBuilder;
     buildRequestFunctions = {
         //chunk meshes
-        0: (chunkKey, chunkX, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("solid", chunkKey, chunkX, chunkZ, data);
+        0: (chunkKey, chunkX, chunkY, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("solid", chunkKey, chunkX, chunkY, chunkZ, data);
         },
-        1: (chunkKey, chunkX, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkZ, data);
+        1: (chunkKey, chunkX, chunkY, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkY, chunkZ, data);
         },
-        3: (chunkKey, chunkX, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkZ, data);
+        3: (chunkKey, chunkX, chunkY, chunkZ, data) => {
+            this.DVE.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkY, chunkZ, data);
         },
     };
     constructor(DVE) {
@@ -68,15 +68,17 @@ export class BuilderWorkerManager {
     async _handlFluideBuildMeshMessage(event) {
         const meshType = event.data[0];
         const chunkX = event.data[1];
-        const chunkZ = event.data[2];
-        const chunkKey = `${chunkX}-${chunkZ}`;
-        this.DVE.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkZ, event.data);
+        const chunkY = event.data[2];
+        const chunkZ = event.data[3];
+        const chunkKey = `${chunkX}-${chunkZ}-${chunkY}`;
+        this.DVE.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
     async _handleBuildMeshMessage(event) {
         const meshType = event.data[0];
         const chunkX = event.data[1];
-        const chunkZ = event.data[2];
-        const chunkKey = `${chunkX}-${chunkZ}`;
-        this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkZ, event.data);
+        const chunkY = event.data[2];
+        const chunkZ = event.data[3];
+        const chunkKey = `${chunkX}-${chunkZ}-${chunkY}`;
+        this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
 }

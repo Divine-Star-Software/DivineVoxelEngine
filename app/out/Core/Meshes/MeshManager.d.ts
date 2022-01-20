@@ -9,9 +9,10 @@ export declare class MeshManager {
     meshes: Record<VoxelSubstanceType, Record<string, BABYLON.Mesh>>;
     meshMakers: Record<VoxelSubstanceType, VoxelMeshInterface>;
     constructor(DVE: DivineVoxelEngine);
-    handleUpdate(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkZ: number, data: any): void;
+    setScene(scene: BABYLON.Scene): void;
+    handleUpdate(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): void;
     _updateFluidMesh(data: any): void;
     requestChunkBeRemoved(chunkKey: string): void;
-    _updateMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkZ: number, data: any): Promise<void>;
-    _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkZ: number, data: any): Promise<void>;
+    _updateMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): Promise<void>;
+    _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): Promise<void>;
 }
