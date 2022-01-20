@@ -14,8 +14,8 @@ export class WorldGen {
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         const returnChunk = [];
         if (type == "pillar") {
-            let pillarBlock = [dreamStonePillar, 1, 1];
-            let baseBlock = [dreamstone, 1, 1];
+            let pillarBlock = [dreamStonePillar, 1, 0xFFFFFFFF];
+            let baseBlock = [dreamstone, 1, 0xFFFFFFFF];
             let baseY = 31;
             let topY = 50;
             let hole = false;
@@ -52,8 +52,8 @@ export class WorldGen {
             }
         }
         if (type == "default") {
-            let topBlock = [dreamstone, 1, 1];
-            let baseBlock = [dreamStonePillar, 1, 1];
+            let topBlock = [dreamstone, 1, 0xFFFFFFFF];
+            let baseBlock = [dreamStonePillar, 1, 0xFFFFFFFF];
             let topY = 31;
             let groundY = 31;
             let hole = false;
@@ -90,17 +90,18 @@ export class WorldGen {
                     }
                 }
             }
-            returnChunk[7][7][topY] = [debugBox, 1, 1];
-            returnChunk[7][7][topY + 1] = [debugBox, 1, 1];
-            returnChunk[7][7][topY + 2] = [debugBox, 1, 1];
-            returnChunk[7][7][topY + 3] = [debugBox, 1, 1];
-            returnChunk[0][0][topY] = [dreamstone, 1, 1];
-            returnChunk[0][15][topY] = [dreamstone, 1, 1];
-            returnChunk[15][15][topY] = [dreamstone, 1, 1];
-            returnChunk[15][0][topY] = [dreamstone, 1, 1];
+            returnChunk[7][7][topY] = [debugBox, 1, 0xFFFFFFFF];
+            returnChunk[7][7][topY + 1] = [debugBox, 1, 0xFFFFFFFF];
+            returnChunk[7][7][topY + 2] = [debugBox, 1, 0xFFFFFFFF];
+            returnChunk[7][7][topY + 3] = [debugBox, 1, 0xFFFFFFFF];
+            returnChunk[0][0][topY] = [dreamstone, 1, 0xFFFFFFFF];
+            returnChunk[0][15][topY] = [dreamstone, 1, 0xFFFFFFFF];
+            returnChunk[15][15][topY] = [dreamstone, 1, 0xFFFFFFFF];
+            returnChunk[15][0][topY] = [dreamstone, 1, 0xFFFFFFFF];
         }
         return {
             voxels: returnChunk,
+            isEmpty: false,
             maxMinHeight: [],
             heightMap: [],
         };

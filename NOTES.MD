@@ -43,29 +43,47 @@ It can do 20+ for more simple chunk meshes. If your world does not update often 
     - If a voxel is not visible at all it is not sent. 
 - Chunk
   - A section of the world. 
-  - Default defined as a 16x16x256 area. 
-  - Voxels stored as a 3d array as in chunk\[x\]\[z\]\[y\]
+  - Default defined as a 16x16x128 area. 
+  - Voxels area stored as a 3d array of **Voxel Data**: \[x\]\[z\]\[y\]
+
 
 #### Chunk Data
+The currently loaded chunks are stored in a object with the chunk's X,Z, and Y as they keys. Each chunk is an object with several properties. 
 
-The currently loaded chunks are stored in a object with the chunk's X and Z as they keys. Each chunk is an object with several properties. 
+This is the current Type that defines the chunk data.
+```ts
+export declare type ChunkVoxels = any[][][];
+export declare type ChunkData = {
+    voxelPallet?: VoxelPallet;
+    voxels: ChunkVoxels;
+    maxMinHeight: number[];
+    heightMap: number[][];
+    isEmpty: boolean;
+};
+```
+The height maps can be calculated beforehand. They help to reduce the amount of data that needs to be processed when a chunk is updated.
 
 The main data it stores are the voxels which is stored as a 3D array. Each voxel is represented by an array of numbers. 
-
-Currently the first number is the voxel id from the global or chunk level voxel pallet map. The second number is used for a voxel state. And finally the three numbers are for the calculated block AO, block light and sky light values. 
 
 If the voxel pallet mode is set to per chunk the chunk will have its local pallet map. Which is a way to get the true id and state of the voxel. 
 
 Metrics so far for total world data size is calculated to be at worst ~500 mb for 200 chunks of full blocks. I tested with different compression formats you can get it down to 50 - 300 kb.
 
+#### Voxel DAta
+ Each voxel contains an array of 3 numbers. 
+  - Index 0 is its pallet id.
+  - Index 1 is its shape state.
+  - Index 2 is its current light value.
+
+```ts
+let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+  "dve:dreamgrass:defualt"
+);
+let dreamGrassVoxel = [dreamGrasss, 0, 0xFFFFFFFF];
+```
+ 
 
 
-Ppos = vec3(0,0,0);
-Pdir = vec3(0,0,1);
-Preach = 4;
 
-Ppoint = ( Pdir * Preach ) + Ppso;
-
-Point = vec3(0,0,5);
 
 

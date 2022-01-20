@@ -15,7 +15,7 @@ export class WorldGen {
         const chunkVoxels = [];
         let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
         // debugBox = dreamstone;
-        let block = [dreamStonePillar, 0, 1, 1, 1, 0xffffffff];
+        let block = [dreamStonePillar, 0, 0xffffffff];
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
@@ -38,7 +38,7 @@ export class WorldGen {
         const chunkVoxels = bottomChunk.voxels;
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
         let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrass:defualt");
-        let dreamGrassVoxel = [dreamGrasss, 0, 1, 1, 1, 0xffffffff];
+        let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
         let block = [dreamstone, 0, 0xffffffff];
         if (y < Math.floor(Math.random() * minY)) {
             chunkVoxels[x] ??= [];
@@ -182,7 +182,7 @@ export class WorldGen {
         bottomChunk.maxMinHeight[1] = minY;
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
         const liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:liquiddreamether:defualt");
-        const liquidDreamEtherVoxel = [liquidDreamEther, 1, 0xffffffff];
+        const liquidDreamEtherVoxel = [liquidDreamEther, 0, 0xffffffff];
         let block = [dreamstone, 0, 0xffffffff];
         if (x == 0 || z == 0 || x == 15 || z == 15) {
             if (y == minY) {
@@ -254,7 +254,7 @@ export class WorldGen {
         bottomChunk.maxMinHeight[1] = minY;
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
         let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrass:defualt");
-        let dreamGrassVoxel = [dreamGrasss, 0, 1, 1, 1, 0xffffffff];
+        let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
         let block = [dreamstone, 0, 0xffffffff];
         if (x == 0 || z == 0 || x == 15 || z == 15) {
             if (y == minY) {
@@ -357,8 +357,8 @@ export class WorldGen {
         bottomChunk.maxMinHeight[1] = minY + 1;
         let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrassblock:defualt");
         let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrass:defualt");
-        let dreamGrassVoxel = [dreamGrasss, 0, 1, 1, 1, 0xffffffff];
-        let block = [dreamGrassBlock, 0];
+        let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
+        let block = [dreamGrassBlock, 0, 0xffffffff];
         if (y < minY) {
             chunkVoxels[x] ??= [];
             chunkVoxels[x][z] ??= [];

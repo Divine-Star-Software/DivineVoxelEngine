@@ -50,6 +50,7 @@ export class WorldGen {
         this.lightTest(returnChunk, 7, 7, 31, 9);
         return {
             voxels: returnChunk,
+            isEmpty: false,
             maxMinHeight: [],
             heightMap: [],
         };

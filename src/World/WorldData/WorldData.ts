@@ -87,8 +87,8 @@ export class WorldData {
    chunkVoxels[relativeX][relativeZ] ??= [];
    chunkVoxels[relativeX][relativeZ][relativeY] = [
     voxelPalletId,
-    1,
-    0xffffffff,
+    0,
+    0xFFFFFFFF,
    ];
 
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
@@ -112,8 +112,8 @@ export class WorldData {
     relativeX,
     relativeZ
    );
-  } else if (!chunkVoxels[relativeX][relativeZ][y]) {
-   chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 0, 0];
+  } else if (!chunkVoxels[relativeX][relativeZ][relativeY]) {
+   chunkVoxels[relativeX][relativeZ][relativeY] = [voxelPalletId, 0, 0xFFFFFFFF];
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
     pallet,
