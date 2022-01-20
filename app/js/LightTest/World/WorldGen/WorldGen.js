@@ -12,7 +12,7 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
+        let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:liquiddreamether:defualt");
         /**light data
@@ -28,18 +28,18 @@ export class WorldGen {
         this.infoByte.setHalfByteBits(4, 0);
         this.infoByte.setHalfByteBits(8, 0);
         this.infoByte.setHalfByteBits(12, 0);
-        const dreamStoneVovxel = [dreamstone, 1, this.infoByte.getNumberValue()];
+        const dreamStoneVovxel = [dreamstonepillar, 1, this.infoByte.getNumberValue()];
         let baseY = 0;
         let maxY = 31;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
-                    if (y >= baseY && y <= maxY) {
+                    if (y >= baseY && y <= maxY - 9) {
                         returnChunk[x] ??= [];
                         returnChunk[x][z] ??= [];
                         returnChunk[x][z][y] = [...dreamStoneVovxel];
                     }
-                    if (y >= maxY && y <= maxY + 7 && Math.random() < 0.2) {
+                    if (y >= maxY - 8 && y <= maxY + 8 && Math.random() < 0.05) {
                         returnChunk[x] ??= [];
                         returnChunk[x][z] ??= [];
                         returnChunk[x][z][y] = [...dreamStoneVovxel];

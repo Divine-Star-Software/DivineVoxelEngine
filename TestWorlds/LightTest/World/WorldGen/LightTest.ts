@@ -64,19 +64,55 @@ export function LightTest(
   color = "blue";
  }
 
- for (let y = startY - radius; y < startY + radius; y++) {
-  let startLevel = 15;
-  let lightLevel = 15;
+ let startLevel = 16;
+ let lightLevel = 16;
+ let fullLevel = 16;
+
+ for (let i = 0; i < radius; i++) {
+  fullLevel--;
+  if (!fullLevel) break;
+  startLevel = fullLevel;
   for (let j = 0; j < radius; j++) {
    startLevel--;
    lightLevel = startLevel;
-   let k = 0;
+   if (!lightLevel) break;
 
    for (let k = 0; k < radius; k++) {
     lightLevel--;
     if (!lightLevel) break;
+
+    //top
+    let y = startY + i;
+
     let z = startZ + k;
     let x = startX + j;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+    z = startZ - k;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+
+    z = startZ + k;
+    x = startX - j;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+    z = startZ - k;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+    //bottom
+    y = startY - i;
+
+    z = startZ + k;
+    x = startX + j;
     if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
      const data = chunkVoxels[x][z][y];
 

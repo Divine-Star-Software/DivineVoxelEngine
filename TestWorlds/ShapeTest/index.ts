@@ -82,7 +82,13 @@ const init = async () => {
   }
  };
  check();
-
+ let divFps = document.getElementById("fps");
+ //render loop
+ engine.runRenderLoop(() => {
+  scene.render();
+  //@ts-ignore
+  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+ });
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
