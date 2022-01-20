@@ -37,8 +37,8 @@ export function InitWorldWorker(
     );
     DVEW.worldData.requestVoxelAdd(
      chunkXZ[0],
+     chunkXZ[1],
      chunkXZ[2],
-     chunkXZ[3],
      eventData[1],
      eventData[2],
      eventData[3]
@@ -52,8 +52,8 @@ export function InitWorldWorker(
     );
     DVEW.worldData.requestVoxelBeRemove(
      chunkXZ[0],
+     chunkXZ[1],
      chunkXZ[2],
-     chunkXZ[3],
      eventData[1],
      eventData[2],
      eventData[3]

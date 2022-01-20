@@ -85,7 +85,7 @@ export function GetRelativeVoxelData(
   if (x <= 0 && z < 0) {
    return checkSouth(this, chunkX, chunkY, chunkZ, blockX, blockY, x, y);
   }
-  if (x > 0 && z < 0) { 
+  if (x > 0 && z < 0) {
    const southEastChunkData =
     this.chunks[`${chunkX + 16}-${chunkZ - 16}-${chunkY}`];
    if (!southEastChunkData) return false;
@@ -224,7 +224,7 @@ export function GetVoxelData(
   if (x < 0 && z < 0) {
    const southWestChunkData =
     this.chunks[`${chunkX - 16}-${chunkZ - 16}-${chunkY}`];
-   if (!southWestChunkData) return false;
+   if (!southWestChunkData || southWestChunkData.isEmpty) return false;
    const southWestChunk = southWestChunkData.voxels;
    if (
     southWestChunk[15] &&
@@ -249,7 +249,7 @@ export function GetVoxelData(
   if (x > 0 && z < 0) {
    const southEastChunkData =
     this.chunks[`${chunkX + 16}-${chunkZ - 16}-${chunkY}`];
-   if (!southEastChunkData) return false;
+   if (!southEastChunkData || southEastChunkData.isEmpty) return false;
    const southEastChunk = southEastChunkData.voxels;
    if (
     southEastChunk[0] &&
@@ -274,7 +274,7 @@ export function GetVoxelData(
   if (x < 0 && z > 0) {
    const northWestChunkData =
     this.chunks[`${chunkX - 16}-${chunkZ - +16}-${chunkY}`];
-   if (!northWestChunkData) return false;
+   if (!northWestChunkData || northWestChunkData.isEmpty) return false;
    const northWestChunk = northWestChunkData.voxels;
    if (
     northWestChunk[15] &&
@@ -299,7 +299,7 @@ export function GetVoxelData(
   if (x > 0 && z > 0) {
    const northEastChunkData =
     this.chunks[`${chunkX + 16}-${chunkZ + 16}-${chunkY}`];
-   if (!northEastChunkData) return false;
+   if (!northEastChunkData || northEastChunkData.isEmpty) return false;
    const northEastChunk = northEastChunkData.voxels;
    if (
     northEastChunk[0] &&
@@ -341,7 +341,7 @@ const checkNorth = (
  y: number
 ) => {
  const northChunkData = worldData.chunks[`${chunkX}-${chunkZ + 16}-${chunkY}`];
- if (!northChunkData) return false;
+ if (!northChunkData || northChunkData.isEmpty) return false;
  const northChunk = northChunkData.voxels;
  if (
   northChunk[blockX + x] &&
@@ -363,7 +363,7 @@ const checkSouth = (
  y: number
 ) => {
  const southChunkData = worldData.chunks[`${chunkX}-${chunkZ - 16}-${chunkY}`];
- if (!southChunkData) return false;
+ if (!southChunkData || southChunkData.isEmpty) return false;
  const southChunk = southChunkData.voxels;
  if (
   southChunk[blockX + x] &&
@@ -385,7 +385,7 @@ const checkEast = (
  z: number
 ) => {
  const eastChunkData = worldData.chunks[`${chunkX + 16}-${chunkZ}-${chunkY}`];
- if (!eastChunkData) return false;
+ if (!eastChunkData || eastChunkData.isEmpty) return false;
  const eastChunk = eastChunkData.voxels;
  if (
   eastChunk[0] &&
@@ -407,7 +407,7 @@ const checkWest = (
  z: number
 ) => {
  const westChunkData = worldData.chunks[`${chunkX - 16}-${chunkZ}-${chunkY}`];
- if (!westChunkData) return false;
+ if (!westChunkData || westChunkData.isEmpty) return false;
  const westChunk = westChunkData.voxels;
  if (
   westChunk[15] &&

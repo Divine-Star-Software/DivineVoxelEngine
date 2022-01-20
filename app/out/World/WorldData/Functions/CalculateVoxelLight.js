@@ -31,15 +31,14 @@ export function VoxelLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY,
     let r = values[1];
     let g = values[2];
     let b = values[3];
-    for (let i = 0; i < checkSet.length; i += 3) {
+    for (let i = 0; i < 9; i += 3) {
         const check = this.getRelativeVoxelData(chunkX, chunkY, chunkZ, blockX, blockY, blockZ, checkSet[i], checkSet[i + 1], checkSet[i + 2]);
         if (!check) {
             continue;
         }
-        const voxelPalletId = check[0];
-        const voxelTrueId = voxelPallet[voxelPalletId][0];
+        const voxelTrueId = voxelPallet[check[0]][0];
         const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
-        if (checkVoxel.data.substance !== voxel.data.substance) {
+        if (checkVoxel.data.substance != voxel.data.substance) {
             continue;
         }
         let neighborLightValue = check[check.length - 1];

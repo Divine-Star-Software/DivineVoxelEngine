@@ -21,6 +21,10 @@ const init = async () => {
     window.addEventListener("click", function () {
         canvas.requestPointerLock();
     });
+    //@ts-ignore
+    //Does not work in electron so currently disabled. 
+    // const engine = new BABYLON.WebGPUEngine(canvas);
+    //await engine.initAsync();
     const engine = new BABYLON.Engine(canvas, false, {});
     engine.doNotHandleContextLost = true;
     engine.enableOfflineSupport = false;

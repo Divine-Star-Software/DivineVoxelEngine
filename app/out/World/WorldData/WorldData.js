@@ -37,10 +37,12 @@ export class WorldData {
         return [(x >> 4) << 4, (y >> 7) << 7, (z >> 4) << 4];
     }
     requestVoxelAdd(chunkX, chunkY, chunkZ, x, y, z, voxelPalletId = 1) {
-        const chunk = this.chunks[`${chunkX}-${chunkZ}`];
+        console.log(arguments);
+        const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         const relativePOS = this._getRelativeChunkPosition(chunkX, chunkY, chunkZ, x, y, z);
         const relativeX = relativePOS[0];
         const relativeZ = relativePOS[1];
+        const relativeY = relativePOS[2];
         const chunkVoxels = chunk.voxels;
         let pallet = chunk.voxelPallet;
         if (!pallet) {
@@ -48,7 +50,11 @@ export class WorldData {
         }
         if (!chunkVoxels[relativeX][relativeZ]) {
             chunkVoxels[relativeX][relativeZ] ??= [];
-            chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 1, 0xffffffff];
+            chunkVoxels[relativeX][relativeZ][relativeY] = [
+                voxelPalletId,
+                1,
+                0xffffffff,
+            ];
             const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(chunk, pallet, chunkX, chunkY, chunkZ);
             this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
             this._checkNearbyChunksToRebuild(chunkX, chunkY, chunkZ, relativeX, relativeZ);

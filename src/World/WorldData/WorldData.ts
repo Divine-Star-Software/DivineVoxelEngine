@@ -65,7 +65,8 @@ export class WorldData {
   z: number,
   voxelPalletId: number = 1
  ): false | ChunkVoxels {
-  const chunk = this.chunks[`${chunkX}-${chunkZ}`];
+     console.log(arguments);
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   const relativePOS = this._getRelativeChunkPosition(
    chunkX,
    chunkY,
@@ -76,7 +77,7 @@ export class WorldData {
   );
   const relativeX = relativePOS[0];
   const relativeZ = relativePOS[1];
-
+  const relativeY = relativePOS[2];
   const chunkVoxels = chunk.voxels;
   let pallet = chunk.voxelPallet;
   if (!pallet) {
@@ -84,7 +85,11 @@ export class WorldData {
   }
   if (!chunkVoxels[relativeX][relativeZ]) {
    chunkVoxels[relativeX][relativeZ] ??= [];
-   chunkVoxels[relativeX][relativeZ][y] = [voxelPalletId, 1, 0xffffffff];
+   chunkVoxels[relativeX][relativeZ][relativeY] = [
+    voxelPalletId,
+    1,
+    0xffffffff,
+   ];
 
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,

@@ -10,10 +10,7 @@ export class WorldGen {
  renderDistance = 20;
 
  copy(data: any): any {
-return [
-    ...data
-  ];
-
+  return [...data];
  }
  generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
@@ -37,6 +34,7 @@ return [
   }
 
   return {
+   isEmpty: false,
    voxels: chunkVoxels,
    maxMinHeight: [],
    heightMap: [],
@@ -44,15 +42,16 @@ return [
  }
 
  generateCrazyChunk(
-  chunk: ChunkData,
+  bottomChunk: ChunkData,
+  topChunk: ChunkData,
   minY: number,
   x: number,
   y: number,
   z: number
  ) {
-  chunk.maxMinHeight[0] = 0;
-  chunk.maxMinHeight[1] = minY;
-  const chunkVoxels = chunk.voxels;
+  bottomChunk.maxMinHeight[0] = 0;
+  bottomChunk.maxMinHeight[1] = minY;
+  const chunkVoxels = bottomChunk.voxels;
   let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamstone:defualt"
   );
@@ -67,8 +66,8 @@ return [
    chunkVoxels[x][z] ??= [];
    chunkVoxels[x][z][y] = this.copy(block);
 
-   if (y < chunk.maxMinHeight[0]) {
-    chunk.maxMinHeight[0] = y;
+   if (y < bottomChunk.maxMinHeight[0]) {
+    bottomChunk.maxMinHeight[0] = y;
    }
 
    if (Math.random() > 0.8) {
@@ -80,20 +79,28 @@ return [
  }
 
  generateSpikeChunk(
-  chunk: ChunkData,
+  bottomChunk: ChunkData,
+  topChunk: ChunkData,
   minY: number,
   maxY: number,
   x: number,
   y: number,
   z: number
  ) {
-  const chunkVoxels = chunk.voxels;
   let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamstonepillar:defualt"
   );
-  chunk.maxMinHeight[0] = minY;
-  chunk.maxMinHeight[1] = maxY;
+  bottomChunk.maxMinHeight[0] = minY;
+  bottomChunk.maxMinHeight[1] = maxY;
   let block = [dreamStonePillar, 0, 0xffffffff];
+
+  let chunkVoxels;
+  if (y > 128) {
+   chunkVoxels = topChunk.voxels;
+   topChunk.isEmpty = false;
+  } else {
+   chunkVoxels = bottomChunk.voxels;
+  }
 
   if (x == 0 || z == 0 || x == 15 || z == 15) {
    if (
@@ -223,15 +230,16 @@ return [
  }
 
  generatePondChunk(
-  chunk: ChunkData,
+  bottomChunk: ChunkData,
+  topChunk: ChunkData,
   minY: number,
   x: number,
   y: number,
   z: number
  ) {
-  const chunkVoxels = chunk.voxels;
-  chunk.maxMinHeight[0] = minY - 7;
-  chunk.maxMinHeight[1] = minY;
+  const chunkVoxels = bottomChunk.voxels;
+  bottomChunk.maxMinHeight[0] = minY - 7;
+  bottomChunk.maxMinHeight[1] = minY;
 
   let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamstone:defualt"
@@ -312,15 +320,16 @@ return [
  }
 
  generateHoleChunk(
-  chunk: ChunkData,
+  bottomChunk: ChunkData,
+  topChunk: ChunkData,
   minY: number,
   x: number,
   y: number,
   z: number
  ) {
-  const chunkVoxels = chunk.voxels;
-  chunk.maxMinHeight[0] = minY - 8;
-  chunk.maxMinHeight[1] = minY;
+  const chunkVoxels = bottomChunk.voxels;
+  bottomChunk.maxMinHeight[0] = minY - 8;
+  bottomChunk.maxMinHeight[1] = minY;
 
   let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamstone:defualt"
@@ -428,15 +437,16 @@ return [
   }
  }
  generateNormalChunk(
-  chunk: ChunkData,
+  bottomChunk: ChunkData,
+  topChunk: ChunkData,
   minY: number,
   x: number,
   y: number,
   z: number
  ) {
-  const chunkVoxels = chunk.voxels;
-  chunk.maxMinHeight[0] = minY;
-  chunk.maxMinHeight[1] = minY + 1;
+  const chunkVoxels = bottomChunk.voxels;
+  bottomChunk.maxMinHeight[0] = minY;
+  bottomChunk.maxMinHeight[1] = minY + 1;
   let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
    "dve:dreamgrassblock:defualt"
   );
@@ -461,17 +471,22 @@ return [
   }
  }
 
- generateChunkNormal(chunkX: number, chunkZ: number): ChunkData {
+ generateChunkNormal(chunkX: number, chunkZ: number): ChunkData[] {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
-
-  const chunkVoxels: any[][][] = [];
 
   let toss = Math.random();
 
-  const chunk = {
-   voxels: chunkVoxels,
+  const bottomChunk = {
+   voxels: [],
    maxMinHeight: [],
    heightMap: [],
+   isEmpty: false,
+  };
+  const topChunk = {
+   voxels: [],
+   maxMinHeight: [],
+   heightMap: [],
+   isEmpty: true,
   };
 
   let minY = 60;
@@ -502,28 +517,29 @@ return [
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (pond) {
-      this.generatePondChunk(chunk, minY, x, y, z);
+      this.generatePondChunk(bottomChunk, topChunk, minY, x, y, z);
      }
      if (crazy) {
-      this.generateCrazyChunk(chunk, minY, x, y, z);
+      this.generateCrazyChunk(bottomChunk, topChunk, minY, x, y, z);
      }
      if (spiked) {
-      this.generateSpikeChunk(chunk, minY, maxY, x, y, z);
+      this.generateSpikeChunk(bottomChunk, topChunk, minY, maxY, x, y, z);
      }
      if (hole) {
-      this.generateHoleChunk(chunk, minY, x, y, z);
+      this.generateHoleChunk(bottomChunk, topChunk, minY, x, y, z);
      }
      if (normal) {
-      this.generateNormalChunk(chunk, minY, x, y, z);
+      this.generateNormalChunk(bottomChunk, topChunk, minY, x, y, z);
      }
     }
    }
   }
 
-  return chunk;
+
+  return [bottomChunk, topChunk];
  }
 
- generateChunkLine(
+ /* generateChunkLine(
   chunkX: number,
   chunkZ: number,
   direction: "north" | "east" | "south" | "west"
@@ -541,8 +557,8 @@ return [
 
     if (!chunks[i][previousMaxChunkRebuild]) {
      const newChunk = this.generateChunkNormal(i, previousMaxChunkRebuild);
-     this.DVEW.worldData.setChunk(i, 0,previousMaxChunkRebuild, newChunk);
-     this.DVEW.buildChunk(i,0, previousMaxChunkRebuild);
+     this.DVEW.worldData.setChunk(i, 0, previousMaxChunkRebuild, newChunk);
+     this.DVEW.buildChunk(i, 0, previousMaxChunkRebuild);
     }
    }
    for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
@@ -550,12 +566,12 @@ return [
      chunks[i] = [];
     }
     if (chunks[i][removeChunkZ]) {
-     this.DVEW.removeChunk(i, 0,removeChunkZ);
+     this.DVEW.removeChunk(i, 0, removeChunkZ);
     }
     if (!chunks[i][newChunkZ]) {
      const newChunk = this.generateChunkNormal(i, newChunkZ);
-     this.DVEW.worldData.setChunk(i, 0,newChunkZ, newChunk);
-     this.DVEW.buildChunk(i,0, newChunkZ);
+     this.DVEW.worldData.setChunk(i, 0, newChunkZ, newChunk);
+     this.DVEW.buildChunk(i, 0, newChunkZ);
     }
    }
   }
@@ -568,12 +584,12 @@ return [
      chunks[i] = [];
     }
     if (chunks[i][removeChunkZ]) {
-     this.DVEW.removeChunk(i,0, removeChunkZ);
+     this.DVEW.removeChunk(i, 0, removeChunkZ);
     }
     if (!chunks[i][newChunkZ]) {
      const newChunk = this.generateChunkNormal(i, newChunkZ);
-     this.DVEW.worldData.setChunk(i, 0,newChunkZ, newChunk);
-     this.DVEW.buildChunk(i,0, newChunkZ);
+     this.DVEW.worldData.setChunk(i, 0, newChunkZ, newChunk);
+     this.DVEW.buildChunk(i, 0, newChunkZ);
     }
    }
   }
@@ -590,8 +606,8 @@ return [
 
     if (!chunks[newChunkX][i]) {
      const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(newChunkX,0, i, newChunk);
-     this.DVEW.buildChunk(newChunkX,0, i);
+     this.DVEW.worldData.setChunk(newChunkX, 0, i, newChunk);
+     this.DVEW.buildChunk(newChunkX, 0, i);
     }
    }
    for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
@@ -601,8 +617,8 @@ return [
 
     if (!chunks[previousMaxChunkRebuild][i]) {
      const newChunk = this.generateChunkNormal(previousMaxChunkRebuild, i);
-     this.DVEW.worldData.setChunk(previousMaxChunkRebuild,0, i, newChunk);
-     this.DVEW.buildChunk(previousMaxChunkRebuild,0, i);
+     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, 0, i, newChunk);
+     this.DVEW.buildChunk(previousMaxChunkRebuild, 0, i);
     }
    }
 
@@ -635,8 +651,8 @@ return [
 
     if (!chunks[newChunkX][i]) {
      const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(newChunkX,0, i, newChunk);
-     this.DVEW.buildChunk(newChunkX,0, i);
+     this.DVEW.worldData.setChunk(newChunkX, 0, i, newChunk);
+     this.DVEW.buildChunk(newChunkX, 0, i);
     }
    }
    for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
@@ -646,8 +662,8 @@ return [
 
     if (!chunks[previousMaxChunkRebuild][i]) {
      const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(previousMaxChunkRebuild,0, i, newChunk);
-     this.DVEW.buildChunk(previousMaxChunkRebuild,0, i);
+     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, 0, i, newChunk);
+     this.DVEW.buildChunk(previousMaxChunkRebuild, 0, i);
     }
    }
    for (const checkChunkX of Object.keys(chunks)) {
@@ -667,5 +683,5 @@ return [
    delete chunks[removeChunkX];
   }
   this.DVEW.buildFluidMesh();
- }
+ } */
 }

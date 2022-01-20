@@ -69,14 +69,14 @@ export class BuilderWorkerManager {
  };
 
  constructor(private DVE: DivineVoxelEngine) {
-  /*     const numBuilders = 4;
+       const numBuilders = 4;
 
     if(window.navigator.hardwareConcurrency > numBuilders) {
       //use all possible cores if we can
-      this.numBuilders = window.navigator.hardwareConcurrency * 2
+      this.numBuilders = window.navigator.hardwareConcurrency;
       ;
-    }]
-     */
+    }
+    
  }
 
  createBuilderWorker(path: string) {

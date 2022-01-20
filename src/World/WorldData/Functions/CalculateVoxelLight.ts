@@ -10,15 +10,12 @@ export function CalculateVoxelLight(
  lightTemplate: number[],
  exposedFaces: number[],
  chunkX: number,
- chunkY : number,
+ chunkY: number,
  chunkZ: number,
  x: number,
  y: number,
  z: number
 ) {
-
-
-
  // +y
  if (exposedFaces[0]) {
   lightTemplate.push(
@@ -353,14 +350,13 @@ export function VoxelLightMixCalc(
  voxel: VoxelInteface,
  voxelPallet: VoxelPallet,
  chunkX: number,
- chunkY :number,
+ chunkY: number,
  chunkZ: number,
  blockX: number,
  blockY: number,
  blockZ: number,
  checkSet: number[]
 ) {
-
  let voxelLigtValue: number = voxelData[voxelData.length - 1];
 
  const values = this.lightByte.getLightValues(voxelLigtValue);
@@ -369,7 +365,7 @@ export function VoxelLightMixCalc(
  let g = values[2];
  let b = values[3];
 
- for (let i = 0; i < checkSet.length; i += 3) {
+ for (let i = 0; i < 9; i += 3) {
   const check = this.getRelativeVoxelData(
    chunkX,
    chunkY,
@@ -386,10 +382,9 @@ export function VoxelLightMixCalc(
    continue;
   }
 
-  const voxelPalletId = check[0];
-  const voxelTrueId = voxelPallet[voxelPalletId][0];
+  const voxelTrueId = voxelPallet[check[0]][0];
   const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
-  if (checkVoxel.data.substance !== voxel.data.substance) {
+  if (checkVoxel.data.substance != voxel.data.substance) {
    continue;
   }
 
@@ -445,7 +440,7 @@ export function VoxelLightMixCalcO(
  blockZ: number,
  checkSet: number[]
 ) {
-  return 0xffffffff;
+ return 0xffffffff;
  let voxelLigtValue: number = voxelData[voxelData.length - 1];
 
  this.infoByte.setNumberValue(voxelLigtValue);

@@ -155,7 +155,7 @@ export class ChunkProcessor {
      //chunk border west
      if (15 == x) {
       const westChunkData = this.DVEW.worldData.getChunk(chunkX + 16,chunkY, chunkZ);
-      if (westChunkData) {
+      if (westChunkData && !westChunkData.isEmpty) {
        const westChunk = westChunkData.voxels;
        if (westChunk[0] && westChunk[0][z] && westChunk[0][z][y] == undefined) {
         addWest = true;
@@ -196,7 +196,7 @@ export class ChunkProcessor {
      //check border east
      if (0 == x) {
       const eastChunkData = this.DVEW.worldData.getChunk(chunkX - 16, chunkY,chunkZ);
-      if (eastChunkData) {
+      if (eastChunkData && !eastChunkData.isEmpty) {
        const eastChunk = eastChunkData.voxels;
        if (
         eastChunk[15] &&
@@ -241,7 +241,7 @@ export class ChunkProcessor {
      //chunk border north
      if (z == 0) {
       const northChunkData = this.DVEW.worldData.getChunk(chunkX,chunkY, chunkZ - 16);
-      if (northChunkData) {
+      if (northChunkData && !northChunkData.isEmpty) {
        const northChunk = northChunkData.voxels;
        if (northChunk[x][15] && northChunk[x][15][y] == undefined) {
         addNorth = true;
@@ -280,7 +280,7 @@ export class ChunkProcessor {
      //chunk border south
      if (15 == z) {
       const southChunkData = this.DVEW.worldData.getChunk(chunkX, chunkY,chunkZ + 16);
-      if (southChunkData) {
+      if (southChunkData && !southChunkData.isEmpty) {
        const southChunk = southChunkData.voxels;
        if (southChunk[x][0] && southChunk[x][0][y] == undefined) {
         addSouth = true;

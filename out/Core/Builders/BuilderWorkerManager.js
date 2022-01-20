@@ -18,14 +18,12 @@ export class BuilderWorkerManager {
     };
     constructor(DVE) {
         this.DVE = DVE;
-        /*     const numBuilders = 4;
-      
-          if(window.navigator.hardwareConcurrency > numBuilders) {
+        const numBuilders = 4;
+        if (window.navigator.hardwareConcurrency > numBuilders) {
             //use all possible cores if we can
-            this.numBuilders = window.navigator.hardwareConcurrency * 2
+            this.numBuilders = window.navigator.hardwareConcurrency;
             ;
-          }]
-           */
+        }
     }
     createBuilderWorker(path) {
         //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",

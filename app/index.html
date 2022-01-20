@@ -31,26 +31,27 @@
       height: 100%;
       overflow: hidden;
     }
+
     .fps {
-                position: absolute;
-                background-color: black;
-                border: 2px solid purple;
-                text-align: center;
-                font-size: 16px;
-                color: white;
-                top: 0;
-                left : 0;
-                width: 80px;
-                height: 20px;
-                z-index: 1000;
-            }
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      font-size: 16px;
+      color: white;
+      top: 0;
+      left: 0;
+      padding: 10px;
+      width: 80px;
+      height: 20px;
+      z-index: 1000;
+    }
   </style>
 
 </head>
 
 <body class="default">
   <div class="fps"><span id='fps'>0</span></div>
-  <script src="./lib/babylon.js"
+  <script src="./lib/bjs5/babylon.js"
     type="module"
     defer></script>
   <script src="./js/World1/index.js"

@@ -39,6 +39,11 @@ export class WorldGen {
                         returnChunk[x][z] ??= [];
                         returnChunk[x][z][y] = [...dreamStoneVovxel];
                     }
+                    if (y >= maxY && y <= maxY + 7 && Math.random() < 0.2) {
+                        returnChunk[x] ??= [];
+                        returnChunk[x][z] ??= [];
+                        returnChunk[x][z][y] = [...dreamStoneVovxel];
+                    }
                 }
             }
         }

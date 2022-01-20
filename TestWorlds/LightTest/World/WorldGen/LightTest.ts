@@ -2,7 +2,7 @@ import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import { WorldGen } from "./WorldGen";
 /**
  * Note to self for light removel.
- * When going through the voxels to updated set the voxel 
+ * When going through the voxels to updated set the voxel
  * light level to be the brigthest neighbor minus 1.
  */
 
@@ -64,39 +64,41 @@ export function LightTest(
   color = "blue";
  }
 
- let startLevel = 15;
- let lightLevel = 15;
- for (let j = 0; j < radius; j++) {
-  startLevel--;
-  lightLevel = startLevel;
-  let k = 0;
+ for (let y = startY - radius; y < startY + radius; y++) {
+  let startLevel = 15;
+  let lightLevel = 15;
+  for (let j = 0; j < radius; j++) {
+   startLevel--;
+   lightLevel = startLevel;
+   let k = 0;
 
-  for (let k = 0; k < radius; k++) {
-   lightLevel--;
-   if (!lightLevel) break;
-   let z = startZ + k;
-   let x = startX + j;
-   if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][startY]) {
-    const data = chunkVoxels[x][z][startY];
+   for (let k = 0; k < radius; k++) {
+    lightLevel--;
+    if (!lightLevel) break;
+    let z = startZ + k;
+    let x = startX + j;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
 
-    data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
-   }
-   z = startZ - k;
-   if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][startY]) {
-    const data = chunkVoxels[x][z][startY];
-    data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
-   }
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+    z = startZ - k;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
 
-   z = startZ + k;
-   x = startX - j;
-   if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][startY]) {
-    const data = chunkVoxels[x][z][startY];
-    data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
-   }
-   z = startZ - k;
-   if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][startY]) {
-    const data = chunkVoxels[x][z][startY];
-    data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    z = startZ + k;
+    x = startX - j;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
+    z = startZ - k;
+    if (chunkVoxels[x] && chunkVoxels[x][z] && chunkVoxels[x][z][y]) {
+     const data = chunkVoxels[x][z][y];
+     data[data.length - 1] = colorFunctions[color](lightLevel, this.infoByte);
+    }
    }
   }
  }
@@ -119,14 +121,14 @@ const colorFunctions: Record<
   infoByte.setHalfByteBits(0, lightLevel);
   infoByte.setHalfByteBits(4, lightLevel);
   infoByte.setHalfByteBits(8, 0);
-  infoByte.setHalfByteBits(12, 0);
+  infoByte.setHalfByteBits(12, lightLevel);
   return infoByte.getNumberValue();
  },
  blue: (lightLevel: number, infoByte: InfoByte) => {
   infoByte.setNumberValue(0);
   infoByte.setHalfByteBits(0, lightLevel);
   infoByte.setHalfByteBits(4, 0);
-  infoByte.setHalfByteBits(8, 0);
+  infoByte.setHalfByteBits(8, lightLevel);
   infoByte.setHalfByteBits(12, lightLevel);
   return infoByte.getNumberValue();
  },
