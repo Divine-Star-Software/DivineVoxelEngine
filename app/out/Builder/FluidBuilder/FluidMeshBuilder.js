@@ -67,7 +67,7 @@ export class FluidMeshBuilder {
         return [positions, indices, colors, uvs];
     }
     addTemplate(chunkX, chunkY, chunkZ, newPositionsTemplate, newFaceTemplate, newShapeTemplate, newUvTemplate, newLightTemplate, newAoTemplate) {
-        this.savedTemplates[`${chunkX}-${chunkZ}`] = [
+        this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`] = [
             newPositionsTemplate,
             newFaceTemplate,
             newShapeTemplate,
@@ -75,6 +75,6 @@ export class FluidMeshBuilder {
             newLightTemplate,
             newAoTemplate,
         ];
-        this.templateMap[`${chunkX}-${chunkZ}`] = [chunkX, chunkZ];
+        this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`] = [chunkX, chunkZ];
     }
 }

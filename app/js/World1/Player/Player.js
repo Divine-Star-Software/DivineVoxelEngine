@@ -331,8 +331,6 @@ export class Player {
         this._setUpPlayerCube();
         this._setUpPlayerCamera();
         document.addEventListener("click", (event) => {
-            return;
-            ;
             if (event.button == 2) {
                 this._doAction("place");
                 this.DVE.world.requestWorldUpdate("block-add", this.blockLookingAtPosition);

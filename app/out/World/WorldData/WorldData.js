@@ -208,7 +208,7 @@ export class WorldData {
         }
         return [relativeX, relativeZ, realtiveY];
     }
-    requestBlockRemove(chunkX, chunkY, chunkZ, x, y, z, blockId = 1) {
+    requestVoxelBeRemove(chunkX, chunkY, chunkZ, x, y, z, blockId = 1) {
         const chunk = this.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;

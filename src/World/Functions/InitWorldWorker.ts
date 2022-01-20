@@ -50,7 +50,7 @@ export function InitWorldWorker(
      event.data[2],
      event.data[3]
     );
-    DVEW.worldData.requestBlockRemove(
+    DVEW.worldData.requestVoxelBeRemove(
      chunkXZ[0],
      chunkXZ[2],
      chunkXZ[3],

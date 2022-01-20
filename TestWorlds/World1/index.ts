@@ -19,9 +19,7 @@ const readyStateCheckInterval = setInterval(function () {
  }
 }, 10);
 
-
-
-const init = async () => {  
+const init = async () => {
  const canvas = document.createElement("canvas");
  canvas.id = "renderCanvas";
  document.body.append(canvas);
@@ -37,16 +35,13 @@ const init = async () => {
  const scene = new BABYLON.Scene(engine);
  //@ts-ignore
  scene.skipPointerMovePicking = true;
- scene.autoClear = false; 
+ scene.autoClear = false;
  scene.autoClearDepthAndStencil = false;
 
-
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
- scene.fogDensity = 0.008
- scene.fogColor = new BABYLON.Color3(99/255,157/255,216/255);
+ scene.fogDensity = 0.008;
+ scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
  scene.fogEnabled = true;
-
-
 
  const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 400.0 }, scene);
  const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -66,8 +61,6 @@ const init = async () => {
 
  camera.attachControl(canvas, true);
 
-
-
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
  setInterval(() => {
@@ -82,7 +75,6 @@ const init = async () => {
   //@ts-ignore
   divFps.innerHTML = engine.getFps().toFixed() + " fps";
  });
-
 
  scene.cleanCachedTextureBuffer();
 };

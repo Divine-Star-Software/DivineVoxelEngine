@@ -439,7 +439,7 @@ export class Player {
   this._setUpPlayerCamera();
 
   document.addEventListener("click", (event: MouseEvent) => {
-    return;;
+
    if (event.button == 2) {
     this._doAction("place");
 

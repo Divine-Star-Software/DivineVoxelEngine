@@ -379,7 +379,7 @@ export class WorldData {
   return [relativeX, relativeZ, realtiveY];
  }
 
- requestBlockRemove(
+ requestVoxelBeRemove(
   chunkX: number,
   chunkY: number,
   chunkZ: number,
@@ -388,8 +388,8 @@ export class WorldData {
   z: number,
   blockId: number = 1
  ): false | ChunkVoxels {
-  const chunk = this.getChunk(chunkX,chunkY,chunkZ);
-  if(!chunk)return false;
+  const chunk = this.getChunk(chunkX, chunkY, chunkZ);
+  if (!chunk) return false;
 
   const relativePOS = this._getRelativeChunkPosition(
    chunkX,

@@ -25,5 +25,5 @@ export declare class WorldData {
     requestVoxelAdd(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, voxelPalletId?: number): false | ChunkVoxels;
     _checkNearbyChunksToRebuild(chunkX: number, chunkY: number, chunkZ: number, relativeX: number, relativeZ: number): void;
     _getRelativeChunkPosition(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): number[];
-    requestBlockRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | ChunkVoxels;
+    requestVoxelBeRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | ChunkVoxels;
 }

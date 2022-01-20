@@ -13,7 +13,7 @@ export class FluidMeshBuilder {
 
  savedTemplates: Record<string, any[]> = {};
 
- removeTemplate(chunkX: number, chunkY :number,chunkZ: number) {
+ removeTemplate(chunkX: number, chunkY: number, chunkZ: number) {
   delete this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`];
   delete this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`];
  }
@@ -78,7 +78,7 @@ export class FluidMeshBuilder {
 
  addTemplate(
   chunkX: number,
-  chunkY : number,
+  chunkY: number,
   chunkZ: number,
   newPositionsTemplate: Uint16Array,
   newFaceTemplate: Uint8Array,
@@ -87,7 +87,7 @@ export class FluidMeshBuilder {
   newLightTemplate: Float32Array,
   newAoTemplate: Float32Array
  ) {
-  this.savedTemplates[`${chunkX}-${chunkZ}`] = [
+  this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`] = [
    newPositionsTemplate,
    newFaceTemplate,
    newShapeTemplate,
@@ -96,6 +96,6 @@ export class FluidMeshBuilder {
    newAoTemplate,
   ];
 
-  this.templateMap[`${chunkX}-${chunkZ}`] = [chunkX, chunkZ];
+  this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`] = [chunkX, chunkZ];
  }
 }

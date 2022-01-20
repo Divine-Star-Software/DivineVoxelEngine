@@ -166,7 +166,6 @@ export class PlayerWatcher {
   this.cachedChunkZ = this.playerChunkPosition[1];
   setInterval(() => {
    // console.log(this.playerDirection, this.playerABSPositon);
-
    const pickVector = [
     this.playerDirection[0] * this.playerReach + this.playerABSPositon[0],
     this.playerDirection[1] * this.playerReach + this.playerABSPositon[1],
