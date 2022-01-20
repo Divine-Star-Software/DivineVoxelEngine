@@ -19,19 +19,22 @@ This engine only handles rendering and creating of meshes. Things like players, 
 
 # Current Features
 
-- Different Voxel Types
-- Different Voxel Shapes
-- Chunk based rendering and meshing
-- Multi Threaded - World Gen and Chunk Creation happens in workers
-- Ambient Occlusion - Nice shadows for the voxel
-- Animated Textures
-- Custom Shaders
+- Different voxel types and shapes.
+- Chunk based rendering and meshing.
+- Multi threaded mesh building.
+- Ambient occlusion.
+- Animated and connected textures.
+- Custom shaders and shader effects.
+- Vertical and horizontal chunks.
 
 # In Dev
 
-- Any easy way to add voxels and shapes.
 - Saving Data
-- Lighting System
+- Lighting system.
+  - Flood fill lighting system.
+  - Suppourt for different colored lights.
+- World Data API - Easy way to create chunk and the needed data for it.
+
 
 #### Test Out
 
