@@ -6,7 +6,7 @@ This engine was developed on top of the V8 engine through severing it as an Elec
 
 The current suppourted max render amount is 225 chunks. The engine is desinged to run best with that max amount of chunks. 
 
-It can do 20+ for more simple chunk meshes. If your world does not update often then the render distance can be higher as well.
+It can do 400+ for more simple chunks. If your world does not update often then the render distance can be higher as well.
 
 #### Terms
 - Voxel
