@@ -4,10 +4,11 @@
 - Air voxels have a pallet id of -1. While the normal range for voxels is the positive side of a signed 32 bit int (2 billion or so).
 - Light example has been updated with a brand new algorithm.
   - It populates the air around the light sourcre. From there each air voxel light level is the brightest neighbor minus 1.
-  - Once an air voxel is set or updated it's neighbors are check as well. 
-  - If it encounters a solid block it stops filling air in the direction. 
-  - It fills by y, x, then z. Broke up it into four quads around the light. 
-  
+  - Once an air voxel is set or updated its neighbors are check as well. 
+    - It fills by y, x, then z. Broke up it into four quads around the light. 
+  - If it encounters a solid block it stops filling air in that direction. So, if going along the z axis for the current x and y it will stop. 
+  - But once it loops over the next layer on the y axis it can update an empty spaces that the light could wrap around into. 
+
 
 
 1-19-2022
