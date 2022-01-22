@@ -1,4 +1,15 @@
 ##### Change Log
+1-21-2022
+- Solid voxels no longer store a light level. All light levels are stored in an 'air' voxel.
+- Air voxels have a pallet id of -1. While the normal range for voxels is the positive side of a signed 32 bit int (2 billion or so).
+- Light example has been updated with a brand new algorithm.
+  - It populates the air around the light sourcre. From there each air voxel light level is the brightest neighbor minus 1.
+  - Once an air voxel is set or updated it's neighbors are check as well. 
+  - If it encounters a solid block it stops filling air in the direction. 
+  - It fills by y, x, then z. Broke up it into four quads around the light. 
+  
+
+
 1-19-2022
 - Decided to add suppourt for vertical chunks. Right now each chunk is 128 meters high. Might also try 64 tall chunks.
   - This is important to reduce the amount of time to update a big chunk. 
