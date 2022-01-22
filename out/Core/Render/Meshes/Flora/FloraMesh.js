@@ -3,14 +3,14 @@ export class FloraMesh {
     constructor(material) {
         this.material = material;
     }
-    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearcColors, fullColors, uvs) {
+    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("cuv3", uvs, false, 3);
-        mesh.setVerticesData("colors", linearcColors, false, 4);
+        mesh.setVerticesData("colors", aoColors, false, 4);
         mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
@@ -20,13 +20,13 @@ export class FloraMesh {
         mesh.checkCollisions = false;
         return mesh;
     }
-    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, linearColors, fullColors, uvs) {
+    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("cuv3", uvs, false, 3);
-        mesh.setVerticesData("colors", linearColors, false, 4);
+        mesh.setVerticesData("colors", aoColors, false, 4);
         mesh.material = this.material.getMaterial();
         mesh.freezeWorldMatrix();
         return mesh;

@@ -1,7 +1,7 @@
 import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelPallet } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
-export function CalculateVoxelColor(
+/* export function CalculateVoxelColor(
     this: WorldData,
     voxel: VoxelInteface,
     voxelData: any[],
@@ -342,7 +342,7 @@ export function CalculateVoxelColor(
      );
     }
    }
-
+ */
 
 export function VoxelColorMixCalc(
  this: WorldData,

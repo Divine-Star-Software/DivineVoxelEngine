@@ -6,25 +6,57 @@ import {
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import {
- CalculateVoxelLight,
- VoxelLightMixCalc,
-} from "./Functions/CalculateVoxelLight.js";
+ CalculateVoxelRGBLight,
+ VoxelRGBLightMixCalc,
+} from "./Functions/CalculateVoxelRGBLight.js";
 import { InfoByte } from "Global/Util/InfoByte.js";
 import { LightByte } from "Global/Util/LightByte.js";
+import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
+import { VoxelInteface } from "Meta/World/Voxels/Voxel.types.js";
 
 export class WorldData {
  renderDistance = 20;
 
+ chunkXPow2 = 4;
+ chunkZPow2 = 4;
+ chunkYPow2 = 7;
  private chunkProccesor: ChunkProcessor;
 
  chunks: Record<string, ChunkData> = {};
  getVoxelData = GetVoxelData;
  getRelativeVoxelData = GetRelativeVoxelData;
- calculdateVoxelLight = CalculateVoxelLight;
- voxelLightMixCalc = VoxelLightMixCalc;
+ calculdateVoxelLight = CalculateVoxelRGBLight;
+ voxelRGBLightMixCalc = VoxelRGBLightMixCalc;
+ voxelSunLightMixCalc = VoxelSunLightMixCalc;
 
  infoByte: InfoByte;
  lightByte: LightByte;
+
+ substanceRules: Record<string, boolean> = {
+  "solid-solid": false,
+  "solid-flora": true,
+  "solid-transparent": true,
+  "solid-fluid": true,
+  "solid-magma": true,
+
+  "transparent-solid": true,
+  "transparent-flora": true,
+  "transparent-transparent": true,
+  "transparent-fluid": true,
+  "transparent-magma": true,
+
+  "fluid-solid": false,
+  "fluid-flora": true,
+  "fluid-transparent": true,
+  "fluid-fluid": false,
+  "fluid-magma": true,
+
+  "magma-solid": false,
+  "magma-flora": true,
+  "magma-transparent": true,
+  "magma-fluid": true,
+  "magma-magma": false,
+ };
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
@@ -39,10 +71,69 @@ export class WorldData {
   return JSON.stringify(this.chunks);
  }
 
+ faceCheck(
+  voxel: VoxelInteface,
+  voxelData: any[],
+  x: number,
+  y: number,
+  z: number
+ ) {
+  if (voxelData[0] < 0) return true;
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk || chunk.isEmpty) {
+   return true;
+  }
+
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + 15) {
+    voxelX = 15;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + 15) {
+    voxelZ = 15;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + 127) {
+    voxelY = 127;
+   }
+  }
+  if (
+   chunk.voxels[voxelX] &&
+   chunk.voxels[voxelX][voxelZ] &&
+   chunk.voxels[voxelX][voxelZ][voxelY]
+  ) {
+   const voxelId = chunk.voxels[voxelX][voxelZ][voxelY][0];
+   if (voxelId < 0) return true;
+   let voxelPallet = chunk.voxelPallet;
+   if (!voxelPallet) {
+    voxelPallet = this.DVEW.worldGeneration.globalVoxelPallet;
+   }
+
+   const voxelCheck = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelId][0]);
+   if (
+    this.substanceRules[`${voxel.data.substance}-${voxelCheck.data.substance}`]
+   ) {
+    return true;
+   } else {
+    return false;
+   }
+  } else {
+   return true;
+  }
+ }
+
  getData(x: number, y: number, z: number) {
-  const chunkX = (x >> 4) << 4;
-  const chunkY = (y >> 7) << 7;
-  const chunkZ = (z >> 4) << 4;
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
    return false;
@@ -81,9 +172,9 @@ export class WorldData {
  }
 
  setData(x: number, y: number, z: number, data: number[]) {
-  const chunkX = (x >> 4) << 4;
-  const chunkY = (y >> 7) << 7;
-  const chunkZ = (z >> 4) << 4;
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
    return false;
@@ -128,7 +219,11 @@ export class WorldData {
  }
 
  getChunkPosition(x: number, y: number, z: number) {
-  return [(x >> 4) << 4, (y >> 7) << 7, (z >> 4) << 4];
+  return [
+   (x >> this.chunkXPow2) << this.chunkXPow2,
+   (y >> this.chunkYPow2) << this.chunkYPow2,
+   (z >> this.chunkXPow2) << this.chunkXPow2,
+  ];
  }
 
  requestVoxelAdd(

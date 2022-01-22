@@ -4,6 +4,7 @@ import type {
  VoxelAOCalcData,
  VoxelInteface,
  VoxelLightCalcData,
+ VoxelProcessData,
 } from "Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
 import { BuildAmbientOcclusion } from "../Chunks/Functions/ChunkAO.js";
@@ -17,6 +18,120 @@ export class VoxelHelper implements VoxelHelperInterface {
   public textureManager: TextureManagerInterface,
   public voxelManager: VoxelManager
  ) {}
+
+
+ processVoxelLight(data: VoxelProcessData , voxel: VoxelInteface): void {
+    this.worldData.calculdateVoxelLight(
+        voxel,
+        data.voxelData,
+        data.voxelPallete,
+        data.RGBLightTemplate,
+        data.exposedFaces,
+        data.chunkX,
+        data.chunkY,
+        data.chunkZ,
+        data.x,
+        data.y,
+        data.z
+       );
+       if (data.exposedFaces[0]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "top"
+        );
+       }
+       if (data.exposedFaces[1]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "bottom"
+        );
+       }
+       if (data.exposedFaces[2]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "west"
+        );
+       }
+       if (data.exposedFaces[3]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "east"
+        );
+       }
+       if (data.exposedFaces[4]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "north"
+        );
+       }
+       if (data.exposedFaces[5]) {
+        BuildAmbientOcclusion(
+         this.worldData,
+         this.voxelManager,
+         voxel,
+         data.voxelPallete,
+         data.aoTemplate,
+         data.chunkX,
+         data.chunkY,
+         data.chunkZ,
+         data.x,
+         data.y,
+         data.z,
+         "south"
+        );
+       }
+ }
+
 
  calculateVoxelLight(data: VoxelLightCalcData, voxel: VoxelInteface): void {
   this.worldData.calculdateVoxelLight(
@@ -41,7 +156,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -58,7 +172,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -75,7 +188,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -92,7 +204,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -109,7 +220,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -126,7 +236,6 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.voxelManager,
     voxel,
     data.voxelPallete,
-    data.chunkVoxels,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,

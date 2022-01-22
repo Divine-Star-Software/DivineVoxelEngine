@@ -25,4 +25,24 @@ export class DreamGrass {
     getLight(data) {
         this.voxelHelper.calculateVoxelLight(data, this);
     }
+    process(data) {
+        if (data.exposedFaces[0]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+        if (data.exposedFaces[1]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+        if (data.exposedFaces[2]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+        if (data.exposedFaces[3]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+        if (data.exposedFaces[4]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+        if (data.exposedFaces[5]) {
+            data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
+        }
+    }
 }

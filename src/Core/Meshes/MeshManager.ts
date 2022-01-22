@@ -53,15 +53,15 @@ export class MeshManager {
   this.scene.unfreezeActiveMeshes();
   const positions = new Float32Array(data[4]);
   const indicies = new Int32Array(data[5]);
-  const linearColors = new Float32Array(data[6]);
-  const fullColors = new Float32Array(data[7]);
+  const aoColors = new Float32Array(data[6]);
+  const RGBLightColors = new Float32Array(data[7]);
   const uvs = new Float32Array(data[8]);
   if (this.DVE.renderManager.fluidMesh.beenCreated) {
    this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(
     positions,
     indicies,
-    linearColors,
-    fullColors,
+    aoColors,
+    RGBLightColors,
     uvs
    );
   } else {
@@ -69,8 +69,8 @@ export class MeshManager {
    this.DVE.renderManager.fluidMesh.createMeshGeometory(
     positions,
     indicies,
-    linearColors,
-    fullColors,
+    aoColors,
+    RGBLightColors,
     uvs
    );
   }
@@ -99,9 +99,11 @@ export class MeshManager {
   const mesh = this.meshes[type][chunkKey];
   const positions = new Float32Array(data[4]);
   const indicies = new Int32Array(data[5]);
-  const linearColors = new Float32Array(data[6]);
-  const fullColors = new Float32Array(data[7]);
-  const uvs = new Float32Array(data[8]);
+  const aoColors = new Float32Array(data[6]);
+  const rgbLightColors = new Float32Array(data[7]);
+  const sunLightColors = new Float32Array(data[8]);
+  const colors = new Float32Array(data[9]);
+  const uvs = new Float32Array(data[10]);
 
   this.meshMakers[type].rebuildMeshGeometory(
    mesh,
@@ -109,8 +111,10 @@ export class MeshManager {
    chunkZ,
    positions,
    indicies,
-   linearColors,
-   fullColors,
+   aoColors,
+   rgbLightColors,
+   sunLightColors,
+   colors,
    uvs
   );
 
@@ -132,9 +136,11 @@ export class MeshManager {
 
   const positions = new Float32Array(data[4]);
   const indicies = new Int32Array(data[5]);
-  const linearColors = new Float32Array(data[6]);
-  const fullColors = new Float32Array(data[7]);
-  const uvs = new Float32Array(data[8]);
+  const aoColors = new Float32Array(data[6]);
+  const rgbLightColors = new Float32Array(data[7]);
+  const sunLightColors = new Float32Array(data[8]);
+  const colors = new Float32Array(data[9]);
+  const uvs = new Float32Array(data[10]);
 
   this.meshMakers[type].createMeshGeometory(
    mesh,
@@ -142,8 +148,10 @@ export class MeshManager {
    chunkZ,
    positions,
    indicies,
-   linearColors,
-   fullColors,
+   aoColors,
+   rgbLightColors,
+   sunLightColors,
+   colors,
    uvs
   );
   //chunkMesh.updateFacetData();

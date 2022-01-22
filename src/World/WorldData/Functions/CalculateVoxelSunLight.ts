@@ -2,7 +2,7 @@ import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelPallet } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
 
-export function CalculateVoxelLight(
+export function CalculateVoxelRGBLight(
  this: WorldData,
  voxel: VoxelInteface,
  voxelData: any[],
@@ -18,14 +18,9 @@ export function CalculateVoxelLight(
 ) {
  // +y
  if (exposedFaces[0]) {
-  let airLight = this.getData(x + chunkX, y + chunkY + 1, z + chunkZ);
-  if (!airLight) {
-   airLight = [0];
-  }
-
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -36,8 +31,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 1, 1, -1, 1, 0, 0, 1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -48,8 +43,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 1, 1, -1, 1, 0, 0, 1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -60,8 +55,8 @@ export function CalculateVoxelLight(
     z,
     [1, 1, -1, 1, 1, 0, 0, 1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -77,14 +72,9 @@ export function CalculateVoxelLight(
 
  // -y
  if (exposedFaces[1]) {
-  let airLight = this.getData(x + chunkX, y + chunkY - 1, z + chunkZ);
-  if (!airLight) {
-   airLight = [0];
-  }
-
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -95,8 +85,8 @@ export function CalculateVoxelLight(
     z,
     [0, -1, -1, -1, -1, 0, -1, -1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -107,8 +97,8 @@ export function CalculateVoxelLight(
     z,
     [0, -1, -1, 1, -1, 0, 1, -1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -119,8 +109,8 @@ export function CalculateVoxelLight(
     z,
     [0, -1, 1, 1, -1, 0, 1, -1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -136,14 +126,11 @@ export function CalculateVoxelLight(
 
  // +x
  if (exposedFaces[2]) {
-  let airLight = this.getData(x + chunkX - 1, y + chunkY, z + chunkZ);
-  if (!airLight) {
-   airLight = [0];
-  }
+
 
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -152,11 +139,11 @@ export function CalculateVoxelLight(
     x,
     y,
     z,
-    [1, 0, -1, -1, 1, 0, -1, 1, -1]
+    [-1, 0, -1, -1, 1, 0, -1, 1, -1]
    ),
 
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -165,11 +152,11 @@ export function CalculateVoxelLight(
     x,
     y,
     z,
-    [1, 0, 1, -1, 1, 0, -1, 1, 1]
+    [-1, 0, 1, -1, 1, 0, -1, 1, 1]
    ),
 
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -178,10 +165,10 @@ export function CalculateVoxelLight(
     x,
     y,
     z,
-    [1, 0, 1, -1, -1, 0, -1, -1, 1]
+    [-1, 0, 1, -1, -1, 0, -1, -1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -190,20 +177,16 @@ export function CalculateVoxelLight(
     x,
     y,
     z,
-    [1, 0, -1, -1, -1, 0, -1, -1, -1]
+    [-1, 0, -1, -1, -1, 0, -1, -1, -1]
    )
   );
  }
 
  // -x
  if (exposedFaces[3]) {
-  let airLight = this.getData(x + chunkX + 1, y + chunkY, z + chunkZ);
-  if (!airLight) {
-   airLight = [0];
-  }
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -214,8 +197,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 0, 1, 1, 1, 0, 1, 1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -226,8 +209,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 0, -1, 1, 1, 0, 1, 1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -238,8 +221,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 0, -1, 1, -1, 0, 1, -1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -255,13 +238,9 @@ export function CalculateVoxelLight(
 
  // -z
  if (exposedFaces[4]) {
-  let airLight = this.getData(x + chunkX, y + chunkY, z + chunkZ - 1);
-  if (!airLight) {
-   airLight = [0];
-  }
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -272,8 +251,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 0, -1, 0, 1, -1, -1, 1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -285,8 +264,8 @@ export function CalculateVoxelLight(
     [1, 0, -1, 0, 1, -1, 1, 1, -1]
    ),
 
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -297,8 +276,8 @@ export function CalculateVoxelLight(
     z,
     [1, 0, -1, 0, -1, -1, 1, -1, -1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -313,13 +292,10 @@ export function CalculateVoxelLight(
  }
  // +z
  if (exposedFaces[5]) {
-  let airLight = this.getData(x + chunkX, y + chunkY, z + chunkZ + 1);
-  if (!airLight) {
-   airLight = [0];
-  }
+
   lightTemplate.push(
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -330,8 +306,8 @@ export function CalculateVoxelLight(
     z,
     [1, 0, 1, 0, 1, 1, 1, 1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -342,8 +318,8 @@ export function CalculateVoxelLight(
     z,
     [-1, 0, 1, 0, 1, 1, -1, 1, 1]
    ),
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -355,8 +331,8 @@ export function CalculateVoxelLight(
     [-1, 0, 1, 0, -1, 1, -1, -1, 1]
    ),
 
-   this.voxelLightMixCalc(
-    airLight,
+   this.voxelSunLightMixCalc(
+    voxelData,
     voxel,
     voxelPallet,
     chunkX,
@@ -370,9 +346,9 @@ export function CalculateVoxelLight(
   );
  }
 }
-export function VoxelLightMixCalc(
+export function VoxelSunLightMixCalc(
  this: WorldData,
- voxelData: any[],
+ voxelData : any[],
  voxel: VoxelInteface,
  voxelPallet: VoxelPallet,
  chunkX: number,
@@ -390,9 +366,9 @@ export function VoxelLightMixCalc(
  let r = values[1];
  let g = values[2];
  let b = values[3];
-
+ //console.log(w);
  for (let i = 0; i < 9; i += 3) {
-  const check = this.getRelativeVoxelData(
+  /*    const check = this.getRelativeVoxelData(
    chunkX,
    chunkY,
    chunkZ,
@@ -402,6 +378,12 @@ export function VoxelLightMixCalc(
    checkSet[i],
    checkSet[i + 1],
    checkSet[i + 2]
+  );   */
+
+  const check = this.getData(
+   checkSet[i] + chunkX + voxelX,
+   checkSet[i + 1] + chunkY + voxelY,
+   checkSet[i + 2] + chunkZ + voxelZ
   );
 
   if (!check) {

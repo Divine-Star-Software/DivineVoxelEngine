@@ -9,8 +9,10 @@ export class SolidMesh implements VoxelMeshInterface {
   chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  linearColors: Float32Array,
-  fullColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
+  sunLightColors: Float32Array,
+  colors: Float32Array,
   uvs: Float32Array
  ) {
   mesh.unfreezeWorldMatrix();
@@ -21,8 +23,10 @@ export class SolidMesh implements VoxelMeshInterface {
   chunkVertexData.applyToMesh(mesh, true);
 
   mesh.setVerticesData("cuv3", uvs, false, 3);
-  mesh.setVerticesData("linearcColors", linearColors, false, 4);
-  mesh.setVerticesData("fullcolors", fullColors, false, 4);
+  mesh.setVerticesData("aoColors", aoColors, false, 4);
+  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+  mesh.setVerticesData("colors", colors, false, 4);
   mesh.freezeWorldMatrix();
  }
 
@@ -41,11 +45,12 @@ export class SolidMesh implements VoxelMeshInterface {
   chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  linearColors: Float32Array,
-  fullColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
+  sunLightColors: Float32Array,
+  colors: Float32Array,
   uvs: Float32Array
  ) {
-
   const chunkVertexData = new BABYLON.VertexData();
 
   chunkVertexData.positions = positions;
@@ -54,8 +59,10 @@ export class SolidMesh implements VoxelMeshInterface {
   chunkVertexData.applyToMesh(mesh, true);
 
   mesh.setVerticesData("cuv3", uvs, false, 3);
-  mesh.setVerticesData("linearcColors", linearColors, false, 4);
-  mesh.setVerticesData("fullcolors", fullColors, false, 4);
+  mesh.setVerticesData("aoColors", aoColors, false, 4);
+  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+  mesh.setVerticesData("colors", colors, false, 4);
 
   mesh.material = this.material.getMaterial();
   mesh.freezeWorldMatrix();

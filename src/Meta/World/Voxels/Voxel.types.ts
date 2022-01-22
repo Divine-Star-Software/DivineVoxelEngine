@@ -27,29 +27,47 @@ export type VoxelAOCalcData = {
 };
 
 export type VoxelLightCalcData = {
- exposedFaces: number[];
- voxelPallete: VoxelPallet;
- voxelData: any[];
- lightTemplate: number[];
- chunkX: number;
- chunkY: number;
- chunkZ: number;
- x: number;
- y: number;
- z: number;
-};
+    exposedFaces: number[];
+    voxelPallete: VoxelPallet;
+    voxelData: any[];
+    lightTemplate: number[];
+    chunkX: number;
+    chunkY: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+   };
+   
+   export type VoxelUVCalcData = {
+    exposedFaces: number[];
+    chunkVoxels: any[][][];
+    aoTemplate: number[];
+    chunkX: number;
+    chunkY: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+   };
+   
 
-export type VoxelUVCalcData = {
- exposedFaces: number[];
- chunkVoxels: any[][][];
- aoTemplate: number[];
- chunkX: number;
- chunkY: number;
- chunkZ: number;
- x: number;
- y: number;
- z: number;
-};
+export type VoxelProcessData = {
+    exposedFaces: number[];
+    voxelPallete: VoxelPallet;
+    voxelData: any[];
+    aoTemplate: number[];
+    RGBLightTemplate: number[];
+    sunLightTemplate: number[];
+    uvTemplate : number[];
+    chunkX: number;
+    chunkY: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+}
+
 
 /**# Voxel Data
  * ---
@@ -100,4 +118,8 @@ export interface VoxelInteface {
  getLight(data: VoxelLightCalcData): void;
 
  getShapeId(voxelData: any[]): number;
+
+
+process(data : VoxelProcessData) : void;
+
 }

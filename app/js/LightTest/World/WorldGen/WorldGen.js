@@ -1,4 +1,4 @@
-import { LightTest, LightTestA } from "./LightTest.js";
+import { LightTest } from "./LightTest.js";
 export class WorldGen {
     DVEW;
     lightSourceColor;
@@ -46,7 +46,6 @@ export class WorldGen {
         },
     };
     lightTest = LightTest;
-    lightTestA = LightTestA;
     infoByte;
     lightByte;
     chunkDepth = 16;

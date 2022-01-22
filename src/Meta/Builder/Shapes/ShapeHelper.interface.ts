@@ -10,9 +10,15 @@ export interface ShapeHelperInterface {
  ): void;
 
  
- calculateFullColor(
+ calculateRGBLightColor(
     fullColors: number[],
     fullColorTemplate: Float32Array,
     startIndex: number
    ): void;
+
+   calculateSunightColor(
+      sunLight: number[],
+      sunLightTemplate: Int32Array,
+      sunLightIndex: number
+     ) : void;
 }

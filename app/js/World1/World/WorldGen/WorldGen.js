@@ -254,7 +254,7 @@ export class WorldGen {
         bottomChunk.maxMinHeight[1] = minY;
         let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
         let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamgrass:defualt");
-        let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
+        let dreamGrassVoxel = [dreamGrasss, 0, 0xFFFFFFFFF];
         let block = [dreamstone, 0, 0xffffffff];
         if (x == 0 || z == 0 || x == 15 || z == 15) {
             if (y == minY) {

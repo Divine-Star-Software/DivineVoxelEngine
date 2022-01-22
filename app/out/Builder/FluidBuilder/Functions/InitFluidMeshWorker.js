@@ -23,9 +23,10 @@ export function InitWorker(DVEFB) {
             const faces = new Uint8Array(data[5]);
             const shapes = new Uint16Array(data[6]);
             const uvs = new Uint16Array(data[7]);
-            const lights = new Float32Array(data[8]);
-            const ao = new Float32Array(data[9]);
-            DVEFB.fluidMeshBuilder.addTemplate(chunkX, chunkY, chunkZ, positions, faces, shapes, uvs, lights, ao);
+            const rgbLight = new Float32Array(data[8]);
+            const sunLight = new Float32Array(data[9]);
+            const ao = new Float32Array(data[10]);
+            DVEFB.fluidMeshBuilder.addTemplate(chunkX, chunkY, chunkZ, positions, faces, shapes, uvs, rgbLight, ao);
         }
         if (eventType == 1) {
             const meshData = DVEFB.fluidMeshBuilder.generateMesh();

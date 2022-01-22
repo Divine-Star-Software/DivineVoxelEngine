@@ -10,8 +10,10 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  linearcColors: Float32Array,
-  fullColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
+  sunLightColors: Float32Array,
+  colors: Float32Array,
   uvs: Float32Array
  ) {
   mesh.unfreezeWorldMatrix();
@@ -20,7 +22,7 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkVertexData.indices = indicies;
   chunkVertexData.applyToMesh(mesh, true);
   mesh.setVerticesData("cuv3", uvs, false, 3);
-  mesh.setVerticesData("colors", linearcColors, false, 4);
+  mesh.setVerticesData("colors", aoColors, false, 4);
   mesh.freezeWorldMatrix();
  }
 
@@ -38,8 +40,10 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  linearColors: Float32Array,
-  fullColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
+  sunLightColors: Float32Array,
+  colors: Float32Array,
   uvs: Float32Array
  ) {
   const chunkVertexData = new BABYLON.VertexData();
@@ -50,7 +54,7 @@ export class FloraMesh implements VoxelMeshInterface {
   chunkVertexData.applyToMesh(mesh, true);
 
   mesh.setVerticesData("cuv3", uvs, false, 3);
-  mesh.setVerticesData("colors", linearColors, false, 4);
+  mesh.setVerticesData("colors", aoColors, false, 4);
 
   mesh.material = this.material.getMaterial();
   mesh.freezeWorldMatrix();

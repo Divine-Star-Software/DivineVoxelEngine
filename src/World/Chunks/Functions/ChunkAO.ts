@@ -8,9 +8,8 @@ export function ChunkOcculsionCalcuation(
  voxelManager: VoxelManager,
  voxel: VoxelInteface,
  voxelPallet: VoxelPallet,
- chunk: number[][][],
  chunkX: number,
- chunkY : number,
+ chunkY: number,
  chunkZ: number,
  voxelX: number,
  voxelY: number,
@@ -19,7 +18,7 @@ export function ChunkOcculsionCalcuation(
  y: number,
  z: number
 ) {
- const check = worldData.getRelativeVoxelData(
+ /*  const check = worldData.getRelativeVoxelData(
   chunkX,
   chunkY,
   chunkZ,
@@ -29,12 +28,17 @@ export function ChunkOcculsionCalcuation(
   x,
   y,
   z
+ ); */
+ const check = worldData.getData(
+  x + chunkX + voxelX,
+  y + chunkY + voxelY,
+  z + chunkZ + voxelZ
  );
+
  if (!check) {
   return 1;
  }
- if(check[0] < 0)return 1;
-
+ if (check[0] < 0) return 1;
 
  const voxelPalletId = check[0];
  const voxelTrueId = voxelPallet[voxelPalletId][0];
@@ -52,10 +56,9 @@ export function BuildAmbientOcclusion(
  voxelManager: VoxelManager,
  voxel: VoxelInteface,
  voxelPallet: VoxelPallet,
- chunk: number[][][],
  amientOcculusionTemplate: number[],
  chunkX: number,
- chunkY : number,
+ chunkY: number,
  chunkZ: number,
  x: number,
  y: number,
@@ -70,7 +73,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -86,7 +89,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -102,7 +105,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -118,7 +121,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -134,7 +137,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -150,7 +153,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -167,7 +170,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -183,7 +186,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -199,7 +202,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -215,7 +218,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -231,7 +234,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -247,7 +250,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -269,7 +272,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -285,7 +288,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -301,7 +304,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -318,7 +321,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -334,7 +337,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -350,7 +353,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -367,7 +370,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -383,7 +386,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -399,7 +402,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -416,7 +419,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -432,7 +435,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -448,7 +451,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -469,7 +472,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -485,7 +488,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -501,7 +504,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -517,7 +520,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -533,7 +536,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -549,7 +552,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -565,7 +568,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -581,7 +584,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -597,7 +600,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -613,7 +616,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -629,7 +632,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -645,7 +648,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -667,7 +670,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -683,7 +686,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -699,7 +702,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -715,7 +718,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -731,7 +734,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -747,7 +750,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -763,7 +766,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -779,7 +782,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -795,7 +798,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -811,7 +814,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -827,7 +830,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -843,7 +846,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -865,7 +868,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -881,7 +884,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -897,7 +900,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -913,7 +916,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -929,7 +932,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -945,7 +948,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -961,7 +964,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -977,7 +980,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -993,7 +996,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1009,7 +1012,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -1025,7 +1028,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1041,7 +1044,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1063,7 +1066,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -1079,7 +1082,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1095,7 +1098,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1111,7 +1114,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -1127,7 +1130,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1143,7 +1146,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1159,7 +1162,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -1175,7 +1178,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1191,7 +1194,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1207,7 +1210,7 @@ export function BuildAmbientOcclusion(
     voxelManager,
     voxel,
     voxelPallet,
-    chunk,
+  
     chunkX,
     chunkY,
     chunkZ,
@@ -1223,7 +1226,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,
@@ -1239,7 +1242,7 @@ export function BuildAmbientOcclusion(
      voxelManager,
      voxel,
      voxelPallet,
-     chunk,
+   
      chunkX,
      chunkY,
      chunkZ,

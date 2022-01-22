@@ -15,7 +15,15 @@ export class SolidMaterial {
         BABYLON.Effect.ShadersStore["solidFragmentShader"] =
             this.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
         const shaderMaterial = new BABYLON.ShaderMaterial("solid", scene, "solid", {
-            attributes: ["position", "normal", "cuv3", "linearcColors", "colors", "fullcolors"],
+            attributes: [
+                "position",
+                "normal",
+                "cuv3",
+                "aoColors",
+                "colors",
+                "rgbLightColors",
+                "sunLightColors",
+            ],
             uniforms: [
                 "world",
                 "view",
@@ -24,7 +32,7 @@ export class SolidMaterial {
                 "worldViewProjection",
                 "vFogInfos",
                 "vFogColor",
-                "baseLightColor",
+                "sunLightLevel",
                 "projection",
                 "anim1Index",
                 "arrayTex",
@@ -42,10 +50,29 @@ export class SolidMaterial {
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);
             effect.setColor3("vFogColor", scene.fogColor);
-            effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
         this.material = shaderMaterial;
         this.renderManager.animationManager.registerMaterial("solid", shaderMaterial);
+        // effect.setColor4("sunLightLevel", new BABYLON.Color3(1, 1, 1), 1);
+        /*   let level = 0;
+          let up = true;
+          setInterval(() => {
+           if (up) {
+            level += 0.01;
+           } else {
+            level -= 0.01;
+           }
+        
+           if (level >= 1) {
+            up = false;
+           }
+           if (level <= 0) {
+            up = true;
+           }
+        
+           this.material.setFloat("sunLightLevel", level);
+          }, 100); */
+        this.material.setFloat("sunLightLevel", 0.5);
         return this.material;
     }
 }

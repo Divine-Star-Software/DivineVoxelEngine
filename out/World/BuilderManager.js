@@ -50,7 +50,8 @@ export class BuilderManager {
                 const faces = new Uint8Array(baseTemplate.faceTemplate);
                 const shapes = new Uint16Array(baseTemplate.shapeTemplate);
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
-                const light = new Float32Array(baseTemplate.lightTemplate);
+                const rbgLight = new Float32Array(baseTemplate.RGBLightTemplate);
+                const sunLight = new Float32Array(baseTemplate.sunLightTemplate);
                 const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.fluidBuilder.postMessage([
                     0,
@@ -61,7 +62,8 @@ export class BuilderManager {
                     faces.buffer,
                     shapes.buffer,
                     uvs.buffer,
-                    light.buffer,
+                    rbgLight.buffer,
+                    sunLight.buffer,
                     ambientOcclusion.buffer,
                 ]),
                     [
@@ -69,7 +71,8 @@ export class BuilderManager {
                         faces.buffer,
                         shapes.buffer,
                         uvs.buffer,
-                        light.buffer,
+                        rbgLight.buffer,
+                        sunLight.buffer,
                         ambientOcclusion.buffer,
                     ];
             }
@@ -78,7 +81,8 @@ export class BuilderManager {
                 const faces = new Uint8Array(baseTemplate.faceTemplate);
                 const shapes = new Uint16Array(baseTemplate.shapeTemplate);
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
-                const light = new Float32Array(baseTemplate.lightTemplate);
+                const rgbLight = new Float32Array(baseTemplate.RGBLightTemplate);
+                const sunLight = new Int32Array(baseTemplate.sunLightTemplate);
                 const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.builders[this.count].postMessage([
                     this.voxelTypeMap[type],
@@ -89,7 +93,8 @@ export class BuilderManager {
                     faces.buffer,
                     shapes.buffer,
                     uvs.buffer,
-                    light.buffer,
+                    rgbLight.buffer,
+                    sunLight.buffer,
                     ambientOcclusion.buffer,
                 ]),
                     [
@@ -97,7 +102,8 @@ export class BuilderManager {
                         faces.buffer,
                         shapes.buffer,
                         uvs.buffer,
-                        light.buffer,
+                        rgbLight.buffer,
+                        sunLight.buffer,
                         ambientOcclusion.buffer,
                     ];
                 this.count++;

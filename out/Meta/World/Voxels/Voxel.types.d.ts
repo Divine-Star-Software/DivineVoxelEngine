@@ -42,6 +42,21 @@ export declare type VoxelUVCalcData = {
     y: number;
     z: number;
 };
+export declare type VoxelProcessData = {
+    exposedFaces: number[];
+    voxelPallete: VoxelPallet;
+    voxelData: any[];
+    aoTemplate: number[];
+    RGBLightTemplate: number[];
+    sunLightTemplate: number[];
+    uvTemplate: number[];
+    chunkX: number;
+    chunkY: number;
+    chunkZ: number;
+    x: number;
+    y: number;
+    z: number;
+};
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.
@@ -79,4 +94,5 @@ export interface VoxelInteface {
     getAO(data: VoxelAOCalcData): void;
     getLight(data: VoxelLightCalcData): void;
     getShapeId(voxelData: any[]): number;
+    process(data: VoxelProcessData): void;
 }

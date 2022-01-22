@@ -1,4 +1,32 @@
 ##### Change Log
+1-22-2022
+- Wrote a new set of functions for World Data called getData and setData. They take any x,y,z and can get or insert any chunk.
+- With testing they reduced chunk build time by 20ms! With now an avergae of 20ms or so chunk building is really fast. 
+- Chunk processor function was changed to use new commands and allow for the sun light template. 
+- Changed the voxel interface to have only function that is called by the Chunk Processor. It is simply called "process".
+  - In the function the texture uvs, AO light, RGB light, Sun light, and Per Color voxel per face can be calculated. 
+  - It is only called if the voxel is exposed. Meaning it has one face open to view. 
+- Chunk templates now consist of 4 colors sets. Them being:
+  - RGB Color
+    - Default is white. Used to changed the color of a voxel. 
+  - RGB Light
+    - Light from light sources. Such as a candle or a lamp.
+  - Sun Light
+    - Light calculated by global illumnation. 
+    - Can be ignored in use for one dynamic light. 
+      - Dynamic light not added yet but the materials are all updatable. 
+      - Suppourt is planned but will take more time. 
+  - AO Light
+    - Linear light levels used for inter voxel shadows. 
+ - May have an option to turn them off if they are not being used as they do consume more memory. 
+ - Chunk size is now changeable via the WorldData class in the World thread. 
+    - There are three variables in WorldData that are used to determine chunk size. 
+    - They must be a power of 2. 
+    - The variable names are: 
+      - chunkXPow2 
+      - chunkZPow2 
+      - chunkYPow2 
+
 1-21-2022
 - Solid voxels no longer store a light level. All light levels are stored in an 'air' voxel.
 - Air voxels have a pallet id of -1. While the normal range for voxels is the positive side of a signed 32 bit int (2 billion or so).

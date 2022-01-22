@@ -40,22 +40,29 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
-
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
+   );
+
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -86,22 +93,29 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
-
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
+   );
+
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -136,20 +150,28 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
+   );
+
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -181,21 +203,29 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
+   );
+
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -228,21 +258,29 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
+   );
+
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -272,21 +310,28 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateFullColor(
-    data.fullColors,
-    data.lightTemplate,
-    data.lightIndex
+   this.shapeHelper.calculateRGBLightColor(
+    data.RGBLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
    );
    this.shapeHelper.calculateAOColor(
-    data.linearColors,
+    data.AOColors,
     data.aoTemplate,
     data.aoIndex
+   );
+   this.shapeHelper.calculateSunightColor(
+    data.sunLightColors,
+    data.sunLightTemplate,
+    data.sunlightIndex
    );
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newLightIndex: data.lightIndex + 4,
+    newRGBLightIndex: data.rgbLightIndex + 4,
+    newColorIndex: data.colorIndex + 4,
+    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -301,48 +346,62 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    const newData = this.faces[0](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   if (this.shapeHelper.util.isFaceExposexd(data.face, "bottom")) {
    const newData = this.faces[1](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   if (this.shapeHelper.util.isFaceExposexd(data.face, "west")) {
    const newData = this.faces[2](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   if (this.shapeHelper.util.isFaceExposexd(data.face, "east")) {
    const newData = this.faces[3](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   if (this.shapeHelper.util.isFaceExposexd(data.face, "north")) {
    const newData = this.faces[4](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   if (this.shapeHelper.util.isFaceExposexd(data.face, "south")) {
    const newData = this.faces[5](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
-   data.lightIndex = newData.newLightIndex;
+   data.rgbLightIndex = newData.newRGBLightIndex;
    data.aoIndex = newData.newAOIndex;
+   data.colorIndex = newData.newColorIndex;
+   data.sunlightIndex = newData.newSunLightIndex;
   }
   return {
    newIndicieIndex: data.indicieIndex,
    newUVTemplateIndex: data.uvTemplateIndex,
-   newLightIndex: data.lightIndex,
+   newColorIndex: data.colorIndex,
+   newRGBLightIndex: data.rgbLightIndex,
+   newSunLightIndex: data.sunlightIndex,
    newAOIndex: data.aoIndex,
   };
  }

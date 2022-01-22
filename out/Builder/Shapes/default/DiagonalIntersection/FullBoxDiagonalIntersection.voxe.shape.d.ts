@@ -11,7 +11,9 @@ export declare class FullBoxDiagonalIntersection implements VoxelShapeInterface 
     addToChunkMesh(data: VoxelShapeAddData): {
         newIndicieIndex: number;
         newUVTemplateIndex: number;
-        newLightIndex: number;
+        newColorIndex: number;
+        newRGBLightIndex: number;
+        newSunLightIndex: number;
         newAOIndex: number;
     };
 }

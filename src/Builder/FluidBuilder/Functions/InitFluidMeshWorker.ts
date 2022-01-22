@@ -32,8 +32,10 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
    const faces = new Uint8Array(data[5]);
    const shapes = new Uint16Array(data[6]);
    const uvs = new Uint16Array(data[7]);
-   const lights = new Float32Array(data[8]);
-   const ao = new Float32Array(data[9]);
+   const rgbLight = new Float32Array(data[8]);
+   const sunLight = new Float32Array(data[9]);
+   const ao = new Float32Array(data[10]);
+
 
    DVEFB.fluidMeshBuilder.addTemplate(
     chunkX,
@@ -43,7 +45,7 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
     faces,
     shapes,
     uvs,
-    lights,
+    rgbLight,
     ao
    );
   }

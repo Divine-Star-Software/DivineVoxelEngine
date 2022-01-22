@@ -7,34 +7,40 @@ import type { ShapeManager } from "./Shapes/ShapeManager";
 export class ChunkMeshBuilder {
  infoByte: InfoByte;
  constructor(
-  private DVEB : DivineVoxelEngineBuilder,
+  private DVEB: DivineVoxelEngineBuilder,
   private shapeManager: ShapeManager,
   private UTIL: Util
  ) {
   this.infoByte = this.UTIL.getInfoByte();
  }
  buildChunkMesh(
-  chunkType : number,
-  chunkX : number,
-  chunkY : number,
-  chunkZ : number,
+  chunkType: number,
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
   positionsTemplate: Uint16Array,
   faceTemplate: Uint8Array,
   shapeTemplate: Uint16Array,
   uvTemplate: Uint16Array,
-  lightTemplate: Float32Array,
+  colorTemplate: Float32Array,
+  RGBLightTemplate: Float32Array,
+  sunLightTemplate: Int32Array,
   aoTemplate: Float32Array
  ) {
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
-  const linearColors: number[] = [];
-  const fullColors: number[] = [];
-//console.log(lightTemplate);
+  const AOColors: number[] = [];
+  const sunLightColors: number[] = [];
+  const colors: number[] = [];
+  const RGBLightColors: number[] = [];
+  //console.log(lightTemplate);
 
   let indicieIndex = 0;
   let aoIndex = 0;
-  let lightIndex = 0;
+  let RGBLightIndex = 0;
+  let sunLightIndex = 0;
+  let colorIndex = 0;
   let uvIndex = 0;
   let faceIndex = 0;
   let shapeIndex = 0;
@@ -45,6 +51,7 @@ export class ChunkMeshBuilder {
    positionIndex += 3
   ) {
    const x = positionsTemplate[positionIndex] + chunkX;
+   /**@TODO Fix this! ChunkY + y not working*/
    const y = positionsTemplate[positionIndex + 1];
    const z = positionsTemplate[positionIndex + 2] + chunkZ;
 
@@ -53,15 +60,21 @@ export class ChunkMeshBuilder {
    const newIndexes = shape.addToChunkMesh({
     positions: positions,
     indices: indices,
-    fullColors: fullColors,
-    linearColors: linearColors,
+    RGBLightColors: RGBLightColors,
+    sunLightColors: sunLightColors,
+    colors: colors,
+    AOColors: AOColors,
     uvs: uvs,
     face: faceTemplate[faceIndex],
     indicieIndex: indicieIndex,
     unTemplate: uvTemplate,
     uvTemplateIndex: uvIndex,
-    lightTemplate: lightTemplate,
-    lightIndex: lightIndex,
+    colorTemplate: colorTemplate,
+    colorIndex: colorIndex,
+    RGBLightTemplate: RGBLightTemplate,
+    rgbLightIndex: RGBLightIndex,
+    sunLightTemplate: sunLightTemplate,
+    sunlightIndex: sunLightIndex,
     aoTemplate: aoTemplate,
     aoIndex: aoIndex,
     position: { x: x, y: y, z: z },
@@ -69,17 +82,21 @@ export class ChunkMeshBuilder {
    indicieIndex = newIndexes.newIndicieIndex;
    aoIndex = newIndexes.newAOIndex;
    uvIndex = newIndexes.newUVTemplateIndex;
-   lightIndex = newIndexes.newLightIndex;
+   RGBLightIndex = newIndexes.newRGBLightIndex;
+   sunLightIndex = newIndexes.newSunLightIndex;
+   colorIndex = newIndexes.newColorIndex;
    shapeIndex++;
    faceIndex++;
   }
 
-
   const positionArray = new Float32Array(positions);
   const indiciesArray = new Int32Array(indices);
-  const linearColorsArray = new Float32Array(linearColors);
-  const fullColorsArray = new Float32Array(fullColors);
+  const AOColorsArray = new Float32Array(AOColors);
+  const RGBLightColorsArray = new Float32Array(RGBLightColors);
+  const sunLightColorsArray = new Float32Array(sunLightColors);
+  const colorsArray = new Float32Array(colors);
   const uvArray = new Float32Array(uvs);
+  console.log(AOColorsArray.length,sunLightColorsArray.length);
 
   //@ts-ignore
   this.DVEB.worker.postMessage(
@@ -90,20 +107,22 @@ export class ChunkMeshBuilder {
     chunkZ,
     positionArray.buffer,
     indiciesArray.buffer,
-    linearColorsArray.buffer,
-    fullColorsArray.buffer,
+    AOColorsArray.buffer,
+    RGBLightColorsArray.buffer,
+    sunLightColorsArray.buffer,
+    colorsArray.buffer,
     uvArray.buffer,
    ],
    //@ts-ignore
    [
     positionArray.buffer,
     indiciesArray.buffer,
-    linearColorsArray.buffer,
-    fullColorsArray.buffer,
+    AOColorsArray.buffer,
+    RGBLightColorsArray.buffer,
+    sunLightColorsArray.buffer,
+    colorsArray.buffer,
     uvArray.buffer,
    ]
   );
-
-
  }
 }

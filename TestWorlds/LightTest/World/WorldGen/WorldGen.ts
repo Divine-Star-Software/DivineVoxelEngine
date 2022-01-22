@@ -1,7 +1,7 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import { LightTest, LightTestA } from "./LightTest.js";
+import { LightTest } from "./LightTest.js";
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 export class WorldGen {
@@ -55,7 +55,6 @@ export class WorldGen {
  };
 
  lightTest = LightTest;
- lightTestA = LightTestA;
  infoByte: InfoByte;
  lightByte: LightByte;
 

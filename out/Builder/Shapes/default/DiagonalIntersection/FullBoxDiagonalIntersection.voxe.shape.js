@@ -13,11 +13,13 @@ export class FullBoxDiagonalIntersection {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateAOColor(data.linearColors, data.aoTemplate, data.aoIndex);
+            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newLightIndex: data.lightIndex + 4,
+                newRGBLightIndex: data.rgbLightIndex + 4,
+                newColorIndex: data.colorIndex + 4,
+                newSunLightIndex: data.sunlightIndex + 4,
                 newAOIndex: data.aoIndex + 4,
             };
         },
@@ -26,11 +28,13 @@ export class FullBoxDiagonalIntersection {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateAOColor(data.linearColors, data.aoTemplate, data.aoIndex);
+            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newLightIndex: data.lightIndex + 4,
+                newRGBLightIndex: data.rgbLightIndex + 4,
+                newColorIndex: data.colorIndex + 4,
+                newSunLightIndex: data.sunlightIndex + 4,
                 newAOIndex: data.aoIndex + 4,
             };
         },
@@ -39,17 +43,21 @@ export class FullBoxDiagonalIntersection {
         data.position.x += this.width;
         data.position.z += this.depth;
         data.position.y += this.height;
-        const newData1 = this.faces[0](data);
-        data.indicieIndex = newData1.newIndicieIndex;
-        data.uvTemplateIndex = newData1.newUVTemplateIndex;
-        data.lightIndex = newData1.newLightIndex;
-        data.aoIndex = newData1.newAOIndex;
-        const newData2 = this.faces[1](data);
+        const newData = this.faces[0](data);
+        data.indicieIndex = newData.newIndicieIndex;
+        data.uvTemplateIndex = newData.newUVTemplateIndex;
+        data.rgbLightIndex = newData.newRGBLightIndex;
+        data.aoIndex = newData.newAOIndex;
+        data.colorIndex = newData.newColorIndex;
+        data.sunlightIndex = newData.newSunLightIndex;
+        this.faces[1](data);
         return {
-            newIndicieIndex: newData2.newIndicieIndex,
-            newUVTemplateIndex: newData2.newUVTemplateIndex,
-            newLightIndex: newData2.newLightIndex,
-            newAOIndex: newData2.newAOIndex,
+            newIndicieIndex: data.indicieIndex,
+            newUVTemplateIndex: data.uvTemplateIndex,
+            newColorIndex: data.colorIndex,
+            newRGBLightIndex: data.rgbLightIndex,
+            newSunLightIndex: data.sunlightIndex,
+            newAOIndex: data.aoIndex,
         };
     }
 }

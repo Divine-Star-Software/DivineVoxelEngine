@@ -7,8 +7,10 @@ export const solidShaders = {
     attribute vec3 position;
     attribute vec3 normal;
     attribute vec3 cuv3;
-    attribute vec4 linearcColors;
-    attribute vec4 fullcolors;
+    attribute vec4 aoColors;
+    attribute vec4 rgbLightColors;
+    attribute vec4 sunLightColors;
+    attribute vec4 colors;
 
     // Uniforms
     uniform mat4 worldViewProjection;
@@ -21,9 +23,9 @@ export const solidShaders = {
     // Varying
     varying vec3 vUV;
     varying vec3 vNormal;
-    varying vec4 lColors;
-    varying vec4 fColors;
-   
+    varying vec4 aoColor;
+    varying vec4 rgbLColor;
+    varying vec4 sunLColor;
    
     varying float fFogDistance;
    
@@ -37,8 +39,9 @@ export const solidShaders = {
          gl_Position = worldViewProjection * vec4(position, 1.0); 
          animIndex = getUVFace(cuv3.z);
          vUV = cuv3;
-         lColors = linearcColors;
-         fColors = fullcolors;
+         aoColor = aoColors;
+         rgbLColor = rgbLightColors;
+         sunLColor = sunLightColors;
          vNormal = normal;
      }
     
@@ -47,12 +50,15 @@ export const solidShaders = {
     precision highp float;
     precision highp sampler2DArray;
    
-    uniform vec4 baseLightColor;
+    uniform float sunLightLevel;
    
    
     varying vec3 vUV;
-    varying vec4 lColors;
-    varying vec4 fColors;
+    varying vec4 aoColor;
+    varying vec4 rgbLColor;
+    varying vec4 sunLColor;
+
+
     varying vec3 vNormal;
    
     varying float animIndex;
@@ -72,16 +78,17 @@ export const solidShaders = {
 
 
         //mix with supplied vertex colors
-        vec4 mixVertex = mix(rgb, lColors , 1.0);
+        vec4 mixVertex = mix(rgb, aoColor , 1.0);
 
 
 
         //apply to texture color
         vec4 newBase = rgb * mixVertex;
 
+        vec4 light = rgbLColor +  sunLColor  * sunLightLevel;
+        vec4 mixLight  = newBase * light;
 
-        vec4 mixLight  = newBase * baseLightColor * fColors;
-  //  vec4 mixLight = mix(newBase, fColors * baseLightColor , 1.0);
+        
 
 
 
@@ -89,5 +96,5 @@ export const solidShaders = {
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
 
         gl_FragColor = vec4(finalColor.rgb , mixLight.w ); 
-    }`
+    }`,
 };

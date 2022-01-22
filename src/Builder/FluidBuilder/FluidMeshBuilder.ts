@@ -22,6 +22,8 @@ export class FluidMeshBuilder {
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
+  const RGBLightColors: number[] = [];
+  const sunLightColors: number[] = [];
   const colors: number[] = [];
   let indicieIndex = 0;
   let count = 0;
@@ -37,9 +39,11 @@ export class FluidMeshBuilder {
 
    let aoIndex = 0;
    let uvIndex = 0;
-   let faceIndex = 0;
+   let RGBLightIndex = 0;
    let shapeIndex = 0;
    let positionIndex = 0;
+   let sunLightIndex = 0;
+   let colorIndex = 0;
 
    for (let faceIndex = 0; faceIndex < faceTemplate.length; faceIndex++) {
     count++;
@@ -50,30 +54,39 @@ export class FluidMeshBuilder {
     const shapeId = shapeTemplate[shapeIndex];
     const shape = this.shapeManager.getShape(shapeId);
     const newIndexes = shape.addToChunkMesh({
-     positions: positions,
-     indices: indices,
-     fullColors: [],
-     linearColors: colors,
-     uvs: uvs,
-     face: faceTemplate[faceIndex],
-     indicieIndex: indicieIndex,
-     unTemplate: uvTemplate,
-     uvTemplateIndex: uvIndex,
-     lightTemplate: aoTemplate,
-     lightIndex: 0,
-     aoTemplate: aoTemplate,
-     aoIndex: aoIndex,
-     position: { x: x, y: y, z: z },
+        positions: positions,
+        indices: indices,
+        RGBLightColors: RGBLightColors,
+        sunLightColors: sunLightColors,
+        colors: colors,
+        AOColors: [],
+        uvs: uvs,
+        face: faceTemplate[faceIndex],
+        indicieIndex: indicieIndex,
+        unTemplate: uvTemplate,
+        uvTemplateIndex: uvIndex,
+        colorTemplate: lightTemplate,
+        colorIndex: colorIndex,
+        RGBLightTemplate: lightTemplate,
+        rgbLightIndex: RGBLightIndex,
+        sunLightTemplate: lightTemplate,
+        sunlightIndex: sunLightIndex,
+        aoTemplate: lightTemplate,
+        aoIndex: aoIndex,
+        position: { x: x, y: y, z: z },
     });
     indicieIndex = newIndexes.newIndicieIndex;
     aoIndex = newIndexes.newAOIndex;
     uvIndex = newIndexes.newUVTemplateIndex;
+    RGBLightIndex = newIndexes.newRGBLightIndex;
+    sunLightIndex = newIndexes.newSunLightIndex;
+    colorIndex = newIndexes.newColorIndex;
     shapeIndex++;
     positionIndex += 3;
    }
   }
 
-  return [positions, indices, colors, uvs];
+  return [positions, indices, RGBLightColors, uvs];
  }
 
  addTemplate(

@@ -1,7 +1,7 @@
-import { BitArray } from "Global/Util/ByteArray.js";
-import { ChunkData, ChunkTemplate, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
-import { VoxelPallet } from "Meta/WorldData/World.types.js";
+import type { ChunkData, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
+import type { VoxelPallet } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
+import type { WorldData } from "World/WorldData/WorldData.js";
 import { ChunkOcculsionCalcuation } from "./Functions/ChunkAO.js";
 /**# Chunk Processor
  * ---
@@ -22,7 +22,7 @@ export declare class ChunkProcessor {
     substanceRules: Record<string, boolean>;
     exposedFaces: number[];
     constructor(DVEW: DivineVoxelEngineWorld);
-    bitArray: BitArray;
-    getBaseTemplate(): ChunkTemplate;
+    worldData: WorldData;
+    getBaseTemplateNew(): FullChunkTemplate;
     makeAllChunkTemplates(chunk: ChunkData, voxelPallet: VoxelPallet, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
 }
