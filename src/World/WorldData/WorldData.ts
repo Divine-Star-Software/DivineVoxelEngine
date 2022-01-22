@@ -47,17 +47,24 @@ export class WorldData {
   if (!chunk || chunk.isEmpty) {
    return false;
   }
-  const [voxelX, voxelZ, voxelY] = this._getRelativeChunkPosition(
-   chunkX,
-   chunkY,
-   chunkZ,
-   x,
-   y,
-   z
-  );
-
-  //console.log(chunk.voxels);
-  // console.log(chunkX,chunkY,chunkZ,voxelX,voxelY,voxelZ,x,y,z);
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + 15) {
+    voxelX = 15;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + 15) {
+    voxelZ = 15;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + 127) {
+    voxelY = 127;
+   }
+  }
   if (
    chunk.voxels[voxelX] &&
    chunk.voxels[voxelX][voxelZ] &&
@@ -79,18 +86,26 @@ export class WorldData {
   const chunkZ = (z >> 4) << 4;
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
-
    return false;
   }
-
-  const [voxelX, voxelZ, voxelY] = this._getRelativeChunkPosition(
-   chunkX,
-   chunkY,
-   chunkZ,
-   x,
-   y,
-   z
-  );
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + 15) {
+    voxelX = 15;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + 15) {
+    voxelZ = 15;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + 127) {
+    voxelY = 127;
+   }
+  }
   const voxels = chunk.voxels;
   voxels[voxelX] ??= [];
   voxels[voxelX][voxelZ] ??= [];

@@ -372,28 +372,263 @@ const setAirLightBlock = (
  worldData.setData(x, y, z, air);
 };
 
-const lightLevels = {
- q0: {
-  x: 0,
-  y: 0,
-  z: 0,
- },
- q1: {
-  x: 0,
-  y: 0,
-  z: 0,
- },
- q2: {
-  x: 0,
-  y: 0,
-  z: 0,
- },
- q3: {
-  x: 0,
-  y: 0,
-  z: 0,
- },
-};
+const voxelData = [1, 0, 0];
+const airSeed = [-1, 0, 0];
+export function LightTestA(
+ this: WorldGen,
+ chunkX: number,
+ chunkY: number,
+ chunkZ: number,
+ startX: number,
+ startZ: number,
+ startY: number,
+ radius: number
+) {
+ this.visited = {};
+ let trueStartX = startX + chunkX;
+ let trueStartY = startY + chunkY;
+ let trueStartZ = startZ + chunkZ;
+
+ voxelData[voxelData.length - 1] = this.lightSourceColor;
+ this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, voxelData);
+
+ airSeed[voxelData.length - 1] = this.seedLightSourceColor;
+ if (this.DVEW.worldData.getData(trueStartX - 1, trueStartY, trueStartZ)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX - 1, trueStartY, trueStartZ, airSeed);
+  checkNeighbors(
+   trueStartX - 1,
+   trueStartY,
+   trueStartZ,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+ if (this.DVEW.worldData.getData(trueStartX + 1, trueStartY, trueStartZ)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX + 1, trueStartY, trueStartZ, airSeed);
+  checkNeighbors(
+   trueStartX + 1,
+   trueStartY,
+   trueStartZ,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+ if (this.DVEW.worldData.getData(trueStartX, trueStartY - 1, trueStartZ)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX, trueStartY - 1, trueStartZ, airSeed);
+  checkNeighbors(
+   trueStartX,
+   trueStartY - 1,
+   trueStartZ,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+
+ if (this.DVEW.worldData.getData(trueStartX, trueStartY + 1, trueStartZ)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX, trueStartY + 1, trueStartZ, airSeed);
+  checkNeighbors(
+   trueStartX,
+   trueStartY + 1,
+   trueStartZ,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+
+ if (this.DVEW.worldData.getData(trueStartX, trueStartY, trueStartZ - 1)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ - 1, airSeed);
+  checkNeighbors(
+   trueStartX,
+   trueStartY,
+   trueStartZ - 1,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+
+ if (this.DVEW.worldData.getData(trueStartX, trueStartY, trueStartZ + 1)) {
+ } else {
+  this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ + 1, airSeed);
+  checkNeighbors(
+   trueStartX,
+   trueStartY,
+   trueStartZ + 1,
+   this.lightByte,
+   this.DVEW.worldData
+  );
+ }
+
+ let vox;
+ for (let i = 0; i < radius; i++) {
+  for (let j = 0; j < radius; j++) {
+   //top
+   let y = trueStartY + i;
+
+   let z = trueStartZ;
+   let x = trueStartX + j;
+   //q0top
+   let k = 0;
+   for (k = 0; k < radius; k++) {
+    let q0z = z + k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q0z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q0z}`]) {
+       updateAirLightBlock(vox, x, y, q0z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q0z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q0z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q0z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q0z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+   //q2top
+   for (k = 0; k < radius; k++) {
+    let q2z = z - k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q2z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q2z}`]) {
+       updateAirLightBlock(vox, x, y, q2z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q2z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q2z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q2z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q2z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+   x = trueStartX - j;
+   //q1top
+   for (k = 0; k < radius; k++) {
+    let q1z = z + k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q1z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q1z}`]) {
+       updateAirLightBlock(vox, x, y, q1z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q1z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q1z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q1z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q1z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+
+   //q3top
+   for (k = 0; k < radius; k++) {
+    let q3z = z - k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q3z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q3z}`]) {
+       updateAirLightBlock(vox, x, y, q3z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q3z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q3z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q3z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q3z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+
+   //bottom
+   y = trueStartY - i;
+
+   z = trueStartZ;
+   x = trueStartX + j;
+   //q0
+   for (k = 0; k < radius; k++) {
+    let q0z = z + k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q0z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q0z}`]) {
+       updateAirLightBlock(vox, x, y, q0z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q0z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q0z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q0z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q0z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+   //q2
+   for (k = 0; k < radius; k++) {
+    let q2z = z - k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q2z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q2z}`]) {
+       updateAirLightBlock(vox, x, y, q2z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q2z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q2z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q2z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q2z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+   x = trueStartX - j;
+   //q1
+   for (k = 0; k < radius; k++) {
+    let q1z = z + k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q1z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q1z}`]) {
+       updateAirLightBlock(vox, x, y, q1z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q1z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q1z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q1z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q1z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+
+   //q3
+   for (k = 0; k < radius; k++) {
+    let q3z = z - k;
+    if ((vox = this.DVEW.worldData.getData(x, y, q3z))) {
+     if (vox[0] > 0) {
+      break;
+     } else {
+      if (!this.visited[`${x}-${y}-${q3z}`]) {
+       updateAirLightBlock(vox, x, y, q3z, this.lightByte, this.DVEW.worldData);
+       checkNeighbors(x, y, q3z, this.lightByte, this.DVEW.worldData);
+       this.visited[`${x}-${y}-${q3z}`] = true;
+      }
+     }
+    } else {
+     setAirLightBlock(x, y, q3z, this.lightByte, this.DVEW.worldData);
+     checkNeighbors(x, y, q3z, this.lightByte, this.DVEW.worldData);
+    }
+   }
+  }
+ }
+}
 export function LightTest(
  this: WorldGen,
  chunkX: number,
@@ -408,27 +643,10 @@ export function LightTest(
  let trueStartY = startY + chunkY;
  let trueStartZ = startZ + chunkZ;
 
- const toss = Math.random();
+ voxelData[voxelData.length - 1] = this.lightSourceColor;
+ this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, voxelData);
 
- let color = "white";
- if (toss < 0.2) {
-  color = "red";
- }
- if (toss > 0.2 && toss < 0.4) {
-  color = "green";
- }
- if (toss > 0.4 && toss < 0.6) {
-  color = "blue";
- }
-
- const data = [1, 0, 0];
- const lightSourceColor = colorFunctions[color](15, this.infoByte);
- const seedLightSourceColor = colorFunctions[color](14, this.infoByte);
- data[data.length - 1] = lightSourceColor;
- this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, data);
-
- const airSeed = [-1, 0, 0];
- airSeed[data.length - 1] = seedLightSourceColor;
+ airSeed[voxelData.length - 1] = this.seedLightSourceColor;
  if (this.DVEW.worldData.getData(trueStartX - 1, trueStartY, trueStartZ)) {
  } else {
   this.DVEW.worldData.setData(trueStartX - 1, trueStartY, trueStartZ, airSeed);
@@ -514,6 +732,7 @@ export function LightTest(
      if (vox[0] > 0) {
       break;
      } else {
+      // if(!this.visited[`${x}-${y}-${q0z}`])
       updateAirLightBlock(vox, x, y, q0z, this.lightByte, this.DVEW.worldData);
       checkNeighbors(x, y, q0z, this.lightByte, this.DVEW.worldData);
      }
@@ -640,41 +859,3 @@ export function LightTest(
   }
  }
 }
-
-const colorFunctions: Record<
- string,
- (lightLevel: number, infoByte: InfoByte) => number
-> = {
- green: (lightLevel: number, infoByte: InfoByte) => {
-  infoByte.setNumberValue(0);
-  infoByte.setHalfByteBits(0, 0);
-  infoByte.setHalfByteBits(4, Math.ceil(Math.random() * lightLevel));
-  infoByte.setHalfByteBits(8, 0);
-  infoByte.setHalfByteBits(12, Math.ceil(Math.random() * lightLevel));
-  return infoByte.getNumberValue();
- },
- red: (lightLevel: number, infoByte: InfoByte) => {
-  infoByte.setNumberValue(0);
-  infoByte.setHalfByteBits(0, 0);
-  infoByte.setHalfByteBits(4,lightLevel);
-  infoByte.setHalfByteBits(8, Math.ceil(Math.random() * lightLevel));
-  infoByte.setHalfByteBits(12,8);
-  return infoByte.getNumberValue();
- },
- blue: (lightLevel: number, infoByte: InfoByte) => {
-  infoByte.setNumberValue(0);
-  infoByte.setHalfByteBits(0, 0);
-  infoByte.setHalfByteBits(4, 5);
-  infoByte.setHalfByteBits(8, Math.ceil(Math.random() * lightLevel));
-  infoByte.setHalfByteBits(12,4);
-  return infoByte.getNumberValue();
- },
- white: (lightLevel: number, infoByte: InfoByte) => {
-  infoByte.setNumberValue(0);
-  infoByte.setHalfByteBits(0, 0);
-  infoByte.setHalfByteBits(4, 3);
-  infoByte.setHalfByteBits(8, Math.ceil(Math.random() * lightLevel));
-  infoByte.setHalfByteBits(12, Math.ceil(Math.random() * lightLevel));
-  return infoByte.getNumberValue();
- },
-};

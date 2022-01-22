@@ -1,16 +1,61 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import { LightTest } from "./LightTest.js";
+import { LightTest, LightTestA } from "./LightTest.js";
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 export class WorldGen {
+ lightSourceColor: number;
+ seedLightSourceColor: number;
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
   this.lightByte = this.DVEW.UTIL.getLightByte();
+  this.lightSourceColor = this.colorFunctions["white"](15, this.infoByte);
+  this.seedLightSourceColor = this.colorFunctions["white"](14, this.infoByte);
  }
 
+ visited : Record<string,boolean> = {};
+
+ colorFunctions: Record<
+  string,
+  (lightLevel: number, infoByte: InfoByte) => number
+ > = {
+  green: (lightLevel: number, infoByte: InfoByte) => {
+   infoByte.setNumberValue(0);
+   infoByte.setHalfByteBits(0, 0);
+   infoByte.setHalfByteBits(4, 0);
+   infoByte.setHalfByteBits(8, lightLevel);
+   infoByte.setHalfByteBits(12, 0);
+   return infoByte.getNumberValue();
+  },
+  red: (lightLevel: number, infoByte: InfoByte) => {
+   infoByte.setNumberValue(0);
+   infoByte.setHalfByteBits(0, 0);
+   infoByte.setHalfByteBits(4, lightLevel);
+   infoByte.setHalfByteBits(8, 0);
+   infoByte.setHalfByteBits(12, 0);
+   return infoByte.getNumberValue();
+  },
+  blue: (lightLevel: number, infoByte: InfoByte) => {
+   infoByte.setNumberValue(0);
+   infoByte.setHalfByteBits(0, 0);
+   infoByte.setHalfByteBits(4, 5);
+   infoByte.setHalfByteBits(8, 0);
+   infoByte.setHalfByteBits(12, lightLevel);
+   return infoByte.getNumberValue();
+  },
+  white: (lightLevel: number, infoByte: InfoByte) => {
+   infoByte.setNumberValue(0);
+   infoByte.setHalfByteBits(0, 0);
+   infoByte.setHalfByteBits(4, lightLevel);
+   infoByte.setHalfByteBits(8, lightLevel);
+   infoByte.setHalfByteBits(12, lightLevel);
+   return infoByte.getNumberValue();
+  },
+ };
+
  lightTest = LightTest;
+ lightTestA = LightTestA;
  infoByte: InfoByte;
  lightByte: LightByte;
 
@@ -63,11 +108,11 @@ export class WorldGen {
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
-        if (y <= baseY + 5) {
-            returnChunk[x] ??= [];
-            returnChunk[x][z] ??= [];
-            returnChunk[x][z][y] = [...dreamStoneVovxel];
-           }
+     if (y <= baseY + 5) {
+      returnChunk[x] ??= [];
+      returnChunk[x][z] ??= [];
+      returnChunk[x][z][y] = [...dreamStoneVovxel];
+     }
      if (y >= baseY && y <= maxY + 8 && Math.random() < 0.05) {
       returnChunk[x] ??= [];
       returnChunk[x][z] ??= [];
