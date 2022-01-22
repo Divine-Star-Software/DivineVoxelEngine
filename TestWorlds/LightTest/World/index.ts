@@ -21,15 +21,42 @@ const start = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.worldData.setChunk(x,0, z, worldGen.generateChunk(x, z));
+   (async () => {
+    DVEW.worldData.setChunk(x, 0, z, worldGen.generateChunk(x, 0, z));
+   })();
+  }
+ }
+ for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   DVEW.buildChunk(x, 0, z);
   }
  }
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0,z);
+   worldGen.lightTest(x, 0, z, 7, 7, 5, 9);
+   
+
+   worldGen.lightTest(x, 0, z, 7, 7, 15, 9);
+   worldGen.lightTest(x, 0, z, 7, 7, 25, 9);
+   worldGen.lightTest(x, 0, z, 7, 7, 35, 9);
+
+   worldGen.lightTest(x, 0, z, 7, 7, 45, 9);
+   worldGen.lightTest(x, 0, z, 7, 7, 55, 9);
+   worldGen.lightTest(x, 0, z, 7, 7, 65, 9);
   }
+ 
  }
+
+  for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   (async () => {
+    DVEW.buildChunk(x, 0, z);
+   })();
+  }
+ } 
+
+ //
 
  DVEW.buildFluidMesh();
 };

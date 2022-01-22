@@ -18,6 +18,9 @@ export declare class WorldData {
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
+    getData(x: number, y: number, z: number): any;
+    _copy(data: any): any[];
+    setData(x: number, y: number, z: number, data: number[]): false | undefined;
     getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;

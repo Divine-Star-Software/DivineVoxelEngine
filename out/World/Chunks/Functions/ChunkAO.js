@@ -1,8 +1,10 @@
-export function ChunkOcculsionCalcuation(worldData, voxelManager, voxel, voxelPallet, chunk, chunkX, chunkY, chunkZ, blockX, blockY, blockZ, x, y, z) {
-    const check = worldData.getRelativeVoxelData(chunkX, chunkY, chunkZ, blockX, blockY, blockZ, x, y, z);
+export function ChunkOcculsionCalcuation(worldData, voxelManager, voxel, voxelPallet, chunk, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, x, y, z) {
+    const check = worldData.getRelativeVoxelData(chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, x, y, z);
     if (!check) {
         return 1;
     }
+    if (check[0] < 0)
+        return 1;
     const voxelPalletId = check[0];
     const voxelTrueId = voxelPallet[voxelPalletId][0];
     const checkVoxel = voxelManager.getVoxel(voxelTrueId);

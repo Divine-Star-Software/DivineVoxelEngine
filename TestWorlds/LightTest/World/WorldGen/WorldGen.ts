@@ -2,13 +2,17 @@ import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
 import { LightTest } from "./LightTest.js";
+import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
+import { LightByte } from "../../../../out/Global/Util/LightByte";
 export class WorldGen {
- constructor(public DVEW: DVEW) {
+ constructor(public DVEW: DivineVoxelEngineWorld) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
+  this.lightByte = this.DVEW.UTIL.getLightByte();
  }
 
  lightTest = LightTest;
  infoByte: InfoByte;
+ lightByte: LightByte;
 
  chunkDepth = 16;
  chunkWidth = 16;
@@ -18,6 +22,7 @@ export class WorldGen {
 
  generateChunk(
   chunkX: number,
+  chunkY: number,
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
@@ -46,20 +51,24 @@ export class WorldGen {
   this.infoByte.setHalfByteBits(4, 0);
   this.infoByte.setHalfByteBits(8, 0);
   this.infoByte.setHalfByteBits(12, 0);
-  const dreamStoneVovxel = [dreamstonepillar, 1, this.infoByte.getNumberValue()];
+  const dreamStoneVovxel = [
+   dreamstonepillar,
+   1,
+   this.infoByte.getNumberValue(),
+  ];
 
   let baseY = 0;
-  let maxY = 31;
+  let maxY = 61;
 
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
-     if (y >= baseY && y <= maxY - 9 ) {
-      returnChunk[x] ??= [];
-      returnChunk[x][z] ??= [];
-      returnChunk[x][z][y] = [...dreamStoneVovxel];
-     }
-     if (y >= maxY - 8 && y <= maxY + 8 && Math.random() < 0.05) {
+        if (y <= baseY + 5) {
+            returnChunk[x] ??= [];
+            returnChunk[x][z] ??= [];
+            returnChunk[x][z][y] = [...dreamStoneVovxel];
+           }
+     if (y >= baseY && y <= maxY + 8 && Math.random() < 0.05) {
       returnChunk[x] ??= [];
       returnChunk[x][z] ??= [];
       returnChunk[x][z][y] = [...dreamStoneVovxel];
@@ -68,11 +77,9 @@ export class WorldGen {
    }
   }
 
-  this.lightTest(returnChunk, 7, 7, 31, 9);
-
   return {
    voxels: returnChunk,
-   isEmpty : false,
+   isEmpty: false,
    maxMinHeight: [],
    heightMap: [],
   };

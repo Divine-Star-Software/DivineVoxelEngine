@@ -1,6 +1,6 @@
 import { GetRealtiveChunkData } from "./GetRelativeChunkData.js";
-export function ChunkOcculsionCalcuation(worldData, chunk, chunkX, chunkZ, blockX, blockY, blockZ, x, y, z) {
-    const check = GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, blockX, blockY, blockZ, x, y, z);
+export function ChunkOcculsionCalcuation(worldData, chunk, chunkX, chunkZ, voxelX, voxelY, voxelZ, x, y, z) {
+    const check = GetRealtiveChunkData(worldData, chunk, chunkX, chunkZ, voxelX, voxelY, voxelZ, x, y, z);
     if (!check) {
         return 1;
     }

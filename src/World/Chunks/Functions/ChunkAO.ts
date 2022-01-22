@@ -12,9 +12,9 @@ export function ChunkOcculsionCalcuation(
  chunkX: number,
  chunkY : number,
  chunkZ: number,
- blockX: number,
- blockY: number,
- blockZ: number,
+ voxelX: number,
+ voxelY: number,
+ voxelZ: number,
  x: number,
  y: number,
  z: number
@@ -23,9 +23,9 @@ export function ChunkOcculsionCalcuation(
   chunkX,
   chunkY,
   chunkZ,
-  blockX,
-  blockY,
-  blockZ,
+  voxelX,
+  voxelY,
+  voxelZ,
   x,
   y,
   z
@@ -33,6 +33,7 @@ export function ChunkOcculsionCalcuation(
  if (!check) {
   return 1;
  }
+ if(check[0] < 0)return 1;
 
 
  const voxelPalletId = check[0];

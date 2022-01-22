@@ -39,6 +39,64 @@ export class WorldData {
   return JSON.stringify(this.chunks);
  }
 
+ getData(x: number, y: number, z: number) {
+  const chunkX = (x >> 4) << 4;
+  const chunkY = (y >> 7) << 7;
+  const chunkZ = (z >> 4) << 4;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk || chunk.isEmpty) {
+   return false;
+  }
+  const [voxelX, voxelZ, voxelY] = this._getRelativeChunkPosition(
+   chunkX,
+   chunkY,
+   chunkZ,
+   x,
+   y,
+   z
+  );
+
+  //console.log(chunk.voxels);
+  // console.log(chunkX,chunkY,chunkZ,voxelX,voxelY,voxelZ,x,y,z);
+  if (
+   chunk.voxels[voxelX] &&
+   chunk.voxels[voxelX][voxelZ] &&
+   chunk.voxels[voxelX][voxelZ][voxelY]
+  ) {
+   return chunk.voxels[voxelX][voxelZ][voxelY];
+  } else {
+   return false;
+  }
+ }
+
+ _copy(data: any) {
+  return [...data];
+ }
+
+ setData(x: number, y: number, z: number, data: number[]) {
+  const chunkX = (x >> 4) << 4;
+  const chunkY = (y >> 7) << 7;
+  const chunkZ = (z >> 4) << 4;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk || chunk.isEmpty) {
+
+   return false;
+  }
+
+  const [voxelX, voxelZ, voxelY] = this._getRelativeChunkPosition(
+   chunkX,
+   chunkY,
+   chunkZ,
+   x,
+   y,
+   z
+  );
+  const voxels = chunk.voxels;
+  voxels[voxelX] ??= [];
+  voxels[voxelX][voxelZ] ??= [];
+  voxels[voxelX][voxelZ][voxelY] = this._copy(data);
+ }
+
  getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false {
   if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) {
    return false;
@@ -46,7 +104,9 @@ export class WorldData {
   return this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
  }
 
- removeChunk(chunkX: number, chunkY: number, chunkZ: number) {}
+ removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  delete this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+ }
 
  setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData) {
   this.chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
@@ -65,7 +125,6 @@ export class WorldData {
   z: number,
   voxelPalletId: number = 1
  ): false | ChunkVoxels {
-     console.log(arguments);
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   const relativePOS = this._getRelativeChunkPosition(
    chunkX,
@@ -88,7 +147,7 @@ export class WorldData {
    chunkVoxels[relativeX][relativeZ][relativeY] = [
     voxelPalletId,
     0,
-    0xFFFFFFFF,
+    0xffffffff,
    ];
 
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
@@ -113,7 +172,11 @@ export class WorldData {
     relativeZ
    );
   } else if (!chunkVoxels[relativeX][relativeZ][relativeY]) {
-   chunkVoxels[relativeX][relativeZ][relativeY] = [voxelPalletId, 0, 0xFFFFFFFF];
+   chunkVoxels[relativeX][relativeZ][relativeY] = [
+    voxelPalletId,
+    0,
+    0xffffffff,
+   ];
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
     pallet,
@@ -377,7 +440,7 @@ export class WorldData {
   let realtiveY = Math.abs(y - chunkY);
   if (y < 0) {
    if (y == chunkY + 127) {
-    y = 127;
+    realtiveY = 127;
    }
   }
 
