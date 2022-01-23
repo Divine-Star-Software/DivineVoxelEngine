@@ -53,6 +53,7 @@ If you are developing something with it I would love to see it. Send it to me ov
 - Basic physics and collision detection. 
   - Working to develop some helper functions to determine what voxel the player is looking at or touching. 
   - Instead of using collision detection with the actual meshes it will calculate collision in the world thread. 
+- Well written wiki with tutorials on how to do anything that you could possibably want.
 - Saving the world data.
 
 # Future Ideas
@@ -61,7 +62,7 @@ If you are developing something with it I would love to see it. Send it to me ov
   - More shader effects and custom voxel substances
   - Structure creator software. 
   - Standard data format for the engine either called .dsd or .dved
-  
+
 
 #### See In Action
 
@@ -113,6 +114,14 @@ The four contexts being
 
 - [Simon](https://twitter.com/iced_coffee_dev) for providing inspiration for the project and the starter code for the ambient occlusion.
 - [Daivd Catuhe](https://www.linkedin.com/in/dcatuhe/) for creating BabylonJS.
+
+### Want to contribute?
+
+If you would like to contribute please first read the CodeStyles file in the root directory. 
+
+Then get a hold of me through github or other social media. 
+
+I don't need much help but if you want to provide example worlds, more shader effects, and other improvments let me know. 
 
 
 
