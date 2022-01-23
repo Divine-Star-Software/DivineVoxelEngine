@@ -85,11 +85,11 @@ export const fluidShaders =  {
 
 
         //mix with supplied vertex colors
-        vec4 mixVertex = mix(rgb, vColors , 1.0);
+      //  vec4 mixVertex = mix(rgb, vColors , 1.0);
         //apply to texture color
-        vec4 newBase = rgb * mixVertex;
+      //  vec4 newBase = rgb * mixVertex;
 
-        vec4 mixLight  = newBase * baseLightColor;
+        vec4 mixLight  = rgb * baseLightColor;
 
         float fog = CalcFogFactor();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;

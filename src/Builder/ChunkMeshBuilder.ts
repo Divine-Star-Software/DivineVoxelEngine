@@ -96,7 +96,6 @@ export class ChunkMeshBuilder {
   const sunLightColorsArray = new Float32Array(sunLightColors);
   const colorsArray = new Float32Array(colors);
   const uvArray = new Float32Array(uvs);
-  console.log(AOColorsArray.length,sunLightColorsArray.length);
 
   //@ts-ignore
   this.DVEB.worker.postMessage(

@@ -7,17 +7,22 @@
 </p>
 
 ---
-f
 **WARNING:**
 Very early development. This is not finalized. Things will keep changing as development goes forward.
-Fluid mesh is a little broke right now because I am working on the light engine. Should be fixed soon though. Developing an easy way to add sun light
-and voxel light sources with multi colored light!
+The first offical version will be out once the basic lighting system is done. 
+
+Till then some things may be broke or not fully working.
+Check the change log more for info.
 
 # What is this?
 
 A voxel engine written in TypeScript that uses Babylon.Js. This is for Minecraft like games. Meaning it is for rich voxel worlds not sparse ones. Though there are optimizations included for uses of just rendering.
 
 This engine only handles rendering and creating of meshes. Things like players, world generation, mobs, and complex inter-connected logic is up to you.
+
+This could be used to make any type of game not just a Minecraft clone. 
+
+If you are developing something with it I would love to see it. Send it to me over at twitter : [@DivineSoftware](https://twitter.com/DivineSoftware)
 
 # Current Features
 
@@ -49,6 +54,14 @@ This engine only handles rendering and creating of meshes. Things like players, 
   - Working to develop some helper functions to determine what voxel the player is looking at or touching. 
   - Instead of using collision detection with the actual meshes it will calculate collision in the world thread. 
 - Saving the world data.
+
+# Future Ideas
+
+  - Basic voxel collision detection and player example world.
+  - More shader effects and custom voxel substances
+  - Structure creator software. 
+  - Standard data format for the engine either called .dsd or .dved
+  
 
 #### See In Action
 

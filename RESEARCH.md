@@ -40,78 +40,77 @@ I want to post some of my sources and own thoughts.
 
 [Stackoverflow: Walk a line between two points in a 3D voxel space visiting all cells](https://stackoverflow.com/questions/16505905/walk-a-line-between-two-points-in-a-3d-voxel-space-visiting-all-cells)
 
-This guy provided the function below. And it is awesome! Positing it here to save it.
+This guy provided the function below. And it is awesome! Positing the typescript version that I made of it here.
 
-```js
-function visitAll(gx0, gy0, gz0, gx1, gy1, gz1, visitor) {
+```ts
+function visitAll(
+ gx0: number,
+ gy0: number,
+ gz0: number,
+ gx1: number,
+ gy1: number,
+ gz1: number
+ // visitor: (x: number, y: number, z: number) => {}
+) {
+ const positons = [];
+ const gx0idx = Math.floor(gx0);
+ const gy0idx = Math.floor(gy0);
+ const gz0idx = Math.floor(gz0);
 
-    var gx0idx = Math.floor(gx0);
-    var gy0idx = Math.floor(gy0);
-    var gz0idx = Math.floor(gz0);
+ const gx1idx = Math.floor(gx1);
+ const gy1idx = Math.floor(gy1);
+ const gz1idx = Math.floor(gz1);
 
-    var gx1idx = Math.floor(gx1);
-    var gy1idx = Math.floor(gy1);
-    var gz1idx = Math.floor(gz1);
+ const sx = gx1idx > gx0idx ? 1 : gx1idx < gx0idx ? -1 : 0;
+ const sy = gy1idx > gy0idx ? 1 : gy1idx < gy0idx ? -1 : 0;
+ const sz = gz1idx > gz0idx ? 1 : gz1idx < gz0idx ? -1 : 0;
 
-    var sx = gx1idx > gx0idx ? 1 : gx1idx < gx0idx ? -1 : 0;
-    var sy = gy1idx > gy0idx ? 1 : gy1idx < gy0idx ? -1 : 0;
-    var sz = gz1idx > gz0idx ? 1 : gz1idx < gz0idx ? -1 : 0;
+ let gx = gx0idx;
+ let gy = gy0idx;
+ let gz = gz0idx;
 
-    var gx = gx0idx;
-    var gy = gy0idx;
-    var gz = gz0idx;
+ const gxp = gx0idx + (gx1idx > gx0idx ? 1 : 0);
+ const gyp = gy0idx + (gy1idx > gy0idx ? 1 : 0);
+ const gzp = gz0idx + (gz1idx > gz0idx ? 1 : 0);
 
-    //Planes for each axis that we will next cross
-    var gxp = gx0idx + (gx1idx > gx0idx ? 1 : 0);
-    var gyp = gy0idx + (gy1idx > gy0idx ? 1 : 0);
-    var gzp = gz0idx + (gz1idx > gz0idx ? 1 : 0);
+ const vx = gx1 === gx0 ? 1 : gx1 - gx0;
+ const vy = gy1 === gy0 ? 1 : gy1 - gy0;
+ const vz = gz1 === gz0 ? 1 : gz1 - gz0;
 
-    //Only used for multiplying up the error margins
-    var vx = gx1 === gx0 ? 1 : gx1 - gx0;
-    var vy = gy1 === gy0 ? 1 : gy1 - gy0;
-    var vz = gz1 === gz0 ? 1 : gz1 - gz0;
+ const vxvy = vx * vy;
+ const vxvz = vx * vz;
+ const vyvz = vy * vz;
 
-    //Error is normalized to vx * vy * vz so we only have to multiply up
-    var vxvy = vx * vy;
-    var vxvz = vx * vz;
-    var vyvz = vy * vz;
+ let errx = (gxp - gx0) * vyvz;
+ let erry = (gyp - gy0) * vxvz;
+ let errz = (gzp - gz0) * vxvy;
 
-    //Error from the next plane accumulators, scaled up by vx*vy*vz
-    // gx0 + vx * rx === gxp
-    // vx * rx === gxp - gx0
-    // rx === (gxp - gx0) / vx
-    var errx = (gxp - gx0) * vyvz;
-    var erry = (gyp - gy0) * vxvz;
-    var errz = (gzp - gz0) * vxvy;
+ const derrx = sx * vyvz;
+ const derry = sy * vxvz;
+ const derrz = sz * vxvy;
 
-    var derrx = sx * vyvz;
-    var derry = sy * vxvz;
-    var derrz = sz * vxvy;
+ do {
+  //  visitor(gx, gy, gz);
 
-    do {
-        visitor(gx, gy, gz);
+  positons.push(gx, gy, gz);
+  if (gx === gx1idx && gy === gy1idx && gz === gz1idx) break;
 
-        if (gx === gx1idx && gy === gy1idx && gz === gz1idx) break;
+  let xr = Math.abs(errx);
+  let yr = Math.abs(erry);
+  let zr = Math.abs(errz);
 
-        //Which plane do we cross first?
-        var xr = Math.abs(errx);
-        var yr = Math.abs(erry);
-        var zr = Math.abs(errz);
-
-        if (sx !== 0 && (sy === 0 || xr < yr) && (sz === 0 || xr < zr)) {
-            gx += sx;
-            errx += derrx;
-        }
-        else if (sy !== 0 && (sz === 0 || yr < zr)) {
-            gy += sy;
-            erry += derry;
-        }
-        else if (sz !== 0) {
-            gz += sz;
-            errz += derrz;
-        }
-
-    } while (true);
+  if (sx !== 0 && (sy === 0 || xr < yr) && (sz === 0 || xr < zr)) {
+   gx += sx;
+   errx += derrx;
+  } else if (sy !== 0 && (sz === 0 || yr < zr)) {
+   gy += sy;
+   erry += derry;
+  } else if (sz !== 0) {
+   gz += sz;
+   errz += derrz;
+  }
+ } while (true);
+ return positons;
 }
 ```
 
