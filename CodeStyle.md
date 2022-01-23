@@ -19,14 +19,15 @@ In case anyone wants to contribute to the project here are the guidelines:
 - Functions with a $ sign are meant to be called only once.
     - Such is the case with all the main contexts main managers.
     - Each have an "$INIT" function. 
-- Import classes are grouped together into a parent class in each context. 
+- Important classes are grouped together into a parent class in each context. 
     - Their parent classes for each context are:
         - Divine Voxel Engine - **DVE** - Main Thread
         - Divine Voxel Engine World - **DVEW** - World Thread
         - Divine Voxel Engine Builder - **DVEB** - Mesh Builder Thread
         - Divine Voxel Engine Fluid Builder - **DVEFB** - Fluid Mesh Builder Thread
-- Import inital logic are set up in speical init functions. 
+- Important inital logic are set up in speical init functions. 
 - If a bunch of contexts need to use some specific code it is attatched to the UTIL class.
+- If in a context there needs to be a lot of interaction between several classes then it must be broke out into a function.
 
 ## Philosphy 
 
