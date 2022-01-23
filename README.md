@@ -7,7 +7,7 @@
 </p>
 
 ---
-
+f
 **WARNING:**
 Very early development. This is not finalized. Things will keep changing as development goes forward.
 Fluid mesh is a little broke right now because I am working on the light engine. Should be fixed soon though. Developing an easy way to add sun light
@@ -31,11 +31,24 @@ This engine only handles rendering and creating of meshes. Things like players, 
 
 # In Dev
 
-- Saving Data
-- Lighting system.
-  - Flood fill lighting system.
+- Same voxel different colors
+  - Set a color directly on voxel data. 
+  - Options to create shade gradient with neighbors. 
+- Pre-Baking Lighting system.
+  - Flood fill lighting system for local sources.
   - Suppourt for different colored lights.
+  - Sun light calculation for global illumanitation (like minecraft) 
+- Dynamic Lighting system.
+  - Uses Babylon.Js built in dyamic lights and shadow gen.
+  - A way to create a sun light or dynamic light that follows the player. 
+  - It will cast shadows. 
+- One mesh mode
+  - If the world does not need to update a lot all the worlds chunk meshes can be combined into one for each substance.
 - World Data API - Easy way to create chunks and the needed data for it.
+- Basic physics and collision detection. 
+  - Working to develop some helper functions to determine what voxel the player is looking at or touching. 
+  - Instead of using collision detection with the actual meshes it will calculate collision in the world thread. 
+- Saving the world data.
 
 #### See In Action
 
