@@ -4,10 +4,10 @@ In case anyone wants to contribute to the project here are the guidelines:
 
 ## Basic Stying
 
-- Camel case for variables. No capital letters unless it is acronym.
-- Camel case for first char captial for classes. 
+- Camel case for variables. No capital letters unless it is an acronym.
+- Camel case for first char captial of classes. 
 - A class that handles many functions and actions must be called a Manager. 
-- All files that just haves in them must include .types in the file name. 
+- All files that just have types must have .types in the file name. 
 - All files that have an interface must have .interface in the name. 
 - Each function and variable name must make sense and actually describe what it is and what it does. 
     
