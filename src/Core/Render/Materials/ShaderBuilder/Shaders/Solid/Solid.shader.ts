@@ -92,9 +92,6 @@ export const solidShaders = {
         vec4 mixLight  = newBase * light;
 
         
-
-
-
         float fog = CalcFogFactor();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
 

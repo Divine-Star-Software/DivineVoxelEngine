@@ -70,7 +70,7 @@ export class WorldGen {
         this.infoByte.setHalfByteBits(8, 0);
         this.infoByte.setHalfByteBits(12, 0);
         const dreamStoneVovxel = [
-            dreamstonepillar,
+            2,
             1,
             this.infoByte.getNumberValue(),
         ];

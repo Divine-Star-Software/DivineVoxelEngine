@@ -10,7 +10,8 @@
 
 **WARNING:**
 Very early development. This is not finalized. Things will keep changing as development goes forward.
-Things are a little broke right now because I am working on the light engine. Should be fixed soon though!
+Fluid mesh is a little broke right now because I am working on the light engine. Should be fixed soon though. Developing an easy way to add sun light
+and voxel light sources with multi colored light!
 
 # What is this?
 
