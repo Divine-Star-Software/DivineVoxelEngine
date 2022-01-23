@@ -2,6 +2,17 @@
 
 This engine was developed on top of the V8 engine through severing it as an Electron app. So, it may not be computable with all browsers.
 
+## Why did I make this?
+
+Well, as of this writing I only first played Minecraft in 2020. Before then I was too busy with college and my own projects. I then became very curious
+about how it all works. I also love pixel art, comptuer science, and programming. 
+
+I saw that a voxel engine could be used to make basically any type of game. I have a few projects in mind that require an engine like this.
+
+I decided to share this with the public because I can see actual games being made with it. Beyond just my own. 
+
+You may be able to steal my code by you will never take my style and flare. But also you never grow big by making others small. If this engine empowers and inspires others to make beautiful things then my life was worth it. 
+
 ## Chunk Render Amount
 
 The current suppourted max render amount is 225 chunks. The engine is desinged to run best with that max amount of chunks. 
