@@ -1,6 +1,25 @@
-# Code Style
+# Code Style and Contributions
 
 In case anyone wants to contribute to the project here are the guidelines:
+
+## Contributions
+
+It must be relevant to the project and be generally useful to different types of projects.
+Also, any direct code contrubtion must not hinder performance. The optimal chunk build/rebuild time is below 100ms. 
+
+But if you want to help you could work on one or more of the following:
+
+- Documentation 
+- Example worlds 
+- Voxel shapes
+- Shaders and materials
+- Engine improvments and features 
+
+You can also help by providing feedback and reporting bugs. 
+
+## Code Style Guide Lines
+
+To keep the code consistent and understandable I follow some guidlines. 
 
 ## Basic Stying
 
@@ -35,8 +54,11 @@ In case anyone wants to contribute to the project here are the guidelines:
 - Elagent 
 - Effective 
 
-My aim is to keep the engine as easy to use as possible. All the stuff that can be hidden away should. The user of the engine should not have to do to much
-work to get exaclty what they want. 
+My aim is to keep the engine as easy to use as possible (as anything like this could be). 
 
+All the stuff that can be hidden away should. The user of the engine should not have to do to much
+work to get exaclty what they want. You should just be able to make a few files and import a few things to get a beautiful voxel world of your design in twenty or less minutes. 
+
+Everything you could want as an artist and a developer should be eaisly aviable. 
 
 
