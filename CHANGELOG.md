@@ -1,4 +1,12 @@
 ##### Change Log
+1-23-2022
+- Added a research file to save links and other important information.
+- Added some stuff to the notes section.
+- Did a temp fix for the fluid shader to make it ignore the light system.
+- Started work on the wiki. 
+- The shaders for fluid, flora, and magma materials need to be re-written for the light system. But will work on that soon. 
+
+
 1-22-2022
 - Wrote a new set of functions for World Data called getData and setData. They take any x,y,z and can get or insert any chunk.
 - With testing they reduced chunk build time by 20ms! With now an avergae of 20ms or so chunk building is really fast. 

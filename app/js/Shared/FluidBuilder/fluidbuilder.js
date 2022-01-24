@@ -2,4 +2,3 @@ import { DivineVoxelEngineFluidBuilder } from "../../../out/Builder/FluidBuilder
 const DVEFB = new DivineVoxelEngineFluidBuilder();
 DVEFB.$INIT(self);
 self.DVEFB = DVEFB;
-console.log("SUP FROM FLUID BUILDER");

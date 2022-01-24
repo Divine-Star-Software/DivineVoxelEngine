@@ -6,4 +6,3 @@ DVEFB.$INIT((self as any));
 
 (self as any).DVEFB = DVEFB;
 
-console.log("SUP FROM FLUID BUILDER");
