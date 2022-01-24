@@ -10,8 +10,8 @@ export interface VoxelHelperInterface {
  util: Util;
 
  textureManager: TextureManagerInterface;
- calculateVoxelAO(data: VoxelAOCalcData, voxel : VoxelInteface): void;
- calculateVoxelLight(data: VoxelLightCalcData, voxel : VoxelInteface): void;
+ calculateVoxelAO(data: VoxelProcessData, voxel : VoxelInteface): void;
+ calculateVoxelLight(data: VoxelProcessData, voxel : VoxelInteface): void;
 
 
  processVoxelLight(data : VoxelProcessData , voxel: VoxelInteface)  : void;

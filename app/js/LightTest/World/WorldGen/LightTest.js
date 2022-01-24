@@ -158,13 +158,13 @@ const setAirLightBlock = (x, y, z, lightByte, worldData) => {
     air[1] = lightByte.calculateRGBSetLight(n1, n2, n3, n4, n5, n6);
     worldData.setData(x, y, z, air);
 };
-const voxelData = [1, 0, 0];
+const voxelData = [1, 0, 0b1111];
 const airSeed = [-1, 0, 0];
 export function LightTest(chunkX, chunkY, chunkZ, startX, startZ, startY, radius) {
     let trueStartX = startX + chunkX;
     let trueStartY = startY + chunkY;
     let trueStartZ = startZ + chunkZ;
-    voxelData[voxelData.length - 1] = this.lightSourceColor;
+    voxelData[voxelData.length - 1] = 0b111111111111;
     this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, voxelData);
     airSeed[voxelData.length - 1] = this.seedLightSourceColor;
     if (this.DVEW.worldData.getData(trueStartX - 1, trueStartY, trueStartZ)) {

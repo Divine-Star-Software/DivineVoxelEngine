@@ -16,37 +16,39 @@ export class DebugBox {
         return this.trueShapeId;
     }
     getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
+        return;
+    }
+    getAO(data) {
+        return;
+    }
+    getLight(data) {
+        return;
+    }
+    process(data) {
         let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "top");
         let bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "bottom");
         let northUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "north");
         let southUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "south");
         let eastUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "east");
         let westUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "west");
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
-            uvs.push(topUV);
+        if (data.exposedFaces[0]) {
+            data.uvTemplate.push(topUV);
         }
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "bottom")) {
-            uvs.push(bottomUV);
+        if (data.exposedFaces[1]) {
+            data.uvTemplate.push(bottomUV);
         }
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "east")) {
-            uvs.push(eastUV);
+        if (data.exposedFaces[2]) {
+            data.uvTemplate.push(westUV);
         }
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "west")) {
-            uvs.push(westUV);
+        if (data.exposedFaces[3]) {
+            data.uvTemplate.push(eastUV);
         }
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "south")) {
-            uvs.push(southUV);
+        if (data.exposedFaces[4]) {
+            data.uvTemplate.push(northUV);
         }
-        if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "north")) {
-            uvs.push(northUV);
+        if (data.exposedFaces[5]) {
+            data.uvTemplate.push(southUV);
         }
-    }
-    getAO(data) {
-        this.voxelHelper.calculateVoxelAO(data, this);
-    }
-    getLight(data) {
-        this.voxelHelper.calculateVoxelLight(data, this);
-    }
-    process(data) {
+        this.voxelHelper.processVoxelLight(data, this);
     }
 }

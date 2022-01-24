@@ -35,6 +35,9 @@ export function InitWorker(DVEFB) {
             const linearColorsArray = new Float32Array(meshData[2]);
             const fullColorsArray = new Float32Array(meshData[2]);
             const uvArray = new Float32Array(meshData[3]);
+            console.log(positionArray);
+            console.log(indiciesArray);
+            console.log(uvArray);
             //@ts-ignore
             DVEFB.worker.postMessage([
                 0,

@@ -45,6 +45,13 @@ export class WorldData {
   "transparent-fluid": true,
   "transparent-magma": true,
 
+  "flora-solid": true,
+  "flora-flora": true,
+  "flora-transparent": true,
+  "flora-fluid": true,
+  "flora-magma": true,
+
+
   "fluid-solid": false,
   "fluid-flora": true,
   "fluid-transparent": true,

@@ -23,7 +23,8 @@ export declare type VoxelLightCalcData = {
     exposedFaces: number[];
     voxelPallete: VoxelPallet;
     voxelData: any[];
-    lightTemplate: number[];
+    RGBLightTemplate: number[];
+    sunLightTemplate: number[];
     chunkX: number;
     chunkY: number;
     chunkZ: number;

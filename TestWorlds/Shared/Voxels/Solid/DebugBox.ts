@@ -28,6 +28,18 @@ export class DebugBox implements VoxelInteface {
   voxelExposedFaceEncodedBit: number,
   voxelData: any[]
  ): void {
+  return;
+ }
+
+ getAO(data: VoxelAOCalcData): void {
+  return;
+ }
+
+ getLight(data: VoxelLightCalcData): void {
+  return;
+ }
+
+ process(data: VoxelProcessData): void {
   let topUV = this.voxelHelper.textureManager.getTextureUV(
    "solid",
    "debug",
@@ -59,45 +71,25 @@ export class DebugBox implements VoxelInteface {
    "west"
   );
 
-  if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
-   uvs.push(topUV);
+  if (data.exposedFaces[0]) {
+   data.uvTemplate.push(topUV);
   }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "bottom")
-  ) {
-   uvs.push(bottomUV);
+  if (data.exposedFaces[1]) {
+   data.uvTemplate.push(bottomUV);
   }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "east")
-  ) {
-   uvs.push(eastUV);
+  if (data.exposedFaces[2]) {
+   data.uvTemplate.push(westUV);
   }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "west")
-  ) {
-   uvs.push(westUV);
+  if (data.exposedFaces[3]) {
+   data.uvTemplate.push(eastUV);
   }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "south")
-  ) {
-   uvs.push(southUV);
+  if (data.exposedFaces[4]) {
+   data.uvTemplate.push(northUV);
   }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "north")
-  ) {
-   uvs.push(northUV);
+  if (data.exposedFaces[5]) {
+   data.uvTemplate.push(southUV);
   }
- }
 
- getAO(data: VoxelAOCalcData): void {
-  this.voxelHelper.calculateVoxelAO(data, this);
- }
-
- getLight(data: VoxelLightCalcData): void {
-  this.voxelHelper.calculateVoxelLight(data, this);
- }
-
-
- process(data: VoxelProcessData): void {
+  this.voxelHelper.processVoxelLight(data,this);
  }
 }

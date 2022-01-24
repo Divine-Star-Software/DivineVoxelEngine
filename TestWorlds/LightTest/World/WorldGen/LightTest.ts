@@ -181,7 +181,7 @@ const setAirLightBlock = (
  worldData.setData(x, y, z, air);
 };
 
-const voxelData = [1, 0, 0];
+const voxelData = [1, 0, 0b1111];
 const airSeed = [-1, 0, 0];
 
 export function LightTest(
@@ -198,7 +198,7 @@ export function LightTest(
  let trueStartY = startY + chunkY;
  let trueStartZ = startZ + chunkZ;
 
- voxelData[voxelData.length - 1] = this.lightSourceColor;
+ voxelData[voxelData.length - 1] = 0b111111111111;
  this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, voxelData);
 
  airSeed[voxelData.length - 1] = this.seedLightSourceColor;

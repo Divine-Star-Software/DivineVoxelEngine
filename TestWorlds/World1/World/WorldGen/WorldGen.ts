@@ -316,6 +316,12 @@ export class WorldGen {
     chunkVoxels[x][z] ??= [];
     chunkVoxels[x][z][y] = this.copy(liquidDreamEtherVoxel);
    }
+
+   if(y == minY){
+    chunkVoxels[x] ??= [];
+    chunkVoxels[x][z] ??= [];
+    chunkVoxels[x][z][y] = this.copy(liquidDreamEtherVoxel);
+   }
   }
  }
 

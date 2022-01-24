@@ -88,8 +88,4 @@ const init = async () => {
   //@ts-ignore
   divFps.innerHTML = engine.getFps().toFixed() + " fps";
  });
- //render loop
- engine.runRenderLoop(() => {
-  scene.render();
- });
 };

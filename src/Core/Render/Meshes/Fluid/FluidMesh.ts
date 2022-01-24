@@ -1,11 +1,10 @@
-
 import type { FluidMaterial } from "Core/Render/Materials/Fluid/FluidMaterial";
 
-export class FluidMesh   {
- 
-  mesh : BABYLON.Mesh;
+export class FluidMesh {
+ mesh: BABYLON.Mesh;
 
-  beenCreated : boolean = false;
+ scene : BABYLON.Scene;
+ beenCreated: boolean = false;
 
  constructor(private material: FluidMaterial) {}
 
@@ -16,21 +15,21 @@ export class FluidMesh   {
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
-
+   console.log("update");
   const chunkVertexData = new BABYLON.VertexData();
- // const calculatedNormals: number[] = [];
+  // const calculatedNormals: number[] = [];
 
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
- // chunkVertexData.normals = calculatedNormals;
+  // chunkVertexData.normals = calculatedNormals;
 
- // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+  // BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.applyToMesh(this.mesh, true);
 
   this.mesh.setVerticesData("cuv3", uvs, false, 3);
-  this.mesh.setVerticesData("colors", fullColors, false, 4);
+  //this.mesh.setVerticesData("colors", fullColors, false, 4);
 
-/*   this.mesh.unfreezeWorldMatrix();
+  /*   this.mesh.unfreezeWorldMatrix();
   //Babylon throws an error but this functions works
   //So wrapped it in this for now. It works though
   try {
@@ -41,17 +40,15 @@ export class FluidMesh   {
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
-   this.mesh = new BABYLON.Mesh("fluid", scene);
-
+  this.mesh = new BABYLON.Mesh("fluid", scene);
+  this.scene = scene;
   this.mesh.isPickable = false;
   this.mesh.alphaIndex = 1;
   this.mesh.checkCollisions = false;
+  this.mesh.visibility = 0.1;
+  this.mesh.hasVertexAlpha = true;
   return this.mesh;
  }
-
-
-
-
 
  async createMeshGeometory(
   positions: Float32Array,
@@ -60,22 +57,19 @@ export class FluidMesh   {
   fullColors: Float32Array,
   uvs: Float32Array
  ) {
-   console.log("MADE");
-         this.beenCreated = true;
+  this.mesh.material = this.material.getMaterial();
+  this.beenCreated = true;
   const chunkVertexData = new BABYLON.VertexData();
-
-  const calculatedNormals: number[] = [];
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
 
   chunkVertexData.applyToMesh(this.mesh, true);
 
   this.mesh.setVerticesData("cuv3", uvs, false, 3);
-  this.mesh.setVerticesData("colors", fullColors, false, 4);
+ //  this.mesh.setVerticesData("colors", fullColors, false, 4);
 
-  this.mesh.material = this.material.getMaterial();
+
+ // this.mesh.material = new BABYLON.StandardMaterial("",this.scene);
   this.mesh.freezeWorldMatrix();
 
   return this.mesh;

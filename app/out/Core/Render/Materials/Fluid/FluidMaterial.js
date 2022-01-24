@@ -33,13 +33,13 @@ export class FluidMaterial {
             needAlphaBlending: true,
             needAlphaTesting: false,
         });
-        shaderMaterial.fogEnabled = true;
-        texture.hasAlpha = true;
-        shaderMaterial.alpha = 0.7;
+        //shaderMaterial.fogEnabled = true;
+        texture.hasAlpha = false;
+        // shaderMaterial.alpha =  0.7;
         shaderMaterial.setTexture("arrayTex", texture);
-        shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
-        // shaderMaterial.backFaceCulling = false;
-        // shaderMaterial.separateCullingPass = false;
+        //shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
+        shaderMaterial.backFaceCulling = false;
+        //shaderMaterial.separateCullingPass = true;
         shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
             var effect = shaderMaterial.getEffect();

@@ -237,40 +237,6 @@ export class ChunkProcessor {
 
      if (faceBit == 0) continue;
 
-     voxel.getUVs(
-      baseTemplate.uvTemplate,
-      chunkX,
-      chunkZ,
-      faceBit,
-      voxelPalletData
-     );
-
-     voxel.getAO({
-      chunkVoxels: voxels,
-      voxelPallete: voxelPallet,
-      exposedFaces: this.exposedFaces,
-      aoTemplate: baseTemplate.aoTemplate,
-      chunkX: chunkX,
-      chunkY: chunkY,
-      chunkZ: chunkZ,
-      x: x,
-      y: y,
-      z: z,
-     });
-  
-     voxel.getLight({
-      voxelPallete: voxelPallet,
-      voxelData: voxelData,
-      exposedFaces: this.exposedFaces,
-      lightTemplate: baseTemplate.RGBLightTemplate,
-      chunkX: chunkX,
-      chunkY: chunkY,
-      chunkZ: chunkZ,
-      x: x,
-      y: y,
-      z: z,
-     });
-
 
      voxel.process({
         voxelPallete: voxelPallet,

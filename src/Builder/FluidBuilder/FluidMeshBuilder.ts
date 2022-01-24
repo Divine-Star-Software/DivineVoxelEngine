@@ -109,6 +109,7 @@ export class FluidMeshBuilder {
    newAoTemplate,
   ];
 
-  this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`] = [chunkX, chunkZ];
+  this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`] = [chunkX, chunkZ, chunkY];
+  
  }
 }

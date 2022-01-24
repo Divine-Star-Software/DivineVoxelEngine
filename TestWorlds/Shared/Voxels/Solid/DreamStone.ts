@@ -49,7 +49,15 @@ export class Dreamestone implements VoxelInteface {
   voxelExposedFaceEncodedBit: number,
   voxelData: any[]
  ): void {
- // return;
+  return;
+ }
+ getAO(data: VoxelAOCalcData): void {
+   return;
+ }
+ getLight(data: VoxelLightCalcData): void {
+   return;
+ }
+ process(data: VoxelProcessData): void {
   let topUV = this.voxelHelper.textureManager.getTextureUV(
    "solid",
    "dreamstone",
@@ -64,69 +72,6 @@ export class Dreamestone implements VoxelInteface {
    "dreamstone",
    "grassy-side"
   );
-
-  if (this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "top")) {
-   uvs.push(topUV);
-  } else {
-   sideUV = bottomUV;
-  }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "bottom")
-  ) {
-   uvs.push(bottomUV);
-  }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "north")
-  ) {
-   uvs.push(sideUV);
-  }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "south")
-  ) {
-   uvs.push(sideUV);
-  }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "east")
-  ) {
-   uvs.push(sideUV);
-  }
-  if (
-   this.voxelHelper.util.isFaceExposexd(voxelExposedFaceEncodedBit, "west")
-  ) {
-   uvs.push(sideUV);
-  }
- }
- getAO(data: VoxelAOCalcData): void {
- // return;
-  this.voxelHelper.calculateVoxelAO(data, this);
- }
- getLight(data: VoxelLightCalcData): void {
- // return;
-  this.voxelHelper.calculateVoxelLight(data, this);
- }
- process(data: VoxelProcessData): void {
-   if (data.exposedFaces[0]) {
-      data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     if (data.exposedFaces[1]) {
-       data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     if (data.exposedFaces[2]) {
-       data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     if (data.exposedFaces[3]) {
-       data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     if (data.exposedFaces[4]) {
-       data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     if (data.exposedFaces[5]) {
-       data.sunLightTemplate.push(0b1111,0b1111,0b1111,0b1111);
-     }
-     return;
-  let topUV = this.topUV;
-  let sideUV = this.sideUV;
-  let bottomUV = this.bottomUV;
 
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(topUV);
@@ -148,7 +93,7 @@ export class Dreamestone implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(sideUV);
   }
-
   this.voxelHelper.processVoxelLight(data, this);
+  return;
  }
 }

@@ -39,29 +39,19 @@ export class DreamGrass implements VoxelInteface {
  }
 
  getAO(data: VoxelAOCalcData): void {
-  data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);
+    return;
  }
  getLight(data: VoxelLightCalcData): void {
-  this.voxelHelper.calculateVoxelLight(data, this);
+    return;
  }
  process(data: VoxelProcessData): void {
-  if (data.exposedFaces[0]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
-  if (data.exposedFaces[1]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
-  if (data.exposedFaces[2]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
-  if (data.exposedFaces[3]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
-  if (data.exposedFaces[4]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
-  if (data.exposedFaces[5]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-  }
+  const uv = this.voxelHelper.textureManager.getTextureUV(
+   "flora",
+   "dreamgrass"
+  );
+
+  data.uvTemplate.push(uv, uv);
+  data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);
+  this.voxelHelper.calculateVoxelLight(data, this);
  }
 }

@@ -61,15 +61,11 @@ const init = async () => {
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
     DVE.$SCENEINIT({ scene: scene });
-    let divFps = document.getElementById("fps");
+    const divFps = document.getElementById("fps");
     //render loop
     engine.runRenderLoop(() => {
         scene.render();
         //@ts-ignore
         divFps.innerHTML = engine.getFps().toFixed() + " fps";
-    });
-    //render loop
-    engine.runRenderLoop(() => {
-        scene.render();
     });
 };
