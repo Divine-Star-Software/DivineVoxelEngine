@@ -1,8 +1,6 @@
 import type {
- VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
- VoxelLightCalcData,
  VoxelProcessData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
@@ -18,25 +16,7 @@ export class DreamStonePillar implements VoxelInteface {
  };
  hooks = {};
  trueShapeId = 0;
- getShapeId(voxelData: any[]): number {
-  return this.trueShapeId;
- }
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void {
-  return;
- }
 
- getAO(data: VoxelAOCalcData): void {
-  return;
- }
- getLight(data: VoxelLightCalcData): void {
-  return;
- }
  process(data: VoxelProcessData): void {
   let topBottomUV = this.voxelHelper.textureManager.getTextureUV(
    "solid",
@@ -81,6 +61,7 @@ export class DreamStonePillar implements VoxelInteface {
    data.uvTemplate.push(sideUV);
   }
 
+  data.shapeTemplate.push(this.trueShapeId);
   this.voxelHelper.processVoxelLight(data, this);
  }
 }

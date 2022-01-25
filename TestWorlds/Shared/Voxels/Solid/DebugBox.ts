@@ -1,8 +1,6 @@
 import type {
- VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
- VoxelLightCalcData,
  VoxelProcessData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
@@ -18,26 +16,6 @@ export class DebugBox implements VoxelInteface {
  };
  trueShapeId = 0;
  hooks = {};
- getShapeId(voxelData: any[]): number {
-  return this.trueShapeId;
- }
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void {
-  return;
- }
-
- getAO(data: VoxelAOCalcData): void {
-  return;
- }
-
- getLight(data: VoxelLightCalcData): void {
-  return;
- }
 
  process(data: VoxelProcessData): void {
   let topUV = this.voxelHelper.textureManager.getTextureUV(
@@ -90,6 +68,7 @@ export class DebugBox implements VoxelInteface {
    data.uvTemplate.push(southUV);
   }
 
+  data.shapeTemplate.push(this.trueShapeId);
   this.voxelHelper.processVoxelLight(data,this);
  }
 }

@@ -1,8 +1,6 @@
 import type {
- VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
- VoxelLightCalcData,
  VoxelProcessData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
@@ -19,26 +17,6 @@ export class DreamGrassBlock implements VoxelInteface {
  hooks = {};
  trueShapeId = 0;
 
- getShapeId(voxelData: any[]): number {
-  return this.trueShapeId;
- }
-
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void {
-  return;
- }
-
- getAO(data: VoxelAOCalcData): void {
-  //this.voxelHelper.calculateVoxelAO(data, this);
- }
- getLight(data: VoxelLightCalcData): void {
-  //this.voxelHelper.calculateVoxelLight(data, this);
- }
  process(data: VoxelProcessData): void {
   const uv = this.voxelHelper.textureManager.getTextureUV(
    "solid",
@@ -64,6 +42,8 @@ export class DreamGrassBlock implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(uv);
   }
+  
+  data.shapeTemplate.push(this.trueShapeId);
   this.voxelHelper.processVoxelLight(data, this);
  }
 }

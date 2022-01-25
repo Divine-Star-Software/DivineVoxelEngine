@@ -12,18 +12,6 @@ export class DreamStonePillar {
     };
     hooks = {};
     trueShapeId = 0;
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        return;
-    }
-    getAO(data) {
-        return;
-    }
-    getLight(data) {
-        return;
-    }
     process(data) {
         let topBottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar", "top");
         let sideUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar");
@@ -51,6 +39,7 @@ export class DreamStonePillar {
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(sideUV);
         }
+        data.shapeTemplate.push(this.trueShapeId);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

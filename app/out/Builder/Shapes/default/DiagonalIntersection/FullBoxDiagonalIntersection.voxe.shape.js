@@ -43,14 +43,20 @@ export class FullBoxDiagonalIntersection {
         data.position.x += this.width;
         data.position.z += this.depth;
         data.position.y += this.height;
-        const newData = this.faces[0](data);
-        data.indicieIndex = newData.newIndicieIndex;
-        data.uvTemplateIndex = newData.newUVTemplateIndex;
-        data.rgbLightIndex = newData.newRGBLightIndex;
-        data.aoIndex = newData.newAOIndex;
-        data.colorIndex = newData.newColorIndex;
-        data.sunlightIndex = newData.newSunLightIndex;
-        this.faces[1](data);
+        const face1 = this.faces[0](data);
+        data.indicieIndex = face1.newIndicieIndex;
+        data.uvTemplateIndex = face1.newUVTemplateIndex;
+        data.rgbLightIndex = face1.newRGBLightIndex;
+        data.aoIndex = face1.newAOIndex;
+        data.colorIndex = face1.newColorIndex;
+        data.sunlightIndex = face1.newSunLightIndex;
+        const face2 = this.faces[1](data);
+        data.indicieIndex = face2.newIndicieIndex;
+        data.uvTemplateIndex = face2.newUVTemplateIndex;
+        data.rgbLightIndex = face2.newRGBLightIndex;
+        data.aoIndex = face2.newAOIndex;
+        data.colorIndex = face2.newColorIndex;
+        data.sunlightIndex = face2.newSunLightIndex;
         return {
             newIndicieIndex: data.indicieIndex,
             newUVTemplateIndex: data.uvTemplateIndex,

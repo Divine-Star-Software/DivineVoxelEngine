@@ -12,18 +12,6 @@ export class DreamGrassBlock {
     };
     hooks = {};
     trueShapeId = 0;
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        return;
-    }
-    getAO(data) {
-        //this.voxelHelper.calculateVoxelAO(data, this);
-    }
-    getLight(data) {
-        //this.voxelHelper.calculateVoxelLight(data, this);
-    }
     process(data) {
         const uv = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
         if (data.exposedFaces[0]) {
@@ -44,6 +32,7 @@ export class DreamGrassBlock {
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(uv);
         }
+        data.shapeTemplate.push(this.trueShapeId);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

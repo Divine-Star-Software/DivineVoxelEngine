@@ -1,6 +1,6 @@
 import type { Util } from "Global/Util.helper";
 import { TextureManagerInterface } from "../Textures/TextureManager.interface";
-import type { VoxelAOCalcData, VoxelInteface, VoxelLightCalcData, VoxelProcessData } from "./Voxel.types";
+import type {  VoxelInteface,VoxelProcessData } from "./Voxel.types";
 
 /**# Voxel Helper
  * ---

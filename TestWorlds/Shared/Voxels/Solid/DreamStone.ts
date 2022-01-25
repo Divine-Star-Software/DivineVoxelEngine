@@ -1,8 +1,6 @@
 import type {
- VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
- VoxelLightCalcData,
  VoxelProcessData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
@@ -22,41 +20,8 @@ export class Dreamestone implements VoxelInteface {
  hooks = {};
  trueShapeId = 0;
 
- constructor(public voxelHelper: VoxelHelperInterface) {
-  this.topUV = this.voxelHelper.textureManager.getTextureUV(
-   "solid",
-   "dreamstone",
-   "grassy-top"
-  );
-  this.bottomUV = this.voxelHelper.textureManager.getTextureUV(
-   "solid",
-   "dreamstone"
-  );
-  this.sideUV = this.voxelHelper.textureManager.getTextureUV(
-   "solid",
-   "dreamstone",
-   "grassy-side"
-  );
- }
+ constructor(public voxelHelper: VoxelHelperInterface) {}
 
- getShapeId(voxelData: any[]): number {
-  return this.trueShapeId;
- }
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void {
-  return;
- }
- getAO(data: VoxelAOCalcData): void {
-   return;
- }
- getLight(data: VoxelLightCalcData): void {
-   return;
- }
  process(data: VoxelProcessData): void {
   let topUV = this.voxelHelper.textureManager.getTextureUV(
    "solid",
@@ -93,6 +58,8 @@ export class Dreamestone implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(sideUV);
   }
+
+  data.shapeTemplate.push(this.trueShapeId);
   this.voxelHelper.processVoxelLight(data, this);
   return;
  }

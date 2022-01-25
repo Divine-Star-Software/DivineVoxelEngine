@@ -12,18 +12,6 @@ export class DebugBox {
     };
     trueShapeId = 0;
     hooks = {};
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        return;
-    }
-    getAO(data) {
-        return;
-    }
-    getLight(data) {
-        return;
-    }
     process(data) {
         let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "top");
         let bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "bottom");
@@ -49,6 +37,7 @@ export class DebugBox {
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(southUV);
         }
+        data.shapeTemplate.push(this.trueShapeId);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

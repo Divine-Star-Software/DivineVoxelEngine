@@ -12,21 +12,9 @@ export class DreamGrass {
     };
     hooks = {};
     trueShapeId = 0;
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        const uv = this.voxelHelper.textureManager.getTextureUV("flora", "dreamgrass");
-        uvs.push(uv, uv);
-    }
-    getAO(data) {
-        return;
-    }
-    getLight(data) {
-        return;
-    }
     process(data) {
         const uv = this.voxelHelper.textureManager.getTextureUV("flora", "dreamgrass");
+        data.shapeTemplate.push(this.trueShapeId);
         data.uvTemplate.push(uv, uv);
         data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);
         this.voxelHelper.calculateVoxelLight(data, this);

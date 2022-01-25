@@ -12,14 +12,6 @@ export class LiquidDreamEther {
     };
     hooks = {};
     trueShapeId = 0;
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) { }
-    getAO(data) { }
-    getLight(data) {
-        //  this.voxelHelper.calculateVoxelLight(data, this);
-    }
     process(data) {
         let uv = this.voxelHelper.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
         if (data.exposedFaces[0]) {
@@ -64,5 +56,6 @@ export class LiquidDreamEther {
         if (data.exposedFaces[5]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
         }
+        data.shapeTemplate.push(this.trueShapeId);
     }
 }

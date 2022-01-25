@@ -88,4 +88,5 @@ const init = async () => {
   //@ts-ignore
   divFps.innerHTML = engine.getFps().toFixed() + " fps";
  });
+
 };

@@ -13,11 +13,17 @@ export type VoxelSubstanceType =
  | "fluid"
  | "magma";
 
-export type VoxelAOCalcData = {
+
+
+export type VoxelProcessData = {
  exposedFaces: number[];
- chunkVoxels: any[][][];
  voxelPallete: VoxelPallet;
+ voxelData: any[];
  aoTemplate: number[];
+ RGBLightTemplate: number[];
+ sunLightTemplate: number[];
+ uvTemplate: number[];
+ shapeTemplate: number[];
  chunkX: number;
  chunkY: number;
  chunkZ: number;
@@ -25,50 +31,6 @@ export type VoxelAOCalcData = {
  y: number;
  z: number;
 };
-
-export type VoxelLightCalcData = {
-    exposedFaces: number[];
-    voxelPallete: VoxelPallet;
-    voxelData: any[];
-    RGBLightTemplate: number[];
-    sunLightTemplate: number[];
-    chunkX: number;
-    chunkY: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-   };
-   
-   export type VoxelUVCalcData = {
-    exposedFaces: number[];
-    chunkVoxels: any[][][];
-    aoTemplate: number[];
-    chunkX: number;
-    chunkY: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-   };
-   
-
-export type VoxelProcessData = {
-    exposedFaces: number[];
-    voxelPallete: VoxelPallet;
-    voxelData: any[];
-    aoTemplate: number[];
-    RGBLightTemplate: number[];
-    sunLightTemplate: number[];
-    uvTemplate : number[];
-    chunkX: number;
-    chunkY: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-}
-
 
 /**# Voxel Data
  * ---
@@ -96,31 +58,5 @@ export interface VoxelInteface {
   afterAfter?: Function;
  };
 
- /**# Get UVs
-  * ---
-  * This function is called when processing a chunk.
-  * This function must add the voxels uvs.
-  * The current uvs.
-  * @param uvs
-  * A number that is encoded that shows each exposed face.
-  * @param voxelExposedFaceEncodedBit
-  * The voxels data.
-  * @param voxelData
-  */
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void;
-
- getAO(data: VoxelAOCalcData): void;
- getLight(data: VoxelLightCalcData): void;
-
- getShapeId(voxelData: any[]): number;
-
-
-process(data : VoxelProcessData) : void;
-
+ process(data: VoxelProcessData): void;
 }

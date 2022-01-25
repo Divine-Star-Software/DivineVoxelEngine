@@ -69,7 +69,7 @@ export class WorldGen {
         this.infoByte.setHalfByteBits(4, 0);
         this.infoByte.setHalfByteBits(8, 0);
         this.infoByte.setHalfByteBits(12, 0);
-        const dreamStoneVovxel = [2, 0, this.infoByte.getNumberValue()];
+        const dreamStoneVovxel = [5, 0, this.infoByte.getNumberValue()];
         let baseY = 0;
         let maxY = 61;
         for (let x = 0; x < +this.chunkWidth; x++) {

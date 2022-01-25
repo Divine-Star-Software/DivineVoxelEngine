@@ -245,6 +245,7 @@ export class ChunkProcessor {
         aoTemplate : baseTemplate.aoTemplate,
         RGBLightTemplate: baseTemplate.RGBLightTemplate,
         sunLightTemplate : baseTemplate.sunLightTemplate,
+        shapeTemplate : baseTemplate.shapeTemplate,
         uvTemplate : baseTemplate.uvTemplate,
         chunkX: chunkX,
         chunkY: chunkY,
@@ -254,7 +255,7 @@ export class ChunkProcessor {
         z: z,
      });
 
-     baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
      baseTemplate.positionTemplate.push(x, y, z);
      baseTemplate.faceTemplate.push(faceBit);
     }

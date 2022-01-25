@@ -1,8 +1,6 @@
 import type {
- VoxelAOCalcData,
  VoxelData,
  VoxelInteface,
- VoxelLightCalcData,
  VoxelProcessData,
 } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
@@ -19,22 +17,6 @@ export class LiquidDreamEther implements VoxelInteface {
  hooks = {};
  trueShapeId = 0;
 
- getShapeId(voxelData: any[]): number {
-  return this.trueShapeId;
- }
-
- getUVs(
-  uvs: number[],
-  chunkX: number,
-  chunkZ: number,
-  voxelExposedFaceEncodedBit: number,
-  voxelData: any[]
- ): void {}
-
- getAO(data: VoxelAOCalcData): void {}
- getLight(data: VoxelLightCalcData): void {
-  //  this.voxelHelper.calculateVoxelLight(data, this);
- }
  process(data: VoxelProcessData): void {
   let uv = this.voxelHelper.textureManager.getTextureUV(
    "fluid",
@@ -83,5 +65,6 @@ export class LiquidDreamEther implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
   }
+  data.shapeTemplate.push(this.trueShapeId);
  }
 }

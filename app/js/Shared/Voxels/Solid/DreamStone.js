@@ -14,21 +14,6 @@ export class Dreamestone {
     trueShapeId = 0;
     constructor(voxelHelper) {
         this.voxelHelper = voxelHelper;
-        this.topUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
-        this.bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone");
-        this.sideUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
-    }
-    getShapeId(voxelData) {
-        return this.trueShapeId;
-    }
-    getUVs(uvs, chunkX, chunkZ, voxelExposedFaceEncodedBit, voxelData) {
-        return;
-    }
-    getAO(data) {
-        return;
-    }
-    getLight(data) {
-        return;
     }
     process(data) {
         let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
@@ -55,6 +40,7 @@ export class Dreamestone {
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(sideUV);
         }
+        data.shapeTemplate.push(this.trueShapeId);
         this.voxelHelper.processVoxelLight(data, this);
         return;
     }
