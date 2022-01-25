@@ -9,10 +9,8 @@
 ---
 **WARNING:**
 Very early development. This is not finalized. Things will keep changing as development goes forward.
-The first offical version will be out once the basic lighting system is done. 
+Check out the releases for stable working verions. The main repo may be broken at times.
 
-Till then some things may be broke or not fully working.
-Check the change log more for info.
 
 # What is this?
 
@@ -23,6 +21,8 @@ This engine only handles rendering and creating of meshes. Things like players, 
 This could be used to make any type of game not just a Minecraft clone. 
 
 If you are developing something with it I would love to see it. Send it to me over at twitter : [@DivineSoftware](https://twitter.com/DivineSoftware)
+
+Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki) to get started.
 
 # Current Features
 
