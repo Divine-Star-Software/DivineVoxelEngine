@@ -24,5 +24,6 @@ export declare class ChunkProcessor {
     constructor(DVEW: DivineVoxelEngineWorld);
     worldData: WorldData;
     getBaseTemplateNew(): FullChunkTemplate;
+    makeAllChunkTemplatesAsync(chunk: ChunkData, voxelPallet: VoxelPallet, chunkX: number, chunkY: number, chunkZ: number): Promise<FullChunkTemplate>;
     makeAllChunkTemplates(chunk: ChunkData, voxelPallet: VoxelPallet, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
 }

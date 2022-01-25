@@ -9,7 +9,7 @@ export class ChunkMeshBuilder {
         this.UTIL = UTIL;
         this.infoByte = this.UTIL.getInfoByte();
     }
-    buildChunkMesh(chunkType, chunkX, chunkY, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, colorTemplate, RGBLightTemplate, sunLightTemplate, aoTemplate) {
+    async buildChunkMesh(chunkType, chunkX, chunkY, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, colorTemplate, RGBLightTemplate, sunLightTemplate, aoTemplate) {
         const positions = [];
         const indices = [];
         const uvs = [];

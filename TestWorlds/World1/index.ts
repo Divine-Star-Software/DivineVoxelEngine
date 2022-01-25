@@ -68,6 +68,7 @@ const init = async () => {
 
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
+ (window as any).player = player;
  setInterval(() => {
   player.update();
  }, 10);

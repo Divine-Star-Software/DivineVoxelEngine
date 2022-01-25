@@ -318,9 +318,9 @@ export class Player {
         this.hitbox.isPickable = false;
         //this.hitbox.showBoundingBox = true;
         this.hitbox.isVisible = false;
-        this.hitbox.position.x = -56;
-        this.hitbox.position.z = -56;
-        this.hitbox.position.y = 300;
+        this.hitbox.position.x = 0;
+        this.hitbox.position.z = 0;
+        this.hitbox.position.y = 500;
         this.bottomRay = new BABYLON.Ray(new BABYLON.Vector3(0, 0, 0), new BABYLON.Vector3(0, -1, 0), 1);
         const bottomRayHelper = new BABYLON.RayHelper(this.bottomRay);
         bottomRayHelper.attachToMesh(this.hitbox, new BABYLON.Vector3(0, -1, 0), new BABYLON.Vector3(0, -0.5, 0));

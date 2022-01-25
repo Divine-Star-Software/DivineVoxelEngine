@@ -13,7 +13,7 @@ export class ChunkMeshBuilder {
  ) {
   this.infoByte = this.UTIL.getInfoByte();
  }
- buildChunkMesh(
+ async buildChunkMesh(
   chunkType: number,
   chunkX: number,
   chunkY: number,

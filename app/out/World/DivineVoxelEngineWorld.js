@@ -51,6 +51,19 @@ export class DivineVoxelEngineWorld {
         // console.log(t1 - t0);
         return true;
     }
+    async buildChunkAsync(chunkX, chunkY, chunkZ) {
+        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
+        if (!chunk)
+            return false;
+        let pallet = chunk.voxelPallet;
+        if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
+            pallet = this.worldGeneration.getGlobalVoxelPallet();
+        }
+        const template = this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, pallet, chunkX, chunkY, chunkZ);
+        // console.log("sending")
+        // this.builderManager.requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template);
+        return true;
+    }
     buildFluidMesh() {
         this.builderManager.requestFluidMeshBeReBuilt();
     }

@@ -22,6 +22,7 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
 
  const messageFromWorld = (event: MessageEvent) => {
   const data = event.data;
+
   DVEB.builder.buildChunkMesh(
    data[0],
    data[1],

@@ -18,5 +18,6 @@ export declare class BuilderManager {
     addBuilder(port: MessagePort): void;
     requestFullChunkBeRemoved(chunkX: number, chunkZ: number): void;
     requestFluidMeshBeReBuilt(): void;
+    requestFullChunkBeBuiltAsync(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): Promise<void>;
     requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
 }

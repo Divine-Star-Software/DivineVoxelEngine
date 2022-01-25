@@ -9,25 +9,26 @@ RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const playerWatcher = new PlayerWatcher(worldGen, DVEW);
-const start = () => {
-    let chunkNum = 15;
-    let totalChunks = chunkNum * 16 - 144;
-    for (let i = -144; i < totalChunks; i += 16) {
-        for (let k = -144; k < totalChunks; k += 16) {
+const start = async () => {
+    const numChunks = 10;
+    let startX = -16 * numChunks;
+    let startZ = -16 * numChunks;
+    let endX = 16 * numChunks;
+    let endZ = 16 * numChunks;
+    for (let x = startX; x < endX; x += 16) {
+        for (let z = startZ; z < endZ; z += 16) {
             //  const chunk = worldGen.generateChunkStressTest(i, k);
-            const chunks = worldGen.generateChunkNormal(i, k);
+            const chunks = worldGen.generateChunkNormal(x, z);
             for (let y = 0; y < chunks.length; y++) {
-                DVEW.worldData.setChunk(i, 0 + 128 * y, k, chunks[y]);
+                DVEW.worldData.setChunk(x, 0 + 128 * y, z, chunks[y]);
             }
         }
     }
-    for (let i = -144; i < totalChunks; i += 16) {
-        for (let k = -144; k < totalChunks; k += 16) {
-            (async () => {
-                for (let y = 0; y < 2; y++) {
-                    DVEW.buildChunk(i, 0 + 128 * y, k);
-                }
-            })();
+    for (let x = startX; x < endX; x += 16) {
+        for (let z = startZ; z < endZ; z += 16) {
+            for (let y = 0; y < 2; y++) {
+                DVEW.buildChunkAsync(x, 0 + 128 * y, z);
+            }
         }
     }
     DVEW.buildFluidMesh();

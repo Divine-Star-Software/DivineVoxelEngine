@@ -54,6 +54,7 @@ const init = async () => {
     camera.attachControl(canvas, true);
     player.createPlayerSharedArrays();
     player.createPlayer(scene, camera);
+    window.player = player;
     setInterval(() => {
         player.update();
     }, 10);

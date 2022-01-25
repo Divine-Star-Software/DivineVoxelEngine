@@ -7,7 +7,7 @@ export class Player {
  playerDirectionArray: Float32Array;
  playerPickPosition: Float32Array;
 
- particleSystem : BABYLON.ParticleSystem;
+ particleSystem: BABYLON.ParticleSystem;
  playerStatesArray: Uint8Array;
  normalFog = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
  fluidFog = new BABYLON.Color3(150 / 255, 0 / 255, 150 / 255);
@@ -145,18 +145,17 @@ export class Player {
   if (this.playerStatesArray[1]) {
    this.scene.fogDensity = 0.6;
    this.scene.fogColor = this.fluidFog;
-   if(!this.particleSystem.isStarted()){
-   this.particleSystem.start();
-   this.particleSystem.renderingGroupId = 2;
+   if (!this.particleSystem.isStarted()) {
+    this.particleSystem.start();
+    this.particleSystem.renderingGroupId = 2;
    }
   } else {
    this.scene.fogDensity = 0.008;
    this.scene.fogColor = this.normalFog;
    this.particleSystem.renderingGroupId = 0;
-   if(!this.particleSystem.isStopping()){
+   if (!this.particleSystem.isStopping()) {
     this.particleSystem.stop();
-    }
-
+   }
   }
   // console.log(this.playerPickPosition);
 
@@ -343,7 +342,7 @@ export class Player {
 
  async _createParticleSystem(scene: BABYLON.Scene) {
   const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
- this.particleSystem = particleSystem;
+  this.particleSystem = particleSystem;
   const buffer = await this.DVE.renderManager.textureCreator.getTextureBuffer(
    "assets/particlesystems/1.png",
    8,
@@ -413,10 +412,10 @@ export class Player {
   this.hitbox.isPickable = false;
   //this.hitbox.showBoundingBox = true;
   this.hitbox.isVisible = false;
-  this.hitbox.position.x = -56;
+  this.hitbox.position.x = 0;
 
-  this.hitbox.position.z = -56;
-  this.hitbox.position.y = 300;
+  this.hitbox.position.z = 0;
+  this.hitbox.position.y = 500;
 
   this.bottomRay = new BABYLON.Ray(
    new BABYLON.Vector3(0, 0, 0),
@@ -439,7 +438,6 @@ export class Player {
   this._setUpPlayerCamera();
 
   document.addEventListener("click", (event: MouseEvent) => {
-
    if (event.button == 2) {
     this._doAction("place");
 
