@@ -1,5 +1,11 @@
 export class TextureCreator {
     context;
+    imgWidth = 16;
+    imgHeight = 16;
+    defineTextureDimensions(width, height) {
+        this.imgWidth = width;
+        this.imgHeight = height;
+    }
     setUpImageCreation() {
         const TwoDcanvas = document.createElement("canvas");
         const context = TwoDcanvas.getContext("2d");
@@ -8,9 +14,9 @@ export class TextureCreator {
         }
         this.context = context;
     }
-    async createMaterialTexture(scene, images, width = 16, height = 16) {
+    async createMaterialTexture(scene, images, width = this.imgWidth, height = this.imgHeight) {
         const resolvedImages = [];
-        //create blank fill
+        //create blank fill to pad image array buffer
         let index = 0;
         const data = [];
         for (let i = 0; i < width * 2; i++) {
@@ -44,6 +50,7 @@ export class TextureCreator {
                 self.context.drawImage(loadedImage, 0, 0, width, height);
                 const imgData = self.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
+                //import to clear the canvas before re-rendering another image
                 self.context.clearRect(0, 0, width, height);
             };
         });
@@ -59,7 +66,7 @@ export class TextureCreator {
         }
         return combinedImagedata;
     }
-    getTextureBuffer(imgPath, width, height) {
+    getTextureBuffer(imgPath, width = this.imgWidth, height = this.imgHeight) {
         const self = this;
         const prom = new Promise((resolve) => {
             const loadedImage = new Image();

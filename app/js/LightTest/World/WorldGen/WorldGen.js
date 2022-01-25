@@ -53,9 +53,9 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkY, chunkZ, type = "default") {
-        let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
+        let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstonepillar:defualt");
         //   this.chunkMap.addChunk(chunkX,chunkZ);
-        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:liquiddreamether:defualt");
+        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:liquiddreamether:defualt");
         /**light data
          * light is stored in 4 bits. Levels are stored as 0 - 15;
          *

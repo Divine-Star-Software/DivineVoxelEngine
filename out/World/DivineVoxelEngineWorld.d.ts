@@ -1,4 +1,4 @@
-import type { DVEW } from "Meta/World/DVEW";
+import type { DVEW, DVEWInitData } from "Meta/World/DVEW";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -14,7 +14,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 export declare class DivineVoxelEngineWorld implements DVEW {
     worker: Worker;
     settings: {
-        voxelPalletMode: string;
+        voxelPaletteMode: string;
     };
     UTIL: Util;
     builderManager: BuilderManager;
@@ -29,9 +29,5 @@ export declare class DivineVoxelEngineWorld implements DVEW {
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
     buildFluidMesh(): void;
-    $INIT(data: {
-        voxelPalletMode: "per-chunk" | "global";
-        onReady: Function;
-        onMessage: (message: string, data: any[]) => void;
-    }): Promise<void>;
+    $INIT(data: DVEWInitData): Promise<void>;
 }

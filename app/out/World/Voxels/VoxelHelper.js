@@ -10,54 +10,60 @@ export class VoxelHelper {
         this.textureManager = textureManager;
         this.voxelManager = voxelManager;
     }
+    getTrueShapeId(id) {
+        return this.voxelManager.shapeMap[id];
+    }
+    getTrueFluidShapeId(id) {
+        return this.voxelManager.fluidShapeMap[id];
+    }
     processVoxelLight(data, voxel) {
-        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.voxelPallete, data.RGBLightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
+        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.voxelPalettee, data.RGBLightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
         if (data.exposedFaces[0]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
         }
         if (data.exposedFaces[1]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
         }
         if (data.exposedFaces[2]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
         }
         if (data.exposedFaces[3]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
         }
         if (data.exposedFaces[4]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
         }
         if (data.exposedFaces[5]) {
             data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
         }
     }
     calculateVoxelLight(data, voxel) {
-        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.voxelPallete, data.RGBLightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
+        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.voxelPalettee, data.RGBLightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
     }
     calculateVoxelAO(data, voxel) {
         if (data.exposedFaces[0]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
         }
         if (data.exposedFaces[1]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
         }
         if (data.exposedFaces[2]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
         }
         if (data.exposedFaces[3]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
         }
         if (data.exposedFaces[4]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
         }
         if (data.exposedFaces[5]) {
-            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPallete, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
+            BuildAmbientOcclusion(this.worldData, this.voxelManager, voxel, data.voxelPalettee, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
         }
     }
 }

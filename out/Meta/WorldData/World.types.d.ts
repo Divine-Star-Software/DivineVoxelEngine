@@ -1,1 +1,1 @@
-export declare type VoxelPallet = Record<number, any[]>;
+export declare type VoxelPalette = Record<number, any[]>;

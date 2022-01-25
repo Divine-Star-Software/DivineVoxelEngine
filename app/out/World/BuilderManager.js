@@ -39,7 +39,6 @@ export class BuilderManager {
     }
     async requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template) {
         let i = this.voxelBuildOrder.length;
-        console.log(chunkX, chunkY, chunkZ);
         while (i--) {
             const type = this.voxelBuildOrder[i];
             const baseTemplate = template[type];

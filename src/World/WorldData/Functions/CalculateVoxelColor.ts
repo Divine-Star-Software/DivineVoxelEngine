@@ -1,11 +1,11 @@
 import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
-import { VoxelPallet } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
 /* export function CalculateVoxelColor(
     this: WorldData,
     voxel: VoxelInteface,
     voxelData: any[],
-    voxelPallet: VoxelPallet,
+    voxelPalette: VoxelPalette,
     lightTemplate: number[],
     exposedFaces: number[],
     chunkX: number,
@@ -21,7 +21,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -33,7 +33,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -45,7 +45,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -57,7 +57,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -75,7 +75,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -87,7 +87,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -99,7 +99,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -111,7 +111,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -129,7 +129,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -142,7 +142,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -155,7 +155,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -167,7 +167,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -185,7 +185,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -197,7 +197,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -209,7 +209,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -221,7 +221,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -239,7 +239,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -251,7 +251,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -264,7 +264,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -276,7 +276,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -293,7 +293,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -305,7 +305,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -317,7 +317,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -330,7 +330,7 @@ import { WorldData } from "../WorldData";
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -348,7 +348,7 @@ export function VoxelColorMixCalc(
  this: WorldData,
  voxelData: any[],
  voxel: VoxelInteface,
- voxelPallet: VoxelPallet,
+ voxelPalette: VoxelPalette,
  chunkX: number,
  chunkY: number,
  chunkZ: number,
@@ -383,7 +383,7 @@ export function VoxelColorMixCalc(
   }
 
   let neighborLightValue = check[check.length - 1];
-  const voxelTrueId = voxelPallet[check[0]][0];
+  const voxelTrueId = voxelPalette[check[0]][0];
   const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
   if (checkVoxel.data.substance == "solid") {
    continue;

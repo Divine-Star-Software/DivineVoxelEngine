@@ -1,12 +1,12 @@
 import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
-import { VoxelPallet } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
 
 export function CalculateVoxelRGBLight(
  this: WorldData,
  voxel: VoxelInteface,
  voxelData: any[],
- voxelPallet: VoxelPallet,
+ voxelPalette: VoxelPalette,
  lightTemplate: number[],
  exposedFaces: number[],
  chunkX: number,
@@ -30,7 +30,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
      airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -42,7 +42,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
        airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -54,7 +54,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
        airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -66,7 +66,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -92,7 +92,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -104,7 +104,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -116,7 +116,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -128,7 +128,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -155,7 +155,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -168,7 +168,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
      airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -181,7 +181,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -193,7 +193,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -218,7 +218,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -230,7 +230,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -242,7 +242,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -254,7 +254,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -279,7 +279,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -291,7 +291,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -304,7 +304,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -316,7 +316,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -341,7 +341,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -353,7 +353,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -365,7 +365,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -378,7 +378,7 @@ export function CalculateVoxelRGBLight(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
-    voxelPallet,
+    voxelPalette,
     chunkX,
     chunkY,
     chunkZ,
@@ -394,7 +394,7 @@ export function VoxelRGBLightMixCalc(
  this: WorldData,
  airData: any[],
  voxel: VoxelInteface,
- voxelPallet: VoxelPallet,
+ voxelPalette: VoxelPalette,
  chunkX: number,
  chunkY: number,
  chunkZ: number,
@@ -438,7 +438,7 @@ export function VoxelRGBLightMixCalc(
   if (check[0] < 0) {
    neighborLightValue = check[check.length - 1];
   } else {
-   const voxelTrueId = voxelPallet[check[0]][0];
+   const voxelTrueId = voxelPalette[check[0]][0];
    const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
    if (checkVoxel.data.substance == "solid") {
     continue;

@@ -4,7 +4,7 @@ import { DebugBox } from "../Voxels/Solid/DebugBox.js";
 import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
 import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
 import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther.js";
-export function RegisterVoxels(DVEW, voxelPalletMode) {
+export function RegisterVoxels(DVEW, voxelPaletteMode) {
     //solid
     const debugBlock = new DebugBox(DVEW.voxelHelper);
     DVEW.voxelManager.registerVoxelData(debugBlock);
@@ -20,16 +20,16 @@ export function RegisterVoxels(DVEW, voxelPalletMode) {
     //fluid
     const liquidDreamEther = new LiquidDreamEther(DVEW.voxelHelper);
     DVEW.voxelManager.registerVoxelData(liquidDreamEther);
-    if (voxelPalletMode == "global") {
+    if (voxelPaletteMode == "global") {
         //solid
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${debugBlock.data.id}:defualt`, debugBlock.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${dreamStone.data.id}:defualt`, dreamStone.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${dreamStonePillar.data.id}:defualt`, dreamStonePillar.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${dreamGrassBlock.data.id}:defualt`, dreamGrassBlock.data.defaultState);
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${debugBlock.data.id}:defualt`, debugBlock.data.defaultState);
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamStone.data.id}:defualt`, dreamStone.data.defaultState);
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamStonePillar.data.id}:defualt`, dreamStonePillar.data.defaultState);
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamGrassBlock.data.id}:defualt`, dreamGrassBlock.data.defaultState);
         //flora
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${dreamGrass.data.id}:defualt`, dreamGrass.data.defaultState);
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamGrass.data.id}:defualt`, dreamGrass.data.defaultState);
         //fluid
-        DVEW.worldGeneration.addToGlobalVoxelPallet(`${liquidDreamEther.data.id}:defualt`, liquidDreamEther.data.defaultState);
-        // console.log(DVEW.worldGeneration.getGlobalVoxelPallet());
+        DVEW.worldGeneration.addToGlobalVoxelPalette(`${liquidDreamEther.data.id}:defualt`, liquidDreamEther.data.defaultState);
+        // console.log(DVEW.worldGeneration.getGlobalVoxelPalette());
     }
 }

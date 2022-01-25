@@ -8,6 +8,10 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/World1/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+ textureOptions : {
+     width : 16,
+     height : 16
+ }
 });
 
 const player = new Player(DVE);

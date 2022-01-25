@@ -14,13 +14,13 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+  let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
    "dve:debugbox:defualt"
   );
-  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
    "dve:dreamstone:defualt"
   );
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
    "dve:dreamstonepillar:defualt"
   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);

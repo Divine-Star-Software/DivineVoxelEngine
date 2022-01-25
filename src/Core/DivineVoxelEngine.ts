@@ -1,6 +1,6 @@
 import type { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
 
-import type { DVE, DVEInitData } from "Meta/Core/DVE.js";
+import type { DVE, DVEInitData, DVEOptions } from "Meta/Core/DVE.js";
 
 import { Util } from "../Global/Util.helper.js";
 import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
@@ -19,8 +19,23 @@ export class DivineVoxelEngine implements DVE {
 
  constructor() {}
 
- async $INIT(data: DVEInitData) {
+ _handleOptions(data: DVEOptions) {
+  if (data.textureOptions) {
+   if (data.textureOptions.width && data.textureOptions.height) {
+    this.renderManager.textureCreator.defineTextureDimensions(
+     data.textureOptions.width,
+     data.textureOptions.height
+    );
+   }
+  }
+ }
 
+ async reStart(data: DVEOptions): Promise<void> {
+     this._handleOptions(data);
+ }
+
+ async $INIT(data: DVEInitData) {
+  this._handleOptions(data);
   this.world.createWorldWorker(data.worldWorkerPath);
   this.builderManager.createBuilderWorker(data.builderWorkerPath);
   this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
@@ -36,8 +51,8 @@ export class DivineVoxelEngine implements DVE {
  }
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
- // data.scene.enableDepthRenderer();
- 
+  // data.scene.enableDepthRenderer();
+
   await BuildInitalMeshes(this, data.scene);
 
   this.world.startWorldGen();

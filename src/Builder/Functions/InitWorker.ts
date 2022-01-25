@@ -18,6 +18,9 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
 
    port.postMessage(["connect-shape-map", DVEB.shapeManager.shapeMap]);
   }
+  if(message == "re-start"){
+      DVEB.reStart();
+  }
  });
 
  const messageFromWorld = (event: MessageEvent) => {

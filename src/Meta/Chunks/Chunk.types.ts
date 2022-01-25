@@ -1,5 +1,5 @@
 import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
-import { VoxelPallet } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/WorldData/World.types";
 export type ChunkTemplate = {
  positionTemplate: number[];
  faceTemplate: number[];
@@ -13,7 +13,7 @@ export type ChunkTemplate = {
 export type ChunkVoxels = any[][][];
 
 export type ChunkData = {
- voxelPallet?: VoxelPallet;
+ voxelPalette?: VoxelPalette;
  voxels: ChunkVoxels;
  maxMinHeight : number[],
  heightMap : number[][],

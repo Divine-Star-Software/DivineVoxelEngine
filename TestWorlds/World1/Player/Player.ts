@@ -415,7 +415,7 @@ export class Player {
   this.hitbox.position.x = 0;
 
   this.hitbox.position.z = 0;
-  this.hitbox.position.y = 500;
+  this.hitbox.position.y = 200;
 
   this.bottomRay = new BABYLON.Ray(
    new BABYLON.Vector3(0, 0, 0),

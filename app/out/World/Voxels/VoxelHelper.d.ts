@@ -10,6 +10,8 @@ export declare class VoxelHelper implements VoxelHelperInterface {
     textureManager: TextureManagerInterface;
     voxelManager: VoxelManager;
     constructor(util: Util, worldData: WorldData, textureManager: TextureManagerInterface, voxelManager: VoxelManager);
+    getTrueShapeId(id: string): number;
+    getTrueFluidShapeId(id: string): number;
     processVoxelLight(data: VoxelProcessData, voxel: VoxelInteface): void;
     calculateVoxelLight(data: VoxelProcessData, voxel: VoxelInteface): void;
     calculateVoxelAO(data: VoxelProcessData, voxel: VoxelInteface): void;

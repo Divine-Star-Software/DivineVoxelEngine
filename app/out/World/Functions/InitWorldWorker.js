@@ -1,4 +1,4 @@
-export function InitWorldWorker(DVEW, onReady, onMessage) {
+export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
     const prom = new Promise((resolve) => {
         const readyCheck = () => {
             if (DVEW.voxelManager.shapMapIsSet() &&
@@ -28,6 +28,12 @@ export function InitWorldWorker(DVEW, onReady, onMessage) {
             }
             if (eventData == "start") {
                 onReady();
+                return;
+            }
+            if (eventData == "re-start") {
+                if (onRestart) {
+                    onRestart();
+                }
                 return;
             }
             if (message == "connect-builder") {

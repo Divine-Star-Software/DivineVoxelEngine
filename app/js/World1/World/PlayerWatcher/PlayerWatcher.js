@@ -166,7 +166,7 @@ export class PlayerWatcher {
             }
             const headVoxel = this.DVEW.worldData.getVoxelData(pAbsX, pAbsY, pAbsZ, 0, 0, 0);
             if (headVoxel) {
-                if (this.DVEW.voxelManager.getVoxel(this.DVEW.worldGeneration.getGlobalVoxelPallet()[headVoxel[0]][0]).data.substance == "fluid") {
+                if (this.DVEW.voxelManager.getVoxel(this.DVEW.worldGeneration.getGlobalVoxelPalette()[headVoxel[0]][0]).data.substance == "fluid") {
                     this.playerStatesArray[1] = 1;
                 }
                 else {

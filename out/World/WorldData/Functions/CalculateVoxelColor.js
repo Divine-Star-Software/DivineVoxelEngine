@@ -2,7 +2,7 @@
     this: WorldData,
     voxel: VoxelInteface,
     voxelData: any[],
-    voxelPallet: VoxelPallet,
+    voxelPalette: VoxelPalette,
     lightTemplate: number[],
     exposedFaces: number[],
     chunkX: number,
@@ -18,7 +18,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -30,7 +30,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -42,7 +42,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -54,7 +54,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -72,7 +72,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -84,7 +84,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -96,7 +96,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -108,7 +108,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -126,7 +126,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -139,7 +139,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -152,7 +152,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -164,7 +164,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -182,7 +182,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -194,7 +194,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -206,7 +206,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -218,7 +218,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -236,7 +236,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -248,7 +248,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -261,7 +261,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -273,7 +273,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -290,7 +290,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -302,7 +302,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -314,7 +314,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -327,7 +327,7 @@
       this.voxelLightMixCalc(
        voxelData,
        voxel,
-       voxelPallet,
+       voxelPalette,
        chunkX,
        chunkY,
        chunkZ,
@@ -340,7 +340,7 @@
     }
    }
  */
-export function VoxelColorMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, checkSet) {
+export function VoxelColorMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, checkSet) {
     let voxelLigtValue = voxelData[voxelData.length - 1];
     const values = this.lightByte.getLightValues(voxelLigtValue);
     let w = values[0];
@@ -353,7 +353,7 @@ export function VoxelColorMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY,
             continue;
         }
         let neighborLightValue = check[check.length - 1];
-        const voxelTrueId = voxelPallet[check[0]][0];
+        const voxelTrueId = voxelPalette[check[0]][0];
         const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
         if (checkVoxel.data.substance == "solid") {
             continue;

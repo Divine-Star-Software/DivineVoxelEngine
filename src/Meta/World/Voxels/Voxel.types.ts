@@ -1,4 +1,4 @@
-import { VoxelPallet } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/WorldData/World.types";
 import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
@@ -17,7 +17,7 @@ export type VoxelSubstanceType =
 
 export type VoxelProcessData = {
  exposedFaces: number[];
- voxelPallete: VoxelPallet;
+ voxelPalettee: VoxelPalette;
  voxelData: any[];
  aoTemplate: number[];
  RGBLightTemplate: number[];

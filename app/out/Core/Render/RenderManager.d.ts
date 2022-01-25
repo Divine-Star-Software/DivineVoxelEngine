@@ -22,4 +22,5 @@ export declare class RenderManager {
     fluidMesh: FluidMesh;
     magmaMesh: MagmaMesh;
     constructor();
+    reStart(): void;
 }

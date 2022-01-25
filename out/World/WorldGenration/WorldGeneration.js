@@ -3,18 +3,26 @@
  * Helps with creating the needed format for each chunk.
  */
 export class WorldGeneration {
-    globalVoxelPalletIndex = 1;
-    globalVoxelPallet = {};
-    globalVoxelPalletMap = {};
-    getVoxelIdFromGlobalPallet(id) {
-        return this.globalVoxelPalletMap[id];
+    globalVoxelPaletteIndex = 1;
+    globalVoxelPalette = {};
+    globalVoxelPaletteMap = {};
+    getVoxelIdFromGlobalPalette(id) {
+        return this.globalVoxelPaletteMap[id];
     }
-    addToGlobalVoxelPallet(id, voxleStateData) {
-        this.globalVoxelPallet[this.globalVoxelPalletIndex] = voxleStateData;
-        this.globalVoxelPalletMap[id] = this.globalVoxelPalletIndex;
-        this.globalVoxelPalletIndex++;
+    addToGlobalVoxelPalette(id, voxleStateData) {
+        this.globalVoxelPalette[this.globalVoxelPaletteIndex] = voxleStateData;
+        this.globalVoxelPaletteMap[id] = this.globalVoxelPaletteIndex;
+        this.globalVoxelPaletteIndex++;
     }
-    getGlobalVoxelPallet() {
-        return this.globalVoxelPallet;
+    getGlobalVoxelPalette() {
+        return this.globalVoxelPalette;
+    }
+    getBlankChunk(empty = true, voxels = []) {
+        return { ...{
+                voxels: voxels,
+                maxMinHeight: [],
+                heightMap: [],
+                isEmpty: empty,
+            } };
     }
 }

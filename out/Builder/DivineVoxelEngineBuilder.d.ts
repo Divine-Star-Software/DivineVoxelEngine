@@ -8,5 +8,6 @@ export declare class DivineVoxelEngineBuilder {
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;
     builder: ChunkMeshBuilder;
+    reStart(): void;
     $INIT(worker: Worker): void;
 }

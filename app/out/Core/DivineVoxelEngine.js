@@ -11,7 +11,18 @@ export class DivineVoxelEngine {
     meshManager = new MeshManager(this);
     util = new Util();
     constructor() { }
+    _handleOptions(data) {
+        if (data.textureOptions) {
+            if (data.textureOptions.width && data.textureOptions.height) {
+                this.renderManager.textureCreator.defineTextureDimensions(data.textureOptions.width, data.textureOptions.height);
+            }
+        }
+    }
+    async reStart(data) {
+        this._handleOptions(data);
+    }
     async $INIT(data) {
+        this._handleOptions(data);
         this.world.createWorldWorker(data.worldWorkerPath);
         this.builderManager.createBuilderWorker(data.builderWorkerPath);
         this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);

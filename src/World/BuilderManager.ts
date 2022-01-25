@@ -56,7 +56,6 @@ export class BuilderManager {
   template: FullChunkTemplate
  ) {
   let i = this.voxelBuildOrder.length;
-  console.log(chunkX,chunkY,chunkZ);
   while (i--) {
    const type = this.voxelBuildOrder[i];
    const baseTemplate = template[type];

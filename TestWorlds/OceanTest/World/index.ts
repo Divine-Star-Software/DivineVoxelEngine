@@ -36,7 +36,7 @@ const start = () => {
 
 (async () => {
  await DVEW.$INIT({
-  voxelPalletMode: "global",
+  voxelPaletteMode: "global",
   onReady: start,
   onMessage: (message: string, data: any[]) => {},
  });

@@ -119,12 +119,12 @@ export class WorldData {
   ) {
    const voxelId = chunk.voxels[voxelX][voxelZ][voxelY][0];
    if (voxelId < 0) return true;
-   let voxelPallet = chunk.voxelPallet;
-   if (!voxelPallet) {
-    voxelPallet = this.DVEW.worldGeneration.globalVoxelPallet;
+   let voxelPalette = chunk.voxelPalette;
+   if (!voxelPalette) {
+    voxelPalette = this.DVEW.worldGeneration.globalVoxelPalette;
    }
 
-   const voxelCheck = this.DVEW.voxelManager.getVoxel(voxelPallet[voxelId][0]);
+   const voxelCheck = this.DVEW.voxelManager.getVoxel(voxelPalette[voxelId][0]);
    if (
     this.substanceRules[`${voxel.data.substance}-${voxelCheck.data.substance}`]
    ) {
@@ -240,7 +240,7 @@ export class WorldData {
   x: number,
   y: number,
   z: number,
-  voxelPalletId: number = 1
+  voxelPaletteId: number = 1
  ): false | ChunkVoxels {
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   const relativePOS = this._getRelativeChunkPosition(
@@ -255,21 +255,21 @@ export class WorldData {
   const relativeZ = relativePOS[1];
   const relativeY = relativePOS[2];
   const chunkVoxels = chunk.voxels;
-  let pallet = chunk.voxelPallet;
-  if (!pallet) {
-   pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+  let palette = chunk.voxelPalette;
+  if (!palette) {
+   palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
   }
   if (!chunkVoxels[relativeX][relativeZ]) {
    chunkVoxels[relativeX][relativeZ] ??= [];
    chunkVoxels[relativeX][relativeZ][relativeY] = [
-    voxelPalletId,
+    voxelPaletteId,
     0,
     0xffffffff,
    ];
 
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     chunkX,
     chunkY,
     chunkZ
@@ -290,13 +290,13 @@ export class WorldData {
    );
   } else if (!chunkVoxels[relativeX][relativeZ][relativeY]) {
    chunkVoxels[relativeX][relativeZ][relativeY] = [
-    voxelPalletId,
+    voxelPaletteId,
     0,
     0xffffffff,
    ];
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     chunkX,
     chunkY,
     chunkZ
@@ -335,14 +335,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX0;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -360,14 +360,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX15;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -385,14 +385,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkZ0;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -410,14 +410,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkZ15;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -435,14 +435,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX15Z15;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -460,14 +460,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX0Z0;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -485,14 +485,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX15Z0;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -510,14 +510,14 @@ export class WorldData {
    const newChunkY = chunkY;
    const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
    if (!chunk) break buildChunkX0Z15;
-   let pallet = chunk.voxelPallet;
-   if (!pallet) {
-    pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+   let palette = chunk.voxelPalette;
+   if (!palette) {
+    palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
    }
    updated = true;
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     newChunkX,
     newChunkY,
     newChunkZ
@@ -588,9 +588,9 @@ export class WorldData {
   const relativeZ = relativePOS[1];
   const relativeY = relativePOS[2];
   const chunkVoxels = chunk.voxels;
-  let pallet = chunk.voxelPallet;
-  if (!pallet) {
-   pallet = this.DVEW.worldGeneration.getGlobalVoxelPallet();
+  let palette = chunk.voxelPalette;
+  if (!palette) {
+   palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
   }
 
   if (!chunkVoxels[relativeX]) return false;
@@ -608,7 +608,7 @@ export class WorldData {
 
    const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
     chunk,
-    pallet,
+    palette,
     chunkX,
     chunkY,
     chunkZ

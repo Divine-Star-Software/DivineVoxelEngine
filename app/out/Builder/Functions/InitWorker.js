@@ -11,6 +11,9 @@ export function InitWorker(DVEB) {
             };
             port.postMessage(["connect-shape-map", DVEB.shapeManager.shapeMap]);
         }
+        if (message == "re-start") {
+            DVEB.reStart();
+        }
     });
     const messageFromWorld = (event) => {
         const data = event.data;

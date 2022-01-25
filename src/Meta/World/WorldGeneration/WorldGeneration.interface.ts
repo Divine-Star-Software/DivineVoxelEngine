@@ -1,8 +1,8 @@
-import { VoxelPallet } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/WorldData/World.types";
 
 export interface WorldGenerationInterface {
- addToGlobalVoxelPallet(id: string, voxleStateData: any[]): void;
- getVoxelIdFromGlobalPallet(id : string) : number;
- getGlobalVoxelPallet(): VoxelPallet;
+ addToGlobalVoxelPalette(id: string, voxleStateData: any[]): void;
+ getVoxelIdFromGlobalPalette(id : string) : number;
+ getGlobalVoxelPalette(): VoxelPalette;
 
 }

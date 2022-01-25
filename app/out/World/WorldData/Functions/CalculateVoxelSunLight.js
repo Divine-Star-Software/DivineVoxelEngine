@@ -1,30 +1,30 @@
-export function CalculateVoxelRGBLight(voxel, voxelData, voxelPallet, lightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
+export function CalculateVoxelRGBLight(voxel, voxelData, voxelPalette, lightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
     // +y
     if (exposedFaces[0]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]));
     }
     // -y
     if (exposedFaces[1]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, -1, -1, 0, -1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, 1, -1, 0, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, 1, -1, 0, 1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, -1, -1, 0, -1, -1, 1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, -1, -1, 0, -1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, 1, -1, 0, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, 1, -1, 0, 1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, -1, -1, 0, -1, -1, 1]));
     }
     // +x
     if (exposedFaces[2]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, 1, 0, -1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, 1, 0, -1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, -1, 0, -1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, -1, 0, -1, -1, -1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, 1, 0, -1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, 1, 0, -1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, -1, 0, -1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, -1, 0, -1, -1, -1]));
     }
     // -x
     if (exposedFaces[3]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 1, 1, 0, 1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 1, 1, 0, 1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 1, -1, 0, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 1, -1, 0, 1, -1, 1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 1, 1, 0, 1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 1, 1, 0, 1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 1, -1, 0, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 1, -1, 0, 1, -1, 1]));
     }
     // -z
     if (exposedFaces[4]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, 1, -1, -1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, 1, -1, 1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, -1, -1, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, -1, -1, -1, -1, -1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, 1, -1, -1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, 1, -1, 1, 1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, -1, -1, 1, -1, -1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, -1, -1, -1, -1, -1]));
     }
     // +z
     if (exposedFaces[5]) {
-        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, 1, 1, 1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, 1, 1, -1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, -1, 1, -1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, -1, 1, 1, -1, 1]));
+        lightTemplate.push(this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, 1, 1, 1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, 1, 1, -1, 1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, -1, 1, -1, -1, 1]), this.voxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, -1, 1, 1, -1, 1]));
     }
 }
-export function VoxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, checkSet) {
+export function VoxelSunLightMixCalc(voxelData, voxel, voxelPalette, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, checkSet) {
     let voxelLigtValue = voxelData[voxelData.length - 1];
     const values = this.lightByte.getLightValues(voxelLigtValue);
     let w = values[0];
@@ -53,7 +53,7 @@ export function VoxelSunLightMixCalc(voxelData, voxel, voxelPallet, chunkX, chun
             neighborLightValue = check[check.length - 1];
         }
         else {
-            const voxelTrueId = voxelPallet[check[0]][0];
+            const voxelTrueId = voxelPalette[check[0]][0];
             const checkVoxel = this.DVEW.voxelManager.getVoxel(voxelTrueId);
             if (checkVoxel.data.substance == "solid") {
                 continue;

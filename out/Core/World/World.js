@@ -11,6 +11,9 @@ export class World {
     constructor(DVE) {
         this.DVE = DVE;
     }
+    reStart() {
+        this.worker.postMessage("re-start");
+    }
     requestWorldUpdate(type, position) {
         this.DVE.meshManager.runningUpdate = true;
         this.worker.postMessage([type, position.x, position.y, position.z]);
@@ -20,40 +23,8 @@ export class World {
             }
         }, 10);
     }
-    setShadowGen(shadowGen) {
-        this.shadowGen = shadowGen;
-    }
-    getChunkMeshFacetData(chunkX, chunkZ, faceID) {
-        if (!this.chunkMeshes[chunkX])
-            return false;
-        if (this.chunkMeshes[chunkX][chunkZ]) {
-            return this.chunkMeshes[chunkX][chunkZ].getFacetLocalPositions()[faceID];
-        }
-        else {
-            return false;
-        }
-    }
-    getChunkMesh(chunkX, chunkZ) {
-        if (!this.chunkMeshes[chunkX])
-            return false;
-        if (this.chunkMeshes[chunkX][chunkZ]) {
-            return this.chunkMeshes[chunkX][chunkZ];
-        }
-        else {
-            return false;
-        }
-    }
-    setScene(scene) {
-        this.scene = scene;
-    }
-    setMaterial(material) {
-        this.material = material;
-    }
     getWorker() {
         return this.worker;
-    }
-    sendPlayerSharedArrays(arrays) {
-        this.worker.postMessage(["connect-player", arrays[0], arrays[1], arrays[2]]);
     }
     startWorldGen() {
         this.worker.postMessage("start");

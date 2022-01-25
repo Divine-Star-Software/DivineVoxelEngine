@@ -13,14 +13,9 @@ export declare class World {
     shadowGen: BABYLON.ShadowGenerator;
     chunkMeshes: Record<number, Record<number, BABYLON.Mesh>>;
     constructor(DVE: DivineVoxelEngine);
+    reStart(): void;
     requestWorldUpdate(type: "block-add" | "block-remove", position: PositionMatrix): void;
-    setShadowGen(shadowGen: BABYLON.ShadowGenerator): void;
-    getChunkMeshFacetData(chunkX: number, chunkZ: number, faceID: number): false | BABYLON.Vector3;
-    getChunkMesh(chunkX: number, chunkZ: number): false | BABYLON.Mesh;
-    setScene(scene: BABYLON.Scene): void;
-    setMaterial(material: BABYLON.MultiMaterial): void;
     getWorker(): Worker;
-    sendPlayerSharedArrays(arrays: SharedArrayBuffer[]): void;
     startWorldGen(): void;
     handleMessage(event: MessageEvent, world: this): void;
     getBaseWorldData(): Promise<BaseWorldData>;

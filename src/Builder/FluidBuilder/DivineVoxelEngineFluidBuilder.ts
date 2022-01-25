@@ -19,9 +19,10 @@ export class DivineVoxelEngineFluidBuilder {
 
  constructor() {}
 
+ reStart() {}
+
  $INIT(worker: Worker) {
   this.worker = worker;
   InitWorker(this);
  }
-
 }

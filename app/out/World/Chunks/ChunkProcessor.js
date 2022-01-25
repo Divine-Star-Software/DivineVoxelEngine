@@ -94,7 +94,7 @@ export class ChunkProcessor {
             },
         };
     }
-    async makeAllChunkTemplatesAsync(chunk, voxelPallet, chunkX, chunkY, chunkZ) {
+    async makeAllChunkTemplatesAsync(chunk, voxelPalette, chunkX, chunkY, chunkZ) {
         const template = this.getBaseTemplateNew();
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
@@ -114,10 +114,10 @@ export class ChunkProcessor {
                     const voxelId = voxelData[0];
                     if (voxelId < 0)
                         continue;
-                    const voxelPalletData = voxelPallet[voxelId];
-                    if (!voxelPalletData)
+                    const voxelPaletteData = voxelPalette[voxelId];
+                    if (!voxelPaletteData)
                         continue;
-                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
+                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -165,7 +165,7 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
-                        voxelPallete: voxelPallet,
+                        voxelPalettee: voxelPalette,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         aoTemplate: baseTemplate.aoTemplate,
@@ -180,7 +180,7 @@ export class ChunkProcessor {
                         y: y,
                         z: z,
                     });
-                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
                     baseTemplate.positionTemplate.push(x, y, z);
                     baseTemplate.faceTemplate.push(faceBit);
                 }
@@ -189,7 +189,7 @@ export class ChunkProcessor {
         this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         return template;
     }
-    makeAllChunkTemplates(chunk, voxelPallet, chunkX, chunkY, chunkZ) {
+    makeAllChunkTemplates(chunk, voxelPalette, chunkX, chunkY, chunkZ) {
         const template = this.getBaseTemplateNew();
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
@@ -209,10 +209,10 @@ export class ChunkProcessor {
                     const voxelId = voxelData[0];
                     if (voxelId < 0)
                         continue;
-                    const voxelPalletData = voxelPallet[voxelId];
-                    if (!voxelPalletData)
+                    const voxelPaletteData = voxelPalette[voxelId];
+                    if (!voxelPaletteData)
                         continue;
-                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
+                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -260,7 +260,7 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
-                        voxelPallete: voxelPallet,
+                        voxelPalettee: voxelPalette,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         aoTemplate: baseTemplate.aoTemplate,
@@ -275,7 +275,7 @@ export class ChunkProcessor {
                         y: y,
                         z: z,
                     });
-                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
                     baseTemplate.positionTemplate.push(x, y, z);
                     baseTemplate.faceTemplate.push(faceBit);
                 }

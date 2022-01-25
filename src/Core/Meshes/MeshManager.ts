@@ -30,6 +30,11 @@ export class MeshManager {
   this.scene = scene;
  }
 
+
+ reStart() {
+     
+ }
+
  handleUpdate(
   type: VoxelSubstanceType,
   chunkKey: string,

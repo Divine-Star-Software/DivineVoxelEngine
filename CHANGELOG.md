@@ -37,7 +37,7 @@
 
 1-21-2022
 - Solid voxels no longer store a light level. All light levels are stored in an 'air' voxel.
-- Air voxels have a pallet id of -1. While the normal range for voxels is the positive side of a signed 32 bit int (2 billion or so).
+- Air voxels have a palette id of -1. While the normal range for voxels is the positive side of a signed 32 bit int (2 billion or so).
 - Light example has been updated with a brand new algorithm.
   - It populates the air around the light sourcre. From there each air voxel light level is the brightest neighbor minus 1.
   - Once an air voxel is set or updated its neighbors are check as well. 
@@ -81,30 +81,30 @@
 
 1-12-2022
 
-- Voxel data is now stored in the chunk as a number. This number is used to access the real information about the voxel which is stored in something called a Voxel Pallet.  
+- Voxel data is now stored in the chunk as a number. This number is used to access the real information about the voxel which is stored in something called a Voxel Palette.  
 
-  - A voxel pallet can either be "global" or "per-chunk". Global means there is one voxel pallet at a given time for the world generation. While per-chunk means that the voxel pallet is stored with the chunk data. 
-  - Per chunk voxel pallets are good for Minecraft type games where the world data is saved and may have voxels added on later.
-  - Global voxel pallets are good for when the world data is not saved and everything is just generated. 
+  - A voxel palette can either be "global" or "per-chunk". Global means there is one voxel palette at a given time for the world generation. While per-chunk means that the voxel palette is stored with the chunk data. 
+  - Per chunk voxel palettes are good for Minecraft type games where the world data is saved and may have voxels added on later.
+  - Global voxel palettes are good for when the world data is not saved and everything is just generated. 
 
-- A set of functions are being developed to make it easy to develop a voxel pallet. They will in a new class called "WorldGeneration" which is just meant to assist in generating data. 
+- A set of functions are being developed to make it easy to develop a voxel palette. They will in a new class called "WorldGeneration" which is just meant to assist in generating data. 
 
-- If you want to add a block now you have to do different things based on the voxel pallete mode:
+- If you want to add a block now you have to do different things based on the voxel palettee mode:
 
-  - If it is global you must get the index number from the global voxel pallet and insert that into the chunk voxel data. 
-  - If it is per-chunk first you must check to see if the voxel pallet id exists in the chunk pallet and add it there if it does not exist. Then you get the index number from that which you will then insert into the chunk voxel data. 
+  - If it is global you must get the index number from the global voxel palette and insert that into the chunk voxel data. 
+  - If it is per-chunk first you must check to see if the voxel palette id exists in the chunk palette and add it there if it does not exist. Then you get the index number from that which you will then insert into the chunk voxel data. 
 
-The naming convection for voxels and their voxel pallet states is as follows:
+The naming convection for voxels and their voxel palette states is as follows:
 
 ```ts
 const voxleParentGroup = "dve";
 const voxelName = "dreamstone";
 const voxelid = `${voxleParentGroup}:${voxelName}`;
-//create palletid for default voxel state
-const voxelPalletIdDefault = `${voxelid}:default`;
+//create paletteid for default voxel state
+const voxelPaletteIdDefault = `${voxelid}:default`;
 //Add another states like this
 const voxelState = `rotated`;
-const voxelPalletIdRotated = `${voxelid}:${voxelState}`;
+const voxelPaletteIdRotated = `${voxelid}:${voxelState}`;
 ```
 
  

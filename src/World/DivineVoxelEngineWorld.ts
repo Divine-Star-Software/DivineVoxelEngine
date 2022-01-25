@@ -1,5 +1,5 @@
-import type { DVEW } from "Meta/World/DVEW";
-import { VoxelPallet } from "Meta/WorldData/World.types.js";
+import type { DVEW, DVEWInitData } from "Meta/World/DVEW";
+import { VoxelPalette } from "Meta/WorldData/World.types.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -18,7 +18,7 @@ export class DivineVoxelEngineWorld implements DVEW {
  worker: Worker;
 
  settings = {
-  voxelPalletMode: "per-chunk",
+  voxelPaletteMode: "per-chunk",
  };
 
  UTIL = new Util();
@@ -56,15 +56,15 @@ export class DivineVoxelEngineWorld implements DVEW {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
 
-  let pallet = <VoxelPallet>chunk.voxelPallet;
-  if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
-   pallet = this.worldGeneration.getGlobalVoxelPallet();
+  let palette = <VoxelPalette>chunk.voxelPalette;
+  if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
+   palette = this.worldGeneration.getGlobalVoxelPalette();
   }
 
   // let t0= performance.now();
   const template = this.chunkProccesor.makeAllChunkTemplates(
    chunk,
-   pallet,
+   palette,
    chunkX,
    chunkY,
    chunkZ
@@ -78,13 +78,13 @@ export class DivineVoxelEngineWorld implements DVEW {
  async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  let pallet = <VoxelPallet>chunk.voxelPallet;
-  if (this.settings.voxelPalletMode == "global" && !chunk.voxelPallet) {
-   pallet = this.worldGeneration.getGlobalVoxelPallet();
+  let palette = <VoxelPalette>chunk.voxelPalette;
+  if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
+   palette = this.worldGeneration.getGlobalVoxelPalette();
   }
   const template = this.chunkProccesor.makeAllChunkTemplatesAsync(
    chunk,
-   pallet,
+   palette,
    chunkX,
    chunkY,
    chunkZ
@@ -98,12 +98,8 @@ export class DivineVoxelEngineWorld implements DVEW {
   this.builderManager.requestFluidMeshBeReBuilt();
  }
 
- async $INIT(data: {
-  voxelPalletMode: "per-chunk" | "global";
-  onReady: Function;
-  onMessage: (message: string, data: any[]) => void;
- }) {
-  this.settings.voxelPalletMode = data.voxelPalletMode;
-  await InitWorldWorker(this, data.onReady, data.onMessage);
+ async $INIT(data: DVEWInitData) {
+  this.settings.voxelPaletteMode = data.voxelPaletteMode;
+  await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
  }
 }

@@ -10,7 +10,7 @@ RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const playerWatcher = new PlayerWatcher(worldGen, DVEW);
 const start = async () => {
-    const numChunks = 10;
+    const numChunks = 5;
     let startX = -16 * numChunks;
     let startZ = -16 * numChunks;
     let endX = 16 * numChunks;
@@ -34,7 +34,7 @@ const start = async () => {
     DVEW.buildFluidMesh();
 };
 DVEW.$INIT({
-    voxelPalletMode: "global",
+    voxelPaletteMode: "global",
     onReady: start,
     onMessage: (message, data) => {
         if (message == "connect-player") {

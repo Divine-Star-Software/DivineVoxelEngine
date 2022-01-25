@@ -100,7 +100,7 @@ The four contexts being
   - Renders everything using Babylon.Js.
 - World Worker Thread 
   - Holds the world data, voxel data, and does the logic for lighting and so on.
-  - All voxels, voxels pallets, and textures must be registered in this thread.
+  - All voxels, voxels palettes, and textures must be registered in this thread.
 - Builder Worker Thread 
   - Holds the voxel shape data. Solid, flora, and magma custom voxel shapes must be registered in this thread.
   - Given a template from the world thread it will generate a chunk mesh data and then send it to the main thread.

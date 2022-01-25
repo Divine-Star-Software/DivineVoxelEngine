@@ -30,4 +30,8 @@ export class RenderManager {
  magmaMesh: MagmaMesh = new MagmaMesh(this.magmaMaterial);
 
  constructor() {}
+
+ reStart() {
+     
+}
 }

@@ -17,11 +17,19 @@ export class VoxelHelper implements VoxelHelperInterface {
   public voxelManager: VoxelManager
  ) {}
 
+ getTrueShapeId(id : string){
+     return this.voxelManager.shapeMap[id];
+ }
+
+ getTrueFluidShapeId(id : string){
+    return this.voxelManager.fluidShapeMap[id];
+ }
+
  processVoxelLight(data: VoxelProcessData, voxel: VoxelInteface): void {
   this.worldData.calculdateVoxelLight(
    voxel,
    data.voxelData,
-   data.voxelPallete,
+   data.voxelPalettee,
    data.RGBLightTemplate,
    data.exposedFaces,
    data.chunkX,
@@ -37,7 +45,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -54,7 +62,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -71,7 +79,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -88,7 +96,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -105,7 +113,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -122,7 +130,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -139,7 +147,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   this.worldData.calculdateVoxelLight(
    voxel,
    data.voxelData,
-   data.voxelPallete,
+   data.voxelPalettee,
    data.RGBLightTemplate,
    data.exposedFaces,
    data.chunkX,
@@ -157,7 +165,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -173,7 +181,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -189,7 +197,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -205,7 +213,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -221,7 +229,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,
@@ -237,7 +245,7 @@ export class VoxelHelper implements VoxelHelperInterface {
     this.worldData,
     this.voxelManager,
     voxel,
-    data.voxelPallete,
+    data.voxelPalettee,
     data.aoTemplate,
     data.chunkX,
     data.chunkY,

@@ -1,14 +1,16 @@
+import { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { WorldGenerationInterface } from "Meta/World/WorldGeneration/WorldGeneration.interface";
-import type { VoxelPallet } from "Meta/WorldData/World.types";
+import type { VoxelPalette } from "Meta/WorldData/World.types";
 /**# World Generation
  * ---
  * Helps with creating the needed format for each chunk.
  */
 export declare class WorldGeneration implements WorldGenerationInterface {
-    globalVoxelPalletIndex: number;
-    globalVoxelPallet: VoxelPallet;
-    globalVoxelPalletMap: Record<string, number>;
-    getVoxelIdFromGlobalPallet(id: string): number;
-    addToGlobalVoxelPallet(id: string, voxleStateData: any[]): void;
-    getGlobalVoxelPallet(): VoxelPallet;
+    globalVoxelPaletteIndex: number;
+    globalVoxelPalette: VoxelPalette;
+    globalVoxelPaletteMap: Record<string, number>;
+    getVoxelIdFromGlobalPalette(id: string): number;
+    addToGlobalVoxelPalette(id: string, voxleStateData: any[]): void;
+    getGlobalVoxelPalette(): VoxelPalette;
+    getBlankChunk(empty?: boolean, voxels?: number[][][]): ChunkData;
 }

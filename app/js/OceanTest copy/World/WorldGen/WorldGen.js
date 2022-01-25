@@ -8,9 +8,9 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
+        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstone:defualt");
         //   this.chunkMap.addChunk(chunkX,chunkZ);
-        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:liquiddreamether:defualt");
+        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:liquiddreamether:defualt");
         const liquidDreamEtherVoxel = [liquidDreamEther, 1, 1];
         const returnChunk = [];
         const dreamStoneVovxel = [dreamstone, 1, 1];

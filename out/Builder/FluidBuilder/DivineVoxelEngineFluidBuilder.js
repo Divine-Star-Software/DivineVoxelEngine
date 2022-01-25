@@ -10,6 +10,7 @@ export class DivineVoxelEngineFluidBuilder {
     shapeManager = new ShapeManager();
     fluidMeshBuilder = new FluidMeshBuilder(this.shapeManager, this.util);
     constructor() { }
+    reStart() { }
     $INIT(worker) {
         this.worker = worker;
         InitWorker(this);

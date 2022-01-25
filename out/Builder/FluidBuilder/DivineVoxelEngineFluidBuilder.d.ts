@@ -9,5 +9,6 @@ export declare class DivineVoxelEngineFluidBuilder {
     shapeManager: ShapeManager;
     fluidMeshBuilder: FluidMeshBuilder;
     constructor();
+    reStart(): void;
     $INIT(worker: Worker): void;
 }

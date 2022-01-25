@@ -17,6 +17,9 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
 
    port.postMessage(["connect-fluid-shape-map", DVEFB.shapeManager.shapeMap]);
   }
+  if(message == "re-start"){
+    DVEFB.reStart();
+}
  });
 
  const messageFromWorld = (event: MessageEvent) => {

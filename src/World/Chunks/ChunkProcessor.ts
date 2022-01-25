@@ -4,7 +4,7 @@ import type {
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
 import type { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
-import type { VoxelPallet } from "Meta/WorldData/World.types.js";
+import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
 
@@ -113,7 +113,7 @@ export class ChunkProcessor {
  }
  async makeAllChunkTemplatesAsync(
   chunk: ChunkData,
-  voxelPallet: VoxelPallet,
+  voxelPalette: VoxelPalette,
   chunkX: number,
   chunkY: number,
   chunkZ: number
@@ -137,9 +137,9 @@ export class ChunkProcessor {
      if (!voxelData) continue;
      const voxelId = voxelData[0];
      if (voxelId < 0) continue;
-     const voxelPalletData = voxelPallet[voxelId];
-     if (!voxelPalletData) continue;
-     const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
+     const voxelPaletteData = voxelPalette[voxelId];
+     if (!voxelPaletteData) continue;
+     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
      const baseTemplate = template[voxel.data.substance];
 
      let faceBit = 0;
@@ -237,7 +237,7 @@ export class ChunkProcessor {
      if (faceBit == 0) continue;
 
      voxel.process({
-      voxelPallete: voxelPallet,
+      voxelPalettee: voxelPalette,
       voxelData: voxelData,
       exposedFaces: this.exposedFaces,
       aoTemplate: baseTemplate.aoTemplate,
@@ -253,7 +253,7 @@ export class ChunkProcessor {
       z: z,
      });
 
-     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
      baseTemplate.positionTemplate.push(x, y, z);
      baseTemplate.faceTemplate.push(faceBit);
     }
@@ -269,7 +269,7 @@ export class ChunkProcessor {
  }
  makeAllChunkTemplates(
   chunk: ChunkData,
-  voxelPallet: VoxelPallet,
+  voxelPalette: VoxelPalette,
   chunkX: number,
   chunkY: number,
   chunkZ: number
@@ -293,9 +293,9 @@ export class ChunkProcessor {
      if (!voxelData) continue;
      const voxelId = voxelData[0];
      if (voxelId < 0) continue;
-     const voxelPalletData = voxelPallet[voxelId];
-     if (!voxelPalletData) continue;
-     const voxel = this.DVEW.voxelManager.getVoxel(voxelPalletData[0]);
+     const voxelPaletteData = voxelPalette[voxelId];
+     if (!voxelPaletteData) continue;
+     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
      const baseTemplate = template[voxel.data.substance];
 
      let faceBit = 0;
@@ -393,7 +393,7 @@ export class ChunkProcessor {
      if (faceBit == 0) continue;
 
      voxel.process({
-      voxelPallete: voxelPallet,
+      voxelPalettee: voxelPalette,
       voxelData: voxelData,
       exposedFaces: this.exposedFaces,
       aoTemplate: baseTemplate.aoTemplate,
@@ -409,7 +409,7 @@ export class ChunkProcessor {
       z: z,
      });
 
-     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPalletData));
+     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
      baseTemplate.positionTemplate.push(x, y, z);
      baseTemplate.faceTemplate.push(faceBit);
     }

@@ -3,7 +3,8 @@ import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld";
 export function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld,
  onReady: Function,
- onMessage: Function
+ onMessage: Function,
+ onRestart ?: Function
 ): Promise<any> {
  const prom = new Promise((resolve) => {
   const readyCheck = () => {
@@ -62,6 +63,13 @@ export function InitWorldWorker(
 
    if (eventData == "start") {
     onReady();
+    return;
+   }
+
+   if (eventData == "re-start") {
+    if(onRestart){
+    onRestart();
+    }
     return;
    }
 

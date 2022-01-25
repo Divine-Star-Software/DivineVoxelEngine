@@ -8,9 +8,9 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:debugbox:defualt");
-        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstone:defualt");
-        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet("dve:dreamstonepillar:defualt");
+        let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:debugbox:defualt");
+        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstone:defualt");
+        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstonepillar:defualt");
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         const returnChunk = [];
         if (type == "pillar") {

@@ -22,8 +22,13 @@ export class BuilderWorkerManager {
         if (window.navigator.hardwareConcurrency > numBuilders) {
             //use all possible cores if we can
             this.numBuilders = window.navigator.hardwareConcurrency;
-            ;
         }
+    }
+    reStart() {
+        for (const worker of this.builders) {
+            worker.postMessage(["re-start"]);
+        }
+        this.fluidBuilder.postMessage(["re-start"]);
     }
     createBuilderWorker(path) {
         //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",

@@ -1,7 +1,15 @@
 export class TextureCreator {
  context: CanvasRenderingContext2D;
 
+ imgWidth = 16;
+ imgHeight = 16;
 
+
+
+  defineTextureDimensions(width : number,height : number) {
+      this.imgWidth = width;
+      this.imgHeight = height;
+  }
 
  setUpImageCreation() {
   const TwoDcanvas = document.createElement("canvas");
@@ -18,12 +26,12 @@ export class TextureCreator {
  async createMaterialTexture(
   scene : BABYLON.Scene,
   images: string[],
-  width: number = 16,
-  height: number = 16
+  width: number = this.imgWidth,
+  height: number = this.imgHeight
  ): Promise<BABYLON.RawTexture2DArray> {
   const resolvedImages: Uint8ClampedArray[] = [];
 
-  //create blank fill
+  //create blank fill to pad image array buffer
   let index = 0;
   const data = [];
   for (let i = 0; i < width * 2; i++) {
@@ -33,7 +41,6 @@ export class TextureCreator {
     } else {
      data[index] = 0;
     }
-
     index++;
    }
   }
@@ -77,6 +84,7 @@ export class TextureCreator {
     self.context.drawImage(loadedImage, 0, 0, width, height);
     const imgData = self.context.getImageData(0, 0, width, height);
     resolve(imgData.data);
+    //import to clear the canvas before re-rendering another image
     self.context.clearRect(0,0,width,height);
    };
   });
@@ -96,7 +104,7 @@ export class TextureCreator {
  }
 
 
- getTextureBuffer(imgPath : string, width : number,height : number) {
+ getTextureBuffer(imgPath : string, width : number = this.imgWidth,height : number = this.imgHeight) {
     const self = this;
     const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
      const loadedImage = new Image();

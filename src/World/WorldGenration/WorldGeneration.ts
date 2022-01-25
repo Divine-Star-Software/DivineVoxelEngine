@@ -1,37 +1,36 @@
+import { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { WorldGenerationInterface } from "Meta/World/WorldGeneration/WorldGeneration.interface";
-import type { VoxelPallet } from "Meta/WorldData/World.types";
+import type { VoxelPalette } from "Meta/WorldData/World.types";
 
 /**# World Generation
  * ---
- * Helps with creating the needed format for each chunk. 
+ * Helps with creating the needed format for each chunk.
  */
-export class WorldGeneration  implements WorldGenerationInterface {
+export class WorldGeneration implements WorldGenerationInterface {
+ globalVoxelPaletteIndex = 1;
+ globalVoxelPalette: VoxelPalette = {};
+ globalVoxelPaletteMap: Record<string, number> = {};
 
+ getVoxelIdFromGlobalPalette(id: string): number {
+  return this.globalVoxelPaletteMap[id];
+ }
 
-    
-    globalVoxelPalletIndex = 1;
-    globalVoxelPallet : VoxelPallet = {};
-    globalVoxelPalletMap : Record<string,number> = {};
+ addToGlobalVoxelPalette(id: string, voxleStateData: any[]) {
+  this.globalVoxelPalette[this.globalVoxelPaletteIndex] = voxleStateData;
+  this.globalVoxelPaletteMap[id] = this.globalVoxelPaletteIndex;
+  this.globalVoxelPaletteIndex++;
+ }
 
-    getVoxelIdFromGlobalPallet(id: string): number {
-        return this.globalVoxelPalletMap[id];
-    }
+ getGlobalVoxelPalette() {
+  return this.globalVoxelPalette;
+ }
 
-
-    addToGlobalVoxelPallet(id : string,voxleStateData : any[]) {
-         this.globalVoxelPallet[this.globalVoxelPalletIndex] = voxleStateData;
-         this.globalVoxelPalletMap[id] = this.globalVoxelPalletIndex;
-         this.globalVoxelPalletIndex++;
-    }
-
-    getGlobalVoxelPallet() {
-        return this.globalVoxelPallet;
-    }
-
-
-
-    
-
-
-
+ getBlankChunk(empty : boolean = true,voxels : number[][][] = []): ChunkData {
+  return {...{
+   voxels: voxels,
+   maxMinHeight: [],
+   heightMap: [],
+   isEmpty: empty,
+  }};
+ }
 }

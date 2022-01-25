@@ -15,6 +15,10 @@ export class World {
 
  constructor(private DVE: DivineVoxelEngine) {}
 
+ reStart() {
+    this.worker.postMessage("re-start");
+ }
+
  requestWorldUpdate(
   type: "block-add" | "block-remove",
   position: PositionMatrix
@@ -28,42 +32,8 @@ export class World {
   }, 10);
  }
 
- setShadowGen(shadowGen: BABYLON.ShadowGenerator) {
-  this.shadowGen = shadowGen;
- }
-
- getChunkMeshFacetData(chunkX: number, chunkZ: number, faceID: number) {
-  if (!this.chunkMeshes[chunkX]) return false;
-  if (this.chunkMeshes[chunkX][chunkZ]) {
-   return this.chunkMeshes[chunkX][chunkZ].getFacetLocalPositions()[faceID];
-  } else {
-   return false;
-  }
- }
-
- getChunkMesh(chunkX: number, chunkZ: number) {
-  if (!this.chunkMeshes[chunkX]) return false;
-  if (this.chunkMeshes[chunkX][chunkZ]) {
-   return this.chunkMeshes[chunkX][chunkZ];
-  } else {
-   return false;
-  }
- }
-
- setScene(scene: BABYLON.Scene) {
-  this.scene = scene;
- }
-
- setMaterial(material: BABYLON.MultiMaterial) {
-  this.material = material;
- }
-
  getWorker() {
   return this.worker;
- }
-
- sendPlayerSharedArrays(arrays: SharedArrayBuffer[]) {
-  this.worker.postMessage(["connect-player", arrays[0], arrays[1], arrays[2]]);
  }
 
  startWorldGen() {

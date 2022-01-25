@@ -23,6 +23,8 @@ export class MeshManager {
     setScene(scene) {
         this.scene = scene;
     }
+    reStart() {
+    }
     handleUpdate(type, chunkKey, chunkX, chunkY, chunkZ, data) {
         if (type != "fluid") {
             if (!this.meshes[type][chunkKey]) {

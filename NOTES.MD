@@ -57,7 +57,7 @@ Terms I use in the readme and change log that may be confusing.
     - Renders as its own mesh. One mesh per world.
   - Magma
     - Like fluid but no shader effects. Gives off light and is solid.
-- Voxel Pallet
+- Voxel Palette
   - A map of voxel state ids to numbers
   - Used to get the true voxel id for a world or chunk. 
 - Voxel Shape
@@ -83,7 +83,7 @@ This is the current Type that defines the chunk data.
 ```ts
 export declare type ChunkVoxels = any[][][];
 export declare type ChunkData = {
-    voxelPallet?: VoxelPallet;
+    voxelPalette?: VoxelPalette;
     voxels: ChunkVoxels;
     maxMinHeight: number[];
     heightMap: number[][];
@@ -94,18 +94,18 @@ The height maps can be calculated beforehand. They help to reduce the amount of 
 
 The main data it stores are the voxels which is stored as a 3D array. Each voxel is represented by an array of numbers. 
 
-If the voxel pallet mode is set to per chunk the chunk will have its local pallet map. Which is a way to get the true id and state of the voxel. 
+If the voxel palette mode is set to per chunk the chunk will have its local palette map. Which is a way to get the true id and state of the voxel. 
 
 Metrics so far for total world data size is calculated to be at worst ~500 mb for 200 chunks of full blocks. I tested with different compression formats you can get it down to 50 - 300 kb.
 
 ### Voxel DAta
  Each voxel contains an array of 3 numbers. 
-  - Index 0 is its pallet id.
+  - Index 0 is its palette id.
   - Index 1 is its shape state.
   - Index 2 is its current light value.
 
 ```ts
-let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPallet(
+let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
   "dve:dreamgrass:defualt"
 );
 let dreamGrassVoxel = [dreamGrasss, 0, 0xFFFFFFFF];
