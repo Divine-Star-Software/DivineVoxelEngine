@@ -1,46 +1,24 @@
-import { Util } from '../Global/Util.helper.js';
-import { BuilderWorkerManager } from './Builders/BuilderWorkerManager.js';
-import { World } from './World/World.js';
-import { RenderManager } from './Render/RenderManager.js';
-import { BuildInitalMeshes } from './Functions/BuildInitalMeshes.js';
-import { MeshManager } from './Meshes/MeshManager.js';
+import { ShapeHelper } from '../Shapes/ShapeHelper.js';
+import { ShapeManager } from '../Shapes/ShapeManager.js';
+import { Util } from '../../Global/Util.helper.js';
+import { FluidMeshBuilder } from './FluidMeshBuilder.js';
+import { InitWorker } from './Functions/InitFluidMeshWorker.js';
 
-class DivineVoxelEngine {
-  world = new World(this);
-  renderManager = new RenderManager();
-  builderManager = new BuilderWorkerManager(this);
-  meshManager = new MeshManager(this);
+class DivineVoxelEngineFluidBuilder {
   util = new Util();
+  worker;
+  shapeHelper = new ShapeHelper(this.util);
+  shapeManager = new ShapeManager();
+  fluidMeshBuilder = new FluidMeshBuilder(this.shapeManager, this.util);
   constructor() {
   }
-  _handleOptions(data) {
-    if (data.textureOptions) {
-      if (data.textureOptions.width && data.textureOptions.height) {
-        this.renderManager.textureCreator.defineTextureDimensions(data.textureOptions.width, data.textureOptions.height);
-      }
-    }
+  reStart() {
   }
-  async reStart(data) {
-    this._handleOptions(data);
-  }
-  async $INIT(data) {
-    this._handleOptions(data);
-    this.world.createWorldWorker(data.worldWorkerPath);
-    this.builderManager.createBuilderWorker(data.builderWorkerPath);
-    this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
-    await this.world.getBaseWorldData();
-    window.addEventListener("beforeunload", () => {
-      for (const builder of this.builderManager.builders) {
-        builder.terminate();
-      }
-      this.world.worker.terminate();
-    });
-  }
-  async $SCENEINIT(data) {
-    await BuildInitalMeshes(this, data.scene);
-    this.world.startWorldGen();
+  $INIT(worker) {
+    this.worker = worker;
+    InitWorker(this);
   }
 }
 
-export { DivineVoxelEngine };
+export { DivineVoxelEngineFluidBuilder };
 //# sourceMappingURL=divine-voxel-engine.mjs.map

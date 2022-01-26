@@ -1,23 +1,17 @@
-import { DVE, DVEOptions, DVEInitData } from 'Meta/Core/DVE.js';
-import { Util } from '../Global/Util.helper.ts';
-import { BuilderWorkerManager } from './Builders/BuilderWorkerManager.ts';
-import { World } from './World/World.ts';
-import { RenderManager } from './Render/RenderManager.ts';
-import { MeshManager } from './Meshes/MeshManager.ts';
+import { ShapeHelper } from '../Shapes/ShapeHelper.ts';
+import { ShapeManager } from '../Shapes/ShapeManager.ts';
+import { Util } from '../../Global/Util.helper.ts';
+import { FluidMeshBuilder } from './FluidMeshBuilder.ts';
 
-declare class DivineVoxelEngine implements DVE {
-    world: World;
-    renderManager: RenderManager;
-    builderManager: BuilderWorkerManager;
-    meshManager: MeshManager;
+declare class DivineVoxelEngineFluidBuilder {
     util: Util;
+    worker: Worker;
+    shapeHelper: ShapeHelper;
+    shapeManager: ShapeManager;
+    fluidMeshBuilder: FluidMeshBuilder;
     constructor();
-    _handleOptions(data: DVEOptions): void;
-    reStart(data: DVEOptions): Promise<void>;
-    $INIT(data: DVEInitData): Promise<void>;
-    $SCENEINIT(data: {
-        scene: BABYLON.Scene;
-    }): Promise<void>;
+    reStart(): void;
+    $INIT(worker: Worker): void;
 }
 
-export { DivineVoxelEngine };
+export { DivineVoxelEngineFluidBuilder };

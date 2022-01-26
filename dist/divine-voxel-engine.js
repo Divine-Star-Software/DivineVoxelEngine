@@ -2,49 +2,27 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var Util_helper_js = require('../Global/Util.helper.js');
-var BuilderWorkerManager_js = require('./Builders/BuilderWorkerManager.js');
-var World_js = require('./World/World.js');
-var RenderManager_js = require('./Render/RenderManager.js');
-var BuildInitalMeshes_js = require('./Functions/BuildInitalMeshes.js');
-var MeshManager_js = require('./Meshes/MeshManager.js');
+var ShapeHelper_js = require('../Shapes/ShapeHelper.js');
+var ShapeManager_js = require('../Shapes/ShapeManager.js');
+var Util_helper_js = require('../../Global/Util.helper.js');
+var FluidMeshBuilder_js = require('./FluidMeshBuilder.js');
+var InitFluidMeshWorker_js = require('./Functions/InitFluidMeshWorker.js');
 
-class DivineVoxelEngine {
-  world = new World_js.World(this);
-  renderManager = new RenderManager_js.RenderManager();
-  builderManager = new BuilderWorkerManager_js.BuilderWorkerManager(this);
-  meshManager = new MeshManager_js.MeshManager(this);
+class DivineVoxelEngineFluidBuilder {
   util = new Util_helper_js.Util();
+  worker;
+  shapeHelper = new ShapeHelper_js.ShapeHelper(this.util);
+  shapeManager = new ShapeManager_js.ShapeManager();
+  fluidMeshBuilder = new FluidMeshBuilder_js.FluidMeshBuilder(this.shapeManager, this.util);
   constructor() {
   }
-  _handleOptions(data) {
-    if (data.textureOptions) {
-      if (data.textureOptions.width && data.textureOptions.height) {
-        this.renderManager.textureCreator.defineTextureDimensions(data.textureOptions.width, data.textureOptions.height);
-      }
-    }
+  reStart() {
   }
-  async reStart(data) {
-    this._handleOptions(data);
-  }
-  async $INIT(data) {
-    this._handleOptions(data);
-    this.world.createWorldWorker(data.worldWorkerPath);
-    this.builderManager.createBuilderWorker(data.builderWorkerPath);
-    this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
-    await this.world.getBaseWorldData();
-    window.addEventListener("beforeunload", () => {
-      for (const builder of this.builderManager.builders) {
-        builder.terminate();
-      }
-      this.world.worker.terminate();
-    });
-  }
-  async $SCENEINIT(data) {
-    await BuildInitalMeshes_js.BuildInitalMeshes(this, data.scene);
-    this.world.startWorldGen();
+  $INIT(worker) {
+    this.worker = worker;
+    InitFluidMeshWorker_js.InitWorker(this);
   }
 }
 
-exports.DivineVoxelEngine = DivineVoxelEngine;
+exports.DivineVoxelEngineFluidBuilder = DivineVoxelEngineFluidBuilder;
 //# sourceMappingURL=divine-voxel-engine.js.map
