@@ -14,9 +14,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex, data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -32,9 +31,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -50,9 +48,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -68,9 +65,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -86,9 +82,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -104,9 +99,8 @@ export class BoxVoxelShape {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             const uv = data.unTemplate[data.uvTemplateIndex];
             data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateRGBLightColor(data.RGBLightColors, data.RGBLightTemplate, data.rgbLightIndex);
+            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.RGBLightTemplate, data.rgbLightIndex);
             this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            this.shapeHelper.calculateSunightColor(data.sunLightColors, data.sunLightTemplate, data.sunlightIndex);
             return {
                 newIndicieIndex: data.indicieIndex + 4,
                 newUVTemplateIndex: data.uvTemplateIndex + 1,

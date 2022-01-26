@@ -2,12 +2,13 @@ import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelPalette } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
 
-export function CalculateVoxelRGBLight(
+export function CalculateVoxelLight(
  this: WorldData,
  voxel: VoxelInteface,
  voxelData: any[],
  voxelPalette: VoxelPalette,
- lightTemplate: number[],
+ RGBlightTemplate: number[],
+ sunlightTemplate: number[],
  exposedFaces: number[],
  chunkX: number,
  chunkY: number,
@@ -26,7 +27,7 @@ export function CalculateVoxelRGBLight(
    airLight = [0];
   }
 
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
      airLight,
     voxel,
@@ -88,7 +89,7 @@ export function CalculateVoxelRGBLight(
    airLight = [0];
   }
 
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
@@ -151,7 +152,7 @@ export function CalculateVoxelRGBLight(
   }
   // lightTemplate.push(0,0,0,0);
 
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
@@ -214,7 +215,7 @@ export function CalculateVoxelRGBLight(
   if (airLight[0] > 0) {
    airLight = [0];
   }
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
@@ -275,7 +276,7 @@ export function CalculateVoxelRGBLight(
   if (airLight[0] > 0) {
    airLight = [0];
   }
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
@@ -337,7 +338,7 @@ export function CalculateVoxelRGBLight(
    airLight = [0];
   }
 
-  lightTemplate.push(
+  RGBlightTemplate.push(
    this.voxelRGBLightMixCalc(
     airLight,
     voxel,
@@ -390,7 +391,7 @@ export function CalculateVoxelRGBLight(
   );
  }
 }
-export function VoxelRGBLightMixCalc(
+export function VoxelLightMixCalc(
  this: WorldData,
  airData: any[],
  voxel: VoxelInteface,
@@ -412,17 +413,6 @@ export function VoxelRGBLightMixCalc(
  let b = values[3];
  //console.log(w);
  for (let i = 0; i < 9; i += 3) {
-  /*    const check = this.getRelativeVoxelData(
-   chunkX,
-   chunkY,
-   chunkZ,
-   voxelX,
-   voxelY,
-   voxelZ,
-   checkSet[i],
-   checkSet[i + 1],
-   checkSet[i + 2]
-  );   */
 
   const check = this.getData(
    checkSet[i] + chunkX + voxelX,

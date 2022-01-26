@@ -1,41 +1,52 @@
 import type { LightByte } from "Global/Util/LightByte";
+import { ChunkData } from "Meta/Chunks/Chunk.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
+
 import {
- RGBFloodFillCheckNeighbors,
  RGBFloodFill,
- RGBFloodFillSetAirLightVoxels,
- RGBFloodFillUpdateAirLightVoxel,
-} from "./Functions/RGBFloodFill.js";
-import { RGBFloodFill2, RunRGBLightUpdate } from "./Functions/RGBFloodFill2.js";
-import {
  RGBFloodRemove,
- RGBFloodRemoveCheckNeighors,
- RGBFloodRemoveSetAirLightVoxel,
- RGBFloodRemoveUpdateAirLightVoxel,
-} from "./Functions/RGBFloodRemove.js";
+ RunRGBLightUpdate,
+} from "./Functions/RGBFloodLight.js";
+import { sunLightUpdate } from "./Functions/SunLight.js";
 
 export class IlluminationManager {
  lightByte: LightByte;
- air = [-1, 0, 0];
- airSeed = [-1, 0, 0];
+ air = [-1, 0];
+
+ sunLightUpdate = sunLightUpdate;
+ RGBFloodFill = RGBFloodFill;
+ RGBFloodRemove = RGBFloodRemove;
+ runRGBLightUpdate = RunRGBLightUpdate;
+ _RGBlightUpdateQue: number[][] = [];
+ _RGBlightRemovalQue: number[][] = [];
+ _sunLightUpdateQue: number[][] = [];
+
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.lightByte = this.DVEW.UTIL.getLightByte();
  }
 
- RGBFloodFillCheckNeighbors = RGBFloodFillCheckNeighbors;
- RGBFloodFillSetAirLightVoxel = RGBFloodFillSetAirLightVoxels;
- RGBFloodFillUpdateAirLightVoxel = RGBFloodFillUpdateAirLightVoxel;
- RGBFloodFill = RGBFloodFill;
- RGBFloodFill2 = RGBFloodFill2;
+ populateChunkAirWithInitlSunLight(
+  chunk: ChunkData,
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number
+ ) {
+  const heightMap = chunk.heightMap;
+  const voxels = chunk.voxels;
+  for (const x of heightMap.keys()) {
+   for (const z of heightMap.keys()) {
+    const y = heightMap[x][z];
 
- runRGBLightUpdate = RunRGBLightUpdate;
-
-
- lightUpdateQue : number[][] = [];
- lightRemovalQue : number[][] = [];
-
- RGBFloodRemoveCheckNeighbors = RGBFloodRemoveCheckNeighors;
- RGBFloodRemoveSetAirVoxel = RGBFloodRemoveSetAirLightVoxel;
- RGBFloodRemoveUpdateAirVoxel = RGBFloodRemoveUpdateAirLightVoxel;
- RGBFloodRemove = RGBFloodRemove;
+    if (voxels[x] && voxels[x][z] && voxels[x][z][y]) {
+     const voxel = voxels[x][z][y];
+     if (voxel && voxel[0] < 0) {
+      const vl = voxel[voxel.length - 1];
+      const nl = this.lightByte.getFullSunLight(vl);
+      voxel[voxel.length - 1] = nl;
+      this._sunLightUpdateQue.push([chunkX + x, chunkY + y, chunkZ + z]);
+     }
+    }
+   }
+  }
+ }
 }

@@ -38,8 +38,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -86,8 +87,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -142,8 +144,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -185,8 +188,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -234,8 +238,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -280,8 +285,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );

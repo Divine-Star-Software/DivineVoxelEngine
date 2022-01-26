@@ -1,3 +1,4 @@
+import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 /**# World Generation
  * ---
@@ -8,10 +9,12 @@ export class WorldGeneration {
     globalVoxelPaletteIndex = 1;
     globalVoxelPalette = {};
     globalVoxelPaletteMap = {};
+    chunkDataHelper;
     illumantionManager;
     constructor(DVEW) {
         this.DVEW = DVEW;
         this.illumantionManager = new IlluminationManager(this.DVEW);
+        this.chunkDataHelper = new ChunkDataHelper(this.DVEW);
     }
     getVoxelIdFromGlobalPalette(id) {
         return this.globalVoxelPaletteMap[id];
@@ -25,11 +28,13 @@ export class WorldGeneration {
         return this.globalVoxelPalette;
     }
     getBlankChunk(empty = true, voxels = []) {
-        return { ...{
+        return {
+            ...{
                 voxels: voxels,
                 maxMinHeight: [],
                 heightMap: [],
                 isEmpty: empty,
-            } };
+            },
+        };
     }
 }

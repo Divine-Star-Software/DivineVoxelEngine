@@ -22,15 +22,16 @@ export class ShapeHelper {
         0.1, 0.15, 0.25, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85,
         0.9, 1,
     ];
-    calculateRGBLightColor(fullColors, fullTemplate, startIndex) {
+    calculateLightColor(RGBlightColors, sunlightColors, lightTemplate, startIndex) {
         const alpha = 1;
         for (let v = 0; v < 4; v++) {
-            const values = this.lightByte.getLightValues(fullTemplate[startIndex + v]);
+            const values = this.lightByte.getLightValues(lightTemplate[startIndex + v]);
             const w = this.lightMap[values[0]];
             const r = this.lightMap[values[1]];
             const g = this.lightMap[values[2]];
             const b = this.lightMap[values[3]];
-            fullColors.push(r, g, b, alpha);
+            sunlightColors.push(w, w, w, 1);
+            RGBlightColors.push(r, g, b, alpha);
         }
     }
     calculateSunightColor(sunLight, sunLightTemplate, sunLightIndex) {

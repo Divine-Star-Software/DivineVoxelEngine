@@ -13,7 +13,7 @@ export declare class ShapeHelper implements ShapeHelperInterface {
     constructor(util: Util);
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
     lightMap: number[];
-    calculateRGBLightColor(fullColors: number[], fullTemplate: Float32Array, startIndex: number): void;
+    calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: Float32Array, startIndex: number): void;
     calculateSunightColor(sunLight: number[], sunLightTemplate: Int32Array, sunLightIndex: number): void;
     calculateAOColor(colors: number[], chunkAmbientOcculusion: Float32Array, startIndex: number): void;
 }

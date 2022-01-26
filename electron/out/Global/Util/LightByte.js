@@ -280,7 +280,7 @@ export class LightByte {
             b++;
         }
     }
-    isLessThanForRemove(n1, n2) {
+    isLessThanForRGBRemove(n1, n2) {
         let r1 = (n1 & (0x0f << 4)) >> 4;
         let g1 = (n1 & (0x0f << 8)) >> 8;
         let b1 = (n1 & (0x0f << 12)) >> 12;
@@ -301,7 +301,7 @@ export class LightByte {
         }
         return rLess || gLess || bLess;
     }
-    isLessThanForAdd(n1, n2) {
+    isLessThanForRGBAdd(n1, n2) {
         let r1 = ((n1 & (0x0f << 4)) >> 4) + 2;
         let g1 = ((n1 & (0x0f << 8)) >> 8) + 2;
         let b1 = ((n1 & (0x0f << 12)) >> 12) + 2;
@@ -341,9 +341,9 @@ export class LightByte {
         if (b1 >= b2) {
             bMore = true;
         }
-        return rMore || gMore && bMore;
+        return rMore || (gMore && bMore);
     }
-    getMinusOne(sl) {
+    getMinusOneForRGB(sl) {
         let r = ((sl & (0x0f << 4)) >> 4) - 1;
         if (r < 0)
             r = 0;
@@ -358,5 +358,28 @@ export class LightByte {
         bv = (bv & ~(0xf << 8)) | (g << 8);
         bv = (bv & ~(0xf << 12)) | (b << 12);
         return bv;
+    }
+    getFullSunLight(sl) {
+        return (sl & ~(0xf << 0)) | (0b1111 << 0);
+    }
+    isLessThanForSunAdd(n1, n2) {
+        let sl1 = ((n1 & (0x0f << 0)) >> 0) + 2;
+        let sl2 = (n2 & (0x0f << 0)) >> 0;
+        return sl1 <= sl2;
+    }
+    getSunLightForUnderVoxel(currentVoxel) {
+        let sl1 = (currentVoxel & (0x0f << 0)) >> 0;
+        if (sl1 == 0b1111) {
+            return (currentVoxel & ~(0xf << 0)) | (0b1111 << 0);
+        }
+        else {
+            return (currentVoxel & ~(0xf << 0)) | (sl1-- << 0);
+        }
+    }
+    getMinusOneForSun(sl) {
+        let sun = ((sl & (0x0f << 0)) >> 0) - 1;
+        if (sun < 0)
+            sun = 0;
+        return (sun & ~(0xf << 0)) | (sun << 0);
     }
 }

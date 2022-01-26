@@ -1,24 +1,19 @@
 import type { LightByte } from "Global/Util/LightByte";
+import { ChunkData } from "Meta/Chunks/Chunk.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
-import { RGBFloodFillCheckNeighbors, RGBFloodFill, RGBFloodFillSetAirLightVoxels, RGBFloodFillUpdateAirLightVoxel } from "./Functions/RGBFloodFill.js";
-import { RGBFloodFill2, RunRGBLightUpdate } from "./Functions/RGBFloodFill2.js";
-import { RGBFloodRemove, RGBFloodRemoveCheckNeighors, RGBFloodRemoveSetAirLightVoxel, RGBFloodRemoveUpdateAirLightVoxel } from "./Functions/RGBFloodRemove.js";
+import { RGBFloodFill, RGBFloodRemove, RunRGBLightUpdate } from "./Functions/RGBFloodLight.js";
+import { sunLightUpdate } from "./Functions/SunLight.js";
 export declare class IlluminationManager {
     DVEW: DivineVoxelEngineWorld;
     lightByte: LightByte;
     air: number[];
-    airSeed: number[];
-    constructor(DVEW: DivineVoxelEngineWorld);
-    RGBFloodFillCheckNeighbors: typeof RGBFloodFillCheckNeighbors;
-    RGBFloodFillSetAirLightVoxel: typeof RGBFloodFillSetAirLightVoxels;
-    RGBFloodFillUpdateAirLightVoxel: typeof RGBFloodFillUpdateAirLightVoxel;
+    sunLightUpdate: typeof sunLightUpdate;
     RGBFloodFill: typeof RGBFloodFill;
-    RGBFloodFill2: typeof RGBFloodFill2;
-    runRGBLightUpdate: typeof RunRGBLightUpdate;
-    lightUpdateQue: number[][];
-    lightRemovalQue: number[][];
-    RGBFloodRemoveCheckNeighbors: typeof RGBFloodRemoveCheckNeighors;
-    RGBFloodRemoveSetAirVoxel: typeof RGBFloodRemoveSetAirLightVoxel;
-    RGBFloodRemoveUpdateAirVoxel: typeof RGBFloodRemoveUpdateAirLightVoxel;
     RGBFloodRemove: typeof RGBFloodRemove;
+    runRGBLightUpdate: typeof RunRGBLightUpdate;
+    _RGBlightUpdateQue: number[][];
+    _RGBlightRemovalQue: number[][];
+    _sunLightUpdateQue: number[][];
+    constructor(DVEW: DivineVoxelEngineWorld);
+    populateChunkAirWithInitlSunLight(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
 }

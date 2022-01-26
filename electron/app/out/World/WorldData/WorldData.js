@@ -1,5 +1,5 @@
 import { GetRelativeVoxelData, GetVoxelData, } from "./Functions/GetVoxelData.js";
-import { CalculateVoxelRGBLight, VoxelRGBLightMixCalc, } from "./Functions/CalculateVoxelRGBLight.js";
+import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
 import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
 export class WorldData {
     DVEW;
@@ -11,8 +11,8 @@ export class WorldData {
     chunks = {};
     getVoxelData = GetVoxelData;
     getRelativeVoxelData = GetRelativeVoxelData;
-    calculdateVoxelLight = CalculateVoxelRGBLight;
-    voxelRGBLightMixCalc = VoxelRGBLightMixCalc;
+    calculdateVoxelLight = CalculateVoxelLight;
+    voxelRGBLightMixCalc = VoxelLightMixCalc;
     voxelSunLightMixCalc = VoxelSunLightMixCalc;
     infoByte;
     lightByte;
@@ -55,6 +55,50 @@ export class WorldData {
     getCurrentWorldDataString() {
         return JSON.stringify(this.chunks);
     }
+    /**# Is Exposed
+     * ---
+     * Will return true if any face of the voxel is exposed.
+     * Must provide the voxel's x,y,z position.
+     * @param voxel
+     * @param voxelData
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
+    isExposed(voxel, voxelData, x, y, z) {
+        if (this.faceCheck(voxel, voxelData, x + 1, y, z)) {
+            return true;
+        }
+        if (this.faceCheck(voxel, voxelData, x - 1, y, z)) {
+            return true;
+        }
+        if (this.faceCheck(voxel, voxelData, x, y + 1, z)) {
+            return true;
+        }
+        if (this.faceCheck(voxel, voxelData, x, y - 1, z)) {
+            return true;
+        }
+        if (this.faceCheck(voxel, voxelData, x, y, z + 1)) {
+            return true;
+        }
+        if (this.faceCheck(voxel, voxelData, x, y, z - 1)) {
+            return true;
+        }
+        return false;
+    }
+    /**# Face Check
+     * ---
+     * Determines if a face of a voxel is exposed.
+     * You must provide the x,y,z position for the face that is being checked.
+     * For instance if you want to check the top face it would be the voxels y plus 1.
+     * @param voxel
+     * @param voxelData
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
     faceCheck(voxel, voxelData, x, y, z) {
         if (voxelData[0] < 0)
             return true;

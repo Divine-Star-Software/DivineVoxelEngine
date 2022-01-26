@@ -31,6 +31,7 @@ export class VoxelHelper implements VoxelHelperInterface {
    data.voxelData,
    data.voxelPalettee,
    data.RGBLightTemplate,
+   data.sunLightTemplate,
    data.exposedFaces,
    data.chunkX,
    data.chunkY,
@@ -40,7 +41,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    data.z
   );
   if (data.exposedFaces[0]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -57,7 +57,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    );
   }
   if (data.exposedFaces[1]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -74,7 +73,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    );
   }
   if (data.exposedFaces[2]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -91,7 +89,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    );
   }
   if (data.exposedFaces[3]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -108,7 +105,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    );
   }
   if (data.exposedFaces[4]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -125,7 +121,6 @@ export class VoxelHelper implements VoxelHelperInterface {
    );
   }
   if (data.exposedFaces[5]) {
-   data.sunLightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
    BuildAmbientOcclusion(
     this.worldData,
     this.voxelManager,
@@ -149,6 +144,7 @@ export class VoxelHelper implements VoxelHelperInterface {
    data.voxelData,
    data.voxelPalettee,
    data.RGBLightTemplate,
+   data.sunLightTemplate,
    data.exposedFaces,
    data.chunkX,
    data.chunkY,

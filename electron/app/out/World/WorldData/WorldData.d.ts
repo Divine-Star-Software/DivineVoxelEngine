@@ -1,7 +1,7 @@
 import type { ChunkVoxels, ChunkData } from "Meta/Chunks/Chunk.types";
 import { GetRelativeVoxelData, GetVoxelData } from "./Functions/GetVoxelData.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
-import { CalculateVoxelRGBLight, VoxelRGBLightMixCalc } from "./Functions/CalculateVoxelRGBLight.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { InfoByte } from "Global/Util/InfoByte.js";
 import { LightByte } from "Global/Util/LightByte.js";
 import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
@@ -16,8 +16,8 @@ export declare class WorldData {
     chunks: Record<string, ChunkData>;
     getVoxelData: typeof GetVoxelData;
     getRelativeVoxelData: typeof GetRelativeVoxelData;
-    calculdateVoxelLight: typeof CalculateVoxelRGBLight;
-    voxelRGBLightMixCalc: typeof VoxelRGBLightMixCalc;
+    calculdateVoxelLight: typeof CalculateVoxelLight;
+    voxelRGBLightMixCalc: typeof VoxelLightMixCalc;
     voxelSunLightMixCalc: typeof VoxelSunLightMixCalc;
     infoByte: InfoByte;
     lightByte: LightByte;
@@ -25,6 +25,30 @@ export declare class WorldData {
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
+    /**# Is Exposed
+     * ---
+     * Will return true if any face of the voxel is exposed.
+     * Must provide the voxel's x,y,z position.
+     * @param voxel
+     * @param voxelData
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
+    isExposed(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    /**# Face Check
+     * ---
+     * Determines if a face of a voxel is exposed.
+     * You must provide the x,y,z position for the face that is being checked.
+     * For instance if you want to check the top face it would be the voxels y plus 1.
+     * @param voxel
+     * @param voxelData
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
     faceCheck(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
     removeData(x: number, y: number, z: number): false | undefined;
     getData(x: number, y: number, z: number): any;

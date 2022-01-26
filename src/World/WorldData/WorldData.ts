@@ -6,9 +6,9 @@ import {
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import {
- CalculateVoxelRGBLight,
- VoxelRGBLightMixCalc,
-} from "./Functions/CalculateVoxelRGBLight.js";
+ CalculateVoxelLight,
+ VoxelLightMixCalc,
+} from "./Functions/CalculateVoxelLight.js";
 import { InfoByte } from "Global/Util/InfoByte.js";
 import { LightByte } from "Global/Util/LightByte.js";
 import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
@@ -25,8 +25,8 @@ export class WorldData {
  chunks: Record<string, ChunkData> = {};
  getVoxelData = GetVoxelData;
  getRelativeVoxelData = GetRelativeVoxelData;
- calculdateVoxelLight = CalculateVoxelRGBLight;
- voxelRGBLightMixCalc = VoxelRGBLightMixCalc;
+ calculdateVoxelLight = CalculateVoxelLight;
+ voxelRGBLightMixCalc = VoxelLightMixCalc;
  voxelSunLightMixCalc = VoxelSunLightMixCalc;
 
  infoByte: InfoByte;
@@ -50,7 +50,6 @@ export class WorldData {
   "flora-transparent": true,
   "flora-fluid": true,
   "flora-magma": true,
-
 
   "fluid-solid": false,
   "fluid-flora": true,
@@ -78,6 +77,57 @@ export class WorldData {
   return JSON.stringify(this.chunks);
  }
 
+ /**# Is Exposed
+  * ---
+  * Will return true if any face of the voxel is exposed. 
+  * Must provide the voxel's x,y,z position.
+  * @param voxel 
+  * @param voxelData 
+  * @param x 
+  * @param y 
+  * @param z 
+  * @returns 
+  */
+ isExposed(
+  voxel: VoxelInteface,
+  voxelData: any[],
+  x: number,
+  y: number,
+  z: number
+ ) {
+  if (this.faceCheck(voxel, voxelData, x + 1, y, z)) {
+   return true;
+  }
+  if (this.faceCheck(voxel, voxelData, x - 1, y, z)) {
+   return true;
+  }
+  if (this.faceCheck(voxel, voxelData, x, y + 1, z)) {
+   return true;
+  }
+  if (this.faceCheck(voxel, voxelData, x, y - 1, z)) {
+   return true;
+  }
+  if (this.faceCheck(voxel, voxelData, x, y, z + 1)) {
+   return true;
+  }
+  if (this.faceCheck(voxel, voxelData, x, y, z - 1)) {
+   return true;
+  }
+  return false;
+ }
+
+ /**# Face Check
+  * ---
+  * Determines if a face of a voxel is exposed.
+  * You must provide the x,y,z position for the face that is being checked.
+  * For instance if you want to check the top face it would be the voxels y plus 1.
+  * @param voxel
+  * @param voxelData
+  * @param x
+  * @param y
+  * @param z
+  * @returns
+  */
  faceCheck(
   voxel: VoxelInteface,
   voxelData: any[],
@@ -138,41 +188,41 @@ export class WorldData {
  }
 
  removeData(x: number, y: number, z: number) {
-    const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
-    const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
-    const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-    const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-    if (!chunk || chunk.isEmpty) {
-     return false;
-    }
-    let voxelX = Math.abs(x - chunkX);
-    if (x < 0) {
-     if (x == chunkX + 15) {
-      voxelX = 15;
-     }
-    }
-    let voxelZ = Math.abs(z - chunkZ);
-    if (z < 0) {
-     if (z == chunkZ + 15) {
-      voxelZ = 15;
-     }
-    }
-    let voxelY = Math.abs(y - chunkY);
-    if (y < 0) {
-     if (y == chunkY + 127) {
-      voxelY = 127;
-     }
-    }
-    if (
-     chunk.voxels[voxelX] &&
-     chunk.voxels[voxelX][voxelZ] &&
-     chunk.voxels[voxelX][voxelZ][voxelY]
-    ) {
-     delete chunk.voxels[voxelX][voxelZ][voxelY];
-    } else {
-     return false;
-    }
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk || chunk.isEmpty) {
+   return false;
+  }
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + 15) {
+    voxelX = 15;
    }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + 15) {
+    voxelZ = 15;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + 127) {
+    voxelY = 127;
+   }
+  }
+  if (
+   chunk.voxels[voxelX] &&
+   chunk.voxels[voxelX][voxelZ] &&
+   chunk.voxels[voxelX][voxelZ][voxelY]
+  ) {
+   delete chunk.voxels[voxelX][voxelZ][voxelY];
+  } else {
+   return false;
+  }
+ }
  getData(x: number, y: number, z: number) {
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;

@@ -94,6 +94,8 @@ export class ChunkMeshBuilder {
   const AOColorsArray = new Float32Array(AOColors);
   const RGBLightColorsArray = new Float32Array(RGBLightColors);
   const sunLightColorsArray = new Float32Array(sunLightColors);
+
+
   const colorsArray = new Float32Array(colors);
   const uvArray = new Float32Array(uvs);
 

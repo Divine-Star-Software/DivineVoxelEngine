@@ -75,15 +75,12 @@ export const solidShaders = {
         if (rgb.a < 0.5) {
             discard;
         }
+        
+       // gl_FragColor = rgb;
 
-        gl_FragColor = vec4(0,0,0,0);   
-        vec4 lightIntensity = vec4(.5,.5,.5,1);
-
-
+  
         //mix with supplied vertex colors
         vec4 mixVertex = mix(rgb, aoColor , 1.0);
-
-
 
         //apply to texture color
         vec4 newBase = rgb * mixVertex;

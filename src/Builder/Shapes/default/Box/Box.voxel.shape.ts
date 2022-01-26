@@ -40,8 +40,9 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -50,12 +51,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
@@ -93,8 +88,9 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -103,12 +99,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
@@ -149,23 +139,17 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+   this.shapeHelper.calculateLightColor(
+    data.RGBLightColors,
+    data.sunLightColors,
+    data.RGBLightTemplate,
+    data.rgbLightIndex
+   );
    this.shapeHelper.calculateAOColor(
     data.AOColors,
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateRGBLightColor(
-    data.RGBLightColors,
-    data.RGBLightTemplate,
-    data.rgbLightIndex
-   );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -203,8 +187,9 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -213,13 +198,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -258,8 +236,9 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -268,13 +247,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -310,8 +282,9 @@ export class BoxVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateRGBLightColor(
+   this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
+    data.sunLightColors,
     data.RGBLightTemplate,
     data.rgbLightIndex
    );
@@ -320,12 +293,6 @@ export class BoxVoxelShape implements VoxelShapeInterface {
     data.aoTemplate,
     data.aoIndex
    );
-   this.shapeHelper.calculateSunightColor(
-    data.sunLightColors,
-    data.sunLightTemplate,
-    data.sunlightIndex
-   );
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
