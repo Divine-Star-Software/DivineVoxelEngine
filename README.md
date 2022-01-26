@@ -83,14 +83,16 @@ Sceen shots:
 
 To see how to use the engine look at the TestWorlds folder.
 
-To test out the demos clone the repo and then run:
+To test out the demos clone the repo and then check out the **electron** folder.
+
+Go into that direcotry and run these commands:
 
 ```console
 npm i -S
 npm run start
 ```
 
-You can change the world demo in **app/index.html**
+You can change the world demo in **electron/app/index.html**
 
 One thing to note about the engine is that it runs in four different contexts and must be initialized in each. 
 
