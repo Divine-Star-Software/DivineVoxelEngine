@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "url" : "https://github.com/Divine-Star-Software/DivineVoxelEngine"
+    "url": "https://github.com/Divine-Star-Software/DivineVoxelEngine"
   },
   "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
   "author": "Divine Star LLC",
@@ -18,7 +18,6 @@
   "devDependencies": {
     "@types/node": "^16.11.7",
     "babylonjs": "^4.2.0",
-    "electron": "^15.3.1",
     "esbuild": "^0.14.14",
     "rollup": "^2.66.1",
     "rollup-plugin-dts": "^4.1.0",

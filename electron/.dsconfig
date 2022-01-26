@@ -1,7 +1,7 @@
 {
     "sources": [
         {
-            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/out",
+            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/electron/out",
             "fileExtensions": [
                 "js"
             ],
@@ -10,7 +10,7 @@
     ],
     "outputs": [
         {
-            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/app/out",
+            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/electron/app/out",
             "sourceID": "main",
             "codeSection": "all",
             "keepComments": true

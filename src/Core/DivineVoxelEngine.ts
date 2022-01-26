@@ -31,7 +31,7 @@ export class DivineVoxelEngine implements DVE {
  }
 
  async reStart(data: DVEOptions): Promise<void> {
-     this._handleOptions(data);
+  this._handleOptions(data);
  }
 
  async $INIT(data: DVEInitData) {
