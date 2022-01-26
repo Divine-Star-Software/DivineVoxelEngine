@@ -1,18 +1,28 @@
 {
-  "name": "dve",
-  "version": "0.0.1",
+  "name": "divine-voxel-engine",
+  "version": "0.0.2",
+  "main": "dist/divine-voxel-engine.js",
+  "module": "dist/divine-voxel-engine.mjs",
+  "typings": "dist/divine-voxel-engined.ts",
   "description": "",
-  "main": "electron/out/index.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "url" : "https://github.com/Divine-Star-Software/DivineVoxelEngine"
+  },
+  "homepage": "https://github.com/Divine-Star-Software/DivineVoxelEngine",
   "author": "Divine Star LLC",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.11.7",
     "babylonjs": "^4.2.0",
     "electron": "^15.3.1",
+    "esbuild": "^0.14.14",
+    "rollup": "^2.66.1",
+    "rollup-plugin-dts": "^4.1.0",
+    "rollup-plugin-esbuild": "^4.8.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
   }

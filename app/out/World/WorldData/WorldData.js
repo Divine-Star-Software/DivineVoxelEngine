@@ -105,6 +105,41 @@ export class WorldData {
             return true;
         }
     }
+    removeData(x, y, z) {
+        const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+        const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+        const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+        const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+        if (!chunk || chunk.isEmpty) {
+            return false;
+        }
+        let voxelX = Math.abs(x - chunkX);
+        if (x < 0) {
+            if (x == chunkX + 15) {
+                voxelX = 15;
+            }
+        }
+        let voxelZ = Math.abs(z - chunkZ);
+        if (z < 0) {
+            if (z == chunkZ + 15) {
+                voxelZ = 15;
+            }
+        }
+        let voxelY = Math.abs(y - chunkY);
+        if (y < 0) {
+            if (y == chunkY + 127) {
+                voxelY = 127;
+            }
+        }
+        if (chunk.voxels[voxelX] &&
+            chunk.voxels[voxelX][voxelZ] &&
+            chunk.voxels[voxelX][voxelZ][voxelY]) {
+            delete chunk.voxels[voxelX][voxelZ][voxelY];
+        }
+        else {
+            return false;
+        }
+    }
     getData(x, y, z) {
         const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
         const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
@@ -374,7 +409,7 @@ export class WorldData {
         }
         return [relativeX, relativeZ, realtiveY];
     }
-    requestVoxelBeRemove(chunkX, chunkY, chunkZ, x, y, z, blockId = 1) {
+    requestVoxelBeRemove(chunkX, chunkY, chunkZ, x, y, z) {
         const chunk = this.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;

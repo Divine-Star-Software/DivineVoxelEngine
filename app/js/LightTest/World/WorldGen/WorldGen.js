@@ -80,11 +80,11 @@ export class WorldGen {
                         returnChunk[x][z] ??= [];
                         returnChunk[x][z][y] = [...dreamStoneVovxel];
                     }
-                    if (y >= baseY && y <= maxY + 8 && Math.random() < 0.05) {
-                        returnChunk[x] ??= [];
-                        returnChunk[x][z] ??= [];
-                        returnChunk[x][z][y] = [...dreamStoneVovxel];
-                    }
+                    /*       if (y >= baseY && y <= maxY + 8 && Math.random() < 0.05) {
+                          returnChunk[x] ??= [];
+                          returnChunk[x][z] ??= [];
+                          returnChunk[x][z][y] = [...dreamStoneVovxel];
+                         }   */
                 }
             }
         }

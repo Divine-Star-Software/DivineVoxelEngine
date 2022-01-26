@@ -72,7 +72,7 @@ export class SolidMaterial {
         
            this.material.setFloat("sunLightLevel", level);
           }, 100); */
-        this.material.setFloat("sunLightLevel", 0.5);
+        this.material.setFloat("sunLightLevel", 0.2);
         return this.material;
     }
 }

@@ -1,15 +1,23 @@
 import { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { WorldGenerationInterface } from "Meta/World/WorldGeneration/WorldGeneration.interface";
 import type { VoxelPalette } from "Meta/WorldData/World.types";
+import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
+import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 
 /**# World Generation
  * ---
- * Helps with creating the needed format for each chunk.
+ * Helps with creating the needed data for chunks and world generation things.
  */
 export class WorldGeneration implements WorldGenerationInterface {
  globalVoxelPaletteIndex = 1;
  globalVoxelPalette: VoxelPalette = {};
  globalVoxelPaletteMap: Record<string, number> = {};
+
+ illumantionManager : IlluminationManager;
+
+    constructor(public DVEW : DivineVoxelEngineWorld) {
+        this.illumantionManager = new IlluminationManager(this.DVEW);
+    }
 
  getVoxelIdFromGlobalPalette(id: string): number {
   return this.globalVoxelPaletteMap[id];

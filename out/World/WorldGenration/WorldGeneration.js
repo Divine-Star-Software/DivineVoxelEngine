@@ -1,11 +1,18 @@
+import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 /**# World Generation
  * ---
- * Helps with creating the needed format for each chunk.
+ * Helps with creating the needed data for chunks and world generation things.
  */
 export class WorldGeneration {
+    DVEW;
     globalVoxelPaletteIndex = 1;
     globalVoxelPalette = {};
     globalVoxelPaletteMap = {};
+    illumantionManager;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
+        this.illumantionManager = new IlluminationManager(this.DVEW);
+    }
     getVoxelIdFromGlobalPalette(id) {
         return this.globalVoxelPaletteMap[id];
     }

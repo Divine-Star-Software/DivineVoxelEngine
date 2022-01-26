@@ -317,4 +317,87 @@ export class LightByte {
    b++;
   }
  }
+
+ isLessThanForRemove(n1: number, n2: number) {
+  let r1 = (n1 & (0x0f << 4)) >> 4;
+  let g1 = (n1 & (0x0f << 8)) >> 8;
+  let b1 = (n1 & (0x0f << 12)) >> 12;
+  let r2 = (n2 & (0x0f << 4)) >> 4;
+  let g2 = (n2 & (0x0f << 8)) >> 8;
+  let b2 = (n2 & (0x0f << 12)) >> 12;
+
+  let rLess = false;
+  let gLess = false;
+  let bLess = false;
+  if (r1 < r2) {
+   rLess = true;
+  }
+  if (g1 < g2) {
+   gLess = true;
+  }
+  if (b1 < b2) {
+   bLess = true;
+  }
+  return rLess || gLess || bLess;
+ }
+ isLessThanForAdd(n1: number, n2: number) {
+  let r1 = ((n1 & (0x0f << 4)) >> 4) + 2;
+  let g1 = ((n1 & (0x0f << 8)) >> 8) + 2;
+  let b1 = ((n1 & (0x0f << 12)) >> 12) + 2;
+  let r2 = (n2 & (0x0f << 4)) >> 4;
+  let g2 = (n2 & (0x0f << 8)) >> 8;
+  let b2 = (n2 & (0x0f << 12)) >> 12;
+
+  let rLess = false;
+  let gLess = false;
+  let bLess = false;
+  if (r1 <= r2) {
+   rLess = true;
+  }
+  if (g1 <= g2) {
+   gLess = true;
+  }
+  if (b1 <= b2) {
+   bLess = true;
+  }
+  return rLess || gLess || bLess;
+ }
+
+ isGreaterOrEqualThan(n1: number, n2: number) {
+  let r1 = (n1 & (0x0f << 4)) >> 4;
+  let g1 = (n1 & (0x0f << 8)) >> 8;
+  let b1 = (n1 & (0x0f << 12)) >> 12;
+  let r2 = (n2 & (0x0f << 4)) >> 4;
+  let g2 = (n2 & (0x0f << 8)) >> 8;
+  let b2 = (n2 & (0x0f << 12)) >> 12;
+
+  let rMore = false;
+  let gMore = false;
+  let bMore = false;
+  if (r1 >= r2) {
+   rMore = true;
+  }
+  if (g1 >= g2) {
+   gMore = true;
+  }
+  if (b1 >= b2) {
+   bMore = true;
+  }
+  return rMore || gMore && bMore;
+ }
+
+ getMinusOne(sl: number) {
+  let r = ((sl & (0x0f << 4)) >> 4) - 1;
+  if (r < 0) r = 0;
+  let g = ((sl & (0x0f << 8)) >> 8) - 1;
+  if (g < 0) g = 0;
+  let b = ((sl & (0x0f << 12)) >> 12) - 1;
+  if (b < 0) b = 0;
+
+  let bv = 0;
+  bv = (bv & ~(0xf << 4)) | (r << 4);
+  bv = (bv & ~(0xf << 8)) | (g << 8);
+  bv = (bv & ~(0xf << 12)) | (b << 12);
+  return bv;
+ }
 }

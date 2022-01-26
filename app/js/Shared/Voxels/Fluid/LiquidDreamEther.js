@@ -5,7 +5,7 @@ export class LiquidDreamEther {
     }
     data = {
         name: "Liquid Dream Ether",
-        shapeId: "Box",
+        shapeId: "FluidSourceBlock",
         id: "dve:liquiddreamether",
         substance: "fluid",
         defaultState: ["dve:liquiddreamether", 0],

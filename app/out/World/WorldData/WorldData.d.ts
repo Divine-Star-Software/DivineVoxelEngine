@@ -26,6 +26,7 @@ export declare class WorldData {
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
     faceCheck(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    removeData(x: number, y: number, z: number): false | undefined;
     getData(x: number, y: number, z: number): any;
     _copy(data: any): any[];
     setData(x: number, y: number, z: number, data: number[]): false | undefined;
@@ -36,5 +37,5 @@ export declare class WorldData {
     requestVoxelAdd(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, voxelPaletteId?: number): false | ChunkVoxels;
     _checkNearbyChunksToRebuild(chunkX: number, chunkY: number, chunkZ: number, relativeX: number, relativeZ: number): void;
     _getRelativeChunkPosition(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): number[];
-    requestVoxelBeRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, blockId?: number): false | ChunkVoxels;
+    requestVoxelBeRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): false | ChunkVoxels;
 }

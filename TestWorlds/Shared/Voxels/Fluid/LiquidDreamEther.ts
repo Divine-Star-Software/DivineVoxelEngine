@@ -9,7 +9,7 @@ export class LiquidDreamEther implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
  data = <VoxelData>{
   name: "Liquid Dream Ether",
-  shapeId: "Box",
+  shapeId: "FluidSourceBlock",
   id: "dve:liquiddreamether",
   substance: "fluid",
   defaultState: ["dve:liquiddreamether", 0],

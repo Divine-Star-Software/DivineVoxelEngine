@@ -18,7 +18,7 @@ export class DivineVoxelEngineWorld {
     };
     UTIL = new Util();
     builderManager = new BuilderManager();
-    worldGeneration = new WorldGeneration();
+    worldGeneration = new WorldGeneration(this);
     worldData = new WorldData(this);
     textureManager = new TextureManager();
     voxelManager = new VoxelManager();

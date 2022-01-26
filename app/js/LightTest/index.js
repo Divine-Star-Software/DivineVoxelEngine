@@ -6,7 +6,7 @@ await DVE.$INIT({
     builderWorkerPath: "../../../js/Shared/Builder/builder.js",
     fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
 });
-console.log("%cocean test", "color:cyan; font-size:30px;");
+console.log("%clight test 1", "color:cyan; font-size:30px;");
 const readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
