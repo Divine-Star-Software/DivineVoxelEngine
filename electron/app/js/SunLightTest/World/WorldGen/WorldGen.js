@@ -1,4 +1,3 @@
-import { LightTest } from "./LightTest.js";
 export class WorldGen {
     DVEW;
     lightSourceColor;
@@ -45,7 +44,6 @@ export class WorldGen {
             return infoByte.getNumberValue();
         },
     };
-    lightTest = LightTest;
     infoByte;
     lightByte;
     chunkDepth = 16;

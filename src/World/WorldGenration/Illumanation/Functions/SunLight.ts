@@ -1,7 +1,99 @@
 import { IlluminationManager } from "../IlluminationManager";
+export function runSunLightRemove(
+ this: IlluminationManager,
+ chunkX: number,
+ chunkY: number,
+ chunkZ: number,
+ startX: number,
+ startY: number,
+ startZ: number
+) {
+ let trueStartX = startX + chunkX;
+ let trueStartY = startY + chunkY;
+ let trueStartZ = startZ + chunkZ;
+ this._sunLightRemoveQue.push([trueStartX, trueStartY, trueStartZ]);
 
+ while (this._sunLightRemoveQue.length != 0) {
+  const node = this._sunLightRemoveQue.shift();
+  if (!node) {
+   break;
+  }
+
+  const x = node[0];
+  const y = node[1];
+  const z = node[2];
+  const sl = this.DVEW.worldData.getLight(x, y, z);
+
+  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
+  if (n1 > 0 && this.lightByte.isLessThanForSunRemove(n1, sl)) {
+   this._sunLightRemoveQue.push([x - 1, y, z]);
+  } else {
+   if (n1 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x - 1, y, z]);
+    }
+   }
+  }
+
+  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
+  if (n2 > 0 && this.lightByte.isLessThanForSunRemove(n2, sl)) {
+   this._sunLightRemoveQue.push([x + 1, y, z]);
+  } else {
+   if (n2 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x + 1, y, z]);
+    }
+   }
+  }
+
+  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
+  if (n3 > 0 && this.lightByte.isLessThanForSunRemove(n3, sl)) {
+   this._sunLightRemoveQue.push([x, y, z - 1]);
+  } else {
+   if (n3 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x, y, z - 1]);
+    }
+   }
+  }
+
+  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
+  if (n4 > 0 && this.lightByte.isLessThanForSunRemove(n4, sl)) {
+   this._sunLightRemoveQue.push([x, y, z + 1]);
+  } else {
+   if (n4 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x, y, z + 1]);
+    }
+   }
+  }
+
+  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
+  if (n5 > 0 && this.lightByte.sunLightCompareForDownSunRemove(n5, sl)) {
+   this._sunLightRemoveQue.push([x, y - 1, z]);
+  } else {
+   if (n5 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x, y - 1, z]);
+    }
+   }
+  }
+
+  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
+  if (n6 > 0 && this.lightByte.isLessThanForSunRemove(n6, sl)) {
+   this._sunLightRemoveQue.push([x, y + 1, z]);
+  } else {
+   if (n6 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+     this._sunLightUpdateQue.push([x, y + 1, z]);
+    }
+   }
+  }
+  this.DVEW.worldData.setLight(x, y, z, this.lightByte.removeSunLight(sl));
+ }
+ this.sunLightUpdate();
+}
 export function sunLightUpdate(this: IlluminationManager) {
- console.log(this._sunLightUpdateQue);
  while (this._sunLightUpdateQue.length != 0) {
   const node = this._sunLightUpdateQue.shift();
   if (!node) {
@@ -10,120 +102,72 @@ export function sunLightUpdate(this: IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const check = this.DVEW.worldData.getData(x, y, z);
-  let sl = 0;
-  if (check && check[0] < 0) {
-   sl = check[check.length - 1];
-  }
+  const sl = this.DVEW.worldData.getLight(x, y, z);
 
-  let n1 = 0;
-  let n2 = 0;
-  let n3 = 0;
-  let n4 = 0;
-  let n5 = 0;
-  let n6 = 0;
-  const checkX1 = this.DVEW.worldData.getData(x - 1, y, z);
-  if (checkX1) {
-   if (checkX1[0] < 0) {
-    n1 = checkX1[checkX1.length - 1];
-   } else {
-    n1 = -1;
-   }
-  }
+  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
    this._sunLightUpdateQue.push([x - 1, y, z]);
-   const nl = this.lightByte.getMinusOneForSun(sl);
-   if (checkX1) {
-    checkX1[checkX1.length - 1] = nl;
-   }
+   this.DVEW.worldData.setLight(
+    x - 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForSun(sl)
+   );
   }
 
-  const checkX2 = this.DVEW.worldData.getData(x + 1, y, z);
-  if (checkX2) {
-   if (checkX2[0] < 0) {
-    n2 = checkX2[checkX2.length - 1];
-   } else {
-    n2 = -1;
-   }
-  }
+  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
    this._sunLightUpdateQue.push([x + 1, y, z]);
-   const nl = this.lightByte.getMinusOneForSun(sl);
-   if (checkX2) {
-    checkX2[checkX2.length - 1] = nl;
-   }
+   this.DVEW.worldData.setLight(
+    x + 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForSun(sl)
+   );
   }
 
-  const checkZ1 = this.DVEW.worldData.getData(x, y, z - 1);
-  if (checkZ1) {
-   if (checkZ1[0] < 0) {
-    n3 = checkZ1[checkZ1.length - 1];
-   } else {
-    n3 = -1;
-   }
-  }
+  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
    this._sunLightUpdateQue.push([x, y, z - 1]);
-   const nl = this.lightByte.getMinusOneForSun(sl);
-   if (checkZ1) {
-    checkZ1[checkZ1.length - 1] = nl;
-    
-   } else {
-   
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y,
+    z - 1,
+    this.lightByte.getMinusOneForSun(sl)
+   );
   }
 
-  const checkZ2 = this.DVEW.worldData.getData(x, y, z + 1);
-  if (checkZ2) {
-   if (checkZ2[0] < 0) {
-    n4 = checkZ2[checkZ2.length - 1];
-   } else {
-    n4 = -1;
-   }
-  }
+  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
    this._sunLightUpdateQue.push([x, y, z + 1]);
-   const nl = this.lightByte.getMinusOneForSun(sl);
-   if (checkZ2) {
-    checkZ2[checkZ2.length - 1] = nl;
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y,
+    z + 1,
+    this.lightByte.getMinusOneForSun(sl)
+   );
   }
 
-  const checkY1 = this.DVEW.worldData.getData(x, y - 1, z);
-  if (checkY1) {
-   if (checkY1[0] < 0) {
-    n5 = checkY1[checkY1.length - 1];
-   } else {
-    n5 = -1;
-   }
-  }
-  if (n5 > -1 && this.lightByte.isLessThanForSunAdd(n5, sl)) {
+  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
+  if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
    this._sunLightUpdateQue.push([x, y - 1, z]);
-   const nl = this.lightByte.getSunLightForUnderVoxel(sl);
-   if (checkY1) {
-    checkY1[checkY1.length - 1] = nl;
-   } else {
-
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y - 1,
+    z,
+    this.lightByte.getSunLightForUnderVoxel(sl)
+   );
   }
 
-  const checkY2 = this.DVEW.worldData.getData(x, y + 1, z);
-  if (checkY2) {
-   if (checkY2[0] < 0) {
-    n6 = checkY2[checkY2.length - 1];
-
-   } else {
-    n6 = -1;
-   }
-  }
+  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForSunAdd(n6, sl)) {
    this._sunLightUpdateQue.push([x, y + 1, z]);
-   const nl = this.lightByte.getMinusOneForSun(sl);
-   if (checkY2) {
-
-    checkY2[checkY2.length - 1] = nl;
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y + 1,
+    z,
+    this.lightByte.getMinusOneForSun(sl)
+   );
   }
-  
  }
 }

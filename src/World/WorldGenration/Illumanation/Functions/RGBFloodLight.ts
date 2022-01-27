@@ -1,6 +1,6 @@
 import { IlluminationManager } from "../IlluminationManager";
 
-export function RunRGBLightUpdate(this: IlluminationManager) {
+export function runRGBLightUpdate(this: IlluminationManager) {
  while (this._RGBlightUpdateQue.length != 0) {
   const node = this._RGBlightUpdateQue.shift();
   if (!node) {
@@ -229,7 +229,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x - 1, y, z]);
      } else {
       if (n1 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x - 1, y, z]);
        }
       }
@@ -238,7 +238,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x + 1, y, z]);
      } else {
       if (n2 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x + 1, y, z]);
        }
       }
@@ -247,7 +247,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x, y, z - 1]);
      } else {
       if (n3 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x, y, z - 1]);
        }
       }
@@ -256,7 +256,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x, y, z + 1]);
      } else {
       if (n4 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x, y, z + 1]);
        }
       }
@@ -265,7 +265,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x, y - 1, z]);
      } else {
       if (n5 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x, y - 1, z]);
        }
       }
@@ -274,7 +274,7 @@ export function RGBFloodRemove(
       this._RGBlightRemovalQue.push([x, y + 1, z]);
      } else {
       if (n6 != 0) {
-       if (this.lightByte.isGreaterOrEqualThan(n1, sl)) {
+       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
         this._RGBlightUpdateQue.push([x, y + 1, z]);
        }
       }

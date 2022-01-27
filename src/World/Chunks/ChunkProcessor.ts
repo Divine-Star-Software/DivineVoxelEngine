@@ -145,7 +145,7 @@ export class ChunkProcessor {
      let faceBit = 0;
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -160,7 +160,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -175,7 +175,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX + 1,
@@ -190,7 +190,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX - 1,
@@ -205,7 +205,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -220,7 +220,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -301,7 +301,7 @@ export class ChunkProcessor {
      let faceBit = 0;
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -316,7 +316,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -331,7 +331,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX + 1,
@@ -346,7 +346,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX - 1,
@@ -361,7 +361,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,
@@ -376,7 +376,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.worldData.faceCheck(
+      this.worldData.voxelFaceCheck(
        voxel,
        voxelData,
        x + chunkX,

@@ -1,7 +1,7 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import { LightTest } from "./LightTest.js";
+
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 export class WorldGen {
@@ -54,7 +54,6 @@ export class WorldGen {
   },
  };
 
- lightTest = LightTest;
  infoByte: InfoByte;
  lightByte: LightByte;
 
@@ -117,19 +116,17 @@ export class WorldGen {
      if (y == maxY / 2) {
       voxels[x] ??= [];
       voxels[x][z] ??= [];
-      voxels[x][z][y] =  [...dreamStoneVovxel];
+      voxels[x][z][y] = [...dreamStoneVovxel];
      }
     }
    }
   }
 
-  if(Math.random() > 0.5){
-  if (voxels[7] && voxels[7][7] && voxels[7][7][maxY / 2]) {
-   voxels[7][7][maxY / 2] = [-1, 0];
+  if (Math.random() > 0.5) {
+   if (voxels[7] && voxels[7][7] && voxels[7][7][maxY / 2]) {
+    voxels[7][7][maxY / 2] = [-1, 0];
+   }
   }
-}
-
-
 
   return chunk;
  }

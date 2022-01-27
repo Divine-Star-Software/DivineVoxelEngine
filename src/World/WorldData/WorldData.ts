@@ -4,7 +4,6 @@ import {
  GetVoxelData,
 } from "./Functions/GetVoxelData.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
-import type { ChunkProcessor } from "../Chunks/ChunkProcessor.js";
 import {
  CalculateVoxelLight,
  VoxelLightMixCalc,
@@ -20,7 +19,6 @@ export class WorldData {
  chunkXPow2 = 4;
  chunkZPow2 = 4;
  chunkYPow2 = 7;
- private chunkProccesor: ChunkProcessor;
 
  chunks: Record<string, ChunkData> = {};
  getVoxelData = GetVoxelData;
@@ -76,47 +74,77 @@ export class WorldData {
  getCurrentWorldDataString() {
   return JSON.stringify(this.chunks);
  }
+ setLight(x: number, y: number, z: number, lightValue: number) {
+  const voxel = this.getVoxel(x, y, z);
+  if (voxel) {
+   if (voxel[0] == -1) {
+    voxel[1][voxel[1].length - 1] = lightValue;
+   } else {
+    if (voxel[0].data.substance == "solid") {
+     return -1;
+    } else {
+     voxel[1][voxel[1].length - 1] = lightValue;
+    }
+   }
+  }
+  return true;
+ }
+ getLight(x: number, y: number, z: number): number {
+  const voxel = this.getVoxel(x, y, z);
+  if (voxel) {
+   if (voxel[0] == -1) {
+    return voxel[1][voxel[1].length - 1];
+   } else {
+    if (voxel[0].data.substance == "solid") {
+     return 0;
+    } else {
+     return voxel[1][voxel[1].length - 1];
+    }
+   }
+  }
+  return 0;
+ }
 
  /**# Is Exposed
   * ---
-  * Will return true if any face of the voxel is exposed. 
+  * Will return true if any face of the voxel is exposed.
   * Must provide the voxel's x,y,z position.
-  * @param voxel 
-  * @param voxelData 
-  * @param x 
-  * @param y 
-  * @param z 
-  * @returns 
+  * @param voxel
+  * @param voxelData
+  * @param x
+  * @param y
+  * @param z
+  * @returns
   */
- isExposed(
+ isVoxelExposed(
   voxel: VoxelInteface,
   voxelData: any[],
   x: number,
   y: number,
   z: number
  ) {
-  if (this.faceCheck(voxel, voxelData, x + 1, y, z)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x + 1, y, z)) {
    return true;
   }
-  if (this.faceCheck(voxel, voxelData, x - 1, y, z)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x - 1, y, z)) {
    return true;
   }
-  if (this.faceCheck(voxel, voxelData, x, y + 1, z)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x, y + 1, z)) {
    return true;
   }
-  if (this.faceCheck(voxel, voxelData, x, y - 1, z)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x, y - 1, z)) {
    return true;
   }
-  if (this.faceCheck(voxel, voxelData, x, y, z + 1)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x, y, z + 1)) {
    return true;
   }
-  if (this.faceCheck(voxel, voxelData, x, y, z - 1)) {
+  if (this.voxelFaceCheck(voxel, voxelData, x, y, z - 1)) {
    return true;
   }
   return false;
  }
 
- /**# Face Check
+ /**# Voxel Face Check
   * ---
   * Determines if a face of a voxel is exposed.
   * You must provide the x,y,z position for the face that is being checked.
@@ -128,7 +156,7 @@ export class WorldData {
   * @param z
   * @returns
   */
- faceCheck(
+ voxelFaceCheck(
   voxel: VoxelInteface,
   voxelData: any[],
   x: number,
@@ -146,19 +174,19 @@ export class WorldData {
 
   let voxelX = Math.abs(x - chunkX);
   if (x < 0) {
-   if (x == chunkX + 15) {
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
     voxelX = 15;
    }
   }
   let voxelZ = Math.abs(z - chunkZ);
   if (z < 0) {
-   if (z == chunkZ + 15) {
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
     voxelZ = 15;
    }
   }
   let voxelY = Math.abs(y - chunkY);
   if (y < 0) {
-   if (y == chunkY + 127) {
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
     voxelY = 127;
    }
   }
@@ -197,20 +225,20 @@ export class WorldData {
   }
   let voxelX = Math.abs(x - chunkX);
   if (x < 0) {
-   if (x == chunkX + 15) {
-    voxelX = 15;
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
    }
   }
   let voxelZ = Math.abs(z - chunkZ);
   if (z < 0) {
-   if (z == chunkZ + 15) {
-    voxelZ = 15;
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
    }
   }
   let voxelY = Math.abs(y - chunkY);
   if (y < 0) {
-   if (y == chunkY + 127) {
-    voxelY = 127;
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
    }
   }
   if (
@@ -223,6 +251,58 @@ export class WorldData {
    return false;
   }
  }
+
+ getVoxel(x: number, y: number, z: number) {
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+
+  if (!chunk || chunk.isEmpty) {
+   return false;
+  }
+  let voxelPalette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
+  if (chunk.voxelPalette) {
+   voxelPalette = chunk.voxelPalette;
+  }
+
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
+   }
+  }
+  if (
+   chunk.voxels[voxelX] &&
+   chunk.voxels[voxelX][voxelZ] &&
+   chunk.voxels[voxelX][voxelZ][voxelY]
+  ) {
+   const voxelData = chunk.voxels[voxelX][voxelZ][voxelY];
+   const voxelId = voxelData[0];
+   if (voxelId == -1) {
+    return [-1, voxelData];
+   } else {
+    const voxelTrueID = voxelPalette[voxelId][0];
+    const voxel = this.DVEW.voxelManager.getVoxel(voxelTrueID);
+    return [voxel, voxelData];
+   }
+  } else {
+   return false;
+  }
+ }
+
  getData(x: number, y: number, z: number) {
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
@@ -233,20 +313,20 @@ export class WorldData {
   }
   let voxelX = Math.abs(x - chunkX);
   if (x < 0) {
-   if (x == chunkX + 15) {
-    voxelX = 15;
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
    }
   }
   let voxelZ = Math.abs(z - chunkZ);
   if (z < 0) {
-   if (z == chunkZ + 15) {
-    voxelZ = 15;
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
    }
   }
   let voxelY = Math.abs(y - chunkY);
   if (y < 0) {
-   if (y == chunkY + 127) {
-    voxelY = 127;
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
    }
   }
   if (
@@ -264,6 +344,16 @@ export class WorldData {
   return [...data];
  }
 
+ /**# Set Data
+  * ---
+  * Sets the data for a specific point in the world data.
+  * Will not make a new chunk if there is none and just return false.
+  * @param x
+  * @param y
+  * @param z
+  * @param data
+  * @returns
+  */
  setData(x: number, y: number, z: number, data: number[]) {
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
@@ -274,20 +364,60 @@ export class WorldData {
   }
   let voxelX = Math.abs(x - chunkX);
   if (x < 0) {
-   if (x == chunkX + 15) {
-    voxelX = 15;
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
    }
   }
   let voxelZ = Math.abs(z - chunkZ);
   if (z < 0) {
-   if (z == chunkZ + 15) {
-    voxelZ = 15;
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
    }
   }
   let voxelY = Math.abs(y - chunkY);
   if (y < 0) {
-   if (y == chunkY + 127) {
-    voxelY = 127;
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
+   }
+  }
+  const voxels = chunk.voxels;
+  voxels[voxelX] ??= [];
+  voxels[voxelX][voxelZ] ??= [];
+  voxels[voxelX][voxelZ][voxelY] = this._copy(data);
+ }
+ /**# Insert Data
+  * ---
+  * Acts like **setData** but will create a new chunk if it does not exist.
+  * @param x
+  * @param y
+  * @param z
+  * @param data
+  */
+ insertData(x: number, y: number, z: number, data: number[]) {
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+  let chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk) {
+   chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+   this.setChunk(chunkX, chunkY, chunkZ, chunk);
+  }
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
    }
   }
   const voxels = chunk.voxels;

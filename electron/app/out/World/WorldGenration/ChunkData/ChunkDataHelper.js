@@ -18,11 +18,10 @@ export class ChunkDataHelper {
         }
     }
     createHeightMap(chunk, chunkX, chunkY, chunkZ) {
-        const voxels = chunk.voxels;
         const heightMap = [];
-        for (const x of voxels.keys()) {
+        for (let x = 0; x < 16; x++) {
             heightMap[x] = [];
-            for (const z of voxels.keys()) {
+            for (let z = 0; z < 16; z++) {
                 heightMap[x][z] = chunkY + 127;
             }
         }

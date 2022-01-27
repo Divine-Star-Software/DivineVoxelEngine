@@ -1,4 +1,4 @@
-import { InfoByte } from "../../../../out/Global/Util/InfoByte";
+/* import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 import { WorldData } from "../../../../out/World/WorldData/WorldData";
 import { WorldGen } from "./WorldGen";
@@ -14,7 +14,7 @@ import { WorldGen } from "./WorldGen";
  * If the loop encounters a block the loop stops for that specfic z axis and goes to the next.
  * On each loop when the air block is updated it also updates any air blocks below it.
  */
-
+/*
 const copy = (data: any) => {
  return [...data];
 };
@@ -414,3 +414,4 @@ export function LightTest(
   }
  }
 }
+ */

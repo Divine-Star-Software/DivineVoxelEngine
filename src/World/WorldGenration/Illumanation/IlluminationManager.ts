@@ -5,27 +5,30 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 import {
  RGBFloodFill,
  RGBFloodRemove,
- RunRGBLightUpdate,
+ runRGBLightUpdate,
 } from "./Functions/RGBFloodLight.js";
-import { sunLightUpdate } from "./Functions/SunLight.js";
+import { runSunLightRemove, sunLightUpdate } from "./Functions/SunLight.js";
 
 export class IlluminationManager {
  lightByte: LightByte;
  air = [-1, 0];
 
  sunLightUpdate = sunLightUpdate;
+ runSunLightRemove = runSunLightRemove;
  RGBFloodFill = RGBFloodFill;
  RGBFloodRemove = RGBFloodRemove;
- runRGBLightUpdate = RunRGBLightUpdate;
+ runRGBLightUpdate = runRGBLightUpdate;
  _RGBlightUpdateQue: number[][] = [];
  _RGBlightRemovalQue: number[][] = [];
  _sunLightUpdateQue: number[][] = [];
+ _sunLightRemoveQue: number[][] = [];
+
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.lightByte = this.DVEW.UTIL.getLightByte();
  }
 
- populateChunkAirWithInitlSunLight(
+ addChunkToSunLightUpdate(
   chunk: ChunkData,
   chunkX: number,
   chunkY: number,
@@ -33,17 +36,26 @@ export class IlluminationManager {
  ) {
   const heightMap = chunk.heightMap;
   const voxels = chunk.voxels;
-  for (const x of heightMap.keys()) {
-   for (const z of heightMap.keys()) {
-    const y = heightMap[x][z];
+  for (let x = 0; x < 16; x++) {
+   for (let z = 0; z < 16; z++) {
+    this._sunLightUpdateQue.push([chunkX + x - 1, chunkY + 127, chunkZ + z - 1]); 
+    this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
+   }
+  }
+ }
 
+ populateChunkAirWithInitlSunLight(chunk: ChunkData) {
+  const heightMap = chunk.heightMap;
+  const voxels = chunk.voxels;
+  for (let x = 0; x < 16; x++) {
+   for (let z = 0; z < 16; z++) {
+    const y = heightMap[x][z];
     if (voxels[x] && voxels[x][z] && voxels[x][z][y]) {
      const voxel = voxels[x][z][y];
      if (voxel && voxel[0] < 0) {
       const vl = voxel[voxel.length - 1];
       const nl = this.lightByte.getFullSunLight(vl);
       voxel[voxel.length - 1] = nl;
-      this._sunLightUpdateQue.push([chunkX + x, chunkY + y, chunkZ + z]);
      }
     }
    }

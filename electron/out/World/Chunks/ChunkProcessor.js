@@ -120,42 +120,42 @@ export class ChunkProcessor {
                     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 0);
                         this.exposedFaces[0] = 1;
                     }
                     else {
                         this.exposedFaces[0] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 1);
                         this.exposedFaces[1] = 1;
                     }
                     else {
                         this.exposedFaces[1] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 2);
                         this.exposedFaces[2] = 1;
                     }
                     else {
                         this.exposedFaces[2] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 3);
                         this.exposedFaces[3] = 1;
                     }
                     else {
                         this.exposedFaces[3] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         faceBit = faceBit | (1 << 4);
                         this.exposedFaces[4] = 1;
                     }
                     else {
                         this.exposedFaces[4] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         faceBit = faceBit | (1 << 5);
                         this.exposedFaces[5] = 1;
                     }
@@ -215,42 +215,42 @@ export class ChunkProcessor {
                     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 0);
                         this.exposedFaces[0] = 1;
                     }
                     else {
                         this.exposedFaces[0] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 1);
                         this.exposedFaces[1] = 1;
                     }
                     else {
                         this.exposedFaces[1] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 2);
                         this.exposedFaces[2] = 1;
                     }
                     else {
                         this.exposedFaces[2] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 3);
                         this.exposedFaces[3] = 1;
                     }
                     else {
                         this.exposedFaces[3] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         faceBit = faceBit | (1 << 4);
                         this.exposedFaces[4] = 1;
                     }
                     else {
                         this.exposedFaces[4] = 0;
                     }
-                    if (this.worldData.faceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         faceBit = faceBit | (1 << 5);
                         this.exposedFaces[5] = 1;
                     }

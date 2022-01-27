@@ -12,7 +12,6 @@ export declare class WorldData {
     chunkXPow2: number;
     chunkZPow2: number;
     chunkYPow2: number;
-    private chunkProccesor;
     chunks: Record<string, ChunkData>;
     getVoxelData: typeof GetVoxelData;
     getRelativeVoxelData: typeof GetRelativeVoxelData;
@@ -25,6 +24,8 @@ export declare class WorldData {
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
+    setLight(x: number, y: number, z: number, lightValue: number): true | -1;
+    getLight(x: number, y: number, z: number): number;
     /**# Is Exposed
      * ---
      * Will return true if any face of the voxel is exposed.
@@ -36,8 +37,8 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    isExposed(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
-    /**# Face Check
+    isVoxelExposed(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    /**# Voxel Face Check
      * ---
      * Determines if a face of a voxel is exposed.
      * You must provide the x,y,z position for the face that is being checked.
@@ -49,11 +50,31 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    faceCheck(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    voxelFaceCheck(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
     removeData(x: number, y: number, z: number): false | undefined;
+    getVoxel(x: number, y: number, z: number): false | any[];
     getData(x: number, y: number, z: number): any;
     _copy(data: any): any[];
+    /**# Set Data
+     * ---
+     * Sets the data for a specific point in the world data.
+     * Will not make a new chunk if there is none and just return false.
+     * @param x
+     * @param y
+     * @param z
+     * @param data
+     * @returns
+     */
     setData(x: number, y: number, z: number, data: number[]): false | undefined;
+    /**# Insert Data
+     * ---
+     * Acts like **setData** but will create a new chunk if it does not exist.
+     * @param x
+     * @param y
+     * @param z
+     * @param data
+     */
+    insertData(x: number, y: number, z: number, data: number[]): void;
     getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
