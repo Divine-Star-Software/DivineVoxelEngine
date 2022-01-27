@@ -1,8 +1,8 @@
-export function runSunLightRemove(chunkX, chunkY, chunkZ, startX, startY, startZ) {
-    let trueStartX = startX + chunkX;
-    let trueStartY = startY + chunkY;
-    let trueStartZ = startZ + chunkZ;
-    this._sunLightRemoveQue.push([trueStartX, trueStartY, trueStartZ]);
+export function runSunLightRemoveAt(x, y, z) {
+    this._sunLightRemoveQue.push([x, y, z]);
+    this.runSunLightRemove();
+}
+export function runSunLightRemove() {
     while (this._sunLightRemoveQue.length != 0) {
         const node = this._sunLightRemoveQue.shift();
         if (!node) {
@@ -80,9 +80,9 @@ export function runSunLightRemove(chunkX, chunkY, chunkZ, startX, startY, startZ
         }
         this.DVEW.worldData.setLight(x, y, z, this.lightByte.removeSunLight(sl));
     }
-    this.sunLightUpdate();
+    this.runSunLightUpdate();
 }
-export function sunLightUpdate() {
+export function runSunLightUpdate() {
     while (this._sunLightUpdateQue.length != 0) {
         const node = this._sunLightUpdateQue.shift();
         if (!node) {
@@ -123,4 +123,8 @@ export function sunLightUpdate() {
             this.DVEW.worldData.setLight(x, y + 1, z, this.lightByte.getMinusOneForSun(sl));
         }
     }
+}
+export function runSunLightUpdateAt(x, y, z) {
+    this._sunLightUpdateQue.push([x, y, z]);
+    this.runSunLightUpdate();
 }

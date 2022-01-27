@@ -21,7 +21,10 @@ const start = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.worldData.setChunk(x, 0, z, worldGen.generateChunk(x, 0, z));
+   const chunk = DVEW.worldGeneration.getBlankChunk(false);
+   DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
+   worldGen.generateChunk(chunk, x, 0, z);
+   DVEW.worldData.setChunk(x, 0, z, chunk);
   }
  }
 
@@ -34,33 +37,16 @@ const start = () => {
  setInterval(() => {
   for (let x = startX; x < endX; x += 16) {
    for (let z = startZ; z < endZ; z += 16) {
-    DVEW.worldGeneration.illumantionManager.RGBFloodFill(
-     [1, 0, fullLight],
-     fullLight,
-     x + 16,
-     0,
-     z,
-     7,
-     7,
-     7
+    DVEW.worldData.setData(x + 7 + 16, 7, z + 7, [1, 0, fullLight]);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(
+     x + 7,
+     0 + 7,
+     z + 7
     );
-/*     DVEW.worldGeneration.illumantionManager.RGBFloodFill(
-     [1, 0, fullLight],
-     fullLight,
-     x - 32,
-     0,
-     z,
-     7,
-     7,
-     7
-    ); */
-    DVEW.worldGeneration.illumantionManager.RGBFloodRemove(
-     x,
-     0,
-     z,
-     7,
-     7,
-     7
+    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(
+     x + 7 + 16,
+     0 + 7,
+     z + 7
     );
     rebuild(x, z);
    }

@@ -24,7 +24,7 @@ export declare class WorldData {
     constructor(DVEW: DivineVoxelEngineWorld);
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
-    setLight(x: number, y: number, z: number, lightValue: number): true | -1;
+    setLight(x: number, y: number, z: number, lightValue: number): boolean;
     getLight(x: number, y: number, z: number): number;
     /**# Is Exposed
      * ---

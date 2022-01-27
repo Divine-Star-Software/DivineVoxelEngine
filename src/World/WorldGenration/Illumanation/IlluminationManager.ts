@@ -3,26 +3,33 @@ import { ChunkData } from "Meta/Chunks/Chunk.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 import {
- RGBFloodFill,
- RGBFloodRemove,
- runRGBLightUpdate,
+ runRGBFloodFillAt,
+ runRGBFloodRemove,
+ runRGBFloodRemoveAt,
+ runRGBFloodFill,
 } from "./Functions/RGBFloodLight.js";
-import { runSunLightRemove, sunLightUpdate } from "./Functions/SunLight.js";
+import {
+ runSunLightRemove,
+ runSunLightRemoveAt,
+ runSunLightUpdate,
+ runSunLightUpdateAt,
+} from "./Functions/SunLight.js";
 
 export class IlluminationManager {
  lightByte: LightByte;
  air = [-1, 0];
-
- sunLightUpdate = sunLightUpdate;
+ runSunLightUpdateAt = runSunLightUpdateAt;
+ runSunLightUpdate = runSunLightUpdate;
  runSunLightRemove = runSunLightRemove;
- RGBFloodFill = RGBFloodFill;
- RGBFloodRemove = RGBFloodRemove;
- runRGBLightUpdate = runRGBLightUpdate;
+ runSunLightRemoveAt = runSunLightRemoveAt;
+ runRGBFloodFillAt = runRGBFloodFillAt;
+ runRGBFloodFill = runRGBFloodFill;
+ runRGBFloodRemoveAt = runRGBFloodRemoveAt;
+ runRGBFloodRemove = runRGBFloodRemove;
  _RGBlightUpdateQue: number[][] = [];
  _RGBlightRemovalQue: number[][] = [];
  _sunLightUpdateQue: number[][] = [];
  _sunLightRemoveQue: number[][] = [];
-
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.lightByte = this.DVEW.UTIL.getLightByte();
@@ -38,7 +45,11 @@ export class IlluminationManager {
   const voxels = chunk.voxels;
   for (let x = 0; x < 16; x++) {
    for (let z = 0; z < 16; z++) {
-    this._sunLightUpdateQue.push([chunkX + x - 1, chunkY + 127, chunkZ + z - 1]); 
+    this._sunLightUpdateQue.push([
+     chunkX + x - 1,
+     chunkY + 127,
+     chunkZ + z - 1,
+    ]);
     this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
    }
   }

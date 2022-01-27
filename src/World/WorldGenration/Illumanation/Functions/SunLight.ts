@@ -1,18 +1,14 @@
 import { IlluminationManager } from "../IlluminationManager";
-export function runSunLightRemove(
+export function runSunLightRemoveAt(
  this: IlluminationManager,
- chunkX: number,
- chunkY: number,
- chunkZ: number,
- startX: number,
- startY: number,
- startZ: number
+ x: number,
+ y: number,
+ z: number
 ) {
- let trueStartX = startX + chunkX;
- let trueStartY = startY + chunkY;
- let trueStartZ = startZ + chunkZ;
- this._sunLightRemoveQue.push([trueStartX, trueStartY, trueStartZ]);
-
+ this._sunLightRemoveQue.push([x, y, z]);
+ this.runSunLightRemove();
+}
+export function runSunLightRemove(this: IlluminationManager) {
  while (this._sunLightRemoveQue.length != 0) {
   const node = this._sunLightRemoveQue.shift();
   if (!node) {
@@ -91,9 +87,10 @@ export function runSunLightRemove(
   }
   this.DVEW.worldData.setLight(x, y, z, this.lightByte.removeSunLight(sl));
  }
- this.sunLightUpdate();
+ this.runSunLightUpdate();
 }
-export function sunLightUpdate(this: IlluminationManager) {
+
+export function runSunLightUpdate(this: IlluminationManager) {
  while (this._sunLightUpdateQue.length != 0) {
   const node = this._sunLightUpdateQue.shift();
   if (!node) {
@@ -170,4 +167,14 @@ export function sunLightUpdate(this: IlluminationManager) {
    );
   }
  }
+}
+
+export function runSunLightUpdateAt(
+ this: IlluminationManager,
+ x: number,
+ y: number,
+ z: number
+) {
+ this._sunLightUpdateQue.push([x, y, z]);
+ this.runSunLightUpdate();
 }

@@ -1,6 +1,7 @@
+import { PositionMatrix } from "Meta/Util.types";
 import { IlluminationManager } from "../IlluminationManager";
 
-export function runRGBLightUpdate(this: IlluminationManager) {
+export function runRGBFloodFill(this: IlluminationManager) {
  while (this._RGBlightUpdateQue.length != 0) {
   const node = this._RGBlightUpdateQue.shift();
   if (!node) {
@@ -9,281 +10,182 @@ export function runRGBLightUpdate(this: IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const check = this.DVEW.worldData.getData(x, y, z);
-  let sl = 0;
-  if (check && check[0] <= 1) {
-   sl = check[check.length - 1];
-  }
+  const sl = this.DVEW.worldData.getLight(x, y, z);
 
-  let n1 = 0;
-  let n2 = 0;
-  let n3 = 0;
-  let n4 = 0;
-  let n5 = 0;
-  let n6 = 0;
-  const checkX1 = this.DVEW.worldData.getData(x - 1, y, z);
-  if (checkX1) {
-   if (checkX1[0] <= 1) {
-    n1 = checkX1[checkX1.length - 1];
-   } else {
-    n1 = -1;
-   }
-  }
+  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForRGBAdd(n1, sl)) {
    this._RGBlightUpdateQue.push([x - 1, y, z]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkX1) {
-    checkX1[checkX1.length - 1] = nl;
-   } else {
-    this.DVEW.worldData.setData(x - 1, y, z, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x - 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
-  const checkX2 = this.DVEW.worldData.getData(x + 1, y, z);
-  if (checkX2) {
-   if (checkX2[0] <= 1) {
-    n2 = checkX2[checkX2.length - 1];
-   } else {
-    n2 = -1;
-   }
-  }
+  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForRGBAdd(n2, sl)) {
    this._RGBlightUpdateQue.push([x + 1, y, z]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkX2) {
-    checkX2[checkX2.length - 1] = nl;
-   } else {
-    this.DVEW.worldData.setData(x + 1, y, z, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x + 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
-  const checkZ1 = this.DVEW.worldData.getData(x, y, z - 1);
-  if (checkZ1) {
-   if (checkZ1[0] <= 1) {
-    n3 = checkZ1[checkZ1.length - 1];
-   } else {
-    n3 = -1;
-   }
-  }
+  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForRGBAdd(n3, sl)) {
    this._RGBlightUpdateQue.push([x, y, z - 1]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkZ1) {
-    checkZ1[checkZ1.length - 1] = nl;
-   } else {
-    this.DVEW.worldData.setData(x, y, z - 1, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y,
+    z - 1,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
-  const checkZ2 = this.DVEW.worldData.getData(x, y, z + 1);
-  if (checkZ2) {
-   if (checkZ2[0] <= 1) {
-    n4 = checkZ2[checkZ2.length - 1];
-   } else {
-    n4 = -1;
-   }
-  }
+  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForRGBAdd(n4, sl)) {
    this._RGBlightUpdateQue.push([x, y, z + 1]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkZ2) {
-    checkZ2[checkZ2.length - 1] = this.lightByte.getMinusOneForRGB(sl);
-   } else {
-    this.DVEW.worldData.setData(x, y, z + 1, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y,
+    z + 1,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
-
-  const checkY1 = this.DVEW.worldData.getData(x, y - 1, z);
-  if (checkY1) {
-   if (checkY1[0] <= 1) {
-    n5 = checkY1[checkY1.length - 1];
-   } else {
-    n5 = -1;
-   }
-  }
+  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForRGBAdd(n5, sl)) {
    this._RGBlightUpdateQue.push([x, y - 1, z]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkY1) {
-    checkY1[checkY1.length - 1] = nl;
-   } else {
-    this.DVEW.worldData.setData(x, y - 1, z, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y - 1,
+    z,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
-
-  const checkY2 = this.DVEW.worldData.getData(x, y + 1, z);
-  if (checkY2) {
-   if (checkY2[0] <= 1) {
-    n6 = checkY2[checkY2.length - 1];
-   } else {
-    n6 = -1;
-   }
-  }
+  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForRGBAdd(n6, sl)) {
    this._RGBlightUpdateQue.push([x, y + 1, z]);
-   const nl = this.lightByte.getMinusOneForRGB(sl);
-   if (checkY2) {
-    checkY2[checkY2.length - 1] = nl;
-   } else {
-    this.DVEW.worldData.setData(x, y + 1, z, [-1, 0, nl]);
-   }
+   this.DVEW.worldData.setLight(
+    x,
+    y + 1,
+    z,
+    this.lightByte.getMinusOneForRGB(sl)
+   );
   }
  }
 }
 
-export function RGBFloodFill(
+export function runRGBFloodFillAt(
  this: IlluminationManager,
- voxelData: number[],
- lightEncodedData: number,
- chunkX: number,
- chunkY: number,
- chunkZ: number,
- startX: number,
- startY: number,
- startZ: number
+ x: number,
+ y: number,
+ z: number
 ) {
- let trueStartX = startX + chunkX;
- let trueStartY = startY + chunkY;
- let trueStartZ = startZ + chunkZ;
+ this._RGBlightUpdateQue.push([x, y, z]);
 
- voxelData[voxelData.length - 1] = lightEncodedData;
- this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, voxelData);
-
- this._RGBlightUpdateQue.push([trueStartX, trueStartY, trueStartZ]);
- this.runRGBLightUpdate();
+ this.runRGBFloodFill();
 }
 
+export function runRGBFloodRemoveAt(
+ this: IlluminationManager,
+ removeVoxel: boolean,
+ x: number,
+ y: number,
+ z: number
+) {
+ this._RGBlightRemovalQue.push([x, y, z]);
+ if (removeVoxel) {
+  this.runRGBFloodRemove({ x: x, y: y, z: z });
+ } else {
+  this.runRGBFloodRemove();
+ }
+}
+export function runRGBFloodRemove(
+ this: IlluminationManager,
+ lightSource?: PositionMatrix
+) {
+ while (this._RGBlightRemovalQue.length != 0) {
+  const node = this._RGBlightRemovalQue.shift();
+  if (!node) {
+   break;
+  }
 
-export function RGBFloodRemove(
-    this: IlluminationManager,
-    chunkX: number,
-    chunkY: number,
-    chunkZ: number,
-    startX: number,
-    startY: number,
-    startZ: number
-   ) {
-    let trueStartX = startX + chunkX;
-    let trueStartY = startY + chunkY;
-    let trueStartZ = startZ + chunkZ;
-    this._RGBlightRemovalQue.push([trueStartX, trueStartY, trueStartZ]);
-   
-    // this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ,[-1,0]);
-    while (this._RGBlightRemovalQue.length != 0) {
-     const node = this._RGBlightRemovalQue.shift();
-     if (!node) {
-      break;
-     }
-   
-     const x = node[0];
-     const y = node[1];
-     const z = node[2];
-     const check = this.DVEW.worldData.getData(x, y, z);
-   
-     let sl = 0;
-     if (check) {
-      sl = check[check.length - 1];
-     }
-   
-     let n1 = 0;
-     let n2 = 0;
-     let n3 = 0;
-     let n4 = 0;
-     let n5 = 0;
-     let n6 = 0;
-     const checkX1 = this.DVEW.worldData.getData(x - 1, y, z);
-     if (checkX1) {
-      if (checkX1[0] < 0) {
-       n1 = checkX1[checkX1.length - 1];
-      }
-     }
-     const checkX2 = this.DVEW.worldData.getData(x + 1, y, z);
-     if (checkX2) {
-      if (checkX2[0] < 0) {
-       n2 = checkX2[checkX2.length - 1];
-      }
-     }
-     const checkZ1 = this.DVEW.worldData.getData(x, y, z - 1);
-     if (checkZ1) {
-      if (checkZ1[0] < 0) {
-       n3 = checkZ1[checkZ1.length - 1];
-      }
-     }
-     const checkZ2 = this.DVEW.worldData.getData(x, y, z + 1);
-     if (checkZ2) {
-      if (checkZ2[0] < 0) {
-       n4 = checkZ2[checkZ2.length - 1];
-      }
-     }
-     const checkY1 = this.DVEW.worldData.getData(x, y - 1, z);
-     if (checkY1) {
-      if (checkY1[0] < 0) {
-       n5 = checkY1[checkY1.length - 1];
-      }
-     }
-     const checkY2 = this.DVEW.worldData.getData(x, y + 1, z);
-     if (checkY2) {
-      if (checkY2[0] < 0) {
-       n6 = checkY2[checkY2.length - 1];
-      }
-     }
-   
-     if (n1 != 0 && this.lightByte.isLessThanForRGBRemove(n1, sl)) {
-      this._RGBlightRemovalQue.push([x - 1, y, z]);
-     } else {
-      if (n1 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x - 1, y, z]);
-       }
-      }
-     }
-     if (n2 != 0 && this.lightByte.isLessThanForRGBRemove(n2, sl)) {
-      this._RGBlightRemovalQue.push([x + 1, y, z]);
-     } else {
-      if (n2 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x + 1, y, z]);
-       }
-      }
-     }
-     if (n3 != 0 && this.lightByte.isLessThanForRGBRemove(n3, sl)) {
-      this._RGBlightRemovalQue.push([x, y, z - 1]);
-     } else {
-      if (n3 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x, y, z - 1]);
-       }
-      }
-     }
-     if (n4 != 0 && this.lightByte.isLessThanForRGBRemove(n4, sl)) {
-      this._RGBlightRemovalQue.push([x, y, z + 1]);
-     } else {
-      if (n4 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x, y, z + 1]);
-       }
-      }
-     }
-     if (n5 != 0 && this.lightByte.isLessThanForRGBRemove(n5, sl)) {
-      this._RGBlightRemovalQue.push([x, y - 1, z]);
-     } else {
-      if (n5 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x, y - 1, z]);
-       }
-      }
-     }
-     if (n6 != 0 && this.lightByte.isLessThanForRGBRemove(n6, sl)) {
-      this._RGBlightRemovalQue.push([x, y + 1, z]);
-     } else {
-      if (n6 != 0) {
-       if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-        this._RGBlightUpdateQue.push([x, y + 1, z]);
-       }
-      }
-     }
-     // console.log('sup');
-   
-     this.DVEW.worldData.removeData(x, y, z);
+  const x = node[0];
+  const y = node[1];
+  const z = node[2];
+  const sl = this.DVEW.worldData.getLight(x, y, z);
+  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
+  if (n1 > 0 && this.lightByte.isLessThanForRGBRemove(n1, sl)) {
+   this._RGBlightRemovalQue.push([x - 1, y, z]);
+  } else {
+   if (n1 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
+     this._RGBlightUpdateQue.push([x - 1, y, z]);
     }
-    this.runRGBLightUpdate();
-    this.DVEW.worldData.setData(trueStartX, trueStartY, trueStartZ, [-1, 0]);
    }
-   
+  }
+
+  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
+  if (n2 > 0 && this.lightByte.isLessThanForRGBRemove(n2, sl)) {
+   this._RGBlightRemovalQue.push([x + 1, y, z]);
+  } else {
+   if (n2 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n2, sl)) {
+     this._RGBlightUpdateQue.push([x + 1, y, z]);
+    }
+   }
+  }
+
+  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
+  if (n3 > 0 && this.lightByte.isLessThanForRGBRemove(n3, sl)) {
+   this._RGBlightRemovalQue.push([x, y, z - 1]);
+  } else {
+   if (n3 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n3, sl)) {
+     this._RGBlightUpdateQue.push([x, y, z - 1]);
+    }
+   }
+  }
+
+  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
+  if (n4 > 0 && this.lightByte.isLessThanForRGBRemove(n4, sl)) {
+   this._RGBlightRemovalQue.push([x, y, z + 1]);
+  } else {
+   if (n4 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n4, sl)) {
+     this._RGBlightUpdateQue.push([x, y, z + 1]);
+    }
+   }
+  }
+
+  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
+  if (n5 > 0 && this.lightByte.isLessThanForRGBRemove(n5, sl)) {
+   this._RGBlightRemovalQue.push([x, y - 1, z]);
+  } else {
+   if (n5 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n5, sl)) {
+     this._RGBlightUpdateQue.push([x, y - 1, z]);
+    }
+   }
+  }
+
+  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
+  if (n6 > 0 && this.lightByte.isLessThanForRGBRemove(n6, sl)) {
+   this._RGBlightRemovalQue.push([x, y + 1, z]);
+  } else {
+   if (n6 > 0) {
+    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n6, sl)) {
+     this._RGBlightUpdateQue.push([x, y + 1, z]);
+    }
+   }
+  }
+
+  this.DVEW.worldData.setLight(x, y, z, 0);
+ }
+
+ if (lightSource) {
+  this.DVEW.worldData.setLight(lightSource.x, lightSource.y, lightSource.z, 0);
+  this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
+ }
+ this.runRGBFloodFill();
+}

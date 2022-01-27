@@ -62,9 +62,13 @@ export class WorldData {
             }
             else {
                 if (voxel[0].data.substance == "solid") {
-                    return -1;
+                    return false;
                 }
                 else {
+                    const voxelInterface = voxel[0];
+                    if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
+                        return false;
+                    }
                     voxel[1][voxel[1].length - 1] = lightValue;
                 }
             }
@@ -78,12 +82,14 @@ export class WorldData {
                 return voxel[1][voxel[1].length - 1];
             }
             else {
-                if (voxel[0].data.substance == "solid") {
+                const voxelInterface = voxel[0];
+                if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
+                    return voxelInterface.data.lightValue;
+                }
+                if (voxelInterface.data.substance == "solid") {
                     return 0;
                 }
-                else {
-                    return voxel[1][voxel[1].length - 1];
-                }
+                return voxel[1][voxel[1].length - 1];
             }
         }
         return 0;

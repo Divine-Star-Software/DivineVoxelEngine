@@ -13,6 +13,8 @@ export class DebugBox implements VoxelInteface {
   id: "dve:debugbox",
   substance: "solid",
   defaultState: ["dve:debugbox", 0],
+  lightSource: true,
+  lightValue: 0b1111_0000_1111_1111,
  };
  trueShapeId = 0;
  hooks = {};
@@ -69,6 +71,6 @@ export class DebugBox implements VoxelInteface {
   }
 
   data.shapeTemplate.push(this.trueShapeId);
-  this.voxelHelper.processVoxelLight(data,this);
+  this.voxelHelper.processVoxelLight(data, this);
  }
 }

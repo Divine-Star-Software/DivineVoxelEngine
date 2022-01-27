@@ -55,6 +55,12 @@ export declare class LightByte {
      * @returns
      */
     getMinusOneForRGB(sl: number): number;
+    /**# Remove RGB Light
+     * ---
+     * Removes all RGB light from an encoded light value.
+     * @param sl
+     */
+    removeRGBLight(sl: number): number;
     /**# Get Full Sun Light
      * --
      * Alters the encoded light number passed to it to give it full sun light.

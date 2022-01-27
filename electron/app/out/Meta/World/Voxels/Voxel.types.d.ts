@@ -34,6 +34,8 @@ export declare type VoxelData = {
     substance: VoxelSubstanceType;
     defaultState: any[];
     states?: any[];
+    lightSource?: boolean;
+    lightValue?: number;
 };
 export interface VoxelInteface {
     data: VoxelData;

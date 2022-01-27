@@ -107,6 +107,19 @@ export class LightByte {
   return bv;
  }
 
+ /**# Remove RGB Light
+  * ---
+  * Removes all RGB light from an encoded light value.
+  * @param sl
+  */
+ removeRGBLight(sl: number) {
+  let bv = sl;
+  bv = (bv & ~(0xf << 4)) | (0 << 4);
+  bv = (bv & ~(0xf << 8)) | (0 << 8);
+  bv = (bv & ~(0xf << 12)) | (0 << 12);
+  return bv;
+ }
+
  /**# Get Full Sun Light
   * --
   * Alters the encoded light number passed to it to give it full sun light.

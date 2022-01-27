@@ -1,3 +1,5 @@
 import { IlluminationManager } from "../IlluminationManager";
-export declare function runSunLightRemove(this: IlluminationManager, chunkX: number, chunkY: number, chunkZ: number, startX: number, startY: number, startZ: number): void;
-export declare function sunLightUpdate(this: IlluminationManager): void;
+export declare function runSunLightRemoveAt(this: IlluminationManager, x: number, y: number, z: number): void;
+export declare function runSunLightRemove(this: IlluminationManager): void;
+export declare function runSunLightUpdate(this: IlluminationManager): void;
+export declare function runSunLightUpdateAt(this: IlluminationManager, x: number, y: number, z: number): void;

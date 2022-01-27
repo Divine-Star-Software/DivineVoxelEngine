@@ -41,7 +41,7 @@ const start = () => {
             if (!chunk)
                 continue;
             DVEW.worldGeneration.illumantionManager.addChunkToSunLightUpdate(chunk, x, 0, z);
-            DVEW.worldGeneration.illumantionManager.sunLightUpdate();
+            DVEW.worldGeneration.illumantionManager.runSunLightUpdate();
             DVEW.buildChunk(x, 0, z);
         }
     }
@@ -55,7 +55,7 @@ const start = () => {
         if (!chunk)
             return;
         const voxels = chunk.voxels;
-        DVEW.worldGeneration.illumantionManager.runSunLightRemove(0, 0, 0, 7, 126 / 2, 7);
+        DVEW.worldGeneration.illumantionManager.runSunLightRemoveAt(7, 126 / 2, 7);
         if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
             voxels[7][7][126 / 2] = [2, 0, 0];
         }

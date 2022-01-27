@@ -1,4 +1,6 @@
+import { PositionMatrix } from "Meta/Util.types";
 import { IlluminationManager } from "../IlluminationManager";
-export declare function runRGBLightUpdate(this: IlluminationManager): void;
-export declare function RGBFloodFill(this: IlluminationManager, voxelData: number[], lightEncodedData: number, chunkX: number, chunkY: number, chunkZ: number, startX: number, startY: number, startZ: number): void;
-export declare function RGBFloodRemove(this: IlluminationManager, chunkX: number, chunkY: number, chunkZ: number, startX: number, startY: number, startZ: number): void;
+export declare function runRGBFloodFill(this: IlluminationManager): void;
+export declare function runRGBFloodFillAt(this: IlluminationManager, x: number, y: number, z: number): void;
+export declare function runRGBFloodRemoveAt(this: IlluminationManager, removeVoxel: boolean, x: number, y: number, z: number): void;
+export declare function runRGBFloodRemove(this: IlluminationManager, lightSource?: PositionMatrix): void;
