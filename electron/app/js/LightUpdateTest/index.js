@@ -5,6 +5,13 @@ await DVE.$INIT({
     worldWorkerPath: "../../../js/LightUpdateTest/World/index.js",
     builderWorkerPath: "../../../js/Shared/Builder/builder.js",
     fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+    lighting: {
+        doAO: true,
+        doRGBLight: true,
+        doSunLight: true,
+        autoRGBLight: true,
+        autoSunLight: true
+    }
 });
 console.log("%clight update test", "color:cyan; font-size:30px;");
 const readyStateCheckInterval = setInterval(function () {
@@ -13,7 +20,6 @@ const readyStateCheckInterval = setInterval(function () {
         init();
     }
 }, 10);
-//DS.chunkManager.createSharedArrayBuffers();
 const init = async () => {
     const canvas = document.createElement("canvas");
     canvas.id = "renderCanvas";
@@ -61,7 +67,8 @@ const init = async () => {
     scene.fogEnabled = false;
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-    DVE.$SCENEINIT({ scene: scene });
+    await DVE.$SCENEINIT({ scene: scene });
+    DVE.renderManager.setSunLevel(1);
     let divFps = document.getElementById("fps");
     //render loop
     engine.runRenderLoop(() => {

@@ -10,12 +10,14 @@ export type EngineSettingsData = {
  };
  lighting?: {
   doAO: boolean;
-  doColors: boolean;
   doSunLight: boolean;
   doRGBLight: boolean;
   autoRGBLight: boolean;
   autoSunLight: boolean;
  };
+ voxels ?: {
+     doColors : boolean;
+ }
  materials?: {
   disableFloraShaderEffects: boolean;
   disableFluidShaderEffects: boolean;

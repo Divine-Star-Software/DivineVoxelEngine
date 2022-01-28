@@ -31,6 +31,10 @@ export const solidShaders = {
     varying vec4 sunLColor;
     varying vec4 vColors;
 
+    varying float vDoSun;
+    varying float vDoRGB;
+
+
     varying float fFogDistance;
    
     varying float animIndex;
@@ -54,19 +58,21 @@ export const solidShaders = {
          if(doAO == 1.0){
             aoColor = aoColors;
          } else {
-            aoColor = vec4(1,1,1,1); 
+            aoColor = vec4(1.0,1.0,1.0,1.0); 
          }
   
          if(doRGB == 1.0){
+            vDoRGB = 1.0;
             rgbLColor = rgbLightColors;
          } else {
-            rgbLColor = vec4(1,1,1,1); 
+            vDoRGB = 0.0;
          }
 
          if(doSun == 1.0){
+            vDoSun = 1.0;
             sunLColor = sunLightColors;
          } else {
-            sunLColor = vec4(1,1,1,1); 
+            vDoSun = 0.0;
          }
 
          if(doColor == 1.0){
@@ -85,13 +91,16 @@ export const solidShaders = {
     precision highp sampler2DArray;
    
     uniform float sunLightLevel;
-   
+    uniform float baseLevel;
    
     varying vec3 vUV;
     varying vec4 aoColor;
     varying vec4 rgbLColor;
     varying vec4 sunLColor;
     varying vec4 vColors;
+
+    varying float vDoSun;
+    varying float vDoRGB;
 
     varying vec3 vNormal;
    
@@ -100,6 +109,12 @@ export const solidShaders = {
     uniform sampler2DArray arrayTex;
     `,
  fragMain: `
+     vec4 getLight(vec4 base) {
+       return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
+     }
+     vec4 getAO(vec4 base) {
+    return  base * mix(base, aoColor , 1.0);
+  }
     void main(void) {
         vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
 
@@ -110,20 +125,13 @@ export const solidShaders = {
        //mix with colors
        vec4 mixColors = rgb * vColors;
 
-        //mix with ao
-        vec4 mixVertex = mix(mixColors, aoColor , 1.0);
-
-        //apply to texture color
-        vec4 newBase = mixColors * mixVertex;
-
-        //mix with rgb and sun light
-        vec4 light = rgbLColor +  sunLColor  * sunLightLevel;
-        vec4 mixLight  = newBase * light;
+        vec4 newBase = getAO(mixColors);
+        vec4 mixLight = getLight(newBase);
 
         //do fog
         float fog = CalcFogFactor();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
 
-        gl_FragColor = vec4(finalColor.rgb , mixLight.w ); 
+        gl_FragColor = vec4(finalColor.rgb , rgb.w ); 
     }`,
 };

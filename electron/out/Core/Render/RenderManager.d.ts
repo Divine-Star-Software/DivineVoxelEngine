@@ -23,4 +23,6 @@ export declare class RenderManager {
     magmaMesh: MagmaMesh;
     constructor();
     reStart(): void;
+    setSunLevel(level: number): void;
+    setBaseLevel(level: number): void;
 }

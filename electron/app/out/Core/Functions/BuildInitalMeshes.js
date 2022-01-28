@@ -9,7 +9,7 @@ export async function BuildInitalMeshes(DVE, scene) {
     const solidAnimations = DVE.world.baseWorldData.textureAnimations.solid;
     const soidAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.solid;
     const combinedChunkTextures = await DVE.renderManager.textureCreator.createMaterialTexture(scene, solidTextures);
-    DVE.renderManager.solidMaterial.createMaterial(scene, combinedChunkTextures, solidAnimations, soidAnimationTimes);
+    DVE.renderManager.solidMaterial.createMaterial(DVE.engineSettings.settings, scene, combinedChunkTextures, solidAnimations, soidAnimationTimes);
     const floraTextures = DVE.world.baseWorldData?.texturePaths.flora;
     const floraAnimations = DVE.world.baseWorldData.textureAnimations.flora;
     const floraAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.flora;

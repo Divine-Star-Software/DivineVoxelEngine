@@ -24,6 +24,11 @@ export class RenderManager {
     fluidMesh = new FluidMesh(this.fluidMaterial);
     magmaMesh = new MagmaMesh(this.magmaMaterial);
     constructor() { }
-    reStart() {
+    reStart() { }
+    setSunLevel(level) {
+        this.solidMaterial.setSunLightLevel(level);
+    }
+    setBaseLevel(level) {
+        this.solidMaterial.setBaseLevel(level);
     }
 }

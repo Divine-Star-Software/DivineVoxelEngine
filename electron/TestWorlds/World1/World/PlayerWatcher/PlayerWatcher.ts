@@ -194,12 +194,10 @@ export class PlayerWatcher {
     const x = data[i];
     const y = data[i + 1];
     const z = data[i + 2];
-    const voxelData = this.DVEW.worldData.getVoxelData(x, y, z);
+    const voxelData = this.DVEW.worldData.getVoxel(x, y, z);
 
-    if (voxelData) {
-     if (voxelData[0]) {
-      break;
-     }
+    if (voxelData && voxelData[0] != -1) {
+     break;
     }
    }
    this.playerPickPosition[0] = data[i];
@@ -208,36 +206,16 @@ export class PlayerWatcher {
 
    //below player
 
-   const belowVoxel = this.DVEW.worldData.getVoxelData(
-    pAbsX,
-    pAbsY,
-    pAbsZ,
-
-    0,
-
-    -2,
-    0
-   );
-   if (belowVoxel) {
+   const belowVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY - 2, pAbsZ);
+   if (belowVoxel && belowVoxel[0] != -1) {
     this.playerStatesArray[0] = 1;
    } else {
     this.playerStatesArray[0] = 0;
    }
 
-   const headVoxel = this.DVEW.worldData.getVoxelData(
-    pAbsX,
-    pAbsY,
-    pAbsZ,
-    0,
-    0,
-    0
-   );
-   if (headVoxel) {
-    if (
-     this.DVEW.voxelManager.getVoxel(
-      this.DVEW.worldGeneration.getGlobalVoxelPalette()[headVoxel[0]][0]
-     ).data.substance == "fluid"
-    ) {
+   const headVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY, pAbsZ);
+   if (headVoxel && headVoxel[0] != -1) {
+    if (headVoxel[0].data.substance == "fluid") {
      this.playerStatesArray[1] = 1;
     } else {
      this.playerStatesArray[1] = 0;

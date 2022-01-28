@@ -13,9 +13,11 @@ export class EngineSettings {
             chunkYPow2: 7,
             chunkZPow2: 4,
         },
+        voxels: {
+            doColors: true,
+        },
         lighting: {
             doAO: true,
-            doColors: true,
             doSunLight: true,
             doRGBLight: true,
             autoRGBLight: true,

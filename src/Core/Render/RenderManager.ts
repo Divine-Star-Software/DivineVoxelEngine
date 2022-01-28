@@ -31,7 +31,12 @@ export class RenderManager {
 
  constructor() {}
 
- reStart() {
-     
-}
+ reStart() {}
+
+ setSunLevel(level: number) {
+  this.solidMaterial.setSunLightLevel(level);
+ }
+ setBaseLevel(level: number) {
+  this.solidMaterial.setBaseLevel(level);
+ }
 }

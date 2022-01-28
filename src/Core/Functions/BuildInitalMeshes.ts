@@ -22,6 +22,7 @@ export async function BuildInitalMeshes(
    solidTextures
   );
  DVE.renderManager.solidMaterial.createMaterial(
+  DVE.engineSettings.settings,
   scene,
   combinedChunkTextures,
   solidAnimations,

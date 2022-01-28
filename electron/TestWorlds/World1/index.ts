@@ -11,7 +11,14 @@ await DVE.$INIT({
  textureOptions : {
      width : 16,
      height : 16
- }
+ },
+ lighting : {
+    doAO : true,
+    doRGBLight : false,
+    doSunLight : false,
+    autoRGBLight : false,
+    autoSunLight : false
+}
 });
 
 const player = new Player(DVE);
@@ -77,9 +84,10 @@ const init = async () => {
   player.update();
  }, 10);
 
- DVE.$SCENEINIT({ scene: scene });
+ await DVE.$SCENEINIT({ scene: scene });
+ DVE.renderManager.setBaseLevel(0.5);
  let divFps = document.getElementById("fps");
- //render loop
+ //render loop 
  engine.runRenderLoop(() => {
   scene.render();
   //@ts-ignore
