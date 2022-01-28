@@ -9,7 +9,7 @@ export class ChunkMeshBuilder {
         this.UTIL = UTIL;
         this.infoByte = this.UTIL.getInfoByte();
     }
-    async buildChunkMesh(chunkType, chunkX, chunkY, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, colorTemplate, RGBLightTemplate, sunLightTemplate, aoTemplate) {
+    async buildChunkMesh(chunkType, chunkX, chunkY, chunkZ, positionsTemplate, faceTemplate, shapeTemplate, uvTemplate, colorTemplate, lightTemplate, aoTemplate) {
         const positions = [];
         const indices = [];
         const uvs = [];
@@ -21,7 +21,6 @@ export class ChunkMeshBuilder {
         let indicieIndex = 0;
         let aoIndex = 0;
         let RGBLightIndex = 0;
-        let sunLightIndex = 0;
         let colorIndex = 0;
         let uvIndex = 0;
         let faceIndex = 0;
@@ -47,10 +46,8 @@ export class ChunkMeshBuilder {
                 uvTemplateIndex: uvIndex,
                 colorTemplate: colorTemplate,
                 colorIndex: colorIndex,
-                RGBLightTemplate: RGBLightTemplate,
-                rgbLightIndex: RGBLightIndex,
-                sunLightTemplate: sunLightTemplate,
-                sunlightIndex: sunLightIndex,
+                lightTemplate: lightTemplate,
+                lightIndex: RGBLightIndex,
                 aoTemplate: aoTemplate,
                 aoIndex: aoIndex,
                 position: { x: x, y: y, z: z },
@@ -58,8 +55,7 @@ export class ChunkMeshBuilder {
             indicieIndex = newIndexes.newIndicieIndex;
             aoIndex = newIndexes.newAOIndex;
             uvIndex = newIndexes.newUVTemplateIndex;
-            RGBLightIndex = newIndexes.newRGBLightIndex;
-            sunLightIndex = newIndexes.newSunLightIndex;
+            RGBLightIndex = newIndexes.newlightIndex;
             colorIndex = newIndexes.newColorIndex;
             shapeIndex++;
             faceIndex++;

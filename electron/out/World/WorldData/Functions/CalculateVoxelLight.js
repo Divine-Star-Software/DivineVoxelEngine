@@ -1,4 +1,4 @@
-export function CalculateVoxelLight(voxel, voxelData, voxelPalette, RGBlightTemplate, sunlightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
+export function CalculateVoxelLight(voxel, voxelData, voxelPalette, RGBlightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
     // +y
     if (exposedFaces[0]) {
         let airLight = this.getData(x + chunkX, y + chunkY + 1, z + chunkZ);

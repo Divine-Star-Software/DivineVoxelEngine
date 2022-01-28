@@ -12,8 +12,7 @@ export declare class FullBoxDiagonalIntersection implements VoxelShapeInterface 
         newIndicieIndex: number;
         newUVTemplateIndex: number;
         newColorIndex: number;
-        newRGBLightIndex: number;
-        newSunLightIndex: number;
+        newlightIndex: number;
         newAOIndex: number;
     };
 }

@@ -17,9 +17,9 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
 
    port.postMessage(["connect-fluid-shape-map", DVEFB.shapeManager.shapeMap]);
   }
-  if(message == "re-start"){
-    DVEFB.reStart();
-}
+  if (message == "re-start") {
+   DVEFB.reStart();
+  }
  });
 
  const messageFromWorld = (event: MessageEvent) => {
@@ -35,10 +35,9 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
    const faces = new Uint8Array(data[5]);
    const shapes = new Uint16Array(data[6]);
    const uvs = new Uint16Array(data[7]);
-   const rgbLight = new Float32Array(data[8]);
-   const sunLight = new Float32Array(data[9]);
+   const colors = new Float32Array(data[8]);
+   const light = new Float32Array(data[9]);
    const ao = new Float32Array(data[10]);
-
 
    DVEFB.fluidMeshBuilder.addTemplate(
     chunkX,
@@ -48,7 +47,8 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
     faces,
     shapes,
     uvs,
-    rgbLight,
+    colors,
+    light,
     ao
    );
   }

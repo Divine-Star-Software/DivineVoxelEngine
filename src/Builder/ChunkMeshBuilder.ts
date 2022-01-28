@@ -23,8 +23,7 @@ export class ChunkMeshBuilder {
   shapeTemplate: Uint16Array,
   uvTemplate: Uint16Array,
   colorTemplate: Float32Array,
-  RGBLightTemplate: Float32Array,
-  sunLightTemplate: Int32Array,
+  lightTemplate: Float32Array,
   aoTemplate: Float32Array
  ) {
   const positions: number[] = [];
@@ -39,7 +38,6 @@ export class ChunkMeshBuilder {
   let indicieIndex = 0;
   let aoIndex = 0;
   let RGBLightIndex = 0;
-  let sunLightIndex = 0;
   let colorIndex = 0;
   let uvIndex = 0;
   let faceIndex = 0;
@@ -71,10 +69,8 @@ export class ChunkMeshBuilder {
     uvTemplateIndex: uvIndex,
     colorTemplate: colorTemplate,
     colorIndex: colorIndex,
-    RGBLightTemplate: RGBLightTemplate,
-    rgbLightIndex: RGBLightIndex,
-    sunLightTemplate: sunLightTemplate,
-    sunlightIndex: sunLightIndex,
+    lightTemplate: lightTemplate,
+    lightIndex: RGBLightIndex,
     aoTemplate: aoTemplate,
     aoIndex: aoIndex,
     position: { x: x, y: y, z: z },
@@ -82,8 +78,7 @@ export class ChunkMeshBuilder {
    indicieIndex = newIndexes.newIndicieIndex;
    aoIndex = newIndexes.newAOIndex;
    uvIndex = newIndexes.newUVTemplateIndex;
-   RGBLightIndex = newIndexes.newRGBLightIndex;
-   sunLightIndex = newIndexes.newSunLightIndex;
+   RGBLightIndex = newIndexes.newlightIndex;
    colorIndex = newIndexes.newColorIndex;
    shapeIndex++;
    faceIndex++;
@@ -94,8 +89,6 @@ export class ChunkMeshBuilder {
   const AOColorsArray = new Float32Array(AOColors);
   const RGBLightColorsArray = new Float32Array(RGBLightColors);
   const sunLightColorsArray = new Float32Array(sunLightColors);
-
-
   const colorsArray = new Float32Array(colors);
   const uvArray = new Float32Array(uvs);
 

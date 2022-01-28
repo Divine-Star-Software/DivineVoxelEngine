@@ -48,9 +48,8 @@ export class FullBoxDiagonalIntersection implements VoxelShapeInterface {
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newRGBLightIndex: data.rgbLightIndex + 4,
+    newlightIndex: data.lightIndex + 4,
     newColorIndex: data.colorIndex + 4,
-    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -94,9 +93,8 @@ export class FullBoxDiagonalIntersection implements VoxelShapeInterface {
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
-    newRGBLightIndex: data.rgbLightIndex + 4,
+    newlightIndex: data.lightIndex + 4,
     newColorIndex: data.colorIndex + 4,
-    newSunLightIndex: data.sunlightIndex + 4,
     newAOIndex: data.aoIndex + 4,
    };
   },
@@ -110,25 +108,22 @@ export class FullBoxDiagonalIntersection implements VoxelShapeInterface {
   const face1 = this.faces[0](data);
   data.indicieIndex = face1.newIndicieIndex;
   data.uvTemplateIndex = face1.newUVTemplateIndex;
-  data.rgbLightIndex = face1.newRGBLightIndex;
+  data.lightIndex = face1.newlightIndex;
   data.aoIndex = face1.newAOIndex;
   data.colorIndex = face1.newColorIndex;
-  data.sunlightIndex = face1.newSunLightIndex;
 
   const face2 = this.faces[1](data);
   data.indicieIndex = face2.newIndicieIndex;
   data.uvTemplateIndex = face2.newUVTemplateIndex;
-  data.rgbLightIndex = face2.newRGBLightIndex;
+  data.lightIndex = face2.newlightIndex;
   data.aoIndex = face2.newAOIndex;
   data.colorIndex = face2.newColorIndex;
-  data.sunlightIndex = face2.newSunLightIndex;
   return {
-   newIndicieIndex: data.indicieIndex,
-   newUVTemplateIndex: data.uvTemplateIndex,
-   newColorIndex: data.colorIndex,
-   newRGBLightIndex: data.rgbLightIndex,
-   newSunLightIndex: data.sunlightIndex,
-   newAOIndex: data.aoIndex,
-  };
+    newIndicieIndex: data.indicieIndex,
+    newUVTemplateIndex: data.uvTemplateIndex,
+    newColorIndex: data.colorIndex,
+    newlightIndex: data.lightIndex,
+    newAOIndex: data.aoIndex,
+   };
  }
 }

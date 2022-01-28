@@ -13,8 +13,7 @@ export declare class BoxVoxelShape implements VoxelShapeInterface {
         newIndicieIndex: number;
         newUVTemplateIndex: number;
         newColorIndex: number;
-        newRGBLightIndex: number;
-        newSunLightIndex: number;
+        newlightIndex: number;
         newAOIndex: number;
     };
 }

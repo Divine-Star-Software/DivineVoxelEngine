@@ -68,8 +68,8 @@ export class BuilderManager {
     const faces = new Uint8Array(baseTemplate.faceTemplate);
     const shapes = new Uint16Array(baseTemplate.shapeTemplate);
     const uvs = new Uint16Array(baseTemplate.uvTemplate);
-    const rbgLight = new Float32Array(baseTemplate.RGBLightTemplate);
-    const sunLight = new Float32Array(baseTemplate.sunLightTemplate);
+    const colors = new Float32Array(baseTemplate.colorTemplate);
+    const light = new Float32Array(baseTemplate.lightTemplate);
     const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
     this.fluidBuilder.postMessage([
@@ -81,8 +81,8 @@ export class BuilderManager {
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
-     rbgLight.buffer,
-     sunLight.buffer,
+     colors.buffer,
+     light.buffer,
      ambientOcclusion.buffer,
     ]),
      [
@@ -90,8 +90,8 @@ export class BuilderManager {
       faces.buffer,
       shapes.buffer,
       uvs.buffer,
-      rbgLight.buffer,
-      sunLight.buffer,
+      colors.buffer,
+      light.buffer,
       ambientOcclusion.buffer,
      ];
    } else {
@@ -99,8 +99,8 @@ export class BuilderManager {
     const faces = new Uint8Array(baseTemplate.faceTemplate);
     const shapes = new Uint16Array(baseTemplate.shapeTemplate);
     const uvs = new Uint16Array(baseTemplate.uvTemplate);
-    const rgbLight = new Float32Array(baseTemplate.RGBLightTemplate);
-    const sunLight = new Int32Array(baseTemplate.sunLightTemplate);
+    const colors = new Float32Array(baseTemplate.colorTemplate);
+    const light = new Float32Array(baseTemplate.lightTemplate);
     const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
     this.builders[this.count].postMessage([
@@ -112,8 +112,8 @@ export class BuilderManager {
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
-     rgbLight.buffer,
-     sunLight.buffer,
+     colors.buffer,
+     light.buffer,
      ambientOcclusion.buffer,
     ]),
      [
@@ -121,8 +121,8 @@ export class BuilderManager {
       faces.buffer,
       shapes.buffer,
       uvs.buffer,
-      rgbLight.buffer,
-      sunLight.buffer,
+      colors.buffer,
+      light.buffer,
       ambientOcclusion.buffer,
      ];
     this.count++;
@@ -151,8 +151,8 @@ export class BuilderManager {
     const faces = new Uint8Array(baseTemplate.faceTemplate);
     const shapes = new Uint16Array(baseTemplate.shapeTemplate);
     const uvs = new Uint16Array(baseTemplate.uvTemplate);
-    const rbgLight = new Float32Array(baseTemplate.RGBLightTemplate);
-    const sunLight = new Float32Array(baseTemplate.sunLightTemplate);
+    const colors = new Float32Array(baseTemplate.colorTemplate);
+    const light = new Float32Array(baseTemplate.lightTemplate);
     const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
     this.fluidBuilder.postMessage([
@@ -164,8 +164,8 @@ export class BuilderManager {
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
-     rbgLight.buffer,
-     sunLight.buffer,
+     colors.buffer,
+     light.buffer,
      ambientOcclusion.buffer,
     ]),
      [
@@ -173,8 +173,8 @@ export class BuilderManager {
       faces.buffer,
       shapes.buffer,
       uvs.buffer,
-      rbgLight.buffer,
-      sunLight.buffer,
+      colors.buffer,
+      light.buffer,
       ambientOcclusion.buffer,
      ];
    } else {
@@ -182,8 +182,8 @@ export class BuilderManager {
     const faces = new Uint8Array(baseTemplate.faceTemplate);
     const shapes = new Uint16Array(baseTemplate.shapeTemplate);
     const uvs = new Uint16Array(baseTemplate.uvTemplate);
-    const rgbLight = new Float32Array(baseTemplate.RGBLightTemplate);
-    const sunLight = new Int32Array(baseTemplate.sunLightTemplate);
+    const colors = new Float32Array(baseTemplate.colorTemplate);
+    const light = new Float32Array(baseTemplate.lightTemplate);
     const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
 
     this.builders[this.count].postMessage([
@@ -195,8 +195,8 @@ export class BuilderManager {
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
-     rgbLight.buffer,
-     sunLight.buffer,
+     colors.buffer,
+     light.buffer,
      ambientOcclusion.buffer,
     ]),
      [
@@ -204,8 +204,8 @@ export class BuilderManager {
       faces.buffer,
       shapes.buffer,
       uvs.buffer,
-      rgbLight.buffer,
-      sunLight.buffer,
+      colors.buffer,
+      light.buffer,
       ambientOcclusion.buffer,
      ];
     this.count++;

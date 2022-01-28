@@ -8,7 +8,6 @@ export function CalculateVoxelLight(
  voxelData: any[],
  voxelPalette: VoxelPalette,
  RGBlightTemplate: number[],
- sunlightTemplate: number[],
  exposedFaces: number[],
  chunkX: number,
  chunkY: number,

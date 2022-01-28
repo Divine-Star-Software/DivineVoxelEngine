@@ -18,8 +18,8 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
 
    port.postMessage(["connect-shape-map", DVEB.shapeManager.shapeMap]);
   }
-  if(message == "re-start"){
-      DVEB.reStart();
+  if (message == "re-start") {
+   DVEB.reStart();
   }
  });
 
@@ -35,10 +35,8 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
    new Uint8Array(data[5]),
    new Uint16Array(data[6]),
    new Uint16Array(data[7]),
-   //change to color template eventually
    new Float32Array(data[8]),
-   new Float32Array(data[8]),
-   new Int32Array(data[9]),
+   new Float32Array(data[9]),
    new Float32Array(data[10])
   );
  };

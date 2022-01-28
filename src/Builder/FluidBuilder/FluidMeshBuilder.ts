@@ -67,10 +67,8 @@ export class FluidMeshBuilder {
         uvTemplateIndex: uvIndex,
         colorTemplate: lightTemplate,
         colorIndex: colorIndex,
-        RGBLightTemplate: lightTemplate,
-        rgbLightIndex: RGBLightIndex,
-        sunLightTemplate: lightTemplate,
-        sunlightIndex: sunLightIndex,
+        lightTemplate: lightTemplate,
+        lightIndex: RGBLightIndex,
         aoTemplate: lightTemplate,
         aoIndex: aoIndex,
         position: { x: x, y: y, z: z },
@@ -78,8 +76,7 @@ export class FluidMeshBuilder {
     indicieIndex = newIndexes.newIndicieIndex;
     aoIndex = newIndexes.newAOIndex;
     uvIndex = newIndexes.newUVTemplateIndex;
-    RGBLightIndex = newIndexes.newRGBLightIndex;
-    sunLightIndex = newIndexes.newSunLightIndex;
+    RGBLightIndex = newIndexes.newlightIndex;
     colorIndex = newIndexes.newColorIndex;
     shapeIndex++;
     positionIndex += 3;
@@ -97,6 +94,7 @@ export class FluidMeshBuilder {
   newFaceTemplate: Uint8Array,
   newShapeTemplate: Uint16Array,
   newUvTemplate: Uint16Array,
+  newColorsTemplate : Float32Array,
   newLightTemplate: Float32Array,
   newAoTemplate: Float32Array
  ) {
@@ -107,6 +105,7 @@ export class FluidMeshBuilder {
    newUvTemplate,
    newLightTemplate,
    newAoTemplate,
+   newColorsTemplate
   ];
 
   this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`] = [chunkX, chunkZ, chunkY];

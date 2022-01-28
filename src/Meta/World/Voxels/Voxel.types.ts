@@ -13,17 +13,16 @@ export type VoxelSubstanceType =
  | "fluid"
  | "magma";
 
-
-
 export type VoxelProcessData = {
  exposedFaces: number[];
  voxelPalettee: VoxelPalette;
  voxelData: any[];
- aoTemplate: number[];
- RGBLightTemplate: number[];
- sunLightTemplate: number[];
  uvTemplate: number[];
  shapeTemplate: number[];
+ colorTemplate : number[];
+ lightTemplate: number[];
+ aoTemplate: number[];
+
  chunkX: number;
  chunkY: number;
  chunkZ: number;
@@ -43,8 +42,8 @@ export type VoxelData = {
  substance: VoxelSubstanceType;
  defaultState: any[];
  states?: any[];
- lightSource ?: boolean;
- lightValue ?: number;
+ lightSource?: boolean;
+ lightValue?: number;
 };
 
 export interface VoxelInteface {

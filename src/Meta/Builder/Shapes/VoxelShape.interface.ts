@@ -53,10 +53,8 @@ export type VoxelShapeAddData = {
  uvTemplateIndex: number;
  colorTemplate: Float32Array;
  colorIndex: number;
- RGBLightTemplate: Float32Array;
- rgbLightIndex: number;
- sunLightTemplate: Int32Array;
- sunlightIndex: number;
+ lightTemplate: Float32Array;
+ lightIndex: number;
  aoTemplate: Float32Array;
  aoIndex: number;
  position: PositionMatrix;
@@ -66,8 +64,7 @@ export type VoxelShapeAddReturnData = {
  newIndicieIndex: number;
  newUVTemplateIndex: number;
  newColorIndex: number;
- newRGBLightIndex: number;
- newSunLightIndex: number;
+ newlightIndex: number;
  newAOIndex: number;
 };
 

@@ -5,9 +5,9 @@ export type ChunkTemplate = {
  faceTemplate: number[];
  uvTemplate: number[];
  shapeTemplate: number[];
- RGBLightTemplate: number[];
- sunLightTemplate: number[];
+ lightTemplate: number[];
  aoTemplate: number[];
+ colorTemplate : number[];
 };
 
 export type ChunkVoxels = any[][][];
