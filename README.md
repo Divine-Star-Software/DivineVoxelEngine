@@ -38,6 +38,7 @@ Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/w
 - Easy to use light API and light options
 - Easy to use auto update world on voxel add/remove 
   - Will auto update light sources for you. 
+- Fluid flow and magma flow like MineCraft.
 - Same voxel different colors
   - Set a color directly on voxel data. 
   - Options to create shade gradient with neighbors. 
