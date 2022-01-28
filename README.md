@@ -74,11 +74,8 @@ Sceen shots:
 
 ### Want to contribute?
 
-If you would like to contribute please first read the CodeStyles file in the root directory. 
+If you would like to contribute please read [Contributions & Code Style Guide](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki/Contributions-&-Code-Style-Guide) of the wiki.
 
-Then get a hold of me through github or other social media. 
-
-I don't need much help but if you want to provide example worlds, more shader effects, and other improvments let me know. 
 
 
 
