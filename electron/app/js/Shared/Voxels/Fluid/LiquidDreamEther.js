@@ -56,6 +56,7 @@ export class LiquidDreamEther {
         if (data.exposedFaces[5]) {
             data.lightTemplate.push(0b1111, 0b1111, 0b1111, 0b1111);
         }
+        data.shapeStateTemplate.push(data.voxelData[1]);
         data.shapeTemplate.push(this.trueShapeId);
     }
 }

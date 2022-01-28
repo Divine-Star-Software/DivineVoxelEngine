@@ -161,4 +161,14 @@ export class BuilderWorkerManager {
    event.data
   );
  }
+
+ _syncSettings() {
+  for (const builders of this.builders) {
+   builders.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+  }
+  this.fluidBuilder.postMessage([
+   "sync-settings",
+   this.DVE.engineSettings.settings,
+  ]);
+ }
 }

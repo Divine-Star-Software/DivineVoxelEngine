@@ -34,8 +34,11 @@ export class SolidMaterial {
                 "vFogColor",
                 "sunLightLevel",
                 "projection",
-                "anim1Index",
                 "arrayTex",
+                "doAO",
+                "doSun",
+                "doRGB",
+                "doColor",
                 ...animData.uniforms,
             ],
             needAlphaBlending: true,
@@ -52,26 +55,30 @@ export class SolidMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
         };
         this.material = shaderMaterial;
+        shaderMaterial.setFloat("doAO", 1.0);
+        shaderMaterial.setFloat("doSun", 1.0);
+        shaderMaterial.setFloat("doRGB", 1.0);
+        shaderMaterial.setFloat("doColor", 1.0);
         this.renderManager.animationManager.registerMaterial("solid", shaderMaterial);
         // effect.setColor4("sunLightLevel", new BABYLON.Color3(1, 1, 1), 1);
         /*   let level = 0;
-          let up = true;
-          setInterval(() => {
-           if (up) {
-            level += 0.01;
-           } else {
-            level -= 0.01;
-           }
-        
-           if (level >= 1) {
-            up = false;
-           }
-           if (level <= 0) {
-            up = true;
-           }
-        
-           this.material.setFloat("sunLightLevel", level);
-          }, 100); */
+        let up = true;
+        setInterval(() => {
+         if (up) {
+          level += 0.01;
+         } else {
+          level -= 0.01;
+         }
+      
+         if (level >= 1) {
+          up = false;
+         }
+         if (level <= 0) {
+          up = true;
+         }
+      
+         this.material.setFloat("sunLightLevel", level);
+        }, 100); */
         this.material.setFloat("sunLightLevel", 1);
         return this.material;
     }

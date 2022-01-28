@@ -18,12 +18,18 @@ export class BuilderManager {
   transparent: -1,
  };
 
+
+
+
  mainThreadCom: Worker;
 
  builders: MessagePort[] = [];
 
  fluidBuilder: MessagePort;
  fluidMeshHasBeenUpdated = false;
+
+
+
 
  setMainThreadCom(worker: Worker) {
   this.mainThreadCom = worker;
@@ -215,4 +221,6 @@ export class BuilderManager {
    }
   }
  }
+
+
 }

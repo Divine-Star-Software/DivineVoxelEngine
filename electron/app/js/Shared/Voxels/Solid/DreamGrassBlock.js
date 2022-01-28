@@ -33,6 +33,7 @@ export class DreamGrassBlock {
             data.uvTemplate.push(uv);
         }
         data.shapeTemplate.push(this.trueShapeId);
+        data.shapeStateTemplate.push(data.voxelData[1]);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

@@ -14,6 +14,11 @@ export function InitWorker(DVEB) {
         if (message == "re-start") {
             DVEB.reStart();
         }
+        if (message == "sync-settings") {
+            const settings = data[1];
+            DVEB.syncSettings(settings);
+            return;
+        }
     });
     const messageFromWorld = (event) => {
         const data = event.data;

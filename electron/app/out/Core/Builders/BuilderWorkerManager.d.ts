@@ -12,4 +12,5 @@ export declare class BuilderWorkerManager {
     createFluidBuilderWorker(path: string): void;
     _handlFluideBuildMeshMessage(event: MessageEvent): Promise<void>;
     _handleBuildMeshMessage(event: MessageEvent): Promise<void>;
+    _syncSettings(): void;
 }

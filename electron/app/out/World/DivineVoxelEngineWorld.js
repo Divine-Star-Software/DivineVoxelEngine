@@ -1,3 +1,4 @@
+import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -16,6 +17,7 @@ export class DivineVoxelEngineWorld {
     settings = {
         voxelPaletteMode: "per-chunk",
     };
+    engineSettings = new EngineSettings();
     UTIL = new Util();
     builderManager = new BuilderManager();
     worldGeneration = new WorldGeneration(this);
@@ -27,6 +29,14 @@ export class DivineVoxelEngineWorld {
     constructor(worker) {
         this.worker = worker;
         this.builderManager.setMainThreadCom(this.worker);
+    }
+    syncSettings(data) {
+        this.engineSettings.syncSettings(data);
+        if (data.chunks) {
+            this.worldData.chunkXPow2 = data.chunks.chunkXPow2;
+            this.worldData.chunkYPow2 = data.chunks.chunkYPow2;
+            this.worldData.chunkZPow2 = data.chunks.chunkZPow2;
+        }
     }
     removeChunk(chunkX, chunkY, chunkZ) {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);

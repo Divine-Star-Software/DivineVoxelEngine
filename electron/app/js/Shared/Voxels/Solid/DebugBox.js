@@ -40,6 +40,7 @@ export class DebugBox {
             data.uvTemplate.push(southUV);
         }
         data.shapeTemplate.push(this.trueShapeId);
+        data.shapeStateTemplate.push(data.voxelData[1]);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

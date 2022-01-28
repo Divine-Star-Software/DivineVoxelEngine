@@ -36,6 +36,11 @@ export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
                 }
                 return;
             }
+            if (eventData == "sync-settings") {
+                const settings = event.data[1];
+                DVEW.syncSettings(settings);
+                return;
+            }
             if (message == "connect-builder") {
                 const port = event.ports[0];
                 DVEW.builderManager.addBuilder(port);

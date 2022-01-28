@@ -4,7 +4,7 @@ export function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld,
  onReady: Function,
  onMessage: Function,
- onRestart ?: Function
+ onRestart?: Function
 ): Promise<any> {
  const prom = new Promise((resolve) => {
   const readyCheck = () => {
@@ -67,9 +67,15 @@ export function InitWorldWorker(
    }
 
    if (eventData == "re-start") {
-    if(onRestart){
-    onRestart();
+    if (onRestart) {
+     onRestart();
     }
+    return;
+   }
+
+   if (eventData == "sync-settings") {
+    const settings = event.data[1];
+    DVEW.syncSettings(settings);
     return;
    }
 

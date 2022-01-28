@@ -14,6 +14,7 @@ export class DreamGrass {
     trueShapeId = 0;
     process(data) {
         const uv = this.voxelHelper.textureManager.getTextureUV("flora", "dreamgrass");
+        data.shapeStateTemplate.push(data.voxelData[1]);
         data.shapeTemplate.push(this.trueShapeId);
         data.uvTemplate.push(uv, uv);
         data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);

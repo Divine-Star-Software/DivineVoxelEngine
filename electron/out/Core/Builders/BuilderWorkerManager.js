@@ -84,4 +84,13 @@ export class BuilderWorkerManager {
         const chunkKey = `${chunkX}-${chunkZ}-${chunkY}`;
         this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
+    _syncSettings() {
+        for (const builders of this.builders) {
+            builders.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+        }
+        this.fluidBuilder.postMessage([
+            "sync-settings",
+            this.DVE.engineSettings.settings,
+        ]);
+    }
 }

@@ -12,6 +12,7 @@ import { InfoByte } from "Global/Util/InfoByte.js";
 import { LightByte } from "Global/Util/LightByte.js";
 import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
 import { VoxelInteface } from "Meta/World/Voxels/Voxel.types.js";
+import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 
 export class WorldData {
  renderDistance = 20;
@@ -66,6 +67,8 @@ export class WorldData {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
   this.lightByte = this.DVEW.UTIL.getLightByte();
  }
+
+
 
  getCurrentWorldDataSize() {
   const data = JSON.stringify(this.chunks);

@@ -1,22 +1,10 @@
+import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 
 
 export type DVEInitData = {
     worldWorkerPath: string;
     builderWorkerPath: string;
     fluidBuilderWorkerPath: string;
-} & DVEOptions;
-
-export type DVEOptions = {
-    textureOptions ?: {
-        width :  number,
-        height : number
-    }
-}
-
-export interface DVE {
+} & EngineSettingsData;
 
 
-     reStart(data : DVEOptions) : Promise<void>;
-     
-     $INIT(data :DVEInitData) : Promise<void>;
-}

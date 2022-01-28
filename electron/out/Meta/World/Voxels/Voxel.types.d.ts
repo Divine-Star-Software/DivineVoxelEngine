@@ -9,8 +9,10 @@ export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fl
 export declare type VoxelProcessData = {
     exposedFaces: number[];
     voxelData: any[];
+    voxelState: string;
     uvTemplate: number[];
     shapeTemplate: number[];
+    shapeStateTemplate: number[];
     colorTemplate: number[];
     lightTemplate: number[];
     aoTemplate: number[];

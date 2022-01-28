@@ -71,6 +71,7 @@ export class DebugBox implements VoxelInteface {
   }
 
   data.shapeTemplate.push(this.trueShapeId);
+  data.shapeStateTemplate.push(data.voxelData[1]);
   this.voxelHelper.processVoxelLight(data, this);
  }
 }

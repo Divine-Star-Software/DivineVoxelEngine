@@ -52,8 +52,11 @@ export class SolidMaterial {
     "vFogColor",
     "sunLightLevel",
     "projection",
-    "anim1Index",
     "arrayTex",
+    "doAO",
+    "doSun",
+    "doRGB",
+    "doColor",
     ...animData.uniforms,
    ],
    needAlphaBlending: true,
@@ -80,11 +83,14 @@ export class SolidMaterial {
   };
 
   this.material = shaderMaterial;
-
+  shaderMaterial.setFloat("doAO", 1.0);
+  shaderMaterial.setFloat("doSun", 1.0);
+  shaderMaterial.setFloat("doRGB", 1.0);
+  shaderMaterial.setFloat("doColor", 1.0);
   this.renderManager.animationManager.registerMaterial("solid", shaderMaterial);
 
   // effect.setColor4("sunLightLevel", new BABYLON.Color3(1, 1, 1), 1);
-/*   let level = 0;
+  /*   let level = 0;
   let up = true;
   setInterval(() => {
    if (up) {

@@ -81,4 +81,7 @@ export class World {
             this.handleMessage(message, world);
         };
     }
+    _syncSettings() {
+        this.worker.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+    }
 }

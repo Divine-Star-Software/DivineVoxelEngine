@@ -1,6 +1,5 @@
-import type { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
-
-import type { DVE, DVEInitData, DVEOptions } from "Meta/Core/DVE.js";
+import type { DVEInitData } from "Meta/Core/DVE.js";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 
 import { Util } from "../Global/Util.helper.js";
 import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
@@ -8,10 +7,13 @@ import { World } from "./World/World.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
+import { TimerState } from "babylonjs/Misc/timer";
 
-export class DivineVoxelEngine implements DVE {
+export class DivineVoxelEngine {
  world = new World(this);
 
+ engineSettings = new EngineSettings();
  renderManager = new RenderManager();
  builderManager = new BuilderWorkerManager(this);
  meshManager = new MeshManager(this);
@@ -19,7 +21,8 @@ export class DivineVoxelEngine implements DVE {
 
  constructor() {}
 
- _handleOptions(data: DVEOptions) {
+ _handleOptions() {
+  const data = this.engineSettings.settings;
   if (data.textureOptions) {
    if (data.textureOptions.width && data.textureOptions.height) {
     this.renderManager.textureCreator.defineTextureDimensions(
@@ -30,16 +33,24 @@ export class DivineVoxelEngine implements DVE {
   }
  }
 
- async reStart(data: DVEOptions): Promise<void> {
-  this._handleOptions(data);
+ _syncSettings(data: EngineSettingsData) {
+  this.engineSettings.syncSettings(data);
+  this.world._syncSettings();
+  this.builderManager._syncSettings();
+ }
+
+ async reStart(data: EngineSettingsData): Promise<void> {
+  this._syncSettings(data);
+  this._handleOptions();
  }
 
  async $INIT(data: DVEInitData) {
-  this._handleOptions(data);
+  this.engineSettings.syncSettings(data);
+  this._handleOptions();
   this.world.createWorldWorker(data.worldWorkerPath);
   this.builderManager.createBuilderWorker(data.builderWorkerPath);
   this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
-
+  this._syncSettings(data);
   await this.world.getBaseWorldData();
 
   window.addEventListener("beforeunload", () => {

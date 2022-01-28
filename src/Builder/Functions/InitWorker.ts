@@ -21,6 +21,11 @@ export function InitWorker(DVEB: DivineVoxelEngineBuilder) {
   if (message == "re-start") {
    DVEB.reStart();
   }
+  if (message == "sync-settings") {
+    const settings = data[1];
+    DVEB.syncSettings(settings);
+    return;
+   }
  });
 
  const messageFromWorld = (event: MessageEvent) => {

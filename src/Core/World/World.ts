@@ -82,6 +82,7 @@ export class World {
   return prom;
  }
 
+
  createWorldWorker(workerPath: string) {
   //../Contexts/World/World.worker.js
   const world = this;
@@ -95,5 +96,10 @@ export class World {
   this.worker.onmessage = (message: MessageEvent) => {
    this.handleMessage(message, world);
   };
+ }
+
+
+ _syncSettings() {
+    this.worker.postMessage(["sync-settings",this.DVE.engineSettings.settings]);
  }
 }

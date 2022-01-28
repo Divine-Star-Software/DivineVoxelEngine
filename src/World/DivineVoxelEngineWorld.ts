@@ -1,4 +1,5 @@
-import type {  DVEWInitData } from "Meta/World/DVEW";
+import { EngineSettings } from "../Global/EngineSettings.js";
+import type { DVEWInitData } from "Meta/World/DVEW";
 import { VoxelPalette } from "Meta/WorldData/World.types.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
@@ -9,6 +10,7 @@ import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
+import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -21,6 +23,7 @@ export class DivineVoxelEngineWorld {
   voxelPaletteMode: "per-chunk",
  };
 
+ engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
  builderManager = new BuilderManager();
@@ -43,7 +46,14 @@ export class DivineVoxelEngineWorld {
   this.worker = worker;
   this.builderManager.setMainThreadCom(<any>this.worker);
  }
-
+ syncSettings(data: EngineSettingsData) {
+  this.engineSettings.syncSettings(data);
+  if (data.chunks) {
+   this.worldData.chunkXPow2 = data.chunks.chunkXPow2;
+   this.worldData.chunkYPow2 = data.chunks.chunkYPow2;
+   this.worldData.chunkZPow2 = data.chunks.chunkZPow2;
+  }
+ }
  removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
@@ -55,7 +65,6 @@ export class DivineVoxelEngineWorld {
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-
 
   // let t0= performance.now();
   const template = this.chunkProccesor.makeAllChunkTemplates(

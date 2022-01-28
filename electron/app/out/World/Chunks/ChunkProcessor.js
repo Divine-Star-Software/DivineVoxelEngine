@@ -51,6 +51,7 @@ export class ChunkProcessor {
                     faceTemplate: [],
                     uvTemplate: [],
                     shapeTemplate: [],
+                    shapeStateTemplate: [],
                     colorTemplate: [],
                     lightTemplate: [],
                     aoTemplate: [],
@@ -60,6 +61,7 @@ export class ChunkProcessor {
                     faceTemplate: [],
                     uvTemplate: [],
                     shapeTemplate: [],
+                    shapeStateTemplate: [],
                     colorTemplate: [],
                     lightTemplate: [],
                     aoTemplate: [],
@@ -69,6 +71,7 @@ export class ChunkProcessor {
                     faceTemplate: [],
                     uvTemplate: [],
                     shapeTemplate: [],
+                    shapeStateTemplate: [],
                     colorTemplate: [],
                     lightTemplate: [],
                     aoTemplate: [],
@@ -78,6 +81,7 @@ export class ChunkProcessor {
                     faceTemplate: [],
                     uvTemplate: [],
                     shapeTemplate: [],
+                    shapeStateTemplate: [],
                     colorTemplate: [],
                     lightTemplate: [],
                     aoTemplate: [],
@@ -87,6 +91,7 @@ export class ChunkProcessor {
                     faceTemplate: [],
                     uvTemplate: [],
                     shapeTemplate: [],
+                    shapeStateTemplate: [],
                     colorTemplate: [],
                     lightTemplate: [],
                     aoTemplate: [],
@@ -118,6 +123,7 @@ export class ChunkProcessor {
                     if (!voxelCheck)
                         continue;
                     const voxel = voxelCheck[0];
+                    const voxelState = voxelCheck[1];
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -165,9 +171,11 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
+                        voxelState: voxelState,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         shapeTemplate: baseTemplate.shapeTemplate,
+                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
                         uvTemplate: baseTemplate.uvTemplate,
                         colorTemplate: baseTemplate.colorTemplate,
                         aoTemplate: baseTemplate.aoTemplate,
@@ -212,6 +220,7 @@ export class ChunkProcessor {
                     if (!voxelCheck)
                         continue;
                     const voxel = voxelCheck[0];
+                    const voxelState = voxelCheck[1];
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -259,9 +268,11 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
+                        voxelState: voxelState,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         shapeTemplate: baseTemplate.shapeTemplate,
+                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
                         uvTemplate: baseTemplate.uvTemplate,
                         colorTemplate: baseTemplate.colorTemplate,
                         aoTemplate: baseTemplate.aoTemplate,

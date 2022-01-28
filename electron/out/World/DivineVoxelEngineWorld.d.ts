@@ -1,3 +1,4 @@
+import { EngineSettings } from "../Global/EngineSettings.js";
 import type { DVEWInitData } from "Meta/World/DVEW";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
@@ -7,6 +8,7 @@ import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
+import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker content.
@@ -16,6 +18,7 @@ export declare class DivineVoxelEngineWorld {
     settings: {
         voxelPaletteMode: string;
     };
+    engineSettings: EngineSettings;
     UTIL: Util;
     builderManager: BuilderManager;
     worldGeneration: WorldGeneration;
@@ -25,6 +28,7 @@ export declare class DivineVoxelEngineWorld {
     voxelHelper: VoxelHelper;
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
+    syncSettings(data: EngineSettingsData): void;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
