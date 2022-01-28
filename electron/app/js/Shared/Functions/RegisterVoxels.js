@@ -22,14 +22,34 @@ export function RegisterVoxels(DVEW, voxelPaletteMode) {
     DVEW.voxelManager.registerVoxelData(liquidDreamEther);
     if (voxelPaletteMode == "global") {
         //solid
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${debugBlock.data.id}:defualt`, debugBlock.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamStone.data.id}:defualt`, dreamStone.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamStonePillar.data.id}:defualt`, dreamStonePillar.data.defaultState);
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamGrassBlock.data.id}:defualt`, dreamGrassBlock.data.defaultState);
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(debugBlock);
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(dreamStone);
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(dreamStonePillar);
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(dreamGrassBlock);
         //flora
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${dreamGrass.data.id}:defualt`, dreamGrass.data.defaultState);
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(dreamGrass);
         //fluid
-        DVEW.worldGeneration.addToGlobalVoxelPalette(`${liquidDreamEther.data.id}:defualt`, liquidDreamEther.data.defaultState);
-        // console.log(DVEW.worldGeneration.getGlobalVoxelPalette());
+        DVEW.worldGeneration.registerVoxelForGlobalPalette(liquidDreamEther);
+    }
+    if (voxelPaletteMode == "per-chunk") {
+        //solid
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(debugBlock);
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(dreamStone);
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(dreamStonePillar);
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(dreamGrassBlock);
+        //flora
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(dreamGrass);
+        //fluid
+        DVEW.worldGeneration.registerVoxelForPerChunkVoxelPalette(liquidDreamEther);
+    }
+    const chunk = DVEW.worldGeneration.getBlankChunk(true, true);
+    DVEW.worldGeneration.voxelPaletteHelper.addToChunksVoxelPalette(chunk, dreamStonePillar.data.id, "default");
+    const paletteId = DVEW.worldGeneration.voxelPaletteHelper.getVoxelPaletteId(chunk, dreamStonePillar.data.id, "default");
+    if (paletteId) {
+        const voxelData = DVEW.worldGeneration.voxelPaletteHelper.getVoxelData(chunk, paletteId);
+        if (voxelData) {
+            const voxelTrueId = voxelData[0];
+            const voxelStateId = voxelData[1];
+        }
     }
 }

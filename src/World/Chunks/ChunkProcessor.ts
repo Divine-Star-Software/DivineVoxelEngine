@@ -3,7 +3,7 @@ import type {
  ChunkTemplate,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
-import type { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
+import type { VoxelInteface, VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
 import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
@@ -113,7 +113,6 @@ export class ChunkProcessor {
  }
  async makeAllChunkTemplatesAsync(
   chunk: ChunkData,
-  voxelPalette: VoxelPalette,
   chunkX: number,
   chunkY: number,
   chunkZ: number
@@ -137,9 +136,10 @@ export class ChunkProcessor {
      if (!voxelData) continue;
      const voxelId = voxelData[0];
      if (voxelId < 0) continue;
-     const voxelPaletteData = voxelPalette[voxelId];
-     if (!voxelPaletteData) continue;
-     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
+     const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x,chunkY + y,chunkZ + z);
+     if(!voxelCheck)continue;
+     const voxel :  VoxelInteface = voxelCheck[0];
+
      const baseTemplate = template[voxel.data.substance];
 
      let faceBit = 0;
@@ -237,7 +237,6 @@ export class ChunkProcessor {
      if (faceBit == 0) continue;
 
      voxel.process({
-      voxelPalettee: voxelPalette,
       voxelData: voxelData,
       exposedFaces: this.exposedFaces,
       shapeTemplate: baseTemplate.shapeTemplate,
@@ -269,7 +268,6 @@ export class ChunkProcessor {
  }
  makeAllChunkTemplates(
   chunk: ChunkData,
-  voxelPalette: VoxelPalette,
   chunkX: number,
   chunkY: number,
   chunkZ: number
@@ -293,9 +291,9 @@ export class ChunkProcessor {
      if (!voxelData) continue;
      const voxelId = voxelData[0];
      if (voxelId < 0) continue;
-     const voxelPaletteData = voxelPalette[voxelId];
-     if (!voxelPaletteData) continue;
-     const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
+     const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x,chunkY + y,chunkZ + z);
+     if(!voxelCheck)continue;
+     const voxel :  VoxelInteface = voxelCheck[0];
      const baseTemplate = template[voxel.data.substance];
 
      let faceBit = 0;
@@ -309,6 +307,7 @@ export class ChunkProcessor {
        z + chunkZ
       )
      ) {
+
       faceBit = faceBit | (1 << 0);
       this.exposedFaces[0] = 1;
      } else {
@@ -393,7 +392,7 @@ export class ChunkProcessor {
      if (faceBit == 0) continue;
 
      voxel.process({
-      voxelPalettee: voxelPalette,
+
       voxelData: voxelData,
       exposedFaces: this.exposedFaces,
       shapeTemplate: baseTemplate.shapeTemplate,

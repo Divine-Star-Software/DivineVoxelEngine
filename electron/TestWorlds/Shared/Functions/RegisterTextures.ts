@@ -1,6 +1,6 @@
-import { DVEW } from "../../../out/Meta/World/DVEW";
+import type { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld";
 
-export function RegisterTexutres(DVEW: DVEW) {
+export function RegisterTexutres(DVEW: DivineVoxelEngineWorld) {
  DVEW.textureManager.defineDefaultTexturePath("assets/textures");
 
  DVEW.textureManager.registerTexture("solid", {

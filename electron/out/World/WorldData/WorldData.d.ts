@@ -80,7 +80,6 @@ export declare class WorldData {
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
     getChunkPosition(x: number, y: number, z: number): number[];
     requestVoxelAdd(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, voxelPaletteId?: number): false | ChunkVoxels;
-    _checkNearbyChunksToRebuild(chunkX: number, chunkY: number, chunkZ: number, relativeX: number, relativeZ: number): void;
     _getRelativeChunkPosition(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): number[];
     requestVoxelBeRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): false | ChunkVoxels;
 }

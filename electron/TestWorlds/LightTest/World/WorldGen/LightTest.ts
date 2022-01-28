@@ -1,19 +1,7 @@
-import { InfoByte } from "../../../../out/Global/Util/InfoByte";
+/* import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 import { WorldData } from "../../../../out/World/WorldData/WorldData";
 import { WorldGen } from "./WorldGen";
-/**
- * Note to self for light removel.
- * When going through the voxels to updated set the voxel
- * light level to be the brigthest neighbor minus 1.
- *
- *
- *
- * New idea for light system.
- * Each air data is set to be its brightest cardinal + top/bottom neighbor minus -1
- * If the loop encounters a block the loop stops for that specfic z axis and goes to the next.
- * On each loop when the air block is updated it also updates any air blocks below it.
- */
 
 const copy = (data: any) => {
  return [...data];
@@ -414,3 +402,4 @@ export function LightTest(
   }
  }
 }
+ */

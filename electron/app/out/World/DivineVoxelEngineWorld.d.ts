@@ -1,4 +1,4 @@
-import type { DVEW, DVEWInitData } from "Meta/World/DVEW";
+import type { DVEWInitData } from "Meta/World/DVEW";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
@@ -11,7 +11,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
  * ---
  * This handles everything in the world worker content.
  */
-export declare class DivineVoxelEngineWorld implements DVEW {
+export declare class DivineVoxelEngineWorld {
     worker: Worker;
     settings: {
         voxelPaletteMode: string;

@@ -1,7 +1,7 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
-import type { DVEW } from "../../../../out/Meta/World/DVEW";
+
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import { LightTest } from "./LightTest.js";
+
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
 export class WorldGen {
@@ -54,7 +54,6 @@ export class WorldGen {
   },
  };
 
- lightTest = LightTest;
  infoByte: InfoByte;
  lightByte: LightByte;
 
@@ -72,19 +71,8 @@ export class WorldGen {
   type: string = "default"
  ): ChunkData {
   let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:dreamstonepillar:defualt"
+   "dve:dreamstonepillar","default"
   );
-  //   this.chunkMap.addChunk(chunkX,chunkZ);
-  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:liquiddreamether:defualt"
-  );
-
-  /**light data
-   * light is stored in 4 bits. Levels are stored as 0 - 15;
-   *
-   */
-
-  const liquidDreamEtherVoxel = [liquidDreamEther, 1, 0xffffffff];
 
   const chunkVoxels: any[][][] = chunk.voxels;
 

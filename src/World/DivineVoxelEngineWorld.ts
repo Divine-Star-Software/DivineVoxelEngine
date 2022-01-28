@@ -1,4 +1,4 @@
-import type { DVEW, DVEWInitData } from "Meta/World/DVEW";
+import type {  DVEWInitData } from "Meta/World/DVEW";
 import { VoxelPalette } from "Meta/WorldData/World.types.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
@@ -14,7 +14,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
  * ---
  * This handles everything in the world worker content.
  */
-export class DivineVoxelEngineWorld implements DVEW {
+export class DivineVoxelEngineWorld {
  worker: Worker;
 
  settings = {
@@ -56,15 +56,10 @@ export class DivineVoxelEngineWorld implements DVEW {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
 
-  let palette = <VoxelPalette>chunk.voxelPalette;
-  if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
-   palette = this.worldGeneration.getGlobalVoxelPalette();
-  }
 
   // let t0= performance.now();
   const template = this.chunkProccesor.makeAllChunkTemplates(
    chunk,
-   palette,
    chunkX,
    chunkY,
    chunkZ
@@ -78,13 +73,8 @@ export class DivineVoxelEngineWorld implements DVEW {
  async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  let palette = <VoxelPalette>chunk.voxelPalette;
-  if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
-   palette = this.worldGeneration.getGlobalVoxelPalette();
-  }
   const template = this.chunkProccesor.makeAllChunkTemplatesAsync(
    chunk,
-   palette,
    chunkX,
    chunkY,
    chunkZ

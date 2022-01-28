@@ -7,16 +7,20 @@ export type ChunkTemplate = {
  shapeTemplate: number[];
  lightTemplate: number[];
  aoTemplate: number[];
- colorTemplate : number[];
+ colorTemplate: number[];
 };
 
 export type ChunkVoxels = any[][][];
 
 export type ChunkData = {
- voxelPalette?: VoxelPalette;
+ palette?: {
+  count : number;
+  record: Record<number, string>;
+  map: Record<string, number>;
+ };
  voxels: ChunkVoxels;
- maxMinHeight : number[],
- heightMap : number[][],
- isEmpty : boolean
+ maxMinHeight: number[];
+ heightMap: number[][];
+ isEmpty: boolean;
 };
 export type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

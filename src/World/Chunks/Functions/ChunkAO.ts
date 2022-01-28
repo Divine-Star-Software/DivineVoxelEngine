@@ -5,9 +5,7 @@ import type { WorldData } from "World/WorldData/WorldData";
 
 export function ChunkOcculsionCalcuation(
  worldData: WorldData,
- voxelManager: VoxelManager,
  voxel: VoxelInteface,
- voxelPalette: VoxelPalette,
  chunkX: number,
  chunkY: number,
  chunkZ: number,
@@ -29,7 +27,7 @@ export function ChunkOcculsionCalcuation(
   y,
   z
  ); */
- const check = worldData.getData(
+ const check = worldData.getVoxel(
   x + chunkX + voxelX,
   y + chunkY + voxelY,
   z + chunkZ + voxelZ
@@ -39,23 +37,17 @@ export function ChunkOcculsionCalcuation(
   return 1;
  }
  if (check[0] < 0) return 1;
-
- const voxelPaletteId = check[0];
- const voxelTrueId = voxelPalette[voxelPaletteId][0];
- const checkVoxel = voxelManager.getVoxel(voxelTrueId);
+ const checkVoxel = check[0];
 
  if (checkVoxel.data.substance !== voxel.data.substance) {
   return 1;
  }
-
  return 0.75;
 }
 
 export function BuildAmbientOcclusion(
  worldData: WorldData,
- voxelManager: VoxelManager,
  voxel: VoxelInteface,
- voxelPalette: VoxelPalette,
  amientOcculusionTemplate: number[],
  chunkX: number,
  chunkY: number,
@@ -70,10 +62,7 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
     voxel,
-    voxelPalette,
-  
     chunkX,
     chunkY,
     chunkZ,
@@ -86,10 +75,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -102,10 +90,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -118,10 +105,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -134,10 +120,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -150,10 +135,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -167,10 +151,9 @@ export function BuildAmbientOcclusion(
 
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -183,10 +166,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -199,10 +181,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -215,10 +196,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -231,10 +211,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -247,10 +226,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -269,10 +247,9 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -285,10 +262,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -301,10 +277,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -318,10 +293,9 @@ export function BuildAmbientOcclusion(
 
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -334,10 +308,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -350,10 +323,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -367,10 +339,9 @@ export function BuildAmbientOcclusion(
 
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -383,10 +354,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -399,10 +369,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -416,10 +385,9 @@ export function BuildAmbientOcclusion(
 
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -432,10 +400,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -448,10 +415,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -469,10 +435,9 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -485,10 +450,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -501,10 +465,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -517,10 +480,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -533,10 +495,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -549,10 +510,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -565,10 +525,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -581,10 +540,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -597,10 +555,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -613,10 +570,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -629,10 +585,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -645,10 +600,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -667,10 +621,9 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -683,10 +636,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -699,10 +651,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -715,10 +666,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -731,10 +681,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -747,10 +696,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -763,10 +711,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -779,10 +726,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -795,10 +741,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -811,10 +756,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -827,10 +771,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -843,10 +786,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -865,10 +807,9 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -881,10 +822,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -897,10 +837,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -913,10 +852,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -929,10 +867,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -945,10 +882,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -961,10 +897,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -977,10 +912,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -993,10 +927,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1009,10 +942,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -1025,10 +957,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1041,10 +972,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1063,10 +993,9 @@ export function BuildAmbientOcclusion(
   amientOcculusionTemplate.push(
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -1079,10 +1008,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1095,10 +1023,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1111,10 +1038,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -1127,10 +1053,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1143,10 +1068,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1159,10 +1083,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -1175,10 +1098,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1191,10 +1113,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1207,10 +1128,9 @@ export function BuildAmbientOcclusion(
     ),
    ChunkOcculsionCalcuation(
     worldData,
-    voxelManager,
+
     voxel,
-    voxelPalette,
-  
+
     chunkX,
     chunkY,
     chunkZ,
@@ -1223,10 +1143,9 @@ export function BuildAmbientOcclusion(
    ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,
@@ -1239,10 +1158,9 @@ export function BuildAmbientOcclusion(
     ) *
     ChunkOcculsionCalcuation(
      worldData,
-     voxelManager,
+
      voxel,
-     voxelPalette,
-   
+
      chunkX,
      chunkY,
      chunkZ,

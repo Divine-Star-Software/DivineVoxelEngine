@@ -1,4 +1,3 @@
-import { VoxelPalette } from "Meta/WorldData/World.types";
 import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
@@ -9,7 +8,6 @@ import { VoxelHelperInterface } from "./VoxelHelper.interface";
 export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fluid" | "magma";
 export declare type VoxelProcessData = {
     exposedFaces: number[];
-    voxelPalettee: VoxelPalette;
     voxelData: any[];
     uvTemplate: number[];
     shapeTemplate: number[];

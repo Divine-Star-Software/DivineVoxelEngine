@@ -3,4 +3,4 @@
 
 
 
-export type VoxelPalette = Record<number,any[]>;
+export type VoxelPalette = Record<number,string>;

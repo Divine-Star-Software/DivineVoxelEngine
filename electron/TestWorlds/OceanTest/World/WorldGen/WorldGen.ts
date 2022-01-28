@@ -1,7 +1,7 @@
-import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
+import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 export class WorldGen {
- constructor(public DVEW: DVEW) {}
+ constructor(public DVEW: DivineVoxelEngineWorld) {}
 
  chunkDepth = 16;
  chunkWidth = 16;
@@ -15,11 +15,11 @@ export class WorldGen {
   type: string = "default"
  ): ChunkData {
   let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:dreamstone:defualt"
+   "dve:dreamstone","default"
   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
   let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:liquiddreamether:defualt"
+   "dve:liquiddreamether","default"
   );
   const liquidDreamEtherVoxel = [liquidDreamEther, 1, 1];
   const returnChunk: any[][][] = [];

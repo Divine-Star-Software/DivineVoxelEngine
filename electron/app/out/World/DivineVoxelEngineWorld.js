@@ -40,12 +40,8 @@ export class DivineVoxelEngineWorld {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        let palette = chunk.voxelPalette;
-        if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
-            palette = this.worldGeneration.getGlobalVoxelPalette();
-        }
         // let t0= performance.now();
-        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, palette, chunkX, chunkY, chunkZ);
+        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
         this.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         // let t1= performance.now();
         // console.log(t1 - t0);
@@ -55,11 +51,7 @@ export class DivineVoxelEngineWorld {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        let palette = chunk.voxelPalette;
-        if (this.settings.voxelPaletteMode == "global" && !chunk.voxelPalette) {
-            palette = this.worldGeneration.getGlobalVoxelPalette();
-        }
-        const template = this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, palette, chunkX, chunkY, chunkZ);
+        const template = this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
         // console.log("sending")
         // this.builderManager.requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template);
         return true;

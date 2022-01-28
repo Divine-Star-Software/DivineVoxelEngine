@@ -94,7 +94,7 @@ export class ChunkProcessor {
             },
         };
     }
-    async makeAllChunkTemplatesAsync(chunk, voxelPalette, chunkX, chunkY, chunkZ) {
+    async makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ) {
         const template = this.getBaseTemplateNew();
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
@@ -114,10 +114,10 @@ export class ChunkProcessor {
                     const voxelId = voxelData[0];
                     if (voxelId < 0)
                         continue;
-                    const voxelPaletteData = voxelPalette[voxelId];
-                    if (!voxelPaletteData)
+                    const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
+                    if (!voxelCheck)
                         continue;
-                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
+                    const voxel = voxelCheck[0];
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -165,7 +165,6 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
-                        voxelPalettee: voxelPalette,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         shapeTemplate: baseTemplate.shapeTemplate,
@@ -189,7 +188,7 @@ export class ChunkProcessor {
         this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         return template;
     }
-    makeAllChunkTemplates(chunk, voxelPalette, chunkX, chunkY, chunkZ) {
+    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
         const template = this.getBaseTemplateNew();
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
@@ -209,10 +208,10 @@ export class ChunkProcessor {
                     const voxelId = voxelData[0];
                     if (voxelId < 0)
                         continue;
-                    const voxelPaletteData = voxelPalette[voxelId];
-                    if (!voxelPaletteData)
+                    const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
+                    if (!voxelCheck)
                         continue;
-                    const voxel = this.DVEW.voxelManager.getVoxel(voxelPaletteData[0]);
+                    const voxel = voxelCheck[0];
                     const baseTemplate = template[voxel.data.substance];
                     let faceBit = 0;
                     if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
@@ -260,7 +259,6 @@ export class ChunkProcessor {
                     if (faceBit == 0)
                         continue;
                     voxel.process({
-                        voxelPalettee: voxelPalette,
                         voxelData: voxelData,
                         exposedFaces: this.exposedFaces,
                         shapeTemplate: baseTemplate.shapeTemplate,

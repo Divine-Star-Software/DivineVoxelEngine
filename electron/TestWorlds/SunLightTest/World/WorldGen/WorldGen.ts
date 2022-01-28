@@ -1,5 +1,4 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
-import type { DVEW } from "../../../../out/Meta/World/DVEW";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
 
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
@@ -71,11 +70,11 @@ export class WorldGen {
   type: string = "default"
  ): ChunkData {
   let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:dreamstonepillar:defualt"
+   "dve:dreamstonepillar","default"
   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
   let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
-   "dve:liquiddreamether:defualt"
+   "dve:liquiddreamether","default"
   );
 
   /**light data

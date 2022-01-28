@@ -15,7 +15,6 @@ export type VoxelSubstanceType =
 
 export type VoxelProcessData = {
  exposedFaces: number[];
- voxelPalettee: VoxelPalette;
  voxelData: any[];
  uvTemplate: number[];
  shapeTemplate: number[];
