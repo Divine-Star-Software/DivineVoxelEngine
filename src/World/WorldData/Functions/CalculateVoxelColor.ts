@@ -344,7 +344,7 @@ import { WorldData } from "../WorldData";
    }
  */
 
-export function VoxelColorMixCalc(
+/* export function VoxelColorMixCalc(
  this: WorldData,
  voxelData: any[],
  voxel: VoxelInteface,
@@ -426,3 +426,4 @@ export function VoxelColorMixCalc(
 
  return this.lightByte.setLightValues([w, r, g, b]);
 }
+ */

@@ -16,7 +16,7 @@ export class WorldGen {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const chunkVoxels: any[][][] = [];
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstonepillar","default"
   );
 
@@ -52,10 +52,10 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = 0;
   bottomChunk.maxMinHeight[1] = minY;
   const chunkVoxels = bottomChunk.voxels;
-  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstone","default"
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamgrass","default"
   );
 
@@ -87,7 +87,7 @@ export class WorldGen {
   y: number,
   z: number
  ) {
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstonepillar","default"
   );
   bottomChunk.maxMinHeight[0] = minY;
@@ -241,10 +241,10 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 7;
   bottomChunk.maxMinHeight[1] = minY;
 
-  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstone","default"
   );
-  const liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  const liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:liquiddreamether","default"
   );
   const liquidDreamEtherVoxel = [liquidDreamEther, 0, 0xffffffff];
@@ -337,10 +337,10 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 8;
   bottomChunk.maxMinHeight[1] = minY;
 
-  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstone","default"
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamgrass","default"
   );
 
@@ -453,10 +453,10 @@ export class WorldGen {
   const chunkVoxels = bottomChunk.voxels;
   bottomChunk.maxMinHeight[0] = minY;
   bottomChunk.maxMinHeight[1] = minY + 1;
-  let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamgrassblock","default"
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamgrass","default"
   );
 

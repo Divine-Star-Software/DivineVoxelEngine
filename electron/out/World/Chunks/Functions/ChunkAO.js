@@ -1,15 +1,4 @@
 export function ChunkOcculsionCalcuation(worldData, voxel, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, x, y, z) {
-    /*  const check = worldData.getRelativeVoxelData(
-     chunkX,
-     chunkY,
-     chunkZ,
-     voxelX,
-     voxelY,
-     voxelZ,
-     x,
-     y,
-     z
-    ); */
     const check = worldData.getVoxel(x + chunkX + voxelX, y + chunkY + voxelY, z + chunkZ + voxelZ);
     if (!check) {
         return 1;

@@ -1,6 +1,9 @@
-import { GetRelativeVoxelData, GetVoxelData, } from "./Functions/GetVoxelData.js";
 import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
-import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
+/**# World Data
+ * ---
+ * Handles all the game worlds data.
+ * Also handles getting and setting data.
+ */
 export class WorldData {
     DVEW;
     renderDistance = 20;
@@ -8,11 +11,10 @@ export class WorldData {
     chunkZPow2 = 4;
     chunkYPow2 = 7;
     chunks = {};
-    getVoxelData = GetVoxelData;
-    getRelativeVoxelData = GetRelativeVoxelData;
+    _chunkRebuildQue = [];
+    _chunkRebuildQueMap = {};
     calculdateVoxelLight = CalculateVoxelLight;
     voxelRGBLightMixCalc = VoxelLightMixCalc;
-    voxelSunLightMixCalc = VoxelSunLightMixCalc;
     infoByte;
     lightByte;
     substanceRules = {
@@ -46,6 +48,30 @@ export class WorldData {
         this.DVEW = DVEW;
         this.infoByte = this.DVEW.UTIL.getInfoByte();
         this.lightByte = this.DVEW.UTIL.getLightByte();
+    }
+    getChunkRebuildQue() {
+        return this._chunkRebuildQue;
+    }
+    getSubstanceNeededToRebuild(chunkX, chunkY, chunkZ) {
+        return this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`];
+    }
+    clearChunkRebuildQue() {
+        this._chunkRebuildQue = [];
+        this._chunkRebuildQueMap = {};
+    }
+    _addToRebuildQue(x, y, z, substance) {
+        const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+        const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+        const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+        if (!this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`]) {
+            this._chunkRebuildQue.push([chunkX, chunkY, chunkZ]);
+            //@ts-ignore
+            this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`] = {};
+            this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`][substance] = true;
+        }
+        else {
+            this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`][substance] = true;
+        }
     }
     getCurrentWorldDataSize() {
         const data = JSON.stringify(this.chunks);
@@ -397,373 +423,57 @@ export class WorldData {
             (z >> this.chunkXPow2) << this.chunkXPow2,
         ];
     }
-    requestVoxelAdd(chunkX, chunkY, chunkZ, x, y, z, voxelPaletteId = 1) {
-        /*  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-        const relativePOS = this._getRelativeChunkPosition(
-         chunkX,
-         chunkY,
-         chunkZ,
-         x,
-         y,
-         z
-        );
-        const relativeX = relativePOS[0];
-        const relativeZ = relativePOS[1];
-        const relativeY = relativePOS[2];
-        const chunkVoxels = chunk.voxels;
-        let palette = chunk.voxelPalette;
-        if (!palette) {
-         palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-        }
-        if (!chunkVoxels[relativeX][relativeZ]) {
-         chunkVoxels[relativeX][relativeZ] ??= [];
-         chunkVoxels[relativeX][relativeZ][relativeY] = [
-          voxelPaletteId,
-          0,
-          0xffffffff,
-         ];
-      
-         const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-          chunk,
-          palette,
-          chunkX,
-          chunkY,
-          chunkZ
-         );
-         this.DVEW.builderManager.requestFullChunkBeBuilt(
-          chunkX,
-          chunkY,
-          chunkZ,
-          template
-         );
-      
-         this._checkNearbyChunksToRebuild(
-          chunkX,
-          chunkY,
-          chunkZ,
-          relativeX,
-          relativeZ
-         );
-        } else if (!chunkVoxels[relativeX][relativeZ][relativeY]) {
-         chunkVoxels[relativeX][relativeZ][relativeY] = [
-          voxelPaletteId,
-          0,
-          0xffffffff,
-         ];
-         const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-          chunk,
-          palette,
-          chunkX,
-          chunkY,
-          chunkZ
-         );
-      
-         this.DVEW.builderManager.requestFullChunkBeBuilt(
-          chunkX,
-          chunkY,
-          chunkZ,
-          template
-         );
-      
-         this._checkNearbyChunksToRebuild(
-          chunkX,
-          chunkY,
-          chunkZ,
-          relativeX,
-          relativeZ
-         );
-        }
-       */
-        return false;
-    }
-    /*  _checkNearbyChunksToRebuild(
-     chunkX: number,
-     chunkY: number,
-     chunkZ: number,
-     relativeX: number,
-     relativeZ: number
-    ) {
-     let updated = false;
-     buildChunkX0: if (relativeX == 0) {
-      const newChunkX = chunkX - 16;
-      const newChunkZ = chunkZ;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX0;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkX15: if (relativeX == 15) {
-      const newChunkX = chunkX + 16;
-      const newChunkZ = chunkZ;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX15;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkZ0: if (relativeZ == 0) {
-      const newChunkX = chunkX;
-      const newChunkZ = chunkZ - 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkZ0;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkZ15: if (relativeZ == 15) {
-      const newChunkX = chunkX;
-      const newChunkZ = chunkZ + 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkZ15;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkX15Z15: if (relativeZ == 15 && relativeX == 15) {
-      const newChunkX = chunkX + 16;
-      const newChunkZ = chunkZ + 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX15Z15;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkX0Z0: if (relativeZ == 0 && relativeX == 0) {
-      const newChunkX = chunkX - 16;
-      const newChunkZ = chunkZ - 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX0Z0;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkX15Z0: if (relativeZ == 0 && relativeX == 15) {
-      const newChunkX = chunkX + 16;
-      const newChunkZ = chunkZ - 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX15Z0;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     buildChunkX0Z15: if (relativeZ == 15 && relativeX == 0) {
-      const newChunkX = chunkX - 16;
-      const newChunkZ = chunkZ + 16;
-      const newChunkY = chunkY;
-      const chunk = this.getChunk(newChunkX, newChunkY, newChunkZ);
-      if (!chunk) break buildChunkX0Z15;
-      let palette = chunk.voxelPalette;
-      if (!palette) {
-       palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-      }
-      updated = true;
-      const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-       chunk,
-       palette,
-       newChunkX,
-       newChunkY,
-       newChunkZ
-      );
-      this.DVEW.builderManager.requestFullChunkBeBuilt(
-       newChunkX,
-       newChunkY,
-       newChunkZ,
-       template
-      );
-     }
-     if (updated) {
-      this.DVEW.buildFluidMesh();
-     }
-    }
-    */
-    _getRelativeChunkPosition(chunkX, chunkY, chunkZ, x, y, z) {
-        let relativeX = Math.abs(x - chunkX);
-        if (x < 0) {
-            if (x == chunkX + 15) {
-                relativeX = 15;
+    requestVoxelAdd(x, y, z, voxelId, voxelStateId, voxelData = 0) {
+        const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+        const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+        const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
+        const chunk = this.getChunk(chunkX, chunkY, chunkZ);
+        if (!chunk)
+            return;
+        let voxelPalletId = 0;
+        if (chunk.palette) {
+            const check = this.DVEW.worldGeneration.voxelPaletteHelper.getVoxelPaletteId(chunk, voxelId, voxelStateId);
+            if (check) {
+                voxelPalletId = check;
+            }
+            else {
+                const newPaletteId = this.DVEW.worldGeneration.voxelPaletteHelper.addToChunksVoxelPalette(chunk, voxelId, voxelStateId);
+                if (!newPaletteId)
+                    return;
+                voxelPalletId = newPaletteId;
             }
         }
-        let relativeZ = Math.abs(z - chunkZ);
-        if (z < 0) {
-            if (z == chunkZ + 15) {
-                relativeZ = 15;
+        else {
+            const check = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
+            if (check) {
+                voxelPalletId = check;
             }
         }
-        let realtiveY = Math.abs(y - chunkY);
-        if (y < 0) {
-            if (y == chunkY + 127) {
-                realtiveY = 127;
-            }
+        let light = 0;
+        const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
+        if (voxel.data.lightSource && voxel.data.lightValue) {
+            light = voxel.data.lightValue;
         }
-        return [relativeX, relativeZ, realtiveY];
+        else {
+            light = this.getLight(x, y, z);
+        }
+        this.setData(x, y, z, [voxelPalletId, voxelData, light]);
+        this._addToRebuildQue(x, y, z, "all");
+        this._addToRebuildQue(x + 1, y, z, "all");
+        this._addToRebuildQue(x - 1, y, z, "all");
+        this._addToRebuildQue(x, y + 1, z, "all");
+        this._addToRebuildQue(x, y - 1, z, "all");
+        this._addToRebuildQue(x, y, z + 1, "all");
+        this._addToRebuildQue(x, y, z - 1, "all");
     }
-    requestVoxelBeRemove(chunkX, chunkY, chunkZ, x, y, z) {
-        /*  const chunk = this.getChunk(chunkX, chunkY, chunkZ);
-        if (!chunk) return false;
-      
-        const relativePOS = this._getRelativeChunkPosition(
-         chunkX,
-         chunkY,
-         chunkZ,
-         x,
-         y,
-         z
-        );
-        const relativeX = relativePOS[0];
-        const relativeZ = relativePOS[1];
-        const relativeY = relativePOS[2];
-        const chunkVoxels = chunk.voxels;
-        let palette = chunk.voxelPalette;
-        if (!palette) {
-         palette = this.DVEW.worldGeneration.getGlobalVoxelPalette();
-        }
-      
-        if (!chunkVoxels[relativeX]) return false;
-        if (!chunkVoxels[relativeX][relativeZ]) return false;
-        if (chunkVoxels[relativeX][relativeZ][relativeY]) {
-         delete chunkVoxels[relativeX][relativeZ][relativeY];
-      
-         this._checkNearbyChunksToRebuild(
-          chunkX,
-          chunkY,
-          chunkZ,
-          relativeX,
-          relativeZ
-         );
-      
-         const template = this.DVEW.chunkProccesor.makeAllChunkTemplates(
-          chunk,
-          palette,
-          chunkX,
-          chunkY,
-          chunkZ
-         );
-         this.DVEW.builderManager.requestFullChunkBeBuilt(
-          chunkX,
-          chunkY,
-          chunkZ,
-          template
-         );
-      
-         this.DVEW.buildFluidMesh();
-      
-         return chunkVoxels;
-        } else {
-         return false;
-        } */
-        return false;
+    requestVoxelBeRemoved(x, y, z) {
+        this.setData(x, y, z, [-1, 0]);
+        this._addToRebuildQue(x, y, z, "all");
+        this._addToRebuildQue(x + 1, y, z, "all");
+        this._addToRebuildQue(x - 1, y, z, "all");
+        this._addToRebuildQue(x, y + 1, z, "all");
+        this._addToRebuildQue(x, y - 1, z, "all");
+        this._addToRebuildQue(x, y, z + 1, "all");
+        this._addToRebuildQue(x, y, z - 1, "all");
     }
 }

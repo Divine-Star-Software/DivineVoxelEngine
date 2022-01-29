@@ -38,6 +38,34 @@ export class DivineVoxelEngineWorld {
             this.worldData.chunkZPow2 = data.chunks.chunkZPow2;
         }
     }
+    runChunkRebuildQue() {
+        const que = this.worldData.getChunkRebuildQue();
+        while (que.length != 0) {
+            const position = que.shift();
+            if (!position)
+                break;
+            const substance = this.worldData.getSubstanceNeededToRebuild(position[0], position[1], position[2]);
+            if (substance.all) {
+                this.buildChunkAsync(position[0], position[1], position[2]);
+                this.buildFluidMesh();
+            }
+        }
+        this.worldData.clearChunkRebuildQue();
+    }
+    async runChunkRebuildQueAsync() {
+        const que = this.worldData.getChunkRebuildQue();
+        while (que.length != 0) {
+            const position = que.shift();
+            if (!position)
+                break;
+            const substance = this.worldData.getSubstanceNeededToRebuild(position[0], position[1], position[2]);
+            if (substance.all) {
+                this.buildChunkAsync(position[0], position[1], position[2]);
+                this.buildFluidMesh();
+            }
+        }
+        this.worldData.clearChunkRebuildQue();
+    }
     removeChunk(chunkX, chunkY, chunkZ) {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)

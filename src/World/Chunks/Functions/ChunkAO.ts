@@ -16,17 +16,7 @@ export function ChunkOcculsionCalcuation(
  y: number,
  z: number
 ) {
- /*  const check = worldData.getRelativeVoxelData(
-  chunkX,
-  chunkY,
-  chunkZ,
-  voxelX,
-  voxelY,
-  voxelZ,
-  x,
-  y,
-  z
- ); */
+
  const check = worldData.getVoxel(
   x + chunkX + voxelX,
   y + chunkY + voxelY,

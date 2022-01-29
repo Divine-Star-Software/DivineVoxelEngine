@@ -32,7 +32,7 @@ export class WorldGeneration {
   * @param voxelStateId
   * @returns
   */
- getVoxelIdFromGlobalPalette(
+ getVoxelPaletteIdFromGlobalPalette(
   voxelTrueId: string,
   voxelStateId: string
  ): number {

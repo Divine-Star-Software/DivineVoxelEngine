@@ -1,11 +1,14 @@
-import type { ChunkVoxels, ChunkData } from "Meta/Chunks/Chunk.types";
-import { GetRelativeVoxelData, GetVoxelData } from "./Functions/GetVoxelData.js";
+import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
+import type { InfoByte } from "Global/Util/InfoByte.js";
+import type { LightByte } from "Global/Util/LightByte.js";
+import type { VoxelInteface, VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
-import { InfoByte } from "Global/Util/InfoByte.js";
-import { LightByte } from "Global/Util/LightByte.js";
-import { VoxelSunLightMixCalc } from "./Functions/CalculateVoxelSunLight.js";
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types.js";
+/**# World Data
+ * ---
+ * Handles all the game worlds data.
+ * Also handles getting and setting data.
+ */
 export declare class WorldData {
     DVEW: DivineVoxelEngineWorld;
     renderDistance: number;
@@ -13,15 +16,18 @@ export declare class WorldData {
     chunkZPow2: number;
     chunkYPow2: number;
     chunks: Record<string, ChunkData>;
-    getVoxelData: typeof GetVoxelData;
-    getRelativeVoxelData: typeof GetRelativeVoxelData;
+    _chunkRebuildQue: number[][];
+    _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
     calculdateVoxelLight: typeof CalculateVoxelLight;
     voxelRGBLightMixCalc: typeof VoxelLightMixCalc;
-    voxelSunLightMixCalc: typeof VoxelSunLightMixCalc;
     infoByte: InfoByte;
     lightByte: LightByte;
     substanceRules: Record<string, boolean>;
     constructor(DVEW: DivineVoxelEngineWorld);
+    getChunkRebuildQue(): number[][];
+    getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
+    clearChunkRebuildQue(): void;
+    _addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
     setLight(x: number, y: number, z: number, lightValue: number): boolean;
@@ -79,7 +85,6 @@ export declare class WorldData {
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
     getChunkPosition(x: number, y: number, z: number): number[];
-    requestVoxelAdd(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number, voxelPaletteId?: number): false | ChunkVoxels;
-    _getRelativeChunkPosition(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): number[];
-    requestVoxelBeRemove(chunkX: number, chunkY: number, chunkZ: number, x: number, y: number, z: number): false | ChunkVoxels;
+    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string, voxelData?: number): void;
+    requestVoxelBeRemoved(x: number, y: number, z: number): void;
 }

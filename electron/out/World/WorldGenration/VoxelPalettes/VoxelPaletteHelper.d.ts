@@ -9,5 +9,5 @@ export declare class VoxelPaletteHelper {
     constructor(worldGeneration: WorldGeneration);
     getVoxelData(chunk: ChunkData, voxelId: number): string[] | false;
     getVoxelPaletteId(chunk: ChunkData, voxelId: string, voxelState: string): number | false;
-    addToChunksVoxelPalette(chunk: ChunkData, voxelId: string, voxelState: string): boolean;
+    addToChunksVoxelPalette(chunk: ChunkData, voxelId: string, voxelState: string): number;
 }

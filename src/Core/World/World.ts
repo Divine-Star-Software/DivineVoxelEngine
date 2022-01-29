@@ -20,16 +20,10 @@ export class World {
  }
 
  requestWorldUpdate(
-  type: "block-add" | "block-remove",
+  type: "voxel-add" | "voxel-remove",
   position: PositionMatrix
  ) {
-  this.DVE.meshManager.runningUpdate = true;
   this.worker.postMessage([type, position.x, position.y, position.z]);
-  setTimeout(() => {
-   if (this.DVE.meshManager.runningUpdate) {
-    this.DVE.meshManager.runningUpdate = false;
-   }
-  }, 10);
  }
 
  getWorker() {

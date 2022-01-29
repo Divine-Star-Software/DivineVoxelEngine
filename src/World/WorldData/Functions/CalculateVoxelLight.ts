@@ -1,6 +1,5 @@
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
-import { VoxelPalette } from "Meta/WorldData/World.types";
-import { WorldData } from "../WorldData";
+import type { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import type { WorldData } from "../WorldData";
 
 export function CalculateVoxelLight(
  this: WorldData,

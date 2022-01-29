@@ -70,7 +70,7 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstonepillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstonepillar","default"
   );
 

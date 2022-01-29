@@ -8,11 +8,11 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:debugbox", "default");
-        let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstone", "default");
-        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstonepillar", "default");
-        let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamgrass", "default");
-        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:liquiddreamether", "default");
+        let debugBox = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default");
+        let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default");
+        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default");
+        let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default");
+        let liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default");
         const liquidDreamEtherVoxel = [liquidDreamEther, 1, 0xFFFFFFFF];
         const dreamStoneVovxel = [dreamstone, 1, 0xFFFFFFFF];
         const returnChunk = [];

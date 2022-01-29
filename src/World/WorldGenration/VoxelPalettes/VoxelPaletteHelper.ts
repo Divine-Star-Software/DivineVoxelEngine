@@ -27,13 +27,13 @@ export class VoxelPaletteHelper {
   chunk: ChunkData,
   voxelId: string,
   voxelState: string
- ) {
-  if (!chunk.palette) return false;
+ ) : number  {
+  if (!chunk.palette) return 0;
   const palette = chunk.palette;
   const id = `${voxelId}:${voxelState}`;
   palette.record[palette.count] = id;
   palette.map[id] = palette.count;
   palette.count++;
-  return true;
+  return  palette.count - 1;
  }
 }

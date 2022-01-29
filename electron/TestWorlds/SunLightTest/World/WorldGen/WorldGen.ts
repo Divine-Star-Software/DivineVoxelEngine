@@ -69,11 +69,11 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstonepillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstonepillar","default"
   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
-  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:liquiddreamether","default"
   );
 

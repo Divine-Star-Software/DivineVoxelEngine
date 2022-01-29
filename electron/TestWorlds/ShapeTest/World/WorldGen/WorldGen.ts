@@ -14,20 +14,20 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let debugBox = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let debugBox = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:debugbox","default"
   );
-  let dreamstone = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstone","default"
   );
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamstonepillar","default"
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:dreamgrass","default"
   );
 
-  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette(
+  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
    "dve:liquiddreamether","default"
   );
   const liquidDreamEtherVoxel = [liquidDreamEther, 1, 0xFFFFFFFF];

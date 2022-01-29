@@ -29,6 +29,8 @@ export declare class DivineVoxelEngineWorld {
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
     syncSettings(data: EngineSettingsData): void;
+    runChunkRebuildQue(): void;
+    runChunkRebuildQueAsync(): Promise<void>;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;

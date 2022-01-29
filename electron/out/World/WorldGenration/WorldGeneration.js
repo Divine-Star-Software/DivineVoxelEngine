@@ -28,7 +28,7 @@ export class WorldGeneration {
      * @param voxelStateId
      * @returns
      */
-    getVoxelIdFromGlobalPalette(voxelTrueId, voxelStateId) {
+    getVoxelPaletteIdFromGlobalPalette(voxelTrueId, voxelStateId) {
         return this.globalVoxelPaletteMap[`${voxelTrueId}:${voxelStateId}`];
     }
     /**# Get Voxel True Id From Global Palette

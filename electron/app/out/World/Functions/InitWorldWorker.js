@@ -18,13 +18,13 @@ export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
                 const textures = DVEW.textureManager.generateTexturesData();
                 DVEW.worker.postMessage(["set-world-data", textures]);
             }
-            if (message == "block-add") {
-                const chunkXZ = DVEW.worldData.getChunkPosition(event.data[1], event.data[2], event.data[3]);
-                DVEW.worldData.requestVoxelAdd(chunkXZ[0], chunkXZ[1], chunkXZ[2], eventData[1], eventData[2], eventData[3]);
+            if (message == "voxel-add") {
+                DVEW.worldData.requestVoxelAdd(eventData[1], eventData[2], eventData[3], "dve:debugbox", "default", 0);
+                DVEW.runChunkRebuildQueAsync();
             }
-            if (message == "block-remove") {
-                const chunkXZ = DVEW.worldData.getChunkPosition(event.data[1], event.data[2], event.data[3]);
-                DVEW.worldData.requestVoxelBeRemove(chunkXZ[0], chunkXZ[1], chunkXZ[2], eventData[1], eventData[2], eventData[3]);
+            if (message == "voxel-remove") {
+                DVEW.worldData.requestVoxelBeRemoved(eventData[1], eventData[2], eventData[3]);
+                DVEW.runChunkRebuildQueAsync();
             }
             if (eventData == "start") {
                 onReady();

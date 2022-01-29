@@ -51,7 +51,7 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunk, chunkX, chunkY, chunkZ, type = "default") {
-        let dreamstonepillar = this.DVEW.worldGeneration.getVoxelIdFromGlobalPalette("dve:dreamstonepillar", "default");
+        let dreamstonepillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default");
         const chunkVoxels = chunk.voxels;
         this.infoByte.setNumberValue(0);
         this.infoByte.setHalfByteBits(0, 0);

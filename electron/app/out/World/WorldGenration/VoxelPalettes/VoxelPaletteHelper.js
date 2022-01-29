@@ -22,12 +22,12 @@ export class VoxelPaletteHelper {
     }
     addToChunksVoxelPalette(chunk, voxelId, voxelState) {
         if (!chunk.palette)
-            return false;
+            return 0;
         const palette = chunk.palette;
         const id = `${voxelId}:${voxelState}`;
         palette.record[palette.count] = id;
         palette.map[id] = palette.count;
         palette.count++;
-        return true;
+        return palette.count - 1;
     }
 }

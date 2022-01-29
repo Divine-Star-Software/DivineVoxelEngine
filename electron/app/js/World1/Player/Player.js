@@ -333,11 +333,11 @@ export class Player {
         document.addEventListener("click", (event) => {
             if (event.button == 2) {
                 this._doAction("place");
-                this.DVE.world.requestWorldUpdate("block-add", this.blockLookingAtPosition);
+                this.DVE.world.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
             }
             if (event.button == 0) {
                 this._doAction("break");
-                this.DVE.world.requestWorldUpdate("block-remove", this.blockLookingAtPosition);
+                this.DVE.world.requestWorldUpdate("voxel-remove", this.blockLookingAtPosition);
             }
         });
         document.addEventListener("keydown", (event) => {

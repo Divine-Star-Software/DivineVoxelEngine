@@ -85,6 +85,7 @@ const init = async () => {
  }, 10);
 
  await DVE.$SCENEINIT({ scene: scene });
+// DVE.renderManager.setSunLevel(2);
  DVE.renderManager.setBaseLevel(0.5);
  let divFps = document.getElementById("fps");
  //render loop 
