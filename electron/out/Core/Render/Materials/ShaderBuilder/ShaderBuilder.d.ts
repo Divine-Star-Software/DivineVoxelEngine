@@ -5,14 +5,14 @@ import type { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
  */
 export declare class ShaderBuilder {
     constructor();
-    buildFloraVertexSahder(uniformRegister?: string, animationFuction?: string): string;
-    buildFluidVertexShader(uniformRegister?: string, animationFuction?: string): string;
-    buildSolidVertexShader(uniformRegister?: string, animationFuction?: string): string;
-    buildMagmaVertexShader(uniformRegister?: string, animationFuction?: string): string;
+    buildFloraVertexSahder(uniformRegister?: string, animationFunction?: string): string;
+    buildFluidVertexShader(uniformRegister?: string, animationFunction?: string): string;
+    buildSolidVertexShader(uniformRegister?: string, animationFunction?: string): string;
+    buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string): string;
     buildSolidFragmentShader(): string;
     buildFluidFragmentShader(): string;
     buildFloraFragmentShader(): string;
     buildMagmaFragmentShader(): string;
-    getDefaultVertexShader(voxelSubstance: VoxelSubstanceType, uniformRegister?: string, animationFuction?: string): string;
+    getDefaultVertexShader(voxelSubstance: VoxelSubstanceType, uniformRegister?: string, animationFunction?: string): string;
     getDefaultFragmentShader(voxelSubstance: VoxelSubstanceType): string;
 }

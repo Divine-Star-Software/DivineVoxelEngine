@@ -10,6 +10,12 @@ export const SharedFogFunctions = {
    uniform vec3 vFogColor;
    varying float fFogDistance;
    `,
+    fogVertexTop: `
+ varying float fFogDistance;
+ `,
+    fogVertexMain: `
+ fFogDistance = (view * worldPosition).z;
+ `,
     fogFragFunction: `
     float CalcFogFactor()
     {
