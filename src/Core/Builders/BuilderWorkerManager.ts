@@ -71,10 +71,10 @@ export class BuilderWorkerManager {
  constructor(private DVE: DivineVoxelEngine) {
   const numBuilders = 4;
 
-  if (window.navigator.hardwareConcurrency > numBuilders) {
+/*   if (window.navigator.hardwareConcurrency > numBuilders) {
    //use all possible cores if we can
    this.numBuilders = window.navigator.hardwareConcurrency;
-  }
+  } */
  }
 
  reStart() {

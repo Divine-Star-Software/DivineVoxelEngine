@@ -7,6 +7,13 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/OceanTest/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+ lighting : {
+     doAO : true,
+     doRGBLight : false,
+     doSunLight : false,
+     autoRGBLight : false,
+     autoSunLight : false
+ }
 });
 
 console.log("%cocean test", "color:cyan; font-size:30px;");

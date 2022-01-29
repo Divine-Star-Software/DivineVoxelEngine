@@ -37,7 +37,6 @@ export function InitWorldWorker(
      eventData[3],
      "dve:debugbox",
      "default",
-     0
     );
     DVEW.runChunkRebuildQueAsync();
    }

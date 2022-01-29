@@ -12,7 +12,7 @@ export class ChunkDataHelper {
                 for (let y = 0; y < 128; y++) {
                     voxels[x] ??= [];
                     voxels[x][z] ??= [];
-                    voxels[x][z][y] = [...[-1, 0b0000]];
+                    voxels[x][z][y] = this.DVEW.worldGeneration.paintVoxel(0);
                 }
             }
         }

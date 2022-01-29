@@ -10,6 +10,7 @@ export class ChunkProcessor {
     worldTopY = 256;
     chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
     chunkTemplates = {};
+    voxelByte;
     /**## substance rules
      * ---
      * defines substance interactions for face culling/adding.
@@ -41,6 +42,7 @@ export class ChunkProcessor {
     constructor(DVEW) {
         this.DVEW = DVEW;
         this.worldData = DVEW.worldData;
+        this.voxelByte = DVEW.UTIL.getVoxelByte();
     }
     worldData;
     getBaseTemplateNew() {
@@ -114,10 +116,7 @@ export class ChunkProcessor {
                 }
                 for (const y of voxels[x][z].keys()) {
                     const voxelData = voxels[x][z][y];
-                    if (!voxelData)
-                        continue;
-                    const voxelId = voxelData[0];
-                    if (voxelId < 0)
+                    if (this.voxelByte.getId(voxelData) == 0)
                         continue;
                     const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
                     if (!voxelCheck)
@@ -211,10 +210,7 @@ export class ChunkProcessor {
                 }
                 for (const y of voxels[x][z].keys()) {
                     const voxelData = voxels[x][z][y];
-                    if (!voxelData)
-                        continue;
-                    const voxelId = voxelData[0];
-                    if (voxelId < 0)
+                    if (this.voxelByte.getId(voxelData) == 0)
                         continue;
                     const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
                     if (!voxelCheck)

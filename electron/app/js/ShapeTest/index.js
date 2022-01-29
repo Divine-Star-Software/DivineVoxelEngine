@@ -6,6 +6,13 @@ await DVE.$INIT({
     worldWorkerPath: "../../../js/ShapeTest/World/index.js",
     builderWorkerPath: "../../../js/Shared/Builder/builder.js",
     fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+    lighting: {
+        doAO: true,
+        doRGBLight: false,
+        doSunLight: false,
+        autoRGBLight: false,
+        autoSunLight: false
+    }
 });
 const readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {
@@ -49,6 +56,7 @@ const init = async () => {
     scene.activeCamera = camera;
     camera.attachControl(canvas, true);
     await DVE.$SCENEINIT({ scene: scene });
+    DVE.renderManager.setBaseLevel(1);
     const check = () => {
         if (
         //@ts-ignore

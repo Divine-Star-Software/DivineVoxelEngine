@@ -3,6 +3,8 @@
  * Used to decode light color info.
  */
 export declare class LightByte {
+    decodeLightFromVoxelData(voxelData: number): number;
+    encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     /**# Set Light Values
      * ---
      * Give an array of light values it will return an encoded light number.

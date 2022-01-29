@@ -17,6 +17,7 @@ export class WorldData {
     voxelRGBLightMixCalc = VoxelLightMixCalc;
     infoByte;
     lightByte;
+    voxelByte;
     substanceRules = {
         "solid-solid": false,
         "solid-flora": true,
@@ -48,6 +49,7 @@ export class WorldData {
         this.DVEW = DVEW;
         this.infoByte = this.DVEW.UTIL.getInfoByte();
         this.lightByte = this.DVEW.UTIL.getLightByte();
+        this.voxelByte = this.DVEW.UTIL.getVoxelByte();
     }
     getChunkRebuildQue() {
         return this._chunkRebuildQue;
@@ -80,32 +82,20 @@ export class WorldData {
     getCurrentWorldDataString() {
         return JSON.stringify(this.chunks);
     }
+    setAir(x, y, z, lightValue) {
+        let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
+        this.setData(x, y, z, data);
+    }
     setLight(x, y, z, lightValue) {
-        const voxel = this.getVoxel(x, y, z);
-        if (voxel) {
-            if (voxel[0] == -1) {
-                voxel[1][voxel[1].length - 1] = lightValue;
-            }
-            else {
-                if (voxel[0].data.substance == "solid") {
-                    return false;
-                }
-                else {
-                    const voxelInterface = voxel[0];
-                    if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
-                        return false;
-                    }
-                    voxel[2][voxel[2].length - 1] = lightValue;
-                }
-            }
-        }
-        return true;
+        let data = this.getData(x, y, z);
+        data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
+        this.setData(x, y, z, data);
     }
     getLight(x, y, z) {
         const voxel = this.getVoxel(x, y, z);
         if (voxel) {
             if (voxel[0] == -1) {
-                return voxel[1][voxel[1].length - 1];
+                return this.voxelByte.decodeLightFromVoxelData(voxel[1]);
             }
             else {
                 const voxelInterface = voxel[0];
@@ -115,7 +105,7 @@ export class WorldData {
                 if (voxelInterface.data.substance == "solid") {
                     return 0;
                 }
-                return voxel[2][voxel[2].length - 1];
+                return this.voxelByte.decodeLightFromVoxelData(voxel[2]);
             }
         }
         return 0;
@@ -250,15 +240,15 @@ export class WorldData {
             chunk.voxels[voxelX][voxelZ] &&
             chunk.voxels[voxelX][voxelZ][voxelY]) {
             const voxelData = chunk.voxels[voxelX][voxelZ][voxelY];
-            const voxelId = voxelData[0];
-            if (voxelId == -1) {
+            const voxelId = this.voxelByte.getId(voxelData);
+            if (voxelId == 0) {
                 return [-1, voxelData];
             }
             else {
                 let voxelTrueID = "";
                 let voxelState = "";
                 if (globalPalette) {
-                    const check = this.DVEW.worldGeneration.getVoxelDataFromGlobalPalette(voxelId);
+                    const check = this.DVEW.worldGeneration.voxelPalette.getVoxelDataFromGlobalPalette(voxelId);
                     if (check) {
                         voxelTrueID = check[0];
                         voxelState = check[1];
@@ -268,7 +258,7 @@ export class WorldData {
                     }
                 }
                 else {
-                    const check = this.DVEW.worldGeneration.voxelPaletteHelper.getVoxelData(chunk, voxelId);
+                    const check = this.DVEW.worldGeneration.voxelPalette.getVoxelData(chunk, voxelId);
                     if (check) {
                         voxelTrueID = check[0];
                         voxelState = check[1];
@@ -291,7 +281,7 @@ export class WorldData {
         const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         if (!chunk || chunk.isEmpty) {
-            return false;
+            return 0;
         }
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
@@ -313,11 +303,11 @@ export class WorldData {
         }
         if (chunk.voxels[voxelX] &&
             chunk.voxels[voxelX][voxelZ] &&
-            chunk.voxels[voxelX][voxelZ][voxelY]) {
+            chunk.voxels[voxelX][voxelZ][voxelY] !== undefined) {
             return chunk.voxels[voxelX][voxelZ][voxelY];
         }
         else {
-            return false;
+            return 0;
         }
     }
     _copy(data) {
@@ -362,7 +352,7 @@ export class WorldData {
         const voxels = chunk.voxels;
         voxels[voxelX] ??= [];
         voxels[voxelX][voxelZ] ??= [];
-        voxels[voxelX][voxelZ][voxelY] = this._copy(data);
+        voxels[voxelX][voxelZ][voxelY] = data;
     }
     /**# Insert Data
      * ---
@@ -402,7 +392,7 @@ export class WorldData {
         const voxels = chunk.voxels;
         voxels[voxelX] ??= [];
         voxels[voxelX][voxelZ] ??= [];
-        voxels[voxelX][voxelZ][voxelY] = this._copy(data);
+        voxels[voxelX][voxelZ][voxelY] = data;
     }
     getChunk(chunkX, chunkY, chunkZ) {
         if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) {
@@ -423,7 +413,7 @@ export class WorldData {
             (z >> this.chunkXPow2) << this.chunkXPow2,
         ];
     }
-    requestVoxelAdd(x, y, z, voxelId, voxelStateId, voxelData = 0) {
+    requestVoxelAdd(x, y, z, voxelId, voxelStateId) {
         const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
         const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
         const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
@@ -432,19 +422,19 @@ export class WorldData {
             return;
         let voxelPalletId = 0;
         if (chunk.palette) {
-            const check = this.DVEW.worldGeneration.voxelPaletteHelper.getVoxelPaletteId(chunk, voxelId, voxelStateId);
+            const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(chunk, voxelId, voxelStateId);
             if (check) {
                 voxelPalletId = check;
             }
             else {
-                const newPaletteId = this.DVEW.worldGeneration.voxelPaletteHelper.addToChunksVoxelPalette(chunk, voxelId, voxelStateId);
+                const newPaletteId = this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(chunk, voxelId, voxelStateId);
                 if (!newPaletteId)
                     return;
                 voxelPalletId = newPaletteId;
             }
         }
         else {
-            const check = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
+            const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
             if (check) {
                 voxelPalletId = check;
             }
@@ -457,7 +447,8 @@ export class WorldData {
         else {
             light = this.getLight(x, y, z);
         }
-        this.setData(x, y, z, [voxelPalletId, voxelData, light]);
+        const voxelData = this.DVEW.worldGeneration.paintVoxel(voxelPalletId);
+        this.setData(x, y, z, this.lightByte.encodeLightIntoVoxelData(voxelData, light));
         this._addToRebuildQue(x, y, z, "all");
         this._addToRebuildQue(x + 1, y, z, "all");
         this._addToRebuildQue(x - 1, y, z, "all");
@@ -467,7 +458,7 @@ export class WorldData {
         this._addToRebuildQue(x, y, z - 1, "all");
     }
     requestVoxelBeRemoved(x, y, z) {
-        this.setData(x, y, z, [-1, 0]);
+        this.setData(x, y, z, 0);
         this._addToRebuildQue(x, y, z, "all");
         this._addToRebuildQue(x + 1, y, z, "all");
         this._addToRebuildQue(x - 1, y, z, "all");

@@ -8,14 +8,33 @@ export class WorldGen {
     chunkHeight = 256;
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let debugBox = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default");
-        let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default");
-        let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default");
-        //   this.chunkMap.addChunk(chunkX,chunkZ);
+        let debugBox = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default"));
+        let dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
+        let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
+        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
+        let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
         const returnChunk = [];
-        if (type == "pillar") {
-            let pillarBlock = [dreamStonePillar, 1, 0xffffffff];
-            let baseBlock = [dreamstone, 1, 0xffffffff];
+        if (type == "fluid") {
+            let baseY = 0;
+            let maxY = 31;
+            for (let x = 0; x < +this.chunkWidth; x++) {
+                for (let z = 0; z < this.chunkDepth; z++) {
+                    for (let y = 0; y < this.chunkHeight; y++) {
+                        if (y > baseY && y <= maxY) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = liquidDreamEther;
+                        }
+                        if (y == baseY) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
+                        }
+                    }
+                }
+            }
+        }
+        if (type == "pond") {
             let baseY = 31;
             let topY = 50;
             let hole = false;
@@ -25,12 +44,54 @@ export class WorldGen {
                         if (y < baseY) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = baseBlock;
+                            returnChunk[x][z][y] = dreamstone;
+                            continue;
+                        }
+                        if (y == baseY && x > 0 && x < 15 && z > 0 && z < 15) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = liquidDreamEther;
+                        }
+                        if (y == baseY && x == 0) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
+                        }
+                        if (y == baseY && x == 15) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
+                        }
+                        if (y == baseY && z == 0) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
+                        }
+                        if (y == baseY && z == 15) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
+                        }
+                    }
+                }
+            }
+        }
+        if (type == "pillar") {
+            let baseY = 31;
+            let topY = 50;
+            let hole = false;
+            for (let x = 0; x < +this.chunkWidth; x++) {
+                for (let z = 0; z < this.chunkDepth; z++) {
+                    for (let y = 0; y < this.chunkHeight; y++) {
+                        if (y < baseY) {
+                            returnChunk[x] ??= [];
+                            returnChunk[x][z] ??= [];
+                            returnChunk[x][z][y] = dreamstone;
                         }
                         if (y == topY) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = pillarBlock;
+                            returnChunk[x][z][y] = dreamStonePillar;
                         }
                         if (y >= baseY && y < topY) {
                             if (x % 15 == 0 || z % 15 == 0) {
@@ -44,7 +105,7 @@ export class WorldGen {
                                 }
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
-                                returnChunk[x][z][y] = pillarBlock;
+                                returnChunk[x][z][y] = dreamStonePillar;
                             }
                         }
                     }
@@ -52,8 +113,6 @@ export class WorldGen {
             }
         }
         if (type == "default") {
-            let topBlock = [dreamstone, 1, 0xffffffff];
-            let baseBlock = [dreamStonePillar, 1, 0xffffffff];
             let topY = 31;
             let groundY = 31;
             let hole = false;
@@ -77,32 +136,34 @@ export class WorldGen {
                         if (y < groundY) {
                             returnChunk[x] ??= [];
                             returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = baseBlock;
+                            returnChunk[x][z][y] = dreamStonePillar;
                             continue;
                         }
                         if (hole) {
                             if (y < topY) {
                                 returnChunk[x] ??= [];
                                 returnChunk[x][z] ??= [];
-                                returnChunk[x][z][y] = topBlock;
+                                returnChunk[x][z][y] = dreamstone;
                             }
                         }
                     }
                 }
             }
-            returnChunk[7][7][topY] = [debugBox, 1, 0xffffffff];
-            returnChunk[7][7][topY + 1] = [debugBox, 1, 0xffffffff];
-            returnChunk[7][7][topY + 2] = [debugBox, 1, 0xffffffff];
-            returnChunk[7][7][topY + 3] = [debugBox, 1, 0xffffffff];
-            returnChunk[0][0][topY] = [dreamstone, 1, 0xffffffff];
-            returnChunk[0][15][topY] = [dreamstone, 1, 0xffffffff];
-            returnChunk[15][15][topY] = [dreamstone, 1, 0xffffffff];
-            returnChunk[15][0][topY] = [dreamstone, 1, 0xffffffff];
+            returnChunk[3][3][topY] = liquidDreamEther;
+            returnChunk[5][5][topY] = dreamGrasss;
+            returnChunk[7][7][topY] = debugBox;
+            returnChunk[7][7][topY + 1] = debugBox;
+            returnChunk[7][7][topY + 2] = debugBox;
+            returnChunk[7][7][topY + 3] = debugBox;
+            returnChunk[0][0][topY] = debugBox;
+            returnChunk[0][15][topY] = debugBox;
+            returnChunk[15][15][topY] = debugBox;
+            returnChunk[15][0][topY] = debugBox;
         }
         return {
             voxels: returnChunk,
-            isEmpty: false,
             maxMinHeight: [],
+            isEmpty: false,
             heightMap: [],
         };
     }

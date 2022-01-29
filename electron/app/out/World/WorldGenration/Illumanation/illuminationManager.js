@@ -40,12 +40,11 @@ export class IlluminationManager {
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
                 const y = heightMap[x][z];
-                if (voxels[x] && voxels[x][z] && voxels[x][z][y]) {
+                if (voxels[x] && voxels[x][z] && voxels[x][z][y] !== undefined) {
                     const voxel = voxels[x][z][y];
-                    if (voxel && voxel[0] < 0) {
-                        const vl = voxel[voxel.length - 1];
-                        const nl = this.lightByte.getFullSunLight(vl);
-                        voxel[voxel.length - 1] = nl;
+                    if (voxel == 0) {
+                        const nl = this.lightByte.getFullSunLight(voxel);
+                        voxels[x][z][y] = nl;
                     }
                 }
             }

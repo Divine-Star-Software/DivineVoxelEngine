@@ -25,11 +25,10 @@ const start = () => {
             DVEW.buildChunkAsync(x, 0, z);
         }
     }
-    const fullLight = 0b1111_0000_1111_0000;
     setInterval(() => {
         for (let x = startX; x < endX; x += 16) {
             for (let z = startZ; z < endZ; z += 16) {
-                DVEW.worldData.setData(x + 7 + 16, 7, z + 7, [1, 0, fullLight]);
+                DVEW.worldData.setData(x + 7 + 16, 7, z + 7, DVEW.worldGeneration.paintVoxel(1));
                 DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(true, x + 7, 0 + 7, z + 7);
                 DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x + 7 + 16, 0 + 7, z + 7);
                 rebuild(x, z);

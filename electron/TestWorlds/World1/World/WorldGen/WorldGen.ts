@@ -16,9 +16,11 @@ export class WorldGen {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   const chunkVoxels: any[][][] = [];
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstonepillar","default"
-  );
+  let dreamStonePillar =
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstonepillar",
+    "default"
+   );
 
   // debugBox = dreamstone;
   let block = [dreamStonePillar, 0, 0xffffffff];
@@ -52,19 +54,23 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = 0;
   bottomChunk.maxMinHeight[1] = minY;
   const chunkVoxels = bottomChunk.voxels;
-  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstone","default"
+  let dreamstone = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstone",
+    "default"
+   )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamgrass","default"
+  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamgrass",
+    "default"
+   )
   );
 
-  let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
-  let block = [dreamstone, 0, 0xffffffff];
   if (y < Math.floor(Math.random() * minY)) {
    chunkVoxels[x] ??= [];
    chunkVoxels[x][z] ??= [];
-   chunkVoxels[x][z][y] = this.copy(block);
+   chunkVoxels[x][z][y] = dreamstone;
 
    if (y < bottomChunk.maxMinHeight[0]) {
     bottomChunk.maxMinHeight[0] = y;
@@ -73,7 +79,7 @@ export class WorldGen {
    if (Math.random() > 0.8) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+    chunkVoxels[x][z][y + 1] = dreamGrasss;
    }
   }
  }
@@ -87,12 +93,14 @@ export class WorldGen {
   y: number,
   z: number
  ) {
-  let dreamStonePillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstonepillar","default"
+  let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstonepillar",
+    "default"
+   )
   );
   bottomChunk.maxMinHeight[0] = minY;
   bottomChunk.maxMinHeight[1] = maxY;
-  let block = [dreamStonePillar, 0, 0xffffffff];
 
   let chunkVoxels;
   if (y > 128) {
@@ -112,7 +120,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 0 || z == 0 || x == 15 || z == 15) {
@@ -127,7 +135,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 1 || z == 1 || x == 14 || z == 14) {
@@ -143,7 +151,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 2 || z == 2 || x == 13 || z == 13) {
@@ -159,7 +167,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 3 || z == 3 || x == 12 || z == 12) {
@@ -175,7 +183,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 4 || z == 4 || x == 11 || z == 11) {
@@ -190,7 +198,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 5 || z == 5 || x == 10 || z == 10) {
@@ -205,7 +213,7 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
   if (x == 6 || z == 6 || x == 9 || z == 9) {
@@ -218,14 +226,14 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamStonePillar;
    }
   }
 
   if (y < minY) {
    chunkVoxels[x] ??= [];
    chunkVoxels[x][z] ??= [];
-   chunkVoxels[x][z][y] = this.copy(block);
+   chunkVoxels[x][z][y] = dreamStonePillar;
   }
  }
 
@@ -241,69 +249,73 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 7;
   bottomChunk.maxMinHeight[1] = minY;
 
-  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstone","default"
+  const dreamstone = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstone",
+    "default"
+   )
   );
-  const liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:liquiddreamether","default"
+  const liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:liquiddreamether",
+    "default"
+   )
   );
-  const liquidDreamEtherVoxel = [liquidDreamEther, 0, 0xffffffff];
 
-  let block = [dreamstone, 0, 0xffffffff];
   if (x == 0 || z == 0 || x == 15 || z == 15) {
    if (y == minY) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x == 1 || z == 1 || x == 14 || z == 14) {
    if (y == minY - 1) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x == 2 || z == 2 || x == 13 || z == 13) {
    if (y == minY - 2) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x == 3 || z == 3 || x == 12 || z == 12) {
    if (y == minY - 3) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x <= 4 || z <= 4 || x <= 11 || z <= 11) {
    if (y == minY - 4) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x <= 5 || z <= 5 || x <= 10 || z <= 10) {
    if (y == minY - 5) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
   if (x <= 6 || z <= 6 || x <= 9 || z <= 9) {
    if (y == minY - 6) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
    }
   }
 
   if (y < minY - 6) {
    chunkVoxels[x] ??= [];
    chunkVoxels[x][z] ??= [];
-   chunkVoxels[x][z][y] = this.copy(block);
+   chunkVoxels[x][z][y] = dreamstone;
   }
 
   if (y >= minY - 6 && y <= minY) {
@@ -314,13 +326,13 @@ export class WorldGen {
    ) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(liquidDreamEtherVoxel);
+    chunkVoxels[x][z][y] = liquidDreamEther;
    }
 
-   if(y == minY){
+   if (y == minY) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(liquidDreamEtherVoxel);
+    chunkVoxels[x][z][y] = liquidDreamEther;
    }
   }
  }
@@ -337,24 +349,28 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 8;
   bottomChunk.maxMinHeight[1] = minY;
 
-  let dreamstone = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstone","default"
+  let dreamstone = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstone",
+    "default"
+   )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamgrass","default"
+  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamgrass",
+    "default"
+   )
   );
 
-  let dreamGrassVoxel = [dreamGrasss, 0, 0xFFFFFFFFF];
-  let block = [dreamstone, 0, 0xffffffff];
   if (x == 0 || z == 0 || x == 15 || z == 15) {
    if (y == minY) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -362,11 +378,11 @@ export class WorldGen {
    if (y == minY - 1) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -374,11 +390,11 @@ export class WorldGen {
    if (y == minY - 2) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -386,11 +402,11 @@ export class WorldGen {
    if (y == minY - 3) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -398,11 +414,11 @@ export class WorldGen {
    if (y == minY - 4) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -410,11 +426,11 @@ export class WorldGen {
    if (y == minY - 5) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -422,11 +438,11 @@ export class WorldGen {
    if (y == minY - 6) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(block);
+    chunkVoxels[x][z][y] = dreamstone;
     if (Math.random() > 0.8) {
      chunkVoxels[x] ??= [];
      chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+     chunkVoxels[x][z][y + 1] = dreamGrasss;
     }
    }
   }
@@ -434,11 +450,11 @@ export class WorldGen {
   if (y < minY - 7) {
    chunkVoxels[x] ??= [];
    chunkVoxels[x][z] ??= [];
-   chunkVoxels[x][z][y] = this.copy(block);
+   chunkVoxels[x][z][y] = dreamstone;
    if (Math.random() > 0.8) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y + 1] = this.copy(dreamGrassVoxel);
+    chunkVoxels[x][z][y + 1] = dreamGrasss;
    }
   }
  }
@@ -453,26 +469,30 @@ export class WorldGen {
   const chunkVoxels = bottomChunk.voxels;
   bottomChunk.maxMinHeight[0] = minY;
   bottomChunk.maxMinHeight[1] = minY + 1;
-  let dreamGrassBlock = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamgrassblock","default"
+  let dreamGrassBlock = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamgrassblock",
+    "default"
+   )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamgrass","default"
+  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamgrass",
+    "default"
+   )
   );
 
-  let dreamGrassVoxel = [dreamGrasss, 0, 0xffffffff];
-  let block = [dreamGrassBlock, 0, 0xffffffff];
   if (y < minY) {
    chunkVoxels[x] ??= [];
    chunkVoxels[x][z] ??= [];
-   chunkVoxels[x][z][y] = this.copy(block);
+   chunkVoxels[x][z][y] = dreamGrassBlock;
   }
 
   if (y == minY) {
    if (Math.random() > 0.8) {
     chunkVoxels[x] ??= [];
     chunkVoxels[x][z] ??= [];
-    chunkVoxels[x][z][y] = this.copy(dreamGrassVoxel);
+    chunkVoxels[x][z][y] = dreamGrasss;
    }
   }
  }

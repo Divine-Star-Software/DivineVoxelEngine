@@ -5,6 +5,13 @@ await DVE.$INIT({
     worldWorkerPath: "../../../js/World2/World/index.js",
     builderWorkerPath: "../../../js/Shared/Builder/builder.js",
     fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+    lighting: {
+        doAO: true,
+        doRGBLight: false,
+        doSunLight: false,
+        autoRGBLight: false,
+        autoSunLight: false
+    }
 });
 console.log("%cworld 2", "color:cyan; font-size:30px;");
 const readyStateCheckInterval = setInterval(function () {
@@ -60,7 +67,8 @@ const init = async () => {
     scene.fogEnabled = true;
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-    DVE.$SCENEINIT({ scene: scene });
+    await DVE.$SCENEINIT({ scene: scene });
+    DVE.renderManager.setBaseLevel(0.5);
     let divFps = document.getElementById("fps");
     //render loop
     engine.runRenderLoop(() => {

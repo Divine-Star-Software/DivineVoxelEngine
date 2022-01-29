@@ -8,6 +8,13 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/ShapeTest/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+ lighting : {
+    doAO : true,
+    doRGBLight : false,
+    doSunLight : false,
+    autoRGBLight : false,
+    autoSunLight : false
+}
 });
 
 const readyStateCheckInterval = setInterval(function () {
@@ -65,7 +72,7 @@ const init = async () => {
  camera.attachControl(canvas, true);
 
  await DVE.$SCENEINIT({ scene: scene });
-
+ DVE.renderManager.setBaseLevel(1);
  const check = () => {
   if (
    //@ts-ignore
@@ -83,6 +90,7 @@ const init = async () => {
  };
  check();
  let divFps = document.getElementById("fps");
+
  //render loop
  engine.runRenderLoop(() => {
   scene.render();

@@ -69,53 +69,28 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let dreamstonepillar = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstonepillar","default"
-  );
-  //   this.chunkMap.addChunk(chunkX,chunkZ);
-  let liquidDreamEther = this.DVEW.worldGeneration.getVoxelPaletteIdFromGlobalPalette(
-   "dve:liquiddreamether","default"
-  );
-
-  /**light data
-   * light is stored in 4 bits. Levels are stored as 0 - 15;
-   *
-   */
-
-  const liquidDreamEtherVoxel = [liquidDreamEther, 1, 0xffffffff];
+  const dreamstonepillar =
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstonepillar",
+    "default"
+   );
 
   const voxels: any[][][] = chunk.voxels;
-
-  // const dreamStoneVovxel1 = [dreamstone, 1, 0xFFFFFFFF];
-  // const dreamStoneVovxel2 = [dreamstone, 1, 0xFF001baF];
-
-  this.infoByte.setNumberValue(0);
-  this.infoByte.setHalfByteBits(0, 0);
-  this.infoByte.setHalfByteBits(4, 0);
-  this.infoByte.setHalfByteBits(8, 0);
-  this.infoByte.setHalfByteBits(12, 0);
-  const dreamStoneVovxel = [
-   dreamstonepillar,
-   0,
-   this.infoByte.getNumberValue(),
-  ];
-
   let baseY = 0;
   let maxY = 126;
-
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= maxY / 2 - 5) {
       voxels[x] ??= [];
       voxels[x][z] ??= [];
-      voxels[x][z][y] = [...dreamStoneVovxel];
+      voxels[x][z][y] = this.DVEW.worldGeneration.paintVoxel(dreamstonepillar);
      }
 
      if (y == maxY / 2) {
       voxels[x] ??= [];
       voxels[x][z] ??= [];
-      voxels[x][z][y] = [...dreamStoneVovxel];
+      voxels[x][z][y] = this.DVEW.worldGeneration.paintVoxel(dreamstonepillar);
      }
     }
    }
@@ -123,7 +98,7 @@ export class WorldGen {
 
   if (Math.random() > 0.5) {
    if (voxels[7] && voxels[7][7] && voxels[7][7][maxY / 2]) {
-    voxels[7][7][maxY / 2] = [-1, 0];
+    voxels[7][7][maxY / 2] = 0;
    }
   }
 

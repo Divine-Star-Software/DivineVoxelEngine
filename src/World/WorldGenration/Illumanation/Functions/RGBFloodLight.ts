@@ -115,6 +115,7 @@ export function runRGBFloodRemove(
   const z = node[2];
   const sl = this.DVEW.worldData.getLight(x, y, z);
   const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
+
   if (n1 > 0 && this.lightByte.isLessThanForRGBRemove(n1, sl)) {
    this._RGBlightRemovalQue.push([x - 1, y, z]);
   } else {
@@ -170,6 +171,7 @@ export function runRGBFloodRemove(
   }
 
   const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
+
   if (n6 > 0 && this.lightByte.isLessThanForRGBRemove(n6, sl)) {
    this._RGBlightRemovalQue.push([x, y + 1, z]);
   } else {
@@ -184,8 +186,9 @@ export function runRGBFloodRemove(
  }
 
  if (lightSource) {
-  this.DVEW.worldData.setLight(lightSource.x, lightSource.y, lightSource.z, 0);
+  
+  this.DVEW.worldData.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
   this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
+
  }
- this.runRGBFloodFill();
 }

@@ -2,6 +2,7 @@ import { DirectionNames } from "Meta/Util.types.js";
 import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
+import { VoxelByte } from "./Util/VoxelByte.js";
 
 export class Util {
  infoByte = new InfoByte();
@@ -26,6 +27,10 @@ export class Util {
   const chunkpositionZ = (positionZ >> 4) << 4;
   const chunkpositionX = (positionX >> 4) << 4;
   return [chunkpositionZ, chunkpositionX];
+ }
+
+ getVoxelByte() {
+     return new VoxelByte();
  }
 
  getLightByte() {

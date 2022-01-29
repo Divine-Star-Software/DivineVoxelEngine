@@ -8,10 +8,10 @@ RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const start = () => {
-    let startX = -32;
-    let startZ = -32;
-    let endX = 32;
-    let endZ = 32;
+    let startX = -16;
+    let startZ = -16;
+    let endX = 16;
+    let endZ = 16;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
             const chunk = DVEW.worldGeneration.getBlankChunk(false);
@@ -27,7 +27,7 @@ const start = () => {
     if (chunk) {
         const voxels = chunk.voxels;
         if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
-            voxels[7][7][126 / 2] = [-1, 0];
+            voxels[7][7][126 / 2] = 0;
         }
     }
     for (let x = startX; x < endX; x += 16) {
@@ -56,8 +56,8 @@ const start = () => {
             return;
         const voxels = chunk.voxels;
         DVEW.worldGeneration.illumantionManager.runSunLightRemoveAt(7, 126 / 2, 7);
-        if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
-            voxels[7][7][126 / 2] = [2, 0, 0];
+        if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2] !== undefined) {
+            voxels[7][7][126 / 2] = DVEW.worldGeneration.paintVoxel(2);
         }
         for (let x = startX; x < endX; x += 16) {
             for (let z = startZ; z < endZ; z += 16) {

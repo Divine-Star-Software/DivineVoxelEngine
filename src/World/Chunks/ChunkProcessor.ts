@@ -1,3 +1,4 @@
+import type { VoxelByte } from "Global/Util/VoxelByte.js";
 import type {
  ChunkData,
  ChunkTemplate,
@@ -26,6 +27,7 @@ export class ChunkProcessor {
  worldTopY = 256;
  chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
+ voxelByte: VoxelByte;
 
  /**## substance rules
   * ---
@@ -60,6 +62,7 @@ export class ChunkProcessor {
  exposedFaces: number[] = [];
  constructor(private DVEW: DivineVoxelEngineWorld) {
   this.worldData = DVEW.worldData;
+  this.voxelByte = DVEW.UTIL.getVoxelByte();
  }
  worldData: WorldData;
 
@@ -141,9 +144,9 @@ export class ChunkProcessor {
     }
     for (const y of voxels[x][z].keys()) {
      const voxelData = voxels[x][z][y];
-     if (!voxelData) continue;
-     const voxelId = voxelData[0];
-     if (voxelId < 0) continue;
+
+     if (this.voxelByte.getId(voxelData) == 0) continue;
+
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
       chunkY + y,
@@ -303,9 +306,7 @@ export class ChunkProcessor {
     }
     for (const y of voxels[x][z].keys()) {
      const voxelData = voxels[x][z][y];
-     if (!voxelData) continue;
-     const voxelId = voxelData[0];
-     if (voxelId < 0) continue;
+     if (this.voxelByte.getId(voxelData) == 0) continue;
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
       chunkY + y,

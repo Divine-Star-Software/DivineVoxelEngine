@@ -1,3 +1,4 @@
+import type { VoxelByte } from "Global/Util/VoxelByte.js";
 import type { ChunkData, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
@@ -13,6 +14,7 @@ export declare class ChunkProcessor {
     worldTopY: number;
     chunkOcculsionCalcuation: typeof ChunkOcculsionCalcuation;
     chunkTemplates: Record<number, Record<number, number[][]>>;
+    voxelByte: VoxelByte;
     /**## substance rules
      * ---
      * defines substance interactions for face culling/adding.

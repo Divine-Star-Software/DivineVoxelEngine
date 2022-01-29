@@ -4,6 +4,7 @@ import type { InfoByte } from "Global/Util/InfoByte.js";
 import type { LightByte } from "Global/Util/LightByte.js";
 import type { VoxelInteface, VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
+import { VoxelByte } from "Global/Util/VoxelByte.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -22,6 +23,7 @@ export declare class WorldData {
     voxelRGBLightMixCalc: typeof VoxelLightMixCalc;
     infoByte: InfoByte;
     lightByte: LightByte;
+    voxelByte: VoxelByte;
     substanceRules: Record<string, boolean>;
     constructor(DVEW: DivineVoxelEngineWorld);
     getChunkRebuildQue(): number[][];
@@ -30,7 +32,8 @@ export declare class WorldData {
     _addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
-    setLight(x: number, y: number, z: number, lightValue: number): boolean;
+    setAir(x: number, y: number, z: number, lightValue: number): void;
+    setLight(x: number, y: number, z: number, lightValue: number): void;
     getLight(x: number, y: number, z: number): number;
     /**# Is Exposed
      * ---
@@ -71,7 +74,7 @@ export declare class WorldData {
      * @param data
      * @returns
      */
-    setData(x: number, y: number, z: number, data: number[]): false | undefined;
+    setData(x: number, y: number, z: number, data: number): false | undefined;
     /**# Insert Data
      * ---
      * Acts like **setData** but will create a new chunk if it does not exist.
@@ -85,6 +88,6 @@ export declare class WorldData {
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
     getChunkPosition(x: number, y: number, z: number): number[];
-    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string, voxelData?: number): void;
+    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string): void;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;
 }
