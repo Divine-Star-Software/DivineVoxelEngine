@@ -12,6 +12,7 @@ import {
  VoxelLightMixCalc,
 } from "./Functions/CalculateVoxelLight.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
+import { WorldRegion } from "Meta/WorldData/World.types.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -23,6 +24,89 @@ export class WorldData {
  chunkXPow2 = 4;
  chunkZPow2 = 4;
  chunkYPow2 = 7;
+
+ regionXPow2 = 9;
+ regionZPow2 = 9;
+ regionYPow2 = 8;
+
+ voxelPaletteFunctions: Record<
+  string,
+  (
+   voxelId: string,
+   voxelStateId: string,
+   chunk: ChunkData,
+   region?: WorldRegion
+  ) => number
+ > = {
+  global: (
+   voxelId: string,
+   voxelStateId: string,
+   chunk: ChunkData,
+   region?: WorldRegion
+  ) => {
+   const check =
+    this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+     voxelId,
+     voxelStateId
+    );
+   if (check) {
+    return this.DVEW.worldGeneration.paintVoxel(check);
+   }
+   return -1;
+  },
+  "per-chunk": (
+   voxelId: string,
+   voxelStateId: string,
+   chunk: ChunkData,
+   region?: WorldRegion
+  ) => {
+   const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
+    chunk,
+    voxelId,
+    voxelStateId
+   );
+   if (check) {
+    return check;
+   } else {
+    const newPaletteId =
+     this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(
+      chunk,
+      voxelId,
+      voxelStateId
+     );
+    if (!newPaletteId) return -1;
+    return this.DVEW.worldGeneration.paintVoxel(newPaletteId);
+   }
+  },
+  "per-region": (
+   voxelId: string,
+   voxelStateId: string,
+   chunk: ChunkData,
+   region?: WorldRegion
+  ) => {
+   if (!region) return -1;
+   const check =
+    this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromRegion(
+     region,
+     voxelId,
+     voxelStateId
+    );
+   if (check) {
+    return this.DVEW.worldGeneration.paintVoxel(check);
+   } else {
+    const newPaletteId =
+     this.DVEW.worldGeneration.voxelPalette.addToRegionsVoxelPalette(
+      region,
+      voxelId,
+      voxelStateId
+     );
+    if (!newPaletteId) return -1;
+    return this.DVEW.worldGeneration.paintVoxel(newPaletteId);
+   }
+  },
+ };
+
+ regions: Record<string, WorldRegion> = {};
 
  chunks: Record<string, ChunkData> = {};
 
@@ -88,7 +172,7 @@ export class WorldData {
   this._chunkRebuildQueMap = {};
  }
 
- _addToRebuildQue(
+ addToRebuildQue(
   x: number,
   y: number,
   z: number,
@@ -108,11 +192,11 @@ export class WorldData {
  }
 
  getCurrentWorldDataSize() {
-  const data = JSON.stringify(this.chunks);
+  const data = JSON.stringify(this.regions);
   return new Blob([data]).size;
  }
  getCurrentWorldDataString() {
-  return JSON.stringify(this.chunks);
+  return JSON.stringify(this.regions);
  }
 
  setAir(x: number, y: number, z: number, lightValue: number) {
@@ -222,10 +306,22 @@ export class WorldData {
  }
 
  removeData(x: number, y: number, z: number) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return false;
+  }
+
+  const chunks = region.chunks;
+
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
    return false;
   }
@@ -259,10 +355,21 @@ export class WorldData {
  }
 
  getVoxel(x: number, y: number, z: number) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return false;
+  }
+  const chunks = region.chunks;
+
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
 
   if (!chunk || chunk.isEmpty) {
    return false;
@@ -336,10 +443,22 @@ export class WorldData {
  }
 
  getData(x: number, y: number, z: number) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return false;
+  }
+
+  const chunks = region.chunks;
+
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
    return 0;
   }
@@ -388,10 +507,22 @@ export class WorldData {
   * @returns
   */
  setData(x: number, y: number, z: number, data: number) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   region = this.addRegion(regionX, regionY, regionZ);
+  }
+
+  const chunks = region.chunks;
+
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk || chunk.isEmpty) {
    return false;
   }
@@ -418,6 +549,81 @@ export class WorldData {
   voxels[voxelX][voxelZ] ??= [];
   voxels[voxelX][voxelZ][voxelY] = data;
  }
+
+ addRegion(regionX: number, regionY: number, regionZ: number) {
+  let regionPalette =
+   this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region";
+  const newRegion = this.DVEW.worldGeneration.getBlankRegion(regionPalette);
+  this.regions[`${regionX}-${regionZ}-${regionY}`] = newRegion;
+  return newRegion;
+ }
+
+ paintVoxel(
+  voxelId: string,
+  voxelStateId: string,
+  x: number,
+  y: number,
+  z: number
+ ) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   region = this.addRegion(regionX, regionY, regionZ);
+  }
+
+  const chunks = region.chunks;
+
+  const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
+  const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
+  const chunkZ = (z >> this.chunkZPow2) << this.chunkZPow2;
+  let chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (!chunk) {
+   chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+   if (
+    this.DVEW.engineSettings.settings.lighting?.doSunLight ||
+    this.DVEW.engineSettings.settings.lighting?.doRGBLight
+   ) {
+    if (
+     this.DVEW.engineSettings.settings.lighting?.autoRGBLight ||
+     this.DVEW.engineSettings.settings.lighting?.autoSunLight
+    ) {
+     this.DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
+    }
+   }
+   chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
+  }
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + ((1 << this.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkXPow2) - 1;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + ((1 << this.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkZPow2) - 1;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + ((1 << this.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkYPow2) - 1;
+   }
+  }
+  const data = this.voxelPaletteFunctions[
+   //@ts-ignore
+   this.DVEW.engineSettings.settings.world?.voxelPaletteMode
+  ](voxelId, voxelStateId, chunk);
+  if (data < 0) return;
+  const voxels = chunk.voxels;
+  voxels[voxelX] ??= [];
+  voxels[voxelX][voxelZ] ??= [];
+  voxels[voxelX][voxelZ][voxelY] = data;
+ }
  /**# Insert Data
   * ---
   * Acts like **setData** but will create a new chunk if it does not exist.
@@ -426,13 +632,35 @@ export class WorldData {
   * @param z
   * @param data
   */
- insertData(x: number, y: number, z: number, data: number[]) {
+ insertData(x: number, y: number, z: number, data: number) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (x >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return false;
+  }
+
+  const chunks = region.chunks;
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-  let chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  let chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk) {
    chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+   if (
+    this.DVEW.engineSettings.settings.lighting?.doSunLight ||
+    this.DVEW.engineSettings.settings.lighting?.doRGBLight
+   ) {
+    if (
+     this.DVEW.engineSettings.settings.lighting?.autoRGBLight ||
+     this.DVEW.engineSettings.settings.lighting?.autoSunLight
+    ) {
+     this.DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
+    }
+   }
    this.setChunk(chunkX, chunkY, chunkZ, chunk);
   }
   let voxelX = Math.abs(x - chunkX);
@@ -460,18 +688,50 @@ export class WorldData {
  }
 
  getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false {
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) {
+  const regionX = (chunkX >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (chunkY >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (chunkZ >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
    return false;
   }
-  return this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+
+  const chunks = region.chunks;
+
+  if (!chunks[`${chunkX}-${chunkZ}-${chunkY}`]) {
+   return false;
+  }
+  return chunks[`${chunkX}-${chunkZ}-${chunkY}`];
  }
 
  removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  delete this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+  const regionX = (chunkX >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (chunkY >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (chunkZ >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return false;
+  }
+  const chunks = region.chunks;
+  delete chunks[`${chunkX}-${chunkZ}-${chunkY}`];
  }
 
  setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData) {
-  this.chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
+  const regionX = (chunkX >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (chunkY >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (chunkZ >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   region = this.addRegion(regionX, regionY, regionZ);
+  }
+  const chunks = region.chunks;
+  chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
  }
 
  getChunkPosition(x: number, y: number, z: number) {
@@ -489,6 +749,17 @@ export class WorldData {
   voxelId: string,
   voxelStateId: string
  ) {
+  const regionX = (x >> this.regionXPow2) << this.regionXPow2;
+  const regionY = (y >> this.regionYPow2) << this.regionYPow2;
+  const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
+
+  let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
+
+  if (!region) {
+   return (region = this.addRegion(regionX, regionY, regionZ));
+  }
+  const chunks = region.chunks;
+
   const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
   const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
   const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
@@ -537,22 +808,22 @@ export class WorldData {
    z,
    this.lightByte.encodeLightIntoVoxelData(voxelData, light)
   );
-  this._addToRebuildQue(x, y, z, "all");
-  this._addToRebuildQue(x + 1, y, z, "all");
-  this._addToRebuildQue(x - 1, y, z, "all");
-  this._addToRebuildQue(x, y + 1, z, "all");
-  this._addToRebuildQue(x, y - 1, z, "all");
-  this._addToRebuildQue(x, y, z + 1, "all");
-  this._addToRebuildQue(x, y, z - 1, "all");
+  this.addToRebuildQue(x, y, z, "all");
+  this.addToRebuildQue(x + 1, y, z, "all");
+  this.addToRebuildQue(x - 1, y, z, "all");
+  this.addToRebuildQue(x, y + 1, z, "all");
+  this.addToRebuildQue(x, y - 1, z, "all");
+  this.addToRebuildQue(x, y, z + 1, "all");
+  this.addToRebuildQue(x, y, z - 1, "all");
  }
  requestVoxelBeRemoved(x: number, y: number, z: number) {
   this.setData(x, y, z, 0);
-  this._addToRebuildQue(x, y, z, "all");
-  this._addToRebuildQue(x + 1, y, z, "all");
-  this._addToRebuildQue(x - 1, y, z, "all");
-  this._addToRebuildQue(x, y + 1, z, "all");
-  this._addToRebuildQue(x, y - 1, z, "all");
-  this._addToRebuildQue(x, y, z + 1, "all");
-  this._addToRebuildQue(x, y, z - 1, "all");
+  this.addToRebuildQue(x, y, z, "all");
+  this.addToRebuildQue(x + 1, y, z, "all");
+  this.addToRebuildQue(x - 1, y, z, "all");
+  this.addToRebuildQue(x, y + 1, z, "all");
+  this.addToRebuildQue(x, y - 1, z, "all");
+  this.addToRebuildQue(x, y, z + 1, "all");
+  this.addToRebuildQue(x, y, z - 1, "all");
  }
 }

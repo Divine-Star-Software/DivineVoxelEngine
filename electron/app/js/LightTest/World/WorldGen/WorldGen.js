@@ -50,28 +50,18 @@ export class WorldGen {
     chunkWidth = 16;
     chunkHeight = 256;
     renderDistance = 20;
-    generateChunk(chunk, chunkX, chunkY, chunkZ, type = "default") {
-        let dreamstonepillar = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default");
-        const chunkVoxels = chunk.voxels;
+    generateChunk(chunkX, chunkY, chunkZ, type = "default") {
+        let dreamstonepillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
         let baseY = 0;
         let maxY = 61;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= baseY + 5) {
-                        chunkVoxels[x] ??= [];
-                        chunkVoxels[x][z] ??= [];
-                        chunkVoxels[x][z][y] =
-                            this.DVEW.worldGeneration.paintVoxel(dreamstonepillar);
+                        this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
-                    /*       if (y >= baseY && y <= maxY + 8 && Math.random() < 0.05) {
-                     returnChunk[x] ??= [];
-                     returnChunk[x][z] ??= [];
-                     returnChunk[x][z][y] = [...dreamStoneVovxel];
-                    }   */
                 }
             }
         }
-        return chunk;
     }
 }

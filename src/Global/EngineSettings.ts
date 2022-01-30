@@ -15,8 +15,16 @@ export class EngineSettings {
    autoRebuild: true,
    rebuildMode: "async",
   },
-  chunks: {
+  world: {
    voxelPaletteMode: "global",
+  },
+  regions: {
+   regionXPow2: 9,
+   regionYPow2: 8,
+   regionZPow2: 9,
+  },
+  chunks: {
+   autoHeightMap: true,
    chunkXPow2: 4,
    chunkYPow2: 7,
    chunkZPow2: 4,
@@ -32,6 +40,9 @@ export class EngineSettings {
    autoSunLight: true,
   },
   materials: {
+   doAO: true,
+   doSunLight: true,
+   doRGBLight: true,
    disableFloraShaderEffects: false,
    disableFluidShaderEffects: false,
   },

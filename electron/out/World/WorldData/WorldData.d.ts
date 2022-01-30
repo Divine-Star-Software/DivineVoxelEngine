@@ -5,6 +5,7 @@ import type { LightByte } from "Global/Util/LightByte.js";
 import type { VoxelInteface, VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
+import { WorldRegion } from "Meta/WorldData/World.types.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -16,6 +17,11 @@ export declare class WorldData {
     chunkXPow2: number;
     chunkZPow2: number;
     chunkYPow2: number;
+    regionXPow2: number;
+    regionZPow2: number;
+    regionYPow2: number;
+    voxelPaletteFunctions: Record<string, (voxelId: string, voxelStateId: string, chunk: ChunkData, region?: WorldRegion) => number>;
+    regions: Record<string, WorldRegion>;
     chunks: Record<string, ChunkData>;
     _chunkRebuildQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
@@ -29,7 +35,7 @@ export declare class WorldData {
     getChunkRebuildQue(): number[][];
     getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
     clearChunkRebuildQue(): void;
-    _addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
+    addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;
     setAir(x: number, y: number, z: number, lightValue: number): void;
@@ -75,6 +81,8 @@ export declare class WorldData {
      * @returns
      */
     setData(x: number, y: number, z: number, data: number): false | undefined;
+    addRegion(regionX: number, regionY: number, regionZ: number): WorldRegion;
+    paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     /**# Insert Data
      * ---
      * Acts like **setData** but will create a new chunk if it does not exist.
@@ -83,11 +91,11 @@ export declare class WorldData {
      * @param z
      * @param data
      */
-    insertData(x: number, y: number, z: number, data: number[]): void;
+    insertData(x: number, y: number, z: number, data: number): false | undefined;
     getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false;
-    removeChunk(chunkX: number, chunkY: number, chunkZ: number): void;
+    removeChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
     getChunkPosition(x: number, y: number, z: number): number[];
-    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string): void;
+    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string): WorldRegion | undefined;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;
 }

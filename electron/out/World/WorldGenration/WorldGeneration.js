@@ -1,6 +1,6 @@
 import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { VoxelPaletteHelper as VoxelPaletteManager } from "./VoxelPalettes/VoxelPaletteHelper.js";
+import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/VoxelPaletteHelper.js";
 /**# World Generation
  * ---
  * Helps with creating the needed data for chunks and world generation things.
@@ -20,6 +20,22 @@ export class WorldGeneration {
     }
     paintVoxel(voxelPalletId) {
         return this.voxelByte.setId(voxelPalletId, 0);
+    }
+    getBlankRegion(palette = false) {
+        let paletteData = {};
+        if (palette) {
+            paletteData = {
+                count: 0,
+                map: {},
+                record: {},
+            };
+        }
+        return {
+            ...{
+                chunks: {},
+                ...paletteData,
+            },
+        };
     }
     getBlankChunk(empty = true, palette = false, voxels = []) {
         let paletteData = {};

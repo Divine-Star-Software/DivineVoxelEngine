@@ -31,6 +31,7 @@ export declare class DivineVoxelEngineWorld {
     syncSettings(data: EngineSettingsData): void;
     runChunkRebuildQue(): void;
     runChunkRebuildQueAsync(): Promise<void>;
+    clearChunkRebuildQue(): void;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;

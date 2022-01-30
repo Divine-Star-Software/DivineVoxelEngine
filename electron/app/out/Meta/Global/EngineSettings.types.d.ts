@@ -4,8 +4,16 @@ export declare type EngineSettingsData = {
         height: number;
         animationTime: number;
     };
+    world?: {
+        voxelPaletteMode: "global" | "per-region" | "per-chunk";
+    };
+    regions?: {
+        regionXPow2: number;
+        regionYPow2: number;
+        regionZPow2: number;
+    };
     chunks?: {
-        voxelPaletteMode: 'global' | "per-chunk";
+        autoHeightMap: boolean;
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -27,6 +35,9 @@ export declare type EngineSettingsData = {
     materials?: {
         disableFloraShaderEffects: boolean;
         disableFluidShaderEffects: boolean;
+        doAO: boolean;
+        doSunLight: boolean;
+        doRGBLight: boolean;
     };
     meshing?: {
         maxBuilderThreads: number;

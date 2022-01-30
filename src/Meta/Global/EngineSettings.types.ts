@@ -2,18 +2,26 @@ export type EngineSettingsData = {
  textureOptions?: {
   width: number;
   height: number;
-  animationTime : number;
+  animationTime: number;
+ };
+ world?: {
+  voxelPaletteMode: "global" | "per-region" | "per-chunk";
+ };
+ regions?: {
+  regionXPow2: number;
+  regionYPow2: number;
+  regionZPow2: number;
  };
  chunks?: {
-  voxelPaletteMode : 'global' | "per-chunk";
+  autoHeightMap: boolean;
   chunkXPow2: number;
   chunkYPow2: number;
   chunkZPow2: number;
  };
- updating ?: {
-  autoRebuild : boolean,
-  rebuildMode : "sync" | "async"
- },
+ updating?: {
+  autoRebuild: boolean;
+  rebuildMode: "sync" | "async";
+ };
  lighting?: {
   doAO: boolean;
   doSunLight: boolean;
@@ -21,12 +29,15 @@ export type EngineSettingsData = {
   autoRGBLight: boolean;
   autoSunLight: boolean;
  };
- voxels ?: {
-     doColors : boolean;
- }
+ voxels?: {
+  doColors: boolean;
+ };
  materials?: {
   disableFloraShaderEffects: boolean;
   disableFluidShaderEffects: boolean;
+  doAO: boolean;
+  doSunLight: boolean;
+  doRGBLight: boolean;
  };
  meshing?: {
   maxBuilderThreads: number;

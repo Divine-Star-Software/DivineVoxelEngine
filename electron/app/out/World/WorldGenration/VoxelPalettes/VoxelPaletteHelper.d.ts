@@ -1,13 +1,15 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { WorldRegion } from "Meta/WorldData/World.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
-/**# Voxel Palette Helper
+/**# Voxel Palette Manager
  * ---
  * Used to help decode voxel ids and states from per-chunk voxel palettes.
  */
-export declare class VoxelPaletteHelper {
+export declare class VoxelPaletteManager {
     private DVEW;
     globalVoxelPaletteIndex: number;
+    perRegionVoxelRecord: Record<string, string[]>;
     perChunkVoxelRecord: Record<string, string[]>;
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteMap: Record<string, number>;
@@ -32,8 +34,12 @@ export declare class VoxelPaletteHelper {
     getVoxelDataFromGlobalPalette(voxelId: number): string[];
     registerVoxelForGlobalPalette(voxel: VoxelInteface): void;
     registerVoxelForPerChunkVoxelPalette(voxel: VoxelInteface): void;
+    registerVoxelForPerRegionVoxelPalette(voxel: VoxelInteface): void;
     getGlobalVoxelPalette(): Record<number, string>;
     getVoxelData(chunk: ChunkData, voxelId: number): string[] | false;
     getVoxelPaletteId(chunk: ChunkData, voxelId: string, voxelState: string): number | false;
     addToChunksVoxelPalette(chunk: ChunkData, voxelId: string, voxelState: string): number;
+    getVoxelDataFromRegion(region: WorldRegion, voxelId: number): string[] | false;
+    getVoxelPaletteIdFromRegion(region: WorldRegion, voxelId: string, voxelState: string): number | false;
+    addToRegionsVoxelPalette(region: WorldRegion, voxelId: string, voxelState: string): number;
 }

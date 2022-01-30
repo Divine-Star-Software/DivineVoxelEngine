@@ -66,6 +66,9 @@ export class DivineVoxelEngineWorld {
         }
         this.worldData.clearChunkRebuildQue();
     }
+    clearChunkRebuildQue() {
+        this.worldData.clearChunkRebuildQue();
+    }
     removeChunk(chunkX, chunkY, chunkZ) {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)

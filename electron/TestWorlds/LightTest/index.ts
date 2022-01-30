@@ -58,8 +58,9 @@ const init = async () => {
  camera.maxZ = 500;
  camera.position.x = 9;
  camera.position.z = 9;
- camera.position.y = 35;
+ camera.position.y = 10;
  scene.activeCamera = camera;
+ camera.setTarget(BABYLON.Vector3.Zero());
  //  camera.setTarget(BABYLON.Vector3.Zero());
 
  camera.attachControl(canvas, true);
