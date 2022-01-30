@@ -22,11 +22,12 @@ const start = () => {
             DVEW.buildChunkAsync(x, 0, z);
         }
     }
+    const y = 60;
     setInterval(() => {
         for (let x = startX; x < endX; x += 16) {
             for (let z = startZ; z < endZ; z += 16) {
-                DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, 7, z + 7);
-                DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x + 7, 7, z + 7);
+                DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, y + 7, z + 7);
+                DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x + 7, y + 7, z + 7);
             }
         }
     }, 10);
@@ -34,7 +35,6 @@ const start = () => {
 };
 (async () => {
     await DVEW.$INIT({
-        voxelPaletteMode: "global",
         onReady: start,
         onMessage: (message, data) => { },
     });

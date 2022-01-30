@@ -14,9 +14,6 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
  */
 export class DivineVoxelEngineWorld {
     worker;
-    settings = {
-        voxelPaletteMode: "per-chunk",
-    };
     engineSettings = new EngineSettings();
     UTIL = new Util();
     builderManager = new BuilderManager();
@@ -127,7 +124,6 @@ export class DivineVoxelEngineWorld {
         this.builderManager.requestFluidMeshBeReBuilt();
     }
     async $INIT(data) {
-        this.settings.voxelPaletteMode = data.voxelPaletteMode;
         await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
     }
 }

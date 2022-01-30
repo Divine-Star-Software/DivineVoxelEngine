@@ -35,7 +35,6 @@ const start = () => {
     DVEW.buildFluidMesh();
 };
 DVEW.$INIT({
-    voxelPaletteMode: "global",
     onReady: start,
     onMessage: (message, data) => { },
 });

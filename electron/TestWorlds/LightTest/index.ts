@@ -44,11 +44,7 @@ const init = async () => {
   earthGravity / assumedFramesPerSecond,
   0
  );
- // Fog
- //scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
- scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
- scene.fogColor = new BABYLON.Color3(0.5, 0.5, 0.5);
- scene.fogDensity = 0.01;
+
 
  const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
 
@@ -58,7 +54,7 @@ const init = async () => {
  camera.maxZ = 500;
  camera.position.x = 9;
  camera.position.z = 9;
- camera.position.y = 10;
+ camera.position.y = 150;
  scene.activeCamera = camera;
  camera.setTarget(BABYLON.Vector3.Zero());
  //  camera.setTarget(BABYLON.Vector3.Zero());
@@ -75,9 +71,10 @@ const init = async () => {
  skybox.material = skyboxMaterial;
  skybox.infiniteDistance = true;
 
- scene.fogDensity = 0.008;
- scene.fogColor = new BABYLON.Color3(1 / 255, 1 / 255, 1 / 255);
- scene.fogEnabled = false;
+ scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+ scene.fogDensity = 0.0008;
+ scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
+ scene.fogEnabled = true;
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
 

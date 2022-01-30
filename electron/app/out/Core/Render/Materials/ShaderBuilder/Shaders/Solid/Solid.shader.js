@@ -2,7 +2,7 @@
 export const solidShaders = {
     fragMain: `
         vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
-        if (rgb.a < 0.5) {
+        if (rgb.a < 0.5) { 
             discard;
         }
         rgb = getColor(rgb);

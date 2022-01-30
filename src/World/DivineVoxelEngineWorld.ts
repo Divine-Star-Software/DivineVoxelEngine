@@ -19,10 +19,6 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 export class DivineVoxelEngineWorld {
  worker: Worker;
 
- settings = {
-  voxelPaletteMode: "per-chunk",
- };
-
  engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
@@ -176,7 +172,6 @@ export class DivineVoxelEngineWorld {
  }
 
  async $INIT(data: DVEWInitData) {
-  this.settings.voxelPaletteMode = data.voxelPaletteMode;
   await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
  }
 }

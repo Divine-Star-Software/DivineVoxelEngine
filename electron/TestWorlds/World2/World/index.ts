@@ -43,7 +43,6 @@ const start = () => {
 };
 
 DVEW.$INIT({
- voxelPaletteMode: "global",
  onReady: start,
  onMessage: (message: string, data: any[]) => {},
 });

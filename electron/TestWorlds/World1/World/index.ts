@@ -42,8 +42,6 @@ const start = async () => {
 
 
 DVEW.$INIT({
- voxelPaletteMode: "global",
-
  onReady: start,
  onMessage: (message: string, data: any[]) => {
   if (message == "connect-player") {

@@ -33,7 +33,6 @@ const start = () => {
     DVEW.buildChunk(-16, 0, -16);
 };
 DVEW.$INIT({
-    voxelPaletteMode: "global",
     onReady: start,
     onMessage: (message, data) => { },
 });

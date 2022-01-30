@@ -34,7 +34,6 @@ const start = async () => {
     DVEW.buildFluidMesh();
 };
 DVEW.$INIT({
-    voxelPaletteMode: "global",
     onReady: start,
     onMessage: (message, data) => {
         if (message == "connect-player") {

@@ -76,7 +76,7 @@ export class WorldGen {
    )
   );
 
-  let baseY = 0;
+  let baseY = 60;
   let maxY = 61;
 
   for (let x = 0; x < +this.chunkWidth; x++) {
@@ -85,6 +85,16 @@ export class WorldGen {
      if (y <= baseY + 5) {
       this.DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
+       "default",
+       x + chunkX,
+       y + chunkY,
+       z + chunkZ
+      );
+     }
+
+     if (y == baseY + 5 && x == 1 && z == 1) {
+      this.DVEW.worldData.paintVoxel(
+       "dve:debugbox",
        "default",
        x + chunkX,
        y + chunkY,

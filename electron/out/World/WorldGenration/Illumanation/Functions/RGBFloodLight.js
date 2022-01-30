@@ -143,4 +143,5 @@ export function runRGBFloodRemove(lightSource) {
         this.DVEW.worldData.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
         this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
     }
+    this.runRGBFloodFill();
 }

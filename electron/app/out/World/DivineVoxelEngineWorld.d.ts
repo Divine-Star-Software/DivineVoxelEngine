@@ -15,9 +15,6 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  */
 export declare class DivineVoxelEngineWorld {
     worker: Worker;
-    settings: {
-        voxelPaletteMode: string;
-    };
     engineSettings: EngineSettings;
     UTIL: Util;
     builderManager: BuilderManager;
