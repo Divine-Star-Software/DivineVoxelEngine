@@ -29,6 +29,10 @@ export declare class DivineVoxelEngineWorld {
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
     syncSettings(data: EngineSettingsData): void;
+    runRGBLightUpdateQue(): void;
+    clearRGBLightUpdateQue(): void;
+    runRGBLightRemoveQue(): void;
+    clearRGBLightRemoveQue(): void;
     runChunkRebuildQue(): void;
     runChunkRebuildQueAsync(): Promise<void>;
     clearChunkRebuildQue(): void;

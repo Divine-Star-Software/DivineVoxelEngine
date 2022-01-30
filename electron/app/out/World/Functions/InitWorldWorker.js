@@ -19,7 +19,7 @@ export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
                 DVEW.worker.postMessage(["set-world-data", textures]);
             }
             if (message == "voxel-add") {
-                DVEW.worldData.requestVoxelAdd(eventData[1], eventData[2], eventData[3], "dve:debugbox", "default");
+                DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", eventData[1], eventData[2], eventData[3]);
                 DVEW.runChunkRebuildQueAsync();
             }
             if (message == "voxel-remove") {

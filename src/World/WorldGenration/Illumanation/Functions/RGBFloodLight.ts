@@ -2,7 +2,6 @@ import { PositionMatrix } from "Meta/Util.types";
 import { IlluminationManager } from "../IlluminationManager";
 
 export function runRGBFloodFill(this: IlluminationManager) {
-
  while (this._RGBlightUpdateQue.length != 0) {
   const node = this._RGBlightUpdateQue.shift();
   if (!node) {
@@ -85,7 +84,6 @@ export function runRGBFloodFill(this: IlluminationManager) {
    this.DVEW.worldData.addToRebuildQue(x, y + 1, z, "all");
   }
  }
- 
 }
 
 export function runRGBFloodFillAt(
@@ -200,6 +198,7 @@ export function runRGBFloodRemove(
  }
 
  if (lightSource) {
+  this.DVEW.worldData.removeData(lightSource.x, lightSource.y, lightSource.z);
   this.DVEW.worldData.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
   this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
  }

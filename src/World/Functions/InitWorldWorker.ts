@@ -32,11 +32,11 @@ export function InitWorldWorker(
 
    if (message == "voxel-add") {
     DVEW.worldData.requestVoxelAdd(
-     eventData[1],
-     eventData[2],
-     eventData[3],
      "dve:debugbox",
      "default",
+     eventData[1],
+     eventData[2],
+     eventData[3]
     );
     DVEW.runChunkRebuildQueAsync();
    }

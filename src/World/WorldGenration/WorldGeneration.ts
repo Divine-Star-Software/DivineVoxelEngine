@@ -47,6 +47,7 @@ export class WorldGeneration {
  getBlankChunk(
   empty: boolean = true,
   palette: boolean = false,
+  proto: boolean = true,
   voxels: number[][][] = []
  ): ChunkData {
   let paletteData = {};
@@ -59,6 +60,7 @@ export class WorldGeneration {
   }
   return {
    ...{
+    proto : proto,
     voxels: voxels,
     maxMinHeight: [],
     heightMap: [],

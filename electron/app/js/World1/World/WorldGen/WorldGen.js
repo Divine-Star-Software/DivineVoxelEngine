@@ -10,28 +10,37 @@ export class WorldGen {
     copy(data) {
         return [...data];
     }
-    generateChunkStressTest(chunkX, chunkZ) {
-        //   this.chunkMap.addChunk(chunkX,chunkZ);
-        const chunkVoxels = [];
-        let dreamStonePillar = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default");
-        // debugBox = dreamstone;
-        let block = [dreamStonePillar, 0, 0xffffffff];
-        for (let x = 0; x < +this.chunkWidth; x++) {
-            for (let z = 0; z < this.chunkDepth; z++) {
-                for (let y = 0; y < this.chunkHeight; y++) {
-                    chunkVoxels[x] ??= [];
-                    chunkVoxels[x][z] ??= [];
-                    chunkVoxels[x][z][y] = this.copy(block);
-                }
-            }
+    /*  generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
+      //   this.chunkMap.addChunk(chunkX,chunkZ);
+    
+    
+      const chunkVoxels: any[][][] = [];
+      let dreamStonePillar =
+       this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+        "dve:dreamstonepillar",
+        "default"
+       );
+    
+      // debugBox = dreamstone;
+      let block = [dreamStonePillar, 0, 0xffffffff];
+    
+      for (let x = 0; x < +this.chunkWidth; x++) {
+       for (let z = 0; z < this.chunkDepth; z++) {
+        for (let y = 0; y < this.chunkHeight; y++) {
+         chunkVoxels[x] ??= [];
+         chunkVoxels[x][z] ??= [];
+         chunkVoxels[x][z][y] = this.copy(block);
         }
-        return {
-            isEmpty: false,
-            voxels: chunkVoxels,
-            maxMinHeight: [],
-            heightMap: [],
-        };
-    }
+       }
+      }
+    
+      return {
+       isEmpty: false,
+       voxels: chunkVoxels,
+       maxMinHeight: [],
+       heightMap: [],
+      };
+     } */
     generateCrazyChunk(bottomChunk, topChunk, minY, x, y, z) {
         bottomChunk.maxMinHeight[0] = 0;
         bottomChunk.maxMinHeight[1] = minY;
@@ -375,12 +384,14 @@ export class WorldGen {
             voxels: [],
             maxMinHeight: [],
             heightMap: [],
+            proto: false,
             isEmpty: false,
         };
         const topChunk = {
             voxels: [],
             maxMinHeight: [],
             heightMap: [],
+            proto: false,
             isEmpty: true,
         };
         let minY = 60;

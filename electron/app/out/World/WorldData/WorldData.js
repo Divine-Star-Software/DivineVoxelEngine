@@ -50,6 +50,8 @@ export class WorldData {
     };
     regions = {};
     chunks = {};
+    _RGBLightRemoveQue = [];
+    _RGBLightUpdateQue = [];
     _chunkRebuildQue = [];
     _chunkRebuildQueMap = {};
     calculdateVoxelLight = CalculateVoxelLight;
@@ -89,6 +91,18 @@ export class WorldData {
         this.infoByte = this.DVEW.UTIL.getInfoByte();
         this.lightByte = this.DVEW.UTIL.getLightByte();
         this.voxelByte = this.DVEW.UTIL.getVoxelByte();
+    }
+    getRGBLightUpdateQue() {
+        return this._RGBLightUpdateQue;
+    }
+    clearRGBLightUpdateQue() {
+        this._RGBLightUpdateQue = [];
+    }
+    getRGBLightRemoveQue() {
+        return this._RGBLightRemoveQue;
+    }
+    clearRGBLightRemoveQue() {
+        this._RGBLightRemoveQue = [];
     }
     getChunkRebuildQue() {
         return this._chunkRebuildQue;
@@ -482,6 +496,12 @@ export class WorldData {
         voxels[voxelX] ??= [];
         voxels[voxelX][voxelZ] ??= [];
         voxels[voxelX][voxelZ][voxelY] = data;
+        if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+            const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
+            if (voxel.data.lightSource && voxel.data.lightValue) {
+                this._RGBLightUpdateQue.push([x, y, z]);
+            }
+        }
     }
     /**# Insert Data
      * ---
@@ -581,7 +601,7 @@ export class WorldData {
             (z >> this.chunkXPow2) << this.chunkXPow2,
         ];
     }
-    requestVoxelAdd(x, y, z, voxelId, voxelStateId) {
+    requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
         const regionX = (x >> this.regionXPow2) << this.regionXPow2;
         const regionY = (y >> this.regionYPow2) << this.regionYPow2;
         const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
@@ -593,7 +613,7 @@ export class WorldData {
         const chunkX = (x >> this.chunkXPow2) << this.chunkXPow2;
         const chunkY = (y >> this.chunkYPow2) << this.chunkYPow2;
         const chunkZ = (z >> this.chunkXPow2) << this.chunkXPow2;
-        const chunk = this.getChunk(chunkX, chunkY, chunkZ);
+        const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         if (!chunk)
             return;
         let voxelPalletId = 0;
@@ -632,9 +652,31 @@ export class WorldData {
         this.addToRebuildQue(x, y - 1, z, "all");
         this.addToRebuildQue(x, y, z + 1, "all");
         this.addToRebuildQue(x, y, z - 1, "all");
+        let needLightUpdate = false;
+        if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+            const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
+            if (voxel.data.lightSource && voxel.data.lightValue) {
+                needLightUpdate = true;
+                this._RGBLightUpdateQue.push([x, y, z]);
+            }
+        }
+        if (this.DVEW.engineSettings.settings.updating?.autoRebuild) {
+            if (needLightUpdate) {
+                this.DVEW.runRGBLightUpdateQue();
+                if (this.DVEW.engineSettings.settings.updating?.rebuildMode == "sync") {
+                    this.DVEW.runChunkRebuildQue();
+                }
+                else {
+                    this.DVEW.runChunkRebuildQueAsync();
+                }
+            }
+        }
     }
     requestVoxelBeRemoved(x, y, z) {
-        this.setData(x, y, z, 0);
+        const voxelCheck = this.getVoxel(x, y, z);
+        if (!voxelCheck || voxelCheck[0] == -1)
+            return;
+        const voxel = voxelCheck[0];
         this.addToRebuildQue(x, y, z, "all");
         this.addToRebuildQue(x + 1, y, z, "all");
         this.addToRebuildQue(x - 1, y, z, "all");
@@ -642,5 +684,24 @@ export class WorldData {
         this.addToRebuildQue(x, y - 1, z, "all");
         this.addToRebuildQue(x, y, z + 1, "all");
         this.addToRebuildQue(x, y, z - 1, "all");
+        let needLightUpdate = false;
+        if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+            if (voxel.data.lightSource && voxel.data.lightValue) {
+                this._RGBLightRemoveQue.push([x, y, z]);
+                needLightUpdate = true;
+            }
+        }
+        if (this.DVEW.engineSettings.settings.updating?.autoRebuild) {
+            if (needLightUpdate) {
+                this.DVEW.runRGBLightRemoveQue();
+                if (this.DVEW.engineSettings.settings.updating?.rebuildMode == "sync") {
+                    this.DVEW.runChunkRebuildQue();
+                }
+                else {
+                    this.DVEW.runChunkRebuildQueAsync();
+                }
+            }
+        }
+        this.setData(x, y, z, 0);
     }
 }

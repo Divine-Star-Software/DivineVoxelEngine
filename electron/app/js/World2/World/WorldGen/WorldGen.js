@@ -164,6 +164,7 @@ export class WorldGen {
             voxels: returnChunk,
             maxMinHeight: [],
             isEmpty: false,
+            proto: false,
             heightMap: [],
         };
     }

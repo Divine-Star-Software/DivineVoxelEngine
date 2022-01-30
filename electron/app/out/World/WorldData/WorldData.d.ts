@@ -23,6 +23,8 @@ export declare class WorldData {
     voxelPaletteFunctions: Record<string, (voxelId: string, voxelStateId: string, chunk: ChunkData, region?: WorldRegion) => number>;
     regions: Record<string, WorldRegion>;
     chunks: Record<string, ChunkData>;
+    _RGBLightRemoveQue: number[][];
+    _RGBLightUpdateQue: number[][];
     _chunkRebuildQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
     calculdateVoxelLight: typeof CalculateVoxelLight;
@@ -32,6 +34,10 @@ export declare class WorldData {
     voxelByte: VoxelByte;
     substanceRules: Record<string, boolean>;
     constructor(DVEW: DivineVoxelEngineWorld);
+    getRGBLightUpdateQue(): number[][];
+    clearRGBLightUpdateQue(): void;
+    getRGBLightRemoveQue(): number[][];
+    clearRGBLightRemoveQue(): void;
     getChunkRebuildQue(): number[][];
     getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
     clearChunkRebuildQue(): void;
@@ -96,6 +102,6 @@ export declare class WorldData {
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
     setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
     getChunkPosition(x: number, y: number, z: number): number[];
-    requestVoxelAdd(x: number, y: number, z: number, voxelId: string, voxelStateId: string): WorldRegion | undefined;
+    requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): WorldRegion | undefined;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;
 }

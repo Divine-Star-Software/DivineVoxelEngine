@@ -55,10 +55,47 @@ export class DivineVoxelEngineWorld {
   }
  }
 
+ runRGBLightUpdateQue() {
+  const queue = this.worldData.getRGBLightUpdateQue();
+  while (queue.length != 0) {
+   const position = queue.shift();
+   if (!position) break;
+   this.worldGeneration.illumantionManager.runRGBFloodFillAt(
+    position[0],
+    position[1],
+    position[2]
+   );
+  }
+  this.worldData.clearRGBLightUpdateQue();
+ }
+
+ clearRGBLightUpdateQue() {
+  this.worldData.clearRGBLightUpdateQue();
+ }
+
+ runRGBLightRemoveQue() {
+   const queue = this.worldData.getRGBLightRemoveQue();
+   while (queue.length != 0) {
+    const position = queue.shift();
+    if (!position) break;
+    this.worldGeneration.illumantionManager.runRGBFloodRemoveAt(
+     true,
+     position[0],
+     position[1],
+     position[2]
+    );
+   }
+   this.worldData.clearRGBLightRemoveQue();
+  }
+ 
+  clearRGBLightRemoveQue() {
+   this.worldData.clearRGBLightRemoveQue();
+  }
+
  runChunkRebuildQue() {
-  const que = this.worldData.getChunkRebuildQue();
-  while (que.length != 0) {
-   const position = que.shift();
+  const queue = this.worldData.getChunkRebuildQue();
+  while (queue.length != 0) {
+   const position = queue.shift();
    if (!position) break;
    const substance = this.worldData.getSubstanceNeededToRebuild(
     position[0],
@@ -74,9 +111,9 @@ export class DivineVoxelEngineWorld {
  }
 
  async runChunkRebuildQueAsync() {
-  const que = this.worldData.getChunkRebuildQue();
-  while (que.length != 0) {
-   const position = que.shift();
+  const queue = this.worldData.getChunkRebuildQue();
+  while (queue.length != 0) {
+   const position = queue.shift();
    if (!position) break;
    const substance = this.worldData.getSubstanceNeededToRebuild(
     position[0],
@@ -91,8 +128,8 @@ export class DivineVoxelEngineWorld {
   this.worldData.clearChunkRebuildQue();
  }
 
- clearChunkRebuildQue(){
-    this.worldData.clearChunkRebuildQue();  
+ clearChunkRebuildQue() {
+  this.worldData.clearChunkRebuildQue();
  }
 
  removeChunk(chunkX: number, chunkY: number, chunkZ: number) {

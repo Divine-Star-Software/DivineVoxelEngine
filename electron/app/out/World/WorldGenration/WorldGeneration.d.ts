@@ -18,5 +18,5 @@ export declare class WorldGeneration {
     constructor(DVEW: DivineVoxelEngineWorld);
     paintVoxel(voxelPalletId: number): number;
     getBlankRegion(palette?: boolean): WorldRegion;
-    getBlankChunk(empty?: boolean, palette?: boolean, voxels?: number[][][]): ChunkData;
+    getBlankChunk(empty?: boolean, palette?: boolean, proto?: boolean, voxels?: number[][][]): ChunkData;
 }

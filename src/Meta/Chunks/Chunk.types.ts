@@ -19,6 +19,7 @@ export type ChunkData = {
   record: Record<number, string>;
   map: Record<string, number>;
  };
+ proto : boolean,
  voxels: ChunkVoxels;
  maxMinHeight: number[];
  heightMap: number[][];

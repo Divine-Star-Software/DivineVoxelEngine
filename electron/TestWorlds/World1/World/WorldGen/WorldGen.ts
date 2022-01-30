@@ -12,8 +12,9 @@ export class WorldGen {
  copy(data: any): any {
   return [...data];
  }
- generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
+/*  generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
   //   this.chunkMap.addChunk(chunkX,chunkZ);
+
 
   const chunkVoxels: any[][][] = [];
   let dreamStonePillar =
@@ -41,7 +42,7 @@ export class WorldGen {
    maxMinHeight: [],
    heightMap: [],
   };
- }
+ } */
 
  generateCrazyChunk(
   bottomChunk: ChunkData,
@@ -506,12 +507,14 @@ export class WorldGen {
    voxels: [],
    maxMinHeight: [],
    heightMap: [],
+   proto : false,
    isEmpty: false,
   };
   const topChunk = {
    voxels: [],
    maxMinHeight: [],
    heightMap: [],
+   proto : false,
    isEmpty: true,
   };
 
