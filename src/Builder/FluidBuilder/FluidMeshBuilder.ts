@@ -35,14 +35,13 @@ export class FluidMeshBuilder {
    const shapeTemplate = template[2];
    const uvTemplate = template[3];
    const lightTemplate = template[4];
-   const aoTemplate = template[5];
+   const colorTemplate = template[5];
 
    let aoIndex = 0;
    let uvIndex = 0;
-   let RGBLightIndex = 0;
+   let lightIndex = 0;
    let shapeIndex = 0;
    let positionIndex = 0;
-   let sunLightIndex = 0;
    let colorIndex = 0;
 
    for (let faceIndex = 0; faceIndex < faceTemplate.length; faceIndex++) {
@@ -65,10 +64,10 @@ export class FluidMeshBuilder {
         indicieIndex: indicieIndex,
         unTemplate: uvTemplate,
         uvTemplateIndex: uvIndex,
-        colorTemplate: lightTemplate,
+        colorTemplate: colorTemplate,
         colorIndex: colorIndex,
         lightTemplate: lightTemplate,
-        lightIndex: RGBLightIndex,
+        lightIndex: lightIndex,
         aoTemplate: lightTemplate,
         aoIndex: aoIndex,
         position: { x: x, y: y, z: z },
@@ -76,14 +75,14 @@ export class FluidMeshBuilder {
     indicieIndex = newIndexes.newIndicieIndex;
     aoIndex = newIndexes.newAOIndex;
     uvIndex = newIndexes.newUVTemplateIndex;
-    RGBLightIndex = newIndexes.newlightIndex;
+    lightIndex = newIndexes.newlightIndex;
     colorIndex = newIndexes.newColorIndex;
     shapeIndex++;
     positionIndex += 3;
    }
   }
 
-  return [positions, indices, RGBLightColors, uvs];
+  return [positions, indices, RGBLightColors, sunLightColors, colors, uvs];
  }
 
  addTemplate(
@@ -96,7 +95,6 @@ export class FluidMeshBuilder {
   newUvTemplate: Uint16Array,
   newColorsTemplate : Float32Array,
   newLightTemplate: Float32Array,
-  newAoTemplate: Float32Array
  ) {
   this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`] = [
    newPositionsTemplate,
@@ -104,7 +102,6 @@ export class FluidMeshBuilder {
    newShapeTemplate,
    newUvTemplate,
    newLightTemplate,
-   newAoTemplate,
    newColorsTemplate
   ];
 

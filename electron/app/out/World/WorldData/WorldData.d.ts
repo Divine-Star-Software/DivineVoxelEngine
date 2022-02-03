@@ -28,7 +28,7 @@ export declare class WorldData {
     _chunkRebuildQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
     calculdateVoxelLight: typeof CalculateVoxelLight;
-    voxelRGBLightMixCalc: typeof VoxelLightMixCalc;
+    voxellightMixCalc: typeof VoxelLightMixCalc;
     infoByte: InfoByte;
     lightByte: LightByte;
     voxelByte: VoxelByte;

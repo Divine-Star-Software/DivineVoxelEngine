@@ -6,7 +6,7 @@ export declare class FluidMesh {
     scene: BABYLON.Scene;
     beenCreated: boolean;
     constructor(material: FluidMaterial);
-    rebuildMeshGeometory(positions: Float32Array, indicies: Int32Array, linearcColors: Float32Array, fullColors: Float32Array, uvs: Float32Array): Promise<void>;
+    rebuildMeshGeometory(positions: Float32Array, indicies: Int32Array, RGBLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<void>;
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
-    createMeshGeometory(positions: Float32Array, indicies: Int32Array, linearColors: Float32Array, fullColors: Float32Array, uvs: Float32Array): Promise<BABYLON.Mesh>;
+    createMeshGeometory(positions: Float32Array, indicies: Int32Array, RGBLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<BABYLON.Mesh>;
 }

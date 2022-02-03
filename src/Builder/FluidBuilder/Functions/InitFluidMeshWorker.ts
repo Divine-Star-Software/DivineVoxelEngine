@@ -42,8 +42,7 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
    const uvs = new Uint16Array(data[7]);
    const colors = new Float32Array(data[8]);
    const light = new Float32Array(data[9]);
-   const ao = new Float32Array(data[10]);
-
+console.log(light);
    DVEFB.fluidMeshBuilder.addTemplate(
     chunkX,
     chunkY,
@@ -53,8 +52,7 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
     shapes,
     uvs,
     colors,
-    light,
-    ao
+    light
    );
   }
 
@@ -63,9 +61,11 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
 
    const positionArray = new Float32Array(meshData[0]);
    const indiciesArray = new Int32Array(meshData[1]);
-   const linearColorsArray = new Float32Array(meshData[2]);
-   const fullColorsArray = new Float32Array(meshData[2]);
-   const uvArray = new Float32Array(meshData[3]);
+   const RGBLightColorsArray = new Float32Array(meshData[2]);
+   const sunLightColorsArray = new Float32Array(meshData[3]);
+   const colorsArray = new Float32Array(meshData[4]);
+   const uvArray = new Float32Array(meshData[5]);
+
    //@ts-ignore
    DVEFB.worker.postMessage(
     [
@@ -75,16 +75,18 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
      0,
      positionArray.buffer,
      indiciesArray.buffer,
-     linearColorsArray.buffer,
-     fullColorsArray.buffer,
+     RGBLightColorsArray.buffer,
+     sunLightColorsArray.buffer,
+     colorsArray.buffer,
      uvArray.buffer,
     ],
     //@ts-ignore
     [
      positionArray.buffer,
      indiciesArray.buffer,
-     linearColorsArray.buffer,
-     fullColorsArray.buffer,
+     RGBLightColorsArray.buffer,
+     sunLightColorsArray.buffer,
+     colorsArray.buffer,
      uvArray.buffer,
     ]
    );

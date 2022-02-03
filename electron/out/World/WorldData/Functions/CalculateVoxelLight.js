@@ -1,33 +1,33 @@
-export function CalculateVoxelLight(voxel, voxelData, RGBlightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
+export function CalculateVoxelLight(voxel, voxelData, lightTemplate, exposedFaces, chunkX, chunkY, chunkZ, x, y, z) {
     // +y
     if (exposedFaces[0]) {
         let airLight = this.getLight(x + chunkX, y + chunkY + 1, z + chunkZ);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 1, 1, -1, 1, 0, 0, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 1, -1, 1, 1, 0, 0, 1, -1]));
     }
     // -y
     if (exposedFaces[1]) {
         let airLight = this.getLight(x + chunkX, y + chunkY - 1, z + chunkZ);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, -1, -1, 0, -1, -1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, 1, -1, 0, 1, -1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, 1, -1, 0, 1, -1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, -1, -1, 0, -1, -1, 1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, -1, -1, 0, -1, -1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, -1, 1, -1, 0, 1, -1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, 1, -1, 0, 1, -1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [0, -1, 1, -1, -1, 0, -1, -1, 1]));
     }
     // +x
     if (exposedFaces[2]) {
         let airLight = this.getLight(x + chunkX + 1, y + chunkY, z + chunkZ);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 1, 1, 0, 1, 1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 1, 1, 0, 1, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 1, -1, 0, 1, -1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 1, -1, 0, 1, -1, -1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 1, 1, 0, 1, 1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 1, 1, 0, 1, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 1, -1, 0, 1, -1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 1, -1, 0, 1, -1, -1]));
     }
     // -x
     if (exposedFaces[3]) {
         let airLight = this.getLight(x + chunkX - 1, y + chunkY, z + chunkZ);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, 1, 0, -1, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, 1, 0, -1, 1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, -1, 0, -1, -1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, -1, 0, -1, -1, 1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, 1, 0, -1, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, 1, 0, -1, 1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, -1, -1, 0, -1, -1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, -1, -1, 0, -1, -1, 1]));
     }
     // -z
     if (exposedFaces[4]) {
         let airLight = this.getLight(x + chunkX, y + chunkY, z + chunkZ - 1);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, 1, -1, -1, 1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, 1, -1, 1, 1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, -1, -1, 1, -1, -1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, -1, -1, -1, -1, -1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, 1, -1, -1, 1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, 1, -1, 1, 1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, -1, 0, -1, -1, 1, -1, -1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, -1, 0, -1, -1, -1, -1, -1]));
     }
     // +z
     if (exposedFaces[5]) {
         let airLight = this.getLight(x + chunkX, y + chunkY, z + chunkZ + 1);
-        RGBlightTemplate.push(this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, 1, 1, 1, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, 1, 1, -1, 1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, -1, 1, -1, -1, 1]), this.voxelRGBLightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, -1, 1, 1, -1, 1]));
+        lightTemplate.push(this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, 1, 1, 1, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, 1, 1, -1, 1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [-1, 0, 1, 0, -1, 1, -1, -1, 1]), this.voxellightMixCalc(airLight, voxel, chunkX, chunkY, chunkZ, x, y, z, [1, 0, 1, 0, -1, 1, 1, -1, 1]));
     }
 }
 export function VoxelLightMixCalc(voxelLigtValue, voxel, chunkX, chunkY, chunkZ, voxelX, voxelY, voxelZ, checkSet) {

@@ -44,7 +44,7 @@ export class WorldGen {
 
    for (let z = 0; z < this.chunkDepth; z++) {
     if (Math.random() < 0.1){ fill = true;} else {fill = false;}
-    if (Math.random() < 0.2){ heightChange = true;} else {heightChange = false;}
+    if (Math.random() < 0.5){ heightChange = true;} else {heightChange = false;}
     if(heightChange){
         height = Math.random() * 3;
     } else {
@@ -73,7 +73,7 @@ export class WorldGen {
          z + chunkZ
         );
        }
-       if (y >= baseY - 5 && y <= baseY - 1 && x != 7 && x != 8) {
+       if (y >= baseY - 5 && y <= baseY - 1 &&  ((x < 6) || (x > 9) ) ) {
         this.DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
          "default",

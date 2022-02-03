@@ -45,12 +45,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.lightIndex
    );
 
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
-   );
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -93,12 +87,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.lightIndex
    );
 
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
-   );
-
    return {
     newIndicieIndex: data.indicieIndex + 4,
     newUVTemplateIndex: data.uvTemplateIndex + 1,
@@ -137,11 +125,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    );
    const uv = data.unTemplate[data.uvTemplateIndex];
    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
-   );
    this.shapeHelper.calculateLightColor(
     data.RGBLightColors,
     data.sunLightColors,
@@ -191,11 +174,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.lightTemplate,
     data.lightIndex
    );
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
-   );
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
@@ -240,11 +218,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.lightTemplate,
     data.lightIndex
    );
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
-   );
 
    return {
     newIndicieIndex: data.indicieIndex + 4,
@@ -285,11 +258,6 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
     data.sunLightColors,
     data.lightTemplate,
     data.lightIndex
-   );
-   this.shapeHelper.calculateAOColor(
-    data.AOColors,
-    data.aoTemplate,
-    data.aoIndex
    );
 
    return {

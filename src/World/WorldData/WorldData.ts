@@ -120,7 +120,7 @@ export class WorldData {
   Record<VoxelSubstanceType | "all", boolean>
  > = {};
  calculdateVoxelLight = CalculateVoxelLight;
- voxelRGBLightMixCalc = VoxelLightMixCalc;
+ voxellightMixCalc = VoxelLightMixCalc;
 
  infoByte: InfoByte;
  lightByte: LightByte;

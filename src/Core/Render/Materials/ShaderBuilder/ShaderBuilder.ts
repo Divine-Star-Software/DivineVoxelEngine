@@ -43,16 +43,27 @@ ${floraShaders.vertexMain}
   uniformRegister: string = "",
   animationFunction: string = ""
  ) {
-  return `
-${fluidShaders.vertexTop}
-
-${uniformRegister}
-
+return `
+${SharedVertexShader.top}
+${SharedVertexShader.attributes}
+${SharedVertexShader.uniforams}
+${SharedVertexShader.varying}
+${SharedVertexShader.optionVars}
 ${ShaderNoiseFunctions.fluid}
-
+${SharedFogFunctions.fogVertexTop}
+${uniformRegister}
 ${animationFunction}
-
-${fluidShaders.vertexMain}
+${fluidShaders.vertexVars}
+${CommonShader.getMainFunction(`
+ ${fluidShaders.vertexWave}
+ ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.setUVInMain}
+ ${SharedVertexShader.doAO}
+ ${SharedVertexShader.doRGB}
+ ${SharedVertexShader.doSun}
+ ${SharedVertexShader.doColors}
+ ${SharedVertexShader.doNormals}
+`)}
 `;
  }
 
@@ -115,17 +126,19 @@ ${solidShaders.fragMain}
  }
 
  buildFluidFragmentShader() {
-  return `
+return `
+${SharedFragmentShader.top}
 ${SharedFogFunctions.fogFragConstants}
-
-${fluidShaders.fragTop}
-
+${SharedFragmentShader.optionVariables}
+${SharedFragmentShader.varsNoAO}
 ${SharedFogFunctions.fogFragVars}
-
 ${SharedFogFunctions.fogFragFunction}
-
+${SharedFragmentShader.getColor}
+${SharedFragmentShader.getLight}
+${SharedFragmentShader.doFog}
+${CommonShader.getMainFunction(`
 ${fluidShaders.fragMain}
-`;
+`)}`;
  }
 
  buildFloraFragmentShader() {

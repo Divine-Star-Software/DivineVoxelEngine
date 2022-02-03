@@ -28,7 +28,7 @@ export class WorldGen {
                 else {
                     fill = false;
                 }
-                if (Math.random() < 0.2) {
+                if (Math.random() < 0.5) {
                     heightChange = true;
                 }
                 else {
@@ -49,7 +49,7 @@ export class WorldGen {
                             if (y <= baseY - 5) {
                                 this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
-                            if (y >= baseY - 5 && y <= baseY - 1 && x != 7 && x != 8) {
+                            if (y >= baseY - 5 && y <= baseY - 1 && ((x < 6) || (x > 9))) {
                                 this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                             if (y == baseY && x == 7 && z == 7) {

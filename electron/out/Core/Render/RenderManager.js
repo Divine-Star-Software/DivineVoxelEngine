@@ -27,8 +27,10 @@ export class RenderManager {
     reStart() { }
     setSunLevel(level) {
         this.solidMaterial.setSunLightLevel(level);
+        this.fluidMaterial.setSunLightLevel(level);
     }
     setBaseLevel(level) {
         this.solidMaterial.setBaseLevel(level);
+        this.fluidMaterial.setBaseLevel(level);
     }
 }

@@ -19,7 +19,7 @@ export class Player {
     hitbox;
     jumped = false;
     jumping = false;
-    jumpTime = 20;
+    jumpTime = 28;
     speed = 0.15;
     moveForward = false;
     moveBackward = false;
@@ -305,7 +305,7 @@ export class Player {
         this.camera = camera;
         // this.camera.position.y = 1;
         this.hitbox.checkCollisions = true;
-        this.hitbox.ellipsoid = new BABYLON.Vector3(0.5, 0.9, 0.5);
+        this.hitbox.ellipsoid = new BABYLON.Vector3(0.45, 0.9, 0.45);
         this.hitbox.isPickable = false;
         //this.hitbox.showBoundingBox = true;
         this.hitbox.isVisible = false;
@@ -361,7 +361,7 @@ export class Player {
                     if (this.playerStatesArray[0] && !this.jumping) {
                         this.jumped = true;
                         this.jumping = true;
-                        this.velocity.y = 0.2;
+                        this.velocity.y = 0.15;
                     }
                     break;
             }

@@ -52,7 +52,6 @@ export class BuilderManager {
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
                 const colors = new Float32Array(baseTemplate.colorTemplate);
                 const light = new Float32Array(baseTemplate.lightTemplate);
-                const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.fluidBuilder.postMessage([
                     0,
                     chunkX,
@@ -64,7 +63,6 @@ export class BuilderManager {
                     uvs.buffer,
                     colors.buffer,
                     light.buffer,
-                    ambientOcclusion.buffer,
                 ]),
                     [
                         positions.buffer,
@@ -73,7 +71,6 @@ export class BuilderManager {
                         uvs.buffer,
                         colors.buffer,
                         light.buffer,
-                        ambientOcclusion.buffer,
                     ];
             }
             else {
@@ -128,7 +125,6 @@ export class BuilderManager {
                 const uvs = new Uint16Array(baseTemplate.uvTemplate);
                 const colors = new Float32Array(baseTemplate.colorTemplate);
                 const light = new Float32Array(baseTemplate.lightTemplate);
-                const ambientOcclusion = new Float32Array(baseTemplate.aoTemplate);
                 this.fluidBuilder.postMessage([
                     0,
                     chunkX,
@@ -140,7 +136,6 @@ export class BuilderManager {
                     uvs.buffer,
                     colors.buffer,
                     light.buffer,
-                    ambientOcclusion.buffer,
                 ]),
                     [
                         positions.buffer,
@@ -149,7 +144,6 @@ export class BuilderManager {
                         uvs.buffer,
                         colors.buffer,
                         light.buffer,
-                        ambientOcclusion.buffer,
                     ];
             }
             else {

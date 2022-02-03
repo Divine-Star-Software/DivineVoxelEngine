@@ -33,16 +33,17 @@ export function InitWorker(DVEFB) {
             const uvs = new Uint16Array(data[7]);
             const colors = new Float32Array(data[8]);
             const light = new Float32Array(data[9]);
-            const ao = new Float32Array(data[10]);
-            DVEFB.fluidMeshBuilder.addTemplate(chunkX, chunkY, chunkZ, positions, faces, shapes, uvs, colors, light, ao);
+            console.log(light);
+            DVEFB.fluidMeshBuilder.addTemplate(chunkX, chunkY, chunkZ, positions, faces, shapes, uvs, colors, light);
         }
         if (eventType == 1) {
             const meshData = DVEFB.fluidMeshBuilder.generateMesh();
             const positionArray = new Float32Array(meshData[0]);
             const indiciesArray = new Int32Array(meshData[1]);
-            const linearColorsArray = new Float32Array(meshData[2]);
-            const fullColorsArray = new Float32Array(meshData[2]);
-            const uvArray = new Float32Array(meshData[3]);
+            const RGBLightColorsArray = new Float32Array(meshData[2]);
+            const sunLightColorsArray = new Float32Array(meshData[3]);
+            const colorsArray = new Float32Array(meshData[4]);
+            const uvArray = new Float32Array(meshData[5]);
             //@ts-ignore
             DVEFB.worker.postMessage([
                 0,
@@ -51,16 +52,18 @@ export function InitWorker(DVEFB) {
                 0,
                 positionArray.buffer,
                 indiciesArray.buffer,
-                linearColorsArray.buffer,
-                fullColorsArray.buffer,
+                RGBLightColorsArray.buffer,
+                sunLightColorsArray.buffer,
+                colorsArray.buffer,
                 uvArray.buffer,
             ], 
             //@ts-ignore
             [
                 positionArray.buffer,
                 indiciesArray.buffer,
-                linearColorsArray.buffer,
-                fullColorsArray.buffer,
+                RGBLightColorsArray.buffer,
+                sunLightColorsArray.buffer,
+                colorsArray.buffer,
                 uvArray.buffer,
             ]);
         }

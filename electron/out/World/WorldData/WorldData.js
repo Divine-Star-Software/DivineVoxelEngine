@@ -55,7 +55,7 @@ export class WorldData {
     _chunkRebuildQue = [];
     _chunkRebuildQueMap = {};
     calculdateVoxelLight = CalculateVoxelLight;
-    voxelRGBLightMixCalc = VoxelLightMixCalc;
+    voxellightMixCalc = VoxelLightMixCalc;
     infoByte;
     lightByte;
     voxelByte;

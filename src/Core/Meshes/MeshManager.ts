@@ -30,10 +30,7 @@ export class MeshManager {
   this.scene = scene;
  }
 
-
- reStart() {
-     
- }
+ reStart() {}
 
  handleUpdate(
   type: VoxelSubstanceType,
@@ -58,15 +55,17 @@ export class MeshManager {
   this.scene.unfreezeActiveMeshes();
   const positions = new Float32Array(data[4]);
   const indicies = new Int32Array(data[5]);
-  const aoColors = new Float32Array(data[6]);
-  const RGBLightColors = new Float32Array(data[7]);
-  const uvs = new Float32Array(data[8]);
+  const RGBLightColors = new Float32Array(data[6]);
+  const sunLightColors = new Float32Array(data[7]);
+  const colors = new Float32Array(data[8]);
+  const uvs = new Float32Array(data[9]);
   if (this.DVE.renderManager.fluidMesh.beenCreated) {
    this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(
     positions,
     indicies,
-    aoColors,
     RGBLightColors,
+    sunLightColors,
+    colors,
     uvs
    );
   } else {
@@ -74,8 +73,9 @@ export class MeshManager {
    this.DVE.renderManager.fluidMesh.createMeshGeometory(
     positions,
     indicies,
-    aoColors,
     RGBLightColors,
+    sunLightColors,
+    colors,
     uvs
    );
   }

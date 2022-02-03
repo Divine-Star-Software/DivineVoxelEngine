@@ -8,6 +8,47 @@ export class FluidMaterial {
     getMaterial() {
         return this.material;
     }
+    setSunLightLevel(level) {
+        if (!this.material) {
+            throw new Error("Material must be created first before it can be updated.");
+        }
+        this.material.setFloat("sunLightLevel", level);
+    }
+    setBaseLevel(level) {
+        if (!this.material) {
+            throw new Error("Material must be created first before it can be updated.");
+        }
+        this.material.setFloat("baseLevel", level);
+    }
+    updateMaterialSettings(settings) {
+        if (!this.material) {
+            throw new Error("Material must be created first before it can be updated.");
+        }
+        if (settings.lighting?.doAO) {
+            this.material.setFloat("doAO", 1.0);
+        }
+        else {
+            this.material.setFloat("doAO", 0.0);
+        }
+        if (settings.lighting?.doSunLight) {
+            this.material.setFloat("doSun", 1.0);
+        }
+        else {
+            this.material.setFloat("doSun", 0.0);
+        }
+        if (settings.lighting?.doRGBLight) {
+            this.material.setFloat("doRGB", 1.0);
+        }
+        else {
+            this.material.setFloat("doRGB", 0.0);
+        }
+        if (settings.voxels?.doColors) {
+            this.material.setFloat("doColor", 1.0);
+        }
+        else {
+            this.material.setFloat("doColor", 0.0);
+        }
+    }
     createMaterial(scene, texture, animations, animationTimes) {
         const animData = this.renderManager.animationManager.registerAnimations("fluid", animations, animationTimes);
         BABYLON.Effect.ShadersStore["fluidVertexShader"] =
@@ -33,13 +74,10 @@ export class FluidMaterial {
             needAlphaBlending: true,
             needAlphaTesting: false,
         });
-        //shaderMaterial.fogEnabled = true;
-        // texture.hasAlpha = false;
-        // shaderMaterial.alpha =  0.7;
+        this.material = shaderMaterial;
         shaderMaterial.setTexture("arrayTex", texture);
-        //shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
-        // shaderMaterial.backFaceCulling = false;
-        //shaderMaterial.separateCullingPass = true;
+        this.material.setFloat("sunLightLevel", 1);
+        this.material.setFloat("baseLevel", 0.5);
         shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
             var effect = shaderMaterial.getEffect();
@@ -49,7 +87,6 @@ export class FluidMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
             effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
-        this.material = shaderMaterial;
         let time = 0;
         scene.registerBeforeRender(function () {
             time += 0.005;

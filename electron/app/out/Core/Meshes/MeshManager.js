@@ -23,8 +23,7 @@ export class MeshManager {
     setScene(scene) {
         this.scene = scene;
     }
-    reStart() {
-    }
+    reStart() { }
     handleUpdate(type, chunkKey, chunkX, chunkY, chunkZ, data) {
         if (type != "fluid") {
             if (!this.meshes[type][chunkKey]) {
@@ -42,15 +41,16 @@ export class MeshManager {
         this.scene.unfreezeActiveMeshes();
         const positions = new Float32Array(data[4]);
         const indicies = new Int32Array(data[5]);
-        const aoColors = new Float32Array(data[6]);
-        const RGBLightColors = new Float32Array(data[7]);
-        const uvs = new Float32Array(data[8]);
+        const RGBLightColors = new Float32Array(data[6]);
+        const sunLightColors = new Float32Array(data[7]);
+        const colors = new Float32Array(data[8]);
+        const uvs = new Float32Array(data[9]);
         if (this.DVE.renderManager.fluidMesh.beenCreated) {
-            this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, aoColors, RGBLightColors, uvs);
+            this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
         }
         else {
             this.DVE.renderManager.fluidMesh.createTemplateMesh(this.scene);
-            this.DVE.renderManager.fluidMesh.createMeshGeometory(positions, indicies, aoColors, RGBLightColors, uvs);
+            this.DVE.renderManager.fluidMesh.createMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
         }
         this.scene.freeActiveMeshes();
     }
