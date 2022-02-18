@@ -42,7 +42,7 @@ export function InitWorker(DVEFB: DivineVoxelEngineFluidBuilder) {
    const uvs = new Uint16Array(data[7]);
    const colors = new Float32Array(data[8]);
    const light = new Float32Array(data[9]);
-console.log(light);
+//console.log(light);
    DVEFB.fluidMeshBuilder.addTemplate(
     chunkX,
     chunkY,

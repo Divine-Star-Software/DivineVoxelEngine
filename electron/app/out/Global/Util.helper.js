@@ -2,6 +2,7 @@ import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
+import { Flat3DArray } from "./Util/Flat3DArray.js";
 export class Util {
     infoByte = new InfoByte();
     exposedFaceRecord = {
@@ -20,6 +21,9 @@ export class Util {
         const chunkpositionZ = (positionZ >> 4) << 4;
         const chunkpositionX = (positionX >> 4) << 4;
         return [chunkpositionZ, chunkpositionX];
+    }
+    getFlat3DArray() {
+        return new Flat3DArray();
     }
     getVoxelByte() {
         return new VoxelByte();

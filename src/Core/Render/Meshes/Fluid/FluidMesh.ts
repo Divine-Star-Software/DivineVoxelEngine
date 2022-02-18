@@ -55,7 +55,7 @@ export class FluidMesh {
   chunkVertexData.applyToMesh(this.mesh, true);
 
   this.mesh.setVerticesData("cuv3", uvs, false, 3);
-  console.log(RGBLightColors,sunLightColors);
+ // console.log(RGBLightColors,sunLightColors);
   this.mesh.setVerticesData("rgbLightColors", RGBLightColors, false, 4);
   this.mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
   this.mesh.setVerticesData("colors", colors, false, 4);
