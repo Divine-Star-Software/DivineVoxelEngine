@@ -55,6 +55,7 @@ export async function BuildInitalMeshes(
    fluidTextures
   );
  DVE.renderManager.fluidMaterial.createMaterial(
+  DVE.engineSettings.settings,
   scene,
   combinedFluidTextures,
   fluidAnimations,

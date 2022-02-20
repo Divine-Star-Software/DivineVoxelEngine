@@ -32,7 +32,7 @@ ${floraShaders.vertexMain}
     buildFluidVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
-${SharedVertexShader.attributes}
+${SharedVertexShader.attributesNoAO}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying}
 ${SharedVertexShader.optionVars}
@@ -45,7 +45,6 @@ ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.setUVInMain}
- ${SharedVertexShader.doAO}
  ${SharedVertexShader.doRGB}
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}

@@ -231,7 +231,7 @@ export class WorldData {
   if (voxel) {
    if (voxel[0] == -1) {
     return this.voxelByte.decodeLightFromVoxelData(voxel[1]);
-   } else {
+   } else { 
     const voxelInterface: VoxelInteface = voxel[0];
     if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
      return voxelInterface.data.lightValue;

@@ -51,6 +51,7 @@ export class FluidMaterial {
  }
 
  createMaterial(
+  settings: EngineSettingsData,
   scene: BABYLON.Scene,
   texture: BABYLON.RawTexture2DArray,
   animations: number[][],
@@ -62,11 +63,6 @@ export class FluidMaterial {
    animationTimes
   );
 
-
-
-  
-
-
   BABYLON.Effect.ShadersStore["fluidVertexShader"] =
    this.renderManager.shaderBuilder.getDefaultVertexShader(
     "fluid",
@@ -76,7 +72,14 @@ export class FluidMaterial {
   BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
    this.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
   const shaderMaterial = new BABYLON.ShaderMaterial("fluid", scene, "fluid", {
-   attributes: ["position", "normal", "cuv3", "colors"],
+   attributes: [
+    "position",
+    "normal",
+    "cuv3",
+    "colors",
+    "rgbLightColors",
+    "sunLightColors",
+   ],
    uniforms: [
     "world",
     "view",
@@ -85,9 +88,13 @@ export class FluidMaterial {
     "worldViewProjection",
     "vFogInfos",
     "vFogColor",
-    "baseLightColor",
+    "sunLightLevel",
+    "baseLevel",
     "projection",
     "arrayTex",
+    "doSun",
+    "doRGB",
+    "doColor",
     "time",
     ...animData.uniforms,
    ],
@@ -97,10 +104,8 @@ export class FluidMaterial {
   this.material = shaderMaterial;
   shaderMaterial.setTexture("arrayTex", texture);
   this.material.setFloat("sunLightLevel", 1);
-  this.material.setFloat("baseLevel", 0.5);
+  this.material.setFloat("baseLevel", 0.1);
   shaderMaterial.needDepthPrePass = true;
-
-
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();
@@ -114,10 +119,11 @@ export class FluidMaterial {
     scene.fogDensity
    );
    effect.setColor3("vFogColor", scene.fogColor);
-   effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
+   //  effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
 
+  this.updateMaterialSettings(settings);
 
   let time = 0;
   scene.registerBeforeRender(function () {
@@ -125,10 +131,8 @@ export class FluidMaterial {
    shaderMaterial.setFloat("time", time);
   });
 
-  this.renderManager.animationManager.registerMaterial("fluid",shaderMaterial);
+  this.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
 
   return this.material;
  }
-
-
 }

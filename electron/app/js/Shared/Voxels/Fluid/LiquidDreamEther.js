@@ -13,7 +13,7 @@ export class LiquidDreamEther {
     hooks = {};
     trueShapeId = 0;
     process(data) {
-        let uv = this.voxelHelper.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
+        const uv = this.voxelHelper.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);
         }
@@ -34,6 +34,6 @@ export class LiquidDreamEther {
         }
         data.shapeStateTemplate.push(data.voxelData[1]);
         data.shapeTemplate.push(this.trueShapeId);
-        this.voxelHelper.processVoxelLight(data, this);
+        this.voxelHelper.calculateVoxelLight(data, this);
     }
 }

@@ -10,5 +10,5 @@ export declare class FluidMaterial {
     setSunLightLevel(level: number): void;
     setBaseLevel(level: number): void;
     updateMaterialSettings(settings: EngineSettingsData): void;
-    createMaterial(scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
+    createMaterial(settings: EngineSettingsData, scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
 }

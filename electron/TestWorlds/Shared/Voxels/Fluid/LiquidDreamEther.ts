@@ -18,7 +18,7 @@ export class LiquidDreamEther implements VoxelInteface {
  trueShapeId = 0;
 
  process(data: VoxelProcessData): void {
-  let uv = this.voxelHelper.textureManager.getTextureUV(
+  const uv = this.voxelHelper.textureManager.getTextureUV(
    "fluid",
    "liquid-dream-ether",
    "still-1"
@@ -43,6 +43,6 @@ export class LiquidDreamEther implements VoxelInteface {
   }
   data.shapeStateTemplate.push(data.voxelData[1]);
   data.shapeTemplate.push(this.trueShapeId);
-  this.voxelHelper.processVoxelLight(data, this);
+  this.voxelHelper.calculateVoxelLight(data, this);
  }
 }

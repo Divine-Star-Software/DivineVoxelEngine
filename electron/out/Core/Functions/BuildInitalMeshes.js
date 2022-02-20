@@ -19,7 +19,7 @@ export async function BuildInitalMeshes(DVE, scene) {
     const fluidAnimations = DVE.world.baseWorldData.textureAnimations.fluid;
     const fluidAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.fluid;
     const combinedFluidTextures = await DVE.renderManager.textureCreator.createMaterialTexture(scene, fluidTextures);
-    DVE.renderManager.fluidMaterial.createMaterial(scene, combinedFluidTextures, fluidAnimations, fluidAnimationTimes);
+    DVE.renderManager.fluidMaterial.createMaterial(DVE.engineSettings.settings, scene, combinedFluidTextures, fluidAnimations, fluidAnimationTimes);
     const magmaTextures = DVE.world.baseWorldData?.texturePaths.magma;
     const magmaAnimations = DVE.world.baseWorldData.textureAnimations.magma;
     const magmaAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.magma;
