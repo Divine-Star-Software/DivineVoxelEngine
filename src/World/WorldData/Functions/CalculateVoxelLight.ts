@@ -368,7 +368,6 @@ export function VoxelLightMixCalc(
   }
 
   let neighborLightValue: number = check;
-
   const values = this.lightByte.getLightValues(neighborLightValue);
   let nw = values[0];
   let nr = values[1];
@@ -402,6 +401,7 @@ export function VoxelLightMixCalc(
   if (nb + 2 > b && b < 15) {
    b++;
   }
+
  }
 
  return this.lightByte.setLightValues([w, r, g, b]);

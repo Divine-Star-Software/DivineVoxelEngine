@@ -8,11 +8,16 @@ export class Flat3DArray {
         y: 256,
         z: 16,
     };
+    _position = {
+        x: 0,
+        y: 0,
+        z: 0
+    };
     setBounds(x, y, z) {
         this.bounds = {
             x: x,
             y: y,
-            z: z,
+            z: z
         };
     }
     getValue(x, y, z, array) {
@@ -27,9 +32,9 @@ export class Flat3DArray {
         return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
     }
     getXYZ(index) {
-        let dx = index % this.bounds.x >> 0;
-        let dy = (index / this.bounds.x) % this.bounds.y >> 0;
-        let dz = (index / (this.bounds.x * this.bounds.y)) >> 0;
-        return [dx, dy, dz];
+        this._position.x = index % this.bounds.x >> 0;
+        this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
+        this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;
+        return this._position;
     }
 }
