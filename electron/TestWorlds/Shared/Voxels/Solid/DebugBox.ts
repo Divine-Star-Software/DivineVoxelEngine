@@ -14,7 +14,7 @@ export class DebugBox implements VoxelInteface {
   substance: "solid",
   defaultState: ["dve:debugbox", 0],
   lightSource: true,
-  lightValue: 0b1111_0000_1111_1111,
+  lightValue: 0b1111_1111_1111_1111,
  };
  trueShapeId = 0;
  hooks = {};

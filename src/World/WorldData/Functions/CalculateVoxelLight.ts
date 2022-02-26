@@ -19,53 +19,62 @@ export function CalculateVoxelLight(
   let light = this.getLight(x + chunkX, y + chunkY + 1, z + chunkZ);
   const ly = 1;
   lightTemplate.push(
-   //top right
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    1,
-    ly,
-    0,
-    0,
-    ly,
-    1,
-    1,
-    ly,
-    1,
-   ]),
-   //bottom right
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    1,
-    ly,
-    0,
-    0,
-    ly,
-    -1,
-    1,
-    ly,
-    -1,
-   ]),
-   //bottom left
+   //-x -z
    this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
     -1,
     ly,
     0,
+
     0,
     ly,
     -1,
+
     -1,
     ly,
     -1,
    ]),
-   //top left
+   //-x +x
    this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
     -1,
     ly,
     0,
+
     0,
     ly,
     1,
+
     -1,
     ly,
     1,
+   ]),
+
+   //+x +z
+   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
+    1,
+    ly,
+    0,
+
+    0,
+    ly,
+    1,
+
+    1,
+    ly,
+    1,
+   ]),
+   //+x -z
+   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
+    1,
+    ly,
+    0,
+
+    0,
+    ly,
+    -1,
+
+    1,
+    ly,
+    -1,
    ])
   );
  }
@@ -366,37 +375,32 @@ export function VoxelLightMixCalc(
   let ng = values[2];
   let nb = values[3];
 
-  if (nw < w && w > 0) {
+  if (nw < w) {
    w--;
   }
   if (nw > w && w < 15) {
    w++;
   }
 
-  if (nr > 0) {
-   if (nr < r && r > 0) {
-    r--;
-   }
-   if (nr > r && r < 15) {
-    r++;
-   }
+  if (nr < r) {
+   r--;
   }
-  if (ng > 0) {
-   if (ng < g && g > 0) {
-    g--;
-   }
-   if (ng > g && g < 15) {
-    g++;
-   }
+  if (nr + 2 > r && r < 15) {
+   r++;
   }
 
-  if (nb > 0) {
-   if (nb < b && b > 0) {
-    b--;
-   }
-   if (nb > b && b < 15) {
-    b++;
-   }
+  if (ng < g) {
+   g--;
+  }
+  if (ng + 2 > g && g < 15) {
+   g++;
+  }
+
+  if (nb < b) {
+   b--;
+  }
+  if (nb + 2 > b && b < 15) {
+   b++;
   }
  }
 
