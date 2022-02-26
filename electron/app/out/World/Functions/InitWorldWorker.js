@@ -17,6 +17,7 @@ export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
             if (message == "get-world-data") {
                 const textures = DVEW.textureManager.generateTexturesData();
                 DVEW.worker.postMessage(["set-world-data", textures]);
+                DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
             }
             if (message == "voxel-add") {
                 DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", eventData[1], eventData[2], eventData[3]);

@@ -1,4 +1,4 @@
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { VoxelHooks, VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
 export declare class VoxelManager implements VoxelManagerInterface {
     voxels: Record<string, VoxelInteface>;
@@ -12,4 +12,5 @@ export declare class VoxelManager implements VoxelManagerInterface {
     fluidShapMapIsSet(): boolean;
     getVoxel(id: string): VoxelInteface;
     registerVoxelData(voxel: VoxelInteface): void;
+    runVoxelHookForAll(hook: VoxelHooks): void;
 }

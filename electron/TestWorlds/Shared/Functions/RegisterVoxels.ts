@@ -1,18 +1,25 @@
+//types
+import type { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+//voxels
 import { Dreamestone } from "../Voxels/Solid/DreamStone.js";
 import { DreamGrassBlock } from "../Voxels/Solid/DreamGrassBlock.js";
 import { DebugBox } from "../Voxels/Solid/DebugBox.js";
 import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
 import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
 import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther.js";
-import type { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { LightDebugBox } from "../Voxels/Solid/LightDebugBox.js";
 
 export function RegisterVoxels(
  DVEW: DivineVoxelEngineWorld,
- voxelPaletteMode: "global" | "per-chunk"
+ voxelPaletteMode: "global" | "per-chunk" | "per-region"
 ) {
+
+
  //solid
- const debugBlock = new DebugBox(DVEW.voxelHelper);
- DVEW.voxelManager.registerVoxelData(debugBlock);
+ const debugBox = new DebugBox(DVEW.voxelHelper);
+ DVEW.voxelManager.registerVoxelData(debugBox);
+ const lightDebugBox = new LightDebugBox(DVEW.voxelHelper);
+ DVEW.voxelManager.registerVoxelData(lightDebugBox);
  const dreamStone = new Dreamestone(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(dreamStone);
  const dreamStonePillar = new DreamStonePillar(DVEW.voxelHelper);
@@ -30,7 +37,8 @@ export function RegisterVoxels(
 
  if (voxelPaletteMode == "global") {
   //solid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(debugBlock);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(debugBox);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(lightDebugBox);
   DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamStone);
   DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamStonePillar);
   DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamGrassBlock);
@@ -39,9 +47,11 @@ export function RegisterVoxels(
   //fluid
   DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(liquidDreamEther);
  }
+
  if (voxelPaletteMode == "per-chunk") {
   //solid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(debugBlock);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(debugBox);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(lightDebugBox);
   DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamStone);
   DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamStonePillar);
   DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamGrassBlock);
@@ -50,25 +60,18 @@ export function RegisterVoxels(
   //fluid
   DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(liquidDreamEther);
  }
- const chunk = DVEW.worldGeneration.getBlankChunk(true,true);
- DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(
-  chunk,
-  dreamStonePillar.data.id,
-  "default"
- );
- const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
-  chunk,
-  dreamStonePillar.data.id,
-  "default"
- );
- if (paletteId) {
-  const voxelData = DVEW.worldGeneration.voxelPalette.getVoxelData(
-   chunk,
-   paletteId
-  );
-  if (voxelData) {
-   const voxelTrueId = voxelData[0];
-   const voxelStateId = voxelData[1];
-  }
+
+ if (voxelPaletteMode == "per-region") {
+  //solid
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(debugBox);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(lightDebugBox);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamStone);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamStonePillar);
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamGrassBlock);
+  //flora
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamGrass);
+  //fluid
+  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(liquidDreamEther);
  }
+
 }

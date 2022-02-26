@@ -17,6 +17,31 @@ export function RegisterTexutres(DVEW: DivineVoxelEngineWorld) {
   },
  });
 
+
+ DVEW.textureManager.registerTexture("solid", {
+    name: "Light Debug Texture",
+    id: "light-debug",
+    frames: 0,
+    varations: {
+     "light-level-0": { frames: 0 },
+     "light-level-1": { frames: 0 },
+     "light-level-2": { frames: 0 },
+     "light-level-3": { frames: 0 },
+     "light-level-4": { frames: 0 },
+     "light-level-5": { frames: 0 },
+     "light-level-6": { frames: 0 },
+     "light-level-7": { frames: 0 },
+     "light-level-8": { frames: 0 },
+     "light-level-9": { frames: 0 },
+     "light-level-10": { frames: 0 },
+     "light-level-11": { frames: 0 },
+     "light-level-12": { frames: 0 },
+     "light-level-13": { frames: 0 },
+     "light-level-14": { frames: 0 },
+     "light-level-15": { frames: 0 },
+    },
+   });
+
  DVEW.textureManager.registerTexture("solid", {
   name: "Dream Stone Textures",
   id: "dreamstone",

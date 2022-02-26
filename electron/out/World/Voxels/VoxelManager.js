@@ -15,7 +15,6 @@ export class VoxelManager {
         }
     }
     setFluidShapeMap(shapeMap) {
-        console.log(shapeMap);
         this.fluidShapeMap = shapeMap;
         this.fluidShapeMapHasBeenSet = true;
         for (const voxelId of Object.keys(this.voxels)) {
@@ -36,5 +35,13 @@ export class VoxelManager {
     }
     registerVoxelData(voxel) {
         this.voxels[voxel.data.id] = voxel;
+    }
+    runVoxelHookForAll(hook) {
+        for (const voxelID of Object.keys(this.voxels)) {
+            const voxel = this.voxels[voxelID];
+            if (!voxel.hooks[hook])
+                continue;
+            voxel.hooks[hook]();
+        }
     }
 }

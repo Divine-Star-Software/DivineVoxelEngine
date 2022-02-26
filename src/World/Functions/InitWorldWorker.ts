@@ -28,6 +28,7 @@ export function InitWorldWorker(
    if (message == "get-world-data") {
     const textures = DVEW.textureManager.generateTexturesData();
     DVEW.worker.postMessage(["set-world-data", textures]);
+    DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
    }
 
    if (message == "voxel-add") {

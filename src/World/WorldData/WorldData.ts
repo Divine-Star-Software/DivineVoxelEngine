@@ -158,6 +158,21 @@ export class WorldData {
   "magma-magma": false,
  };
 
+ lightValueFunctions = {
+  r: (value: number) => {
+   return this.lightByte.getR(value);
+  },
+  g: (value: number) => {
+   return this.lightByte.getG(value);
+  },
+  b: (value: number) => {
+   return this.lightByte.getB(value);
+  },
+  s: (value: number) => {
+   return this.lightByte.getS(value);
+  },
+ };
+
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
   this.lightByte = this.DVEW.UTIL.getLightByte();
@@ -226,12 +241,20 @@ export class WorldData {
   data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
   this.setData(x, y, z, data);
  }
+ /**# Get Light
+  * ---
+  * Returns the raw light value for a voxel.
+  * @param x
+  * @param y
+  * @param z
+  * @returns
+  */
  getLight(x: number, y: number, z: number): number {
   const voxel = this.getVoxel(x, y, z);
   if (voxel) {
    if (voxel[0] == -1) {
     return this.voxelByte.decodeLightFromVoxelData(voxel[1]);
-   } else { 
+   } else {
     const voxelInterface: VoxelInteface = voxel[0];
     if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
      return voxelInterface.data.lightValue;
@@ -243,6 +266,18 @@ export class WorldData {
    }
   }
   return 0;
+ }
+ /**# Get Light Value
+  * ---
+  * Returns the value of the light level type for the given voxel at x,y,z.
+  * @param x
+  * @param y
+  * @param z
+  * @param type
+  * @returns
+  */
+ getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s") {
+  return this.lightValueFunctions[type](this.getLight(x, y, z));
  }
 
  /**# Is Exposed
@@ -508,10 +543,6 @@ export class WorldData {
   } else {
    return 0;
   }
- }
-
- _copy(data: any) {
-  return [...data];
  }
 
  /**# Set Data

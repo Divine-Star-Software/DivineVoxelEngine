@@ -1,5 +1,6 @@
 import type { Util } from "Global/Util.helper";
-import { TextureManagerInterface } from "../Textures/TextureManager.interface";
+import type { WorldData } from "World/WorldData/WorldData";
+import type { TextureManagerInterface } from "../Textures/TextureManager.interface";
 import type {  VoxelInteface,VoxelProcessData } from "./Voxel.types";
 
 /**# Voxel Helper
@@ -8,6 +9,8 @@ import type {  VoxelInteface,VoxelProcessData } from "./Voxel.types";
  */
 export interface VoxelHelperInterface {
  util: Util;
+
+ worldData : WorldData;
 
  textureManager: TextureManagerInterface;
  calculateVoxelAO(data: VoxelProcessData, voxel : VoxelInteface): void;

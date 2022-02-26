@@ -1,4 +1,4 @@
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { VoxelHooks, VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
 
 export class VoxelManager implements VoxelManagerInterface {
@@ -21,7 +21,6 @@ export class VoxelManager implements VoxelManagerInterface {
  }
 
  setFluidShapeMap(shapeMap: Record<string, number>) {
-     console.log(shapeMap);
   this.fluidShapeMap = shapeMap;
   this.fluidShapeMapHasBeenSet = true;
   for (const voxelId of Object.keys(this.voxels)) {
@@ -46,5 +45,13 @@ export class VoxelManager implements VoxelManagerInterface {
 
  registerVoxelData(voxel: VoxelInteface) {
   this.voxels[voxel.data.id] = voxel;
+ }
+
+ runVoxelHookForAll(hook: VoxelHooks) {
+  for (const voxelID of Object.keys(this.voxels)) {
+   const voxel = this.voxels[voxelID];
+   if (!voxel.hooks[hook]) continue;
+   voxel.hooks[hook]();
+  }
  }
 }

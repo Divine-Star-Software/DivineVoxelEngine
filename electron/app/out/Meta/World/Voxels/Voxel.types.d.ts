@@ -23,6 +23,7 @@ export declare type VoxelProcessData = {
     y: number;
     z: number;
 };
+export declare type VoxelHooks = "texturesRegistered" | "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.
@@ -41,11 +42,6 @@ export interface VoxelInteface {
     data: VoxelData;
     trueShapeId: number;
     voxelHelper: VoxelHelperInterface;
-    hooks: {
-        beforeAdd?: Function;
-        afterAdd?: Function;
-        beforeRemove?: Function;
-        afterAfter?: Function;
-    };
+    hooks: Record<VoxelHooks, Function>;
     process(data: VoxelProcessData): void;
 }

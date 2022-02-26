@@ -3,6 +3,22 @@
  * Used to decode light color info.
  */
 export class LightByte {
+ getS(value: number) {
+  return (value & (0x0f << 0)) >> 0;
+ }
+
+ getR(value: number) {
+  return (value & (0x0f << 4)) >> 4;
+ }
+
+ getG(value: number) {
+  return (value & (0x0f << 8)) >> 8;
+ }
+
+ getB(value: number) {
+  return (value & (0x0f << 12)) >> 12;
+ }
+
  decodeLightFromVoxelData(voxelData: number) {
   return (voxelData & (0xffff << 0)) >> 0;
  }

@@ -86,6 +86,20 @@ export class WorldData {
         "magma-fluid": true,
         "magma-magma": false,
     };
+    lightValueFunctions = {
+        r: (value) => {
+            return this.lightByte.getR(value);
+        },
+        g: (value) => {
+            return this.lightByte.getG(value);
+        },
+        b: (value) => {
+            return this.lightByte.getB(value);
+        },
+        s: (value) => {
+            return this.lightByte.getS(value);
+        },
+    };
     constructor(DVEW) {
         this.DVEW = DVEW;
         this.infoByte = this.DVEW.UTIL.getInfoByte();
@@ -144,6 +158,14 @@ export class WorldData {
         data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
         this.setData(x, y, z, data);
     }
+    /**# Get Light
+     * ---
+     * Returns the raw light value for a voxel.
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
     getLight(x, y, z) {
         const voxel = this.getVoxel(x, y, z);
         if (voxel) {
@@ -162,6 +184,18 @@ export class WorldData {
             }
         }
         return 0;
+    }
+    /**# Get Light Value
+     * ---
+     * Returns the value of the light level type for the given voxel at x,y,z.
+     * @param x
+     * @param y
+     * @param z
+     * @param type
+     * @returns
+     */
+    getLightValue(x, y, z, type) {
+        return this.lightValueFunctions[type](this.getLight(x, y, z));
     }
     /**# Is Exposed
      * ---
@@ -386,9 +420,6 @@ export class WorldData {
         else {
             return 0;
         }
-    }
-    _copy(data) {
-        return [...data];
     }
     /**# Set Data
      * ---

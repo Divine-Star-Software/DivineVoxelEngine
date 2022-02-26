@@ -16,11 +16,11 @@ export type VoxelSubstanceType =
 export type VoxelProcessData = {
  exposedFaces: number[];
  voxelData: any[];
- voxelState : string;
+ voxelState: string;
  uvTemplate: number[];
  shapeTemplate: number[];
- shapeStateTemplate:number[];
- colorTemplate : number[];
+ shapeStateTemplate: number[];
+ colorTemplate: number[];
  lightTemplate: number[];
  aoTemplate: number[];
  chunkX: number;
@@ -30,6 +30,14 @@ export type VoxelProcessData = {
  y: number;
  z: number;
 };
+
+export type VoxelHooks =
+ | "texturesRegistered"
+ | "beforeAdd"
+ | "afterAdd"
+ | "beforeRemove"
+ | "afterAfter"
+ | any;
 
 /**# Voxel Data
  * ---
@@ -52,12 +60,7 @@ export interface VoxelInteface {
 
  voxelHelper: VoxelHelperInterface;
 
- hooks: {
-  beforeAdd?: Function;
-  afterAdd?: Function;
-  beforeRemove?: Function;
-  afterAfter?: Function;
- };
+ hooks: Record<VoxelHooks, Function>;
 
  process(data: VoxelProcessData): void;
 }

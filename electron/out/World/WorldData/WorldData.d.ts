@@ -33,6 +33,12 @@ export declare class WorldData {
     lightByte: LightByte;
     voxelByte: VoxelByte;
     substanceRules: Record<string, boolean>;
+    lightValueFunctions: {
+        r: (value: number) => number;
+        g: (value: number) => number;
+        b: (value: number) => number;
+        s: (value: number) => number;
+    };
     constructor(DVEW: DivineVoxelEngineWorld);
     getRGBLightUpdateQue(): number[][];
     clearRGBLightUpdateQue(): void;
@@ -46,7 +52,25 @@ export declare class WorldData {
     getCurrentWorldDataString(): string;
     setAir(x: number, y: number, z: number, lightValue: number): void;
     setLight(x: number, y: number, z: number, lightValue: number): void;
+    /**# Get Light
+     * ---
+     * Returns the raw light value for a voxel.
+     * @param x
+     * @param y
+     * @param z
+     * @returns
+     */
     getLight(x: number, y: number, z: number): number;
+    /**# Get Light Value
+     * ---
+     * Returns the value of the light level type for the given voxel at x,y,z.
+     * @param x
+     * @param y
+     * @param z
+     * @param type
+     * @returns
+     */
+    getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
     /**# Is Exposed
      * ---
      * Will return true if any face of the voxel is exposed.
@@ -75,7 +99,6 @@ export declare class WorldData {
     removeData(x: number, y: number, z: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | any[];
     getData(x: number, y: number, z: number): any;
-    _copy(data: any): any[];
     /**# Set Data
      * ---
      * Sets the data for a specific point in the world data.
