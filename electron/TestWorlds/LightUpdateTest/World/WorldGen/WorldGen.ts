@@ -4,55 +4,18 @@ import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
 
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import { LightByte } from "../../../../out/Global/Util/LightByte";
+import { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 export class WorldGen {
  lightSourceColor: number;
  seedLightSourceColor: number;
+ _3dArray: Flat3DArray;
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.infoByte = this.DVEW.UTIL.getInfoByte();
   this.lightByte = this.DVEW.UTIL.getLightByte();
-  this.lightSourceColor = this.colorFunctions["white"](15, this.infoByte);
-  this.seedLightSourceColor = this.colorFunctions["white"](14, this.infoByte);
+  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
  visited: Record<string, boolean> = {};
-
- colorFunctions: Record<
-  string,
-  (lightLevel: number, infoByte: InfoByte) => number
- > = {
-  green: (lightLevel: number, infoByte: InfoByte) => {
-   infoByte.setNumberValue(0);
-   infoByte.setHalfByteBits(0, 0);
-   infoByte.setHalfByteBits(4, 0);
-   infoByte.setHalfByteBits(8, lightLevel);
-   infoByte.setHalfByteBits(12, 0);
-   return infoByte.getNumberValue();
-  },
-  red: (lightLevel: number, infoByte: InfoByte) => {
-   infoByte.setNumberValue(0);
-   infoByte.setHalfByteBits(0, 0);
-   infoByte.setHalfByteBits(4, lightLevel);
-   infoByte.setHalfByteBits(8, 0);
-   infoByte.setHalfByteBits(12, 0);
-   return infoByte.getNumberValue();
-  },
-  blue: (lightLevel: number, infoByte: InfoByte) => {
-   infoByte.setNumberValue(0);
-   infoByte.setHalfByteBits(0, 0);
-   infoByte.setHalfByteBits(4, 5);
-   infoByte.setHalfByteBits(8, 0);
-   infoByte.setHalfByteBits(12, lightLevel);
-   return infoByte.getNumberValue();
-  },
-  white: (lightLevel: number, infoByte: InfoByte) => {
-   infoByte.setNumberValue(0);
-   infoByte.setHalfByteBits(0, 0);
-   infoByte.setHalfByteBits(4, lightLevel);
-   infoByte.setHalfByteBits(8, lightLevel);
-   infoByte.setHalfByteBits(12, lightLevel);
-   return infoByte.getNumberValue();
-  },
- };
 
  infoByte: InfoByte;
  lightByte: LightByte;
@@ -70,11 +33,13 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let dreamstonepillar = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstonepillar","default"
-  );
+  let dreamstonepillar =
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstonepillar",
+    "default"
+   );
 
-  const chunkVoxels: any[][][] = chunk.voxels;
+  const chunkVoxels: number[] = chunk.voxels;
 
   let baseY = 0;
   let maxY = 61;
@@ -83,9 +48,13 @@ export class WorldGen {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= baseY + 5) {
-      chunkVoxels[x] ??= [];
-      chunkVoxels[x][z] ??= [];
-      chunkVoxels[x][z][y] = this.DVEW.worldGeneration.paintVoxel(dreamstonepillar);
+      this._3dArray.setValue(
+       x,
+       y,
+       z,
+       chunkVoxels,
+       this.DVEW.worldGeneration.paintVoxel(dreamstonepillar)
+      );
      }
     }
    }

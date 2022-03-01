@@ -1,16 +1,21 @@
-import { EngineSettings } from "../Global/EngineSettings.js";
+//type
 import type { DVEWInitData } from "Meta/World/DVEW";
-import { VoxelPalette } from "Meta/WorldData/World.types.js";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
+
+//classes
+import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
-import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
-import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
+
+//functions
+import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
+import { ChunkBounds } from "./Chunks/ChunkBounds.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -18,7 +23,7 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  */
 export class DivineVoxelEngineWorld {
  worker: Worker;
-
+ chunkBounds = new ChunkBounds();
  engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
@@ -45,9 +50,12 @@ export class DivineVoxelEngineWorld {
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
   if (data.chunks) {
-   this.worldData.chunkXPow2 = data.chunks.chunkXPow2;
-   this.worldData.chunkYPow2 = data.chunks.chunkYPow2;
-   this.worldData.chunkZPow2 = data.chunks.chunkZPow2;
+   this.chunkBounds.setChunkBounds(
+    data.chunks.chunkXPow2,
+    data.chunks.chunkYPow2,
+    data.chunks.chunkZPow2
+   );
+   this.worldData.syncChunkBounds();
   }
  }
 
@@ -70,23 +78,23 @@ export class DivineVoxelEngineWorld {
  }
 
  runRGBLightRemoveQue() {
-   const queue = this.worldData.getRGBLightRemoveQue();
-   while (queue.length != 0) {
-    const position = queue.shift();
-    if (!position) break;
-    this.worldGeneration.illumantionManager.runRGBFloodRemoveAt(
-     true,
-     position[0],
-     position[1],
-     position[2]
-    );
-   }
-   this.worldData.clearRGBLightRemoveQue();
+  const queue = this.worldData.getRGBLightRemoveQue();
+  while (queue.length != 0) {
+   const position = queue.shift();
+   if (!position) break;
+   this.worldGeneration.illumantionManager.runRGBFloodRemoveAt(
+    true,
+    position[0],
+    position[1],
+    position[2]
+   );
   }
- 
-  clearRGBLightRemoveQue() {
-   this.worldData.clearRGBLightRemoveQue();
-  }
+  this.worldData.clearRGBLightRemoveQue();
+ }
+
+ clearRGBLightRemoveQue() {
+  this.worldData.clearRGBLightRemoveQue();
+ }
 
  runChunkRebuildQue() {
   const queue = this.worldData.getChunkRebuildQue();

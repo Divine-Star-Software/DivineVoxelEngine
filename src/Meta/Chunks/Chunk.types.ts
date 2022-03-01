@@ -11,7 +11,7 @@ export type ChunkTemplate = {
  colorTemplate: number[];
 };
 
-export type ChunkVoxels = any[][][];
+export type ChunkVoxels = number[];
 
 export type ChunkData = {
  palette?: {

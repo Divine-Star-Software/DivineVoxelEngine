@@ -22,7 +22,7 @@ export class DreamGrass implements VoxelInteface {
    "flora",
    "dreamgrass"
   );
-  data.shapeStateTemplate.push(data.voxelData[1]);
+  data.shapeStateTemplate.push(0);
   data.shapeTemplate.push(this.trueShapeId);
   data.uvTemplate.push(uv, uv);
   data.aoTemplate.push(1, 1, 1, 1, 1, 1, 1, 1);

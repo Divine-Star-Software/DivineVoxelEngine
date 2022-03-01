@@ -1,19 +1,23 @@
+//classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderManager } from "./BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
-import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
+//functions
+import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
+import { ChunkBounds } from "./Chunks/ChunkBounds.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker content.
  */
 export class DivineVoxelEngineWorld {
     worker;
+    chunkBounds = new ChunkBounds();
     engineSettings = new EngineSettings();
     UTIL = new Util();
     builderManager = new BuilderManager();
@@ -30,9 +34,8 @@ export class DivineVoxelEngineWorld {
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
         if (data.chunks) {
-            this.worldData.chunkXPow2 = data.chunks.chunkXPow2;
-            this.worldData.chunkYPow2 = data.chunks.chunkYPow2;
-            this.worldData.chunkZPow2 = data.chunks.chunkZPow2;
+            this.chunkBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
+            this.worldData.syncChunkBounds();
         }
     }
     runRGBLightUpdateQue() {

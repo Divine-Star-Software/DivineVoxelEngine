@@ -13,6 +13,7 @@ export declare class Flat3DArray {
     setBounds(x: number, y: number, z: number): void;
     getValue(x: number, y: number, z: number, array: number[]): number;
     setValue(x: number, y: number, z: number, array: number[], value: number): void;
+    delete(x: number, y: number, z: number, array: number[]): void;
     getIndex(x: number, y: number, z: number): number;
     getXYZ(index: number): PositionMatrix;
 }

@@ -6,9 +6,11 @@ export class WorldGen {
         this.DVEW = DVEW;
         this.infoByte = this.DVEW.UTIL.getInfoByte();
         this.lightByte = this.DVEW.UTIL.getLightByte();
+        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
     infoByte;
     lightByte;
+    _3dArray;
     chunkDepth = 16;
     chunkWidth = 16;
     chunkHeight = 256;
@@ -22,9 +24,7 @@ export class WorldGen {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= baseY + 5) {
-                        chunkVoxels[x] ??= [];
-                        chunkVoxels[x][z] ??= [];
-                        chunkVoxels[x][z][y] = this.DVEW.worldGeneration.paintVoxel(lightDebugBox);
+                        this._3dArray.setValue(x, y, z, chunkVoxels, this.DVEW.worldGeneration.paintVoxel(lightDebugBox));
                     }
                 }
             }

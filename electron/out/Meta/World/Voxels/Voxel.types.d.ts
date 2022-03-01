@@ -8,7 +8,7 @@ import { VoxelHelperInterface } from "./VoxelHelper.interface";
 export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fluid" | "magma";
 export declare type VoxelProcessData = {
     exposedFaces: number[];
-    voxelData: any[];
+    voxelData: number;
     voxelState: string;
     uvTemplate: number[];
     shapeTemplate: number[];

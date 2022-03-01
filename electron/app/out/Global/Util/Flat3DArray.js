@@ -11,22 +11,23 @@ export class Flat3DArray {
     _position = {
         x: 0,
         y: 0,
-        z: 0
+        z: 0,
     };
     setBounds(x, y, z) {
         this.bounds = {
             x: x,
             y: y,
-            z: z
+            z: z,
         };
     }
     getValue(x, y, z, array) {
-        const i = this.getIndex(x, y, z);
-        return array[i];
+        return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
     }
     setValue(x, y, z, array, value) {
-        const i = this.getIndex(x, y, z);
-        array[i] = value;
+        array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
+    }
+    delete(x, y, z, array) {
+        delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
     }
     getIndex(x, y, z) {
         return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;

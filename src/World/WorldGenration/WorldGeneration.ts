@@ -48,7 +48,7 @@ export class WorldGeneration {
   empty: boolean = true,
   palette: boolean = false,
   proto: boolean = true,
-  voxels: number[][][] = []
+  voxels: number[] = []
  ): ChunkData {
   let paletteData = {};
   if (palette) {

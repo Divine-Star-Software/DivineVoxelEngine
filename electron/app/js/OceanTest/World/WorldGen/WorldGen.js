@@ -2,7 +2,9 @@ export class WorldGen {
     DVEW;
     constructor(DVEW) {
         this.DVEW = DVEW;
+        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
+    _3dArray;
     chunkDepth = 16;
     chunkWidth = 16;
     chunkHeight = 256;
@@ -12,7 +14,7 @@ export class WorldGen {
         //   this.chunkMap.addChunk(chunkX,chunkZ);
         let liquidDreamEther = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default");
         const liquidDreamEtherVoxel = this.DVEW.worldGeneration.paintVoxel(liquidDreamEther);
-        const returnChunk = [];
+        const voxels = [];
         const dreamStoneVovxel = this.DVEW.worldGeneration.paintVoxel(dreamstone);
         let baseY = 0;
         let maxY = 31;
@@ -20,20 +22,16 @@ export class WorldGen {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y > baseY && y <= maxY) {
-                        returnChunk[x] ??= [];
-                        returnChunk[x][z] ??= [];
-                        returnChunk[x][z][y] = liquidDreamEtherVoxel;
+                        this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
                     }
                     if (y == baseY) {
-                        returnChunk[x] ??= [];
-                        returnChunk[x][z] ??= [];
-                        returnChunk[x][z][y] = dreamStoneVovxel;
+                        this._3dArray.setValue(x, y, z, voxels, dreamStoneVovxel);
                     }
                 }
             }
         }
         return {
-            voxels: returnChunk,
+            voxels: voxels,
             isEmpty: false,
             proto: false,
             maxMinHeight: [],

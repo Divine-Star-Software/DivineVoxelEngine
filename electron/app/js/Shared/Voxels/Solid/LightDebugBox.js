@@ -41,7 +41,6 @@ export class LightDebugBox {
         const trueZ = data.chunkZ + data.z;
         const light = this.voxelHelper.worldData.getLightValue(trueX, trueY + 1, trueZ, "r");
         let uv = this.textures[light];
-        console.log(light);
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);
         }
@@ -61,7 +60,7 @@ export class LightDebugBox {
             data.uvTemplate.push(uv);
         }
         data.shapeTemplate.push(this.trueShapeId);
-        data.shapeStateTemplate.push(data.voxelData[1]);
+        data.shapeStateTemplate.push(0);
         this.voxelHelper.processVoxelLight(data, this);
     }
 }

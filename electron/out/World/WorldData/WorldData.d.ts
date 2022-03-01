@@ -6,17 +6,18 @@ import type { VoxelInteface, VoxelSubstanceType } from "Meta/World/Voxels/Voxel.
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
+import { Flat3DArray } from "Global/Util/Flat3DArray.js";
+import type { ChunkBounds } from "World/Chunks/ChunkBounds.js";
+import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
  * Also handles getting and setting data.
  */
-export declare class WorldData {
+export declare class WorldData implements ChunkBound {
     DVEW: DivineVoxelEngineWorld;
     renderDistance: number;
-    chunkXPow2: number;
-    chunkZPow2: number;
-    chunkYPow2: number;
+    chunkBounds: ChunkBounds;
     regionXPow2: number;
     regionZPow2: number;
     regionYPow2: number;
@@ -32,6 +33,7 @@ export declare class WorldData {
     infoByte: InfoByte;
     lightByte: LightByte;
     voxelByte: VoxelByte;
+    _3dArray: Flat3DArray;
     substanceRules: Record<string, boolean>;
     lightValueFunctions: {
         r: (value: number) => number;
@@ -40,12 +42,13 @@ export declare class WorldData {
         s: (value: number) => number;
     };
     constructor(DVEW: DivineVoxelEngineWorld);
+    syncChunkBounds(): void;
     getRGBLightUpdateQue(): number[][];
     clearRGBLightUpdateQue(): void;
     getRGBLightRemoveQue(): number[][];
     clearRGBLightRemoveQue(): void;
     getChunkRebuildQue(): number[][];
-    getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
+    getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<"all" | VoxelSubstanceType, boolean>;
     clearChunkRebuildQue(): void;
     addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;
@@ -82,7 +85,7 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    isVoxelExposed(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    isVoxelExposed(voxel: VoxelInteface, voxelData: number, x: number, y: number, z: number): boolean;
     /**# Voxel Face Check
      * ---
      * Determines if a face of a voxel is exposed.
@@ -95,10 +98,10 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    voxelFaceCheck(voxel: VoxelInteface, voxelData: any[], x: number, y: number, z: number): boolean;
+    voxelFaceCheck(voxel: VoxelInteface, voxelData: number, x: number, y: number, z: number): boolean;
     removeData(x: number, y: number, z: number): false | undefined;
-    getVoxel(x: number, y: number, z: number): false | any[];
-    getData(x: number, y: number, z: number): any;
+    getVoxel(x: number, y: number, z: number): any[] | false;
+    getData(x: number, y: number, z: number): number;
     /**# Set Data
      * ---
      * Sets the data for a specific point in the world data.

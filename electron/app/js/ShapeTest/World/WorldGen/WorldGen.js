@@ -2,7 +2,9 @@ export class WorldGen {
     DVEW;
     constructor(DVEW) {
         this.DVEW = DVEW;
+        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
+    _3dArray;
     chunkDepth = 16;
     chunkWidth = 16;
     chunkHeight = 256;
@@ -13,7 +15,7 @@ export class WorldGen {
         let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
         let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
         let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
-        const returnChunk = [];
+        const voxels = [];
         if (type == "fluid") {
             let baseY = 0;
             let maxY = 31;
@@ -21,14 +23,10 @@ export class WorldGen {
                 for (let z = 0; z < this.chunkDepth; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y > baseY && y <= maxY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = liquidDreamEther;
+                            this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
                         }
                         if (y == baseY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                     }
                 }
@@ -42,35 +40,23 @@ export class WorldGen {
                 for (let z = 0; z < this.chunkDepth; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y < baseY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                             continue;
                         }
                         if (y == baseY && x > 0 && x < 15 && z > 0 && z < 15) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = liquidDreamEther;
+                            this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
                         }
                         if (y == baseY && x == 0) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                         if (y == baseY && x == 15) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                         if (y == baseY && z == 0) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                         if (y == baseY && z == 15) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                     }
                 }
@@ -84,14 +70,10 @@ export class WorldGen {
                 for (let z = 0; z < this.chunkDepth; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y < baseY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamstone;
+                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
                         }
                         if (y == topY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamStonePillar;
+                            this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
                         }
                         if (y >= baseY && y < topY) {
                             if (x % 15 == 0 || z % 15 == 0) {
@@ -103,9 +85,7 @@ export class WorldGen {
                                     if (z % 2 == 0)
                                         continue;
                                 }
-                                returnChunk[x] ??= [];
-                                returnChunk[x][z] ??= [];
-                                returnChunk[x][z][y] = dreamStonePillar;
+                                this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
                             }
                         }
                     }
@@ -134,34 +114,20 @@ export class WorldGen {
                             }
                         }
                         if (y < groundY) {
-                            returnChunk[x] ??= [];
-                            returnChunk[x][z] ??= [];
-                            returnChunk[x][z][y] = dreamStonePillar;
+                            this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
                             continue;
                         }
                         if (hole) {
                             if (y < topY) {
-                                returnChunk[x] ??= [];
-                                returnChunk[x][z] ??= [];
-                                returnChunk[x][z][y] = dreamstone;
+                                this._3dArray.setValue(x, y, z, voxels, dreamstone);
                             }
                         }
                     }
                 }
             }
-            returnChunk[3][3][topY] = liquidDreamEther;
-            returnChunk[5][5][topY] = dreamGrasss;
-            returnChunk[7][7][topY] = debugBox;
-            returnChunk[7][7][topY + 1] = debugBox;
-            returnChunk[7][7][topY + 2] = debugBox;
-            returnChunk[7][7][topY + 3] = debugBox;
-            returnChunk[0][0][topY] = debugBox;
-            returnChunk[0][15][topY] = debugBox;
-            returnChunk[15][15][topY] = debugBox;
-            returnChunk[15][0][topY] = debugBox;
         }
         return {
-            voxels: returnChunk,
+            voxels: voxels,
             maxMinHeight: [],
             isEmpty: false,
             proto: false,

@@ -41,7 +41,7 @@ export class LiquidDreamEther implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(uv);
   }
-  data.shapeStateTemplate.push(data.voxelData[1]);
+  data.shapeStateTemplate.push(0);
   data.shapeTemplate.push(this.trueShapeId);
   this.voxelHelper.calculateVoxelLight(data, this);
  }

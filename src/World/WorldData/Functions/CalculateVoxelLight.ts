@@ -4,7 +4,7 @@ import type { WorldData } from "../WorldData";
 export function CalculateVoxelLight(
  this: WorldData,
  voxel: VoxelInteface,
- voxelData: any[],
+ voxelData: number,
  lightTemplate: number[],
  exposedFaces: number[],
  chunkX: number,

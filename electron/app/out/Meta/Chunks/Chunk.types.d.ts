@@ -9,7 +9,7 @@ export declare type ChunkTemplate = {
     aoTemplate: number[];
     colorTemplate: number[];
 };
-export declare type ChunkVoxels = any[][][];
+export declare type ChunkVoxels = number[];
 export declare type ChunkData = {
     palette?: {
         count: number;

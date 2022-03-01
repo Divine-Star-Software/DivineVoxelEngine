@@ -1,8 +1,12 @@
+import { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 export class WorldGen {
- constructor(public DVEW: DivineVoxelEngineWorld) {}
+ constructor(public DVEW: DivineVoxelEngineWorld) {
+  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
+ }
 
+ _3dArray: Flat3DArray;
  chunkDepth = 16;
  chunkWidth = 16;
  chunkHeight = 256;
@@ -14,15 +18,20 @@ export class WorldGen {
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let dreamstone = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-   "dve:dreamstone","default"
-  );
+  let dreamstone =
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:dreamstone",
+    "default"
+   );
   //   this.chunkMap.addChunk(chunkX,chunkZ);
-  let liquidDreamEther = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-   "dve:liquiddreamether","default"
-  );
-  const liquidDreamEtherVoxel = this.DVEW.worldGeneration.paintVoxel(liquidDreamEther);
-  const returnChunk: any[][][] = [];
+  let liquidDreamEther =
+   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    "dve:liquiddreamether",
+    "default"
+   );
+  const liquidDreamEtherVoxel =
+   this.DVEW.worldGeneration.paintVoxel(liquidDreamEther);
+  const voxels: number[] = [];
   const dreamStoneVovxel = this.DVEW.worldGeneration.paintVoxel(dreamstone);
 
   let baseY = 0;
@@ -32,23 +41,19 @@ export class WorldGen {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y > baseY && y <= maxY) {
-      returnChunk[x] ??= [];
-      returnChunk[x][z] ??= [];
-      returnChunk[x][z][y] = liquidDreamEtherVoxel;
+      this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
      }
      if (y == baseY) {
-      returnChunk[x] ??= [];
-      returnChunk[x][z] ??= [];
-      returnChunk[x][z][y] = dreamStoneVovxel;
+      this._3dArray.setValue(x, y, z, voxels, dreamStoneVovxel);
      }
     }
    }
   }
 
   return {
-   voxels: returnChunk,
-   isEmpty : false,
-   proto : false,
+   voxels: voxels,
+   isEmpty: false,
+   proto: false,
    maxMinHeight: [],
    heightMap: [],
   };

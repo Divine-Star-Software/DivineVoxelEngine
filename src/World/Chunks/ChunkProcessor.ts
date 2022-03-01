@@ -1,9 +1,11 @@
+import type { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { VoxelByte } from "Global/Util/VoxelByte.js";
 import type {
  ChunkData,
  ChunkTemplate,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
+import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type {
  VoxelInteface,
  VoxelSubstanceType,
@@ -11,6 +13,7 @@ import type {
 import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
+import type { ChunkBounds } from "./ChunkBounds.js";
 
 import {
  ChunkOcculsionCalcuation,
@@ -22,12 +25,13 @@ import {
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export class ChunkProcessor {
+export class ChunkProcessor implements ChunkBound {
  worldBottomY = 0;
  worldTopY = 256;
  chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
  voxelByte: VoxelByte;
+ _3dArray: Flat3DArray;
 
  /**## substance rules
   * ---
@@ -60,11 +64,19 @@ export class ChunkProcessor {
   "magma-magma": false,
  };
  exposedFaces: number[] = [];
+ worldData: WorldData;
+ chunkBounds: ChunkBounds;
+
  constructor(private DVEW: DivineVoxelEngineWorld) {
   this.worldData = DVEW.worldData;
+  this.chunkBounds = DVEW.chunkBounds;
   this.voxelByte = DVEW.UTIL.getVoxelByte();
+  this._3dArray = DVEW.UTIL.getFlat3DArray();
  }
- worldData: WorldData;
+
+ syncChunkBounds(): void {
+    this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+}
 
  getBaseTemplateNew(): FullChunkTemplate {
   return {
@@ -132,21 +144,11 @@ export class ChunkProcessor {
   const voxels = chunk.voxels;
   const min = chunk.maxMinHeight[0];
   const max = chunk.maxMinHeight[1];
-
-  for (let x = 0; x < 16; x++) {
-   if (!voxels[x]) {
-    continue;
-   }
-
-   for (let z = 0; z < 16; z++) {
-    if (!voxels[x][z]) {
-     continue;
-    }
-    for (const y of voxels[x][z].keys()) {
-     const voxelData = voxels[x][z][y];
-
+  for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
+   for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
+    for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+     const voxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(voxelData) == 0) continue;
-
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
       chunkY + y,
@@ -294,18 +296,10 @@ export class ChunkProcessor {
   const voxels = chunk.voxels;
   const min = chunk.maxMinHeight[0];
   const max = chunk.maxMinHeight[1];
-
-  for (let x = 0; x < 16; x++) {
-   if (!voxels[x]) {
-    continue;
-   }
-
-   for (let z = 0; z < 16; z++) {
-    if (!voxels[x][z]) {
-     continue;
-    }
-    for (const y of voxels[x][z].keys()) {
-     const voxelData = voxels[x][z][y];
+  for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
+   for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
+    for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+     const voxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(voxelData) == 0) continue;
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
@@ -315,6 +309,7 @@ export class ChunkProcessor {
      if (!voxelCheck) continue;
      const voxel: VoxelInteface = voxelCheck[0];
      const voxelState = voxelCheck[1];
+
      const baseTemplate = template[voxel.data.substance];
 
      let faceBit = 0;
@@ -435,7 +430,12 @@ export class ChunkProcessor {
     }
    }
   }
-
+  this.DVEW.builderManager.requestFullChunkBeBuilt(
+   chunkX,
+   chunkY,
+   chunkZ,
+   template
+  );
   return template;
  }
 }

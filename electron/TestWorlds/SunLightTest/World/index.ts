@@ -1,4 +1,4 @@
-import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+/* import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 
@@ -93,3 +93,4 @@ const start = () => {
   onMessage: (message: string, data: any[]) => {},
  });
 })();
+ */

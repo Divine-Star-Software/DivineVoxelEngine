@@ -15,7 +15,7 @@ export type VoxelSubstanceType =
 
 export type VoxelProcessData = {
  exposedFaces: number[];
- voxelData: any[];
+ voxelData: number;
  voxelState: string;
  uvTemplate: number[];
  shapeTemplate: number[];
@@ -57,10 +57,7 @@ export type VoxelData = {
 export interface VoxelInteface {
  data: VoxelData;
  trueShapeId: number;
-
  voxelHelper: VoxelHelperInterface;
-
  hooks: Record<VoxelHooks, Function>;
-
  process(data: VoxelProcessData): void;
 }
