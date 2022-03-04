@@ -6,6 +6,9 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
  */
 export class EngineSettings {
  settings: EngineSettingsData = {
+  matrix : {
+      enabled : true
+  },
   textureOptions: {
    animationTime: 20,
    width: 16,

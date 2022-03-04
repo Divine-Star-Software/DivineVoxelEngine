@@ -1,7 +1,7 @@
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./BuilderManager.js";
+import { BuilderManager } from "./Builder/BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -10,7 +10,9 @@ import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 //functions
 import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
-import { ChunkBounds } from "./Chunks/ChunkBounds.js";
+import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
+import { MatrixThreadCentralHub } from "./Matrix/MatrixThreadCentralHub.js";
+import { Matrix } from "./Matrix/Matrix.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker content.
@@ -23,6 +25,8 @@ export class DivineVoxelEngineWorld {
     builderManager = new BuilderManager();
     worldGeneration = new WorldGeneration(this);
     worldData = new WorldData(this);
+    matrix = new Matrix(this);
+    matrixThreadCentralHub = new MatrixThreadCentralHub(this);
     textureManager = new TextureManager();
     voxelManager = new VoxelManager();
     voxelHelper = new VoxelHelper(this.UTIL, this.worldData, this.textureManager, this.voxelManager);

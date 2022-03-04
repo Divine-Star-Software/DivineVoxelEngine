@@ -7,8 +7,8 @@ import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVox
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type { ChunkBounds } from "World/Chunks/ChunkBounds.js";
-import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
+import type { ChunkBounds } from "Global/Chunks/ChunkBounds.js";
+import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -48,7 +48,7 @@ export declare class WorldData implements ChunkBound {
     getRGBLightRemoveQue(): number[][];
     clearRGBLightRemoveQue(): void;
     getChunkRebuildQue(): number[][];
-    getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<"all" | VoxelSubstanceType, boolean>;
+    getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
     clearChunkRebuildQue(): void;
     addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;

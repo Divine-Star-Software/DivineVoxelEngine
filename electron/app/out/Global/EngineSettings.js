@@ -4,6 +4,9 @@
  */
 export class EngineSettings {
     settings = {
+        matrix: {
+            enabled: true
+        },
         textureOptions: {
             animationTime: 20,
             width: 16,

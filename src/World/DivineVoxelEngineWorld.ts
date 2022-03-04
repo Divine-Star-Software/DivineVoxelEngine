@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./BuilderManager.js";
+import { BuilderManager } from "./Builder/BuilderManager.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -15,7 +15,9 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 
 //functions
 import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
-import { ChunkBounds } from "./Chunks/ChunkBounds.js";
+import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
+import { MatrixThreadCentralHub } from "./Matrix/MatrixThreadCentralHub.js";
+import { Matrix } from "./Matrix/Matrix.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -32,6 +34,9 @@ export class DivineVoxelEngineWorld {
 
  worldData = new WorldData(this);
 
+ matrix = new Matrix(this);
+ matrixThreadCentralHub = new MatrixThreadCentralHub(this);
+
  textureManager = new TextureManager();
  voxelManager = new VoxelManager();
  voxelHelper = new VoxelHelper(
@@ -47,6 +52,10 @@ export class DivineVoxelEngineWorld {
   this.worker = worker;
   this.builderManager.setMainThreadCom(<any>this.worker);
  }
+
+ 
+
+
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
   if (data.chunks) {

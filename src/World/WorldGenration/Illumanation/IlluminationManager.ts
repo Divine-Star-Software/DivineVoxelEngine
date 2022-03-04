@@ -2,7 +2,7 @@ import { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { LightByte } from "Global/Util/LightByte";
 import { ChunkData } from "Meta/Chunks/Chunk.types.js";
 import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
-import type { ChunkBounds } from "World/Chunks/ChunkBounds.js";
+import type { ChunkBounds } from "Global/Chunks/ChunkBounds.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 import {

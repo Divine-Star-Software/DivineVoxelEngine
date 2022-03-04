@@ -1,4 +1,7 @@
 export type EngineSettingsData = {
+ matrix? : {
+    enabled : boolean
+ },
  textureOptions?: {
   width: number;
   height: number;

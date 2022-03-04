@@ -13,7 +13,7 @@ import type {
 import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
-import type { ChunkBounds } from "./ChunkBounds.js";
+import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 
 import {
  ChunkOcculsionCalcuation,

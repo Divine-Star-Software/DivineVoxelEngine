@@ -1,3 +1,4 @@
+import { ChunkVoxels } from "Meta/Chunks/Chunk.types";
 import { PositionMatrix } from "Meta/Util.types";
 
 /**# Flat 3D Array
@@ -25,15 +26,15 @@ export class Flat3DArray {
   };
  }
 
- getValue(x: number, y: number, z: number, array: number[]) {
+ getValue(x: number, y: number, z: number, array: ChunkVoxels) {
   return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  }
 
- setValue(x: number, y: number, z: number, array: number[], value: number) {
+ setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number) {
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
  }
 
- delete(x: number, y: number, z: number, array: number[]) {
+ delete(x: number, y: number, z: number, array: ChunkVoxels) {
   delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  }
 

@@ -1,6 +1,6 @@
 {
   "name": "divine-voxel-engine",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "dist/divine-voxel-engine.js",
   "module": "dist/divine-voxel-engine.mjs",
   "typings": "dist/divine-voxel-engined.ts",

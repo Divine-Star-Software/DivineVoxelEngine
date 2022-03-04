@@ -4,7 +4,7 @@ import type { ChunkData, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
-import type { ChunkBounds } from "./ChunkBounds.js";
+import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 import { ChunkOcculsionCalcuation } from "./Functions/ChunkAO.js";
 /**# Chunk Processor
  * ---
