@@ -23,6 +23,7 @@ Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/w
 - Different voxel types and shapes.
 - Chunk-based rendering and meshing.
 - Multi-threaded mesh building.
+- Multi-threaded chunk data access.
 - Ambient occlusion.
 - Animated textures.
 - Connected Textures.
@@ -45,8 +46,6 @@ Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/w
   - Options to create shade gradient with neighbors. 
 - Dynamic Lighting system.
   - Will use Babylon's built-in dyamic lights and shadow casting.
-- One mesh mode
-  - If the world does not need to update a lot all the worlds chunk meshes can be combined into one for each substance.
 - Well-written wiki with tutorials on how to do anything that you could possibly want.
 - Standard data format for the engine that will be called either .dsd or .dved for saving the world data and or structures.
 
