@@ -106,10 +106,13 @@ const init = async () => {
  await DVE.$SCENEINIT({ scene: scene });
  DVE.renderManager.setSunLevel(1);
  let divFps = document.getElementById("fps");
+ let position = document.getElementById("position");
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
   //@ts-ignore
   divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  //@ts-ignore
+  position.innerHTML = `${camera.position.x.toFixed(2)} ${camera.position.y.toFixed(2)} ${camera.position.z.toFixed(2)}`;
  });
 };

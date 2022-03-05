@@ -33,7 +33,7 @@ export function CalculateVoxelLight(
     ly,
     -1,
    ]),
-   //-x +x
+   //-x +z
    this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
     -1,
     ly,
@@ -355,7 +355,31 @@ export function VoxelLightMixCalc(
  let r = values[1];
  let g = values[2];
  let b = values[3];
+
  //console.log(w);
+
+ const zeroCount = {
+  w: 0,
+  r: 0,
+  g: 0,
+  b: 0,
+ };
+
+ if (w == 0) {
+  zeroCount.w++;
+ }
+ if (r == 0) {
+  zeroCount.r++;
+ }
+
+ if (g == 0) {
+  zeroCount.g++;
+ }
+
+ if (b == 0) {
+  zeroCount.b++;
+ }
+
  for (let i = 6; i > 0; i -= 3) {
   const check = this.getLight(
    checkSet[i] + chunkX + voxelX,
@@ -374,35 +398,60 @@ export function VoxelLightMixCalc(
   let ng = values[2];
   let nb = values[3];
 
-  if (nw < w) {
+  if (nw < w && w > 0) {
    w--;
   }
   if (nw > w && w < 15) {
    w++;
   }
+  if (nw == 0) {
+   zeroCount.w++;
+  }
 
-  if (nr < r) {
+  if (nr < r && r > 0) {
    r--;
   }
-  if (nr + 2 > r && r < 15) {
+  if (nr > r && r < 15) {
    r++;
   }
+  if (nr == 0) {
+   zeroCount.r++;
+  }
 
-  if (ng < g) {
+  if (ng < g && g > 0) {
    g--;
   }
-  if (ng + 2 > g && g < 15) {
+  if (ng > g && g < 15) {
    g++;
   }
+  if (ng == 0) {
+   zeroCount.g++;
+  }
 
-  if (nb < b) {
+  if (nb < b && b > 0) {
    b--;
   }
-  if (nb + 2 > b && b < 15) {
+  if (nb > b && b < 15) {
    b++;
   }
 
+  if (nb == 0) {
+   zeroCount.b++;
+  }
  }
 
+ if (zeroCount.w >= 2) {
+  w = 0;
+ }
+ if (zeroCount.r >= 2) {
+  r = 15;
+  //console.log(zeroCount);
+ }
+ if (zeroCount.g >= 2) {
+  g = 0;
+ }
+ if (zeroCount.b >= 2) {
+  b = 0;
+ }
  return this.lightByte.setLightValues([w, r, g, b]);
 }

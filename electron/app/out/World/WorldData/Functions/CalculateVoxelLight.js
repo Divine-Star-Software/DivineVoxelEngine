@@ -16,7 +16,7 @@ export function CalculateVoxelLight(voxel, voxelData, lightTemplate, exposedFace
             ly,
             -1,
         ]), 
-        //-x +x
+        //-x +z
         this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
             -1,
             ly,
@@ -86,6 +86,24 @@ export function VoxelLightMixCalc(voxelLigtValue, voxel, chunkX, chunkY, chunkZ,
     let g = values[2];
     let b = values[3];
     //console.log(w);
+    const zeroCount = {
+        w: 0,
+        r: 0,
+        g: 0,
+        b: 0,
+    };
+    if (w == 0) {
+        zeroCount.w++;
+    }
+    if (r == 0) {
+        zeroCount.r++;
+    }
+    if (g == 0) {
+        zeroCount.g++;
+    }
+    if (b == 0) {
+        zeroCount.b++;
+    }
     for (let i = 6; i > 0; i -= 3) {
         const check = this.getLight(checkSet[i] + chunkX + voxelX, checkSet[i + 1] + chunkY + voxelY, checkSet[i + 2] + chunkZ + voxelZ);
         if (!check) {
@@ -97,30 +115,55 @@ export function VoxelLightMixCalc(voxelLigtValue, voxel, chunkX, chunkY, chunkZ,
         let nr = values[1];
         let ng = values[2];
         let nb = values[3];
-        if (nw < w) {
+        if (nw < w && w > 0) {
             w--;
         }
         if (nw > w && w < 15) {
             w++;
         }
-        if (nr < r) {
+        if (nw == 0) {
+            zeroCount.w++;
+        }
+        if (nr < r && r > 0) {
             r--;
         }
-        if (nr + 2 > r && r < 15) {
+        if (nr > r && r < 15) {
             r++;
         }
-        if (ng < g) {
+        if (nr == 0) {
+            zeroCount.r++;
+        }
+        if (ng < g && g > 0) {
             g--;
         }
-        if (ng + 2 > g && g < 15) {
+        if (ng > g && g < 15) {
             g++;
         }
-        if (nb < b) {
+        if (ng == 0) {
+            zeroCount.g++;
+        }
+        if (nb < b && b > 0) {
             b--;
         }
-        if (nb + 2 > b && b < 15) {
+        if (nb > b && b < 15) {
             b++;
         }
+        if (nb == 0) {
+            zeroCount.b++;
+        }
+    }
+    if (zeroCount.w >= 2) {
+        w = 0;
+    }
+    if (zeroCount.r >= 2) {
+        r = 15;
+        //console.log(zeroCount);
+    }
+    if (zeroCount.g >= 2) {
+        g = 0;
+    }
+    if (zeroCount.b >= 2) {
+        b = 0;
     }
     return this.lightByte.setLightValues([w, r, g, b]);
 }
