@@ -22,7 +22,7 @@ export class WorldGen {
         let height = 0;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
-                if (Math.random() < 0.1) {
+                if (Math.random() < 0.3) {
                     fill = true;
                 }
                 else {
@@ -52,7 +52,7 @@ export class WorldGen {
                             if (y >= baseY - 5 && y <= baseY - 1 && ((x < 6) || (x > 9))) {
                                 this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
-                            if (y == baseY && x == 7 && z == 7) {
+                            if (y == baseY && (x == 6 || x == 9) && z == 7) {
                                 this.DVEW.worldData.paintVoxel("dve:debugbox", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }

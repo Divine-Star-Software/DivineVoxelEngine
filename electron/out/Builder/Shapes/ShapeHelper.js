@@ -19,8 +19,8 @@ export class ShapeHelper {
         return [r, g, b, a];
     }
     lightMap = [
-        0.1, 0.12, 0.13, 0.14, 0.15, 0.2, 0.25, 0.35, 0.45, 0.5, 0.55, 0.65, 0.75, 0.85,
-        0.9, 1,
+        0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74, 0.85,
+        0.97, 1,
     ];
     calculateLightColor(RGBlightColors, sunlightColors, lightTemplate, startIndex) {
         const alpha = 1;

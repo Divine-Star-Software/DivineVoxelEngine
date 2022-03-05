@@ -43,7 +43,7 @@ export class WorldGen {
   for (let x = 0; x < +this.chunkWidth; x++) {
 
    for (let z = 0; z < this.chunkDepth; z++) {
-    if (Math.random() < 0.1){ fill = true;} else {fill = false;}
+    if (Math.random() < 0.3){ fill = true;} else {fill = false;}
     if (Math.random() < 0.5){ heightChange = true;} else {heightChange = false;}
     if(heightChange){
         height = Math.random() * 3;
@@ -82,7 +82,7 @@ export class WorldGen {
          z + chunkZ
         );
        }
-       if (y == baseY && x == 7 && z == 7) {
+       if (y == baseY && (x == 6 || x == 9) && z == 7) {
         this.DVEW.worldData.paintVoxel(
          "dve:debugbox",
          "default",

@@ -470,6 +470,11 @@ export class WorldData {
         this.regions[`${regionX}-${regionZ}-${regionY}`] = newRegion;
         return newRegion;
     }
+    getRegion(regionX, regionY, regionZ) {
+        if (!this.regions[`${regionX}-${regionZ}-${regionY}`])
+            return false;
+        return this.regions[`${regionX}-${regionZ}-${regionY}`];
+    }
     paintVoxel(voxelId, voxelStateId, x, y, z) {
         const regionX = (x >> this.regionXPow2) << this.regionXPow2;
         const regionY = (y >> this.regionYPow2) << this.regionYPow2;

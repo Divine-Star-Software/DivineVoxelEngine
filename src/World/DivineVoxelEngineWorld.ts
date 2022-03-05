@@ -16,7 +16,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 //functions
 import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
-import { MatrixThreadCentralHub } from "./Matrix/MatrixThreadCentralHub.js";
+import { MatrixThreadHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 
 /**# Divine Voxel Engine World
@@ -35,7 +35,7 @@ export class DivineVoxelEngineWorld {
  worldData = new WorldData(this);
 
  matrix = new Matrix(this);
- matrixThreadCentralHub = new MatrixThreadCentralHub(this);
+ matrixCentralHub = new MatrixThreadHub(this);
 
  textureManager = new TextureManager();
  voxelManager = new VoxelManager();
@@ -167,7 +167,7 @@ export class DivineVoxelEngineWorld {
   this.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
 
   // let t1= performance.now();
-  // console.log(t1 - t0);
+  // console.log(t1 - t0); 
   return true;
  }
  async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {

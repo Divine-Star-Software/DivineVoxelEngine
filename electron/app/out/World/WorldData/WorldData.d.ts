@@ -114,6 +114,7 @@ export declare class WorldData implements ChunkBound {
      */
     setData(x: number, y: number, z: number, data: number): false | undefined;
     addRegion(regionX: number, regionY: number, regionZ: number): WorldRegion;
+    getRegion(regionX: number, regionY: number, regionZ: number): false | WorldRegion;
     paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     /**# Insert Data
      * ---

@@ -183,9 +183,8 @@ export class WorldData implements ChunkBound {
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
-
  syncChunkBounds(): void {
-     this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+  this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
  }
 
  getRGBLightUpdateQue() {
@@ -421,7 +420,6 @@ export class WorldData implements ChunkBound {
   const regionY = (y >> this.regionYPow2) << this.regionYPow2;
   const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
 
-
   let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
 
   if (!region) {
@@ -618,6 +616,11 @@ export class WorldData implements ChunkBound {
   const newRegion = this.DVEW.worldGeneration.getBlankRegion(regionPalette);
   this.regions[`${regionX}-${regionZ}-${regionY}`] = newRegion;
   return newRegion;
+ }
+
+ getRegion(regionX: number, regionY: number, regionZ: number) {
+  if (!this.regions[`${regionX}-${regionZ}-${regionY}`]) return false;
+  return this.regions[`${regionX}-${regionZ}-${regionY}`];
  }
 
  paintVoxel(
