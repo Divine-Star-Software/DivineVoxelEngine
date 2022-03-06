@@ -4,6 +4,8 @@
  */
 export class Matrix {
     DVEW;
+    //two minutes
+    updateDieTime = 120000;
     loadedChunks = {};
     chunkStatesSAB = {};
     //A view of the chunk states SAB. The states are used to define if the chunk is 'locked' or not.
@@ -58,7 +60,7 @@ export class Matrix {
                 setTimeout(() => {
                     clearInterval(inte);
                     resolve(false);
-                }, 50000000);
+                }, this.updateDieTime);
             }
         });
         return prom;

@@ -9,6 +9,8 @@ export class WorldMatrix {
     _3dArray = new Flat3DArray();
     chunkBounds = new ChunkBounds();
     voxelByte = new VoxelByte();
+    //two minutes
+    updateDieTime = 120000;
     regionXPow2 = 9;
     regionZPow2 = 9;
     regionYPow2 = 8;
@@ -134,7 +136,7 @@ export class WorldMatrix {
                 setTimeout(() => {
                     clearInterval(inte);
                     resolve(false);
-                }, 50000000);
+                }, this.updateDieTime);
             }
         });
         return prom;

@@ -10,6 +10,7 @@ export declare class WorldMatrix implements ChunkBound {
     _3dArray: Flat3DArray;
     chunkBounds: ChunkBounds;
     voxelByte: VoxelByte;
+    updateDieTime: number;
     regionXPow2: number;
     regionZPow2: number;
     regionYPow2: number;

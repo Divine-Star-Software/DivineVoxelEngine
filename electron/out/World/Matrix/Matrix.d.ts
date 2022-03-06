@@ -6,6 +6,7 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
  */
 export declare class Matrix {
     private DVEW;
+    updateDieTime: number;
     loadedChunks: Record<string, SharedArrayBuffer>;
     chunkStatesSAB: Record<string, SharedArrayBuffer>;
     chunkStates: Record<string, Uint8Array>;
