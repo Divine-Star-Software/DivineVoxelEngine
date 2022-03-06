@@ -1,6 +1,6 @@
 /**# Voxel Palette Manager
  * ---
- * Used to help decode voxel ids and states from per-chunk voxel palettes.
+ * Used to help decode voxel ids and states from per-region voxel palettes.
  */
 export class VoxelPaletteManager {
     DVEW;
@@ -53,16 +53,6 @@ export class VoxelPaletteManager {
             }
         }
     }
-    registerVoxelForPerChunkVoxelPalette(voxel) {
-        const defaultId = `${voxel.data.id}:default`;
-        this.perChunkVoxelRecord[defaultId] = [voxel.data.id, "default"];
-        if (voxel.data.states) {
-            for (const state of voxel.data.states) {
-                const stateID = `${voxel.data.id}:${state}`;
-                this.perChunkVoxelRecord[stateID] = [voxel.data.id, state];
-            }
-        }
-    }
     registerVoxelForPerRegionVoxelPalette(voxel) {
         const defaultId = `${voxel.data.id}:default`;
         this.perRegionVoxelRecord[defaultId] = [voxel.data.id, "default"];
@@ -75,29 +65,6 @@ export class VoxelPaletteManager {
     }
     getGlobalVoxelPalette() {
         return this.globalVoxelPalette;
-    }
-    getVoxelData(chunk, voxelId) {
-        if (!chunk.palette)
-            return false;
-        const palette = chunk.palette;
-        const id = palette.record[voxelId];
-        return this.perChunkVoxelRecord[id];
-    }
-    getVoxelPaletteId(chunk, voxelId, voxelState) {
-        if (!chunk.palette)
-            return false;
-        const palette = chunk.palette;
-        return palette.map[`${voxelId}:${voxelState}`];
-    }
-    addToChunksVoxelPalette(chunk, voxelId, voxelState) {
-        if (!chunk.palette)
-            return 0;
-        const palette = chunk.palette;
-        const id = `${voxelId}:${voxelState}`;
-        palette.record[palette.count] = id;
-        palette.map[id] = palette.count;
-        palette.count++;
-        return palette.count - 1;
     }
     getVoxelDataFromRegion(region, voxelId) {
         if (!region.palette)

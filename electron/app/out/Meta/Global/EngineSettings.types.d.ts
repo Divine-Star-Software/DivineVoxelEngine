@@ -8,7 +8,7 @@ export declare type EngineSettingsData = {
         animationTime: number;
     };
     world?: {
-        voxelPaletteMode: "global" | "per-region" | "per-chunk";
+        voxelPaletteMode: "global" | "per-region";
     };
     regions?: {
         regionXPow2: number;

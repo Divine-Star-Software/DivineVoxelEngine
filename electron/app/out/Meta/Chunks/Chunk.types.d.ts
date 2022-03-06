@@ -11,11 +11,6 @@ export declare type ChunkTemplate = {
 };
 export declare type ChunkVoxels = number[] | Uint32Array;
 export declare type ChunkData = {
-    palette?: {
-        count: number;
-        record: Record<number, string>;
-        map: Record<string, number>;
-    };
     proto: boolean;
     voxels: ChunkVoxels;
     maxMinHeight: number[];

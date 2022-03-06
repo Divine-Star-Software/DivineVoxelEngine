@@ -19,18 +19,6 @@ export class WorldData {
             }
             return -1;
         },
-        "per-chunk": (voxelId, voxelStateId, chunk, region) => {
-            const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(chunk, voxelId, voxelStateId);
-            if (check) {
-                return check;
-            }
-            else {
-                const newPaletteId = this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(chunk, voxelId, voxelStateId);
-                if (!newPaletteId)
-                    return -1;
-                return this.DVEW.worldGeneration.paintVoxel(newPaletteId);
-            }
-        },
         "per-region": (voxelId, voxelStateId, chunk, region) => {
             if (!region)
                 return -1;
@@ -318,7 +306,7 @@ export class WorldData {
             return false;
         }
         let globalPalette = true;
-        if (chunk.palette) {
+        if (region.palette) {
             globalPalette = false;
         }
         let voxelX = Math.abs(x - chunkX);
@@ -359,7 +347,7 @@ export class WorldData {
                     }
                 }
                 else {
-                    const check = this.DVEW.worldGeneration.voxelPalette.getVoxelData(chunk, voxelId);
+                    const check = this.DVEW.worldGeneration.voxelPalette.getVoxelDataFromRegion(region, voxelId);
                     if (check) {
                         voxelTrueID = check[0];
                         voxelState = check[1];
@@ -641,13 +629,13 @@ export class WorldData {
         if (!chunk)
             return;
         let voxelPalletId = 0;
-        if (chunk.palette) {
-            const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(chunk, voxelId, voxelStateId);
+        if (region.palette) {
+            const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromRegion(region, voxelId, voxelStateId);
             if (check) {
                 voxelPalletId = check;
             }
             else {
-                const newPaletteId = this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(chunk, voxelId, voxelStateId);
+                const newPaletteId = this.DVEW.worldGeneration.voxelPalette.addToRegionsVoxelPalette(region, voxelId, voxelStateId);
                 if (!newPaletteId)
                     return;
                 voxelPalletId = newPaletteId;

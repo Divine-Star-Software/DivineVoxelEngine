@@ -56,30 +56,6 @@ export class WorldData implements ChunkBound {
    }
    return -1;
   },
-  "per-chunk": (
-   voxelId: string,
-   voxelStateId: string,
-   chunk: ChunkData,
-   region?: WorldRegion
-  ) => {
-   const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
-    chunk,
-    voxelId,
-    voxelStateId
-   );
-   if (check) {
-    return check;
-   } else {
-    const newPaletteId =
-     this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(
-      chunk,
-      voxelId,
-      voxelStateId
-     );
-    if (!newPaletteId) return -1;
-    return this.DVEW.worldGeneration.paintVoxel(newPaletteId);
-   }
-  },
   "per-region": (
    voxelId: string,
    voxelStateId: string,
@@ -440,7 +416,7 @@ export class WorldData implements ChunkBound {
   }
 
   let globalPalette = true;
-  if (chunk.palette) {
+  if (region.palette) {
    globalPalette = false;
   }
 
@@ -487,10 +463,11 @@ export class WorldData implements ChunkBound {
       return false;
      }
     } else {
-     const check = this.DVEW.worldGeneration.voxelPalette.getVoxelData(
-      chunk,
-      voxelId
-     );
+     const check =
+      this.DVEW.worldGeneration.voxelPalette.getVoxelDataFromRegion(
+       region,
+       voxelId
+      );
      if (check) {
       voxelTrueID = check[0];
       voxelState = check[1];
@@ -840,18 +817,19 @@ export class WorldData implements ChunkBound {
   const chunk = chunks[`${chunkX}-${chunkZ}-${chunkY}`];
   if (!chunk) return;
   let voxelPalletId = 0;
-  if (chunk.palette) {
-   const check = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
-    chunk,
-    voxelId,
-    voxelStateId
-   );
+  if (region.palette) {
+   const check =
+    this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromRegion(
+     region,
+     voxelId,
+     voxelStateId
+    );
    if (check) {
     voxelPalletId = check;
    } else {
     const newPaletteId =
-     this.DVEW.worldGeneration.voxelPalette.addToChunksVoxelPalette(
-      chunk,
+     this.DVEW.worldGeneration.voxelPalette.addToRegionsVoxelPalette(
+      region,
       voxelId,
       voxelStateId
      );
