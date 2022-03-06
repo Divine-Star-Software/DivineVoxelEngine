@@ -17,18 +17,18 @@ export class Matrix {
     isChunkLocked(chunkX, chunkY, chunkZ) {
         if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
             return false;
-        return this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`][0] == 1;
+        return (Atomics.load(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0) == 1);
     }
     lockChunk(chunkX, chunkY, chunkZ) {
         if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
             return false;
-        this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`][0] = 1;
+        Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 1);
         return true;
     }
     unLockChunk(chunkX, chunkY, chunkZ) {
         if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
             return false;
-        this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`][0] = 0;
+        Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 0);
         return true;
     }
     updateChunkData(chunkX, chunkY, chunkZ, run) {
