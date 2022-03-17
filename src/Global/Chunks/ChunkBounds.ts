@@ -22,13 +22,13 @@ export class ChunkBounds {
 
  setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number) {
   this.chunkXPow2 = pow2X;
-  this.chunkXSize = Math.pow(2, pow2X);
+  this.chunkXSize = 2 ** pow2X;
 
   this.chunkYPow2 = pow2Y;
-  this.chunkYSize = Math.pow(2, pow2Y);
+  this.chunkYSize = 2 ** pow2Y;
 
   this.chunkZPow2 = pow2Z;
-  this.chunkZSize = Math.pow(2, pow2Z);
+  this.chunkZSize = 2 ** pow2Z;
 
   this.chunkTotalVoxels = this.chunkXSize * this.chunkYSize * this.chunkZSize;
  }

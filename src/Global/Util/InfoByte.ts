@@ -4,7 +4,7 @@ type BinaryArray = BinaryNums[];
 export class InfoByte {
  maxBit = 31;
  minBit = 0;
- maxDec = Math.pow(2, this.maxBit + 1);
+ maxDec = 2 ** this.maxBit + 1;
  minDec = 0;
  constructor(public byteValue = 0) {}
 

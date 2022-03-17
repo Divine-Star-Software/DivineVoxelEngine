@@ -2,7 +2,7 @@ export class InfoByte {
     byteValue;
     maxBit = 31;
     minBit = 0;
-    maxDec = Math.pow(2, this.maxBit + 1);
+    maxDec = 2 ** this.maxBit + 1;
     minDec = 0;
     constructor(byteValue = 0) {
         this.byteValue = byteValue;
