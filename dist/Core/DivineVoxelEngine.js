@@ -1,18 +1,42 @@
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./Builders/BuilderManager.js";
-import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
-import { ChunkManager } from "./Chunks/ChunkManager.js";
+import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
 import { World } from "./World/World.js";
+import { RenderManager } from "./Render/RenderManager.js";
+import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
+import { MeshManager } from "./Meshes/MeshManager.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
 export class DivineVoxelEngine {
     world = new World(this);
-    chunkManager = new ChunkManager(this);
-    builderManager = new BuilderManager(this);
-    chunkMaterial = new ChunkMaterial();
+    engineSettings = new EngineSettings();
+    renderManager = new RenderManager();
+    builderManager = new BuilderWorkerManager(this);
+    meshManager = new MeshManager(this);
     util = new Util();
     constructor() { }
+    _handleOptions() {
+        const data = this.engineSettings.settings;
+        if (data.textureOptions) {
+            if (data.textureOptions.width && data.textureOptions.height) {
+                this.renderManager.textureCreator.defineTextureDimensions(data.textureOptions.width, data.textureOptions.height);
+            }
+        }
+    }
+    _syncSettings(data) {
+        this.engineSettings.syncSettings(data);
+        this.world._syncSettings();
+        this.builderManager._syncSettings();
+    }
+    async reStart(data) {
+        this._syncSettings(data);
+        this._handleOptions();
+    }
     async $INIT(data) {
+        this.engineSettings.syncSettings(data);
+        this._handleOptions();
         this.world.createWorldWorker(data.worldWorkerPath);
         this.builderManager.createBuilderWorker(data.builderWorkerPath);
+        this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
+        this._syncSettings(data);
         await this.world.getBaseWorldData();
         window.addEventListener("beforeunload", () => {
             for (const builder of this.builderManager.builders) {
@@ -22,35 +46,8 @@ export class DivineVoxelEngine {
         });
     }
     async $SCENEINIT(data) {
-        if (!this.world.baseWorldData) {
-            throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
-        }
-        this.chunkMaterial.setScene(data.scene);
-        const textures = this.world.baseWorldData?.texturePaths;
-        const combinedTexture = await this.chunkMaterial.createMaterialTexture(textures);
-        const material = this.chunkMaterial.getMaterial(combinedTexture);
-        this.builderManager.setScene(data.scene);
-        this.builderManager.setMaterial(material);
-        this.builderManager.createBaseChunkMeshes();
+        // data.scene.enableDepthRenderer();
+        await BuildInitalMeshes(this, data.scene);
         this.world.startWorldGen();
-        const max = 10;
-        let count = max;
-        let test = true;
-        setInterval(() => {
-            if (!count) {
-                count = max;
-                if (test) {
-                    this.chunkMaterial.runAnimations(3);
-                    test = false;
-                }
-                else {
-                    test = true;
-                    this.chunkMaterial.runAnimations(4);
-                }
-            }
-            else {
-                count--;
-            }
-        }, 50);
     }
 }

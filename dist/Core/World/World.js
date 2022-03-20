@@ -1,61 +1,24 @@
-import { ChunkBuilder } from "../Builders/ChunkBuilder.js";
 export class World {
-    DS;
+    DVE;
     waitingForWolrdData = false;
     baseWorldData = null;
     runningBlockUpdate = false;
     worker;
-    chunkBuilder = new ChunkBuilder();
     scene;
     material;
     shadowGen;
     chunkMeshes = {};
-    constructor(DS) {
-        this.DS = DS;
+    constructor(DVE) {
+        this.DVE = DVE;
+    }
+    reStart() {
+        this.worker.postMessage("re-start");
     }
     requestWorldUpdate(type, position) {
-        this.DS.builderManager.runningBlockUpdate = true;
         this.worker.postMessage([type, position.x, position.y, position.z]);
-        setTimeout(() => {
-            if (this.DS.builderManager.runningBlockUpdate) {
-                this.DS.builderManager.runningBlockUpdate = false;
-            }
-        }, 10);
-    }
-    setShadowGen(shadowGen) {
-        this.shadowGen = shadowGen;
-    }
-    getChunkMeshFacetData(chunkX, chunkZ, faceID) {
-        if (!this.chunkMeshes[chunkX])
-            return false;
-        if (this.chunkMeshes[chunkX][chunkZ]) {
-            return this.chunkMeshes[chunkX][chunkZ].getFacetLocalPositions()[faceID];
-        }
-        else {
-            return false;
-        }
-    }
-    getChunkMesh(chunkX, chunkZ) {
-        if (!this.chunkMeshes[chunkX])
-            return false;
-        if (this.chunkMeshes[chunkX][chunkZ]) {
-            return this.chunkMeshes[chunkX][chunkZ];
-        }
-        else {
-            return false;
-        }
-    }
-    setScene(scene) {
-        this.scene = scene;
-    }
-    setMaterial(material) {
-        this.material = material;
     }
     getWorker() {
         return this.worker;
-    }
-    sendPlayerSharedArrays(arrays) {
-        this.worker.postMessage(["connect-player", arrays[0], arrays[1], arrays[2]]);
     }
     startWorldGen() {
         this.worker.postMessage("start");
@@ -65,7 +28,7 @@ export class World {
         if (message == "remove-chunk") {
             const chunkX = event.data[1];
             const chunkZ = event.data[2];
-            this.DS.builderManager.requestChunkBeRemoved(chunkX, chunkZ);
+            this.DVE.meshManager.requestChunkBeRemoved(`${chunkX}-${chunkZ}`);
         }
         if (message == "set-world-data") {
             this.baseWorldData = event.data[1];
@@ -111,5 +74,8 @@ export class World {
         this.worker.onmessage = (message) => {
             this.handleMessage(message, world);
         };
+    }
+    _syncSettings() {
+        this.worker.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
     }
 }

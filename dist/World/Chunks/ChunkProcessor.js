@@ -1,188 +1,287 @@
-import { ChunkOcculsionCalcuation, BuildAmbientOcclusion, } from "./Functions/ChunkAO.js";
+import { ChunkOcculsionCalcuation, } from "./Functions/ChunkAO.js";
+/**# Chunk Processor
+ * ---
+ * Takes the given world data and generates templates
+ * to build chunk meshes.
+ */
 export class ChunkProcessor {
-    worldData;
-    voxelManager;
-    UTIL;
+    DVEW;
     worldBottomY = 0;
     worldTopY = 256;
     chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
     chunkTemplates = {};
-    constructor(worldData, voxelManager, UTIL) {
-        this.worldData = worldData;
-        this.voxelManager = voxelManager;
-        this.UTIL = UTIL;
+    voxelByte;
+    _3dArray;
+    /**## substance rules
+     * ---
+     * defines substance interactions for face culling/adding.
+     * First is the voxel being tested. The second are its neighbors
+     */
+    substanceRules = {
+        "solid-solid": false,
+        "solid-flora": true,
+        "solid-transparent": true,
+        "solid-fluid": true,
+        "solid-magma": true,
+        "transparent-solid": true,
+        "transparent-flora": true,
+        "transparent-transparent": true,
+        "transparent-fluid": true,
+        "transparent-magma": true,
+        "fluid-solid": false,
+        "fluid-flora": true,
+        "fluid-transparent": true,
+        "fluid-fluid": false,
+        "fluid-magma": true,
+        "magma-solid": false,
+        "magma-flora": true,
+        "magma-transparent": true,
+        "magma-fluid": true,
+        "magma-magma": false,
+    };
+    exposedFaces = [];
+    worldData;
+    chunkBounds;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
+        this.worldData = DVEW.worldData;
+        this.chunkBounds = DVEW.chunkBounds;
+        this.voxelByte = DVEW.UTIL.getVoxelByte();
+        this._3dArray = DVEW.UTIL.getFlat3DArray();
     }
-    makeChunkTemplate(chunk, chunkX, chunkZ) {
-        const positionTemplate = [];
-        const faceTemplate = [];
-        const uvTemplate = [];
-        const shapeTemplate = [];
-        const ligtTemplate = [];
-        const aoTemplate = [];
-        for (const x of chunk.keys()) {
-            if (!chunk[x]) {
-                continue;
-            }
-            for (const z of chunk[x].keys()) {
-                if (!chunk[x][z]) {
-                    continue;
-                }
-                for (const y of chunk[x][z].keys()) {
-                    const voxelData = chunk[x][z][y];
-                    if (!voxelData)
+    syncChunkBounds() {
+        this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+    }
+    getBaseTemplateNew() {
+        return {
+            ...{
+                solid: {
+                    positionTemplate: [],
+                    faceTemplate: [],
+                    uvTemplate: [],
+                    shapeTemplate: [],
+                    shapeStateTemplate: [],
+                    colorTemplate: [],
+                    lightTemplate: [],
+                    aoTemplate: [],
+                },
+                transparent: {
+                    positionTemplate: [],
+                    faceTemplate: [],
+                    uvTemplate: [],
+                    shapeTemplate: [],
+                    shapeStateTemplate: [],
+                    colorTemplate: [],
+                    lightTemplate: [],
+                    aoTemplate: [],
+                },
+                flora: {
+                    positionTemplate: [],
+                    faceTemplate: [],
+                    uvTemplate: [],
+                    shapeTemplate: [],
+                    shapeStateTemplate: [],
+                    colorTemplate: [],
+                    lightTemplate: [],
+                    aoTemplate: [],
+                },
+                fluid: {
+                    positionTemplate: [],
+                    faceTemplate: [],
+                    uvTemplate: [],
+                    shapeTemplate: [],
+                    shapeStateTemplate: [],
+                    colorTemplate: [],
+                    lightTemplate: [],
+                    aoTemplate: [],
+                },
+                magma: {
+                    positionTemplate: [],
+                    faceTemplate: [],
+                    uvTemplate: [],
+                    shapeTemplate: [],
+                    shapeStateTemplate: [],
+                    colorTemplate: [],
+                    lightTemplate: [],
+                    aoTemplate: [],
+                },
+            },
+        };
+    }
+    async makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ) {
+        const template = this.getBaseTemplateNew();
+        const voxels = chunk.voxels;
+        const min = chunk.maxMinHeight[0];
+        const max = chunk.maxMinHeight[1];
+        for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
+            for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
+                for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+                    const voxelData = this._3dArray.getValue(x, y, z, voxels);
+                    if (this.voxelByte.getId(voxelData) == 0)
                         continue;
-                    const voxelId = voxelData[0];
-                    const voxel = this.voxelManager.getVoxel(voxelId);
-                    let addNorth = false;
-                    let addSouth = false;
-                    let addEast = false;
-                    let addWest = false;
-                    const bitArray = this.UTIL.getBitArray([0]);
-                    if (!chunk[x][z][y + 1]) {
-                        //add top
-                        bitArray.setBit(0, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "top");
-                    }
-                    if (!chunk[x][z][y - 1] && y != this.worldBottomY) {
-                        //add bottom
-                        bitArray.setBit(1, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "bottom");
-                    }
-                    //chunk border east
-                    if (15 == x) {
-                        const westChunk = this.worldData.getChunk(chunkX + 16, chunkZ);
-                        if (westChunk) {
-                            if (westChunk[0]) {
-                                if (westChunk[0][z]) {
-                                    if (westChunk[0][z][y]) {
-                                    }
-                                    else {
-                                        addWest = true;
-                                    }
-                                }
-                            }
-                        }
-                        else {
-                            addWest = true;
-                        }
+                    const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
+                    if (!voxelCheck)
+                        continue;
+                    const voxel = voxelCheck[0];
+                    const voxelState = voxelCheck[1];
+                    const baseTemplate = template[voxel.data.substance];
+                    let faceBit = 0;
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 0);
+                        this.exposedFaces[0] = 1;
                     }
                     else {
-                        if (!chunk[x + 1]) {
-                            addWest = true;
-                        }
-                        else if (chunk[x + 1][z]) {
-                            if (!chunk[x + 1][z][y]) {
-                                addWest = true;
-                            }
-                        }
+                        this.exposedFaces[0] = 0;
                     }
-                    if (0 == x) {
-                        const westChunk = this.worldData.getChunk(chunkX - 16, chunkZ);
-                        if (westChunk) {
-                            if (westChunk[15]) {
-                                if (westChunk[15][z]) {
-                                    if (westChunk[15][z][y]) {
-                                    }
-                                    else {
-                                        addEast = true;
-                                    }
-                                }
-                            }
-                        }
-                        else {
-                            addEast = true;
-                        }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 1);
+                        this.exposedFaces[1] = 1;
                     }
                     else {
-                        if (!chunk[x - 1]) {
-                            addEast = true;
-                        }
-                        else if (chunk[x - 1][z]) {
-                            if (!chunk[x - 1][z][y]) {
-                                addEast = true;
-                            }
-                        }
+                        this.exposedFaces[1] = 0;
                     }
-                    //chunk border north
-                    if (0 == z) {
-                        const northChunk = this.worldData.getChunk(chunkX, chunkZ - 16);
-                        if (northChunk) {
-                            if (northChunk[x][15]) {
-                                if (northChunk[x][15][y]) {
-                                }
-                                else {
-                                    addNorth = true;
-                                }
-                            }
-                        }
-                        else {
-                            addNorth = true;
-                        }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 2);
+                        this.exposedFaces[2] = 1;
                     }
                     else {
-                        if (!chunk[x][z - 1]) {
-                            addNorth = true;
-                        }
-                        else if (!chunk[x][z - 1][y]) {
-                            addNorth = true;
-                        }
+                        this.exposedFaces[2] = 0;
                     }
-                    //chunk border south
-                    if (15 == z) {
-                        const southChunk = this.worldData.getChunk(chunkX, chunkZ + 16);
-                        if (southChunk) {
-                            if (southChunk[x][0]) {
-                                if (southChunk[x][0][y]) {
-                                }
-                                else {
-                                    addSouth = true;
-                                }
-                            }
-                        }
-                        else {
-                            addSouth = true;
-                        }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 3);
+                        this.exposedFaces[3] = 1;
                     }
                     else {
-                        if (!chunk[x][z + 1]) {
-                            addSouth = true;
-                        }
-                        else if (!chunk[x][z + 1][y]) {
-                            addSouth = true;
-                        }
+                        this.exposedFaces[3] = 0;
                     }
-                    if (addWest) {
-                        bitArray.setBit(2, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "west");
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                        faceBit = faceBit | (1 << 4);
+                        this.exposedFaces[4] = 1;
                     }
-                    if (addEast) {
-                        bitArray.setBit(3, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "east");
+                    else {
+                        this.exposedFaces[4] = 0;
                     }
-                    if (addNorth) {
-                        bitArray.setBit(4, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "north");
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                        faceBit = faceBit | (1 << 5);
+                        this.exposedFaces[5] = 1;
                     }
-                    if (addSouth) {
-                        bitArray.setBit(5, 1);
-                        BuildAmbientOcclusion(this.worldData, chunk, aoTemplate, chunkX, chunkZ, x, y, z, "south");
+                    else {
+                        this.exposedFaces[5] = 0;
                     }
-                    //end of block loop
-                    const faces = bitArray.getDec(0);
-                    voxel.getUVs(uvTemplate, faces, voxelData);
-                    shapeTemplate.push(voxel.getShapeId(voxelData));
-                    positionTemplate.push(x, y, z);
-                    faceTemplate.push(faces);
+                    if (faceBit == 0)
+                        continue;
+                    voxel.process({
+                        voxelState: voxelState,
+                        voxelData: voxelData,
+                        exposedFaces: this.exposedFaces,
+                        shapeTemplate: baseTemplate.shapeTemplate,
+                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
+                        uvTemplate: baseTemplate.uvTemplate,
+                        colorTemplate: baseTemplate.colorTemplate,
+                        aoTemplate: baseTemplate.aoTemplate,
+                        lightTemplate: baseTemplate.lightTemplate,
+                        chunkX: chunkX,
+                        chunkY: chunkY,
+                        chunkZ: chunkZ,
+                        x: x,
+                        y: y,
+                        z: z,
+                    });
+                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
+                    baseTemplate.positionTemplate.push(x, y, z);
+                    baseTemplate.faceTemplate.push(faceBit);
                 }
             }
         }
-        return [
-            positionTemplate,
-            faceTemplate,
-            shapeTemplate,
-            uvTemplate,
-            ligtTemplate,
-            aoTemplate,
-        ];
+        this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        return template;
+    }
+    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
+        const template = this.getBaseTemplateNew();
+        const voxels = chunk.voxels;
+        const min = chunk.maxMinHeight[0];
+        const max = chunk.maxMinHeight[1];
+        for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
+            for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
+                for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+                    const voxelData = this._3dArray.getValue(x, y, z, voxels);
+                    if (this.voxelByte.getId(voxelData) == 0)
+                        continue;
+                    const voxelCheck = this.DVEW.worldData.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
+                    if (!voxelCheck)
+                        continue;
+                    const voxel = voxelCheck[0];
+                    const voxelState = voxelCheck[1];
+                    const baseTemplate = template[voxel.data.substance];
+                    let faceBit = 0;
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 0);
+                        this.exposedFaces[0] = 1;
+                    }
+                    else {
+                        this.exposedFaces[0] = 0;
+                    }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 1);
+                        this.exposedFaces[1] = 1;
+                    }
+                    else {
+                        this.exposedFaces[1] = 0;
+                    }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 2);
+                        this.exposedFaces[2] = 1;
+                    }
+                    else {
+                        this.exposedFaces[2] = 0;
+                    }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                        faceBit = faceBit | (1 << 3);
+                        this.exposedFaces[3] = 1;
+                    }
+                    else {
+                        this.exposedFaces[3] = 0;
+                    }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                        faceBit = faceBit | (1 << 4);
+                        this.exposedFaces[4] = 1;
+                    }
+                    else {
+                        this.exposedFaces[4] = 0;
+                    }
+                    if (this.worldData.voxelFaceCheck(voxel, voxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                        faceBit = faceBit | (1 << 5);
+                        this.exposedFaces[5] = 1;
+                    }
+                    else {
+                        this.exposedFaces[5] = 0;
+                    }
+                    if (faceBit == 0)
+                        continue;
+                    voxel.process({
+                        voxelState: voxelState,
+                        voxelData: voxelData,
+                        exposedFaces: this.exposedFaces,
+                        shapeTemplate: baseTemplate.shapeTemplate,
+                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
+                        uvTemplate: baseTemplate.uvTemplate,
+                        colorTemplate: baseTemplate.colorTemplate,
+                        aoTemplate: baseTemplate.aoTemplate,
+                        lightTemplate: baseTemplate.lightTemplate,
+                        chunkX: chunkX,
+                        chunkY: chunkY,
+                        chunkZ: chunkZ,
+                        x: x,
+                        y: y,
+                        z: z,
+                    });
+                    // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
+                    baseTemplate.positionTemplate.push(x, y, z);
+                    baseTemplate.faceTemplate.push(faceBit);
+                }
+            }
+        }
+        this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        return template;
     }
 }

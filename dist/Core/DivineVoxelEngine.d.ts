@@ -1,20 +1,24 @@
 /// <reference types="babylonjs" />
+import type { DVEInitData } from "Meta/Core/DVE.js";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./Builders/BuilderManager.js";
-import { ChunkMaterial } from "./Builders/ChunkMaterial.js";
-import { ChunkManager } from "./Chunks/ChunkManager.js";
+import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
 import { World } from "./World/World.js";
+import { RenderManager } from "./Render/RenderManager.js";
+import { MeshManager } from "./Meshes/MeshManager.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
 export declare class DivineVoxelEngine {
     world: World;
-    chunkManager: ChunkManager;
-    builderManager: BuilderManager;
-    chunkMaterial: ChunkMaterial;
+    engineSettings: EngineSettings;
+    renderManager: RenderManager;
+    builderManager: BuilderWorkerManager;
+    meshManager: MeshManager;
     util: Util;
     constructor();
-    $INIT(data: {
-        worldWorkerPath: string;
-        builderWorkerPath: string;
-    }): Promise<void>;
+    _handleOptions(): void;
+    _syncSettings(data: EngineSettingsData): void;
+    reStart(data: EngineSettingsData): Promise<void>;
+    $INIT(data: DVEInitData): Promise<void>;
     $SCENEINIT(data: {
         scene: BABYLON.Scene;
     }): Promise<void>;

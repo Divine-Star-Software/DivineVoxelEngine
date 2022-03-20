@@ -9,6 +9,9 @@ export class BitArray {
     getDec(index) {
         return this.byteArray[index];
     }
+    setDec(index, value) {
+        this.byteArray[index] = value;
+    }
     getBit(index) {
         const byteIndex = Math.floor(index / 8);
         const bitIndex = index - 8 * byteIndex;

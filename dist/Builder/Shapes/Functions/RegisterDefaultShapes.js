@@ -1,5 +1,8 @@
-import { BoxVoxelShape } from "../default/Box.voxel.shape.js";
+import { FullBoxDiagonalIntersection } from "../default/DiagonalIntersection/FullBoxDiagonalIntersection.voxe.shape.js";
+import { BoxVoxelShape } from "../default/Box/Box.voxel.shape.js";
 export function RegisterDefaultShapes(shpaeManager, shapeHelper) {
     const boxVoxel = new BoxVoxelShape(shapeHelper);
-    shpaeManager.registerShape(0, boxVoxel);
+    shpaeManager.registerShape(boxVoxel);
+    const fullBoxDiagonalIntersection = new FullBoxDiagonalIntersection(shapeHelper);
+    shpaeManager.registerShape(fullBoxDiagonalIntersection);
 }

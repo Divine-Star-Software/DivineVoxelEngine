@@ -1,6 +1,6 @@
-import { Chunk } from "Meta/WorldData/World.types";
+import { ChunkData } from "Meta/Chunks/Chunk.types";
 export interface WorldDataInterface {
-    chunks: Record<number, Record<number, Chunk>>;
-    setChunk(chunkX: number, chunkZ: number, chunk: Chunk): void;
-    removeChunk(chunkX: number, chunkZ: number, chunk: Chunk): void;
+    chunks: Record<number, Record<number, ChunkData>>;
+    setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
+    removeChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
 }

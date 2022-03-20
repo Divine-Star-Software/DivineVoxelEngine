@@ -1,9 +1,9 @@
 {
   "name": "divine-voxel-engine",
-  "version": "0.0.8",
-  "main": "dist/divine-voxel-engine.js",
-  "module": "dist/divine-voxel-engine.mjs",
-  "typings": "dist/divine-voxel-engined.ts",
+  "version": "0.0.9",
+  "main": "dist/index.js",
+  "type": "module",
+  "typings": "dist/index.ts",
   "description": "TypeScript Voxel Engine - Uses Babylon.js",
   "keywords": ["voxel","voxel engine","babylon.js"],
   "scripts": {
