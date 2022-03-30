@@ -1,4 +1,4 @@
-import { BuildAmbientOcclusion } from "../Chunks/Functions/ChunkAO.js";
+import { BuildAmbientOcclusion } from "../WorldData/Functions/ChunkAO.js";
 export class VoxelHelper {
     util;
     worldData;

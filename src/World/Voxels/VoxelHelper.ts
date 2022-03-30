@@ -5,7 +5,7 @@ import type {
  VoxelProcessData,
 } from "Meta/World/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
-import { BuildAmbientOcclusion } from "../Chunks/Functions/ChunkAO.js";
+import { BuildAmbientOcclusion } from "../WorldData/Functions/ChunkAO.js";
 import type { WorldData } from "World/WorldData/WorldData";
 import type { VoxelManager } from "./VoxelManager.js";
 

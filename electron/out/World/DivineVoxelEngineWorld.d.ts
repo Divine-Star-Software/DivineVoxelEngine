@@ -10,7 +10,7 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
-import { MatrixThreadHub } from "./Matrix/MatrixCentralHub.js";
+import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 /**# Divine Voxel Engine World
  * ---
@@ -25,7 +25,7 @@ export declare class DivineVoxelEngineWorld {
     worldGeneration: WorldGeneration;
     worldData: WorldData;
     matrix: Matrix;
-    matrixCentralHub: MatrixThreadHub;
+    matrixCentralHub: MatrixCentralHub;
     textureManager: TextureManager;
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;

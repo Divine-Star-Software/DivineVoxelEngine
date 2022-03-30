@@ -15,10 +15,7 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
 import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 
-import {
- ChunkOcculsionCalcuation,
- BuildAmbientOcclusion,
-} from "./Functions/ChunkAO.js";
+
 
 /**# Chunk Processor
  * ---
@@ -28,7 +25,7 @@ import {
 export class ChunkProcessor implements ChunkBound {
  worldBottomY = 0;
  worldTopY = 256;
- chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
+
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
  voxelByte: VoxelByte;
  _3dArray: Flat3DArray;

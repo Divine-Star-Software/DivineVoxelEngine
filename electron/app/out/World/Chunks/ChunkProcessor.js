@@ -1,4 +1,3 @@
-import { ChunkOcculsionCalcuation, } from "./Functions/ChunkAO.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -8,7 +7,6 @@ export class ChunkProcessor {
     DVEW;
     worldBottomY = 0;
     worldTopY = 256;
-    chunkOcculsionCalcuation = ChunkOcculsionCalcuation;
     chunkTemplates = {};
     voxelByte;
     _3dArray;

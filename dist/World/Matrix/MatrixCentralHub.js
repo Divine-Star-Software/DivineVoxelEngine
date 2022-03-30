@@ -2,7 +2,7 @@
  *---
  * Hanldes all syncing and releasing of data between chunk bound threads.
  */
-export class MatrixThreadHub {
+export class MatrixCentralHub {
     DVEW;
     threads = {};
     constructor(DVEW) {

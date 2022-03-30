@@ -9,6 +9,9 @@ const DVEW = new DivineVoxelEngineWorld(self as any);
 RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 
+
+
+
 const worldGen = new WorldGen(DVEW);
 const playerWatcher = new PlayerWatcher(worldGen, DVEW);
 const start = async () => {
@@ -40,6 +43,18 @@ const start = async () => {
  DVEW.buildFluidMesh();
 };
 
+
+DVEW.matrixCentralHub.registerThread("my-thread",new Worker("./path-to-worker.js"));
+
+DVEW.matrixCentralHub.syncChunk(0,0,0);
+DVEW.matrixCentralHub.releaseChunk(0,0,0);
+
+DVEW.matrixCentralHub.releaseChunkInThread("my-thread",0,0,0);
+
+DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread("my-thread");
+DVEW.matrixCentralHub.syncRegionVoxelPalette(0,0,0);
+DVEW.matrixCentralHub.syncRegionVoxelPaletteInThread("my-thread",0,0,0);
 
 DVEW.$INIT({
  onReady: start,

@@ -1,22 +1,22 @@
 {
     "sources": [
         {
-            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/electron/out",
+            "dir": "D:/DSSoftware/APPS/divinevoxelengine/dist",
             "fileExtensions": [
-                "js"
+                "js", "d.ts"
             ],
             "id": "main"
         }
     ],
     "outputs": [
         {
-            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/electron/app/out",
+            "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/app/out",
             "sourceID": "main",
             "codeSection": "all",
             "keepComments": true
         },
         {
-            "dir": "D:/DSSoftware/PROJECTS/divinevoxelengine/dist",
+            "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/out",
             "sourceID": "main",
             "codeSection": "all",
             "keepComments": true

@@ -3,7 +3,7 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
  *---
  * Hanldes all syncing and releasing of data between chunk bound threads.
  */
-export declare class MatrixThreadHub {
+export declare class MatrixCentralHub {
     private DVEW;
     threads: Record<string, Worker | MessagePort>;
     constructor(DVEW: DivineVoxelEngineWorld);

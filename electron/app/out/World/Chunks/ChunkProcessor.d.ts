@@ -5,7 +5,6 @@ import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
 import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
-import { ChunkOcculsionCalcuation } from "./Functions/ChunkAO.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -15,7 +14,6 @@ export declare class ChunkProcessor implements ChunkBound {
     private DVEW;
     worldBottomY: number;
     worldTopY: number;
-    chunkOcculsionCalcuation: typeof ChunkOcculsionCalcuation;
     chunkTemplates: Record<number, Record<number, number[][]>>;
     voxelByte: VoxelByte;
     _3dArray: Flat3DArray;
