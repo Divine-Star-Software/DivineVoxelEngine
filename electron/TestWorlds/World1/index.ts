@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Player } from "./Player/Player.js";
 
@@ -8,13 +9,13 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/World1/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
- lighting : {
-    doAO : true,
-    doRGBLight : false,
-    doSunLight : false,
-    autoRGBLight : false,
-    autoSunLight : false
-}
+ lighting: {
+  doAO: true,
+  doRGBLight: false,
+  doSunLight: false,
+  autoRGBLight: false,
+  autoSunLight: false,
+ },
 });
 
 const player = new Player(DVE);
@@ -36,7 +37,7 @@ const init = async () => {
  });
 
  //@ts-ignore
- //Does not work in electron so currently disabled. 
+ //Does not work in electron so currently disabled.
  // const engine = new BABYLON.WebGPUEngine(canvas);
  //await engine.initAsync();
 
@@ -81,14 +82,14 @@ const init = async () => {
  }, 10);
 
  await DVE.$SCENEINIT({ scene: scene });
-// DVE.renderManager.setSunLevel(2);
+ // DVE.renderManager.setSunLevel(2);
  DVE.renderManager.setBaseLevel(0.5);
- let divFps = document.getElementById("fps");
- //render loop 
+
+ const runGui = CreateGUI();
+ //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine, player.hitbox);
  });
 
  scene.cleanCachedTextureBuffer();

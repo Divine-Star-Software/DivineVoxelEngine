@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Shape1 } from "./ShapeTest/Shape1.js";
 
@@ -89,13 +90,14 @@ const init = async () => {
   }
  };
  check();
- let divFps = document.getElementById("fps");
+
+
+ const runGui = CreateGUI();
 
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine,camera);
  });
 
  scene.cleanCachedTextureBuffer();

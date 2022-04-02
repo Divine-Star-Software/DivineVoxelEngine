@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 
 const DVE = new DivineVoxelEngine();
@@ -82,11 +83,11 @@ const init = async () => {
 
  DVE.$SCENEINIT({ scene: scene });
  let divFps = document.getElementById("fps");
+
+ const runGui = CreateGUI();
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine, camera);
  });
-
 };

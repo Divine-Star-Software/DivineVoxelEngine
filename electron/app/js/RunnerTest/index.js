@@ -1,4 +1,5 @@
 console.log("%runner test", "color:cyan; font-size:30px;");
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Player } from "../Shared/Player/Type2/Player.js";
 const DVE = new DivineVoxelEngine();
@@ -61,12 +62,12 @@ const init = async () => {
     setInterval(() => {
         player.update();
     }, 10);
+    const runGui = CreateGUI();
     await DVE.$SCENEINIT({ scene: scene });
     let divFps = document.getElementById("fps");
     //render loop
     engine.runRenderLoop(() => {
         scene.render();
-        //@ts-ignore
-        divFps.innerHTML = engine.getFps().toFixed() + " fps";
+        runGui(engine, player.hitbox);
     });
 };

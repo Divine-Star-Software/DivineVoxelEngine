@@ -39,7 +39,7 @@ export class WorldGen {
     "default"
    );
 
-  const chunkVoxels: number[] = chunk.voxels;
+  const chunkVoxels = chunk.voxels;
 
   let baseY = 0;
   let maxY = 61;

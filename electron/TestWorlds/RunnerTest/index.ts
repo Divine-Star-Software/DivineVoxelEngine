@@ -1,4 +1,5 @@
 console.log("%runner test", "color:cyan; font-size:30px;");
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Player } from "../Shared/Player/Type2/Player.js";
 const DVE = new DivineVoxelEngine();
@@ -45,7 +46,6 @@ const init = async () => {
   0
  );
 
-
  const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
 
  camera.fov = 1.5;
@@ -75,8 +75,6 @@ const init = async () => {
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
 
-
-
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
  (window as any).player = player;
@@ -84,14 +82,13 @@ const init = async () => {
   player.update();
  }, 10);
 
+ const runGui = CreateGUI();
 
  await DVE.$SCENEINIT({ scene: scene });
  let divFps = document.getElementById("fps");
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine, player.hitbox);
  });
-
 };

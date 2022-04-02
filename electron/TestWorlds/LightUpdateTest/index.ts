@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 
 const DVE = new DivineVoxelEngine();
@@ -7,16 +8,14 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/LightUpdateTest/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
- lighting : {
-     doAO : true,
-     doRGBLight : true,
-     doSunLight : true,
-     autoRGBLight : true,
-     autoSunLight : true
- }
+ lighting: {
+  doAO: true,
+  doRGBLight: true,
+  doSunLight: true,
+  autoRGBLight: true,
+  autoSunLight: true,
+ },
 });
-
-
 
 console.log("%clight update test", "color:cyan; font-size:30px;");
 
@@ -26,7 +25,6 @@ const readyStateCheckInterval = setInterval(function () {
   init();
  }
 }, 10);
-
 
 const init = async () => {
  const canvas = document.createElement("canvas");
@@ -60,7 +58,6 @@ const init = async () => {
 
  const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
 
-
  camera.fov = 1.5;
  camera.minZ = 0.01;
  camera.angularSensibility = 4000;
@@ -90,13 +87,13 @@ const init = async () => {
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
 
-await DVE.$SCENEINIT({ scene: scene });
+ await DVE.$SCENEINIT({ scene: scene });
  DVE.renderManager.setSunLevel(1);
- let divFps = document.getElementById("fps");
+ const runGui = CreateGUI();
+
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine, camera);
  });
 };

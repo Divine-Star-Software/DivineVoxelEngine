@@ -67,7 +67,9 @@ const init = async () => {
     scene.fogEnabled = true;
     scene.autoClear = false; // Color buffer
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
-    DVE.$SCENEINIT({ scene: scene });
+    await DVE.$SCENEINIT({ scene: scene });
+    // DVE.renderManager.setSunLevel(2);
+    DVE.renderManager.setBaseLevel(0.5);
     const divFps = document.getElementById("fps");
     //render loop
     engine.runRenderLoop(() => {

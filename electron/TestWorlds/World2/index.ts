@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 
 const DVE = new DivineVoxelEngine();
@@ -7,13 +8,13 @@ await DVE.$INIT({
  worldWorkerPath: "../../../js/World2/World/index.js",
  builderWorkerPath: "../../../js/Shared/Builder/builder.js",
  fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
- lighting : {
-    doAO : true,
-    doRGBLight : false,
-    doSunLight : false,
-    autoRGBLight : false,
-    autoSunLight : false
-}
+ lighting: {
+  doAO: true,
+  doRGBLight: false,
+  doSunLight: false,
+  autoRGBLight: false,
+  autoSunLight: false,
+ },
 });
 
 console.log("%cworld 2", "color:cyan; font-size:30px;");
@@ -87,13 +88,14 @@ const init = async () => {
  scene.autoClear = false; // Color buffer
  scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
 
-await DVE.$SCENEINIT({ scene: scene });
-DVE.renderManager.setBaseLevel(0.5);
- let divFps = document.getElementById("fps");
+ await DVE.$SCENEINIT({ scene: scene });
+ DVE.renderManager.setBaseLevel(0.5);
+
+ const runGui = CreateGUI();
+
  //render loop
  engine.runRenderLoop(() => {
   scene.render();
-  //@ts-ignore
-  divFps.innerHTML = engine.getFps().toFixed() + " fps";
+  runGui(engine, camera);
  });
 };

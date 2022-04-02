@@ -36,18 +36,6 @@ export function RegisterVoxels(DVEW, voxelPaletteMode) {
         //fluid
         DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(liquidDreamEther);
     }
-    if (voxelPaletteMode == "per-chunk") {
-        //solid
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(debugBox);
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(lightDebugBox);
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamStone);
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamStonePillar);
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamGrassBlock);
-        //flora
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(dreamGrass);
-        //fluid
-        DVEW.worldGeneration.voxelPalette.registerVoxelForPerChunkVoxelPalette(liquidDreamEther);
-    }
     if (voxelPaletteMode == "per-region") {
         //solid
         DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(debugBox);

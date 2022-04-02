@@ -1,5 +1,5 @@
 export * from "./Global/EngineSettings.types";
-export * from "./Global/BaseWorldData.type";
+export * from "./World/BaseWorldData.type";
 export * from "./Builder/Shapes/ShapeHelper.interface";
 export * from "./Builder/Shapes/VoxelShape.interface";
 export * from "./Chunks/Chunk.types";

@@ -22,7 +22,7 @@ export class WorldGen {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y > baseY && y <= maxY) {
-                        this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
+                        this._3dArray.setValue(x, y, z, voxels, liquidDreamEtherVoxel);
                     }
                     if (y == baseY) {
                         this._3dArray.setValue(x, y, z, voxels, dreamStoneVovxel);

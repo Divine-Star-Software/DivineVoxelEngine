@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import type { DivineVoxelEngine } from "Core/DivineVoxelEngine.js";
-import { BaseWorldData } from "Meta/Global/BaseWorldData.type.js";
+import { BaseWorldData } from "Meta/World/BaseWorldData.type.js";
 import { PositionMatrix } from "Meta/Util.types.js";
 export declare class World {
     private DVE;

@@ -1,8 +1,8 @@
-/* import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 
-import { WorldGen } from "./WorldGen/WorldGen.js";
+import { WorldGen } from "./WorldGen.js";
 
 const DVEW = new DivineVoxelEngineWorld(self as any);
 
@@ -36,9 +36,9 @@ const start = () => {
  const chunk = DVEW.worldData.getChunk(0, 0, 0);
  if (chunk) {
   const voxels = chunk.voxels;
-  if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
+  /*   if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
    voxels[7][7][126 / 2] = 0;
-  }
+  } */
  }
 
  for (let x = startX; x < endX; x += 16) {
@@ -73,9 +73,6 @@ const start = () => {
   if (!chunk) return;
   const voxels = chunk.voxels;
   DVEW.worldGeneration.illumantionManager.runSunLightRemoveAt(7, 126 / 2, 7);
-  if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2] !== undefined) {
-   voxels[7][7][126 / 2] = DVEW.worldGeneration.paintVoxel(2);
-  }
 
   for (let x = startX; x < endX; x += 16) {
    for (let z = startZ; z < endZ; z += 16) {
@@ -93,4 +90,3 @@ const start = () => {
   onMessage: (message: string, data: any[]) => {},
  });
 })();
- */

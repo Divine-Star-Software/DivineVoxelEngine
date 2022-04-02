@@ -1,80 +1,74 @@
-const { app, BrowserWindow, nativeImage, ipcMain } = require("electron");
+const { app, BrowserWindow, nativeImage } = require("electron");
+const ipcMain: Electron.IpcMain = require("electron").ipcMain;
 const { promises: fs } = require("fs");
 const path = require("path");
-
-const { session } = require('electron')
-
+const { session } = require("electron");
 
 /*
 *fix webgl context lost
 https://github.com/electron/electron/issues/11934
 */
-app.commandLine.appendSwitch("js-flags", "--max-old-space-size=6000");
 app.commandLine.appendSwitch("--disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
+app.commandLine.appendSwitch("js-flags", "--max-old-space-size=6000");
 
 const APP_INIT = async () => {
-
-  session.defaultSession.webRequest.onHeadersReceived((details : any, callback : any) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Cross-Origin-Embedder-Policy': ['require-corp'],
-        'Cross-Origin-Opener-Policy': ['same-origin']
-      }
-    })
-  });
-  const editorWindow = await CreateMainWindow();
+ session.defaultSession.webRequest.onHeadersReceived(
+  (details: any, callback: any) => {
+   //enable headers to enable shared array buffer
+   callback({
+    responseHeaders: {
+     ...details.responseHeaders,
+     "Cross-Origin-Embedder-Policy": ["require-corp"],
+     "Cross-Origin-Opener-Policy": ["same-origin"],
+    },
+   });
+  }
+ );
+ const editorWindow = await CreateMainWindow();
 };
-
+console.log("hello");
 app.whenReady().then(async () => {
-  await APP_INIT();
+ await APP_INIT();
 });
 
-
-
 const CreateMainWindow = async () => {
-  //  const image = nativeImage.createFromPath(__dirname + "/logo-small.png");
-  //  image.setTemplateImage(true);
+ const mainWindow: any = new BrowserWindow({
+  width: 1280,
+  height: 720,
+  frame: true,
+  fullscreen: false,
+  webPreferences: {
+   nodeIntegration: true,
+   nodeIntegrationInWorker: true,
+   contextIsolation: false,
+   devTools: true,
+   spellcheck: false,
 
-  const editorWindow: any = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    frame: true,
-    fullscreen: false,
-    webPreferences: {
-     // preload: path.join(__dirname, "WindowPreload.js"),
-      nodeIntegration: true,
-      nodeIntegrationInWorker: true,
-      contextIsolation: false,
-      devTools: true,
-      spellcheck: false,
+   backgroundThrottling: false,
+  },
+  backgroundColor: "#000000",
+ });
 
-      backgroundThrottling: false,
-    },
-    backgroundColor: "#000000",
-    // icon: image,
-  });
+ mainWindow.menuBarVisible = false;
 
-  editorWindow.menuBarVisible = false;
+ mainWindow.webContents.on("will-navigate", (event: any) => {
+  event.preventDefault();
+ });
 
-  editorWindow.webContents.on("will-navigate", (event: any) => {
-    event.preventDefault();
-  });
+ mainWindow.loadFile("app/index.html");
 
-  editorWindow.loadFile("app/index.html");
-  /*    editorWindow.setAspectRatio = 9 / 16;
-  editorWindow.setMinimumSize(700, 400);
+ ipcMain.on("home", (event, args) => {
+  mainWindow.loadFile("app/index.html");
+ });
 
-  let resizeTimeout: any;
-  editorWindow.on("resize", (event: any) => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function () {
-      var size = editorWindow.getSize();
-      //@ts-ignore
-      editorWindow.setSize(size[0], parseInt((size[0] * 9) / 16));
-    }, 100);
-  });  */
+ ipcMain.on("world", (event, args) => {
+  console.log(args);
+  mainWindow.loadFile("app/worlds.html");
+  setTimeout(() => {
+   (mainWindow as Electron.BrowserWindow).webContents.postMessage("load", args);
+  }, 1000);
+ });
 
-  return editorWindow;
+ return mainWindow;
 };

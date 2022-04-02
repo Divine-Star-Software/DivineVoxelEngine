@@ -1,3 +1,4 @@
+import { CreateGUI } from "../Shared/GUI/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 const DVE = new DivineVoxelEngine();
 window.DVE = DVE;
@@ -10,8 +11,8 @@ await DVE.$INIT({
         doRGBLight: false,
         doSunLight: false,
         autoRGBLight: false,
-        autoSunLight: false
-    }
+        autoSunLight: false,
+    },
 });
 console.log("%cworld 2", "color:cyan; font-size:30px;");
 const readyStateCheckInterval = setInterval(function () {
@@ -69,11 +70,10 @@ const init = async () => {
     scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
     await DVE.$SCENEINIT({ scene: scene });
     DVE.renderManager.setBaseLevel(0.5);
-    let divFps = document.getElementById("fps");
+    const runGui = CreateGUI();
     //render loop
     engine.runRenderLoop(() => {
         scene.render();
-        //@ts-ignore
-        divFps.innerHTML = engine.getFps().toFixed() + " fps";
+        runGui(engine, camera);
     });
 };
