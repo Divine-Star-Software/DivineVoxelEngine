@@ -6,7 +6,7 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
  */
 export class EngineSettings {
  settings: EngineSettingsData = {
-  matrix : {
+  nexus : {
       enabled : true
   },
   textureOptions: {

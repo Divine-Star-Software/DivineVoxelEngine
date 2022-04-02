@@ -4,7 +4,7 @@
  */
 export class EngineSettings {
     settings = {
-        matrix: {
+        nexus: {
             enabled: true
         },
         textureOptions: {

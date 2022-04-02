@@ -1,6 +1,6 @@
 import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
-import { Flat3DArray } from "../Util/Flat3DArray.js";
-import { ChunkBounds } from "../Chunks/ChunkBounds.js";
+import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
+import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 
 /**# World Matrix

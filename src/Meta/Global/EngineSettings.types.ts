@@ -1,5 +1,5 @@
 export type EngineSettingsData = {
- matrix? : {
+ nexus? : {
     enabled : boolean
  },
  textureOptions?: {
