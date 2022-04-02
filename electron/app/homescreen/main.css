@@ -50,11 +50,20 @@
 
 .dve-logo {
  color: rgba(162, 5, 224, 0.925);
- top: 200px;
+ top: 190px;
  left: 50%;
- transform: translate(-50%,-50%);
+ transform: translate(-50%, -50%);
  position: absolute;
  font-size: 50px;
+}
+
+.dve-version {
+ color: rgba(119, 7, 163, 0.925);
+ top: 250px;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ position: absolute;
+ font-size: 20px;
 }
 
 .world-selection-section {

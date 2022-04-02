@@ -1,5 +1,6 @@
 import { Worlds } from "../Worlds.js";
-import { ElementTreeData } from "../libs/ElementTree";
+import { ElementTreeData } from "../libs/ElementTree/index";
+//@ts-ignore
 const { ipcRenderer } = require("electron");
 
 const WorldSelection = (

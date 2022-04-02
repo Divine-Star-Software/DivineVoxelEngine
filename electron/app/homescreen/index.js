@@ -19,6 +19,13 @@ const HomeScreen = () => {
                     },
                     text: "Divine Voxel Engine",
                 },
+                {
+                    type: "h2",
+                    attrs: {
+                        className: "dve-version",
+                    },
+                    text: "Alpha 0.9",
+                },
                 WebSelectionSection(),
             ],
         },

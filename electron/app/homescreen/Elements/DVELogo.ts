@@ -1,4 +1,4 @@
-import { ElementTreeData } from "../libs";
+import { ElementTreeData } from "../libs/index";
 
 export const DVELogo = (): ElementTreeData => {
  return [
