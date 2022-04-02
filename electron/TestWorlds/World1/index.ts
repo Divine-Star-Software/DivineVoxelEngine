@@ -1,4 +1,12 @@
-import { CreateGUI } from "../Shared/GUI/index.js";
+import {
+ SetUpEngine,
+ SetUpCanvas,
+ SetUpDefaultCamera,
+ SetUpDefaultSkybox,
+ runRenderLoop,
+ SetUpDefaultScene,
+} from "../Shared/Babylon/index.js";
+import { RunInit } from "../Shared/Create/index.js";
 import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
 import { Player } from "./Player/Player.js";
 
@@ -20,59 +28,15 @@ await DVE.$INIT({
 
 const player = new Player(DVE);
 
-const readyStateCheckInterval = setInterval(function () {
- if (document.readyState === "complete") {
-  clearInterval(readyStateCheckInterval);
-  init();
- }
-}, 10);
-
 const init = async () => {
- const canvas = document.createElement("canvas");
- canvas.id = "renderCanvas";
- document.body.append(canvas);
+ const canvas = SetUpCanvas();
+ const engine = SetUpEngine(canvas);
+ const scene = SetUpDefaultScene(engine);
+ const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
+ SetUpDefaultSkybox(scene);
 
- window.addEventListener("click", function () {
-  canvas.requestPointerLock();
- });
-
- //@ts-ignore
- //Does not work in electron so currently disabled.
- // const engine = new BABYLON.WebGPUEngine(canvas);
- //await engine.initAsync();
-
- const engine = new BABYLON.Engine(canvas, false, {});
- engine.doNotHandleContextLost = true;
- engine.enableOfflineSupport = false;
- engine.setSize(1920, 1080);
- const scene = new BABYLON.Scene(engine);
- //@ts-ignore
- scene.skipPointerMovePicking = true;
- scene.autoClear = false;
- scene.autoClearDepthAndStencil = false;
-
- scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
- scene.fogDensity = 0.008;
- scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
- scene.fogEnabled = true;
-
- const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 400.0 }, scene);
- const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
- skyboxMaterial.backFaceCulling = false;
- skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
- skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-
- skybox.material = skyboxMaterial;
- skybox.infiniteDistance = true;
-
- const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
- camera.fov = 1.5;
- camera.minZ = 0.01;
- camera.angularSensibility = 4000;
- camera.maxZ = 500;
- scene.activeCamera = camera;
-
- camera.attachControl(canvas, true);
+ await DVE.$SCENEINIT({ scene: scene });
+ DVE.renderManager.setBaseLevel(0.5);
 
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
@@ -81,16 +45,9 @@ const init = async () => {
   player.update();
  }, 10);
 
- await DVE.$SCENEINIT({ scene: scene });
- // DVE.renderManager.setSunLevel(2);
- DVE.renderManager.setBaseLevel(0.5);
-
- const runGui = CreateGUI();
- //render loop
- engine.runRenderLoop(() => {
-  scene.render();
-  runGui(engine, player.hitbox);
- });
-
- scene.cleanCachedTextureBuffer();
+ runRenderLoop(engine, scene, player.hitbox);
 };
+
+RunInit(init);
+
+
