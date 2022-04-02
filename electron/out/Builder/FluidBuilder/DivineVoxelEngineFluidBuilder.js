@@ -21,3 +21,5 @@ export class DivineVoxelEngineFluidBuilder {
         InitWorker(this);
     }
 }
+//@ts-ignore
+export const DVEFB = new DivineVoxelEngineFluidBuilder(self);

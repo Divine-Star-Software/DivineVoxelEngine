@@ -20,6 +20,7 @@ export class DivineVoxelEngineBuilder {
 
 
     syncSettings(data : EngineSettingsData) {
+        
             this.engineSettings.syncSettings(data);
     }
     reStart(){
@@ -31,3 +32,7 @@ export class DivineVoxelEngineBuilder {
         InitWorker(this);
     }
 }
+
+
+//@ts-ignore
+export const DVEB = new DivineVoxelEngineBuilder((self as Worker));

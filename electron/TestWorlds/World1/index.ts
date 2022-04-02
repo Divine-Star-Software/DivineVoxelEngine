@@ -6,17 +6,23 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit } from "../Shared/Create/index.js";
-import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
+import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
+import { DVE } from "../../out/index.js";
 import { Player } from "./Player/Player.js";
 
-const DVE = new DivineVoxelEngine();
-(window as any).DVE = DVE;
+const workers = SetUpWorkers(
+ import.meta.url,
+ "./World/index.js",
+ "../Shared/Builder/builder.js",
+ "../Shared/FluidBuilder/fluidbuilder.js"
+);
+
+
 
 await DVE.$INIT({
- worldWorkerPath: "../../../js/World1/World/index.js",
- builderWorkerPath: "../../../js/Shared/Builder/builder.js",
- fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+ worldWorker: workers.worldWorker,
+ builderWorker: workers.builderWorkers,
+ fluidBuilderWorker: workers.fluidBuilderWorker,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -35,6 +41,7 @@ const init = async () => {
  const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
  SetUpDefaultSkybox(scene);
 
+
  await DVE.$SCENEINIT({ scene: scene });
  DVE.renderManager.setBaseLevel(0.5);
 
@@ -49,5 +56,3 @@ const init = async () => {
 };
 
 RunInit(init);
-
-

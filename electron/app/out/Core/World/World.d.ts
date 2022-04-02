@@ -20,5 +20,7 @@ export declare class World {
     handleMessage(event: MessageEvent, world: this): void;
     getBaseWorldData(): Promise<BaseWorldData>;
     createWorldWorker(workerPath: string): void;
+    setWorldWorker(worker: Worker): void;
+    _initWorker(): void;
     _syncSettings(): void;
 }

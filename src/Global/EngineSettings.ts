@@ -6,8 +6,8 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
  */
 export class EngineSettings {
  settings: EngineSettingsData = {
-  nexus : {
-      enabled : true
+  nexus: {
+   enabled: true,
   },
   textureOptions: {
    animationTime: 20,
@@ -55,9 +55,17 @@ export class EngineSettings {
  };
 
  syncSettings(data: EngineSettingsData) {
+
   for (const key of Object.keys(data)) {
-   //@ts-ignore
-   this.settings[key] = data[key];
+     
+   if ((this as any).settings[key]) {
+       //@ts-ignore
+    (this as any).settings[key] = data[key];
+   }
   }
+ }
+
+ getSettingsCopy() {
+ return  JSON.parse(JSON.stringify(this.settings));
  }
 }

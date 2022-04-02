@@ -1,5 +1,5 @@
 //types
-import type { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+import type { DivineVoxelEngineWorld } from "../../../out/index.js";//voxels
 //voxels
 import { Dreamestone } from "../Voxels/Solid/DreamStone.js";
 import { DreamGrassBlock } from "../Voxels/Solid/DreamGrassBlock.js";

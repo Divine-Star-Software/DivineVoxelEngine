@@ -6,4 +6,5 @@ import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare class EngineSettings {
     settings: EngineSettingsData;
     syncSettings(data: EngineSettingsData): void;
+    getSettingsCopy(): any;
 }

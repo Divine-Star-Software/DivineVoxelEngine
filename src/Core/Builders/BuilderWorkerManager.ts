@@ -71,7 +71,7 @@ export class BuilderWorkerManager {
  constructor(private DVE: DivineVoxelEngine) {
   const numBuilders = 4;
 
-/*   if (window.navigator.hardwareConcurrency > numBuilders) {
+  /*   if (window.navigator.hardwareConcurrency > numBuilders) {
    //use all possible cores if we can
    this.numBuilders = window.navigator.hardwareConcurrency;
   } */
@@ -84,12 +84,24 @@ export class BuilderWorkerManager {
   this.fluidBuilder.postMessage(["re-start"]);
  }
 
- createBuilderWorker(path: string) {
+ setBuilderWorkers(workers: Worker[]) {
+  this.builders = workers;
+  this.numBuilders = workers.length;
+  this._initBuilderWorkers();
+ }
+
+ createBuilderWorkers(path: string) {
   //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",
   for (let i = 0; i < this.numBuilders; i++) {
    this.builders[i] = new Worker(new URL(path, import.meta.url), {
     type: "module",
    });
+  }
+  this._initBuilderWorkers();
+ }
+
+ _initBuilderWorkers() {
+  for (let i = 0; i < this.numBuilders; i++) {
    this.builders[i].onerror = (er: ErrorEvent) => {
     console.log(er);
    };
@@ -112,6 +124,15 @@ export class BuilderWorkerManager {
   this.fluidBuilder = new Worker(new URL(path, import.meta.url), {
    type: "module",
   });
+  this._initFluidBuilder();
+ }
+
+ setFluidBuilderWorker(worker: Worker) {
+  this.fluidBuilder = worker;
+  this._initFluidBuilder();
+ }
+
+ _initFluidBuilder() {
   this.fluidBuilder.onerror = (er: ErrorEvent) => {
    console.log(er);
   };
@@ -163,12 +184,11 @@ export class BuilderWorkerManager {
  }
 
  _syncSettings() {
+  const settings = this.DVE.engineSettings.getSettingsCopy();
+
   for (const builders of this.builders) {
-   builders.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+   builders.postMessage(["sync-settings", settings]);
   }
-  this.fluidBuilder.postMessage([
-   "sync-settings",
-   this.DVE.engineSettings.settings,
-  ]);
+  this.fluidBuilder.postMessage(["sync-settings", settings]);
  }
 }

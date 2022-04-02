@@ -1,13 +1,12 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
-import { RunInit } from "../Shared/Create/index.js";
-import { DivineVoxelEngine } from "../../out/Core/DivineVoxelEngine.js";
+import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
+import { DVE } from "../../out/index.js";
 import { Player } from "../Shared/Player/Type2/Player.js";
-const DVE = new DivineVoxelEngine();
-window.DVE = DVE;
+const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/FluidBuilder/fluidbuilder.js");
 await DVE.$INIT({
-    worldWorkerPath: "../../../js/RunnerTest/World/index.js",
-    builderWorkerPath: "../../../js/Shared/Builder/builder.js",
-    fluidBuilderWorkerPath: "../../../js/Shared/FluidBuilder/fluidbuilder.js",
+    worldWorker: workers.worldWorker,
+    builderWorker: workers.builderWorkers,
+    fluidBuilderWorker: workers.fluidBuilderWorker,
 });
 const player = new Player(DVE);
 const init = async () => {

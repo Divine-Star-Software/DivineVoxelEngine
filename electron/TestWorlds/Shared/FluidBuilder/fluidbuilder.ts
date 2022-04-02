@@ -1,8 +1,4 @@
-
-import {DivineVoxelEngineFluidBuilder} from "../../../out/Builder/FluidBuilder/DivineVoxelEngineFluidBuilder.js";
-const DVEFB = new DivineVoxelEngineFluidBuilder();
-
+import { DVEFB } from "../../../out/index.js";
 DVEFB.$INIT((self as any));
 
-(self as any).DVEFB = DVEFB;
 

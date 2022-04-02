@@ -9,40 +9,6 @@ export class WorldGen {
     chunkWidth = 16;
     chunkHeight = 256;
     renderDistance = 20;
-    copy(data) {
-        return [...data];
-    }
-    /*  generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
-     //   this.chunkMap.addChunk(chunkX,chunkZ);
-   
-   
-     const chunkVoxels: any[][][] = [];
-     let dreamStonePillar =
-      this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-       "dve:dreamstonepillar",
-       "default"
-      );
-   
-     // debugBox = dreamstone;
-     let block = [dreamStonePillar, 0, 0xffffffff];
-   
-     for (let x = 0; x < +this.chunkWidth; x++) {
-      for (let z = 0; z < this.chunkDepth; z++) {
-       for (let y = 0; y < this.chunkHeight; y++) {
-        chunkVoxels[x] ??= [];
-        chunkVoxels[x][z] ??= [];
-        chunkVoxels[x][z][y] = this.copy(block);
-       }
-      }
-     }
-   
-     return {
-      isEmpty: false,
-      voxels: chunkVoxels,
-      maxMinHeight: [],
-      heightMap: [],
-     };
-    } */
     generateCrazyChunk(bottomChunk, topChunk, minY, x, y, z) {
         bottomChunk.maxMinHeight[0] = 0;
         bottomChunk.maxMinHeight[1] = minY;
@@ -300,7 +266,6 @@ export class WorldGen {
         }
     }
     generateChunkNormal(chunkX, chunkZ) {
-        //   this.chunkMap.addChunk(chunkX,chunkZ);
         let toss = Math.random();
         const bottomChunk = {
             voxels: [],

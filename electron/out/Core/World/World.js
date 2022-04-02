@@ -63,11 +63,17 @@ export class World {
         return prom;
     }
     createWorldWorker(workerPath) {
-        //../Contexts/World/World.worker.js
-        const world = this;
         this.worker = new Worker(new URL(workerPath, import.meta.url), {
             type: "module",
         });
+        this._initWorker();
+    }
+    setWorldWorker(worker) {
+        this.worker = worker;
+        this._initWorker();
+    }
+    _initWorker() {
+        const world = this;
         this.worker.onerror = (er) => {
             console.log(er);
         };
@@ -76,6 +82,7 @@ export class World {
         };
     }
     _syncSettings() {
-        this.worker.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+        const settings = this.DVE.engineSettings.getSettingsCopy();
+        this.worker.postMessage(["sync-settings", settings]);
     }
 }

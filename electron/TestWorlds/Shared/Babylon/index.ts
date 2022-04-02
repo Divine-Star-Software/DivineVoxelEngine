@@ -78,7 +78,6 @@ export const SetUpDefaultCamera = (
   startTarget.z
  );
  const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
- console.log(startPosition);
 
  camera.fov = 1.5;
  camera.minZ = 0.01;

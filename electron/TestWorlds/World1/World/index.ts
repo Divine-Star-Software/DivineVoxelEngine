@@ -1,15 +1,12 @@
-import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { DVEW } from "../../../out/index.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
-const DVEW = new DivineVoxelEngineWorld(self as any);
-(self as any).DVEW = DVEW;
+
 RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
-
-
 
 
 const worldGen = new WorldGen(DVEW);
@@ -44,17 +41,7 @@ const start = async () => {
 };
 
 
-DVEW.matrixCentralHub.registerThread("my-thread",new Worker("./path-to-worker.js"));
 
-DVEW.matrixCentralHub.syncChunk(0,0,0);
-DVEW.matrixCentralHub.releaseChunk(0,0,0);
-
-DVEW.matrixCentralHub.releaseChunkInThread("my-thread",0,0,0);
-
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
-DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread("my-thread");
-DVEW.matrixCentralHub.syncRegionVoxelPalette(0,0,0);
-DVEW.matrixCentralHub.syncRegionVoxelPaletteInThread("my-thread",0,0,0);
 
 DVEW.$INIT({
  onReady: start,

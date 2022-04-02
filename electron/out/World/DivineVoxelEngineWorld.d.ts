@@ -45,3 +45,4 @@ export declare class DivineVoxelEngineWorld {
     buildFluidMesh(): void;
     $INIT(data: DVEWInitData): Promise<void>;
 }
+export declare const DVEW: DivineVoxelEngineWorld;

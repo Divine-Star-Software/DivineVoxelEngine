@@ -1,5 +1,4 @@
-import type { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld";
-
+import type { DivineVoxelEngineWorld } from "../../../out/index.js";
 export function RegisterTexutres(DVEW: DivineVoxelEngineWorld) {
  DVEW.textureManager.defineDefaultTexturePath("assets/textures");
 

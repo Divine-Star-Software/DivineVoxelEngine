@@ -1,3 +1,2 @@
-import { DivineVoxelEngineBuilder } from "../../../out/Builder/DivineVoxelEngineBuilder.js";
-const DVEB = new DivineVoxelEngineBuilder();
+import { DVEB } from "../../../out/index.js";
 DVEB.$INIT(self);

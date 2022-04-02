@@ -1,6 +1,6 @@
 import type { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
-import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
+import type { ChunkData } from "../../../../out/Meta/index";
+import type { DivineVoxelEngineWorld } from "../../../../out/index";
 export class WorldGen {
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
@@ -12,41 +12,6 @@ export class WorldGen {
  chunkHeight = 256;
 
  renderDistance = 20;
-
- copy(data: any): any {
-  return [...data];
- }
- /*  generateChunkStressTest(chunkX: number, chunkZ: number): ChunkData {
-  //   this.chunkMap.addChunk(chunkX,chunkZ);
-
-
-  const chunkVoxels: any[][][] = [];
-  let dreamStonePillar =
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-    "dve:dreamstonepillar",
-    "default"
-   );
-
-  // debugBox = dreamstone;
-  let block = [dreamStonePillar, 0, 0xffffffff];
-
-  for (let x = 0; x < +this.chunkWidth; x++) {
-   for (let z = 0; z < this.chunkDepth; z++) {
-    for (let y = 0; y < this.chunkHeight; y++) {
-     chunkVoxels[x] ??= [];
-     chunkVoxels[x][z] ??= [];
-     chunkVoxels[x][z][y] = this.copy(block);
-    }
-   }
-  }
-
-  return {
-   isEmpty: false,
-   voxels: chunkVoxels,
-   maxMinHeight: [],
-   heightMap: [],
-  };
- } */
 
  generateCrazyChunk(
   bottomChunk: ChunkData,
@@ -421,7 +386,6 @@ export class WorldGen {
  }
 
  generateChunkNormal(chunkX: number, chunkZ: number): ChunkData[] {
-  //   this.chunkMap.addChunk(chunkX,chunkZ);
 
   let toss = Math.random();
 
@@ -489,149 +453,4 @@ export class WorldGen {
   return [bottomChunk, topChunk];
  }
 
- /* generateChunkLine(
-  chunkX: number,
-  chunkZ: number,
-  direction: "north" | "east" | "south" | "west"
- ) {
-  const chunks = this.DVEW.worldData.chunks;
-  if (direction == "north") {
-   const newChunkZ = chunkZ + (this.renderDistance / 2) * 16 + 16;
-   const removeChunkZ = chunkZ - (this.renderDistance / 2) * 16 + 32;
-   const previousMaxChunkRebuild = newChunkZ - 32;
-
-   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
-    if (!chunks[i]) {
-     chunks[i] = [];
-    }
-
-    if (!chunks[i][previousMaxChunkRebuild]) {
-     const newChunk = this.generateChunkNormal(i, previousMaxChunkRebuild);
-     this.DVEW.worldData.setChunk(i, 0, previousMaxChunkRebuild, newChunk);
-     this.DVEW.buildChunk(i, 0, previousMaxChunkRebuild);
-    }
-   }
-   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
-    if (!chunks[i]) {
-     chunks[i] = [];
-    }
-    if (chunks[i][removeChunkZ]) {
-     this.DVEW.removeChunk(i, 0, removeChunkZ);
-    }
-    if (!chunks[i][newChunkZ]) {
-     const newChunk = this.generateChunkNormal(i, newChunkZ);
-     this.DVEW.worldData.setChunk(i, 0, newChunkZ, newChunk);
-     this.DVEW.buildChunk(i, 0, newChunkZ);
-    }
-   }
-  }
-  if (direction == "south") {
-   const removeChunkZ = chunkZ + (this.renderDistance / 2) * 16;
-   const newChunkZ = chunkZ - (this.renderDistance / 2) * 16;
-
-   for (let i = chunkX - 10 * 16; i < chunkX + 10 * 16; i += 16) {
-    if (!chunks[i]) {
-     chunks[i] = [];
-    }
-    if (chunks[i][removeChunkZ]) {
-     this.DVEW.removeChunk(i, 0, removeChunkZ);
-    }
-    if (!chunks[i][newChunkZ]) {
-     const newChunk = this.generateChunkNormal(i, newChunkZ);
-     this.DVEW.worldData.setChunk(i, 0, newChunkZ, newChunk);
-     this.DVEW.buildChunk(i, 0, newChunkZ);
-    }
-   }
-  }
-
-  if (direction == "east") {
-   const newChunkX = chunkX + (this.renderDistance / 2) * 16 + 16;
-   const removeChunkX = chunkX - (this.renderDistance / 2) * 16 + 16;
-   const previousMaxChunkRebuild = newChunkX - 16;
-
-   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
-    if (!chunks[newChunkX]) {
-     chunks[newChunkX] = [];
-    }
-
-    if (!chunks[newChunkX][i]) {
-     const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(newChunkX, 0, i, newChunk);
-     this.DVEW.buildChunk(newChunkX, 0, i);
-    }
-   }
-   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
-    if (!chunks[previousMaxChunkRebuild]) {
-     chunks[previousMaxChunkRebuild] = [];
-    }
-
-    if (!chunks[previousMaxChunkRebuild][i]) {
-     const newChunk = this.generateChunkNormal(previousMaxChunkRebuild, i);
-     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, 0, i, newChunk);
-     this.DVEW.buildChunk(previousMaxChunkRebuild, 0, i);
-    }
-   }
-
-   for (const checkChunkX of Object.keys(chunks)) {
-    const chunkXNum = Number(checkChunkX);
-    if (chunkXNum <= removeChunkX) {
-     for (const chunk of Object.keys(chunks[chunkXNum])) {
-      const chunkZ = Number(chunk);
-      chunks[chunkXNum][chunkZ];
-      this.DVEW.builderManager.requestFullChunkBeRemoved(chunkXNum, chunkZ);
-
-      delete chunks[chunkXNum][chunkZ];
-     }
-     delete chunks[chunkXNum];
-    }
-   }
-
-   delete chunks[removeChunkX];
-  }
-
-  if (direction == "west") {
-   const removeChunkX = chunkX + (this.renderDistance / 2) * 16;
-   const newChunkX = chunkX - (this.renderDistance / 2) * 16;
-   const previousMaxChunkRebuild = newChunkX + 16;
-
-   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
-    if (!chunks[newChunkX]) {
-     chunks[newChunkX] = [];
-    }
-
-    if (!chunks[newChunkX][i]) {
-     const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(newChunkX, 0, i, newChunk);
-     this.DVEW.buildChunk(newChunkX, 0, i);
-    }
-   }
-   for (let i = chunkZ - 10 * 16; i < chunkZ + 10 * 16; i += 16) {
-    if (!chunks[previousMaxChunkRebuild]) {
-     chunks[previousMaxChunkRebuild] = [];
-    }
-
-    if (!chunks[previousMaxChunkRebuild][i]) {
-     const newChunk = this.generateChunkNormal(newChunkX, i);
-     this.DVEW.worldData.setChunk(previousMaxChunkRebuild, 0, i, newChunk);
-     this.DVEW.buildChunk(previousMaxChunkRebuild, 0, i);
-    }
-   }
-   for (const checkChunkX of Object.keys(chunks)) {
-    const chunkXNum = Number(checkChunkX);
-    if (chunkXNum >= removeChunkX) {
-     for (const chunk of Object.keys(chunks[chunkXNum])) {
-      const chunkZ = Number(chunk);
-      chunks[chunkXNum][chunkZ];
-      this.DVEW.builderManager.requestFullChunkBeRemoved(chunkXNum, chunkZ);
-
-      delete chunks[chunkXNum][chunkZ];
-     }
-     delete chunks[chunkXNum];
-    }
-   }
-
-   delete chunks[removeChunkX];
-  }
-  this.DVEW.buildFluidMesh();
- } */
 }

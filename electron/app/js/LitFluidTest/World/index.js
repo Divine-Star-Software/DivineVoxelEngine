@@ -1,9 +1,7 @@
-import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { DVEW } from "../../../out/index.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
-const DVEW = new DivineVoxelEngineWorld(self);
-self.DVEW = DVEW;
 RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);

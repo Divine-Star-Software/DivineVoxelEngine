@@ -2,8 +2,8 @@ import type {
  VoxelData,
  VoxelInteface,
  VoxelProcessData,
-} from "../../../../out/Meta/World/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
+ VoxelHelperInterface,
+} from "../../../../out/Meta/index.js";
 
 export class DebugBox implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}

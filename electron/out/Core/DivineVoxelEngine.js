@@ -33,9 +33,34 @@ export class DivineVoxelEngine {
     async $INIT(data) {
         this.engineSettings.syncSettings(data);
         this._handleOptions();
-        this.world.createWorldWorker(data.worldWorkerPath);
-        this.builderManager.createBuilderWorker(data.builderWorkerPath);
-        this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorkerPath);
+        if (typeof data.worldWorker == "string") {
+            this.world.createWorldWorker(data.worldWorker);
+        }
+        else if (data.worldWorker instanceof Worker) {
+            this.world.setWorldWorker(data.worldWorker);
+        }
+        else {
+            throw Error("Supplied data for World Worker is not correct. Must be path to worker or a worker.");
+        }
+        if (typeof data.builderWorker == "string") {
+            this.builderManager.createBuilderWorkers(data.builderWorker);
+        }
+        else if (Array.isArray(data.builderWorker) &&
+            data.builderWorker[0] instanceof Worker) {
+            this.builderManager.setBuilderWorkers(data.builderWorker);
+        }
+        else {
+            throw Error("Supplied data for Builder Workers is not correct. Must be path to worker or an array workers.");
+        }
+        if (typeof data.fluidBuilderWorker == "string") {
+            this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorker);
+        }
+        else if (data.fluidBuilderWorker instanceof Worker) {
+            this.builderManager.setFluidBuilderWorker(data.fluidBuilderWorker);
+        }
+        else {
+            throw Error("Supplied data for Fluid Worker is not correct. Must be path to worker or a worker.");
+        }
         this._syncSettings(data);
         await this.world.getBaseWorldData();
         window.addEventListener("beforeunload", () => {
@@ -51,3 +76,4 @@ export class DivineVoxelEngine {
         this.world.startWorldGen();
     }
 }
+export const DVE = new DivineVoxelEngine();

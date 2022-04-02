@@ -16,3 +16,4 @@ export declare class DivineVoxelEngineFluidBuilder {
     syncSettings(data: EngineSettingsData): void;
     $INIT(worker: Worker): void;
 }
+export declare const DVEFB: DivineVoxelEngineFluidBuilder;

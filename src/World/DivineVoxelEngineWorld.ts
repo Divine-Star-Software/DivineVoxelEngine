@@ -192,3 +192,6 @@ export class DivineVoxelEngineWorld {
   await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
  }
 }
+
+//@ts-ignore
+export const DVEW = new DivineVoxelEngineWorld((self as Worker));

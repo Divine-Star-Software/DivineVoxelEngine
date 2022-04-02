@@ -2,8 +2,8 @@ import type {
  VoxelData,
  VoxelInteface,
  VoxelProcessData,
-} from "../../../../out/Meta/World/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
+ VoxelHelperInterface,
+} from "../../../../out/Meta/index.js";
 
 export class LightDebugBox implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
@@ -106,14 +106,17 @@ export class LightDebugBox implements VoxelInteface {
  textures: Record<number, number>;
 
  process(data: VoxelProcessData): void {
-
-
   const trueX = data.chunkX + data.x;
   const trueY = data.chunkY + data.y;
   const trueZ = data.chunkZ + data.z;
 
-  const light = this.voxelHelper.worldData.getLightValue(trueX, trueY + 1, trueZ,"r");
-  let uv = this.textures[light];   
+  const light = this.voxelHelper.worldData.getLightValue(
+   trueX,
+   trueY + 1,
+   trueZ,
+   "r"
+  );
+  let uv = this.textures[light];
 
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);

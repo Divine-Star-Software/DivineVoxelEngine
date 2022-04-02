@@ -16,7 +16,7 @@ export class World {
  constructor(private DVE: DivineVoxelEngine) {}
 
  reStart() {
-    this.worker.postMessage("re-start");
+  this.worker.postMessage("re-start");
  }
 
  requestWorldUpdate(
@@ -76,14 +76,20 @@ export class World {
   return prom;
  }
 
-
  createWorldWorker(workerPath: string) {
-  //../Contexts/World/World.worker.js
-  const world = this;
-
   this.worker = new Worker(new URL(workerPath, import.meta.url), {
    type: "module",
   });
+  this._initWorker();
+ }
+
+ setWorldWorker(worker: Worker) {
+  this.worker = worker;
+  this._initWorker();
+ }
+
+ _initWorker() {
+  const world = this;
   this.worker.onerror = (er: ErrorEvent) => {
    console.log(er);
   };
@@ -92,8 +98,8 @@ export class World {
   };
  }
 
-
  _syncSettings() {
-    this.worker.postMessage(["sync-settings",this.DVE.engineSettings.settings]);
+  const settings = this.DVE.engineSettings.getSettingsCopy();
+  this.worker.postMessage(["sync-settings", settings]);
  }
 }

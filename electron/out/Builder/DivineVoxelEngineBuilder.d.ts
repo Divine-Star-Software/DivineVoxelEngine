@@ -15,3 +15,4 @@ export declare class DivineVoxelEngineBuilder {
     reStart(): void;
     $INIT(worker: Worker): void;
 }
+export declare const DVEB: DivineVoxelEngineBuilder;

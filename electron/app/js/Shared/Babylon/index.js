@@ -49,7 +49,6 @@ export const SetUpDarkScene = (engine) => {
 export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30, z: -2 }, startTarget = { x: 0, y: 0, z: 0 }) => {
     const target = new BABYLON.Vector3(startTarget.x, startTarget.y, startTarget.z);
     const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
-    console.log(startPosition);
     camera.fov = 1.5;
     camera.minZ = 0.01;
     camera.angularSensibility = 4000;

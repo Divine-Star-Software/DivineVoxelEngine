@@ -1,11 +1,8 @@
+import { DVEW } from "../../../out/index.js";
 import { PlayerWatcher } from "../../Shared/Player/Type2/PlayerWatcher.js";
-import { DivineVoxelEngineWorld } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
-const DVEW = new DivineVoxelEngineWorld(self);
-//for testing only
-self.DVEW = DVEW;
 const playerWatcher = new PlayerWatcher(DVEW);
 const worldGen = new WorldGen(DVEW);
 RegisterTexutres(DVEW);

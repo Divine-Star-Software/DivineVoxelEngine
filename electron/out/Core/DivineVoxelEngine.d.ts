@@ -23,3 +23,4 @@ export declare class DivineVoxelEngine {
         scene: BABYLON.Scene;
     }): Promise<void>;
 }
+export declare const DVE: DivineVoxelEngine;

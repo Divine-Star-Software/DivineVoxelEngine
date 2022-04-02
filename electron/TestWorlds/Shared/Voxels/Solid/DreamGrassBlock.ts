@@ -2,8 +2,8 @@ import type {
  VoxelData,
  VoxelInteface,
  VoxelProcessData,
-} from "../../../../out/Meta/World/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "../../../../out/Meta/World/Voxels/VoxelHelper.interface";
+ VoxelHelperInterface,
+} from "../../../../out/Meta/index.js";
 
 export class DreamGrassBlock implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
@@ -42,7 +42,7 @@ export class DreamGrassBlock implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(uv);
   }
-  
+
   data.shapeTemplate.push(this.trueShapeId);
   data.shapeStateTemplate.push(0);
   this.voxelHelper.processVoxelLight(data, this);

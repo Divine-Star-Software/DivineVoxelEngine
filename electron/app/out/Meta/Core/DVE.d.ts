@@ -1,6 +1,6 @@
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare type DVEInitData = {
-    worldWorkerPath: string;
-    builderWorkerPath: string;
-    fluidBuilderWorkerPath: string;
+    worldWorker: string | Worker;
+    builderWorker: string | Worker[];
+    fluidBuilderWorker: string | Worker;
 } & EngineSettingsData;

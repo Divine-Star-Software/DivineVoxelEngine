@@ -20,9 +20,9 @@ export class BuilderWorkerManager {
         this.DVE = DVE;
         const numBuilders = 4;
         /*   if (window.navigator.hardwareConcurrency > numBuilders) {
-           //use all possible cores if we can
-           this.numBuilders = window.navigator.hardwareConcurrency;
-          } */
+         //use all possible cores if we can
+         this.numBuilders = window.navigator.hardwareConcurrency;
+        } */
     }
     reStart() {
         for (const worker of this.builders) {
@@ -30,12 +30,22 @@ export class BuilderWorkerManager {
         }
         this.fluidBuilder.postMessage(["re-start"]);
     }
-    createBuilderWorker(path) {
+    setBuilderWorkers(workers) {
+        this.builders = workers;
+        this.numBuilders = workers.length;
+        this._initBuilderWorkers();
+    }
+    createBuilderWorkers(path) {
         //  "../Contexts/MeshBuilders/ChunkMeshBuilder.worker.js",
         for (let i = 0; i < this.numBuilders; i++) {
             this.builders[i] = new Worker(new URL(path, import.meta.url), {
                 type: "module",
             });
+        }
+        this._initBuilderWorkers();
+    }
+    _initBuilderWorkers() {
+        for (let i = 0; i < this.numBuilders; i++) {
             this.builders[i].onerror = (er) => {
                 console.log(er);
             };
@@ -55,6 +65,13 @@ export class BuilderWorkerManager {
         this.fluidBuilder = new Worker(new URL(path, import.meta.url), {
             type: "module",
         });
+        this._initFluidBuilder();
+    }
+    setFluidBuilderWorker(worker) {
+        this.fluidBuilder = worker;
+        this._initFluidBuilder();
+    }
+    _initFluidBuilder() {
         this.fluidBuilder.onerror = (er) => {
             console.log(er);
         };
@@ -85,12 +102,10 @@ export class BuilderWorkerManager {
         this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
     _syncSettings() {
+        const settings = this.DVE.engineSettings.getSettingsCopy();
         for (const builders of this.builders) {
-            builders.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+            builders.postMessage(["sync-settings", settings]);
         }
-        this.fluidBuilder.postMessage([
-            "sync-settings",
-            this.DVE.engineSettings.settings,
-        ]);
+        this.fluidBuilder.postMessage(["sync-settings", settings]);
     }
 }
