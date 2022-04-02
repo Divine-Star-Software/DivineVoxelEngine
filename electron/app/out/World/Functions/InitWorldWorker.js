@@ -20,7 +20,7 @@ export function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
                 DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
             }
             if (message == "voxel-add") {
-                DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", eventData[1], eventData[2], eventData[3]);
+                DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", eventData[1], eventData[2], eventData[3]);
                 DVEW.runChunkRebuildQueAsync();
             }
             if (message == "voxel-remove") {

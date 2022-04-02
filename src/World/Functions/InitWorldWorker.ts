@@ -33,7 +33,7 @@ export function InitWorldWorker(
 
    if (message == "voxel-add") {
     DVEW.worldData.requestVoxelAdd(
-     "dve:debugbox",
+     "dve:dreamstone",
      "default",
      eventData[1],
      eventData[2],

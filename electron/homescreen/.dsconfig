@@ -1,0 +1,25 @@
+{
+ "sources": [
+  {
+    "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/homescreen/",
+    "fileExtensions": [
+    "css"
+   ],
+   "id": "css"
+  }
+ ],
+ "outputs": [
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/app/homescreen/",
+   "sourceID": "css",
+   "codeSection": "all",
+   "keepComments": true
+  }
+ ],
+ "codeSections": {
+  "test": {
+   "start": "@ds-test-start",
+   "end": "@ds-test-end"
+  }
+ }
+}

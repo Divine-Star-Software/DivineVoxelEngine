@@ -5,11 +5,14 @@
   "main": "./electronstart/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "electron ."
+    "start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^16.0.7"
+  },
+  "dependencies": {
+    "ds-element-tree": "0.0.7"
   }
 }

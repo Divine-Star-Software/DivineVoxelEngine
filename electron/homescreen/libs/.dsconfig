@@ -1,0 +1,25 @@
+{
+ "sources": [
+  {
+   "dir": "D:/DSSoftware/DSLIBS/elementTree/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "elementtree"
+  }
+ ],
+ "outputs": [
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/homescreen/libs/ElementTree",
+   "sourceID": "elementtree",
+   "codeSection": "all",
+   "keepComments": true
+  }
+ ],
+ "codeSections": {
+  "test": {
+   "start": "@ds-test-start",
+   "end": "@ds-test-end"
+  }
+ }
+}
