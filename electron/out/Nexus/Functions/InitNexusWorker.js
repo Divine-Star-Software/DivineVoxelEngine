@@ -4,6 +4,10 @@ export function InitNexusWorker(DVEN, onReady, onMessage, onRestart) {
             const port = eventData.ports[0];
             DVEN.worldComm.setWorldPort(port);
         },
+        "sync-settings": (data, eventData) => {
+            const settings = data[1];
+            DVEN.syncSettings(settings);
+        },
     };
     addEventListener("message", (event) => {
         const eventData = event.data;

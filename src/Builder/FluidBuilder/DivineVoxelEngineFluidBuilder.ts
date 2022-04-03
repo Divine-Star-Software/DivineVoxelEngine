@@ -2,7 +2,7 @@ import { ShapeHelper } from "../Shapes/ShapeHelper.js";
 import { ShapeManager } from "../Shapes/ShapeManager.js";
 import { Util } from "../../Global/Util.helper.js";
 import { FluidMeshBuilder } from "./FluidMeshBuilder.js";
-import { InitWorker } from "./Functions/InitFluidMeshWorker.js";
+import { InitWorker } from "./Init/InitFluidMeshWorker.js";
 import { EngineSettings } from "../../Global/EngineSettings.js";
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 

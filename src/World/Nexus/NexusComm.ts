@@ -11,7 +11,12 @@ export class NexusComm {
 
  setNexusPort(port: MessagePort) {
   this.port = port;
+
   this.DVEW.matrixCentralHub.registerThread("nexus", port);
+  port.onmessage = (event: MessageEvent) => {
+   //stuff
+  // console.log(event);
+  };
  }
 
  nexusLoadChunk(chunkX: number, chunkY: number, chunkZ: number) {
@@ -20,6 +25,11 @@ export class NexusComm {
  }
  removeChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
   if (!this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ)) return false;
-  this.DVEW.matrixCentralHub.releaseChunkInThread("nexus", chunkX, chunkY, chunkZ);
+  this.DVEW.matrixCentralHub.releaseChunkInThread(
+   "nexus",
+   chunkX,
+   chunkY,
+   chunkZ
+  );
  }
 }

@@ -42,7 +42,7 @@ export class NexusComm {
         const channel = new MessageChannel();
         const worldWorker = this.DVE.worldComm.getWorker();
         //connect world to fluid builder
-        worldWorker.postMessage(["connect-fluid-builder"], [channel.port1]);
+        worldWorker.postMessage(["connect-nexus"], [channel.port1]);
         //connect fluid builder to world
         this.worker.postMessage(["connect-world"], [channel.port2]);
     }

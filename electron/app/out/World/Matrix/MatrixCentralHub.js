@@ -8,8 +8,36 @@ export class MatrixCentralHub {
     constructor(DVEW) {
         this.DVEW = DVEW;
     }
+    _threadMessageFunctions = {
+        "matrix-sync-chunk": (data, event) => {
+            const thread = data[1];
+            const chunkX = data[2];
+            const chunkY = data[3];
+            const chunkZ = data[4];
+            this.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
+        },
+        "matrix-release-chunk": (data, event) => {
+            const thread = data[1];
+            const chunkX = data[2];
+            const chunkY = data[3];
+            const chunkZ = data[4];
+            this.releaseChunkInThread(thread, chunkX, chunkY, chunkZ);
+        },
+    };
     registerThread(threadId, thread) {
         this.threads[threadId] = thread;
+        const channel = new MessageChannel();
+        const port = channel.port1;
+        thread.postMessage(["set-world-port"], [port]);
+        channel.port2.onmessage = (event) => {
+            const data = event.data;
+            if (data && data[0]) {
+                const message = data[0];
+                if (this._threadMessageFunctions[message]) {
+                    this._threadMessageFunctions[message](data, event);
+                }
+            }
+        };
     }
     syncChunk(chunkX, chunkY, chunkZ) {
         const chunkSABs = this.DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);

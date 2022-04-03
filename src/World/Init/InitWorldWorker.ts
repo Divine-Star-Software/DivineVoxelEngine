@@ -55,25 +55,17 @@ export function InitWorldWorker(
     const settings = event.data[1];
     DVEW.syncSettings(settings);
    },
+   "connect-nexus": (data, event) => {
+    const port = event.ports[0];
+    DVEW.nexusComm.setNexusPort(port);
+   },
    "connect-builder": (data, event) => {
     const port = event.ports[0];
-    DVEW.builderComm.addBuilder(port);
-    port.onmessage = (event: MessageEvent) => {
-     if (DVEW.voxelManager.shapMapIsSet()) return;
-     if (event.data[0] == "connect-shape-map") {
-      DVEW.voxelManager.setShapeMap(event.data[1]);
-     }
-    };
+    DVEW.builderComm.connectBuilder(port);
    },
    "connect-fluid-builder": (data, event) => {
     const port = event.ports[0];
-    DVEW.builderComm.addFluidBuilder(port);
-    port.onmessage = (event: MessageEvent) => {
-     if (DVEW.voxelManager.fluidShapMapIsSet()) return;
-     if (event.data[0] == "connect-fluid-shape-map") {
-      DVEW.voxelManager.setFluidShapeMap(event.data[1]);
-     }
-    };
+    DVEW.builderComm.connectFluidBuilder(port);
    },
   };
 
@@ -81,63 +73,9 @@ export function InitWorldWorker(
    const eventData = event.data;
 
    const message = eventData[0];
-/* 
-   if (message == "get-world-data") {
-    const textures = DVEW.textureManager.generateTexturesData();
-    DVEW.worker.postMessage(["set-world-data", textures]);
-    DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
-   }
 
-   if (eventData == "start") {
-    onReady();
-    return;
-   }
-
-   if (eventData == "re-start") {
-    if (onRestart) {
-     onRestart();
-    }
-    return;
-   }
-
-   if (eventData == "sync-settings") {
-    const settings = event.data[1];
-    DVEW.syncSettings(settings);
-    return;
-   }
-   
-   if (message == "connect-builder") {
-    const port = event.ports[0];
-    DVEW.builderComm.addBuilder(port);
-
-    port.onmessage = (event: MessageEvent) => {
-     if (DVEW.voxelManager.shapMapIsSet()) return;
-     if (event.data[0] == "connect-shape-map") {
-      DVEW.voxelManager.setShapeMap(event.data[1]);
-     }
-    };
-    return;
-   }
-
-   if (message == "connect-fluid-builder") {
-    const port = event.ports[0];
-    DVEW.builderComm.addFluidBuilder(port);
-
-    port.onmessage = (event: MessageEvent) => {
-     if (DVEW.voxelManager.fluidShapMapIsSet()) return;
-     if (event.data[0] == "connect-fluid-shape-map") {
-      DVEW.voxelManager.setFluidShapeMap(event.data[1]);
-     }
-    };
-    return;
-   }   */
- 
    if (messageFunctions[message]) {
-    console.log(message);
     messageFunctions[message](eventData, event);
-    return;
-   } else {
-    console.log(message);
    }
 
    onMessage(message, eventData);

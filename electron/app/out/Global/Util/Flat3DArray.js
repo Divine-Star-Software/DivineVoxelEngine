@@ -14,12 +14,11 @@ export class Flat3DArray {
         z: 0,
     };
     setBounds(x, y, z) {
-        console.log(x, y, z);
-        /*   this.bounds = {
-           x: x,
-           y: y,
-           z: z,
-          }; */
+        this.bounds = {
+            x: x,
+            y: y,
+            z: z,
+        };
     }
     getValue(x, y, z, array) {
         return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];

@@ -19,12 +19,11 @@ export class Flat3DArray {
  };
 
  setBounds(x: number, y: number, z: number) {
-     console.log(x,y,z);
-/*   this.bounds = {
+  this.bounds = {
    x: x,
    y: y,
    z: z,
-  }; */
+  };
  }
 
  getValue(x: number, y: number, z: number, array: ChunkVoxels) {

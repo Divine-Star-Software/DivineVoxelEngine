@@ -6,50 +6,69 @@ import type { WorldMatrix } from "./WorldMatrix";
  * It syncs the chunk data.
  */
 export class MatrixHub {
- messageFunctions: Record<string, (data: any) => any | void> = {
-  "sync-chunk": (data) => {
+ messageFunctions: Record<
+  string,
+  (data: any, event: MessageEvent) => any | void
+ > = {
+  "sync-chunk": (data, event) => {
    this._syncChunk(data);
   },
-  "release-chunk": (data) => {
+  "release-chunk": (data, event) => {
    this._releaseChunk(data);
   },
-  "sync-global-palettek": (data) => {
+  "sync-global-palette": (data, event) => {
    this._releaseChunk(data);
   },
-  "sync-region-palette": (data) => {
+  "sync-region-palette": (data, event) => {
    this._releaseChunk(data);
   },
-  "release-region-palette": (data) => {
+  "release-region-palette": (data, event) => {
    this._releaseChunk(data);
   },
-  "set-world-port": (data) => {
-    this._releaseChunk(data);
-   },
+  "set-world-port": (data, event) => {
+   const port = event.ports[0];
+   this._setWorldPort(port);
+  },
  };
 
+ worldPort: MessagePort;
 
- worldPort : MessagePort;
+ constructor(public threadName: string, private worldMatrix: WorldMatrix) {}
 
- constructor(public threadName : string,private worldMatrix: WorldMatrix,) {}
+ onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
+  const data = event.data;
 
- onMessage(data: any[], runAfter: (data: any) => any | void) {
-  if(!data[0])return;
+  if (!data || !data[0]) return;
   const message = data[0];
   if (this.messageFunctions[message]) {
-   this.messageFunctions[message](data);
+   this.messageFunctions[message](data, event);
    return;
   }
-  runAfter(data);
+  runAfter(event);
  }
 
  requestChunkSync(chunkX: number, chunkY: number, chunkZ: number) {
-     this.worldPort.postMessage(["matrix-sync-chunk"])
+  this.worldPort.postMessage([
+   "matrix-sync-chunk",
+   this.threadName,
+   chunkX,
+   chunkY,
+   chunkZ,
+  ]);
  }
 
- requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {}
+ requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {
+  this.worldPort.postMessage([
+   "matrix-release-chunk",
+   this.threadName,
+   chunkX,
+   chunkY,
+   chunkZ,
+  ]);
+ }
 
- _setWorldPort(port : MessagePort) {
-     this.worldPort = port;
+ _setWorldPort(port: MessagePort) {
+  this.worldPort = port;
  }
 
  _syncChunk(data: any[]) {

@@ -27,7 +27,7 @@ export class EngineSettings {
         chunks: {
             autoHeightMap: true,
             chunkXPow2: 4,
-            chunkYPow2: 8,
+            chunkYPow2: 7,
             chunkZPow2: 4,
         },
         voxels: {

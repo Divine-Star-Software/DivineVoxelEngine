@@ -1,7 +1,7 @@
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { ChunkMeshBuilder } from "./ChunkMeshBuilder.js";
-import { InitWorker } from "./Functions/InitWorker.js";
+import { InitWorker } from "./Init/InitWorker.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 export class DivineVoxelEngineBuilder {

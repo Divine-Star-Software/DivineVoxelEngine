@@ -3,8 +3,12 @@
  * Handles communication with the mesh builders thread.
  */
 export class BuilderComm {
+    DVEW;
     count = 0;
     numBuilders = 0;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
+    }
     voxelBuildOrder = ["solid", "flora", "fluid", "magma"];
     voxelTypeMap = {
         solid: 0,
@@ -20,12 +24,26 @@ export class BuilderComm {
     setMainThreadCom(worker) {
         this.mainThreadCom = worker;
     }
-    addFluidBuilder(port) {
+    connectFluidBuilder(port) {
         this.fluidBuilder = port;
+        port.onmessage = (event) => {
+            if (this.DVEW.voxelManager.fluidShapMapIsSet())
+                return;
+            if (event.data[0] == "connect-fluid-shape-map") {
+                this.DVEW.voxelManager.setFluidShapeMap(event.data[1]);
+            }
+        };
     }
-    addBuilder(port) {
+    connectBuilder(port) {
         this.builders.push(port);
         this.numBuilders++;
+        port.onmessage = (event) => {
+            if (this.DVEW.voxelManager.shapMapIsSet())
+                return;
+            if (event.data[0] == "connect-shape-map") {
+                this.DVEW.voxelManager.setShapeMap(event.data[1]);
+            }
+        };
     }
     requestFullChunkBeRemoved(chunkX, chunkZ) {
         this.mainThreadCom.postMessage(["remove-chunk", chunkX, chunkZ]);

@@ -11,6 +11,10 @@ export class NexusComm {
     setNexusPort(port) {
         this.port = port;
         this.DVEW.matrixCentralHub.registerThread("nexus", port);
+        port.onmessage = (event) => {
+            //stuff
+            // console.log(event);
+        };
     }
     nexusLoadChunk(chunkX, chunkY, chunkZ) {
         if (this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ))

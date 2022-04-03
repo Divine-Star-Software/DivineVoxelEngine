@@ -6,23 +6,26 @@ export function InitNexusWorker(
  onMessage: Function,
  onRestart?: Function
 ) {
- const messageFunctions: Record<string, (data: any,event : MessageEvent) => void> = {
-  "set-world-port": (data,eventData) => {
-      const port = eventData.ports[0]
-      DVEN.worldComm.setWorldPort(port);
+ const messageFunctions: Record<
+  string,
+  (data: any, event: MessageEvent) => void
+ > = {
+  "connect-world": (data, eventData) => {
+   const port = eventData.ports[0];
+   DVEN.worldComm.setWorldPort(port);
+   onReady();
+  },
+  "sync-settings": (data, eventData) => {
+   const settings = data[1];
+   DVEN.syncSettings(settings);
   },
  };
 
  addEventListener("message", (event: MessageEvent) => {
   const eventData = event.data;
   const message = eventData[0];
-
   if (messageFunctions[message]) {
-   messageFunctions[message](eventData,event);
+   messageFunctions[message](eventData, event);
   }
-
-  DVEN.matrixHub.onMessage(event.data, (data) => {
-   onMessage(message, data);
-  });
  });
 }

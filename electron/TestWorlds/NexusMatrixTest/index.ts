@@ -15,16 +15,17 @@ const workers = SetUpWorkers(
  "./World/index.js",
  "../Shared/Builder/builder.js",
  "../Shared/FluidBuilder/fluidbuilder.js",
- "./Nexus/index.js",
+ "./Nexus/index.js"
 );
 
 await DVE.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  fluidBuilderWorker: workers.fluidBuilderWorker,
- nexus : {
-     enabled : true
- }
+ nexusWorker: workers.nexusWorker,
+ nexus: {
+  enabled: true,
+ },
 });
 
 const init = async () => {

@@ -6,9 +6,10 @@ await DVE.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
     fluidBuilderWorker: workers.fluidBuilderWorker,
+    nexusWorker: workers.nexusWorker,
     nexus: {
-        enabled: true
-    }
+        enabled: true,
+    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();

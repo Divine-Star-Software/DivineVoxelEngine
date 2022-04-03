@@ -1,3 +1,4 @@
+import type { DivineVoxelEngineWorld } from "index";
 import { FullChunkTemplate } from "Meta/Chunks/Chunk.types";
 import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
 
@@ -8,6 +9,8 @@ import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
 export class BuilderComm {
  count = 0;
  numBuilders = 0;
+
+ constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  voxelBuildOrder: VoxelSubstanceType[] = ["solid", "flora", "fluid", "magma"];
  voxelTypeMap: Record<VoxelSubstanceType, number> = {
@@ -29,13 +32,25 @@ export class BuilderComm {
   this.mainThreadCom = worker;
  }
 
- addFluidBuilder(port: MessagePort) {
+ connectFluidBuilder(port: MessagePort) {
   this.fluidBuilder = port;
+  port.onmessage = (event: MessageEvent) => {
+   if (this.DVEW.voxelManager.fluidShapMapIsSet()) return;
+   if (event.data[0] == "connect-fluid-shape-map") {
+    this.DVEW.voxelManager.setFluidShapeMap(event.data[1]);
+   }
+  };
  }
 
- addBuilder(port: MessagePort) {
+ connectBuilder(port: MessagePort) {
   this.builders.push(port);
   this.numBuilders++;
+  port.onmessage = (event: MessageEvent) => {
+   if (this.DVEW.voxelManager.shapMapIsSet()) return;
+   if (event.data[0] == "connect-shape-map") {
+    this.DVEW.voxelManager.setShapeMap(event.data[1]);
+   }
+  };
  }
 
  requestFullChunkBeRemoved(chunkX: number, chunkZ: number) {

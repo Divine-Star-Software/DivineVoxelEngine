@@ -1,12 +1,16 @@
+import { EngineSettings } from "../Global/EngineSettings.js";
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 import { WorldComm } from "./World/WorldComm.js";
+import { EngineSettingsData } from "Meta/index.js";
 declare class DivineVoxelEngineNexusClass {
+    engineSettings: EngineSettings;
     worldMatrix: WorldMatrix;
     matrixHub: MatrixHub;
     worldComm: WorldComm;
     $INIT(data: DVENInitData): Promise<void>;
+    syncSettings(data: EngineSettingsData): void;
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.
      */

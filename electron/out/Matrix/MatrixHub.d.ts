@@ -7,10 +7,10 @@ import type { WorldMatrix } from "./WorldMatrix";
 export declare class MatrixHub {
     threadName: string;
     private worldMatrix;
-    messageFunctions: Record<string, (data: any) => any | void>;
+    messageFunctions: Record<string, (data: any, event: MessageEvent) => any | void>;
     worldPort: MessagePort;
     constructor(threadName: string, worldMatrix: WorldMatrix);
-    onMessage(data: any[], runAfter: (data: any) => any | void): void;
+    onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void): void;
     requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): void;
     requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
     _setWorldPort(port: MessagePort): void;
