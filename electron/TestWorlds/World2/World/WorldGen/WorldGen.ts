@@ -8,7 +8,7 @@ export class WorldGen {
 
  chunkDepth = 16;
  chunkWidth = 16;
- chunkHeight = 256;
+ chunkHeight = 128;
 
  renderDistance = 20;
 

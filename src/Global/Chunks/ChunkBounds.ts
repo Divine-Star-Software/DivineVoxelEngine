@@ -11,13 +11,13 @@ export class ChunkBounds {
  chunkZPow2 = 4;
 
  chunkXSize = 16;
- chunkYSize = 256;
+ chunkYSize = 128;
  chunkZSize = 16;
 
- chunkTotalVoxels = 16 * 256 * 16;
+ chunkTotalVoxels = 16 * 128 * 16;
 
  syncBoundsWithFlat3DArray(flat3dArray: Flat3DArray) {
-  flat3dArray.setBounds(this.chunkXSize, this.chunkYPow2, this.chunkZSize);
+  flat3dArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
  }
 
  setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number) {

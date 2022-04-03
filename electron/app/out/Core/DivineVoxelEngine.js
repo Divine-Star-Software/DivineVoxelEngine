@@ -1,15 +1,17 @@
 import { Util } from "../Global/Util.helper.js";
-import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
-import { World } from "./World/World.js";
+import { BuilderComm } from "./Builders/BuilderComm.js";
+import { WorldComm } from "./World/WorldComm.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
+import { NexusComm } from "./Nexus/NexusComm.js";
 export class DivineVoxelEngine {
-    world = new World(this);
+    worldComm = new WorldComm(this);
+    nexusComm = new NexusComm(this);
     engineSettings = new EngineSettings();
     renderManager = new RenderManager();
-    builderManager = new BuilderWorkerManager(this);
+    builderManager = new BuilderComm(this);
     meshManager = new MeshManager(this);
     util = new Util();
     constructor() { }
@@ -23,7 +25,7 @@ export class DivineVoxelEngine {
     }
     _syncSettings(data) {
         this.engineSettings.syncSettings(data);
-        this.world._syncSettings();
+        this.worldComm._syncSettings();
         this.builderManager._syncSettings();
     }
     async reStart(data) {
@@ -34,10 +36,10 @@ export class DivineVoxelEngine {
         this.engineSettings.syncSettings(data);
         this._handleOptions();
         if (typeof data.worldWorker == "string") {
-            this.world.createWorldWorker(data.worldWorker);
+            this.worldComm.createWorldWorker(data.worldWorker);
         }
         else if (data.worldWorker instanceof Worker) {
-            this.world.setWorldWorker(data.worldWorker);
+            this.worldComm.setWorldWorker(data.worldWorker);
         }
         else {
             throw Error("Supplied data for World Worker is not correct. Must be path to worker or a worker.");
@@ -61,19 +63,34 @@ export class DivineVoxelEngine {
         else {
             throw Error("Supplied data for Fluid Worker is not correct. Must be path to worker or a worker.");
         }
+        if (data.nexusWorker && data.nexus?.enabled) {
+            if (typeof data.nexusWorker == "string") {
+                this.nexusComm.createNexusWorker(data.nexusWorker);
+            }
+            else if (data.nexusWorker instanceof Worker) {
+                this.nexusComm.setNexusWorker(data.nexusWorker);
+            }
+            else {
+                throw Error("Supplied data for Nexus Worker is not correct. Must be path to worker or a worker.");
+            }
+        }
         this._syncSettings(data);
-        await this.world.getBaseWorldData();
+        await this.worldComm.getBaseWorldData();
+        //terminate all workers
         window.addEventListener("beforeunload", () => {
             for (const builder of this.builderManager.builders) {
                 builder.terminate();
             }
-            this.world.worker.terminate();
+            this.builderManager.fluidBuilder.terminate();
+            this.worldComm.worker.terminate();
+            if (this.nexusComm.worker) {
+                this.nexusComm.worker.terminate();
+            }
         });
     }
     async $SCENEINIT(data) {
-        // data.scene.enableDepthRenderer();
         await BuildInitalMeshes(this, data.scene);
-        this.world.startWorldGen();
+        this.worldComm.start();
     }
 }
 export const DVE = new DivineVoxelEngine();

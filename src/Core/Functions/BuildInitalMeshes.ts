@@ -4,7 +4,7 @@ export async function BuildInitalMeshes(
  DVE: DivineVoxelEngine,
  scene: BABYLON.Scene
 ) {
- if (!DVE.world.baseWorldData) {
+ if (!DVE.worldComm.baseWorldData) {
   throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
  }
 
@@ -13,9 +13,9 @@ export async function BuildInitalMeshes(
 
  // console.log(DVE.world.baseWorldData);
 
- const solidTextures = DVE.world.baseWorldData?.texturePaths.solid;
- const solidAnimations = DVE.world.baseWorldData.textureAnimations.solid;
- const soidAnimationTimes = DVE.world.baseWorldData.textureAnimationTimes.solid;
+ const solidTextures = DVE.worldComm.baseWorldData?.texturePaths.solid;
+ const solidAnimations = DVE.worldComm.baseWorldData.textureAnimations.solid;
+ const soidAnimationTimes = DVE.worldComm.baseWorldData.textureAnimationTimes.solid;
  const combinedChunkTextures =
   await DVE.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -29,10 +29,10 @@ export async function BuildInitalMeshes(
   soidAnimationTimes
  );
 
- const floraTextures = DVE.world.baseWorldData?.texturePaths.flora;
- const floraAnimations = DVE.world.baseWorldData.textureAnimations.flora;
+ const floraTextures = DVE.worldComm.baseWorldData?.texturePaths.flora;
+ const floraAnimations = DVE.worldComm.baseWorldData.textureAnimations.flora;
  const floraAnimationTimes =
-  DVE.world.baseWorldData.textureAnimationTimes.flora;
+  DVE.worldComm.baseWorldData.textureAnimationTimes.flora;
  const combinedFloraTextures =
   await DVE.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -45,10 +45,10 @@ export async function BuildInitalMeshes(
   floraAnimationTimes
  );
 
- const fluidTextures = DVE.world.baseWorldData?.texturePaths.fluid;
- const fluidAnimations = DVE.world.baseWorldData.textureAnimations.fluid;
+ const fluidTextures = DVE.worldComm.baseWorldData?.texturePaths.fluid;
+ const fluidAnimations = DVE.worldComm.baseWorldData.textureAnimations.fluid;
  const fluidAnimationTimes =
-  DVE.world.baseWorldData.textureAnimationTimes.fluid;
+  DVE.worldComm.baseWorldData.textureAnimationTimes.fluid;
  const combinedFluidTextures =
   await DVE.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -62,10 +62,10 @@ export async function BuildInitalMeshes(
   fluidAnimationTimes
  );
 
- const magmaTextures = DVE.world.baseWorldData?.texturePaths.magma;
- const magmaAnimations = DVE.world.baseWorldData.textureAnimations.magma;
+ const magmaTextures = DVE.worldComm.baseWorldData?.texturePaths.magma;
+ const magmaAnimations = DVE.worldComm.baseWorldData.textureAnimations.magma;
  const magmaAnimationTimes =
-  DVE.world.baseWorldData.textureAnimationTimes.magma;
+  DVE.worldComm.baseWorldData.textureAnimationTimes.magma;
  const combinedMagmaTextures =
   await DVE.renderManager.textureCreator.createMaterialTexture(
    scene,

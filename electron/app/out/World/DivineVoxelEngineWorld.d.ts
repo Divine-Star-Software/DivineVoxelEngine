@@ -2,7 +2,7 @@ import type { DVEWInitData } from "Meta/World/DVEW";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./Builder/BuilderManager.js";
+import { BuilderComm } from "./Builder/BuilderComm.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -12,20 +12,22 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
+import { NexusComm } from "./Nexus/NexusComm.js";
 /**# Divine Voxel Engine World
  * ---
- * This handles everything in the world worker content.
+ * This handles everything in the world worker context.
  */
 export declare class DivineVoxelEngineWorld {
     worker: Worker;
     chunkBounds: ChunkBounds;
     engineSettings: EngineSettings;
     UTIL: Util;
-    builderManager: BuilderManager;
+    builderComm: BuilderComm;
     worldGeneration: WorldGeneration;
     worldData: WorldData;
     matrix: Matrix;
     matrixCentralHub: MatrixCentralHub;
+    nexusComm: NexusComm;
     textureManager: TextureManager;
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;
@@ -44,5 +46,13 @@ export declare class DivineVoxelEngineWorld {
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
     buildFluidMesh(): void;
     $INIT(data: DVEWInitData): Promise<void>;
+    /**# Load chunk into Nexus
+     * Load a chunk into the shared nexus thread.
+     */
+    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): void;
+    /**# Release Chunk From Nexus
+     * Remve a chunk in the shared nexus thread.
+     */
+    releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number): void;
 }
 export declare const DVEW: DivineVoxelEngineWorld;

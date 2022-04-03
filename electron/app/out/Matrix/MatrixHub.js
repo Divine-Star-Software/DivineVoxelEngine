@@ -4,32 +4,49 @@
  * It syncs the chunk data.
  */
 export class MatrixHub {
+    threadName;
     worldMatrix;
-    constructor(worldMatrix) {
+    messageFunctions = {
+        "sync-chunk": (data) => {
+            this._syncChunk(data);
+        },
+        "release-chunk": (data) => {
+            this._releaseChunk(data);
+        },
+        "sync-global-palettek": (data) => {
+            this._releaseChunk(data);
+        },
+        "sync-region-palette": (data) => {
+            this._releaseChunk(data);
+        },
+        "release-region-palette": (data) => {
+            this._releaseChunk(data);
+        },
+        "set-world-port": (data) => {
+            this._releaseChunk(data);
+        },
+    };
+    worldPort;
+    constructor(threadName, worldMatrix) {
+        this.threadName = threadName;
         this.worldMatrix = worldMatrix;
     }
     onMessage(data, runAfter) {
-        if (data[0] == "sync-chun") {
-            this._syncChunk(data);
+        if (!data[0])
             return;
-        }
-        if (data[0] == "release-chun") {
-            this._releaseChunk(data);
-            return;
-        }
-        if (data[0] == "sync-global-palette") {
-            this._syncGlobalVoxelPalette(data);
-            return;
-        }
-        if (data[0] == "sync-region-palette") {
-            this._syncGlobalVoxelPalette(data);
-            return;
-        }
-        if (data[0] == "release-region-palette") {
-            this._syncGlobalVoxelPalette(data);
+        const message = data[0];
+        if (this.messageFunctions[message]) {
+            this.messageFunctions[message](data);
             return;
         }
         runAfter(data);
+    }
+    requestChunkSync(chunkX, chunkY, chunkZ) {
+        this.worldPort.postMessage(["matrix-sync-chunk"]);
+    }
+    requestChunkRelease(chunkX, chunkY, chunkZ) { }
+    _setWorldPort(port) {
+        this.worldPort = port;
     }
     _syncChunk(data) {
         const chunkSAB = data[1];

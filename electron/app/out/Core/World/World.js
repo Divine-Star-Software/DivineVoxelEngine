@@ -2,12 +2,7 @@ export class World {
     DVE;
     waitingForWolrdData = false;
     baseWorldData = null;
-    runningBlockUpdate = false;
     worker;
-    scene;
-    material;
-    shadowGen;
-    chunkMeshes = {};
     constructor(DVE) {
         this.DVE = DVE;
     }

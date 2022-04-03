@@ -1,7 +1,7 @@
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderManager } from "./Builder/BuilderManager.js";
+import { BuilderComm } from "./Builder/BuilderComm.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -13,27 +13,29 @@ import { InitWorldWorker } from "./Functions/InitWorldWorker.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
+import { NexusComm } from "./Nexus/NexusComm.js";
 /**# Divine Voxel Engine World
  * ---
- * This handles everything in the world worker content.
+ * This handles everything in the world worker context.
  */
 export class DivineVoxelEngineWorld {
     worker;
     chunkBounds = new ChunkBounds();
     engineSettings = new EngineSettings();
     UTIL = new Util();
-    builderManager = new BuilderManager();
+    builderComm = new BuilderComm();
     worldGeneration = new WorldGeneration(this);
     worldData = new WorldData(this);
     matrix = new Matrix(this);
     matrixCentralHub = new MatrixCentralHub(this);
+    nexusComm = new NexusComm(this);
     textureManager = new TextureManager();
     voxelManager = new VoxelManager();
     voxelHelper = new VoxelHelper(this.UTIL, this.worldData, this.textureManager, this.voxelManager);
     chunkProccesor = new ChunkProcessor(this);
     constructor(worker) {
         this.worker = worker;
-        this.builderManager.setMainThreadCom(this.worker);
+        this.builderComm.setMainThreadCom(this.worker);
     }
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
@@ -103,7 +105,7 @@ export class DivineVoxelEngineWorld {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        this.builderManager.requestFullChunkBeRemoved(chunkX, chunkZ);
+        this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
         this.worldData.removeChunk(chunkX, chunkY, chunkZ);
         return true;
     }
@@ -113,9 +115,9 @@ export class DivineVoxelEngineWorld {
             return false;
         // let t0= performance.now();
         const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
-        this.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        this.builderComm.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         // let t1= performance.now();
-        // console.log(t1 - t0); 
+        // console.log(t1 - t0);
         return true;
     }
     async buildChunkAsync(chunkX, chunkY, chunkZ) {
@@ -128,10 +130,22 @@ export class DivineVoxelEngineWorld {
         return true;
     }
     buildFluidMesh() {
-        this.builderManager.requestFluidMeshBeReBuilt();
+        this.builderComm.requestFluidMeshBeReBuilt();
     }
     async $INIT(data) {
         await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
+    }
+    /**# Load chunk into Nexus
+     * Load a chunk into the shared nexus thread.
+     */
+    loadChunkIntoNexus(chunkX, chunkY, chunkZ) {
+        this.nexusComm.nexusLoadChunk(chunkX, chunkY, chunkZ);
+    }
+    /**# Release Chunk From Nexus
+     * Remve a chunk in the shared nexus thread.
+     */
+    releaseChunkFromNexus(chunkX, chunkY, chunkZ) {
+        this.nexusComm.removeChunkFromNexus(chunkX, chunkY, chunkZ);
     }
 }
 //@ts-ignore

@@ -191,7 +191,7 @@ export class ChunkProcessor {
                 }
             }
         }
-        this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        this.DVEW.builderComm.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         return template;
     }
     makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
@@ -279,7 +279,7 @@ export class ChunkProcessor {
                 }
             }
         }
-        this.DVEW.builderManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        this.DVEW.builderComm.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
         return template;
     }
 }

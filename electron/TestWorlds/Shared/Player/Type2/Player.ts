@@ -65,7 +65,7 @@ export class Player {
    playerPickPositionArrayBuffer,
    playerStatesArrayBuffer,
   ];
-  this.DVE.world.getWorker().postMessage(["connect-player", ...arrays]);
+  this.DVE.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -419,12 +419,12 @@ export class Player {
    if (event.button == 2) {
     this._doAction("place");
 
-    this.DVE.world.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
+    this.DVE.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
    }
 
    if (event.button == 0) {
     this._doAction("break");
-    this.DVE.world.requestWorldUpdate(
+    this.DVE.worldComm.requestWorldUpdate(
      "voxel-remove",
      this.blockLookingAtPosition
     );

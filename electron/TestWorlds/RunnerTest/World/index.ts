@@ -23,7 +23,6 @@ const start = () => {
   if (x == -32 || x == 32) type = "wall";
   if (x == -16 || x == 16) type = "trench";
   if (x == 0) type = "track";
-  console.log(x, type);
   for (let z = startZ; z < endZ; z += 16) {
    worldGen.generateChunk(x, 0, z, <any>type);
   }

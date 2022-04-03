@@ -6,30 +6,50 @@ import type { WorldMatrix } from "./WorldMatrix";
  * It syncs the chunk data.
  */
 export class MatrixHub {
- constructor(private worldMatrix: WorldMatrix) {}
-
- onMessage(data: any[], runAfter: (data: any) => {}) {
-  if (data[0] == "sync-chun") {
+ messageFunctions: Record<string, (data: any) => any | void> = {
+  "sync-chunk": (data) => {
    this._syncChunk(data);
-   return;
-  }
-  if (data[0] == "release-chun") {
+  },
+  "release-chunk": (data) => {
    this._releaseChunk(data);
-   return;
-  }
-  if (data[0] == "sync-global-palette") {
-   this._syncGlobalVoxelPalette(data);
-   return;
-  }
-  if (data[0] == "sync-region-palette") {
-   this._syncGlobalVoxelPalette(data);
-   return;
-  }
-  if (data[0] == "release-region-palette") {
-   this._syncGlobalVoxelPalette(data);
+  },
+  "sync-global-palettek": (data) => {
+   this._releaseChunk(data);
+  },
+  "sync-region-palette": (data) => {
+   this._releaseChunk(data);
+  },
+  "release-region-palette": (data) => {
+   this._releaseChunk(data);
+  },
+  "set-world-port": (data) => {
+    this._releaseChunk(data);
+   },
+ };
+
+
+ worldPort : MessagePort;
+
+ constructor(public threadName : string,private worldMatrix: WorldMatrix,) {}
+
+ onMessage(data: any[], runAfter: (data: any) => any | void) {
+  if(!data[0])return;
+  const message = data[0];
+  if (this.messageFunctions[message]) {
+   this.messageFunctions[message](data);
    return;
   }
   runAfter(data);
+ }
+
+ requestChunkSync(chunkX: number, chunkY: number, chunkZ: number) {
+     this.worldPort.postMessage(["matrix-sync-chunk"])
+ }
+
+ requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {}
+
+ _setWorldPort(port : MessagePort) {
+     this.worldPort = port;
  }
 
  _syncChunk(data: any[]) {

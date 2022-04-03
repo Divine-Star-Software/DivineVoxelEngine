@@ -53,7 +53,7 @@ export class BuilderWorkerManager {
                 this._handleBuildMeshMessage(event);
             };
             const channel = new MessageChannel();
-            const worldWorker = this.DVE.world.getWorker();
+            const worldWorker = this.DVE.worldComm.getWorker();
             const builderWorker = this.builders[i];
             //connect builder to world
             worldWorker.postMessage(["connect-builder"], [channel.port1]);
@@ -79,7 +79,7 @@ export class BuilderWorkerManager {
             this._handlFluideBuildMeshMessage(event);
         };
         const channel = new MessageChannel();
-        const worldWorker = this.DVE.world.getWorker();
+        const worldWorker = this.DVE.worldComm.getWorker();
         //connect world to fluid builder
         worldWorker.postMessage(["connect-fluid-builder"], [channel.port1]);
         //connect fluid builder to world

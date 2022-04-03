@@ -5,7 +5,7 @@
 export class Flat3DArray {
     bounds = {
         x: 16,
-        y: 256,
+        y: 128,
         z: 16,
     };
     _position = {
@@ -14,11 +14,12 @@ export class Flat3DArray {
         z: 0,
     };
     setBounds(x, y, z) {
-        this.bounds = {
-            x: x,
-            y: y,
-            z: z,
-        };
+        console.log(x, y, z);
+        /*   this.bounds = {
+           x: x,
+           y: y,
+           z: z,
+          }; */
     }
     getValue(x, y, z, array) {
         return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];

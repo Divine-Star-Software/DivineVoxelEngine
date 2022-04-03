@@ -8,7 +8,7 @@ import { PositionMatrix } from "Meta/Util.types";
 export class Flat3DArray {
  bounds = {
   x: 16,
-  y: 256,
+  y: 128,
   z: 16,
  };
 
@@ -19,11 +19,12 @@ export class Flat3DArray {
  };
 
  setBounds(x: number, y: number, z: number) {
-  this.bounds = {
+     console.log(x,y,z);
+/*   this.bounds = {
    x: x,
    y: y,
    z: z,
-  };
+  }; */
  }
 
  getValue(x: number, y: number, z: number, array: ChunkVoxels) {

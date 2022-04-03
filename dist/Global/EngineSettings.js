@@ -21,13 +21,13 @@ export class EngineSettings {
         },
         regions: {
             regionXPow2: 9,
-            regionYPow2: 8,
+            regionYPow2: 7,
             regionZPow2: 9,
         },
         chunks: {
             autoHeightMap: true,
             chunkXPow2: 4,
-            chunkYPow2: 7,
+            chunkYPow2: 8,
             chunkZPow2: 4,
         },
         voxels: {

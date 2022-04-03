@@ -20,7 +20,6 @@ const start = () => {
             type = "trench";
         if (x == 0)
             type = "track";
-        console.log(x, type);
         for (let z = startZ; z < endZ; z += 16) {
             worldGen.generateChunk(x, 0, z, type);
         }

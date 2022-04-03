@@ -2,16 +2,18 @@
 import type { DVEInitData } from "Meta/Core/DVE.js";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderWorkerManager } from "./Builders/BuilderWorkerManager.js";
-import { World } from "./World/World.js";
+import { BuilderComm } from "./Builders/BuilderComm.js";
+import { WorldComm } from "./World/WorldComm.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
+import { NexusComm } from "./Nexus/NexusComm.js";
 export declare class DivineVoxelEngine {
-    world: World;
+    worldComm: WorldComm;
+    nexusComm: NexusComm;
     engineSettings: EngineSettings;
     renderManager: RenderManager;
-    builderManager: BuilderWorkerManager;
+    builderManager: BuilderComm;
     meshManager: MeshManager;
     util: Util;
     constructor();
