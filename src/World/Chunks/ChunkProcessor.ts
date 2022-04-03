@@ -275,7 +275,7 @@ export class ChunkProcessor implements ChunkBound {
     }
    }
   }
-  this.DVEW.builderComm.requestFullChunkBeBuilt(
+  this.DVEW.builderComm.requestFullChunkBeBuiltAsync(
    chunkX,
    chunkY,
    chunkZ,

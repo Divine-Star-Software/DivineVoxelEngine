@@ -113,39 +113,27 @@ export class DivineVoxelEngineWorld {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        // let t0= performance.now();
-        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
-        this.builderComm.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
-        // let t1= performance.now();
-        // console.log(t1 - t0);
+        this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
         return true;
     }
     async buildChunkAsync(chunkX, chunkY, chunkZ) {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        const template = this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
-        // console.log("sending")
-        // this.builderManager.requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template);
+        this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
         return true;
     }
     buildFluidMesh() {
         this.builderComm.requestFluidMeshBeReBuilt();
     }
+    sendMessageToNexus(message, data, transfers) {
+        this.nexusComm.sendMessageToNexus(message, data, transfers);
+    }
+    onMessageFromNexus(message, run) {
+        this.nexusComm.listenForMessage(message, run);
+    }
     async $INIT(data) {
         await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
-    }
-    /**# Load chunk into Nexus
-     * Load a chunk into the shared nexus thread.
-     */
-    loadChunkIntoNexus(chunkX, chunkY, chunkZ) {
-        this.nexusComm.nexusLoadChunk(chunkX, chunkY, chunkZ);
-    }
-    /**# Release Chunk From Nexus
-     * Remve a chunk in the shared nexus thread.
-     */
-    releaseChunkFromNexus(chunkX, chunkY, chunkZ) {
-        this.nexusComm.removeChunkFromNexus(chunkX, chunkY, chunkZ);
     }
 }
 //@ts-ignore

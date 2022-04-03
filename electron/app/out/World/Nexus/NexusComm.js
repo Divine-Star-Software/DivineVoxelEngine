@@ -5,6 +5,7 @@
 export class NexusComm {
     DVEW;
     port;
+    messageFunctions = {};
     constructor(DVEW) {
         this.DVEW = DVEW;
     }
@@ -12,18 +13,19 @@ export class NexusComm {
         this.port = port;
         this.DVEW.matrixCentralHub.registerThread("nexus", port);
         port.onmessage = (event) => {
-            //stuff
-            // console.log(event);
+            const message = event.data[0];
+            if (this.messageFunctions[message]) {
+                this.messageFunctions[message](event.data, event);
+            }
         };
     }
-    nexusLoadChunk(chunkX, chunkY, chunkZ) {
-        if (this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ))
-            return false;
-        this.DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkX, chunkY, chunkZ);
+    sendMessageToNexus(message, data, transfers) {
+        if (transfers) {
+            this.port.postMessage([message, ...data], transfers);
+        }
+        this.port.postMessage([message, ...data]);
     }
-    removeChunkFromNexus(chunkX, chunkY, chunkZ) {
-        if (!this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ))
-            return false;
-        this.DVEW.matrixCentralHub.releaseChunkInThread("nexus", chunkX, chunkY, chunkZ);
+    listenForMessage(message, run) {
+        this.messageFunctions[message] = run;
     }
 }

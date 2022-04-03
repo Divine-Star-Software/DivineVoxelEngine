@@ -45,14 +45,8 @@ export declare class DivineVoxelEngineWorld {
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
     buildFluidMesh(): void;
+    sendMessageToNexus(message: string, data: any[], transfers?: any[]): void;
+    onMessageFromNexus(message: string, run: (data: any[], event: MessageEvent) => void): void;
     $INIT(data: DVEWInitData): Promise<void>;
-    /**# Load chunk into Nexus
-     * Load a chunk into the shared nexus thread.
-     */
-    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): void;
-    /**# Release Chunk From Nexus
-     * Remve a chunk in the shared nexus thread.
-     */
-    releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number): void;
 }
 export declare const DVEW: DivineVoxelEngineWorld;

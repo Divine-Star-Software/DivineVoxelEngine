@@ -6,7 +6,8 @@ import type { DivineVoxelEngineWorld } from "index";
  */
 export class NexusComm {
  port: MessagePort;
-
+ messageFunctions: Record<string, (data: any[], event: MessageEvent) => void> =
+  {};
  constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  setNexusPort(port: MessagePort) {
@@ -14,22 +15,24 @@ export class NexusComm {
 
   this.DVEW.matrixCentralHub.registerThread("nexus", port);
   port.onmessage = (event: MessageEvent) => {
-   //stuff
-  // console.log(event);
+   const message = event.data[0];
+   if (this.messageFunctions[message]) {
+    this.messageFunctions[message](event.data, event);
+   }
   };
  }
 
- nexusLoadChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  if (this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ)) return false;
-  this.DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkX, chunkY, chunkZ);
+ sendMessageToNexus(message: string, data: any[], transfers?: any[]) {
+  if (transfers) {
+   this.port.postMessage([message, ...data], transfers);
+  }
+  this.port.postMessage([message, ...data]);
  }
- removeChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ)) return false;
-  this.DVEW.matrixCentralHub.releaseChunkInThread(
-   "nexus",
-   chunkX,
-   chunkY,
-   chunkZ
-  );
+
+ listenForMessage(
+  message: string,
+  run: (data: any[], event: MessageEvent) => void
+ ) {
+  this.messageFunctions[message] = run;
  }
 }

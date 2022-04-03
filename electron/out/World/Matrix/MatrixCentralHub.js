@@ -14,6 +14,8 @@ export class MatrixCentralHub {
             const chunkX = data[2];
             const chunkY = data[3];
             const chunkZ = data[4];
+            console.log("MATRIX SYNC CHUNK");
+            console.log(thread, chunkX, chunkY, chunkZ);
             this.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
         },
         "matrix-release-chunk": (data, event) => {
@@ -23,12 +25,30 @@ export class MatrixCentralHub {
             const chunkZ = data[4];
             this.releaseChunkInThread(thread, chunkX, chunkY, chunkZ);
         },
+        "sync-global-voxel-palette": (data, event) => {
+            const thread = data[1];
+            this.syncGlobalVoxelPaletteInThread(thread);
+        },
+        "sync-region-voxel-palette": (data, event) => {
+            const thread = data[1];
+            const regionX = data[2];
+            const regionY = data[3];
+            const regionZ = data[4];
+            this.syncRegionVoxelPaletteInThread(thread, regionX, regionY, regionZ);
+        },
+        "release-region-voxel-palette": (data, event) => {
+            const thread = data[1];
+            const regionX = data[2];
+            const regionY = data[3];
+            const regionZ = data[4];
+            this.releaseRegionVoxelPaletteInThread(thread, regionX, regionY, regionZ);
+        },
     };
     registerThread(threadId, thread) {
-        this.threads[threadId] = thread;
         const channel = new MessageChannel();
         const port = channel.port1;
         thread.postMessage(["set-world-port"], [port]);
+        this.threads[threadId] = thread;
         channel.port2.onmessage = (event) => {
             const data = event.data;
             if (data && data[0]) {
@@ -58,6 +78,7 @@ export class MatrixCentralHub {
         const chunkSABs = this.DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);
         if (!chunkSABs)
             return false;
+        console.log("SYNCYING THREAD");
         this.threads[threadId].postMessage([
             "sync-chunk",
             chunkSABs[0],

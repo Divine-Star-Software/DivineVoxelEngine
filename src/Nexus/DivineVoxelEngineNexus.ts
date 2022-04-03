@@ -36,12 +36,27 @@ class DivineVoxelEngineNexusClass {
  /**# Load chunk into Nexus
   * Load a chunk into the shared nexus thread.
   */
- loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number) {}
+ loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number) {
+  this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
+ }
 
  /**# Release Chunk From Nexus
   * Remve a chunk in the shared nexus thread.
   */
- releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {}
+ releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
+  this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
+ }
+
+ /**# On Message From World
+  * ---
+  * Add a function to run on a message from the world thread.
+  */
+ onMessageFromWorld(
+  message: string,
+  run: (data: any[], event: MessageEvent) => void
+ ) {
+  this.worldComm.listenForMessage(message, run);
+ }
 }
 
 export type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;

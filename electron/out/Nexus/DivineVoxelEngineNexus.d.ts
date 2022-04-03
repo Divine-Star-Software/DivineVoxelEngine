@@ -19,6 +19,11 @@ declare class DivineVoxelEngineNexusClass {
      * Remve a chunk in the shared nexus thread.
      */
     releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number): void;
+    /**# On Message From World
+     * ---
+     * Add a function to run on a message from the world thread.
+     */
+    onMessageFromWorld(message: string, run: (data: any[], event: MessageEvent) => void): void;
 }
 export declare type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;
 export declare const DVEN: DivineVoxelEngineNexusClass;

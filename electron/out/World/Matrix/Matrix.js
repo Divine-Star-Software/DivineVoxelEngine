@@ -84,6 +84,9 @@ export class Matrix {
     }
     createChunkSAB(chunkX, chunkY, chunkZ) {
         const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
+        setTimeout(() => {
+            console.log(this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ));
+        }, 5000);
         if (!chunk)
             return false;
         const length = chunk.voxels.length;

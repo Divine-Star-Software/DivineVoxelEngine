@@ -41,5 +41,5 @@ export declare class WorldMatrix implements ChunkBound {
     unLockChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: Uint32Array) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number): false | undefined;
-    getData(x: number, y: number, z: number, value: number): number | false;
+    getData(x: number, y: number, z: number): number | false;
 }

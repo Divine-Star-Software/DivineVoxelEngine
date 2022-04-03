@@ -212,7 +212,7 @@ export class WorldMatrix implements ChunkBound {
   this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk, data);
  }
 
- getData(x: number, y: number, z: number, value: number) {
+ getData(x: number, y: number, z: number) {
   const chunkX =
    (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
   const chunkY =

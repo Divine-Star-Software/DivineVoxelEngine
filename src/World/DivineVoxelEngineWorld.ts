@@ -156,31 +156,19 @@ export class DivineVoxelEngineWorld {
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-
-  // let t0= performance.now();
-  const template = this.chunkProccesor.makeAllChunkTemplates(
-   chunk,
-   chunkX,
-   chunkY,
-   chunkZ
-  );
-  this.builderComm.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
-
-  // let t1= performance.now();
-  // console.log(t1 - t0);
+  this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
   return true;
  }
+
  async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  const template = this.chunkProccesor.makeAllChunkTemplatesAsync(
+   this.chunkProccesor.makeAllChunkTemplatesAsync(
    chunk,
    chunkX,
    chunkY,
    chunkZ
   );
-  // console.log("sending")
-  // this.builderManager.requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template);
   return true;
  }
 
@@ -188,24 +176,20 @@ export class DivineVoxelEngineWorld {
   this.builderComm.requestFluidMeshBeReBuilt();
  }
 
+ sendMessageToNexus(message: string, data: any[], transfers?: any[]) {
+  this.nexusComm.sendMessageToNexus(message, data, transfers);
+ }
+
+ onMessageFromNexus(
+  message: string,
+  run: (data: any[], event: MessageEvent) => void
+ ) {
+  this.nexusComm.listenForMessage(message, run);
+ }
+
  async $INIT(data: DVEWInitData) {
   await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
  }
-
- /**# Load chunk into Nexus
-  * Load a chunk into the shared nexus thread.
-  */
- loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number) {
-     this.nexusComm.nexusLoadChunk(chunkX,chunkY,chunkZ);
- }
-
- /**# Release Chunk From Nexus
-  * Remve a chunk in the shared nexus thread.
-  */
- releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
-    this.nexusComm.removeChunkFromNexus(chunkX,chunkY,chunkZ);
- }
-
 }
 
 //@ts-ignore

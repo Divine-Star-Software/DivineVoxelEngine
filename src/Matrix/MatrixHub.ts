@@ -11,6 +11,7 @@ export class MatrixHub {
   (data: any, event: MessageEvent) => any | void
  > = {
   "sync-chunk": (data, event) => {
+    console.log(data);
    this._syncChunk(data);
   },
   "release-chunk": (data, event) => {
@@ -37,7 +38,7 @@ export class MatrixHub {
 
  onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
   const data = event.data;
-
+  console.log(data);
   if (!data || !data[0]) return;
   const message = data[0];
   if (this.messageFunctions[message]) {
@@ -69,6 +70,9 @@ export class MatrixHub {
 
  _setWorldPort(port: MessagePort) {
   this.worldPort = port;
+  this.worldPort.onmessage = (event)=>{
+    console.log(event);
+  }
  }
 
  _syncChunk(data: any[]) {

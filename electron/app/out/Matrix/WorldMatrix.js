@@ -168,7 +168,7 @@ export class WorldMatrix {
         }
         this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk, data);
     }
-    getData(x, y, z, value) {
+    getData(x, y, z) {
         const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
         const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
         const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
