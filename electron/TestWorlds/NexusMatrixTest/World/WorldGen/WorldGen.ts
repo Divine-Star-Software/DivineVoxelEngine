@@ -29,7 +29,7 @@ export class WorldGen {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= maxY) {
       this.DVEW.worldData.paintVoxel(
-       "dve:dreamstone",
+       "dve:dreamstonepillar",
        "default",
        x + chunkX,
        y + chunkY,

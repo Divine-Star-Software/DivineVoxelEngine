@@ -14,7 +14,7 @@ declare class DivineVoxelEngineNexusClass {
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.
      */
-    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): void;
+    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
     /**# Release Chunk From Nexus
      * Remve a chunk in the shared nexus thread.
      */

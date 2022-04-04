@@ -6,6 +6,20 @@ export class NexusComm {
     DVE;
     worker;
     scene;
+    messageFunctions = {
+        "spawn-entity": (data, event) => {
+            const entityId = data[1];
+            const identiferId = data[2];
+            const position = data[3];
+            const states = data[4];
+            this.DVE.renderedEntites.spawnEntity(entityId, identiferId, position, states);
+        },
+        "de-spawn-entity": (data, event) => {
+            const entityId = data[1];
+            const identiferId = data[2];
+            this.DVE.renderedEntites.deSpawnEntity(entityId, identiferId);
+        },
+    };
     constructor(DVE) {
         this.DVE = DVE;
     }
@@ -18,8 +32,12 @@ export class NexusComm {
     startWorldGen() {
         this.worker.postMessage("start");
     }
-    handleMessage(event, world) {
+    handleMessage(event) {
+        console.log(event);
         const message = event.data[0];
+        if (this.messageFunctions[message]) {
+            this.messageFunctions[message](event.data, event);
+        }
     }
     createNexusWorker(workerPath) {
         this.worker = new Worker(new URL(workerPath, import.meta.url), {
@@ -37,7 +55,7 @@ export class NexusComm {
             console.log(er);
         };
         this.worker.onmessage = (message) => {
-            this.handleMessage(message, world);
+            this.handleMessage(message);
         };
         const channel = new MessageChannel();
         const worldWorker = this.DVE.worldComm.getWorker();

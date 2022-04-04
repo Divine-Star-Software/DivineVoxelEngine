@@ -19,7 +19,7 @@ export class WorldGen {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= maxY) {
-                        this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (x == 7 && z == 7 && y == maxY) {
                         this.DVEW.worldData.paintVoxel("dve:debugbox", "default", x + chunkX, y + chunkY, z + chunkZ);

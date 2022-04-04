@@ -6,6 +6,7 @@ import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusComm } from "./Nexus/NexusComm.js";
+import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 export class DivineVoxelEngine {
     worldComm = new WorldComm(this);
     nexusComm = new NexusComm(this);
@@ -13,6 +14,7 @@ export class DivineVoxelEngine {
     renderManager = new RenderManager();
     builderManager = new BuilderComm(this);
     meshManager = new MeshManager(this);
+    renderedEntites = new RenderedEntitesManager(this);
     util = new Util();
     constructor() { }
     _handleOptions() {
@@ -91,6 +93,9 @@ export class DivineVoxelEngine {
     async $SCENEINIT(data) {
         await BuildInitalMeshes(this, data.scene);
         this.worldComm.start();
+        if (this.engineSettings.settings.nexus?.enabled) {
+            this.renderedEntites.setScene(data.scene);
+        }
     }
 }
 export const DVE = new DivineVoxelEngine();

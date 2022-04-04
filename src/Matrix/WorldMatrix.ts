@@ -14,6 +14,7 @@ export class WorldMatrix implements ChunkBound {
 
  //two minutes
  updateDieTime = 120000;
+ loadDieTime = 10000;
 
  regionXPow2 = 9;
  regionZPow2 = 9;
@@ -30,6 +31,32 @@ export class WorldMatrix implements ChunkBound {
 
  syncChunkBounds(): void {
   this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+ }
+
+ /**# Await Chunk Load
+  * ---
+  * Wait for a chunk to loaded into the matrix  for use. 
+  */
+ awaitChunkLoad(
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
+  timeout = this.loadDieTime
+ ) {
+  return new Promise((resolve, reject) => {
+   let inte = 0;
+   const failTimeout = setTimeout(() => {
+    clearInterval(inte);
+    reject(false);
+   }, timeout);
+
+   inte = setInterval(() => {
+    if (this.getChunk(chunkX, chunkY, chunkZ)) {
+     clearTimeout(failTimeout);
+     resolve(true);
+    }
+   }, 10);
+  });
  }
 
  __setGlobalVoxelPalette(palette: Record<number, string>) {

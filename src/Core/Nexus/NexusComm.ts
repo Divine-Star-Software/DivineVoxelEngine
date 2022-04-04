@@ -8,6 +8,28 @@ export class NexusComm {
  worker: Worker;
  scene: BABYLON.Scene;
 
+ messageFunctions: Record<string, (data: any[], event: MessageEvent) => void> =
+  {
+   "spawn-entity": (data, event) => {
+    const entityId = data[1];
+    const identiferId = data[2];
+    const position = data[3];
+    const states = data[4];
+
+    this.DVE.renderedEntites.spawnEntity(
+     entityId,
+     identiferId,
+     position,
+     states
+    );
+   },
+   "de-spawn-entity": (data, event) => {
+    const entityId = data[1];
+    const identiferId = data[2];
+    this.DVE.renderedEntites.deSpawnEntity(entityId, identiferId);
+   },
+  };
+
  constructor(private DVE: DivineVoxelEngine) {}
 
  reStart() {
@@ -22,8 +44,12 @@ export class NexusComm {
   this.worker.postMessage("start");
  }
 
- handleMessage(event: MessageEvent, world: this) {
+ handleMessage(event: MessageEvent) {
+     console.log(event);
   const message = event.data[0];
+  if (this.messageFunctions[message]) {
+   this.messageFunctions[message](event.data, event);
+  }
  }
 
  createNexusWorker(workerPath: string) {
@@ -44,7 +70,7 @@ export class NexusComm {
    console.log(er);
   };
   this.worker.onmessage = (message: MessageEvent) => {
-   this.handleMessage(message, world);
+   this.handleMessage(message);
   };
   const channel = new MessageChannel();
   const worldWorker = this.DVE.worldComm.getWorker();

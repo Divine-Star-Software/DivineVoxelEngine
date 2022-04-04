@@ -23,8 +23,9 @@ class DivineVoxelEngineNexusClass {
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.
      */
-    loadChunkIntoNexus(chunkX, chunkY, chunkZ) {
+    async loadChunkIntoNexus(chunkX, chunkY, chunkZ) {
         this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
+        return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
     }
     /**# Release Chunk From Nexus
      * Remve a chunk in the shared nexus thread.

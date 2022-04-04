@@ -9,6 +9,7 @@ import { BuildInitalMeshes } from "./Functions/BuildInitalMeshes.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusComm } from "./Nexus/NexusComm.js";
+import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 
 export class DivineVoxelEngine {
  worldComm = new WorldComm(this);
@@ -18,6 +19,9 @@ export class DivineVoxelEngine {
  renderManager = new RenderManager();
  builderManager = new BuilderComm(this);
  meshManager = new MeshManager(this);
+
+ renderedEntites = new RenderedEntitesManager(this);
+
  util: Util = new Util();
 
  constructor() {}
@@ -113,8 +117,10 @@ export class DivineVoxelEngine {
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
   await BuildInitalMeshes(this, data.scene);
-
   this.worldComm.start();
+  if (this.engineSettings.settings.nexus?.enabled) {
+   this.renderedEntites.setScene(data.scene);
+  }
  }
 }
 

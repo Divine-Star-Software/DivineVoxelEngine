@@ -9,11 +9,8 @@ await DVEN.$INIT({
  onMessage: (message: string, data: any[]) => {},
 });
 
-DVEN.onMessageFromWorld("done", (data, event) => {
- console.log("DONE!!!");
- DVEN.loadChunkIntoNexus(0, 0, 0);
- setTimeout(() => {
-  const voxel = DVEN.worldMatrix.getData(0, 0, 0);
-  console.log(voxel);
- }, 5000);
+DVEN.onMessageFromWorld("done", async (data, event) => {
+ await DVEN.loadChunkIntoNexus(0, 0, 0);
+ const voxel = DVEN.worldMatrix.getData(0, 0, 0);
+ console.log(voxel);
 });
