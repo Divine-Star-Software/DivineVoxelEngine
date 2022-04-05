@@ -16,6 +16,7 @@ export function InitNexusWorker(
     if (messageFunctions[message]) {
      messageFunctions[message](eventData, event);
     }
+    DVEN.renderComm._onMessage(event);
    });
   } catch (error) {
    reject(false);

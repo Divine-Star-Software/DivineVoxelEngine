@@ -15,13 +15,14 @@ export class MatrixHub {
             this._releaseChunk(data);
         },
         "sync-global-palette": (data, event) => {
-            this._releaseChunk(data);
+            console.log("SYNC GLOBAL PALEETE");
+            this._syncGlobalVoxelPalette(data);
         },
         "sync-region-palette": (data, event) => {
-            this._releaseChunk(data);
+            this._syncRegionVoxelPalette(data);
         },
         "release-region-palette": (data, event) => {
-            this._releaseChunk(data);
+            this._releaseRegionVoxelPalette(data);
         },
         "set-world-port": (data, event) => {
             const port = event.ports[0];

@@ -28,7 +28,7 @@ export const SetUpWorkers = (
  const bPath = new URL(builderPath, basePath);
 
  const builderWorkers: Worker[] = [];
- for (let i = 0; i < 12; i++) {
+ for (let i = 0; i < 4; i++) {
   builderWorkers.push(
    new Worker(bPath, {
     type: "module",

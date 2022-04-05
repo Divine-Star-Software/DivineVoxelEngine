@@ -25,13 +25,13 @@ export class NexusEntites {
  registerEntity(
   id: string,
   entityData: NexusEntityData,
-  renderedEntity: NexusEntity
+  nexusEntity: NexusEntity
  ) {
   if (this.entityTemplate[id]) {
    throw new Error(`The entity with the ${id} already exists.`);
   }
   this.entityTemplate[id] = {
-   template: renderedEntity,
+   template: nexusEntity,
    data: entityData,
   };
  }
@@ -54,14 +54,14 @@ export class NexusEntites {
  ) {
   const entity = this.entityTemplate[entityId];
   const newEntity = new entity.template();
-  const positionArray = new SharedArrayBuffer(4 * 3);
-  const statesArray = new Float32Array(entity.data.numStates * 4);
-  newEntity.position = new Float32Array(positionArray);
-  newEntity.states = new Float32Array(statesArray);
+  const positionSAB = new SharedArrayBuffer(4 * 3);
+  const statesSAB = new SharedArrayBuffer(entity.data.numStates * 4);
+  newEntity.position = new Float32Array(positionSAB);
+  newEntity.states = new Float32Array(statesSAB);
   newEntity.position[0] = position.x;
   newEntity.position[1] = position.y;
   newEntity.position[2] = position.z;
-  newEntity.$INIT(entity.data, otherData);
+  newEntity.$INIT(this.DVEN,entity.data, otherData);
   let uuid = "";
   if (identiferId) {
    uuid = identiferId;
@@ -70,12 +70,22 @@ export class NexusEntites {
   }
   this.loaedEntities[entity.data.type][uuid] = newEntity;
   newEntity.onSpawn();
+  this.DVEN.renderComm.sendMessage("spawn-entity", [
+   entityId,
+   identiferId,
+   positionSAB,
+   statesSAB,
+  ]);
  }
 
- dSepawnEntity(entityId: string, identiferId: string) {
+ ddSepawnEntity(entityId: string, identiferId: string) {
   const entity = this.entityTemplate[entityId];
   const despawningEntity = this.loaedEntities[entity.data.type][identiferId];
   despawningEntity.onDeSpawn();
   delete this.loaedEntities[entity.data.type][identiferId];
+  this.DVEN.renderComm.sendMessage("de-spawn-entity", [
+    entityId,
+    identiferId,
+   ]);
  }
 }

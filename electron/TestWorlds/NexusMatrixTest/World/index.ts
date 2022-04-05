@@ -1,4 +1,4 @@
-import { DVEW } from "../../../out/index.js";
+import { DVEN, DVEW } from "../../../out/index.js";
 
 import { PlayerWatcher } from "../../Shared/Player/Type2/PlayerWatcher.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
@@ -25,25 +25,20 @@ const start = () => {
  }
 
  DVEW.runRGBLightUpdateQue();
-  for (let x = startX; x < endX; x += 16) {
-   for (let z = startZ; z < endZ; z += 16) {
-    DVEW.buildChunkAsync(x, 0, z);
-   }
+ for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   DVEW.buildChunkAsync(x, 0, z);
   }
-  DVEW.buildFluidMesh();
+ }
+ DVEW.buildFluidMesh();
 
-
-  DVEW.sendMessageToNexus("done", []);
+ DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+ (DVEW as any).nexusComm.sendMessage("done", []);
 };
 
 (async () => {
  await DVEW.$INIT({
   onReady: start,
-  onMessage: (message: string, data: any[]) => {
-   if (message == "connect-player") {
-    playerWatcher.setPlayerSharedArrays(data);
-    playerWatcher.startWatchingPlayer();
-   }
-  },
+  onMessage: (message: string, data: any[]) => {},
  });
 })();

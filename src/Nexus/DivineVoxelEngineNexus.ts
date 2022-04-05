@@ -7,8 +7,10 @@ import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
-import { WorldComm } from "./World/WorldComm.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { EngineSettingsData } from "Meta/index.js";
+import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
 
 class DivineVoxelEngineNexusClass {
  engineSettings = new EngineSettings();
@@ -16,6 +18,9 @@ class DivineVoxelEngineNexusClass {
  matrixHub = new MatrixHub("nexus", this.worldMatrix);
 
  worldComm = new WorldComm(this);
+ renderComm = new RenderComm();
+
+ nexusEntites = new NexusEntites(this);
 
  async $INIT(data: DVENInitData) {
   await InitNexusWorker(this, data.onReady, data.onMessage, data.onRestart);
@@ -48,16 +53,6 @@ class DivineVoxelEngineNexusClass {
   this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
  }
 
- /**# On Message From World
-  * ---
-  * Add a function to run on a message from the world thread.
-  */
- onMessageFromWorld(
-  message: string,
-  run: (data: any[], event: MessageEvent) => void
- ) {
-  this.worldComm.listenForMessage(message, run);
- }
 }
 
 export type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;

@@ -1,7 +1,7 @@
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./Builder/BuilderComm.js";
+import { BuilderComm } from "./InterComms/Builder/BuilderComm.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -13,7 +13,7 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
-import { NexusComm } from "./Nexus/NexusComm.js";
+import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -30,7 +30,7 @@ export class DivineVoxelEngineWorld {
     matrixCentralHub = new MatrixCentralHub(this);
     nexusComm = new NexusComm(this);
     textureManager = new TextureManager();
-    voxelManager = new VoxelManager();
+    voxelManager = new VoxelManager(this);
     voxelHelper = new VoxelHelper(this.UTIL, this.worldData, this.textureManager, this.voxelManager);
     chunkProccesor = new ChunkProcessor(this);
     constructor(worker) {
@@ -125,12 +125,6 @@ export class DivineVoxelEngineWorld {
     }
     buildFluidMesh() {
         this.builderComm.requestFluidMeshBeReBuilt();
-    }
-    sendMessageToNexus(message, data, transfers) {
-        this.nexusComm.sendMessageToNexus(message, data, transfers);
-    }
-    onMessageFromNexus(message, run) {
-        this.nexusComm.listenForMessage(message, run);
     }
     async $INIT(data) {
         await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);

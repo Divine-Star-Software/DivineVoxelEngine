@@ -24,16 +24,12 @@ const start = () => {
         }
     }
     DVEW.buildFluidMesh();
-    DVEW.sendMessageToNexus("done", []);
+    DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+    DVEW.nexusComm.sendMessage("done", []);
 };
 (async () => {
     await DVEW.$INIT({
         onReady: start,
-        onMessage: (message, data) => {
-            if (message == "connect-player") {
-                playerWatcher.setPlayerSharedArrays(data);
-                playerWatcher.startWatchingPlayer();
-            }
-        },
+        onMessage: (message, data) => { },
     });
 })();

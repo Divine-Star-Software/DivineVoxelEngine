@@ -2,12 +2,12 @@
 import type { DVEInitData } from "Meta/Core/DVE.js";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./Builders/BuilderComm.js";
-import { WorldComm } from "./World/WorldComm.js";
+import { BuilderComm } from "./InterComms/Builders/BuilderComm.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
-import { NexusComm } from "./Nexus/NexusComm.js";
+import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 export declare class DivineVoxelEngine {
     worldComm: WorldComm;

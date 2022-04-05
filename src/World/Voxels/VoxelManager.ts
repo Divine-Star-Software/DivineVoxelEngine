@@ -1,3 +1,4 @@
+import { DivineVoxelEngineWorld } from "index";
 import { VoxelHooks, VoxelInteface } from "Meta/World/Voxels/Voxel.types";
 import { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
 
@@ -8,6 +9,8 @@ export class VoxelManager implements VoxelManagerInterface {
 
  fluidShapeMap: Record<string, number> = {};
  fluidShapeMapHasBeenSet = false;
+
+ constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  setShapeMap(shapeMap: Record<string, number>) {
   this.shapeMap = shapeMap;
@@ -45,6 +48,16 @@ export class VoxelManager implements VoxelManagerInterface {
 
  registerVoxelData(voxel: VoxelInteface) {
   this.voxels[voxel.data.id] = voxel;
+  if (this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+   this.DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
+  }
+  if (
+   this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region"
+  ) {
+   this.DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(
+    voxel
+   );
+  }
  }
 
  runVoxelHookForAll(hook: VoxelHooks) {

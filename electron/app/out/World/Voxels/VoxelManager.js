@@ -1,9 +1,13 @@
 export class VoxelManager {
+    DVEW;
     voxels = {};
     shapeMap = {};
     shapeMapHasBeenSet = false;
     fluidShapeMap = {};
     fluidShapeMapHasBeenSet = false;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
+    }
     setShapeMap(shapeMap) {
         this.shapeMap = shapeMap;
         this.shapeMapHasBeenSet = true;
@@ -35,6 +39,12 @@ export class VoxelManager {
     }
     registerVoxelData(voxel) {
         this.voxels[voxel.data.id] = voxel;
+        if (this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+            this.DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
+        }
+        if (this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+            this.DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(voxel);
+        }
     }
     runVoxelHookForAll(hook) {
         for (const voxelID of Object.keys(this.voxels)) {

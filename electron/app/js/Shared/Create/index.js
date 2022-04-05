@@ -13,7 +13,7 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, fluidBuilderPath,
     });
     const bPath = new URL(builderPath, basePath);
     const builderWorkers = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 4; i++) {
         builderWorkers.push(new Worker(bPath, {
             type: "module",
         }));

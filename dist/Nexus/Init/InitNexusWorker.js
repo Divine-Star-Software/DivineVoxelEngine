@@ -9,6 +9,7 @@ export function InitNexusWorker(DVEN, onReady, onMessage, onRestart) {
                 if (messageFunctions[message]) {
                     messageFunctions[message](eventData, event);
                 }
+                DVEN.renderComm._onMessage(event);
             });
         }
         catch (error) {

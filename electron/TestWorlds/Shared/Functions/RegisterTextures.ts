@@ -62,6 +62,12 @@ export function RegisterTexutres(DVEW: DivineVoxelEngineWorld) {
   },
  });
 
+ DVEW.textureManager.registerTexture("solid", {
+  name: "Dream Lanmp Texture",
+  id: "dreamlamp",
+  frames: 0,
+ });
+
  DVEW.textureManager.registerTexture("flora", {
   name: "Dream Grass Texture",
   id: "dreamgrass",

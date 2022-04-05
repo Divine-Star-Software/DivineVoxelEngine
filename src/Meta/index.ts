@@ -12,3 +12,4 @@ export * from "./World/Voxels/VoxelHelper.interface";
 export * from "./World/Voxels/VoxelManager.interface";
 export * from "./World/WorldData/WorldData.types";
 export * from "./Util.types";
+export * from "./Entity/index";

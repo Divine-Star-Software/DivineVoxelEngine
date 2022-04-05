@@ -4,11 +4,7 @@ export class WorldGen {
     seedLightSourceColor;
     constructor(DVEW) {
         this.DVEW = DVEW;
-        this.infoByte = this.DVEW.UTIL.getInfoByte();
-        this.lightByte = this.DVEW.UTIL.getLightByte();
     }
-    infoByte;
-    lightByte;
     chunkDepth = 16;
     chunkWidth = 16;
     chunkHeight = 256;
@@ -45,15 +41,15 @@ export class WorldGen {
                         if (!fill) {
                             if (y <= baseY + height && x >= 6 && x <= 9) {
                                 this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                if (y == baseY + height && Math.random() < 0.5) {
+                                    this.DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                }
                             }
                             if (y <= baseY - 5) {
                                 this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
-                            if (y >= baseY - 5 && y <= baseY - 1 && ((x < 6) || (x > 9))) {
+                            if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
                                 this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
-                            }
-                            if (y == baseY && (x == 6 || x == 9) && z == 7) {
-                                this.DVEW.worldData.paintVoxel("dve:debugbox", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }
                         else {

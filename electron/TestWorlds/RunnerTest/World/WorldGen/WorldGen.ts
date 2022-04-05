@@ -1,19 +1,11 @@
 import { InfoByte } from "../../../../out/Global/Util/InfoByte";
 
-import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-import { LightByte } from "../../../../out/Global/Util/LightByte";
+
 export class WorldGen {
  lightSourceColor: number;
  seedLightSourceColor: number;
- constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.infoByte = this.DVEW.UTIL.getInfoByte();
-  this.lightByte = this.DVEW.UTIL.getLightByte();
- }
-
- infoByte: InfoByte;
- lightByte: LightByte;
+ constructor(public DVEW: DivineVoxelEngineWorld) {}
 
  chunkDepth = 16;
  chunkWidth = 16;
@@ -41,20 +33,26 @@ export class WorldGen {
   let heightChange = false;
   let height = 0;
   for (let x = 0; x < +this.chunkWidth; x++) {
-
    for (let z = 0; z < this.chunkDepth; z++) {
-    if (Math.random() < 0.3){ fill = true;} else {fill = false;}
-    if (Math.random() < 0.5){ heightChange = true;} else {heightChange = false;}
-    if(heightChange){
-        height = Math.random() * 3;
+    if (Math.random() < 0.3) {
+     fill = true;
     } else {
-        height = 0;
+     fill = false;
+    }
+    if (Math.random() < 0.5) {
+     heightChange = true;
+    } else {
+     heightChange = false;
+    }
+    if (heightChange) {
+     height = Math.random() * 3;
+    } else {
+     height = 0;
     }
     for (let y = 0; y < this.chunkHeight; y++) {
-
      if (type == "track") {
       if (!fill) {
-       if (y <= baseY + height  && x >= 6 && x <= 9) {
+       if (y <= baseY + height && x >= 6 && x <= 9) {
         this.DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
          "default",
@@ -62,6 +60,15 @@ export class WorldGen {
          y + chunkY,
          z + chunkZ
         );
+        if (y == baseY + height && Math.random() < 0.5) {
+         this.DVEW.worldData.paintVoxel(
+          "dve:dreamlamp",
+          "default",
+          x + chunkX,
+          y + chunkY,
+          z + chunkZ
+         );
+        }
        }
 
        if (y <= baseY - 5) {
@@ -73,18 +80,9 @@ export class WorldGen {
          z + chunkZ
         );
        }
-       if (y >= baseY - 5 && y <= baseY - 1 &&  ((x < 6) || (x > 9) ) ) {
+       if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
         this.DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
-         "default",
-         x + chunkX,
-         y + chunkY,
-         z + chunkZ
-        );
-       }
-       if (y == baseY && (x == 6 || x == 9) && z == 7) {
-        this.DVEW.worldData.paintVoxel(
-         "dve:debugbox",
          "default",
          x + chunkX,
          y + chunkY,

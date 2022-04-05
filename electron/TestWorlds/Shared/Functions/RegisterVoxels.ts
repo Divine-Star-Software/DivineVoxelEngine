@@ -1,8 +1,9 @@
 //types
-import type { DivineVoxelEngineWorld } from "../../../out/index.js";//voxels
+import type { DivineVoxelEngineWorld } from "../../../out/index.js"; //voxels
 //voxels
 import { Dreamestone } from "../Voxels/Solid/DreamStone.js";
-import { DreamGrassBlock } from "../Voxels/Solid/DreamGrassBlock.js";
+import { DreamGrassBlock } from "../Voxels/Solid/DreamGrass.js";
+import { DreamLamp } from "../Voxels/Solid/DreamLamp.js";
 import { DebugBox } from "../Voxels/Solid/DebugBox.js";
 import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
 import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
@@ -13,8 +14,6 @@ export function RegisterVoxels(
  DVEW: DivineVoxelEngineWorld,
  voxelPaletteMode: "global" | "per-chunk" | "per-region"
 ) {
-
-
  //solid
  const debugBox = new DebugBox(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(debugBox);
@@ -26,6 +25,8 @@ export function RegisterVoxels(
  DVEW.voxelManager.registerVoxelData(dreamStonePillar);
  const dreamGrassBlock = new DreamGrassBlock(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(dreamGrassBlock);
+ const dreamLamp = new DreamLamp(DVEW.voxelHelper);
+ DVEW.voxelManager.registerVoxelData(dreamLamp);
 
  //flora
  const dreamGrass = new DreamGrass(DVEW.voxelHelper);
@@ -34,31 +35,4 @@ export function RegisterVoxels(
  //fluid
  const liquidDreamEther = new LiquidDreamEther(DVEW.voxelHelper);
  DVEW.voxelManager.registerVoxelData(liquidDreamEther);
-
- if (voxelPaletteMode == "global") {
-  //solid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(debugBox);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(lightDebugBox);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamStone);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamStonePillar);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamGrassBlock);
-  //flora
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(dreamGrass);
-  //fluid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(liquidDreamEther);
- }
-
- if (voxelPaletteMode == "per-region") {
-  //solid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(debugBox);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(lightDebugBox);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamStone);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamStonePillar);
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamGrassBlock);
-  //flora
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(dreamGrass);
-  //fluid
-  DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(liquidDreamEther);
- }
-
 }
