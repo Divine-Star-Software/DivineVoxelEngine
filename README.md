@@ -9,7 +9,7 @@
 ---
 **WARNING:**
 This is not finalized. Things will keep changing as development goes forward.
-Check out the releases for stable working verions. The main repo may be broken at times.
+Check out the releases for stable working verions. The main repo may be broken at times. Breaking changes will keep happening to suppourt the evolution of the enigne.
 If something is not working or broken check the [Change Log](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki/Change-Log) & [To Do](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki/To-Do).
 
 # What is this?
