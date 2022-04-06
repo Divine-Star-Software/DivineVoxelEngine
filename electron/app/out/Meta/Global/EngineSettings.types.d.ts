@@ -2,6 +2,9 @@ export declare type EngineSettingsData = {
     nexus?: {
         enabled: boolean;
     };
+    server?: {
+        enabled: boolean;
+    };
     textureOptions?: {
         width: number;
         height: number;

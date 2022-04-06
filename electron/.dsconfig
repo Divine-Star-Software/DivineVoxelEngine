@@ -20,6 +20,12 @@
             "sourceID": "main",
             "codeSection": "all",
             "keepComments": true
+        },
+        {
+            "dir": "D:/DSSoftware/APPS/divinevoxelengine/server/dve",
+            "sourceID": "main",
+            "codeSection": "all",
+            "keepComments": true
         }
     ],
     "codeSections": {

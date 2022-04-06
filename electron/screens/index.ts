@@ -6,6 +6,8 @@ import { CreateScene } from "./background/CreateScene.js";
 
 ElementTree.linkCSS(import.meta.url, "main.css");
 
+localStorage.clear();
+
 const HomeScreen = (): ElementTreeData => {
  return [
   {

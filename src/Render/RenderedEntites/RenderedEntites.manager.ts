@@ -1,10 +1,10 @@
 import { DivineVoxelEngineRender } from "index";
-import { EntityTypes } from "Meta/Entity/Entity.types";
+import { EntityTypes } from "Meta/Builder/Entity/Entity.types";
 import type {
  RenderedEntity,
  RenderedEntityData,
  RenderedEntityInterface,
-} from "Meta/Entity/RenderedEntity.types";
+} from "Meta/Builder/Entity/RenderedEntity.types";
 
 export class RenderedEntitesManager {
  scene: BABYLON.Scene;

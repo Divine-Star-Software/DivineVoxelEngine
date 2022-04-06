@@ -1,0 +1,41 @@
+import { EngineSettings } from "../Global/EngineSettings.js";
+//matrix
+import { MatrixHub } from "../Matrix/MatrixHub.js";
+import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+//functions
+import { InitNexusWorker } from "./Init/InitNexusWorker.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
+import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
+class DivineVoxelEngineNexusClass {
+    engineSettings = new EngineSettings();
+    worldMatrix = new WorldMatrix();
+    matrixHub = new MatrixHub("nexus", this.worldMatrix);
+    worldComm = new WorldComm(this);
+    renderComm = new RenderComm();
+    nexusEntites = new NexusEntites(this);
+    async $INIT(data) {
+        await InitNexusWorker(this, data.onReady, data.onMessage, data.onRestart);
+    }
+    syncSettings(data) {
+        this.engineSettings.syncSettings(data);
+        if (data.chunks) {
+            this.worldMatrix.chunkBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
+            this.worldMatrix.syncChunkBounds();
+        }
+    }
+    /**# Load chunk into Nexus
+     * Load a chunk into the shared nexus thread.
+     */
+    async loadChunkIntoNexus(chunkX, chunkY, chunkZ) {
+        this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
+        return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
+    }
+    /**# Release Chunk From Nexus
+     * Remve a chunk in the shared nexus thread.
+     */
+    releaseChunkFromNexus(chunkX, chunkY, chunkZ) {
+        this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
+    }
+}
+export const DVEN = new DivineVoxelEngineNexusClass();

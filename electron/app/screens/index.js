@@ -3,6 +3,7 @@ import { WebSelectionSection } from "./Elements/WorldSelect.js";
 import { DVELogo } from "./Elements/DVELogo.js";
 import { CreateScene } from "./background/CreateScene.js";
 ElementTree.linkCSS(import.meta.url, "main.css");
+localStorage.clear();
 const HomeScreen = () => {
     return [
         {

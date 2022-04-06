@@ -1,14 +1,17 @@
 export type EngineSettingsData = {
- nexus? : {
-    enabled : boolean
- },
+ nexus?: {
+  enabled: boolean;
+ };
+ server?: {
+  enabled: boolean;
+ };
  textureOptions?: {
   width: number;
   height: number;
   animationTime: number;
  };
  world?: {
-  voxelPaletteMode: "global" | "per-region";  
+  voxelPaletteMode: "global" | "per-region";
  };
  regions?: {
   regionXPow2: number;
