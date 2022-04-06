@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import type { SolidMaterial } from "Core/Render/Materials/Solid/SolidMaterial";
-import { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
+import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
 export declare class SolidMesh implements VoxelMeshInterface {
     private material;
     constructor(material: SolidMaterial);

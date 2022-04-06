@@ -14,10 +14,10 @@ export class MeshManager {
         this.DVE = DVE;
         //@ts-ignore
         this.meshMakers = {
-            solid: this.DVE.renderManager.solidMesh,
-            transparent: this.DVE.renderManager.solidMesh,
-            flora: this.DVE.renderManager.floraMesh,
-            magma: this.DVE.renderManager.magmaMesh,
+            solid: this.DVER.renderManager.solidMesh,
+            transparent: this.DVER.renderManager.solidMesh,
+            flora: this.DVER.renderManager.floraMesh,
+            magma: this.DVER.renderManager.magmaMesh,
         };
     }
     setScene(scene) {
@@ -45,12 +45,12 @@ export class MeshManager {
         const sunLightColors = new Float32Array(data[7]);
         const colors = new Float32Array(data[8]);
         const uvs = new Float32Array(data[9]);
-        if (this.DVE.renderManager.fluidMesh.beenCreated) {
-            this.DVE.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
+        if (this.DVER.renderManager.fluidMesh.beenCreated) {
+            this.DVER.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
         }
         else {
-            this.DVE.renderManager.fluidMesh.createTemplateMesh(this.scene);
-            this.DVE.renderManager.fluidMesh.createMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
+            this.DVER.renderManager.fluidMesh.createTemplateMesh(this.scene);
+            this.DVER.renderManager.fluidMesh.createMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
         }
         this.scene.freeActiveMeshes();
     }

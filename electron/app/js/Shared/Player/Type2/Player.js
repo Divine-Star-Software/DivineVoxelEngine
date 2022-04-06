@@ -1,5 +1,5 @@
 export class Player {
-    DVE;
+    DVER;
     absPositionArray;
     chunkPositionArray;
     playerDirectionArray;
@@ -33,8 +33,8 @@ export class Player {
     checkDownCollision = false;
     bottomRay;
     camRay;
-    constructor(DVE) {
-        this.DVE = DVE;
+    constructor(DVER) {
+        this.DVER = DVER;
     }
     createPlayerSharedArrays() {
         const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -55,7 +55,7 @@ export class Player {
             playerPickPositionArrayBuffer,
             playerStatesArrayBuffer,
         ];
-        this.DVE.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+        this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
     }
     calculateGameZone(positionX, positionZ) {
         const chunkpositionX = (positionX >> 4) << 4;
@@ -123,7 +123,7 @@ export class Player {
     async update() {
         if (!this.ready || !this.active)
             return;
-        if (this.DVE.meshManager.runningUpdate)
+        if (this.DVER.meshManager.runningUpdate)
             return;
         if (this.playerStatesArray[1]) {
             this.scene.fogDensity = 0.6;
@@ -271,7 +271,7 @@ export class Player {
     async _createParticleSystem(scene) {
         const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
         this.particleSystem = particleSystem;
-        const buffer = await this.DVE.renderManager.textureCreator.getTextureBuffer("assets/particlesystems/1.png", 8, 8);
+        const buffer = await this.DVER.renderManager.textureCreator.getTextureBuffer("assets/particlesystems/1.png", 8, 8);
         //Texture of each particle
         particleSystem.particleTexture = new BABYLON.RawTexture(new Uint8Array(buffer), 8, 8, 1, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
         particleSystem.isLocal = true;
@@ -324,11 +324,11 @@ export class Player {
         document.addEventListener("click", (event) => {
             if (event.button == 2) {
                 this._doAction("place");
-                this.DVE.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
+                this.DVER.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
             }
             if (event.button == 0) {
                 this._doAction("break");
-                this.DVE.worldComm.requestWorldUpdate("voxel-remove", this.blockLookingAtPosition);
+                this.DVER.worldComm.requestWorldUpdate("voxel-remove", this.blockLookingAtPosition);
             }
         });
         document.addEventListener("keydown", (event) => {

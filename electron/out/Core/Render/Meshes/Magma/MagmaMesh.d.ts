@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import type { MagmaMaterial } from "Core/Render/Materials/Magma/MagmaMaterial";
-import type { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
+import type { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
 export declare class MagmaMesh implements VoxelMeshInterface {
     private material;
     constructor(material: MagmaMaterial);

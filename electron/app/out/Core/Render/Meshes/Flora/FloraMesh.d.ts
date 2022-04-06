@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import type { FloraMaterial } from "Core/Render/Materials/Flora/FloraMaterial";
-import { VoxelMeshInterface } from "Meta/Core/Meshes/VoxelMesh.interface";
+import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
 export declare class FloraMesh implements VoxelMeshInterface {
     private material;
     constructor(material: FloraMaterial);

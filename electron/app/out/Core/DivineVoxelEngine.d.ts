@@ -1,5 +1,5 @@
 /// <reference types="babylonjs" />
-import type { DVEInitData } from "Meta/Core/DVE.js";
+import type { DVEInitData } from "Meta/Render/DVER.js";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { Util } from "../Global/Util.helper.js";
 import { BuilderComm } from "./InterComms/Builders/BuilderComm.js";

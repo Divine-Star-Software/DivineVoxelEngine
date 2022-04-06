@@ -1,4 +1,5 @@
-import type { DivineVoxelEngine } from "../../../out/Core/DivineVoxelEngine";
+import type { DivineVoxelEngine } from "../../../out/Render/DivineVoxelEngine";
+import { DivineVoxelEngineRender } from "../../../out/index";
 import type { PositionMatrix } from "../../../out/Meta/Util.types";
 
 export class Player {
@@ -42,7 +43,7 @@ export class Player {
  bottomRay: BABYLON.Ray;
  camRay: BABYLON.Ray;
 
- constructor(private DVE: DivineVoxelEngine) {}
+ constructor(private DVER: DivineVoxelEngineRender) {}
 
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -64,7 +65,7 @@ export class Player {
    playerPickPositionArrayBuffer,
    playerStatesArrayBuffer,
   ];
-  this.DVE.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+  this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -141,7 +142,7 @@ export class Player {
 
  async update() {
   if (!this.ready || !this.active) return;
-  if (this.DVE.meshManager.runningUpdate) return;
+  if (this.DVER.meshManager.runningUpdate) return;
   if (this.playerStatesArray[1]) {
    this.scene.fogDensity = 0.6;
    this.scene.fogColor = this.fluidFog;
@@ -343,7 +344,7 @@ export class Player {
  async _createParticleSystem(scene: BABYLON.Scene) {
   const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
   this.particleSystem = particleSystem;
-  const buffer = await this.DVE.renderManager.textureCreator.getTextureBuffer(
+  const buffer = await this.DVER.renderManager.textureCreator.getTextureBuffer(
    "assets/particlesystems/1.png",
    8,
    8
@@ -441,7 +442,7 @@ export class Player {
    if (event.button == 2) {
     this._doAction("place");
 
-    this.DVE.worldComm.requestWorldUpdate(
+    this.DVER.worldComm.requestWorldUpdate(
      "voxel-add",
      this.blockLookingAtPosition
     );
@@ -449,7 +450,7 @@ export class Player {
 
    if (event.button == 0) {
     this._doAction("break");
-    this.DVE.worldComm.requestWorldUpdate(
+    this.DVER.worldComm.requestWorldUpdate(
      "voxel-remove",
      this.blockLookingAtPosition
     );

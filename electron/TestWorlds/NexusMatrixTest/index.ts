@@ -8,10 +8,10 @@ import {
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 
-import { DVE } from "../../out/index.js";
+import { DVER } from "../../out/index.js";
 import { RegisterEntitiesInCore } from "../Shared/Functions/RegisterEntitesInCore.js";
 
-RegisterEntitiesInCore(DVE);
+RegisterEntitiesInCore(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
@@ -21,7 +21,7 @@ const workers = SetUpWorkers(
  "./Nexus/index.js"
 );
 
-await DVE.$INIT({
+await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  fluidBuilderWorker: workers.fluidBuilderWorker,
@@ -47,7 +47,7 @@ const init = async () => {
  //need this for meshes that are not part of the engnie
  const light = new BABYLON.HemisphericLight("",new BABYLON.Vector3(0,1,0),scene)
 
- await DVE.$SCENEINIT({ scene: scene });
+ await DVER.$SCENEINIT({ scene: scene });
 
  runRenderLoop(engine, scene, camera);
 };

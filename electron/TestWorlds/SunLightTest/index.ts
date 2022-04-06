@@ -7,7 +7,7 @@ import {
  runRenderLoop,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-import { DVE } from "../../out/index.js";
+import { DVER } from "../../out/index.js";
 
 const workers = SetUpWorkers(
  import.meta.url,
@@ -16,7 +16,7 @@ const workers = SetUpWorkers(
  "../Shared/FluidBuilder/fluidbuilder.js"
 );
 
-await DVE.$INIT({
+await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  fluidBuilderWorker: workers.fluidBuilderWorker,
@@ -29,7 +29,7 @@ const init = async () => {
  const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 150, z: 0 });
  SetUpDefaultSkybox(scene);
 
- await DVE.$SCENEINIT({ scene: scene });
+ await DVER.$SCENEINIT({ scene: scene });
 
  runRenderLoop(engine, scene, camera);
 };

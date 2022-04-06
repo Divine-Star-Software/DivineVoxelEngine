@@ -3,7 +3,7 @@ export * from "./World/BaseWorldData.type";
 export * from "./Builder/Shapes/ShapeHelper.interface";
 export * from "./Builder/Shapes/VoxelShape.interface";
 export * from "./Chunks/Chunk.types";
-export * from "./Core/Meshes/VoxelMesh.interface";
+export * from "./Render/Meshes/VoxelMesh.interface";
 export * from "./World/BuilderManager/BuilderManager.interface";
 export * from "./World/Textures/Texture.types";
 export * from "./World/Textures/TextureManager.interface";

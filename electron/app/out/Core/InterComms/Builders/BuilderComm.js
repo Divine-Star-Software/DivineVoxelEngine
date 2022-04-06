@@ -12,13 +12,13 @@ export class BuilderComm {
     buildRequestFunctions = {
         //chunk meshes
         0: (chunkKey, chunkX, chunkY, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("solid", chunkKey, chunkX, chunkY, chunkZ, data);
+            this.DVER.meshManager.handleUpdate("solid", chunkKey, chunkX, chunkY, chunkZ, data);
         },
         1: (chunkKey, chunkX, chunkY, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkY, chunkZ, data);
+            this.DVER.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkY, chunkZ, data);
         },
         3: (chunkKey, chunkX, chunkY, chunkZ, data) => {
-            this.DVE.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkY, chunkZ, data);
+            this.DVER.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkY, chunkZ, data);
         },
     };
     constructor(DVE) {
@@ -58,7 +58,7 @@ export class BuilderComm {
                 this._handleBuildMeshMessage(event);
             };
             const channel = new MessageChannel();
-            const worldWorker = this.DVE.worldComm.getWorker();
+            const worldWorker = this.DVER.worldComm.getWorker();
             const builderWorker = this.builders[i];
             //connect builder to world
             worldWorker.postMessage(["connect-builder"], [channel.port1]);
@@ -84,7 +84,7 @@ export class BuilderComm {
             this._handlFluideBuildMeshMessage(event);
         };
         const channel = new MessageChannel();
-        const worldWorker = this.DVE.worldComm.getWorker();
+        const worldWorker = this.DVER.worldComm.getWorker();
         //connect world to fluid builder
         worldWorker.postMessage(["connect-fluid-builder"], [channel.port1]);
         //connect fluid builder to world
@@ -96,7 +96,7 @@ export class BuilderComm {
         const chunkY = event.data[2];
         const chunkZ = event.data[3];
         const chunkKey = `${chunkX}-${chunkZ}-${chunkY}`;
-        this.DVE.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkY, chunkZ, event.data);
+        this.DVER.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
     async _handleBuildMeshMessage(event) {
         const meshType = event.data[0];
@@ -107,7 +107,7 @@ export class BuilderComm {
         this.buildRequestFunctions[meshType](chunkKey, chunkX, chunkY, chunkZ, event.data);
     }
     _syncSettings() {
-        const settings = this.DVE.engineSettings.getSettingsCopy();
+        const settings = this.DVER.engineSettings.getSettingsCopy();
         for (const builders of this.builders) {
             builders.postMessage(["sync-settings", settings]);
         }

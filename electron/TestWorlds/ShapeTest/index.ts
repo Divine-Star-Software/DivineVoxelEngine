@@ -7,7 +7,7 @@ import {
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-import { DVE } from "../../out/index.js";
+import { DVER } from "../../out/index.js";
 import { Shape1 } from "./ShapeTest/Shape1.js";
 
 
@@ -18,7 +18,7 @@ const workers = SetUpWorkers(
  "../Shared/FluidBuilder/fluidbuilder.js"
 );
 
-await DVE.$INIT({
+await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  fluidBuilderWorker: workers.fluidBuilderWorker,
@@ -35,11 +35,11 @@ const runTest = (scene: BABYLON.Scene) => {
  const check = () => {
   if (
    //@ts-ignore
-   DVE.meshManager.meshes["solid"]["0-0-0"] !== undefined
+   DVER.meshManager.meshes["solid"]["0-0-0"] !== undefined
   ) {
    Shape1(
     scene,
-    <BABYLON.ShaderMaterial>DVE.renderManager.floraMaterial.getMaterial()
+    <BABYLON.ShaderMaterial>DVER.renderManager.floraMaterial.getMaterial()
    );
   } else {
    setTimeout(() => {
@@ -62,8 +62,8 @@ const init = async () => {
  );
  SetUpDefaultSkybox(scene);
 
- await DVE.$SCENEINIT({ scene: scene });
- DVE.renderManager.setBaseLevel(1);
+ await DVER.$SCENEINIT({ scene: scene });
+ DVER.renderManager.setBaseLevel(1);
 
  runTest(scene);
 

@@ -12,12 +12,12 @@ export class NexusComm {
             const identiferId = data[2];
             const position = data[3];
             const states = data[4];
-            this.DVE.renderedEntites.spawnEntity(entityId, identiferId, position, states);
+            this.DVER.renderedEntites.spawnEntity(entityId, identiferId, position, states);
         },
         "de-spawn-entity": (data, event) => {
             const entityId = data[1];
             const identiferId = data[2];
-            this.DVE.renderedEntites.deSpawnEntity(entityId, identiferId);
+            this.DVER.renderedEntites.deSpawnEntity(entityId, identiferId);
         },
     };
     constructor(DVE) {
@@ -57,13 +57,13 @@ export class NexusComm {
             this.handleMessage(event);
         };
         const channel = new MessageChannel();
-        const worldWorker = this.DVE.worldComm.getWorker();
+        const worldWorker = this.DVER.worldComm.getWorker();
         //connect world to fluid builder
         worldWorker.postMessage(["connect-nexus"], [channel.port1]);
         //connect fluid builder to world
         this.worker.postMessage(["connect-world"], [channel.port2]);
     }
     _syncSettings() {
-        this.worker.postMessage(["sync-settings", this.DVE.engineSettings.settings]);
+        this.worker.postMessage(["sync-settings", this.DVER.engineSettings.settings]);
     }
 }

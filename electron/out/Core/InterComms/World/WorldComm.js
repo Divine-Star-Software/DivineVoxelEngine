@@ -27,7 +27,7 @@ export class WorldComm {
         if (message == "remove-chunk") {
             const chunkX = event.data[1];
             const chunkZ = event.data[2];
-            this.DVE.meshManager.requestChunkBeRemoved(`${chunkX}-${chunkZ}`);
+            this.DVER.meshManager.requestChunkBeRemoved(`${chunkX}-${chunkZ}`);
         }
         if (message == "set-world-data") {
             this.baseWorldData = event.data[1];
@@ -81,7 +81,7 @@ export class WorldComm {
         };
     }
     _syncSettings() {
-        const settings = this.DVE.engineSettings.getSettingsCopy();
+        const settings = this.DVER.engineSettings.getSettingsCopy();
         this.worker.postMessage(["sync-settings", settings]);
     }
 }

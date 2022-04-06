@@ -7,7 +7,7 @@ import {
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-import { DVE } from "../../out/index.js";
+import { DVER } from "../../out/index.js";
 import { Player } from "./Player/Player.js";
 
 const workers = SetUpWorkers(
@@ -19,7 +19,7 @@ const workers = SetUpWorkers(
 
 
 
-await DVE.$INIT({
+await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  fluidBuilderWorker: workers.fluidBuilderWorker,
@@ -32,7 +32,7 @@ await DVE.$INIT({
  },
 });
 
-const player = new Player(DVE);
+const player = new Player(DVER);
 
 const init = async () => {
  const canvas = SetUpCanvas();
@@ -42,8 +42,8 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
 
 
- await DVE.$SCENEINIT({ scene: scene });
- DVE.renderManager.setBaseLevel(0.5);
+ await DVER.$SCENEINIT({ scene: scene });
+ DVER.renderManager.setBaseLevel(0.5);
 
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);

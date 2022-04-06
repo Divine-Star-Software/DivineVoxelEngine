@@ -26,7 +26,7 @@ export class WorldGen {
                     if (y < currentY) {
                         this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
-                    if (Math.random() < 0.1 && y == currentY) {
+                    if (Math.random() < 0.01 && y == currentY) {
                         this.DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
                 }

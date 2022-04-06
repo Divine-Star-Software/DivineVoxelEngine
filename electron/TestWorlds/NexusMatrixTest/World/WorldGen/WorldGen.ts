@@ -36,7 +36,7 @@ export class WorldGen {
       );
      }
 
-     if (Math.random() < 0.1 && y == currentY) {
+     if (Math.random() < 0.01 && y == currentY) {
       this.DVEW.worldData.paintVoxel(
        "dve:dreamlamp",
        "default",
