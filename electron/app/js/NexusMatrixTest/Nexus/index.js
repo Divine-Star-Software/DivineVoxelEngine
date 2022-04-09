@@ -5,7 +5,6 @@ RegisterEntitesInNexus(DVEN);
 const start = () => { };
 await DVEN.$INIT({
     onReady: start,
-    onMessage: (message, data) => { },
 });
 DVEN.worldComm.listenForMessage("done", async (data, event) => {
     await DVEN.loadChunkIntoNexus(0, 0, 0);

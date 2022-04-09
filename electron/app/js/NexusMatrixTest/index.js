@@ -22,6 +22,7 @@ const init = async () => {
     //need this for meshes that are not part of the engnie
     const light = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     await DVER.$SCENEINIT({ scene: scene });
+    DVER.renderManager.setBaseLevel(0);
     runRenderLoop(engine, scene, camera);
 };
 RunInit(init);

@@ -19,12 +19,14 @@ import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
 
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
 export class DivineVoxelEngineWorld {
+ environment: "node" | "browser" = "browser";
  worker: Worker;
  chunkBounds = new ChunkBounds();
  engineSettings: EngineSettings = new EngineSettings();
@@ -32,13 +34,14 @@ export class DivineVoxelEngineWorld {
 
  builderComm = new BuilderComm(this);
  worldGeneration = new WorldGeneration(this);
+ renderComm = RenderComm;
 
  worldData = new WorldData(this);
 
  matrix = new Matrix(this);
  matrixCentralHub = new MatrixCentralHub(this);
 
- nexusComm = new NexusComm(this);
+ nexusComm = NexusComm;
 
  textureManager = new TextureManager();
  voxelManager = new VoxelManager(this);
@@ -54,6 +57,12 @@ export class DivineVoxelEngineWorld {
  constructor(worker: Worker) {
   this.worker = worker;
   this.builderComm.setMainThreadCom(<any>this.worker);
+ }
+
+ isReady() {
+  let ready =
+   DVEW.voxelManager.shapMapIsSet() && DVEW.voxelManager.fluidShapMapIsSet();
+  return ready;
  }
 
  syncSettings(data: EngineSettingsData) {
@@ -162,20 +171,21 @@ export class DivineVoxelEngineWorld {
 
  async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-  if (!chunk) return false;
-   this.chunkProccesor.makeAllChunkTemplatesAsync(
-   chunk,
-   chunkX,
-   chunkY,
-   chunkZ
-  );
+  if (!chunk) {
+   console.warn(
+    `Trying to rebuild chunk. ${chunkX}-${chunkY}-${chunkZ} does not exist.`
+   );
+   return false;
+  }
+
+  this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
   return true;
  }
 
  buildFluidMesh() {
   this.builderComm.requestFluidMeshBeReBuilt();
  }
- 
+
  async $INIT(data: DVEWInitData) {
   await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
  }
@@ -183,3 +193,8 @@ export class DivineVoxelEngineWorld {
 
 //@ts-ignore
 export const DVEW = new DivineVoxelEngineWorld(self as Worker);
+
+//@ts-ignore
+if (typeof process !== "undefined" && typeof Worker === "undefined") {
+ DVEW.environment = "node";
+}

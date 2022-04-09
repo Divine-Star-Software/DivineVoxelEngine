@@ -34,6 +34,5 @@ const start = () => {
 (async () => {
     await DVEW.$INIT({
         onReady: start,
-        onMessage: (message, data) => { },
     });
 })();

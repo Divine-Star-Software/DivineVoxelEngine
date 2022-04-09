@@ -1,85 +1,41 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld";
 
-export function InitWorldWorker(
+export async function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld,
- onReady: Function,
- onMessage: Function,
- onRestart?: Function
+ onReady: () => void,
+ onMessage?: (event: any) => void,
+ onRestart?: () => void
 ): Promise<any> {
- const prom = new Promise((resolve) => {
-  const readyCheck = () => {
-   if (
-    DVEW.voxelManager.shapMapIsSet() &&
-    DVEW.voxelManager.fluidShapMapIsSet()
-   ) {
+ DVEW.renderComm.onReady = onReady;
+ if(onMessage) {
+ DVEW.renderComm.onMessage = onMessage;
+ }
+ if (onRestart) {
+  DVEW.renderComm.onRestart = onRestart;
+ }
+
+ if (DVEW.environment == "browser") {
+  (DVEW as any).renderComm.setPort(self);
+ }
+ if (DVEW.environment == "node") {
+  //@ts-ignore
+  if (require) {
+   //@ts-ignore
+   const { parentPort } = require("worker_threads");
+   (DVEW as any).renderComm.setPort(parentPort);
+  } else {
+   //@ts-ignore
+   const { parentPort } = await import("worker_threads").parentPort;
+   (DVEW as any).renderComm.setPort(parentPort);
+  }
+ }
+
+ await new Promise((resolve) => {
+  const inte = setInterval(() => {
+   if (DVEW.isReady()) {
+    clearInterval(inte);
     resolve(true);
-   } else {
-    setTimeout(() => {
-     readyCheck();
-    }, 10);
    }
-  };
-
-  const messageFunctions: Record<
-   string,
-   (data: any, event: MessageEvent) => void
-  > = {
-   "voxel-add": (data, event) => {
-    DVEW.worldData.requestVoxelAdd(
-     "dve:dreamstone",
-     "default",
-     data[1],
-     data[2],
-     data[3]
-    );
-    DVEW.runChunkRebuildQueAsync();
-   },
-   "voxel-remove": (data, event) => {
-    DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
-    DVEW.runChunkRebuildQueAsync();
-   },
-   "get-world-data": (data, event) => {
-    const textures = DVEW.textureManager.generateTexturesData();
-    DVEW.worker.postMessage(["set-world-data", textures]);
-    DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
-   },
-   start: (data, event) => {
-    onReady();
-   },
-   "re-start": (data, event) => {
-    if (onRestart) {
-     onRestart();
-    }
-   },
-   "sync-settings": (data, event) => {
-    const settings = event.data[1];
-    DVEW.syncSettings(settings);
-   },
-   "connect-nexus": (data, event) => {
-    const port = event.ports[0];
-    DVEW.nexusComm.setNexusPort(port);
-   },
-   "connect-builder": (data, event) => {
-    const port = event.ports[0];
-    DVEW.builderComm.connectBuilder(port);
-   },
-   "connect-fluid-builder": (data, event) => {
-    const port = event.ports[0];
-    DVEW.builderComm.connectFluidBuilder(port);
-   },
-  };
-
-  addEventListener("message", (event: MessageEvent) => {
-   const eventData = event.data;
-
-   const message = eventData[0];
-
-   if (messageFunctions[message]) {
-    messageFunctions[message](eventData, event);
-   }
-
-   onMessage(message, eventData);
-  });
+  }, 1);
  });
- return prom;
 }

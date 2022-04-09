@@ -1,8 +1,8 @@
 
 
 export type DVEWInitData = {
- onReady: Function;
- onMessage: (message: string, data: any[]) => void;
- onRestart ?: Function;
+    onReady: ()=>void,
+    onMessage?:(event : any)=>void,
+    onRestart?: ()=>void
 };
 

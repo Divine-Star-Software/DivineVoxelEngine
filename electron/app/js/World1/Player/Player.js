@@ -320,7 +320,7 @@ export class Player {
         this.hitbox.isVisible = false;
         this.hitbox.position.x = 0;
         this.hitbox.position.z = 0;
-        this.hitbox.position.y = 200;
+        this.hitbox.position.y = 300;
         this.bottomRay = new BABYLON.Ray(new BABYLON.Vector3(0, 0, 0), new BABYLON.Vector3(0, -1, 0), 1);
         const bottomRayHelper = new BABYLON.RayHelper(this.bottomRay);
         bottomRayHelper.attachToMesh(this.hitbox, new BABYLON.Vector3(0, -1, 0), new BABYLON.Vector3(0, -0.5, 0));

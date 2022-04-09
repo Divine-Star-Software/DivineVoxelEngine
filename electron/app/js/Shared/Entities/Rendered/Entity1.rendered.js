@@ -15,9 +15,9 @@ export class Entity1Rendered {
         cube.material = cubeMaterial;
         cubeMaterial.diffuseColor = new BABYLON.Color3(0.7, 0, 0.7);
         setInterval(() => {
-            cube.position.x = this.position[0] + .25;
-            cube.position.y = this.position[1] - 0.5;
-            cube.position.z = this.position[2] + .25;
+            cube.position.x = this.position[0] + .5;
+            cube.position.y = this.position[1] - 0.72;
+            cube.position.z = this.position[2] + .5;
             cube.rotation.y += .01;
         }, 20);
     }

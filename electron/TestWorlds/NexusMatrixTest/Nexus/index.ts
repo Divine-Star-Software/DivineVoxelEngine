@@ -1,5 +1,5 @@
 import { RegisterEntitesInNexus } from "../../Shared/Functions/RegisterEntitiesInNexus.js";
-import { DVEN, DVEW } from "../../../out/index.js";
+import { DVEN } from "../../../out/index.js";
 
 console.log("HELLO FROM NEXUS");
 
@@ -7,7 +7,7 @@ RegisterEntitesInNexus(DVEN);
 const start = () => {};
 await DVEN.$INIT({
  onReady: start,
- onMessage: (message: string, data: any[]) => {},
+ 
 });
 
 DVEN.worldComm.listenForMessage("done", async (data, event) => {

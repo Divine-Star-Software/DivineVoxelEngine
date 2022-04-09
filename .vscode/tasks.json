@@ -1,0 +1,75 @@
+{
+ "version": "2.0.0",
+ "presentation": {
+  "echo": false,
+  "reveal": "always",
+  "focus": false,
+  "panel": "dedicated",
+  "showReuseMessage": true
+ },
+ "tasks": [
+  {
+   "label": "Project Startup",
+   "dependsOn": [
+    "electron",
+    "src-compile",
+    "testworlds-compile",
+    "server-compile",
+    "dsst-main",
+    "screens-compile",
+    "dsst-screens"
+   ],
+   // Mark as the default build task so cmd/ctrl+shift+b will create them
+   "group": {
+    "kind": "build",
+    "isDefault": true
+   },
+   // Try start the task on folder open
+   "runOptions": {
+    "runOn": "folderOpen"
+   }
+  },
+  {
+   "label": "electron",
+   "type": "shell",
+   "command": "cd electron; npm run start",
+   "isBackground": true
+  },
+  {
+   "label": "src-compile",
+   "type": "shell",
+   "command": "cd src; tsc --watch",
+   "isBackground": true
+  },
+  {
+   "label": "testworlds-compile",
+   "type": "shell",
+   "command": "cd electron/TestWorlds; tsc --watch",
+   "isBackground": true
+  },
+  {
+   "label": "server-compile",
+   "type": "shell",
+   "command": "cd server/src; tsc --watch",
+   "isBackground": true
+  },
+  {
+   "label": "dsst-main",
+   "type": "shell",
+   "command": "dsst -a",
+   "isBackground": true
+  },
+  {
+   "label": "screens-compile",
+   "type": "shell",
+   "command": "cd electron/screens; tsc --watch",
+   "isBackground": true
+  },
+  {
+   "label": "dsst-screens",
+   "type": "shell",
+   "command": "cd electron/screens; dsst -a",
+   "isBackground": true
+  }
+ ]
+}

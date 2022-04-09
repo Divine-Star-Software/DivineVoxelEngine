@@ -1,3 +1,4 @@
+import { InterCommPortTypes } from "Meta/Comms/InterComm.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 /**# Matrix Thread Central Hub
@@ -5,7 +6,7 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
  * Hanldes all syncing and releasing of data between chunk bound threads.
  */
 export class MatrixCentralHub {
- threads: Record<string, Worker | MessagePort> = {};
+ threads: Record<string, InterCommPortTypes> = {};
 
  constructor(private DVEW: DivineVoxelEngineWorld) {}
 
@@ -49,7 +50,7 @@ export class MatrixCentralHub {
   },
  };
 
- registerThread(threadId: string, thread: Worker | MessagePort) {
+ registerThread(threadId: string, thread: InterCommPortTypes) {
   const channel = new MessageChannel();
   const port = channel.port1;
   thread.postMessage(["set-world-port"], [port]);

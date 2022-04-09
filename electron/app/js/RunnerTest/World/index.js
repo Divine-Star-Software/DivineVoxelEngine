@@ -32,14 +32,10 @@ const start = () => {
     }
     DVEW.buildFluidMesh();
 };
-(async () => {
-    await DVEW.$INIT({
-        onReady: start,
-        onMessage: (message, data) => {
-            if (message == "connect-player") {
-                playerWatcher.setPlayerSharedArrays(data);
-                playerWatcher.startWatchingPlayer();
-            }
-        },
-    });
-})();
+DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
+    playerWatcher.setPlayerSharedArrays(data);
+    playerWatcher.startWatchingPlayer();
+});
+await DVEW.$INIT({
+    onReady: start,
+});

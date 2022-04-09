@@ -4,7 +4,7 @@ import { getNexusWorkerFunctions } from "./NexusMessageFunctions.js";
 export function InitNexusWorker(
  DVEN: DivineVoxelEngineNexus,
  onReady: Function,
- onMessage: Function,
+ onMessage?: Function,
  onRestart?: Function
 ) {
  return new Promise((resolve, reject) => {

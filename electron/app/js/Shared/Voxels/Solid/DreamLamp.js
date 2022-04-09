@@ -10,7 +10,7 @@ export class DreamLamp {
         substance: "solid",
         defaultState: ["dve:dreamlamp", 0],
         lightSource: true,
-        lightValue: 0b1000_0000_1000_1111,
+        lightValue: 0b1111_0000_1111_1111,
     };
     hooks = {};
     trueShapeId = 0;

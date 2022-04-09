@@ -26,6 +26,7 @@ export class ChunkMeshBuilder {
   lightTemplate: Float32Array,
   aoTemplate: Float32Array
  ) {
+
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
@@ -50,7 +51,7 @@ export class ChunkMeshBuilder {
   ) {
    const x = positionsTemplate[positionIndex] + chunkX;
    /**@TODO Fix this! ChunkY + y not working*/
-   const y = positionsTemplate[positionIndex + 1];
+   const y = positionsTemplate[positionIndex + 1] + chunkY;
    const z = positionsTemplate[positionIndex + 2] + chunkZ;
 
    const shapeId = shapeTemplate[shapeIndex];

@@ -1,2 +1,2 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld";
-export declare function InitWorldWorker(DVEW: DivineVoxelEngineWorld, onReady: Function, onMessage: Function, onRestart?: Function): Promise<any>;
+export declare function InitWorldWorker(DVEW: DivineVoxelEngineWorld, onReady: () => void, onMessage?: (event: any) => void, onRestart?: () => void): Promise<any>;

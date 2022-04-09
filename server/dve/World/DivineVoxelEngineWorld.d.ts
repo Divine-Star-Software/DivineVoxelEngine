@@ -12,27 +12,32 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
-import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
 export declare class DivineVoxelEngineWorld {
+    environment: "node" | "browser";
     worker: Worker;
     chunkBounds: ChunkBounds;
     engineSettings: EngineSettings;
     UTIL: Util;
     builderComm: BuilderComm;
     worldGeneration: WorldGeneration;
+    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
     worldData: WorldData;
     matrix: Matrix;
     matrixCentralHub: MatrixCentralHub;
-    nexusComm: NexusComm;
+    nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     textureManager: TextureManager;
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;
     chunkProccesor: ChunkProcessor;
     constructor(worker: Worker);
+    isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;
     runRGBLightUpdateQue(): void;
     clearRGBLightUpdateQue(): void;

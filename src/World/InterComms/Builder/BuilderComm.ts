@@ -124,7 +124,7 @@ export class BuilderComm {
      faces.buffer,
      shapes.buffer,
      uvs.buffer,
-     colors.buffer,
+     colors.buffer,  
      light.buffer,
      ambientOcclusion.buffer,
     ]),

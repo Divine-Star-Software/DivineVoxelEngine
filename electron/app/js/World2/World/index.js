@@ -32,5 +32,4 @@ const start = () => {
 };
 DVEW.$INIT({
     onReady: start,
-    onMessage: (message, data) => { },
 });

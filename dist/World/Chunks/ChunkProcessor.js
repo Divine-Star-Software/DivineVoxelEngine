@@ -52,57 +52,55 @@ export class ChunkProcessor {
     }
     getBaseTemplateNew() {
         return {
-            ...{
-                solid: {
-                    positionTemplate: [],
-                    faceTemplate: [],
-                    uvTemplate: [],
-                    shapeTemplate: [],
-                    shapeStateTemplate: [],
-                    colorTemplate: [],
-                    lightTemplate: [],
-                    aoTemplate: [],
-                },
-                transparent: {
-                    positionTemplate: [],
-                    faceTemplate: [],
-                    uvTemplate: [],
-                    shapeTemplate: [],
-                    shapeStateTemplate: [],
-                    colorTemplate: [],
-                    lightTemplate: [],
-                    aoTemplate: [],
-                },
-                flora: {
-                    positionTemplate: [],
-                    faceTemplate: [],
-                    uvTemplate: [],
-                    shapeTemplate: [],
-                    shapeStateTemplate: [],
-                    colorTemplate: [],
-                    lightTemplate: [],
-                    aoTemplate: [],
-                },
-                fluid: {
-                    positionTemplate: [],
-                    faceTemplate: [],
-                    uvTemplate: [],
-                    shapeTemplate: [],
-                    shapeStateTemplate: [],
-                    colorTemplate: [],
-                    lightTemplate: [],
-                    aoTemplate: [],
-                },
-                magma: {
-                    positionTemplate: [],
-                    faceTemplate: [],
-                    uvTemplate: [],
-                    shapeTemplate: [],
-                    shapeStateTemplate: [],
-                    colorTemplate: [],
-                    lightTemplate: [],
-                    aoTemplate: [],
-                },
+            solid: {
+                positionTemplate: [],
+                faceTemplate: [],
+                uvTemplate: [],
+                shapeTemplate: [],
+                shapeStateTemplate: [],
+                colorTemplate: [],
+                lightTemplate: [],
+                aoTemplate: [],
+            },
+            transparent: {
+                positionTemplate: [],
+                faceTemplate: [],
+                uvTemplate: [],
+                shapeTemplate: [],
+                shapeStateTemplate: [],
+                colorTemplate: [],
+                lightTemplate: [],
+                aoTemplate: [],
+            },
+            flora: {
+                positionTemplate: [],
+                faceTemplate: [],
+                uvTemplate: [],
+                shapeTemplate: [],
+                shapeStateTemplate: [],
+                colorTemplate: [],
+                lightTemplate: [],
+                aoTemplate: [],
+            },
+            fluid: {
+                positionTemplate: [],
+                faceTemplate: [],
+                uvTemplate: [],
+                shapeTemplate: [],
+                shapeStateTemplate: [],
+                colorTemplate: [],
+                lightTemplate: [],
+                aoTemplate: [],
+            },
+            magma: {
+                positionTemplate: [],
+                faceTemplate: [],
+                uvTemplate: [],
+                shapeTemplate: [],
+                shapeStateTemplate: [],
+                colorTemplate: [],
+                lightTemplate: [],
+                aoTemplate: [],
             },
         };
     }
@@ -111,9 +109,12 @@ export class ChunkProcessor {
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
         const max = chunk.maxMinHeight[1];
-        for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
-            for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
-                for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+        let maxX = this.chunkBounds.chunkXSize;
+        let maxZ = this.chunkBounds.chunkZSize;
+        let maxY = this.chunkBounds.chunkYSize;
+        for (let x = 0; x < maxX; x++) {
+            for (let z = 0; z < maxZ; z++) {
+                for (let y = 0; y < maxY; y++) {
                     const voxelData = this._3dArray.getValue(x, y, z, voxels);
                     if (this.voxelByte.getId(voxelData) == 0)
                         continue;
@@ -199,9 +200,12 @@ export class ChunkProcessor {
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
         const max = chunk.maxMinHeight[1];
-        for (let x = 0; x < this.chunkBounds.chunkXSize; x++) {
-            for (let z = 0; z < this.chunkBounds.chunkZSize; z++) {
-                for (let y = 0; y < this.chunkBounds.chunkYSize; y++) {
+        let maxX = this.chunkBounds.chunkXSize;
+        let maxZ = this.chunkBounds.chunkZSize;
+        let maxY = this.chunkBounds.chunkYSize;
+        for (let x = 0; x < maxX; x++) {
+            for (let z = 0; z < maxZ; z++) {
+                for (let y = 0; y < maxY; y++) {
                     const voxelData = this._3dArray.getValue(x, y, z, voxels);
                     if (this.voxelByte.getId(voxelData) == 0)
                         continue;

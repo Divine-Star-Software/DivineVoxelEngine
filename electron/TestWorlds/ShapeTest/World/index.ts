@@ -43,5 +43,5 @@ DVEW.buildFluidMesh();
 
 DVEW.$INIT({
  onReady: start,
- onMessage: (message: string, data: any[]) => {},
+ 
 });

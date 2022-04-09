@@ -10,7 +10,7 @@ export class Player {
 
  particleSystem: BABYLON.ParticleSystem;
  playerStatesArray: Uint8Array;
- normalFog = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
+ normalFog = new BABYLON.Color3(1 / 255, 1 / 255, 1 / 255);
  fluidFog = new BABYLON.Color3(150 / 255, 0 / 255, 150 / 255);
  scene: BABYLON.Scene;
  cachedVelocity = new BABYLON.Vector3();

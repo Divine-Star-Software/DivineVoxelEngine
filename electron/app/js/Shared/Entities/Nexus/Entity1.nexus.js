@@ -11,7 +11,7 @@ export class Entity1Nexus {
         console.log(data);
         setTimeout(() => {
             setInterval(() => {
-                const voxel = DVEN.worldMatrix.getVoxel(this.position[0], this.position[1] - 1 >> 0, this.position[2]);
+                const voxel = DVEN.worldMatrix.getVoxel(this.position[0] >> 0, this.position[1] - 1 >> 0, this.position[2] >> 0);
                 if (voxel == "dve:air") {
                     this.position[1] -= 0.1;
                 }
