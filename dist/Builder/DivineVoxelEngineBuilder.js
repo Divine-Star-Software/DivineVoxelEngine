@@ -6,11 +6,16 @@ import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
 export class DivineVoxelEngineBuilder {
+    environment = "browser";
     worker;
     UTIL = new Util();
     worldMatrix = new WorldMatrix();
     matrixHub = new MatrixHub("builder", this.worldMatrix);
+    renderComm = RenderComm;
+    worldComm = WorldComm;
     engineSettings = new EngineSettings();
     shapeManager = new ShapeManager();
     shapeHelper = new ShapeHelper(this.UTIL);
@@ -18,12 +23,17 @@ export class DivineVoxelEngineBuilder {
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
     }
-    reStart() {
+    reStart() { }
+    isReady() {
+        return true;
     }
-    $INIT(worker) {
-        this.worker = worker;
-        InitWorker(this);
+    $INIT(initData) {
+        InitWorker(this, initData);
     }
 }
 //@ts-ignore
 export const DVEB = new DivineVoxelEngineBuilder(self);
+//@ts-ignore
+if (typeof process !== "undefined" && typeof Worker === "undefined") {
+    DVEB.environment = "node";
+}

@@ -8,36 +8,47 @@ import { ShapeManager } from "./Shapes/ShapeManager.js";
 
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
-
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { DVEBInitData } from "Meta/Builder/DVEB.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
 
 export class DivineVoxelEngineBuilder {
+ environment: "node" | "browser" = "browser";
+ worker: Worker;
+ UTIL: Util = new Util();
+ worldMatrix = new WorldMatrix();
+ matrixHub = new MatrixHub("builder", this.worldMatrix);
 
-    worker : Worker;
-    UTIL : Util = new Util();
-    worldMatrix = new WorldMatrix();
-    matrixHub = new MatrixHub("builder",this.worldMatrix);
+ renderComm = RenderComm;
+ worldComm = WorldComm;
 
-    engineSettings : EngineSettings = new EngineSettings();
-    shapeManager : ShapeManager = new ShapeManager();
-    shapeHelper = new ShapeHelper(this.UTIL);
-    builder : ChunkMeshBuilder = new ChunkMeshBuilder(this,this.shapeManager,this.UTIL);
+ engineSettings: EngineSettings = new EngineSettings();
+ shapeManager: ShapeManager = new ShapeManager();
+ shapeHelper = new ShapeHelper(this.UTIL);
+ builder: ChunkMeshBuilder = new ChunkMeshBuilder(
+  this,
+  this.shapeManager,
+  this.UTIL
+ );
 
+ syncSettings(data: EngineSettingsData) {
+  this.engineSettings.syncSettings(data);
+ }
+ reStart() {}
 
+ isReady() {
+     return true;
+ }
 
-    syncSettings(data : EngineSettingsData) {
-        
-            this.engineSettings.syncSettings(data);
-    }
-    reStart(){
-        
-    }
-
-    $INIT(worker : Worker) {
-        this.worker = worker;
-        InitWorker(this);
-    }
+ $INIT(initData : DVEBInitData) {
+  InitWorker(this,initData);
+ }
 }
 
+//@ts-ignore
+export const DVEB = new DivineVoxelEngineBuilder(self as Worker);
 
 //@ts-ignore
-export const DVEB = new DivineVoxelEngineBuilder((self as Worker));
+if (typeof process !== "undefined" && typeof Worker === "undefined") {
+ DVEB.environment = "node";
+}

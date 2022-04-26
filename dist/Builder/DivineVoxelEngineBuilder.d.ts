@@ -6,17 +6,25 @@ import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+import { DVEBInitData } from "Meta/Builder/DVEB.js";
 export declare class DivineVoxelEngineBuilder {
+    environment: "node" | "browser";
     worker: Worker;
     UTIL: Util;
     worldMatrix: WorldMatrix;
     matrixHub: MatrixHub;
+    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
+    worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     engineSettings: EngineSettings;
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;
     builder: ChunkMeshBuilder;
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;
-    $INIT(worker: Worker): void;
+    isReady(): boolean;
+    $INIT(initData: DVEBInitData): void;
 }
 export declare const DVEB: DivineVoxelEngineBuilder;

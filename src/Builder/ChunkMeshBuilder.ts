@@ -26,7 +26,6 @@ export class ChunkMeshBuilder {
   lightTemplate: Float32Array,
   aoTemplate: Float32Array
  ) {
-
   const positions: number[] = [];
   const indices: number[] = [];
   const uvs: number[] = [];
@@ -93,10 +92,10 @@ export class ChunkMeshBuilder {
   const colorsArray = new Float32Array(colors);
   const uvArray = new Float32Array(uvs);
 
-  //@ts-ignore
-  this.DVEB.worker.postMessage(
+
+  this.DVEB.renderComm.sendMessage(
+   chunkType,
    [
-    chunkType,
     chunkX,
     chunkY,
     chunkZ,
@@ -108,7 +107,6 @@ export class ChunkMeshBuilder {
     colorsArray.buffer,
     uvArray.buffer,
    ],
-   //@ts-ignore
    [
     positionArray.buffer,
     indiciesArray.buffer,

@@ -11,7 +11,7 @@ const commBase: InterCommInterface = {
  },
  setPort: function (port) {
   if (!port) {
-   throw new Error(`InterComm: ${this.name} port is not set.`);
+   throw new Error(`DVE InterComm: ${this.name} port is not set.`);
   }
   this.port = port;
   this.__onSetPortRun(port);
@@ -37,7 +37,7 @@ const commBase: InterCommInterface = {
  messageFunctions: {},
  sendMessage: function (message: string | number, data: any[], transfers?: any[]) {
   if (!this.port) {
-   throw new Error(`InterComm : ${this.name} port is not set.`);
+   throw new Error(`DVE InterComm : ${this.name} port is not set.`);
   }
   if (transfers) {
    this.port.postMessage([message, ...data], transfers);

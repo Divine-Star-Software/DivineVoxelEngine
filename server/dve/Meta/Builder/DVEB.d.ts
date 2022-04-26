@@ -1,3 +1,5 @@
-export interface DVEB {
-    $INIT(worker: Worker): void;
-}
+export declare type DVEBInitData = {
+    onReady: () => void;
+    onMessage?: (event: any) => void;
+    onRestart?: () => void;
+};

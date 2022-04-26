@@ -67,9 +67,7 @@ export class ChunkMeshBuilder {
         const sunLightColorsArray = new Float32Array(sunLightColors);
         const colorsArray = new Float32Array(colors);
         const uvArray = new Float32Array(uvs);
-        //@ts-ignore
-        this.DVEB.worker.postMessage([
-            chunkType,
+        this.DVEB.renderComm.sendMessage(chunkType, [
             chunkX,
             chunkY,
             chunkZ,
@@ -80,9 +78,7 @@ export class ChunkMeshBuilder {
             sunLightColorsArray.buffer,
             colorsArray.buffer,
             uvArray.buffer,
-        ], 
-        //@ts-ignore
-        [
+        ], [
             positionArray.buffer,
             indiciesArray.buffer,
             AOColorsArray.buffer,
