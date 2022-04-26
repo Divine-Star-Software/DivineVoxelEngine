@@ -17,8 +17,6 @@ const workers = SetUpWorkers(
  "../Shared/FluidBuilder/fluidbuilder.js"
 );
 
-
-
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
@@ -41,16 +39,17 @@ const init = async () => {
  const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
  SetUpDefaultSkybox(scene);
 
-
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0.5);
 
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
  (window as any).player = player;
- setInterval(() => {
-  player.update();
- }, 10);
+ setTimeout(() => {
+  setInterval(() => {
+   player.update();
+  }, 10);
+ }, 20000);
 
  runRenderLoop(engine, scene, player.hitbox);
 };

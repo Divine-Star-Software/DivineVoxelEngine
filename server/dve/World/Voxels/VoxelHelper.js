@@ -1,46 +1,50 @@
 import { BuildAmbientOcclusion } from "../WorldData/Functions/ChunkAO.js";
 export class VoxelHelper {
-    util;
-    worldData;
-    textureManager;
-    voxelManager;
-    constructor(util, worldData, textureManager, voxelManager) {
-        this.util = util;
-        this.worldData = worldData;
-        this.textureManager = textureManager;
-        this.voxelManager = voxelManager;
+    DVEW;
+    constructor(DVEW) {
+        this.DVEW = DVEW;
     }
     getTrueShapeId(id) {
-        return this.voxelManager.shapeMap[id];
+        return this.DVEW.voxelManager.shapeMap[id];
     }
     getTrueFluidShapeId(id) {
-        return this.voxelManager.fluidShapeMap[id];
+        return this.DVEW.voxelManager.fluidShapeMap[id];
     }
     processVoxelLight(data, voxel) {
-        this.calculateVoxelLight(data, voxel);
-        this.calculateVoxelAO(data, voxel);
+        if (this.DVEW.engineSettings.settings.lighting?.doRGBLight ||
+            this.DVEW.engineSettings.settings.lighting?.doSunLight) {
+            this.calculateVoxelLight(data, voxel);
+        }
+        if (this.DVEW.engineSettings.settings.lighting?.doAO) {
+            this.calculateVoxelAO(data, voxel);
+        }
     }
     calculateVoxelLight(data, voxel) {
-        this.worldData.calculdateVoxelLight(voxel, data.voxelData, data.lightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
+        if (!this.DVEW.engineSettings.settings.lighting?.doSunLight &&
+            !this.DVEW.engineSettings.settings.lighting?.doRGBLight)
+            return;
+        this.DVEW.worldData.calculdateVoxelLight(voxel, data.voxelData, data.lightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
     }
     calculateVoxelAO(data, voxel) {
+        if (!this.DVEW.engineSettings.settings.lighting?.doAO)
+            return;
         if (data.exposedFaces[0]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");
         }
         if (data.exposedFaces[1]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
         }
         if (data.exposedFaces[2]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
         }
         if (data.exposedFaces[3]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
         }
         if (data.exposedFaces[4]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
         }
         if (data.exposedFaces[5]) {
-            BuildAmbientOcclusion(this.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
+            BuildAmbientOcclusion(this.DVEW.worldData, voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
         }
     }
 }

@@ -13,7 +13,7 @@ export class DreamGrass {
     hooks = {};
     trueShapeId = 0;
     process(data) {
-        const uv = this.voxelHelper.textureManager.getTextureUV("flora", "dreamgrass");
+        const uv = this.voxelHelper.DVEW.textureManager.getTextureUV("flora", "dreamgrass");
         data.shapeStateTemplate.push(0);
         data.shapeTemplate.push(this.trueShapeId);
         data.uvTemplate.push(uv, uv);

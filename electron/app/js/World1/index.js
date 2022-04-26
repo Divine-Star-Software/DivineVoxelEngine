@@ -27,9 +27,11 @@ const init = async () => {
     player.createPlayerSharedArrays();
     player.createPlayer(scene, camera);
     window.player = player;
-    setInterval(() => {
-        player.update();
-    }, 10);
+    setTimeout(() => {
+        setInterval(() => {
+            player.update();
+        }, 10);
+    }, 20000);
     runRenderLoop(engine, scene, player.hitbox);
 };
 RunInit(init);

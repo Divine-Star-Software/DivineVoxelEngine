@@ -4,7 +4,7 @@ const renderCommBase = {
     onReady: () => { },
     onRestart: () => { },
 };
-const renderComm = CreateInterComm("render", renderCommBase);
+const renderComm = CreateInterComm("world-render", renderCommBase);
 export const RenderComm = renderComm;
 renderComm.messageFunctions = {
     "get-world-data": (data, event) => {
@@ -40,6 +40,6 @@ renderComm.messageFunctions = {
         if (!event)
             return;
         const port = event.ports[0];
-        DVEW.builderComm.connectFluidBuilder(port);
+        DVEW.fluidBuilderComm.setPort(port);
     },
 };

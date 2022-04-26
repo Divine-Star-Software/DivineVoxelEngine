@@ -15,12 +15,12 @@ export class DebugBox {
     trueShapeId = 0;
     hooks = {};
     process(data) {
-        let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "top");
-        let bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "bottom");
-        let northUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "north");
-        let southUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "south");
-        let eastUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "east");
-        let westUV = this.voxelHelper.textureManager.getTextureUV("solid", "debug", "west");
+        let topUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "top");
+        let bottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "bottom");
+        let northUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "north");
+        let southUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "south");
+        let eastUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "east");
+        let westUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "debug", "west");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
         }

@@ -1,5 +1,5 @@
-import { InterCommInterface } from "Meta/Comms/InterComm.types";
-import { NodeWorker } from "Meta/Comms/NodeWorker.interface";
+import type { InterCommInterface } from "Meta/Comms/InterComm.types";
+import type { NodeWorker } from "Meta/Comms/NodeWorker.interface";
 
 const commBase: InterCommInterface = {
  environment: "browser",
@@ -35,17 +35,18 @@ const commBase: InterCommInterface = {
    }
  },
  messageFunctions: {},
- sendMessage: function (message: string, data: any[], transfers?: any[]) {
+ sendMessage: function (message: string | number, data: any[], transfers?: any[]) {
   if (!this.port) {
    throw new Error(`InterComm : ${this.name} port is not set.`);
   }
   if (transfers) {
    this.port.postMessage([message, ...data], transfers);
+   return;
   }
   this.port.postMessage([message, ...data]);
  },
  listenForMessage: function (
-  message: string,
+  message: string | number,
   run: (data: any[], event?: MessageEvent) => void
  ) {
   this.messageFunctions[message] = run;

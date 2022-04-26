@@ -62,64 +62,6 @@ export class Player {
         const chunkpositionZ = (positionZ >> 4) << 4;
         return [chunkpositionX, chunkpositionZ];
     }
-    /**# Directions
-     * ---
-     * 0 -> north
-     * 1 -> north west
-     * 2 -> north east
-     * 3 -> east
-     * 4 -> west;
-     * 5 -> south
-     * 6 -> south east
-     * 7 -> south east
-     *
-     * @param direction
-     */
-    _getDirection(direction) {
-        //  console.log(direction.x, direction.y, direction.z);
-        if (direction.x > -0.4 && direction.x < 0.4 && direction.z > 0) {
-            //   console.log("north");
-            this.playerDirectionArray[0] = 0;
-        }
-        if (direction.x < -0.4 && direction.x > -0.7 && direction.z > 0) {
-            //   console.log("north west");
-            this.playerDirectionArray[0] = 1;
-        }
-        if (direction.x > 0.4 && direction.x < 0.7 && direction.z > 0) {
-            //   console.log("north east");
-            this.playerDirectionArray[0] = 2;
-        }
-        if (direction.x > 0.7 &&
-            direction.x < 1 &&
-            direction.z > -0.6 &&
-            direction.z < 0.6) {
-            //   console.log("east");
-            this.playerDirectionArray[0] = 3;
-        }
-        if (direction.x < 0.7 &&
-            direction.x > 1 &&
-            direction.z < -0.6 &&
-            direction.z > 0.6) {
-            //     console.log("west");
-            this.playerDirectionArray[0] = 4;
-        }
-        if (direction.x > -0.7 && direction.x < -0.05 && direction.z < 0) {
-            //   console.log("south west");
-            this.playerDirectionArray[0] = 6;
-        }
-        if (direction.x > -0.2 && direction.x < 0.9 && direction.z < 0) {
-            //console.log("south east");
-            this.playerDirectionArray[0] = 7;
-        }
-        if (direction.x > -0.4 && direction.x < 0.4 && direction.z < 0) {
-            //    console.log("south");
-            this.playerDirectionArray[0] = 5;
-        }
-        /*     if (direction.z > -0.6 && direction.z < 0.6 && direction.x < 0) {
-            console.log("west");
-            this.playerDirectionArray[0] = 3;
-          } */
-    }
     async update() {
         if (!this.ready || !this.active)
             return;
@@ -141,16 +83,13 @@ export class Player {
                 this.particleSystem.stop();
             }
         }
-        // console.log(this.playerPickPosition);
         const direction = this.camera.getDirection(this.forward);
         this.playerDirectionArray[0] = direction.x;
         this.playerDirectionArray[1] = direction.y;
         this.playerDirectionArray[2] = direction.z;
-        // this._getDirection(direction);
         this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
         this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
         this.playerCube.position.z = this.playerPickPosition[2] + 0.5;
-        // console.log(this.camera.getDirection(this.forward));
         const x = Math.round(this.hitbox.position.x);
         //  const y = Math.floor(this.hitbox.position.y);
         const z = Math.round(this.hitbox.position.z);
@@ -195,10 +134,8 @@ export class Player {
                         return;
                     }
                     if (action == "place") {
-                        console.log(x, y, z);
                         let normal = BABYLON.Vector3.Zero();
                         normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-                        //  console.log(normal);
                         if (normal.x == 1) {
                             this.blockLookingAtPosition.x = x + 1;
                             this.blockLookingAtPosition.y = y;
@@ -236,7 +173,6 @@ export class Player {
                             return;
                         }
                     }
-                    //    console.log(this.blockLookingAtPosition);
                 }
             }
         }
@@ -320,7 +256,7 @@ export class Player {
         this.hitbox.isVisible = false;
         this.hitbox.position.x = 0;
         this.hitbox.position.z = 0;
-        this.hitbox.position.y = 300;
+        this.hitbox.position.y = 80;
         this.bottomRay = new BABYLON.Ray(new BABYLON.Vector3(0, 0, 0), new BABYLON.Vector3(0, -1, 0), 1);
         const bottomRayHelper = new BABYLON.RayHelper(this.bottomRay);
         bottomRayHelper.attachToMesh(this.hitbox, new BABYLON.Vector3(0, -1, 0), new BABYLON.Vector3(0, -0.5, 0));

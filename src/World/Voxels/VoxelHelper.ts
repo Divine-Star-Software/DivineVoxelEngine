@@ -8,30 +8,38 @@ import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interfa
 import { BuildAmbientOcclusion } from "../WorldData/Functions/ChunkAO.js";
 import type { WorldData } from "World/WorldData/WorldData";
 import type { VoxelManager } from "./VoxelManager.js";
+import { DivineVoxelEngineWorld } from "index.js";
 
 export class VoxelHelper implements VoxelHelperInterface {
- constructor(
-  public util: Util,
-  public worldData: WorldData,
-  public textureManager: TextureManagerInterface,
-  public voxelManager: VoxelManager
- ) {}
+ constructor(public DVEW: DivineVoxelEngineWorld) {}
 
- getTrueShapeId(id : string){
-     return this.voxelManager.shapeMap[id];
+ getTrueShapeId(id: string) {
+  return this.DVEW.voxelManager.shapeMap[id];
  }
 
- getTrueFluidShapeId(id : string){
-    return this.voxelManager.fluidShapeMap[id];
+ getTrueFluidShapeId(id: string) {
+  return this.DVEW.voxelManager.fluidShapeMap[id];
  }
 
  processVoxelLight(data: VoxelProcessData, voxel: VoxelInteface): void {
-  this.calculateVoxelLight(data,voxel);
-  this.calculateVoxelAO(data,voxel);
+  if (
+   this.DVEW.engineSettings.settings.lighting?.doRGBLight ||
+   this.DVEW.engineSettings.settings.lighting?.doSunLight
+  ) {
+   this.calculateVoxelLight(data, voxel);
+  }
+  if (this.DVEW.engineSettings.settings.lighting?.doAO) {
+   this.calculateVoxelAO(data, voxel);
+  }
  }
 
  calculateVoxelLight(data: VoxelProcessData, voxel: VoxelInteface): void {
-  this.worldData.calculdateVoxelLight(
+  if (
+   !this.DVEW.engineSettings.settings.lighting?.doSunLight &&
+   !this.DVEW.engineSettings.settings.lighting?.doRGBLight
+  )
+   return;
+  this.DVEW.worldData.calculdateVoxelLight(
    voxel,
    data.voxelData,
    data.lightTemplate,
@@ -46,9 +54,10 @@ export class VoxelHelper implements VoxelHelperInterface {
  }
 
  calculateVoxelAO(data: VoxelProcessData, voxel: VoxelInteface) {
+  if (!this.DVEW.engineSettings.settings.lighting?.doAO) return;
   if (data.exposedFaces[0]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,
@@ -62,7 +71,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   }
   if (data.exposedFaces[1]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,
@@ -76,7 +85,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   }
   if (data.exposedFaces[2]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,
@@ -90,7 +99,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   }
   if (data.exposedFaces[3]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,
@@ -104,7 +113,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   }
   if (data.exposedFaces[4]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,
@@ -118,7 +127,7 @@ export class VoxelHelper implements VoxelHelperInterface {
   }
   if (data.exposedFaces[5]) {
    BuildAmbientOcclusion(
-    this.worldData,
+    this.DVEW.worldData,
     voxel,
     data.aoTemplate,
     data.chunkX,

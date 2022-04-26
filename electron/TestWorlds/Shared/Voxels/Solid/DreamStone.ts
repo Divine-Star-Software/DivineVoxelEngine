@@ -23,16 +23,16 @@ export class Dreamestone implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
 
  process(data: VoxelProcessData): void {
-  let topUV = this.voxelHelper.textureManager.getTextureUV(
+  let topUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone",
    "grassy-top"
   );
-  let bottomUV = this.voxelHelper.textureManager.getTextureUV(
+  let bottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone"
   );
-  let sideUV = this.voxelHelper.textureManager.getTextureUV(
+  let sideUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone",
    "grassy-side"

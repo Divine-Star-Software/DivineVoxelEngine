@@ -1,25 +1,25 @@
 //type
 import type { DVEWInitData } from "Meta/World/DVEW";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
-
+//functions
+import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./InterComms/Builder/BuilderComm.js";
+import { BuilderComm } from "./InterComms/Builder/BuilderComm-o.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
-
-//functions
-import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
+//comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -33,6 +33,7 @@ export class DivineVoxelEngineWorld {
  UTIL = new Util();
 
  builderComm = new BuilderComm(this);
+ fluidBuilderComm = FluidBuilderComm;
  worldGeneration = new WorldGeneration(this);
  renderComm = RenderComm;
 
@@ -45,12 +46,7 @@ export class DivineVoxelEngineWorld {
 
  textureManager = new TextureManager();
  voxelManager = new VoxelManager(this);
- voxelHelper = new VoxelHelper(
-  this.UTIL,
-  this.worldData,
-  this.textureManager,
-  this.voxelManager
- );
+ voxelHelper = new VoxelHelper(this);
 
  chunkProccesor = new ChunkProcessor(this);
 
@@ -158,6 +154,7 @@ export class DivineVoxelEngineWorld {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
   this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
+  this.fluidBuilderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
   return true;
  }
@@ -177,13 +174,12 @@ export class DivineVoxelEngineWorld {
    );
    return false;
   }
-
   this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
   return true;
  }
 
  buildFluidMesh() {
-  this.builderComm.requestFluidMeshBeReBuilt();
+  DVEW.fluidBuilderComm.requestFluidMeshBeReBuilt();
  }
 
  async $INIT(data: DVEWInitData) {

@@ -18,21 +18,21 @@ export class DreamStonePillar implements VoxelInteface {
  trueShapeId = 0;
 
  process(data: VoxelProcessData): void {
-  let topBottomUV = this.voxelHelper.textureManager.getTextureUV(
+  let topBottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone-pillar",
    "top"
   );
-  let sideUV = this.voxelHelper.textureManager.getTextureUV(
+  let sideUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone-pillar"
   );
-  let sideTopUV = this.voxelHelper.textureManager.getTextureUV(
+  let sideTopUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone-pillar",
    "side-top"
   );
-  let sideBottom = this.voxelHelper.textureManager.getTextureUV(
+  let sideBottom = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamstone-pillar",
    "side-bottom"

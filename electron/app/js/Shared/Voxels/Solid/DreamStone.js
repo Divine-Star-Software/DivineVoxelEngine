@@ -16,9 +16,9 @@ export class Dreamestone {
         this.voxelHelper = voxelHelper;
     }
     process(data) {
-        let topUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
-        let bottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone");
-        let sideUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
+        let topUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
+        let bottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone");
+        let sideUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
         }

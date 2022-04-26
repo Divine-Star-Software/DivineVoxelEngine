@@ -13,10 +13,10 @@ export class DreamStonePillar {
     hooks = {};
     trueShapeId = 0;
     process(data) {
-        let topBottomUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar", "top");
-        let sideUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar");
-        let sideTopUV = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top");
-        let sideBottom = this.voxelHelper.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-bottom");
+        let topBottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone-pillar", "top");
+        let sideUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone-pillar");
+        let sideTopUV = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top");
+        let sideBottom = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-bottom");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topBottomUV);
             sideUV = sideTopUV;

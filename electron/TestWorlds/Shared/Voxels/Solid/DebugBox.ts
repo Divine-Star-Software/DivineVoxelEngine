@@ -20,32 +20,32 @@ export class DebugBox implements VoxelInteface {
  hooks = {};
 
  process(data: VoxelProcessData): void {
-  let topUV = this.voxelHelper.textureManager.getTextureUV(
+  let topUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "top"
   );
-  let bottomUV = this.voxelHelper.textureManager.getTextureUV(
+  let bottomUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "bottom"
   );
-  let northUV = this.voxelHelper.textureManager.getTextureUV(
+  let northUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "north"
   );
-  let southUV = this.voxelHelper.textureManager.getTextureUV(
+  let southUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "south"
   );
-  let eastUV = this.voxelHelper.textureManager.getTextureUV(
+  let eastUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "east"
   );
-  let westUV = this.voxelHelper.textureManager.getTextureUV(
+  let westUV = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "debug",
    "west"

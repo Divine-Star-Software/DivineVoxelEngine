@@ -20,6 +20,11 @@ export const Worlds: WorldsData = [
     description: `A simple 9 chunk area with different voxel types.`,
     world: "World2",
    },
+   {
+    title: "Noise World",
+    description: `A world generated using perlin noise.`,
+    world: "World3",
+   },
   ],
  },
  {
@@ -38,6 +43,11 @@ export const Worlds: WorldsData = [
   sectionTitle: "Tests",
   sectionDescription: "Worlds used for testing purposes.",
   worlds: [
+    {
+    title: "Server Test",
+    description: "Used to test Divine Voxel Engine Server.",
+    world: "ServerTest",
+    },
    {
     title: "Nexus & Matrix Test",
     description: "Used to test the Nexus and Matrix parts of the engine.",

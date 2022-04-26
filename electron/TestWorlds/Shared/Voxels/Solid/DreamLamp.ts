@@ -20,7 +20,7 @@ export class DreamLamp implements VoxelInteface {
  trueShapeId = 0;
 
  process(data: VoxelProcessData): void {
-  const uv = this.voxelHelper.textureManager.getTextureUV(
+  const uv = this.voxelHelper.DVEW.textureManager.getTextureUV(
    "solid",
    "dreamlamp"
   );

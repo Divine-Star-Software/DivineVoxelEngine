@@ -2,7 +2,7 @@ import type { DVEWInitData } from "Meta/World/DVEW";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./InterComms/Builder/BuilderComm.js";
+import { BuilderComm } from "./InterComms/Builder/BuilderComm-o.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -23,6 +23,20 @@ export declare class DivineVoxelEngineWorld {
     engineSettings: EngineSettings;
     UTIL: Util;
     builderComm: BuilderComm;
+    fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        fluidMeshHasBeenUpdated: boolean;
+    } & {
+        fluidMeshHasBeenUpdated: boolean;
+        setChunkTemplateForFluidMesh: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+            fluidMeshHasBeenUpdated: boolean;
+        }, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/index.js").ChunkTemplate) => void;
+        requestFluidMeshBeReBuilt: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+            fluidMeshHasBeenUpdated: boolean;
+        }) => void;
+        requestFullChunkBeRemoved: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+            fluidMeshHasBeenUpdated: boolean;
+        }, chunkX: number, chunkZ: number) => void;
+    };
     worldGeneration: WorldGeneration;
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         onReady: () => void;

@@ -38,6 +38,7 @@ const commBase = {
         }
         if (transfers) {
             this.port.postMessage([message, ...data], transfers);
+            return;
         }
         this.port.postMessage([message, ...data]);
     },

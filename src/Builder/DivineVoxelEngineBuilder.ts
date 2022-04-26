@@ -6,11 +6,16 @@ import { InitWorker } from "./Init/InitWorker.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 
+import { MatrixHub } from "../Matrix/MatrixHub.js";
+import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+
 
 export class DivineVoxelEngineBuilder {
 
     worker : Worker;
     UTIL : Util = new Util();
+    worldMatrix = new WorldMatrix();
+    matrixHub = new MatrixHub("builder",this.worldMatrix);
 
     engineSettings : EngineSettings = new EngineSettings();
     shapeManager : ShapeManager = new ShapeManager();
