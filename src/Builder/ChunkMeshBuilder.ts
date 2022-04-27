@@ -49,7 +49,6 @@ export class ChunkMeshBuilder {
    positionIndex += 3
   ) {
    const x = positionsTemplate[positionIndex] + chunkX;
-   /**@TODO Fix this! ChunkY + y not working*/
    const y = positionsTemplate[positionIndex + 1] + chunkY;
    const z = positionsTemplate[positionIndex + 2] + chunkZ;
 

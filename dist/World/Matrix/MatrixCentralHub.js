@@ -14,8 +14,6 @@ export class MatrixCentralHub {
             const chunkX = data[2];
             const chunkY = data[3];
             const chunkZ = data[4];
-            console.log("MATRIX SYNC CHUNK");
-            console.log(thread, chunkX, chunkY, chunkZ);
             this.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
         },
         "matrix-release-chunk": (data, event) => {
@@ -78,7 +76,7 @@ export class MatrixCentralHub {
         const chunkSABs = this.DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);
         if (!chunkSABs)
             return false;
-        console.log("SYNCYING THREAD");
+        console.log(this.threads);
         this.threads[threadId].postMessage([
             "sync-chunk",
             chunkSABs[0],

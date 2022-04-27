@@ -27,7 +27,6 @@ export class ChunkMeshBuilder {
         let shapeIndex = 0;
         for (let positionIndex = 0; positionIndex < positionsTemplate.length; positionIndex += 3) {
             const x = positionsTemplate[positionIndex] + chunkX;
-            /**@TODO Fix this! ChunkY + y not working*/
             const y = positionsTemplate[positionIndex + 1] + chunkY;
             const z = positionsTemplate[positionIndex + 2] + chunkZ;
             const shapeId = shapeTemplate[shapeIndex];

@@ -18,6 +18,7 @@ export declare class DivineVoxelEngineBuilder {
         onRestart: () => void;
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    __connectedToWorld: boolean;
     engineSettings: EngineSettings;
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;
@@ -25,6 +26,6 @@ export declare class DivineVoxelEngineBuilder {
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;
     isReady(): boolean;
-    $INIT(initData: DVEBInitData): void;
+    $INIT(initData: DVEBInitData): Promise<void>;
 }
 export declare const DVEB: DivineVoxelEngineBuilder;

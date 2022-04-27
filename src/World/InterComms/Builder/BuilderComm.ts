@@ -8,11 +8,16 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 const builderComm = CreateInterComm("world-builder-base", {});
 builderComm.messageFunctions = {
  "connect-shape-map": (data, event) => {
-     if(!event)return;
+  if (!event) return;
   if (DVEW.voxelManager.fluidShapMapIsSet()) return;
   DVEW.voxelManager.setFluidShapeMap(event.data[1]);
  },
 };
+
+builderComm.listenForMessage("connect-shape-map", (data, event) => {
+ if (!event) return;
+ DVEW.voxelManager.setShapeMap(data[1]);
+});
 
 export const GetNewBuilderComm = (count: number, port: InterCommPortTypes) => {
  const newComm: InterCommInterface = Object.create(builderComm);

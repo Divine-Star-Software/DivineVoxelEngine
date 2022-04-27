@@ -17,10 +17,13 @@ export class DivineVoxelEngineBuilder {
  worker: Worker;
  UTIL: Util = new Util();
  worldMatrix = new WorldMatrix();
- matrixHub = new MatrixHub("builder", this.worldMatrix);
+ matrixHub = new MatrixHub("builder-1", this.worldMatrix);
 
  renderComm = RenderComm;
  worldComm = WorldComm;
+
+
+ __connectedToWorld = false;
 
  engineSettings: EngineSettings = new EngineSettings();
  shapeManager: ShapeManager = new ShapeManager();
@@ -37,11 +40,11 @@ export class DivineVoxelEngineBuilder {
  reStart() {}
 
  isReady() {
-     return true;
+     return this.__connectedToWorld && this.matrixHub.worldPort !== undefined;
  }
 
- $INIT(initData : DVEBInitData) {
-  InitWorker(this,initData);
+ async $INIT(initData : DVEBInitData) {
+ await  InitWorker(this,initData);
  }
 }
 

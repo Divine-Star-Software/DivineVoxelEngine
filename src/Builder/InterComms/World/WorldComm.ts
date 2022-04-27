@@ -24,6 +24,14 @@ const buildMesh = (data: any[]) => {
  );
 };
 
+worldComm.onMessage = (event) => {
+ DVEB.matrixHub.onMessage(event, (messageEvent) => {
+ });
+ if (event.data[0] == "set-world-port") {
+    DVEB.__connectedToWorld = true;
+ }
+};
+
 worldComm.messageFunctions = {
  0: (data, event) => {
   buildMesh(data);

@@ -10,6 +10,11 @@ builderComm.messageFunctions = {
         DVEW.voxelManager.setFluidShapeMap(event.data[1]);
     },
 };
+builderComm.listenForMessage("connect-shape-map", (data, event) => {
+    if (!event)
+        return;
+    DVEW.voxelManager.setShapeMap(data[1]);
+});
 export const GetNewBuilderComm = (count, port) => {
     const newComm = Object.create(builderComm);
     newComm.onSetPort((port) => {

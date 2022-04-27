@@ -11,14 +11,12 @@ export class MatrixHub {
   (data: any, event: MessageEvent) => any | void
  > = {
   "sync-chunk": (data, event) => {
-   console.log(data);
    this._syncChunk(data);
   },
   "release-chunk": (data, event) => {
    this._releaseChunk(data);
   },
   "sync-global-palette": (data, event) => {
-   console.log("SYNC GLOBAL PALEETE");
    this._syncGlobalVoxelPalette(data);
   },
   "sync-region-palette": (data, event) => {
@@ -39,7 +37,6 @@ export class MatrixHub {
 
  onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
   const data = event.data;
-  console.log(data);
   if (!data || !data[0]) return;
   const message = data[0];
   if (this.messageFunctions[message]) {
@@ -49,7 +46,7 @@ export class MatrixHub {
   runAfter(event);
  }
 
- requestChunkSync(chunkX: number, chunkY: number, chunkZ: number) {
+ async requestChunkSync(chunkX: number, chunkY: number, chunkZ: number) {
   this.worldPort.postMessage([
    "matrix-sync-chunk",
    this.threadName,
@@ -57,6 +54,8 @@ export class MatrixHub {
    chunkY,
    chunkZ,
   ]);
+
+ return await this.worldMatrix.awaitChunkLoad(chunkX,chunkY,chunkZ);
  }
 
  requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {
