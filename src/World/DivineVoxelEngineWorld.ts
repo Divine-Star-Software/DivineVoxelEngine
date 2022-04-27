@@ -6,7 +6,6 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./InterComms/Builder/BuilderComm-o.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -20,6 +19,7 @@ import { Matrix } from "./Matrix/Matrix.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
+import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -32,7 +32,8 @@ export class DivineVoxelEngineWorld {
  engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
- builderComm = new BuilderComm(this);
+ builderCommManager = new BuilderCommManager();
+ //builderComm = new BuilderComm(this);
  fluidBuilderComm = FluidBuilderComm;
  worldGeneration = new WorldGeneration(this);
  renderComm = RenderComm;
@@ -52,7 +53,7 @@ export class DivineVoxelEngineWorld {
 
  constructor(worker: Worker) {
   this.worker = worker;
-  this.builderComm.setMainThreadCom(<any>this.worker);
+  //this.builderComm.setMainThreadCom(<any>this.worker);
  }
 
  isReady() {
@@ -153,7 +154,8 @@ export class DivineVoxelEngineWorld {
  removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
+  // this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
+  this.renderComm.sendMessage("remove-chunk", [chunkX, chunkZ]);
   this.fluidBuilderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
   return true;

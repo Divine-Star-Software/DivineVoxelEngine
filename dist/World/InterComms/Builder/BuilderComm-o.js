@@ -20,20 +20,8 @@ export class BuilderComm {
     };
     mainThreadCom;
     builders = [];
-    fluidBuilder;
-    fluidMeshHasBeenUpdated = false;
     setMainThreadCom(worker) {
         this.mainThreadCom = worker;
-    }
-    connectFluidBuilder(port) {
-        this.fluidBuilder = port;
-        port.onmessage = (event) => {
-            if (this.DVEW.voxelManager.fluidShapMapIsSet())
-                return;
-            if (event.data[0] == "connect-fluid-shape-map") {
-                this.DVEW.voxelManager.setFluidShapeMap(event.data[1]);
-            }
-        };
     }
     connectBuilder(port) {
         this.builders.push(port);
@@ -48,13 +36,6 @@ export class BuilderComm {
     }
     requestFullChunkBeRemoved(chunkX, chunkZ) {
         this.mainThreadCom.postMessage(["remove-chunk", chunkX, chunkZ]);
-        this.fluidBuilder.postMessage([2, chunkX, chunkZ]);
-    }
-    requestFluidMeshBeReBuilt() {
-        if (this.fluidMeshHasBeenUpdated) {
-            this.fluidMeshHasBeenUpdated = false;
-            this.fluidBuilder.postMessage([1]);
-        }
     }
     async requestFullChunkBeBuiltAsync(chunkX, chunkY, chunkZ, template) {
         let i = this.voxelBuildOrder.length;

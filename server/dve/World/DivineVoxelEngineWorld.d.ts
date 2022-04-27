@@ -2,7 +2,6 @@ import type { DVEWInitData } from "Meta/World/DVEW";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./InterComms/Builder/BuilderComm-o.js";
 import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
@@ -12,6 +11,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
+import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -22,7 +22,7 @@ export declare class DivineVoxelEngineWorld {
     chunkBounds: ChunkBounds;
     engineSettings: EngineSettings;
     UTIL: Util;
-    builderComm: BuilderComm;
+    builderCommManager: BuilderCommManager;
     fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         fluidMeshHasBeenUpdated: boolean;
     } & {

@@ -15,13 +15,9 @@ export declare class BuilderComm {
     voxelTypeMap: Record<Partial<VoxelSubstanceType>, number>;
     mainThreadCom: Worker;
     builders: MessagePort[];
-    fluidBuilder: MessagePort;
-    fluidMeshHasBeenUpdated: boolean;
     setMainThreadCom(worker: Worker): void;
-    connectFluidBuilder(port: MessagePort): void;
     connectBuilder(port: MessagePort): void;
     requestFullChunkBeRemoved(chunkX: number, chunkZ: number): void;
-    requestFluidMeshBeReBuilt(): void;
     requestFullChunkBeBuiltAsync(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): Promise<void>;
     requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
 }
