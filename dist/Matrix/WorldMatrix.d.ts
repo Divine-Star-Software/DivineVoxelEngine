@@ -18,8 +18,8 @@ export declare class WorldMatrix implements ChunkBound {
     chunks: Record<string, Uint32Array>;
     chunkStates: Record<string, Uint8Array>;
     paletteMode: number;
-    globalVoxelPalette: Record<number, string>;
-    regionVoxelPalettes: Record<string, Record<number, string>>;
+    globalVoxelPalette: Record<number, string[]>;
+    regionVoxelPalettes: Record<string, Record<number, string[]>>;
     constructor();
     syncChunkBounds(): void;
     /**# Await Chunk Load
@@ -27,10 +27,10 @@ export declare class WorldMatrix implements ChunkBound {
      * Wait for a chunk to loaded into the matrix  for use.
      */
     awaitChunkLoad(chunkX: number, chunkY: number, chunkZ: number, timeout?: number): Promise<unknown>;
-    __setGlobalVoxelPalette(palette: Record<number, string>): void;
-    __setRegionVoxelPalette(regionX: number, regionY: number, regionZ: number, palette: Record<number, string>): void;
+    __setGlobalVoxelPalette(palette: Record<number, string[]>): void;
+    __setRegionVoxelPalette(regionX: number, regionY: number, regionZ: number, palette: Record<number, string[]>): void;
     __removeRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): false | undefined;
-    getVoxel(x: number, y: number, z: number): string | false;
+    getVoxel(x: number, y: number, z: number): false | string[];
     /**# Set Chunk
      * ---
      * To be only called by the Matrix Hub.
@@ -47,5 +47,6 @@ export declare class WorldMatrix implements ChunkBound {
     unLockChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: Uint32Array) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number): false | undefined;
-    getData(x: number, y: number, z: number): number | false;
+    getData(x: number, y: number, z: number): number;
+    getVoxelNumberID(x: number, y: number, z: number): number;
 }

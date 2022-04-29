@@ -3,4 +3,4 @@ export * from "./World/DivineVoxelEngineWorld.js";
 export * from "./Nexus/DivineVoxelEngineNexus.js";
 export * from "./Server/DivineVoxelEngineServer.js";
 export * from "./Builder/DivineVoxelEngineBuilder.js";
-export * from "./Builder/FluidBuilder/DivineVoxelEngineFluidBuilder.js";
+export * from "./FluidBuilder/DivineVoxelEngineFluidBuilder.js";

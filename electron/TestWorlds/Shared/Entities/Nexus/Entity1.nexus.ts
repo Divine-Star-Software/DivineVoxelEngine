@@ -21,12 +21,11 @@ export class Entity1Nexus implements NexusEntityInterface {
    setInterval(() => {
     const voxel = DVEN.worldMatrix.getVoxel(
      this.position[0] >> 0,
-     this.position[1] - 1 >> 0,
+     (this.position[1] - 1) >> 0,
      this.position[2] >> 0
     );
 
-    if (voxel == "dve:air") {
-        
+    if (voxel && voxel[0] == "dve:air") {
      this.position[1] -= 0.1;
     }
    }, 20);

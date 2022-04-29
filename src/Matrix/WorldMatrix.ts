@@ -2,6 +2,7 @@ import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelByte } from "../Global/Util/VoxelByte.js";
+import { VoxelData } from "Meta/index.js";
 
 /**# World Matrix
  * ---
@@ -24,8 +25,8 @@ export class WorldMatrix implements ChunkBound {
  chunkStates: Record<string, Uint8Array> = {};
 
  paletteMode = 0;
- globalVoxelPalette: Record<number, string> = {};
- regionVoxelPalettes: Record<string, Record<number, string>> = {};
+ globalVoxelPalette: Record<number, string[]> = {};
+ regionVoxelPalettes: Record<string, Record<number, string[]>> = {};
 
  constructor() {}
 
@@ -35,7 +36,7 @@ export class WorldMatrix implements ChunkBound {
 
  /**# Await Chunk Load
   * ---
-  * Wait for a chunk to loaded into the matrix  for use. 
+  * Wait for a chunk to loaded into the matrix  for use.
   */
  awaitChunkLoad(
   chunkX: number,
@@ -59,7 +60,7 @@ export class WorldMatrix implements ChunkBound {
   });
  }
 
- __setGlobalVoxelPalette(palette: Record<number, string>) {
+ __setGlobalVoxelPalette(palette: Record<number, string[]>) {
   this.globalVoxelPalette = palette;
  }
 
@@ -67,7 +68,7 @@ export class WorldMatrix implements ChunkBound {
   regionX: number,
   regionY: number,
   regionZ: number,
-  palette: Record<number, string>
+  palette: Record<number, string[]>
  ) {
   this.regionVoxelPalettes[`${regionX}-${regionZ}-${regionY}`] = palette;
  }
@@ -120,7 +121,7 @@ export class WorldMatrix implements ChunkBound {
   }
   const voxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
   const voxelId = this.voxelByte.getId(voxelData);
-  if (voxelId == 0) return "dve:air";
+  if (voxelId == 0) return ["dve:air"];
   return palette[voxelId];
  }
 
@@ -246,7 +247,7 @@ export class WorldMatrix implements ChunkBound {
    (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
   const chunkZ =
    (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
+  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return -1;
   const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
 
   let voxelX = Math.abs(x - chunkX);
@@ -268,5 +269,36 @@ export class WorldMatrix implements ChunkBound {
    }
   }
   return this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+ }
+ getVoxelNumberID(x: number, y: number, z: number) {
+  const chunkX =
+   (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+  const chunkY =
+   (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
+  const chunkZ =
+   (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return -1;
+  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+
+  let voxelX = Math.abs(x - chunkX);
+  if (x < 0) {
+   if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
+    voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+   }
+  }
+  let voxelZ = Math.abs(z - chunkZ);
+  if (z < 0) {
+   if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
+    voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+   }
+  }
+  let voxelY = Math.abs(y - chunkY);
+  if (y < 0) {
+   if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
+    voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+   }
+  }
+  const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+  return this.voxelByte.getId(rawVoxelData);
  }
 }

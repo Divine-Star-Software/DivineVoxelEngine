@@ -1,10 +1,11 @@
-import { ShapeHelper } from "../Shapes/ShapeHelper.js";
-import { ShapeManager } from "../Shapes/ShapeManager.js";
-import { Util } from "../../Global/Util.helper.js";
+import { ShapeHelper } from "./Shapes/ShapeHelper.js";
+import { ShapeManager } from "./Shapes/ShapeManager.js";
+import { Util } from "../Global/Util.helper.js";
 import { FluidMeshBuilder } from "./FluidMeshBuilder.js";
 import { InitWorker } from "./Init/InitFluidMeshWorker.js";
-import { EngineSettings } from "../../Global/EngineSettings.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
+
 
 export class DivineVoxelEngineFluidBuilder {
  util: Util = new Util();
@@ -14,6 +15,8 @@ export class DivineVoxelEngineFluidBuilder {
  engineSettings : EngineSettings = new EngineSettings();
  shapeHelper: ShapeHelper = new ShapeHelper(this.util);
  shapeManager: ShapeManager = new ShapeManager();
+
+
 
  fluidMeshBuilder: FluidMeshBuilder = new FluidMeshBuilder(
   this.shapeManager,

@@ -90,7 +90,7 @@ export class WorldMatrix {
         const voxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
         const voxelId = this.voxelByte.getId(voxelData);
         if (voxelId == 0)
-            return "dve:air";
+            return ["dve:air"];
         return palette[voxelId];
     }
     /**# Set Chunk
@@ -193,7 +193,7 @@ export class WorldMatrix {
         const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
         const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
         if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`])
-            return false;
+            return -1;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
@@ -214,5 +214,33 @@ export class WorldMatrix {
             }
         }
         return this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+    }
+    getVoxelNumberID(x, y, z) {
+        const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
+        const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`])
+            return -1;
+        const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+        let voxelX = Math.abs(x - chunkX);
+        if (x < 0) {
+            if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
+                voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+            }
+        }
+        let voxelZ = Math.abs(z - chunkZ);
+        if (z < 0) {
+            if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
+                voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+            }
+        }
+        let voxelY = Math.abs(y - chunkY);
+        if (y < 0) {
+            if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
+                voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+            }
+        }
+        const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+        return this.voxelByte.getId(rawVoxelData);
     }
 }

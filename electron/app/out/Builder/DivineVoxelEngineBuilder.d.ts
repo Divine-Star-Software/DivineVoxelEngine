@@ -6,7 +6,10 @@ import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
-import { DVEBInitData } from "Meta/Builder/DVEB.js";
+import type { DVEBInitData } from "Meta/Builder/DVEB.js";
+import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 export declare class DivineVoxelEngineBuilder {
     environment: "node" | "browser";
     worker: Worker;
@@ -18,6 +21,9 @@ export declare class DivineVoxelEngineBuilder {
         onRestart: () => void;
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    chunkBounds: ChunkBounds;
+    voxelManager: VoxelManager;
+    voxelHelper: VoxelHelper;
     __connectedToWorld: boolean;
     engineSettings: EngineSettings;
     shapeManager: ShapeManager;
