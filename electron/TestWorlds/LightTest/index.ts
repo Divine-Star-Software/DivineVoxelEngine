@@ -7,8 +7,10 @@ import {
  runRenderLoop,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-
 import { DVER } from "../../out/index.js";
+import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+
+RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,

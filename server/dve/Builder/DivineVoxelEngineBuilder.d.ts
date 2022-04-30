@@ -10,6 +10,7 @@ import type { DVEBInitData } from "Meta/Builder/DVEB.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 export declare class DivineVoxelEngineBuilder {
     environment: "node" | "browser";
     worker: Worker;
@@ -22,6 +23,7 @@ export declare class DivineVoxelEngineBuilder {
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     chunkBounds: ChunkBounds;
+    textureManager: TextureManager;
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;
     __connectedToWorld: boolean;

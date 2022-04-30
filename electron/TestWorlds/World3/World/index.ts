@@ -1,7 +1,7 @@
 import { DVEN, DVEW } from "../../../out/index.js";
 
 import { PlayerWatcher } from "../../Shared/Player/Type2/PlayerWatcher.js";
-import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
+import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures-o.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";

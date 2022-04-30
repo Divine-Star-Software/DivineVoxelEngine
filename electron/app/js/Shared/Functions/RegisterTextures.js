@@ -1,6 +1,6 @@
-export function RegisterTexutres(DVEW) {
-    DVEW.textureManager.defineDefaultTexturePath("assets/textures");
-    DVEW.textureManager.registerTexture("solid", {
+export function RegisterTexutres(DVER) {
+    DVER.textureManager.defineDefaultTexturePath("assets/textures");
+    DVER.textureManager.registerTexture("solid", {
         name: "Debug Texture",
         id: "debug",
         frames: 0,
@@ -13,7 +13,7 @@ export function RegisterTexutres(DVEW) {
             west: { frames: 0 },
         },
     });
-    DVEW.textureManager.registerTexture("solid", {
+    DVER.textureManager.registerTexture("solid", {
         name: "Light Debug Texture",
         id: "light-debug",
         frames: 0,
@@ -36,7 +36,7 @@ export function RegisterTexutres(DVEW) {
             "light-level-15": { frames: 0 },
         },
     });
-    DVEW.textureManager.registerTexture("solid", {
+    DVER.textureManager.registerTexture("solid", {
         name: "Dream Stone Textures",
         id: "dreamstone",
         frames: 0,
@@ -45,7 +45,7 @@ export function RegisterTexutres(DVEW) {
             "grassy-side": { frames: 0 },
         },
     });
-    DVEW.textureManager.registerTexture("solid", {
+    DVER.textureManager.registerTexture("solid", {
         name: "Dream Stone Pillar",
         id: "dreamstone-pillar",
         frames: 0,
@@ -55,17 +55,17 @@ export function RegisterTexutres(DVEW) {
             top: { frames: 0 },
         },
     });
-    DVEW.textureManager.registerTexture("solid", {
+    DVER.textureManager.registerTexture("solid", {
         name: "Dream Lanmp Texture",
         id: "dreamlamp",
         frames: 0,
     });
-    DVEW.textureManager.registerTexture("flora", {
+    DVER.textureManager.registerTexture("flora", {
         name: "Dream Grass Texture",
         id: "dreamgrass",
         frames: 0,
     });
-    DVEW.textureManager.registerTexture("fluid", {
+    DVER.textureManager.registerTexture("fluid", {
         name: "Liquid Dream Ether Texture",
         id: "liquid-dream-ether",
         frames: 0,

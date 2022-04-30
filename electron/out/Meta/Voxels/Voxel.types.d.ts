@@ -1,3 +1,4 @@
+import type { DivineVoxelEngineBuilder } from "../../Builder/DivineVoxelEngineBuilder";
 import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
@@ -24,6 +25,8 @@ export declare type VoxelProcessData = {
     z: number;
 };
 export declare type VoxelHooks = "texturesRegistered" | "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
+export declare type VoxelBuilderThreadHooks = "texturesRegistered" | any;
+export declare type VoxelWorldThreadHooks = "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.
@@ -45,3 +48,13 @@ export interface VoxelInteface {
     hooks: Record<VoxelHooks, Function>;
     process(data: VoxelProcessData): void;
 }
+export declare type VoxelBuilderThreadObject = {
+    data: VoxelData;
+    trueShapeId: number;
+    hooks: Record<VoxelBuilderThreadHooks, Function>;
+    process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
+};
+export declare type VoxelWorldThreadObject = {
+    data: VoxelData;
+    hooks: Record<VoxelWorldThreadHooks, Function>;
+};

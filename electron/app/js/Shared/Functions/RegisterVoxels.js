@@ -1,12 +1,12 @@
 //voxels
-import { Dreamestone } from "../Voxels/Solid/DreamStone.js";
-import { DreamGrassBlock } from "../Voxels/Solid/DreamGrass.js";
-import { DreamLamp } from "../Voxels/Solid/DreamLamp.js";
-import { DebugBox } from "../Voxels/Solid/DebugBox.js";
-import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar.js";
-import { DreamGrass } from "../Voxels/Flora/DreamGrass.js";
-import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther.js";
-import { LightDebugBox } from "../Voxels/Solid/LightDebugBox.js";
+import { Dreamestone } from "../Voxels/Solid/DreamStone/DreamStone.js";
+import { DreamGrassBlock } from "../Voxels/Solid/DreamGrass/DreamGrass.js";
+import { DreamLamp } from "../Voxels/Solid/DreamLamp/DreamLamp.js";
+import { DebugBox } from "../Voxels/Solid/DebugBox/DebugBox.js";
+import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar/DreamStonePillar.js";
+import { DreamGrass } from "../Voxels/Flora/DreamGrass/DreamGrass.js";
+import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.js";
+import { LightDebugBox } from "../Voxels/Solid/LightDebugBox/LightDebugBox.js";
 export function RegisterVoxels(DVEW, voxelPaletteMode) {
     //solid
     const debugBox = new DebugBox(DVEW.voxelHelper);

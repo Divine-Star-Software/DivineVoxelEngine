@@ -10,7 +10,9 @@ import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 
 import { DVER } from "../../out/index.js";
 import { RegisterEntitiesInCore } from "../Shared/Functions/RegisterEntitesInCore.js";
+import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 
+RegisterTexutres(DVER);
 RegisterEntitiesInCore(DVER);
 
 const workers = SetUpWorkers(

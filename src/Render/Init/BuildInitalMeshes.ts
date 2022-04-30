@@ -4,18 +4,21 @@ export async function BuildInitalMeshes(
  DVER: DivineVoxelEngineRender,
  scene: BABYLON.Scene
 ) {
- if (!DVER.worldComm.baseWorldData) {
+ if (!DVER.textureManager.processedTextureData) {
   throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
  }
 
  await DVER.renderManager.textureCreator.setUpImageCreation();
  DVER.meshManager.setScene(scene);
 
- // console.log(DVER.world.baseWorldData);
 
- const solidTextures = DVER.worldComm.baseWorldData?.texturePaths.solid;
- const solidAnimations = DVER.worldComm.baseWorldData.textureAnimations.solid;
- const soidAnimationTimes = DVER.worldComm.baseWorldData.textureAnimationTimes.solid;
+
+ const solidTextures =
+  DVER.textureManager.processedTextureData.texturePaths.solid;
+ const solidAnimations =
+  DVER.textureManager.processedTextureData.textureAnimations.solid;
+ const soidAnimationTimes =
+  DVER.textureManager.processedTextureData.textureAnimationTimes.solid;
  const combinedChunkTextures =
   await DVER.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -29,10 +32,12 @@ export async function BuildInitalMeshes(
   soidAnimationTimes
  );
 
- const floraTextures = DVER.worldComm.baseWorldData?.texturePaths.flora;
- const floraAnimations = DVER.worldComm.baseWorldData.textureAnimations.flora;
+ const floraTextures =
+  DVER.textureManager.processedTextureData.texturePaths.flora;
+ const floraAnimations =
+  DVER.textureManager.processedTextureData.textureAnimations.flora;
  const floraAnimationTimes =
-  DVER.worldComm.baseWorldData.textureAnimationTimes.flora;
+  DVER.textureManager.processedTextureData.textureAnimationTimes.flora;
  const combinedFloraTextures =
   await DVER.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -45,10 +50,12 @@ export async function BuildInitalMeshes(
   floraAnimationTimes
  );
 
- const fluidTextures = DVER.worldComm.baseWorldData?.texturePaths.fluid;
- const fluidAnimations = DVER.worldComm.baseWorldData.textureAnimations.fluid;
+ const fluidTextures =
+  DVER.textureManager.processedTextureData.texturePaths.fluid;
+ const fluidAnimations =
+  DVER.textureManager.processedTextureData.textureAnimations.fluid;
  const fluidAnimationTimes =
-  DVER.worldComm.baseWorldData.textureAnimationTimes.fluid;
+  DVER.textureManager.processedTextureData.textureAnimationTimes.fluid;
  const combinedFluidTextures =
   await DVER.renderManager.textureCreator.createMaterialTexture(
    scene,
@@ -62,10 +69,12 @@ export async function BuildInitalMeshes(
   fluidAnimationTimes
  );
 
- const magmaTextures = DVER.worldComm.baseWorldData?.texturePaths.magma;
- const magmaAnimations = DVER.worldComm.baseWorldData.textureAnimations.magma;
+ const magmaTextures =
+  DVER.textureManager.processedTextureData.texturePaths.magma;
+ const magmaAnimations =
+  DVER.textureManager.processedTextureData.textureAnimations.magma;
  const magmaAnimationTimes =
-  DVER.worldComm.baseWorldData.textureAnimationTimes.magma;
+  DVER.textureManager.processedTextureData.textureAnimationTimes.magma;
  const combinedMagmaTextures =
   await DVER.renderManager.textureCreator.createMaterialTexture(
    scene,

@@ -9,6 +9,7 @@ import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 export declare class DivineVoxelEngineRender {
     worldComm: WorldComm;
     nexusComm: NexusComm;
@@ -16,6 +17,7 @@ export declare class DivineVoxelEngineRender {
     renderManager: RenderManager;
     builderManager: BuilderComm;
     meshManager: MeshManager;
+    textureManager: TextureManager;
     renderedEntites: RenderedEntitesManager;
     util: Util;
     constructor();

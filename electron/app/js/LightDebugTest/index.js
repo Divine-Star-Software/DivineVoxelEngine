@@ -1,6 +1,8 @@
 import { SetUpEngine, SetUpCanvas, SetUpDarkScene, SetUpDefaultCamera, SetUpDefaultSkybox, CreateWorldAxis, runRenderLoop, } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/index.js";
+import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/FluidBuilder/fluidbuilder.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,

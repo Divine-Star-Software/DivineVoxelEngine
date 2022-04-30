@@ -1,5 +1,5 @@
 import { DVEW } from "../../../out/index.js";
-import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures.js";
+import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures-o.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";
 import { WorldGen } from "./WorldGen.js";
 RegisterTexutres(DVEW);

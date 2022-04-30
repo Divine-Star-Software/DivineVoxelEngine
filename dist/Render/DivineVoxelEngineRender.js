@@ -7,6 +7,7 @@ import { MeshManager } from "./Meshes/MeshManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 export class DivineVoxelEngineRender {
     worldComm = new WorldComm(this);
     nexusComm = new NexusComm(this);
@@ -14,6 +15,7 @@ export class DivineVoxelEngineRender {
     renderManager = new RenderManager();
     builderManager = new BuilderComm(this);
     meshManager = new MeshManager(this);
+    textureManager = new TextureManager();
     renderedEntites = new RenderedEntitesManager(this);
     util = new Util();
     constructor() { }
@@ -77,6 +79,7 @@ export class DivineVoxelEngineRender {
             }
         }
         this._syncSettings(data);
+        this.textureManager.generateTexturesData();
         await this.worldComm.getBaseWorldData();
         //terminate all workers
         window.addEventListener("beforeunload", () => {

@@ -3,26 +3,27 @@ import type {
  VoxelInteface,
  VoxelProcessData,
  VoxelHelperInterface,
-} from "../../../../out/Meta/index.js";
+} from "../../../../../out/Meta/index.js";
 
-export class LiquidDreamEther implements VoxelInteface {
+export class DreamGrassBlock implements VoxelInteface {
  constructor(public voxelHelper: VoxelHelperInterface) {}
  data = <VoxelData>{
-  name: "Liquid Dream Ether",
-  shapeId: "FluidSourceBlock",
-  id: "dve:liquiddreamether",
-  substance: "fluid",
-  defaultState: ["dve:liquiddreamether", 0],
+  name: "Dream Grass Block",
+  shapeId: "Box",
+  id: "dve:dreamgrassblock",
+  substance: "solid",
+  defaultState: ["dve:dreamgrassblock", 0],
  };
  hooks = {};
  trueShapeId = 0;
 
  process(data: VoxelProcessData): void {
   const uv = this.voxelHelper.DVEW.textureManager.getTextureUV(
-   "fluid",
-   "liquid-dream-ether",
-   "still-1"
+   "solid",
+   "dreamstone",
+   "grassy-top"
   );
+
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
   }
@@ -41,8 +42,9 @@ export class LiquidDreamEther implements VoxelInteface {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(uv);
   }
-  data.shapeStateTemplate.push(0);
+
   data.shapeTemplate.push(this.trueShapeId);
-  this.voxelHelper.calculateVoxelLight(data, this);
+  data.shapeStateTemplate.push(0);
+  this.voxelHelper.processVoxelLight(data, this);
  }
 }

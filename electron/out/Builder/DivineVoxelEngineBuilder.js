@@ -11,6 +11,7 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 export class DivineVoxelEngineBuilder {
     environment = "browser";
     worker;
@@ -20,6 +21,7 @@ export class DivineVoxelEngineBuilder {
     renderComm = RenderComm;
     worldComm = WorldComm;
     chunkBounds = new ChunkBounds();
+    textureManager = new TextureManager();
     voxelManager = new VoxelManager(this);
     voxelHelper = new VoxelHelper(this);
     __connectedToWorld = false;

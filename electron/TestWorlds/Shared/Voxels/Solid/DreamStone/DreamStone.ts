@@ -3,7 +3,7 @@ import type {
  VoxelInteface,
  VoxelProcessData,
  VoxelHelperInterface,
-} from "../../../../out/Meta/index.js";
+} from "../../../../../out/Meta/index.js";
 
 export class Dreamestone implements VoxelInteface {
  topUV: number;
