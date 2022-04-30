@@ -12,7 +12,7 @@ import type {
  VoxelInteface,
  VoxelSubstanceType,
  VoxelData,
-} from "Meta/World/Voxels/Voxel.types.js";
+} from "Meta/Voxels/Voxel.types.js";
 import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";

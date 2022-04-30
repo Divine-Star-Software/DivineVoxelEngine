@@ -1,4 +1,4 @@
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { VoxelInteface } from "Meta/Voxels/Voxel.types";
 import { VoxelPalette } from "Meta/WorldData/World.types";
 import { WorldData } from "../WorldData";
 /* export function CalculateVoxelColor(

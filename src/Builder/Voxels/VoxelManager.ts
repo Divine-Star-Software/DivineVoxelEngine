@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineBuilder  } from "index";
-import { VoxelHooks, VoxelData,VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { VoxelHooks, VoxelData,VoxelInteface } from "Meta/Voxels/Voxel.types";
 
 export class VoxelManager  {
  voxelData: Record<string, VoxelData> = {};

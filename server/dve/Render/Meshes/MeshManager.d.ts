@@ -1,7 +1,7 @@
 /// <reference types="babylonjs" />
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
-import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 export declare class MeshManager {
     private DVER;
     scene: BABYLON.Scene;

@@ -9,7 +9,7 @@ import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type {
  VoxelInteface,
  VoxelSubstanceType,
-} from "Meta/World/Voxels/Voxel.types.js";
+} from "Meta/Voxels/Voxel.types.js";
 import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";

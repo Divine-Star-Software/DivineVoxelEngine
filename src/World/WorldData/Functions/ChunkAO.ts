@@ -1,4 +1,4 @@
-import type { VoxelInteface } from "Meta/World/Voxels/Voxel.types.js";
+import type { VoxelInteface } from "Meta/Voxels/Voxel.types.js";
 import type { WorldData } from "World/WorldData/WorldData";
 
 export function ChunkOcculsionCalcuation(

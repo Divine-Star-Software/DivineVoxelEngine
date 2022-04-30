@@ -4,7 +4,7 @@ import type {
  InterCommPortTypes,
 } from "Meta/Comms/InterComm.types";
 import type { FullChunkTemplate } from "Meta/index";
-import type { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 //comms
 import { GetNewBuilderComm } from "./BuilderComm.js";
 

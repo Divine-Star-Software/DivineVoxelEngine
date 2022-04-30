@@ -56,16 +56,18 @@ const start = () => {
    );
    DVEW.worldGeneration.illumantionManager.runSunLightUpdate();
    DVEW.buildChunk(x, 0, z);
+
   }
  }
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
    DVEW.buildChunk(x, 0, z);
+
   }
  }
-
  setTimeout(() => {
+
   const chunk = DVEW.worldData.getChunk(0, 0, 0);
   if (!chunk) return;
   const voxels = chunk.voxels;
@@ -76,6 +78,7 @@ const start = () => {
     DVEW.buildChunk(x, 0, z);
    }
   }
+
  }, 2000);
 
  //DVEW.buildFluidMesh();

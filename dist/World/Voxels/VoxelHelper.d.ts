@@ -1,5 +1,5 @@
-import type { VoxelInteface, VoxelProcessData } from "Meta/World/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
+import type { VoxelInteface, VoxelProcessData } from "Meta/Voxels/Voxel.types";
+import type { VoxelHelperInterface } from "Meta/Voxels/VoxelHelper.interface";
 import { DivineVoxelEngineWorld } from "index.js";
 export declare class VoxelHelper implements VoxelHelperInterface {
     DVEW: DivineVoxelEngineWorld;

@@ -1,4 +1,4 @@
-import { VoxelSubstanceType } from "../Voxels/Voxel.types";
+import { VoxelSubstanceType } from "../../Voxels/Voxel.types";
 import { TextureData } from "./Texture.types";
 
 export interface TextureManagerInterface {

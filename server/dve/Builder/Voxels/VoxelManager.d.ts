@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineBuilder } from "index";
-import { VoxelData } from "Meta/World/Voxels/Voxel.types";
+import { VoxelData } from "Meta/Voxels/Voxel.types";
 export declare class VoxelManager {
     private DVEB;
     voxelData: Record<string, VoxelData>;

@@ -6,6 +6,13 @@ await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
     fluidBuilderWorker: workers.fluidBuilderWorker,
+    lighting: {
+        doAO: true,
+        doRGBLight: true,
+        doSunLight: true,
+        autoRGBLight: true,
+        autoSunLight: true,
+    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();

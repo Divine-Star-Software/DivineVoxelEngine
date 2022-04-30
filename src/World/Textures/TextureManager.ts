@@ -1,6 +1,6 @@
 import type { TextureData } from "Meta/World/Textures/Texture.types";
 import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager.interface";
-import type { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 
 export class TextureManager implements TextureManagerInterface {
  defaultTexturePath: string = "";

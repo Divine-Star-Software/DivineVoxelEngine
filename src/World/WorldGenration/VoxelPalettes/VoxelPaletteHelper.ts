@@ -1,5 +1,5 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import { VoxelInteface } from "Meta/Voxels/Voxel.types";
 import { WorldRegion } from "Meta/WorldData/World.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 import { WorldGeneration } from "../WorldGeneration";

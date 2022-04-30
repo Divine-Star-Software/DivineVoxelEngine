@@ -1,4 +1,4 @@
-import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 /**# BaseWorldData
  * ---
  * This is the data that is registered in the world thread but needs to be also

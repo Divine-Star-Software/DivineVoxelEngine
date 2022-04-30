@@ -1,6 +1,6 @@
 import { DivineVoxelEngineWorld } from "index";
-import { VoxelHooks, VoxelInteface } from "Meta/World/Voxels/Voxel.types";
-import { VoxelManagerInterface } from "Meta/World/Voxels/VoxelManager.interface";
+import { VoxelHooks, VoxelInteface } from "Meta/Voxels/Voxel.types";
+import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.interface";
 export declare class VoxelManager implements VoxelManagerInterface {
     private DVEW;
     voxels: Record<string, VoxelInteface>;

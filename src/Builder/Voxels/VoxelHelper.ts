@@ -3,8 +3,8 @@ import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager
 import type {
  VoxelInteface,
  VoxelProcessData,
-} from "Meta/World/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "Meta/World/Voxels/VoxelHelper.interface";
+} from "Meta/Voxels/Voxel.types";
+import type { VoxelHelperInterface } from "Meta/Voxels/VoxelHelper.interface";
 import { BuildAmbientOcclusion } from "./Functions/ChunkAO.js";
 import type { WorldData } from "World/WorldData/WorldData";
 import type { VoxelManager } from "./VoxelManager.js";

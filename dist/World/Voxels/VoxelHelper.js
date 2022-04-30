@@ -20,7 +20,7 @@ export class VoxelHelper {
         }
     }
     calculateVoxelLight(data, voxel) {
-        if (!this.DVEW.engineSettings.settings.lighting?.doSunLight &&
+        if (!this.DVEW.engineSettings.settings.lighting?.doSunLight ||
             !this.DVEW.engineSettings.settings.lighting?.doRGBLight)
             return;
         this.DVEW.worldData.calculdateVoxelLight(voxel, data.voxelData, data.lightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);

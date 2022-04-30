@@ -1,4 +1,4 @@
-import { VoxelSubstanceType } from "Meta/World/Voxels/Voxel.types";
+import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 
 export class AnimationManager {
  //@ts-ignore

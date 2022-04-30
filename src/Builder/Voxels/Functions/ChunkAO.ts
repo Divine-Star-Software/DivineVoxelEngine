@@ -1,7 +1,7 @@
 import type {
  VoxelInteface,
  VoxelData,
-} from "Meta/World/Voxels/Voxel.types.js";
+} from "Meta/Voxels/Voxel.types.js";
 import type { WorldData } from "World/WorldData/WorldData";
 import { DVEB } from "../../DivineVoxelEngineBuilder.js";
 

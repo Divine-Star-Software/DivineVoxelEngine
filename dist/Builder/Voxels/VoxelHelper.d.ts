@@ -1,4 +1,4 @@
-import type { VoxelProcessData } from "Meta/World/Voxels/Voxel.types";
+import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
 import { DivineVoxelEngineBuilder } from "index.js";
 import type { VoxelData } from "../../Meta/index";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";

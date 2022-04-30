@@ -1,4 +1,4 @@
-import type { VoxelInteface,VoxelData } from "Meta/World/Voxels/Voxel.types";
+import type { VoxelInteface,VoxelData } from "Meta/Voxels/Voxel.types";
 
 import {DVEB} from "../../DivineVoxelEngineBuilder.js";
 import { VoxelHelper } from "../VoxelHelper.js";

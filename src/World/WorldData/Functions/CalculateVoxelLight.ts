@@ -1,4 +1,4 @@
-import type { VoxelInteface } from "Meta/World/Voxels/Voxel.types";
+import type { VoxelInteface } from "Meta/Voxels/Voxel.types";
 import type { WorldData } from "../WorldData";
 
 export function CalculateVoxelLight(
@@ -444,8 +444,7 @@ export function VoxelLightMixCalc(
   w = 0;
  }
  if (zeroCount.r >= 2) {
-  r = 15;
-  //console.log(zeroCount);
+  r = 0;
  }
  if (zeroCount.g >= 2) {
   g = 0;
@@ -453,5 +452,6 @@ export function VoxelLightMixCalc(
  if (zeroCount.b >= 2) {
   b = 0;
  }
+
  return this.lightByte.setLightValues([w, r, g, b]);
 }

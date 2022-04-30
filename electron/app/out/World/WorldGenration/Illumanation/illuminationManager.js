@@ -3,6 +3,7 @@ import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightU
 export class IlluminationManager {
     DVEW;
     lightByte;
+    voxelByte;
     _3dArray;
     chunkBounds;
     air = [-1, 0];
@@ -22,6 +23,7 @@ export class IlluminationManager {
         this.DVEW = DVEW;
         this.chunkBounds = DVEW.chunkBounds;
         this.lightByte = this.DVEW.UTIL.getLightByte();
+        this.voxelByte = this.DVEW.UTIL.getVoxelByte();
         this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
     syncChunkBounds() {
@@ -32,11 +34,6 @@ export class IlluminationManager {
         const voxels = chunk.voxels;
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
-                this._sunLightUpdateQue.push([
-                    chunkX + x - 1,
-                    chunkY + 127,
-                    chunkZ + z - 1,
-                ]);
                 this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
             }
         }
@@ -48,11 +45,11 @@ export class IlluminationManager {
             for (let z = 0; z < 16; z++) {
                 const y = heightMap[x][z];
                 const voxel = this._3dArray.getValue(x, y, z, voxels);
-                if (this._3dArray.getValue(x, y, z, voxels)) {
-                    if (voxel == 0) {
-                        const nl = this.lightByte.getFullSunLight(voxel);
-                        this._3dArray.setValue(x, y, z, voxels, voxel);
-                    }
+                const voxelId = this.voxelByte.getId(voxel);
+                if (voxelId == 0) {
+                    const nl = this.lightByte.getFullSunLight(voxel);
+                    const newVoxel = this.voxelByte.encodeLightIntoVoxelData(voxel, nl);
+                    this._3dArray.setValue(x, y, z, voxels, newVoxel);
                 }
             }
         }

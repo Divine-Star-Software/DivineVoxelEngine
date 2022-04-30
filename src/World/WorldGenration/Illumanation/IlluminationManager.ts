@@ -17,9 +17,11 @@ import {
  runSunLightUpdate,
  runSunLightUpdateAt,
 } from "./Functions/SunLight.js";
+import type { VoxelByte } from "Global/Util/VoxelByte.js";
 
 export class IlluminationManager implements ChunkBound {
  lightByte: LightByte;
+ voxelByte: VoxelByte;
  _3dArray: Flat3DArray;
  chunkBounds: ChunkBounds;
  air = [-1, 0];
@@ -39,6 +41,7 @@ export class IlluminationManager implements ChunkBound {
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.chunkBounds = DVEW.chunkBounds;
   this.lightByte = this.DVEW.UTIL.getLightByte();
+  this.voxelByte = this.DVEW.UTIL.getVoxelByte();
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
@@ -56,11 +59,6 @@ export class IlluminationManager implements ChunkBound {
   const voxels = chunk.voxels;
   for (let x = 0; x < 16; x++) {
    for (let z = 0; z < 16; z++) {
-    this._sunLightUpdateQue.push([
-     chunkX + x - 1,
-     chunkY + 127,
-     chunkZ + z - 1,
-    ]);
     this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
    }
   }
@@ -73,11 +71,11 @@ export class IlluminationManager implements ChunkBound {
    for (let z = 0; z < 16; z++) {
     const y = heightMap[x][z];
     const voxel = this._3dArray.getValue(x, y, z, voxels);
-    if (this._3dArray.getValue(x, y, z, voxels)) {
-     if (voxel == 0) {
-      const nl = this.lightByte.getFullSunLight(voxel);
-      this._3dArray.setValue(x, y, z, voxels, voxel);
-     }
+    const voxelId = this.voxelByte.getId(voxel);
+    if (voxelId == 0) {
+     const nl = this.lightByte.getFullSunLight(voxel);
+     const newVoxel = this.voxelByte.encodeLightIntoVoxelData(voxel, nl);
+     this._3dArray.setValue(x, y, z, voxels, newVoxel);
     }
    }
   }

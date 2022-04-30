@@ -5,7 +5,7 @@ import type { LightByte } from "Global/Util/LightByte.js";
 import type {
  VoxelInteface,
  VoxelSubstanceType,
-} from "Meta/World/Voxels/Voxel.types.js";
+} from "Meta/Voxels/Voxel.types.js";
 
 import {
  CalculateVoxelLight,

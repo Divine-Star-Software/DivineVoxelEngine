@@ -6,9 +6,11 @@ import type { ChunkBounds } from "Global/Chunks/ChunkBounds.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
 import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt } from "./Functions/SunLight.js";
+import type { VoxelByte } from "Global/Util/VoxelByte.js";
 export declare class IlluminationManager implements ChunkBound {
     DVEW: DivineVoxelEngineWorld;
     lightByte: LightByte;
+    voxelByte: VoxelByte;
     _3dArray: Flat3DArray;
     chunkBounds: ChunkBounds;
     air: number[];

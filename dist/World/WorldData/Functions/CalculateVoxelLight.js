@@ -156,8 +156,7 @@ export function VoxelLightMixCalc(voxelLigtValue, voxel, chunkX, chunkY, chunkZ,
         w = 0;
     }
     if (zeroCount.r >= 2) {
-        r = 15;
-        //console.log(zeroCount);
+        r = 0;
     }
     if (zeroCount.g >= 2) {
         g = 0;
