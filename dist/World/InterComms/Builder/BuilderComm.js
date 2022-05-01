@@ -18,9 +18,10 @@ builderComm.listenForMessage("connect-shape-map", (data, event) => {
 export const GetNewBuilderComm = (count, port) => {
     const newComm = Object.create(builderComm);
     newComm.onSetPort((port) => {
-        DVEW.matrixCentralHub.registerThread(`builder-${count}`, port);
+        const threadName = `builder-${count}`;
+        DVEW.matrixCentralHub.registerThread(threadName, port);
         if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
-            DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(`builder-${count}`);
+            DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
         }
     });
     newComm.setPort(port);

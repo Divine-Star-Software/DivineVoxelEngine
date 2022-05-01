@@ -10,7 +10,7 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 class DivineVoxelEngineNexusClass {
     engineSettings = new EngineSettings();
     worldMatrix = new WorldMatrix();
-    matrixHub = new MatrixHub("nexus", this.worldMatrix);
+    matrixHub = new MatrixHub(this.worldMatrix, "nexus");
     worldComm = new WorldComm(this);
     renderComm = new RenderComm();
     nexusEntites = new NexusEntites(this);

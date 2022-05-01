@@ -5,11 +5,11 @@ import type { WorldMatrix } from "./WorldMatrix";
  * It syncs the chunk data.
  */
 export declare class MatrixHub {
-    threadName: string;
     private worldMatrix;
     messageFunctions: Record<string, (data: any, event: MessageEvent) => any | void>;
     worldPort: MessagePort;
-    constructor(threadName: string, worldMatrix: WorldMatrix);
+    threadName: string;
+    constructor(worldMatrix: WorldMatrix, threadName?: string);
     onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void): void;
     requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
     requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -19,4 +19,5 @@ export declare class MatrixHub {
     _syncGlobalVoxelPalette(data: any[]): void;
     _syncRegionVoxelPalette(data: any[]): void;
     _releaseRegionVoxelPalette(data: any[]): void;
+    _setThreadName(data: any[]): void;
 }

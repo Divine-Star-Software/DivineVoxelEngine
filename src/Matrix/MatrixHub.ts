@@ -10,20 +10,23 @@ export class MatrixHub {
   string,
   (data: any, event: MessageEvent) => any | void
  > = {
-  "sync-chunk": (data, event) => {
+  "sync-chunk": (data) => {
    this._syncChunk(data);
   },
-  "release-chunk": (data, event) => {
+  "release-chunk": (data) => {
    this._releaseChunk(data);
   },
-  "sync-global-palette": (data, event) => {
+  "sync-global-palette": (data) => {
    this._syncGlobalVoxelPalette(data);
   },
-  "sync-region-palette": (data, event) => {
+  "sync-region-palette": (data) => {
    this._syncRegionVoxelPalette(data);
   },
-  "release-region-palette": (data, event) => {
+  "release-region-palette": (data) => {
    this._releaseRegionVoxelPalette(data);
+  },
+  "set-thread-name": (data) => {
+   this._setThreadName(data);
   },
   "set-world-port": (data, event) => {
    const port = event.ports[0];
@@ -33,7 +36,14 @@ export class MatrixHub {
 
  worldPort: MessagePort;
 
- constructor(public threadName: string, private worldMatrix: WorldMatrix) {}
+
+ threadName : string;
+
+ constructor(private worldMatrix: WorldMatrix,threadName ?: string) {
+    if(threadName) {
+        this.threadName = threadName;
+    }
+ }
 
  onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
   const data = event.data;
@@ -55,7 +65,7 @@ export class MatrixHub {
    chunkZ,
   ]);
 
- return await this.worldMatrix.awaitChunkLoad(chunkX,chunkY,chunkZ);
+  return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
  }
 
  requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {
@@ -92,7 +102,7 @@ export class MatrixHub {
  }
 
  _syncGlobalVoxelPalette(data: any[]) {
-  this.worldMatrix.__setGlobalVoxelPalette(data[1],data[2]);
+  this.worldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
  }
 
  _syncRegionVoxelPalette(data: any[]) {
@@ -108,5 +118,9 @@ export class MatrixHub {
   const regionY = data[2];
   const regionZ = data[3];
   this.worldMatrix.__removeRegionVoxelPalette(regionX, regionY, regionZ);
+ }
+
+ _setThreadName(data: any[]) {
+  this.threadName = data[1];
  }
 }

@@ -4,23 +4,25 @@
  * It syncs the chunk data.
  */
 export class MatrixHub {
-    threadName;
     worldMatrix;
     messageFunctions = {
-        "sync-chunk": (data, event) => {
+        "sync-chunk": (data) => {
             this._syncChunk(data);
         },
-        "release-chunk": (data, event) => {
+        "release-chunk": (data) => {
             this._releaseChunk(data);
         },
-        "sync-global-palette": (data, event) => {
+        "sync-global-palette": (data) => {
             this._syncGlobalVoxelPalette(data);
         },
-        "sync-region-palette": (data, event) => {
+        "sync-region-palette": (data) => {
             this._syncRegionVoxelPalette(data);
         },
-        "release-region-palette": (data, event) => {
+        "release-region-palette": (data) => {
             this._releaseRegionVoxelPalette(data);
+        },
+        "set-thread-name": (data) => {
+            this._setThreadName(data);
         },
         "set-world-port": (data, event) => {
             const port = event.ports[0];
@@ -28,9 +30,12 @@ export class MatrixHub {
         },
     };
     worldPort;
-    constructor(threadName, worldMatrix) {
-        this.threadName = threadName;
+    threadName;
+    constructor(worldMatrix, threadName) {
         this.worldMatrix = worldMatrix;
+        if (threadName) {
+            this.threadName = threadName;
+        }
     }
     onMessage(event, runAfter) {
         const data = event.data;
@@ -97,5 +102,8 @@ export class MatrixHub {
         const regionY = data[2];
         const regionZ = data[3];
         this.worldMatrix.__removeRegionVoxelPalette(regionX, regionY, regionZ);
+    }
+    _setThreadName(data) {
+        this.threadName = data[1];
     }
 }

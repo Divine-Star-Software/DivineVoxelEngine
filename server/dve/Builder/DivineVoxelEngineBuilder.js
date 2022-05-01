@@ -18,7 +18,7 @@ export class DivineVoxelEngineBuilder {
     worker;
     UTIL = new Util();
     worldMatrix = new WorldMatrix();
-    matrixHub = new MatrixHub("builder-1", this.worldMatrix);
+    matrixHub = new MatrixHub(this.worldMatrix);
     renderComm = RenderComm;
     worldComm = WorldComm;
     chunkBounds = new ChunkBounds();
