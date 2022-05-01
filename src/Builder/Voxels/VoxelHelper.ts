@@ -10,7 +10,7 @@ import type { WorldData } from "World/WorldData/WorldData";
 import type { VoxelManager } from "./VoxelManager.js";
 import { DivineVoxelEngineBuilder, DivineVoxelEngineWorld } from "index.js";
 
-import type { VoxelData } from "../../Meta/index";
+import type { VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
 
 import {
  CalculateVoxelLight,
@@ -71,31 +71,25 @@ export class VoxelHelper {
  }
 
  voxelFaceCheck(
-  voxel: VoxelData,
+  voxel: VoxelBuilderThreadObject,
   voxelData: number,
   x: number,
   y: number,
   z: number
  ) {
-  const voxelCheck = this.DVEB.worldMatrix.getVoxel(x, y, z);
-  return true;
-  /*    if(voxelCheck == "dve:air")return true;
-
-    if (voxelCheck && voxelCheck == "dve:air") {
-     const neighborVoxel: string = voxelCheck[0];
-  
+  const checkVoxelId = this.DVEB.worldMatrix.getVoxel(x, y, z);
+   if(checkVoxelId && checkVoxelId[0] == "dve:air")return true;
+   if(!checkVoxelId)return true;
+    const checkVoxelObject = this.DVEB.voxelManager.getVoxel(checkVoxelId[0]);
      if (
       this.substanceRules[
-       `${voxel.data.substance}-${neighborVoxel.data.substance}`
+       `${voxel.data.substance}-${checkVoxelObject.data.substance}`
       ]
      ) {
       return true;
      } else {
       return false;
      }
-    } else {
-     return true;
-    } */
  }
 
  /**# Get Light
@@ -118,10 +112,10 @@ export class VoxelHelper {
     if (!voxel) return 0;
     const voxelData = this.DVEB.voxelManager.getVoxel(voxel[0]);
 
-    if (voxelData.lightSource && voxelData.lightValue) {
-     return voxelData.lightValue;
+    if (voxelData.data.lightSource && voxelData.data.lightValue) {
+     return voxelData.data.lightValue;
     }
-    if (voxelData.substance == "solid") {
+    if (voxelData.data.substance == "solid") {
      return 0;
     }
     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);

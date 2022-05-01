@@ -78,6 +78,13 @@ export class VoxelPaletteManager {
  getGlobalVoxelPalette() {
   return this.globalVoxelPalette;
  }
+/**# Get Global Voxel Palette Record
+ * ---
+ * Returns a record that maps voxel ids and states to already split array of values.
+ */
+ getGlobalVoxelPaletteRecord() {
+    return this.globalVoxelPaletteRecord;
+}
 
  getVoxelDataFromRegion(
   region: WorldRegion,

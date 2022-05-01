@@ -18,8 +18,9 @@ export declare class WorldMatrix implements ChunkBound {
     chunks: Record<string, Uint32Array>;
     chunkStates: Record<string, Uint8Array>;
     paletteMode: number;
-    globalVoxelPalette: Record<number, string[]>;
-    regionVoxelPalettes: Record<string, Record<number, string[]>>;
+    globalVoxelPalette: Record<number, string>;
+    globalVoxelPaletteRecord: Record<string, string[]>;
+    regionVoxelPalettes: Record<string, Record<number, string>>;
     constructor();
     syncChunkBounds(): void;
     /**# Await Chunk Load
@@ -27,8 +28,8 @@ export declare class WorldMatrix implements ChunkBound {
      * Wait for a chunk to loaded into the matrix  for use.
      */
     awaitChunkLoad(chunkX: number, chunkY: number, chunkZ: number, timeout?: number): Promise<unknown>;
-    __setGlobalVoxelPalette(palette: Record<number, string[]>): void;
-    __setRegionVoxelPalette(regionX: number, regionY: number, regionZ: number, palette: Record<number, string[]>): void;
+    __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
+    __setRegionVoxelPalette(regionX: number, regionY: number, regionZ: number, palette: Record<number, string>): void;
     __removeRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | string[];
     /**# Set Chunk

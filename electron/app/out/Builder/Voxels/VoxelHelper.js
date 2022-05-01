@@ -45,25 +45,18 @@ export class VoxelHelper {
         return this.DVEB.voxelManager.fluidShapeMap[id];
     }
     voxelFaceCheck(voxel, voxelData, x, y, z) {
-        const voxelCheck = this.DVEB.worldMatrix.getVoxel(x, y, z);
-        return true;
-        /*    if(voxelCheck == "dve:air")return true;
-      
-          if (voxelCheck && voxelCheck == "dve:air") {
-           const neighborVoxel: string = voxelCheck[0];
-        
-           if (
-            this.substanceRules[
-             `${voxel.data.substance}-${neighborVoxel.data.substance}`
-            ]
-           ) {
+        const checkVoxelId = this.DVEB.worldMatrix.getVoxel(x, y, z);
+        if (checkVoxelId && checkVoxelId[0] == "dve:air")
             return true;
-           } else {
+        if (!checkVoxelId)
+            return true;
+        const checkVoxelObject = this.DVEB.voxelManager.getVoxel(checkVoxelId[0]);
+        if (this.substanceRules[`${voxel.data.substance}-${checkVoxelObject.data.substance}`]) {
+            return true;
+        }
+        else {
             return false;
-           }
-          } else {
-           return true;
-          } */
+        }
     }
     /**# Get Light
      * ---
@@ -85,10 +78,10 @@ export class VoxelHelper {
                 if (!voxel)
                     return 0;
                 const voxelData = this.DVEB.voxelManager.getVoxel(voxel[0]);
-                if (voxelData.lightSource && voxelData.lightValue) {
-                    return voxelData.lightValue;
+                if (voxelData.data.lightSource && voxelData.data.lightValue) {
+                    return voxelData.data.lightValue;
                 }
-                if (voxelData.substance == "solid") {
+                if (voxelData.data.substance == "solid") {
                     return 0;
                 }
                 return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);

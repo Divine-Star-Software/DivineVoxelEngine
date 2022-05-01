@@ -13,13 +13,16 @@ renderComm.messageFunctions = {
         const port = event.ports[0];
         DVEB.worldComm.setPort(port);
     },
+    "sync-settings": (data, event) => {
+        const settings = data[1];
+        DVEB.syncSettings(settings);
+    },
     "re-start": (data, event) => {
         DVEB.reStart();
         renderComm.onRestart();
     },
-    "sync-settings": (data, event) => {
-        const settings = data[1];
-        DVEB.syncSettings(settings);
-        return;
-    }
+    "sync-uv-texuture-data": (data, event) => {
+        const uvTextureMap = data[1];
+        DVEB.textureManager.setUVTextureMap(uvTextureMap);
+    },
 };

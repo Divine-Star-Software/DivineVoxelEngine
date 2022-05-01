@@ -1,8 +1,8 @@
 import type { DivineVoxelEngineBuilder  } from "index";
-import { VoxelHooks, VoxelData,VoxelInteface } from "Meta/Voxels/Voxel.types";
+import { VoxelHooks, VoxelData,VoxelBuilderThreadObject } from "Meta/Voxels/Voxel.types";
 
 export class VoxelManager  {
- voxelData: Record<string, VoxelData> = {};
+ voxelObjects: Record<string, VoxelBuilderThreadObject> = {};
  shapeMap: Record<string, number> = {};
  shapeMapHasBeenSet = false;
 
@@ -29,13 +29,13 @@ export class VoxelManager  {
   return this.fluidShapeMapHasBeenSet;
  }
 
- getVoxel(id: string): VoxelData {
-  return this.voxelData[id];
+ getVoxel(id: string): VoxelBuilderThreadObject {
+  return this.voxelObjects[id];
  }
 
 
- registerVoxelData(voxel: VoxelData) {
-  this.voxelData[voxel.id] = voxel;
+ registerVoxel(voxel: VoxelBuilderThreadObject) {
+  this.voxelObjects[voxel.data.id] = voxel;
  }
 
 

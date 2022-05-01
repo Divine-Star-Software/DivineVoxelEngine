@@ -132,9 +132,12 @@ export class MatrixCentralHub {
  syncGlobalVoxelPaletteInThread(threadId: string) {
   const globalVoxelPalette =
    this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
+  const globalVoxelPaletteRecord =
+   this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
   this.threads[threadId].postMessage([
    "sync-global-palette",
    globalVoxelPalette,
+   globalVoxelPaletteRecord
   ]);
  }
 

@@ -1,8 +1,8 @@
 import type { DivineVoxelEngineBuilder } from "index";
-import { VoxelData } from "Meta/Voxels/Voxel.types";
+import { VoxelBuilderThreadObject } from "Meta/Voxels/Voxel.types";
 export declare class VoxelManager {
     private DVEB;
-    voxelData: Record<string, VoxelData>;
+    voxelObjects: Record<string, VoxelBuilderThreadObject>;
     shapeMap: Record<string, number>;
     shapeMapHasBeenSet: boolean;
     fluidShapeMap: Record<string, number>;
@@ -12,6 +12,6 @@ export declare class VoxelManager {
     setFluidShapeMap(shapeMap: Record<string, number>): void;
     shapMapIsSet(): boolean;
     fluidShapMapIsSet(): boolean;
-    getVoxel(id: string): VoxelData;
-    registerVoxelData(voxel: VoxelData): void;
+    getVoxel(id: string): VoxelBuilderThreadObject;
+    registerVoxel(voxel: VoxelBuilderThreadObject): void;
 }

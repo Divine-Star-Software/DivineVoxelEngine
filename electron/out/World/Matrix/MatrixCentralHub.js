@@ -110,9 +110,11 @@ export class MatrixCentralHub {
     }
     syncGlobalVoxelPaletteInThread(threadId) {
         const globalVoxelPalette = this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
+        const globalVoxelPaletteRecord = this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
         this.threads[threadId].postMessage([
             "sync-global-palette",
             globalVoxelPalette,
+            globalVoxelPaletteRecord
         ]);
     }
     syncRegionVoxelPalette(regionX, regionY, regionZ) {

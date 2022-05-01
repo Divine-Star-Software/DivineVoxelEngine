@@ -23,6 +23,9 @@ export const GetNewBuilderComm = (count: number, port: InterCommPortTypes) => {
  const newComm: InterCommInterface = Object.create(builderComm);
  newComm.onSetPort((port) => {
   DVEW.matrixCentralHub.registerThread(`builder-${count}`, port);
+  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+   DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(`builder-${count}`);
+  }
  });
  newComm.setPort(port);
  return newComm;

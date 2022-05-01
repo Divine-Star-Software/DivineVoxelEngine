@@ -25,8 +25,9 @@ export class WorldMatrix implements ChunkBound {
  chunkStates: Record<string, Uint8Array> = {};
 
  paletteMode = 0;
- globalVoxelPalette: Record<number, string[]> = {};
- regionVoxelPalettes: Record<string, Record<number, string[]>> = {};
+ globalVoxelPalette: Record<number, string> = {};
+ globalVoxelPaletteRecord: Record<string, string[]> = {};
+ regionVoxelPalettes: Record<string, Record<number, string>> = {};
 
  constructor() {}
 
@@ -60,15 +61,19 @@ export class WorldMatrix implements ChunkBound {
   });
  }
 
- __setGlobalVoxelPalette(palette: Record<number, string[]>) {
+ __setGlobalVoxelPalette(
+  palette: Record<number, string>,
+  record: Record<string, string[]>
+ ) {
   this.globalVoxelPalette = palette;
+  this.globalVoxelPaletteRecord = record;
  }
 
  __setRegionVoxelPalette(
   regionX: number,
   regionY: number,
   regionZ: number,
-  palette: Record<number, string[]>
+  palette: Record<number, string>
  ) {
   this.regionVoxelPalettes[`${regionX}-${regionZ}-${regionY}`] = palette;
  }
@@ -81,6 +86,7 @@ export class WorldMatrix implements ChunkBound {
 
  getVoxel(x: number, y: number, z: number) {
   let palette = this.globalVoxelPalette;
+  let record = this.globalVoxelPaletteRecord;
 
   if (this.paletteMode == 1) {
    const regionX = (x >> this.regionXPow2) << this.regionXPow2;
@@ -119,10 +125,11 @@ export class WorldMatrix implements ChunkBound {
     voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
    }
   }
-  const voxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
-  const voxelId = this.voxelByte.getId(voxelData);
-  if (voxelId == 0) return ["dve:air"];
-  return palette[voxelId];
+  const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+  const numericVoxelId = this.voxelByte.getId(rawVoxelData);
+  if (numericVoxelId == 0) return ["dve:air"];
+  const paletteId = palette[numericVoxelId];
+  return record[paletteId];
  }
 
  /**# Set Chunk

@@ -11,6 +11,7 @@ import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
+import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 export declare class DivineVoxelEngineBuilder {
     environment: "node" | "browser";
     worker: Worker;
@@ -23,6 +24,7 @@ export declare class DivineVoxelEngineBuilder {
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     chunkBounds: ChunkBounds;
+    chunkProccesor: ChunkProcessor;
     textureManager: TextureManager;
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;
@@ -30,10 +32,11 @@ export declare class DivineVoxelEngineBuilder {
     engineSettings: EngineSettings;
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;
-    builder: ChunkMeshBuilder;
+    chunkMesher: ChunkMeshBuilder;
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;
     isReady(): boolean;
     $INIT(initData: DVEBInitData): Promise<void>;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
 }
 export declare const DVEB: DivineVoxelEngineBuilder;

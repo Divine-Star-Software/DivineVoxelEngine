@@ -9,7 +9,7 @@ worldComm.onSetPort((port) => {
 });
 
 const buildMesh = (data: any[]) => {
- DVEB.builder.buildChunkMesh(
+ DVEB.chunkMesher.buildChunkMesh(
   data[0],
   data[1],
   data[2],

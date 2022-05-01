@@ -104,11 +104,8 @@ export class ChunkProcessor {
             },
         };
     }
-    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
+    makeAllChunkTemplates(voxels, chunkX, chunkY, chunkZ) {
         const template = this.getBaseTemplateNew();
-        const voxels = chunk.voxels;
-        const min = chunk.maxMinHeight[0];
-        const max = chunk.maxMinHeight[1];
         let maxX = this.chunkBounds.chunkXSize;
         let maxZ = this.chunkBounds.chunkZSize;
         let maxY = this.chunkBounds.chunkYSize;
@@ -121,47 +118,46 @@ export class ChunkProcessor {
                     const voxelCheck = this.DVEB.worldMatrix.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
                     if (!voxelCheck)
                         continue;
-                    const voxelData = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
-                    const voxel = voxelData;
+                    const voxelObject = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
                     const voxelState = voxelCheck[1];
-                    const baseTemplate = template[voxel.substance];
+                    const baseTemplate = template[voxelObject.data.substance];
                     let faceBit = 0;
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 0);
                         this.exposedFaces[0] = 1;
                     }
                     else {
                         this.exposedFaces[0] = 0;
                     }
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 1);
                         this.exposedFaces[1] = 1;
                     }
                     else {
                         this.exposedFaces[1] = 0;
                     }
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 2);
                         this.exposedFaces[2] = 1;
                     }
                     else {
                         this.exposedFaces[2] = 0;
                     }
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 3);
                         this.exposedFaces[3] = 1;
                     }
                     else {
                         this.exposedFaces[3] = 0;
                     }
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         faceBit = faceBit | (1 << 4);
                         this.exposedFaces[4] = 1;
                     }
                     else {
                         this.exposedFaces[4] = 0;
                     }
-                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxel, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (this.DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         faceBit = faceBit | (1 << 5);
                         this.exposedFaces[5] = 1;
                     }
@@ -170,23 +166,23 @@ export class ChunkProcessor {
                     }
                     if (faceBit == 0)
                         continue;
-                    /*      voxel.process({
-                          voxelState: voxelState,
-                          voxelData: voxelData,
-                          exposedFaces: this.exposedFaces,
-                          shapeTemplate: baseTemplate.shapeTemplate,
-                          shapeStateTemplate: baseTemplate.shapeStateTemplate,
-                          uvTemplate: baseTemplate.uvTemplate,
-                          colorTemplate: baseTemplate.colorTemplate,
-                          aoTemplate: baseTemplate.aoTemplate,
-                          lightTemplate: baseTemplate.lightTemplate,
-                          chunkX: chunkX,
-                          chunkY: chunkY,
-                          chunkZ: chunkZ,
-                          x: x,
-                          y: y,
-                          z: z,
-                         }); */
+                    voxelObject.process({
+                        voxelState: voxelState,
+                        voxelData: rawVoxelData,
+                        exposedFaces: this.exposedFaces,
+                        shapeTemplate: baseTemplate.shapeTemplate,
+                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
+                        uvTemplate: baseTemplate.uvTemplate,
+                        colorTemplate: baseTemplate.colorTemplate,
+                        aoTemplate: baseTemplate.aoTemplate,
+                        lightTemplate: baseTemplate.lightTemplate,
+                        chunkX: chunkX,
+                        chunkY: chunkY,
+                        chunkZ: chunkZ,
+                        x: x,
+                        y: y,
+                        z: z,
+                    }, this.DVEB);
                     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
                     baseTemplate.positionTemplate.push(x, y, z);
                     baseTemplate.faceTemplate.push(faceBit);

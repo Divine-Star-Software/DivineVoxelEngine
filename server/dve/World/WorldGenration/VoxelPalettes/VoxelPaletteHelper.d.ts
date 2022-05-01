@@ -34,6 +34,11 @@ export declare class VoxelPaletteManager {
     registerVoxelForGlobalPalette(voxel: VoxelInteface): void;
     registerVoxelForPerRegionVoxelPalette(voxel: VoxelInteface): void;
     getGlobalVoxelPalette(): Record<number, string>;
+    /**# Get Global Voxel Palette Record
+     * ---
+     * Returns a record that maps voxel ids and states to already split array of values.
+     */
+    getGlobalVoxelPaletteRecord(): Record<string, string[]>;
     getVoxelDataFromRegion(region: WorldRegion, voxelId: number): string[] | false;
     getVoxelPaletteIdFromRegion(region: WorldRegion, voxelId: string, voxelState: string): number | false;
     addToRegionsVoxelPalette(region: WorldRegion, voxelId: string, voxelState: string): number;

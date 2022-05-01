@@ -25,7 +25,7 @@ export function OcculsionCalcuation(
 
  const checkVoxel = DVEB.voxelManager.getVoxel(check[0]);
 
- if (checkVoxel.substance !== voxel.substance) {
+ if (checkVoxel.data.substance !== voxel.substance) {
   return 1;
  }
  return 0.75;

@@ -1,6 +1,6 @@
 export class VoxelManager {
     DVEB;
-    voxelData = {};
+    voxelObjects = {};
     shapeMap = {};
     shapeMapHasBeenSet = false;
     fluidShapeMap = {};
@@ -23,9 +23,9 @@ export class VoxelManager {
         return this.fluidShapeMapHasBeenSet;
     }
     getVoxel(id) {
-        return this.voxelData[id];
+        return this.voxelObjects[id];
     }
-    registerVoxelData(voxel) {
-        this.voxelData[voxel.id] = voxel;
+    registerVoxel(voxel) {
+        this.voxelObjects[voxel.data.id] = voxel;
     }
 }

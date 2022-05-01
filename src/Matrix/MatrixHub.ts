@@ -92,7 +92,7 @@ export class MatrixHub {
  }
 
  _syncGlobalVoxelPalette(data: any[]) {
-  this.worldMatrix.__setGlobalVoxelPalette(data[1]);
+  this.worldMatrix.__setGlobalVoxelPalette(data[1],data[2]);
  }
 
  _syncRegionVoxelPalette(data: any[]) {

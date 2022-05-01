@@ -80,6 +80,12 @@ export class DivineVoxelEngineRender {
         }
         this._syncSettings(data);
         this.textureManager.generateTexturesData();
+        for (const builder of this.builderManager.builders) {
+            builder.postMessage([
+                "sync-uv-texuture-data",
+                this.textureManager.uvTextureMap,
+            ]);
+        }
         await this.worldComm.getBaseWorldData();
         //terminate all workers
         window.addEventListener("beforeunload", () => {

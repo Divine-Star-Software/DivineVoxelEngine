@@ -15,6 +15,7 @@ import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
+import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 
 export class DivineVoxelEngineBuilder {
  environment: "node" | "browser" = "browser";
@@ -27,6 +28,7 @@ export class DivineVoxelEngineBuilder {
  worldComm = WorldComm;
  chunkBounds = new ChunkBounds();
 
+ chunkProccesor = new ChunkProcessor(this);
  textureManager = new TextureManager();
  voxelManager = new VoxelManager(this);
  voxelHelper = new VoxelHelper(this);
@@ -35,11 +37,7 @@ export class DivineVoxelEngineBuilder {
  engineSettings: EngineSettings = new EngineSettings();
  shapeManager: ShapeManager = new ShapeManager();
  shapeHelper = new ShapeHelper(this.UTIL);
- builder: ChunkMeshBuilder = new ChunkMeshBuilder(
-  this,
-  this.shapeManager,
-  this.UTIL
- );
+ chunkMesher = new ChunkMeshBuilder(this, this.shapeManager, this.UTIL);
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
@@ -61,6 +59,20 @@ export class DivineVoxelEngineBuilder {
 
  async $INIT(initData: DVEBInitData) {
   await InitWorker(this, initData);
+ }
+
+ buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  const chunk = this.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
+  console.log(chunk);
+  if (!chunk) return false;
+  const template = this.chunkProccesor.makeAllChunkTemplates(
+   chunk,
+   chunkX,
+   chunkY,
+   chunkZ
+  );
+  console.log(template);
+  return true;
  }
 }
 

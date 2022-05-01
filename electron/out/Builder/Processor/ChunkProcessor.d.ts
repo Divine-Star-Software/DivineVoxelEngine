@@ -2,7 +2,7 @@ import type { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { VoxelByte } from "Global/Util/VoxelByte.js";
 import { DivineVoxelEngineBuilder } from "index.js";
 import { WorldMatrix } from "Matrix/WorldMatrix.js";
-import type { ChunkData, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
+import type { ChunkVoxels, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 /**# Chunk Processor
@@ -29,5 +29,5 @@ export declare class ChunkProcessor implements ChunkBound {
     constructor(DVEB: DivineVoxelEngineBuilder);
     syncChunkBounds(): void;
     getBaseTemplateNew(): FullChunkTemplate;
-    makeAllChunkTemplates(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
+    makeAllChunkTemplates(voxels: ChunkVoxels, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
 }

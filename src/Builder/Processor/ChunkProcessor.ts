@@ -5,6 +5,7 @@ import { WorldMatrix } from "Matrix/WorldMatrix.js";
 import type {
  ChunkData,
  ChunkTemplate,
+ ChunkVoxels,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
 import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
@@ -132,15 +133,12 @@ export class ChunkProcessor implements ChunkBound {
  }
 
  makeAllChunkTemplates(
-  chunk: ChunkData,
+  voxels: ChunkVoxels,
   chunkX: number,
   chunkY: number,
   chunkZ: number
  ): FullChunkTemplate {
   const template: FullChunkTemplate = this.getBaseTemplateNew();
-  const voxels = chunk.voxels;
-  const min = chunk.maxMinHeight[0];
-  const max = chunk.maxMinHeight[1];
   let maxX = this.chunkBounds.chunkXSize;
   let maxZ = this.chunkBounds.chunkZSize;
   let maxY = this.chunkBounds.chunkYSize;
@@ -155,18 +153,16 @@ export class ChunkProcessor implements ChunkBound {
       chunkZ + z
      );
      if (!voxelCheck) continue;
-     const voxelData = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
-
-     const voxel: VoxelData = voxelData;
+     const voxelObject = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
 
-     const baseTemplate = template[voxel.substance];
+     const baseTemplate = template[voxelObject.data.substance];
 
      let faceBit = 0;
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX,
        y + chunkY + 1,
@@ -181,7 +177,7 @@ export class ChunkProcessor implements ChunkBound {
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX,
        y + chunkY - 1,
@@ -196,7 +192,7 @@ export class ChunkProcessor implements ChunkBound {
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX + 1,
        y + chunkY,
@@ -211,7 +207,7 @@ export class ChunkProcessor implements ChunkBound {
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX - 1,
        y + chunkY,
@@ -226,7 +222,7 @@ export class ChunkProcessor implements ChunkBound {
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX,
        y + chunkY,
@@ -241,7 +237,7 @@ export class ChunkProcessor implements ChunkBound {
 
      if (
       this.DVEB.voxelHelper.voxelFaceCheck(
-       voxel,
+       voxelObject,
        rawVoxelData,
        x + chunkX,
        y + chunkY,
@@ -256,9 +252,9 @@ export class ChunkProcessor implements ChunkBound {
 
      if (faceBit == 0) continue;
 
-/*      voxel.process({
+      voxelObject.process({
       voxelState: voxelState,
-      voxelData: voxelData,
+      voxelData: rawVoxelData,
       exposedFaces: this.exposedFaces,
       shapeTemplate: baseTemplate.shapeTemplate,
       shapeStateTemplate: baseTemplate.shapeStateTemplate,
@@ -272,7 +268,8 @@ export class ChunkProcessor implements ChunkBound {
       x: x,
       y: y,
       z: z,
-     }); */
+     },
+     this.DVEB); 
 
      // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
      baseTemplate.positionTemplate.push(x, y, z);
@@ -280,6 +277,7 @@ export class ChunkProcessor implements ChunkBound {
     }
    }
   }
+
   /*   this.DVEW.builderCommManager.requestFullChunkBeBuilt(
    chunkX,
    chunkY,
