@@ -1,6 +1,6 @@
 import { VoxelData } from "../../../../../out/Meta/index";
 
-export const DreamGrassVoxelData: VoxelData = {
+export const DreamGrassBlockVoxelData: VoxelData = {
     name: "Dream Grass Block",
     shapeId: "Box",
     id: "dve:dreamgrassblock",

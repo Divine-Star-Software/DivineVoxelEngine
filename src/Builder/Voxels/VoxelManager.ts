@@ -38,5 +38,11 @@ export class VoxelManager  {
   this.voxelObjects[voxel.data.id] = voxel;
  }
 
-
+ runVoxelHookForAll(hook: VoxelHooks) {
+    for (const voxelID of Object.keys(this.voxelObjects)) {
+     const voxel = this.voxelObjects[voxelID];
+     if (!voxel.hooks[hook]) continue;
+     voxel.hooks[hook](this.DVEB);
+    }
+   }
 }

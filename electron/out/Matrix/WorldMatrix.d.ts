@@ -21,6 +21,7 @@ export declare class WorldMatrix implements ChunkBound {
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteRecord: Record<string, string[]>;
     regionVoxelPalettes: Record<string, Record<number, string>>;
+    threadName: string;
     constructor();
     syncChunkBounds(): void;
     /**# Await Chunk Load

@@ -16,7 +16,6 @@ export class DreamLamp {
     trueShapeId = 0;
     process(data) {
         const uv = this.voxelHelper.DVEW.textureManager.getTextureUV("solid", "dreamlamp");
-        console.log(uv);
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);
         }

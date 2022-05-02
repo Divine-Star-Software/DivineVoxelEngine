@@ -48,7 +48,6 @@ export class DivineVoxelEngineBuilder {
     }
     buildChunk(chunkX, chunkY, chunkZ) {
         const chunk = this.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
-        console.log(chunk);
         if (!chunk)
             return false;
         const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);

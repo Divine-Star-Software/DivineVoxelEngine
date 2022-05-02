@@ -42,6 +42,7 @@ export class MatrixHub {
  constructor(private worldMatrix: WorldMatrix,threadName ?: string) {
     if(threadName) {
         this.threadName = threadName;
+        this.worldMatrix.threadName = this.threadName;
     }
  }
 
@@ -64,7 +65,7 @@ export class MatrixHub {
    chunkY,
    chunkZ,
   ]);
-
+  console.log(this.threadName);
   return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
  }
 
@@ -122,5 +123,6 @@ export class MatrixHub {
 
  _setThreadName(data: any[]) {
   this.threadName = data[1];
+  this.worldMatrix.threadName = this.threadName;
  }
 }

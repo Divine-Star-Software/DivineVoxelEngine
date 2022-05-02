@@ -33,6 +33,20 @@ export class VoxelHelper {
         "magma-fluid": true,
         "magma-magma": false,
     };
+    lightValueFunctions = {
+        r: (value) => {
+            return this.lightByte.getR(value);
+        },
+        g: (value) => {
+            return this.lightByte.getG(value);
+        },
+        b: (value) => {
+            return this.lightByte.getB(value);
+        },
+        s: (value) => {
+            return this.lightByte.getS(value);
+        },
+    };
     constructor(DVEB) {
         this.DVEB = DVEB;
         this.voxelByte = this.DVEB.UTIL.getVoxelByte();
@@ -88,6 +102,9 @@ export class VoxelHelper {
             }
         }
         return 0;
+    }
+    getLightValue(x, y, z, type) {
+        return this.lightValueFunctions[type](this.getLight(x, y, z));
     }
     processVoxelLight(data, voxel) {
         if (this.DVEB.engineSettings.settings.lighting?.doRGBLight ||

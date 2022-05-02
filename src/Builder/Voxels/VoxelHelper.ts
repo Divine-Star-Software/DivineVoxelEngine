@@ -1,9 +1,6 @@
 import type { Util } from "Global/Util.helper";
 import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager.interface";
-import type {
- VoxelInteface,
- VoxelProcessData,
-} from "Meta/Voxels/Voxel.types";
+import type { VoxelInteface, VoxelProcessData } from "Meta/Voxels/Voxel.types";
 import type { VoxelHelperInterface } from "Meta/Voxels/VoxelHelper.interface";
 import { BuildAmbientOcclusion } from "./Functions/ChunkAO.js";
 import type { WorldData } from "World/WorldData/WorldData";
@@ -57,6 +54,21 @@ export class VoxelHelper {
   "magma-magma": false,
  };
 
+ lightValueFunctions = {
+  r: (value: number) => {
+   return this.lightByte.getR(value);
+  },
+  g: (value: number) => {
+   return this.lightByte.getG(value);
+  },
+  b: (value: number) => {
+   return this.lightByte.getB(value);
+  },
+  s: (value: number) => {
+   return this.lightByte.getS(value);
+  },
+ };
+
  constructor(public DVEB: DivineVoxelEngineBuilder) {
   this.voxelByte = this.DVEB.UTIL.getVoxelByte();
   this.lightByte = this.DVEB.UTIL.getLightByte();
@@ -78,18 +90,18 @@ export class VoxelHelper {
   z: number
  ) {
   const checkVoxelId = this.DVEB.worldMatrix.getVoxel(x, y, z);
-   if(checkVoxelId && checkVoxelId[0] == "dve:air")return true;
-   if(!checkVoxelId)return true;
-    const checkVoxelObject = this.DVEB.voxelManager.getVoxel(checkVoxelId[0]);
-     if (
-      this.substanceRules[
-       `${voxel.data.substance}-${checkVoxelObject.data.substance}`
-      ]
-     ) {
-      return true;
-     } else {
-      return false;
-     }
+  if (checkVoxelId && checkVoxelId[0] == "dve:air") return true;
+  if (!checkVoxelId) return true;
+  const checkVoxelObject = this.DVEB.voxelManager.getVoxel(checkVoxelId[0]);
+  if (
+   this.substanceRules[
+    `${voxel.data.substance}-${checkVoxelObject.data.substance}`
+   ]
+  ) {
+   return true;
+  } else {
+   return false;
+  }
  }
 
  /**# Get Light
@@ -122,6 +134,10 @@ export class VoxelHelper {
    }
   }
   return 0;
+ }
+
+ getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s") {
+  return this.lightValueFunctions[type](this.getLight(x, y, z));
  }
 
  processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {

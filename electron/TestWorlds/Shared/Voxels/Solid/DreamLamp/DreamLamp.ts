@@ -24,7 +24,6 @@ export class DreamLamp implements VoxelInteface {
    "solid",
    "dreamlamp"
   );
-console.log(uv);
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
   }

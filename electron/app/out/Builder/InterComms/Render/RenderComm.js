@@ -24,5 +24,6 @@ renderComm.messageFunctions = {
     "sync-uv-texuture-data": (data, event) => {
         const uvTextureMap = data[1];
         DVEB.textureManager.setUVTextureMap(uvTextureMap);
+        DVEB.voxelManager.runVoxelHookForAll("texturesRegistered");
     },
 };

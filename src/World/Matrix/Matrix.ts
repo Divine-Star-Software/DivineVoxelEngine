@@ -9,6 +9,7 @@ export class Matrix {
  updateDieTime = 120000;
 
  loadedChunks: Record<string, SharedArrayBuffer> = {};
+ loadedRegions: Record<string, Record<string, boolean>> = {};
  chunkStatesSAB: Record<string, SharedArrayBuffer> = {};
  //A view of the chunk states SAB. The states are used to define if the chunk is 'locked' or not.
  chunkStates: Record<string, Uint8Array> = {};
@@ -111,6 +112,7 @@ export class Matrix {
   this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint8Array(
    chunkStateSAB
   );
+  this.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`] = chunkStateSAB;
   return [chunkSAB, chunkStateSAB];
  }
 }

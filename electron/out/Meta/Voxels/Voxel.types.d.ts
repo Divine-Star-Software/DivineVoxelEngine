@@ -51,7 +51,7 @@ export interface VoxelInteface {
 export declare type VoxelBuilderThreadObject = {
     data: VoxelData;
     trueShapeId: number;
-    hooks: Record<VoxelBuilderThreadHooks, Function>;
+    hooks: Record<VoxelBuilderThreadHooks, (DVEB: DivineVoxelEngineBuilder) => any>;
     process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };
 export declare type VoxelWorldThreadObject = {

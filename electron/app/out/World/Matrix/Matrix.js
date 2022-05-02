@@ -7,6 +7,7 @@ export class Matrix {
     //two minutes
     updateDieTime = 120000;
     loadedChunks = {};
+    loadedRegions = {};
     chunkStatesSAB = {};
     //A view of the chunk states SAB. The states are used to define if the chunk is 'locked' or not.
     chunkStates = {};
@@ -97,6 +98,7 @@ export class Matrix {
         this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunkSAB;
         chunk.voxels = chunkSABView;
         this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint8Array(chunkStateSAB);
+        this.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`] = chunkStateSAB;
         return [chunkSAB, chunkStateSAB];
     }
 }

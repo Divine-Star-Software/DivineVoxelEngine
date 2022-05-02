@@ -21,6 +21,7 @@ export class WorldMatrix {
     globalVoxelPalette = {};
     globalVoxelPaletteRecord = {};
     regionVoxelPalettes = {};
+    threadName = "";
     constructor() { }
     syncChunkBounds() {
         this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
@@ -34,6 +35,7 @@ export class WorldMatrix {
             let inte = 0;
             const failTimeout = setTimeout(() => {
                 clearInterval(inte);
+                console.warn(`${this.threadName} could not load the chunk ${chunkX}-${chunkY}-${chunkZ} in time.`);
                 reject(false);
             }, timeout);
             inte = setInterval(() => {

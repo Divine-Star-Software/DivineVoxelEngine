@@ -1,6 +1,6 @@
-import { DreamGrassVoxelData } from "./DreamGrass.voxel.data.js";
-export const DreamGrassVoxelBuilderThread = {
-    data: DreamGrassVoxelData,
+import { DreamGrassBlockVoxelData } from "./DreamGrass.voxel.data.js";
+export const DreamGrassBlockVoxelBuilderThread = {
+    data: DreamGrassBlockVoxelData,
     trueShapeId: 1,
     hooks: {},
     process: function (data, DVEB) {

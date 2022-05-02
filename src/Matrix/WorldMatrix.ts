@@ -29,6 +29,7 @@ export class WorldMatrix implements ChunkBound {
  globalVoxelPaletteRecord: Record<string, string[]> = {};
  regionVoxelPalettes: Record<string, Record<number, string>> = {};
 
+ threadName = "";
  constructor() {}
 
  syncChunkBounds(): void {
@@ -49,9 +50,9 @@ export class WorldMatrix implements ChunkBound {
    let inte = 0;
    const failTimeout = setTimeout(() => {
     clearInterval(inte);
+    console.warn(`${this.threadName} could not load the chunk ${chunkX}-${chunkY}-${chunkZ} in time.`);
     reject(false);
    }, timeout);
-
    inte = setInterval(() => {
     if (this.getChunk(chunkX, chunkY, chunkZ)) {
      clearTimeout(failTimeout);

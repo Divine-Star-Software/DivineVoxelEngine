@@ -35,6 +35,7 @@ export class MatrixHub {
         this.worldMatrix = worldMatrix;
         if (threadName) {
             this.threadName = threadName;
+            this.worldMatrix.threadName = this.threadName;
         }
     }
     onMessage(event, runAfter) {
@@ -56,6 +57,7 @@ export class MatrixHub {
             chunkY,
             chunkZ,
         ]);
+        console.log(this.threadName);
         return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
     }
     requestChunkRelease(chunkX, chunkY, chunkZ) {
@@ -105,5 +107,6 @@ export class MatrixHub {
     }
     _setThreadName(data) {
         this.threadName = data[1];
+        this.worldMatrix.threadName = this.threadName;
     }
 }

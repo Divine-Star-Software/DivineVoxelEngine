@@ -11,6 +11,12 @@ export declare class VoxelHelper {
     voxelByte: VoxelByte;
     lightByte: LightByte;
     substanceRules: Record<string, boolean>;
+    lightValueFunctions: {
+        r: (value: number) => number;
+        g: (value: number) => number;
+        b: (value: number) => number;
+        s: (value: number) => number;
+    };
     constructor(DVEB: DivineVoxelEngineBuilder);
     getTrueShapeId(id: string): number;
     getTrueFluidShapeId(id: string): number;
@@ -24,6 +30,7 @@ export declare class VoxelHelper {
      * @returns
      */
     getLight(x: number, y: number, z: number): number;
+    getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
     processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void;
     calculateVoxelLight(data: VoxelProcessData, voxel: VoxelData): void;
     calculateVoxelAO(data: VoxelProcessData, voxel: VoxelData): void;

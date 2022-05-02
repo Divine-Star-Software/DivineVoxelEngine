@@ -8,6 +8,7 @@ export declare class Matrix {
     private DVEW;
     updateDieTime: number;
     loadedChunks: Record<string, SharedArrayBuffer>;
+    loadedRegions: Record<string, Record<string, boolean>>;
     chunkStatesSAB: Record<string, SharedArrayBuffer>;
     chunkStates: Record<string, Uint8Array>;
     constructor(DVEW: DivineVoxelEngineWorld);
