@@ -61,6 +61,10 @@ Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/w
 
 ## See In Action
 
+![DVE 1](https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-new1.JPG)
+
+![DVE 1](https://divine-star-software.github.io/DigitalAssets/images/DVE/DVE-new2.JPG)
+
 ![DVE 1](https://portfolio.lucasdamianjohnson.dev/images/portfolio/DVOXEL/ss11.jpg)
 
 ![DVE 1](https://portfolio.lucasdamianjohnson.dev/images/portfolio/DVOXEL/ss9.jpg)
