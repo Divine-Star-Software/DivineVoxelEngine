@@ -4,7 +4,6 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
-
 RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 
@@ -46,6 +45,5 @@ const start = () => {
 (async () => {
  await DVEW.$INIT({
   onReady: start,
-  
  });
 })();

@@ -8,7 +8,7 @@ import { DVEB } from "../../../out/index.js";
  setTimeout(async ()=>{
     await DVEB.matrixHub.requestChunkSync(0, 0, 0);
     DVEB.buildChunk(0,0,0);
- },2000)
+ },4000)
 
 })();
 

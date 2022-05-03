@@ -50,8 +50,8 @@ export class WorldGen {
     "default"
    )
   );
-
-  const voxels: number[] = [];
+  const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+  const voxels = chunk.voxels;
   if (type == "fluid") {
    let baseY = 0;
    let maxY = 31;
@@ -167,12 +167,6 @@ export class WorldGen {
     }
    }
   }
-  return {
-   voxels: voxels,
-   maxMinHeight: [],
-   isEmpty: false,
-   proto: false,
-   heightMap: [],
-  };
+  return chunk;
  }
 }

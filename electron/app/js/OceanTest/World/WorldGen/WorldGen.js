@@ -11,11 +11,11 @@ export class WorldGen {
     renderDistance = 20;
     generateChunk(chunkX, chunkZ, type = "default") {
         let dreamstone = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default");
-        //   this.chunkMap.addChunk(chunkX,chunkZ);
         let liquidDreamEther = this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default");
         const liquidDreamEtherVoxel = this.DVEW.worldGeneration.paintVoxel(liquidDreamEther);
-        const voxels = [];
         const dreamStoneVovxel = this.DVEW.worldGeneration.paintVoxel(dreamstone);
+        const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+        const voxels = chunk.voxels;
         let baseY = 0;
         let maxY = 31;
         for (let x = 0; x < +this.chunkWidth; x++) {
@@ -30,12 +30,6 @@ export class WorldGen {
                 }
             }
         }
-        return {
-            voxels: voxels,
-            isEmpty: false,
-            proto: false,
-            maxMinHeight: [],
-            heightMap: [],
-        };
+        return chunk;
     }
 }

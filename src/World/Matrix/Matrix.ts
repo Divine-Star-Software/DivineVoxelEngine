@@ -80,14 +80,14 @@ export class Matrix {
   if (!this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`]) return;
   const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  const voxels: number[] = [];
+/*   const voxels: number[] = [];
   const length = chunk.voxels.length;
   const chunkSABView = chunk.voxels;
   let i = length;
   while (i--) {
    voxels[i] = chunkSABView[i];
   }
-  chunk.voxels = voxels;
+  chunk.voxels = voxels; */
   delete this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`];
   return true;
  }
@@ -100,19 +100,13 @@ export class Matrix {
   const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
   const length = chunk.voxels.length;
-  const chunkSAB = new SharedArrayBuffer(length * 4);
   const chunkStateSAB = new SharedArrayBuffer(1);
-  const chunkSABView = new Uint32Array(chunkSAB);
-  let i = length;
-  while (i--) {
-   chunkSABView[i] = chunk.voxels[i];
-  }
-  this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunkSAB;
-  chunk.voxels = chunkSABView;
+  this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk.voxelsSAB;
+
   this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint8Array(
    chunkStateSAB
   );
   this.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`] = chunkStateSAB;
-  return [chunkSAB, chunkStateSAB];
+  return [chunk.voxelsSAB, chunkStateSAB];
  }
 }

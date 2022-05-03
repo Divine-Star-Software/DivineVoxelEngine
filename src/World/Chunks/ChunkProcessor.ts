@@ -140,10 +140,12 @@ export class ChunkProcessor implements ChunkBound {
   let maxX = this.chunkBounds.chunkXSize;
   let maxZ = this.chunkBounds.chunkZSize;
   let maxY = this.chunkBounds.chunkYSize;
+
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
      const voxelData = this._3dArray.getValue(x, y, z, voxels);
+  
      if (this.voxelByte.getId(voxelData) == 0) continue;
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
@@ -304,6 +306,7 @@ export class ChunkProcessor implements ChunkBound {
   let maxX = this.chunkBounds.chunkXSize;
   let maxZ = this.chunkBounds.chunkZSize;
   let maxY = this.chunkBounds.chunkYSize;
+
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
@@ -314,6 +317,7 @@ export class ChunkProcessor implements ChunkBound {
       chunkY + y,
       chunkZ + z
      );
+     
      if (!voxelCheck) continue;
      const voxel: VoxelInteface = voxelCheck[0];
      const voxelState = voxelCheck[1];
@@ -438,6 +442,7 @@ export class ChunkProcessor implements ChunkBound {
     }
    }
   }
+
   this.DVEW.builderCommManager.requestFullChunkBeBuilt(
    chunkX,
    chunkY,

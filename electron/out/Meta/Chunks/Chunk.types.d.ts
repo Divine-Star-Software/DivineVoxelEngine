@@ -12,7 +12,8 @@ export declare type ChunkTemplate = {
 export declare type ChunkVoxels = number[] | Uint32Array;
 export declare type ChunkData = {
     proto: boolean;
-    voxels: ChunkVoxels;
+    voxelsSAB: SharedArrayBuffer;
+    voxels: Uint32Array;
     maxMinHeight: number[];
     heightMap: number[][];
     isEmpty: boolean;

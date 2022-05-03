@@ -270,20 +270,8 @@ export class WorldGen {
     }
     generateChunkNormal(chunkX, chunkZ) {
         let toss = Math.random();
-        const bottomChunk = {
-            voxels: [],
-            maxMinHeight: [],
-            heightMap: [],
-            proto: false,
-            isEmpty: false,
-        };
-        const topChunk = {
-            voxels: [],
-            maxMinHeight: [],
-            heightMap: [],
-            proto: false,
-            isEmpty: true,
-        };
+        const topChunk = this.DVEW.worldGeneration.getBlankChunk(false);
+        const bottomChunk = this.DVEW.worldGeneration.getBlankChunk(false);
         let minY = 60;
         let maxY = 256;
         let spiked = false;
