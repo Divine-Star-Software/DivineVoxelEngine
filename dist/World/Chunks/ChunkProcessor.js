@@ -10,45 +10,16 @@ export class ChunkProcessor {
     chunkTemplates = {};
     voxelByte;
     _3dArray;
-    /**## substance rules
-     * ---
-     * defines substance interactions for face culling/adding.
-     * First is the voxel being tested. The second are its neighbors
-     */
-    substanceRules = {
-        "solid-solid": false,
-        "solid-flora": true,
-        "solid-transparent": true,
-        "solid-fluid": true,
-        "solid-magma": true,
-        "transparent-solid": true,
-        "transparent-flora": true,
-        "transparent-transparent": true,
-        "transparent-fluid": true,
-        "transparent-magma": true,
-        "fluid-solid": false,
-        "fluid-flora": true,
-        "fluid-transparent": true,
-        "fluid-fluid": false,
-        "fluid-magma": true,
-        "magma-solid": false,
-        "magma-flora": true,
-        "magma-transparent": true,
-        "magma-fluid": true,
-        "magma-magma": false,
-    };
     exposedFaces = [];
     worldData;
-    chunkBounds;
     constructor(DVEW) {
         this.DVEW = DVEW;
         this.worldData = DVEW.worldData;
-        this.chunkBounds = DVEW.chunkBounds;
         this.voxelByte = DVEW.UTIL.getVoxelByte();
         this._3dArray = DVEW.UTIL.getFlat3DArray();
     }
     syncChunkBounds() {
-        this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+        this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
     }
     getBaseTemplateNew() {
         return {
@@ -109,9 +80,9 @@ export class ChunkProcessor {
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
         const max = chunk.maxMinHeight[1];
-        let maxX = this.chunkBounds.chunkXSize;
-        let maxZ = this.chunkBounds.chunkZSize;
-        let maxY = this.chunkBounds.chunkYSize;
+        let maxX = this.DVEW.worldBounds.chunkXSize;
+        let maxZ = this.DVEW.worldBounds.chunkZSize;
+        let maxY = this.DVEW.worldBounds.chunkYSize;
         for (let x = 0; x < maxX; x++) {
             for (let z = 0; z < maxZ; z++) {
                 for (let y = 0; y < maxY; y++) {
@@ -201,9 +172,9 @@ export class ChunkProcessor {
         const voxels = chunk.voxels;
         const min = chunk.maxMinHeight[0];
         const max = chunk.maxMinHeight[1];
-        let maxX = this.chunkBounds.chunkXSize;
-        let maxZ = this.chunkBounds.chunkZSize;
-        let maxY = this.chunkBounds.chunkYSize;
+        let maxX = this.DVEW.worldBounds.chunkXSize;
+        let maxZ = this.DVEW.worldBounds.chunkZSize;
+        let maxY = this.DVEW.worldBounds.chunkYSize;
         for (let x = 0; x < maxX; x++) {
             for (let z = 0; z < maxZ; z++) {
                 for (let y = 0; y < maxY; y++) {

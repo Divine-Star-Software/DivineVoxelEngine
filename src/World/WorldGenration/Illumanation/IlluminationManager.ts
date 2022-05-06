@@ -2,7 +2,6 @@ import { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { LightByte } from "Global/Util/LightByte";
 import { ChunkData } from "Meta/Chunks/Chunk.types.js";
 import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
-import type { ChunkBounds } from "Global/Chunks/ChunkBounds.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 import {
@@ -23,7 +22,6 @@ export class IlluminationManager implements ChunkBound {
  lightByte: LightByte;
  voxelByte: VoxelByte;
  _3dArray: Flat3DArray;
- chunkBounds: ChunkBounds;
  air = [-1, 0];
  runSunLightUpdateAt = runSunLightUpdateAt;
  runSunLightUpdate = runSunLightUpdate;
@@ -39,14 +37,13 @@ export class IlluminationManager implements ChunkBound {
  _sunLightRemoveQue: number[][] = [];
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.chunkBounds = DVEW.chunkBounds;
   this.lightByte = this.DVEW.UTIL.getLightByte();
   this.voxelByte = this.DVEW.UTIL.getVoxelByte();
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
  syncChunkBounds(): void {
-  this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+  this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
  }
 
  addChunkToSunLightUpdate(

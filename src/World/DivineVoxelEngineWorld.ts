@@ -12,7 +12,6 @@ import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
-import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 //comms
@@ -20,6 +19,7 @@ import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
+import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -28,7 +28,7 @@ import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 export class DivineVoxelEngineWorld {
  environment: "node" | "browser" = "browser";
  worker: Worker;
- chunkBounds = new ChunkBounds();
+ worldBounds = WorldBounds;
  engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
@@ -65,12 +65,22 @@ export class DivineVoxelEngineWorld {
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
   if (data.chunks) {
-   this.chunkBounds.setChunkBounds(
+   this.worldBounds.setChunkBounds(
     data.chunks.chunkXPow2,
     data.chunks.chunkYPow2,
     data.chunks.chunkZPow2
    );
    this.worldData.syncChunkBounds();
+   this.worldGeneration.illumantionManager.syncChunkBounds();
+   this.worldGeneration.chunkDataHelper.syncChunkBounds();
+   this.chunkProccesor.syncChunkBounds();
+  }
+  if (data.regions) {
+   this.worldBounds.setRegionBounds(
+    data.regions.regionXPow2,
+    data.regions.regionYPow2,
+    data.regions.regionZPow2
+   );
   }
  }
 

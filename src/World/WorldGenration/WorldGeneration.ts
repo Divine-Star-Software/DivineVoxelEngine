@@ -59,9 +59,9 @@ export class WorldGeneration {
    };
   }
   const chunkSAB = new SharedArrayBuffer(
-   this.DVEW.chunkBounds.chunkTotalVoxels
+   this.DVEW.worldBounds.chunkTotalVoxels
   );
-  const chunkVoxels = new Uint32Array(this.DVEW.chunkBounds.chunkTotalVoxels);
+  const chunkVoxels = new Uint32Array(this.DVEW.worldBounds.chunkTotalVoxels);
   return {
    ...{
     proto: proto,

@@ -1,13 +1,13 @@
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
-import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelByte } from "../Global/Util/VoxelByte.js";
+import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
 export class WorldMatrix {
     _3dArray = new Flat3DArray();
-    chunkBounds = new ChunkBounds();
+    worldBounds = WorldBounds;
     voxelByte = new VoxelByte();
     //two minutes
     updateDieTime = 120000;
@@ -24,7 +24,7 @@ export class WorldMatrix {
     threadName = "";
     constructor() { }
     syncChunkBounds() {
-        this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+        this.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
     }
     /**# Await Chunk Load
      * ---
@@ -67,29 +67,29 @@ export class WorldMatrix {
             const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
             palette = this.regionVoxelPalettes[`${regionX}-${regionZ}-${regionY}`];
         }
-        const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
-        const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
-        const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        const chunkX = (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
+        const chunkY = (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
+        const chunkZ = (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         if (!chunk) {
             return false;
         }
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
-            if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
-                voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+            if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
+                voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
             }
         }
         let voxelZ = Math.abs(z - chunkZ);
         if (z < 0) {
-            if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
-                voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+            if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
+                voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
             }
         }
         let voxelY = Math.abs(y - chunkY);
         if (y < 0) {
-            if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
-                voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+            if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
+                voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
             }
         }
         const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
@@ -168,82 +168,82 @@ export class WorldMatrix {
         return prom;
     }
     setData(x, y, z, data) {
-        const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
-        const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
-        const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        const chunkX = (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
+        const chunkY = (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
+        const chunkZ = (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
         if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`])
             return false;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
-            if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
-                voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+            if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
+                voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
             }
         }
         let voxelZ = Math.abs(z - chunkZ);
         if (z < 0) {
-            if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
-                voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+            if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
+                voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
             }
         }
         let voxelY = Math.abs(y - chunkY);
         if (y < 0) {
-            if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
-                voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+            if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
+                voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
             }
         }
         this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk, data);
     }
     getData(x, y, z) {
-        const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
-        const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
-        const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        const chunkX = (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
+        const chunkY = (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
+        const chunkZ = (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
         if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`])
             return -1;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
-            if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
-                voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+            if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
+                voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
             }
         }
         let voxelZ = Math.abs(z - chunkZ);
         if (z < 0) {
-            if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
-                voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+            if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
+                voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
             }
         }
         let voxelY = Math.abs(y - chunkY);
         if (y < 0) {
-            if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
-                voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+            if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
+                voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
             }
         }
         return this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
     }
     getVoxelNumberID(x, y, z) {
-        const chunkX = (x >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
-        const chunkY = (y >> this.chunkBounds.chunkYPow2) << this.chunkBounds.chunkYPow2;
-        const chunkZ = (z >> this.chunkBounds.chunkXPow2) << this.chunkBounds.chunkXPow2;
+        const chunkX = (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
+        const chunkY = (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
+        const chunkZ = (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
         if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`])
             return -1;
         const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
         let voxelX = Math.abs(x - chunkX);
         if (x < 0) {
-            if (x == chunkX + ((1 << this.chunkBounds.chunkXPow2) - 1)) {
-                voxelX = (1 << this.chunkBounds.chunkXPow2) - 1;
+            if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
+                voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
             }
         }
         let voxelZ = Math.abs(z - chunkZ);
         if (z < 0) {
-            if (z == chunkZ + ((1 << this.chunkBounds.chunkZPow2) - 1)) {
-                voxelZ = (1 << this.chunkBounds.chunkZPow2) - 1;
+            if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
+                voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
             }
         }
         let voxelY = Math.abs(y - chunkY);
         if (y < 0) {
-            if (y == chunkY + ((1 << this.chunkBounds.chunkYPow2) - 1)) {
-                voxelY = (1 << this.chunkBounds.chunkYPow2) - 1;
+            if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
+                voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
             }
         }
         const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);

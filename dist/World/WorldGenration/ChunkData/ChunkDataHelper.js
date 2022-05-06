@@ -2,15 +2,13 @@ export class ChunkDataHelper {
     DVEW;
     lightByte;
     _3dArray;
-    chunkBounds;
     constructor(DVEW) {
         this.DVEW = DVEW;
-        this.chunkBounds = DVEW.chunkBounds;
         this.lightByte = this.DVEW.UTIL.getLightByte();
         this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
     syncChunkBounds() {
-        this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+        this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
     }
     fillWithAir(chunk) {
         const voxels = chunk.voxels;

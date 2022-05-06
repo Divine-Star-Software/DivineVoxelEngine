@@ -5,7 +5,6 @@ export class IlluminationManager {
     lightByte;
     voxelByte;
     _3dArray;
-    chunkBounds;
     air = [-1, 0];
     runSunLightUpdateAt = runSunLightUpdateAt;
     runSunLightUpdate = runSunLightUpdate;
@@ -21,13 +20,12 @@ export class IlluminationManager {
     _sunLightRemoveQue = [];
     constructor(DVEW) {
         this.DVEW = DVEW;
-        this.chunkBounds = DVEW.chunkBounds;
         this.lightByte = this.DVEW.UTIL.getLightByte();
         this.voxelByte = this.DVEW.UTIL.getVoxelByte();
         this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
     syncChunkBounds() {
-        this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+        this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
     }
     addChunkToSunLightUpdate(chunk, chunkX, chunkY, chunkZ) {
         const heightMap = chunk.heightMap;

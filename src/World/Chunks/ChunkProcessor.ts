@@ -10,67 +10,32 @@ import type {
  VoxelInteface,
  VoxelSubstanceType,
 } from "Meta/Voxels/Voxel.types.js";
-import type { VoxelPalette } from "Meta/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { WorldData } from "World/WorldData/WorldData.js";
-import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export class ChunkProcessor implements ChunkBound {
+export class ChunkProcessor {
  worldBottomY = 0;
  worldTopY = 256;
 
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
  voxelByte: VoxelByte;
  _3dArray: Flat3DArray;
-
- /**## substance rules
-  * ---
-  * defines substance interactions for face culling/adding.
-  * First is the voxel being tested. The second are its neighbors
-  */
- substanceRules: Record<string, boolean> = {
-  "solid-solid": false,
-  "solid-flora": true,
-  "solid-transparent": true,
-  "solid-fluid": true,
-  "solid-magma": true,
-
-  "transparent-solid": true,
-  "transparent-flora": true,
-  "transparent-transparent": true,
-  "transparent-fluid": true,
-  "transparent-magma": true,
-
-  "fluid-solid": false,
-  "fluid-flora": true,
-  "fluid-transparent": true,
-  "fluid-fluid": false,
-  "fluid-magma": true,
-
-  "magma-solid": false,
-  "magma-flora": true,
-  "magma-transparent": true,
-  "magma-fluid": true,
-  "magma-magma": false,
- };
  exposedFaces: number[] = [];
  worldData: WorldData;
- chunkBounds: ChunkBounds;
 
  constructor(private DVEW: DivineVoxelEngineWorld) {
   this.worldData = DVEW.worldData;
-  this.chunkBounds = DVEW.chunkBounds;
   this.voxelByte = DVEW.UTIL.getVoxelByte();
   this._3dArray = DVEW.UTIL.getFlat3DArray();
  }
 
  syncChunkBounds(): void {
-  this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+  this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
  }
 
  getBaseTemplateNew(): FullChunkTemplate {
@@ -137,15 +102,15 @@ export class ChunkProcessor implements ChunkBound {
   const voxels = chunk.voxels;
   const min = chunk.maxMinHeight[0];
   const max = chunk.maxMinHeight[1];
-  let maxX = this.chunkBounds.chunkXSize;
-  let maxZ = this.chunkBounds.chunkZSize;
-  let maxY = this.chunkBounds.chunkYSize;
+  let maxX = this.DVEW.worldBounds.chunkXSize;
+  let maxZ = this.DVEW.worldBounds.chunkZSize;
+  let maxY = this.DVEW.worldBounds.chunkYSize;
 
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
      const voxelData = this._3dArray.getValue(x, y, z, voxels);
-  
+
      if (this.voxelByte.getId(voxelData) == 0) continue;
      const voxelCheck = this.DVEW.worldData.getVoxel(
       chunkX + x,
@@ -289,7 +254,6 @@ export class ChunkProcessor implements ChunkBound {
    chunkZ,
    template.fluid
   );
-
 
   return template;
  }
@@ -303,9 +267,9 @@ export class ChunkProcessor implements ChunkBound {
   const voxels = chunk.voxels;
   const min = chunk.maxMinHeight[0];
   const max = chunk.maxMinHeight[1];
-  let maxX = this.chunkBounds.chunkXSize;
-  let maxZ = this.chunkBounds.chunkZSize;
-  let maxY = this.chunkBounds.chunkYSize;
+  let maxX = this.DVEW.worldBounds.chunkXSize;
+  let maxZ = this.DVEW.worldBounds.chunkZSize;
+  let maxY = this.DVEW.worldBounds.chunkYSize;
 
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
@@ -317,7 +281,7 @@ export class ChunkProcessor implements ChunkBound {
       chunkY + y,
       chunkZ + z
      );
-     
+
      if (!voxelCheck) continue;
      const voxel: VoxelInteface = voxelCheck[0];
      const voxelState = voxelCheck[1];
@@ -455,7 +419,6 @@ export class ChunkProcessor implements ChunkBound {
    chunkZ,
    template.fluid
   );
-
 
   return template;
  }

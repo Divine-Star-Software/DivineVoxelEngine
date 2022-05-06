@@ -1,3 +1,4 @@
+//types
 import { EngineSettings } from "../Global/EngineSettings.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
@@ -20,7 +21,7 @@ class DivineVoxelEngineNexusClass {
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
         if (data.chunks) {
-            this.worldMatrix.chunkBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
+            this.worldMatrix.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
             this.worldMatrix.syncChunkBounds();
         }
     }

@@ -1,14 +1,30 @@
-import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
-import { ChunkBounds } from "../Global/Chunks/ChunkBounds.js";
 import { VoxelByte } from "../Global/Util/VoxelByte.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
-export declare class WorldMatrix implements ChunkBound {
+export declare class WorldMatrix {
     _3dArray: Flat3DArray;
-    chunkBounds: ChunkBounds;
+    worldBounds: {
+        chunkXPow2: number;
+        chunkYPow2: number;
+        chunkZPow2: number;
+        chunkXSize: number;
+        chunkYSize: number;
+        chunkZSize: number;
+        chunkTotalVoxels: number;
+        regionXPow2: number;
+        regionYPow2: number;
+        regionZPow2: number;
+        regionXSize: number;
+        regionYSize: number;
+        regionZSize: number;
+        regionTotalChunks: number;
+        syncBoundsWithFlat3DArray: (flat3dArray: Flat3DArray) => void;
+        setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+        setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+    };
     voxelByte: VoxelByte;
     updateDieTime: number;
     loadDieTime: number;

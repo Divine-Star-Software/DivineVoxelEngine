@@ -7,17 +7,16 @@ import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVox
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type { ChunkBounds } from "Global/Chunks/ChunkBounds.js";
-import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
+import type { WorldBounds } from "Global/WorldBounds/WorldBounds.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
  * Also handles getting and setting data.
  */
-export declare class WorldData implements ChunkBound {
+export declare class WorldData {
     DVEW: DivineVoxelEngineWorld;
     renderDistance: number;
-    chunkBounds: ChunkBounds;
+    worldBounds: typeof WorldBounds;
     regionXPow2: number;
     regionZPow2: number;
     regionYPow2: number;

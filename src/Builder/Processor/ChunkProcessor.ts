@@ -3,78 +3,33 @@ import type { VoxelByte } from "Global/Util/VoxelByte.js";
 import { DivineVoxelEngineBuilder } from "index.js";
 import { WorldMatrix } from "Matrix/WorldMatrix.js";
 import type {
- ChunkData,
- ChunkTemplate,
  ChunkVoxels,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
-import { ChunkBound } from "Meta/World/ChunkBound.interface.js";
-import type {
- VoxelInteface,
- VoxelSubstanceType,
- VoxelData,
-} from "Meta/Voxels/Voxel.types.js";
-import type { VoxelPalette } from "Meta/WorldData/World.types.js";
-import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
-import type { WorldData } from "World/WorldData/WorldData.js";
-import type { ChunkBounds } from "../../Global/Chunks/ChunkBounds.js";
 
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export class ChunkProcessor implements ChunkBound {
+export class ChunkProcessor {
  worldBottomY = 0;
  worldTopY = 256;
 
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
  voxelByte: VoxelByte;
  _3dArray: Flat3DArray;
-
- /**## substance rules
-  * ---
-  * defines substance interactions for face culling/adding.
-  * First is the voxel being tested. The second are its neighbors
-  */
- substanceRules: Record<string, boolean> = {
-  "solid-solid": false,
-  "solid-flora": true,
-  "solid-transparent": true,
-  "solid-fluid": true,
-  "solid-magma": true,
-
-  "transparent-solid": true,
-  "transparent-flora": true,
-  "transparent-transparent": true,
-  "transparent-fluid": true,
-  "transparent-magma": true,
-
-  "fluid-solid": false,
-  "fluid-flora": true,
-  "fluid-transparent": true,
-  "fluid-fluid": false,
-  "fluid-magma": true,
-
-  "magma-solid": false,
-  "magma-flora": true,
-  "magma-transparent": true,
-  "magma-fluid": true,
-  "magma-magma": false,
- };
  exposedFaces: number[] = [];
  worldMatrix: WorldMatrix;
- chunkBounds: ChunkBounds;
 
  constructor(private DVEB: DivineVoxelEngineBuilder) {
   this.worldMatrix = DVEB.worldMatrix;
-  this.chunkBounds = DVEB.chunkBounds;
   this.voxelByte = DVEB.UTIL.getVoxelByte();
   this._3dArray = DVEB.UTIL.getFlat3DArray();
  }
 
  syncChunkBounds(): void {
-  this.chunkBounds.syncBoundsWithFlat3DArray(this._3dArray);
+  this.DVEB.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
  }
 
  getBaseTemplateNew(): FullChunkTemplate {
@@ -139,9 +94,9 @@ export class ChunkProcessor implements ChunkBound {
   chunkZ: number
  ): FullChunkTemplate {
   const template: FullChunkTemplate = this.getBaseTemplateNew();
-  let maxX = this.chunkBounds.chunkXSize;
-  let maxZ = this.chunkBounds.chunkZSize;
-  let maxY = this.chunkBounds.chunkYSize;
+  let maxX = this.DVEB.worldBounds.chunkXSize;
+  let maxZ = this.DVEB.worldBounds.chunkZSize;
+  let maxY = this.DVEB.worldBounds.chunkYSize;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
@@ -252,24 +207,26 @@ export class ChunkProcessor implements ChunkBound {
 
      if (faceBit == 0) continue;
 
-      voxelObject.process({
-      voxelState: voxelState,
-      voxelData: rawVoxelData,
-      exposedFaces: this.exposedFaces,
-      shapeTemplate: baseTemplate.shapeTemplate,
-      shapeStateTemplate: baseTemplate.shapeStateTemplate,
-      uvTemplate: baseTemplate.uvTemplate,
-      colorTemplate: baseTemplate.colorTemplate,
-      aoTemplate: baseTemplate.aoTemplate,
-      lightTemplate: baseTemplate.lightTemplate,
-      chunkX: chunkX,
-      chunkY: chunkY,
-      chunkZ: chunkZ,
-      x: x,
-      y: y,
-      z: z,
-     },
-     this.DVEB); 
+     voxelObject.process(
+      {
+       voxelState: voxelState,
+       voxelData: rawVoxelData,
+       exposedFaces: this.exposedFaces,
+       shapeTemplate: baseTemplate.shapeTemplate,
+       shapeStateTemplate: baseTemplate.shapeStateTemplate,
+       uvTemplate: baseTemplate.uvTemplate,
+       colorTemplate: baseTemplate.colorTemplate,
+       aoTemplate: baseTemplate.aoTemplate,
+       lightTemplate: baseTemplate.lightTemplate,
+       chunkX: chunkX,
+       chunkY: chunkY,
+       chunkZ: chunkZ,
+       x: x,
+       y: y,
+       z: z,
+      },
+      this.DVEB
+     );
 
      // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
      baseTemplate.positionTemplate.push(x, y, z);
