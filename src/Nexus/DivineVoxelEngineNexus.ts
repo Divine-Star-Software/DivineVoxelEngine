@@ -35,6 +35,13 @@ class DivineVoxelEngineNexusClass {
    );
    this.worldMatrix.syncChunkBounds();
   }
+  if (data.regions) {
+   this.worldMatrix.worldBounds.setRegionBounds(
+    data.regions.regionXPow2,
+    data.regions.regionYPow2,
+    data.regions.regionZPow2
+   );
+  }
  }
 
  /**# Load chunk into Nexus
@@ -51,7 +58,6 @@ class DivineVoxelEngineNexusClass {
  releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
   this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
  }
-
 }
 
 export type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;

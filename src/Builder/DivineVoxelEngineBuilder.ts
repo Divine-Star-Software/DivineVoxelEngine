@@ -1,7 +1,7 @@
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { ChunkMeshBuilder } from "./ChunkMeshBuilder.js";
+import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
@@ -37,7 +37,7 @@ export class DivineVoxelEngineBuilder {
  engineSettings: EngineSettings = new EngineSettings();
  shapeManager: ShapeManager = new ShapeManager();
  shapeHelper = new ShapeHelper(this.UTIL);
- chunkMesher = new ChunkMeshBuilder(this, this.shapeManager, this.UTIL);
+ chunkMesher = new ChunkMeshBuilder(this);
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
@@ -52,12 +52,12 @@ export class DivineVoxelEngineBuilder {
    this.chunkProccesor.syncChunkBounds();
   }
   if (data.regions) {
-    this.worldBounds.setRegionBounds(
-     data.regions.regionXPow2,
-     data.regions.regionYPow2,
-     data.regions.regionZPow2
-    );
-   }
+   this.worldBounds.setRegionBounds(
+    data.regions.regionXPow2,
+    data.regions.regionYPow2,
+    data.regions.regionZPow2
+   );
+  }
  }
  reStart() {}
 
@@ -78,7 +78,7 @@ export class DivineVoxelEngineBuilder {
    chunkY,
    chunkZ
   );
-  console.log(template);
+  this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template);
   return true;
  }
 }

@@ -57,7 +57,6 @@ export class MatrixHub {
             chunkY,
             chunkZ,
         ]);
-        console.log(this.threadName);
         return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
     }
     requestChunkRelease(chunkX, chunkY, chunkZ) {

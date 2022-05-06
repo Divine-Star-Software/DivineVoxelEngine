@@ -24,6 +24,9 @@ class DivineVoxelEngineNexusClass {
             this.worldMatrix.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
             this.worldMatrix.syncChunkBounds();
         }
+        if (data.regions) {
+            this.worldMatrix.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
+        }
     }
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.

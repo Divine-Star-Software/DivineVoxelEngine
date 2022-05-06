@@ -11,6 +11,12 @@ export class VoxelManager {
     setShapeMap(shapeMap) {
         this.shapeMap = shapeMap;
         this.shapeMapHasBeenSet = true;
+        for (const voxelId of Object.keys(this.voxelObjects)) {
+            const voxel = this.voxelObjects[voxelId];
+            if (voxel.data.substance !== "fluid") {
+                voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
+            }
+        }
     }
     setFluidShapeMap(shapeMap) {
         this.fluidShapeMap = shapeMap;

@@ -46,8 +46,8 @@ export class WorldGeneration {
                 record: {},
             };
         }
-        const chunkSAB = new SharedArrayBuffer(this.DVEW.worldBounds.chunkTotalVoxels);
-        const chunkVoxels = new Uint32Array(this.DVEW.worldBounds.chunkTotalVoxels);
+        const chunkSAB = new SharedArrayBuffer(this.DVEW.worldBounds.chunkTotalVoxels * 4);
+        const chunkVoxels = new Uint32Array(chunkSAB);
         return {
             ...{
                 proto: proto,

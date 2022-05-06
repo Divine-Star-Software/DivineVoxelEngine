@@ -43,19 +43,22 @@ export type VoxelShapeAddData = {
  positions: number[];
  indices: number[];
  RGBLightColors: number[];
- sunLightColors : number[];
+ sunLightColors: number[];
  AOColors: number[];
- colors : number[];
+ colors: number[];
  uvs: number[];
  face: number;
  indicieIndex: number;
- unTemplate: Uint16Array;
+ /** 
+ @TODO fix this type def. after updates
+ */
+ unTemplate: Uint16Array | number[] | any;
  uvTemplateIndex: number;
- colorTemplate: Float32Array;
+ colorTemplate: Float32Array | number[] | any;
  colorIndex: number;
- lightTemplate: Float32Array;
+ lightTemplate: Float32Array | number[] | any;
  lightIndex: number;
- aoTemplate: Float32Array;
+ aoTemplate: Float32Array | number[] | any;
  aoIndex: number;
  position: PositionMatrix;
 };
@@ -75,7 +78,7 @@ export type VoxelShapeAddReturnData = {
  * It checks with the voxel shape to build the proper mesh.
  */
 export interface VoxelShapeInterface {
- id : string;
+ id: string;
  shapeHelper: ShapeHelperInterface;
 
  /**# Add To Chunk Mesh

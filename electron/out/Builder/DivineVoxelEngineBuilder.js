@@ -1,6 +1,6 @@
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { ChunkMeshBuilder } from "./ChunkMeshBuilder.js";
+import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
@@ -30,7 +30,7 @@ export class DivineVoxelEngineBuilder {
     engineSettings = new EngineSettings();
     shapeManager = new ShapeManager();
     shapeHelper = new ShapeHelper(this.UTIL);
-    chunkMesher = new ChunkMeshBuilder(this, this.shapeManager, this.UTIL);
+    chunkMesher = new ChunkMeshBuilder(this);
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
         this.engineSettings.syncSettings(data);
@@ -55,7 +55,7 @@ export class DivineVoxelEngineBuilder {
         if (!chunk)
             return false;
         const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
-        console.log(template);
+        this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template);
         return true;
     }
 }

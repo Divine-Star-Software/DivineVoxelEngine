@@ -8,6 +8,7 @@ export async function InitWorker(
  initData: DVEBInitData
 ) {
  RegisterDefaultShapes(DVEB.shapeManager, DVEB.shapeHelper);
+ DVEB.voxelManager.setShapeMap(DVEB.shapeManager.shapeMap);
 
  DVEB.renderComm.onReady = initData.onReady;
  if (initData.onMessage) {
@@ -42,5 +43,4 @@ export async function InitWorker(
    }
   }, 1);
  });
-
 }

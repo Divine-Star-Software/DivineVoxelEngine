@@ -1,7 +1,7 @@
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { ChunkMeshBuilder } from "./ChunkMeshBuilder.js";
+import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";

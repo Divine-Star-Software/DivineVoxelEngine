@@ -107,7 +107,9 @@ export class ChunkProcessor {
       chunkY + y,
       chunkZ + z
      );
+
      if (!voxelCheck) continue;
+
      const voxelObject = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
 

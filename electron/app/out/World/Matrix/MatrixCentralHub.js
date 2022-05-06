@@ -87,7 +87,6 @@ export class MatrixCentralHub {
                 return false;
             chunkSABs = newChunkSAB;
         }
-        console.log(chunkSABs);
         this.threads[threadId].postMessage([
             "sync-chunk",
             chunkSABs[0],
@@ -112,10 +111,12 @@ export class MatrixCentralHub {
     }
     syncGlobalVoxelPalette() {
         const globalVoxelPalette = this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
+        const globalVoxelPaletteRecord = this.DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
         for (const threadId of Object.keys(this.threads)) {
             this.threads[threadId].postMessage([
                 "sync-global-palette",
                 globalVoxelPalette,
+                globalVoxelPaletteRecord,
             ]);
         }
     }
