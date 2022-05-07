@@ -126,7 +126,7 @@ export declare class WorldData {
     insertData(x: number, y: number, z: number, data: number): false | undefined;
     getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
-    setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData): void;
+    setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData, doNotSyncInBuilderThread?: boolean): void;
     getChunkPosition(x: number, y: number, z: number): number[];
     requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): WorldRegion | undefined;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;

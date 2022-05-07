@@ -80,6 +80,7 @@ export class DivineVoxelEngineRender {
         }
         this._syncSettings(data);
         this.textureManager.generateTexturesData();
+        this.builderManager.connectBuilderToFluidBuilder();
         for (const builder of this.builderManager.builders) {
             builder.postMessage([
                 "sync-uv-texuture-data",

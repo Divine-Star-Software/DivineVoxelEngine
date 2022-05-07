@@ -29,10 +29,11 @@ export class DivineVoxelEngineWorld {
  environment: "node" | "browser" = "browser";
  worker: Worker;
  worldBounds = WorldBounds;
+ __settingsHaveBeenSynced = false;
  engineSettings: EngineSettings = new EngineSettings();
  UTIL = new Util();
 
- builderCommManager = new BuilderCommManager();
+ builderCommManager = new BuilderCommManager(this);
  //builderComm = new BuilderComm(this);
  fluidBuilderComm = FluidBuilderComm;
  worldGeneration = new WorldGeneration(this);
@@ -58,7 +59,11 @@ export class DivineVoxelEngineWorld {
 
  isReady() {
   let ready =
-   DVEW.voxelManager.shapMapIsSet() && DVEW.voxelManager.fluidShapMapIsSet();
+   this.builderCommManager.isReady() && this.fluidBuilderComm.ready
+   && this.__settingsHaveBeenSynced;
+   if(ready) {
+       console.log("WORLD READY");
+   }
   return ready;
  }
 
@@ -82,6 +87,8 @@ export class DivineVoxelEngineWorld {
     data.regions.regionZPow2
    );
   }
+  this.__settingsHaveBeenSynced = true;
+
  }
 
  runRGBLightUpdateQue() {
@@ -132,7 +139,7 @@ export class DivineVoxelEngineWorld {
     position[2]
    );
    if (substance.all) {
-    this.buildChunkAsync(position[0], position[1], position[2]);
+    this.buildChunk(position[0], position[1], position[2]);
     this.buildFluidMesh();
    }
   }
@@ -172,6 +179,11 @@ export class DivineVoxelEngineWorld {
  }
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+
+  this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
+ }
+
+ buildChunkO(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
   this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);

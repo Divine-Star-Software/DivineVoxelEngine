@@ -19,6 +19,7 @@ export declare class BuilderComm {
     createFluidBuilderWorker(path: string): void;
     setFluidBuilderWorker(worker: Worker): void;
     _initFluidBuilder(): void;
+    connectBuilderToFluidBuilder(): void;
     _handlFluideBuildMeshMessage(event: MessageEvent): Promise<void>;
     _handleBuildMeshMessage(event: MessageEvent): Promise<void>;
     _syncSettings(): void;

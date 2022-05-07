@@ -11,10 +11,10 @@ RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 
 const start = () => {
- let startX = -16;
- let startZ = -16;
- let endX = 16;
- let endZ = 16;
+ let startX = -128;
+ let startZ = -128;
+ let endX = 128;
+ let endZ = 128;
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
@@ -28,7 +28,10 @@ const start = () => {
   }
  }
 
- DVEW.buildFluidMesh();
+ setTimeout(()=> {
+    DVEW.buildFluidMesh();
+ },3000)
+
 };
 
 (async () => {

@@ -14,13 +14,13 @@ import {
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type {WorldBounds} from "Global/WorldBounds/WorldBounds.js";
+import type { WorldBounds } from "Global/WorldBounds/WorldBounds.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
  * Also handles getting and setting data.
  */
-export class WorldData  {
+export class WorldData {
  renderDistance = 20;
 
  worldBounds: typeof WorldBounds;
@@ -766,7 +766,13 @@ export class WorldData  {
   delete chunks[`${chunkX}-${chunkZ}-${chunkY}`];
  }
 
- setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData) {
+ setChunk(
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
+  chunk: ChunkData,
+  doNotSyncInBuilderThread = false
+ ) {
   const regionX = (chunkX >> this.regionXPow2) << this.regionXPow2;
   const regionY = (chunkY >> this.regionYPow2) << this.regionYPow2;
   const regionZ = (chunkZ >> this.regionZPow2) << this.regionZPow2;
@@ -778,6 +784,8 @@ export class WorldData  {
   }
   const chunks = region.chunks;
   chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
+  if (doNotSyncInBuilderThread) return;
+  this.DVEW.builderCommManager.syncChunkInAllBuilders(chunkX, chunkY, chunkZ);
  }
 
  getChunkPosition(x: number, y: number, z: number) {

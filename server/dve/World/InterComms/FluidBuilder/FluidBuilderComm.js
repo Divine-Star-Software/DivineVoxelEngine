@@ -1,10 +1,7 @@
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-import { DVEW } from "../../DivineVoxelEngineWorld.js";
 const fluidBuilderCommBase = CreateInterComm("world-fluid-builder", {
     fluidMeshHasBeenUpdated: false,
-});
-fluidBuilderCommBase.listenForMessage("connect-fluid-shape-map", (data, event) => {
-    DVEW.voxelManager.setFluidShapeMap(data[1]);
+    ready: false,
 });
 const fluidBuilderCommFunctions = {
     fluidMeshHasBeenUpdated: false,
@@ -36,10 +33,7 @@ const fluidBuilderCommFunctions = {
         ]);
     },
     requestFluidMeshBeReBuilt: function () {
-        if (this.fluidMeshHasBeenUpdated) {
-            this.fluidMeshHasBeenUpdated = false;
-            this.sendMessage(1, []);
-        }
+        this.sendMessage(1, []);
     },
     requestFullChunkBeRemoved: function (chunkX, chunkZ) {
         if (this.fluidMeshHasBeenUpdated) {
@@ -49,4 +43,7 @@ const fluidBuilderCommFunctions = {
     },
 };
 const fluidBuilderComm = Object.assign(fluidBuilderCommBase, fluidBuilderCommFunctions);
+fluidBuilderComm.listenForMessage("ready", (data, event) => {
+    fluidBuilderComm.ready = true;
+});
 export const FluidBuilderComm = fluidBuilderComm;

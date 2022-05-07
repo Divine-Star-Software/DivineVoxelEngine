@@ -1,71 +1,35 @@
 import { RegisterDefaultFluidShapes } from "../Shapes/Functions/RegisterDefaultFluidShapes.js";
-export function InitWorker(DVEFB) {
+export async function InitWorker(DVEFB, initData) {
     RegisterDefaultFluidShapes(DVEFB);
-    addEventListener("message", (event) => {
-        const data = event.data;
-        const message = data[0];
-        if (message == "connect-world") {
-            const port = event.ports[0];
-            port.onmessage = (event) => {
-                messageFromWorld(event);
-            };
-            port.postMessage(["connect-fluid-shape-map", DVEFB.shapeManager.shapeMap]);
+    DVEFB.renderComm.onReady = initData.onReady;
+    if (initData.onMessage) {
+        DVEFB.renderComm.onMessage = initData.onMessage;
+    }
+    if (initData.onRestart) {
+        DVEFB.renderComm.onRestart = initData.onRestart;
+    }
+    if (DVEFB.environment == "browser") {
+        DVEFB.renderComm.setPort(self);
+    }
+    if (DVEFB.environment == "node") {
+        //@ts-ignore
+        if (require) {
+            //@ts-ignore
+            const { parentPort } = require("worker_threads");
+            DVEFB.renderComm.setPort(parentPort);
         }
-        if (message == "re-start") {
-            DVEFB.reStart();
+        else {
+            //@ts-ignore
+            const { parentPort } = await import("worker_threads").parentPort;
+            DVEFB.renderComm.setPort(parentPort);
         }
-        if (message == "sync-settings") {
-            const settings = data[1];
-            DVEFB.syncSettings(settings);
-            return;
-        }
+    }
+    await new Promise((resolve) => {
+        const inte = setInterval(() => {
+            if (DVEFB.isReady()) {
+                clearInterval(inte);
+                resolve(true);
+            }
+        }, 1);
     });
-    const messageFromWorld = (event) => {
-        const data = event.data;
-        const eventType = data[0];
-        if (eventType == 0) {
-            const chunkX = data[1];
-            const chunkY = data[2];
-            const chunkZ = data[3];
-            const positions = new Uint16Array(data[4]);
-            const faces = new Uint8Array(data[5]);
-            const shapes = new Uint16Array(data[6]);
-            const uvs = new Uint16Array(data[7]);
-            const colors = new Float32Array(data[8]);
-            const light = new Float32Array(data[9]);
-            //console.log(light);
-            DVEFB.fluidMeshBuilder.addTemplate(chunkX, chunkY, chunkZ, positions, faces, shapes, uvs, colors, light);
-        }
-        if (eventType == 1) {
-            const meshData = DVEFB.fluidMeshBuilder.generateMesh();
-            const positionArray = new Float32Array(meshData[0]);
-            const indiciesArray = new Int32Array(meshData[1]);
-            const RGBLightColorsArray = new Float32Array(meshData[2]);
-            const sunLightColorsArray = new Float32Array(meshData[3]);
-            const colorsArray = new Float32Array(meshData[4]);
-            const uvArray = new Float32Array(meshData[5]);
-            //@ts-ignore
-            DVEFB.worker.postMessage([
-                0,
-                0,
-                0,
-                0,
-                positionArray.buffer,
-                indiciesArray.buffer,
-                RGBLightColorsArray.buffer,
-                sunLightColorsArray.buffer,
-                colorsArray.buffer,
-                uvArray.buffer,
-            ], 
-            //@ts-ignore
-            [
-                positionArray.buffer,
-                indiciesArray.buffer,
-                RGBLightColorsArray.buffer,
-                sunLightColorsArray.buffer,
-                colorsArray.buffer,
-                uvArray.buffer,
-            ]);
-        }
-    };
 }

@@ -160,18 +160,30 @@ export class ChunkProcessor {
                 }
             }
         }
-        /*   this.DVEW.builderCommManager.requestFullChunkBeBuilt(
-         chunkX,
-         chunkY,
-         chunkZ,
-         template
-        );
-        this.DVEW.fluidBuilderComm.setChunkTemplateForFluidMesh(
-         chunkX,
-         chunkY,
-         chunkZ,
-         template.fluid
-        ); */
+        const positions = new Uint16Array(template.fluid.positionTemplate);
+        const faces = new Uint8Array(template.fluid.faceTemplate);
+        const shapes = new Uint16Array(template.fluid.shapeTemplate);
+        const uvs = new Uint16Array(template.fluid.uvTemplate);
+        const colors = new Float32Array(template.fluid.colorTemplate);
+        const light = new Float32Array(template.fluid.lightTemplate);
+        this.DVEB.fluidBuilderComm.sendMessage(0, [
+            chunkX,
+            chunkY,
+            chunkZ,
+            positions.buffer,
+            faces.buffer,
+            shapes.buffer,
+            uvs.buffer,
+            colors.buffer,
+            light.buffer,
+        ], [
+            positions.buffer,
+            faces.buffer,
+            shapes.buffer,
+            uvs.buffer,
+            colors.buffer,
+            light.buffer,
+        ]);
         return template;
     }
 }

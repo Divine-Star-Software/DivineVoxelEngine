@@ -1,7 +1,9 @@
 import { Flat3DArray } from "Global/Util/Flat3DArray";
+import { PositionMatrix } from "Meta/Util.types";
 /**# World Bounds
  * ---
- * This only holds the data for the size of chunks, regions, and the world.
+ * This holds the data for the size of chunks, regions, and the world.
+ * It also handles the calcuation of chunks, regions, and relative voxel positions.
  * A refernce is held to all classes that need it.
  */
 export declare const WorldBounds: {
@@ -19,7 +21,42 @@ export declare const WorldBounds: {
     regionYSize: number;
     regionZSize: number;
     regionTotalChunks: number;
+    __regionPosition: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    __chunkPosition: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    __voxelPosition: {
+        x: number;
+        y: number;
+        z: number;
+    };
     syncBoundsWithFlat3DArray: (flat3dArray: Flat3DArray) => void;
     setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
     setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+    getRegionPosition: (x: number, y: number, z: number) => {
+        x: number;
+        y: number;
+        z: number;
+    };
+    getChunkPosition: (x: number, y: number, z: number) => {
+        x: number;
+        y: number;
+        z: number;
+    };
+    /**# Get Voxel Positions
+     * ---
+     * Returns the x/y/z index of the voxel in the chunk.
+     * Used to find actual index in the chunk array.
+     */
+    getVoxelPosition: (x: number, y: number, z: number, chunkPOS: PositionMatrix) => {
+        x: number;
+        y: number;
+        z: number;
+    };
 };

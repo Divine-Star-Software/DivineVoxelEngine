@@ -13,6 +13,7 @@ const worldGen = new WorldGen(DVEW);
 await DVEW.$INIT({
  onReady: () => {},
 });
+console.log("not read");
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 
 const chunk = worldGen.generateChunk(0, 0);
@@ -31,24 +32,17 @@ DVEW.worldData.setChunk(16, 0, 16, worldGen.generateChunk(16, 16));
 DVEW.worldData.setChunk(16, 0, -16, worldGen.generateChunk(16, -16, "pillar"));
 DVEW.worldData.setChunk(-16, 0, -16, worldGen.generateChunk(-16, -16));
 
-let startX = -16;
+ let startX = -16;
 let startZ = -16;
 let endX = 16;
 let endZ = 16;
-
-
-
-/* 
-DVEW.buildChunk(0, 0, 0);
-DVEW.buildChunk(-16, 0, 0);
-DVEW.buildChunk(16, 0, 0);
-DVEW.buildChunk(0, 0, -16);
-DVEW.buildChunk(0, 0, 16);
-
-DVEW.buildChunk(-16, 0, 16);
-DVEW.buildChunk(16, 0, 16);
-DVEW.buildChunk(16, 0, -16);
-DVEW.buildChunk(-16, 0, -16); 
- */
-
+for (let x = startX; x <= endX; x += 16) {
+ for (let z = startZ; z <= endZ; z += 16) {
+  DVEW.buildChunk(x, 0, z);
+ }
+} 
+/* DVEW.builderCommManager.builders[0].sendMessage("done", []);
 DVEW.builderCommManager.builders[1].sendMessage("done", []);
+DVEW.builderCommManager.builders[2].sendMessage("done", []);
+DVEW.builderCommManager.builders[3].sendMessage("done", []);
+ */

@@ -595,7 +595,7 @@ export class WorldData {
         const chunks = region.chunks;
         delete chunks[`${chunkX}-${chunkZ}-${chunkY}`];
     }
-    setChunk(chunkX, chunkY, chunkZ, chunk) {
+    setChunk(chunkX, chunkY, chunkZ, chunk, doNotSyncInBuilderThread = false) {
         const regionX = (chunkX >> this.regionXPow2) << this.regionXPow2;
         const regionY = (chunkY >> this.regionYPow2) << this.regionYPow2;
         const regionZ = (chunkZ >> this.regionZPow2) << this.regionZPow2;
@@ -605,6 +605,9 @@ export class WorldData {
         }
         const chunks = region.chunks;
         chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
+        if (doNotSyncInBuilderThread)
+            return;
+        this.DVEW.builderCommManager.syncChunkInAllBuilders(chunkX, chunkY, chunkZ);
     }
     getChunkPosition(x, y, z) {
         return [

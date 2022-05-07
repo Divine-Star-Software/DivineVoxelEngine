@@ -25,9 +25,10 @@ export class DivineVoxelEngineWorld {
     environment = "browser";
     worker;
     worldBounds = WorldBounds;
+    __settingsHaveBeenSynced = false;
     engineSettings = new EngineSettings();
     UTIL = new Util();
-    builderCommManager = new BuilderCommManager();
+    builderCommManager = new BuilderCommManager(this);
     //builderComm = new BuilderComm(this);
     fluidBuilderComm = FluidBuilderComm;
     worldGeneration = new WorldGeneration(this);
@@ -45,7 +46,11 @@ export class DivineVoxelEngineWorld {
         //this.builderComm.setMainThreadCom(<any>this.worker);
     }
     isReady() {
-        let ready = DVEW.voxelManager.shapMapIsSet() && DVEW.voxelManager.fluidShapMapIsSet();
+        let ready = this.builderCommManager.isReady() && this.fluidBuilderComm.ready
+            && this.__settingsHaveBeenSynced;
+        if (ready) {
+            console.log("WORLD READY");
+        }
         return ready;
     }
     syncSettings(data) {
@@ -60,6 +65,7 @@ export class DivineVoxelEngineWorld {
         if (data.regions) {
             this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
         }
+        this.__settingsHaveBeenSynced = true;
     }
     runRGBLightUpdateQue() {
         const queue = this.worldData.getRGBLightUpdateQue();
@@ -95,7 +101,7 @@ export class DivineVoxelEngineWorld {
                 break;
             const substance = this.worldData.getSubstanceNeededToRebuild(position[0], position[1], position[2]);
             if (substance.all) {
-                this.buildChunkAsync(position[0], position[1], position[2]);
+                this.buildChunk(position[0], position[1], position[2]);
                 this.buildFluidMesh();
             }
         }
@@ -129,6 +135,9 @@ export class DivineVoxelEngineWorld {
         return true;
     }
     buildChunk(chunkX, chunkY, chunkZ) {
+        this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
+    }
+    buildChunkO(chunkX, chunkY, chunkZ) {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;

@@ -6,7 +6,6 @@ export class VoxelPaletteManager {
     DVEW;
     globalVoxelPaletteIndex = 1;
     perRegionVoxelRecord = {};
-    perChunkVoxelRecord = {};
     globalVoxelPalette = {};
     globalVoxelPaletteMap = {};
     globalVoxelPaletteRecord = {};
@@ -77,8 +76,8 @@ export class VoxelPaletteManager {
         if (!region.palette)
             return false;
         const palette = region.palette;
-        const id = palette.record[voxelId];
-        return this.perChunkVoxelRecord[id];
+        const stringId = palette.palette[voxelId];
+        return palette.record[stringId];
     }
     getVoxelPaletteIdFromRegion(region, voxelId, voxelState) {
         if (!region.palette)
@@ -91,8 +90,9 @@ export class VoxelPaletteManager {
             return 0;
         const palette = region.palette;
         const id = `${voxelId}:${voxelState}`;
-        palette.record[palette.count] = id;
+        palette.record[palette.count] = [id, voxelState];
         palette.map[id] = palette.count;
+        palette.palette[palette.count] = id;
         palette.count++;
         return palette.count - 1;
     }

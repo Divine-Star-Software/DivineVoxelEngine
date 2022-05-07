@@ -6,10 +6,10 @@ RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const start = () => {
-    let startX = -16;
-    let startZ = -16;
-    let endX = 16;
-    let endZ = 16;
+    let startX = -128;
+    let startZ = -128;
+    let endX = 128;
+    let endZ = 128;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
             DVEW.worldData.setChunk(x, 0, z, worldGen.generateChunk(x, z));
@@ -20,7 +20,9 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    DVEW.buildFluidMesh();
+    setTimeout(() => {
+        DVEW.buildFluidMesh();
+    }, 3000);
 };
 (async () => {
     await DVEW.$INIT({

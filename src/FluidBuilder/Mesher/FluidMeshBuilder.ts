@@ -13,6 +13,9 @@ export class FluidMeshBuilder {
 
  savedTemplates: Record<string, any[]> = {};
 
+
+
+ 
  removeTemplate(chunkX: number, chunkY: number, chunkZ: number) {
   delete this.savedTemplates[`${chunkX}-${chunkZ}-${chunkY}`];
   delete this.templateMap[`${chunkX}-${chunkZ}-${chunkY}`];

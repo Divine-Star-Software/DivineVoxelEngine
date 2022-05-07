@@ -163,7 +163,7 @@ export class ChunkProcessor {
                 }
             }
         }
-        this.DVEW.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        this.DVEW.builderCommManager.requestFullChunkBeBuiltO(chunkX, chunkY, chunkZ, template);
         this.DVEW.fluidBuilderComm.setChunkTemplateForFluidMesh(chunkX, chunkY, chunkZ, template.fluid);
         return template;
     }
@@ -255,7 +255,7 @@ export class ChunkProcessor {
                 }
             }
         }
-        this.DVEW.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template);
+        this.DVEW.builderCommManager.requestFullChunkBeBuiltO(chunkX, chunkY, chunkZ, template);
         this.DVEW.fluidBuilderComm.setChunkTemplateForFluidMesh(chunkX, chunkY, chunkZ, template.fluid);
         return template;
     }

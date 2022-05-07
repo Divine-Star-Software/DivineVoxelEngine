@@ -16,6 +16,7 @@ import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
+import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilder.js";
 
 export class DivineVoxelEngineBuilder {
  environment: "node" | "browser" = "browser";
@@ -24,8 +25,10 @@ export class DivineVoxelEngineBuilder {
  worldMatrix = new WorldMatrix();
  matrixHub = new MatrixHub(this.worldMatrix);
 
+
  renderComm = RenderComm;
  worldComm = WorldComm;
+ fluidBuilderComm = FluidBuilderComm;
  worldBounds = WorldBounds;
 
  chunkProccesor = new ChunkProcessor(this);
@@ -35,6 +38,7 @@ export class DivineVoxelEngineBuilder {
  __connectedToWorld = false;
 
  engineSettings: EngineSettings = new EngineSettings();
+ __settingsHaveBeenSynced = false;
  shapeManager: ShapeManager = new ShapeManager();
  shapeHelper = new ShapeHelper(this.UTIL);
  chunkMesher = new ChunkMeshBuilder(this);
@@ -58,22 +62,41 @@ export class DivineVoxelEngineBuilder {
     data.regions.regionZPow2
    );
   }
+   this.__settingsHaveBeenSynced = true;
  }
  reStart() {}
 
  isReady() {
-  return this.__connectedToWorld && this.matrixHub.worldPort !== undefined;
+  return (
+   this.__connectedToWorld &&
+   this.matrixHub.worldPort !== undefined &&
+   this.voxelManager.shapMapIsSet() &&
+   this.voxelManager.fluidShapMapIsSet()
+   && this.worldComm.port !== null
+   && this.fluidBuilderComm.port !== null
+   && this.textureManager.isReady()
+   && this.__settingsHaveBeenSynced
+  );
  }
 
  async $INIT(initData: DVEBInitData) {
   await InitWorker(this, initData);
+  console.log("BUILDER READY");
+  this.worldComm.sendMessage("ready", []);
  }
 
- buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  const chunk = this.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
-  if (!chunk) return false;
+ async buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  let chunk = this.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
+  if (!chunk) {
+   await this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
+   chunk = this.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
+   if (!chunk) {
+    console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
+    return;
+   }
+  }
   const template = this.chunkProccesor.makeAllChunkTemplates(
-   chunk,
+   chunk.voxels,
    chunkX,
    chunkY,
    chunkZ

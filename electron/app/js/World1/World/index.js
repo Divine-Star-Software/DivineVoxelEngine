@@ -13,7 +13,7 @@ DVEW.renderComm.listenForMessage("voxel-add", (data, event) => {
 });
 DVEW.renderComm.listenForMessage("voxel-remove", (data, event) => {
     DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
-    DVEW.runChunkRebuildQueAsync();
+    DVEW.runChunkRebuildQue();
 });
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
     playerWatcher.setPlayerSharedArrays(data);
@@ -38,8 +38,10 @@ for (let x = startX; x < endX; x += 16) {
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         for (let y = 0; y < 2; y++) {
-            DVEW.buildChunkAsync(x, 128 * y, z);
+            DVEW.buildChunk(x, 128 * y, z);
         }
     }
 }
-DVEW.buildFluidMesh();
+setTimeout(() => {
+    DVEW.buildFluidMesh();
+}, 8000);

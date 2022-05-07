@@ -17,7 +17,7 @@ export declare class MatrixHub {
     _syncChunk(data: any[]): void;
     _releaseChunk(data: any[]): void;
     _syncGlobalVoxelPalette(data: any[]): void;
-    _syncRegionVoxelPalette(data: any[]): void;
+    _syncRegionData(data: any[]): void;
     _releaseRegionVoxelPalette(data: any[]): void;
     _setThreadName(data: any[]): void;
 }

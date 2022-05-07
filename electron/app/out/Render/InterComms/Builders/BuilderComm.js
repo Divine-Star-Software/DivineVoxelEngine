@@ -90,6 +90,13 @@ export class BuilderComm {
         //connect fluid builder to world
         this.fluidBuilder.postMessage(["connect-world"], [channel.port2]);
     }
+    connectBuilderToFluidBuilder() {
+        for (const builder of this.builders) {
+            const channel = new MessageChannel();
+            builder.postMessage(["connect-fluid-builder"], [channel.port1]);
+            this.fluidBuilder.postMessage(["connect-builder"], [channel.port2]);
+        }
+    }
     async _handlFluideBuildMeshMessage(event) {
         const meshType = event.data[0];
         const chunkX = event.data[1];

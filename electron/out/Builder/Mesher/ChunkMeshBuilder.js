@@ -150,26 +150,28 @@ export class ChunkMeshBuilder {
             const sunLightColorsArray = new Float32Array(sunLightColors);
             const colorsArray = new Float32Array(colors);
             const uvArray = new Float32Array(uvs);
-            this.DVEB.renderComm.sendMessage(this.voxelTypeMap[type], [
-                chunkX,
-                chunkY,
-                chunkZ,
-                positionArray.buffer,
-                indiciesArray.buffer,
-                AOColorsArray.buffer,
-                RGBLightColorsArray.buffer,
-                sunLightColorsArray.buffer,
-                colorsArray.buffer,
-                uvArray.buffer,
-            ], [
-                positionArray.buffer,
-                indiciesArray.buffer,
-                AOColorsArray.buffer,
-                RGBLightColorsArray.buffer,
-                sunLightColorsArray.buffer,
-                colorsArray.buffer,
-                uvArray.buffer,
-            ]);
+            if (type !== "fluid") {
+                this.DVEB.renderComm.sendMessage(this.voxelTypeMap[type], [
+                    chunkX,
+                    chunkY,
+                    chunkZ,
+                    positionArray.buffer,
+                    indiciesArray.buffer,
+                    AOColorsArray.buffer,
+                    RGBLightColorsArray.buffer,
+                    sunLightColorsArray.buffer,
+                    colorsArray.buffer,
+                    uvArray.buffer,
+                ], [
+                    positionArray.buffer,
+                    indiciesArray.buffer,
+                    AOColorsArray.buffer,
+                    RGBLightColorsArray.buffer,
+                    sunLightColorsArray.buffer,
+                    colorsArray.buffer,
+                    uvArray.buffer,
+                ]);
+            }
         }
     }
 }

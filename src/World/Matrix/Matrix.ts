@@ -99,7 +99,6 @@ export class Matrix {
  ): SharedArrayBuffer[] | false {
   const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  const length = chunk.voxels.length;
   const chunkStateSAB = new SharedArrayBuffer(1);
   this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk.voxelsSAB;
 

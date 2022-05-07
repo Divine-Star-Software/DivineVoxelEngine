@@ -11,7 +11,6 @@ import { WorldGeneration } from "../WorldGeneration";
 export class VoxelPaletteManager {
  globalVoxelPaletteIndex = 1;
  perRegionVoxelRecord: Record<string, string[]> = {};
- perChunkVoxelRecord: Record<string, string[]> = {};
  globalVoxelPalette: Record<number, string> = {};
  globalVoxelPaletteMap: Record<string, number> = {};
  globalVoxelPaletteRecord: Record<string, string[]> = {};
@@ -92,8 +91,9 @@ export class VoxelPaletteManager {
  ): string[] | false {
   if (!region.palette) return false;
   const palette = region.palette;
-  const id = palette.record[voxelId];
-  return this.perChunkVoxelRecord[id];
+  const stringId = palette.palette[voxelId];
+  return palette.record[stringId];
+  
  }
  getVoxelPaletteIdFromRegion(
   region: WorldRegion,
@@ -112,8 +112,9 @@ export class VoxelPaletteManager {
   if (!region.palette) return 0;
   const palette = region.palette;
   const id = `${voxelId}:${voxelState}`;
-  palette.record[palette.count] = id;
+  palette.record[palette.count] = [id,voxelState];
   palette.map[id] = palette.count;
+  palette.palette[palette.count] = id;
   palette.count++;
   return palette.count - 1;
  }

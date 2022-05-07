@@ -5,6 +5,7 @@ import { GetNewBuilderComm } from "./BuilderComm.js";
  * Handles all builder inter comms.
  */
 export class BuilderCommManager {
+    DVEW;
     voxelBuildOrder = ["solid", "flora", "magma"];
     voxelTypeMap = {
         solid: 0,
@@ -14,14 +15,47 @@ export class BuilderCommManager {
     count = 0;
     numBuilders = 0;
     builders = [];
+    ready = {};
+    constructor(DVEW) {
+        this.DVEW = DVEW;
+    }
     addBuilder(port) {
-        const newComm = GetNewBuilderComm(this.builders.length + 1, port);
+        const newComm = GetNewBuilderComm(this.numBuilders + 1, port);
         this.builders.push(newComm);
+        const builder = this;
+        newComm.listenForMessage("ready", () => {
+            builder.ready[newComm.name] = true;
+        });
         this.numBuilders++;
     }
-    requestFullChunkBeRemoved(chunkX, chunkY, chunkZ) {
+    syncChunkInAllBuilders(chunkX, chunkY, chunkZ) {
+        for (const builder of this.builders) {
+            this.DVEW.matrixCentralHub.syncChunkInThread(builder.name, chunkX, chunkY, chunkZ);
+        }
     }
-    requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, template) {
+    releaseChunkInAllBuilders(chunkX, chunkY, chunkZ) {
+        for (const builder of this.builders) {
+            this.DVEW.matrixCentralHub.releaseChunkInThread(builder.name, chunkX, chunkY, chunkZ);
+        }
+    }
+    isReady() {
+        for (const ready of Object.keys(this.ready)) {
+            if (this.ready[ready] == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+    requestFullChunkBeRemoved(chunkX, chunkY, chunkZ) { }
+    requestFullChunkBeBuilt(chunkX, chunkY, chunkZ) {
+        const comm = this.builders[this.count];
+        comm.sendMessage(7, [chunkX, chunkY, chunkZ]);
+        this.count++;
+        if (this.count >= this.numBuilders) {
+            this.count = 0;
+        }
+    }
+    requestFullChunkBeBuiltO(chunkX, chunkY, chunkZ, template) {
         let i = this.voxelBuildOrder.length;
         while (i--) {
             const type = this.voxelBuildOrder[i];

@@ -19,7 +19,7 @@ export class MatrixCentralHub {
    const chunkX = data[2];
    const chunkY = data[3];
    const chunkZ = data[4];
-   const returndata = this.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
+  this.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
   },
   "matrix-release-chunk": (data, event) => {
    const thread = data[1];
@@ -88,16 +88,19 @@ export class MatrixCentralHub {
   chunkZ: number
  ) {
   let chunkSABs: SharedArrayBuffer[] = [];
+
+
   if (this.DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ)) {
    chunkSABs[0] =
-    this.DVEW.matrix.loadedChunks[`${chunkX}-${chunkY}-${chunkZ}`];
+    this.DVEW.matrix.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`];
    chunkSABs[1] =
-    this.DVEW.matrix.chunkStatesSAB[`${chunkX}-${chunkY}-${chunkZ}`];
+    this.DVEW.matrix.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`];
   } else {
    const newChunkSAB = this.DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
+
   this.threads[threadId].postMessage([
    "sync-chunk",
    chunkSABs[0],
@@ -161,9 +164,9 @@ export class MatrixCentralHub {
   if (!regionVoxelPalette) return false;
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
-    "sync-region-palette",
+    "sync-region-data",
     regionVoxelPalette,
-    regionX,
+    regionX, 
     regionY,
     regionZ,
    ]);
@@ -181,7 +184,7 @@ export class MatrixCentralHub {
   const regionVoxelPalette = region.palette;
   if (!regionVoxelPalette) return false;
   this.threads[threadId].postMessage([
-   "sync-region-palette",
+   "sync-region-data",
    regionVoxelPalette,
    regionX,
    regionY,

@@ -16,6 +16,9 @@ worldComm.onMessage = (event) => {
     }
 };
 worldComm.messageFunctions = {
+    7: (data, event) => {
+        DVEB.buildChunk(data[1], data[2], data[3]);
+    },
     0: (data, event) => {
         buildMesh(data);
     },

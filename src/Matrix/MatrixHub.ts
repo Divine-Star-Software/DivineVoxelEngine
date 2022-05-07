@@ -19,8 +19,8 @@ export class MatrixHub {
   "sync-global-palette": (data) => {
    this._syncGlobalVoxelPalette(data);
   },
-  "sync-region-palette": (data) => {
-   this._syncRegionVoxelPalette(data);
+  "sync-region-data": (data) => {
+   this._syncRegionData(data);
   },
   "release-region-palette": (data) => {
    this._releaseRegionVoxelPalette(data);
@@ -105,12 +105,12 @@ export class MatrixHub {
   this.worldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
  }
 
- _syncRegionVoxelPalette(data: any[]) {
+ _syncRegionData(data: any[]) {
   const palette = data[1];
   const regionX = data[2];
   const regionY = data[3];
   const regionZ = data[4];
-  this.worldMatrix.__setRegionVoxelPalette(regionX, regionY, regionZ, palette);
+  this.worldMatrix.__syncRegionData(regionX, regionY, regionZ, palette);
  }
 
  _releaseRegionVoxelPalette(data: any[]) {

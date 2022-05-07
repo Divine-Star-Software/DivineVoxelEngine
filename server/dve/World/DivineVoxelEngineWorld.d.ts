@@ -33,25 +33,60 @@ export declare class DivineVoxelEngineWorld {
         regionYSize: number;
         regionZSize: number;
         regionTotalChunks: number;
+        __regionPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __chunkPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __voxelPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
         syncBoundsWithFlat3DArray: (flat3dArray: import("../Global/Util/Flat3DArray.js").Flat3DArray) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+        getRegionPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getChunkPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            x: number;
+            y: number;
+            z: number;
+        };
     };
+    __settingsHaveBeenSynced: boolean;
     engineSettings: EngineSettings;
     UTIL: Util;
     builderCommManager: BuilderCommManager;
     fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         fluidMeshHasBeenUpdated: boolean;
+        ready: boolean;
     } & {
         fluidMeshHasBeenUpdated: boolean;
         setChunkTemplateForFluidMesh: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
             fluidMeshHasBeenUpdated: boolean;
+            ready: boolean;
         }, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/index.js").ChunkTemplate) => void;
         requestFluidMeshBeReBuilt: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
             fluidMeshHasBeenUpdated: boolean;
+            ready: boolean;
         }) => void;
         requestFullChunkBeRemoved: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
             fluidMeshHasBeenUpdated: boolean;
+            ready: boolean;
         }, chunkX: number, chunkZ: number) => void;
     };
     worldGeneration: WorldGeneration;
@@ -78,7 +113,8 @@ export declare class DivineVoxelEngineWorld {
     runChunkRebuildQueAsync(): Promise<void>;
     clearChunkRebuildQue(): void;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
-    buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
+    buildChunkO(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
     buildFluidMesh(): void;
     $INIT(data: DVEWInitData): Promise<void>;

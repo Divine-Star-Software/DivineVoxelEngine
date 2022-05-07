@@ -22,6 +22,7 @@ export declare class DivineVoxelEngineBuilder {
         onRestart: () => void;
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     worldBounds: {
         chunkXPow2: number;
         chunkYPow2: number;
@@ -37,9 +38,39 @@ export declare class DivineVoxelEngineBuilder {
         regionYSize: number;
         regionZSize: number;
         regionTotalChunks: number;
+        __regionPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __chunkPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __voxelPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
         syncBoundsWithFlat3DArray: (flat3dArray: import("../Global/Util/Flat3DArray.js").Flat3DArray) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+        getRegionPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getChunkPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            x: number;
+            y: number;
+            z: number;
+        };
     };
     chunkProccesor: ChunkProcessor;
     textureManager: TextureManager;
@@ -47,6 +78,7 @@ export declare class DivineVoxelEngineBuilder {
     voxelHelper: VoxelHelper;
     __connectedToWorld: boolean;
     engineSettings: EngineSettings;
+    __settingsHaveBeenSynced: boolean;
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;
     chunkMesher: ChunkMeshBuilder;
@@ -54,6 +86,6 @@ export declare class DivineVoxelEngineBuilder {
     reStart(): void;
     isReady(): boolean;
     $INIT(initData: DVEBInitData): Promise<void>;
-    buildChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number): Promise<true | undefined>;
 }
 export declare const DVEB: DivineVoxelEngineBuilder;

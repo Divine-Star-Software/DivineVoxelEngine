@@ -37,7 +37,7 @@ export class WorldGeneration {
             },
         };
     }
-    getBlankChunk(empty = true, palette = false, proto = true, voxels = []) {
+    getBlankChunk(empty = true, palette = false, proto = true) {
         let paletteData = {};
         if (palette) {
             paletteData = {

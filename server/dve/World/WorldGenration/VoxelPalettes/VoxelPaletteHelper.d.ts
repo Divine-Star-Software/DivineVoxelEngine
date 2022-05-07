@@ -9,7 +9,6 @@ export declare class VoxelPaletteManager {
     private DVEW;
     globalVoxelPaletteIndex: number;
     perRegionVoxelRecord: Record<string, string[]>;
-    perChunkVoxelRecord: Record<string, string[]>;
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteMap: Record<string, number>;
     globalVoxelPaletteRecord: Record<string, string[]>;

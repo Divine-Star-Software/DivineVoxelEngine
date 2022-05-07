@@ -1,3 +1,4 @@
+import { WorldRegionPalette } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
 import { VoxelByte } from "../Global/Util/VoxelByte.js";
 /**# World Matrix
@@ -21,9 +22,39 @@ export declare class WorldMatrix {
         regionYSize: number;
         regionZSize: number;
         regionTotalChunks: number;
+        __regionPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __chunkPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        __voxelPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
         syncBoundsWithFlat3DArray: (flat3dArray: Flat3DArray) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+        getRegionPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getChunkPosition: (x: number, y: number, z: number) => {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            x: number;
+            y: number;
+            z: number;
+        };
     };
     voxelByte: VoxelByte;
     updateDieTime: number;
@@ -31,6 +62,13 @@ export declare class WorldMatrix {
     regionXPow2: number;
     regionZPow2: number;
     regionYPow2: number;
+    regions: Record<string, {
+        palette?: WorldRegionPalette;
+        chunks: Record<string, {
+            voxels: Uint32Array;
+            chunkStates: Uint8Array;
+        }>;
+    }>;
     chunks: Record<string, Uint32Array>;
     chunkStates: Record<string, Uint8Array>;
     paletteMode: number;
@@ -46,25 +84,34 @@ export declare class WorldMatrix {
      */
     awaitChunkLoad(chunkX: number, chunkY: number, chunkZ: number, timeout?: number): Promise<unknown>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
-    __setRegionVoxelPalette(regionX: number, regionY: number, regionZ: number, palette: Record<number, string>): void;
+    __syncRegionData(x: number, y: number, z: number, palette: WorldRegionPalette): void;
     __removeRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | string[];
+    _createRegion(x: number, y: number, z: number): {
+        chunks: {};
+    };
     /**# Set Chunk
      * ---
      * To be only called by the Matrix Hub.
      */
-    __setChunk(chunkX: number, chunkY: number, chunkZ: number, chunkSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
+    __setChunk(x: number, y: number, z: number, chunkSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
     /**# Remove Chunk
      * ---
      * To be only called by the Matrix Hub.
      */
-    __removeChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
-    getChunk(chunkX: number, chunkY: number, chunkZ: number): false | Uint32Array;
-    isChunkLocked(chunkX: number, chunkY: number, chunkZ: number): boolean;
-    lockChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
-    unLockChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
-    updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: Uint32Array) => {}): false | Promise<boolean>;
+    __removeChunk(x: number, y: number, z: number): false | undefined;
+    getChunk(x: number, y: number, z: number): false | {
+        voxels: Uint32Array;
+        chunkStates: Uint8Array;
+    };
+    isChunkLocked(x: number, y: number, z: number): boolean;
+    lockChunk(x: number, y: number, z: number): boolean;
+    unLockChunk(x: number, y: number, z: number): boolean;
+    updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: {
+        voxels: Uint32Array;
+        chunkStates: Uint8Array;
+    }) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number): false | undefined;
     getData(x: number, y: number, z: number): number;
-    getVoxelNumberID(x: number, y: number, z: number): number;
+    getVoxelNumberID(x: number, y: number, z: number): number | false;
 }

@@ -1,3 +1,4 @@
+import { WorldRegionPalette } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
 import { VoxelByte } from "../Global/Util/VoxelByte.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
@@ -18,6 +19,20 @@ export class WorldMatrix {
  regionXPow2 = 9;
  regionZPow2 = 9;
  regionYPow2 = 8;
+
+ regions: Record<
+  string,
+  {
+   palette?: WorldRegionPalette;
+   chunks: Record<
+    string,
+    {
+     voxels: Uint32Array;
+     chunkStates: Uint8Array;
+    }
+   >;
+  }
+ > = {};
 
  chunks: Record<string, Uint32Array> = {};
  chunkStates: Record<string, Uint8Array> = {};
@@ -70,13 +85,15 @@ export class WorldMatrix {
   this.globalVoxelPaletteRecord = record;
  }
 
- __setRegionVoxelPalette(
-  regionX: number,
-  regionY: number,
-  regionZ: number,
-  palette: Record<number, string>
+ __syncRegionData(
+  x: number,
+  y: number,
+  z: number,
+  palette: WorldRegionPalette
  ) {
-  this.regionVoxelPalettes[`${regionX}-${regionZ}-${regionY}`] = palette;
+  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+  const region = this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`];
+  region.palette = palette;
  }
 
  __removeRegionVoxelPalette(regionX: number, regionY: number, regionZ: number) {
@@ -90,47 +107,31 @@ export class WorldMatrix {
   let record = this.globalVoxelPaletteRecord;
 
   if (this.paletteMode == 1) {
-   const regionX = (x >> this.regionXPow2) << this.regionXPow2;
-   const regionY = (y >> this.regionYPow2) << this.regionYPow2;
-   const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
-   palette = this.regionVoxelPalettes[`${regionX}-${regionZ}-${regionY}`];
-  }
-
-  const chunkX =
-   (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  const chunkY =
-   (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
-  const chunkZ =
-   (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-
-  if (!chunk) {
-   return false;
-  }
-
-  let voxelX = Math.abs(x - chunkX);
-  if (x < 0) {
-   if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
-    voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
+   const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+   const region = this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`];
+   if (region && region?.palette) {
+    palette = region.palette.palette;
+    record = region.palette.record;
+   } else {
+    return false;
    }
   }
-  let voxelZ = Math.abs(z - chunkZ);
-  if (z < 0) {
-   if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
-    voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
-   }
-  }
-  let voxelY = Math.abs(y - chunkY);
-  if (y < 0) {
-   if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
-    voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
-   }
-  }
-  const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
-  const numericVoxelId = this.voxelByte.getId(rawVoxelData);
+
+  const numericVoxelId = this.getVoxelNumberID(x, y, z);
+  if (!numericVoxelId) return false;
+
   if (numericVoxelId == 0) return ["dve:air"];
   const paletteId = palette[numericVoxelId];
   return record[paletteId];
+ }
+
+ _createRegion(x: number, y: number, z: number) {
+  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+  const region = {
+   chunks: {},
+  };
+  this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`] = region;
+  return region;
  }
 
  /**# Set Chunk
@@ -138,48 +139,63 @@ export class WorldMatrix {
   * To be only called by the Matrix Hub.
   */
  __setChunk(
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number,
+  x: number,
+  y: number,
+  z: number,
   chunkSAB: SharedArrayBuffer,
   chunkStateSAB: SharedArrayBuffer
  ) {
-  this.chunks[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint32Array(chunkSAB);
-  this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint8Array(
-   chunkStateSAB
-  );
+  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+  let region = this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`];
+  if (!region) {
+   region = this._createRegion(x, y, z);
+  }
+  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+  region.chunks[`${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`] = {
+   voxels: new Uint32Array(chunkSAB),
+   chunkStates: new Uint8Array(chunkStateSAB),
+  };
  }
 
  /**# Remove Chunk
   * ---
   * To be only called by the Matrix Hub.
   */
- __removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  delete this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+ __removeChunk(x: number, y: number, z: number) {
+  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+  let region = this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`];
+  if (!region) return false;
+  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+  delete region.chunks[`${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`];
  }
 
- getChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  return this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
+ getChunk(x: number, y: number, z: number) {
+  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
+  const region = this.regions[`${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`];
+  if (!region) return false;
+  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+  const chunk = region.chunks[`${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`];
+  if (!chunk) return false;
+  return chunk;
  }
 
- isChunkLocked(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  return (
-   Atomics.load(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0) == 1
-  );
+ isChunkLocked(x: number, y: number, z: number) {
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return false;
+  return Atomics.load(chunk.chunkStates, 0) == 1;
  }
 
- lockChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 1);
+ lockChunk(x: number, y: number, z: number) {
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return false;
+  Atomics.store(chunk.chunkStates, 0, 1);
   return true;
  }
 
- unLockChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 0);
+ unLockChunk(x: number, y: number, z: number) {
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return false;
+  Atomics.store(chunk.chunkStates, 0, 0);
   return true;
  }
 
@@ -187,7 +203,7 @@ export class WorldMatrix {
   chunkX: number,
   chunkY: number,
   chunkZ: number,
-  run: (chunk: Uint32Array) => {}
+  run: (chunk: { voxels: Uint32Array; chunkStates: Uint8Array }) => {}
  ): false | Promise<boolean> {
   const chunk = this.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) {
@@ -218,95 +234,42 @@ export class WorldMatrix {
  }
 
  setData(x: number, y: number, z: number, data: number) {
-  const chunkX =
-   (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  const chunkY =
-   (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
-  const chunkZ =
-   (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return false;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-
-  let voxelX = Math.abs(x - chunkX);
-  if (x < 0) {
-   if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
-    voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
-   }
-  }
-  let voxelZ = Math.abs(z - chunkZ);
-  if (z < 0) {
-   if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
-    voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
-   }
-  }
-  let voxelY = Math.abs(y - chunkY);
-  if (y < 0) {
-   if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
-    voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
-   }
-  }
-  this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk, data);
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return false;
+  const voxelPOS = this.worldBounds.getVoxelPosition(
+   x,
+   y,
+   z,
+   this.worldBounds.getChunkPosition(x, y, z)
+  );
+  this._3dArray.setValue(
+   voxelPOS.x,
+   voxelPOS.y,
+   voxelPOS.z,
+   chunk.voxels,
+   data
+  );
  }
 
  getData(x: number, y: number, z: number) {
-  const chunkX =
-   (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  const chunkY =
-   (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
-  const chunkZ =
-   (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return -1;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-
-  let voxelX = Math.abs(x - chunkX);
-  if (x < 0) {
-   if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
-    voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
-   }
-  }
-  let voxelZ = Math.abs(z - chunkZ);
-  if (z < 0) {
-   if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
-    voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
-   }
-  }
-  let voxelY = Math.abs(y - chunkY);
-  if (y < 0) {
-   if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
-    voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
-   }
-  }
-  return this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return -1;
+  const voxelPOS = this.worldBounds.getVoxelPosition(
+   x,
+   y,
+   z,
+   this.worldBounds.getChunkPosition(x, y, z)
+  );
+  return this._3dArray.getValue(
+   voxelPOS.x,
+   voxelPOS.y,
+   voxelPOS.z,
+   chunk.voxels
+  );
  }
  getVoxelNumberID(x: number, y: number, z: number) {
-  const chunkX =
-   (x >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  const chunkY =
-   (y >> this.worldBounds.chunkYPow2) << this.worldBounds.chunkYPow2;
-  const chunkZ =
-   (z >> this.worldBounds.chunkXPow2) << this.worldBounds.chunkXPow2;
-  if (!this.chunks[`${chunkX}-${chunkZ}-${chunkY}`]) return -1;
-  const chunk = this.chunks[`${chunkX}-${chunkZ}-${chunkY}`];
-
-  let voxelX = Math.abs(x - chunkX);
-  if (x < 0) {
-   if (x == chunkX + ((1 << this.worldBounds.chunkXPow2) - 1)) {
-    voxelX = (1 << this.worldBounds.chunkXPow2) - 1;
-   }
-  }
-  let voxelZ = Math.abs(z - chunkZ);
-  if (z < 0) {
-   if (z == chunkZ + ((1 << this.worldBounds.chunkZPow2) - 1)) {
-    voxelZ = (1 << this.worldBounds.chunkZPow2) - 1;
-   }
-  }
-  let voxelY = Math.abs(y - chunkY);
-  if (y < 0) {
-   if (y == chunkY + ((1 << this.worldBounds.chunkYPow2) - 1)) {
-    voxelY = (1 << this.worldBounds.chunkYPow2) - 1;
-   }
-  }
-  const rawVoxelData = this._3dArray.getValue(voxelX, voxelY, voxelZ, chunk);
+  const rawVoxelData = this.getData(x, y, z);
+  if (rawVoxelData < 0) return false;
   return this.voxelByte.getId(rawVoxelData);
  }
 }
