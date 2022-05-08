@@ -9,7 +9,7 @@ const worldGen = new WorldGen(DVEW);
 const playerWatcher = new PlayerWatcher(worldGen, DVEW);
 DVEW.renderComm.listenForMessage("voxel-add", (data, event) => {
     DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", data[1], data[2], data[3]);
-    DVEW.runChunkRebuildQueAsync();
+    DVEW.runChunkRebuildQue();
 });
 DVEW.renderComm.listenForMessage("voxel-remove", (data, event) => {
     DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);

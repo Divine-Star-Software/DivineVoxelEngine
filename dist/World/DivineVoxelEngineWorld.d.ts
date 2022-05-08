@@ -68,6 +68,7 @@ export declare class DivineVoxelEngineWorld {
         };
     };
     __settingsHaveBeenSynced: boolean;
+    __renderIsDone: boolean;
     engineSettings: EngineSettings;
     UTIL: Util;
     builderCommManager: BuilderCommManager;

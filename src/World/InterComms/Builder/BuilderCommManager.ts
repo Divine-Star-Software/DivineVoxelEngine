@@ -26,6 +26,7 @@ export class BuilderCommManager {
  builders: InterCommInterface[] = [];
 
  ready: Record<string, boolean> = {};
+ buildersConnected = 0;
 
  constructor(public DVEW: DivineVoxelEngineWorld) {}
 
@@ -33,11 +34,11 @@ export class BuilderCommManager {
   const newComm = GetNewBuilderComm(this.numBuilders + 1, port);
   this.builders.push(newComm);
   const builder = this;
-  newComm.listenForMessage("ready",()=> {
-    builder.ready[newComm.name] = true;
-  })
+  newComm.listenForMessage("ready", () => {
+   builder.ready[newComm.name] = true;
+   builder.buildersConnected++;
+  });
   this.numBuilders++;
-
  }
 
  syncChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number) {
@@ -63,15 +64,13 @@ export class BuilderCommManager {
  }
 
  isReady() {
- for(const ready of Object.keys(this.ready)) {
-     if(this.ready[ready] == false) {
-    
-         return false;
-
-     }
-
- }
-
+  if (!this.buildersConnected) return false;
+  if (this.buildersConnected < this.numBuilders) return false;
+  for (const ready of Object.keys(this.ready)) {
+   if (this.ready[ready] == false) {
+    return false;
+   }
+  }
   return true;
  }
 

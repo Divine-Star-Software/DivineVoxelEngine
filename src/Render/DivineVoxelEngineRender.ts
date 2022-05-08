@@ -113,6 +113,8 @@ export class DivineVoxelEngineRender {
 
   await this.worldComm.getBaseWorldData();
 
+  
+
   //terminate all workers
   window.addEventListener("beforeunload", () => {
    for (const builder of this.builderManager.builders) {

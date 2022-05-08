@@ -13,6 +13,7 @@ renderComm.messageFunctions = {
         DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
     },
     start: function (data, event) {
+        DVEW.__renderIsDone = true;
         renderComm.onReady();
     },
     "re-start": function (data, event) {

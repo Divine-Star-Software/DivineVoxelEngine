@@ -18,6 +18,7 @@ export declare class BuilderCommManager {
     numBuilders: number;
     builders: InterCommInterface[];
     ready: Record<string, boolean>;
+    buildersConnected: number;
     constructor(DVEW: DivineVoxelEngineWorld);
     addBuilder(port: InterCommPortTypes): void;
     syncChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;

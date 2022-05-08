@@ -26,6 +26,7 @@ export class DivineVoxelEngineWorld {
     worker;
     worldBounds = WorldBounds;
     __settingsHaveBeenSynced = false;
+    __renderIsDone = false;
     engineSettings = new EngineSettings();
     UTIL = new Util();
     builderCommManager = new BuilderCommManager(this);
@@ -47,7 +48,7 @@ export class DivineVoxelEngineWorld {
     }
     isReady() {
         let ready = this.builderCommManager.isReady() && this.fluidBuilderComm.ready
-            && this.__settingsHaveBeenSynced;
+            && this.__settingsHaveBeenSynced && this.__renderIsDone;
         if (ready) {
             console.log("WORLD READY");
         }

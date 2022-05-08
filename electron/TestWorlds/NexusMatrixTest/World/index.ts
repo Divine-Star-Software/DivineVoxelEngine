@@ -27,7 +27,7 @@ const start = () => {
  DVEW.runRGBLightUpdateQue();
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunkAsync(x, 0, z);
+   DVEW.buildChunk(x, 0, z);
   }
  }
  DVEW.buildFluidMesh();

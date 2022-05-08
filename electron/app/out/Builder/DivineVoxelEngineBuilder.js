@@ -36,7 +36,6 @@ export class DivineVoxelEngineBuilder {
     chunkMesher = new ChunkMeshBuilder(this);
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
-        this.engineSettings.syncSettings(data);
         if (data.chunks) {
             this.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
             this.worldMatrix.syncChunkBounds();
@@ -46,6 +45,7 @@ export class DivineVoxelEngineBuilder {
             this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
         }
         this.__settingsHaveBeenSynced = true;
+        console.log(data);
     }
     reStart() { }
     isReady() {
@@ -60,7 +60,6 @@ export class DivineVoxelEngineBuilder {
     }
     async $INIT(initData) {
         await InitWorker(this, initData);
-        console.log("BUILDER READY");
         this.worldComm.sendMessage("ready", []);
     }
     async buildChunk(chunkX, chunkY, chunkZ) {

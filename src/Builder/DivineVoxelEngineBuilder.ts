@@ -45,7 +45,6 @@ export class DivineVoxelEngineBuilder {
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
-  this.engineSettings.syncSettings(data);
   if (data.chunks) {
    this.worldBounds.setChunkBounds(
     data.chunks.chunkXPow2,
@@ -63,6 +62,7 @@ export class DivineVoxelEngineBuilder {
    );
   }
    this.__settingsHaveBeenSynced = true;
+   console.log(data);
  }
  reStart() {}
 
@@ -81,7 +81,7 @@ export class DivineVoxelEngineBuilder {
 
  async $INIT(initData: DVEBInitData) {
   await InitWorker(this, initData);
-  console.log("BUILDER READY");
+
   this.worldComm.sendMessage("ready", []);
  }
 

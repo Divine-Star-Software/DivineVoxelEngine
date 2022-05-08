@@ -11,7 +11,7 @@ const start = () => {
     let startX = -32;
     let startZ = -128;
     let endX = 48;
-    let endZ = 256;
+    let endZ = 512;
     let type = "track";
     for (let x = startX; x < endX; x += 16) {
         if (x == -32 || x == 32)

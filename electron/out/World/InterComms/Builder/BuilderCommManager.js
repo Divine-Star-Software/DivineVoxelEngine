@@ -16,6 +16,7 @@ export class BuilderCommManager {
     numBuilders = 0;
     builders = [];
     ready = {};
+    buildersConnected = 0;
     constructor(DVEW) {
         this.DVEW = DVEW;
     }
@@ -25,6 +26,7 @@ export class BuilderCommManager {
         const builder = this;
         newComm.listenForMessage("ready", () => {
             builder.ready[newComm.name] = true;
+            builder.buildersConnected++;
         });
         this.numBuilders++;
     }
@@ -39,6 +41,10 @@ export class BuilderCommManager {
         }
     }
     isReady() {
+        if (!this.buildersConnected)
+            return false;
+        if (this.buildersConnected < this.numBuilders)
+            return false;
         for (const ready of Object.keys(this.ready)) {
             if (this.ready[ready] == false) {
                 return false;
