@@ -2,7 +2,7 @@ import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { InfoByte } from "Global/Util/InfoByte.js";
 import type { LightByte } from "Global/Util/LightByte.js";
-import type { VoxelInteface, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
+import type { VoxelData, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
@@ -81,7 +81,7 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    isVoxelExposed(voxel: VoxelInteface, voxelData: number, x: number, y: number, z: number): boolean;
+    isVoxelExposed(voxel: VoxelData, voxelData: number, x: number, y: number, z: number): boolean;
     /**# Voxel Face Check
      * ---
      * Determines if a face of a voxel is exposed.
@@ -94,7 +94,7 @@ export declare class WorldData {
      * @param z
      * @returns
      */
-    voxelFaceCheck(voxel: VoxelInteface, voxelData: number, x: number, y: number, z: number): boolean;
+    voxelFaceCheck(voxel: VoxelData, voxelData: number, x: number, y: number, z: number): boolean;
     removeData(x: number, y: number, z: number): false | undefined;
     getVoxel(x: number, y: number, z: number): any[] | false;
     getData(x: number, y: number, z: number): number;

@@ -19,6 +19,7 @@ export class VoxelManager {
         return this.fluidShapeMapHasBeenSet;
     }
     getVoxel(id) {
+        console.log(id);
         return this.voxels[id];
     }
     registerVoxelData(voxel) {

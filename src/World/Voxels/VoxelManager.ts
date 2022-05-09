@@ -29,6 +29,7 @@ export class VoxelManager {
  }
 
  getVoxel(id: string): VoxelData {
+     console.log(id);
   return this.voxels[id];
  }
 

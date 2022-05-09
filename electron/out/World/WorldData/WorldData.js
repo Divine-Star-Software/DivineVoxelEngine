@@ -162,11 +162,11 @@ export class WorldData {
                 return this.voxelByte.decodeLightFromVoxelData(voxel[1]);
             }
             else {
-                const voxelInterface = voxel[0];
-                if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
-                    return voxelInterface.data.lightValue;
+                const voxelData = voxel[0];
+                if (voxelData.lightSource && voxelData.lightValue) {
+                    return voxelData.lightValue;
                 }
-                if (voxelInterface.data.substance == "solid") {
+                if (voxelData.substance == "solid") {
                     return 0;
                 }
                 return this.voxelByte.decodeLightFromVoxelData(voxel[2]);
@@ -234,7 +234,7 @@ export class WorldData {
         const voxelCheck = this.getVoxel(x, y, z);
         if (voxelCheck && voxelCheck[0] != -1) {
             const neighborVoxel = voxelCheck[0];
-            if (this.substanceRules[`${voxel.data.substance}-${neighborVoxel.data.substance}`]) {
+            if (this.substanceRules[`${voxel.substance}-${neighborVoxel.substance}`]) {
                 return true;
             }
             else {

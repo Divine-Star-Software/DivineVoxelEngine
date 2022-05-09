@@ -2,10 +2,7 @@ import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { InfoByte } from "Global/Util/InfoByte.js";
 import type { LightByte } from "Global/Util/LightByte.js";
-import type {
- VoxelInteface,
- VoxelSubstanceType,
-} from "Meta/Voxels/Voxel.types.js";
+import type { VoxelData, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
 
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
@@ -234,11 +231,11 @@ export class WorldData {
    if (voxel[0] == -1) {
     return this.voxelByte.decodeLightFromVoxelData(voxel[1]);
    } else {
-    const voxelInterface: VoxelInteface = voxel[0];
-    if (voxelInterface.data.lightSource && voxelInterface.data.lightValue) {
-     return voxelInterface.data.lightValue;
+    const voxelData: VoxelData = voxel[0];
+    if (voxelData.lightSource && voxelData.lightValue) {
+     return voxelData.lightValue;
     }
-    if (voxelInterface.data.substance == "solid") {
+    if (voxelData.substance == "solid") {
      return 0;
     }
     return this.voxelByte.decodeLightFromVoxelData(voxel[2]);
@@ -271,7 +268,7 @@ export class WorldData {
   * @returns
   */
  isVoxelExposed(
-  voxel: VoxelInteface,
+  voxel: VoxelData,
   voxelData: number,
   x: number,
   y: number,
@@ -311,7 +308,7 @@ export class WorldData {
   * @returns
   */
  voxelFaceCheck(
-  voxel: VoxelInteface,
+  voxel: VoxelData,
   voxelData: number,
   x: number,
   y: number,
@@ -319,13 +316,9 @@ export class WorldData {
  ) {
   const voxelCheck = this.getVoxel(x, y, z);
   if (voxelCheck && voxelCheck[0] != -1) {
-   const neighborVoxel: VoxelInteface = voxelCheck[0];
+   const neighborVoxel: VoxelData = voxelCheck[0];
 
-   if (
-    this.substanceRules[
-     `${voxel.data.substance}-${neighborVoxel.data.substance}`
-    ]
-   ) {
+   if (this.substanceRules[`${voxel.substance}-${neighborVoxel.substance}`]) {
     return true;
    } else {
     return false;
