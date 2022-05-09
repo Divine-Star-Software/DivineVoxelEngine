@@ -20,7 +20,7 @@ export class VoxelHelper {
  voxellightMixCalc = VoxelLightMixCalc;
  calculdateVoxelLight = CalculateVoxelLight;
 
- voxelByte: VoxelByte;
+ voxelByte: typeof VoxelByte;
  lightByte: LightByte;
  substanceRules: Record<string, boolean> = {
   "solid-solid": false,

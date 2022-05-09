@@ -13,7 +13,7 @@ export declare class ChunkProcessor {
     worldBottomY: number;
     worldTopY: number;
     chunkTemplates: Record<number, Record<number, number[][]>>;
-    voxelByte: VoxelByte;
+    voxelByte: typeof VoxelByte;
     _3dArray: Flat3DArray;
     exposedFaces: number[];
     worldMatrix: WorldMatrix;

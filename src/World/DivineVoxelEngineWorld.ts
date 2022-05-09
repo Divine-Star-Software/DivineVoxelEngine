@@ -6,10 +6,6 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
-import { TextureManager } from "./Textures/TextureManager.js";
-import { VoxelHelper } from "./Voxels/VoxelHelper.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
@@ -20,6 +16,8 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -47,11 +45,8 @@ export class DivineVoxelEngineWorld {
 
  nexusComm = NexusComm;
 
- textureManager = new TextureManager();
  voxelManager = new VoxelManager(this);
- voxelHelper = new VoxelHelper(this);
-
- chunkProccesor = new ChunkProcessor(this);
+ textureManager = new TextureManager();
 
  constructor(worker: Worker) {
   this.worker = worker;
@@ -60,11 +55,13 @@ export class DivineVoxelEngineWorld {
 
  isReady() {
   let ready =
-   this.builderCommManager.isReady() && this.fluidBuilderComm.ready
-   && this.__settingsHaveBeenSynced && this.__renderIsDone;
-   if(ready) {
-       console.log("WORLD READY");
-   }
+   this.builderCommManager.isReady() &&
+   this.fluidBuilderComm.ready &&
+   this.__settingsHaveBeenSynced &&
+   this.__renderIsDone;
+  if (ready) {
+   console.log("WORLD READY");
+  }
   return ready;
  }
 
@@ -79,7 +76,6 @@ export class DivineVoxelEngineWorld {
    this.worldData.syncChunkBounds();
    this.worldGeneration.illumantionManager.syncChunkBounds();
    this.worldGeneration.chunkDataHelper.syncChunkBounds();
-   this.chunkProccesor.syncChunkBounds();
   }
   if (data.regions) {
    this.worldBounds.setRegionBounds(
@@ -89,7 +85,6 @@ export class DivineVoxelEngineWorld {
    );
   }
   this.__settingsHaveBeenSynced = true;
-
  }
 
  runRGBLightUpdateQue() {
@@ -147,24 +142,6 @@ export class DivineVoxelEngineWorld {
   this.worldData.clearChunkRebuildQue();
  }
 
- async runChunkRebuildQueAsync() {
-  const queue = this.worldData.getChunkRebuildQue();
-  while (queue.length != 0) {
-   const position = queue.shift();
-   if (!position) break;
-   const substance = this.worldData.getSubstanceNeededToRebuild(
-    position[0],
-    position[1],
-    position[2]
-   );
-   if (substance.all) {
-    this.buildChunkAsync(position[0], position[1], position[2]);
-    this.buildFluidMesh();
-   }
-  }
-  this.worldData.clearChunkRebuildQue();
- }
-
  clearChunkRebuildQue() {
   this.worldData.clearChunkRebuildQue();
  }
@@ -180,27 +157,7 @@ export class DivineVoxelEngineWorld {
  }
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
-
   this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
- }
-
- buildChunkO(chunkX: number, chunkY: number, chunkZ: number) {
-  const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-  if (!chunk) return false;
-  this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
-  return true;
- }
-
- async buildChunkAsync(chunkX: number, chunkY: number, chunkZ: number) {
-  const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-  if (!chunk) {
-   console.warn(
-    `Trying to rebuild chunk. ${chunkX}-${chunkY}-${chunkZ} does not exist.`
-   );
-   return false;
-  }
-  this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
-  return true;
  }
 
  buildFluidMesh() {

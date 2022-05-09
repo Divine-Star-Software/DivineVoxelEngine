@@ -62,7 +62,6 @@ export class DivineVoxelEngineBuilder {
    );
   }
    this.__settingsHaveBeenSynced = true;
-   console.log(data);
  }
  reStart() {}
 

@@ -1,4 +1,4 @@
-import { VoxelInteface } from "Meta/Voxels/Voxel.types";
+import { VoxelData } from "Meta/Voxels/Voxel.types";
 import { WorldRegion } from "Meta/WorldData/World.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 /**# Voxel Palette Manager
@@ -30,8 +30,8 @@ export declare class VoxelPaletteManager {
      * @returns
      */
     getVoxelDataFromGlobalPalette(voxelId: number): string[];
-    registerVoxelForGlobalPalette(voxel: VoxelInteface): void;
-    registerVoxelForPerRegionVoxelPalette(voxel: VoxelInteface): void;
+    registerVoxelForGlobalPalette(voxel: VoxelData): void;
+    registerVoxelForPerRegionVoxelPalette(voxel: VoxelData): void;
     getGlobalVoxelPalette(): Record<number, string>;
     /**# Get Global Voxel Palette Record
      * ---

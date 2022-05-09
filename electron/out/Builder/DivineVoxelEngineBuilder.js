@@ -45,7 +45,6 @@ export class DivineVoxelEngineBuilder {
             this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
         }
         this.__settingsHaveBeenSynced = true;
-        console.log(data);
     }
     reStart() { }
     isReady() {

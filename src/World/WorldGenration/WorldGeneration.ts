@@ -14,7 +14,7 @@ export class WorldGeneration {
  chunkDataHelper: ChunkDataHelper;
  illumantionManager: IlluminationManager;
  voxelPalette: VoxelPaletteManager;
- voxelByte: VoxelByte;
+ voxelByte: typeof VoxelByte;
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.illumantionManager = new IlluminationManager(this.DVEW);

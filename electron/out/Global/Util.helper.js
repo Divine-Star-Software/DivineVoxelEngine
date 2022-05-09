@@ -26,7 +26,7 @@ export class Util {
         return new Flat3DArray();
     }
     getVoxelByte() {
-        return new VoxelByte();
+        return VoxelByte;
     }
     getLightByte() {
         return new LightByte();

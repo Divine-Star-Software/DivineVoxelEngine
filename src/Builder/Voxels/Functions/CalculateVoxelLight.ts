@@ -442,7 +442,7 @@ export function VoxelLightMixCalc(
   }
  }
 
- if (zeroCount.w >= 2) {
+/*  if (zeroCount.w >= 2) {
   w = 0;
  }
  if (zeroCount.r >= 2) {
@@ -454,6 +454,6 @@ export function VoxelLightMixCalc(
  }
  if (zeroCount.b >= 2) {
   b = 0;
- }
+ } */
  return this.lightByte.setLightValues([w, r, g, b]);
 }

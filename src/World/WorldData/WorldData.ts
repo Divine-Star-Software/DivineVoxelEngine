@@ -7,10 +7,6 @@ import type {
  VoxelSubstanceType,
 } from "Meta/Voxels/Voxel.types.js";
 
-import {
- CalculateVoxelLight,
- VoxelLightMixCalc,
-} from "./Functions/CalculateVoxelLight.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
@@ -94,12 +90,10 @@ export class WorldData {
   string,
   Record<VoxelSubstanceType | "all", boolean>
  > = {};
- calculdateVoxelLight = CalculateVoxelLight;
- voxellightMixCalc = VoxelLightMixCalc;
 
  infoByte: InfoByte;
  lightByte: LightByte;
- voxelByte: VoxelByte;
+ voxelByte: typeof VoxelByte;
  _3dArray: Flat3DArray;
 
  substanceRules: Record<string, boolean> = {
@@ -665,7 +659,7 @@ export class WorldData {
   this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk.voxels, data);
   if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
    const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-   if (voxel.data.lightSource && voxel.data.lightValue) {
+   if (voxel.lightSource && voxel.lightValue) {
     this._RGBLightUpdateQue.push([x, y, z]);
    }
   }
@@ -854,8 +848,8 @@ export class WorldData {
   }
   let light = 0;
   const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-  if (voxel.data.lightSource && voxel.data.lightValue) {
-   light = voxel.data.lightValue;
+  if (voxel.lightSource && voxel.lightValue) {
+   light = voxel.lightValue;
   } else {
    light = this.getLight(x, y, z);
   }
@@ -877,7 +871,7 @@ export class WorldData {
   let needLightUpdate = false;
   if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
    const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-   if (voxel.data.lightSource && voxel.data.lightValue) {
+   if (voxel.lightSource && voxel.lightValue) {
     needLightUpdate = true;
     this._RGBLightUpdateQue.push([x, y, z]);
    }
@@ -889,7 +883,7 @@ export class WorldData {
     if (this.DVEW.engineSettings.settings.updating?.rebuildMode == "sync") {
      this.DVEW.runChunkRebuildQue();
     } else {
-     this.DVEW.runChunkRebuildQueAsync();
+     this.DVEW.runChunkRebuildQue();
     }
    }
   }
@@ -921,7 +915,7 @@ export class WorldData {
     if (this.DVEW.engineSettings.settings.updating?.rebuildMode == "sync") {
      this.DVEW.runChunkRebuildQue();
     } else {
-     this.DVEW.runChunkRebuildQueAsync();
+     this.DVEW.runChunkRebuildQue();
     }
    }
   }

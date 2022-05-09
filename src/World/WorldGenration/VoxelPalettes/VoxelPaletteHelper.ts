@@ -1,5 +1,5 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import { VoxelInteface } from "Meta/Voxels/Voxel.types";
+import { VoxelData } from "Meta/Voxels/Voxel.types";
 import { WorldRegion } from "Meta/WorldData/World.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 import { WorldGeneration } from "../WorldGeneration";
@@ -43,19 +43,19 @@ export class VoxelPaletteManager {
   return this.globalVoxelPaletteRecord[id];
  }
 
- registerVoxelForGlobalPalette(voxel: VoxelInteface) {
-  const defaultId = `${voxel.data.id}:default`;
+ registerVoxelForGlobalPalette(voxel: VoxelData) {
+  const defaultId = `${voxel.id}:default`;
   this.globalVoxelPalette[this.globalVoxelPaletteIndex] = defaultId;
-  this.globalVoxelPaletteMap[`${voxel.data.id}:default`] =
+  this.globalVoxelPaletteMap[`${voxel.id}:default`] =
    this.globalVoxelPaletteIndex;
   this.globalVoxelPaletteIndex++;
-  this.globalVoxelPaletteRecord[defaultId] = [voxel.data.id, "default"];
-  if (voxel.data.states) {
-   for (const state of voxel.data.states) {
-    const stateID = `${voxel.data.id}:${state}`;
+  this.globalVoxelPaletteRecord[defaultId] = [voxel.id, "default"];
+  if (voxel.states) {
+   for (const state of voxel.states) {
+    const stateID = `${voxel.id}:${state}`;
     this.globalVoxelPalette[this.globalVoxelPaletteIndex] = stateID;
-    this.globalVoxelPaletteRecord[stateID] = [voxel.data.id, state];
-    this.globalVoxelPaletteMap[`${voxel.data.id}:${state}`] =
+    this.globalVoxelPaletteRecord[stateID] = [voxel.id, state];
+    this.globalVoxelPaletteMap[`${voxel.id}:${state}`] =
      this.globalVoxelPaletteIndex;
     this.globalVoxelPaletteIndex++;
    }
@@ -63,13 +63,13 @@ export class VoxelPaletteManager {
  }
 
 
- registerVoxelForPerRegionVoxelPalette(voxel: VoxelInteface) {
-  const defaultId = `${voxel.data.id}:default`;
-  this.perRegionVoxelRecord[defaultId] = [voxel.data.id, "default"];
-  if (voxel.data.states) {
-   for (const state of voxel.data.states) {
-    const stateID = `${voxel.data.id}:${state}`;
-    this.perRegionVoxelRecord[stateID] = [voxel.data.id, state];
+ registerVoxelForPerRegionVoxelPalette(voxel: VoxelData) {
+  const defaultId = `${voxel.id}:default`;
+  this.perRegionVoxelRecord[defaultId] = [voxel.id, "default"];
+  if (voxel.states) {
+   for (const state of voxel.states) {
+    const stateID = `${voxel.id}:${state}`;
+    this.perRegionVoxelRecord[stateID] = [voxel.id, state];
    }
   }
  }

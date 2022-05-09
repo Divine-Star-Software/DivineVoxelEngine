@@ -3,10 +3,6 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 //classes
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { ChunkProcessor } from "./Chunks/ChunkProcessor.js";
-import { TextureManager } from "./Textures/TextureManager.js";
-import { VoxelHelper } from "./Voxels/VoxelHelper.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
@@ -17,6 +13,8 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -38,17 +36,17 @@ export class DivineVoxelEngineWorld {
     matrix = new Matrix(this);
     matrixCentralHub = new MatrixCentralHub(this);
     nexusComm = NexusComm;
-    textureManager = new TextureManager();
     voxelManager = new VoxelManager(this);
-    voxelHelper = new VoxelHelper(this);
-    chunkProccesor = new ChunkProcessor(this);
+    textureManager = new TextureManager();
     constructor(worker) {
         this.worker = worker;
         //this.builderComm.setMainThreadCom(<any>this.worker);
     }
     isReady() {
-        let ready = this.builderCommManager.isReady() && this.fluidBuilderComm.ready
-            && this.__settingsHaveBeenSynced && this.__renderIsDone;
+        let ready = this.builderCommManager.isReady() &&
+            this.fluidBuilderComm.ready &&
+            this.__settingsHaveBeenSynced &&
+            this.__renderIsDone;
         if (ready) {
             console.log("WORLD READY");
         }
@@ -61,7 +59,6 @@ export class DivineVoxelEngineWorld {
             this.worldData.syncChunkBounds();
             this.worldGeneration.illumantionManager.syncChunkBounds();
             this.worldGeneration.chunkDataHelper.syncChunkBounds();
-            this.chunkProccesor.syncChunkBounds();
         }
         if (data.regions) {
             this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
@@ -108,20 +105,6 @@ export class DivineVoxelEngineWorld {
         }
         this.worldData.clearChunkRebuildQue();
     }
-    async runChunkRebuildQueAsync() {
-        const queue = this.worldData.getChunkRebuildQue();
-        while (queue.length != 0) {
-            const position = queue.shift();
-            if (!position)
-                break;
-            const substance = this.worldData.getSubstanceNeededToRebuild(position[0], position[1], position[2]);
-            if (substance.all) {
-                this.buildChunkAsync(position[0], position[1], position[2]);
-                this.buildFluidMesh();
-            }
-        }
-        this.worldData.clearChunkRebuildQue();
-    }
     clearChunkRebuildQue() {
         this.worldData.clearChunkRebuildQue();
     }
@@ -137,22 +120,6 @@ export class DivineVoxelEngineWorld {
     }
     buildChunk(chunkX, chunkY, chunkZ) {
         this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
-    }
-    buildChunkO(chunkX, chunkY, chunkZ) {
-        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-        if (!chunk)
-            return false;
-        this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
-        return true;
-    }
-    async buildChunkAsync(chunkX, chunkY, chunkZ) {
-        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-        if (!chunk) {
-            console.warn(`Trying to rebuild chunk. ${chunkX}-${chunkY}-${chunkZ} does not exist.`);
-            return false;
-        }
-        this.chunkProccesor.makeAllChunkTemplatesAsync(chunk, chunkX, chunkY, chunkZ);
-        return true;
     }
     buildFluidMesh() {
         DVEW.fluidBuilderComm.requestFluidMeshBeReBuilt();

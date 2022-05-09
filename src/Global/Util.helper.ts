@@ -5,7 +5,6 @@ import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
 
-
 export class Util {
  infoByte = new InfoByte();
  exposedFaceRecord: Record<DirectionNames, number> = {
@@ -32,15 +31,15 @@ export class Util {
  }
 
  getFlat3DArray() {
-     return new Flat3DArray();
+  return new Flat3DArray();
  }
 
  getVoxelByte() {
-     return new VoxelByte();
+  return VoxelByte;
  }
 
  getLightByte() {
-     return new LightByte();
+  return new LightByte();
  }
 
  getInfoByte(number: number = 0) {

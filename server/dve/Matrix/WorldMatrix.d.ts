@@ -1,6 +1,5 @@
 import { WorldRegionPalette } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
-import { VoxelByte } from "../Global/Util/VoxelByte.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
@@ -56,7 +55,12 @@ export declare class WorldMatrix {
             z: number;
         };
     };
-    voxelByte: VoxelByte;
+    voxelByte: {
+        setId(id: number, value: number): number;
+        getId(value: number): number;
+        decodeLightFromVoxelData(voxelData: number): number;
+        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+    };
     updateDieTime: number;
     loadDieTime: number;
     regionXPow2: number;

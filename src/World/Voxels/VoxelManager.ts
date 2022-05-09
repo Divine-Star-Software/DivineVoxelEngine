@@ -1,9 +1,9 @@
 import { DivineVoxelEngineWorld } from "index";
-import { VoxelHooks, VoxelInteface } from "Meta/Voxels/Voxel.types";
+import { VoxelHooks, VoxelInteface,VoxelData } from "Meta/Voxels/Voxel.types";
 import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.interface";
 
-export class VoxelManager implements VoxelManagerInterface {
- voxels: Record<string, VoxelInteface> = {};
+export class VoxelManager {
+ voxels: Record<string, VoxelData> = {};
  shapeMap: Record<string, number> = {};
  shapeMapHasBeenSet = false;
 
@@ -13,25 +13,11 @@ export class VoxelManager implements VoxelManagerInterface {
  constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  setShapeMap(shapeMap: Record<string, number>) {
-  this.shapeMap = shapeMap;
-  this.shapeMapHasBeenSet = true;
-  for (const voxelId of Object.keys(this.voxels)) {
-   const voxel = this.voxels[voxelId];
-   if (voxel.data.substance !== "fluid") {
-    voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
-   }
-  }
+
  }
 
  setFluidShapeMap(shapeMap: Record<string, number>) {
-  this.fluidShapeMap = shapeMap;
-  this.fluidShapeMapHasBeenSet = true;
-  for (const voxelId of Object.keys(this.voxels)) {
-   const voxel = this.voxels[voxelId];
-   if (voxel.data.substance === "fluid") {
-    voxel.trueShapeId = this.fluidShapeMap[voxel.data.shapeId];
-   }
-  }
+
  }
 
  shapMapIsSet() {
@@ -42,12 +28,12 @@ export class VoxelManager implements VoxelManagerInterface {
   return this.fluidShapeMapHasBeenSet;
  }
 
- getVoxel(id: string): VoxelInteface {
+ getVoxel(id: string): VoxelData {
   return this.voxels[id];
  }
 
- registerVoxelData(voxel: VoxelInteface) {
-  this.voxels[voxel.data.id] = voxel;
+ registerVoxelData(voxel: VoxelData) {
+  this.voxels[voxel.id] = voxel;
   if (this.DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
    this.DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
   }
@@ -61,10 +47,10 @@ export class VoxelManager implements VoxelManagerInterface {
  }
 
  runVoxelHookForAll(hook: VoxelHooks) {
-  for (const voxelID of Object.keys(this.voxels)) {
+/*   for (const voxelID of Object.keys(this.voxels)) {
    const voxel = this.voxels[voxelID];
    if (!voxel.hooks[hook]) continue;
    voxel.hooks[hook]();
-  }
+  } */
  }
 }

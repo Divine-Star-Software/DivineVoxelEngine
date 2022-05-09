@@ -14,7 +14,7 @@ export declare class WorldGeneration {
     chunkDataHelper: ChunkDataHelper;
     illumantionManager: IlluminationManager;
     voxelPalette: VoxelPaletteManager;
-    voxelByte: VoxelByte;
+    voxelByte: typeof VoxelByte;
     constructor(DVEW: DivineVoxelEngineWorld);
     paintVoxel(voxelPalletId: number): number;
     getBlankRegion(palette?: boolean): WorldRegion;

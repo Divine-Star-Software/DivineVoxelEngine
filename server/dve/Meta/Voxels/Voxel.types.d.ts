@@ -1,5 +1,4 @@
 import type { DivineVoxelEngineBuilder } from "../../Builder/DivineVoxelEngineBuilder";
-import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
  * All solid and transparent voxels are grouped together in the same mesh per chunk.
@@ -44,7 +43,7 @@ export declare type VoxelData = {
 export interface VoxelInteface {
     data: VoxelData;
     trueShapeId: number;
-    voxelHelper: VoxelHelperInterface;
+    voxelHelper: any;
     hooks: Record<VoxelHooks, Function>;
     process(data: VoxelProcessData): void;
 }

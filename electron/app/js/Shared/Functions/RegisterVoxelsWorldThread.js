@@ -1,30 +1,21 @@
 //voxels
-import { Dreamestone } from "../Voxels/Solid/DreamStone/DreamStone.js";
-import { DreamGrassBlock } from "../Voxels/Solid/DreamGrass/DreamGrass.js";
-import { DreamLamp } from "../Voxels/Solid/DreamLamp/DreamLamp.js";
-import { DebugBox } from "../Voxels/Solid/DebugBox/DebugBox.js";
-import { DreamStonePillar } from "../Voxels/Solid/DreamStonePillar/DreamStonePillar.js";
-import { DreamGrass } from "../Voxels/Flora/DreamGrass/DreamGrass.js";
-import { LiquidDreamEther } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.js";
-import { LightDebugBox } from "../Voxels/Solid/LightDebugBox/LightDebugBox.js";
+import { DebugBoxVoxelData } from "../../Shared/Voxels/Solid/DebugBox/DebugBox.voxel.data.js";
+import { LightDebugBoxVoxelData } from "../../Shared/Voxels/Solid/LightDebugBox/LightDebugBox.voxel.data.js";
+import { DreamStoneVoxelData } from "../../Shared/Voxels/Solid/DreamStone/DreamStone.voxel.data.js";
+import { DreamStonePillarVoxelData } from "../../Shared/Voxels/Solid/DreamStonePillar/DreamStonePillar.voxel.data.js";
+import { DreamGrassBlockVoxelData } from "../../Shared/Voxels/Solid/DreamGrass/DreamGrass.voxel.data.js";
+import { DreamLampVoxelData } from "../../Shared/Voxels/Solid/DreamLamp/DreamLamp.voxel.data.js";
+import { DreamGrassVoxelData } from "../../Shared/Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
+import { LiquidDreamEtherVoxelData } from "../../Shared/Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
 export function RegisterVoxels(DVEW, voxelPaletteMode) {
-    //solid
-    const debugBox = new DebugBox(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(debugBox);
-    const lightDebugBox = new LightDebugBox(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(lightDebugBox);
-    const dreamStone = new Dreamestone(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(dreamStone);
-    const dreamStonePillar = new DreamStonePillar(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(dreamStonePillar);
-    const dreamGrassBlock = new DreamGrassBlock(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(dreamGrassBlock);
-    const dreamLamp = new DreamLamp(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(dreamLamp);
+    DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
+    DVEW.voxelManager.registerVoxelData(LightDebugBoxVoxelData);
+    DVEW.voxelManager.registerVoxelData(DreamStoneVoxelData);
+    DVEW.voxelManager.registerVoxelData(DreamStonePillarVoxelData);
+    DVEW.voxelManager.registerVoxelData(DreamGrassBlockVoxelData);
+    DVEW.voxelManager.registerVoxelData(DreamLampVoxelData);
     //flora
-    const dreamGrass = new DreamGrass(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(dreamGrass);
+    DVEW.voxelManager.registerVoxelData(DreamGrassVoxelData);
     //fluid
-    const liquidDreamEther = new LiquidDreamEther(DVEW.voxelHelper);
-    DVEW.voxelManager.registerVoxelData(liquidDreamEther);
+    DVEW.voxelManager.registerVoxelData(LiquidDreamEtherVoxelData);
 }

@@ -1,9 +1,8 @@
 import { DivineVoxelEngineWorld } from "index";
-import { VoxelHooks, VoxelInteface } from "Meta/Voxels/Voxel.types";
-import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.interface";
-export declare class VoxelManager implements VoxelManagerInterface {
+import { VoxelHooks, VoxelData } from "Meta/Voxels/Voxel.types";
+export declare class VoxelManager {
     private DVEW;
-    voxels: Record<string, VoxelInteface>;
+    voxels: Record<string, VoxelData>;
     shapeMap: Record<string, number>;
     shapeMapHasBeenSet: boolean;
     fluidShapeMap: Record<string, number>;
@@ -13,7 +12,7 @@ export declare class VoxelManager implements VoxelManagerInterface {
     setFluidShapeMap(shapeMap: Record<string, number>): void;
     shapMapIsSet(): boolean;
     fluidShapMapIsSet(): boolean;
-    getVoxel(id: string): VoxelInteface;
-    registerVoxelData(voxel: VoxelInteface): void;
+    getVoxel(id: string): VoxelData;
+    registerVoxelData(voxel: VoxelData): void;
     runVoxelHookForAll(hook: VoxelHooks): void;
 }

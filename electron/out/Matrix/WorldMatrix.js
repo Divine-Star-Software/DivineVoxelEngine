@@ -8,7 +8,7 @@ import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 export class WorldMatrix {
     _3dArray = new Flat3DArray();
     worldBounds = WorldBounds;
-    voxelByte = new VoxelByte();
+    voxelByte = VoxelByte;
     //two minutes
     updateDieTime = 120000;
     loadDieTime = 10000;

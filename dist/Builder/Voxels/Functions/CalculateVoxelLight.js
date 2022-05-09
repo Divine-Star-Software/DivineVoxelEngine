@@ -152,18 +152,18 @@ export function VoxelLightMixCalc(voxelLigtValue, voxel, chunkX, chunkY, chunkZ,
             zeroCount.b++;
         }
     }
-    if (zeroCount.w >= 2) {
-        w = 0;
-    }
-    if (zeroCount.r >= 2) {
-        r = 15;
-        //console.log(zeroCount);
-    }
-    if (zeroCount.g >= 2) {
-        g = 0;
-    }
-    if (zeroCount.b >= 2) {
-        b = 0;
-    }
+    /*  if (zeroCount.w >= 2) {
+      w = 0;
+     }
+     if (zeroCount.r >= 2) {
+      r = 15;
+      //console.log(zeroCount);
+     }
+     if (zeroCount.g >= 2) {
+      g = 0;
+     }
+     if (zeroCount.b >= 2) {
+      b = 0;
+     } */
     return this.lightByte.setLightValues([w, r, g, b]);
 }

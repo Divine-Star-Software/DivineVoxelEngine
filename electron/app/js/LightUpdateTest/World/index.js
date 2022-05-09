@@ -6,12 +6,12 @@ RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 const worldGen = new WorldGen(DVEW);
 const rebuild = (x, z) => {
-    DVEW.buildChunkAsync(x, 0, z);
-    DVEW.buildChunkAsync(x - 16, 0, z);
-    DVEW.buildChunkAsync(x + 16, 0, z);
-    DVEW.buildChunkAsync(x + 32, 0, z);
-    DVEW.buildChunkAsync(x, 0, z + 16);
-    DVEW.buildChunkAsync(x, 0, z - 16);
+    DVEW.buildChunk(x, 0, z);
+    DVEW.buildChunk(x - 16, 0, z);
+    DVEW.buildChunk(x + 16, 0, z);
+    DVEW.buildChunk(x + 32, 0, z);
+    DVEW.buildChunk(x, 0, z + 16);
+    DVEW.buildChunk(x, 0, z - 16);
 };
 const start = () => {
     let startX = -64;

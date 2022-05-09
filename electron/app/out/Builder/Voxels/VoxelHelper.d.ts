@@ -8,7 +8,7 @@ export declare class VoxelHelper {
     DVEB: DivineVoxelEngineBuilder;
     voxellightMixCalc: typeof VoxelLightMixCalc;
     calculdateVoxelLight: typeof CalculateVoxelLight;
-    voxelByte: VoxelByte;
+    voxelByte: typeof VoxelByte;
     lightByte: LightByte;
     substanceRules: Record<string, boolean>;
     lightValueFunctions: {

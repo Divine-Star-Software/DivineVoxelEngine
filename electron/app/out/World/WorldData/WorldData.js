@@ -1,4 +1,3 @@
-import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -40,8 +39,6 @@ export class WorldData {
     _RGBLightUpdateQue = [];
     _chunkRebuildQue = [];
     _chunkRebuildQueMap = {};
-    calculdateVoxelLight = CalculateVoxelLight;
-    voxellightMixCalc = VoxelLightMixCalc;
     infoByte;
     lightByte;
     voxelByte;
@@ -513,7 +510,7 @@ export class WorldData {
         this._3dArray.setValue(voxelX, voxelY, voxelZ, chunk.voxels, data);
         if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-            if (voxel.data.lightSource && voxel.data.lightValue) {
+            if (voxel.lightSource && voxel.lightValue) {
                 this._RGBLightUpdateQue.push([x, y, z]);
             }
         }
@@ -652,8 +649,8 @@ export class WorldData {
         }
         let light = 0;
         const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-        if (voxel.data.lightSource && voxel.data.lightValue) {
-            light = voxel.data.lightValue;
+        if (voxel.lightSource && voxel.lightValue) {
+            light = voxel.lightValue;
         }
         else {
             light = this.getLight(x, y, z);
@@ -670,7 +667,7 @@ export class WorldData {
         let needLightUpdate = false;
         if (this.DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = this.DVEW.voxelManager.getVoxel(voxelId);
-            if (voxel.data.lightSource && voxel.data.lightValue) {
+            if (voxel.lightSource && voxel.lightValue) {
                 needLightUpdate = true;
                 this._RGBLightUpdateQue.push([x, y, z]);
             }
@@ -682,7 +679,7 @@ export class WorldData {
                     this.DVEW.runChunkRebuildQue();
                 }
                 else {
-                    this.DVEW.runChunkRebuildQueAsync();
+                    this.DVEW.runChunkRebuildQue();
                 }
             }
         }
@@ -713,7 +710,7 @@ export class WorldData {
                     this.DVEW.runChunkRebuildQue();
                 }
                 else {
-                    this.DVEW.runChunkRebuildQueAsync();
+                    this.DVEW.runChunkRebuildQue();
                 }
             }
         }

@@ -3,7 +3,6 @@ import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld.js";
 import type { InfoByte } from "Global/Util/InfoByte.js";
 import type { LightByte } from "Global/Util/LightByte.js";
 import type { VoxelInteface, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
-import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { WorldRegion } from "Meta/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
@@ -27,11 +26,9 @@ export declare class WorldData {
     _RGBLightUpdateQue: number[][];
     _chunkRebuildQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
-    calculdateVoxelLight: typeof CalculateVoxelLight;
-    voxellightMixCalc: typeof VoxelLightMixCalc;
     infoByte: InfoByte;
     lightByte: LightByte;
-    voxelByte: VoxelByte;
+    voxelByte: typeof VoxelByte;
     _3dArray: Flat3DArray;
     substanceRules: Record<string, boolean>;
     lightValueFunctions: {
