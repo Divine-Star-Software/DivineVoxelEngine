@@ -3,7 +3,7 @@ import { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
 import { DivineVoxelEngineBuilder } from "../DivineVoxelEngineBuilder";
 export declare class ChunkMeshBuilder {
     private DVEB;
-    infoByte: InfoByte;
+    infoByte: typeof InfoByte;
     voxelBuildOrder: VoxelSubstanceType[];
     voxelTypeMap: {
         solid: number;

@@ -1,16 +1,16 @@
 type BinaryNums = 0 | 1;
 type BinaryArray = BinaryNums[];
 
-export class InfoByte {
- maxBit = 31;
- minBit = 0;
- maxDec = 2 ** this.maxBit + 1;
- minDec = 0;
- constructor(public byteValue = 0) {}
+export const InfoByte = {
+ maxBit : 31,
+ minBit : 0,
+ maxDec : 2 ** 31 + 1,
+ minDec : 0,
+ byteValue : 0,
 
  getNumberValue(): number {
   return this.byteValue;
- }
+ },
 
  setNumberValue(newValue: number) {
   if (newValue > this.maxDec || newValue < this.minDec) {
@@ -19,7 +19,7 @@ export class InfoByte {
    );
   }
   this.byteValue = newValue;
- }
+ },
 
  getBit(index: number): BinaryNums {
   if (index > this.maxBit || index < this.minBit) {
@@ -29,7 +29,7 @@ export class InfoByte {
   }
   const value = (this.byteValue >>> index) & 1;
   return <BinaryNums>value;
- }
+ },
 
  getBitsArray(bitIndex: number, byteLength: number): BinaryArray {
   if (bitIndex > this.maxBit + byteLength || bitIndex < this.minBit) {
@@ -43,7 +43,7 @@ export class InfoByte {
    bits.push((this.byteValue >>> i) & 1);
   }
   return bits;
- }
+ },
 
  getHalfByteDec(bitIndex: number): number {
   if (bitIndex > this.maxBit + 4 || bitIndex < this.minBit) {
@@ -53,7 +53,7 @@ export class InfoByte {
   }
 
   return (this.byteValue & (0x0f << bitIndex)) >> bitIndex;
- }
+ },
 
  setHalfByteBits(index: number, value: number) {
   if (index > this.maxBit || index < this.minBit) {
@@ -65,7 +65,7 @@ export class InfoByte {
    throw new Error(`Value is out range. Must not be greater than 16`);
   }
   this.byteValue = (this.byteValue & ~(0xf << index)) | (value << index);
- }
+ },
 
  setBit(index: number, value: BinaryNums) {
   if (index > this.maxBit || index < this.minBit) {
@@ -82,7 +82,7 @@ export class InfoByte {
   } else {
    this.byteValue = this.byteValue | setValue;
   }
- }
+ },
 
  toArray(): BinaryArray {
   const returnArray: BinaryArray = [];
@@ -90,10 +90,10 @@ export class InfoByte {
    returnArray.push(this.getBit(i));
   }
   return returnArray;
- }
+ },
 
  toString(delimiter = "") {
   const array = this.toArray();
   return array.join(delimiter);
- }
-}
+ },
+};

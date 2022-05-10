@@ -1,4 +1,3 @@
-import { EngineSettings } from "../Global/EngineSettings.js";
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
@@ -7,7 +6,11 @@ import { EngineSettingsData } from "Meta/index.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 declare class DivineVoxelEngineNexusClass {
-    engineSettings: EngineSettings;
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
     worldMatrix: WorldMatrix;
     matrixHub: MatrixHub;
     worldComm: WorldComm;

@@ -7,8 +7,8 @@ import { LightByte } from "Global/Util/LightByte";
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export class ShapeHelper implements ShapeHelperInterface {
- infoByte: InfoByte;
- lightByte: LightByte;
+ infoByte: typeof InfoByte;
+ lightByte: typeof LightByte;
 
  constructor(public util: Util) {
   this.infoByte = this.util.getInfoByte();

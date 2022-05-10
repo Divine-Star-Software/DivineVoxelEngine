@@ -9,7 +9,7 @@ export declare class VoxelHelper {
     voxellightMixCalc: typeof VoxelLightMixCalc;
     calculdateVoxelLight: typeof CalculateVoxelLight;
     voxelByte: typeof VoxelByte;
-    lightByte: LightByte;
+    lightByte: typeof LightByte;
     substanceRules: Record<string, boolean>;
     lightValueFunctions: {
         r: (value: number) => number;

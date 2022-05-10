@@ -12,7 +12,7 @@ import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 
 class DivineVoxelEngineNexusClass {
- engineSettings = new EngineSettings();
+ engineSettings = EngineSettings;
  worldMatrix = new WorldMatrix();
  matrixHub = new MatrixHub(this.worldMatrix, "nexus");
 

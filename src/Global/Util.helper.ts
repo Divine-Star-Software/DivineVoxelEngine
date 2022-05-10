@@ -1,12 +1,11 @@
 import { DirectionNames } from "Meta/Util.types.js";
-import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
 
 export class Util {
- infoByte = new InfoByte();
+ infoByte =  InfoByte;
  exposedFaceRecord: Record<DirectionNames, number> = {
   top: 0,
   bottom: 1,
@@ -31,7 +30,7 @@ export class Util {
  }
 
  getFlat3DArray() {
-  return new Flat3DArray();
+  return Flat3DArray;
  }
 
  getVoxelByte() {
@@ -39,15 +38,12 @@ export class Util {
  }
 
  getLightByte() {
-  return new LightByte();
+  return LightByte;
  }
 
  getInfoByte(number: number = 0) {
-  return new InfoByte(number);
- }
-
- getBitArray(nums: number[]) {
-  return new BitArray(nums);
+  InfoByte.setNumberValue(number);
+  return InfoByte;
  }
 
  degtoRad(degrees: number) {

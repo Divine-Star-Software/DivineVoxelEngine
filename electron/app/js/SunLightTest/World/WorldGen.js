@@ -2,13 +2,9 @@ export class WorldGen {
     DVEW;
     constructor(DVEW) {
         this.DVEW = DVEW;
-        this.infoByte = this.DVEW.UTIL.getInfoByte();
-        this.lightByte = this.DVEW.UTIL.getLightByte();
         this._3dArray = this.DVEW.UTIL.getFlat3DArray();
     }
     visited = {};
-    infoByte;
-    lightByte;
     _3dArray;
     chunkDepth = 16;
     chunkWidth = 16;

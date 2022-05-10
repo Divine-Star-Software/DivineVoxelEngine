@@ -1,4 +1,4 @@
-import { Flat3DArray } from "Global/Util/Flat3DArray";
+import type { Flat3DArray } from "Global/Util/Flat3DArray";
 import { PositionMatrix } from "Meta/Util.types";
 /**# World Bounds
  * ---
@@ -36,7 +36,7 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
-    syncBoundsWithFlat3DArray: (flat3dArray: Flat3DArray) => void;
+    syncBoundsWithFlat3DArray: (flat3dArray: typeof Flat3DArray) => void;
     setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
     setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
     getRegionPosition: (x: number, y: number, z: number) => {

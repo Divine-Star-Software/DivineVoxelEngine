@@ -1,5 +1,4 @@
 import { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
@@ -53,7 +52,24 @@ export declare class DivineVoxelEngineBuilder {
             y: number;
             z: number;
         };
-        syncBoundsWithFlat3DArray: (flat3dArray: import("../Global/Util/Flat3DArray.js").Flat3DArray) => void;
+        syncBoundsWithFlat3DArray: (flat3dArray: {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+            setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+        }) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         getRegionPosition: (x: number, y: number, z: number) => {
@@ -77,7 +93,11 @@ export declare class DivineVoxelEngineBuilder {
     voxelManager: VoxelManager;
     voxelHelper: VoxelHelper;
     __connectedToWorld: boolean;
-    engineSettings: EngineSettings;
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
     __settingsHaveBeenSynced: boolean;
     shapeManager: ShapeManager;
     shapeHelper: ShapeHelper;

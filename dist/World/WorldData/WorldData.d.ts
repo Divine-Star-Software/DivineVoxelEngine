@@ -26,10 +26,10 @@ export declare class WorldData {
     _RGBLightUpdateQue: number[][];
     _chunkRebuildQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
-    infoByte: InfoByte;
-    lightByte: LightByte;
+    infoByte: typeof InfoByte;
+    lightByte: typeof LightByte;
     voxelByte: typeof VoxelByte;
-    _3dArray: Flat3DArray;
+    _3dArray: typeof Flat3DArray;
     substanceRules: Record<string, boolean>;
     lightValueFunctions: {
         r: (value: number) => number;

@@ -19,9 +19,9 @@ import {
 import type { VoxelByte } from "Global/Util/VoxelByte.js";
 
 export class IlluminationManager implements ChunkBound {
- lightByte: LightByte;
+ lightByte: typeof LightByte;
  voxelByte: typeof VoxelByte;
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
  air = [-1, 0];
  runSunLightUpdateAt = runSunLightUpdateAt;
  runSunLightUpdate = runSunLightUpdate;

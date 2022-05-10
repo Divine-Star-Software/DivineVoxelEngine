@@ -8,8 +8,8 @@ import { LightByte } from "Global/Util/LightByte";
  */
 export declare class ShapeHelper implements ShapeHelperInterface {
     util: Util;
-    infoByte: InfoByte;
-    lightByte: LightByte;
+    infoByte: typeof InfoByte;
+    lightByte: typeof LightByte;
     constructor(util: Util);
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
     lightMap: number[];

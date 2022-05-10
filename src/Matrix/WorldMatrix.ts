@@ -8,7 +8,7 @@ import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
 export class WorldMatrix {
- _3dArray = new Flat3DArray();
+ _3dArray = Flat3DArray;
  worldBounds = WorldBounds;
  voxelByte = VoxelByte;
 

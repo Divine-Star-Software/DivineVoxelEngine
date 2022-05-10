@@ -7,18 +7,13 @@ import { Flat3DArray } from "../../../out/Global/Util/Flat3DArray";
 export class WorldGen {
 
  constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.infoByte = this.DVEW.UTIL.getInfoByte();
-  this.lightByte = this.DVEW.UTIL.getLightByte();
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
  visited: Record<string, boolean> = {};
 
 
-
- infoByte: InfoByte;
- lightByte: LightByte;
- _3dArray : Flat3DArray;
+ _3dArray : typeof Flat3DArray;
 
  chunkDepth = 16;
  chunkWidth = 16;

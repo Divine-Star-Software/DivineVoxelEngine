@@ -1,10 +1,9 @@
-import { BitArray } from "./Util/ByteArray.js";
 import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
 export class Util {
-    infoByte = new InfoByte();
+    infoByte = InfoByte;
     exposedFaceRecord = {
         top: 0,
         bottom: 1,
@@ -23,19 +22,17 @@ export class Util {
         return [chunkpositionZ, chunkpositionX];
     }
     getFlat3DArray() {
-        return new Flat3DArray();
+        return Flat3DArray;
     }
     getVoxelByte() {
         return VoxelByte;
     }
     getLightByte() {
-        return new LightByte();
+        return LightByte;
     }
     getInfoByte(number = 0) {
-        return new InfoByte(number);
-    }
-    getBitArray(nums) {
-        return new BitArray(nums);
+        InfoByte.setNumberValue(number);
+        return InfoByte;
     }
     degtoRad(degrees) {
         return degrees * (Math.PI / 180);

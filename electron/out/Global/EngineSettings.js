@@ -2,8 +2,8 @@
  * ---
  * Handles common settings for all contexts
  */
-export class EngineSettings {
-    settings = {
+export const EngineSettings = {
+    settings: {
         nexus: {
             enabled: true,
         },
@@ -50,7 +50,7 @@ export class EngineSettings {
         meshing: {
             maxBuilderThreads: 6,
         },
-    };
+    },
     syncSettings(data) {
         for (const key of Object.keys(data)) {
             if (this.settings[key]) {
@@ -58,8 +58,8 @@ export class EngineSettings {
                 this.settings[key] = data[key];
             }
         }
-    }
+    },
     getSettingsCopy() {
         return JSON.parse(JSON.stringify(this.settings));
-    }
-}
+    },
+};

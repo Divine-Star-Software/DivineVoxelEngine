@@ -1,12 +1,9 @@
-import type { Util } from "Global/Util.helper";
 import type { InfoByte } from "Global/Util/InfoByte";
 import { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
-import type { MeshData } from "Meta/Util.types";
 import { DivineVoxelEngineBuilder } from "../DivineVoxelEngineBuilder";
-import type { ShapeManager } from "../Shapes/ShapeManager";
 
 export class ChunkMeshBuilder {
- infoByte: InfoByte;
+ infoByte: typeof InfoByte;
  voxelBuildOrder: VoxelSubstanceType[] = ["solid", "flora", "magma"];
  voxelTypeMap = {
   solid: 0,

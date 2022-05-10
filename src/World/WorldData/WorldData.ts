@@ -88,10 +88,10 @@ export class WorldData {
   Record<VoxelSubstanceType | "all", boolean>
  > = {};
 
- infoByte: InfoByte;
- lightByte: LightByte;
+ infoByte: typeof InfoByte;
+ lightByte: typeof LightByte;
  voxelByte: typeof VoxelByte;
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
 
  substanceRules: Record<string, boolean> = {
   "solid-solid": false,
@@ -332,9 +332,7 @@ export class WorldData {
   const regionX = (x >> this.regionXPow2) << this.regionXPow2;
   const regionY = (y >> this.regionYPow2) << this.regionYPow2;
   const regionZ = (z >> this.regionZPow2) << this.regionZPow2;
-
   let region = this.regions[`${regionX}-${regionZ}-${regionY}`];
-
   if (!region) {
    return false;
   }

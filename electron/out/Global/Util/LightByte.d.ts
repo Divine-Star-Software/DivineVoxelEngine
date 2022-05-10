@@ -2,7 +2,7 @@
  * ---
  * Used to decode light color info.
  */
-export declare class LightByte {
+export declare const LightByte: {
     getS(value: number): number;
     getR(value: number): number;
     getG(value: number): number;
@@ -142,4 +142,4 @@ export declare class LightByte {
      * @returns
      */
     removeSunLight(sl: number): number;
-}
+};

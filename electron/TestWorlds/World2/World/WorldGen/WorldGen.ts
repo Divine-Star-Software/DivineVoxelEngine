@@ -12,7 +12,7 @@ export class WorldGen {
 
  renderDistance = 20;
 
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
 
  generateChunk(
   chunkX: number,

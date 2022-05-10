@@ -1,10 +1,9 @@
 import type { ShapeManager } from "Builder/Shapes/ShapeManager";
 import type { Util } from "Global/Util.helper";
 import { InfoByte } from "Global/Util/InfoByte";
-import type { MeshData } from "Meta/Util.types";
 
 export class FluidMeshBuilder {
- infoByte: InfoByte;
+ infoByte: typeof InfoByte;
  constructor(private shapeManager: ShapeManager, private UTIL: Util) {
   this.infoByte = this.UTIL.getInfoByte();
  }

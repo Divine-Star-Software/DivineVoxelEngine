@@ -19,7 +19,7 @@ export class DivineVoxelEngineFluidBuilder {
  worldComm = WorldComm;
  renderComm = RenderComm;
  __settingsHaveBeenSynced = false;
- engineSettings: EngineSettings = new EngineSettings();
+ engineSettings = EngineSettings;
  shapeHelper: ShapeHelper = new ShapeHelper(this.util);
  shapeManager: ShapeManager = new ShapeManager();
 

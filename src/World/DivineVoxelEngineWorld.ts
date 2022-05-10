@@ -29,7 +29,7 @@ export class DivineVoxelEngineWorld {
  worldBounds = WorldBounds;
  __settingsHaveBeenSynced = false;
  __renderIsDone = false;
- engineSettings: EngineSettings = new EngineSettings();
+ engineSettings  = EngineSettings;
  UTIL = new Util();
 
  builderCommManager = new BuilderCommManager(this);

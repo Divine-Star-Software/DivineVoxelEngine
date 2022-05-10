@@ -1,6 +1,5 @@
 import type { DVEWInitData } from "Meta/World/DVEW";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
@@ -46,7 +45,24 @@ export declare class DivineVoxelEngineWorld {
             y: number;
             z: number;
         };
-        syncBoundsWithFlat3DArray: (flat3dArray: import("../Global/Util/Flat3DArray.js").Flat3DArray) => void;
+        syncBoundsWithFlat3DArray: (flat3dArray: {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+            setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+        }) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         getRegionPosition: (x: number, y: number, z: number) => {
@@ -67,7 +83,11 @@ export declare class DivineVoxelEngineWorld {
     };
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
-    engineSettings: EngineSettings;
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
     UTIL: Util;
     builderCommManager: BuilderCommManager;
     fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {

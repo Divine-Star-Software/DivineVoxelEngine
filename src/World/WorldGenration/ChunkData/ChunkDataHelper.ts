@@ -5,8 +5,8 @@ import type { ChunkBound } from "Meta/World/ChunkBound.interface";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 export class ChunkDataHelper implements ChunkBound {
- lightByte: LightByte;
- _3dArray: Flat3DArray;
+ lightByte: typeof LightByte;
+ _3dArray: typeof Flat3DArray;
  constructor(public DVEW: DivineVoxelEngineWorld) {
   this.lightByte = this.DVEW.UTIL.getLightByte();
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();

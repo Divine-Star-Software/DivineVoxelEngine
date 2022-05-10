@@ -25,7 +25,6 @@ export class DivineVoxelEngineBuilder {
  worldMatrix = new WorldMatrix();
  matrixHub = new MatrixHub(this.worldMatrix);
 
-
  renderComm = RenderComm;
  worldComm = WorldComm;
  fluidBuilderComm = FluidBuilderComm;
@@ -37,7 +36,7 @@ export class DivineVoxelEngineBuilder {
  voxelHelper = new VoxelHelper(this);
  __connectedToWorld = false;
 
- engineSettings: EngineSettings = new EngineSettings();
+ engineSettings = EngineSettings;
  __settingsHaveBeenSynced = false;
  shapeManager: ShapeManager = new ShapeManager();
  shapeHelper = new ShapeHelper(this.UTIL);
@@ -45,7 +44,7 @@ export class DivineVoxelEngineBuilder {
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
-  if (data.chunks) {
+if (data.chunks) {
    this.worldBounds.setChunkBounds(
     data.chunks.chunkXPow2,
     data.chunks.chunkYPow2,
@@ -61,7 +60,7 @@ export class DivineVoxelEngineBuilder {
     data.regions.regionZPow2
    );
   }
-   this.__settingsHaveBeenSynced = true;
+  this.__settingsHaveBeenSynced = true;
  }
  reStart() {}
 
@@ -70,11 +69,11 @@ export class DivineVoxelEngineBuilder {
    this.__connectedToWorld &&
    this.matrixHub.worldPort !== undefined &&
    this.voxelManager.shapMapIsSet() &&
-   this.voxelManager.fluidShapMapIsSet()
-   && this.worldComm.port !== null
-   && this.fluidBuilderComm.port !== null
-   && this.textureManager.isReady()
-   && this.__settingsHaveBeenSynced
+   this.voxelManager.fluidShapMapIsSet() &&
+   this.worldComm.port !== null &&
+   this.fluidBuilderComm.port !== null &&
+   this.textureManager.isReady() &&
+   this.__settingsHaveBeenSynced
   );
  }
 

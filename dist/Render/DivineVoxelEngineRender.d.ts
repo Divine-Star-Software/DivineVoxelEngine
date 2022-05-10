@@ -6,14 +6,17 @@ import { BuilderComm } from "./InterComms/Builders/BuilderComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 export declare class DivineVoxelEngineRender {
     worldComm: WorldComm;
     nexusComm: NexusComm;
-    engineSettings: EngineSettings;
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
     renderManager: RenderManager;
     builderManager: BuilderComm;
     meshManager: MeshManager;

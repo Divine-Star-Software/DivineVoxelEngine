@@ -1,11 +1,27 @@
 import { WorldRegionPalette } from "Meta/WorldData/World.types.js";
-import { Flat3DArray } from "../Global/Util/Flat3DArray.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
 export declare class WorldMatrix {
-    _3dArray: Flat3DArray;
+    _3dArray: {
+        bounds: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        _position: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        setBounds(x: number, y: number, z: number): void;
+        getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+        setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+        delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+        getIndex(x: number, y: number, z: number): number;
+        getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+    };
     worldBounds: {
         chunkXPow2: number;
         chunkYPow2: number;
@@ -36,7 +52,24 @@ export declare class WorldMatrix {
             y: number;
             z: number;
         };
-        syncBoundsWithFlat3DArray: (flat3dArray: Flat3DArray) => void;
+        syncBoundsWithFlat3DArray: (flat3dArray: {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+            setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+        }) => void;
         setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
         getRegionPosition: (x: number, y: number, z: number) => {

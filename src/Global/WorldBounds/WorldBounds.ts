@@ -1,4 +1,4 @@
-import { Flat3DArray } from "Global/Util/Flat3DArray";
+import type { Flat3DArray } from "Global/Util/Flat3DArray";
 import { PositionMatrix } from "Meta/Util.types";
 
 /**# World Bounds
@@ -32,7 +32,7 @@ export const WorldBounds = {
  __chunkPosition: { x: 0, y: 0, z: 0 },
  __voxelPosition: { x: 0, y: 0, z: 0 },
 
- syncBoundsWithFlat3DArray: function (flat3dArray: Flat3DArray) {
+ syncBoundsWithFlat3DArray: function (flat3dArray: typeof Flat3DArray) {
   flat3dArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
  },
  setChunkBounds: function (pow2X: number, pow2Y: number, pow2Z: number) {

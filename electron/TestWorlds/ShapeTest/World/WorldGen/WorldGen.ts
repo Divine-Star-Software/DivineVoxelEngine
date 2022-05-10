@@ -6,7 +6,7 @@ export class WorldGen {
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
 
  chunkDepth = 16;
  chunkWidth = 16;

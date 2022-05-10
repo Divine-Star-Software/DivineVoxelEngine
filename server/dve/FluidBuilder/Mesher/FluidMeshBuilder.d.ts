@@ -4,7 +4,7 @@ import { InfoByte } from "Global/Util/InfoByte";
 export declare class FluidMeshBuilder {
     private shapeManager;
     private UTIL;
-    infoByte: InfoByte;
+    infoByte: typeof InfoByte;
     constructor(shapeManager: ShapeManager, UTIL: Util);
     templateMap: Record<string, number[]>;
     savedTemplates: Record<string, any[]>;

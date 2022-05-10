@@ -1,24 +1,18 @@
-import { InfoByte } from "../../../../out/Global/Util/InfoByte";
-
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-import { LightByte } from "../../../../out/Global/Util/LightByte";
 import { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 export class WorldGen {
  lightSourceColor: number;
  seedLightSourceColor: number;
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
  constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.infoByte = this.DVEW.UTIL.getInfoByte();
-  this.lightByte = this.DVEW.UTIL.getLightByte();
+
   this._3dArray = this.DVEW.UTIL.getFlat3DArray();
  }
 
  visited: Record<string, boolean> = {};
 
- infoByte: InfoByte;
- lightByte: LightByte;
+
 
  chunkDepth = 16;
  chunkWidth = 16;

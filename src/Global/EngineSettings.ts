@@ -1,11 +1,11 @@
-import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
  */
-export class EngineSettings {
- settings: EngineSettingsData = {
+export const EngineSettings = {
+ settings: <EngineSettingsData>{
   nexus: {
    enabled: true,
   },
@@ -52,20 +52,18 @@ export class EngineSettings {
   meshing: {
    maxBuilderThreads: 6,
   },
- };
+ },
 
  syncSettings(data: EngineSettingsData) {
-
   for (const key of Object.keys(data)) {
-     
    if ((this as any).settings[key]) {
-       //@ts-ignore
+    //@ts-ignore
     (this as any).settings[key] = data[key];
    }
   }
- }
+ },
 
  getSettingsCopy() {
- return  JSON.parse(JSON.stringify(this.settings));
- }
-}
+  return JSON.parse(JSON.stringify(this.settings));
+ },
+};

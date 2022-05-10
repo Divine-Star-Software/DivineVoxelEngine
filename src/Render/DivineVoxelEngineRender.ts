@@ -16,7 +16,7 @@ export class DivineVoxelEngineRender {
  worldComm = new WorldComm(this);
  nexusComm = new NexusComm(this);
 
- engineSettings = new EngineSettings();
+ engineSettings =  EngineSettings;
  renderManager = new RenderManager();
  builderManager = new BuilderComm(this);
  meshManager = new MeshManager(this);

@@ -29,7 +29,7 @@ export class DivineVoxelEngineBuilder {
     voxelManager = new VoxelManager(this);
     voxelHelper = new VoxelHelper(this);
     __connectedToWorld = false;
-    engineSettings = new EngineSettings();
+    engineSettings = EngineSettings;
     __settingsHaveBeenSynced = false;
     shapeManager = new ShapeManager();
     shapeHelper = new ShapeHelper(this.UTIL);
@@ -51,11 +51,11 @@ export class DivineVoxelEngineBuilder {
         return (this.__connectedToWorld &&
             this.matrixHub.worldPort !== undefined &&
             this.voxelManager.shapMapIsSet() &&
-            this.voxelManager.fluidShapMapIsSet()
-            && this.worldComm.port !== null
-            && this.fluidBuilderComm.port !== null
-            && this.textureManager.isReady()
-            && this.__settingsHaveBeenSynced);
+            this.voxelManager.fluidShapMapIsSet() &&
+            this.worldComm.port !== null &&
+            this.fluidBuilderComm.port !== null &&
+            this.textureManager.isReady() &&
+            this.__settingsHaveBeenSynced);
     }
     async $INIT(initData) {
         await InitWorker(this, initData);

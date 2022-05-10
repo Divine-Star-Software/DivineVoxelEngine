@@ -21,7 +21,7 @@ export class VoxelHelper {
  calculdateVoxelLight = CalculateVoxelLight;
 
  voxelByte: typeof VoxelByte;
- lightByte: LightByte;
+ lightByte: typeof LightByte;
  substanceRules: Record<string, boolean> = {
   "solid-solid": false,
   "solid-flora": true,

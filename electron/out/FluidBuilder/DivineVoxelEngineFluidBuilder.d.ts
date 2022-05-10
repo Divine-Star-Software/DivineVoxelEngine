@@ -4,7 +4,6 @@ import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { Util } from "../Global/Util.helper.js";
 import { FluidMeshBuilder } from "./Mesher/FluidMeshBuilder.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
 export declare class DivineVoxelEngineFluidBuilder {
     util: Util;
     environment: "node" | "browser";
@@ -14,7 +13,11 @@ export declare class DivineVoxelEngineFluidBuilder {
         onRestart: () => void;
     };
     __settingsHaveBeenSynced: boolean;
-    engineSettings: EngineSettings;
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
     shapeHelper: ShapeHelper;
     shapeManager: ShapeManager;
     fluidMeshBuilder: FluidMeshBuilder;

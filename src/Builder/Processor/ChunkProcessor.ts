@@ -18,7 +18,7 @@ export class ChunkProcessor {
 
  chunkTemplates: Record<number, Record<number, number[][]>> = {};
  voxelByte: typeof VoxelByte;
- _3dArray: Flat3DArray;
+ _3dArray: typeof Flat3DArray;
  exposedFaces: number[] = [];
  worldMatrix: WorldMatrix;
 
