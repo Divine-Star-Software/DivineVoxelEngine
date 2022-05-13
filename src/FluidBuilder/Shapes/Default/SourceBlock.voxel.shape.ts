@@ -4,13 +4,14 @@ import type {
  VoxelShapeAddReturnData,
  VoxelShapeInterface,
 } from "Meta/Builder/Shapes/VoxelShape.interface";
+import { ShapeHelper } from "../ShapeHelper";
 
 export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
  id = "FluidSourceBlock";
  width: number = 0.5;
  depth: number = 0.5;
  height: number = 0.5;
- constructor(public shapeHelper: ShapeHelperInterface) {}
+ constructor(public shapeHelper:  ShapeHelper) {}
  faces: Record<number, (data: VoxelShapeAddData) => VoxelShapeAddReturnData> = {
   //add top face
   0: (data: VoxelShapeAddData) => {
@@ -275,7 +276,9 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
   data.position.z += this.depth;
   data.position.y += this.height;
 
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "top")) {
+
+
+  if (this.shapeHelper.isFaceExposexd(data.face, "top")) {
    const newData = this.faces[0](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
@@ -283,7 +286,7 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    data.aoIndex = newData.newAOIndex;
    data.colorIndex = newData.newColorIndex;
   }
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "bottom")) {
+  if (this.shapeHelper.isFaceExposexd(data.face, "bottom")) {
    const newData = this.faces[1](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
@@ -291,7 +294,7 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    data.aoIndex = newData.newAOIndex;
    data.colorIndex = newData.newColorIndex;
   }
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "west")) {
+  if (this.shapeHelper.isFaceExposexd(data.face, "west")) {
    const newData = this.faces[2](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
@@ -299,7 +302,7 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    data.aoIndex = newData.newAOIndex;
    data.colorIndex = newData.newColorIndex;
   }
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "east")) {
+  if (this.shapeHelper.isFaceExposexd(data.face, "east")) {
    const newData = this.faces[3](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
@@ -307,7 +310,7 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    data.aoIndex = newData.newAOIndex;
    data.colorIndex = newData.newColorIndex;
   }
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "north")) {
+  if (this.shapeHelper.isFaceExposexd(data.face, "north")) {
    const newData = this.faces[4](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;
@@ -315,7 +318,7 @@ export class FluidSourceBlockVoxelShape implements VoxelShapeInterface {
    data.aoIndex = newData.newAOIndex;
    data.colorIndex = newData.newColorIndex;
   }
-  if (this.shapeHelper.util.isFaceExposexd(data.face, "south")) {
+  if (this.shapeHelper.isFaceExposexd(data.face, "south")) {
    const newData = this.faces[5](data);
    data.indicieIndex = newData.newIndicieIndex;
    data.uvTemplateIndex = newData.newUVTemplateIndex;

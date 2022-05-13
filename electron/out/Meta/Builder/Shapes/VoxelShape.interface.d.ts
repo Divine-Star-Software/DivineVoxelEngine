@@ -1,5 +1,4 @@
 import { PositionMatrix } from "Meta/Util.types";
-import { ShapeHelperInterface } from "./ShapeHelper.interface";
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions
@@ -74,11 +73,10 @@ export declare type VoxelShapeAddReturnData = {
  * Voxel shapes are used by the mesh bulder to generate the mush.
  * It checks with the voxel shape to build the proper mesh.
  */
-export interface VoxelShapeInterface {
+export declare type VoxelShapeInterface = {
     id: string;
-    shapeHelper: ShapeHelperInterface;
     /**# Add To Chunk Mesh
      * ---
      */
     addToChunkMesh(data: VoxelShapeAddData): VoxelShapeAddReturnData;
-}
+};

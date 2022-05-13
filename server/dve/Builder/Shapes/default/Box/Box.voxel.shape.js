@@ -1,168 +1,138 @@
-export class BoxVoxelShape {
-    shapeHelper;
-    id = "Box";
-    width = 0.5;
-    depth = 0.5;
-    height = 0.5;
-    constructor(shapeHelper) {
-        this.shapeHelper = shapeHelper;
-    }
-    faces = {
-        //add top face
-        0: (data) => {
-            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth);
-            data.indices.push(data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex, data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-        //add bottom face
-        1: (data) => {
-            data.positions.push(data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
-            data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-        //add west face
-        2: (data) => {
-            data.positions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth);
-            data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-        //add east face
-        3: (data) => {
-            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth);
-            data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-        //add north face
-        4: (data) => {
-            data.positions.push(data.position.x + -this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + this.height, data.position.z + -this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + -this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + -this.depth);
-            data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-        //add south face
-        5: (data) => {
-            data.positions.push(data.position.x + this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + this.height, data.position.z + this.depth, data.position.x + -this.width, data.position.y + -this.height, data.position.z + this.depth, data.position.x + this.width, data.position.y + -this.height, data.position.z + this.depth);
-            data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
-            const uv = data.unTemplate[data.uvTemplateIndex];
-            data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-            this.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-            this.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-            return {
-                newIndicieIndex: data.indicieIndex + 4,
-                newUVTemplateIndex: data.uvTemplateIndex + 1,
-                newlightIndex: data.lightIndex + 4,
-                newColorIndex: data.colorIndex + 4,
-                newAOIndex: data.aoIndex + 4,
-            };
-        },
-    };
-    addToChunkMesh(data) {
-        data.position.x += this.width;
-        data.position.z += this.depth;
-        data.position.y += this.height;
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "top")) {
-            const newData = this.faces[0](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "bottom")) {
-            const newData = this.faces[1](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "west")) {
-            const newData = this.faces[2](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "east")) {
-            const newData = this.faces[3](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "north")) {
-            const newData = this.faces[4](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
-        if (this.shapeHelper.util.isFaceExposexd(data.face, "south")) {
-            const newData = this.faces[5](data);
-            data.indicieIndex = newData.newIndicieIndex;
-            data.uvTemplateIndex = newData.newUVTemplateIndex;
-            data.lightIndex = newData.newlightIndex;
-            data.aoIndex = newData.newAOIndex;
-            data.colorIndex = newData.newColorIndex;
-        }
+import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+const processReturnData = (shapeData, returnData) => {
+    shapeData.indicieIndex = returnData.newIndicieIndex;
+    shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
+    shapeData.lightIndex = returnData.newlightIndex;
+    shapeData.aoIndex = returnData.newAOIndex;
+    shapeData.colorIndex = returnData.newColorIndex;
+};
+const shapeDimensions = {
+    width: 0.5,
+    depth: 0.5,
+    height: 0.5,
+};
+const faceFunctions = {
+    //add top face
+    0: (data) => {
+        data.positions.push(data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex, data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
         return {
-            newIndicieIndex: data.indicieIndex,
-            newUVTemplateIndex: data.uvTemplateIndex,
-            newColorIndex: data.colorIndex,
-            newlightIndex: data.lightIndex,
-            newAOIndex: data.aoIndex,
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
         };
-    }
-}
+    },
+    //add bottom face
+    1: (data) => {
+        data.positions.push(data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+        return {
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
+        };
+    },
+    //add west face
+    2: (data) => {
+        data.positions.push(data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+        return {
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
+        };
+    },
+    //add east face
+    3: (data) => {
+        data.positions.push(data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+        return {
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
+        };
+    },
+    //add north face
+    4: (data) => {
+        data.positions.push(data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+        return {
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
+        };
+    },
+    //add south face
+    5: (data) => {
+        data.positions.push(data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth);
+        data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
+        const uv = data.unTemplate[data.uvTemplateIndex];
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+        return {
+            newIndicieIndex: data.indicieIndex + 4,
+            newUVTemplateIndex: data.uvTemplateIndex + 1,
+            newlightIndex: data.lightIndex + 4,
+            newColorIndex: data.colorIndex + 4,
+            newAOIndex: data.aoIndex + 4,
+        };
+    },
+};
+export const BoxVoxelShape = {
+    id: "Box",
+    addToChunkMesh(data) {
+        data.position.x += shapeDimensions.width;
+        data.position.z += shapeDimensions.depth;
+        data.position.y += shapeDimensions.height;
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[0](data));
+        }
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[1](data));
+        }
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "west")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[2](data));
+        }
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "east")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[3](data));
+        }
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "north")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[4](data));
+        }
+        if (DVEB.shapeHelper.isFaceExposexd(data.face, "south")) {
+            DVEB.shapeHelper.processReturnData(data, faceFunctions[5](data));
+        }
+        return DVEB.shapeHelper.produceShapeReturnData(data);
+    },
+};

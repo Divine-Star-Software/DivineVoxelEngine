@@ -1,4 +1,3 @@
-import { DirectionNames } from "Meta/Util.types.js";
 export declare class Util {
     infoByte: {
         maxBit: number;
@@ -16,8 +15,6 @@ export declare class Util {
         toArray(): (0 | 1)[];
         toString(delimiter?: string): string;
     };
-    exposedFaceRecord: Record<DirectionNames, number>;
-    isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: DirectionNames): boolean;
     calculateGameZone(positionZ: number, positionX: number): number[];
     getFlat3DArray(): {
         bounds: {
@@ -35,7 +32,7 @@ export declare class Util {
         setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
         delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("Meta/Util.types.js").PositionMatrix;
+        getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
     };
     getVoxelByte(): {
         setId(id: number, value: number): number;

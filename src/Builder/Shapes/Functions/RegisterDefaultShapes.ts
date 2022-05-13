@@ -4,8 +4,7 @@ import { BoxVoxelShape } from "../default/Box/Box.voxel.shape.js";
 import type { ShapeManager } from "../ShapeManager";
 
 export function RegisterDefaultShapes(shpaeManager : ShapeManager,shapeHelper : ShapeHelperInterface) {
-    const boxVoxel = new BoxVoxelShape(shapeHelper);
-    shpaeManager.registerShape(boxVoxel); 
+    shpaeManager.registerShape(BoxVoxelShape); 
     const fullBoxDiagonalIntersection = new FullBoxDiagonalIntersection(shapeHelper);
     shpaeManager.registerShape(fullBoxDiagonalIntersection);
 }

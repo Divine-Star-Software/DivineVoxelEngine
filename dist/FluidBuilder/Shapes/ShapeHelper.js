@@ -6,10 +6,43 @@ export class ShapeHelper {
     util;
     infoByte;
     lightByte;
+    //Use for producing the light gradient
+    lightMap = [
+        0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
+        0.85, 0.97, 1,
+    ];
     constructor(util) {
         this.util = util;
         this.infoByte = this.util.getInfoByte();
         this.lightByte = this.util.getLightByte();
+    }
+    exposedFaceRecord = {
+        top: 0,
+        bottom: 1,
+        west: 2,
+        east: 3,
+        north: 4,
+        south: 5,
+    };
+    isFaceExposexd(voxelExposedFaceEncodedBit, faceDirection) {
+        this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
+        return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
+    }
+    processReturnData(shapeData, returnData) {
+        shapeData.indicieIndex = returnData.newIndicieIndex;
+        shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
+        shapeData.lightIndex = returnData.newlightIndex;
+        shapeData.aoIndex = returnData.newAOIndex;
+        shapeData.colorIndex = returnData.newColorIndex;
+    }
+    produceShapeReturnData(shapeData) {
+        return {
+            newIndicieIndex: shapeData.indicieIndex,
+            newUVTemplateIndex: shapeData.uvTemplateIndex,
+            newColorIndex: shapeData.colorIndex,
+            newlightIndex: shapeData.lightIndex,
+            newAOIndex: shapeData.aoIndex,
+        };
     }
     toLinearSpace(r, g, b, a) {
         r = r ** 2.2;
@@ -18,10 +51,6 @@ export class ShapeHelper {
         a = a * 1;
         return [r, g, b, a];
     }
-    lightMap = [
-        0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
-        0.85, 0.97, 1,
-    ];
     calculateLightColor(RGBlightColors, sunlightColors, lightTemplate, startIndex) {
         const alpha = 1;
         for (let v = 0; v < 4; v++) {

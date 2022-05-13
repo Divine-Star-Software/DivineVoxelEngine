@@ -1,18 +1,63 @@
 import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
 import type { Util } from "Global/Util.helper";
-import { InfoByte } from "Global/Util/InfoByte";
-import { LightByte } from "Global/Util/LightByte";
+import type { DirectionNames } from "Meta/Util.types.js";
+import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
+import type { InfoByte } from "Global/Util/InfoByte";
+import type { LightByte } from "Global/Util/LightByte";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
  */
-export class ShapeHelper implements ShapeHelperInterface {
+export class ShapeHelper {
  infoByte: typeof InfoByte;
  lightByte: typeof LightByte;
+ //Use for producing the light gradient
+ lightMap: number[] = [
+  0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
+  0.85, 0.97, 1,
+ ];
 
  constructor(public util: Util) {
   this.infoByte = this.util.getInfoByte();
   this.lightByte = this.util.getLightByte();
+ }
+
+ exposedFaceRecord: Record<DirectionNames, number> = {
+  top: 0,
+  bottom: 1,
+  west: 2,
+  east: 3,
+  north: 4,
+  south: 5,
+ };
+
+ isFaceExposexd(
+  voxelExposedFaceEncodedBit: number,
+  faceDirection: DirectionNames
+ ) {
+  this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
+  return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
+ }
+
+ processReturnData(
+  shapeData: VoxelShapeAddData,
+  returnData: VoxelShapeAddReturnData
+ ) {
+  shapeData.indicieIndex = returnData.newIndicieIndex;
+  shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
+  shapeData.lightIndex = returnData.newlightIndex;
+  shapeData.aoIndex = returnData.newAOIndex;
+  shapeData.colorIndex = returnData.newColorIndex;
+ }
+
+ produceShapeReturnData(shapeData: VoxelShapeAddData) {
+  return {
+   newIndicieIndex: shapeData.indicieIndex,
+   newUVTemplateIndex: shapeData.uvTemplateIndex,
+   newColorIndex: shapeData.colorIndex,
+   newlightIndex: shapeData.lightIndex,
+   newAOIndex: shapeData.aoIndex,
+  };
  }
 
  toLinearSpace(r: number, g: number, b: number, a: number) {
@@ -23,10 +68,6 @@ export class ShapeHelper implements ShapeHelperInterface {
   return [r, g, b, a];
  }
 
- lightMap: number[] = [
-  0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
-  0.85, 0.97, 1,
- ];
  calculateLightColor(
   RGBlightColors: number[],
   sunlightColors: number[],
