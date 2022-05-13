@@ -213,54 +213,12 @@ export class WorldGen {
    )
   );
 
-  if (x == 0 || z == 0 || x == 15 || z == 15) {
-   if (y == minY) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x == 1 || z == 1 || x == 14 || z == 14) {
-   if (y == minY - 1) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x == 2 || z == 2 || x == 13 || z == 13) {
-   if (y == minY - 2) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x == 3 || z == 3 || x == 12 || z == 12) {
-   if (y == minY - 3) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x <= 4 || z <= 4 || x <= 11 || z <= 11) {
-   if (y == minY - 4) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x <= 5 || z <= 5 || x <= 10 || z <= 10) {
-   if (y == minY - 5) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-  if (x <= 6 || z <= 6 || x <= 9 || z <= 9) {
-   if (y == minY - 6) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-   }
-  }
-
   if (y < minY - 6) {
    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
   }
 
   if (y >= minY - 6 && y <= minY) {
-   if (this._3dArray.getValue(x, y, z, chunkVoxels)) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, liquidDreamEther);
-   }
-
-   if (y == minY) {
-    this._3dArray.setValue(x, y, z, chunkVoxels, liquidDreamEther);
-   }
+   this._3dArray.setValue(x, y, z, chunkVoxels, liquidDreamEther);
   }
  }
 

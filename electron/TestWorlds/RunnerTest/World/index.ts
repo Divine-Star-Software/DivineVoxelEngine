@@ -36,9 +36,9 @@ const start = () => {
   }
  }
 
- setTimeout(()=> {
-    DVEW.buildFluidMesh();
- },3000)
+ setTimeout(() => {
+  DVEW.buildFluidMesh();
+ }, 3000);
 };
 
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {

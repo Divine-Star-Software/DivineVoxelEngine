@@ -622,7 +622,7 @@ export class WorldData {
      this.DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
     }
    }
-   chunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk;
+   this.setChunk(chunkX,chunkY,chunkZ,chunk);
   }
   let voxelX = Math.abs(x - chunkX);
   if (x < 0) {
