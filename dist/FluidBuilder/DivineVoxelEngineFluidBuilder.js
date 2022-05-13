@@ -17,7 +17,6 @@ export class DivineVoxelEngineFluidBuilder {
     shapeHelper = new ShapeHelper(this.util);
     shapeManager = new ShapeManager();
     fluidMeshBuilder = new FluidMeshBuilder(this.shapeManager, this.util);
-    constructor() { }
     isReady() {
         return this.worldComm.port !== null && this.__settingsHaveBeenSynced;
     }
@@ -31,8 +30,7 @@ export class DivineVoxelEngineFluidBuilder {
         this.worldComm.sendMessage("ready", []);
     }
 }
-//@ts-ignore
-export const DVEFB = new DivineVoxelEngineFluidBuilder(self);
+export const DVEFB = new DivineVoxelEngineFluidBuilder();
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {
     DVEFB.environment = "node";

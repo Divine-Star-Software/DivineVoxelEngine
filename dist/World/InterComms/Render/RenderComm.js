@@ -9,7 +9,7 @@ export const RenderComm = renderComm;
 renderComm.messageFunctions = {
     "get-world-data": (data, event) => {
         const textures = DVEW.textureManager.generateTexturesData();
-        DVEW.worker.postMessage(["set-world-data", textures]);
+        renderComm.sendMessage("set-world-data", [textures]);
         DVEW.voxelManager.runVoxelHookForAll("texturesRegistered");
     },
     start: function (data, event) {

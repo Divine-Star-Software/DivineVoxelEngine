@@ -21,7 +21,6 @@ export declare class DivineVoxelEngineFluidBuilder {
     shapeHelper: ShapeHelper;
     shapeManager: ShapeManager;
     fluidMeshBuilder: FluidMeshBuilder;
-    constructor();
     isReady(): boolean;
     reStart(): void;
     syncSettings(data: EngineSettingsData): void;

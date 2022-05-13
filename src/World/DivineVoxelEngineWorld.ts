@@ -25,11 +25,10 @@ import { TextureManager } from "./Textures/TextureManager.js";
  */
 export class DivineVoxelEngineWorld {
  environment: "node" | "browser" = "browser";
- worker: Worker;
  worldBounds = WorldBounds;
  __settingsHaveBeenSynced = false;
  __renderIsDone = false;
- engineSettings  = EngineSettings;
+ engineSettings = EngineSettings;
  UTIL = new Util();
 
  builderCommManager = new BuilderCommManager(this);
@@ -48,10 +47,7 @@ export class DivineVoxelEngineWorld {
  voxelManager = new VoxelManager(this);
  textureManager = new TextureManager();
 
- constructor(worker: Worker) {
-  this.worker = worker;
-  //this.builderComm.setMainThreadCom(<any>this.worker);
- }
+ constructor() {}
 
  isReady() {
   let ready =
@@ -169,8 +165,7 @@ export class DivineVoxelEngineWorld {
  }
 }
 
-//@ts-ignore
-export const DVEW = new DivineVoxelEngineWorld(self as Worker);
+export const DVEW = new DivineVoxelEngineWorld();
 
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {

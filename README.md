@@ -22,7 +22,7 @@ Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/w
 
 - Different voxel types and shapes.
 - Chunk-based rendering and meshing.
-- Multi-threaded mesh building.
+- In parallel mesh building.
 - Multi-threaded chunk data access.
 - Ambient occlusion.
 - Animated textures.

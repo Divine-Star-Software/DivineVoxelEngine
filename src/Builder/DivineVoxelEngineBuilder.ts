@@ -20,7 +20,6 @@ import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilder.js";
 
 export class DivineVoxelEngineBuilder {
  environment: "node" | "browser" = "browser";
- worker: Worker;
  UTIL: Util = new Util();
  worldMatrix = new WorldMatrix();
  matrixHub = new MatrixHub(this.worldMatrix);
@@ -104,8 +103,8 @@ if (data.chunks) {
  }
 }
 
-//@ts-ignore
-export const DVEB = new DivineVoxelEngineBuilder(self as Worker);
+
+export const DVEB = new DivineVoxelEngineBuilder();
 
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {

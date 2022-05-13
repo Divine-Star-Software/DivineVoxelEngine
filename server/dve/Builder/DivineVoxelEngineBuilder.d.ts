@@ -12,7 +12,6 @@ import { TextureManager } from "./Textures/TextureManager.js";
 import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 export declare class DivineVoxelEngineBuilder {
     environment: "node" | "browser";
-    worker: Worker;
     UTIL: Util;
     worldMatrix: WorldMatrix;
     matrixHub: MatrixHub;

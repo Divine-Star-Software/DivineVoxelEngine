@@ -14,7 +14,6 @@ import { TextureManager } from "./Textures/TextureManager.js";
  */
 export declare class DivineVoxelEngineWorld {
     environment: "node" | "browser";
-    worker: Worker;
     worldBounds: {
         chunkXPow2: number;
         chunkYPow2: number;
@@ -119,7 +118,7 @@ export declare class DivineVoxelEngineWorld {
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     voxelManager: VoxelManager;
     textureManager: TextureManager;
-    constructor(worker: Worker);
+    constructor();
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;
     runRGBLightUpdateQue(): void;

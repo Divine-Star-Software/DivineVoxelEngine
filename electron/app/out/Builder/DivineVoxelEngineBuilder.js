@@ -16,7 +16,6 @@ import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilder.js";
 export class DivineVoxelEngineBuilder {
     environment = "browser";
-    worker;
     UTIL = new Util();
     worldMatrix = new WorldMatrix();
     matrixHub = new MatrixHub(this.worldMatrix);
@@ -76,8 +75,7 @@ export class DivineVoxelEngineBuilder {
         return true;
     }
 }
-//@ts-ignore
-export const DVEB = new DivineVoxelEngineBuilder(self);
+export const DVEB = new DivineVoxelEngineBuilder();
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {
     DVEB.environment = "node";

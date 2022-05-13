@@ -28,7 +28,6 @@ export class DivineVoxelEngineFluidBuilder {
   this.util
  );
 
- constructor() {}
 
  isReady() {
   return this.worldComm.port !== null && this.__settingsHaveBeenSynced;
@@ -44,8 +43,8 @@ export class DivineVoxelEngineFluidBuilder {
   this.worldComm.sendMessage("ready", []);
  }
 }
-//@ts-ignore
-export const DVEFB = new DivineVoxelEngineFluidBuilder(self as Worker);
+
+export const DVEFB = new DivineVoxelEngineFluidBuilder();
 
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {
