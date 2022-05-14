@@ -8,17 +8,6 @@ import type {
 
 type BoxFaceFunction = (data: VoxelShapeAddData) => VoxelShapeAddReturnData;
 
-const processReturnData = (
- shapeData: VoxelShapeAddData,
- returnData: VoxelShapeAddReturnData
-) => {
- shapeData.indicieIndex = returnData.newIndicieIndex;
- shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
- shapeData.lightIndex = returnData.newlightIndex;
- shapeData.aoIndex = returnData.newAOIndex;
- shapeData.colorIndex = returnData.newColorIndex;
-};
-
 const shapeDimensions = {
  width: 0.5,
  depth: 0.5,

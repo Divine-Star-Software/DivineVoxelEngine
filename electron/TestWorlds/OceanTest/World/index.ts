@@ -28,10 +28,6 @@ const start = () => {
   }
  }
 
- setTimeout(()=> {
-    DVEW.buildFluidMesh();
- },3000)
-
 };
 
 (async () => {

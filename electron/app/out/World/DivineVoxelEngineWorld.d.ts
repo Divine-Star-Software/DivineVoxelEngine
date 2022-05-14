@@ -89,24 +89,6 @@ export declare class DivineVoxelEngineWorld {
     };
     UTIL: Util;
     builderCommManager: BuilderCommManager;
-    fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
-        fluidMeshHasBeenUpdated: boolean;
-        ready: boolean;
-    } & {
-        fluidMeshHasBeenUpdated: boolean;
-        setChunkTemplateForFluidMesh: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
-            fluidMeshHasBeenUpdated: boolean;
-            ready: boolean;
-        }, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/index.js").ChunkTemplate) => void;
-        requestFluidMeshBeReBuilt: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
-            fluidMeshHasBeenUpdated: boolean;
-            ready: boolean;
-        }) => void;
-        requestFullChunkBeRemoved: (this: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
-            fluidMeshHasBeenUpdated: boolean;
-            ready: boolean;
-        }, chunkX: number, chunkZ: number) => void;
-    };
     worldGeneration: WorldGeneration;
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         onReady: () => void;
@@ -129,7 +111,6 @@ export declare class DivineVoxelEngineWorld {
     clearChunkRebuildQue(): void;
     removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
-    buildFluidMesh(): void;
     $INIT(data: DVEWInitData): Promise<void>;
 }
 export declare const DVEW: DivineVoxelEngineWorld;

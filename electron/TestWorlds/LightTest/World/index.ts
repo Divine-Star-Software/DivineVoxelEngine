@@ -36,7 +36,7 @@ const start = () => {
   }
  }, 10);
 
- DVEW.buildFluidMesh();
+
 };
 
 (async () => {

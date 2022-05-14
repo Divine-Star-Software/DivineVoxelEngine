@@ -160,13 +160,15 @@ export class ChunkProcessor {
                 }
             }
         }
-        const positions = new Uint16Array(template.fluid.positionTemplate);
-        const faces = new Uint8Array(template.fluid.faceTemplate);
-        const shapes = new Uint16Array(template.fluid.shapeTemplate);
-        const uvs = new Uint16Array(template.fluid.uvTemplate);
-        const colors = new Float32Array(template.fluid.colorTemplate);
-        const light = new Float32Array(template.fluid.lightTemplate);
-        this.DVEB.fluidBuilderComm.sendMessage(0, [
+        /*   const positions = new Uint16Array(template.fluid.positionTemplate);
+          const faces = new Uint8Array(template.fluid.faceTemplate);
+          const shapes = new Uint16Array(template.fluid.shapeTemplate);
+          const uvs = new Uint16Array(template.fluid.uvTemplate);
+          const colors = new Float32Array(template.fluid.colorTemplate);
+          const light = new Float32Array(template.fluid.lightTemplate);
+          this.DVEB.fluidBuilderComm.sendMessage(
+           0,
+           [
             chunkX,
             chunkY,
             chunkZ,
@@ -176,14 +178,17 @@ export class ChunkProcessor {
             uvs.buffer,
             colors.buffer,
             light.buffer,
-        ], [
+           ],
+           [
             positions.buffer,
             faces.buffer,
             shapes.buffer,
             uvs.buffer,
             colors.buffer,
             light.buffer,
-        ]);
+           ]
+          );
+         */
         return template;
     }
 }

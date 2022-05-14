@@ -16,7 +16,7 @@ export class DivineVoxelEngineRender {
  worldComm = new WorldComm(this);
  nexusComm = new NexusComm(this);
 
- engineSettings =  EngineSettings;
+ engineSettings = EngineSettings;
  renderManager = new RenderManager();
  builderManager = new BuilderComm(this);
  meshManager = new MeshManager(this);
@@ -79,16 +79,6 @@ export class DivineVoxelEngineRender {
    );
   }
 
-  if (typeof data.fluidBuilderWorker == "string") {
-   this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorker);
-  } else if (data.fluidBuilderWorker instanceof Worker) {
-   this.builderManager.setFluidBuilderWorker(data.fluidBuilderWorker);
-  } else {
-   throw Error(
-    "Supplied data for Fluid Worker is not correct. Must be path to worker or a worker."
-   );
-  }
-
   if (data.nexusWorker && data.nexus?.enabled) {
    if (typeof data.nexusWorker == "string") {
     this.nexusComm.createNexusWorker(data.nexusWorker);
@@ -103,7 +93,6 @@ export class DivineVoxelEngineRender {
 
   this._syncSettings(data);
   this.textureManager.generateTexturesData();
-  this.builderManager.connectBuilderToFluidBuilder();
   for (const builder of this.builderManager.builders) {
    builder.postMessage([
     "sync-uv-texuture-data",
@@ -113,14 +102,11 @@ export class DivineVoxelEngineRender {
 
   await this.worldComm.getBaseWorldData();
 
-  
-
   //terminate all workers
   window.addEventListener("beforeunload", () => {
    for (const builder of this.builderManager.builders) {
     builder.terminate();
    }
-   this.builderManager.fluidBuilder.terminate();
    this.worldComm.worker.terminate();
    if (this.nexusComm.worker) {
     this.nexusComm.worker.terminate();

@@ -6,7 +6,7 @@ export const RunInit = (init) => {
         }
     }, 10);
 };
-export const SetUpWorkers = (basePath, worldPath, builderPath, fluidBuilderPath, nexusPath) => {
+export const SetUpWorkers = (basePath, worldPath, builderPath, nexusPath) => {
     const wPath = new URL(worldPath, basePath);
     const worldWorker = new Worker(wPath, {
         type: "module",
@@ -18,10 +18,6 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, fluidBuilderPath,
             type: "module",
         }));
     }
-    const fPath = new URL(fluidBuilderPath, basePath);
-    const fluidBuilderWorker = new Worker(fPath, {
-        type: "module",
-    });
     let nexusWorker = null;
     if (nexusPath) {
         nexusWorker = new Worker(new URL(nexusPath, basePath), {
@@ -31,7 +27,6 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, fluidBuilderPath,
     return {
         worldWorker: worldWorker,
         builderWorkers: builderWorkers,
-        fluidBuilderWorker: fluidBuilderWorker,
         nexusWorker: nexusWorker,
     };
 };

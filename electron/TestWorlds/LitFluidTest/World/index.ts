@@ -30,9 +30,7 @@ const start = () => {
   }
  }
 
- setTimeout(()=>{
-    DVEW.buildFluidMesh();
- },1000);
+
 
 
  const x = 0;
@@ -41,8 +39,6 @@ const start = () => {
  DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 7, z);
 
  DVEW.runChunkRebuildQue();
-
- DVEW.buildFluidMesh();
 };
 
 (async () => {

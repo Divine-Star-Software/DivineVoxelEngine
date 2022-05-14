@@ -4,11 +4,10 @@ import { DVER } from "../../out/index.js";
 import { Player } from "../Shared/Player/Type2/Player.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/FluidBuilder/fluidbuilder.js");
+const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
-    builderWorker: workers.builderWorkers,
-    fluidBuilderWorker: workers.fluidBuilderWorker,
+    builderWorker: workers.builderWorkers
 });
 const player = new Player(DVER);
 const init = async () => {

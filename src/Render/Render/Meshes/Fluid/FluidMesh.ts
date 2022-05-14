@@ -1,67 +1,71 @@
-import type { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
+import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
 
-export class FluidMesh {
- mesh: BABYLON.Mesh;
-
- scene: BABYLON.Scene;
- beenCreated: boolean = false;
-
+export class FluidMesh implements VoxelMeshInterface {
  constructor(private material: FluidMaterial) {}
-
  async rebuildMeshGeometory(
+  mesh: BABYLON.Mesh,
+  chunkX: number,
+  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  RGBLightColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
   sunLightColors: Float32Array,
   colors: Float32Array,
   uvs: Float32Array
  ) {
+  mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
+
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
-  chunkVertexData.applyToMesh(this.mesh, true);
+  chunkVertexData.applyToMesh(mesh, true);
 
-  this.mesh.setVerticesData("cuv3", uvs, false, 3);
-  this.mesh.setVerticesData("rgbLightColors", RGBLightColors, false, 4);
-  this.mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-  this.mesh.setVerticesData("colors", colors, false, 4);
+  mesh.setVerticesData("cuv3", uvs, false, 3);
+  mesh.setVerticesData("aoColors", aoColors, false, 4);
+  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+  mesh.setVerticesData("colors", colors, false, 4);
+  mesh.freezeWorldMatrix();
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  this.mesh = new BABYLON.Mesh("fluid", scene);
-  this.scene = scene;
-  this.mesh.isPickable = false;
-  this.mesh.alphaIndex = 1;
-  this.mesh.checkCollisions = false;
-  this.mesh.visibility = 0.1;
-  this.mesh.hasVertexAlpha = true;
-  return this.mesh;
+  const mesh = new BABYLON.Mesh("solid", scene);
+  mesh.alphaIndex = 0;
+  mesh.isPickable = false;
+  mesh.checkCollisions = true;
+
+  return mesh;
  }
 
  async createMeshGeometory(
+  mesh: BABYLON.Mesh,
+  chunkX: number,
+  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
-  RGBLightColors: Float32Array,
+  aoColors: Float32Array,
+  rgbLightColors: Float32Array,
   sunLightColors: Float32Array,
   colors: Float32Array,
   uvs: Float32Array
  ) {
-  this.mesh.material = this.material.getMaterial();
-  this.beenCreated = true;
   const chunkVertexData = new BABYLON.VertexData();
+
   chunkVertexData.positions = positions;
   chunkVertexData.indices = indicies;
+  // chunkVertexData.colors = linearColors;
+  chunkVertexData.applyToMesh(mesh, true);
 
-  chunkVertexData.applyToMesh(this.mesh, true);
+  mesh.setVerticesData("cuv3", uvs, false, 3);
+  mesh.setVerticesData("aoColors", aoColors, false, 4);
+  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+  mesh.setVerticesData("colors", colors, false, 4);
 
-  this.mesh.setVerticesData("cuv3", uvs, false, 3);
-
-  this.mesh.setVerticesData("rgbLightColors", RGBLightColors, false, 4);
-  this.mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-  this.mesh.setVerticesData("colors", colors, false, 4);
-
-  this.mesh.freezeWorldMatrix();
-
-  return this.mesh;
+  mesh.material = this.material.getMaterial();
+  mesh.freezeWorldMatrix();
+  return mesh;
  }
 }

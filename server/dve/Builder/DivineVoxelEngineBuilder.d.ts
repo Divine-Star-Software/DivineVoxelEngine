@@ -20,7 +20,6 @@ export declare class DivineVoxelEngineBuilder {
         onRestart: () => void;
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
-    fluidBuilderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     worldBounds: {
         chunkXPow2: number;
         chunkYPow2: number;

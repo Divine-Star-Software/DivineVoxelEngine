@@ -8,7 +8,6 @@ export class BuilderComm {
     numBuilders = 4;
     count = 0;
     builders = [];
-    fluidBuilder;
     buildRequestFunctions = {
         //chunk meshes
         0: (chunkKey, chunkX, chunkY, chunkZ, data) => {
@@ -16,6 +15,9 @@ export class BuilderComm {
         },
         1: (chunkKey, chunkX, chunkY, chunkZ, data) => {
             this.DVER.meshManager.handleUpdate("flora", chunkKey, chunkX, chunkY, chunkZ, data);
+        },
+        2: (chunkKey, chunkX, chunkY, chunkZ, data) => {
+            this.DVER.meshManager.handleUpdate("fluid", chunkKey, chunkX, chunkY, chunkZ, data);
         },
         3: (chunkKey, chunkX, chunkY, chunkZ, data) => {
             this.DVER.meshManager.handleUpdate("magma", chunkKey, chunkX, chunkY, chunkZ, data);
@@ -33,7 +35,6 @@ export class BuilderComm {
         for (const worker of this.builders) {
             worker.postMessage(["re-start"]);
         }
-        this.fluidBuilder.postMessage(["re-start"]);
     }
     setBuilderWorkers(workers) {
         this.builders = workers;
@@ -66,37 +67,6 @@ export class BuilderComm {
             builderWorker.postMessage(["connect-world"], [channel.port2]);
         }
     }
-    createFluidBuilderWorker(path) {
-        this.fluidBuilder = new Worker(new URL(path, import.meta.url), {
-            type: "module",
-        });
-        this._initFluidBuilder();
-    }
-    setFluidBuilderWorker(worker) {
-        this.fluidBuilder = worker;
-        this._initFluidBuilder();
-    }
-    _initFluidBuilder() {
-        this.fluidBuilder.onerror = (er) => {
-            console.log(er);
-        };
-        this.fluidBuilder.onmessage = async (event) => {
-            this._handlFluideBuildMeshMessage(event);
-        };
-        const channel = new MessageChannel();
-        const worldWorker = this.DVER.worldComm.getWorker();
-        //connect world to fluid builder
-        worldWorker.postMessage(["connect-fluid-builder"], [channel.port1]);
-        //connect fluid builder to world
-        this.fluidBuilder.postMessage(["connect-world"], [channel.port2]);
-    }
-    connectBuilderToFluidBuilder() {
-        for (const builder of this.builders) {
-            const channel = new MessageChannel();
-            builder.postMessage(["connect-fluid-builder"], [channel.port1]);
-            this.fluidBuilder.postMessage(["connect-builder"], [channel.port2]);
-        }
-    }
     async _handlFluideBuildMeshMessage(event) {
         const meshType = event.data[0];
         const chunkX = event.data[1];
@@ -118,6 +88,5 @@ export class BuilderComm {
         for (const builders of this.builders) {
             builders.postMessage(["sync-settings", settings]);
         }
-        this.fluidBuilder.postMessage(["sync-settings", settings]);
     }
 }

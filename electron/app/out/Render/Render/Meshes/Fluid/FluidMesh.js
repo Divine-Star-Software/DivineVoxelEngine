@@ -1,43 +1,41 @@
 export class FluidMesh {
     material;
-    mesh;
-    scene;
-    beenCreated = false;
     constructor(material) {
         this.material = material;
     }
-    async rebuildMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs) {
+    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+        mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
-        chunkVertexData.applyToMesh(this.mesh, true);
-        this.mesh.setVerticesData("cuv3", uvs, false, 3);
-        this.mesh.setVerticesData("rgbLightColors", RGBLightColors, false, 4);
-        this.mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        this.mesh.setVerticesData("colors", colors, false, 4);
+        chunkVertexData.applyToMesh(mesh, true);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
+        mesh.setVerticesData("aoColors", aoColors, false, 4);
+        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+        mesh.setVerticesData("colors", colors, false, 4);
+        mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
-        this.mesh = new BABYLON.Mesh("fluid", scene);
-        this.scene = scene;
-        this.mesh.isPickable = false;
-        this.mesh.alphaIndex = 1;
-        this.mesh.checkCollisions = false;
-        this.mesh.visibility = 0.1;
-        this.mesh.hasVertexAlpha = true;
-        return this.mesh;
+        const mesh = new BABYLON.Mesh("solid", scene);
+        mesh.alphaIndex = 0;
+        mesh.isPickable = false;
+        mesh.checkCollisions = true;
+        return mesh;
     }
-    async createMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs) {
-        this.mesh.material = this.material.getMaterial();
-        this.beenCreated = true;
+    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
-        chunkVertexData.applyToMesh(this.mesh, true);
-        this.mesh.setVerticesData("cuv3", uvs, false, 3);
-        this.mesh.setVerticesData("rgbLightColors", RGBLightColors, false, 4);
-        this.mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        this.mesh.setVerticesData("colors", colors, false, 4);
-        this.mesh.freezeWorldMatrix();
-        return this.mesh;
+        // chunkVertexData.colors = linearColors;
+        chunkVertexData.applyToMesh(mesh, true);
+        mesh.setVerticesData("cuv3", uvs, false, 3);
+        mesh.setVerticesData("aoColors", aoColors, false, 4);
+        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+        mesh.setVerticesData("colors", colors, false, 4);
+        mesh.material = this.material.getMaterial();
+        mesh.freezeWorldMatrix();
+        return mesh;
     }
 }

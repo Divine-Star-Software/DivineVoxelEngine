@@ -16,6 +16,7 @@ export class MeshManager {
         this.meshMakers = {
             solid: this.DVER.renderManager.solidMesh,
             transparent: this.DVER.renderManager.solidMesh,
+            fluid: this.DVER.renderManager.fluidMesh,
             flora: this.DVER.renderManager.floraMesh,
             magma: this.DVER.renderManager.magmaMesh,
         };
@@ -25,34 +26,12 @@ export class MeshManager {
     }
     reStart() { }
     handleUpdate(type, chunkKey, chunkX, chunkY, chunkZ, data) {
-        if (type != "fluid") {
-            if (!this.meshes[type][chunkKey]) {
-                this._buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
-            }
-            else {
-                this._updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
-            }
+        if (!this.meshes[type][chunkKey]) {
+            this._buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
         }
         else {
-            this._updateFluidMesh(data);
+            this._updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
         }
-    }
-    _updateFluidMesh(data) {
-        this.scene.unfreezeActiveMeshes();
-        const positions = new Float32Array(data[4]);
-        const indicies = new Int32Array(data[5]);
-        const RGBLightColors = new Float32Array(data[6]);
-        const sunLightColors = new Float32Array(data[7]);
-        const colors = new Float32Array(data[8]);
-        const uvs = new Float32Array(data[9]);
-        if (this.DVER.renderManager.fluidMesh.beenCreated) {
-            this.DVER.renderManager.fluidMesh.rebuildMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
-        }
-        else {
-            this.DVER.renderManager.fluidMesh.createTemplateMesh(this.scene);
-            this.DVER.renderManager.fluidMesh.createMeshGeometory(positions, indicies, RGBLightColors, sunLightColors, colors, uvs);
-        }
-        this.scene.freeActiveMeshes();
     }
     requestChunkBeRemoved(chunkKey) {
         for (const substance of Object.keys(this.meshes)) {

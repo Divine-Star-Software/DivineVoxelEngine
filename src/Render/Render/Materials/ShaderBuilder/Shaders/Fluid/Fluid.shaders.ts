@@ -6,8 +6,9 @@ export const fluidShaders = {
   `,
 
  vertexWave: `
+vec4 posWorld = world * vec4(position, 1.0);
 vec3 p = position;
-float height = fbm(p.xz * 0.08 + time);
+float height = fbm(posWorld.xz * 0.08 + time);
 p.y += height * 0.1 - .3;
 vec4 worldPosition = world * vec4(p, 1.0);
 gl_Position = viewProjection * worldPosition; 

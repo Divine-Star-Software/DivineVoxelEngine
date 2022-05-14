@@ -8,9 +8,9 @@ export declare class ChunkMeshBuilder {
     voxelTypeMap: {
         solid: number;
         flora: number;
+        fluid: number;
         magma: number;
     };
     constructor(DVEB: DivineVoxelEngineBuilder);
-    buildChunkMeshO(chunkType: number, chunkX: number, chunkY: number, chunkZ: number, positionsTemplate: Uint16Array, faceTemplate: Uint8Array, shapeTemplate: Uint16Array, uvTemplate: Uint16Array, colorTemplate: Float32Array, lightTemplate: Float32Array, aoTemplate: Float32Array): Promise<void>;
-    buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): Promise<void>;
+    buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
 }

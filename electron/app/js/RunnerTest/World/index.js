@@ -30,9 +30,6 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    setTimeout(() => {
-        DVEW.buildFluidMesh();
-    }, 3000);
 };
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
     playerWatcher.setPlayerSharedArrays(data);

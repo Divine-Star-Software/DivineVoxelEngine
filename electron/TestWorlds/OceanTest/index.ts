@@ -6,7 +6,7 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit,SetUpWorkers} from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/index.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 
@@ -15,13 +15,11 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
- "../Shared/Builder/builder.js",
- "../Shared/FluidBuilder/fluidbuilder.js"
+ "../Shared/Builder/builder.js"
 );
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
- fluidBuilderWorker: workers.fluidBuilderWorker,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -35,7 +33,7 @@ const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
  const scene = SetUpDefaultScene(engine);
- const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 60, z: 0 });
+ const camera = SetUpDefaultCamera(scene, canvas, { x: 150, y: 60, z: 0 });
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });

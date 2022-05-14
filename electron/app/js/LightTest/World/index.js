@@ -29,7 +29,6 @@ const start = () => {
             }
         }
     }, 10);
-    DVEW.buildFluidMesh();
 };
 (async () => {
     await DVEW.$INIT({

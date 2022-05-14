@@ -13,19 +13,7 @@ export class VoxelManager {
         this.shapeMapHasBeenSet = true;
         for (const voxelId of Object.keys(this.voxelObjects)) {
             const voxel = this.voxelObjects[voxelId];
-            if (voxel.data.substance !== "fluid") {
-                voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
-            }
-        }
-    }
-    setFluidShapeMap(shapeMap) {
-        this.fluidShapeMap = shapeMap;
-        this.fluidShapeMapHasBeenSet = true;
-        for (const voxelId of Object.keys(this.voxelObjects)) {
-            const voxel = this.voxelObjects[voxelId];
-            if (voxel.data.substance == "fluid") {
-                voxel.trueShapeId = this.fluidShapeMap[voxel.data.shapeId];
-            }
+            voxel.trueShapeId = this.shapeMap[voxel.data.shapeId];
         }
     }
     shapMapIsSet() {

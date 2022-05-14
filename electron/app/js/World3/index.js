@@ -5,11 +5,10 @@ import { RegisterEntitiesInCore } from "../Shared/Functions/RegisterEntitesInCor
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 RegisterEntitiesInCore(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/FluidBuilder/fluidbuilder.js");
+const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
-    fluidBuilderWorker: workers.fluidBuilderWorker,
 });
 const init = async () => {
     const canvas = SetUpCanvas();

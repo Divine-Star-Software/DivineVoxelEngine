@@ -239,7 +239,7 @@ export class ChunkProcessor {
 
 
 
-  const positions = new Uint16Array(template.fluid.positionTemplate);
+/*   const positions = new Uint16Array(template.fluid.positionTemplate);
   const faces = new Uint8Array(template.fluid.faceTemplate);
   const shapes = new Uint16Array(template.fluid.shapeTemplate);
   const uvs = new Uint16Array(template.fluid.uvTemplate);
@@ -267,7 +267,7 @@ export class ChunkProcessor {
     light.buffer,
    ]
   );
-
+ */
   return template;
  }
 }

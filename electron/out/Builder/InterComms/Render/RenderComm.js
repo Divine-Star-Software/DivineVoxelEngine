@@ -13,12 +13,6 @@ renderComm.messageFunctions = {
         const port = event.ports[0];
         DVEB.worldComm.setPort(port);
     },
-    "connect-fluid-builder": (data, event) => {
-        if (!event)
-            return;
-        const port = event.ports[0];
-        DVEB.fluidBuilderComm.setPort(port);
-    },
     "sync-settings": (data, event) => {
         const settings = data[1];
         DVEB.syncSettings(settings);

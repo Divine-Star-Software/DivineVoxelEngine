@@ -9,7 +9,6 @@ export declare class VoxelManager {
     fluidShapeMapHasBeenSet: boolean;
     constructor(DVEB: DivineVoxelEngineBuilder);
     setShapeMap(shapeMap: Record<string, number>): void;
-    setFluidShapeMap(shapeMap: Record<string, number>): void;
     shapMapIsSet(): boolean;
     fluidShapMapIsSet(): boolean;
     getVoxel(id: string): VoxelBuilderThreadObject;

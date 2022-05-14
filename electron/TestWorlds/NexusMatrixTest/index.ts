@@ -19,14 +19,12 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
  "../Shared/Builder/builder.js",
- "../Shared/FluidBuilder/fluidbuilder.js",
  "./Nexus/index.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
- fluidBuilderWorker: workers.fluidBuilderWorker,
  nexusWorker: workers.nexusWorker,
  nexus: {
   enabled: true,

@@ -13,7 +13,6 @@ import { Matrix } from "./Matrix/Matrix.js";
 //comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
-import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
@@ -32,8 +31,6 @@ export class DivineVoxelEngineWorld {
  UTIL = new Util();
 
  builderCommManager = new BuilderCommManager(this);
- //builderComm = new BuilderComm(this);
- fluidBuilderComm = FluidBuilderComm;
  worldGeneration = new WorldGeneration(this);
  renderComm = RenderComm;
 
@@ -52,7 +49,6 @@ export class DivineVoxelEngineWorld {
  isReady() {
   let ready =
    this.builderCommManager.isReady() &&
-   this.fluidBuilderComm.ready &&
    this.__settingsHaveBeenSynced &&
    this.__renderIsDone;
   if (ready) {
@@ -132,7 +128,6 @@ export class DivineVoxelEngineWorld {
    );
    if (substance.all) {
     this.buildChunk(position[0], position[1], position[2]);
-    this.buildFluidMesh();
    }
   }
   this.worldData.clearChunkRebuildQue();
@@ -147,17 +142,12 @@ export class DivineVoxelEngineWorld {
   if (!chunk) return false;
   // this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
   this.renderComm.sendMessage("remove-chunk", [chunkX, chunkZ]);
-  this.fluidBuilderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
   return true;
  }
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
   this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
- }
-
- buildFluidMesh() {
-  DVEW.fluidBuilderComm.requestFluidMeshBeReBuilt();
  }
 
  async $INIT(data: DVEWInitData) {

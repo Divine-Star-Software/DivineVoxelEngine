@@ -12,7 +12,6 @@ export declare class MeshManager {
     setScene(scene: BABYLON.Scene): void;
     reStart(): void;
     handleUpdate(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): void;
-    _updateFluidMesh(data: any): void;
     requestChunkBeRemoved(chunkKey: string): void;
     _updateMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): Promise<void>;
     _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, chunkX: number, chunkY: number, chunkZ: number, data: any): Promise<void>;

@@ -36,9 +36,4 @@ renderComm.messageFunctions = {
   // DVEW.builderComm.connectBuilder(port);
   DVEW.builderCommManager.addBuilder(port);
  },
- "connect-fluid-builder": (data, event) => {
-  if (!event) return;
-  const port = event.ports[0];
-  DVEW.fluidBuilderComm.setPort(port);
- },
 };

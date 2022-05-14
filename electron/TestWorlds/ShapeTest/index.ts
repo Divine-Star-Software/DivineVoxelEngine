@@ -16,14 +16,12 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
- "../Shared/Builder/builder.js",
- "../Shared/FluidBuilder/fluidbuilder.js"
+ "../Shared/Builder/builder.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
- fluidBuilderWorker: workers.fluidBuilderWorker,
  lighting: {
   doAO: true,
   doRGBLight: false,

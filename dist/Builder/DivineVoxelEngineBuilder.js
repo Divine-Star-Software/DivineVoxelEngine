@@ -13,7 +13,6 @@ import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
-import { FluidBuilderComm } from "./InterComms/FluidBuilder/FluidBuilder.js";
 export class DivineVoxelEngineBuilder {
     environment = "browser";
     UTIL = new Util();
@@ -21,7 +20,6 @@ export class DivineVoxelEngineBuilder {
     matrixHub = new MatrixHub(this.worldMatrix);
     renderComm = RenderComm;
     worldComm = WorldComm;
-    fluidBuilderComm = FluidBuilderComm;
     worldBounds = WorldBounds;
     chunkProccesor = new ChunkProcessor(this);
     textureManager = new TextureManager();
@@ -50,9 +48,7 @@ export class DivineVoxelEngineBuilder {
         return (this.__connectedToWorld &&
             this.matrixHub.worldPort !== undefined &&
             this.voxelManager.shapMapIsSet() &&
-            this.voxelManager.fluidShapMapIsSet() &&
             this.worldComm.port !== null &&
-            this.fluidBuilderComm.port !== null &&
             this.textureManager.isReady() &&
             this.__settingsHaveBeenSynced);
     }

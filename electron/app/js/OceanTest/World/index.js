@@ -20,9 +20,6 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    setTimeout(() => {
-        DVEW.buildFluidMesh();
-    }, 3000);
 };
 (async () => {
     await DVEW.$INIT({

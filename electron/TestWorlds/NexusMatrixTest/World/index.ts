@@ -30,7 +30,7 @@ const start = () => {
    DVEW.buildChunk(x, 0, z);
   }
  }
- DVEW.buildFluidMesh();
+
 
  DVEW.matrixCentralHub.syncGlobalVoxelPalette();
  (DVEW as any).nexusComm.sendMessage("done", []);

@@ -10,7 +10,8 @@ export const SharedVertexShader = {
   `,
   uniforams : `
   uniform mat4 worldViewProjection;
-  uniform mat4 world;                    
+  uniform mat4 world;      
+  uniform vec3 worldMatrix;                
   uniform mat4 view;                    
   uniform mat4 viewProjection;       
   `,

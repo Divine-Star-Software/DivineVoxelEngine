@@ -42,6 +42,3 @@ for (let x = startX; x < endX; x += 16) {
         }
     }
 }
-setTimeout(() => {
-    DVEW.buildFluidMesh();
-}, 8000);

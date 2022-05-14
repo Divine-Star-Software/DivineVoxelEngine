@@ -41,7 +41,7 @@ const start = () => {
   }
  }
 
- DVEW.buildFluidMesh();
+
  const fullLight = 0b1111_0000_1111_0000;
 
  const x = 0;
@@ -106,7 +106,7 @@ const start = () => {
    }
   }
 
-  DVEW.buildFluidMesh();
+
 
   setTimeout(() => {
    for (let j = -1; j < 16; j++) {
@@ -125,7 +125,7 @@ const start = () => {
      DVEW.buildChunk(x, 0, z);
     }
    }
-   DVEW.buildFluidMesh();
+
    setTimeout(() => {
     DVEW.worldData.setAir(x + 7, 10, z + 7,0);
     DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x + 7, 9, z + 7);
@@ -134,7 +134,7 @@ const start = () => {
       DVEW.buildChunk(x, 0, z);
      }
     }
-    DVEW.buildFluidMesh();
+
    }, 500);
   }, 500);
  }, 500);

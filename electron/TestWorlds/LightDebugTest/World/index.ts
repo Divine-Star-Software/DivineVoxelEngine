@@ -30,7 +30,7 @@ const start = () => {
   }
  }
 
- DVEW.buildFluidMesh();
+
 
  const x = 0;
  const z = 0;
@@ -39,7 +39,6 @@ const start = () => {
 
  DVEW.runChunkRebuildQue();
 
- DVEW.buildFluidMesh();
 };
 
 (async () => {

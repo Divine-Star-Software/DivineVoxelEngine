@@ -7,7 +7,6 @@ const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Bui
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
-    fluidBuilderWorker: workers.fluidBuilderWorker,
     lighting: {
         doAO: true,
         doRGBLight: true,

@@ -23,15 +23,11 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    setTimeout(() => {
-        DVEW.buildFluidMesh();
-    }, 1000);
     const x = 0;
     const z = 0;
     DVEW.worldData.setData(x, 7, z, DVEW.worldGeneration.paintVoxel(1));
     DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 7, z);
     DVEW.runChunkRebuildQue();
-    DVEW.buildFluidMesh();
 };
 (async () => {
     await DVEW.$INIT({

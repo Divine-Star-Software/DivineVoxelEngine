@@ -1,11 +1,4 @@
 import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
-const processReturnData = (shapeData, returnData) => {
-    shapeData.indicieIndex = returnData.newIndicieIndex;
-    shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
-    shapeData.lightIndex = returnData.newlightIndex;
-    shapeData.aoIndex = returnData.newAOIndex;
-    shapeData.colorIndex = returnData.newColorIndex;
-};
 const shapeDimensions = {
     width: 0.5,
     depth: 0.5,

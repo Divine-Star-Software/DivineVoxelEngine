@@ -1,12 +1,10 @@
 /// <reference types="babylonjs" />
-import type { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
-export declare class FluidMesh {
+import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
+export declare class FluidMesh implements VoxelMeshInterface {
     private material;
-    mesh: BABYLON.Mesh;
-    scene: BABYLON.Scene;
-    beenCreated: boolean;
     constructor(material: FluidMaterial);
-    rebuildMeshGeometory(positions: Float32Array, indicies: Int32Array, RGBLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<void>;
+    rebuildMeshGeometory(mesh: BABYLON.Mesh, chunkX: number, chunkZ: number, positions: Float32Array, indicies: Int32Array, aoColors: Float32Array, rgbLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<void>;
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
-    createMeshGeometory(positions: Float32Array, indicies: Int32Array, RGBLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<BABYLON.Mesh>;
+    createMeshGeometory(mesh: BABYLON.Mesh, chunkX: number, chunkZ: number, positions: Float32Array, indicies: Int32Array, aoColors: Float32Array, rgbLightColors: Float32Array, sunLightColors: Float32Array, colors: Float32Array, uvs: Float32Array): Promise<BABYLON.Mesh>;
 }

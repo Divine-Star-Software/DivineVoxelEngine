@@ -85,6 +85,7 @@ export class FluidMaterial {
     "view",
     "viewProjection",
     "worldView",
+    "worldMatrix",
     "worldViewProjection",
     "vFogInfos",
     "vFogColor",

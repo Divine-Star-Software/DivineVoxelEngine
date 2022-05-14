@@ -58,15 +58,6 @@ export class DivineVoxelEngineRender {
         else {
             throw Error("Supplied data for Builder Workers is not correct. Must be path to worker or an array workers.");
         }
-        if (typeof data.fluidBuilderWorker == "string") {
-            this.builderManager.createFluidBuilderWorker(data.fluidBuilderWorker);
-        }
-        else if (data.fluidBuilderWorker instanceof Worker) {
-            this.builderManager.setFluidBuilderWorker(data.fluidBuilderWorker);
-        }
-        else {
-            throw Error("Supplied data for Fluid Worker is not correct. Must be path to worker or a worker.");
-        }
         if (data.nexusWorker && data.nexus?.enabled) {
             if (typeof data.nexusWorker == "string") {
                 this.nexusComm.createNexusWorker(data.nexusWorker);
@@ -80,7 +71,6 @@ export class DivineVoxelEngineRender {
         }
         this._syncSettings(data);
         this.textureManager.generateTexturesData();
-        this.builderManager.connectBuilderToFluidBuilder();
         for (const builder of this.builderManager.builders) {
             builder.postMessage([
                 "sync-uv-texuture-data",
@@ -93,7 +83,6 @@ export class DivineVoxelEngineRender {
             for (const builder of this.builderManager.builders) {
                 builder.terminate();
             }
-            this.builderManager.fluidBuilder.terminate();
             this.worldComm.worker.terminate();
             if (this.nexusComm.worker) {
                 this.nexusComm.worker.terminate();
