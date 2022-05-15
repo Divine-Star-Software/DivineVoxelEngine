@@ -1,60 +1,63 @@
+import { DVEW } from "../DivineVoxelEngineWorld.js";
+import { Util } from "../../Global/Util.helper.js";
 /**# Matrix
  * ---
  * Holds all shared array buffer.
  */
-export class Matrix {
-    DVEW;
+export const Matrix = {
     //two minutes
-    updateDieTime = 120000;
-    loadedChunks = {};
-    loadedRegions = {};
-    chunkStatesSAB = {};
+    updateDieTime: 120000,
+    worldBounds: Util.getWorldBounds(),
+    loadedChunks: {},
+    loadedRegions: {},
+    chunkStatesSAB: {},
     //A view of the chunk states SAB. The states are used to define if the chunk is 'locked' or not.
-    chunkStates = {};
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-    }
-    isChunkInMatrix(chunkX, chunkY, chunkZ) {
-        return this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] !== undefined;
-    }
-    isChunkLocked(chunkX, chunkY, chunkZ) {
-        if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
+    chunkStates: {},
+    isChunkInMatrix(x, y, z) {
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        return this.loadedChunks[chunkKey] !== undefined;
+    },
+    isChunkLocked(x, y, z) {
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        if (!this.chunkStates[chunkKey])
             return false;
-        return (Atomics.load(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0) == 1);
-    }
-    lockChunk(chunkX, chunkY, chunkZ) {
-        if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
+        return Atomics.load(this.chunkStates[chunkKey], 0) == 1;
+    },
+    lockChunk(x, y, z) {
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        if (!this.chunkStates[chunkKey])
             return false;
-        Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 1);
+        Atomics.store(this.chunkStates[chunkKey], 0, 1);
         return true;
-    }
-    unLockChunk(chunkX, chunkY, chunkZ) {
-        if (!this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`])
+    },
+    unLockChunk(x, y, z) {
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        if (!this.chunkStates[chunkKey])
             return false;
-        Atomics.store(this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`], 0, 0);
+        Atomics.store(this.chunkStates[chunkKey], 0, 0);
         return true;
-    }
-    updateChunkData(chunkX, chunkY, chunkZ, run) {
-        const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
+    },
+    updateChunkData(x, y, z, run) {
+        const chunk = DVEW.worldData.getChunk(x, y, z);
         if (!chunk) {
             return false;
         }
-        if (!this.isChunkInMatrix(chunkX, chunkY, chunkZ)) {
+        if (!this.isChunkInMatrix(x, y, z)) {
             run(chunk);
         }
         const prom = new Promise((resolve, reject) => {
-            if (!this.isChunkLocked(chunkX, chunkY, chunkZ)) {
-                this.lockChunk(chunkX, chunkY, chunkZ);
+            if (!this.isChunkLocked(x, y, z)) {
+                this.lockChunk(x, y, z);
                 run(chunk);
-                this.unLockChunk(chunkX, chunkY, chunkZ);
+                this.unLockChunk(x, y, z);
                 resolve(true);
             }
             else {
                 const inte = setInterval(() => {
-                    if (!this.isChunkLocked(chunkX, chunkY, chunkZ)) {
-                        this.lockChunk(chunkX, chunkY, chunkZ);
+                    if (!this.isChunkLocked(x, y, z)) {
+                        this.lockChunk(x, y, z);
                         run(chunk);
-                        this.unLockChunk(chunkX, chunkY, chunkZ);
+                        this.unLockChunk(x, y, z);
                         resolve(true);
                     }
                 }, 1);
@@ -65,32 +68,26 @@ export class Matrix {
             }
         });
         return prom;
-    }
-    releaseChunk(chunkX, chunkY, chunkZ) {
-        if (!this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`])
+    },
+    releaseChunk(x, y, z) {
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        if (!this.loadedChunks[chunkKey])
             return;
-        const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
+        const chunk = DVEW.worldData.getChunk(x, y, z);
         if (!chunk)
             return false;
-        /*   const voxels: number[] = [];
-          const length = chunk.voxels.length;
-          const chunkSABView = chunk.voxels;
-          let i = length;
-          while (i--) {
-           voxels[i] = chunkSABView[i];
-          }
-          chunk.voxels = voxels; */
-        delete this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`];
+        delete this.loadedChunks[chunkKey];
         return true;
-    }
-    createChunkSAB(chunkX, chunkY, chunkZ) {
-        const chunk = this.DVEW.worldData.getChunk(chunkX, chunkY, chunkZ);
+    },
+    createChunkSAB(x, y, z) {
+        const chunk = DVEW.worldData.getChunk(x, y, z);
         if (!chunk)
             return false;
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
         const chunkStateSAB = new SharedArrayBuffer(1);
-        this.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`] = chunk.voxelsSAB;
-        this.chunkStates[`${chunkX}-${chunkZ}-${chunkY}`] = new Uint8Array(chunkStateSAB);
-        this.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`] = chunkStateSAB;
+        this.loadedChunks[chunkKey] = chunk.voxelsSAB;
+        this.chunkStates[chunkKey] = new Uint8Array(chunkStateSAB);
+        this.chunkStatesSAB[chunkKey] = chunkStateSAB;
         return [chunk.voxelsSAB, chunkStateSAB];
-    }
-}
+    },
+};

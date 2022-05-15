@@ -4,7 +4,7 @@ import {DVEB} from "../../DivineVoxelEngineBuilder.js";
 import { VoxelHelper } from "../VoxelHelper.js";
 
 export function CalculateVoxelLight(
- this: VoxelHelper,
+ this: typeof VoxelHelper,
  voxel: VoxelData,
  voxelData: number,
  lightTemplate: number[],
@@ -341,7 +341,7 @@ export function CalculateVoxelLight(
  }
 }
 export function VoxelLightMixCalc(
- this: VoxelHelper,
+ this: typeof VoxelHelper,
  voxelLigtValue: number,
  voxel: VoxelData,
  chunkX: number,

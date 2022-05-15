@@ -6,7 +6,5 @@ export * from "./Chunks/Chunk.types";
 export * from "./Render/Meshes/VoxelMesh.interface";
 export * from "./Render/Textures/Texture.types";
 export * from "./Voxels/Voxel.types";
-export * from "./Voxels/VoxelHelper.interface";
-export * from "./Voxels/VoxelManager.interface";
 export * from "./Util.types";
 export * from "./Entity/index";

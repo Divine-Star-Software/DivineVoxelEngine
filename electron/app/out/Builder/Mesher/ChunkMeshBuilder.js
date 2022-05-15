@@ -1,17 +1,15 @@
-export class ChunkMeshBuilder {
-    DVEB;
-    infoByte;
-    voxelBuildOrder = ["solid", "flora", "fluid", "magma"];
-    voxelTypeMap = {
+//objects
+import { Util } from "../../Global/Util.helper.js";
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
+export const ChunkMeshBuilder = {
+    infoByte: Util.getInfoByte(),
+    voxelBuildOrder: ["solid", "flora", "fluid", "magma"],
+    voxelTypeMap: {
         solid: 0,
         flora: 1,
         fluid: 2,
         magma: 3,
-    };
-    constructor(DVEB) {
-        this.DVEB = DVEB;
-        this.infoByte = this.DVEB.UTIL.getInfoByte();
-    }
+    },
     buildChunkMesh(chunkX, chunkY, chunkZ, template) {
         let i = this.voxelBuildOrder.length;
         while (i--) {
@@ -26,7 +24,6 @@ export class ChunkMeshBuilder {
             const sunLightColors = [];
             const colors = [];
             const RGBLightColors = [];
-            //console.log(lightTemplate);
             let indicieIndex = 0;
             let aoIndex = 0;
             let RGBLightIndex = 0;
@@ -39,7 +36,7 @@ export class ChunkMeshBuilder {
                 const y = baseTemplate.positionTemplate[positionIndex + 1] + chunkY;
                 const z = baseTemplate.positionTemplate[positionIndex + 2] + chunkZ;
                 const shapeId = baseTemplate.shapeTemplate[shapeIndex];
-                const shape = this.DVEB.shapeManager.getShape(shapeId);
+                const shape = DVEB.shapeManager.getShape(shapeId);
                 const newIndexes = shape.addToChunkMesh({
                     positions: positions,
                     indices: indices,
@@ -75,7 +72,7 @@ export class ChunkMeshBuilder {
             const sunLightColorsArray = new Float32Array(sunLightColors);
             const colorsArray = new Float32Array(colors);
             const uvArray = new Float32Array(uvs);
-            this.DVEB.renderComm.sendMessage(this.voxelTypeMap[type], [
+            DVEB.renderComm.sendMessage(this.voxelTypeMap[type], [
                 chunkX,
                 chunkY,
                 chunkZ,
@@ -96,5 +93,5 @@ export class ChunkMeshBuilder {
                 uvArray.buffer,
             ]);
         }
-    }
-}
+    },
+};

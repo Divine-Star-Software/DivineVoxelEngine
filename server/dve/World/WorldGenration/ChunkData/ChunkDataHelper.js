@@ -1,25 +1,21 @@
-export class ChunkDataHelper {
-    DVEW;
-    lightByte;
-    _3dArray;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this.lightByte = this.DVEW.UTIL.getLightByte();
-        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
-    }
+import { Util } from "../../../Global/Util.helper.js";
+import { DVEW } from "../../DivineVoxelEngineWorld.js";
+export const ChunkDataHelper = {
+    lightByte: Util.getLightByte(),
+    _3dArray: Util.getFlat3DArray(),
     syncChunkBounds() {
-        this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
-    }
+        DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
+    },
     fillWithAir(chunk) {
         const voxels = chunk.voxels;
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
                 for (let y = 0; y < 128; y++) {
-                    this._3dArray.setValue(x, y, z, voxels, this.DVEW.worldGeneration.paintVoxel(0));
+                    this._3dArray.setValue(x, y, z, voxels, DVEW.worldGeneration.paintVoxel(0));
                 }
             }
         }
-    }
+    },
     createHeightMap(chunk, chunkX, chunkY, chunkZ) {
         const heightMap = [];
         for (let x = 0; x < 16; x++) {
@@ -29,5 +25,5 @@ export class ChunkDataHelper {
             }
         }
         chunk.heightMap = heightMap;
-    }
-}
+    },
+};

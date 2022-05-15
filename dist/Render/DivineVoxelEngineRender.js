@@ -15,7 +15,7 @@ export class DivineVoxelEngineRender {
     renderManager = new RenderManager();
     builderManager = new BuilderComm(this);
     meshManager = new MeshManager(this);
-    textureManager = new TextureManager();
+    textureManager = TextureManager;
     renderedEntites = new RenderedEntitesManager(this);
     util = Util;
     constructor() { }

@@ -7,7 +7,6 @@ import { RenderManager } from "./Render/RenderManager.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
-import { TextureManager } from "./Textures/TextureManager.js";
 export declare class DivineVoxelEngineRender {
     worldComm: WorldComm;
     nexusComm: NexusComm;
@@ -19,7 +18,20 @@ export declare class DivineVoxelEngineRender {
     renderManager: RenderManager;
     builderManager: BuilderComm;
     meshManager: MeshManager;
-    textureManager: TextureManager;
+    textureManager: {
+        defaultTexturePath: string;
+        processedTextureData: import("../Meta/index.js").TextureProccesedData;
+        textureData: import("../Meta/index.js").TextureData;
+        textureExtension: Record<import("../Meta/index.js").VoxelSubstanceType, string>;
+        textures: Record<import("../Meta/index.js").VoxelSubstanceType, import("../Meta/index.js").TextureData[]>;
+        uvTextureMap: Record<import("../Meta/index.js").VoxelSubstanceType, Record<string, number>>;
+        _processVariations(texture: import("../Meta/index.js").TextureData, texturePaths: string[], animations: Record<import("../Meta/index.js").VoxelSubstanceType, number[][]>, textureAnimatioTimes: Record<import("../Meta/index.js").VoxelSubstanceType, number[][]>, extension: string, count: number, path: string, substance: import("../Meta/index.js").VoxelSubstanceType): number;
+        generateTexturesData(): import("../Meta/index.js").TextureProccesedData;
+        defineDefaultTexturePath(path: string): void;
+        defineDefaultTextureExtension(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType, ext: string): void;
+        getTextureUV(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType, textureId: string, varation?: string | undefined): number;
+        registerTexture(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType, textureData: import("../Meta/index.js").TextureData): void;
+    };
     renderedEntites: RenderedEntitesManager;
     util: {
         calculateGameZone(positionZ: number, positionX: number): number[];
@@ -70,6 +82,76 @@ export declare class DivineVoxelEngineRender {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+        };
+        getWorldBounds(): {
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            regionTotalChunks: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithFlat3DArray: (flat3dArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            }) => void;
+            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
+            getRegionPosition: (x: number, y: number, z: number) => {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition: (x: number, y: number, z: number) => {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
+            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
+            getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
+            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
+            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+                x: number;
+                y: number;
+                z: number;
+            };
         };
         getInfoByte(number?: number): {
             maxBit: number;

@@ -1,19 +1,15 @@
-import { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
+import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
-export declare class WorldMatrix {
+export declare const WorldMatrix: {
     _3dArray: {
         bounds: {
             x: number;
             y: number;
             z: number;
         };
-        /**# World Matrix
-         * ---
-         * Hanldes the getting and setting of data that are loaded in the matrix.
-         */
         _position: {
             x: number;
             y: number;
@@ -62,10 +58,6 @@ export declare class WorldMatrix {
                 y: number;
                 z: number;
             };
-            /**# World Matrix
-             * ---
-             * Hanldes the getting and setting of data that are loaded in the matrix.
-             */
             _position: {
                 x: number;
                 y: number;
@@ -91,7 +83,9 @@ export declare class WorldMatrix {
             z: number;
         };
         getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
+        getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
         getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
+        getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
         getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
             x: number;
             y: number;
@@ -106,11 +100,8 @@ export declare class WorldMatrix {
     };
     updateDieTime: number;
     loadDieTime: number;
-    regionXPow2: number;
-    regionZPow2: number;
-    regionYPow2: number;
     regions: Record<string, {
-        palette?: WorldRegionPalette;
+        palette?: WorldRegionPalette | undefined;
         chunks: Record<string, {
             voxels: Uint32Array;
             chunkStates: Uint8Array;
@@ -123,16 +114,15 @@ export declare class WorldMatrix {
     globalVoxelPaletteRecord: Record<string, string[]>;
     regionVoxelPalettes: Record<string, Record<number, string>>;
     threadName: string;
-    constructor();
     syncChunkBounds(): void;
     /**# Await Chunk Load
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
      */
-    awaitChunkLoad(chunkX: number, chunkY: number, chunkZ: number, timeout?: number): Promise<unknown>;
+    awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<unknown>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
     __syncRegionData(x: number, y: number, z: number, palette: WorldRegionPalette): void;
-    __removeRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): false | undefined;
+    __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | string[];
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
@@ -142,6 +132,13 @@ export declare class WorldMatrix {
      * To be only called by the Matrix Hub.
      */
     __setChunk(x: number, y: number, z: number, chunkSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
+    getRegion(x: number, y: number, z: number): false | {
+        palette?: WorldRegionPalette | undefined;
+        chunks: Record<string, {
+            voxels: Uint32Array;
+            chunkStates: Uint8Array;
+        }>;
+    };
     /**# Remove Chunk
      * ---
      * To be only called by the Matrix Hub.
@@ -161,4 +158,4 @@ export declare class WorldMatrix {
     setData(x: number, y: number, z: number, data: number): false | undefined;
     getData(x: number, y: number, z: number): number;
     getVoxelNumberID(x: number, y: number, z: number): number | false;
-}
+};

@@ -2,38 +2,28 @@
  * ---
  * Used to help decode voxel ids and states from per-region voxel palettes.
  */
-export class VoxelPaletteManager {
-    DVEW;
-    globalVoxelPaletteIndex = 1;
-    perRegionVoxelRecord = {};
-    globalVoxelPalette = {};
-    globalVoxelPaletteMap = {};
-    globalVoxelPaletteRecord = {};
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-    }
+export const VoxelPaletteManager = {
+    globalVoxelPaletteIndex: 1,
+    perRegionVoxelRecord: {},
+    globalVoxelPalette: {},
+    globalVoxelPaletteMap: {},
+    globalVoxelPaletteRecord: {},
     /**# Get Vooxel Id From Global Palette
      * ---
      * Gets the number id for use of actual world generation.
      * This is what is actually stored in the chunk voxels.
-     * @param voxelTrueId
-     * @param voxelStateId
-     * @returns
      */
     getVoxelPaletteIdFromGlobalPalette(voxelTrueId, voxelStateId) {
         return this.globalVoxelPaletteMap[`${voxelTrueId}:${voxelStateId}`];
-    }
+    },
     /**# Get Voxel True Id From Global Palette
      * ---
      * Returns the string id and state from the global voxel palette.
-     * @param voxelId
-     * @param voxelStateId
-     * @returns
      */
     getVoxelDataFromGlobalPalette(voxelId) {
         const id = this.globalVoxelPalette[voxelId];
         return this.globalVoxelPaletteRecord[id];
-    }
+    },
     registerVoxelForGlobalPalette(voxel) {
         const defaultId = `${voxel.id}:default`;
         this.globalVoxelPalette[this.globalVoxelPaletteIndex] = defaultId;
@@ -51,7 +41,7 @@ export class VoxelPaletteManager {
                 this.globalVoxelPaletteIndex++;
             }
         }
-    }
+    },
     registerVoxelForPerRegionVoxelPalette(voxel) {
         const defaultId = `${voxel.id}:default`;
         this.perRegionVoxelRecord[defaultId] = [voxel.id, "default"];
@@ -61,30 +51,30 @@ export class VoxelPaletteManager {
                 this.perRegionVoxelRecord[stateID] = [voxel.id, state];
             }
         }
-    }
+    },
     getGlobalVoxelPalette() {
         return this.globalVoxelPalette;
-    }
+    },
     /**# Get Global Voxel Palette Record
      * ---
      * Returns a record that maps voxel ids and states to already split array of values.
      */
     getGlobalVoxelPaletteRecord() {
         return this.globalVoxelPaletteRecord;
-    }
+    },
     getVoxelDataFromRegion(region, voxelId) {
         if (!region.palette)
             return false;
         const palette = region.palette;
         const stringId = palette.palette[voxelId];
         return palette.record[stringId];
-    }
+    },
     getVoxelPaletteIdFromRegion(region, voxelId, voxelState) {
         if (!region.palette)
             return false;
         const palette = region.palette;
         return palette.map[`${voxelId}:${voxelState}`];
-    }
+    },
     addToRegionsVoxelPalette(region, voxelId, voxelState) {
         if (!region.palette)
             return 0;
@@ -95,5 +85,5 @@ export class VoxelPaletteManager {
         palette.palette[palette.count] = id;
         palette.count++;
         return palette.count - 1;
-    }
-}
+    },
+};

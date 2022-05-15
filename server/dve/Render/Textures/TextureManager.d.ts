@@ -1,7 +1,7 @@
 import type { TextureData } from "Meta/Render/Textures/Texture.types";
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
-import { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
-export declare class TextureManager {
+import type { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
+export declare const TextureManager: {
     defaultTexturePath: string;
     processedTextureData: TextureProccesedData;
     textureData: TextureData;
@@ -12,6 +12,6 @@ export declare class TextureManager {
     generateTexturesData(): TextureProccesedData;
     defineDefaultTexturePath(path: string): void;
     defineDefaultTextureExtension(voxelSubstanceType: VoxelSubstanceType, ext: string): void;
-    getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string): number;
+    getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string | undefined): number;
     registerTexture(voxelSubstanceType: VoxelSubstanceType, textureData: TextureData): void;
-}
+};

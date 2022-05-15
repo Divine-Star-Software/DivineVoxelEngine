@@ -1,23 +1,25 @@
+//types
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import { BuildAmbientOcclusion } from "./Functions/ChunkAO.js";
-import { DivineVoxelEngineBuilder, DivineVoxelEngineWorld } from "index.js";
-
 import type { VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
+//objects
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
+import { Util } from "../../Global/Util.helper.js";
 
+//functions
+import { BuildAmbientOcclusion } from "./Functions/ChunkAO.js";
 import {
  CalculateVoxelLight,
  VoxelLightMixCalc,
 } from "./Functions/CalculateVoxelLight.js";
-import type { VoxelByte } from "Global/Util/VoxelByte.js";
-import type { LightByte } from "Global/Util/LightByte.js";
 
-export class VoxelHelper {
- voxellightMixCalc = VoxelLightMixCalc;
- calculdateVoxelLight = CalculateVoxelLight;
 
- voxelByte: typeof VoxelByte;
- lightByte: typeof LightByte;
- substanceRules: Record<string, boolean> = {
+export const VoxelHelper = {
+ voxellightMixCalc: VoxelLightMixCalc,
+ calculdateVoxelLight: CalculateVoxelLight,
+
+ voxelByte: Util.getVoxelByte(),
+ lightByte: Util.getLightByte(),
+ substanceRules: <Record<string, boolean>>{
   "solid-solid": false,
   "solid-flora": true,
   "solid-transparent": true,
@@ -47,35 +49,30 @@ export class VoxelHelper {
   "magma-transparent": true,
   "magma-fluid": true,
   "magma-magma": false,
- };
+ },
 
- lightValueFunctions = {
+ lightValueFunctions: {
   r: (value: number) => {
-   return this.lightByte.getR(value);
+   return VoxelHelper.lightByte.getR(value);
   },
   g: (value: number) => {
-   return this.lightByte.getG(value);
+   return VoxelHelper.lightByte.getG(value);
   },
   b: (value: number) => {
-   return this.lightByte.getB(value);
+   return VoxelHelper.lightByte.getB(value);
   },
   s: (value: number) => {
-   return this.lightByte.getS(value);
+   return VoxelHelper.lightByte.getS(value);
   },
- };
-
- constructor(public DVEB: DivineVoxelEngineBuilder) {
-  this.voxelByte = this.DVEB.UTIL.getVoxelByte();
-  this.lightByte = this.DVEB.UTIL.getLightByte();
- }
+ },
 
  getTrueShapeId(id: string) {
-  return this.DVEB.voxelManager.shapeMap[id];
- }
+  return DVEB.voxelManager.shapeMap[id];
+ },
 
  getTrueFluidShapeId(id: string) {
-  return this.DVEB.voxelManager.fluidShapeMap[id];
- }
+  return DVEB.voxelManager.fluidShapeMap[id];
+ },
 
  voxelFaceCheck(
   voxel: VoxelBuilderThreadObject,
@@ -84,10 +81,10 @@ export class VoxelHelper {
   y: number,
   z: number
  ) {
-  const checkVoxelId = this.DVEB.worldMatrix.getVoxel(x, y, z);
+  const checkVoxelId = DVEB.worldMatrix.getVoxel(x, y, z);
   if (checkVoxelId && checkVoxelId[0] == "dve:air") return true;
   if (!checkVoxelId) return true;
-  const checkVoxelObject = this.DVEB.voxelManager.getVoxel(checkVoxelId[0]);
+  const checkVoxelObject = DVEB.voxelManager.getVoxel(checkVoxelId[0]);
   if (
    this.substanceRules[
     `${voxel.data.substance}-${checkVoxelObject.data.substance}`
@@ -97,27 +94,23 @@ export class VoxelHelper {
   } else {
    return false;
   }
- }
+ },
 
  /**# Get Light
   * ---
   * Returns the raw light value for a voxel.
-  * @param x
-  * @param y
-  * @param z
-  * @returns
   */
  getLight(x: number, y: number, z: number): number {
-  const rawVoxelData = this.DVEB.worldMatrix.getData(x, y, z);
+  const rawVoxelData = DVEB.worldMatrix.getData(x, y, z);
 
   if (rawVoxelData >= 0) {
    const voxelId = this.voxelByte.getId(rawVoxelData);
    if (voxelId == 0) {
     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
    } else {
-    const voxel = this.DVEB.worldMatrix.getVoxel(x, y, z);
+    const voxel = DVEB.worldMatrix.getVoxel(x, y, z);
     if (!voxel) return 0;
-    const voxelData = this.DVEB.voxelManager.getVoxel(voxel[0]);
+    const voxelData = DVEB.voxelManager.getVoxel(voxel[0]);
 
     if (voxelData.data.lightSource && voxelData.data.lightValue) {
      return voxelData.data.lightValue;
@@ -129,28 +122,28 @@ export class VoxelHelper {
    }
   }
   return 0;
- }
+ },
 
  getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s") {
   return this.lightValueFunctions[type](this.getLight(x, y, z));
- }
+ },
 
  processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
   if (
-   this.DVEB.engineSettings.settings.lighting?.doRGBLight ||
-   this.DVEB.engineSettings.settings.lighting?.doSunLight
+   DVEB.engineSettings.settings.lighting?.doRGBLight ||
+   DVEB.engineSettings.settings.lighting?.doSunLight
   ) {
    this.calculateVoxelLight(data, voxel);
   }
-  if (this.DVEB.engineSettings.settings.lighting?.doAO) {
+  if (DVEB.engineSettings.settings.lighting?.doAO) {
    this.calculateVoxelAO(data, voxel);
   }
- }
+ },
 
  calculateVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
   if (
-   !this.DVEB.engineSettings.settings.lighting?.doSunLight &&
-   !this.DVEB.engineSettings.settings.lighting?.doRGBLight
+   !DVEB.engineSettings.settings.lighting?.doSunLight &&
+   !DVEB.engineSettings.settings.lighting?.doRGBLight
   )
    return;
   this.calculdateVoxelLight(
@@ -165,10 +158,10 @@ export class VoxelHelper {
    data.y,
    data.z
   );
- }
+ },
 
  calculateVoxelAO(data: VoxelProcessData, voxel: VoxelData) {
-  if (!this.DVEB.engineSettings.settings.lighting?.doAO) return;
+  if (!DVEB.engineSettings.settings.lighting?.doAO) return;
   if (data.exposedFaces[0]) {
    BuildAmbientOcclusion(
     voxel,
@@ -247,5 +240,5 @@ export class VoxelHelper {
     "south"
    );
   }
- }
-}
+ },
+};

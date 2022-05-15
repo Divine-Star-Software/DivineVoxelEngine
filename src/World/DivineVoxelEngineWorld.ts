@@ -14,37 +14,35 @@ import { Matrix } from "./Matrix/Matrix.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
-import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-
 
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
-export class DivineVoxelEngineWorld {
- environment: "node" | "browser" = "browser";
- worldBounds = WorldBounds;
- __settingsHaveBeenSynced = false;
- __renderIsDone = false;
- engineSettings = EngineSettings;
- UTIL = Util;
+export const DVEW = {
+ environment: <"node" | "browser">"browser",
 
- builderCommManager = new BuilderCommManager(this);
- worldGeneration = new WorldGeneration(this);
- renderComm = RenderComm;
+ worldBounds: Util.getWorldBounds(),
+ __settingsHaveBeenSynced: false,
+ __renderIsDone: false,
+ engineSettings: EngineSettings,
+ UTIL: Util,
 
- worldData = new WorldData(this);
+ builderCommManager: BuilderCommManager,
 
- matrix = new Matrix(this);
- matrixCentralHub = new MatrixCentralHub(this);
+ worldGeneration: WorldGeneration,
 
- nexusComm = NexusComm;
+ renderComm: RenderComm,
 
- voxelManager = new VoxelManager(this);
+ worldData: WorldData,
 
+ matrix: Matrix,
+ matrixCentralHub: MatrixCentralHub,
 
- constructor() {}
+ nexusComm: NexusComm,
+
+ voxelManager: VoxelManager,
 
  isReady() {
   let ready =
@@ -52,7 +50,7 @@ export class DivineVoxelEngineWorld {
    this.__settingsHaveBeenSynced &&
    this.__renderIsDone;
   return ready;
- }
+ },
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
@@ -74,7 +72,7 @@ export class DivineVoxelEngineWorld {
    );
   }
   this.__settingsHaveBeenSynced = true;
- }
+ },
 
  runRGBLightUpdateQue() {
   const queue = this.worldData.getRGBLightUpdateQue();
@@ -88,11 +86,11 @@ export class DivineVoxelEngineWorld {
    );
   }
   this.worldData.clearRGBLightUpdateQue();
- }
+ },
 
  clearRGBLightUpdateQue() {
   this.worldData.clearRGBLightUpdateQue();
- }
+ },
 
  runRGBLightRemoveQue() {
   const queue = this.worldData.getRGBLightRemoveQue();
@@ -107,11 +105,11 @@ export class DivineVoxelEngineWorld {
    );
   }
   this.worldData.clearRGBLightRemoveQue();
- }
+ },
 
  clearRGBLightRemoveQue() {
   this.worldData.clearRGBLightRemoveQue();
- }
+ },
 
  runChunkRebuildQue() {
   const queue = this.worldData.getChunkRebuildQue();
@@ -128,11 +126,11 @@ export class DivineVoxelEngineWorld {
    }
   }
   this.worldData.clearChunkRebuildQue();
- }
+ },
 
  clearChunkRebuildQue() {
   this.worldData.clearChunkRebuildQue();
- }
+ },
 
  removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
@@ -141,18 +139,18 @@ export class DivineVoxelEngineWorld {
   this.renderComm.sendMessage("remove-chunk", [chunkX, chunkZ]);
   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
   return true;
- }
+ },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
   this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
- }
+ },
 
  async $INIT(data: DVEWInitData) {
-  await InitWorldWorker(this, data.onReady, data.onMessage, data.onRestart);
- }
-}
+  await InitWorldWorker(data.onReady, data.onMessage, data.onRestart);
+ },
+};
 
-export const DVEW = new DivineVoxelEngineWorld();
+export type DivineVoxelEngineWorld = typeof DVEW;
 
 //@ts-ignore
 if (typeof process !== "undefined" && typeof Worker === "undefined") {

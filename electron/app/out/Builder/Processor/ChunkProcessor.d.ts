@@ -1,24 +1,36 @@
-import type { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type { VoxelByte } from "Global/Util/VoxelByte.js";
-import { DivineVoxelEngineBuilder } from "index.js";
-import { WorldMatrix } from "Matrix/WorldMatrix.js";
 import type { ChunkVoxels, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export declare class ChunkProcessor {
-    private DVEB;
-    worldBottomY: number;
-    worldTopY: number;
+export declare const ChunkProcessor: {
+    voxelByte: {
+        setId(id: number, value: number): number;
+        getId(value: number): number;
+        decodeLightFromVoxelData(voxelData: number): number;
+        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+    };
+    _3dArray: {
+        bounds: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        _position: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        setBounds(x: number, y: number, z: number): void;
+        getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
+        setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
+        delete(x: number, y: number, z: number, array: ChunkVoxels): void;
+        getIndex(x: number, y: number, z: number): number;
+        getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
+    };
     chunkTemplates: Record<number, Record<number, number[][]>>;
-    voxelByte: typeof VoxelByte;
-    _3dArray: typeof Flat3DArray;
     exposedFaces: number[];
-    worldMatrix: WorldMatrix;
-    constructor(DVEB: DivineVoxelEngineBuilder);
-    syncChunkBounds(): void;
     getBaseTemplateNew(): FullChunkTemplate;
     makeAllChunkTemplates(voxels: ChunkVoxels, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
-}
+};

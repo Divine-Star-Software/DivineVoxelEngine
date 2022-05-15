@@ -1,7 +1,8 @@
-import { VoxelByte } from "Global/Util/VoxelByte.js";
+//types
 import { ChunkData } from "Meta/Chunks/Chunk.types";
 import { WorldRegion } from "Meta/World/WorldData/World.types.js";
-import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
+//objects
+import { Util } from "../../Global/Util.helper.js";
 import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/VoxelPaletteHelper.js";
@@ -10,22 +11,16 @@ import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/Voxe
  * ---
  * Helps with creating the needed data for chunks and world generation things.
  */
-export class WorldGeneration {
- chunkDataHelper: ChunkDataHelper;
- illumantionManager: IlluminationManager;
- voxelPalette: VoxelPaletteManager;
- voxelByte: typeof VoxelByte;
-
- constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.illumantionManager = new IlluminationManager(this.DVEW);
-  this.chunkDataHelper = new ChunkDataHelper(this.DVEW);
-  this.voxelPalette = new VoxelPaletteManager(this.DVEW);
-  this.voxelByte = this.DVEW.UTIL.getVoxelByte();
- }
+export const WorldGeneration  = {
+ chunkDataHelper :  ChunkDataHelper,
+ illumantionManager : IlluminationManager,
+ voxelPalette : VoxelPaletteManager,
+ worldBounds : Util.getWorldBounds(),
+ voxelByte : Util.getVoxelByte(),
 
  paintVoxel(voxelPalletId: number) {
   return this.voxelByte.setId(voxelPalletId, 0);
- }
+ },
 
  getBlankRegion(palette: boolean = false): WorldRegion {
   let paletteData = {};
@@ -42,7 +37,7 @@ export class WorldGeneration {
     ...paletteData,
    },
   };
- }
+ },
 
  getBlankChunk(
   empty: boolean = true,
@@ -57,9 +52,7 @@ export class WorldGeneration {
     record: {},
    };
   }
-  const chunkSAB = new SharedArrayBuffer(
-   this.DVEW.worldBounds.chunkTotalVoxels * 4
-  );
+  const chunkSAB = new SharedArrayBuffer(this.worldBounds.chunkTotalVoxels * 4);
   const chunkVoxels = new Uint32Array(chunkSAB);
   return {
    ...{

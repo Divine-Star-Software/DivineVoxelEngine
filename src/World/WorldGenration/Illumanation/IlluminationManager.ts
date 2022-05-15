@@ -1,49 +1,42 @@
-import { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type { LightByte } from "Global/Util/LightByte";
-import { ChunkData } from "Meta/Chunks/Chunk.types.js";
-import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
-
+//types
+import type { ChunkData } from "Meta/index.js";
+//objects
+import { Util } from "../../../Global/Util.helper.js";
+import { DVEW } from "../../DivineVoxelEngineWorld.js";
+//functions
 import {
- runRGBFloodFillAt,
- runRGBFloodRemove,
- runRGBFloodRemoveAt,
- runRGBFloodFill,
-} from "./Functions/RGBFloodLight.js";
-import {
- runSunLightRemove,
- runSunLightRemoveAt,
- runSunLightUpdate,
- runSunLightUpdateAt,
-} from "./Functions/SunLight.js";
-import type { VoxelByte } from "Global/Util/VoxelByte.js";
-
-export class IlluminationManager {
- lightByte: typeof LightByte;
- voxelByte: typeof VoxelByte;
- _3dArray: typeof Flat3DArray;
- air = [-1, 0];
- runSunLightUpdateAt = runSunLightUpdateAt;
- runSunLightUpdate = runSunLightUpdate;
- runSunLightRemove = runSunLightRemove;
- runSunLightRemoveAt = runSunLightRemoveAt;
- runRGBFloodFillAt = runRGBFloodFillAt;
- runRGBFloodFill = runRGBFloodFill;
- runRGBFloodRemoveAt = runRGBFloodRemoveAt;
- runRGBFloodRemove = runRGBFloodRemove;
- _RGBlightUpdateQue: number[][] = [];
- _RGBlightRemovalQue: number[][] = [];
- _sunLightUpdateQue: number[][] = [];
- _sunLightRemoveQue: number[][] = [];
-
- constructor(public DVEW: DivineVoxelEngineWorld) {
-  this.lightByte = this.DVEW.UTIL.getLightByte();
-  this.voxelByte = this.DVEW.UTIL.getVoxelByte();
-  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
- }
+    runRGBFloodFillAt,
+    runRGBFloodRemove,
+    runRGBFloodRemoveAt,
+    runRGBFloodFill,
+   } from "./Functions/RGBFloodLight.js";
+   import {
+    runSunLightRemove,
+    runSunLightRemoveAt,
+    runSunLightUpdate,
+    runSunLightUpdateAt,
+   } from "./Functions/SunLight.js";
+export const IlluminationManager = {
+ lightByte: Util.getLightByte(),
+ voxelByte: Util.getVoxelByte(),
+ _3dArray: Util.getFlat3DArray(),
+ air: [-1, 0],
+ runSunLightUpdateAt: runSunLightUpdateAt,
+ runSunLightUpdate: runSunLightUpdate,
+ runSunLightRemove: runSunLightRemove,
+ runSunLightRemoveAt: runSunLightRemoveAt,
+ runRGBFloodFillAt: runRGBFloodFillAt,
+ runRGBFloodFill: runRGBFloodFill,
+ runRGBFloodRemoveAt: runRGBFloodRemoveAt,
+ runRGBFloodRemove: runRGBFloodRemove,
+ _RGBlightUpdateQue: <number[][]>[],
+ _RGBlightRemovalQue: <number[][]>[],
+ _sunLightUpdateQue: <number[][]>[],
+ _sunLightRemoveQue: <number[][]>[],
 
  syncChunkBounds(): void {
-  this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
- }
+  DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
+ },
 
  addChunkToSunLightUpdate(
   chunk: ChunkData,
@@ -58,7 +51,7 @@ export class IlluminationManager {
     this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
    }
   }
- }
+ },
 
  populateChunkAirWithInitlSunLight(chunk: ChunkData) {
   const heightMap = chunk.heightMap;
@@ -75,5 +68,5 @@ export class IlluminationManager {
     }
    }
   }
- }
-}
+ },
+};

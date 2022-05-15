@@ -1,9 +1,21 @@
-import type { InfoByte } from "Global/Util/InfoByte";
-import { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
-import { DivineVoxelEngineBuilder } from "../DivineVoxelEngineBuilder";
-export declare class ChunkMeshBuilder {
-    private DVEB;
-    infoByte: typeof InfoByte;
+import type { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
+export declare const ChunkMeshBuilder: {
+    infoByte: {
+        maxBit: number;
+        minBit: number;
+        maxDec: number;
+        minDec: number;
+        byteValue: number;
+        getNumberValue(): number;
+        setNumberValue(newValue: number): void;
+        getBit(index: number): 0 | 1;
+        getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
+        getHalfByteDec(bitIndex: number): number;
+        setHalfByteBits(index: number, value: number): void;
+        setBit(index: number, value: 0 | 1): void;
+        toArray(): (0 | 1)[];
+        toString(delimiter?: string): string;
+    };
     voxelBuildOrder: VoxelSubstanceType[];
     voxelTypeMap: {
         solid: number;
@@ -11,6 +23,5 @@ export declare class ChunkMeshBuilder {
         fluid: number;
         magma: number;
     };
-    constructor(DVEB: DivineVoxelEngineBuilder);
     buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
-}
+};

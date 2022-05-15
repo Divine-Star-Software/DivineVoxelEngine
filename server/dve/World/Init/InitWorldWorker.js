@@ -1,4 +1,5 @@
-export async function InitWorldWorker(DVEW, onReady, onMessage, onRestart) {
+import { DVEW } from "../DivineVoxelEngineWorld.js";
+export async function InitWorldWorker(onReady, onMessage, onRestart) {
     DVEW.renderComm.onReady = onReady;
     if (onMessage) {
         DVEW.renderComm.onMessage = onMessage;

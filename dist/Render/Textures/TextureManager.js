@@ -1,28 +1,28 @@
-export class TextureManager {
-    defaultTexturePath = "";
-    processedTextureData;
-    textureData;
-    textureExtension = {
+export const TextureManager = {
+    defaultTexturePath: "",
+    processedTextureData: {},
+    textureData: {},
+    textureExtension: {
         solid: "png",
         transparent: "png",
         fluid: "png",
         magma: "png",
         flora: "png",
-    };
-    textures = {
+    },
+    textures: {
         solid: [],
         transparent: [],
         fluid: [],
         magma: [],
         flora: [],
-    };
-    uvTextureMap = {
+    },
+    uvTextureMap: {
         solid: {},
         transparent: {},
         fluid: {},
         magma: {},
         flora: {},
-    };
+    },
     _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, substance) {
         if (!texture.varations)
             return count;
@@ -55,7 +55,7 @@ export class TextureManager {
             }
         }
         return count;
-    }
+    },
     generateTexturesData() {
         const returnTexturePaths = {
             solid: [],
@@ -127,21 +127,21 @@ export class TextureManager {
             texturePaths: returnTexturePaths,
         };
         return this.processedTextureData;
-    }
+    },
     defineDefaultTexturePath(path) {
         this.defaultTexturePath = path;
-    }
+    },
     defineDefaultTextureExtension(voxelSubstanceType, ext) {
         this.textureExtension[voxelSubstanceType] = ext;
-    }
+    },
     getTextureUV(voxelSubstanceType, textureId, varation) {
         let id = textureId;
         if (varation) {
             id = `${textureId}:${varation}`;
         }
         return this.uvTextureMap[voxelSubstanceType][id];
-    }
+    },
     registerTexture(voxelSubstanceType, textureData) {
         this.textures[voxelSubstanceType].push(textureData);
-    }
-}
+    },
+};

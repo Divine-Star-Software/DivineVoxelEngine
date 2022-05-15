@@ -1,32 +1,29 @@
+//objects
+import { Util } from "../../../Global/Util.helper.js";
+import { DVEW } from "../../DivineVoxelEngineWorld.js";
+//functions
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill, } from "./Functions/RGBFloodLight.js";
 import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, } from "./Functions/SunLight.js";
-export class IlluminationManager {
-    DVEW;
-    lightByte;
-    voxelByte;
-    _3dArray;
-    air = [-1, 0];
-    runSunLightUpdateAt = runSunLightUpdateAt;
-    runSunLightUpdate = runSunLightUpdate;
-    runSunLightRemove = runSunLightRemove;
-    runSunLightRemoveAt = runSunLightRemoveAt;
-    runRGBFloodFillAt = runRGBFloodFillAt;
-    runRGBFloodFill = runRGBFloodFill;
-    runRGBFloodRemoveAt = runRGBFloodRemoveAt;
-    runRGBFloodRemove = runRGBFloodRemove;
-    _RGBlightUpdateQue = [];
-    _RGBlightRemovalQue = [];
-    _sunLightUpdateQue = [];
-    _sunLightRemoveQue = [];
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this.lightByte = this.DVEW.UTIL.getLightByte();
-        this.voxelByte = this.DVEW.UTIL.getVoxelByte();
-        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
-    }
+export const IlluminationManager = {
+    lightByte: Util.getLightByte(),
+    voxelByte: Util.getVoxelByte(),
+    _3dArray: Util.getFlat3DArray(),
+    air: [-1, 0],
+    runSunLightUpdateAt: runSunLightUpdateAt,
+    runSunLightUpdate: runSunLightUpdate,
+    runSunLightRemove: runSunLightRemove,
+    runSunLightRemoveAt: runSunLightRemoveAt,
+    runRGBFloodFillAt: runRGBFloodFillAt,
+    runRGBFloodFill: runRGBFloodFill,
+    runRGBFloodRemoveAt: runRGBFloodRemoveAt,
+    runRGBFloodRemove: runRGBFloodRemove,
+    _RGBlightUpdateQue: [],
+    _RGBlightRemovalQue: [],
+    _sunLightUpdateQue: [],
+    _sunLightRemoveQue: [],
     syncChunkBounds() {
-        this.DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
-    }
+        DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
+    },
     addChunkToSunLightUpdate(chunk, chunkX, chunkY, chunkZ) {
         const heightMap = chunk.heightMap;
         const voxels = chunk.voxels;
@@ -35,7 +32,7 @@ export class IlluminationManager {
                 this._sunLightUpdateQue.push([chunkX + x, chunkY + 127, chunkZ + z]);
             }
         }
-    }
+    },
     populateChunkAirWithInitlSunLight(chunk) {
         const heightMap = chunk.heightMap;
         const voxels = chunk.voxels;
@@ -51,5 +48,5 @@ export class IlluminationManager {
                 }
             }
         }
-    }
-}
+    },
+};

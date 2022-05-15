@@ -1,6 +1,7 @@
-import { IlluminationManager } from "../IlluminationManager";
+import type { IlluminationManager } from "../IlluminationManager";
+import { DVEW } from "../../../DivineVoxelEngineWorld.js";
 export function runSunLightRemoveAt(
- this: IlluminationManager,
+ this: typeof IlluminationManager,
  x: number,
  y: number,
  z: number
@@ -8,7 +9,7 @@ export function runSunLightRemoveAt(
  this._sunLightRemoveQue.push([x, y, z]);
  this.runSunLightRemove();
 }
-export function runSunLightRemove(this: IlluminationManager) {
+export function runSunLightRemove(this: typeof IlluminationManager) {
  while (this._sunLightRemoveQue.length != 0) {
   const node = this._sunLightRemoveQue.shift();
   if (!node) {
@@ -18,9 +19,9 @@ export function runSunLightRemove(this: IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = this.DVEW.worldData.getLight(x, y, z);
+  const sl = DVEW.worldData.getLight(x, y, z);
 
-  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
+  const n1 = DVEW.worldData.getLight(x - 1, y, z);
   if (n1 > 0 && this.lightByte.isLessThanForSunRemove(n1, sl)) {
    this._sunLightRemoveQue.push([x - 1, y, z]);
   } else {
@@ -31,7 +32,7 @@ export function runSunLightRemove(this: IlluminationManager) {
    }
   }
 
-  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
+  const n2 = DVEW.worldData.getLight(x + 1, y, z);
   if (n2 > 0 && this.lightByte.isLessThanForSunRemove(n2, sl)) {
    this._sunLightRemoveQue.push([x + 1, y, z]);
   } else {
@@ -42,7 +43,7 @@ export function runSunLightRemove(this: IlluminationManager) {
    }
   }
 
-  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
+  const n3 = DVEW.worldData.getLight(x, y, z - 1);
   if (n3 > 0 && this.lightByte.isLessThanForSunRemove(n3, sl)) {
    this._sunLightRemoveQue.push([x, y, z - 1]);
   } else {
@@ -53,7 +54,7 @@ export function runSunLightRemove(this: IlluminationManager) {
    }
   }
 
-  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
+  const n4 = DVEW.worldData.getLight(x, y, z + 1);
   if (n4 > 0 && this.lightByte.isLessThanForSunRemove(n4, sl)) {
    this._sunLightRemoveQue.push([x, y, z + 1]);
   } else {
@@ -64,7 +65,7 @@ export function runSunLightRemove(this: IlluminationManager) {
    }
   }
 
-  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
+  const n5 = DVEW.worldData.getLight(x, y - 1, z);
   if (n5 > 0 && this.lightByte.sunLightCompareForDownSunRemove(n5, sl)) {
    this._sunLightRemoveQue.push([x, y - 1, z]);
   } else {
@@ -75,7 +76,7 @@ export function runSunLightRemove(this: IlluminationManager) {
    }
   }
 
-  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
+  const n6 = DVEW.worldData.getLight(x, y + 1, z);
   if (n6 > 0 && this.lightByte.isLessThanForSunRemove(n6, sl)) {
    this._sunLightRemoveQue.push([x, y + 1, z]);
   } else {
@@ -85,12 +86,12 @@ export function runSunLightRemove(this: IlluminationManager) {
     }
    }
   }
-  this.DVEW.worldData.setLight(x, y, z, this.lightByte.removeSunLight(sl));
+  DVEW.worldData.setLight(x, y, z, this.lightByte.removeSunLight(sl));
  }
  this.runSunLightUpdate();
 }
 
-export function runSunLightUpdate(this: IlluminationManager) {
+export function runSunLightUpdate(this: typeof IlluminationManager) {
  while (this._sunLightUpdateQue.length != 0) {
   const node = this._sunLightUpdateQue.shift();
   if (!node) {
@@ -99,56 +100,36 @@ export function runSunLightUpdate(this: IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = this.DVEW.worldData.getLight(x, y, z);
+  const sl = DVEW.worldData.getLight(x, y, z);
 
-  const n1 = this.DVEW.worldData.getLight(x - 1, y, z);
+  const n1 = DVEW.worldData.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
    this._sunLightUpdateQue.push([x - 1, y, z]);
-   this.DVEW.worldData.setLight(
-    x - 1,
-    y,
-    z,
-    this.lightByte.getMinusOneForSun(sl)
-   );
+   DVEW.worldData.setLight(x - 1, y, z, this.lightByte.getMinusOneForSun(sl));
   }
 
-  const n2 = this.DVEW.worldData.getLight(x + 1, y, z);
+  const n2 = DVEW.worldData.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
    this._sunLightUpdateQue.push([x + 1, y, z]);
-   this.DVEW.worldData.setLight(
-    x + 1,
-    y,
-    z,
-    this.lightByte.getMinusOneForSun(sl)
-   );
+   DVEW.worldData.setLight(x + 1, y, z, this.lightByte.getMinusOneForSun(sl));
   }
 
-  const n3 = this.DVEW.worldData.getLight(x, y, z - 1);
+  const n3 = DVEW.worldData.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
    this._sunLightUpdateQue.push([x, y, z - 1]);
-   this.DVEW.worldData.setLight(
-    x,
-    y,
-    z - 1,
-    this.lightByte.getMinusOneForSun(sl)
-   );
+   DVEW.worldData.setLight(x, y, z - 1, this.lightByte.getMinusOneForSun(sl));
   }
 
-  const n4 = this.DVEW.worldData.getLight(x, y, z + 1);
+  const n4 = DVEW.worldData.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
    this._sunLightUpdateQue.push([x, y, z + 1]);
-   this.DVEW.worldData.setLight(
-    x,
-    y,
-    z + 1,
-    this.lightByte.getMinusOneForSun(sl)
-   );
+   DVEW.worldData.setLight(x, y, z + 1, this.lightByte.getMinusOneForSun(sl));
   }
 
-  const n5 = this.DVEW.worldData.getLight(x, y - 1, z);
+  const n5 = DVEW.worldData.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
    this._sunLightUpdateQue.push([x, y - 1, z]);
-   this.DVEW.worldData.setLight(
+   DVEW.worldData.setLight(
     x,
     y - 1,
     z,
@@ -156,21 +137,16 @@ export function runSunLightUpdate(this: IlluminationManager) {
    );
   }
 
-  const n6 = this.DVEW.worldData.getLight(x, y + 1, z);
+  const n6 = DVEW.worldData.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForSunAdd(n6, sl)) {
    this._sunLightUpdateQue.push([x, y + 1, z]);
-   this.DVEW.worldData.setLight(
-    x,
-    y + 1,
-    z,
-    this.lightByte.getMinusOneForSun(sl)
-   );
+   DVEW.worldData.setLight(x, y + 1, z, this.lightByte.getMinusOneForSun(sl));
   }
  }
 }
 
 export function runSunLightUpdateAt(
- this: IlluminationManager,
+ this: typeof IlluminationManager,
  x: number,
  y: number,
  z: number

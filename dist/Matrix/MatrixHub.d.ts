@@ -1,15 +1,14 @@
-import type { WorldMatrix } from "./WorldMatrix";
+import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
 /**# Matrix Hub
  * ---
  * Handles messages from the WorldData thread.
  * It syncs the chunk data.
  */
-export declare class MatrixHub {
-    private worldMatrix;
+export declare const MatrixHub: {
     messageFunctions: Record<string, (data: any, event: MessageEvent) => any | void>;
-    worldPort: MessagePort;
+    worldPort: InterCommPortTypes | undefined;
     threadName: string;
-    constructor(worldMatrix: WorldMatrix, threadName?: string);
+    setThreadName(threadName: string): void;
     onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void): void;
     requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
     requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -20,4 +19,4 @@ export declare class MatrixHub {
     _syncRegionData(data: any[]): void;
     _releaseRegionVoxelPalette(data: any[]): void;
     _setThreadName(data: any[]): void;
-}
+};

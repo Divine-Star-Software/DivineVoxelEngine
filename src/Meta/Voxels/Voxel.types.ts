@@ -1,6 +1,4 @@
 import type { DivineVoxelEngineBuilder } from "../../Builder/DivineVoxelEngineBuilder";
-import { VoxelPalette } from "Meta/World/WorldData/World.types";
-import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---
  * All solid and transparent voxels are grouped together in the same mesh per chunk.
@@ -75,11 +73,14 @@ export interface VoxelInteface {
 export type VoxelBuilderThreadObject = {
  data: VoxelData;
  trueShapeId: number;
- hooks: Record<VoxelBuilderThreadHooks, (DVEB:DivineVoxelEngineBuilder)=>any>;
+ hooks: Record<
+  VoxelBuilderThreadHooks,
+  (DVEB: DivineVoxelEngineBuilder) => any
+ >;
  process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };
 
 export type VoxelWorldThreadObject = {
  data: VoxelData;
  hooks: Record<VoxelWorldThreadHooks, Function>;
-}
+};

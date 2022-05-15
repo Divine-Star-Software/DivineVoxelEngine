@@ -1,7 +1,6 @@
-import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld";
+import {DVEW} from "../DivineVoxelEngineWorld.js";
 
 export async function InitWorldWorker(
- DVEW: DivineVoxelEngineWorld,
  onReady: () => void,
  onMessage?: (event: any) => void,
  onRestart?: () => void

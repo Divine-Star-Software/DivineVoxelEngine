@@ -10,8 +10,8 @@ import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 class DivineVoxelEngineNexusClass {
     engineSettings = EngineSettings;
-    worldMatrix = new WorldMatrix();
-    matrixHub = new MatrixHub(this.worldMatrix, "nexus");
+    worldMatrix = WorldMatrix;
+    matrixHub = MatrixHub;
     worldComm = new WorldComm(this);
     renderComm = new RenderComm();
     nexusEntites = new NexusEntites(this);
@@ -43,3 +43,4 @@ class DivineVoxelEngineNexusClass {
     }
 }
 export const DVEN = new DivineVoxelEngineNexusClass();
+DVEN.matrixHub.setThreadName("nexus");

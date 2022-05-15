@@ -1,19 +1,19 @@
-import type { InfoByte } from "Global/Util/InfoByte";
-import { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
-import { DivineVoxelEngineBuilder } from "../DivineVoxelEngineBuilder";
+//types
+import type { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
+//objects
+import { Util } from "../../Global/Util.helper.js";
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
 
-export class ChunkMeshBuilder {
- infoByte: typeof InfoByte;
- voxelBuildOrder: VoxelSubstanceType[] = ["solid", "flora", "fluid", "magma"];
- voxelTypeMap = {
+export const ChunkMeshBuilder = {
+ infoByte: Util.getInfoByte(),
+ voxelBuildOrder: <VoxelSubstanceType[]>["solid", "flora", "fluid", "magma"],
+ voxelTypeMap: {
   solid: 0,
   flora: 1,
   fluid: 2,
   magma: 3,
- };
- constructor(private DVEB: DivineVoxelEngineBuilder) {
-  this.infoByte = this.DVEB.UTIL.getInfoByte();
- }
+ },
+
  buildChunkMesh(
   chunkX: number,
   chunkY: number,
@@ -34,7 +34,6 @@ export class ChunkMeshBuilder {
    const sunLightColors: number[] = [];
    const colors: number[] = [];
    const RGBLightColors: number[] = [];
-   //console.log(lightTemplate);
 
    let indicieIndex = 0;
    let aoIndex = 0;
@@ -54,7 +53,7 @@ export class ChunkMeshBuilder {
     const z = baseTemplate.positionTemplate[positionIndex + 2] + chunkZ;
 
     const shapeId = baseTemplate.shapeTemplate[shapeIndex];
-    const shape = this.DVEB.shapeManager.getShape(shapeId);
+    const shape = DVEB.shapeManager.getShape(shapeId);
     const newIndexes = shape.addToChunkMesh({
      positions: positions,
      indices: indices,
@@ -92,7 +91,7 @@ export class ChunkMeshBuilder {
    const colorsArray = new Float32Array(colors);
    const uvArray = new Float32Array(uvs);
 
-   this.DVEB.renderComm.sendMessage(
+   DVEB.renderComm.sendMessage(
     (this as any).voxelTypeMap[type],
     [
      chunkX,
@@ -117,5 +116,5 @@ export class ChunkMeshBuilder {
     ]
    );
   }
- }
-}
+ },
+};

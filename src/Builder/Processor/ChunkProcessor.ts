@@ -1,37 +1,23 @@
-import type { Flat3DArray } from "Global/Util/Flat3DArray.js";
-import type { VoxelByte } from "Global/Util/VoxelByte.js";
-import { DivineVoxelEngineBuilder } from "index.js";
-import { WorldMatrix } from "Matrix/WorldMatrix.js";
+//types
 import type {
- ChunkVoxels,
- FullChunkTemplate,
-} from "Meta/Chunks/Chunk.types.js";
+    ChunkVoxels,
+    FullChunkTemplate,
+   } from "Meta/Chunks/Chunk.types.js";
+//objects
+import { Util } from "../../Global/Util.helper.js";
+
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
 
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export class ChunkProcessor {
- worldBottomY = 0;
- worldTopY = 256;
-
- chunkTemplates: Record<number, Record<number, number[][]>> = {};
- voxelByte: typeof VoxelByte;
- _3dArray: typeof Flat3DArray;
- exposedFaces: number[] = [];
- worldMatrix: WorldMatrix;
-
- constructor(private DVEB: DivineVoxelEngineBuilder) {
-  this.worldMatrix = DVEB.worldMatrix;
-  this.voxelByte = DVEB.UTIL.getVoxelByte();
-  this._3dArray = DVEB.UTIL.getFlat3DArray();
- }
-
- syncChunkBounds(): void {
-  this.DVEB.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
- }
-
+export const ChunkProcessor  = {
+ voxelByte : Util.getVoxelByte(),
+ _3dArray : Util.getFlat3DArray(),
+ chunkTemplates: <Record<number, Record<number, number[][]>>>  {},
+ exposedFaces: <number[]>  [],
  getBaseTemplateNew(): FullChunkTemplate {
   return {
    solid: {
@@ -85,7 +71,7 @@ export class ChunkProcessor {
     aoTemplate: [],
    },
   };
- }
+ },
 
  makeAllChunkTemplates(
   voxels: ChunkVoxels,
@@ -94,15 +80,15 @@ export class ChunkProcessor {
   chunkZ: number
  ): FullChunkTemplate {
   const template: FullChunkTemplate = this.getBaseTemplateNew();
-  let maxX = this.DVEB.worldBounds.chunkXSize;
-  let maxZ = this.DVEB.worldBounds.chunkZSize;
-  let maxY = this.DVEB.worldBounds.chunkYSize;
+  let maxX = DVEB.worldBounds.chunkXSize;
+  let maxZ = DVEB.worldBounds.chunkZSize;
+  let maxY = DVEB.worldBounds.chunkYSize;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
      const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(rawVoxelData) == 0) continue;
-     const voxelCheck = this.DVEB.worldMatrix.getVoxel(
+     const voxelCheck = DVEB.worldMatrix.getVoxel(
       chunkX + x,
       chunkY + y,
       chunkZ + z
@@ -110,7 +96,7 @@ export class ChunkProcessor {
 
      if (!voxelCheck) continue;
 
-     const voxelObject = this.DVEB.voxelManager.getVoxel(voxelCheck[0]);
+     const voxelObject = DVEB.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
 
      const baseTemplate = template[voxelObject.data.substance];
@@ -118,7 +104,7 @@ export class ChunkProcessor {
      let faceBit = 0;
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX,
@@ -133,7 +119,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX,
@@ -148,7 +134,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX + 1,
@@ -163,7 +149,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX - 1,
@@ -178,7 +164,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX,
@@ -193,7 +179,7 @@ export class ChunkProcessor {
      }
 
      if (
-      this.DVEB.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        voxelObject,
        rawVoxelData,
        x + chunkX,
@@ -227,47 +213,15 @@ export class ChunkProcessor {
        y: y,
        z: z,
       },
-      this.DVEB
+      DVEB
      );
-
-     // baseTemplate.shapeTemplate.push(voxel.getShapeId(voxelPaletteData));
+     
      baseTemplate.positionTemplate.push(x, y, z);
      baseTemplate.faceTemplate.push(faceBit);
     }
    }
   }
 
-
-
-/*   const positions = new Uint16Array(template.fluid.positionTemplate);
-  const faces = new Uint8Array(template.fluid.faceTemplate);
-  const shapes = new Uint16Array(template.fluid.shapeTemplate);
-  const uvs = new Uint16Array(template.fluid.uvTemplate);
-  const colors = new Float32Array(template.fluid.colorTemplate);
-  const light = new Float32Array(template.fluid.lightTemplate);
-  this.DVEB.fluidBuilderComm.sendMessage(
-   0,
-   [
-    chunkX,
-    chunkY,
-    chunkZ,
-    positions.buffer,
-    faces.buffer,
-    shapes.buffer,
-    uvs.buffer,
-    colors.buffer,
-    light.buffer,
-   ],
-   [
-    positions.buffer,
-    faces.buffer,
-    shapes.buffer,
-    uvs.buffer,
-    colors.buffer,
-    light.buffer,
-   ]
-  );
- */
   return template;
  }
 }

@@ -1,35 +1,29 @@
-import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
-import type { Util } from "Global/Util.helper";
+//types
 import type { DirectionNames } from "Meta/Util.types.js";
 import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
-import type { InfoByte } from "Global/Util/InfoByte";
-import type { LightByte } from "Global/Util/LightByte";
+//objects
+import { Util } from "../../Global/Util.helper.js";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
  */
-export class ShapeHelper {
- infoByte: typeof InfoByte;
- lightByte: typeof LightByte;
+export const ShapeHelper = {
+ infoByte: Util.getInfoByte(),
+ lightByte: Util.getLightByte(),
  //Use for producing the light gradient
- lightMap: number[] = [
+ lightMap: [
   0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
   0.85, 0.97, 1,
- ];
+ ],
 
- constructor(public util: typeof Util) {
-  this.infoByte = this.util.getInfoByte();
-  this.lightByte = this.util.getLightByte();
- }
-
- exposedFaceRecord: Record<DirectionNames, number> = {
+ exposedFaceRecord: <Record<DirectionNames, number>>{
   top: 0,
   bottom: 1,
   west: 2,
   east: 3,
   north: 4,
   south: 5,
- };
+ },
 
  isFaceExposexd(
   voxelExposedFaceEncodedBit: number,
@@ -37,7 +31,7 @@ export class ShapeHelper {
  ) {
   this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
   return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
- }
+ },
 
  processReturnData(
   shapeData: VoxelShapeAddData,
@@ -48,7 +42,7 @@ export class ShapeHelper {
   shapeData.lightIndex = returnData.newlightIndex;
   shapeData.aoIndex = returnData.newAOIndex;
   shapeData.colorIndex = returnData.newColorIndex;
- }
+ },
 
  produceShapeReturnData(shapeData: VoxelShapeAddData) {
   return {
@@ -58,7 +52,7 @@ export class ShapeHelper {
    newlightIndex: shapeData.lightIndex,
    newAOIndex: shapeData.aoIndex,
   };
- }
+ },
 
  toLinearSpace(r: number, g: number, b: number, a: number) {
   r = r ** 2.2;
@@ -66,7 +60,7 @@ export class ShapeHelper {
   b = b ** 2.2;
   a = a * 1;
   return [r, g, b, a];
- }
+ },
 
  calculateLightColor(
   RGBlightColors: number[],
@@ -84,7 +78,8 @@ export class ShapeHelper {
    sunlightColors.push(w, w, w, 1);
    RGBlightColors.push(r, g, b, alpha);
   }
- }
+ },
+
  calculateSunightColor(
   sunLight: number[],
   sunLightTemplate: Int32Array,
@@ -97,7 +92,8 @@ export class ShapeHelper {
    const w = this.lightMap[values[0]];
    sunLight.push(w, w, w, 1);
   }
- }
+ },
+
  calculateAOColor(
   colors: number[],
   chunkAmbientOcculusion: Float32Array,
@@ -118,5 +114,5 @@ export class ShapeHelper {
    const newColor = this.toLinearSpace(Ar, Ag, Ab, Aa);
    colors.push(newColor[0], newColor[1], newColor[2], 1);
   }
- }
-}
+ },
+};

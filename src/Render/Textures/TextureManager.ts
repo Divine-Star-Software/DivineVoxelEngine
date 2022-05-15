@@ -1,36 +1,36 @@
 import type { TextureData } from "Meta/Render/Textures/Texture.types";
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
-import { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
+import type { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
 
-export class TextureManager  {
- defaultTexturePath: string = "";
+export const TextureManager = {
+ defaultTexturePath: "",
 
- processedTextureData: TextureProccesedData;
- textureData: TextureData;
+ processedTextureData: <TextureProccesedData>{},
+ textureData: <TextureData>{},
 
- textureExtension: Record<VoxelSubstanceType, string> = {
+ textureExtension: <Record<VoxelSubstanceType, string>>{
   solid: "png",
   transparent: "png",
   fluid: "png",
   magma: "png",
   flora: "png",
- };
+ },
 
- textures: Record<VoxelSubstanceType, TextureData[]> = {
+ textures: <Record<VoxelSubstanceType, TextureData[]>>{
   solid: [],
   transparent: [],
   fluid: [],
   magma: [],
   flora: [],
- };
+ },
 
- uvTextureMap: Record<VoxelSubstanceType, Record<string, number>> = {
+ uvTextureMap: <Record<VoxelSubstanceType, Record<string, number>>>{
   solid: {},
   transparent: {},
   fluid: {},
   magma: {},
   flora: {},
- };
+ },
 
  _processVariations(
   texture: TextureData,
@@ -79,7 +79,7 @@ export class TextureManager  {
   }
 
   return count;
- }
+ },
  generateTexturesData() {
   const returnTexturePaths: Record<VoxelSubstanceType, string[]> = {
    solid: [],
@@ -179,18 +179,18 @@ export class TextureManager  {
    texturePaths: returnTexturePaths,
   };
   return this.processedTextureData;
- }
+ },
 
  defineDefaultTexturePath(path: string) {
   this.defaultTexturePath = path;
- }
+ },
 
  defineDefaultTextureExtension(
   voxelSubstanceType: VoxelSubstanceType,
   ext: string
  ) {
   this.textureExtension[voxelSubstanceType] = ext;
- }
+ },
 
  getTextureUV(
   voxelSubstanceType: VoxelSubstanceType,
@@ -203,12 +203,12 @@ export class TextureManager  {
   }
 
   return this.uvTextureMap[voxelSubstanceType][id];
- }
+ },
 
  registerTexture(
   voxelSubstanceType: VoxelSubstanceType,
   textureData: TextureData
  ) {
   this.textures[voxelSubstanceType].push(textureData);
- }
-}
+ },
+};

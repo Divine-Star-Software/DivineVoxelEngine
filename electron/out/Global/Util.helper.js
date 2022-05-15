@@ -2,6 +2,7 @@ import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
+import { WorldBounds } from "./Util/WorldBounds.js";
 export const Util = {
     calculateGameZone(positionZ, positionX) {
         const chunkpositionZ = (positionZ >> 4) << 4;
@@ -16,6 +17,9 @@ export const Util = {
     },
     getLightByte() {
         return LightByte;
+    },
+    getWorldBounds() {
+        return WorldBounds;
     },
     getInfoByte(number = 0) {
         InfoByte.setNumberValue(number);

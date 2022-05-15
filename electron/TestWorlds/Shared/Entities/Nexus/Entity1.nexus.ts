@@ -25,6 +25,7 @@ export class Entity1Nexus implements NexusEntityInterface {
      this.position[2] >> 0
     );
 
+
     if (voxel && voxel[0] == "dve:air") {
      this.position[1] -= 0.1;
     }

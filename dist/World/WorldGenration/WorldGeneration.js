@@ -1,3 +1,5 @@
+//objects
+import { Util } from "../../Global/Util.helper.js";
 import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/VoxelPaletteHelper.js";
@@ -5,22 +7,15 @@ import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/Voxe
  * ---
  * Helps with creating the needed data for chunks and world generation things.
  */
-export class WorldGeneration {
-    DVEW;
-    chunkDataHelper;
-    illumantionManager;
-    voxelPalette;
-    voxelByte;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this.illumantionManager = new IlluminationManager(this.DVEW);
-        this.chunkDataHelper = new ChunkDataHelper(this.DVEW);
-        this.voxelPalette = new VoxelPaletteManager(this.DVEW);
-        this.voxelByte = this.DVEW.UTIL.getVoxelByte();
-    }
+export const WorldGeneration = {
+    chunkDataHelper: ChunkDataHelper,
+    illumantionManager: IlluminationManager,
+    voxelPalette: VoxelPaletteManager,
+    worldBounds: Util.getWorldBounds(),
+    voxelByte: Util.getVoxelByte(),
     paintVoxel(voxelPalletId) {
         return this.voxelByte.setId(voxelPalletId, 0);
-    }
+    },
     getBlankRegion(palette = false) {
         let paletteData = {};
         if (palette) {
@@ -36,7 +31,7 @@ export class WorldGeneration {
                 ...paletteData,
             },
         };
-    }
+    },
     getBlankChunk(empty = true, palette = false, proto = true) {
         let paletteData = {};
         if (palette) {
@@ -46,7 +41,7 @@ export class WorldGeneration {
                 record: {},
             };
         }
-        const chunkSAB = new SharedArrayBuffer(this.DVEW.worldBounds.chunkTotalVoxels * 4);
+        const chunkSAB = new SharedArrayBuffer(this.worldBounds.chunkTotalVoxels * 4);
         const chunkVoxels = new Uint32Array(chunkSAB);
         return {
             ...{
@@ -60,4 +55,4 @@ export class WorldGeneration {
             },
         };
     }
-}
+};
