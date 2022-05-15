@@ -72,6 +72,12 @@ export const WorldBounds = {
   this.__chunkPosition.z = (z >> this.chunkXPow2) << this.chunkXPow2;
   return this.__chunkPosition;
  },
+ getChunkKey: function (chunkPOS : PositionMatrix) {
+  return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
+ },
+ getRegionKey: function (regionPOS : PositionMatrix) {
+  return `${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`;
+ },
  /**# Get Voxel Positions
   * ---
   * Returns the x/y/z index of the voxel in the chunk.

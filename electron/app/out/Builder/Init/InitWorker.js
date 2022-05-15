@@ -1,6 +1,6 @@
 import { RegisterDefaultShapes } from "../Shapes/Functions/RegisterDefaultShapes.js";
 export async function InitWorker(DVEB, initData) {
-    RegisterDefaultShapes(DVEB.shapeManager, DVEB.shapeHelper);
+    RegisterDefaultShapes(DVEB);
     DVEB.voxelManager.setShapeMap(DVEB.shapeManager.shapeMap);
     DVEB.renderComm.onReady = initData.onReady;
     if (initData.onMessage) {

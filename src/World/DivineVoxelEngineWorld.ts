@@ -16,7 +16,7 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { TextureManager } from "./Textures/TextureManager.js";
+
 
 /**# Divine Voxel Engine World
  * ---
@@ -28,7 +28,7 @@ export class DivineVoxelEngineWorld {
  __settingsHaveBeenSynced = false;
  __renderIsDone = false;
  engineSettings = EngineSettings;
- UTIL = new Util();
+ UTIL = Util;
 
  builderCommManager = new BuilderCommManager(this);
  worldGeneration = new WorldGeneration(this);
@@ -42,7 +42,7 @@ export class DivineVoxelEngineWorld {
  nexusComm = NexusComm;
 
  voxelManager = new VoxelManager(this);
- textureManager = new TextureManager();
+
 
  constructor() {}
 
@@ -51,9 +51,6 @@ export class DivineVoxelEngineWorld {
    this.builderCommManager.isReady() &&
    this.__settingsHaveBeenSynced &&
    this.__renderIsDone;
-  if (ready) {
-   console.log("WORLD READY");
-  }
   return ready;
  }
 

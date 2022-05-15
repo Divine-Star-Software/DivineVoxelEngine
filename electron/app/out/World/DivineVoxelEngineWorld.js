@@ -13,7 +13,6 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { TextureManager } from "./Textures/TextureManager.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -24,7 +23,7 @@ export class DivineVoxelEngineWorld {
     __settingsHaveBeenSynced = false;
     __renderIsDone = false;
     engineSettings = EngineSettings;
-    UTIL = new Util();
+    UTIL = Util;
     builderCommManager = new BuilderCommManager(this);
     worldGeneration = new WorldGeneration(this);
     renderComm = RenderComm;
@@ -33,15 +32,11 @@ export class DivineVoxelEngineWorld {
     matrixCentralHub = new MatrixCentralHub(this);
     nexusComm = NexusComm;
     voxelManager = new VoxelManager(this);
-    textureManager = new TextureManager();
     constructor() { }
     isReady() {
         let ready = this.builderCommManager.isReady() &&
             this.__settingsHaveBeenSynced &&
             this.__renderIsDone;
-        if (ready) {
-            console.log("WORLD READY");
-        }
         return ready;
     }
     syncSettings(data) {

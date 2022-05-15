@@ -1,11 +1,9 @@
-import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures-o.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
 import { DVEW } from "../../../out/index.js";
 
-RegisterTexutres(DVEW);
 RegisterVoxels(DVEW, "global");
 
 const worldGen = new WorldGen(DVEW);

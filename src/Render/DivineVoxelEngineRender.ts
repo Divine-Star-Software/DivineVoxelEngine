@@ -25,7 +25,7 @@ export class DivineVoxelEngineRender {
 
  renderedEntites = new RenderedEntitesManager(this);
 
- util: Util = new Util();
+ util = Util;
 
  constructor() {}
 
@@ -99,8 +99,6 @@ export class DivineVoxelEngineRender {
     this.textureManager.uvTextureMap,
    ]);
   }
-
-  await this.worldComm.getBaseWorldData();
 
   //terminate all workers
   window.addEventListener("beforeunload", () => {

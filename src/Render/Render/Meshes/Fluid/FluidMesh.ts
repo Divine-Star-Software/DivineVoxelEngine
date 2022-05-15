@@ -31,10 +31,9 @@ export class FluidMesh implements VoxelMeshInterface {
  }
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  const mesh = new BABYLON.Mesh("solid", scene);
+  const mesh = new BABYLON.Mesh("fluid", scene);
   mesh.alphaIndex = 0;
   mesh.isPickable = false;
-  mesh.checkCollisions = true;
 
   return mesh;
  }

@@ -17,7 +17,7 @@ export class ShapeHelper {
   0.85, 0.97, 1,
  ];
 
- constructor(public util: Util) {
+ constructor(public util: typeof Util) {
   this.infoByte = this.util.getInfoByte();
   this.lightByte = this.util.getLightByte();
  }

@@ -1,5 +1,4 @@
-import { PositionMatrix } from "Meta/Util.types";
-import { ShapeHelperInterface } from "./ShapeHelper.interface";
+import type { PositionMatrix } from "Meta/Util.types";
 
 /** # Voxel Shape Add DAta
 ---

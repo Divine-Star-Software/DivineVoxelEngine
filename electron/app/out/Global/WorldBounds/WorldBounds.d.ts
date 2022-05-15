@@ -49,6 +49,8 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
+    getChunkKey: (chunkPOS: PositionMatrix) => string;
+    getRegionKey: (regionPOS: PositionMatrix) => string;
     /**# Get Voxel Positions
      * ---
      * Returns the x/y/z index of the voxel in the chunk.

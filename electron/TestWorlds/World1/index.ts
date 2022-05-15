@@ -50,7 +50,7 @@ const init = async () => {
   setInterval(() => {
    player.update();
   }, 10);
- }, 20000);
+ }, 5000);
 
  runRenderLoop(engine, scene, player.hitbox);
 };

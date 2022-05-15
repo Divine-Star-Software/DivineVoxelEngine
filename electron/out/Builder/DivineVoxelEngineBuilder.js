@@ -15,7 +15,7 @@ import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 export class DivineVoxelEngineBuilder {
     environment = "browser";
-    UTIL = new Util();
+    UTIL = Util;
     worldMatrix = new WorldMatrix();
     matrixHub = new MatrixHub(this.worldMatrix);
     renderComm = RenderComm;

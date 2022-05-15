@@ -7,7 +7,7 @@ export async function InitWorker(
  DVEB: DivineVoxelEngineBuilder,
  initData: DVEBInitData
 ) {
- RegisterDefaultShapes(DVEB.shapeManager, DVEB.shapeHelper);
+ RegisterDefaultShapes(DVEB);
  DVEB.voxelManager.setShapeMap(DVEB.shapeManager.shapeMap);
 
  DVEB.renderComm.onReady = initData.onReady;

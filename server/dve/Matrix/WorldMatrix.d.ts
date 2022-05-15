@@ -82,6 +82,8 @@ export declare class WorldMatrix {
             y: number;
             z: number;
         };
+        getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
+        getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
         getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
             x: number;
             y: number;

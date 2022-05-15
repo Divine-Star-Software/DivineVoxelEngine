@@ -19,7 +19,7 @@ import { WorldBounds } from "../Global/WorldBounds/WorldBounds.js";
 
 export class DivineVoxelEngineBuilder {
  environment: "node" | "browser" = "browser";
- UTIL: Util = new Util();
+ UTIL = Util;
  worldMatrix = new WorldMatrix();
  matrixHub = new MatrixHub(this.worldMatrix);
 
@@ -41,7 +41,7 @@ export class DivineVoxelEngineBuilder {
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
-if (data.chunks) {
+  if (data.chunks) {
    this.worldBounds.setChunkBounds(
     data.chunks.chunkXPow2,
     data.chunks.chunkYPow2,
@@ -98,7 +98,6 @@ if (data.chunks) {
   return true;
  }
 }
-
 
 export const DVEB = new DivineVoxelEngineBuilder();
 

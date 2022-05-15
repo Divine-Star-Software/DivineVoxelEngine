@@ -17,10 +17,9 @@ export class FluidMesh {
         mesh.freezeWorldMatrix();
     }
     createTemplateMesh(scene) {
-        const mesh = new BABYLON.Mesh("solid", scene);
+        const mesh = new BABYLON.Mesh("fluid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
-        mesh.checkCollisions = true;
         return mesh;
     }
     async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {

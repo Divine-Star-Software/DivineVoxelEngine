@@ -17,7 +17,7 @@ export class DivineVoxelEngineRender {
     meshManager = new MeshManager(this);
     textureManager = new TextureManager();
     renderedEntites = new RenderedEntitesManager(this);
-    util = new Util();
+    util = Util;
     constructor() { }
     _handleOptions() {
         const data = this.engineSettings.settings;
@@ -77,7 +77,6 @@ export class DivineVoxelEngineRender {
                 this.textureManager.uvTextureMap,
             ]);
         }
-        await this.worldComm.getBaseWorldData();
         //terminate all workers
         window.addEventListener("beforeunload", () => {
             for (const builder of this.builderManager.builders) {

@@ -8,11 +8,11 @@ import type { LightByte } from "Global/Util/LightByte";
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export declare class ShapeHelper {
-    util: Util;
+    util: typeof Util;
     infoByte: typeof InfoByte;
     lightByte: typeof LightByte;
     lightMap: number[];
-    constructor(util: Util);
+    constructor(util: typeof Util);
     exposedFaceRecord: Record<DirectionNames, number>;
     isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: DirectionNames): boolean;
     processReturnData(shapeData: VoxelShapeAddData, returnData: VoxelShapeAddReturnData): void;

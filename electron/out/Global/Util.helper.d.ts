@@ -1,20 +1,4 @@
-export declare class Util {
-    infoByte: {
-        maxBit: number;
-        minBit: number;
-        maxDec: number;
-        minDec: number;
-        byteValue: number;
-        getNumberValue(): number;
-        setNumberValue(newValue: number): void;
-        getBit(index: number): 0 | 1;
-        getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
-        getHalfByteDec(bitIndex: number): number;
-        setHalfByteBits(index: number, value: number): void;
-        setBit(index: number, value: 0 | 1): void;
-        toArray(): (0 | 1)[];
-        toString(delimiter?: string): string;
-    };
+export declare const Util: {
     calculateGameZone(positionZ: number, positionX: number): number[];
     getFlat3DArray(): {
         bounds: {
@@ -82,4 +66,4 @@ export declare class Util {
     };
     degtoRad(degrees: number): number;
     radToDeg(radians: number): number;
-}
+};

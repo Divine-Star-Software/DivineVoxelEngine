@@ -1,4 +1,4 @@
-import { PositionMatrix } from "Meta/Util.types";
+import type { PositionMatrix } from "Meta/Util.types";
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions

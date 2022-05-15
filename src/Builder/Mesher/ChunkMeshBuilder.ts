@@ -25,6 +25,8 @@ export class ChunkMeshBuilder {
    const type = this.voxelBuildOrder[i];
    const baseTemplate = template[type];
 
+   if (baseTemplate.positionTemplate.length == 0) continue;
+
    const positions: number[] = [];
    const indices: number[] = [];
    const uvs: number[] = [];

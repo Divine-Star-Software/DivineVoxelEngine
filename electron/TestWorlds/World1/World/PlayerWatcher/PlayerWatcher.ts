@@ -1,4 +1,3 @@
-import { VoxelInteface } from "../../../../out/Meta/World/Voxels/Voxel.types";
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 import type { WorldGen } from "../WorldGen/WorldGen";
 

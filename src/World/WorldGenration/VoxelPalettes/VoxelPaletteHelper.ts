@@ -1,8 +1,7 @@
-import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import { VoxelData } from "Meta/Voxels/Voxel.types";
-import { WorldRegion } from "Meta/WorldData/World.types";
+import type { VoxelData } from "Meta/Voxels/Voxel.types";
+import type { WorldRegion } from "Meta/WorldData/World.types";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
-import { WorldGeneration } from "../WorldGeneration";
+
 
 /**# Voxel Palette Manager
  * ---

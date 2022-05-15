@@ -54,32 +54,17 @@ export declare class WorldData {
     /**# Get Light
      * ---
      * Returns the raw light value for a voxel.
-     * @param x
-     * @param y
-     * @param z
-     * @returns
      */
     getLight(x: number, y: number, z: number): number;
     /**# Get Light Value
      * ---
      * Returns the value of the light level type for the given voxel at x,y,z.
-     * @param x
-     * @param y
-     * @param z
-     * @param type
-     * @returns
      */
     getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
     /**# Is Exposed
      * ---
      * Will return true if any face of the voxel is exposed.
      * Must provide the voxel's x,y,z position.
-     * @param voxel
-     * @param voxelData
-     * @param x
-     * @param y
-     * @param z
-     * @returns
      */
     isVoxelExposed(voxel: VoxelData, voxelData: number, x: number, y: number, z: number): boolean;
     /**# Voxel Face Check
@@ -87,44 +72,29 @@ export declare class WorldData {
      * Determines if a face of a voxel is exposed.
      * You must provide the x,y,z position for the face that is being checked.
      * For instance if you want to check the top face it would be the voxels y plus 1.
-     * @param voxel
-     * @param voxelData
-     * @param x
-     * @param y
-     * @param z
-     * @returns
      */
     voxelFaceCheck(voxel: VoxelData, voxelData: number, x: number, y: number, z: number): boolean;
     removeData(x: number, y: number, z: number): false | undefined;
-    getVoxel(x: number, y: number, z: number): any[] | false;
     getData(x: number, y: number, z: number): number;
     /**# Set Data
      * ---
      * Sets the data for a specific point in the world data.
      * Will not make a new chunk if there is none and just return false.
-     * @param x
-     * @param y
-     * @param z
-     * @param data
-     * @returns
      */
-    setData(x: number, y: number, z: number, data: number): false | undefined;
-    addRegion(regionX: number, regionY: number, regionZ: number): WorldRegion;
-    getRegion(regionX: number, regionY: number, regionZ: number): false | WorldRegion;
+    setData(x: number, y: number, z: number, data: number): void | -1;
+    getVoxel(x: number, y: number, z: number): any[] | false;
+    addRegion(x: number, y: number, z: number): WorldRegion;
+    getRegion(x: number, y: number, z: number): false | WorldRegion;
+    addChunk(x: number, y: number, z: number): ChunkData;
     paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     /**# Insert Data
      * ---
      * Acts like **setData** but will create a new chunk if it does not exist.
-     * @param x
-     * @param y
-     * @param z
-     * @param data
      */
-    insertData(x: number, y: number, z: number, data: number): false | undefined;
-    getChunk(chunkX: number, chunkY: number, chunkZ: number): ChunkData | false;
-    removeChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
-    setChunk(chunkX: number, chunkY: number, chunkZ: number, chunk: ChunkData, doNotSyncInBuilderThread?: boolean): void;
-    getChunkPosition(x: number, y: number, z: number): number[];
-    requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): WorldRegion | undefined;
+    insertData(x: number, y: number, z: number, data: number): void;
+    getChunk(x: number, y: number, z: number): ChunkData | false;
+    removeChunk(x: number, y: number, z: number): false | undefined;
+    setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInBuilderThread?: boolean): void;
+    requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;
 }

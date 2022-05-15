@@ -1,4 +1,3 @@
-import type { DivineVoxelEngine } from "../../../out/Render/DivineVoxelEngine";
 import { DivineVoxelEngineRender } from "../../../out/index";
 import type { PositionMatrix } from "../../../out/Meta/Util.types";
 

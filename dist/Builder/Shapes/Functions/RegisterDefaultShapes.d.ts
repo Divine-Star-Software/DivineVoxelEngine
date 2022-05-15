@@ -1,3 +1,2 @@
-import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
-import type { ShapeManager } from "../ShapeManager";
-export declare function RegisterDefaultShapes(shpaeManager: ShapeManager, shapeHelper: ShapeHelperInterface): void;
+import type { DivineVoxelEngineBuilder } from "../../DivineVoxelEngineBuilder.js";
+export declare function RegisterDefaultShapes(DVEB: DivineVoxelEngineBuilder): void;
