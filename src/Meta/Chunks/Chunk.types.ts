@@ -1,5 +1,5 @@
 import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
-import { VoxelPalette } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/World/WorldData/World.types";
 export type ChunkTemplate = {
  positionTemplate: number[];
  faceTemplate: number[];

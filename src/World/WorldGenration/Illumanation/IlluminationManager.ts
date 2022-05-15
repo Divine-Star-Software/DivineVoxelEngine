@@ -1,7 +1,6 @@
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { LightByte } from "Global/Util/LightByte";
 import { ChunkData } from "Meta/Chunks/Chunk.types.js";
-import type { ChunkBound } from "Meta/World/ChunkBound.interface.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
 import {
@@ -18,7 +17,7 @@ import {
 } from "./Functions/SunLight.js";
 import type { VoxelByte } from "Global/Util/VoxelByte.js";
 
-export class IlluminationManager implements ChunkBound {
+export class IlluminationManager {
  lightByte: typeof LightByte;
  voxelByte: typeof VoxelByte;
  _3dArray: typeof Flat3DArray;

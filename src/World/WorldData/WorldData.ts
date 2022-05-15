@@ -5,7 +5,7 @@ import type { LightByte } from "Global/Util/LightByte.js";
 import type { VoxelData, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
 
 import { VoxelByte } from "Global/Util/VoxelByte.js";
-import { WorldRegion } from "Meta/WorldData/World.types.js";
+import { WorldRegion } from "Meta/World/WorldData/World.types.js";
 import { Flat3DArray } from "Global/Util/Flat3DArray.js";
 import type { WorldBounds } from "Global/WorldBounds/WorldBounds.js";
 /**# World Data

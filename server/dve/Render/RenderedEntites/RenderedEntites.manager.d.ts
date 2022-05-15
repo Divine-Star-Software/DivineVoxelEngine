@@ -1,7 +1,7 @@
 /// <reference types="babylonjs" />
 import { DivineVoxelEngineRender } from "index";
-import { EntityTypes } from "Meta/Builder/Entity/Entity.types";
-import type { RenderedEntity, RenderedEntityData, RenderedEntityInterface } from "Meta/Builder/Entity/RenderedEntity.types";
+import { EntityTypes } from "Meta/Entity/Entity.types";
+import type { RenderedEntity, RenderedEntityData, RenderedEntityInterface } from "Meta/Entity/RenderedEntity.types";
 export declare class RenderedEntitesManager {
     private DVE;
     scene: BABYLON.Scene;

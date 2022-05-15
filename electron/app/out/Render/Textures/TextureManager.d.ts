@@ -1,8 +1,7 @@
-import type { TextureData } from "Meta/World/Textures/Texture.types";
-import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager.interface";
+import type { TextureData } from "Meta/Render/Textures/Texture.types";
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 import { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
-export declare class TextureManager implements TextureManagerInterface {
+export declare class TextureManager {
     defaultTexturePath: string;
     processedTextureData: TextureProccesedData;
     textureData: TextureData;

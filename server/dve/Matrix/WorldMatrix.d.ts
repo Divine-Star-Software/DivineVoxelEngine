@@ -1,4 +1,4 @@
-import { WorldRegionPalette } from "Meta/WorldData/World.types.js";
+import { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
@@ -10,6 +10,10 @@ export declare class WorldMatrix {
             y: number;
             z: number;
         };
+        /**# World Matrix
+         * ---
+         * Hanldes the getting and setting of data that are loaded in the matrix.
+         */
         _position: {
             x: number;
             y: number;
@@ -58,6 +62,10 @@ export declare class WorldMatrix {
                 y: number;
                 z: number;
             };
+            /**# World Matrix
+             * ---
+             * Hanldes the getting and setting of data that are loaded in the matrix.
+             */
             _position: {
                 x: number;
                 y: number;

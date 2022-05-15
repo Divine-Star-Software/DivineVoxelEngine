@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineBuilder } from "../../Builder/DivineVoxelEngineBuilder";
-import { VoxelPalette } from "Meta/WorldData/World.types";
+import { VoxelPalette } from "Meta/World/WorldData/World.types";
 import { VoxelHelperInterface } from "./VoxelHelper.interface";
 /**# Voxel Substance Type
  * ---

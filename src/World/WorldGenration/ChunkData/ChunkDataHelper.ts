@@ -1,10 +1,9 @@
 import type { Flat3DArray } from "Global/Util/Flat3DArray";
 import type { LightByte } from "Global/Util/LightByte";
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import type { ChunkBound } from "Meta/World/ChunkBound.interface";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 
-export class ChunkDataHelper implements ChunkBound {
+export class ChunkDataHelper {
  lightByte: typeof LightByte;
  _3dArray: typeof Flat3DArray;
  constructor(public DVEW: DivineVoxelEngineWorld) {

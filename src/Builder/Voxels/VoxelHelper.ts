@@ -1,10 +1,5 @@
-import type { Util } from "Global/Util.helper";
-import type { TextureManagerInterface } from "Meta/World/Textures/TextureManager.interface";
-import type { VoxelInteface, VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import type { VoxelHelperInterface } from "Meta/Voxels/VoxelHelper.interface";
+import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
 import { BuildAmbientOcclusion } from "./Functions/ChunkAO.js";
-import type { WorldData } from "World/WorldData/WorldData";
-import type { VoxelManager } from "./VoxelManager.js";
 import { DivineVoxelEngineBuilder, DivineVoxelEngineWorld } from "index.js";
 
 import type { VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";

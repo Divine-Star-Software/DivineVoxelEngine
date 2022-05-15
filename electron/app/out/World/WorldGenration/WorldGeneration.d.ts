@@ -1,6 +1,6 @@
 import { VoxelByte } from "Global/Util/VoxelByte.js";
 import { ChunkData } from "Meta/Chunks/Chunk.types";
-import { WorldRegion } from "Meta/WorldData/World.types.js";
+import { WorldRegion } from "Meta/World/WorldData/World.types.js";
 import type { DivineVoxelEngineWorld } from "World/DivineVoxelEngineWorld";
 import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";

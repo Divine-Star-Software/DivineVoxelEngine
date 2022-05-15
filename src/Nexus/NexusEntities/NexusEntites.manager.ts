@@ -1,10 +1,10 @@
 import type { DivineVoxelEngineNexus } from "index";
-import type { EntityTypes } from "Meta/Builder/Entity/Entity.types";
+import type { EntityTypes } from "Meta/Entity/Entity.types";
 import type {
  NexusEntity,
  NexusEntityData,
  NexusEntityInterface,
-} from "Meta/Builder/Entity/NexusEntity.types";
+} from "Meta/Entity/NexusEntity.types";
 import { PositionMatrix } from "Meta/Util.types";
 
 export class NexusEntites {
