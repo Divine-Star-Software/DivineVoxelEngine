@@ -162,7 +162,7 @@ export declare const WorldData: {
     setLight(x: number, y: number, z: number, lightValue: number): void;
     getLight(x: number, y: number, z: number): number;
     removeData(x: number, y: number, z: number): false | undefined;
-    getData(x: number, y: number, z: number): number;
+    getData(x: number, y: number, z: number): number | false;
     setData(x: number, y: number, z: number, data: number): void | -1;
     getVoxel(x: number, y: number, z: number): [VoxelData | number, string | number, number] | false;
     addRegion(x: number, y: number, z: number): WorldRegion;

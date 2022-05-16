@@ -18,9 +18,9 @@ export const WorldBounds = {
 
  chunkTotalVoxels: 16 * 128 * 16,
 
- regionXPow2: 4,
+ regionXPow2: 9,
  regionYPow2: 7,
- regionZPow2: 4,
+ regionZPow2: 9,
 
  regionXSize: 16,
  regionYSize: 128,
@@ -69,21 +69,21 @@ export const WorldBounds = {
  getChunkPosition: function (x: number, y: number, z: number) {
   this.__chunkPosition.x = (x >> this.chunkXPow2) << this.chunkXPow2;
   this.__chunkPosition.y = (y >> this.chunkYPow2) << this.chunkYPow2;
-  this.__chunkPosition.z = (z >> this.chunkXPow2) << this.chunkXPow2;
+  this.__chunkPosition.z = (z >> this.chunkZPow2) << this.chunkZPow2;
   return this.__chunkPosition;
  },
- getChunkKey: function (chunkPOS : PositionMatrix) {
+ getChunkKey: function (chunkPOS: PositionMatrix) {
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
- getChunkKeyFromPosition: function (x : number, y : number, z : number) {
-  const chunkPOS = this .getChunkPosition(x,y,z);
+ getChunkKeyFromPosition: function (x: number, y: number, z: number) {
+  const chunkPOS = this.getChunkPosition(x, y, z);
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
- getRegionKey: function (regionPOS : PositionMatrix) {
+ getRegionKey: function (regionPOS: PositionMatrix) {
   return `${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`;
  },
- getRegionKeyFromPosition: function (x : number, y : number, z : number) {
-  const regionPOS = this.getRegionPosition(x,y,z);
+ getRegionKeyFromPosition: function (x: number, y: number, z: number) {
+  const regionPOS = this.getRegionPosition(x, y, z);
   return `${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`;
  },
  /**# Get Voxel Positions

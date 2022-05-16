@@ -142,6 +142,7 @@ export const WorldData = {
  },
  setLight(x: number, y: number, z: number, lightValue: number) {
   let data = this.getData(x, y, z);
+  if (data === false) return;
   data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
   this.setData(x, y, z, data);
  },
@@ -197,7 +198,7 @@ export const WorldData = {
 
   let region = this.regions[regionKey];
   if (!region) {
-   return -1;
+   return false;
   }
 
   const chunks = region.chunks;
@@ -205,7 +206,7 @@ export const WorldData = {
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   const chunk = chunks[chunkKey];
   if (!chunk || chunk.isEmpty) {
-   return -1;
+   return false;
   }
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
 
@@ -308,7 +309,9 @@ export const WorldData = {
  getRegion(x: number, y: number, z: number) {
   const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
   const regionKey = this.worldBounds.getRegionKey(regionPOS);
-  if (!this.regions[regionKey]) return false;
+  if (!this.regions[regionKey]) {
+   return false;
+  }
   return this.regions[regionKey];
  },
 
@@ -325,6 +328,7 @@ export const WorldData = {
     DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
    }
   }
+
   this.setChunk(x, y, z, chunk);
   return chunk;
  },
@@ -339,18 +343,15 @@ export const WorldData = {
   let region = this.getRegion(x, y, z);
 
   if (!region) {
-   region = this.addRegion(x, y, x);
+   region = this.addRegion(x, y, z);
   }
 
-  const chunks = region.chunks;
-
-  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-
-  let chunk = chunks[chunkKey];
+  let chunk = this.getChunk(x, y, z);
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
-   }
+  }
+
+  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
@@ -375,7 +376,7 @@ export const WorldData = {
  insertData(x: number, y: number, z: number, data: number) {
   let region = this.getRegion(x, y, z);
   if (!region) {
-   region = this.addRegion(x, y, x);
+   region = this.addRegion(x, y, z);
   }
   const chunks = region.chunks;
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
@@ -446,7 +447,7 @@ export const WorldData = {
   let region = this.getRegion(x, y, z);
 
   if (!region) {
-   region = this.addRegion(x, y, x);
+   region = this.addRegion(x, y, z);
   }
 
   const chunks = region.chunks;

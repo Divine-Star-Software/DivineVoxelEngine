@@ -12,9 +12,9 @@ export const WorldBounds = {
     chunkYSize: 128,
     chunkZSize: 16,
     chunkTotalVoxels: 16 * 128 * 16,
-    regionXPow2: 4,
+    regionXPow2: 9,
     regionYPow2: 7,
-    regionZPow2: 4,
+    regionZPow2: 9,
     regionXSize: 16,
     regionYSize: 128,
     regionZSize: 16,
@@ -53,7 +53,7 @@ export const WorldBounds = {
     getChunkPosition: function (x, y, z) {
         this.__chunkPosition.x = (x >> this.chunkXPow2) << this.chunkXPow2;
         this.__chunkPosition.y = (y >> this.chunkYPow2) << this.chunkYPow2;
-        this.__chunkPosition.z = (z >> this.chunkXPow2) << this.chunkXPow2;
+        this.__chunkPosition.z = (z >> this.chunkZPow2) << this.chunkZPow2;
         return this.__chunkPosition;
     },
     getChunkKey: function (chunkPOS) {

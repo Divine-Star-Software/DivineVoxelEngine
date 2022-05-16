@@ -104,6 +104,7 @@ export const MatrixCentralHub = {
    chunkSABs = newChunkSAB;
   }
 
+
   this.threads[threadId].postMessage([
    "sync-chunk",
    chunkSABs[0],
