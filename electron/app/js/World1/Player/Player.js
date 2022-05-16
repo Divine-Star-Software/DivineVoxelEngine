@@ -55,7 +55,7 @@ export class Player {
             playerPickPositionArrayBuffer,
             playerStatesArrayBuffer,
         ];
-        this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+        this.DVER.worldComm.sendMessage("connect-player", arrays);
     }
     calculateGameZone(positionX, positionZ) {
         const chunkpositionX = (positionX >> 4) << 4;
@@ -269,11 +269,19 @@ export class Player {
         document.addEventListener("click", (event) => {
             if (event.button == 2) {
                 this._doAction("place");
-                this.DVER.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
+                this.DVER.worldComm.sendMessage("voxel-add", [
+                    this.blockLookingAtPosition.x,
+                    this.blockLookingAtPosition.y,
+                    this.blockLookingAtPosition.z,
+                ]);
             }
             if (event.button == 0) {
                 this._doAction("break");
-                this.DVER.worldComm.requestWorldUpdate("voxel-remove", this.blockLookingAtPosition);
+                this.DVER.worldComm.sendMessage("voxel-remove", [
+                    this.blockLookingAtPosition.x,
+                    this.blockLookingAtPosition.y,
+                    this.blockLookingAtPosition.z,
+                ]);
             }
         });
         document.addEventListener("keydown", (event) => {

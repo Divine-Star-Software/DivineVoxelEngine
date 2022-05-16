@@ -1,25 +1,34 @@
 import type { DivineVoxelEngineNexus } from "Nexus/DivineVoxelEngineNexus";
-import { getNexusWorkerFunctions } from "./NexusMessageFunctions.js";
 
-export function InitNexusWorker(
+export async function InitNexusWorker(
  DVEN: DivineVoxelEngineNexus,
  onReady: Function,
  onMessage?: Function,
  onRestart?: Function
 ) {
- return new Promise((resolve, reject) => {
-  try {
-   const messageFunctions = getNexusWorkerFunctions(resolve, DVEN, onReady);
-   addEventListener("message", (event: MessageEvent) => {
-    const eventData = event.data;
-    const message = eventData[0];
-    if (messageFunctions[message]) {
-     messageFunctions[message](eventData, event);
-    }
-    DVEN.renderComm._onMessage(event);
-   });
-  } catch (error) {
-   reject(false);
+ if (DVEN.environment == "browser") {
+  (DVEN as any).renderComm.setPort(self);
+ }
+
+ if (DVEN.environment == "node") {
+  //@ts-ignore
+  if (require) {
+   //@ts-ignore
+   const { parentPort } = require("worker_threads");
+   (DVEN as any).renderComm.setPort(parentPort);
+  } else {
+   //@ts-ignore
+   const { parentPort } = await import("worker_threads").parentPort;
+   (DVEN as any).renderComm.setPort(parentPort);
   }
+ }
+
+ await new Promise((resolve) => {
+  const inte = setInterval(() => {
+   if (DVEN.isReady()) {
+    clearInterval(inte);
+    resolve(true);
+   }
+  }, 1);
  });
 }

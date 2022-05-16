@@ -1,4 +1,3 @@
-
 import { DivineVoxelEngineRender } from "../../../../out/index";
 import type { PositionMatrix } from "../../../../out/Meta/Util.types";
 
@@ -43,7 +42,7 @@ export class Player {
  bottomRay: BABYLON.Ray;
  camRay: BABYLON.Ray;
 
- constructor(private DVER: DivineVoxelEngineRender) {}
+ constructor(private DVER: typeof DivineVoxelEngineRender) {}
 
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -66,7 +65,7 @@ export class Player {
    playerPickPositionArrayBuffer,
    playerStatesArrayBuffer,
   ];
-  this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+  this.DVER.worldComm.sendMessage("connect-player", arrays);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -150,12 +149,11 @@ export class Player {
    if (!this.particleSystem.isStarted()) {
     this.particleSystem.start();
     this.particleSystem.renderingGroupId = 2;
-    setTimeout(()=>{
-
-      this.hitbox.position.x = 8;
-      this.hitbox.position.y = 20;
-      this.hitbox.position.z = -120;
-    },1000)
+    setTimeout(() => {
+     this.hitbox.position.x = 8;
+     this.hitbox.position.y = 20;
+     this.hitbox.position.z = -120;
+    }, 1000);
    }
   } else {
    this.scene.fogDensity = 0.008;
@@ -173,7 +171,7 @@ export class Player {
   this.playerDirectionArray[1] = direction.y;
   this.playerDirectionArray[2] = direction.z;
   // this._getDirection(direction);
-/* 
+  /* 
   this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
   this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
   this.playerCube.position.z = this.playerPickPosition[2] + 0.5; */
@@ -196,7 +194,7 @@ export class Player {
     this.jumpCount = this.jumpTime;
     this.jumping = false;
    } else {
-//    this.velocity.y += 0.05;
+    //    this.velocity.y += 0.05;
     this.jumpCount--;
    }
   } else {
@@ -315,9 +313,7 @@ export class Player {
   this.playerCube = cube;
  }
 
- _setUpPlayerCamera() {
-
- }
+ _setUpPlayerCamera() {}
 
  async _createParticleSystem(scene: BABYLON.Scene) {
   const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
@@ -416,21 +412,7 @@ export class Player {
   this._setUpPlayerCube();
   this._setUpPlayerCamera();
 
-  document.addEventListener("click", (event: MouseEvent) => {
-   if (event.button == 2) {
-    this._doAction("place");
-
-    this.DVER.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
-   }
-
-   if (event.button == 0) {
-    this._doAction("break");
-    this.DVER.worldComm.requestWorldUpdate(
-     "voxel-remove",
-     this.blockLookingAtPosition
-    );
-   }
-  });
+  document.addEventListener("click", (event: MouseEvent) => {});
 
   document.addEventListener(
    "keydown",

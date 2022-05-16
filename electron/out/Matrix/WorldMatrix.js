@@ -185,14 +185,14 @@ export const WorldMatrix = {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return false;
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, this.worldBounds.getChunkPosition(x, y, z));
+        const voxelPOS = this.worldBounds.getVoxelPositionFromChunkPosition(x, y, z, this.worldBounds.getChunkPosition(x, y, z));
         this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
     },
     getData(x, y, z) {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return -1;
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, this.worldBounds.getChunkPosition(x, y, z));
+        const voxelPOS = this.worldBounds.getVoxelPositionFromChunkPosition(x, y, z, this.worldBounds.getChunkPosition(x, y, z));
         return this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels);
     },
     getVoxelNumberID(x, y, z) {

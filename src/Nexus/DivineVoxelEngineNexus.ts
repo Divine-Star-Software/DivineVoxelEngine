@@ -11,19 +11,25 @@ import { EngineSettingsData } from "Meta/index.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 
-class DivineVoxelEngineNexusClass {
- engineSettings = EngineSettings;
- worldMatrix = WorldMatrix;
- matrixHub = MatrixHub;
+export const DVEN = {
+ environment: <"node" | "browser">"browser",
+ engineSettings: EngineSettings,
+ worldMatrix: WorldMatrix,
+ matrixHub: MatrixHub,
+ __connectedToWorld: false,
 
- worldComm = new WorldComm(this);
- renderComm = new RenderComm();
+ worldComm: WorldComm,
+ renderComm: RenderComm,
 
- nexusEntites = new NexusEntites(this);
+ nexusEntites: NexusEntites,
 
  async $INIT(data: DVENInitData) {
   await InitNexusWorker(this, data.onReady, data.onMessage, data.onRestart);
- }
+ },
+
+ isReady() {
+  return this.matrixHub.worldPort !== undefined && this.__connectedToWorld;
+ },
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
@@ -42,7 +48,7 @@ class DivineVoxelEngineNexusClass {
     data.regions.regionZPow2
    );
   }
- }
+ },
 
  /**# Load chunk into Nexus
   * Load a chunk into the shared nexus thread.
@@ -50,15 +56,15 @@ class DivineVoxelEngineNexusClass {
  async loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number) {
   this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
   return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
- }
+ },
 
  /**# Release Chunk From Nexus
   * Remve a chunk in the shared nexus thread.
   */
  releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
   this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
- }
-}
-export type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;
-export const DVEN = new DivineVoxelEngineNexusClass();
+ },
+};
+export type DivineVoxelEngineNexus = typeof DVEN;
+
 DVEN.matrixHub.setThreadName("nexus");

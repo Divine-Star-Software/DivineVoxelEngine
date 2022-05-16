@@ -1,14 +1,39 @@
-import type { RenderManager } from "Render/Render/RenderManager";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { DVER } from "../../../DivineVoxelEngineRender.js";
 
-export class MagmaMaterial {
- material: BABYLON.ShaderMaterial;
- context: CanvasRenderingContext2D;
-
- constructor(private renderManager: RenderManager) {}
+export const MagmaMaterial = {
+ material: <BABYLON.ShaderMaterial | null>null,
+ context: <CanvasRenderingContext2D | null>null,
 
  getMaterial() {
   return this.material;
- }
+ },
+
+ updateMaterialSettings(settings: EngineSettingsData) {
+  if (!this.material) {
+   throw new Error("Material must be created first before it can be updated.");
+  }
+  if (settings.lighting?.doAO) {
+   this.material.setFloat("doAO", 1.0);
+  } else {
+   this.material.setFloat("doAO", 0.0);
+  }
+  if (settings.lighting?.doSunLight) {
+   this.material.setFloat("doSun", 1.0);
+  } else {
+   this.material.setFloat("doSun", 0.0);
+  }
+  if (settings.lighting?.doRGBLight) {
+   this.material.setFloat("doRGB", 1.0);
+  } else {
+   this.material.setFloat("doRGB", 0.0);
+  }
+  if (settings.voxels?.doColors) {
+   this.material.setFloat("doColor", 1.0);
+  } else {
+   this.material.setFloat("doColor", 0.0);
+  }
+ },
 
  createMaterial(
   scene: BABYLON.Scene,
@@ -16,20 +41,20 @@ export class MagmaMaterial {
   animations: number[][],
   animationTimes: number[][]
  ): BABYLON.ShaderMaterial {
-  const animData = this.renderManager.animationManager.registerAnimations(
+  const animData = DVER.renderManager.animationManager.registerAnimations(
    "magma",
    animations,
    animationTimes
   );
 
   BABYLON.Effect.ShadersStore["magmaVertexShader"] =
-   this.renderManager.shaderBuilder.getDefaultVertexShader(
+   DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "magma",
     animData.uniformRegisterCode,
     animData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["magmaFragmentShader"] =
-   this.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
+   DVER.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
 
   const shaderMaterial = new BABYLON.ShaderMaterial("magma", scene, "magma", {
    attributes: ["position", "normal", "cuv3", "colors"],
@@ -73,14 +98,8 @@ export class MagmaMaterial {
 
   this.material = shaderMaterial;
 
-  this.renderManager.animationManager.registerMaterial("magma",shaderMaterial);
-
+  DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
 
   return this.material;
- }
-
- runAnimations(num: number) {
-  this.material.setFloat("anim1Index", num);
-  this.material.setFloat("anim2Index", num - 3);
- }
-}
+ },
+};

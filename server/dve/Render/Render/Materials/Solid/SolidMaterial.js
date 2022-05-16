@@ -1,25 +1,22 @@
-export class SolidMaterial {
-    renderManager;
-    material;
-    context;
-    constructor(renderManager) {
-        this.renderManager = renderManager;
-    }
+import { DVER } from "../../../DivineVoxelEngineRender.js";
+export const SolidMaterial = {
+    material: null,
+    context: null,
     getMaterial() {
         return this.material;
-    }
+    },
     setSunLightLevel(level) {
         if (!this.material) {
             throw new Error("Material must be created first before it can be updated.");
         }
         this.material.setFloat("sunLightLevel", level);
-    }
+    },
     setBaseLevel(level) {
         if (!this.material) {
             throw new Error("Material must be created first before it can be updated.");
         }
         this.material.setFloat("baseLevel", level);
-    }
+    },
     updateMaterialSettings(settings) {
         if (!this.material) {
             throw new Error("Material must be created first before it can be updated.");
@@ -48,13 +45,13 @@ export class SolidMaterial {
         else {
             this.material.setFloat("doColor", 0.0);
         }
-    }
+    },
     createMaterial(settings, scene, texture, animations, animationTimes) {
-        const animData = this.renderManager.animationManager.registerAnimations("solid", animations, animationTimes);
+        const animData = DVER.renderManager.animationManager.registerAnimations("solid", animations, animationTimes);
         BABYLON.Effect.ShadersStore["solidVertexShader"] =
-            this.renderManager.shaderBuilder.getDefaultVertexShader("solid", animData.uniformRegisterCode, animData.animationFunctionCode);
+            DVER.renderManager.shaderBuilder.getDefaultVertexShader("solid", animData.uniformRegisterCode, animData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["solidFragmentShader"] =
-            this.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
+            DVER.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
         this.material = new BABYLON.ShaderMaterial("solid", scene, "solid", {
             attributes: [
                 "position",
@@ -92,6 +89,8 @@ export class SolidMaterial {
         this.material.setFloat("sunLightLevel", 1);
         this.material.setFloat("baseLevel", 0.1);
         this.material.onBind = (mesh) => {
+            if (!this.material)
+                return;
             var effect = this.material.getEffect();
             if (!effect)
                 return;
@@ -99,10 +98,10 @@ export class SolidMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
         };
         this.updateMaterialSettings(settings);
-        this.renderManager.animationManager.registerMaterial("solid", this.material);
+        DVER.renderManager.animationManager.registerMaterial("solid", this.material);
         return this.material;
-    }
+    },
     overrideMaterial(material) {
         this.material = material;
-    }
-}
+    },
+};

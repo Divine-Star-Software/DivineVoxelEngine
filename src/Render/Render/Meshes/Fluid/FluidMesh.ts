@@ -1,12 +1,9 @@
 import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
-import { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
+import { FluidMaterial } from "../../Materials/Fluid/FluidMaterial.js";
 
-export class FluidMesh implements VoxelMeshInterface {
- constructor(private material: FluidMaterial) {}
+export const FluidMesh: VoxelMeshInterface = {
  async rebuildMeshGeometory(
   mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   aoColors: Float32Array,
@@ -28,7 +25,7 @@ export class FluidMesh implements VoxelMeshInterface {
   mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
   mesh.setVerticesData("colors", colors, false, 4);
   mesh.freezeWorldMatrix();
- }
+ },
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("fluid", scene);
@@ -36,12 +33,10 @@ export class FluidMesh implements VoxelMeshInterface {
   mesh.isPickable = false;
 
   return mesh;
- }
+ },
 
  async createMeshGeometory(
   mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   aoColors: Float32Array,
@@ -63,8 +58,8 @@ export class FluidMesh implements VoxelMeshInterface {
   mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
   mesh.setVerticesData("colors", colors, false, 4);
 
-  mesh.material = this.material.getMaterial();
+  mesh.material = FluidMaterial.getMaterial();
   mesh.freezeWorldMatrix();
   return mesh;
- }
-}
+ },
+};

@@ -1,52 +1,45 @@
-import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
-import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
-import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import type { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import { DVER } from "../DivineVoxelEngineRender.js";
 
-export class MeshManager {
- scene: BABYLON.Scene;
- runningUpdate = false;
+export const MeshManager = {
+ scene: <BABYLON.Scene | null>null,
+ runningUpdate: false,
 
- meshes: Record<VoxelSubstanceType, Record<string, BABYLON.Mesh>> = {
+ meshes: <Record<VoxelSubstanceType, Record<string, BABYLON.Mesh>>>{
   solid: {},
   transparent: {},
   flora: {},
   fluid: {},
   magma: {},
- };
+ },
 
- meshMakers: Record<VoxelSubstanceType, VoxelMeshInterface>;
+ meshMakers: <Record<VoxelSubstanceType, VoxelMeshInterface>>{},
 
- constructor(private DVER: DivineVoxelEngineRender) {
+ $INIT() {
   //@ts-ignore
   this.meshMakers = {
-   solid: this.DVER.renderManager.solidMesh,
-   transparent: this.DVER.renderManager.solidMesh,
-   fluid: this.DVER.renderManager.fluidMesh,
-   flora: this.DVER.renderManager.floraMesh,
-   magma: this.DVER.renderManager.magmaMesh,
+   solid: DVER.renderManager.solidMesh,
+   transparent: DVER.renderManager.solidMesh,
+   fluid: DVER.renderManager.fluidMesh,
+   flora: DVER.renderManager.floraMesh,
+   magma: DVER.renderManager.magmaMesh,
   };
- }
+ },
 
  setScene(scene: BABYLON.Scene) {
   this.scene = scene;
- }
+ },
 
- reStart() {}
+ reStart() {},
 
- handleUpdate(
-  type: VoxelSubstanceType,
-  chunkKey: string,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number,
-  data: any
- ) {
+ handleUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
   if (!this.meshes[type][chunkKey]) {
-   this._buildNewMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
+   this._buildNewMesh(type, chunkKey, data);
   } else {
-   this._updateMesh(type, chunkKey, chunkX, chunkY, chunkZ, data);
+   this._updateMesh(type, chunkKey, data);
   }
- }
+ },
 
  requestChunkBeRemoved(chunkKey: string) {
   for (const substance of Object.keys(this.meshes)) {
@@ -55,16 +48,10 @@ export class MeshManager {
     delete this.meshes[substance as VoxelSubstanceType][chunkKey];
    }
   }
- }
+ },
 
- async _updateMesh(
-  type: VoxelSubstanceType,
-  chunkKey: string,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number,
-  data: any
- ) {
+ async _updateMesh(type: VoxelSubstanceType, chunkKey: string, data: any) {
+  if (!this.scene) return;
   this.scene.unfreezeActiveMeshes();
   this.runningUpdate = true;
   const mesh = this.meshes[type][chunkKey];
@@ -78,8 +65,6 @@ export class MeshManager {
 
   this.meshMakers[type].rebuildMeshGeometory(
    mesh,
-   chunkX,
-   chunkZ,
    positions,
    indicies,
    aoColors,
@@ -91,16 +76,10 @@ export class MeshManager {
 
   this.runningUpdate = false;
   this.scene.freeActiveMeshes();
- }
+ },
 
- async _buildNewMesh(
-  type: VoxelSubstanceType,
-  chunkKey: string,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number,
-  data: any
- ) {
+ async _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, data: any) {
+  if (!this.scene) return;
   this.scene.unfreezeActiveMeshes();
   const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
   mesh.setEnabled(true);
@@ -115,8 +94,6 @@ export class MeshManager {
 
   this.meshMakers[type].createMeshGeometory(
    mesh,
-   chunkX,
-   chunkZ,
    positions,
    indicies,
    aoColors,
@@ -128,5 +105,5 @@ export class MeshManager {
   //chunkMesh.updateFacetData();
   this.meshes[type][chunkKey] = mesh;
   this.scene.freeActiveMeshes();
- }
-}
+ },
+};

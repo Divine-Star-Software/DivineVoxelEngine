@@ -16,8 +16,7 @@ import { SharedVertexShader } from "./Shaders/Shared/Vertex/VertexShader.js";
  *---
  * Helps construct raw text shaders.
  */
-export class ShaderBuilder {
-    constructor() { }
+export const ShaderBuilder = {
     buildFloraVertexSahder(uniformRegister = "", animationFunction = "") {
         return `
 ${floraShaders.vertexTop}
@@ -28,7 +27,7 @@ ${animationFunction}
 
 ${floraShaders.vertexMain}
 `;
-    }
+    },
     buildFluidVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
@@ -51,7 +50,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doNormals}
 `)}
 `;
-    }
+    },
     buildSolidVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
@@ -73,7 +72,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doNormals}
 `)}
 `;
-    }
+    },
     buildMagmaVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${magmaShaders.vertexTop}
@@ -84,7 +83,7 @@ ${animationFunction}
 
 ${magmaShaders.vertexMain}
 `;
-    }
+    },
     buildSolidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
@@ -100,7 +99,7 @@ ${SharedFragmentShader.doFog}
 ${CommonShader.getMainFunction(`
 ${solidShaders.fragMain}
 `)}`;
-    }
+    },
     buildFluidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
@@ -115,7 +114,7 @@ ${SharedFragmentShader.doFog}
 ${CommonShader.getMainFunction(`
 ${fluidShaders.fragMain}
 `)}`;
-    }
+    },
     buildFloraFragmentShader() {
         return `
 ${SharedFogFunctions.fogFragConstants}
@@ -128,7 +127,7 @@ ${SharedFogFunctions.fogFragFunction}
 
 ${floraShaders.fragMain}
 `;
-    }
+    },
     buildMagmaFragmentShader() {
         return `
 ${SharedFogFunctions.fogFragConstants}
@@ -141,7 +140,7 @@ ${SharedFogFunctions.fogFragFunction}
 
 ${magmaShaders.fragMain}
 `;
-    }
+    },
     getDefaultVertexShader(voxelSubstance, uniformRegister = "", animationFunction = "") {
         if (voxelSubstance == "magma") {
             return this.buildMagmaVertexShader(uniformRegister, animationFunction);
@@ -156,7 +155,7 @@ ${magmaShaders.fragMain}
             return this.buildSolidVertexShader(uniformRegister, animationFunction);
         }
         return "";
-    }
+    },
     getDefaultFragmentShader(voxelSubstance) {
         if (voxelSubstance == "solid") {
             return this.buildSolidFragmentShader();
@@ -172,4 +171,4 @@ ${magmaShaders.fragMain}
         }
         return "";
     }
-}
+};

@@ -42,7 +42,7 @@ export class Player {
  bottomRay: BABYLON.Ray;
  camRay: BABYLON.Ray;
 
- constructor(private DVER: DivineVoxelEngineRender) {}
+ constructor(private DVER: typeof DivineVoxelEngineRender) {}
 
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);
@@ -64,7 +64,7 @@ export class Player {
    playerPickPositionArrayBuffer,
    playerStatesArrayBuffer,
   ];
-  this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+  this.DVER.worldComm.sendMessage("connect-player", arrays);
  }
 
  calculateGameZone(positionX: number, positionZ: number) {
@@ -99,11 +99,9 @@ export class Player {
   this.playerDirectionArray[1] = direction.y;
   this.playerDirectionArray[2] = direction.z;
 
-
   this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
   this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
   this.playerCube.position.z = this.playerPickPosition[2] + 0.5;
-
 
   const x = Math.round(this.hitbox.position.x);
   //  const y = Math.floor(this.hitbox.position.y);
@@ -158,7 +156,6 @@ export class Player {
       return;
      }
      if (action == "place") {
-   
       let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
       normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
 
@@ -205,8 +202,6 @@ export class Player {
        return;
       }
      }
-
-
     }
    }
   }
@@ -374,19 +369,20 @@ export class Player {
   document.addEventListener("click", (event: MouseEvent) => {
    if (event.button == 2) {
     this._doAction("place");
-
-    this.DVER.worldComm.requestWorldUpdate(
-     "voxel-add",
-     this.blockLookingAtPosition
-    );
+    this.DVER.worldComm.sendMessage("voxel-add", [
+     this.blockLookingAtPosition.x,
+     this.blockLookingAtPosition.y,
+     this.blockLookingAtPosition.z,
+    ]);
    }
 
    if (event.button == 0) {
     this._doAction("break");
-    this.DVER.worldComm.requestWorldUpdate(
-     "voxel-remove",
-     this.blockLookingAtPosition
-    );
+    this.DVER.worldComm.sendMessage("voxel-remove", [
+     this.blockLookingAtPosition.x,
+     this.blockLookingAtPosition.y,
+     this.blockLookingAtPosition.z,
+    ]);
    }
   });
 

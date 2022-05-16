@@ -2,6 +2,7 @@ export async function BuildInitalMeshes(DVER, scene) {
     if (!DVER.textureManager.processedTextureData) {
         throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
     }
+    DVER.meshManager.$INIT();
     await DVER.renderManager.textureCreator.setUpImageCreation();
     DVER.meshManager.setScene(scene);
     const solidTextures = DVER.textureManager.processedTextureData.texturePaths.solid;

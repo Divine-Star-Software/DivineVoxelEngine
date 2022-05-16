@@ -1,8 +1,8 @@
-export class AnimationManager {
+export const AnimationManager = {
     //@ts-ignore
-    animatedMaterials = {};
-    animCount = 0;
-    animations = [];
+    animatedMaterials: {},
+    animCount: 0,
+    animations: [],
     /**# Register Animations
      * ---
      * Given the data from the texture creator it will generate
@@ -56,10 +56,10 @@ export class AnimationManager {
             uniformRegisterCode: uniformRegisterCode,
             animationFunctionCode: animationFunctionCode,
         };
-    }
+    },
     registerMaterial(voxelSubstanceType, material) {
         this.animatedMaterials[voxelSubstanceType] = material;
-    }
+    },
     startAnimations() {
         setInterval(() => {
             let i = this.animCount;
@@ -81,4 +81,4 @@ export class AnimationManager {
             }
         }, 50);
     }
-}
+};

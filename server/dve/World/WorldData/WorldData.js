@@ -129,14 +129,11 @@ export const WorldData = {
         if (!region) {
             return false;
         }
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        const chunk = chunks[chunkKey];
+        const chunk = this.getChunk(x, y, z);
         if (!chunk || chunk.isEmpty) {
             return false;
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         if (this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels)) {
             this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, 0);
         }
@@ -151,14 +148,11 @@ export const WorldData = {
         if (!region) {
             return false;
         }
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        const chunk = chunks[chunkKey];
+        const chunk = this.getChunk(x, y, z);
         if (!chunk || chunk.isEmpty) {
             return false;
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         return this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels);
     },
     setData(x, y, z, data) {
@@ -168,14 +162,11 @@ export const WorldData = {
         if (!region) {
             return -1;
         }
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        const chunk = chunks[chunkKey];
+        const chunk = this.getChunk(x, y, z);
         if (!chunk || chunk.isEmpty) {
             return -1;
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         return this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
     },
     getVoxel(x, y, z) {
@@ -262,8 +253,7 @@ export const WorldData = {
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         const data = voxelPaletteGetFunctions[
         //@ts-ignore
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
@@ -282,14 +272,11 @@ export const WorldData = {
         if (!region) {
             region = this.addRegion(x, y, z);
         }
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        let chunk = chunks[chunkKey];
+        let chunk = this.getChunk(x, y, z);
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
     },
     getChunk(x, y, z) {
@@ -330,14 +317,11 @@ export const WorldData = {
         if (!region) {
             region = this.addRegion(x, y, z);
         }
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        let chunk = chunks[chunkKey];
+        let chunk = this.getChunk(x, y, z);
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         const data = voxelPaletteGetFunctions[
         //@ts-ignore
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);

@@ -1,28 +1,26 @@
-import type { RenderManager } from "Render/Render/RenderManager";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { DVER } from "../../../DivineVoxelEngineRender.js";
 
-export class FluidMaterial {
- material: BABYLON.ShaderMaterial;
- context: CanvasRenderingContext2D;
-
- constructor(private renderManager: RenderManager) {}
+export const FluidMaterial = {
+ material: <BABYLON.ShaderMaterial | null>null,
+ context: <CanvasRenderingContext2D | null>null,
 
  getMaterial() {
   return this.material;
- }
+ },
 
  setSunLightLevel(level: number) {
   if (!this.material) {
    throw new Error("Material must be created first before it can be updated.");
   }
   this.material.setFloat("sunLightLevel", level);
- }
+ },
  setBaseLevel(level: number) {
   if (!this.material) {
    throw new Error("Material must be created first before it can be updated.");
   }
   this.material.setFloat("baseLevel", level);
- }
+ },
 
  updateMaterialSettings(settings: EngineSettingsData) {
   if (!this.material) {
@@ -48,7 +46,7 @@ export class FluidMaterial {
   } else {
    this.material.setFloat("doColor", 0.0);
   }
- }
+ },
 
  createMaterial(
   settings: EngineSettingsData,
@@ -57,20 +55,20 @@ export class FluidMaterial {
   animations: number[][],
   animationTimes: number[][]
  ): BABYLON.ShaderMaterial {
-  const animData = this.renderManager.animationManager.registerAnimations(
+  const animData = DVER.renderManager.animationManager.registerAnimations(
    "fluid",
    animations,
    animationTimes
   );
 
   BABYLON.Effect.ShadersStore["fluidVertexShader"] =
-   this.renderManager.shaderBuilder.getDefaultVertexShader(
+   DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "fluid",
     animData.uniformRegisterCode,
     animData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
-   this.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
+   DVER.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
   const shaderMaterial = new BABYLON.ShaderMaterial("fluid", scene, "fluid", {
    attributes: [
     "position",
@@ -123,7 +121,6 @@ export class FluidMaterial {
    //  effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-
   this.updateMaterialSettings(settings);
 
   let time = 0;
@@ -132,8 +129,8 @@ export class FluidMaterial {
    shaderMaterial.setFloat("time", time);
   });
 
-  this.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
+  DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
 
   return this.material;
- }
-}
+ },
+};

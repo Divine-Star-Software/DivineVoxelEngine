@@ -1,9 +1,6 @@
-export class SolidMesh {
-    material;
-    constructor(material) {
-        this.material = material;
-    }
-    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+import { SolidMaterial } from "../../Materials/Solid/SolidMaterial.js";
+export const SolidMesh = {
+    async rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
@@ -15,15 +12,15 @@ export class SolidMesh {
         mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
         mesh.setVerticesData("colors", colors, false, 4);
         mesh.freezeWorldMatrix();
-    }
+    },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("solid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
         mesh.checkCollisions = true;
         return mesh;
-    }
-    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    },
+    async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
@@ -34,8 +31,8 @@ export class SolidMesh {
         mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
         mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
         mesh.setVerticesData("colors", colors, false, 4);
-        mesh.material = this.material.getMaterial();
+        mesh.material = SolidMaterial.material;
         mesh.freezeWorldMatrix();
         return mesh;
     }
-}
+};

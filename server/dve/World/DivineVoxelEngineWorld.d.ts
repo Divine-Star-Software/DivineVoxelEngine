@@ -38,7 +38,6 @@ export declare const DVEW: {
         regionXSize: number;
         regionYSize: number;
         regionZSize: number;
-        regionTotalChunks: number;
         __regionPosition: {
             x: number;
             y: number;
@@ -54,7 +53,7 @@ export declare const DVEW: {
             y: number;
             z: number;
         };
-        syncBoundsWithFlat3DArray: (flat3dArray: {
+        syncBoundsWithFlat3DArray(flat3dArray: {
             bounds: {
                 x: number;
                 y: number;
@@ -71,24 +70,29 @@ export declare const DVEW: {
             delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-        }) => void;
-        setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-        setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-        getRegionPosition: (x: number, y: number, z: number) => {
+        }): void;
+        setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+        setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+        getRegionPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
             z: number;
         };
-        getChunkPosition: (x: number, y: number, z: number) => {
+        getChunkPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
             z: number;
         };
-        getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-        getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-        getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-        getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-        getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+        getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+        getChunkKeyFromPosition(x: number, y: number, z: number): string;
+        getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+        getRegionKeyFromPosition(x: number, y: number, z: number): string;
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getVoxelPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
             z: number;
@@ -165,7 +169,6 @@ export declare const DVEW: {
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
-            regionTotalChunks: number;
             __regionPosition: {
                 x: number;
                 y: number;
@@ -181,7 +184,7 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            syncBoundsWithFlat3DArray: (flat3dArray: {
+            syncBoundsWithFlat3DArray(flat3dArray: {
                 bounds: {
                     x: number;
                     y: number;
@@ -198,24 +201,29 @@ export declare const DVEW: {
                 delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            }) => void;
-            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            getRegionPosition: (x: number, y: number, z: number) => {
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkPosition: (x: number, y: number, z: number) => {
+            getChunkPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-            getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
@@ -268,7 +276,6 @@ export declare const DVEW: {
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
-            regionTotalChunks: number;
             __regionPosition: {
                 x: number;
                 y: number;
@@ -284,7 +291,7 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            syncBoundsWithFlat3DArray: (flat3dArray: {
+            syncBoundsWithFlat3DArray(flat3dArray: {
                 bounds: {
                     x: number;
                     y: number;
@@ -301,24 +308,29 @@ export declare const DVEW: {
                 delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            }) => void;
-            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            getRegionPosition: (x: number, y: number, z: number) => {
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkPosition: (x: number, y: number, z: number) => {
+            getChunkPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-            getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
@@ -550,7 +562,6 @@ export declare const DVEW: {
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
-            regionTotalChunks: number;
             __regionPosition: {
                 x: number;
                 y: number;
@@ -566,7 +577,7 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            syncBoundsWithFlat3DArray: (flat3dArray: {
+            syncBoundsWithFlat3DArray(flat3dArray: {
                 bounds: {
                     x: number;
                     y: number;
@@ -583,24 +594,29 @@ export declare const DVEW: {
                 delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            }) => void;
-            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            getRegionPosition: (x: number, y: number, z: number) => {
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkPosition: (x: number, y: number, z: number) => {
+            getChunkPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-            getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
@@ -651,7 +667,6 @@ export declare const DVEW: {
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
-            regionTotalChunks: number;
             __regionPosition: {
                 x: number;
                 y: number;
@@ -667,7 +682,7 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            syncBoundsWithFlat3DArray: (flat3dArray: {
+            syncBoundsWithFlat3DArray(flat3dArray: {
                 bounds: {
                     x: number;
                     y: number;
@@ -684,24 +699,29 @@ export declare const DVEW: {
                 delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            }) => void;
-            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            getRegionPosition: (x: number, y: number, z: number) => {
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkPosition: (x: number, y: number, z: number) => {
+            getChunkPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkKey: (chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-            getRegionKey: (regionPOS: import("../Meta/Util.types.js").PositionMatrix) => string;
-            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix) => {
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
@@ -723,16 +743,16 @@ export declare const DVEW: {
         threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
         _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
         registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
-        syncChunk(chunkX: number, chunkY: number, chunkZ: number): false | undefined;
-        syncChunkInThread(threadId: string, chunkX: number, chunkY: number, chunkZ: number): false | undefined;
-        releaseChunk(chunkX: number, chunkY: number, chunkZ: number): void;
-        releaseChunkInThread(threadId: string, chunkX: number, chunkY: number, chunkZ: number): void;
+        syncChunk(x: number, y: number, z: number): false | undefined;
+        syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        releaseChunk(x: number, y: number, z: number): void;
+        releaseChunkInThread(threadId: string, x: number, y: number, z: number): void;
         syncGlobalVoxelPalette(): void;
         syncGlobalVoxelPaletteInThread(threadId: string): void;
-        syncRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): false | undefined;
-        syncRegionVoxelPaletteInThread(threadId: string, regionX: number, regionY: number, regionZ: number): false | undefined;
-        releaseRegionVoxelPalette(regionX: number, regionY: number, regionZ: number): void;
-        releaseRegionVoxelPaletteInThread(threadId: string, regionX: number, regionY: number, regionZ: number): void;
+        syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
+        syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        releaseRegionVoxelPalette(x: number, y: number, z: number): void;
+        releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): void;
     };
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     voxelManager: {

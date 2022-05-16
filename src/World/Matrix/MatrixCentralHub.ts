@@ -1,4 +1,4 @@
-import { InterCommPortTypes } from "Meta/Comms/InterComm.types";
+import type { InterCommPortTypes } from "Meta/Comms/InterComm.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 
 /**# Matrix Thread Central Hub
@@ -72,67 +72,63 @@ export const MatrixCentralHub = {
   };
  },
 
- syncChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  const chunkSABs = DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);
+ syncChunk(x: number, y: number, z: number) {
+  const chunkSABs = DVEW.matrix.createChunkSAB(x, y, z);
   if (!chunkSABs) return false;
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "sync-chunk",
     chunkSABs[0],
     chunkSABs[1],
-    chunkX,
-    chunkY,
-    chunkZ,
+    x,
+    y,
+    z,
    ]);
   }
  },
 
- syncChunkInThread(
-  threadId: string,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number
- ) {
+ syncChunkInThread(threadId: string, x: number, y: number, z: number) {
   let chunkSABs: SharedArrayBuffer[] = [];
-
-  if (DVEW.matrix.isChunkInMatrix(chunkX, chunkY, chunkZ)) {
-   chunkSABs[0] = DVEW.matrix.loadedChunks[`${chunkX}-${chunkZ}-${chunkY}`];
-   chunkSABs[1] = DVEW.matrix.chunkStatesSAB[`${chunkX}-${chunkZ}-${chunkY}`];
+  if (DVEW.matrix.isChunkInMatrix(x, y, z)) {
+   const chunkKey = DVEW.worldBounds.getChunkKeyFromPosition(x, y, z);
+   chunkSABs[0] = DVEW.matrix.loadedChunks[chunkKey];
+   chunkSABs[1] = DVEW.matrix.chunkStatesSAB[chunkKey];
   } else {
-   const newChunkSAB = DVEW.matrix.createChunkSAB(chunkX, chunkY, chunkZ);
+   const newChunkSAB = DVEW.matrix.createChunkSAB(x, y, z);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
-
 
   this.threads[threadId].postMessage([
    "sync-chunk",
    chunkSABs[0],
    chunkSABs[1],
-   chunkX,
-   chunkY,
-   chunkZ,
+   x,
+   y,
+   z,
   ]);
  },
 
- releaseChunk(chunkX: number, chunkY: number, chunkZ: number) {
+ releaseChunk(x: number, y: number, z: number) {
+  const chunkPOS = DVEW.worldBounds.getChunkPosition(x, y, z);
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "release-chunk",
-    chunkX,
-    chunkY,
-    chunkZ,
+    chunkPOS.x,
+    chunkPOS.y,
+    chunkPOS.z,
    ]);
   }
  },
 
- releaseChunkInThread(
-  threadId: string,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number
- ) {
-  this.threads[threadId].postMessage(["release-chunk", chunkX, chunkY, chunkZ]);
+ releaseChunkInThread(threadId: string, x: number, y: number, z: number) {
+  const chunkPOS = DVEW.worldBounds.getChunkPosition(x, y, z);
+  this.threads[threadId].postMessage([
+   "release-chunk",
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z,
+  ]);
  },
 
  syncGlobalVoxelPalette() {
@@ -161,63 +157,67 @@ export const MatrixCentralHub = {
   ]);
  },
 
- syncRegionVoxelPalette(regionX: number, regionY: number, regionZ: number) {
-  const region = DVEW.worldData.getRegion(regionX, regionY, regionZ);
+ syncRegionVoxelPalette(x: number, y: number, z: number) {
+  const region = DVEW.worldData.getRegion(x, y, z);
   if (!region) return false;
   const regionVoxelPalette = region.palette;
   if (!regionVoxelPalette) return false;
+  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "sync-region-data",
     regionVoxelPalette,
-    regionX,
-    regionY,
-    regionZ,
+    regionPOS.x,
+    regionPOS.y,
+    regionPOS.z,
    ]);
   }
  },
 
  syncRegionVoxelPaletteInThread(
   threadId: string,
-  regionX: number,
-  regionY: number,
-  regionZ: number
+  x: number,
+  y: number,
+  z: number
  ) {
-  const region = DVEW.worldData.getRegion(regionX, regionY, regionZ);
+  const region = DVEW.worldData.getRegion(x, y, z);
   if (!region) return false;
   const regionVoxelPalette = region.palette;
   if (!regionVoxelPalette) return false;
+  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   this.threads[threadId].postMessage([
    "sync-region-data",
    regionVoxelPalette,
-   regionX,
-   regionY,
-   regionZ,
+   regionPOS.x,
+   regionPOS.y,
+   regionPOS.z,
   ]);
  },
 
- releaseRegionVoxelPalette(regionX: number, regionY: number, regionZ: number) {
+ releaseRegionVoxelPalette(x: number, y: number, z: number) {
+  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "release-region-palette",
-    regionX,
-    regionY,
-    regionZ,
+    regionPOS.x,
+    regionPOS.y,
+    regionPOS.z,
    ]);
   }
  },
 
  releaseRegionVoxelPaletteInThread(
   threadId: string,
-  regionX: number,
-  regionY: number,
-  regionZ: number
+  x: number,
+  y: number,
+  z: number
  ) {
+  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   this.threads[threadId].postMessage([
    "release-region-palette",
-   regionX,
-   regionY,
-   regionZ,
+   regionPOS.x,
+   regionPOS.y,
+   regionPOS.z,
   ]);
  },
 };

@@ -21,8 +21,8 @@ import { SharedVertexShader } from "./Shaders/Shared/Vertex/VertexShader.js";
  *---
  * Helps construct raw text shaders.
  */
-export class ShaderBuilder {
- constructor() {}
+export const ShaderBuilder =  {
+
 
  buildFloraVertexSahder(
   uniformRegister: string = "",
@@ -37,7 +37,7 @@ ${animationFunction}
 
 ${floraShaders.vertexMain}
 `;
- }
+ },
 
  buildFluidVertexShader(
   uniformRegister: string = "",
@@ -64,7 +64,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doNormals}
 `)}
 `;
- }
+ },
 
  buildSolidVertexShader(
   uniformRegister: string = "",
@@ -90,7 +90,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doNormals}
 `)}
 `;
- }
+ },
 
  buildMagmaVertexShader(
   uniformRegister: string = "",
@@ -105,7 +105,7 @@ ${animationFunction}
 
 ${magmaShaders.vertexMain}
 `;
- }
+ },
 
  buildSolidFragmentShader() {
   return `
@@ -122,7 +122,7 @@ ${SharedFragmentShader.doFog}
 ${CommonShader.getMainFunction(`
 ${solidShaders.fragMain}
 `)}`;
- }
+ },
 
  buildFluidFragmentShader() {
 return `
@@ -138,7 +138,7 @@ ${SharedFragmentShader.doFog}
 ${CommonShader.getMainFunction(`
 ${fluidShaders.fragMain}
 `)}`;
- }
+ },
 
  buildFloraFragmentShader() {
   return `
@@ -152,7 +152,7 @@ ${SharedFogFunctions.fogFragFunction}
 
 ${floraShaders.fragMain}
 `;
- }
+ },
 
  buildMagmaFragmentShader() {
   return `
@@ -166,7 +166,7 @@ ${SharedFogFunctions.fogFragFunction}
 
 ${magmaShaders.fragMain}
 `;
- }
+ },
 
  getDefaultVertexShader(
   voxelSubstance: VoxelSubstanceType,
@@ -186,7 +186,7 @@ ${magmaShaders.fragMain}
    return this.buildSolidVertexShader(uniformRegister, animationFunction);
   }
   return "";
- }
+ },
 
  getDefaultFragmentShader(voxelSubstance: VoxelSubstanceType) {
   if (voxelSubstance == "solid") {

@@ -1,33 +1,35 @@
+//types
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
-
+//objects
 import { Util } from "../Global/Util.helper.js";
-import { BuilderComm } from "./InterComms/Builders/BuilderComm.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { RenderManager } from "./Render/RenderManager.js";
-import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
-import { MeshManager } from "./Meshes/MeshManager.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
-import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
+import { MeshManager } from "./Meshes/MeshManager.js";
+import { RenderManager } from "./Render/RenderManager.js";
+//inter comms
+import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
+import { BuilderCommManager } from "./InterComms/Builders/BuilderCommManager.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
+//functions
+import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 
-export class DivineVoxelEngineRender {
- worldComm = new WorldComm(this);
- nexusComm = new NexusComm(this);
+export const DVER = {
+ worldBounds: Util.getWorldBounds(),
+ worldComm: WorldComm,
+ nexusComm: NexusComm,
+ builderCommManager: BuilderCommManager,
 
- engineSettings = EngineSettings;
- renderManager = new RenderManager();
- builderManager = new BuilderComm(this);
- meshManager = new MeshManager(this);
+ engineSettings: EngineSettings,
+ renderManager: RenderManager,
+ meshManager: MeshManager,
 
- textureManager = TextureManager;
+ textureManager: TextureManager,
 
- renderedEntites = new RenderedEntitesManager(this);
+ renderedEntites: RenderedEntitesManager,
 
- util = Util;
-
- constructor() {}
+ util: Util,
 
  _handleOptions() {
   const data = this.engineSettings.settings;
@@ -39,27 +41,32 @@ export class DivineVoxelEngineRender {
     );
    }
   }
- }
+ },
 
  _syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);
-  this.worldComm._syncSettings();
-  this.builderManager._syncSettings();
- }
+  const copy = this.engineSettings.getSettingsCopy();
+  this.worldComm.sendMessage("sync-settings", [copy]);
+  if (this.nexusComm.port) {
+   this.nexusComm.sendMessage("sync-settings", [copy]);
+  }
+  this.builderCommManager.syncSettings(copy);
+ },
 
  async reStart(data: EngineSettingsData): Promise<void> {
   this._syncSettings(data);
   this._handleOptions();
- }
+ },
 
  async $INIT(data: DVERInitData) {
   this.engineSettings.syncSettings(data);
   this._handleOptions();
 
   if (typeof data.worldWorker == "string") {
-   this.worldComm.createWorldWorker(data.worldWorker);
+   const worker = this.__createWorker(data.worldWorker);
+   this.worldComm.setPort(worker);
   } else if (data.worldWorker instanceof Worker) {
-   this.worldComm.setWorldWorker(data.worldWorker);
+   this.worldComm.setPort(data.worldWorker);
   } else {
    throw Error(
     "Supplied data for World Worker is not correct. Must be path to worker or a worker."
@@ -67,12 +74,12 @@ export class DivineVoxelEngineRender {
   }
 
   if (typeof data.builderWorker == "string") {
-   this.builderManager.createBuilderWorkers(data.builderWorker);
+   this.builderCommManager.createBuilders(data.builderWorker);
   } else if (
    Array.isArray(data.builderWorker) &&
    data.builderWorker[0] instanceof Worker
   ) {
-   this.builderManager.setBuilderWorkers(data.builderWorker);
+   this.builderCommManager.setBuilders(data.builderWorker);
   } else {
    throw Error(
     "Supplied data for Builder Workers is not correct. Must be path to worker or an array workers."
@@ -81,44 +88,50 @@ export class DivineVoxelEngineRender {
 
   if (data.nexusWorker && data.nexus?.enabled) {
    if (typeof data.nexusWorker == "string") {
-    this.nexusComm.createNexusWorker(data.nexusWorker);
+    const worker = this.__createWorker(data.nexusWorker);
+    this.nexusComm.setPort(worker);
    } else if (data.nexusWorker instanceof Worker) {
-    this.nexusComm.setNexusWorker(data.nexusWorker);
+    this.nexusComm.setPort(data.nexusWorker);
    } else {
     throw Error(
      "Supplied data for Nexus Worker is not correct. Must be path to worker or a worker."
     );
    }
+   this.nexusComm.$INIT();
   }
 
   this._syncSettings(data);
   this.textureManager.generateTexturesData();
-  for (const builder of this.builderManager.builders) {
-   builder.postMessage([
-    "sync-uv-texuture-data",
-    this.textureManager.uvTextureMap,
-   ]);
-  }
+  this.builderCommManager.$INIT();
 
   //terminate all workers
   window.addEventListener("beforeunload", () => {
-   for (const builder of this.builderManager.builders) {
-    builder.terminate();
+   for (const builder of this.builderCommManager.builders) {
+    //@ts-ignore
+    builder.port.terminate();
    }
-   this.worldComm.worker.terminate();
-   if (this.nexusComm.worker) {
-    this.nexusComm.worker.terminate();
+   //@ts-ignore
+   this.worldComm.port.terminate();
+   if (this.nexusComm.port) {
+    //@ts-ignore
+    this.nexusComm.port.terminate();
    }
   });
- }
+ },
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
   await BuildInitalMeshes(this, data.scene);
-  this.worldComm.start();
   if (this.engineSettings.settings.nexus?.enabled) {
    this.renderedEntites.setScene(data.scene);
   }
- }
-}
+  this.worldComm.sendMessage("start", []);
+ },
 
-export const DVER = new DivineVoxelEngineRender();
+ __createWorker(path: string) {
+  return new Worker(new URL(path, import.meta.url), {
+   type: "module",
+  });
+ },
+};
+
+export const DivineVoxelEngineRender =  DVER;

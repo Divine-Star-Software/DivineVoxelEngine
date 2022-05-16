@@ -13,32 +13,29 @@ import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
 import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
 import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
 
-export class RenderManager {
- shaderBuilder: ShaderBuilder = new ShaderBuilder();
- textureCreator: TextureCreator = new TextureCreator();
+export const RenderManager = {
+ shaderBuilder: ShaderBuilder,
+ textureCreator: TextureCreator,
+ animationManager: AnimationManager,
 
- animationManager: AnimationManager = new AnimationManager();
+ solidMaterial: SolidMaterial,
+ floraMaterial: FloraMaterial,
+ fluidMaterial: FluidMaterial,
+ magmaMaterial: MagmaMaterial,
 
- solidMaterial: SolidMaterial = new SolidMaterial(this);
- floraMaterial: FloraMaterial = new FloraMaterial(this);
- fluidMaterial: FluidMaterial = new FluidMaterial(this);
- magmaMaterial: MagmaMaterial = new MagmaMaterial(this);
+ solidMesh: SolidMesh,
+ floraMesh: FloraMesh,
+ fluidMesh: FluidMesh,
+ magmaMesh: MagmaMesh,
 
- solidMesh: SolidMesh = new SolidMesh(this.solidMaterial);
- floraMesh: FloraMesh = new FloraMesh(this.floraMaterial);
- fluidMesh: FluidMesh = new FluidMesh(this.fluidMaterial);
- magmaMesh: MagmaMesh = new MagmaMesh(this.magmaMaterial);
-
- constructor() {}
-
- reStart() {}
+ reStart() {},
 
  setSunLevel(level: number) {
   this.solidMaterial.setSunLightLevel(level);
   this.fluidMaterial.setSunLightLevel(level);
- }
+ },
  setBaseLevel(level: number) {
   this.solidMaterial.setBaseLevel(level);
   this.fluidMaterial.setBaseLevel(level);
- }
-}
+ },
+};

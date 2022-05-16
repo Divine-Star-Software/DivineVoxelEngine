@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
-export declare class AnimationManager {
+export declare const AnimationManager: {
     animatedMaterials: Record<VoxelSubstanceType, BABYLON.ShaderMaterial>;
     animCount: number;
     animations: {
@@ -27,4 +27,4 @@ export declare class AnimationManager {
     };
     registerMaterial(voxelSubstanceType: VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
     startAnimations(): void;
-}
+};

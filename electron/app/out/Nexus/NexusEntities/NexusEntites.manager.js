@@ -1,16 +1,13 @@
-export class NexusEntites {
-    DVEN;
-    entityTemplate = {};
-    loaedEntities = {
+import { DVEN } from "../DivineVoxelEngineNexus.js";
+export const NexusEntites = {
+    entityTemplate: {},
+    loaedEntities: {
         player: {},
         being: {},
         item: {},
         npc: {},
         util: {},
-    };
-    constructor(DVEN) {
-        this.DVEN = DVEN;
-    }
+    },
     registerEntity(id, entityData, nexusEntity) {
         if (this.entityTemplate[id]) {
             throw new Error(`The entity with the ${id} already exists.`);
@@ -19,16 +16,16 @@ export class NexusEntites {
             template: nexusEntity,
             data: entityData,
         };
-    }
+    },
     _getID() {
         return `${this._unqiueId()}-${this._unqiueId()}`;
-    }
+    },
     _unqiueId() {
         return Math.floor((1 + Math.random()) * 0x1000000).toString(16);
-    }
+    },
     _generateUUI() {
         return this._getID();
-    }
+    },
     spawnEntity(entityId, position, otherData, identiferId) {
         const entity = this.entityTemplate[entityId];
         const newEntity = new entity.template();
@@ -39,7 +36,7 @@ export class NexusEntites {
         newEntity.position[0] = position.x;
         newEntity.position[1] = position.y;
         newEntity.position[2] = position.z;
-        newEntity.$INIT(this.DVEN, entity.data, otherData);
+        newEntity.$INIT(DVEN, entity.data, otherData);
         let uuid = "";
         if (identiferId) {
             uuid = identiferId;
@@ -49,21 +46,18 @@ export class NexusEntites {
         }
         this.loaedEntities[entity.data.type][uuid] = newEntity;
         newEntity.onSpawn();
-        this.DVEN.renderComm.sendMessage("spawn-entity", [
+        DVEN.renderComm.sendMessage("spawn-entity", [
             entityId,
             identiferId,
             positionSAB,
             statesSAB,
         ]);
-    }
+    },
     ddSepawnEntity(entityId, identiferId) {
         const entity = this.entityTemplate[entityId];
         const despawningEntity = this.loaedEntities[entity.data.type][identiferId];
         despawningEntity.onDeSpawn();
         delete this.loaedEntities[entity.data.type][identiferId];
-        this.DVEN.renderComm.sendMessage("de-spawn-entity", [
-            entityId,
-            identiferId,
-        ]);
-    }
-}
+        DVEN.renderComm.sendMessage("de-spawn-entity", [entityId, identiferId]);
+    },
+};

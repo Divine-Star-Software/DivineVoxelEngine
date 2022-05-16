@@ -235,7 +235,7 @@ export const WorldMatrix = {
  setData(x: number, y: number, z: number, data: number) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return false;
-  const voxelPOS = this.worldBounds.getVoxelPosition(
+  const voxelPOS = this.worldBounds.getVoxelPositionFromChunkPosition(
    x,
    y,
    z,
@@ -253,7 +253,7 @@ export const WorldMatrix = {
  getData(x: number, y: number, z: number) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return -1;
-  const voxelPOS = this.worldBounds.getVoxelPosition(
+  const voxelPOS = this.worldBounds.getVoxelPositionFromChunkPosition(
    x,
    y,
    z,

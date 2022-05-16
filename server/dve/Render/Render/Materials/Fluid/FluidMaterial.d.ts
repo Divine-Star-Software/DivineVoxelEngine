@@ -1,14 +1,11 @@
 /// <reference types="babylonjs" />
-import type { RenderManager } from "Render/Render/RenderManager";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
-export declare class FluidMaterial {
-    private renderManager;
-    material: BABYLON.ShaderMaterial;
-    context: CanvasRenderingContext2D;
-    constructor(renderManager: RenderManager);
-    getMaterial(): BABYLON.ShaderMaterial;
+export declare const FluidMaterial: {
+    material: BABYLON.ShaderMaterial | null;
+    context: CanvasRenderingContext2D | null;
+    getMaterial(): BABYLON.ShaderMaterial | null;
     setSunLightLevel(level: number): void;
     setBaseLevel(level: number): void;
     updateMaterialSettings(settings: EngineSettingsData): void;
     createMaterial(settings: EngineSettingsData, scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
-}
+};

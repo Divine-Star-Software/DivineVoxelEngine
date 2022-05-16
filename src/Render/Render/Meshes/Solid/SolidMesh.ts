@@ -1,12 +1,9 @@
-import type { SolidMaterial } from "Render/Render/Materials/Solid/SolidMaterial";
-import { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import type { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import { SolidMaterial } from "../../Materials/Solid/SolidMaterial.js";
 
-export class SolidMesh implements VoxelMeshInterface {
- constructor(private material: SolidMaterial) {}
+export const SolidMesh : VoxelMeshInterface  = {
  async rebuildMeshGeometory(
   mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   aoColors: Float32Array,
@@ -28,7 +25,7 @@ export class SolidMesh implements VoxelMeshInterface {
   mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
   mesh.setVerticesData("colors", colors, false, 4);
   mesh.freezeWorldMatrix();
- }
+ },
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("solid", scene);
@@ -37,12 +34,10 @@ export class SolidMesh implements VoxelMeshInterface {
   mesh.checkCollisions = true;
 
   return mesh;
- }
+ },
 
  async createMeshGeometory(
   mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkZ: number,
   positions: Float32Array,
   indicies: Int32Array,
   aoColors: Float32Array,
@@ -64,7 +59,7 @@ export class SolidMesh implements VoxelMeshInterface {
   mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
   mesh.setVerticesData("colors", colors, false, 4);
 
-  mesh.material = this.material.getMaterial();
+  mesh.material = SolidMaterial.material;
   mesh.freezeWorldMatrix();
   return mesh;
  }

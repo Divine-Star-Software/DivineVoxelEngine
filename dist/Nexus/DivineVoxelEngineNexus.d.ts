@@ -1,9 +1,7 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { EngineSettingsData } from "Meta/index.js";
-import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
-declare class DivineVoxelEngineNexusClass {
+export declare const DVEN: {
+    environment: "browser" | "node";
     engineSettings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -42,7 +40,6 @@ declare class DivineVoxelEngineNexusClass {
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
-            regionTotalChunks: number;
             __regionPosition: {
                 x: number;
                 y: number;
@@ -58,7 +55,7 @@ declare class DivineVoxelEngineNexusClass {
                 y: number;
                 z: number;
             };
-            syncBoundsWithFlat3DArray: (flat3dArray: {
+            syncBoundsWithFlat3DArray(flat3dArray: {
                 bounds: {
                     x: number;
                     y: number;
@@ -75,24 +72,29 @@ declare class DivineVoxelEngineNexusClass {
                 delete(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("Meta/index.js").PositionMatrix;
-            }) => void;
-            setChunkBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            setRegionBounds: (pow2X: number, pow2Y: number, pow2Z: number) => void;
-            getRegionPosition: (x: number, y: number, z: number) => {
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkPosition: (x: number, y: number, z: number) => {
+            getChunkPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
             };
-            getChunkKey: (chunkPOS: import("Meta/index.js").PositionMatrix) => string;
-            getChunkKeyFromPosition: (x: number, y: number, z: number) => string;
-            getRegionKey: (regionPOS: import("Meta/index.js").PositionMatrix) => string;
-            getRegionKeyFromPosition: (x: number, y: number, z: number) => string;
-            getVoxelPosition: (x: number, y: number, z: number, chunkPOS: import("Meta/index.js").PositionMatrix) => {
+            getChunkKey(chunkPOS: import("Meta/index.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("Meta/index.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
@@ -169,10 +171,27 @@ declare class DivineVoxelEngineNexusClass {
         _releaseRegionVoxelPalette(data: any[]): void;
         _setThreadName(data: any[]): void;
     };
-    worldComm: WorldComm;
-    renderComm: RenderComm;
-    nexusEntites: NexusEntites;
+    __connectedToWorld: boolean;
+    worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
+    nexusEntites: {
+        entityTemplate: Record<string, {
+            template: import("Meta/index.js").NexusEntity;
+            data: import("Meta/index.js").NexusEntityData;
+        }>;
+        loaedEntities: Record<import("Meta/index.js").EntityTypes, Record<string, import("Meta/index.js").NexusEntityInterface>>;
+        registerEntity(id: string, entityData: import("Meta/index.js").NexusEntityData, nexusEntity: import("Meta/index.js").NexusEntity): void;
+        _getID(): string;
+        _unqiueId(): string;
+        _generateUUI(): string;
+        spawnEntity(entityId: string, position: import("Meta/index.js").PositionMatrix, otherData?: any, identiferId?: string | undefined): void;
+        ddSepawnEntity(entityId: string, identiferId: string): void;
+    };
     $INIT(data: DVENInitData): Promise<void>;
+    isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.
@@ -182,7 +201,5 @@ declare class DivineVoxelEngineNexusClass {
      * Remve a chunk in the shared nexus thread.
      */
     releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number): void;
-}
-export declare type DivineVoxelEngineNexus = DivineVoxelEngineNexusClass;
-export declare const DVEN: DivineVoxelEngineNexusClass;
-export {};
+};
+export declare type DivineVoxelEngineNexus = typeof DVEN;

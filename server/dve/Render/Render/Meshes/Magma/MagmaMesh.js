@@ -1,9 +1,6 @@
-export class MagmaMesh {
-    material;
-    constructor(material) {
-        this.material = material;
-    }
-    rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+import { MagmaMaterial } from "../../Materials/Magma/MagmaMaterial.js";
+export const MagmaMesh = {
+    rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
@@ -15,14 +12,14 @@ export class MagmaMesh {
         mesh.setVerticesData("cuv3", uvs, false, 3);
         mesh.setVerticesData("colors", aoColors, false, 4);
         mesh.freezeWorldMatrix();
-    }
+    },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("magma", scene);
         mesh.alphaIndex = 0;
         mesh.checkCollisions = false;
         return mesh;
-    }
-    createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    },
+    createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         const calculatedNormals = [];
         BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
@@ -31,8 +28,8 @@ export class MagmaMesh {
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("cuv3", uvs, false, 3);
         mesh.setVerticesData("colors", aoColors, false, 4);
-        mesh.material = this.material.getMaterial();
+        mesh.material = MagmaMaterial.getMaterial();
         mesh.freezeWorldMatrix();
         return mesh;
-    }
-}
+    },
+};

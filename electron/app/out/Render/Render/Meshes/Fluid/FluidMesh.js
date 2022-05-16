@@ -1,9 +1,6 @@
-export class FluidMesh {
-    material;
-    constructor(material) {
-        this.material = material;
-    }
-    async rebuildMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+import { FluidMaterial } from "../../Materials/Fluid/FluidMaterial.js";
+export const FluidMesh = {
+    async rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
@@ -15,14 +12,14 @@ export class FluidMesh {
         mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
         mesh.setVerticesData("colors", colors, false, 4);
         mesh.freezeWorldMatrix();
-    }
+    },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("fluid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
         return mesh;
-    }
-    async createMeshGeometory(mesh, chunkX, chunkZ, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    },
+    async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
@@ -33,8 +30,8 @@ export class FluidMesh {
         mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
         mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
         mesh.setVerticesData("colors", colors, false, 4);
-        mesh.material = this.material.getMaterial();
+        mesh.material = FluidMaterial.getMaterial();
         mesh.freezeWorldMatrix();
         return mesh;
-    }
-}
+    },
+};

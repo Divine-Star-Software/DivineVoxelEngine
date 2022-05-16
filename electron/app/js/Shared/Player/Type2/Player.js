@@ -55,7 +55,7 @@ export class Player {
             playerPickPositionArrayBuffer,
             playerStatesArrayBuffer,
         ];
-        this.DVER.worldComm.getWorker().postMessage(["connect-player", ...arrays]);
+        this.DVER.worldComm.sendMessage("connect-player", arrays);
     }
     calculateGameZone(positionX, positionZ) {
         const chunkpositionX = (positionX >> 4) << 4;
@@ -153,9 +153,9 @@ export class Player {
         this.playerDirectionArray[2] = direction.z;
         // this._getDirection(direction);
         /*
-          this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
-          this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
-          this.playerCube.position.z = this.playerPickPosition[2] + 0.5; */
+        this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
+        this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
+        this.playerCube.position.z = this.playerPickPosition[2] + 0.5; */
         // console.log(this.camera.getDirection(this.forward));
         const x = Math.round(this.hitbox.position.x);
         //  const y = Math.floor(this.hitbox.position.y);
@@ -266,8 +266,7 @@ export class Player {
         cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
         this.playerCube = cube;
     }
-    _setUpPlayerCamera() {
-    }
+    _setUpPlayerCamera() { }
     async _createParticleSystem(scene) {
         const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
         this.particleSystem = particleSystem;
@@ -321,16 +320,7 @@ export class Player {
         camNode.parent = this.hitbox;
         this._setUpPlayerCube();
         this._setUpPlayerCamera();
-        document.addEventListener("click", (event) => {
-            if (event.button == 2) {
-                this._doAction("place");
-                this.DVER.worldComm.requestWorldUpdate("voxel-add", this.blockLookingAtPosition);
-            }
-            if (event.button == 0) {
-                this._doAction("break");
-                this.DVER.worldComm.requestWorldUpdate("voxel-remove", this.blockLookingAtPosition);
-            }
-        });
+        document.addEventListener("click", (event) => { });
         document.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "1":

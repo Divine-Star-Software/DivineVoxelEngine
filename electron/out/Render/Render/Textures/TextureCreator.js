@@ -1,11 +1,11 @@
-export class TextureCreator {
-    context;
-    imgWidth = 16;
-    imgHeight = 16;
+export const TextureCreator = {
+    context: null,
+    imgWidth: 16,
+    imgHeight: 16,
     defineTextureDimensions(width, height) {
         this.imgWidth = width;
         this.imgHeight = height;
-    }
+    },
     setUpImageCreation() {
         const TwoDcanvas = document.createElement("canvas");
         const context = TwoDcanvas.getContext("2d");
@@ -13,8 +13,12 @@ export class TextureCreator {
             throw new Error("Context did not load for texture creation.");
         }
         this.context = context;
-    }
-    async createMaterialTexture(scene, images, width = this.imgWidth, height = this.imgHeight) {
+    },
+    async createMaterialTexture(scene, images, width = -1, height = -1) {
+        if (width == -1)
+            width = this.imgWidth;
+        if (height == -1)
+            height = this.imgHeight;
         const resolvedImages = [];
         //create blank fill to pad image array buffer
         let index = 0;
@@ -40,22 +44,28 @@ export class TextureCreator {
         const combinedImages = this._combineImageData(totalLength, resolvedImages);
         const _2DTextureArray = new BABYLON.RawTexture2DArray(combinedImages, width, height, images.length + 2, BABYLON.Engine.TEXTUREFORMAT_RGBA, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
         return _2DTextureArray;
-    }
+    },
     _loadImages(imgPath, width, height) {
         const self = this;
+        if (!self.context) {
+            throw new Error("Context is not set for texture creation.");
+        }
         const prom = new Promise((resolve) => {
             const loadedImage = new Image();
             loadedImage.src = imgPath;
             loadedImage.onload = function () {
+                //@ts-ignore
                 self.context.drawImage(loadedImage, 0, 0, width, height);
+                //@ts-ignore
                 const imgData = self.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
                 //import to clear the canvas before re-rendering another image
+                //@ts-ignore
                 self.context.clearRect(0, 0, width, height);
             };
         });
         return prom;
-    }
+    },
     _combineImageData(totalLength, arrays) {
         const combinedImagedata = new Uint8ClampedArray(totalLength);
         const length = arrays[0].length;
@@ -65,19 +75,29 @@ export class TextureCreator {
             combinedImagedata.set(array, previousArrayIndex);
         }
         return combinedImagedata;
-    }
-    getTextureBuffer(imgPath, width = this.imgWidth, height = this.imgHeight) {
+    },
+    getTextureBuffer(imgPath, width = -1, height = -1) {
         const self = this;
+        if (width == -1)
+            width = this.imgWidth;
+        if (height == -1)
+            height = this.imgHeight;
+        if (!self.context) {
+            throw new Error("Context is not set for texture creation.");
+        }
         const prom = new Promise((resolve) => {
             const loadedImage = new Image();
             loadedImage.src = imgPath;
             loadedImage.onload = function () {
+                //@ts-ignore
                 self.context.drawImage(loadedImage, 0, 0, width, height);
+                //@ts-ignore
                 const imgData = self.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
+                //@ts-ignore
                 self.context.clearRect(0, 0, width, height);
             };
         });
         return prom;
     }
-}
+};

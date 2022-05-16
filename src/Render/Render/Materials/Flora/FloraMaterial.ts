@@ -1,14 +1,39 @@
-import type { RenderManager } from "Render/Render/RenderManager";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { DVER } from "../../../DivineVoxelEngineRender.js";
 
-export class FloraMaterial {
- material: BABYLON.ShaderMaterial;
- context: CanvasRenderingContext2D;
-
- constructor(private renderManager: RenderManager) {}
+export const FloraMaterial = {
+ material: <BABYLON.ShaderMaterial | null>null,
+ context: <CanvasRenderingContext2D | null>null,
 
  getMaterial() {
   return this.material;
- }
+ },
+
+ updateMaterialSettings(settings: EngineSettingsData) {
+  if (!this.material) {
+   throw new Error("Material must be created first before it can be updated.");
+  }
+  if (settings.lighting?.doAO) {
+   this.material.setFloat("doAO", 1.0);
+  } else {
+   this.material.setFloat("doAO", 0.0);
+  }
+  if (settings.lighting?.doSunLight) {
+   this.material.setFloat("doSun", 1.0);
+  } else {
+   this.material.setFloat("doSun", 0.0);
+  }
+  if (settings.lighting?.doRGBLight) {
+   this.material.setFloat("doRGB", 1.0);
+  } else {
+   this.material.setFloat("doRGB", 0.0);
+  }
+  if (settings.voxels?.doColors) {
+   this.material.setFloat("doColor", 1.0);
+  } else {
+   this.material.setFloat("doColor", 0.0);
+  }
+ },
 
  createMaterial(
   scene: BABYLON.Scene,
@@ -16,20 +41,20 @@ export class FloraMaterial {
   animations: number[][],
   animationTimes: number[][]
  ): BABYLON.ShaderMaterial {
-  const animData = this.renderManager.animationManager.registerAnimations(
+  const animData = DVER.renderManager.animationManager.registerAnimations(
    "flora",
    animations,
    animationTimes
   );
 
   BABYLON.Effect.ShadersStore["floraVertexShader"] =
-   this.renderManager.shaderBuilder.getDefaultVertexShader(
+   DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "flora",
     animData.uniformRegisterCode,
     animData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["floraFragmentShader"] =
-   this.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
+   DVER.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
 
   const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
    attributes: ["position", "normal", "cuv3", "colors"],
@@ -76,8 +101,6 @@ export class FloraMaterial {
    effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-
-
   let time = 0;
   scene.registerBeforeRender(function () {
    time += 0.08;
@@ -86,10 +109,8 @@ export class FloraMaterial {
 
   this.material = shaderMaterial;
 
-  this.renderManager.animationManager.registerMaterial("magma",shaderMaterial);
+  DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
 
   return this.material;
- }
-
-
-}
+ },
+};

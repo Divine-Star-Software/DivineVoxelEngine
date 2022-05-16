@@ -3,8 +3,6 @@
 export interface VoxelMeshInterface {
     rebuildMeshGeometory(
         chunkMesh: BABYLON.Mesh,
-        chunkX: number,
-        chunkZ: number,
         positions: Float32Array,
         indicies: Int32Array,
         aoColors: Float32Array,
@@ -19,8 +17,6 @@ export interface VoxelMeshInterface {
        
        createMeshGeometory(
         mesh: BABYLON.Mesh,
-        chunkX: number,
-        chunkZ: number,
         positions: Float32Array,
         indicies: Int32Array,
         aoColors: Float32Array,

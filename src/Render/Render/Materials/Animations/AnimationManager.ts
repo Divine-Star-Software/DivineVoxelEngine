@@ -1,12 +1,12 @@
 import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 
-export class AnimationManager {
+export const AnimationManager  = {
  //@ts-ignore
- animatedMaterials: Record<VoxelSubstanceType, BABYLON.ShaderMaterial> = {};
+ animatedMaterials: <Record<VoxelSubstanceType, BABYLON.ShaderMaterial>>  {},
 
- animCount = 0;
+ animCount :0,
 
- animations: {
+ animations: <{
   uniformShaderId: string;
   keys: number[];
   currentFrame: number;
@@ -14,7 +14,7 @@ export class AnimationManager {
   keyCounts: number[];
 
   substance: VoxelSubstanceType;
- }[] = [];
+ }[]>  [],
 
  /**# Register Animations
   * ---
@@ -80,14 +80,14 @@ export class AnimationManager {
    uniformRegisterCode: uniformRegisterCode,
    animationFunctionCode: animationFunctionCode,
   };
- }
+ },
 
  registerMaterial(
   voxelSubstanceType: VoxelSubstanceType,
   material: BABYLON.ShaderMaterial
  ) {
   this.animatedMaterials[voxelSubstanceType] = material;
- }
+ },
 
  startAnimations() {
   setInterval(() => {

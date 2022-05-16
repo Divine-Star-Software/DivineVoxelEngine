@@ -1,24 +1,20 @@
-/**# Render Comm
- * ---
- * Handles communication with the main/render thread.
- */
-export class RenderComm {
-    port = self;
-    messageFunctions = {};
-    $INIT() { }
-    _onMessage(event) {
-        const message = event.data[0];
-        if (this.messageFunctions[message]) {
-            this.messageFunctions[message](event.data, event);
-        }
-    }
-    sendMessage(message, data, transfers) {
-        if (transfers) {
-            this.port.postMessage([message, ...data], transfers);
-        }
-        this.port.postMessage([message, ...data]);
-    }
-    listenForMessage(message, run) {
-        this.messageFunctions[message] = run;
-    }
-}
+import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { DVEN } from "../../DivineVoxelEngineNexus.js";
+const renderCommBase = {
+    onReady: () => { },
+    onRestart: () => { },
+};
+const renderComm = CreateInterComm("nexus-render", renderCommBase);
+export const RenderComm = renderComm;
+renderComm.messageFunctions = {
+    "connect-world": (data, event) => {
+        if (!event)
+            return;
+        const port = event.ports[0];
+        DVEN.worldComm.setPort(port);
+    },
+    "sync-settings": (data, event) => {
+        const settings = data[1];
+        DVEN.syncSettings(settings);
+    },
+};
