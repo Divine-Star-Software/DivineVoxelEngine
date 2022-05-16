@@ -9,7 +9,7 @@ export const ShapeManager = {
     },
     getShape(shapeId) {
         if (!this.shapes[shapeId]) {
-            console.error(`%${shapeId} does not exists.`);
+            throw new Error(`%${shapeId} does not exists.`);
         }
         return this.shapes[shapeId];
     },

@@ -6,6 +6,24 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  */
 export declare const DVEW: {
     environment: "browser" | "node";
+    _3dFlatArray: {
+        bounds: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        _position: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        setBounds(x: number, y: number, z: number): void;
+        getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+        setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+        delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+        getIndex(x: number, y: number, z: number): number;
+        getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+    };
     worldBounds: {
         chunkXPow2: number;
         chunkYPow2: number;
@@ -236,135 +254,6 @@ export declare const DVEW: {
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
     };
     worldGeneration: {
-        chunkDataHelper: {
-            lightByte: {
-                getS(value: number): number;
-                getR(value: number): number;
-                getG(value: number): number;
-                getB(value: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
-                isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                getMinusOneForRGB(sl: number): number;
-                removeRGBLight(sl: number): number;
-                getFullSunLight(sl: number): number;
-                isLessThanForSunAdd(n1: number, n2: number): boolean;
-                isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                getSunLightForUnderVoxel(currentVoxel: number): number;
-                getMinusOneForSun(sl: number): number;
-                isLessThanForSunRemove(n1: number, sl: number): boolean;
-                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                removeSunLight(sl: number): number;
-            };
-            _3dArray: {
-                bounds: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                _position: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            };
-            syncChunkBounds(): void;
-            fillWithAir(chunk: import("../Meta/index.js").ChunkData): void;
-            createHeightMap(chunk: import("../Meta/index.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
-        };
-        illumantionManager: {
-            lightByte: {
-                getS(value: number): number;
-                getR(value: number): number;
-                getG(value: number): number;
-                getB(value: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
-                isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                getMinusOneForRGB(sl: number): number;
-                removeRGBLight(sl: number): number;
-                getFullSunLight(sl: number): number;
-                isLessThanForSunAdd(n1: number, n2: number): boolean;
-                isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                getSunLightForUnderVoxel(currentVoxel: number): number;
-                getMinusOneForSun(sl: number): number;
-                isLessThanForSunRemove(n1: number, sl: number): boolean;
-                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                removeSunLight(sl: number): number;
-            };
-            voxelByte: {
-                setId(id: number, value: number): number;
-                getId(value: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-            };
-            _3dArray: {
-                bounds: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                _position: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            };
-            air: number[];
-            runSunLightUpdateAt: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
-            runSunLightUpdate: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightUpdate;
-            runSunLightRemove: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightRemove;
-            runSunLightRemoveAt: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
-            runRGBFloodFillAt: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
-            runRGBFloodFill: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
-            runRGBFloodRemoveAt: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemoveAt;
-            runRGBFloodRemove: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
-            _RGBlightUpdateQue: number[][];
-            _RGBlightRemovalQue: number[][];
-            _sunLightUpdateQue: number[][];
-            _sunLightRemoveQue: number[][];
-            syncChunkBounds(): void;
-            addChunkToSunLightUpdate(chunk: import("../Meta/index.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
-            populateChunkAirWithInitlSunLight(chunk: import("../Meta/index.js").ChunkData): void;
-        };
-        voxelPalette: {
-            globalVoxelPaletteIndex: number;
-            perRegionVoxelRecord: Record<string, string[]>;
-            globalVoxelPalette: Record<number, string>;
-            globalVoxelPaletteMap: Record<string, number>;
-            globalVoxelPaletteRecord: Record<string, string[]>;
-            getVoxelPaletteIdFromGlobalPalette(voxelTrueId: string, voxelStateId: string): number;
-            getVoxelDataFromGlobalPalette(voxelId: number): string[];
-            registerVoxelForGlobalPalette(voxel: import("../Meta/index.js").VoxelData): void;
-            registerVoxelForPerRegionVoxelPalette(voxel: import("../Meta/index.js").VoxelData): void;
-            getGlobalVoxelPalette(): Record<number, string>;
-            getGlobalVoxelPaletteRecord(): Record<string, string[]>;
-            getVoxelDataFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: number): false | string[];
-            getVoxelPaletteIdFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number | false;
-            addToRegionsVoxelPalette(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number;
-        };
         worldBounds: {
             chunkXPow2: number;
             chunkYPow2: number;
@@ -441,9 +330,136 @@ export declare const DVEW: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
+        chunkDataHelper: {
+            lightByte: {
+                getS(value: number): number;
+                getR(value: number): number;
+                getG(value: number): number;
+                getB(value: number): number;
+                decodeLightFromVoxelData(voxelData: number): number;
+                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+                setLightValues(values: number[]): number;
+                getLightValues(value: number): number[];
+                isLessThanForRGBRemove(n1: number, n2: number): boolean;
+                isLessThanForRGBAdd(n1: number, n2: number): boolean;
+                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+                getMinusOneForRGB(sl: number): number;
+                removeRGBLight(sl: number): number;
+                getFullSunLight(sl: number): number;
+                isLessThanForSunAdd(n1: number, n2: number): boolean;
+                isLessThanForSunAddDown(n1: number, n2: number): boolean;
+                getSunLightForUnderVoxel(currentVoxel: number): number;
+                getMinusOneForSun(sl: number): number;
+                isLessThanForSunRemove(n1: number, sl: number): boolean;
+                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+                removeSunLight(sl: number): number;
+            };
+            _3dArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            };
+            fillWithAir(chunk: import("../Meta/index.js").ChunkData): void;
+            createHeightMap(chunk: import("../Meta/index.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
+        };
+        illumantionManager: {
+            lightByte: {
+                getS(value: number): number;
+                getR(value: number): number;
+                getG(value: number): number;
+                getB(value: number): number;
+                decodeLightFromVoxelData(voxelData: number): number;
+                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+                setLightValues(values: number[]): number;
+                getLightValues(value: number): number[];
+                isLessThanForRGBRemove(n1: number, n2: number): boolean;
+                isLessThanForRGBAdd(n1: number, n2: number): boolean;
+                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+                getMinusOneForRGB(sl: number): number;
+                removeRGBLight(sl: number): number;
+                getFullSunLight(sl: number): number;
+                isLessThanForSunAdd(n1: number, n2: number): boolean;
+                isLessThanForSunAddDown(n1: number, n2: number): boolean;
+                getSunLightForUnderVoxel(currentVoxel: number): number;
+                getMinusOneForSun(sl: number): number;
+                isLessThanForSunRemove(n1: number, sl: number): boolean;
+                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+                removeSunLight(sl: number): number;
+            };
+            voxelByte: {
+                setId(id: number, value: number): number;
+                getId(value: number): number;
+                decodeLightFromVoxelData(voxelData: number): number;
+                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            };
+            _3dArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                delete(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            };
+            air: number[];
+            runSunLightUpdateAt: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
+            runSunLightUpdate: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightUpdate;
+            runSunLightRemove: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightRemove;
+            runSunLightRemoveAt: typeof import("./WorldGenration/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
+            runRGBFloodFillAt: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
+            runRGBFloodFill: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
+            runRGBFloodRemoveAt: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemoveAt;
+            runRGBFloodRemove: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
+            _RGBlightUpdateQue: number[][];
+            _RGBlightRemovalQue: number[][];
+            _sunLightUpdateQue: number[][];
+            _sunLightRemoveQue: number[][];
+            addChunkToSunLightUpdate(chunk: import("../Meta/index.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
+            populateChunkAirWithInitlSunLight(chunk: import("../Meta/index.js").ChunkData): void;
+        };
+        voxelPalette: {
+            globalVoxelPaletteIndex: number;
+            perRegionVoxelRecord: Record<string, string[]>;
+            globalVoxelPalette: Record<number, string>;
+            globalVoxelPaletteMap: Record<string, number>;
+            globalVoxelPaletteRecord: Record<string, string[]>;
+            getVoxelPaletteIdFromGlobalPalette(voxelTrueId: string, voxelStateId: string): number;
+            getVoxelDataFromGlobalPalette(voxelId: number): string[];
+            registerVoxelForGlobalPalette(voxel: import("../Meta/index.js").VoxelData): void;
+            registerVoxelForPerRegionVoxelPalette(voxel: import("../Meta/index.js").VoxelData): void;
+            getGlobalVoxelPalette(): Record<number, string>;
+            getGlobalVoxelPaletteRecord(): Record<string, string[]>;
+            getVoxelDataFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: number): false | string[];
+            getVoxelPaletteIdFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number | false;
+            addToRegionsVoxelPalette(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number;
+        };
         paintVoxel(voxelPalletId: number): number;
         getBlankRegion(palette?: boolean): import("../Meta/World/WorldData/World.types.js").WorldRegion;
-        getBlankChunk(empty?: boolean, palette?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
+        getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
     };
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         onReady: () => void;
@@ -590,7 +606,6 @@ export declare const DVEW: {
                 z: number;
             };
         };
-        syncChunkBounds(): void;
         getRGBLightUpdateQue(): number[][];
         clearRGBLightUpdateQue(): void;
         getRGBLightRemoveQue(): number[][];

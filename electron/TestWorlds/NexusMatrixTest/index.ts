@@ -50,7 +50,7 @@ const init = async () => {
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0);
 
- runRenderLoop(engine, scene, camera);
+ runRenderLoop(engine, scene, camera, DVER);
 };
 
 RunInit(init);

@@ -41,9 +41,6 @@ export const WorldData = {
     voxelByte: Util.getVoxelByte(),
     _3dArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
-    syncChunkBounds() {
-        this.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
-    },
     getRGBLightUpdateQue() {
         return this._RGBLightUpdateQue;
     },
@@ -320,7 +317,7 @@ export const WorldData = {
             region = this.addRegion(x, y, z);
         }
         const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getRegionKey(chunkPOS);
+        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
         const chunks = region.chunks;
         chunks[chunkKey] = chunk;
         if (doNotSyncInBuilderThread)

@@ -78,8 +78,8 @@ export const CreateWorldAxis = (scene, y) => {
     axes.yAxis.position.y = y;
     axes.zAxis.position.y = y;
 };
-export const runRenderLoop = (engine, scene, watchPositon) => {
-    const runGui = CreateGUI();
+export const runRenderLoop = (engine, scene, watchPositon, DVER) => {
+    const runGui = CreateGUI(DVER);
     engine.runRenderLoop(() => {
         scene.render();
         runGui(engine, watchPositon);

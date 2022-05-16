@@ -50,7 +50,6 @@ const voxelPaletteGetFunctions = <
  },
 };
 
-
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -74,10 +73,6 @@ export const WorldData = {
  voxelByte: Util.getVoxelByte(),
  _3dArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
-
- syncChunkBounds(): void {
-  this.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
- },
 
  getRGBLightUpdateQue() {
   return this._RGBLightUpdateQue;
@@ -355,7 +350,7 @@ export const WorldData = {
   let chunk = chunks[chunkKey];
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
-  }
+   }
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z, chunkPOS);
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
@@ -430,7 +425,7 @@ export const WorldData = {
    region = this.addRegion(x, y, z);
   }
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const chunkKey = this.worldBounds.getRegionKey(chunkPOS);
+  const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   const chunks = region.chunks;
   chunks[chunkKey] = chunk;
   if (doNotSyncInBuilderThread) return;

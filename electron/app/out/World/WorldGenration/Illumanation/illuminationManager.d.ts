@@ -63,7 +63,6 @@ export declare const IlluminationManager: {
     _RGBlightRemovalQue: number[][];
     _sunLightUpdateQue: number[][];
     _sunLightRemoveQue: number[][];
-    syncChunkBounds(): void;
     addChunkToSunLightUpdate(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
     populateChunkAirWithInitlSunLight(chunk: ChunkData): void;
 };

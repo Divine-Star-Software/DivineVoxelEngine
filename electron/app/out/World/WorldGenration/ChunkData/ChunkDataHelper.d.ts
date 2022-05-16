@@ -42,7 +42,6 @@ export declare const ChunkDataHelper: {
         getIndex(x: number, y: number, z: number): number;
         getXYZ(index: number): import("../../../Meta/Util.types.js").PositionMatrix;
     };
-    syncChunkBounds(): void;
     fillWithAir(chunk: ChunkData): void;
     createHeightMap(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
 };

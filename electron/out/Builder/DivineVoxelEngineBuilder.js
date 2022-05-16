@@ -17,14 +17,14 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 export const DVEB = {
+    _3dFlatArray: Util.getFlat3DArray(),
+    worldBounds: Util.getWorldBounds(),
     environment: "browser",
     UTIL: Util,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
     renderComm: RenderComm,
     worldComm: WorldComm,
-    _3dFlatArray: Util.getFlat3DArray(),
-    worldBounds: Util.getWorldBounds(),
     chunkProccesor: ChunkProcessor,
     textureManager: TextureManager,
     voxelManager: VoxelManager,

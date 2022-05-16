@@ -6,10 +6,6 @@ export const ChunkDataHelper = {
  lightByte: Util.getLightByte(),
  _3dArray: Util.getFlat3DArray(),
 
- syncChunkBounds(): void {
-  DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
- },
-
  fillWithAir(chunk: ChunkData) {
   const voxels = chunk.voxels;
   for (let x = 0; x < 16; x++) {

@@ -1,6 +1,5 @@
 //objects
 import { Util } from "../../../Global/Util.helper.js";
-import { DVEW } from "../../DivineVoxelEngineWorld.js";
 //functions
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill, } from "./Functions/RGBFloodLight.js";
 import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, } from "./Functions/SunLight.js";
@@ -21,9 +20,6 @@ export const IlluminationManager = {
     _RGBlightRemovalQue: [],
     _sunLightUpdateQue: [],
     _sunLightRemoveQue: [],
-    syncChunkBounds() {
-        DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
-    },
     addChunkToSunLightUpdate(chunk, chunkX, chunkY, chunkZ) {
         const heightMap = chunk.heightMap;
         const voxels = chunk.voxels;

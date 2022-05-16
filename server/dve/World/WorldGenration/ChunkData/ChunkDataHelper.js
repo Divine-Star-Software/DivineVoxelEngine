@@ -3,9 +3,6 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const ChunkDataHelper = {
     lightByte: Util.getLightByte(),
     _3dArray: Util.getFlat3DArray(),
-    syncChunkBounds() {
-        DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
-    },
     fillWithAir(chunk) {
         const voxels = chunk.voxels;
         for (let x = 0; x < 16; x++) {

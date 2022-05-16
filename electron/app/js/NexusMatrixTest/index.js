@@ -24,6 +24,6 @@ const init = async () => {
     const light = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(0);
-    runRenderLoop(engine, scene, camera);
+    runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);

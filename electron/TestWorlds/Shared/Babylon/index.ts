@@ -1,5 +1,6 @@
 import { CreateGUI } from "../GUI/index.js";
 import { PositionMatrix } from "../../../out/Meta/Util.types";
+import { DivineVoxelEngineRender } from "../../../out/index.js";
 
 export const SetUpEngine = (canvas: HTMLCanvasElement) => {
  const engine = new BABYLON.Engine(canvas, false, {});
@@ -116,9 +117,10 @@ export const CreateWorldAxis = (scene: BABYLON.Scene, y: number) => {
 export const runRenderLoop = (
  engine: BABYLON.Engine,
  scene: BABYLON.Scene,
- watchPositon: BABYLON.FreeCamera | BABYLON.Mesh
+ watchPositon: BABYLON.FreeCamera | BABYLON.Mesh,
+ DVER ?: DivineVoxelEngineRender
 ) => {
- const runGui = CreateGUI();
+ const runGui = CreateGUI(DVER);
  engine.runRenderLoop(() => {
   scene.render();
   runGui(engine, watchPositon);

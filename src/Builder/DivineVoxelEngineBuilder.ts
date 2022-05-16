@@ -21,6 +21,8 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { InitWorker } from "./Init/InitWorker.js";
 
 export const DVEB = {
+ _3dFlatArray: Util.getFlat3DArray(),
+ worldBounds: Util.getWorldBounds(),
  environment: <"node" | "browser">"browser",
  UTIL: Util,
  worldMatrix: WorldMatrix,
@@ -28,8 +30,6 @@ export const DVEB = {
 
  renderComm: RenderComm,
  worldComm: WorldComm,
- _3dFlatArray: Util.getFlat3DArray(),
- worldBounds: Util.getWorldBounds(),
 
  chunkProccesor: ChunkProcessor,
  textureManager: TextureManager,

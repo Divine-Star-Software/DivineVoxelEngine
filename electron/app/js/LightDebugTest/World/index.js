@@ -21,8 +21,8 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    const x = 0;
-    const z = 0;
+    const x = -54;
+    const z = -54;
     DVEW.worldData.setData(x, 6, z, DVEW.worldGeneration.paintVoxel(1));
     DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z);
     DVEW.runChunkRebuildQue();

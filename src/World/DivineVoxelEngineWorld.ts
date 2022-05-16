@@ -23,6 +23,7 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 export const DVEW = {
  environment: <"node" | "browser">"browser",
 
+ _3dFlatArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
  __settingsHaveBeenSynced: false,
  __renderIsDone: false,
@@ -60,9 +61,7 @@ export const DVEW = {
     data.chunks.chunkYPow2,
     data.chunks.chunkZPow2
    );
-   this.worldData.syncChunkBounds();
-   this.worldGeneration.illumantionManager.syncChunkBounds();
-   this.worldGeneration.chunkDataHelper.syncChunkBounds();
+   this.worldBounds.syncBoundsWithFlat3DArray(this._3dFlatArray);
   }
   if (data.regions) {
    this.worldBounds.setRegionBounds(

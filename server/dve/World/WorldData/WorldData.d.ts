@@ -147,7 +147,6 @@ export declare const WorldData: {
             z: number;
         };
     };
-    syncChunkBounds(): void;
     getRGBLightUpdateQue(): number[][];
     clearRGBLightUpdateQue(): void;
     getRGBLightRemoveQue(): number[][];

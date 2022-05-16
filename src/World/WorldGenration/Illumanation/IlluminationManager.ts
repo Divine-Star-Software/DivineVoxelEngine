@@ -34,10 +34,6 @@ export const IlluminationManager = {
  _sunLightUpdateQue: <number[][]>[],
  _sunLightRemoveQue: <number[][]>[],
 
- syncChunkBounds(): void {
-  DVEW.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
- },
-
  addChunkToSunLightUpdate(
   chunk: ChunkData,
   chunkX: number,
