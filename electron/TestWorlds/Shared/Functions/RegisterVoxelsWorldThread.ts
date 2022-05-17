@@ -9,17 +9,16 @@ import { DreamGrassBlockVoxelData } from "../../Shared/Voxels/Solid/DreamGrass/D
 import { DreamLampVoxelData } from "../../Shared/Voxels/Solid/DreamLamp/DreamLamp.voxel.data.js";
 import { DreamGrassVoxelData } from "../../Shared/Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
 import { LiquidDreamEtherVoxelData } from "../../Shared/Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
+import { DreamStoneSlabVoxelData } from "../../Shared/Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
 
-export function RegisterVoxels(
- DVEW: DivineVoxelEngineWorld,
- voxelPaletteMode: "global" | "per-chunk" | "per-region"
-) {
+export function RegisterVoxels(DVEW: DivineVoxelEngineWorld,test?:string) {
  DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
  DVEW.voxelManager.registerVoxelData(LightDebugBoxVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamStoneVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamStonePillarVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamGrassBlockVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamLampVoxelData);
+ DVEW.voxelManager.registerVoxelData(DreamStoneSlabVoxelData);
 
  //flora
  DVEW.voxelManager.registerVoxelData(DreamGrassVoxelData);

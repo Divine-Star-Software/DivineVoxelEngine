@@ -134,4 +134,4 @@ export const DVER = {
  },
 };
 
-export const DivineVoxelEngineRender =  DVER;
+export type DivineVoxelEngineRender = typeof DVER;

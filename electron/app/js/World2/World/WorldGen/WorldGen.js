@@ -17,64 +17,18 @@ export class WorldGen {
         let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
         const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
         const voxels = chunk.voxels;
-        if (type == "fluid") {
-            let baseY = 0;
-            let maxY = 31;
-            for (let x = 0; x < +this.chunkWidth; x++) {
-                for (let z = 0; z < this.chunkDepth; z++) {
-                    for (let y = 0; y < this.chunkHeight; y++) {
-                        if (y > baseY && y <= maxY) {
-                            this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
-                        }
-                        if (y == baseY) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                        }
-                    }
-                }
-            }
-        }
-        if (type == "pond") {
-            let baseY = 31;
-            let topY = 50;
-            let hole = false;
-            for (let x = 0; x < +this.chunkWidth; x++) {
-                for (let z = 0; z < this.chunkDepth; z++) {
-                    for (let y = 0; y < this.chunkHeight; y++) {
-                        if (y < baseY) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                            continue;
-                        }
-                        if (y == baseY && x > 0 && x < 15 && z > 0 && z < 15) {
-                            this._3dArray.setValue(x, y, z, voxels, liquidDreamEther);
-                        }
-                        if (y == baseY && x == 0) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                        }
-                        if (y == baseY && x == 15) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                        }
-                        if (y == baseY && z == 0) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                        }
-                        if (y == baseY && z == 15) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
-                        }
-                    }
-                }
-            }
-        }
         if (type == "pillar") {
             let baseY = 31;
             let topY = 50;
             let hole = false;
-            for (let x = 0; x < +this.chunkWidth; x++) {
-                for (let z = 0; z < this.chunkDepth; z++) {
+            for (let x = chunkX; x <= this.chunkWidth + chunkX; x++) {
+                for (let z = chunkZ; z <= this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y < baseY) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamstone);
+                            this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
                         }
                         if (y == topY) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
+                            this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                         }
                         if (y >= baseY && y < topY) {
                             if (x % 15 == 0 || z % 15 == 0) {
@@ -86,7 +40,7 @@ export class WorldGen {
                                     if (z % 2 == 0)
                                         continue;
                                 }
-                                this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
+                                this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                             }
                         }
                     }
@@ -101,8 +55,8 @@ export class WorldGen {
                 topY = 42;
                 hole = true;
             }
-            for (let x = 0; x < +this.chunkWidth; x++) {
-                for (let z = 0; z < this.chunkDepth; z++) {
+            for (let x = chunkX; x <= this.chunkWidth + chunkX; x++) {
+                for (let z = chunkZ; z <= this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (hole) {
                             if (y > 30 && y <= topY - 4) {
@@ -115,16 +69,20 @@ export class WorldGen {
                             }
                         }
                         if (y < groundY) {
-                            this._3dArray.setValue(x, y, z, voxels, dreamStonePillar);
+                            this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                             continue;
                         }
                         if (hole) {
                             if (y < topY) {
-                                this._3dArray.setValue(x, y, z, voxels, dreamstone);
+                                this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
                             }
                         }
                     }
                 }
+            }
+            if (!hole) {
+                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 7);
+                this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + 7, topY, chunkZ + 9);
             }
         }
         return chunk;

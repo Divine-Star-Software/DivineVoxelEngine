@@ -1,7 +1,7 @@
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 
 export async function BuildInitalMeshes(
- DVER: typeof DivineVoxelEngineRender,
+ DVER: DivineVoxelEngineRender,
  scene: BABYLON.Scene
 ) {
  if (!DVER.textureManager.processedTextureData) {

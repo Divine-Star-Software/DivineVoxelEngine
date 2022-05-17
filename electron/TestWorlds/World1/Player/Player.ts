@@ -42,7 +42,7 @@ export class Player {
  bottomRay: BABYLON.Ray;
  camRay: BABYLON.Ray;
 
- constructor(private DVER: typeof DivineVoxelEngineRender) {}
+ constructor(private DVER: DivineVoxelEngineRender) {}
 
  createPlayerSharedArrays() {
   const absPositionArrayBuffer = new SharedArrayBuffer(12);

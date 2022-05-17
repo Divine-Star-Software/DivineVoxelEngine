@@ -109,4 +109,3 @@ export const DVER = {
         });
     },
 };
-export const DivineVoxelEngineRender = DVER;

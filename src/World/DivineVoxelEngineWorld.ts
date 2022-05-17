@@ -54,9 +54,7 @@ export const DVEW = {
  },
 
  syncSettings(data: EngineSettingsData) {
-  console.log(this.engineSettings.settings.regions);
   this.engineSettings.syncSettings(data);
-
   if (data.chunks) {
    this.worldBounds.setChunkBounds(
     data.chunks.chunkXPow2,

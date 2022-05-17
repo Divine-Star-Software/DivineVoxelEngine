@@ -7,13 +7,15 @@ import { DreamGrassBlockVoxelData } from "../../Shared/Voxels/Solid/DreamGrass/D
 import { DreamLampVoxelData } from "../../Shared/Voxels/Solid/DreamLamp/DreamLamp.voxel.data.js";
 import { DreamGrassVoxelData } from "../../Shared/Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
 import { LiquidDreamEtherVoxelData } from "../../Shared/Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
-export function RegisterVoxels(DVEW, voxelPaletteMode) {
+import { DreamStoneSlabVoxelData } from "../../Shared/Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
+export function RegisterVoxels(DVEW, test) {
     DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
     DVEW.voxelManager.registerVoxelData(LightDebugBoxVoxelData);
     DVEW.voxelManager.registerVoxelData(DreamStoneVoxelData);
     DVEW.voxelManager.registerVoxelData(DreamStonePillarVoxelData);
     DVEW.voxelManager.registerVoxelData(DreamGrassBlockVoxelData);
     DVEW.voxelManager.registerVoxelData(DreamLampVoxelData);
+    DVEW.voxelManager.registerVoxelData(DreamStoneSlabVoxelData);
     //flora
     DVEW.voxelManager.registerVoxelData(DreamGrassVoxelData);
     //fluid
