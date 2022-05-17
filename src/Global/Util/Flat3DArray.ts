@@ -29,15 +29,30 @@ export const Flat3DArray = {
  getValue(x: number, y: number, z: number, array: ChunkVoxels) {
   return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  },
-
+ getValueUseObj(position: PositionMatrix, array: ChunkVoxels) {
+  return array[
+   position.x +
+    position.y * this.bounds.x +
+    position.z * this.bounds.z * this.bounds.y
+  ];
+ },
  setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number) {
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
  },
-
- delete(x: number, y: number, z: number, array: ChunkVoxels) {
-  delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
+ setValueUseObj(position: PositionMatrix, array: ChunkVoxels, value: number) {
+  array[
+   position.x +
+    position.y * this.bounds.x +
+    position.z * this.bounds.z * this.bounds.y
+  ] = value;
  },
 
+ deleteValue(x: number, y: number, z: number, array: ChunkVoxels) {
+  delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
+ },
+ deleteUseObj(position: PositionMatrix, array: ChunkVoxels) {
+  delete array[position.x + position.y * this.bounds.x + position.z * this.bounds.z * this.bounds.y];
+ },
  getIndex(x: number, y: number, z: number) {
   return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
  },

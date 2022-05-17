@@ -17,8 +17,11 @@ export declare const Flat3DArray: {
     };
     setBounds(x: number, y: number, z: number): void;
     getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
+    getValueUseObj(position: PositionMatrix, array: ChunkVoxels): number;
     setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
-    delete(x: number, y: number, z: number, array: ChunkVoxels): void;
+    setValueUseObj(position: PositionMatrix, array: ChunkVoxels, value: number): void;
+    deleteValue(x: number, y: number, z: number, array: ChunkVoxels): void;
+    deleteUseObj(position: PositionMatrix, array: ChunkVoxels): void;
     getIndex(x: number, y: number, z: number): number;
     getXYZ(index: number): PositionMatrix;
 };

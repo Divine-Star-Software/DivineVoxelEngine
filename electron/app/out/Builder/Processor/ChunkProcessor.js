@@ -81,44 +81,47 @@ export const ChunkProcessor = {
                         continue;
                     const voxelObject = DVEB.voxelManager.getVoxel(voxelCheck[0]);
                     const voxelState = voxelCheck[1];
-                    const baseTemplate = template[voxelObject.data.substance];
+                    let baseTemplate = template[voxelObject.data.substance];
+                    if (voxelObject.data.substance == "transparent") {
+                        baseTemplate = template["solid"];
+                    }
                     let faceBit = 0;
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 0);
                         this.exposedFaces[0] = 1;
                     }
                     else {
                         this.exposedFaces[0] = 0;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         faceBit = faceBit | (1 << 1);
                         this.exposedFaces[1] = 1;
                     }
                     else {
                         this.exposedFaces[1] = 0;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 2);
                         this.exposedFaces[2] = 1;
                     }
                     else {
                         this.exposedFaces[2] = 0;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         faceBit = faceBit | (1 << 3);
                         this.exposedFaces[3] = 1;
                     }
                     else {
                         this.exposedFaces[3] = 0;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         faceBit = faceBit | (1 << 4);
                         this.exposedFaces[4] = 1;
                     }
                     else {
                         this.exposedFaces[4] = 0;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck(voxelObject, rawVoxelData, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         faceBit = faceBit | (1 << 5);
                         this.exposedFaces[5] = 1;
                     }
@@ -150,5 +153,5 @@ export const ChunkProcessor = {
             }
         }
         return template;
-    }
+    },
 };

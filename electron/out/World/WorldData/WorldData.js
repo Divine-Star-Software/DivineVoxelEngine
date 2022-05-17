@@ -123,9 +123,7 @@ export const WorldData = {
         return 0;
     },
     removeData(x, y, z) {
-        const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-        const regionKey = this.worldBounds.getRegionKey(regionPOS);
-        let region = this.regions[regionKey];
+        const region = this.getRegion(x, y, z);
         if (!region) {
             return false;
         }
@@ -134,17 +132,15 @@ export const WorldData = {
             return false;
         }
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-        if (this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels)) {
-            this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, 0);
+        if (this._3dArray.getValueUseObj(voxelPOS, chunk.voxels)) {
+            this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, 0);
         }
         else {
             return false;
         }
     },
     getData(x, y, z) {
-        const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-        const regionKey = this.worldBounds.getRegionKey(regionPOS);
-        let region = this.regions[regionKey];
+        const region = this.getRegion(x, y, z);
         if (!region) {
             return false;
         }
@@ -152,13 +148,10 @@ export const WorldData = {
         if (!chunk || chunk.isEmpty) {
             return false;
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-        return this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels);
+        return this._3dArray.getValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels);
     },
     setData(x, y, z, data) {
-        const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-        const regionKey = this.worldBounds.getRegionKey(regionPOS);
-        let region = this.regions[regionKey];
+        const region = this.getRegion(x, y, z);
         if (!region) {
             return -1;
         }
@@ -166,8 +159,7 @@ export const WorldData = {
         if (!chunk || chunk.isEmpty) {
             return -1;
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-        return this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
+        return this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
     },
     getVoxel(x, y, z) {
         const region = this.getRegion(x, y, z);
@@ -219,14 +211,12 @@ export const WorldData = {
     addRegion(x, y, z) {
         let regionPalette = DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region";
         const newRegion = DVEW.worldGeneration.getBlankRegion(regionPalette);
-        const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-        const regionKey = this.worldBounds.getRegionKey(regionPOS);
+        const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
         this.regions[regionKey] = newRegion;
         return newRegion;
     },
     getRegion(x, y, z) {
-        const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-        const regionKey = this.worldBounds.getRegionKey(regionPOS);
+        const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
         if (!this.regions[regionKey]) {
             return false;
         }
@@ -253,13 +243,12 @@ export const WorldData = {
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         const data = voxelPaletteGetFunctions[
         //@ts-ignore
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
         if (data < 0)
             return;
-        this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
+        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = DVEW.voxelManager.getVoxel(voxelId);
             if (voxel.lightSource && voxel.lightValue) {
@@ -276,28 +265,23 @@ export const WorldData = {
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-        this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
+        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
     },
     getChunk(x, y, z) {
         const region = this.getRegion(x, y, z);
         if (!region)
             return false;
-        const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        if (!chunks[chunkKey])
+        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+        if (!region.chunks[chunkKey])
             return false;
-        return chunks[chunkKey];
+        return region.chunks[chunkKey];
     },
     removeChunk(x, y, z) {
         const region = this.getRegion(x, y, z);
         if (!region)
             return false;
         const chunks = region.chunks;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        delete chunks[chunkKey];
+        delete chunks[this.worldBounds.getChunkKeyFromPosition(x, y, z)];
     },
     setChunk(x, y, z, chunk, doNotSyncInBuilderThread = false) {
         let region = this.getRegion(x, y, z);
@@ -321,13 +305,12 @@ export const WorldData = {
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         const data = voxelPaletteGetFunctions[
         //@ts-ignore
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
         if (data < 0)
             return;
-        this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, data);
+        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
         this.runRebuildChekc(x, y, z);
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {

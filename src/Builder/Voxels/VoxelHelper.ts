@@ -1,6 +1,6 @@
 //types
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import type { VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
+import type { DirectionNames, VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
 //objects
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { Util } from "../../Global/Util.helper.js";
@@ -75,8 +75,8 @@ export const VoxelHelper = {
  },
 
  voxelFaceCheck(
+  face : DirectionNames,
   voxel: VoxelBuilderThreadObject,
-  voxelData: number,
   x: number,
   y: number,
   z: number

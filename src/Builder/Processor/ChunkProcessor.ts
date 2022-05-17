@@ -1,8 +1,8 @@
 //types
 import type {
-    ChunkVoxels,
-    FullChunkTemplate,
-   } from "Meta/Chunks/Chunk.types.js";
+ ChunkVoxels,
+ FullChunkTemplate,
+} from "Meta/Chunks/Chunk.types.js";
 //objects
 import { Util } from "../../Global/Util.helper.js";
 
@@ -13,11 +13,11 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export const ChunkProcessor  = {
- voxelByte : Util.getVoxelByte(),
- _3dArray : Util.getFlat3DArray(),
- chunkTemplates: <Record<number, Record<number, number[][]>>>  {},
- exposedFaces: <number[]>  [],
+export const ChunkProcessor = {
+ voxelByte: Util.getVoxelByte(),
+ _3dArray: Util.getFlat3DArray(),
+ chunkTemplates: <Record<number, Record<number, number[][]>>>{},
+ exposedFaces: <number[]>[],
  getBaseTemplateNew(): FullChunkTemplate {
   return {
    solid: {
@@ -99,14 +99,17 @@ export const ChunkProcessor  = {
      const voxelObject = DVEB.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
 
-     const baseTemplate = template[voxelObject.data.substance];
+     let baseTemplate = template[voxelObject.data.substance];
+     if (voxelObject.data.substance == "transparent") {
+      baseTemplate = template["solid"];
+     }
 
      let faceBit = 0;
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "top",
        voxelObject,
-       rawVoxelData,
        x + chunkX,
        y + chunkY + 1,
        z + chunkZ
@@ -120,8 +123,8 @@ export const ChunkProcessor  = {
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "bottom",
        voxelObject,
-       rawVoxelData,
        x + chunkX,
        y + chunkY - 1,
        z + chunkZ
@@ -135,8 +138,8 @@ export const ChunkProcessor  = {
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "east",
        voxelObject,
-       rawVoxelData,
        x + chunkX + 1,
        y + chunkY,
        z + chunkZ
@@ -150,8 +153,8 @@ export const ChunkProcessor  = {
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "west",
        voxelObject,
-       rawVoxelData,
        x + chunkX - 1,
        y + chunkY,
        z + chunkZ
@@ -165,8 +168,8 @@ export const ChunkProcessor  = {
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "south",
        voxelObject,
-       rawVoxelData,
        x + chunkX,
        y + chunkY,
        z + chunkZ - 1
@@ -180,8 +183,8 @@ export const ChunkProcessor  = {
 
      if (
       DVEB.voxelHelper.voxelFaceCheck(
+       "north",
        voxelObject,
-       rawVoxelData,
        x + chunkX,
        y + chunkY,
        z + chunkZ + 1
@@ -215,7 +218,7 @@ export const ChunkProcessor  = {
       },
       DVEB
      );
-     
+
      baseTemplate.positionTemplate.push(x, y, z);
      baseTemplate.faceTemplate.push(faceBit);
     }
@@ -223,5 +226,5 @@ export const ChunkProcessor  = {
   }
 
   return template;
- }
-}
+ },
+};

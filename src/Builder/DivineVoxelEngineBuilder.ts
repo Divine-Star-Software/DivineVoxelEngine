@@ -2,15 +2,16 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import type { DVEBInitData } from "Meta/Builder/DVEB.js";
 //objects
-import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
-import { ShapeHelper } from "./Shapes/ShapeHelper.js";
-import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
+import { ShapeHelper } from "./Shapes/ShapeHelper.js";
+import { ShapeManager } from "./Shapes/ShapeManager.js";
+import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
+import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
@@ -20,28 +21,30 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 
+
 export const DVEB = {
+ environment: <"node" | "browser">"browser",
+ __settingsHaveBeenSynced: false,
+ __connectedToWorld: false,
  _3dFlatArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
- environment: <"node" | "browser">"browser",
  UTIL: Util,
- worldMatrix: WorldMatrix,
- matrixHub: MatrixHub,
+ engineSettings: EngineSettings,
 
  renderComm: RenderComm,
  worldComm: WorldComm,
 
- chunkProccesor: ChunkProcessor,
+ worldMatrix: WorldMatrix,
+ matrixHub: MatrixHub,
+
  textureManager: TextureManager,
  voxelManager: VoxelManager,
  voxelHelper: VoxelHelper,
- __connectedToWorld: false,
-
- engineSettings: EngineSettings,
- __settingsHaveBeenSynced: false,
  shapeManager: ShapeManager,
  shapeHelper: ShapeHelper,
+ shapeBuilder: ShapeBuilder,
  chunkMesher: ChunkMeshBuilder,
+ chunkProccesor: ChunkProcessor,
 
  syncSettings(data: EngineSettingsData) {
   this.engineSettings.syncSettings(data);

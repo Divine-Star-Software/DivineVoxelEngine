@@ -21,8 +21,11 @@ export declare const DVEN: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
+            getValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): number;
             setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-            delete(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+            setValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+            deleteUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("Meta/index.js").PositionMatrix;
         };
@@ -68,8 +71,11 @@ export declare const DVEN: {
                 };
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): number;
                 setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-                delete(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+                setValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("Meta/index.js").PositionMatrix;
             }): void;

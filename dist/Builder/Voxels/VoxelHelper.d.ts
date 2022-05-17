@@ -1,5 +1,5 @@
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import type { VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
+import type { DirectionNames, VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 export declare const VoxelHelper: {
     voxellightMixCalc: typeof VoxelLightMixCalc;
@@ -43,7 +43,7 @@ export declare const VoxelHelper: {
     };
     getTrueShapeId(id: string): number;
     getTrueFluidShapeId(id: string): number;
-    voxelFaceCheck(voxel: VoxelBuilderThreadObject, voxelData: number, x: number, y: number, z: number): boolean;
+    voxelFaceCheck(face: DirectionNames, voxel: VoxelBuilderThreadObject, x: number, y: number, z: number): boolean;
     /**# Get Light
      * ---
      * Returns the raw light value for a voxel.

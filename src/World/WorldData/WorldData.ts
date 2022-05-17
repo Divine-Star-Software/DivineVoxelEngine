@@ -167,34 +167,24 @@ export const WorldData = {
  },
 
  removeData(x: number, y: number, z: number) {
-  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-  const regionKey = this.worldBounds.getRegionKey(regionPOS);
-
-  let region = this.regions[regionKey];
+  const region = this.getRegion(x, y, z);
   if (!region) {
    return false;
   }
-
   const chunk = this.getChunk(x, y, z);
   if (!chunk || chunk.isEmpty) {
    return false;
   }
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-
-  if (
-   this._3dArray.getValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels)
-  ) {
-   this._3dArray.setValue(voxelPOS.x, voxelPOS.y, voxelPOS.z, chunk.voxels, 0);
+  if (this._3dArray.getValueUseObj(voxelPOS, chunk.voxels)) {
+   this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, 0);
   } else {
    return false;
   }
  },
 
  getData(x: number, y: number, z: number) {
-  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-  const regionKey = this.worldBounds.getRegionKey(regionPOS);
-
-  let region = this.regions[regionKey];
+  const region = this.getRegion(x, y, z);
   if (!region) {
    return false;
   }
@@ -203,34 +193,24 @@ export const WorldData = {
   if (!chunk || chunk.isEmpty) {
    return false;
   }
-  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
 
-  return this._3dArray.getValue(
-   voxelPOS.x,
-   voxelPOS.y,
-   voxelPOS.z,
+  return this._3dArray.getValueUseObj(
+   this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels
   );
  },
 
  setData(x: number, y: number, z: number, data: number) {
-  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-  const regionKey = this.worldBounds.getRegionKey(regionPOS);
-
-  let region = this.regions[regionKey];
+  const region = this.getRegion(x, y, z);
   if (!region) {
    return -1;
   }
-
   const chunk = this.getChunk(x, y, z);
   if (!chunk || chunk.isEmpty) {
    return -1;
   }
-  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-  return this._3dArray.setValue(
-   voxelPOS.x,
-   voxelPOS.y,
-   voxelPOS.z,
+  return this._3dArray.setValueUseObj(
+   this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels,
    data
   );
@@ -292,15 +272,13 @@ export const WorldData = {
   let regionPalette =
    DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region";
   const newRegion = DVEW.worldGeneration.getBlankRegion(regionPalette);
-  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-  const regionKey = this.worldBounds.getRegionKey(regionPOS);
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   this.regions[regionKey] = newRegion;
   return newRegion;
  },
 
  getRegion(x: number, y: number, z: number) {
-  const regionPOS = this.worldBounds.getRegionPosition(x, y, z);
-  const regionKey = this.worldBounds.getRegionKey(regionPOS);
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   if (!this.regions[regionKey]) {
    return false;
   }
@@ -320,7 +298,6 @@ export const WorldData = {
     DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
    }
   }
-
   this.setChunk(x, y, z, chunk);
   return chunk;
  },
@@ -336,22 +313,17 @@ export const WorldData = {
   if (!region) {
    region = this.addRegion(x, y, z);
   }
-
   let chunk = this.getChunk(x, y, z);
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
   }
-
-  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
    DVEW.engineSettings.settings.world?.voxelPaletteMode
   ](voxelId, voxelStateId, region);
   if (data < 0) return;
-  this._3dArray.setValue(
-   voxelPOS.x,
-   voxelPOS.y,
-   voxelPOS.z,
+  this._3dArray.setValueUseObj(
+   this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels,
    data
   );
@@ -372,11 +344,8 @@ export const WorldData = {
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
   }
-  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-  this._3dArray.setValue(
-   voxelPOS.x,
-   voxelPOS.y,
-   voxelPOS.z,
+  this._3dArray.setValueUseObj(
+   this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels,
    data
   );
@@ -385,20 +354,16 @@ export const WorldData = {
  getChunk(x: number, y: number, z: number): ChunkData | false {
   const region = this.getRegion(x, y, z);
   if (!region) return false;
-  const chunks = region.chunks;
-  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-  if (!chunks[chunkKey]) return false;
-  return chunks[chunkKey];
+  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+  if (!region.chunks[chunkKey]) return false;
+  return region.chunks[chunkKey];
  },
 
  removeChunk(x: number, y: number, z: number) {
   const region = this.getRegion(x, y, z);
   if (!region) return false;
   const chunks = region.chunks;
-  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-  delete chunks[chunkKey];
+  delete chunks[this.worldBounds.getChunkKeyFromPosition(x, y, z)];
  },
 
  setChunk(
@@ -441,16 +406,13 @@ export const WorldData = {
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
   }
-  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
    DVEW.engineSettings.settings.world?.voxelPaletteMode
   ](voxelId, voxelStateId, region);
   if (data < 0) return;
-  this._3dArray.setValue(
-   voxelPOS.x,
-   voxelPOS.y,
-   voxelPOS.z,
+  this._3dArray.setValueUseObj(
+   this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels,
    data
   );

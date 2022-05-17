@@ -1,7 +1,4 @@
-import type {
- VoxelInteface,
- VoxelData,
-} from "Meta/Voxels/Voxel.types.js";
+import type { VoxelInteface, VoxelData } from "Meta/Voxels/Voxel.types.js";
 import type { WorldData } from "World/WorldData/WorldData";
 import { DVEB } from "../../DivineVoxelEngineBuilder.js";
 
@@ -25,8 +22,17 @@ export function OcculsionCalcuation(
 
  const checkVoxel = DVEB.voxelManager.getVoxel(check[0]);
 
- if (checkVoxel.data.substance !== voxel.substance) {
-  return 1;
+ if (voxel.substance == "transparent" || voxel.substance == "solid") {
+  if (
+   checkVoxel.data.substance != "solid" &&
+   checkVoxel.data.substance != "transparent"
+  ) {
+   return 1;
+  }
+ } else {
+  if (checkVoxel.data.substance !== voxel.substance) {
+   return 1;
+  }
  }
  return 0.75;
 }

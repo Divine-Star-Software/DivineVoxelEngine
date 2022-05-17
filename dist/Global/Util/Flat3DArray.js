@@ -23,11 +23,24 @@ export const Flat3DArray = {
     getValue(x, y, z, array) {
         return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
     },
+    getValueUseObj(position, array) {
+        return array[position.x +
+            position.y * this.bounds.x +
+            position.z * this.bounds.z * this.bounds.y];
+    },
     setValue(x, y, z, array, value) {
         array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
     },
-    delete(x, y, z, array) {
+    setValueUseObj(position, array, value) {
+        array[position.x +
+            position.y * this.bounds.x +
+            position.z * this.bounds.z * this.bounds.y] = value;
+    },
+    deleteValue(x, y, z, array) {
         delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
+    },
+    deleteUseObj(position, array) {
+        delete array[position.x + position.y * this.bounds.x + position.z * this.bounds.z * this.bounds.y];
     },
     getIndex(x, y, z) {
         return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;

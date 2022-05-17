@@ -8,8 +8,16 @@ export function OcculsionCalcuation(voxel, voxelX, voxelY, voxelZ, x, y, z) {
         return 1;
     }
     const checkVoxel = DVEB.voxelManager.getVoxel(check[0]);
-    if (checkVoxel.data.substance !== voxel.substance) {
-        return 1;
+    if (voxel.substance == "transparent" || voxel.substance == "solid") {
+        if (checkVoxel.data.substance != "solid" &&
+            checkVoxel.data.substance != "transparent") {
+            return 1;
+        }
+    }
+    else {
+        if (checkVoxel.data.substance !== voxel.substance) {
+            return 1;
+        }
     }
     return 0.75;
 }

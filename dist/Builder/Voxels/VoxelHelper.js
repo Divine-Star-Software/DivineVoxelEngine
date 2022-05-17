@@ -56,7 +56,7 @@ export const VoxelHelper = {
     getTrueFluidShapeId(id) {
         return DVEB.voxelManager.fluidShapeMap[id];
     },
-    voxelFaceCheck(voxel, voxelData, x, y, z) {
+    voxelFaceCheck(face, voxel, x, y, z) {
         const checkVoxelId = DVEB.worldMatrix.getVoxel(x, y, z);
         if (checkVoxelId && checkVoxelId[0] == "dve:air")
             return true;

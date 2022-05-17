@@ -78,7 +78,7 @@ export class Player {
   if (!this.ready || !this.active) return;
   if (this.DVER.meshManager.runningUpdate) return;
   if (this.playerStatesArray[1]) {
-   this.scene.fogDensity = 0.6;
+   this.scene.fogDensity = 0.3;
    this.scene.fogColor = this.fluidFog;
    if (!this.particleSystem.isStarted()) {
     this.particleSystem.start();

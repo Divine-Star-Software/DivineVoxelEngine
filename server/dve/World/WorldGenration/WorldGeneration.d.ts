@@ -47,8 +47,11 @@ export declare const WorldGeneration: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+            getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
             setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            delete(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
         }): void;
@@ -123,8 +126,11 @@ export declare const WorldGeneration: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+            getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
             setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            delete(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
         };
@@ -175,8 +181,11 @@ export declare const WorldGeneration: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+            getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
             setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            delete(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
         };

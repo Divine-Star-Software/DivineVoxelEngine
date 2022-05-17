@@ -10,19 +10,11 @@ export class WorldGen {
     renderDistance = 20;
     _3dArray;
     generateChunk(chunkX, chunkZ, type = "default") {
-        let debugBox = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default"));
-        let dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
-        let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
-        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
-        let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
-        const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
-        const voxels = chunk.voxels;
         if (type == "pillar") {
             let baseY = 31;
             let topY = 50;
-            let hole = false;
-            for (let x = chunkX; x <= this.chunkWidth + chunkX; x++) {
-                for (let z = chunkZ; z <= this.chunkDepth + chunkZ; z++) {
+            for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+                for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y < baseY) {
                             this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
@@ -31,15 +23,14 @@ export class WorldGen {
                             this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                         }
                         if (y >= baseY && y < topY) {
-                            if (x % 15 == 0 || z % 15 == 0) {
-                                if (x > 0) {
-                                    if (x % 2 == 0)
-                                        continue;
-                                }
-                                if (z > 0) {
-                                    if (z % 2 == 0)
-                                        continue;
-                                }
+                            if (x == chunkX + 15 ||
+                                z == chunkZ + 15 ||
+                                x == chunkX + 1 ||
+                                z == chunkZ + 1) {
+                                if (x % 2 == 0)
+                                    continue;
+                                if (z % 2 == 0)
+                                    continue;
                                 this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                             }
                         }
@@ -55,8 +46,8 @@ export class WorldGen {
                 topY = 42;
                 hole = true;
             }
-            for (let x = chunkX; x <= this.chunkWidth + chunkX; x++) {
-                for (let z = chunkZ; z <= this.chunkDepth + chunkZ; z++) {
+            for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+                for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (hole) {
                             if (y > 30 && y <= topY - 4) {
@@ -82,9 +73,10 @@ export class WorldGen {
             }
             if (!hole) {
                 this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 7);
+                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 8);
+                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 6, topY, chunkZ + 9);
                 this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + 7, topY, chunkZ + 9);
             }
         }
-        return chunk;
     }
 }
