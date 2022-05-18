@@ -3,6 +3,7 @@ import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodF
 import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt } from "./Functions/SunLight.js";
 export declare const IlluminationManager: {
     lightByte: {
+        _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;

@@ -7,13 +7,6 @@ const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Bui
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
-    lighting: {
-        doAO: true,
-        doRGBLight: true,
-        doSunLight: true,
-        autoRGBLight: true,
-        autoSunLight: true,
-    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();
@@ -24,4 +17,5 @@ const init = async () => {
     await DVER.$SCENEINIT({ scene: scene });
     runRenderLoop(engine, scene, camera);
 };
+window.DVER = DVER;
 RunInit(init);

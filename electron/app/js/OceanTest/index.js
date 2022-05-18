@@ -1,4 +1,4 @@
-import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
+import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDarkScene, } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/index.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
@@ -18,7 +18,7 @@ await DVER.$INIT({
 const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
-    const scene = SetUpDefaultScene(engine);
+    const scene = SetUpDarkScene(engine);
     const camera = SetUpDefaultCamera(scene, canvas, { x: 150, y: 60, z: 0 });
     SetUpDefaultSkybox(scene);
     await DVER.$SCENEINIT({ scene: scene });

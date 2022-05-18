@@ -248,6 +248,7 @@ export declare const DVER: {
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
         getLightByte(): {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;

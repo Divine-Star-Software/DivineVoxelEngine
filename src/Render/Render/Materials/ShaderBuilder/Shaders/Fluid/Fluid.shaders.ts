@@ -16,9 +16,9 @@ gl_Position = viewProjection * worldPosition;
 
  fragMain: `
   vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
-  if (rgb.a < 0.5) { 
-      discard;
-  }
+  if (rgb.w < 0.5) { 
+     discard;
+   }
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);

@@ -90,6 +90,7 @@ export declare const WorldGeneration: {
     };
     chunkDataHelper: {
         lightByte: {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -139,6 +140,7 @@ export declare const WorldGeneration: {
     };
     illumantionManager: {
         lightByte: {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;

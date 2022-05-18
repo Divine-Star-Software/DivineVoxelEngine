@@ -105,7 +105,6 @@ export const FluidMaterial = {
   this.material.setFloat("sunLightLevel", 1);
   this.material.setFloat("baseLevel", 0.1);
   shaderMaterial.needDepthPrePass = true;
-  shaderMaterial.backFaceCulling = false;
 
   shaderMaterial.onBind = (mesh) => {
    var effect = shaderMaterial.getEffect();

@@ -12,10 +12,7 @@ const shapeDimensions = {
  height: 0.5,
 };
 
-const faceFunctions: Record<
- number,
- (data: VoxelShapeAddData) => VoxelShapeAddReturnData
-> = {
+const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
  0: (data: VoxelShapeAddData) => {
   data.positions.push(
    data.position.x - shapeDimensions.width,
@@ -49,13 +46,11 @@ const faceFunctions: Record<
    data.aoIndex
   );
 
-  return {
-   newIndicieIndex: data.indicieIndex + 4,
-   newUVTemplateIndex: data.uvTemplateIndex + 1,
-   newlightIndex: data.lightIndex + 4,
-   newColorIndex: data.colorIndex + 4,
-   newAOIndex: data.aoIndex + 4,
-  };
+  data.indicieIndex += 4;
+  data.uvTemplateIndex += 1;
+  data.lightIndex += 4;
+  data.colorIndex += 4;
+  data.aoIndex += 4;
  },
 
  1: (data: VoxelShapeAddData) => {
@@ -94,13 +89,11 @@ const faceFunctions: Record<
    data.aoIndex
   );
 
-  return {
-   newIndicieIndex: data.indicieIndex + 4,
-   newUVTemplateIndex: data.uvTemplateIndex + 1,
-   newlightIndex: data.lightIndex + 4,
-   newColorIndex: data.colorIndex + 4,
-   newAOIndex: data.aoIndex + 4,
-  };
+  data.indicieIndex += 4;
+  data.uvTemplateIndex += 1;
+  data.lightIndex += 4;
+  data.colorIndex += 4;
+  data.aoIndex += 4;
  },
 };
 
@@ -110,10 +103,8 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
   data.position.x += shapeDimensions.width;
   data.position.z += shapeDimensions.depth;
   data.position.y += shapeDimensions.height;
-
-  DVEB.shapeHelper.processReturnData(data, faceFunctions[0](data));
-  DVEB.shapeHelper.processReturnData(data, faceFunctions[1](data));
-
+  faceFunctions[0](data);
+  faceFunctions[1](data);
   return DVEB.shapeHelper.produceShapeReturnData(data);
  },
 };

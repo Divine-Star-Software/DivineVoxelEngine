@@ -5,6 +5,7 @@ import {
  SetUpDefaultSkybox,
  runRenderLoop,
  SetUpDefaultScene,
+ SetUpDarkScene,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/index.js";
@@ -32,7 +33,7 @@ await DVER.$INIT({
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
- const scene = SetUpDefaultScene(engine);
+ const scene = SetUpDarkScene(engine);
  const camera = SetUpDefaultCamera(scene, canvas, { x: 150, y: 60, z: 0 });
  SetUpDefaultSkybox(scene);
 

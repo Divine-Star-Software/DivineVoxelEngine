@@ -1,6 +1,7 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
 export declare const ChunkDataHelper: {
     lightByte: {
+        _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;

@@ -10,10 +10,7 @@ const start = () => {
     let endZ = 64;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            const chunk = DVEW.worldGeneration.getBlankChunk(false);
-            DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-            worldGen.generateChunk(chunk, x, 0, z);
-            DVEW.worldData.setChunk(x, 0, z, chunk);
+            worldGen.generateChunk(x, 0, z);
         }
     }
     for (let x = startX; x < endX; x += 16) {
@@ -21,8 +18,8 @@ const start = () => {
             DVEW.buildChunk(x, 0, z);
         }
     }
-    const x = -54;
-    const z = -54;
+    const x = 0;
+    const z = 0;
     DVEW.worldData.setData(x, 6, z, DVEW.worldGeneration.paintVoxel(1));
     DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z);
     DVEW.runChunkRebuildQue();

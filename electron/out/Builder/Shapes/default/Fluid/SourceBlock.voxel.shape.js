@@ -4,11 +4,16 @@ const shapeDimensions = {
     depth: 0.5,
     height: 0.5,
 };
-const processDefaultFaceData = (data) => {
+const processDefaultFaceData = (data, double = false) => {
     const uv = data.unTemplate[data.uvTemplateIndex];
     data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+    if (double) {
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+    }
     data.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;
@@ -18,7 +23,10 @@ const faceFunctions = {
     //add top face
     0: (data) => {
         DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data);
-        processDefaultFaceData(data);
+        data.position.y += shapeDimensions.height;
+        DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data);
+        data.position.y -= shapeDimensions.height;
+        processDefaultFaceData(data, true);
     },
     //add bottom face
     1: (data) => {
@@ -35,7 +43,7 @@ const faceFunctions = {
         DVEB.shapeBuilder.addFace("east", data.position, shapeDimensions, data);
         processDefaultFaceData(data);
     },
-    //add north face
+    //add north
     4: (data) => {
         DVEB.shapeBuilder.addFace("north", data.position, shapeDimensions, data);
         processDefaultFaceData(data);

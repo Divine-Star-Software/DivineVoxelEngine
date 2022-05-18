@@ -1,5 +1,5 @@
 import type { DirectionNames } from "Meta/Util.types.js";
-import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
+import type { VoxelShapeAddData } from "Meta/index";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
@@ -22,6 +22,7 @@ export declare const ShapeHelper: {
         toString(delimiter?: string): string;
     };
     lightByte: {
+        _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
@@ -48,7 +49,6 @@ export declare const ShapeHelper: {
     lightMap: number[];
     exposedFaceRecord: Record<DirectionNames, number>;
     isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: DirectionNames): boolean;
-    processReturnData(shapeData: VoxelShapeAddData, returnData: VoxelShapeAddReturnData): void;
     produceShapeReturnData(shapeData: VoxelShapeAddData): {
         newIndicieIndex: number;
         newUVTemplateIndex: number;

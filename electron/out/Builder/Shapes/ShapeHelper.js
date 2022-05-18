@@ -24,13 +24,6 @@ export const ShapeHelper = {
         this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
         return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
     },
-    processReturnData(shapeData, returnData) {
-        shapeData.indicieIndex = returnData.newIndicieIndex;
-        shapeData.uvTemplateIndex = returnData.newUVTemplateIndex;
-        shapeData.lightIndex = returnData.newlightIndex;
-        shapeData.aoIndex = returnData.newAOIndex;
-        shapeData.colorIndex = returnData.newColorIndex;
-    },
     produceShapeReturnData(shapeData) {
         return {
             newIndicieIndex: shapeData.indicieIndex,
@@ -48,7 +41,6 @@ export const ShapeHelper = {
         return [r, g, b, a];
     },
     calculateLightColor(RGBlightColors, sunlightColors, lightTemplate, startIndex) {
-        const alpha = 1;
         for (let v = 0; v < 4; v++) {
             const values = this.lightByte.getLightValues(lightTemplate[startIndex + v]);
             const w = this.lightMap[values[0]];
@@ -56,7 +48,7 @@ export const ShapeHelper = {
             const g = this.lightMap[values[2]];
             const b = this.lightMap[values[3]];
             sunlightColors.push(w, w, w, 1);
-            RGBlightColors.push(r, g, b, alpha);
+            RGBlightColors.push(r, g, b, 1);
         }
     },
     calculateSunightColor(sunLight, sunLightTemplate, sunLightIndex) {
@@ -67,17 +59,9 @@ export const ShapeHelper = {
         }
     },
     calculateAOColor(colors, chunkAmbientOcculusion, startIndex) {
-        const Cr = 1;
-        const Cg = 1;
-        const Cb = 1;
-        const Ca = 1;
         for (let v = 0; v < 4; v++) {
             const aColor = chunkAmbientOcculusion[startIndex + v];
-            const Ar = aColor * Cr;
-            const Ag = aColor * Cg;
-            const Ab = aColor * Cb;
-            const Aa = aColor * Ca;
-            const newColor = this.toLinearSpace(Ar, Ag, Ab, Aa);
+            const newColor = this.toLinearSpace(aColor, aColor, aColor, aColor);
             colors.push(newColor[0], newColor[1], newColor[2], 1);
         }
     },

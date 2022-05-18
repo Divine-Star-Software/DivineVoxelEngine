@@ -15,16 +15,7 @@ const start = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   const chunk = DVEW.worldGeneration.getBlankChunk(false);
-   DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-   worldGen.generateChunk(chunk, x, 0, z);
-   DVEW.worldData.setChunk(x, 0, z, chunk);
-  }
- }
-
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0, z);
+   worldGen.generateChunk(x, 0, z);
   }
  }
 
@@ -33,7 +24,11 @@ const start = () => {
  DVEW.worldData.setData(x, 7, z, DVEW.worldGeneration.paintVoxel(1));
  DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 7, z);
 
- DVEW.runChunkRebuildQue();
+ for (let x = startX; x < endX; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   DVEW.buildChunk(x, 0, z);
+  }
+ }
 };
 
 (async () => {

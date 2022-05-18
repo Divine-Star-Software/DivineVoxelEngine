@@ -5,6 +5,7 @@ import {
  SetUpDefaultCamera,
  SetUpDefaultSkybox,
  runRenderLoop,
+ SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/index.js";
@@ -22,13 +23,6 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
- lighting: {
-  doAO: true,
-  doRGBLight: true,
-  doSunLight: true,
-  autoRGBLight: true,
-  autoSunLight: true,
- },
 });
 
 const init = async () => {
@@ -43,4 +37,5 @@ const init = async () => {
  runRenderLoop(engine, scene, camera);
 };
 
+(window as any).DVER = DVER;
 RunInit(init);

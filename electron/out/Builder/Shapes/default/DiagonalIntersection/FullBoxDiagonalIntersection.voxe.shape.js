@@ -11,13 +11,11 @@ const faceFunctions = {
         const uv = data.unTemplate[data.uvTemplateIndex];
         data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
         DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-        return {
-            newIndicieIndex: data.indicieIndex + 4,
-            newUVTemplateIndex: data.uvTemplateIndex + 1,
-            newlightIndex: data.lightIndex + 4,
-            newColorIndex: data.colorIndex + 4,
-            newAOIndex: data.aoIndex + 4,
-        };
+        data.indicieIndex += 4;
+        data.uvTemplateIndex += 1;
+        data.lightIndex += 4;
+        data.colorIndex += 4;
+        data.aoIndex += 4;
     },
     1: (data) => {
         data.positions.push(data.position.x + -shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + -shapeDimensions.depth, data.position.x + -shapeDimensions.width, data.position.y + -shapeDimensions.height, data.position.z + shapeDimensions.depth);
@@ -25,13 +23,11 @@ const faceFunctions = {
         const uv = data.unTemplate[data.uvTemplateIndex];
         data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
         DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-        return {
-            newIndicieIndex: data.indicieIndex + 4,
-            newUVTemplateIndex: data.uvTemplateIndex + 1,
-            newlightIndex: data.lightIndex + 4,
-            newColorIndex: data.colorIndex + 4,
-            newAOIndex: data.aoIndex + 4,
-        };
+        data.indicieIndex += 4;
+        data.uvTemplateIndex += 1;
+        data.lightIndex += 4;
+        data.colorIndex += 4;
+        data.aoIndex += 4;
     },
 };
 export const FullBoxDiagonalIntersection = {
@@ -40,8 +36,8 @@ export const FullBoxDiagonalIntersection = {
         data.position.x += shapeDimensions.width;
         data.position.z += shapeDimensions.depth;
         data.position.y += shapeDimensions.height;
-        DVEB.shapeHelper.processReturnData(data, faceFunctions[0](data));
-        DVEB.shapeHelper.processReturnData(data, faceFunctions[1](data));
+        faceFunctions[0](data);
+        faceFunctions[1](data);
         return DVEB.shapeHelper.produceShapeReturnData(data);
     },
 };

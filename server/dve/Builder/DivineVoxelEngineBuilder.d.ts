@@ -132,6 +132,7 @@ export declare const DVEB: {
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
         getLightByte(): {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -461,6 +462,7 @@ export declare const DVEB: {
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
         lightByte: {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -526,6 +528,7 @@ export declare const DVEB: {
             toString(delimiter?: string): string;
         };
         lightByte: {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -552,7 +555,6 @@ export declare const DVEB: {
         lightMap: number[];
         exposedFaceRecord: Record<import("../Meta/Util.types.js").DirectionNames, number>;
         isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: import("../Meta/Util.types.js").DirectionNames): boolean;
-        processReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData, returnData: import("../Meta/index.js").VoxelShapeAddReturnData): void;
         produceShapeReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData): {
             newIndicieIndex: number;
             newUVTemplateIndex: number;

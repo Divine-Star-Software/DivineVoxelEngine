@@ -1,6 +1,5 @@
 import type { VoxelShapeAddData } from "Meta/index";
 import type { DirectionNames, PositionMatrix } from "Meta/Util.types";
-import {DVEB} from "../DivineVoxelEngineBuilder.js";
 type DimenionsMatrix = { width: number; height: number; depth: number };
 export const ShapeBuilder = {
  faceFunctions: <
@@ -175,5 +174,4 @@ export const ShapeBuilder = {
  ) {
   this.faceFunctions[direction](origion, dimensions, data);
  },
-
 };

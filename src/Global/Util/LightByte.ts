@@ -2,7 +2,8 @@
  * ---
  * Used to decode light color info.
  */
-export const LightByte =  {
+export const LightByte = {
+ _lightValues: <number[]>[],
  getS(value: number) {
   return (value & (0x0f << 0)) >> 0;
  },
@@ -49,12 +50,11 @@ export const LightByte =  {
   * @returns
   */
  getLightValues(value: number) {
-  return [
-   (value & (0x0f << 0)) >> 0,
-   (value & (0x0f << 4)) >> 4,
-   (value & (0x0f << 8)) >> 8,
-   (value & (0x0f << 12)) >> 12,
-  ];
+  this._lightValues[0] = (value & (0x0f << 0)) >> 0;
+  this._lightValues[1] = (value & (0x0f << 4)) >> 4;
+  this._lightValues[2] = (value & (0x0f << 8)) >> 8;
+  this._lightValues[3] = (value & (0x0f << 12)) >> 12;
+  return this._lightValues;
  },
  /**# Is Less Than For RGB Remove
   * ---
@@ -253,5 +253,5 @@ export const LightByte =  {
   */
  removeSunLight(sl: number) {
   return (sl & ~(0xf << 0)) | (0 << 0);
- }
-}
+ },
+};

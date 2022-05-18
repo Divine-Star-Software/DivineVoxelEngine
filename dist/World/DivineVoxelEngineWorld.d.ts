@@ -141,6 +141,7 @@ export declare const DVEW: {
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
         getLightByte(): {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -359,6 +360,7 @@ export declare const DVEW: {
         };
         chunkDataHelper: {
             lightByte: {
+                _lightValues: number[];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -408,6 +410,7 @@ export declare const DVEW: {
         };
         illumantionManager: {
             lightByte: {
+                _lightValues: number[];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -522,6 +525,7 @@ export declare const DVEW: {
             toString(delimiter?: string): string;
         };
         lightByte: {
+            _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;

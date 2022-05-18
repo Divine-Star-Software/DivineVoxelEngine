@@ -11,6 +11,7 @@ export declare const VoxelHelper: {
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     };
     lightByte: {
+        _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;

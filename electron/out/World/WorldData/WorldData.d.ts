@@ -30,6 +30,7 @@ export declare const WorldData: {
         toString(delimiter?: string): string;
     };
     lightByte: {
+        _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;

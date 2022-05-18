@@ -1,7 +1,44 @@
-import type { VoxelInteface,VoxelData } from "Meta/Voxels/Voxel.types";
-
-import {DVEB} from "../../DivineVoxelEngineBuilder.js";
+import type { VoxelData } from "Meta/Voxels/Voxel.types";
 import { VoxelHelper } from "../VoxelHelper.js";
+
+const voxelLightChecks = {
+ top: {
+  1: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
+  2: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
+  3: [1, 1, 0, 0, 1, 1, 1, 1, 1],
+  4: [1, 1, 0, 0, 1, -1, 1, 1, -1],
+ },
+ bottom: {
+  1: [0, -1, -1, -1, -1, 0, -1, -1, -1],
+  2: [0, -1, -1, 1, -1, 0, 1, -1, -1],
+  3: [0, -1, 1, 1, -1, 0, 1, -1, 1],
+  4: [0, -1, 1, -1, -1, 0, -1, -1, 1],
+ },
+ east: {
+  1: [1, 0, -1, 1, 1, 0, 1, 1, -1],
+  2: [1, 0, 1, 1, 1, 0, 1, 1, 1],
+  3: [1, 0, 1, 1, -1, 0, 1, -1, 1],
+  4: [1, 0, -1, 1, -1, 0, 1, -1, -1],
+ },
+ west: {
+  1: [-1, 0, 1, -1, 1, 0, -1, 1, 1],
+  2: [-1, 0, -1, -1, 1, 0, -1, 1, -1],
+  3: [-1, 0, -1, -1, -1, 0, -1, -1, -1],
+  4: [-1, 0, 1, -1, -1, 0, -1, -1, 1],
+ },
+ south: {
+  1: [-1, 0, -1, 0, 1, -1, -1, 1, -1],
+  2: [1, 0, -1, 0, 1, -1, 1, 1, -1],
+  3: [1, 0, -1, 0, -1, -1, 1, -1, -1],
+  4: [-1, 0, -1, 0, -1, -1, -1, -1, -1],
+ },
+ north: {
+  1: [1, 0, 1, 0, 1, 1, 1, 1, 1],
+  2: [-1, 0, 1, 0, 1, 1, -1, 1, 1],
+  3: [-1, 0, 1, 0, -1, 1, -1, -1, 1],
+  4: [1, 0, 1, 0, -1, 1, 1, -1, 1],
+ },
+};
 
 export function CalculateVoxelLight(
  this: typeof VoxelHelper,
@@ -16,340 +53,86 @@ export function CalculateVoxelLight(
  y: number,
  z: number
 ) {
- // +y
+ const tx = chunkX + x;
+ const ty = chunkY + y;
+ const tz = chunkZ + z;
+ //top
  if (exposedFaces[0]) {
-  let light = this.getLight(x + chunkX, y + chunkY + 1, z + chunkZ);
-  const ly = 1;
+  let l = this.getLight(tx, ty + 1, tz);
   lightTemplate.push(
    //-x -z
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    -1,
-    ly,
-    0,
-
-    0,
-    ly,
-    -1,
-
-    -1,
-    ly,
-    -1,
-   ]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[1]),
    //-x +z
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    -1,
-    ly,
-    0,
-
-    0,
-    ly,
-    1,
-
-    -1,
-    ly,
-    1,
-   ]),
-
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[2]),
    //+x +z
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    1,
-    ly,
-    0,
-
-    0,
-    ly,
-    1,
-
-    1,
-    ly,
-    1,
-   ]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[3]),
    //+x -z
-   this.voxellightMixCalc(light, voxel, chunkX, chunkY, chunkZ, x, y, z, [
-    1,
-    ly,
-    0,
-
-    0,
-    ly,
-    -1,
-
-    1,
-    ly,
-    -1,
-   ])
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[4])
   );
  }
 
- // -y
+ //bottom
  if (exposedFaces[1]) {
-  let airLight = this.getLight(x + chunkX, y + chunkY - 1, z + chunkZ);
+  let l = this.getLight(tx, ty - 1, tz);
   lightTemplate.push(
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [0, -1, -1, -1, -1, 0, -1, -1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [0, -1, -1, 1, -1, 0, 1, -1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [0, -1, 1, 1, -1, 0, 1, -1, 1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [0, -1, 1, -1, -1, 0, -1, -1, 1]
-   )
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[1]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[2]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[3]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[4])
   );
  }
 
- // +x
+ //east
  if (exposedFaces[2]) {
-  let airLight = this.getLight(x + chunkX + 1, y + chunkY, z + chunkZ);
+  let l = this.getLight(tx + 1, ty, tz);
   lightTemplate.push(
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, -1, 1, 1, 0, 1, 1, -1]
-   ),
-
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, 1, 1, 1, 0, 1, 1, 1]
-   ),
-
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, 1, 1, -1, 0, 1, -1, 1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, -1, 1, -1, 0, 1, -1, -1]
-   )
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[1]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[2]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[3]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[4])
   );
  }
 
- // -x
+ //west
  if (exposedFaces[3]) {
-  let airLight = this.getLight(x + chunkX - 1, y + chunkY, z + chunkZ);
+  let l = this.getLight(tx - 1, ty, tz);
   lightTemplate.push(
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, 1, -1, 1, 0, -1, 1, 1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, -1, -1, 1, 0, -1, 1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, -1, -1, -1, 0, -1, -1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, 1, -1, -1, 0, -1, -1, 1]
-   )
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[1]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[2]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[3]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[4])
   );
  }
 
- // -z
+ //south
  if (exposedFaces[4]) {
-  let airLight = this.getLight(x + chunkX, y + chunkY, z + chunkZ - 1);
+  let l = this.getLight(tx, ty, tz - 1);
   lightTemplate.push(
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, -1, 0, 1, -1, -1, 1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, -1, 0, 1, -1, 1, 1, -1]
-   ),
-
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, -1, 0, -1, -1, 1, -1, -1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, -1, 0, -1, -1, -1, -1, -1]
-   )
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[1]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[2]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[3]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[4])
   );
  }
- // +z
+ //north
  if (exposedFaces[5]) {
-  let airLight = this.getLight(x + chunkX, y + chunkY, z + chunkZ + 1);
-
+  let l = this.getLight(tx, ty, tz + 1);
   lightTemplate.push(
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, 1, 0, 1, 1, 1, 1, 1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, 1, 0, 1, 1, -1, 1, 1]
-   ),
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [-1, 0, 1, 0, -1, 1, -1, -1, 1]
-   ),
-
-   this.voxellightMixCalc(
-    airLight,
-    voxel,
-    chunkX,
-    chunkY,
-    chunkZ,
-    x,
-    y,
-    z,
-    [1, 0, 1, 0, -1, 1, 1, -1, 1]
-   )
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[1]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[2]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[3]),
+   this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[4])
   );
  }
 }
+
+const newValues: number[] = [];
 export function VoxelLightMixCalc(
  this: typeof VoxelHelper,
  voxelLigtValue: number,
- voxel: VoxelData,
- chunkX: number,
- chunkY: number,
- chunkZ: number,
- voxelX: number,
- voxelY: number,
- voxelZ: number,
+ x: number,
+ y: number,
+ z: number,
  checkSet: number[]
 ) {
  const values = this.lightByte.getLightValues(voxelLigtValue);
@@ -358,35 +141,11 @@ export function VoxelLightMixCalc(
  let g = values[2];
  let b = values[3];
 
- //console.log(w);
-
- const zeroCount = {
-  w: 0,
-  r: 0,
-  g: 0,
-  b: 0,
- };
-
- if (w == 0) {
-  zeroCount.w++;
- }
- if (r == 0) {
-  zeroCount.r++;
- }
-
- if (g == 0) {
-  zeroCount.g++;
- }
-
- if (b == 0) {
-  zeroCount.b++;
- }
-
  for (let i = 6; i > 0; i -= 3) {
   const check = this.getLight(
-   checkSet[i] + chunkX + voxelX,
-   checkSet[i + 1] + chunkY + voxelY,
-   checkSet[i + 2] + chunkZ + voxelZ
+   checkSet[i] + x,
+   checkSet[i + 1] + y,
+   checkSet[i + 2] + z
   );
 
   if (!check) {
@@ -406,18 +165,12 @@ export function VoxelLightMixCalc(
   if (nw > w && w < 15) {
    w++;
   }
-  if (nw == 0) {
-   zeroCount.w++;
-  }
 
   if (nr < r && r > 0) {
    r--;
   }
   if (nr > r && r < 15) {
    r++;
-  }
-  if (nr == 0) {
-   zeroCount.r++;
   }
 
   if (ng < g && g > 0) {
@@ -426,9 +179,6 @@ export function VoxelLightMixCalc(
   if (ng > g && g < 15) {
    g++;
   }
-  if (ng == 0) {
-   zeroCount.g++;
-  }
 
   if (nb < b && b > 0) {
    b--;
@@ -436,24 +186,10 @@ export function VoxelLightMixCalc(
   if (nb > b && b < 15) {
    b++;
   }
-
-  if (nb == 0) {
-   zeroCount.b++;
-  }
  }
-
-/*  if (zeroCount.w >= 2) {
-  w = 0;
- }
- if (zeroCount.r >= 2) {
-  r = 15;
-  //console.log(zeroCount);
- }
- if (zeroCount.g >= 2) {
-  g = 0;
- }
- if (zeroCount.b >= 2) {
-  b = 0;
- } */
- return this.lightByte.setLightValues([w, r, g, b]);
+ newValues[0] = w;
+ newValues[1] = r;
+ newValues[2] = g;
+ newValues[3] = b;
+ return this.lightByte.setLightValues(newValues);
 }
