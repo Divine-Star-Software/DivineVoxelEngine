@@ -34,11 +34,6 @@ const processDefaultFaceData = (data: VoxelShapeAddData, double = false) => {
    data.lightTemplate,
    data.lightIndex
   );
-  DVEB.shapeHelper.calculateAOColor(
-   data.AOColors,
-   data.aoTemplate,
-   data.aoIndex
-  );
  }
  data.uvTemplateIndex += 1;
  data.lightIndex += 4;
@@ -50,10 +45,10 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
  //add top face
  0: (data: VoxelShapeAddData) => {
   DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data);
-  data.position.y += shapeDimensions.height;
+/*   data.position.y += shapeDimensions.height;
   DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data);
-  data.position.y -= shapeDimensions.height;
-  processDefaultFaceData(data, true);
+  data.position.y -= shapeDimensions.height; */
+  processDefaultFaceData(data, false);
  },
  //add bottom face
  1: (data: VoxelShapeAddData) => {

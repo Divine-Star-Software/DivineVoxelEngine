@@ -36,7 +36,6 @@ export const SetUpDefaultScene = (engine: BABYLON.Engine) => {
   earthGravity / assumedFramesPerSecond,
   0
  );
-
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
  scene.fogDensity = 0.008;
  scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
@@ -82,8 +81,9 @@ export const SetUpDefaultCamera = (
 
  camera.fov = 1.5;
  camera.minZ = 0.01;
- camera.angularSensibility = 4000;
  camera.maxZ = 500;
+ camera.angularSensibility = 4000;
+
 
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;

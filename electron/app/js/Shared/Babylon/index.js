@@ -51,8 +51,8 @@ export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30,
     const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
     camera.fov = 1.5;
     camera.minZ = 0.01;
-    camera.angularSensibility = 4000;
     camera.maxZ = 500;
+    camera.angularSensibility = 4000;
     camera.position.x = startPosition.x;
     camera.position.y = startPosition.y;
     camera.position.z = startPosition.z;

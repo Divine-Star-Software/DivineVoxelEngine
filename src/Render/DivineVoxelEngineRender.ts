@@ -120,6 +120,7 @@ export const DVER = {
  },
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
+
   await BuildInitalMeshes(this, data.scene);
   if (this.engineSettings.settings.nexus?.enabled) {
    this.renderedEntites.setScene(data.scene);

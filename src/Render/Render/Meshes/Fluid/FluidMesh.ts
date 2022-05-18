@@ -31,7 +31,6 @@ export const FluidMesh: VoxelMeshInterface = {
   const mesh = new BABYLON.Mesh("fluid", scene);
   mesh.alphaIndex = 0;
   mesh.isPickable = false;
-
   return mesh;
  },
 

@@ -73,6 +73,7 @@ export class WorldGen {
             }
             if (!hole) {
                 this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 7);
+                this.DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + 6, topY, chunkZ + 7);
                 this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 8);
                 this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 6, topY, chunkZ + 9);
                 this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + 7, topY, chunkZ + 9);

@@ -57,8 +57,8 @@ export const FloraMaterial = {
                 "time",
                 ...animData.uniforms,
             ],
-            needAlphaBlending: true,
-            needAlphaTesting: false,
+            needAlphaBlending: false,
+            needAlphaTesting: true,
         });
         shaderMaterial.fogEnabled = true;
         texture.hasAlpha = true;
@@ -66,7 +66,7 @@ export const FloraMaterial = {
         shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
         shaderMaterial.backFaceCulling = false;
         // shaderMaterial.separateCullingPass = false;
-        shaderMaterial.needDepthPrePass = true;
+        // shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
             var effect = shaderMaterial.getEffect();
             if (!effect)

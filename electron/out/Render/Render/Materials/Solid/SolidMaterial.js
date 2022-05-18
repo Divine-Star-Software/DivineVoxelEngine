@@ -80,12 +80,13 @@ export const SolidMaterial = {
                 "doColor",
                 ...animData.uniforms,
             ],
-            needAlphaBlending: true,
-            needAlphaTesting: false,
+            needAlphaBlending: false,
+            needAlphaTesting: true,
         });
+        //this.material.forceDepthWrite = true;
         this.material.fogEnabled = true;
+        texture.hasAlpha = true;
         this.material.setTexture("arrayTex", texture);
-        this.material.needDepthPrePass = true;
         this.material.setFloat("sunLightLevel", 1);
         this.material.setFloat("baseLevel", 0.1);
         this.material.onBind = (mesh) => {

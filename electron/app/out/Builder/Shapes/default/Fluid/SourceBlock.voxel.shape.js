@@ -12,7 +12,6 @@ const processDefaultFaceData = (data, double = false) => {
     if (double) {
         data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
         DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-        DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
     }
     data.uvTemplateIndex += 1;
     data.lightIndex += 4;
@@ -23,10 +22,10 @@ const faceFunctions = {
     //add top face
     0: (data) => {
         DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data);
-        data.position.y += shapeDimensions.height;
-        DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data);
-        data.position.y -= shapeDimensions.height;
-        processDefaultFaceData(data, true);
+        /*   data.position.y += shapeDimensions.height;
+          DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data);
+          data.position.y -= shapeDimensions.height; */
+        processDefaultFaceData(data, false);
     },
     //add bottom face
     1: (data) => {

@@ -106,6 +106,13 @@ export class WorldGen {
      chunkZ + 7
     );
     this.DVEW.worldData.paintVoxel(
+     "dve:dreamgrass",
+     "default",
+     chunkX + 6,
+     topY,
+     chunkZ + 7
+    );
+    this.DVEW.worldData.paintVoxel(
      "dve:dreamstoneslab",
      "default",
      chunkX + 7,
