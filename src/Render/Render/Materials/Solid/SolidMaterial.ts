@@ -111,7 +111,7 @@ export const SolidMaterial = {
   this.material.setFloat("baseLevel", 0.1);
   this.material.onBind = (mesh) => {
    if (!this.material) return;
-   var effect = this.material.getEffect();
+   const effect = this.material.getEffect();
    if (!effect) return;
 
    effect.setFloat4(

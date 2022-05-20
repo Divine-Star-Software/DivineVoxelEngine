@@ -31,6 +31,16 @@ export const BuilderCommManager = {
             DVEW.matrixCentralHub.releaseChunkInThread(builder.name, chunkX, chunkY, chunkZ);
         }
     },
+    syncRegionInAllBuilders(regionX, regionY, regionZ) {
+        for (const builder of this.builders) {
+            DVEW.matrixCentralHub.syncRegionInThread(builder.name, regionX, regionY, regionZ);
+        }
+    },
+    releaseRegionInAllBuilders(regionX, regionY, regionZ) {
+        for (const builder of this.builders) {
+            DVEW.matrixCentralHub.releaseRegionInThread(builder.name, regionX, regionY, regionZ);
+        }
+    },
     isReady() {
         if (!this.buildersConnected)
             return false;

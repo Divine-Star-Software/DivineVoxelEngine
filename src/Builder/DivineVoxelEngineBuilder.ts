@@ -21,7 +21,6 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 
-
 export const DVEB = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
@@ -69,12 +68,12 @@ export const DVEB = {
 
  isReady() {
   return (
-   this.__connectedToWorld &&
-   this.matrixHub.worldPort !== undefined &&
-   this.voxelManager.shapMapIsSet() &&
-   this.worldComm.port !== null &&
-   this.textureManager.isReady() &&
-   this.__settingsHaveBeenSynced
+   DVEB.__connectedToWorld &&
+   DVEB.matrixHub.worldPort !== undefined &&
+   DVEB.voxelManager.shapMapIsSet() &&
+   DVEB.worldComm.port !== null &&
+   DVEB.textureManager.isReady() &&
+   DVEB.__settingsHaveBeenSynced
   );
  },
 
@@ -107,7 +106,4 @@ export const DVEB = {
 
 export type DivineVoxelEngineBuilder = typeof DVEB;
 
-//@ts-ignore
-if (typeof process !== "undefined" && typeof Worker === "undefined") {
- DVEB.environment = "node";
-}
+DVEB.environment = Util.getEnviorment();

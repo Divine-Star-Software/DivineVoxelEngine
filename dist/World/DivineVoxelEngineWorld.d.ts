@@ -106,13 +106,16 @@ export declare const DVEW: {
     };
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
-    engineSettings: {
-        settings: EngineSettingsData;
-        syncSettings(data: EngineSettingsData): void;
-        getSettingsCopy(): any;
-    };
     UTIL: {
-        calculateGameZone(positionZ: number, positionX: number): number[];
+        createPromiseCheck: (data: {
+            check: () => boolean;
+            onReady?: (() => any) | undefined;
+            checkInterval: number;
+            failTimeOut?: number | undefined;
+            onFail?: (() => any) | undefined;
+        }) => Promise<boolean>;
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -164,7 +167,10 @@ export declare const DVEW: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
-        };
+        }; /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         getWorldBounds(): {
             chunkXPow2: number;
             chunkYPow2: number;
@@ -261,6 +267,160 @@ export declare const DVEW: {
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
+    engineSettings: {
+        settings: EngineSettingsData;
+        syncSettings(data: EngineSettingsData): void;
+        getSettingsCopy(): any;
+    };
+    matrix: {
+        updateDieTime: number;
+        worldBounds: {
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithFlat3DArray(flat3dArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+        };
+        regions: Record<string, {
+            threadsLoadedIn: Record<string, boolean>;
+            chunks: {
+                [x: string]: {
+                    chunkStates: Uint8Array;
+                    chunkStatesSAB: SharedArrayBuffer;
+                    chunkSAB: SharedArrayBuffer;
+                };
+            };
+        }>;
+        isChunkInMatrix(x: number, y: number, z: number): boolean;
+        isRegionInMatrix(x: number, y: number, z: number): boolean;
+        isChunkLocked(x: number, y: number, z: number): boolean;
+        lockChunk(x: number, y: number, z: number): boolean;
+        unLockChunk(x: number, y: number, z: number): boolean;
+        updateChunkData(x: number, y: number, z: number, run: (chunk: import("../Meta/index.js").ChunkData) => {}): false | Promise<boolean>;
+        releaseChunk(x: number, y: number, z: number): boolean | undefined;
+        createMatrixChunkData(x: number, y: number, z: number): false | SharedArrayBuffer[];
+        getMatrixChunkData(x: number, y: number, z: number): false | {
+            chunkStates: Uint8Array;
+            chunkStatesSAB: SharedArrayBuffer;
+            chunkSAB: SharedArrayBuffer;
+        };
+        getMatrixRegionData(x: number, y: number, z: number): false | {
+            threadsLoadedIn: Record<string, boolean>;
+            chunks: {
+                [x: string]: {
+                    chunkStates: Uint8Array;
+                    chunkStatesSAB: SharedArrayBuffer;
+                    chunkSAB: SharedArrayBuffer;
+                };
+            };
+        };
+        addRegionToMatrix(x: number, y: number, z: number): {
+            threadsLoadedIn: Record<string, boolean>;
+            chunks: {
+                [x: string]: {
+                    chunkStates: Uint8Array;
+                    chunkStatesSAB: SharedArrayBuffer;
+                    chunkSAB: SharedArrayBuffer;
+                };
+            };
+        };
+        removeRegionFromMatrix(x: number, y: number, z: number): false | undefined;
+        deleteThreadFromRegion(threadId: string, x: number, y: number, z: number): false | undefined;
+    };
+    matrixCentralHub: {
+        threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
+        _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
+        registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
+        syncChunk(x: number, y: number, z: number): false | undefined;
+        syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        releaseChunk(x: number, y: number, z: number): void;
+        releaseChunkInThread(threadId: string, x: number, y: number, z: number): void;
+        syncRegion(x: number, y: number, z: number): false | undefined;
+        syncRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        releaseRegion(x: number, y: number, z: number): false | undefined;
+        releaseRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        syncGlobalVoxelPalette(): void;
+        syncGlobalVoxelPaletteInThread(threadId: string): void;
+        syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
+        syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        releaseRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
+        releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+    };
+    nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
     builderCommManager: {
         count: number;
         numBuilders: number;
@@ -270,6 +430,8 @@ export declare const DVEW: {
         addBuilder(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;
+        syncRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
+        releaseRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
         requestFullChunkBeRemoved(chunkX: number, chunkY: number, chunkZ: number): void;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -497,10 +659,6 @@ export declare const DVEW: {
         getBlankRegion(palette?: boolean): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
     };
-    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
-        onReady: () => void;
-        onRestart: () => void;
-    };
     worldData: {
         regions: Record<string, import("../Meta/World/WorldData/World.types.js").WorldRegion>;
         chunks: Record<string, import("../Meta/index.js").ChunkData>;
@@ -682,113 +840,6 @@ export declare const DVEW: {
         requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
         requestVoxelBeRemoved(x: number, y: number, z: number): void;
     };
-    matrix: {
-        updateDieTime: number;
-        worldBounds: {
-            chunkXPow2: number;
-            chunkYPow2: number;
-            chunkZPow2: number;
-            chunkXSize: number;
-            chunkYSize: number;
-            chunkZSize: number;
-            chunkTotalVoxels: number;
-            regionXPow2: number;
-            regionYPow2: number;
-            regionZPow2: number;
-            regionXSize: number;
-            regionYSize: number;
-            regionZSize: number;
-            __regionPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __chunkPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __voxelPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            syncBoundsWithFlat3DArray(flat3dArray: {
-                bounds: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                _position: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
-                setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
-                getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
-            }): void;
-            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            getRegionPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getVoxelPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-        };
-        loadedChunks: Record<string, SharedArrayBuffer>;
-        loadedRegions: Record<string, Record<string, boolean>>;
-        chunkStatesSAB: Record<string, SharedArrayBuffer>;
-        chunkStates: Record<string, Uint8Array>;
-        isChunkInMatrix(x: number, y: number, z: number): boolean;
-        isChunkLocked(x: number, y: number, z: number): boolean;
-        lockChunk(x: number, y: number, z: number): boolean;
-        unLockChunk(x: number, y: number, z: number): boolean;
-        updateChunkData(x: number, y: number, z: number, run: (chunk: import("../Meta/index.js").ChunkData) => {}): false | Promise<boolean>;
-        releaseChunk(x: number, y: number, z: number): boolean | undefined;
-        createChunkSAB(x: number, y: number, z: number): false | SharedArrayBuffer[];
-    };
-    matrixCentralHub: {
-        threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
-        _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
-        registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
-        syncChunk(x: number, y: number, z: number): false | undefined;
-        syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-        releaseChunk(x: number, y: number, z: number): void;
-        releaseChunkInThread(threadId: string, x: number, y: number, z: number): void;
-        syncGlobalVoxelPalette(): void;
-        syncGlobalVoxelPaletteInThread(threadId: string): void;
-        syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
-        syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-        releaseRegionVoxelPalette(x: number, y: number, z: number): void;
-        releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): void;
-    };
-    nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     voxelManager: {
         voxels: Record<string, import("../Meta/index.js").VoxelData>;
         shapeMap: Record<string, number>;
@@ -807,7 +858,17 @@ export declare const DVEW: {
     clearRGBLightRemoveQue(): void;
     runChunkRebuildQue(): void;
     clearChunkRebuildQue(): void;
-    removeChunk(chunkX: number, chunkY: number, chunkZ: number): boolean;
+    /**# Remove Chunk
+     * ---
+     * Removes a chunk from the render thread.
+     * Can also delete the chunk from world ata.
+     */
+    removeChunk(chunkX: number, chunkY: number, chunkZ: number, deleteChunk?: boolean): boolean;
+    /**# Delete Chunk
+     * ---
+     * Deletes a chunk from world data and releases it from all threads.
+     */
+    deleteChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     $INIT(data: DVEWInitData): Promise<void>;
 };

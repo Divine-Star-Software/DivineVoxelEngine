@@ -1,5 +1,13 @@
 export declare const Util: {
-    calculateGameZone(positionZ: number, positionX: number): number[];
+    createPromiseCheck: (data: {
+        check: () => boolean;
+        onReady?: (() => any) | undefined;
+        checkInterval: number;
+        failTimeOut?: number | undefined;
+        onFail?: (() => any) | undefined;
+    }) => Promise<boolean>;
+    getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+    getEnviorment(): "node" | "browser";
     getFlat3DArray(): {
         bounds: {
             x: number;

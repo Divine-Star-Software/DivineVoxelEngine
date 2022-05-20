@@ -1,4 +1,13 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
+declare type MatrixRegionData = {
+    threadsLoadedIn: Record<string, boolean>;
+    chunks: MatrixChunkData;
+};
+declare type MatrixChunkData = Record<string, {
+    chunkStates: Uint8Array;
+    chunkStatesSAB: SharedArrayBuffer;
+    chunkSAB: SharedArrayBuffer;
+}>;
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -82,15 +91,23 @@ export declare const Matrix: {
             z: number;
         };
     };
-    loadedChunks: Record<string, SharedArrayBuffer>;
-    loadedRegions: Record<string, Record<string, boolean>>;
-    chunkStatesSAB: Record<string, SharedArrayBuffer>;
-    chunkStates: Record<string, Uint8Array>;
+    regions: Record<string, MatrixRegionData>;
     isChunkInMatrix(x: number, y: number, z: number): boolean;
+    isRegionInMatrix(x: number, y: number, z: number): boolean;
     isChunkLocked(x: number, y: number, z: number): boolean;
     lockChunk(x: number, y: number, z: number): boolean;
     unLockChunk(x: number, y: number, z: number): boolean;
     updateChunkData(x: number, y: number, z: number, run: (chunk: ChunkData) => {}): false | Promise<boolean>;
     releaseChunk(x: number, y: number, z: number): boolean | undefined;
-    createChunkSAB(x: number, y: number, z: number): SharedArrayBuffer[] | false;
+    createMatrixChunkData(x: number, y: number, z: number): SharedArrayBuffer[] | false;
+    getMatrixChunkData(x: number, y: number, z: number): false | {
+        chunkStates: Uint8Array;
+        chunkStatesSAB: SharedArrayBuffer;
+        chunkSAB: SharedArrayBuffer;
+    };
+    getMatrixRegionData(x: number, y: number, z: number): false | MatrixRegionData;
+    addRegionToMatrix(x: number, y: number, z: number): MatrixRegionData;
+    removeRegionFromMatrix(x: number, y: number, z: number): false | undefined;
+    deleteThreadFromRegion(threadId: string, x: number, y: number, z: number): false | undefined;
 };
+export {};

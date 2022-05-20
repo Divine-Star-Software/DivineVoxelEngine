@@ -73,8 +73,24 @@ export const MatrixCentralHub = {
  },
 
  syncChunk(x: number, y: number, z: number) {
-  const chunkSABs = DVEW.matrix.createChunkSAB(x, y, z);
-  if (!chunkSABs) return false;
+  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+   if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
+    this.syncRegionVoxelPalette(x, y, z);
+   }
+  }
+
+  let chunkSABs: SharedArrayBuffer[] = [];
+  if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
+   const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
+   if (chunkData) {
+    chunkSABs[0] = chunkData.chunkSAB;
+    chunkSABs[1] = chunkData.chunkStatesSAB;
+   }
+  } else {
+   const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
+   if (!newChunkSAB) return false;
+   chunkSABs = newChunkSAB;
+  }
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "sync-chunk",
@@ -88,17 +104,23 @@ export const MatrixCentralHub = {
  },
 
  syncChunkInThread(threadId: string, x: number, y: number, z: number) {
+  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+   if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
+    this.syncRegionVoxelPalette(x, y, z);
+   }
+  }
   let chunkSABs: SharedArrayBuffer[] = [];
-  if (DVEW.matrix.isChunkInMatrix(x, y, z)) {
-   const chunkKey = DVEW.worldBounds.getChunkKeyFromPosition(x, y, z);
-   chunkSABs[0] = DVEW.matrix.loadedChunks[chunkKey];
-   chunkSABs[1] = DVEW.matrix.chunkStatesSAB[chunkKey];
+  if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
+   const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
+   if (chunkData) {
+    chunkSABs[0] = chunkData.chunkSAB;
+    chunkSABs[1] = chunkData.chunkStatesSAB;
+   }
   } else {
-   const newChunkSAB = DVEW.matrix.createChunkSAB(x, y, z);
+   const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
-
   this.threads[threadId].postMessage([
    "sync-chunk",
    chunkSABs[0],
@@ -129,6 +151,85 @@ export const MatrixCentralHub = {
    chunkPOS.y,
    chunkPOS.z,
   ]);
+ },
+
+ syncRegion(x: number, y: number, z: number) {
+  const region = DVEW.worldData.getRegion(x, y, z);
+  if (!region) return false;
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
+  for (const chunkKeys of Object.keys(region.chunks)) {
+   const chunk = region.chunks[chunkKeys];
+   for (const threadId of Object.keys(this.threads)) {
+    this.syncChunkInThread(
+     threadId,
+     chunk.position[0],
+     chunk.position[1],
+     chunk.position[2]
+    );
+   }
+  }
+ },
+
+ syncRegionInThread(threadId: string, x: number, y: number, z: number) {
+  const region = DVEW.worldData.getRegion(x, y, z);
+  if (!region) return false;
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
+  for (const chunkKeys of Object.keys(region.chunks)) {
+   const chunk = region.chunks[chunkKeys];
+   this.syncChunkInThread(
+    threadId,
+    chunk.position[0],
+    chunk.position[1],
+    chunk.position[2]
+   );
+  }
+ },
+
+ releaseRegion(x: number, y: number, z: number) {
+  const region = DVEW.worldData.getRegion(x, y, z);
+  if (!region) return false;
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
+  for (const chunkKeys of Object.keys(region.chunks)) {
+   const chunk = region.chunks[chunkKeys];
+   for (const threadId of Object.keys(this.threads)) {
+    delete matrixRegionData.threadsLoadedIn[threadId];
+    this.releaseChunkInThread(
+     threadId,
+     chunk.position[0],
+     chunk.position[1],
+     chunk.position[2]
+    );
+   }
+  }
+  DVEW.matrix.removeRegionFromMatrix(x, y, z);
+ },
+
+ releaseRegionInThread(threadId: string, x: number, y: number, z: number) {
+  const region = DVEW.worldData.getRegion(x, y, z);
+  if (!region) return false;
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
+  delete matrixRegionData.threadsLoadedIn[threadId];
+  for (const chunkKeys of Object.keys(region.chunks)) {
+   const chunk = region.chunks[chunkKeys];
+   this.releaseChunkInThread(
+    threadId,
+    chunk.position[0],
+    chunk.position[1],
+    chunk.position[2]
+   );
+  }
  },
 
  syncGlobalVoxelPalette() {
@@ -163,7 +264,12 @@ export const MatrixCentralHub = {
   const regionVoxelPalette = region.palette;
   if (!regionVoxelPalette) return false;
   const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
   for (const threadId of Object.keys(this.threads)) {
+   matrixRegionData.threadsLoadedIn[threadId] = true;
    this.threads[threadId].postMessage([
     "sync-region-data",
     regionVoxelPalette,
@@ -185,6 +291,11 @@ export const MatrixCentralHub = {
   const regionVoxelPalette = region.palette;
   if (!regionVoxelPalette) return false;
   const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) {
+   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
+  }
+  matrixRegionData.threadsLoadedIn[threadId] = true;
   this.threads[threadId].postMessage([
    "sync-region-data",
    regionVoxelPalette,
@@ -195,8 +306,11 @@ export const MatrixCentralHub = {
  },
 
  releaseRegionVoxelPalette(x: number, y: number, z: number) {
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) return false;
   const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   for (const threadId of Object.keys(this.threads)) {
+   delete matrixRegionData.threadsLoadedIn[threadId];
    this.threads[threadId].postMessage([
     "release-region-palette",
     regionPOS.x,
@@ -212,6 +326,9 @@ export const MatrixCentralHub = {
   y: number,
   z: number
  ) {
+  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
+  if (!matrixRegionData) return false;
+  delete matrixRegionData.threadsLoadedIn[threadId];
   const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
   this.threads[threadId].postMessage([
    "release-region-palette",

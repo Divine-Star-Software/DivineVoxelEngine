@@ -114,7 +114,7 @@ export const FluidMaterial = {
   shaderMaterial.setFloat("baseLevel", 0.1);
 
   shaderMaterial.onBind = (mesh) => {
-   var effect = shaderMaterial.getEffect();
+   const effect = shaderMaterial.getEffect();
    if (!effect) return;
 
    effect.setFloat4(

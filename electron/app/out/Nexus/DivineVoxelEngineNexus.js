@@ -1,27 +1,30 @@
-//types
-import { EngineSettings } from "../Global/EngineSettings.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+//comms
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { WorldComm } from "./InterComms/World/WorldComm.js";
+//objects
+import { Util } from "../Global/Util.helper.js";
+import { EngineSettings } from "../Global/EngineSettings.js";
+import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
 export const DVEN = {
     environment: "browser",
+    __connectedToWorld: false,
+    UTIL: Util,
     engineSettings: EngineSettings,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
-    __connectedToWorld: false,
     worldComm: WorldComm,
     renderComm: RenderComm,
     nexusEntites: NexusEntites,
     async $INIT(data) {
-        await InitNexusWorker(this, data.onReady, data.onMessage, data.onRestart);
+        await InitNexusWorker(this, data);
     },
     isReady() {
-        return this.matrixHub.worldPort !== undefined && this.__connectedToWorld;
+        return DVEN.matrixHub.worldPort !== undefined && DVEN.__connectedToWorld;
     },
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
@@ -48,3 +51,4 @@ export const DVEN = {
     },
 };
 DVEN.matrixHub.setThreadName("nexus");
+DVEN.environment = Util.getEnviorment();

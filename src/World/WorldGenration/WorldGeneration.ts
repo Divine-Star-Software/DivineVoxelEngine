@@ -47,6 +47,7 @@ export const WorldGeneration = {
    maxMinHeight: [],
    heightMap: [],
    isEmpty: empty,
+   position : []
   };
  },
 };

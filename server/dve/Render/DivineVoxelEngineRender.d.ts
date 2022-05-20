@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -219,7 +220,15 @@ export declare const DVER: {
         deSpawnEntity(entityId: string, identiferId: string): false | undefined;
     };
     util: {
-        calculateGameZone(positionZ: number, positionX: number): number[];
+        createPromiseCheck: (data: {
+            check: () => boolean;
+            onReady?: (() => any) | undefined;
+            checkInterval: number;
+            failTimeOut?: number | undefined;
+            onFail?: (() => any) | undefined;
+        }) => Promise<boolean>;
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;

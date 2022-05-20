@@ -82,7 +82,7 @@ export const MagmaMaterial = {
   shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
-   var effect = shaderMaterial.getEffect();
+   const effect = shaderMaterial.getEffect();
    if (!effect) return;
 
    effect.setFloat4(

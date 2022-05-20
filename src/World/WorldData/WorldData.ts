@@ -116,6 +116,8 @@ export const WorldData = {
   z: number,
   substance: "all" | VoxelSubstanceType
  ) {
+  const chunk = this.getChunk(x, y, z);
+  if (!chunk) return;
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   if (!this._chunkRebuildQueMap[chunkKey]) {
@@ -380,6 +382,9 @@ export const WorldData = {
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   const chunks = region.chunks;
+  chunk.position[0] = chunkPOS.x;
+  chunk.position[1] = chunkPOS.y;
+  chunk.position[2] = chunkPOS.z;
   chunks[chunkKey] = chunk;
   if (doNotSyncInBuilderThread) return;
   DVEW.builderCommManager.syncChunkInAllBuilders(

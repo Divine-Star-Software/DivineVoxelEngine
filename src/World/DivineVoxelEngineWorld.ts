@@ -27,29 +27,26 @@ export const DVEW = {
  worldBounds: Util.getWorldBounds(),
  __settingsHaveBeenSynced: false,
  __renderIsDone: false,
- engineSettings: EngineSettings,
+
  UTIL: Util,
-
- builderCommManager: BuilderCommManager,
-
- worldGeneration: WorldGeneration,
-
- renderComm: RenderComm,
-
- worldData: WorldData,
+ engineSettings: EngineSettings,
 
  matrix: Matrix,
  matrixCentralHub: MatrixCentralHub,
 
  nexusComm: NexusComm,
+ renderComm: RenderComm,
+ builderCommManager: BuilderCommManager,
 
+ worldGeneration: WorldGeneration,
+ worldData: WorldData,
  voxelManager: VoxelManager,
 
  isReady() {
   let ready =
-   this.builderCommManager.isReady() &&
-   this.__settingsHaveBeenSynced &&
-   this.__renderIsDone;
+   DVEW.builderCommManager.isReady() &&
+   DVEW.__settingsHaveBeenSynced &&
+   DVEW.__renderIsDone;
   return ready;
  },
 
@@ -131,13 +128,34 @@ export const DVEW = {
   this.worldData.clearChunkRebuildQue();
  },
 
- removeChunk(chunkX: number, chunkY: number, chunkZ: number) {
+ /**# Remove Chunk
+  * ---
+  * Removes a chunk from the render thread.
+  * Can also delete the chunk from world ata.
+  */
+ removeChunk(
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
+  deleteChunk = false
+ ) {
   const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) return false;
-  // this.builderComm.requestFullChunkBeRemoved(chunkX, chunkZ);
-  this.renderComm.sendMessage("remove-chunk", [chunkX, chunkZ]);
-  this.worldData.removeChunk(chunkX, chunkY, chunkZ);
+  this.renderComm.sendMessage("remove-chunk", [chunkX, chunkY, chunkZ]);
+  if (deleteChunk) {
+   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
+   this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
+  }
   return true;
+ },
+
+ /**# Delete Chunk
+  * ---
+  * Deletes a chunk from world data and releases it from all threads.
+  */
+ deleteChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  this.worldData.removeChunk(chunkX, chunkY, chunkZ);
+  this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
  },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
@@ -145,13 +163,10 @@ export const DVEW = {
  },
 
  async $INIT(data: DVEWInitData) {
-  await InitWorldWorker(data.onReady, data.onMessage, data.onRestart);
+  await InitWorldWorker(this, data);
  },
 };
 
 export type DivineVoxelEngineWorld = typeof DVEW;
 
-//@ts-ignore
-if (typeof process !== "undefined" && typeof Worker === "undefined") {
- DVEW.environment = "node";
-}
+DVEW.environment = Util.getEnviorment();

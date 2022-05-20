@@ -1,2 +1,3 @@
 import type { DivineVoxelEngineNexus } from "Nexus/DivineVoxelEngineNexus";
-export declare function InitNexusWorker(DVEN: DivineVoxelEngineNexus, onReady: Function, onMessage?: Function, onRestart?: Function): Promise<void>;
+import type { DVENInitData } from "Meta/Nexus/DVEN";
+export declare function InitNexusWorker(DVEN: DivineVoxelEngineNexus, initData: DVENInitData): Promise<void>;

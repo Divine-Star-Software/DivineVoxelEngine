@@ -17,5 +17,6 @@ export declare type ChunkData = {
     maxMinHeight: number[];
     heightMap: number[][];
     isEmpty: boolean;
+    position: number[];
 };
 export declare type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

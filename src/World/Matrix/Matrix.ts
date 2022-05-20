@@ -2,6 +2,20 @@ import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 
+type MatrixRegionData = {
+ threadsLoadedIn: Record<string, boolean>;
+ chunks: MatrixChunkData;
+};
+
+type MatrixChunkData = Record<
+ string,
+ {
+  chunkStates: Uint8Array;
+  chunkStatesSAB: SharedArrayBuffer;
+  chunkSAB: SharedArrayBuffer;
+ }
+>;
+
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -10,34 +24,39 @@ export const Matrix = {
  //two minutes
  updateDieTime: 120000,
  worldBounds: Util.getWorldBounds(),
- loadedChunks: <Record<string, SharedArrayBuffer>>{},
- loadedRegions: <Record<string, Record<string, boolean>>>{},
- chunkStatesSAB: <Record<string, SharedArrayBuffer>>{},
- //A view of the chunk states SAB. The states are used to define if the chunk is 'locked' or not.
- chunkStates: <Record<string, Uint8Array>>{},
+ regions: <Record<string, MatrixRegionData>>{},
 
  isChunkInMatrix(x: number, y: number, z: number) {
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  return this.loadedChunks[chunkKey] !== undefined;
+  if (!this.isRegionInMatrix(x, y, z)) return false;
+  return (
+   this.regions[this.worldBounds.getChunkKeyFromPosition(x, y, z)] !== undefined
+  );
+ },
+
+ isRegionInMatrix(x: number, y: number, z: number) {
+  return (
+   this.regions[this.worldBounds.getRegionKeyFromPosition(x, y, z)] !==
+   undefined
+  );
  },
 
  isChunkLocked(x: number, y: number, z: number) {
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  if (!this.chunkStates[chunkKey]) return false;
-  return Atomics.load(this.chunkStates[chunkKey], 0) == 1;
+  const chunkData = this.getMatrixChunkData(x, y, z);
+  if (!chunkData) return false;
+  return Atomics.load(chunkData.chunkStates, 0) == 1;
  },
 
  lockChunk(x: number, y: number, z: number) {
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  if (!this.chunkStates[chunkKey]) return false;
-  Atomics.store(this.chunkStates[chunkKey], 0, 1);
+  const chunkData = this.getMatrixChunkData(x, y, z);
+  if (!chunkData) return false;
+  Atomics.store(chunkData.chunkStates, 0, 1);
   return true;
  },
 
  unLockChunk(x: number, y: number, z: number) {
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  if (!this.chunkStates[chunkKey]) return false;
-  Atomics.store(this.chunkStates[chunkKey], 0, 0);
+  const chunkData = this.getMatrixChunkData(x, y, z);
+  if (!chunkData) return false;
+  Atomics.store(chunkData.chunkStates, 0, 0);
   return true;
  },
 
@@ -54,48 +73,90 @@ export const Matrix = {
   if (!this.isChunkInMatrix(x, y, z)) {
    run(chunk);
   }
-  const prom: Promise<boolean> = new Promise((resolve, reject) => {
-   if (!this.isChunkLocked(x, y, z)) {
-    this.lockChunk(x, y, z);
+  return Util.createPromiseCheck({
+   check: () => {
+    return !this.isChunkLocked(x, y, z);
+   },
+   onReady: () => {
     run(chunk);
-    this.unLockChunk(x, y, z);
-    resolve(true);
-   } else {
-    const inte = setInterval(() => {
-     if (!this.isChunkLocked(x, y, z)) {
-      this.lockChunk(x, y, z);
-      run(chunk);
-      this.unLockChunk(x, y, z);
-      resolve(true);
-     }
-    }, 1);
-    setTimeout(() => {
-     clearInterval(inte);
-     resolve(false);
-    }, this.updateDieTime);
-   }
+   },
+   checkInterval: 10,
+   failTimeOut: this.updateDieTime,
+   onFail: () => {
+    const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+    console.warn(`The chunk ${chunkKey} could not be updated in time.`);
+   },
   });
-  return prom;
  },
 
  releaseChunk(x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) return;
   const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  if (!this.loadedChunks[chunkKey]) return;
-  const chunk = DVEW.worldData.getChunk(x, y, z);
-  if (!chunk) return false;
-  delete this.loadedChunks[chunkKey];
+  if (!this.regions[regionKey].chunks[chunkKey]) return false;
+  delete this.regions[regionKey].chunks[chunkKey];
   return true;
  },
 
- createChunkSAB(x: number, y: number, z: number): SharedArrayBuffer[] | false {
+ createMatrixChunkData(
+  x: number,
+  y: number,
+  z: number
+ ): SharedArrayBuffer[] | false {
   const chunk = DVEW.worldData.getChunk(x, y, z);
   if (!chunk) return false;
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
   const chunkStateSAB = new SharedArrayBuffer(1);
-  this.loadedChunks[chunkKey] = chunk.voxelsSAB;
-
-  this.chunkStates[chunkKey] = new Uint8Array(chunkStateSAB);
-  this.chunkStatesSAB[chunkKey] = chunkStateSAB;
+  if (!this.regions[regionKey]) {
+   this.regions[regionKey] = {
+    chunks: {},
+    threadsLoadedIn: {},
+   };
+  }
+  this.regions[regionKey].chunks[chunkKey] = {
+   chunkStates: new Uint8Array(chunkStateSAB),
+   chunkStatesSAB: chunkStateSAB,
+   chunkSAB: chunk.voxelsSAB,
+  };
   return [chunk.voxelsSAB, chunkStateSAB];
+ },
+ 
+ getMatrixChunkData(x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) return false;
+  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey].chunks[chunkKey]) return false;
+  return this.regions[regionKey].chunks[chunkKey];
+ },
+
+ getMatrixRegionData(x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) return false;
+  return this.regions[regionKey];
+ },
+
+ addRegionToMatrix(x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) {
+   this.regions[regionKey] = {
+    chunks: {},
+    threadsLoadedIn: {},
+   };
+  }
+  return this.regions[regionKey];
+ },
+
+ removeRegionFromMatrix(x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) return false;
+  delete this.regions[regionKey];
+ },
+
+ deleteThreadFromRegion(threadId: string, x: number, y: number, z: number) {
+  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  if (!this.regions[regionKey]) return false;
+  if (!this.regions[regionKey].threadsLoadedIn[threadId]) return false;
+  delete this.regions[regionKey].threadsLoadedIn[threadId];
  },
 };

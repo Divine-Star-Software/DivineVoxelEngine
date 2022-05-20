@@ -68,7 +68,7 @@ export const FloraMaterial = {
         // shaderMaterial.separateCullingPass = false;
         // shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
-            var effect = shaderMaterial.getEffect();
+            const effect = shaderMaterial.getEffect();
             if (!effect)
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);

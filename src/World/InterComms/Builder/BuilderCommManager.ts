@@ -53,6 +53,28 @@ export const BuilderCommManager = {
   }
  },
 
+ syncRegionInAllBuilders(regionX: number, regionY: number, regionZ: number) {
+  for (const builder of this.builders) {
+   DVEW.matrixCentralHub.syncRegionInThread(
+    builder.name,
+    regionX,
+    regionY,
+    regionZ
+   );
+  }
+ },
+
+ releaseRegionInAllBuilders(regionX: number, regionY: number, regionZ: number) {
+  for (const builder of this.builders) {
+   DVEW.matrixCentralHub.releaseRegionInThread(
+    builder.name,
+    regionX,
+    regionY,
+    regionZ
+   );
+  }
+ },
+
  isReady() {
   if (!this.buildersConnected) return false;
   if (this.buildersConnected < this.numBuilders) return false;

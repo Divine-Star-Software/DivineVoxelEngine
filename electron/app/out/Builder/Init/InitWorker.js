@@ -9,28 +9,7 @@ export async function InitWorker(DVEB, initData) {
     if (initData.onRestart) {
         DVEB.renderComm.onRestart = initData.onRestart;
     }
-    if (DVEB.environment == "browser") {
-        DVEB.renderComm.setPort(self);
-    }
-    if (DVEB.environment == "node") {
-        //@ts-ignore
-        if (require) {
-            //@ts-ignore
-            const { parentPort } = require("worker_threads");
-            DVEB.renderComm.setPort(parentPort);
-        }
-        else {
-            //@ts-ignore
-            const { parentPort } = await import("worker_threads").parentPort;
-            DVEB.renderComm.setPort(parentPort);
-        }
-    }
-    await new Promise((resolve) => {
-        const inte = setInterval(() => {
-            if (DVEB.isReady()) {
-                clearInterval(inte);
-                resolve(true);
-            }
-        }, 1);
-    });
+    const renderPort = await DVEB.UTIL.getWorkerPort(DVEB.environment);
+    DVEB.renderComm.setPort(renderPort);
+    await DVEB.UTIL.createPromiseCheck({ check: DVEB.isReady, checkInterval: 1 });
 }

@@ -129,7 +129,7 @@ export declare const WorldMatrix: {
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
      */
-    awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<unknown>;
+    awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
     __syncRegionData(x: number, y: number, z: number, palette: WorldRegionPalette): void;
     __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
@@ -161,7 +161,7 @@ export declare const WorldMatrix: {
     isChunkLocked(x: number, y: number, z: number): boolean;
     lockChunk(x: number, y: number, z: number): boolean;
     unLockChunk(x: number, y: number, z: number): boolean;
-    updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: {
+    updateChunkData(x: number, y: number, z: number, run: (chunk: {
         voxels: Uint32Array;
         chunkStates: Uint8Array;
     }) => {}): false | Promise<boolean>;

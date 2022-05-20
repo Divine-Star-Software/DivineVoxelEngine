@@ -93,7 +93,7 @@ export const FluidMaterial = {
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.onBind = (mesh) => {
-            var effect = shaderMaterial.getEffect();
+            const effect = shaderMaterial.getEffect();
             if (!effect)
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);

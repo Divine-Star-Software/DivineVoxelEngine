@@ -50,12 +50,12 @@ export const DVEB = {
     },
     reStart() { },
     isReady() {
-        return (this.__connectedToWorld &&
-            this.matrixHub.worldPort !== undefined &&
-            this.voxelManager.shapMapIsSet() &&
-            this.worldComm.port !== null &&
-            this.textureManager.isReady() &&
-            this.__settingsHaveBeenSynced);
+        return (DVEB.__connectedToWorld &&
+            DVEB.matrixHub.worldPort !== undefined &&
+            DVEB.voxelManager.shapMapIsSet() &&
+            DVEB.worldComm.port !== null &&
+            DVEB.textureManager.isReady() &&
+            DVEB.__settingsHaveBeenSynced);
     },
     async $INIT(initData) {
         await InitWorker(this, initData);
@@ -76,7 +76,4 @@ export const DVEB = {
         return true;
     },
 };
-//@ts-ignore
-if (typeof process !== "undefined" && typeof Worker === "undefined") {
-    DVEB.environment = "node";
-}
+DVEB.environment = Util.getEnviorment();

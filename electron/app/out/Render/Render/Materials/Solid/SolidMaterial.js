@@ -92,7 +92,7 @@ export const SolidMaterial = {
         this.material.onBind = (mesh) => {
             if (!this.material)
                 return;
-            var effect = this.material.getEffect();
+            const effect = this.material.getEffect();
             if (!effect)
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);

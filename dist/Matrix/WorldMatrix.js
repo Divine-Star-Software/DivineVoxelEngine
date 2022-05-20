@@ -27,20 +27,16 @@ export const WorldMatrix = {
      * Wait for a chunk to loaded into the matrix  for use.
      */
     awaitChunkLoad(x, y, z, timeout = 120000) {
-        return new Promise((resolve, reject) => {
-            let inte = 0;
-            const failTimeout = setTimeout(() => {
-                clearInterval(inte);
+        return Util.createPromiseCheck({
+            check: () => {
+                return this.getChunk(x, y, z) !== false;
+            },
+            checkInterval: 10,
+            failTimeOut: timeout,
+            onFail: () => {
                 const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
                 console.warn(`${this.threadName} could not load the chunk ${chunkKey} in time.`);
-                reject(false);
-            }, timeout);
-            inte = setInterval(() => {
-                if (this.getChunk(x, y, z)) {
-                    clearTimeout(failTimeout);
-                    resolve(true);
-                }
-            }, 10);
+            },
         });
     },
     __setGlobalVoxelPalette(palette, record) {
@@ -152,34 +148,25 @@ export const WorldMatrix = {
         Atomics.store(chunk.chunkStates, 0, 0);
         return true;
     },
-    updateChunkData(chunkX, chunkY, chunkZ, run) {
-        const chunk = this.getChunk(chunkX, chunkY, chunkZ);
+    updateChunkData(x, y, z, run) {
+        const chunk = this.getChunk(x, y, z);
         if (!chunk) {
             return false;
         }
-        const prom = new Promise((resolve, reject) => {
-            if (!this.isChunkLocked(chunkX, chunkY, chunkZ)) {
-                this.lockChunk(chunkX, chunkY, chunkZ);
+        return Util.createPromiseCheck({
+            check: () => {
+                return !this.isChunkLocked(x, y, z);
+            },
+            onReady: () => {
                 run(chunk);
-                this.unLockChunk(chunkX, chunkY, chunkZ);
-                resolve(true);
-            }
-            else {
-                const inte = setInterval(() => {
-                    if (!this.isChunkLocked(chunkX, chunkY, chunkZ)) {
-                        this.lockChunk(chunkX, chunkY, chunkZ);
-                        run(chunk);
-                        this.unLockChunk(chunkX, chunkY, chunkZ);
-                        resolve(true);
-                    }
-                }, 1);
-                setTimeout(() => {
-                    clearInterval(inte);
-                    resolve(false);
-                }, this.updateDieTime);
-            }
+            },
+            checkInterval: 10,
+            failTimeOut: this.updateDieTime,
+            onFail: () => {
+                const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+                console.warn(`${this.threadName} could not load the chunk ${chunkKey} in time.`);
+            },
         });
-        return prom;
     },
     setData(x, y, z, data) {
         const chunk = this.getChunk(x, y, z);

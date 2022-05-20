@@ -6,11 +6,8 @@ export class WorldGen {
     chunkDepth = 16;
     chunkWidth = 16;
     chunkHeight = 256;
-    renderDistance = 20;
-    generateChunk(chunkX, chunkY, chunkZ, type = "default") {
-        let dreamstonepillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
+    generateChunk(chunkX, chunkY, chunkZ) {
         let baseY = 60;
-        let maxY = 61;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {

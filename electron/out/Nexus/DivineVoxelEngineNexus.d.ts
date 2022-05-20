@@ -1,7 +1,169 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
-import { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
     environment: "browser" | "node";
+    __connectedToWorld: boolean;
+    UTIL: {
+        createPromiseCheck: (data: {
+            check: () => boolean;
+            onReady?: (() => any) | undefined;
+            checkInterval: number;
+            failTimeOut?: number | undefined;
+            onFail?: (() => any) | undefined;
+        }) => Promise<boolean>;
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
+        getFlat3DArray(): {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
+            getValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): number;
+            setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+            deleteUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("Meta/index.js").PositionMatrix;
+        };
+        getVoxelByte(): {
+            setId(id: number, value: number): number;
+            getId(value: number): number;
+            decodeLightFromVoxelData(voxelData: number): number;
+            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        };
+        getLightByte(): {
+            _lightValues: number[];
+            getS(value: number): number;
+            getR(value: number): number;
+            getG(value: number): number;
+            getB(value: number): number;
+            decodeLightFromVoxelData(voxelData: number): number;
+            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            setLightValues(values: number[]): number;
+            getLightValues(value: number): number[];
+            isLessThanForRGBRemove(n1: number, n2: number): boolean;
+            isLessThanForRGBAdd(n1: number, n2: number): boolean;
+            isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+            getMinusOneForRGB(sl: number): number;
+            removeRGBLight(sl: number): number;
+            getFullSunLight(sl: number): number;
+            isLessThanForSunAdd(n1: number, n2: number): boolean;
+            isLessThanForSunAddDown(n1: number, n2: number): boolean;
+            getSunLightForUnderVoxel(currentVoxel: number): number;
+            getMinusOneForSun(sl: number): number;
+            isLessThanForSunRemove(n1: number, sl: number): boolean;
+            isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+            sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+            removeSunLight(sl: number): number;
+        };
+        getWorldBounds(): {
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithFlat3DArray(flat3dArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("Meta/index.js").PositionMatrix;
+            }): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("Meta/index.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("Meta/index.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+        };
+        getInfoByte(number?: number): {
+            maxBit: number;
+            minBit: number;
+            maxDec: number;
+            minDec: number;
+            byteValue: number;
+            getNumberValue(): number;
+            setNumberValue(newValue: number): void;
+            getBit(index: number): 0 | 1;
+            getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
+            getHalfByteDec(bitIndex: number): number;
+            setHalfByteBits(index: number, value: number): void;
+            /**# Release Chunk From Nexus
+             * Remve a chunk in the shared nexus thread.
+             */
+            setBit(index: number, value: 0 | 1): void;
+            toArray(): (0 | 1)[];
+            toString(delimiter?: string): string;
+        };
+        degtoRad(degrees: number): number;
+        radToDeg(radians: number): number;
+    };
     engineSettings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -129,7 +291,7 @@ export declare const DVEN: {
         regionVoxelPalettes: Record<string, Record<number, string>>;
         threadName: string;
         syncChunkBounds(): void;
-        awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<unknown>;
+        awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
         __syncRegionData(x: number, y: number, z: number, palette: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette): void;
         __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
@@ -153,7 +315,7 @@ export declare const DVEN: {
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;
-        updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: {
+        updateChunkData(x: number, y: number, z: number, run: (chunk: {
             voxels: Uint32Array;
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
@@ -167,7 +329,7 @@ export declare const DVEN: {
         threadName: string;
         setThreadName(threadName: string): void;
         onMessage(event: MessageEvent<any>, runAfter: (event: MessageEvent<any>) => any): void;
-        requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
+        requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean | undefined>;
         requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
         _setWorldPort(port: MessagePort): void;
         _syncChunk(data: any[]): void;
@@ -177,7 +339,6 @@ export declare const DVEN: {
         _releaseRegionVoxelPalette(data: any[]): void;
         _setThreadName(data: any[]): void;
     };
-    __connectedToWorld: boolean;
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         onReady: () => void;
@@ -202,7 +363,7 @@ export declare const DVEN: {
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.
      */
-    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
+    loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean>;
     /**# Release Chunk From Nexus
      * Remve a chunk in the shared nexus thread.
      */

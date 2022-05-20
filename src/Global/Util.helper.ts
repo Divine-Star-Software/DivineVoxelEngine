@@ -3,12 +3,19 @@ import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
 import { WorldBounds } from "./Util/WorldBounds.js";
+import { GetWorkerPort } from "./Util/GetWorkerPort.js";
+import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
 
 export const Util = {
- calculateGameZone(positionZ: number, positionX: number) {
-  const chunkpositionZ = (positionZ >> 4) << 4;
-  const chunkpositionX = (positionX >> 4) << 4;
-  return [chunkpositionZ, chunkpositionX];
+ createPromiseCheck: CreatePromiseCheck,
+ getWorkerPort: GetWorkerPort,
+ getEnviorment(): "node" | "browser" {
+  let environment: "node" | "browser" = "browser";
+  //@ts-ignore
+  if (typeof process !== "undefined" && typeof Worker === "undefined") {
+   environment = "node";
+  }
+  return environment;
  },
  getFlat3DArray() {
   return Flat3DArray;

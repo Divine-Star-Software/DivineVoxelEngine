@@ -103,7 +103,15 @@ export declare const DVEB: {
         };
     };
     UTIL: {
-        calculateGameZone(positionZ: number, positionX: number): number[];
+        createPromiseCheck: (data: {
+            check: () => boolean;
+            onReady?: (() => any) | undefined;
+            checkInterval: number;
+            failTimeOut?: number | undefined;
+            onFail?: (() => any) | undefined;
+        }) => Promise<boolean>;
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -384,7 +392,7 @@ export declare const DVEB: {
         regionVoxelPalettes: Record<string, Record<number, string>>;
         threadName: string;
         syncChunkBounds(): void;
-        awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<unknown>;
+        awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
         __syncRegionData(x: number, y: number, z: number, palette: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette): void;
         __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
@@ -408,7 +416,7 @@ export declare const DVEB: {
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;
-        updateChunkData(chunkX: number, chunkY: number, chunkZ: number, run: (chunk: {
+        updateChunkData(x: number, y: number, z: number, run: (chunk: {
             voxels: Uint32Array;
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
@@ -422,7 +430,7 @@ export declare const DVEB: {
         threadName: string;
         setThreadName(threadName: string): void;
         onMessage(event: MessageEvent<any>, runAfter: (event: MessageEvent<any>) => any): void;
-        requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<unknown>;
+        requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean | undefined>;
         requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
         _setWorldPort(port: MessagePort): void;
         _syncChunk(data: any[]): void;

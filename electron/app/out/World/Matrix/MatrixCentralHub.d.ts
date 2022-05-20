@@ -11,10 +11,14 @@ export declare const MatrixCentralHub: {
     syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
     releaseChunk(x: number, y: number, z: number): void;
     releaseChunkInThread(threadId: string, x: number, y: number, z: number): void;
+    syncRegion(x: number, y: number, z: number): false | undefined;
+    syncRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+    releaseRegion(x: number, y: number, z: number): false | undefined;
+    releaseRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
     syncGlobalVoxelPalette(): void;
     syncGlobalVoxelPaletteInThread(threadId: string): void;
     syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
     syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-    releaseRegionVoxelPalette(x: number, y: number, z: number): void;
-    releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): void;
+    releaseRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
+    releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
 };
