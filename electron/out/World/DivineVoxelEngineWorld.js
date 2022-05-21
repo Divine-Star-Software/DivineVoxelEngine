@@ -1,17 +1,18 @@
-//functions
-import { InitWorldWorker } from "./Init/InitWorldWorker.js";
-//classes
+//objects
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
-//comms
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+//inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { WorldGenCommManager } from "./InterComms/WorldGenerators/WorldGenCommManager.js";
+//functions
+import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -29,11 +30,13 @@ export const DVEW = {
     nexusComm: NexusComm,
     renderComm: RenderComm,
     builderCommManager: BuilderCommManager,
+    worldGenCommManager: WorldGenCommManager,
     worldGeneration: WorldGeneration,
     worldData: WorldData,
     voxelManager: VoxelManager,
     isReady() {
         let ready = DVEW.builderCommManager.isReady() &&
+            DVEW.worldGenCommManager.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
             DVEW.__renderIsDone;
         return ready;

@@ -1,8 +1,8 @@
-import { DVEW } from "../../../out/index.js";
-import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-const start = () => {
+const start = async () => {
     let startX = -64;
     let startZ = -64;
     let endX = 64;
@@ -20,8 +20,23 @@ const start = () => {
     const x = 0;
     const z = 0;
     DVEW.worldData.setData(x, 6, z, DVEW.worldGeneration.paintVoxel(1));
-    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z);
-    DVEW.runChunkRebuildQue();
+    DVEW.worldData.setData(x - 5, 6, z, DVEW.worldGeneration.paintVoxel(1));
+    DVEW.worldData.setData(x + 5, 6, z, DVEW.worldGeneration.paintVoxel(1));
+    DVEW.worldData.setData(x, 6, z + 5, DVEW.worldGeneration.paintVoxel(1));
+    DVEW.worldData.setData(x, 6, z - 5, DVEW.worldGeneration.paintVoxel(1));
+    DVEW.worldGenCommManager.runRGBFloodFillAt(x, 6, z);
+    DVEW.worldGenCommManager.runRGBFloodFillAt(x + 5, 6, z);
+    DVEW.worldGenCommManager.runRGBFloodFillAt(x - 5, 6, z);
+    DVEW.worldGenCommManager.runRGBFloodFillAt(x, 6, z + 5);
+    DVEW.worldGenCommManager.runRGBFloodFillAt(x, 6, z - 5);
+    await DVEW.worldGenCommManager.awaitAllLightUpdates();
+    DVEW.worldGenCommManager.runRebuildQue();
+    /*  DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x + 5, 6, z);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x - 5, 6, z);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z + 5);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z - 5); */
+    //DVEW.runChunkRebuildQue();
 };
 (async () => {
     await DVEW.$INIT({

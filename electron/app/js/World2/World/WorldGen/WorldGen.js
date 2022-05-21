@@ -1,4 +1,4 @@
-import { DVEW } from "../../../../out/index.js";
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 export const WorldGen = {
     chunkDepth: 16,
     chunkWidth: 16,

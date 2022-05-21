@@ -1,7 +1,5 @@
-import type { ShapeHelperInterface } from "Meta/Builder/Shapes/ShapeHelper.interface";
 import type {
  VoxelShapeAddData,
- VoxelShapeAddReturnData,
  VoxelShapeInterface,
 } from "Meta/Builder/Shapes/VoxelShape.interface";
 import { DVEB } from "../../../DivineVoxelEngineBuilder.js";

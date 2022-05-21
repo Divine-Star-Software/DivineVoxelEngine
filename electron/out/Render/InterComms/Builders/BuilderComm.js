@@ -8,9 +8,9 @@ const handleUpdate = (substance, data) => {
     const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(chunkX, chunkY, chunkZ);
     DVER.meshManager.handleUpdate(substance, chunkKey, data);
 };
-const builderComm = CreateInterComm("world-builder-base", { ready: false });
 export const GetNewBuilderComm = (count, port) => {
-    const newComm = Object.create(builderComm);
+    const newComm = CreateInterComm("render-builder-base", { ready: false });
+    newComm.name = `builder-${count}`;
     newComm.messageFunctions = {
         //chunk meshes
         0: (data) => {

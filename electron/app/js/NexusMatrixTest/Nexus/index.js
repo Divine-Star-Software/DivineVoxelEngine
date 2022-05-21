@@ -1,5 +1,5 @@
 import { RegisterEntitesInNexus } from "../../Shared/Functions/RegisterEntitiesInNexus.js";
-import { DVEN } from "../../../out/index.js";
+import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
 console.log("HELLO FROM NEXUS");
 RegisterEntitesInNexus(DVEN);
 const start = () => { };

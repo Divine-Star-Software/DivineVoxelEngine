@@ -6,6 +6,7 @@ const renderCommBase = {
 };
 const renderComm = CreateInterComm("world-render", renderCommBase);
 export const RenderComm = renderComm;
+const ports = [];
 renderComm.messageFunctions = {
     start: function (data, event) {
         DVEW.__renderIsDone = true;
@@ -30,7 +31,13 @@ renderComm.messageFunctions = {
         if (!event)
             return;
         const port = event.ports[0];
-        // DVEW.builderComm.connectBuilder(port);
         DVEW.builderCommManager.addBuilder(port);
     },
+    "connect-world-gen": (data, event) => {
+        if (!event)
+            return;
+        const port = event.ports[0];
+        DVEW.worldGenCommManager.addWorldGen(port);
+    },
 };
+//renderComm.onMessage = (event) => console.log(event.data,event.ports);

@@ -8,5 +8,10 @@ export async function InitWorldWorker(DVEW, initData) {
     }
     const renderPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
     DVEW.renderComm.setPort(renderPort);
-    await DVEW.UTIL.createPromiseCheck({ check: DVEW.isReady, checkInterval: 1 });
+    await DVEW.UTIL.createPromiseCheck({
+        check: () => {
+            return DVEW.isReady();
+        },
+        checkInterval: 1,
+    });
 }

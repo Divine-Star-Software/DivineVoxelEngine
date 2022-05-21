@@ -11,7 +11,7 @@ export const BuilderCommManager = {
  $INIT() {
   for (const builder of this.builders) {
    const channel = new MessageChannel();
-   DVER.worldComm.sendMessage("connect-builder", [], [channel.port1]);
+   DVER.worldComm.sendMessage("connect-builder", [builder.name], [channel.port1]);
    builder.sendMessage("connect-world", [], [channel.port2]);
    builder.sendMessage("sync-uv-texuture-data", [
     DVER.textureManager.uvTextureMap,

@@ -286,7 +286,7 @@ export const WorldData = {
         const chunks = region.chunks;
         delete chunks[this.worldBounds.getChunkKeyFromPosition(x, y, z)];
     },
-    setChunk(x, y, z, chunk, doNotSyncInBuilderThread = false) {
+    setChunk(x, y, z, chunk, doNotSyncInThreads = false) {
         let region = this.getRegion(x, y, z);
         if (!region) {
             region = this.addRegion(x, y, z);
@@ -298,9 +298,10 @@ export const WorldData = {
         chunk.position[1] = chunkPOS.y;
         chunk.position[2] = chunkPOS.z;
         chunks[chunkKey] = chunk;
-        if (doNotSyncInBuilderThread)
+        if (doNotSyncInThreads)
             return;
         DVEW.builderCommManager.syncChunkInAllBuilders(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        DVEW.worldGenCommManager.syncChunkInAllWorldGens(chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
     requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
         let region = this.getRegion(x, y, z);

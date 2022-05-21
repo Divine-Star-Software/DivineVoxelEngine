@@ -1,6 +1,6 @@
 import { CreateGUI } from "../GUI/index.js";
 import { PositionMatrix } from "../../../out/Meta/Util.types";
-import { DivineVoxelEngineRender } from "../../../out/index.js";
+import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 
 export const SetUpEngine = (canvas: HTMLCanvasElement) => {
  const engine = new BABYLON.Engine(canvas, false, {});

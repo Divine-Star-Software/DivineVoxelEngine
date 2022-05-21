@@ -1,5 +1,4 @@
-import type { VoxelInteface, VoxelData } from "Meta/Voxels/Voxel.types.js";
-import type { WorldData } from "World/WorldData/WorldData";
+import type {  VoxelData } from "Meta/Voxels/Voxel.types.js";
 import { DVEB } from "../../DivineVoxelEngineBuilder.js";
 
 export function OcculsionCalcuation(

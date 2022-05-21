@@ -1,4 +1,4 @@
-import { DivineVoxelEngineRender } from "../../../out/index";
+import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 import type { PositionMatrix } from "../../../out/Meta/Util.types";
 
 export class Player {

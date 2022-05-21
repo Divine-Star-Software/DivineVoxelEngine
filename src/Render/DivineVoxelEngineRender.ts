@@ -11,15 +11,19 @@ import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { BuilderCommManager } from "./InterComms/Builders/BuilderCommManager.js";
+import { WorldGenCommManager } from "./InterComms/WorldGenerators/WorldGenCommManager.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
+import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
+
 
 export const DVER = {
  worldBounds: Util.getWorldBounds(),
  worldComm: WorldComm,
  nexusComm: NexusComm,
  builderCommManager: BuilderCommManager,
+ worldGenCommManager: WorldGenCommManager,
 
  engineSettings: EngineSettings,
  renderManager: RenderManager,
@@ -51,6 +55,7 @@ export const DVER = {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }
   this.builderCommManager.syncSettings(copy);
+  this.worldGenCommManager.syncSettings(copy);
  },
 
  async reStart(data: EngineSettingsData): Promise<void> {
@@ -58,69 +63,12 @@ export const DVER = {
   this._handleOptions();
  },
 
- async $INIT(data: DVERInitData) {
-  this.engineSettings.syncSettings(data);
-  this._handleOptions();
-
-  if (typeof data.worldWorker == "string") {
-   const worker = this.__createWorker(data.worldWorker);
-   this.worldComm.setPort(worker);
-  } else if (data.worldWorker instanceof Worker) {
-   this.worldComm.setPort(data.worldWorker);
-  } else {
-   throw Error(
-    "Supplied data for World Worker is not correct. Must be path to worker or a worker."
-   );
-  }
-
-  if (typeof data.builderWorker == "string") {
-   this.builderCommManager.createBuilders(data.builderWorker);
-  } else if (
-   Array.isArray(data.builderWorker) &&
-   data.builderWorker[0] instanceof Worker
-  ) {
-   this.builderCommManager.setBuilders(data.builderWorker);
-  } else {
-   throw Error(
-    "Supplied data for Builder Workers is not correct. Must be path to worker or an array workers."
-   );
-  }
-
-  if (data.nexusWorker && data.nexus?.enabled) {
-   if (typeof data.nexusWorker == "string") {
-    const worker = this.__createWorker(data.nexusWorker);
-    this.nexusComm.setPort(worker);
-   } else if (data.nexusWorker instanceof Worker) {
-    this.nexusComm.setPort(data.nexusWorker);
-   } else {
-    throw Error(
-     "Supplied data for Nexus Worker is not correct. Must be path to worker or a worker."
-    );
-   }
-   this.nexusComm.$INIT();
-  }
-
-  this._syncSettings(data);
-  this.textureManager.generateTexturesData();
-  this.builderCommManager.$INIT();
-
-  //terminate all workers
-  window.addEventListener("beforeunload", () => {
-   for (const builder of this.builderCommManager.builders) {
-    //@ts-ignore
-    builder.port.terminate();
-   }
-   //@ts-ignore
-   this.worldComm.port.terminate();
-   if (this.nexusComm.port) {
-    //@ts-ignore
-    this.nexusComm.port.terminate();
-   }
-  });
+ async $INIT(initData: DVERInitData) {
+    
+   InitWorkers(this, initData);
  },
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
-
   await BuildInitalMeshes(this, data.scene);
   if (this.engineSettings.settings.nexus?.enabled) {
    this.renderedEntites.setScene(data.scene);

@@ -167,10 +167,7 @@ export declare const DVEW: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
-        }; /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
+        };
         getWorldBounds(): {
             chunkXPow2: number;
             chunkYPow2: number;
@@ -425,7 +422,6 @@ export declare const DVEW: {
         count: number;
         numBuilders: number;
         builders: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
-        ready: Record<string, boolean>;
         buildersConnected: number;
         addBuilder(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -433,8 +429,26 @@ export declare const DVEW: {
         syncRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
         releaseRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
-        requestFullChunkBeRemoved(chunkX: number, chunkY: number, chunkZ: number): void;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
+    };
+    worldGenCommManager: {
+        count: number;
+        numWorldGens: number;
+        __numLightUpdates: number;
+        worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+        worldGensConnected: number;
+        addWorldGen(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
+        syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
+        releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
+        syncRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
+        releaseRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
+        isReady(): boolean;
+        _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
+        _chunkRebuildQue: number[][];
+        __addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
+        awaitAllLightUpdates(): Promise<boolean>;
+        runRebuildQue(): void;
+        runRGBFloodFillAt(x: number, y: number, z: number): void;
     };
     worldGeneration: {
         worldBounds: {
@@ -836,7 +850,7 @@ export declare const DVEW: {
         insertData(x: number, y: number, z: number, data: number): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
-        setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInBuilderThread?: boolean): void;
+        setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
         requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
         requestVoxelBeRemoved(x: number, y: number, z: number): void;
     };

@@ -1,6 +1,6 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDarkScene, } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-import { DVER } from "../../out/index.js";
+import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { Player } from "../Shared/Player/Type2/Player.js";
 const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/FluidBuilder/fluidbuilder.js");
 await DVER.$INIT({

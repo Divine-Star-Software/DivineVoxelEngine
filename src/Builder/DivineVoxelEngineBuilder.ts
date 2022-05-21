@@ -78,9 +78,9 @@ export const DVEB = {
  },
 
  async $INIT(initData: DVEBInitData) {
-  await InitWorker(this, initData);
 
-  this.worldComm.sendMessage("ready", []);
+  await InitWorker(this, initData);
+ this.worldComm.sendMessage("ready", []);
  },
 
  async buildChunk(chunkX: number, chunkY: number, chunkZ: number) {

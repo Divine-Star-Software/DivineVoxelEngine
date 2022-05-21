@@ -19,10 +19,9 @@ const handleUpdate = (substance: VoxelSubstanceType, data: any) => {
  );
  DVER.meshManager.handleUpdate(substance,chunkKey,data);
 };
-
-const builderComm = CreateInterComm("world-builder-base", { ready: false });
 export const GetNewBuilderComm = (count: number, port: InterCommPortTypes) => {
- const newComm: InterCommInterface = Object.create(builderComm);
+ const newComm: InterCommInterface =  CreateInterComm("render-builder-base", { ready: false });
+ newComm.name = `builder-${count}`;
  newComm.messageFunctions = {
   //chunk meshes
   0: (data: any) => {

@@ -1,4 +1,4 @@
-import { DVEW } from "../../../out/index.js";
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { PlayerWatcher } from "../../Shared/Player/Type2/PlayerWatcher.js";
 import { RegisterTexutres } from "../../Shared/Functions/RegisterTextures-o.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxels.js";

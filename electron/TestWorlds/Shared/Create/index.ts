@@ -11,10 +11,12 @@ export const SetUpWorkers = (
  basePath: string,
  worldPath: string,
  builderPath: string,
+ worldGenPath: string,
  nexusPath?: string
 ): {
  worldWorker: Worker;
  builderWorkers: Worker[];
+ worldGenWorkers: Worker[];
  nexusWorker?: Worker | null;
 } => {
  const wPath = new URL(worldPath, basePath);
@@ -24,11 +26,20 @@ export const SetUpWorkers = (
  });
 
  const bPath = new URL(builderPath, basePath);
-
  const builderWorkers: Worker[] = [];
  for (let i = 0; i < 12; i++) {
   builderWorkers.push(
    new Worker(bPath, {
+    type: "module",
+   })
+  );
+ }
+
+ const wgPath = new URL(worldGenPath, basePath);
+ const worldGenWorkers: Worker[] = [];
+ for (let i = 0; i < 6; i++) {
+  worldGenWorkers.push(
+   new Worker(wgPath, {
     type: "module",
    })
   );
@@ -44,6 +55,7 @@ export const SetUpWorkers = (
  return {
   worldWorker: worldWorker,
   builderWorkers: builderWorkers,
+  worldGenWorkers: worldGenWorkers,
   nexusWorker: nexusWorker,
  };
 };

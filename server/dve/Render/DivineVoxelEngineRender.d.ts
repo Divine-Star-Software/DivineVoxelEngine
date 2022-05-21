@@ -91,6 +91,14 @@ export declare const DVER: {
         setBuilders(builders: Worker[]): void;
         syncSettings(data: any): void;
     };
+    worldGenCommManager: {
+        count: number;
+        worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+        $INIT(): void;
+        createWorldGens(path: string, numWorldGens?: number): void;
+        setWorldGens(worldGens: Worker[]): void;
+        syncSettings(data: any): void;
+    };
     engineSettings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -380,7 +388,7 @@ export declare const DVER: {
     _handleOptions(): void;
     _syncSettings(data: EngineSettingsData): void;
     reStart(data: EngineSettingsData): Promise<void>;
-    $INIT(data: DVERInitData): Promise<void>;
+    $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
         scene: BABYLON.Scene;
     }): Promise<void>;

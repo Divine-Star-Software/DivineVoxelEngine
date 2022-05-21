@@ -6,7 +6,7 @@ export const RunInit = (init) => {
         }
     }, 10);
 };
-export const SetUpWorkers = (basePath, worldPath, builderPath, nexusPath) => {
+export const SetUpWorkers = (basePath, worldPath, builderPath, worldGenPath, nexusPath) => {
     const wPath = new URL(worldPath, basePath);
     const worldWorker = new Worker(wPath, {
         type: "module",
@@ -15,6 +15,13 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, nexusPath) => {
     const builderWorkers = [];
     for (let i = 0; i < 12; i++) {
         builderWorkers.push(new Worker(bPath, {
+            type: "module",
+        }));
+    }
+    const wgPath = new URL(worldGenPath, basePath);
+    const worldGenWorkers = [];
+    for (let i = 0; i < 6; i++) {
+        worldGenWorkers.push(new Worker(wgPath, {
             type: "module",
         }));
     }
@@ -27,6 +34,7 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, nexusPath) => {
     return {
         worldWorker: worldWorker,
         builderWorkers: builderWorkers,
+        worldGenWorkers: worldGenWorkers,
         nexusWorker: nexusWorker,
     };
 };

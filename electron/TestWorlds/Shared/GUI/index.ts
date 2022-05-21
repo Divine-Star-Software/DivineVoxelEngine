@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineRender } from "../../../out/index";
+import type { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 
 export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
  let divFps = document.getElementById("fps");

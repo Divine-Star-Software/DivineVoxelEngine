@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineRender } from "../../../out/index.js";
+import type { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  DVER.textureManager.defineDefaultTexturePath("assets/textures");
 

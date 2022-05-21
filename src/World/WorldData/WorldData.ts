@@ -373,7 +373,7 @@ export const WorldData = {
   y: number,
   z: number,
   chunk: ChunkData,
-  doNotSyncInBuilderThread = false
+  doNotSyncInThreads = false
  ) {
   let region = this.getRegion(x, y, z);
   if (!region) {
@@ -386,8 +386,13 @@ export const WorldData = {
   chunk.position[1] = chunkPOS.y;
   chunk.position[2] = chunkPOS.z;
   chunks[chunkKey] = chunk;
-  if (doNotSyncInBuilderThread) return;
+  if (doNotSyncInThreads) return;
   DVEW.builderCommManager.syncChunkInAllBuilders(
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z
+  );
+  DVEW.worldGenCommManager.syncChunkInAllWorldGens(
    chunkPOS.x,
    chunkPOS.y,
    chunkPOS.z

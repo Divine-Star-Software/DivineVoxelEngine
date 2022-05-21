@@ -1,14 +1,15 @@
-import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
+import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
-import { DVEW } from "../../../out/index.js";
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 
 RegisterVoxels(DVEW);
 
 await DVEW.$INIT({
  onReady: () => {},
 });
+console.log("start");
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 
 WorldGen.generateChunk(0, 0);

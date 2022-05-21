@@ -1,5 +1,5 @@
-import { DVEW } from "../../../out/index.js";
-import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);

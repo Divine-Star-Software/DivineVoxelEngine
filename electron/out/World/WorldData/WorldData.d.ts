@@ -183,7 +183,7 @@ export declare const WorldData: {
     insertData(x: number, y: number, z: number, data: number): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;
     removeChunk(x: number, y: number, z: number): false | undefined;
-    setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInBuilderThread?: boolean): void;
+    setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInThreads?: boolean): void;
     requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     requestVoxelBeRemoved(x: number, y: number, z: number): void;
 };

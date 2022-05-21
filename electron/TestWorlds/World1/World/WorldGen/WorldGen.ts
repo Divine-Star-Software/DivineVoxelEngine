@@ -1,6 +1,5 @@
-import type { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 import type { ChunkData } from "../../../../out/Meta/index";
-import { DVEW } from "../../../../out/index.js";
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 export const WorldGen = {
  _3dArray: DVEW.UTIL.getFlat3DArray(),
  chunkDepth: 16,

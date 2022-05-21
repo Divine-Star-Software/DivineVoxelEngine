@@ -1,4 +1,4 @@
-import { DivineVoxelEngineNexus } from "../../../../out/index";
+import { DivineVoxelEngineNexus } from "../../../../out/Nexus/DivineVoxelEngineNexus.js";
 import {
  NexusEntityData,
  NexusEntityInterface,

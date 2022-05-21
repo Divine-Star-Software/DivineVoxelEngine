@@ -1,14 +1,15 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDarkScene, } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
-import { DVER } from "../../out/index.js";
+import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterEntitiesInCore } from "../Shared/Functions/RegisterEntitesInCore.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 RegisterEntitiesInCore(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "./Nexus/index.js");
+const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js", "../Shared/WorldGeneration/worldgen.js", "./Nexus/index.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
+    worldGenWorker: workers.worldGenWorkers,
     nexusWorker: workers.nexusWorker,
     nexus: {
         enabled: true,
