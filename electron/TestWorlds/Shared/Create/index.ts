@@ -1,6 +1,6 @@
 export const RunInit = (init: Function) => {
  const readyStateCheckInterval = setInterval(function () {
-  if (document.readyState === "complete") {
+  if (document.readyState === "complete" && typeof BABYLON !== undefined) {
    clearInterval(readyStateCheckInterval);
    init();
   }

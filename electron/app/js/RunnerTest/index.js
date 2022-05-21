@@ -7,10 +7,10 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/index.js", "../Shared/Builder/builder.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
-    builderWorker: workers.builderWorkers
+    builderWorker: workers.builderWorkers,
 });
-const player = new Player(DVER);
 const init = async () => {
+    const player = new Player(DVER);
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDarkScene(engine);

@@ -16,8 +16,8 @@ await DVER.$INIT({
         autoSunLight: false,
     },
 });
-const player = new Player(DVER);
 const init = async () => {
+    const player = new Player(DVER);
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);

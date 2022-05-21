@@ -16,7 +16,7 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
- "../Shared/Builder/builder.js",
+ "../Shared/Builder/builder.js"
 );
 
 await DVER.$INIT({
@@ -31,9 +31,8 @@ await DVER.$INIT({
  },
 });
 
-const player = new Player(DVER);
-
 const init = async () => {
+ const player = new Player(DVER);
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
  const scene = SetUpDefaultScene(engine);

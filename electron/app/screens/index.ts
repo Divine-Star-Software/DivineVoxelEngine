@@ -6,6 +6,8 @@ import { CreateScene } from "./background/CreateScene.js";
 
 ElementTree.linkCSS(import.meta.url, "main.css");
 
+localStorage.clear();
+
 const HomeScreen = (): ElementTreeData => {
  return [
   {
@@ -27,7 +29,7 @@ const HomeScreen = (): ElementTreeData => {
      attrs: {
       className: "dve-version",
      },
-     text: "Alpha 0.9",
+     text: "Alpha 1.0",
     },
     WebSelectionSection(),
    ],
