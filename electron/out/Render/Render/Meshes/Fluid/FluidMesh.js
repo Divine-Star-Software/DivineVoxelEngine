@@ -17,6 +17,9 @@ export const FluidMesh = {
         const mesh = new BABYLON.Mesh("fluid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
+        mesh.checkCollisions = false;
+        mesh.doNotSyncBoundingInfo = true;
+        mesh.doNotSerialize = true;
         return mesh;
     },
     async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {

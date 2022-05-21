@@ -6,9 +6,8 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
 const playerWatcher = new PlayerWatcher(DVEW);
-const worldGen = new WorldGen(DVEW);
 
-RegisterVoxels(DVEW, "global");
+RegisterVoxels(DVEW);
 
 const start = () => {
  let startX = -32;
@@ -18,7 +17,7 @@ const start = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   worldGen.generateChunk(x, 0, z);
+   WorldGen.generateChunk(x, 0, z);
   }
  }
 
@@ -28,15 +27,10 @@ const start = () => {
    DVEW.buildChunk(x, 0, z);
   }
  }
-
-
-
-
 };
 
 (async () => {
  await DVEW.$INIT({
   onReady: start,
-  
  });
 })();

@@ -84,7 +84,6 @@ export const SetUpDefaultCamera = (
  camera.maxZ = 500;
  camera.angularSensibility = 4000;
 
-
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;
  camera.position.z = startPosition.z;
@@ -118,7 +117,7 @@ export const runRenderLoop = (
  engine: BABYLON.Engine,
  scene: BABYLON.Scene,
  watchPositon: BABYLON.FreeCamera | BABYLON.Mesh,
- DVER ?: DivineVoxelEngineRender
+ DVER?: DivineVoxelEngineRender
 ) => {
  const runGui = CreateGUI(DVER);
  engine.runRenderLoop(() => {

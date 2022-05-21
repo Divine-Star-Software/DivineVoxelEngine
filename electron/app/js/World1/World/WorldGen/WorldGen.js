@@ -1,20 +1,15 @@
-export class WorldGen {
-    DVEW;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
-    }
-    _3dArray;
-    chunkDepth = 16;
-    chunkWidth = 16;
-    chunkHeight = 256;
-    renderDistance = 20;
+import { DVEW } from "../../../../out/index.js";
+export const WorldGen = {
+    _3dArray: DVEW.UTIL.getFlat3DArray(),
+    chunkDepth: 16,
+    chunkWidth: 16,
+    chunkHeight: 256,
     generateCrazyChunk(bottomChunk, topChunk, minY, x, y, z) {
         bottomChunk.maxMinHeight[0] = 0;
         bottomChunk.maxMinHeight[1] = minY;
         const chunkVoxels = bottomChunk.voxels;
-        let dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
-        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
+        let dreamstone = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
+        let dreamGrasss = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
         if (y < Math.floor(Math.random() * minY)) {
             this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
             if (y < bottomChunk.maxMinHeight[0]) {
@@ -24,9 +19,9 @@ export class WorldGen {
                 this._3dArray.setValue(x, y + 1, z, chunkVoxels, dreamGrasss);
             }
         }
-    }
+    },
     generateSpikeChunk(bottomChunk, topChunk, minY, maxY, x, y, z) {
-        let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
+        let dreamStonePillar = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
         bottomChunk.maxMinHeight[0] = minY;
         bottomChunk.maxMinHeight[1] = maxY;
         let chunkVoxels;
@@ -130,26 +125,26 @@ export class WorldGen {
         if (y < minY) {
             this._3dArray.setValue(x, cy, z, chunkVoxels, dreamStonePillar);
         }
-    }
+    },
     generatePondChunk(bottomChunk, topChunk, minY, x, y, z) {
         const chunkVoxels = bottomChunk.voxels;
         bottomChunk.maxMinHeight[0] = minY - 7;
         bottomChunk.maxMinHeight[1] = minY;
-        const dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
-        const liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
+        const dreamstone = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
+        const liquidDreamEther = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
         if (y < minY - 6) {
             this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
         }
         if (y >= minY - 6 && y <= minY) {
             this._3dArray.setValue(x, y, z, chunkVoxels, liquidDreamEther);
         }
-    }
+    },
     generateHoleChunk(bottomChunk, topChunk, minY, x, y, z) {
         const chunkVoxels = bottomChunk.voxels;
         bottomChunk.maxMinHeight[0] = minY - 8;
         bottomChunk.maxMinHeight[1] = minY;
-        let dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
-        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
+        let dreamstone = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
+        let dreamGrasss = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
         if (x == 0 || z == 0 || x == 15 || z == 15) {
             if (y == minY) {
                 this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
@@ -212,13 +207,13 @@ export class WorldGen {
                 this._3dArray.setValue(x, y + 1, z, chunkVoxels, dreamGrasss);
             }
         }
-    }
+    },
     generateNormalChunk(bottomChunk, topChunk, minY, x, y, z) {
         const chunkVoxels = bottomChunk.voxels;
         bottomChunk.maxMinHeight[0] = minY;
         bottomChunk.maxMinHeight[1] = minY + 1;
-        let dreamGrassBlock = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrassblock", "default"));
-        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
+        let dreamGrassBlock = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrassblock", "default"));
+        let dreamGrasss = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
         if (y < minY) {
             this._3dArray.setValue(x, y, z, chunkVoxels, dreamGrassBlock);
         }
@@ -227,11 +222,11 @@ export class WorldGen {
                 this._3dArray.setValue(x, y, z, chunkVoxels, dreamGrasss);
             }
         }
-    }
+    },
     generateChunkNormal(chunkX, chunkZ) {
         let toss = Math.random();
-        const topChunk = this.DVEW.worldGeneration.getBlankChunk(false);
-        const bottomChunk = this.DVEW.worldGeneration.getBlankChunk(false);
+        const topChunk = DVEW.worldGeneration.getBlankChunk(false);
+        const bottomChunk = DVEW.worldGeneration.getBlankChunk(false);
         let minY = 60;
         let maxY = 256;
         let spiked = false;
@@ -276,5 +271,5 @@ export class WorldGen {
             }
         }
         return [bottomChunk, topChunk];
-    }
-}
+    },
+};

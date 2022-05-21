@@ -18,6 +18,7 @@ export const SolidMesh = {
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
         mesh.checkCollisions = true;
+        mesh.doNotSerialize = true;
         return mesh;
     },
     async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {

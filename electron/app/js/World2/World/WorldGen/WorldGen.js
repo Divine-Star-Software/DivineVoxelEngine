@@ -1,14 +1,8 @@
-export class WorldGen {
-    DVEW;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
-    }
-    chunkDepth = 16;
-    chunkWidth = 16;
-    chunkHeight = 128;
-    renderDistance = 20;
-    _3dArray;
+import { DVEW } from "../../../../out/index.js";
+export const WorldGen = {
+    chunkDepth: 16,
+    chunkWidth: 16,
+    chunkHeight: 128,
     generateChunk(chunkX, chunkZ, type = "default") {
         if (type == "pillar") {
             let baseY = 31;
@@ -17,10 +11,10 @@ export class WorldGen {
                 for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
                         if (y < baseY) {
-                            this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+                            DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
                         }
                         if (y == topY) {
-                            this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                         }
                         if (y >= baseY && y < topY) {
                             if (x == chunkX + 15 ||
@@ -31,7 +25,7 @@ export class WorldGen {
                                     continue;
                                 if (z % 2 == 0)
                                     continue;
-                                this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                             }
                         }
                     }
@@ -41,43 +35,33 @@ export class WorldGen {
         if (type == "default") {
             let topY = 31;
             let groundY = 31;
-            let hole = false;
-            if (Math.abs(chunkX) == 16 && Math.abs(chunkZ) == 16) {
-                topY = 42;
-                hole = true;
-            }
             for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
                 for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                     for (let y = 0; y < this.chunkHeight; y++) {
-                        if (hole) {
-                            if (y > 30 && y <= topY - 4) {
-                                if (x > 4 && x < 10) {
-                                    continue;
-                                }
-                                if (z > 4 && z < 10) {
-                                    continue;
-                                }
-                            }
-                        }
                         if (y < groundY) {
-                            this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
                             continue;
                         }
-                        if (hole) {
-                            if (y < topY) {
-                                this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+                        let flip = Math.random();
+                        if (flip <= 0.02) {
+                            DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", x, topY, z);
+                            continue;
+                        }
+                        if (flip >= 0.02 && flip <= 0.04) {
+                            DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, topY, z);
+                            let flip2 = Math.random();
+                            if (flip2 < 0.01) {
+                                DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, topY + 1, z);
                             }
+                            continue;
+                        }
+                        if (flip >= 0.04 && flip <= 0.08) {
+                            DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, topY, z);
+                            continue;
                         }
                     }
                 }
             }
-            if (!hole) {
-                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 7);
-                this.DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + 6, topY, chunkZ + 7);
-                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 7, topY, chunkZ + 8);
-                this.DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", chunkX + 6, topY, chunkZ + 9);
-                this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + 7, topY, chunkZ + 9);
-            }
         }
-    }
-}
+    },
+};

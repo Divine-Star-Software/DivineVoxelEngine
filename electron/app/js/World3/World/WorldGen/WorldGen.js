@@ -1,14 +1,8 @@
-export class WorldGen {
-    DVEW;
-    lightSourceColor;
-    seedLightSourceColor;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-    }
-    chunkDepth = 16;
-    chunkWidth = 16;
-    chunkHeight = 128;
-    renderDistance = 20;
+import { DVEW } from "../../../../out/index.js";
+export const WorldGen = {
+    chunkDepth: 16,
+    chunkWidth: 16,
+    chunkHeight: 128,
     generateChunk(chunkX, chunkY, chunkZ) {
         let maxY = 10;
         for (let x = 0; x < +this.chunkWidth; x++) {
@@ -24,13 +18,13 @@ export class WorldGen {
                 currentY = currentY >> 0;
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y < currentY) {
-                        this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (Math.random() < 0.01 && y == currentY) {
-                        this.DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
                     }
                 }
             }
         }
-    }
-}
+    },
+};

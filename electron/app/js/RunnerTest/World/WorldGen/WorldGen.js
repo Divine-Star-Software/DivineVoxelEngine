@@ -1,16 +1,9 @@
-export class WorldGen {
-    DVEW;
-    lightSourceColor;
-    seedLightSourceColor;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-    }
-    chunkDepth = 16;
-    chunkWidth = 16;
-    chunkHeight = 256;
-    renderDistance = 20;
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+export const WorldGen = {
+    chunkDepth: 16,
+    chunkWidth: 16,
+    chunkHeight: 256,
     generateChunk(chunkX, chunkY, chunkZ, type) {
-        let dreamstonepillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
         let baseY = 10;
         let maxY = 61;
         let fill = false;
@@ -40,42 +33,42 @@ export class WorldGen {
                     if (type == "track") {
                         if (!fill) {
                             if (y <= baseY + height && x >= 6 && x <= 9) {
-                                this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                                 if (y == baseY + height && Math.random() < 0.5) {
-                                    this.DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                    DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
                                 }
                             }
                             if (y <= baseY - 5) {
-                                this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                             if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
-                                this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }
                         else {
                             if (y <= baseY - 5) {
-                                this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                             if (y >= baseY - 5 && y <= baseY - 1) {
-                                this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }
                     }
                     if (type == "trench") {
                         if (y <= baseY - 5) {
-                            this.DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
                         }
                         if (y >= baseY - 5 && y <= baseY - 1) {
-                            this.DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x + chunkX, y + chunkY, z + chunkZ);
                         }
                     }
                     if (type == "wall") {
                         if (y <= maxY) {
-                            this.DVEW.worldData.paintVoxel("dve:dreamstone", "default", x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:dreamstone", "default", x + chunkX, y + chunkY, z + chunkZ);
                         }
                     }
                 }
             }
         }
-    }
-}
+    },
+};

@@ -33,14 +33,18 @@ export const WorldGeneration = {
     getBlankChunk(empty = true, proto = true) {
         const chunkSAB = new SharedArrayBuffer(this.worldBounds.chunkTotalVoxels * 4);
         const chunkVoxels = new Uint32Array(chunkSAB);
+        const chunkStatesSAB = new SharedArrayBuffer(this.worldBounds.chunkTotalVoxels * 4);
+        const chunkStatesVoxels = new Uint32Array(chunkSAB);
         return {
             proto: proto,
             voxelsSAB: chunkSAB,
             voxels: chunkVoxels,
+            voxelsStatesSAB: chunkStatesSAB,
+            voxelsStates: chunkStatesVoxels,
             maxMinHeight: [],
             heightMap: [],
             isEmpty: empty,
-            position: []
+            position: [],
         };
     },
 };

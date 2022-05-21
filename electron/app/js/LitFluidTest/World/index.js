@@ -1,8 +1,7 @@
 import { DVEW } from "../../../out/index.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
-RegisterVoxels(DVEW, "global");
-const worldGen = new WorldGen(DVEW);
+RegisterVoxels(DVEW);
 const start = () => {
     let startX = -16;
     let startZ = -16;
@@ -10,7 +9,7 @@ const start = () => {
     let endZ = 16;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            worldGen.generateChunk(x, 0, z);
+            WorldGen.generateChunk(x, 0, z);
         }
     }
     const x = 0;

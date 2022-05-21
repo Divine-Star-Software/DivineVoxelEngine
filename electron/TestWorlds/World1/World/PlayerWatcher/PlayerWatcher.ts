@@ -1,6 +1,4 @@
 import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-import type { WorldGen } from "../WorldGen/WorldGen";
-
 function visitAll(
  gx0: number,
  gy0: number,
@@ -137,10 +135,7 @@ export class PlayerWatcher {
 
  playerReach = 8;
 
- constructor(
-  private worldGen: WorldGen,
-  private DVEW: DivineVoxelEngineWorld
- ) {}
+ constructor(private DVEW: DivineVoxelEngineWorld) {}
 
  setPlayerSharedArrays(data: any[]) {
   this.playerABSPositon = new Float32Array(data[1]);
@@ -165,14 +160,6 @@ export class PlayerWatcher {
    const pAbsY = Math.floor(this.playerABSPositon[1] + 0.5);
    const pAbsZ = Math.floor(this.playerABSPositon[2]);
 
-   /*    const data = plotLine3d(
-    pAbsX,
-    pAbsY,
-    pAbsZ,
-    Math.floor(pickVector[0]),
-    Math.floor(pickVector[1]),
-    Math.floor(pickVector[2])
-   ); */
    const data = visitAll(
     this.playerABSPositon[0],
     this.playerABSPositon[1],
@@ -223,79 +210,6 @@ export class PlayerWatcher {
    } else {
     this.playerStatesArray[1] = 0;
    }
-   /* 
-   let movedWest = false;
-   let movedEast = false;
-   let movedNorth = false;
-   let movedSouth = false;
-
-   if (this.cachedChunkX != chunkX) {
-    if (this.cachedChunkX > chunkX) {
-     movedWest = true;
-    }
-    if (this.cachedChunkX < chunkX) {
-     movedEast = true;
-    }
-   }
-   if (this.cachedChunkZ != chunkZ) {
-    if (this.cachedChunkZ < chunkZ) {
-     movedNorth = true;
-    }
-    if (this.cachedChunkZ > chunkZ) {
-     movedSouth = true;
-    }
-   }
-
-   let moved = false;
-   if (movedNorth) {
-    moved = true;
-    this.currentMaxChunkZ += 16;
-    this.currentMinChunkZ += 16;
-    //add chunks to the north remove from the south
-    this.worldGen.generateChunkLine(
-     this.cachedChunkX,
-     this.cachedChunkZ,
-     "north"
-    );
-   }
-   if (movedSouth) {
-    moved = true;
-    this.currentMaxChunkZ -= 16;
-    this.currentMinChunkZ -= 16;
-    //add chunks to the south remove from the north
-    this.worldGen.generateChunkLine(
-     this.cachedChunkX,
-     this.cachedChunkZ,
-     "south"
-    );
-   }
-   if (movedWest) {
-    moved = true;
-    this.currentMaxChunkX -= 16;
-    this.currentMinChunkX -= 16;
-    //add chunks to the west remove from the east
-    this.worldGen.generateChunkLine(
-     this.cachedChunkX,
-     this.cachedChunkZ,
-     "west"
-    );
-   }
-   if (movedEast) {
-    moved = true;
-    this.currentMaxChunkX += 16;
-    this.currentMinChunkX += 16;
-    //add chunks to the east remove from te wast
-    this.worldGen.generateChunkLine(
-     this.cachedChunkX,
-     this.cachedChunkZ,
-     "east"
-    );
-   }
-
-   this.cachedChunkX = chunkX;
-   this.cachedChunkZ = chunkZ;
-   if (moved) {
-   } */
   }, 10);
  }
 }

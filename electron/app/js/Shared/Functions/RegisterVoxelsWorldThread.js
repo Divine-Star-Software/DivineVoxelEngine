@@ -8,7 +8,7 @@ import { DreamLampVoxelData } from "../../Shared/Voxels/Solid/DreamLamp/DreamLam
 import { DreamGrassVoxelData } from "../../Shared/Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
 import { LiquidDreamEtherVoxelData } from "../../Shared/Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
 import { DreamStoneSlabVoxelData } from "../../Shared/Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
-export function RegisterVoxels(DVEW, test) {
+export function RegisterVoxels(DVEW) {
     DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
     DVEW.voxelManager.registerVoxelData(LightDebugBoxVoxelData);
     DVEW.voxelManager.registerVoxelData(DreamStoneVoxelData);

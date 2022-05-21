@@ -11,7 +11,7 @@ import { DreamGrassVoxelData } from "../../Shared/Voxels/Flora/DreamGrass/DreamG
 import { LiquidDreamEtherVoxelData } from "../../Shared/Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
 import { DreamStoneSlabVoxelData } from "../../Shared/Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
 
-export function RegisterVoxels(DVEW: DivineVoxelEngineWorld,test?:string) {
+export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
  DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
  DVEW.voxelManager.registerVoxelData(LightDebugBoxVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamStoneVoxelData);

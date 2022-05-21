@@ -88,7 +88,6 @@ function plotLine3d(x0, y0, z0, x1, y1, z1) {
  * based on their new position and render distance.
  */
 export class PlayerWatcher {
-    worldGen;
     DVEW;
     playerABSPositon;
     playerChunkPosition;
@@ -103,8 +102,7 @@ export class PlayerWatcher {
     cachedChunkZ = 0;
     cachedChunkX = 0;
     playerReach = 8;
-    constructor(worldGen, DVEW) {
-        this.worldGen = worldGen;
+    constructor(DVEW) {
         this.DVEW = DVEW;
     }
     setPlayerSharedArrays(data) {
@@ -127,14 +125,6 @@ export class PlayerWatcher {
             const pAbsX = Math.floor(this.playerABSPositon[0]);
             const pAbsY = Math.floor(this.playerABSPositon[1] + 0.5);
             const pAbsZ = Math.floor(this.playerABSPositon[2]);
-            /*    const data = plotLine3d(
-             pAbsX,
-             pAbsY,
-             pAbsZ,
-             Math.floor(pickVector[0]),
-             Math.floor(pickVector[1]),
-             Math.floor(pickVector[2])
-            ); */
             const data = visitAll(this.playerABSPositon[0], this.playerABSPositon[1], this.playerABSPositon[2], pickVector[0], pickVector[1], pickVector[2]);
             const chunkX = (pAbsX >> 4) << 4;
             const chunkY = (pAbsY >> 7) << 7;
@@ -175,79 +165,6 @@ export class PlayerWatcher {
             else {
                 this.playerStatesArray[1] = 0;
             }
-            /*
-            let movedWest = false;
-            let movedEast = false;
-            let movedNorth = false;
-            let movedSouth = false;
-         
-            if (this.cachedChunkX != chunkX) {
-             if (this.cachedChunkX > chunkX) {
-              movedWest = true;
-             }
-             if (this.cachedChunkX < chunkX) {
-              movedEast = true;
-             }
-            }
-            if (this.cachedChunkZ != chunkZ) {
-             if (this.cachedChunkZ < chunkZ) {
-              movedNorth = true;
-             }
-             if (this.cachedChunkZ > chunkZ) {
-              movedSouth = true;
-             }
-            }
-         
-            let moved = false;
-            if (movedNorth) {
-             moved = true;
-             this.currentMaxChunkZ += 16;
-             this.currentMinChunkZ += 16;
-             //add chunks to the north remove from the south
-             this.worldGen.generateChunkLine(
-              this.cachedChunkX,
-              this.cachedChunkZ,
-              "north"
-             );
-            }
-            if (movedSouth) {
-             moved = true;
-             this.currentMaxChunkZ -= 16;
-             this.currentMinChunkZ -= 16;
-             //add chunks to the south remove from the north
-             this.worldGen.generateChunkLine(
-              this.cachedChunkX,
-              this.cachedChunkZ,
-              "south"
-             );
-            }
-            if (movedWest) {
-             moved = true;
-             this.currentMaxChunkX -= 16;
-             this.currentMinChunkX -= 16;
-             //add chunks to the west remove from the east
-             this.worldGen.generateChunkLine(
-              this.cachedChunkX,
-              this.cachedChunkZ,
-              "west"
-             );
-            }
-            if (movedEast) {
-             moved = true;
-             this.currentMaxChunkX += 16;
-             this.currentMinChunkX += 16;
-             //add chunks to the east remove from te wast
-             this.worldGen.generateChunkLine(
-              this.cachedChunkX,
-              this.cachedChunkZ,
-              "east"
-             );
-            }
-         
-            this.cachedChunkX = chunkX;
-            this.cachedChunkZ = chunkZ;
-            if (moved) {
-            } */
         }, 10);
     }
 }

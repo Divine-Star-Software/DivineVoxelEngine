@@ -4,9 +4,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread
 
 import { WorldGen } from "./WorldGen.js";
 
-RegisterVoxels(DVEW, "global");
-
-const worldGen = new WorldGen(DVEW);
+RegisterVoxels(DVEW);
 
 const start = () => {
  let startX = -64;
@@ -18,7 +16,7 @@ const start = () => {
   for (let z = startZ; z < endZ; z += 16) {
    const chunk = DVEW.worldGeneration.getBlankChunk(false);
    DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-   worldGen.generateChunk(chunk, x, 0, z);
+   WorldGen.generateChunk(chunk, x, 0, z);
    DVEW.worldGeneration.chunkDataHelper.createHeightMap(chunk, x, 0, z);
    DVEW.worldGeneration.illumantionManager.populateChunkAirWithInitlSunLight(
     chunk
@@ -54,18 +52,15 @@ const start = () => {
    );
    DVEW.worldGeneration.illumantionManager.runSunLightUpdate();
    DVEW.buildChunk(x, 0, z);
-
   }
  }
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
    DVEW.buildChunk(x, 0, z);
-
   }
  }
  setTimeout(() => {
-
   const chunk = DVEW.worldData.getChunk(0, 0, 0);
   if (!chunk) return;
   const voxels = chunk.voxels;
@@ -76,7 +71,6 @@ const start = () => {
     DVEW.buildChunk(x, 0, z);
    }
   }
-
  }, 2000);
 
  //DVEW.buildFluidMesh();
@@ -85,6 +79,5 @@ const start = () => {
 (async () => {
  await DVEW.$INIT({
   onReady: start,
-  
  });
 })();

@@ -1,8 +1,7 @@
 import { DVEW } from "../../../out/index.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
-RegisterVoxels(DVEW, "global");
-const worldGen = new WorldGen(DVEW);
+RegisterVoxels(DVEW);
 const rebuild = (x, z) => {
     DVEW.buildChunk(x, 0, z);
     DVEW.buildChunk(x - 16, 0, z);
@@ -20,7 +19,7 @@ const start = () => {
         for (let z = startZ; z < endZ; z += 16) {
             const chunk = DVEW.worldGeneration.getBlankChunk(false);
             DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-            worldGen.generateChunk(chunk, x, 0, z);
+            WorldGen.generateChunk(chunk, x, 0, z);
             DVEW.worldData.setChunk(x, 0, z, chunk);
         }
     }
@@ -38,25 +37,25 @@ const start = () => {
     setTimeout(() => {
         for (let j = 0; j < 8; j++) {
             for (let i = -5; i < 10; i++) {
-                DVEW.worldData.setData(x + 1, 6 + j, z + 4 + i, DVEW.worldGeneration.paintVoxel(1));
+                DVEW.worldData.setData(x + 1, 6 + j, z + 4 + i, DVEW.worldGeneration.paintVoxel(3));
                 DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false, x, 6 + j, z + 4 + i);
             }
         }
         for (let j = 0; j < 8; j++) {
             for (let i = -5; i < 10; i++) {
-                DVEW.worldData.setData(x + 15, 6 + j, z + 4 + i, DVEW.worldGeneration.paintVoxel(1));
+                DVEW.worldData.setData(x + 15, 6 + j, z + 4 + i, DVEW.worldGeneration.paintVoxel(3));
                 DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(true, x + 16, 6 + j, z + 4 + i);
             }
         }
         for (let j = 0; j < 8; j++) {
             for (let i = -5; i < 5; i++) {
-                DVEW.worldData.setData(x + 7 + i, 6 + j, z - 2, DVEW.worldGeneration.paintVoxel(1));
+                DVEW.worldData.setData(x + 7 + i, 6 + j, z - 2, DVEW.worldGeneration.paintVoxel(3));
                 DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false, x + 7 + i, 6 + j, z - 3);
             }
         }
         for (let j = 0; j < 8; j++) {
             for (let i = -5; i < 5; i++) {
-                DVEW.worldData.setData(x + 7 + i, 6 + j, z + 14, DVEW.worldGeneration.paintVoxel(1));
+                DVEW.worldData.setData(x + 7 + i, 6 + j, z + 14, DVEW.worldGeneration.paintVoxel(3));
                 DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false, x + 7 + i, 6 + j, z + 15);
             }
         }
@@ -68,7 +67,7 @@ const start = () => {
         setTimeout(() => {
             for (let j = -1; j < 16; j++) {
                 for (let i = -1; i < 16; i++) {
-                    DVEW.worldData.setData(x + i, 10, z + j, DVEW.worldGeneration.paintVoxel(1));
+                    DVEW.worldData.setData(x + i, 10, z + j, DVEW.worldGeneration.paintVoxel(3));
                     DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false, x + i, 11, z + j);
                 }
             }

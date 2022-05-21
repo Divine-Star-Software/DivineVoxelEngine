@@ -1,31 +1,15 @@
-import { InfoByte } from "../../../../out/Global/Util/InfoByte";
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 
-import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-
-export class WorldGen {
- lightSourceColor: number;
- seedLightSourceColor: number;
- constructor(public DVEW: DivineVoxelEngineWorld) {}
-
- chunkDepth = 16;
- chunkWidth = 16;
- chunkHeight = 256;
-
- renderDistance = 20;
-
+export const WorldGen = {
+ chunkDepth: 16,
+ chunkWidth: 16,
+ chunkHeight: 256,
  generateChunk(
   chunkX: number,
   chunkY: number,
   chunkZ: number,
   type: "track" | "wall" | "trench"
  ) {
-  let dreamstonepillar = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-    "dve:dreamstonepillar",
-    "default"
-   )
-  );
-
   let baseY = 10;
   let maxY = 61;
 
@@ -53,7 +37,7 @@ export class WorldGen {
      if (type == "track") {
       if (!fill) {
        if (y <= baseY + height && x >= 6 && x <= 9) {
-        this.DVEW.worldData.paintVoxel(
+        DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
          "default",
          x + chunkX,
@@ -61,7 +45,7 @@ export class WorldGen {
          z + chunkZ
         );
         if (y == baseY + height && Math.random() < 0.5) {
-         this.DVEW.worldData.paintVoxel(
+         DVEW.worldData.paintVoxel(
           "dve:dreamlamp",
           "default",
           x + chunkX,
@@ -72,7 +56,7 @@ export class WorldGen {
        }
 
        if (y <= baseY - 5) {
-        this.DVEW.worldData.paintVoxel(
+        DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
          "default",
          x + chunkX,
@@ -81,7 +65,7 @@ export class WorldGen {
         );
        }
        if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
-        this.DVEW.worldData.paintVoxel(
+        DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
          "default",
          x + chunkX,
@@ -91,7 +75,7 @@ export class WorldGen {
        }
       } else {
        if (y <= baseY - 5) {
-        this.DVEW.worldData.paintVoxel(
+        DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
          "default",
          x + chunkX,
@@ -100,7 +84,7 @@ export class WorldGen {
         );
        }
        if (y >= baseY - 5 && y <= baseY - 1) {
-        this.DVEW.worldData.paintVoxel(
+        DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
          "default",
          x + chunkX,
@@ -113,7 +97,7 @@ export class WorldGen {
 
      if (type == "trench") {
       if (y <= baseY - 5) {
-       this.DVEW.worldData.paintVoxel(
+       DVEW.worldData.paintVoxel(
         "dve:dreamstonepillar",
         "default",
         x + chunkX,
@@ -123,7 +107,7 @@ export class WorldGen {
       }
 
       if (y >= baseY - 5 && y <= baseY - 1) {
-       this.DVEW.worldData.paintVoxel(
+       DVEW.worldData.paintVoxel(
         "dve:liquiddreamether",
         "default",
         x + chunkX,
@@ -135,7 +119,7 @@ export class WorldGen {
 
      if (type == "wall") {
       if (y <= maxY) {
-       this.DVEW.worldData.paintVoxel(
+       DVEW.worldData.paintVoxel(
         "dve:dreamstone",
         "default",
         x + chunkX,
@@ -147,5 +131,5 @@ export class WorldGen {
     }
    }
   }
- }
-}
+ },
+};

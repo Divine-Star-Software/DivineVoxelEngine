@@ -16,6 +16,8 @@ export type ChunkData = {
  proto: boolean;
  voxelsSAB: SharedArrayBuffer;
  voxels: Uint32Array;
+ voxelsStatesSAB: SharedArrayBuffer;
+ voxelsStates: Uint32Array;
  maxMinHeight: number[];
  heightMap: number[][];
  isEmpty: boolean;

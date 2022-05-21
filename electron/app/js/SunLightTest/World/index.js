@@ -1,8 +1,7 @@
 import { DVEW } from "../../../out/index.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread.js";
 import { WorldGen } from "./WorldGen.js";
-RegisterVoxels(DVEW, "global");
-const worldGen = new WorldGen(DVEW);
+RegisterVoxels(DVEW);
 const start = () => {
     let startX = -64;
     let startZ = -64;
@@ -12,7 +11,7 @@ const start = () => {
         for (let z = startZ; z < endZ; z += 16) {
             const chunk = DVEW.worldGeneration.getBlankChunk(false);
             DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-            worldGen.generateChunk(chunk, x, 0, z);
+            WorldGen.generateChunk(chunk, x, 0, z);
             DVEW.worldGeneration.chunkDataHelper.createHeightMap(chunk, x, 0, z);
             DVEW.worldGeneration.illumantionManager.populateChunkAirWithInitlSunLight(chunk);
             DVEW.worldData.setChunk(x, 0, z, chunk);

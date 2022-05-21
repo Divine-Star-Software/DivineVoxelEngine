@@ -22,12 +22,12 @@ const APP_INIT = async () => {
      "Cross-Origin-Embedder-Policy": ["require-corp"],
      "Cross-Origin-Opener-Policy": ["same-origin"],
     },
-   });
+});
   }
  );
  const editorWindow = await CreateMainWindow();
 };
-console.log("hello");
+
 app.whenReady().then(async () => {
  await APP_INIT();
 });

@@ -32,6 +32,7 @@ export const SolidMesh : VoxelMeshInterface  = {
   mesh.alphaIndex = 0;
   mesh.isPickable = false;
   mesh.checkCollisions = true;
+  mesh.doNotSerialize = true;
 
   return mesh;
  },

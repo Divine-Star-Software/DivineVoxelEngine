@@ -16,7 +16,10 @@ export const MagmaMesh = {
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("magma", scene);
         mesh.alphaIndex = 0;
+        mesh.isPickable = false;
         mesh.checkCollisions = false;
+        mesh.doNotSyncBoundingInfo = true;
+        mesh.doNotSerialize = true;
         return mesh;
     },
     createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {

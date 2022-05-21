@@ -1,57 +1,50 @@
-import { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-export class WorldGen {
- constructor(public DVEW: DivineVoxelEngineWorld) {
-  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
- }
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+export const WorldGen = {
+ _3dArray: DVEW.UTIL.getFlat3DArray(),
 
- _3dArray: typeof Flat3DArray;
-
- chunkDepth = 16;
- chunkWidth = 16;
- chunkHeight = 256;
-
- renderDistance = 20;
+ chunkDepth: 16,
+ chunkWidth: 16,
+ chunkHeight: 256,
 
  generateChunk(
   chunkX: number,
   chunkZ: number,
   type: string = "default"
  ): ChunkData {
-  let debugBox = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let debugBox = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:debugbox",
     "default"
    )
   );
-  let dreamstone = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamstone = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstone",
     "default"
    )
   );
-  let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamStonePillar = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstonepillar",
     "default"
    )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamGrasss = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrass",
     "default"
    )
   );
 
-  let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let liquidDreamEther = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:liquiddreamether",
     "default"
    )
   );
 
-  const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+  const chunk = DVEW.worldGeneration.getBlankChunk(false);
   const voxels = chunk.voxels;
   if (type == "fluid") {
    let baseY = 0;
@@ -169,5 +162,5 @@ export class WorldGen {
    }
   }
   return chunk;
- }
-}
+ },
+};

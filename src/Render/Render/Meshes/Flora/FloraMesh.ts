@@ -24,9 +24,11 @@ export const FloraMesh: VoxelMeshInterface = {
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("flora", scene);
-  mesh.alphaIndex = 1;
+  mesh.alphaIndex = 0;
   mesh.isPickable = false;
   mesh.checkCollisions = false;
+  mesh.doNotSyncBoundingInfo = true;
+  mesh.doNotSerialize = true;
   return mesh;
  },
 

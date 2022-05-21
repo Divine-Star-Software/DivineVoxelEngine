@@ -3,11 +3,9 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelsWorldThread
 import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
+RegisterVoxels(DVEW);
 
-RegisterVoxels(DVEW, "global");
-
-const worldGen = new WorldGen(DVEW);
-const playerWatcher = new PlayerWatcher(worldGen, DVEW);
+const playerWatcher = new PlayerWatcher(DVEW);
 
 DVEW.renderComm.listenForMessage("voxel-add", (data, event) => {
  DVEW.worldData.requestVoxelAdd(
@@ -40,7 +38,7 @@ let endZ = 16 * numChunks;
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
-  const chunks = worldGen.generateChunkNormal(x, z);
+  const chunks = WorldGen.generateChunkNormal(x, z);
   for (let y = 0; y < chunks.length; y++) {
    DVEW.worldData.setChunk(x, 128 * y, z, chunks[y]);
   }

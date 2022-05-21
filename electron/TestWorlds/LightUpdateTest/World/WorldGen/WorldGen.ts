@@ -1,25 +1,11 @@
 import type { ChunkData } from "../../../../out/Meta/Chunks/Chunk.types";
-import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-import { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
-export class WorldGen {
- lightSourceColor: number;
- seedLightSourceColor: number;
- _3dArray: typeof Flat3DArray;
- constructor(public DVEW: DivineVoxelEngineWorld) {
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 
-  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
- }
-
- visited: Record<string, boolean> = {};
-
-
-
- chunkDepth = 16;
- chunkWidth = 16;
- chunkHeight = 256;
-
- renderDistance = 20;
-
+export const WorldGen = {
+ _3dArray: DVEW.UTIL.getFlat3DArray(),
+ chunkDepth: 16,
+ chunkWidth: 16,
+ chunkHeight: 256,
  generateChunk(
   chunk: ChunkData,
   chunkX: number,
@@ -28,16 +14,14 @@ export class WorldGen {
   type: string = "default"
  ): ChunkData {
   let dreamstonepillar =
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstonepillar",
     "default"
    );
 
   const chunkVoxels = chunk.voxels;
-
   let baseY = 0;
   let maxY = 61;
-
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
@@ -47,7 +31,7 @@ export class WorldGen {
        y,
        z,
        chunkVoxels,
-       this.DVEW.worldGeneration.paintVoxel(dreamstonepillar)
+       DVEW.worldGeneration.paintVoxel(dreamstonepillar)
       );
      }
     }
@@ -55,5 +39,5 @@ export class WorldGen {
   }
 
   return chunk;
- }
-}
+ },
+};

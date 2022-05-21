@@ -1,16 +1,8 @@
-import type { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
-
-export class WorldGen {
- lightSourceColor: number;
- seedLightSourceColor: number;
- constructor(public DVEW: DivineVoxelEngineWorld) {}
-
- chunkDepth = 16;
- chunkWidth = 16;
- chunkHeight = 128;
-
- renderDistance = 20;
-
+import { DVEW } from "../../../../out/index.js";
+export const WorldGen = {
+ chunkDepth: 16,
+ chunkWidth: 16,
+ chunkHeight: 128,
  generateChunk(chunkX: number, chunkY: number, chunkZ: number) {
   let maxY = 10;
 
@@ -27,7 +19,7 @@ export class WorldGen {
     currentY = currentY >> 0;
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y < currentY) {
-      this.DVEW.worldData.paintVoxel(
+      DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
        "default",
        x + chunkX,
@@ -37,7 +29,7 @@ export class WorldGen {
      }
 
      if (Math.random() < 0.01 && y == currentY) {
-      this.DVEW.worldData.paintVoxel(
+      DVEW.worldData.paintVoxel(
        "dve:dreamlamp",
        "default",
        x + chunkX,
@@ -48,5 +40,5 @@ export class WorldGen {
     }
    }
   }
- }
-}
+ },
+};

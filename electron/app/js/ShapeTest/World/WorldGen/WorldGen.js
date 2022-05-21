@@ -1,21 +1,16 @@
-export class WorldGen {
-    DVEW;
-    constructor(DVEW) {
-        this.DVEW = DVEW;
-        this._3dArray = this.DVEW.UTIL.getFlat3DArray();
-    }
-    _3dArray;
-    chunkDepth = 16;
-    chunkWidth = 16;
-    chunkHeight = 256;
-    renderDistance = 20;
+import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+export const WorldGen = {
+    _3dArray: DVEW.UTIL.getFlat3DArray(),
+    chunkDepth: 16,
+    chunkWidth: 16,
+    chunkHeight: 256,
     generateChunk(chunkX, chunkZ, type = "default") {
-        let debugBox = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default"));
-        let dreamstone = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
-        let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
-        let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
-        let liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
-        const chunk = this.DVEW.worldGeneration.getBlankChunk(false);
+        let debugBox = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:debugbox", "default"));
+        let dreamstone = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstone", "default"));
+        let dreamStonePillar = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamstonepillar", "default"));
+        let dreamGrasss = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:dreamgrass", "default"));
+        let liquidDreamEther = DVEW.worldGeneration.paintVoxel(DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette("dve:liquiddreamether", "default"));
+        const chunk = DVEW.worldGeneration.getBlankChunk(false);
         const voxels = chunk.voxels;
         if (type == "fluid") {
             let baseY = 0;
@@ -128,5 +123,5 @@ export class WorldGen {
             }
         }
         return chunk;
-    }
-}
+    },
+};

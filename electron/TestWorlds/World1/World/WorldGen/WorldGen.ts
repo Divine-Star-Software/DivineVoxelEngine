@@ -1,17 +1,11 @@
 import type { Flat3DArray } from "../../../../out/Global/Util/Flat3DArray";
 import type { ChunkData } from "../../../../out/Meta/index";
-import type { DivineVoxelEngineWorld } from "../../../../out/index";
-export class WorldGen {
- constructor(public DVEW: DivineVoxelEngineWorld) {
-  this._3dArray = this.DVEW.UTIL.getFlat3DArray();
- }
-
- _3dArray: typeof Flat3DArray;
- chunkDepth = 16;
- chunkWidth = 16;
- chunkHeight = 256;
-
- renderDistance = 20;
+import { DVEW } from "../../../../out/index.js";
+export const WorldGen = {
+ _3dArray: DVEW.UTIL.getFlat3DArray(),
+ chunkDepth: 16,
+ chunkWidth: 16,
+ chunkHeight: 256,
 
  generateCrazyChunk(
   bottomChunk: ChunkData,
@@ -24,14 +18,14 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = 0;
   bottomChunk.maxMinHeight[1] = minY;
   const chunkVoxels = bottomChunk.voxels;
-  let dreamstone = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamstone = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstone",
     "default"
    )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamGrasss = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrass",
     "default"
    )
@@ -48,7 +42,7 @@ export class WorldGen {
     this._3dArray.setValue(x, y + 1, z, chunkVoxels, dreamGrasss);
    }
   }
- }
+ },
 
  generateSpikeChunk(
   bottomChunk: ChunkData,
@@ -59,8 +53,8 @@ export class WorldGen {
   y: number,
   z: number
  ) {
-  let dreamStonePillar = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamStonePillar = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstonepillar",
     "default"
    )
@@ -186,7 +180,7 @@ export class WorldGen {
   if (y < minY) {
    this._3dArray.setValue(x, cy, z, chunkVoxels, dreamStonePillar);
   }
- }
+ },
 
  generatePondChunk(
   bottomChunk: ChunkData,
@@ -200,14 +194,14 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 7;
   bottomChunk.maxMinHeight[1] = minY;
 
-  const dreamstone = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  const dreamstone = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstone",
     "default"
    )
   );
-  const liquidDreamEther = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  const liquidDreamEther = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:liquiddreamether",
     "default"
    )
@@ -220,7 +214,7 @@ export class WorldGen {
   if (y >= minY - 6 && y <= minY) {
    this._3dArray.setValue(x, y, z, chunkVoxels, liquidDreamEther);
   }
- }
+ },
 
  generateHoleChunk(
   bottomChunk: ChunkData,
@@ -234,14 +228,14 @@ export class WorldGen {
   bottomChunk.maxMinHeight[0] = minY - 8;
   bottomChunk.maxMinHeight[1] = minY;
 
-  let dreamstone = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamstone = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamstone",
     "default"
    )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamGrasss = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrass",
     "default"
    )
@@ -310,7 +304,8 @@ export class WorldGen {
     this._3dArray.setValue(x, y + 1, z, chunkVoxels, dreamGrasss);
    }
   }
- }
+ },
+
  generateNormalChunk(
   bottomChunk: ChunkData,
   topChunk: ChunkData,
@@ -322,14 +317,14 @@ export class WorldGen {
   const chunkVoxels = bottomChunk.voxels;
   bottomChunk.maxMinHeight[0] = minY;
   bottomChunk.maxMinHeight[1] = minY + 1;
-  let dreamGrassBlock = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamGrassBlock = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrassblock",
     "default"
    )
   );
-  let dreamGrasss = this.DVEW.worldGeneration.paintVoxel(
-   this.DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+  let dreamGrasss = DVEW.worldGeneration.paintVoxel(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrass",
     "default"
    )
@@ -344,13 +339,13 @@ export class WorldGen {
     this._3dArray.setValue(x, y, z, chunkVoxels, dreamGrasss);
    }
   }
- }
+ },
 
  generateChunkNormal(chunkX: number, chunkZ: number): ChunkData[] {
   let toss = Math.random();
 
-  const topChunk = this.DVEW.worldGeneration.getBlankChunk(false);
-  const bottomChunk = this.DVEW.worldGeneration.getBlankChunk(false);
+  const topChunk = DVEW.worldGeneration.getBlankChunk(false);
+  const bottomChunk = DVEW.worldGeneration.getBlankChunk(false);
 
   let minY = 60;
   let maxY = 256;
@@ -399,5 +394,5 @@ export class WorldGen {
   }
 
   return [bottomChunk, topChunk];
- }
-}
+ },
+};
