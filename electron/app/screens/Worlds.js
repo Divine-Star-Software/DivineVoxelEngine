@@ -15,10 +15,10 @@ export const Worlds = [
                 world: "World2",
             },
             /*    {
-                title: "Noise World",
-                description: `A world generated using perlin noise.`,
-                world: "World3",
-               }, */
+             title: "Noise World",
+             description: `A world generated using perlin noise.`,
+             world: "World3",
+            }, */
         ],
     },
     {
@@ -37,10 +37,10 @@ export const Worlds = [
         sectionDescription: "Worlds used for testing purposes.",
         worlds: [
             /*     {
-                title: "Server Test",
-                description: "Used to test Divine Voxel Engine Server.",
-                world: "ServerTest",
-                }, */
+             title: "Server Test",
+             description: "Used to test Divine Voxel Engine Server.",
+             world: "ServerTest",
+             }, */
             {
                 title: "Nexus & Matrix Test",
                 description: "Used to test the Nexus and Matrix parts of the engine.",
@@ -72,8 +72,13 @@ export const Worlds = [
                 world: "LightUpdateTest",
             },
             {
-                title: "Massive Light Test",
-                description: "Used to test a lot of light sources.",
+                title: "Huge Light Test",
+                description: "Used to test a lot of light sources",
+                world: "HugeLightTest",
+            },
+            {
+                title: "Constant Light Update Test",
+                description: "Used to test a lot of constant light updates.",
                 world: "LightTest",
             },
             {

@@ -1,23 +1,24 @@
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-import { BuilderCommManager } from "./BuilderCommManager.js";
 export const GetNewBuilderComm = (count, port) => {
-    const newComm = CreateInterComm("world-builder-base", {
+    const threadName = `builder-${count}`;
+    const newComm = CreateInterComm(threadName, {
         ready: false,
     });
     newComm.onSetPort((port) => {
-        const threadName = `builder-${count}`;
-        newComm.name = threadName;
         DVEW.matrixCentralHub.registerThread(threadName, port);
         if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
             DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
         }
     });
-    BuilderCommManager.numBuilders++;
+    DVEW.builderCommManager.numBuilders++;
     newComm.setPort(port);
     newComm.messageFunctions = {
         ready: (data, event) => {
-            BuilderCommManager.buildersConnected++;
+            DVEW.builderCommManager.buildersConnected++;
+        },
+        0: (data, event) => {
+            DVEW.queues._numChunksRebuilding--;
         },
     };
     return newComm;

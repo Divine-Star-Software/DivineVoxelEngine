@@ -10,10 +10,20 @@ worldComm.onMessage = (event) => {
  }
 };
 worldComm.messageFunctions = {
-    0 : (data,event)=>{
-        const x = data[1];
-        const y = data[2];
-        const z = data[3];
-        DVEWG.runRGBFloodFill(x,y,z,);
-    }
+ 0: (data, event) => {
+  const x = data[1];
+  const y = data[2];
+  const z = data[3];
+  DVEWG.runRGBFloodFill(x, y, z);
+ },
+ 1: (data, event) => {
+  const x = data[1];
+  const y = data[2];
+  const z = data[3];
+  DVEWG.runRGBFloodFill(x, y, z);
+ },
+};
+worldComm.messageFunctions[-1] = (data, event) => {
+    const queueStates = new Int32Array(data[1]);
+    DVEWG.queues.setQueueStates(queueStates);
 };

@@ -24,6 +24,11 @@ export const VoxelManager = {
   }
  },
 
+ getCurrentVoxelSize() {
+  const data = JSON.stringify(this.voxels);
+  return new Blob([data]).size;
+ },
+
  runVoxelHookForAll(hook: VoxelHooks) {
   /*   for (const voxelID of Object.keys(this.voxels)) {
    const voxel = this.voxels[voxelID];

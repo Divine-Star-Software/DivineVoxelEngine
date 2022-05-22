@@ -3,14 +3,15 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 import { MatrixHub } from "../Matrix/MatrixHub.js";
+import { QueuesManager } from "./Queues/QueuesManager.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { VoxelHelper } from "./Voxels/VoxelHelper.js";
+import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 //inter comms
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { VoxelHelper } from "./Voxels/VoxelHelper.js";
-import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 export const DVEWG = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
@@ -26,6 +27,7 @@ export const DVEWG = {
     illumination: IlluminationManager,
     voxelManager: VoxelManager,
     voxelHelper: VoxelHelper,
+    queues: QueuesManager,
     syncSettings(data) {
         this.engineSettings.syncSettings(data);
         if (data.chunks) {
@@ -45,12 +47,24 @@ export const DVEWG = {
         await InitWorker(this, initData);
         this.worldComm.sendMessage("ready", []);
     },
+    rebuildQueMap: {},
     addToRebuildQue(x, y, z, substance) {
-        this.worldComm.sendMessage(0, [x, y, z, substance]);
+        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
+        if (!this.rebuildQueMap[chunkKey]) {
+            this.rebuildQueMap[chunkKey] = true;
+            //@ts-ignore
+            this.worldComm.port.postMessage([0, x, y, z, substance]);
+        }
     },
     runRGBFloodFill(x, y, z) {
         this.illumination.runRGBFloodFillAt(x, y, z);
-        this.worldComm.sendMessage(1, []);
+        this.queues.finishRGBLightUpdate();
+        this.rebuildQueMap = {};
+    },
+    runRGBFloodRemove(x, y, z) {
+        this.illumination.runRGBFloodRemoveAt(false, x, y, z);
+        this.worldComm.sendMessage(2, []);
     },
 };
 DVEWG.environment = Util.getEnviorment();

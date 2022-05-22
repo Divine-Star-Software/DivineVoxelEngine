@@ -13,6 +13,7 @@ import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
 import { WorldGenCommManager } from "./InterComms/WorldGenerators/WorldGenCommManager.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
+import { QueuesManager } from "./Queues/QueuesManager.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -34,6 +35,7 @@ export const DVEW = {
     worldGeneration: WorldGeneration,
     worldData: WorldData,
     voxelManager: VoxelManager,
+    queues: QueuesManager,
     isReady() {
         let ready = DVEW.builderCommManager.isReady() &&
             DVEW.worldGenCommManager.isReady() &&

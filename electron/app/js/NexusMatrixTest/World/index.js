@@ -4,28 +4,25 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 const playerWatcher = new PlayerWatcher(DVEW);
 RegisterVoxels(DVEW);
-const start = () => {
-    let startX = -32;
-    let startZ = -32;
-    let endX = 32;
-    let endZ = 32;
-    for (let x = startX; x < endX; x += 16) {
-        for (let z = startZ; z < endZ; z += 16) {
-            WorldGen.generateChunk(x, 0, z);
-        }
+await DVEW.$INIT({
+    onReady: () => { },
+});
+let startX = -32;
+let startZ = -32;
+let endX = 32;
+let endZ = 32;
+for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+        WorldGen.generateChunk(x, 0, z);
     }
-    DVEW.runRGBLightUpdateQue();
-    for (let x = startX; x < endX; x += 16) {
-        for (let z = startZ; z < endZ; z += 16) {
-            DVEW.buildChunk(x, 0, z);
-        }
+}
+DVEW.queues.runRGBUpdateQue();
+await DVEW.queues.awaitAllRGBLightUpdates();
+for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+        DVEW.buildChunk(x, 0, z);
     }
-    DVEW.matrixCentralHub.syncGlobalVoxelPalette();
-    DVEW.nexusComm.sendMessage("done", []);
-};
-(async () => {
-    await DVEW.$INIT({
-        onReady: start,
-    });
-})();
+}
+DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+DVEW.nexusComm.sendMessage("done", []);
 self.DVEW = DVEW;

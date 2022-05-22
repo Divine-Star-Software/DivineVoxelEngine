@@ -63,14 +63,14 @@ export const WorldData = {
         this._chunkRebuildQue = [];
         this._chunkRebuildQueMap = {};
     },
-    runRebuildChekc(x, y, z) {
-        this.addToRebuildQue(x, y, z, "all");
-        this.addToRebuildQue(x + 1, y, z, "all");
-        this.addToRebuildQue(x - 1, y, z, "all");
-        this.addToRebuildQue(x, y + 1, z, "all");
-        this.addToRebuildQue(x, y - 1, z, "all");
-        this.addToRebuildQue(x, y, z + 1, "all");
-        this.addToRebuildQue(x, y, z - 1, "all");
+    runRebuildCheck(x, y, z) {
+        DVEW.queues.addToRebuildQue(x, y, z, "all");
+        DVEW.queues.addToRebuildQue(x + 1, y, z, "all");
+        DVEW.queues.addToRebuildQue(x - 1, y, z, "all");
+        DVEW.queues.addToRebuildQue(x, y + 1, z, "all");
+        DVEW.queues.addToRebuildQue(x, y - 1, z, "all");
+        DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
+        DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
     },
     addToRebuildQue(x, y, z, substance) {
         const chunk = this.getChunk(x, y, z);
@@ -255,7 +255,7 @@ export const WorldData = {
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = DVEW.voxelManager.getVoxel(voxelId);
             if (voxel.lightSource && voxel.lightValue) {
-                this._RGBLightUpdateQue.push([x, y, z]);
+                DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
         }
     },
@@ -318,7 +318,7 @@ export const WorldData = {
         if (data < 0)
             return;
         this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
-        this.runRebuildChekc(x, y, z);
+        this.runRebuildCheck(x, y, z);
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = DVEW.voxelManager.getVoxel(voxelId);
@@ -339,7 +339,7 @@ export const WorldData = {
         if (!voxelCheck || voxelCheck[0] == -1)
             return;
         const voxel = voxelCheck[0];
-        this.runRebuildChekc(x, y, z);
+        this.runRebuildCheck(x, y, z);
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             if (voxel.lightSource && voxel.lightValue) {

@@ -17,6 +17,10 @@ export const VoxelManager = {
             DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(voxel);
         }
     },
+    getCurrentVoxelSize() {
+        const data = JSON.stringify(this.voxels);
+        return new Blob([data]).size;
+    },
     runVoxelHookForAll(hook) {
         /*   for (const voxelID of Object.keys(this.voxels)) {
          const voxel = this.voxels[voxelID];

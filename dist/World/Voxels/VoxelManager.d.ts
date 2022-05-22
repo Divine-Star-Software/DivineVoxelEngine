@@ -7,5 +7,6 @@ export declare const VoxelManager: {
     fluidShapeMapHasBeenSet: boolean;
     getVoxel(id: string): VoxelData;
     registerVoxelData(voxel: VoxelData): void;
+    getCurrentVoxelSize(): number;
     runVoxelHookForAll(hook: VoxelHooks): void;
 };

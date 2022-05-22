@@ -434,9 +434,11 @@ export declare const DVEW: {
     worldGenCommManager: {
         count: number;
         numWorldGens: number;
+        states: Int32Array;
         __numLightUpdates: number;
         worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
         worldGensConnected: number;
+        $INIT(): void;
         addWorldGen(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -449,6 +451,12 @@ export declare const DVEW: {
         awaitAllLightUpdates(): Promise<boolean>;
         runRebuildQue(): void;
         runRGBFloodFillAt(x: number, y: number, z: number): void;
+        runRGBFloodRemoveAt(x: number, y: number, z: number): void;
+        areRGBLightUpdatesAllDone(): boolean; /**# Remove Chunk
+         * ---
+         * Removes a chunk from the render thread.
+         * Can also delete the chunk from world ata.
+         */
     };
     worldGeneration: {
         worldBounds: {
@@ -832,7 +840,7 @@ export declare const DVEW: {
         getChunkRebuildQue(): number[][];
         getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>;
         clearChunkRebuildQue(): void;
-        runRebuildChekc(x: number, y: number, z: number): void;
+        runRebuildCheck(x: number, y: number, z: number): void;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
         getCurrentWorldDataSize(): number;
         getCurrentWorldDataString(): string;
@@ -862,7 +870,26 @@ export declare const DVEW: {
         fluidShapeMapHasBeenSet: boolean;
         getVoxel(id: string): import("../Meta/index.js").VoxelData;
         registerVoxelData(voxel: import("../Meta/index.js").VoxelData): void;
+        getCurrentVoxelSize(): number;
         runVoxelHookForAll(hook: any): void;
+    };
+    queues: {
+        _numChunksRebuilding: number;
+        _numRGBLightUpdates: number;
+        _numRGBLightRemoves: number;
+        _RGBLightRemoveQue: number[][];
+        _RGBLightUpdateQue: number[][];
+        _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
+        _chunkRebuildQue: number[][];
+        addToRGBUpdateQue(x: number, y: number, z: number): void;
+        addToRGBRemoveQue(x: number, y: number, z: number): void;
+        runRGBUpdateQue(): void;
+        runRGBRemoveQue(): void;
+        awaitAllRGBLightUpdates(): Promise<boolean>;
+        awaitAllRGBLightRemove(): Promise<boolean>;
+        addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
+        runRebuildQue(): void;
+        awaitAllChunksToBeBuilt(): Promise<boolean>;
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;

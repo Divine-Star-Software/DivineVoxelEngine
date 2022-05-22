@@ -92,6 +92,7 @@ export const ChunkMeshBuilder = {
                 colorsArray.buffer,
                 uvArray.buffer,
             ]);
+            DVEB.worldComm.sendMessage(0, []);
         }
     },
 };

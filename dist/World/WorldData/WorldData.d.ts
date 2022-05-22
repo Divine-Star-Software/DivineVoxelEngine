@@ -165,7 +165,7 @@ export declare const WorldData: {
     getChunkRebuildQue(): number[][];
     getSubstanceNeededToRebuild(chunkX: number, chunkY: number, chunkZ: number): Record<VoxelSubstanceType | "all", boolean>;
     clearChunkRebuildQue(): void;
-    runRebuildChekc(x: number, y: number, z: number): void;
+    runRebuildCheck(x: number, y: number, z: number): void;
     addToRebuildQue(x: number, y: number, z: number, substance: "all" | VoxelSubstanceType): void;
     getCurrentWorldDataSize(): number;
     getCurrentWorldDataString(): string;

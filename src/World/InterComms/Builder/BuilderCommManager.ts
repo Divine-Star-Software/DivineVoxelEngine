@@ -74,7 +74,9 @@ export const BuilderCommManager = {
  },
 
  requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number) {
+ 
   const comm = this.builders[this.count];
+  DVEW.queues._numChunksRebuilding++;
   comm.sendMessage(0, [chunkX, chunkY, chunkZ]);
   this.count++;
   if (this.count >= this.numBuilders) {

@@ -20,7 +20,7 @@ export const SetUpWorkers = (basePath, worldPath, builderPath, worldGenPath, nex
     }
     const wgPath = new URL(worldGenPath, basePath);
     const worldGenWorkers = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 12; i++) {
         worldGenWorkers.push(new Worker(wgPath, {
             type: "module",
         }));

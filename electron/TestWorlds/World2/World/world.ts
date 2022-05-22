@@ -32,3 +32,6 @@ for (let x = startX; x <= endX; x += 16) {
   DVEW.buildChunk(x, 0, z);
  }
 }
+
+
+(self as any).DVEW = DVEW; 

@@ -562,11 +562,19 @@ export declare const DVEWG: {
         setAir(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
     };
+    queues: {
+        states: Int32Array;
+        setQueueStates(states: Int32Array): void;
+        startRGBLightUpdate(): void;
+        finishRGBLightUpdate(): void;
+    };
     syncSettings(data: EngineSettingsData): void;
     isReady(): boolean;
     reStart(): void;
     $INIT(initData: DVEWGInitData): Promise<void>;
+    rebuildQueMap: Record<string, boolean>;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     runRGBFloodFill(x: number, y: number, z: number): void;
+    runRGBFloodRemove(x: number, y: number, z: number): void;
 };
 export declare type DivineVoxelEngineWorldGeneration = typeof DVEWG;

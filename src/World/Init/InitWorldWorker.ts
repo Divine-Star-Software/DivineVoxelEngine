@@ -21,5 +21,8 @@ export async function InitWorldWorker(
    return DVEW.isReady();
   },
   checkInterval: 1,
+  onReady : () => {
+      DVEW.worldGenCommManager.$INIT();
+  }
  });
 }

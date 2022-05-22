@@ -20,7 +20,7 @@ export const Worlds: WorldsData = [
     description: `A simple 9 chunk area with different voxel types.`,
     world: "World2",
    },
-/*    {
+   /*    {
     title: "Noise World",
     description: `A world generated using perlin noise.`,
     world: "World3",
@@ -43,7 +43,7 @@ export const Worlds: WorldsData = [
   sectionTitle: "Tests",
   sectionDescription: "Worlds used for testing purposes.",
   worlds: [
-/*     {
+   /*     {
     title: "Server Test",
     description: "Used to test Divine Voxel Engine Server.",
     world: "ServerTest",
@@ -79,8 +79,13 @@ export const Worlds: WorldsData = [
     world: "LightUpdateTest",
    },
    {
-    title: "Massive Light Test",
-    description: "Used to test a lot of light sources.",
+    title: "Huge Light Test",
+    description: "Used to test a lot of light sources",
+    world: "HugeLightTest",
+   },
+   {
+    title: "Constant Light Update Test",
+    description: "Used to test a lot of constant light updates.",
     world: "LightTest",
    },
    {

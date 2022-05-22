@@ -7,9 +7,11 @@ import { VoxelSubstanceType } from "Meta/index.js";
 export declare const WorldGenCommManager: {
     count: number;
     numWorldGens: number;
+    states: Int32Array;
     __numLightUpdates: number;
     worldGens: InterCommInterface[];
     worldGensConnected: number;
+    $INIT(): void;
     addWorldGen(port: InterCommPortTypes): void;
     syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
     releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
@@ -22,4 +24,6 @@ export declare const WorldGenCommManager: {
     awaitAllLightUpdates(): Promise<boolean>;
     runRebuildQue(): void;
     runRGBFloodFillAt(x: number, y: number, z: number): void;
+    runRGBFloodRemoveAt(x: number, y: number, z: number): void;
+    areRGBLightUpdatesAllDone(): boolean;
 };

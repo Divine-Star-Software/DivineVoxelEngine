@@ -15,12 +15,22 @@ import { VoxelSubstanceType } from "Meta/index.js";
 export const WorldGenCommManager = {
  count: 0,
  numWorldGens: 0,
+ states: <Int32Array>new Int32Array(),
 
  __numLightUpdates: 0,
 
  worldGens: <InterCommInterface[]>[],
 
  worldGensConnected: 0,
+
+ $INIT() {
+  const sab = new SharedArrayBuffer(4 * 4);
+  WorldGenCommManager.states = new Int32Array(sab);
+  WorldGenCommManager.states[1] = 1000;
+  for (const worldGen of this.worldGens) {
+   worldGen.sendMessage(-1, [sab]);
+  }
+ },
 
  addWorldGen(port: InterCommPortTypes) {
   const newComm = GetNewWorldGenComm(this.numWorldGens + 1, port);
@@ -126,11 +136,22 @@ export const WorldGenCommManager = {
 
  runRGBFloodFillAt(x: number, y: number, z: number) {
   const comm = this.worldGens[this.count];
-  this.__numLightUpdates++;
   comm.sendMessage(0, [x, y, z]);
   this.count++;
   if (this.count >= this.numWorldGens) {
    this.count = 0;
   }
+ },
+ runRGBFloodRemoveAt(x: number, y: number, z: number) {
+  const comm = this.worldGens[this.count];
+  comm.sendMessage(1, [x, y, z]);
+  this.count++;
+  if (this.count >= this.numWorldGens) {
+   this.count = 0;
+  }
+ },
+
+ areRGBLightUpdatesAllDone() {
+   return Atomics.load(this.states,0) == 0;
  },
 };

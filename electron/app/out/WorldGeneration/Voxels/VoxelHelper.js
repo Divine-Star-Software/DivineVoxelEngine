@@ -33,13 +33,13 @@ export const VoxelHelper = {
             else {
                 const voxel = DVEWG.worldMatrix.getVoxel(x, y, z);
                 if (!voxel)
-                    return 0;
+                    return -1;
                 const voxelData = DVEWG.voxelManager.getVoxel(voxel[0]);
                 if (voxelData.lightSource && voxelData.lightValue) {
                     return voxelData.lightValue;
                 }
                 if (voxelData.substance == "solid") {
-                    return 0;
+                    return -1;
                 }
                 return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
             }

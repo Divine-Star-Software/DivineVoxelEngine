@@ -4,12 +4,14 @@ import type {
 } from "Meta/Comms/InterComm.types";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-import { WorldGenCommManager } from "./WorldGenCommManager.js";
+
 
 export const GetNewWorldGenComm = (count: number, port: InterCommPortTypes) => {
- const newComm: InterCommInterface = CreateInterComm("world-world-gen-base", { ready: false });
+ const threadName = `world-gen-${count}`;
+ const newComm: InterCommInterface = CreateInterComm(threadName, {
+  ready: false,
+ });
  newComm.onSetPort((port) => {
-  const threadName = `world-gen-${count}`;
   newComm.name = threadName;
   DVEW.matrixCentralHub.registerThread(threadName, port);
   if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
@@ -17,22 +19,25 @@ export const GetNewWorldGenComm = (count: number, port: InterCommPortTypes) => {
   }
  });
  newComm.setPort(port);
- WorldGenCommManager.numWorldGens++;
+ DVEW.worldGenCommManager.numWorldGens++;
  newComm.messageFunctions = {
   ready: (data, event) => {
-   WorldGenCommManager.worldGensConnected++;
+    DVEW.worldGenCommManager.worldGensConnected++;
   },
-  0 : (data,event) => {
-      const x = data[1];
-      const y  = data[2];
-      const z = data[3];
-      const substance = data[4];
-      WorldGenCommManager.__addToRebuildQue(x,y,z,substance);
+  0: (data, event) => {
+   const x = data[1];
+   const y = data[2];
+   const z = data[3];
+   const substance = data[4];
+   DVEW.queues.addToRebuildQue(x, y, z, substance);
   },
-  1 : (data,event)=> {
-    WorldGenCommManager.__numLightUpdates--;
-  }
+  1: (data, event) => {
+   DVEW.queues._numRGBLightUpdates--;
+  },
+  2: (data, event) => {
+   DVEW.queues._numRGBLightRemoves--;
+  },
  };
+
  return newComm;
 };
-

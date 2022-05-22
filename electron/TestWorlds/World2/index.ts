@@ -14,7 +14,7 @@ RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
- "./World/index.js",
+ "./World/world.js",
  "../Shared/Builder/builder.js",
  "../Shared/WorldGeneration/worldgen.js"
 );
@@ -51,3 +51,5 @@ const init = async () => {
 };
 
 RunInit(init);
+
+

@@ -100,14 +100,14 @@ export const WorldData = {
   this._chunkRebuildQueMap = {};
  },
 
- runRebuildChekc(x: number, y: number, z: number) {
-  this.addToRebuildQue(x, y, z, "all");
-  this.addToRebuildQue(x + 1, y, z, "all");
-  this.addToRebuildQue(x - 1, y, z, "all");
-  this.addToRebuildQue(x, y + 1, z, "all");
-  this.addToRebuildQue(x, y - 1, z, "all");
-  this.addToRebuildQue(x, y, z + 1, "all");
-  this.addToRebuildQue(x, y, z - 1, "all");
+ runRebuildCheck(x: number, y: number, z: number) {
+  DVEW.queues.addToRebuildQue(x, y, z, "all");
+  DVEW.queues.addToRebuildQue(x + 1, y, z, "all");
+  DVEW.queues.addToRebuildQue(x - 1, y, z, "all");
+  DVEW.queues.addToRebuildQue(x, y + 1, z, "all");
+  DVEW.queues.addToRebuildQue(x, y - 1, z, "all");
+  DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
+  DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
  },
 
  addToRebuildQue(
@@ -332,7 +332,7 @@ export const WorldData = {
   if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
    const voxel = DVEW.voxelManager.getVoxel(voxelId);
    if (voxel.lightSource && voxel.lightValue) {
-    this._RGBLightUpdateQue.push([x, y, z]);
+    DVEW.queues.addToRGBUpdateQue(x,y,z);
    }
   }
  },
@@ -427,7 +427,7 @@ export const WorldData = {
    data
   );
 
-  this.runRebuildChekc(x, y, z);
+  this.runRebuildCheck(x, y, z);
   let needLightUpdate = false;
   if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
    const voxel = DVEW.voxelManager.getVoxel(voxelId);
@@ -449,7 +449,7 @@ export const WorldData = {
   if (!voxelCheck || voxelCheck[0] == -1) return;
   const voxel = <VoxelData>voxelCheck[0];
 
-  this.runRebuildChekc(x, y, z);
+  this.runRebuildCheck(x, y, z);
   let needLightUpdate = false;
   if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
    if (voxel.lightSource && voxel.lightValue) {
