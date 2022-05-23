@@ -90,12 +90,12 @@ export declare const DVER: {
         setBuilders(builders: Worker[]): void;
         syncSettings(data: any): void;
     };
-    worldGenCommManager: {
+    propagationCommManager: {
         count: number;
         worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
         $INIT(): void;
-        createWorldGens(path: string, numWorldGens?: number): void;
-        setWorldGens(worldGens: Worker[]): void;
+        createPropagators(path: string, numWorldGens?: number): void;
+        setPropagators(worldGens: Worker[]): void;
         syncSettings(data: any): void;
     };
     engineSettings: {

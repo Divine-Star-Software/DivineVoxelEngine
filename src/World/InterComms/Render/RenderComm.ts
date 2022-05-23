@@ -31,11 +31,11 @@ renderComm.messageFunctions = {
   const port = event.ports[0];
   DVEW.builderCommManager.addBuilder(port);
  },
- "connect-world-gen": (data, event) => {
+ "connect-propagator": (data, event) => {
   if (!event) return;
 
   const port = event.ports[0];
-  DVEW.worldGenCommManager.addWorldGen(port);
+  DVEW.propagationCommManager.addPropagator(port);
  },
 };
 

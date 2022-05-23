@@ -4,13 +4,13 @@ import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 const playerWatcher = new PlayerWatcher(DVEW);
-DVEW.renderComm.listenForMessage("voxel-add", (data, event) => {
-    DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", data[1], data[2], data[3]);
-    DVEW.runChunkRebuildQue();
+DVEW.renderComm.listenForMessage("voxel-add", async (data, event) => {
+    await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", data[1], data[2], data[3]);
+    //DVEW.runChunkRebuildQue();
 });
-DVEW.renderComm.listenForMessage("voxel-remove", (data, event) => {
-    DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
-    DVEW.runChunkRebuildQue();
+DVEW.renderComm.listenForMessage("voxel-remove", async (data, event) => {
+    await DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
+    // DVEW.runChunkRebuildQue();
 });
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
     playerWatcher.setPlayerSharedArrays(data);

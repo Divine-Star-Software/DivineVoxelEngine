@@ -115,7 +115,7 @@ export const ChunkMeshBuilder = {
      uvArray.buffer,
     ]
    );
-   DVEB.worldComm.sendMessage(0,[]);
   }
+  DVEB.worldComm.sendMessage(0, []);
  },
 };

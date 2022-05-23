@@ -10,7 +10,7 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
-import { WorldGenCommManager } from "./InterComms/WorldGenerators/WorldGenCommManager.js";
+import { PropagationCommManager } from "./InterComms/Propagators/PropagationCommManager.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
@@ -31,14 +31,14 @@ export const DVEW = {
     nexusComm: NexusComm,
     renderComm: RenderComm,
     builderCommManager: BuilderCommManager,
-    worldGenCommManager: WorldGenCommManager,
+    propagationCommManager: PropagationCommManager,
     worldGeneration: WorldGeneration,
     worldData: WorldData,
     voxelManager: VoxelManager,
     queues: QueuesManager,
     isReady() {
         let ready = DVEW.builderCommManager.isReady() &&
-            DVEW.worldGenCommManager.isReady() &&
+            DVEW.propagationCommManager.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
             DVEW.__renderIsDone;
         return ready;

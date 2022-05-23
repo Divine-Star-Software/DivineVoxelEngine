@@ -33,13 +33,13 @@ export function InitWorkers(
  }
 
 
- if (typeof initData.worldGenWorker == "string") {
-  DVER.worldGenCommManager.createWorldGens(initData.worldGenWorker);
+ if (typeof initData.propagationWorker == "string") {
+  DVER.propagationCommManager.createPropagators(initData.propagationWorker);
  } else if (
-  Array.isArray(initData.worldGenWorker) &&
-  initData.worldGenWorker[0] instanceof Worker
+  Array.isArray(initData.propagationWorker) &&
+  initData.propagationWorker[0] instanceof Worker
  ) {
-  DVER.worldGenCommManager.setWorldGens(initData.worldGenWorker);
+  DVER.propagationCommManager.setPropagators(initData.propagationWorker);
  } else {
   throw Error(
    "Supplied data for the World Generation Workers is not correct. Must be path to worker or an array workers."
@@ -64,7 +64,7 @@ export function InitWorkers(
  DVER._syncSettings(initData);
  DVER.textureManager.generateTexturesData();
  DVER.builderCommManager.$INIT();
- DVER.worldGenCommManager.$INIT();
+ DVER.propagationCommManager.$INIT();
 
  //terminate all workers
  window.addEventListener("beforeunload", () => {

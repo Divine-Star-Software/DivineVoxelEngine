@@ -19,14 +19,14 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
  "../Shared/Builder/builder.js",
- "../Shared/WorldGeneration/worldgen.js",
+ "../Shared/Propagators/propagators.js",
  "./Nexus/index.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
- worldGenWorker : workers.worldGenWorkers,
+ propagationWorker : workers.propagationWorkers,
  nexusWorker: workers.nexusWorker,
  nexus: {
   enabled: true,

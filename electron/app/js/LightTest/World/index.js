@@ -25,9 +25,11 @@ const y = 60;
 const run = async () => {
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, y + 7, z + 7);
-            await DVEW.queues.awaitAllChunksToBeBuilt();
-            DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x + 7, y + 7, z + 7);
+            if (x == startX) {
+                await DVEW.worldData.requestVoxelBeRemoved(endX + 7 - 16, y + 7, z + 7);
+            }
+            await DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, y + 7, z + 7);
+            await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x + 7, y + 7, z + 7);
         }
     }
     run();

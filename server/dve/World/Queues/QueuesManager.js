@@ -20,8 +20,8 @@ export const QueuesManager = {
             const position = queue.shift();
             if (!position)
                 break;
-            Atomics.add(DVEW.worldGenCommManager.states, 0, 1);
-            DVEW.worldGenCommManager.runRGBFloodFillAt(position[0], position[1], position[2]);
+            Atomics.add(DVEW.propagationCommManager.states, 0, 1);
+            DVEW.propagationCommManager.runRGBFloodFillAt(position[0], position[1], position[2]);
         }
         this._RGBLightUpdateQue = [];
     },
@@ -31,14 +31,15 @@ export const QueuesManager = {
             const position = queue.shift();
             if (!position)
                 break;
-            DVEW.worldGenCommManager.runRGBFloodRemoveAt(position[0], position[1], position[2]);
+            Atomics.add(DVEW.propagationCommManager.states, 1, 1);
+            DVEW.propagationCommManager.runRGBFloodRemoveAt(position[0], position[1], position[2]);
         }
         this._RGBLightRemoveQue = [];
     },
     awaitAllRGBLightUpdates() {
         return DVEW.UTIL.createPromiseCheck({
             check: () => {
-                return DVEW.worldGenCommManager.areRGBLightUpdatesAllDone();
+                return DVEW.propagationCommManager.areRGBLightUpdatesAllDone();
             },
             checkInterval: 1,
         });
@@ -46,7 +47,7 @@ export const QueuesManager = {
     awaitAllRGBLightRemove() {
         return DVEW.UTIL.createPromiseCheck({
             check: () => {
-                return QueuesManager._numRGBLightRemoves == 0;
+                return DVEW.propagationCommManager.areRGBLightRemovesAllDone();
             },
             checkInterval: 1,
         });
@@ -75,6 +76,8 @@ export const QueuesManager = {
                 break;
             DVEW.buildChunk(position[0], position[1], position[2]);
         }
+        this._chunkRebuildQue = [];
+        this._chunkRebuildQueMap = {};
     },
     awaitAllChunksToBeBuilt() {
         return DVEW.UTIL.createPromiseCheck({

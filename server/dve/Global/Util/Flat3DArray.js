@@ -37,10 +37,15 @@ export const Flat3DArray = {
             position.z * this.bounds.z * this.bounds.y] = value;
     },
     deleteValue(x, y, z, array) {
-        delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
+        //@ts-ignore
+        array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = undefined;
     },
     deleteUseObj(position, array) {
-        delete array[position.x + position.y * this.bounds.x + position.z * this.bounds.z * this.bounds.y];
+        //@ts-ignore
+        array[position.x +
+            position.y * this.bounds.x +
+            position.z * this.bounds.z * this.bounds.y] = undefined;
+        ;
     },
     getIndex(x, y, z) {
         return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;

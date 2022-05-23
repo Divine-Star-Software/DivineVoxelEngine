@@ -431,15 +431,15 @@ export declare const DVEW: {
         isReady(): boolean;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
     };
-    worldGenCommManager: {
+    propagationCommManager: {
         count: number;
         numWorldGens: number;
         states: Int32Array;
         __numLightUpdates: number;
-        worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+        propagators: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
         worldGensConnected: number;
         $INIT(): void;
-        addWorldGen(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
+        addPropagator(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
         syncRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
@@ -452,11 +452,8 @@ export declare const DVEW: {
         runRebuildQue(): void;
         runRGBFloodFillAt(x: number, y: number, z: number): void;
         runRGBFloodRemoveAt(x: number, y: number, z: number): void;
-        areRGBLightUpdatesAllDone(): boolean; /**# Remove Chunk
-         * ---
-         * Removes a chunk from the render thread.
-         * Can also delete the chunk from world ata.
-         */
+        areRGBLightUpdatesAllDone(): boolean;
+        areRGBLightRemovesAllDone(): boolean;
     };
     worldGeneration: {
         worldBounds: {
@@ -655,6 +652,10 @@ export declare const DVEW: {
             runRGBFloodRemoveAt: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemoveAt;
             runRGBFloodRemove: typeof import("./WorldGenration/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
             _RGBlightUpdateQue: number[][];
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             _RGBlightRemovalQue: number[][];
             _sunLightUpdateQue: number[][];
             _sunLightRemoveQue: number[][];
@@ -859,8 +860,8 @@ export declare const DVEW: {
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
-        requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
-        requestVoxelBeRemoved(x: number, y: number, z: number): void;
+        requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
+        requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
     };
     voxelManager: {
         voxels: Record<string, import("../Meta/index.js").VoxelData>;

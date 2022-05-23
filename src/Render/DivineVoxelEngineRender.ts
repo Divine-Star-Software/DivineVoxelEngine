@@ -11,7 +11,7 @@ import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { BuilderCommManager } from "./InterComms/Builders/BuilderCommManager.js";
-import { WorldGenCommManager } from "./InterComms/WorldGenerators/WorldGenCommManager.js";
+import { PropagationCommManager } from "./InterComms/Propagators/PropagationCommManager.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
@@ -23,7 +23,7 @@ export const DVER = {
  worldComm: WorldComm,
  nexusComm: NexusComm,
  builderCommManager: BuilderCommManager,
- worldGenCommManager: WorldGenCommManager,
+ propagationCommManager: PropagationCommManager,
 
  engineSettings: EngineSettings,
  renderManager: RenderManager,
@@ -55,7 +55,7 @@ export const DVER = {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }
   this.builderCommManager.syncSettings(copy);
-  this.worldGenCommManager.syncSettings(copy);
+  this.propagationCommManager.syncSettings(copy);
  },
 
  async reStart(data: EngineSettingsData): Promise<void> {

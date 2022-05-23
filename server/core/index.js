@@ -4,7 +4,6 @@ import { DVES } from "../dve/Server/DivineVoxelEngineServer.js";
 const world = new Worker(new URL("World/index.js", import.meta.url));
 const nexus = new Worker(new URL("Nexus/index.js", import.meta.url));
 const builder = new Worker(new URL("Builder/index.js", import.meta.url));
-const FluidBuilder = new Worker(new URL("FluidBuilder/index.js", import.meta.url));
 DVES.$INIT({
     worldWorker: world,
     builderWorker: [world],

@@ -48,10 +48,16 @@ export const Flat3DArray = {
  },
 
  deleteValue(x: number, y: number, z: number, array: ChunkVoxels) {
-  delete array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
+  //@ts-ignore
+  array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = undefined;
  },
  deleteUseObj(position: PositionMatrix, array: ChunkVoxels) {
-  delete array[position.x + position.y * this.bounds.x + position.z * this.bounds.z * this.bounds.y];
+  //@ts-ignore
+  array[
+   position.x +
+    position.y * this.bounds.x +
+    position.z * this.bounds.z * this.bounds.y
+  ]  = undefined;;
  },
  getIndex(x: number, y: number, z: number) {
   return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;

@@ -14,7 +14,8 @@ for (let x = startX; x < endX; x += 16) {
         WorldGen.generateChunk(x, 0, z);
     }
 }
-/* for (let x = startX; x < endX; x += 16) {
+/*
+for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   DVEW.buildChunk(x, 0, z);
  }
@@ -24,7 +25,11 @@ await DVEW.queues.awaitAllChunksToBeBuilt(); */
 DVEW.queues.runRGBUpdateQue();
 await DVEW.queues.awaitAllRGBLightUpdates();
 //console.log("start");
-DVEW.queues.runRebuildQue();
+for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+        DVEW.buildChunk(x, 0, z);
+    }
+}
 /* setTimeout(() => {
  DVEW.runRGBLightUpdateQue();
  DVEW.runChunkRebuildQue();

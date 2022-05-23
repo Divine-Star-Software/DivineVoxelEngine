@@ -11,12 +11,12 @@ export const SetUpWorkers = (
  basePath: string,
  worldPath: string,
  builderPath: string,
- worldGenPath: string,
+ propagationPath: string,
  nexusPath?: string
 ): {
  worldWorker: Worker;
  builderWorkers: Worker[];
- worldGenWorkers: Worker[];
+ propagationWorkers: Worker[];
  nexusWorker?: Worker | null;
 } => {
  const wPath = new URL(worldPath, basePath);
@@ -35,7 +35,7 @@ export const SetUpWorkers = (
   );
  }
 
- const wgPath = new URL(worldGenPath, basePath);
+ const wgPath = new URL(propagationPath, basePath);
  const worldGenWorkers: Worker[] = [];
  for (let i = 0; i < 12; i++) {
   worldGenWorkers.push(
@@ -55,7 +55,7 @@ export const SetUpWorkers = (
  return {
   worldWorker: worldWorker,
   builderWorkers: builderWorkers,
-  worldGenWorkers: worldGenWorkers,
+  propagationWorkers: worldGenWorkers,
   nexusWorker: nexusWorker,
  };
 };

@@ -301,9 +301,9 @@ export const WorldData = {
         if (doNotSyncInThreads)
             return;
         DVEW.builderCommManager.syncChunkInAllBuilders(chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        DVEW.worldGenCommManager.syncChunkInAllWorldGens(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        DVEW.propagationCommManager.syncChunkInAllWorldGens(chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
-    requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
+    async requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
         let region = this.getRegion(x, y, z);
         if (!region) {
             region = this.addRegion(x, y, z);
@@ -324,17 +324,19 @@ export const WorldData = {
             const voxel = DVEW.voxelManager.getVoxel(voxelId);
             if (voxel.lightSource && voxel.lightValue) {
                 needLightUpdate = true;
-                this._RGBLightUpdateQue.push([x, y, z]);
+                DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
         }
         if (DVEW.engineSettings.settings.updating?.autoRebuild) {
             if (needLightUpdate) {
-                DVEW.runRGBLightUpdateQue();
+                DVEW.queues.runRGBUpdateQue();
+                await DVEW.queues.awaitAllRGBLightUpdates();
             }
-            DVEW.runChunkRebuildQue();
+            DVEW.queues.runRebuildQue();
+            await DVEW.queues.awaitAllChunksToBeBuilt();
         }
     },
-    requestVoxelBeRemoved(x, y, z) {
+    async requestVoxelBeRemoved(x, y, z) {
         const voxelCheck = this.getVoxel(x, y, z);
         if (!voxelCheck || voxelCheck[0] == -1)
             return;
@@ -343,16 +345,18 @@ export const WorldData = {
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             if (voxel.lightSource && voxel.lightValue) {
-                this._RGBLightRemoveQue.push([x, y, z]);
+                DVEW.queues.addToRGBRemoveQue(x, y, z);
                 needLightUpdate = true;
             }
         }
         if (DVEW.engineSettings.settings.updating?.autoRebuild) {
             if (needLightUpdate) {
-                DVEW.runRGBLightRemoveQue();
+                DVEW.queues.runRGBRemoveQue();
+                await DVEW.queues.awaitAllRGBLightRemove();
             }
-            DVEW.runChunkRebuildQue();
+            this.setAir(x, y, z, 0);
+            DVEW.queues.runRebuildQue();
+            await DVEW.queues.awaitAllChunksToBeBuilt();
         }
-        this.setData(x, y, z, 0);
     },
 };
