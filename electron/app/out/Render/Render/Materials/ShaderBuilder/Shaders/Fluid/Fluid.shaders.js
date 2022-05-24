@@ -19,6 +19,6 @@ gl_Position = viewProjection * worldPosition;
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  gl_FragColor = vec4(finalColor.rgb , rgb.a ); 
+  gl_FragColor = vec4(finalColor.rgb ,rgb.a ); 
 `,
 };

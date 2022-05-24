@@ -6,6 +6,7 @@ import {
  SetUpDefaultSkybox,
  runRenderLoop,
  SetUpDefaultScene,
+ CreateWorldAxis,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
@@ -30,9 +31,9 @@ const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
  const scene = SetUpDarkScene(engine);
- const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 30, z: 0 });
+ const camera = SetUpDefaultCamera(scene, canvas);
  SetUpDefaultSkybox(scene);
-
+ CreateWorldAxis(scene, 10);
  await DVER.$SCENEINIT({ scene: scene });
 
  runRenderLoop(engine, scene, camera);

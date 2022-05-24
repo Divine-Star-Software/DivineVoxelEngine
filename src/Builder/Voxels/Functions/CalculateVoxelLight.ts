@@ -1,11 +1,11 @@
 import type { VoxelData } from "Meta/Voxels/Voxel.types";
 import { VoxelHelper } from "../VoxelHelper.js";
-
+//
 const voxelLightChecks = {
  top: {
   1: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
   2: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
-  3: [1, 1, 0, 0, 1, 1, 1, 1, 1],
+  3: [1, 1, 0,  0, 1, 1,   1, 1, 1],
   4: [1, 1, 0, 0, 1, -1, 1, 1, -1],
  },
  bottom: {
@@ -127,6 +127,7 @@ export function CalculateVoxelLight(
 }
 
 const newValues: number[] = [];
+const zeroCheck = { w: 0, r: 0, g: 0, b: 0 };
 export function VoxelLightMixCalc(
  this: typeof VoxelHelper,
  voxelLigtValue: number,
@@ -141,6 +142,11 @@ export function VoxelLightMixCalc(
  let g = values[2];
  let b = values[3];
 
+ if (w == 0) zeroCheck.w++;
+ if (r == 0) zeroCheck.r++;
+ if (g == 0) zeroCheck.g++;
+ if (b == 0) zeroCheck.b++;
+
  for (let i = 6; i > 0; i -= 3) {
   const check = this.getLight(
    checkSet[i] + x,
@@ -148,9 +154,7 @@ export function VoxelLightMixCalc(
    checkSet[i + 2] + z
   );
 
-  if (!check) {
-   continue;
-  }
+  
 
   let neighborLightValue: number = check;
   const values = this.lightByte.getLightValues(neighborLightValue);
@@ -158,6 +162,14 @@ export function VoxelLightMixCalc(
   let nr = values[1];
   let ng = values[2];
   let nb = values[3];
+
+  if (nw == 0) zeroCheck.w++;
+  if (nr == 0) zeroCheck.r++;
+  if (ng == 0) zeroCheck.g++;
+  if (nb == 0) zeroCheck.b++;
+
+  if(!check)continue;
+  
 
   if (nw < w && w > 0) {
    w--;
@@ -187,9 +199,35 @@ export function VoxelLightMixCalc(
    b++;
   }
  }
- newValues[0] = w;
+ if (zeroCheck.w >= 2) {
+  newValues[0] = 0;
+ } else {
+  newValues[0] = w;
+ }
+ if (zeroCheck.r >= 2) {
+  newValues[1] = 0;
+ } else {
+  newValues[1] = r;
+ }
+ if (zeroCheck.g >= 2) {
+  newValues[2] = 0;
+ } else {
+  newValues[2] = g;
+ }
+ if (zeroCheck.b >= 2) {
+  newValues[3] = 0;
+ } else {
+  newValues[3] = b;
+ }
+
+/*  newValues[0] = w;
  newValues[1] = r;
  newValues[2] = g;
  newValues[3] = b;
+ */
+ zeroCheck.w = 0;
+ zeroCheck.r = 0;
+ zeroCheck.b = 0;
+ zeroCheck.g = 0;
  return this.lightByte.setLightValues(newValues);
 }
