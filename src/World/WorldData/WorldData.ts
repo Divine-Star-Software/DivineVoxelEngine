@@ -462,10 +462,10 @@ export const WorldData = {
 
   if (DVEW.engineSettings.settings.updating?.autoRebuild) {
    if (needLightUpdate) {
-   DVEW.queues.runRGBRemoveQue();
-   await DVEW.queues.awaitAllRGBLightRemove();
+    DVEW.queues.runRGBRemoveQue();
+    await DVEW.queues.awaitAllRGBLightRemove();
    }
-   this.setAir(x,y,z,0);
+   this.setAir(x, y, z, 0);
    DVEW.queues.runRebuildQue();
    await DVEW.queues.awaitAllChunksToBeBuilt();
   }

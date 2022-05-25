@@ -5,7 +5,7 @@ export const DebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
  data: DebugBoxVoxelData,
  trueShapeId: 1,
  hooks: {},
- process: (data, DVEB) => {
+ process (data, DVEB) {
   let topUV = DVEB.textureManager.getTextureUV("solid", "debug", "top");
   let bottomUV = DVEB.textureManager.getTextureUV("solid", "debug", "bottom");
   let northUV = DVEB.textureManager.getTextureUV("solid", "debug", "north");
@@ -31,8 +31,8 @@ export const DebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(southUV);
   }
-  data.shapeTemplate.push(DebugBoxVoxelBuilderThread.trueShapeId);
+  data.shapeTemplate.push(this.trueShapeId);
   data.shapeStateTemplate.push(0);
-  DVEB.voxelHelper.processVoxelLight(data, DebugBoxVoxelBuilderThread.data);
+  DVEB.voxelHelper.processVoxelLight(data, this.data);
  },
 };

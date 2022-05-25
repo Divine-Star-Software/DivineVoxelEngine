@@ -1,6 +1,10 @@
 //types
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import type { DirectionNames, VoxelBuilderThreadObject, VoxelData } from "../../Meta/index";
+import type {
+ DirectionNames,
+ VoxelBuilderThreadObject,
+ VoxelData,
+} from "../../Meta/index";
 //objects
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { Util } from "../../Global/Util.helper.js";
@@ -11,7 +15,6 @@ import {
  CalculateVoxelLight,
  VoxelLightMixCalc,
 } from "./Functions/CalculateVoxelLight.js";
-
 
 export const VoxelHelper = {
  voxellightMixCalc: VoxelLightMixCalc,
@@ -75,7 +78,7 @@ export const VoxelHelper = {
  },
 
  voxelFaceCheck(
-  face : DirectionNames,
+  face: DirectionNames,
   voxel: VoxelBuilderThreadObject,
   x: number,
   y: number,
@@ -147,16 +150,10 @@ export const VoxelHelper = {
   )
    return;
   this.calculdateVoxelLight(
-   voxel,
-   data.voxelData,
-   data.lightTemplate,
-   data.exposedFaces,
-   data.chunkX,
-   data.chunkY,
-   data.chunkZ,
-   data.x,
-   data.y,
-   data.z
+   data,
+   data.chunkX + data.x,
+   data.chunkY + data.y,
+   data.chunkZ + data.z
   );
  },
 

@@ -137,7 +137,6 @@ export const FluidMaterial = {
   });
 
   DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
-
   return this.material;
  },
 };

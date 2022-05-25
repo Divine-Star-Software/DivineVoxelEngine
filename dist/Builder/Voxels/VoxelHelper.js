@@ -113,7 +113,7 @@ export const VoxelHelper = {
         if (!DVEB.engineSettings.settings.lighting?.doSunLight &&
             !DVEB.engineSettings.settings.lighting?.doRGBLight)
             return;
-        this.calculdateVoxelLight(voxel, data.voxelData, data.lightTemplate, data.exposedFaces, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z);
+        this.calculdateVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z);
     },
     calculateVoxelAO(data, voxel) {
         if (!DVEB.engineSettings.settings.lighting?.doAO)

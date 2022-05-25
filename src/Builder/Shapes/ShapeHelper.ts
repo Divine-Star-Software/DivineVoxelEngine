@@ -33,9 +33,10 @@ export const ShapeHelper = {
   return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
  },
 
- produceShapeReturnData(shapeData: VoxelShapeAddData) {
+ produceShapeReturnData(shapeData: VoxelShapeAddData) : VoxelShapeAddReturnData {
   return {
    newIndicieIndex: shapeData.indicieIndex,
+   newFaceStateIndex : shapeData.faceStateIndex,
    newUVTemplateIndex: shapeData.uvTemplateIndex,
    newColorIndex: shapeData.colorIndex,
    newlightIndex: shapeData.lightIndex,
@@ -54,7 +55,7 @@ export const ShapeHelper = {
  calculateLightColor(
   RGBlightColors: number[],
   sunlightColors: number[],
-  lightTemplate: Float32Array,
+  lightTemplate: number[],
   startIndex: number
  ) {
   for (let v = 0; v < 4; v++) {
@@ -70,7 +71,7 @@ export const ShapeHelper = {
 
  calculateSunightColor(
   sunLight: number[],
-  sunLightTemplate: Int32Array,
+  sunLightTemplate: number[],
   sunLightIndex: number
  ) {
   for (let v = 0; v < 4; v++) {
@@ -84,7 +85,7 @@ export const ShapeHelper = {
 
  calculateAOColor(
   colors: number[],
-  chunkAmbientOcculusion: Float32Array,
+  chunkAmbientOcculusion: number[],
   startIndex: number
  ) {
   for (let v = 0; v < 4; v++) {

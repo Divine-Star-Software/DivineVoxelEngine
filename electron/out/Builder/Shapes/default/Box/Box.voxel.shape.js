@@ -6,13 +6,20 @@ const shapeDimensions = {
 };
 const processDefaultFaceData = (data) => {
     const uv = data.unTemplate[data.uvTemplateIndex];
-    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+    let flip = data.faceStateTemplate[data.faceStateIndex];
+    if (!flip) {
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+    }
+    else {
+        data.uvs.push(1, 0, uv, 1, 1, uv, 0, 1, uv, 0, 0, uv);
+    }
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
     data.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;
     data.aoIndex += 4;
+    data.faceStateIndex += 1;
 };
 const faceFunctions = {
     //add top face

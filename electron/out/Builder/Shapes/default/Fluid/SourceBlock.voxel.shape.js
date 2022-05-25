@@ -6,26 +6,26 @@ const shapeDimensions = {
 };
 const processDefaultFaceData = (data, double = false) => {
     const uv = data.unTemplate[data.uvTemplateIndex];
-    data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+    let flip = data.faceStateTemplate[data.faceStateIndex];
+    if (!flip) {
+        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+    }
+    else {
+        data.uvs.push(1, 0, uv, 1, 1, uv, 0, 1, uv, 0, 0, uv);
+    }
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-    if (double) {
-        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-    }
     data.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;
     data.aoIndex += 4;
+    data.faceStateIndex += 1;
 };
 const faceFunctions = {
     //add top face
     0: (data) => {
         DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data);
-        /*   data.position.y += shapeDimensions.height;
-          DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data);
-          data.position.y -= shapeDimensions.height; */
-        processDefaultFaceData(data, false);
+        processDefaultFaceData(data);
     },
     //add bottom face
     1: (data) => {

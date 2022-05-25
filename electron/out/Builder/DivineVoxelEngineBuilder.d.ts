@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import type { DVEBInitData } from "Meta/Builder/DVEB.js";
 export declare const DVEB: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     _3dFlatArray: {
@@ -110,8 +110,8 @@ export declare const DVEB: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -563,17 +563,11 @@ export declare const DVEB: {
         lightMap: number[];
         exposedFaceRecord: Record<import("../Meta/Util.types.js").DirectionNames, number>;
         isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: import("../Meta/Util.types.js").DirectionNames): boolean;
-        produceShapeReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData): {
-            newIndicieIndex: number;
-            newUVTemplateIndex: number;
-            newColorIndex: number;
-            newlightIndex: number;
-            newAOIndex: number;
-        };
+        produceShapeReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData): import("../Meta/index.js").VoxelShapeAddReturnData;
         toLinearSpace(r: number, g: number, b: number, a: number): number[];
-        calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: Float32Array, startIndex: number): void;
-        calculateSunightColor(sunLight: number[], sunLightTemplate: Int32Array, sunLightIndex: number): void;
-        calculateAOColor(colors: number[], chunkAmbientOcculusion: Float32Array, startIndex: number): void;
+        calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
+        calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
+        calculateAOColor(colors: number[], chunkAmbientOcculusion: number[], startIndex: number): void;
     };
     shapeBuilder: {
         faceFunctions: Record<import("../Meta/Util.types.js").DirectionNames, (origion: import("../Meta/Util.types.js").PositionMatrix, dimensions: {
@@ -643,6 +637,7 @@ export declare const DVEB: {
         };
         chunkTemplates: Record<number, Record<number, number[][]>>;
         exposedFaces: number[];
+        faceStates: number[];
         getBaseTemplateNew(): import("../Meta/index.js").FullChunkTemplate;
         makeAllChunkTemplates(voxels: import("../Meta/index.js").ChunkVoxels, chunkX: number, chunkY: number, chunkZ: number): import("../Meta/index.js").FullChunkTemplate;
     };

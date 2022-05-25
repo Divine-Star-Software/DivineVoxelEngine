@@ -28,9 +28,9 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
-setTimeout(async () => {
+/* setTimeout(async ()=>{
     console.log("remove");
     await DVEW.worldData.requestVoxelBeRemoved(x, 6, z);
-    DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false, x, 6, z);
+    DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false,x,6,z);
     DVEW.worldGeneration.illumantionManager.runRGBFloodRemove();
-}, 1000);
+},1000) */ 

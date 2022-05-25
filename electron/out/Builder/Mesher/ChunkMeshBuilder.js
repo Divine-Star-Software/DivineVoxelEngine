@@ -25,12 +25,14 @@ export const ChunkMeshBuilder = {
             const colors = [];
             const RGBLightColors = [];
             let indicieIndex = 0;
+            let faceIndex = 0;
+            let shapeIndex = 0;
             let aoIndex = 0;
             let RGBLightIndex = 0;
             let colorIndex = 0;
             let uvIndex = 0;
-            let faceIndex = 0;
-            let shapeIndex = 0;
+            let faceStateIndex = 0;
+            let shapeStateIndex = 0;
             for (let positionIndex = 0; positionIndex < baseTemplate.positionTemplate.length; positionIndex += 3) {
                 const x = baseTemplate.positionTemplate[positionIndex] + chunkX;
                 const y = baseTemplate.positionTemplate[positionIndex + 1] + chunkY;
@@ -47,6 +49,10 @@ export const ChunkMeshBuilder = {
                     uvs: uvs,
                     face: baseTemplate.faceTemplate[faceIndex],
                     indicieIndex: indicieIndex,
+                    shapeStateTemplate: baseTemplate.shapeStateTemplate,
+                    shapeStateIndex: shapeStateIndex,
+                    faceStateTemplate: baseTemplate.faceStateTemplate,
+                    faceStateIndex: faceStateIndex,
                     unTemplate: baseTemplate.uvTemplate,
                     uvTemplateIndex: uvIndex,
                     colorTemplate: baseTemplate.colorTemplate,
@@ -62,6 +68,8 @@ export const ChunkMeshBuilder = {
                 uvIndex = newIndexes.newUVTemplateIndex;
                 RGBLightIndex = newIndexes.newlightIndex;
                 colorIndex = newIndexes.newColorIndex;
+                faceStateIndex = newIndexes.newFaceStateIndex;
+                shapeStateIndex++;
                 shapeIndex++;
                 faceIndex++;
             }

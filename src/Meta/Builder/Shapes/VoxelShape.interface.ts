@@ -39,6 +39,7 @@ import type { PositionMatrix } from "Meta/Util.types";
 * @var position: PositionMatrix;
 */
 export type VoxelShapeAddData = {
+ //actual mesh data
  positions: number[];
  indices: number[];
  RGBLightColors: number[];
@@ -48,16 +49,18 @@ export type VoxelShapeAddData = {
  uvs: number[];
  face: number;
  indicieIndex: number;
- /** 
- @TODO fix this type def. after updates
- */
- unTemplate: Uint16Array | number[] | any;
+ //chunk template data
+ shapeStateTemplate : number[],
+ shapeStateIndex : number,
+ faceStateTemplate : number[],
+ faceStateIndex : number,
+ unTemplate: number[];
  uvTemplateIndex: number;
- colorTemplate: Float32Array | number[] | any;
+ colorTemplate: number[];
  colorIndex: number;
- lightTemplate: Float32Array | number[] | any;
+ lightTemplate: number[];
  lightIndex: number;
- aoTemplate: Float32Array | number[] | any;
+ aoTemplate: number[];
  aoIndex: number;
  position: PositionMatrix;
 };
@@ -65,6 +68,7 @@ export type VoxelShapeAddData = {
 export type VoxelShapeAddReturnData = {
  newIndicieIndex: number;
  newUVTemplateIndex: number;
+ newFaceStateIndex: number;
  newColorIndex: number;
  newlightIndex: number;
  newAOIndex: number;
@@ -82,4 +86,4 @@ export type VoxelShapeInterface = {
   * ---
   */
  addToChunkMesh(data: VoxelShapeAddData): VoxelShapeAddReturnData;
-} 
+};

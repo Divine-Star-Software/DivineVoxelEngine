@@ -47,22 +47,24 @@ export declare type VoxelShapeAddData = {
     uvs: number[];
     face: number;
     indicieIndex: number;
-    /**
-    @TODO fix this type def. after updates
-    */
-    unTemplate: Uint16Array | number[] | any;
+    shapeStateTemplate: number[];
+    shapeStateIndex: number;
+    faceStateTemplate: number[];
+    faceStateIndex: number;
+    unTemplate: number[];
     uvTemplateIndex: number;
-    colorTemplate: Float32Array | number[] | any;
+    colorTemplate: number[];
     colorIndex: number;
-    lightTemplate: Float32Array | number[] | any;
+    lightTemplate: number[];
     lightIndex: number;
-    aoTemplate: Float32Array | number[] | any;
+    aoTemplate: number[];
     aoIndex: number;
     position: PositionMatrix;
 };
 export declare type VoxelShapeAddReturnData = {
     newIndicieIndex: number;
     newUVTemplateIndex: number;
+    newFaceStateIndex: number;
     newColorIndex: number;
     newlightIndex: number;
     newAOIndex: number;

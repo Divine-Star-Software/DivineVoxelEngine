@@ -5,7 +5,7 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
     onReady: () => { },
 });
-const topTest = async () => {
+const topBottomTest = async () => {
     let startX = -16;
     let startZ = -16;
     let endX = 16;
@@ -15,9 +15,9 @@ const topTest = async () => {
             WorldGen.generateChunk(x, 0, z, 0);
         }
     }
-    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 2, 0);
+    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 16, 0);
 };
-const southTest = async () => {
+const northSouthTest = async () => {
     let startX = -48;
     let startZ = -16;
     let endX = -16;
@@ -25,17 +25,23 @@ const southTest = async () => {
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
             WorldGen.generateChunk(x, 0, z, 1);
-            console.log(x, 0, z);
-            console.log(DVEW.worldData.getChunk(x, 0, z));
         }
     }
-    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", startX + 16, 8, -1);
+    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", startX + 16, 16, 1);
+};
+const eastWestTest = async () => {
+    let startX = 16;
+    let startZ = -16;
+    let endX = 48;
+    let endZ = 16;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            DVEW.buildChunk(x, 0, z);
+            WorldGen.generateChunk(x, 0, z, 2);
         }
     }
+    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", startX + 14, 16, 0);
 };
-topTest();
-southTest();
+topBottomTest();
+northSouthTest();
+eastWestTest();
 self.DVEW = DVEW;

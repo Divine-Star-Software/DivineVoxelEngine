@@ -34,6 +34,7 @@ export declare const ChunkProcessor: {
     };
     chunkTemplates: Record<number, Record<number, number[][]>>;
     exposedFaces: number[];
+    faceStates: number[];
     getBaseTemplateNew(): FullChunkTemplate;
     makeAllChunkTemplates(voxels: ChunkVoxels, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
 };

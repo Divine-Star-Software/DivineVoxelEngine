@@ -14,11 +14,13 @@ export type VoxelSubstanceType =
 
 export type VoxelProcessData = {
  exposedFaces: number[];
+ faceStates: number[];
  voxelData: number;
  voxelState: string;
  uvTemplate: number[];
  shapeTemplate: number[];
  shapeStateTemplate: number[];
+ faceStateTemplate: number[];
  colorTemplate: number[];
  lightTemplate: number[];
  aoTemplate: number[];

@@ -1,5 +1,5 @@
 import type { DirectionNames } from "Meta/Util.types.js";
-import type { VoxelShapeAddData } from "Meta/index";
+import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
@@ -49,15 +49,9 @@ export declare const ShapeHelper: {
     lightMap: number[];
     exposedFaceRecord: Record<DirectionNames, number>;
     isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: DirectionNames): boolean;
-    produceShapeReturnData(shapeData: VoxelShapeAddData): {
-        newIndicieIndex: number;
-        newUVTemplateIndex: number;
-        newColorIndex: number;
-        newlightIndex: number;
-        newAOIndex: number;
-    };
+    produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
-    calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: Float32Array, startIndex: number): void;
-    calculateSunightColor(sunLight: number[], sunLightTemplate: Int32Array, sunLightIndex: number): void;
-    calculateAOColor(colors: number[], chunkAmbientOcculusion: Float32Array, startIndex: number): void;
+    calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
+    calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
+    calculateAOColor(colors: number[], chunkAmbientOcculusion: number[], startIndex: number): void;
 };
