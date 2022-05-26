@@ -14,7 +14,11 @@ const processDefaultFaceData = (data, double = false) => {
         data.uvs.push(1, 0, uv, 1, 1, uv, 0, 1, uv, 0, 0, uv);
     }
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-    DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+    /*  DVEB.shapeHelper.calculateAOColor(
+      data.AOColors,
+      data.aoTemplate,
+      data.aoIndex
+     ); */
     data.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;

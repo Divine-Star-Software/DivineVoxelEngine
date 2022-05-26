@@ -135,7 +135,6 @@ export const FluidMaterial = {
    time += 0.005;
    shaderMaterial.setFloat("time", time);
   });
-
   DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
   return this.material;
  },

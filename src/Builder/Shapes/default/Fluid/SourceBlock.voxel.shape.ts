@@ -27,11 +27,11 @@ const processDefaultFaceData = (data: VoxelShapeAddData, double = false) => {
   data.lightTemplate,
   data.lightIndex
  );
- DVEB.shapeHelper.calculateAOColor(
+/*  DVEB.shapeHelper.calculateAOColor(
   data.AOColors,
   data.aoTemplate,
   data.aoIndex
- );
+ ); */
  data.uvTemplateIndex += 1;
  data.lightIndex += 4;
  data.colorIndex += 4;

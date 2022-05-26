@@ -13,7 +13,7 @@ const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDarkScene(engine);
-    const camera = SetUpDefaultCamera(scene, canvas, { x: -32, y: 16, z: -16 }, { x: -32, y: 16, z: 0 });
+    const camera = SetUpDefaultCamera(scene, canvas, { x: -32, y: 16, z: 16 }, { x: -32, y: 16, z: 0 });
     SetUpDefaultSkybox(scene);
     CreateWorldAxis(scene, 20);
     await DVER.$SCENEINIT({ scene: scene });

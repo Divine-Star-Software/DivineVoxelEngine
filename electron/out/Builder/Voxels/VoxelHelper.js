@@ -90,7 +90,7 @@ export const VoxelHelper = {
                     return voxelData.data.lightValue;
                 }
                 if (voxelData.data.substance == "solid") {
-                    return 0;
+                    return -1;
                 }
                 return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
             }
