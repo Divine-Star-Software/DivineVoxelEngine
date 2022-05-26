@@ -133,6 +133,20 @@ export declare const DVEB: {
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
         };
+        getFaceByte(): {
+            _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
+            markFaceAsExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            isFaceExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
+            setFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+        };
         getVoxelByte(): {
             setId(id: number, value: number): number;
             getId(value: number): number;
@@ -535,6 +549,20 @@ export declare const DVEB: {
             toArray(): (0 | 1)[];
             toString(delimiter?: string): string;
         };
+        faceByte: {
+            _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
+            markFaceAsExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            isFaceExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
+            setFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+        };
         lightByte: {
             _lightValues: number[];
             getS(value: number): number;
@@ -562,7 +590,8 @@ export declare const DVEB: {
         };
         lightMap: number[];
         exposedFaceRecord: Record<import("../Meta/Util.types.js").DirectionNames, number>;
-        isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: import("../Meta/Util.types.js").DirectionNames): boolean;
+        shouldFaceFlip(faceBit: number, faceDirection: import("../Meta/Util.types.js").DirectionNames): boolean;
+        isFaceExposexd(faceBit: number, faceDirection: import("../Meta/Util.types.js").DirectionNames): boolean;
         produceShapeReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData): import("../Meta/index.js").VoxelShapeAddReturnData;
         toLinearSpace(r: number, g: number, b: number, a: number): number[];
         calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
@@ -574,12 +603,12 @@ export declare const DVEB: {
             width: number;
             height: number;
             depth: number;
-        }, data: import("../Meta/index.js").VoxelShapeAddData) => void>;
+        }, data: import("../Meta/index.js").VoxelShapeAddData, flip?: boolean | undefined) => void>;
         addFace(direction: import("../Meta/Util.types.js").DirectionNames, origion: import("../Meta/Util.types.js").PositionMatrix, dimensions: {
             width: number;
             height: number;
             depth: number;
-        }, data: import("../Meta/index.js").VoxelShapeAddData): void;
+        }, data: import("../Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
     };
     chunkMesher: {
         infoByte: {
@@ -613,6 +642,20 @@ export declare const DVEB: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        };
+        faceByte: {
+            _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+            checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
+            markFaceAsExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            isFaceExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
+            setFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+            getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
         };
         _3dArray: {
             bounds: {

@@ -52,7 +52,7 @@ export function BuildAmbientOcclusion(
  const trueZ = chunkZ + z;
 
  // +x
- if (face == "west") {
+ if (face == "east") {
   amientOcculusionTemplate.push(
    OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, -1) *
     OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 1, 0) *
@@ -71,7 +71,7 @@ export function BuildAmbientOcclusion(
  }
 
  // -x
- if (face == "east") {
+ if (face == "west") {
   amientOcculusionTemplate.push(
    OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, 1) *
     OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 1, 0) *
@@ -127,7 +127,7 @@ export function BuildAmbientOcclusion(
  }
 
  // +z
- if (face == "south") {
+ if (face == "north") {
   amientOcculusionTemplate.push(
    OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, 1) *
     OcculsionCalcuation(voxel, trueX, trueY, trueZ, 0, 1, 1) *
@@ -145,7 +145,7 @@ export function BuildAmbientOcclusion(
  }
 
  // -z
- if (face == "north") {
+ if (face == "south") {
   amientOcculusionTemplate.push(
    OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, -1) *
     OcculsionCalcuation(voxel, trueX, trueY, trueZ, 0, 1, -1) *

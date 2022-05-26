@@ -8,15 +8,13 @@ export const ShapeBuilder = {
    (
     origion: PositionMatrix,
     dimensions: DimenionsMatrix,
-    data: VoxelShapeAddData
+    data: VoxelShapeAddData,
+    flip ?: boolean
    ) => void
   >
  >{
-  top: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  top: (origion, dimensions, data,flip) => {
+
 
    if (!flip) {
     data.positions.push(
@@ -60,11 +58,8 @@ export const ShapeBuilder = {
    );
    data.indicieIndex += 4;
   },
-  bottom: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  bottom: (origion, dimensions, data,flip) => {
+
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -106,11 +101,8 @@ export const ShapeBuilder = {
    );
    data.indicieIndex += 4;
   },
-  north: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  south: (origion, dimensions, data,flip) => {
+
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -152,11 +144,8 @@ export const ShapeBuilder = {
    );
    data.indicieIndex += 4;
   },
-  south: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  north: (origion, dimensions, data,flip) => {
+
    if (!flip) {
     data.positions.push(
      origion.x + dimensions.width,
@@ -198,11 +187,8 @@ export const ShapeBuilder = {
    );
    data.indicieIndex += 4;
   },
-  east: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  west:(origion, dimensions, data,flip) => {
+
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -245,11 +231,8 @@ export const ShapeBuilder = {
    );
    data.indicieIndex += 4;
   },
-  west: (origion, dimensions, data) => {
-   let flip = false;
-   if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-    flip = true;
-   }
+  east: (origion, dimensions, data,flip) => {
+
    if (!flip) {
     data.positions.push(
      origion.x + dimensions.width,
@@ -299,8 +282,9 @@ export const ShapeBuilder = {
   direction: DirectionNames,
   origion: PositionMatrix,
   dimensions: DimenionsMatrix,
-  data: VoxelShapeAddData
+  data: VoxelShapeAddData,
+  flip = false,
  ) {
-  this.faceFunctions[direction](origion, dimensions, data);
+  this.faceFunctions[direction](origion, dimensions, data,flip);
  },
 };

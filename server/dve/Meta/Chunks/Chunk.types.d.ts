@@ -5,7 +5,6 @@ export declare type ChunkTemplate = {
     uvTemplate: number[];
     shapeTemplate: number[];
     shapeStateTemplate: number[];
-    faceStateTemplate: number[];
     lightTemplate: number[];
     aoTemplate: number[];
     colorTemplate: number[];

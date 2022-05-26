@@ -52,8 +52,6 @@ export type VoxelShapeAddData = {
  //chunk template data
  shapeStateTemplate : number[],
  shapeStateIndex : number,
- faceStateTemplate : number[],
- faceStateIndex : number,
  unTemplate: number[];
  uvTemplateIndex: number;
  colorTemplate: number[];
@@ -68,7 +66,6 @@ export type VoxelShapeAddData = {
 export type VoxelShapeAddReturnData = {
  newIndicieIndex: number;
  newUVTemplateIndex: number;
- newFaceStateIndex: number;
  newColorIndex: number;
  newlightIndex: number;
  newAOIndex: number;

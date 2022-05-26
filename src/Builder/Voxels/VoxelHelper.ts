@@ -195,7 +195,7 @@ export const VoxelHelper = {
     data.x,
     data.y,
     data.z,
-    "west"
+    "east"
    );
   }
   if (data.exposedFaces[3]) {
@@ -208,7 +208,7 @@ export const VoxelHelper = {
     data.x,
     data.y,
     data.z,
-    "east"
+    "west"
    );
   }
   if (data.exposedFaces[4]) {
@@ -221,7 +221,7 @@ export const VoxelHelper = {
     data.x,
     data.y,
     data.z,
-    "north"
+    "south"
    );
   }
   if (data.exposedFaces[5]) {
@@ -234,7 +234,7 @@ export const VoxelHelper = {
     data.x,
     data.y,
     data.z,
-    "south"
+    "north"
    );
   }
  },

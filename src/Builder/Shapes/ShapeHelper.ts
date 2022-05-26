@@ -9,6 +9,7 @@ import { Util } from "../../Global/Util.helper.js";
  */
 export const ShapeHelper = {
  infoByte: Util.getInfoByte(),
+ faceByte: Util.getFaceByte(),
  lightByte: Util.getLightByte(),
  //Use for producing the light gradient
  lightMap: [
@@ -25,18 +26,17 @@ export const ShapeHelper = {
   south: 5,
  },
 
- isFaceExposexd(
-  voxelExposedFaceEncodedBit: number,
-  faceDirection: DirectionNames
- ) {
-  this.infoByte.setNumberValue(voxelExposedFaceEncodedBit);
-  return this.infoByte.getBit(this.exposedFaceRecord[faceDirection]) == 1;
+ shouldFaceFlip(faceBit: number, faceDirection: DirectionNames) {
+  return this.faceByte.getFaceRotateState(faceDirection, faceBit) == 1;
  },
 
- produceShapeReturnData(shapeData: VoxelShapeAddData) : VoxelShapeAddReturnData {
+ isFaceExposexd(faceBit: number, faceDirection: DirectionNames) {
+  return this.faceByte.isFaceExposed(faceDirection, faceBit);
+ },
+
+ produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData {
   return {
    newIndicieIndex: shapeData.indicieIndex,
-   newFaceStateIndex : shapeData.faceStateIndex,
    newUVTemplateIndex: shapeData.uvTemplateIndex,
    newColorIndex: shapeData.colorIndex,
    newlightIndex: shapeData.lightIndex,

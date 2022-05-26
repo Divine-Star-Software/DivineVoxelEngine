@@ -10,7 +10,7 @@ export const VoxelByte = {
         return (value & (0xffff << 16)) >> 16;
     },
     decodeLightFromVoxelData(voxelData) {
-        return voxelData & 0xffff;
+        return (voxelData & (0xffff << 0)) >> 0;
     },
     encodeLightIntoVoxelData(voxelData, encodedLight) {
         return (voxelData & ~(0xffff << 0)) | (encodedLight << 0);

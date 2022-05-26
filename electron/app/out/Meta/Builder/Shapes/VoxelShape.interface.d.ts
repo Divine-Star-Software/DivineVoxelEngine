@@ -49,8 +49,6 @@ export declare type VoxelShapeAddData = {
     indicieIndex: number;
     shapeStateTemplate: number[];
     shapeStateIndex: number;
-    faceStateTemplate: number[];
-    faceStateIndex: number;
     unTemplate: number[];
     uvTemplateIndex: number;
     colorTemplate: number[];
@@ -64,7 +62,6 @@ export declare type VoxelShapeAddData = {
 export declare type VoxelShapeAddReturnData = {
     newIndicieIndex: number;
     newUVTemplateIndex: number;
-    newFaceStateIndex: number;
     newColorIndex: number;
     newlightIndex: number;
     newAOIndex: number;

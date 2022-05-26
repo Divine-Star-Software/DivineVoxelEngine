@@ -1,10 +1,6 @@
 export const ShapeBuilder = {
     faceFunctions: {
-        top: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        top: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth, origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth);
             }
@@ -14,11 +10,7 @@ export const ShapeBuilder = {
             data.indices.push(data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex, data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex);
             data.indicieIndex += 4;
         },
-        bottom: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        bottom: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth, origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth);
             }
@@ -28,11 +20,7 @@ export const ShapeBuilder = {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             data.indicieIndex += 4;
         },
-        north: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        south: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth, origion.x + dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth, origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth);
             }
@@ -42,11 +30,7 @@ export const ShapeBuilder = {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             data.indicieIndex += 4;
         },
-        south: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        north: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth);
             }
@@ -56,11 +40,7 @@ export const ShapeBuilder = {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             data.indicieIndex += 4;
         },
-        east: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        west: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + -dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth, origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth, origion.x + -dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth);
             }
@@ -70,11 +50,7 @@ export const ShapeBuilder = {
             data.indices.push(data.indicieIndex + 2, data.indicieIndex + 1, data.indicieIndex, data.indicieIndex + 3, data.indicieIndex + 2, data.indicieIndex);
             data.indicieIndex += 4;
         },
-        west: (origion, dimensions, data) => {
-            let flip = false;
-            if (data.faceStateTemplate[data.faceStateIndex] == 1) {
-                flip = true;
-            }
+        east: (origion, dimensions, data, flip) => {
             if (!flip) {
                 data.positions.push(origion.x + dimensions.width, origion.y + dimensions.height, origion.z + -dimensions.depth, origion.x + dimensions.width, origion.y + dimensions.height, origion.z + dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + dimensions.depth, origion.x + dimensions.width, origion.y + -dimensions.height, origion.z + -dimensions.depth);
             }
@@ -85,7 +61,7 @@ export const ShapeBuilder = {
             data.indicieIndex += 4;
         },
     },
-    addFace(direction, origion, dimensions, data) {
-        this.faceFunctions[direction](origion, dimensions, data);
+    addFace(direction, origion, dimensions, data, flip = false) {
+        this.faceFunctions[direction](origion, dimensions, data, flip);
     },
 };

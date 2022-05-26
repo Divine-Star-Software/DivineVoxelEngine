@@ -34,6 +34,20 @@ export declare const DVEN: {
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("Meta/index.js").PositionMatrix;
         };
+        getFaceByte(): {
+            _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
+            _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _getFaceRotateState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
+            markExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
+            checkExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => boolean>;
+            markFaceAsExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+            isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
+            setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
+            getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
+            getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+        };
         getVoxelByte(): {
             setId(id: number, value: number): number;
             getId(value: number): number;

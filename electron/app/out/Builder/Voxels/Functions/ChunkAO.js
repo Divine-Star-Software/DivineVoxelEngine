@@ -26,7 +26,7 @@ export function BuildAmbientOcclusion(voxel, amientOcculusionTemplate, chunkX, c
     const trueY = chunkY + y;
     const trueZ = chunkZ + z;
     // +x
-    if (face == "west") {
+    if (face == "east") {
         amientOcculusionTemplate.push(OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, -1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 1, 0) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 1, -1), OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, 1) *
@@ -38,7 +38,7 @@ export function BuildAmbientOcclusion(voxel, amientOcculusionTemplate, chunkX, c
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, -1, -1));
     }
     // -x
-    if (face == "east") {
+    if (face == "west") {
         amientOcculusionTemplate.push(OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, 1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 1, 0) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 1, 1), OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, -1) *
@@ -74,7 +74,7 @@ export function BuildAmbientOcclusion(voxel, amientOcculusionTemplate, chunkX, c
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, -1, 1));
     }
     // +z
-    if (face == "south") {
+    if (face == "north") {
         amientOcculusionTemplate.push(OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, 1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 0, 1, 1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 1, 1), OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, 1) *
@@ -86,7 +86,7 @@ export function BuildAmbientOcclusion(voxel, amientOcculusionTemplate, chunkX, c
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, -1, 1));
     }
     // -z
-    if (face == "north") {
+    if (face == "south") {
         amientOcculusionTemplate.push(OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 0, -1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, 0, 1, -1) *
             OcculsionCalcuation(voxel, trueX, trueY, trueZ, -1, 1, -1), OcculsionCalcuation(voxel, trueX, trueY, trueZ, 1, 0, -1) *

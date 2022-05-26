@@ -15,6 +15,7 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
  */
 export const ChunkProcessor = {
  voxelByte: Util.getVoxelByte(),
+ faceByte: Util.getFaceByte(),
  _3dArray: Util.getFlat3DArray(),
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
  exposedFaces: <number[]>[],
@@ -27,7 +28,6 @@ export const ChunkProcessor = {
     uvTemplate: [],
     shapeTemplate: [],
     shapeStateTemplate: [],
-    faceStateTemplate: [],
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
@@ -38,7 +38,6 @@ export const ChunkProcessor = {
     uvTemplate: [],
     shapeTemplate: [],
     shapeStateTemplate: [],
-    faceStateTemplate: [],
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
@@ -49,7 +48,6 @@ export const ChunkProcessor = {
     uvTemplate: [],
     shapeTemplate: [],
     shapeStateTemplate: [],
-    faceStateTemplate: [],
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
@@ -60,7 +58,6 @@ export const ChunkProcessor = {
     uvTemplate: [],
     shapeTemplate: [],
     shapeStateTemplate: [],
-    faceStateTemplate: [],
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
@@ -71,7 +68,6 @@ export const ChunkProcessor = {
     uvTemplate: [],
     shapeTemplate: [],
     shapeStateTemplate: [],
-    faceStateTemplate: [],
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
@@ -121,9 +117,9 @@ export const ChunkProcessor = {
        z + chunkZ
       )
      ) {
-      faceBit = faceBit | (1 << 0);
       this.exposedFaces[0] = 1;
       this.faceStates[0] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("top", faceBit);
      } else {
       this.exposedFaces[0] = 0;
       this.faceStates[0] = -1;
@@ -138,9 +134,9 @@ export const ChunkProcessor = {
        z + chunkZ
       )
      ) {
-      faceBit = faceBit | (1 << 1);
       this.exposedFaces[1] = 1;
       this.faceStates[1] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("bottom", faceBit);
      } else {
       this.exposedFaces[1] = 0;
       this.faceStates[1] = -1;
@@ -155,9 +151,9 @@ export const ChunkProcessor = {
        z + chunkZ
       )
      ) {
-      faceBit = faceBit | (1 << 2);
       this.exposedFaces[2] = 1;
       this.faceStates[2] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("east", faceBit);
      } else {
       this.exposedFaces[2] = 0;
       this.faceStates[2] = -1;
@@ -172,9 +168,9 @@ export const ChunkProcessor = {
        z + chunkZ
       )
      ) {
-      faceBit = faceBit | (1 << 3);
       this.exposedFaces[3] = 1;
       this.faceStates[3] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("west", faceBit);
      } else {
       this.exposedFaces[3] = 0;
       this.faceStates[3] = -1;
@@ -189,9 +185,9 @@ export const ChunkProcessor = {
        z + chunkZ - 1
       )
      ) {
-      faceBit = faceBit | (1 << 4);
       this.exposedFaces[4] = 1;
       this.faceStates[4] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("south", faceBit);
      } else {
       this.exposedFaces[4] = 0;
       this.faceStates[4] = -1;
@@ -206,9 +202,9 @@ export const ChunkProcessor = {
        z + chunkZ + 1
       )
      ) {
-      faceBit = faceBit | (1 << 5);
       this.exposedFaces[5] = 1;
       this.faceStates[5] = 0;
+      faceBit = this.faceByte.markFaceAsExposed("north", faceBit);
      } else {
       this.exposedFaces[5] = 0;
       this.faceStates[5] = -1;
@@ -224,7 +220,6 @@ export const ChunkProcessor = {
        faceStates: this.faceStates,
        shapeTemplate: baseTemplate.shapeTemplate,
        shapeStateTemplate: baseTemplate.shapeStateTemplate,
-       faceStateTemplate: baseTemplate.faceStateTemplate,
        uvTemplate: baseTemplate.uvTemplate,
        colorTemplate: baseTemplate.colorTemplate,
        aoTemplate: baseTemplate.aoTemplate,
@@ -240,26 +235,51 @@ export const ChunkProcessor = {
      );
 
      baseTemplate.positionTemplate.push(x, y, z);
-     baseTemplate.faceTemplate.push(faceBit);
 
-     if (this.exposedFaces[0] && this.faceStates[0] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[0]);
+     if (this.exposedFaces[0]) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "top",
+       this.faceStates[0],
+       faceBit
+      );
      }
-     if (this.exposedFaces[1] && this.faceStates[1] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[1]);
+     if (this.exposedFaces[1] ) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "bottom",
+       this.faceStates[1],
+       faceBit
+      );
      }
-     if (this.exposedFaces[2] && this.faceStates[2] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[2]);
+     if (this.exposedFaces[2] ) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "east",
+       this.faceStates[2],
+       faceBit
+      );
      }
-     if (this.exposedFaces[3] && this.faceStates[3] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[3]);
+     if (this.exposedFaces[3]) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "west",
+       this.faceStates[3],
+       faceBit
+      );
      }
-     if (this.exposedFaces[4] && this.faceStates[4] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[4]);
+     if (this.exposedFaces[4] ) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "south",
+       this.faceStates[4],
+       faceBit
+      );
      }
-     if (this.exposedFaces[5] && this.faceStates[5] > -1) {
-      baseTemplate.faceStateTemplate.push(this.faceStates[5]);
+     if (this.exposedFaces[5]) {
+      faceBit = this.faceByte.setFaceRotateState(
+       "north",
+       this.faceStates[5],
+       faceBit
+      );
      }
+
+     baseTemplate.faceTemplate.push(faceBit);
     }
    }
   }

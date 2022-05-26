@@ -12,9 +12,9 @@ export const VoxelByte =  {
  },
 
  decodeLightFromVoxelData(voxelData: number) {
-  return voxelData & 0xffff;
+  return (voxelData & (0xffff << 0)) >> 0;
  },
  encodeLightIntoVoxelData(voxelData: number, encodedLight: number) {
-  return (voxelData & ~(0xffff << 0)) | (encodedLight << 0);
+  return  (voxelData & ~(0xffff << 0)) | (encodedLight << 0);
  }
 }

@@ -125,16 +125,16 @@ export const VoxelHelper = {
             BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "bottom");
         }
         if (data.exposedFaces[2]) {
-            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
-        }
-        if (data.exposedFaces[3]) {
             BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "east");
         }
+        if (data.exposedFaces[3]) {
+            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "west");
+        }
         if (data.exposedFaces[4]) {
-            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
+            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
         }
         if (data.exposedFaces[5]) {
-            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "south");
+            BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "north");
         }
     },
 };

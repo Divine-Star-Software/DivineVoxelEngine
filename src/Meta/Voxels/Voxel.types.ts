@@ -20,7 +20,6 @@ export type VoxelProcessData = {
  uvTemplate: number[];
  shapeTemplate: number[];
  shapeStateTemplate: number[];
- faceStateTemplate: number[];
  colorTemplate: number[];
  lightTemplate: number[];
  aoTemplate: number[];

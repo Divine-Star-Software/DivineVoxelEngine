@@ -107,8 +107,6 @@ export const FluidMaterial = {
   shaderMaterial.backFaceCulling = false;
   shaderMaterial.forceDepthWrite = true;
   
-
-
   shaderMaterial.setTexture("arrayTex", texture);
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);

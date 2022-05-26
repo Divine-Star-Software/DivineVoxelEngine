@@ -21,6 +21,20 @@ export declare const ShapeHelper: {
         toArray(): (0 | 1)[];
         toString(delimiter?: string): string;
     };
+    faceByte: {
+        _setFaceTextureState: Record<DirectionNames, (state: number, faceBit: number) => number>;
+        _getFaceTextureState: Record<DirectionNames, (faceBit: number) => number>;
+        _setFaceRotateState: Record<DirectionNames, (state: number, faceBit: number) => number>;
+        _getFaceRotateState: Record<DirectionNames, (faceBit: number) => number>;
+        markExposedFace: Record<DirectionNames, (faceBit: number) => number>;
+        checkExposedFace: Record<DirectionNames, (faceBit: number) => boolean>;
+        markFaceAsExposed(direction: DirectionNames, rawData: number): number;
+        isFaceExposed(direction: DirectionNames, rawData: number): boolean;
+        setFaceRotateState(direction: DirectionNames, state: number, rawData: number): number;
+        getFaceRotateState(direction: DirectionNames, rawData: number): number;
+        setFaceTextureState(direction: DirectionNames, state: number, rawData: number): number;
+        getFaceTextureState(direction: DirectionNames, rawData: number): number;
+    };
     lightByte: {
         _lightValues: number[];
         getS(value: number): number;
@@ -48,7 +62,8 @@ export declare const ShapeHelper: {
     };
     lightMap: number[];
     exposedFaceRecord: Record<DirectionNames, number>;
-    isFaceExposexd(voxelExposedFaceEncodedBit: number, faceDirection: DirectionNames): boolean;
+    shouldFaceFlip(faceBit: number, faceDirection: DirectionNames): boolean;
+    isFaceExposexd(faceBit: number, faceDirection: DirectionNames): boolean;
     produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
     calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;

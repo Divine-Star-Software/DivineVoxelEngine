@@ -5,6 +5,7 @@ import { Flat3DArray } from "./Util/Flat3DArray.js";
 import { WorldBounds } from "./Util/WorldBounds.js";
 import { GetWorkerPort } from "./Util/GetWorkerPort.js";
 import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
+import { FaceByte } from "./Util/FaceByte.js";
 
 export const Util = {
  createPromiseCheck: CreatePromiseCheck,
@@ -19,6 +20,9 @@ export const Util = {
  },
  getFlat3DArray() {
   return Flat3DArray;
+ },
+ getFaceByte() {
+  return FaceByte;
  },
  getVoxelByte() {
   return VoxelByte;

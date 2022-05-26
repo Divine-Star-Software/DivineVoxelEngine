@@ -44,7 +44,7 @@ export const VoxelHelper = {
                 return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
             }
         }
-        return 0;
+        return -1;
     },
     setLight(x, y, z, lightValue) {
         let data = DVEP.worldMatrix.getData(x, y, z);
