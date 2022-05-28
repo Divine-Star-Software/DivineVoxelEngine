@@ -7,6 +7,7 @@ import { GetWorkerPort } from "./Util/GetWorkerPort.js";
 import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
 import { FaceByte } from "./Util/FaceByte.js";
 import { HeightByte } from "./Util/HeightByte.js";
+import { HeightMapArray } from "./Util/HeightMapArray.js";
 export const Util = {
     createPromiseCheck: CreatePromiseCheck,
     getWorkerPort: GetWorkerPort,
@@ -23,6 +24,9 @@ export const Util = {
     },
     getFaceByte() {
         return FaceByte;
+    },
+    getHeightMapArray() {
+        return HeightMapArray;
     },
     getHeightByte() {
         return HeightByte;

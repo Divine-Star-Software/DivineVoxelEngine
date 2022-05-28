@@ -1,20 +1,7 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
-
-type MatrixRegionData = {
- threadsLoadedIn: Record<string, boolean>;
- chunks: MatrixChunkData;
-};
-
-type MatrixChunkData = Record<
- string,
- {
-  chunkStates: Uint8Array;
-  chunkStatesSAB: SharedArrayBuffer;
-  chunkSAB: SharedArrayBuffer;
- }
->;
+import { MatrixRegionData } from "Meta/Matrix/MatrixData.js";
 
 /**# Matrix
  * ---
@@ -117,11 +104,20 @@ export const Matrix = {
   this.regions[regionKey].chunks[chunkKey] = {
    chunkStates: new Uint8Array(chunkStateSAB),
    chunkStatesSAB: chunkStateSAB,
-   chunkSAB: chunk.voxelsSAB,
+   voxelsSAB: chunk.voxelsSAB,
+   voxelsStatesSAB: chunk.voxelsStatesSAB,
+   heightMapSAB: chunk.heightMapSAB,
+   minMaxMapSAB : chunk.minMaxMapSAB
   };
-  return [chunk.voxelsSAB, chunkStateSAB];
+  return [
+   chunk.voxelsSAB,
+   chunk.voxelsStatesSAB,
+   chunk.heightMapSAB,
+   chunk.minMaxMapSAB,
+   chunkStateSAB,
+  ];
  },
- 
+
  getMatrixChunkData(x: number, y: number, z: number) {
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   if (!this.regions[regionKey]) return false;

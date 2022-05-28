@@ -1,8 +1,5 @@
-//objects
-import { Util } from "../../Global/Util.helper.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 export const ChunkMeshBuilder = {
-    infoByte: Util.getInfoByte(),
     voxelBuildOrder: ["solid", "flora", "fluid", "magma"],
     voxelTypeMap: {
         solid: 0,

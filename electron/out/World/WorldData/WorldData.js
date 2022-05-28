@@ -32,37 +32,11 @@ const voxelPaletteGetFunctions = {
 export const WorldData = {
     regions: {},
     chunks: {},
-    _RGBLightRemoveQue: [],
-    _RGBLightUpdateQue: [],
-    _chunkRebuildQue: [],
-    _chunkRebuildQueMap: {},
-    infoByte: Util.getInfoByte(),
+    heightByte: Util.getHeightByte(),
     lightByte: Util.getLightByte(),
     voxelByte: Util.getVoxelByte(),
     _3dArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
-    getRGBLightUpdateQue() {
-        return this._RGBLightUpdateQue;
-    },
-    clearRGBLightUpdateQue() {
-        this._RGBLightUpdateQue = [];
-    },
-    getRGBLightRemoveQue() {
-        return this._RGBLightRemoveQue;
-    },
-    clearRGBLightRemoveQue() {
-        this._RGBLightRemoveQue = [];
-    },
-    getChunkRebuildQue() {
-        return this._chunkRebuildQue;
-    },
-    getSubstanceNeededToRebuild(chunkX, chunkY, chunkZ) {
-        return this._chunkRebuildQueMap[`${chunkX}-${chunkZ}-${chunkY}`];
-    },
-    clearChunkRebuildQue() {
-        this._chunkRebuildQue = [];
-        this._chunkRebuildQueMap = {};
-    },
     runRebuildCheck(x, y, z) {
         DVEW.queues.addToRebuildQue(x, y, z, "all");
         DVEW.queues.addToRebuildQue(x + 1, y, z, "all");
@@ -71,22 +45,6 @@ export const WorldData = {
         DVEW.queues.addToRebuildQue(x, y - 1, z, "all");
         DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
         DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
-    },
-    addToRebuildQue(x, y, z, substance) {
-        const chunk = this.getChunk(x, y, z);
-        if (!chunk)
-            return;
-        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        if (!this._chunkRebuildQueMap[chunkKey]) {
-            this._chunkRebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
-            //@ts-ignore
-            this._chunkRebuildQueMap[chunkKey] = {};
-            this._chunkRebuildQueMap[chunkKey][substance] = true;
-        }
-        else {
-            this._chunkRebuildQueMap[chunkKey][substance] = true;
-        }
     },
     getCurrentWorldDataSize() {
         const data = JSON.stringify(this.regions);
@@ -231,6 +189,9 @@ export const WorldData = {
         return chunk;
     },
     paintVoxel(voxelId, voxelStateId, x, y, z) {
+        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
+        if (!voxelData)
+            return;
         let region = this.getRegion(x, y, z);
         if (!region) {
             region = this.addRegion(x, y, z);
@@ -244,12 +205,34 @@ export const WorldData = {
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
         if (data < 0)
             return;
-        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
             const voxel = DVEW.voxelManager.getVoxel(voxelId);
             if (voxel.lightSource && voxel.lightValue) {
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
+        }
+    },
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk) {
+        let substance = voxelData.substance;
+        if (substance == "transparent") {
+            substance = "solid";
+        }
+        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
+        this.heightByte.updateChunkMinMax(voxelPOS, chunk.heightMap);
+    },
+    __handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk) {
+        let substance = voxelData.substance;
+        if (substance == "transparent") {
+            substance = "solid";
+        }
+        let needToRecalculateHeightMap = this.heightByte.calculateHeightRemoveDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
+        if (needToRecalculateHeightMap) {
+            /**
+             * @TODO implement this
+             */
         }
     },
     insertData(x, y, z, data) {
@@ -297,6 +280,9 @@ export const WorldData = {
         DVEW.propagationCommManager.syncChunkInAllWorldGens(chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
     async requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
+        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
+        if (!voxelData)
+            return;
         let region = this.getRegion(x, y, z);
         if (!region) {
             region = this.addRegion(x, y, z);
@@ -310,12 +296,13 @@ export const WorldData = {
         DVEW.engineSettings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
         if (data < 0)
             return;
-        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
         this.runRebuildCheck(x, y, z);
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
-            const voxel = DVEW.voxelManager.getVoxel(voxelId);
-            if (voxel.lightSource && voxel.lightValue) {
+            if (voxelData.lightSource && voxelData.lightValue) {
                 needLightUpdate = true;
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
@@ -330,16 +317,28 @@ export const WorldData = {
         }
     },
     async requestVoxelBeRemoved(x, y, z) {
+        const chunk = this.getChunk(x, y, z);
+        if (!chunk)
+            return;
         const voxelCheck = this.getVoxel(x, y, z);
         if (!voxelCheck || voxelCheck[0] == -1)
             return;
-        const voxel = voxelCheck[0];
+        const voxelData = voxelCheck[0];
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk);
         this.runRebuildCheck(x, y, z);
         let needLightUpdate = false;
         if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
-            if (voxel.lightSource && voxel.lightValue) {
+            if (voxelData.lightSource && voxelData.lightValue) {
                 DVEW.queues.addToRGBRemoveQue(x, y, z);
                 needLightUpdate = true;
+            }
+            else {
+                let light = this.getLight(x, y, z);
+                if (light > 0) {
+                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                    needLightUpdate = true;
+                }
             }
         }
         if (DVEW.engineSettings.settings.updating?.autoRebuild) {

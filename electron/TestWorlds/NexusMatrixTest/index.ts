@@ -31,6 +31,13 @@ await DVER.$INIT({
  nexus: {
   enabled: true,
  },
+ lighting: {
+    doAO: true,
+    doRGBLight: true,
+    doSunLight: false,
+    autoRGBLight: true,
+    autoSunLight: false,
+   },
 });
 
 const init = async () => {

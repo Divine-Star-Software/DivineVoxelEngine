@@ -1,4 +1,5 @@
 //types
+import type {MatrixLoadedRegion} from "../Meta/Matrix/MatrixData";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
@@ -16,21 +17,7 @@ export const WorldMatrix = {
  updateDieTime: 120000,
  loadDieTime: 10000,
 
- regions: <
-  Record<
-   string,
-   {
-    palette?: WorldRegionPalette;
-    chunks: Record<
-     string,
-     {
-      voxels: Uint32Array;
-      chunkStates: Uint8Array;
-     }
-    >;
-   }
-  >
- >{},
+ regions: <MatrixLoadedRegion>{},
 
  chunks: <Record<string, Uint32Array>>{},
  chunkStates: <Record<string, Uint8Array>>{},
@@ -43,7 +30,7 @@ export const WorldMatrix = {
  threadName: "",
 
  syncChunkBounds(): void {
-  this.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
+  this.worldBounds.syncBoundsWithArrays();
  },
 
  /**# Await Chunk Load
@@ -132,7 +119,10 @@ export const WorldMatrix = {
   x: number,
   y: number,
   z: number,
-  chunkSAB: SharedArrayBuffer,
+  voxelsSAB: SharedArrayBuffer,
+  voxelStatesSAB : SharedArrayBuffer,
+  heightMapSAB : SharedArrayBuffer,
+  minMaxMapSAB : SharedArrayBuffer,
   chunkStateSAB: SharedArrayBuffer
  ) {
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
@@ -142,7 +132,10 @@ export const WorldMatrix = {
   }
   const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
   region.chunks[chunkKey] = {
-   voxels: new Uint32Array(chunkSAB),
+   voxels: new Uint32Array(voxelsSAB),
+   voxelStates : new Uint32Array(voxelStatesSAB),
+   heightMap : new Uint32Array(heightMapSAB),
+   minMaxMap : new Uint32Array(minMaxMapSAB),
    chunkStates: new Uint8Array(chunkStateSAB),
   };
  },

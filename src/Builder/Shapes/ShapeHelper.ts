@@ -8,7 +8,6 @@ import { Util } from "../../Global/Util.helper.js";
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export const ShapeHelper = {
- infoByte: Util.getInfoByte(),
  faceByte: Util.getFaceByte(),
  lightByte: Util.getLightByte(),
  //Use for producing the light gradient
@@ -16,15 +15,6 @@ export const ShapeHelper = {
   0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
   0.85, 0.97, 1,
  ],
-
- exposedFaceRecord: <Record<DirectionNames, number>>{
-  top: 0,
-  bottom: 1,
-  west: 2,
-  east: 3,
-  north: 4,
-  south: 5,
- },
 
  shouldFaceFlip(faceBit: number, faceDirection: DirectionNames) {
   return this.faceByte.getFaceRotateState(faceDirection, faceBit) == 1;

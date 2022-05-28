@@ -41,7 +41,7 @@ export const DVEB = {
         this.engineSettings.syncSettings(data);
         if (data.chunks) {
             this.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
-            this.worldBounds.syncBoundsWithFlat3DArray(this._3dFlatArray);
+            this.worldBounds.syncBoundsWithArrays();
         }
         if (data.regions) {
             this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
@@ -71,7 +71,7 @@ export const DVEB = {
                 return;
             }
         }
-        const template = this.chunkProccesor.makeAllChunkTemplates(chunk.voxels, chunkX, chunkY, chunkZ);
+        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
         this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template);
         return true;
     },

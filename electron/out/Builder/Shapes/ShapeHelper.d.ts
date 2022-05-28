@@ -5,22 +5,6 @@ import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export declare const ShapeHelper: {
-    infoByte: {
-        maxBit: number;
-        minBit: number;
-        maxDec: number;
-        minDec: number;
-        byteValue: number;
-        getNumberValue(): number;
-        setNumberValue(newValue: number): void;
-        getBit(index: number): 0 | 1;
-        getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
-        getHalfByteDec(bitIndex: number): number;
-        setHalfByteBits(index: number, value: number): void;
-        setBit(index: number, value: 0 | 1): void;
-        toArray(): (0 | 1)[];
-        toString(delimiter?: string): string;
-    };
     faceByte: {
         _setFaceTextureState: Record<DirectionNames, (state: number, faceBit: number) => number>;
         _getFaceTextureState: Record<DirectionNames, (faceBit: number) => number>;
@@ -61,7 +45,6 @@ export declare const ShapeHelper: {
         removeSunLight(sl: number): number;
     };
     lightMap: number[];
-    exposedFaceRecord: Record<DirectionNames, number>;
     shouldFaceFlip(faceBit: number, faceDirection: DirectionNames): boolean;
     isFaceExposexd(faceBit: number, faceDirection: DirectionNames): boolean;
     produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;

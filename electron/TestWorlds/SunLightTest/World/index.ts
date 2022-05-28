@@ -6,78 +6,23 @@ import { WorldGen } from "./WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-const start = () => {
- let startX = -64;
- let startZ = -64;
- let endX = 64;
- let endZ = 64;
+await DVEW.$INIT({
+ onReady: () => {},
+});
 
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   const chunk = DVEW.worldGeneration.getBlankChunk(false);
-   DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-   WorldGen.generateChunk(chunk, x, 0, z);
-   DVEW.worldGeneration.chunkDataHelper.createHeightMap(chunk, x, 0, z);
-   DVEW.worldGeneration.illumantionManager.populateChunkAirWithInitlSunLight(
-    chunk
-   );
-   DVEW.worldData.setChunk(x, 0, z, chunk);
+let startX = -64;
+let startZ = -64;
+let endX = 64;
+let endZ = 64;
 
-   //  console.log(chunk);
-  }
+for (let x = startX; x < endX; x += 16) {
+ for (let z = startZ; z < endZ; z += 16) {
+  WorldGen.generateChunk(x, 0, z);
  }
- const chunk = DVEW.worldData.getChunk(0, 0, 0);
- if (chunk) {
-  const voxels = chunk.voxels;
-  /*   if (voxels[7] && voxels[7][7] && voxels[7][7][126 / 2]) {
-   voxels[7][7][126 / 2] = 0;
-  } */
+}
+
+for (let x = startX; x < endX; x += 16) {
+ for (let z = startZ; z < endZ; z += 16) {
+  DVEW.buildChunk(x, 0, z);
  }
-
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0, z);
-  }
- }
-
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   const chunk = DVEW.worldData.getChunk(x, 0, z);
-   if (!chunk) continue;
-   DVEW.worldGeneration.illumantionManager.addChunkToSunLightUpdate(
-    chunk,
-    x,
-    0,
-    z
-   );
-   DVEW.worldGeneration.illumantionManager.runSunLightUpdate();
-   DVEW.buildChunk(x, 0, z);
-  }
- }
-
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0, z);
-  }
- }
- setTimeout(() => {
-  const chunk = DVEW.worldData.getChunk(0, 0, 0);
-  if (!chunk) return;
-  const voxels = chunk.voxels;
-  DVEW.worldGeneration.illumantionManager.runSunLightRemoveAt(7, 126 / 2, 7);
-
-  for (let x = startX; x < endX; x += 16) {
-   for (let z = startZ; z < endZ; z += 16) {
-    DVEW.buildChunk(x, 0, z);
-   }
-  }
- }, 2000);
-
- //DVEW.buildFluidMesh();
-};
-
-(async () => {
- await DVEW.$INIT({
-  onReady: start,
- });
-})();
+}

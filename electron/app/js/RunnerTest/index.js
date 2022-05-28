@@ -9,6 +9,13 @@ await DVER.$INIT({
     worldWorker: workers.worldWorker,
     builderWorker: workers.builderWorkers,
     propagationWorker: workers.propagationWorkers,
+    lighting: {
+        doAO: true,
+        doRGBLight: true,
+        doSunLight: false,
+        autoRGBLight: true,
+        autoSunLight: false,
+    },
 });
 const init = async () => {
     const player = new Player(DVER);

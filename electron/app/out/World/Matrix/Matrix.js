@@ -87,9 +87,18 @@ export const Matrix = {
         this.regions[regionKey].chunks[chunkKey] = {
             chunkStates: new Uint8Array(chunkStateSAB),
             chunkStatesSAB: chunkStateSAB,
-            chunkSAB: chunk.voxelsSAB,
+            voxelsSAB: chunk.voxelsSAB,
+            voxelsStatesSAB: chunk.voxelsStatesSAB,
+            heightMapSAB: chunk.heightMapSAB,
+            minMaxMapSAB: chunk.minMaxMapSAB
         };
-        return [chunk.voxelsSAB, chunkStateSAB];
+        return [
+            chunk.voxelsSAB,
+            chunk.voxelsStatesSAB,
+            chunk.heightMapSAB,
+            chunk.minMaxMapSAB,
+            chunkStateSAB,
+        ];
     },
     getMatrixChunkData(x, y, z) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);

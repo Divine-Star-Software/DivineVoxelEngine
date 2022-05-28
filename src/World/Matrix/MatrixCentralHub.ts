@@ -83,8 +83,11 @@ export const MatrixCentralHub = {
   if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
    const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
    if (chunkData) {
-    chunkSABs[0] = chunkData.chunkSAB;
-    chunkSABs[1] = chunkData.chunkStatesSAB;
+    chunkSABs[0] = chunkData.voxelsSAB;
+    chunkSABs[1] = chunkData.voxelsStatesSAB;
+    chunkSABs[2] = chunkData.heightMapSAB;
+    chunkSABs[3] = chunkData.minMaxMapSAB;
+    chunkSABs[4] = chunkData.chunkStatesSAB;
    }
   } else {
    const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
@@ -96,6 +99,9 @@ export const MatrixCentralHub = {
     "sync-chunk",
     chunkSABs[0],
     chunkSABs[1],
+    chunkSABs[2],
+    chunkSABs[3],
+    chunkSABs[4],
     x,
     y,
     z,
@@ -113,22 +119,28 @@ export const MatrixCentralHub = {
   if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
    const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
    if (chunkData) {
-    chunkSABs[0] = chunkData.chunkSAB;
-    chunkSABs[1] = chunkData.chunkStatesSAB;
+    chunkSABs[0] = chunkData.voxelsSAB;
+    chunkSABs[1] = chunkData.voxelsStatesSAB;
+    chunkSABs[2] = chunkData.heightMapSAB;
+    chunkSABs[3] = chunkData.minMaxMapSAB;
+    chunkSABs[4] = chunkData.chunkStatesSAB;
    }
   } else {
    const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
-  this.threads[threadId].postMessage([
-   "sync-chunk",
-   chunkSABs[0],
-   chunkSABs[1],
-   x,
-   y,
-   z,
-  ]);
+   this.threads[threadId].postMessage([
+    "sync-chunk",
+    chunkSABs[0],
+    chunkSABs[1],
+    chunkSABs[2],
+    chunkSABs[3],
+    chunkSABs[4],
+    x,
+    y,
+    z,
+   ]);
  },
 
  releaseChunk(x: number, y: number, z: number) {

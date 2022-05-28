@@ -9,7 +9,7 @@ export const CreateGUI = (DVER) => {
         position.innerHTML = `${positionWatch.position.x.toFixed(2)} ${positionWatch.position.y.toFixed(2)} ${positionWatch.position.z.toFixed(2)}`;
         if (DVER) {
             //@ts-ignore
-            chunkPosition.innerHTML = DVER?.util
+            chunkPosition.innerHTML = DVER.UTIL
                 .getWorldBounds()
                 .getChunkKeyFromPosition(positionWatch.position.x, positionWatch.position.y, positionWatch.position.z);
         }

@@ -63,7 +63,7 @@ export const DVEW = {
     data.chunks.chunkYPow2,
     data.chunks.chunkZPow2
    );
-   this.worldBounds.syncBoundsWithFlat3DArray(this._3dFlatArray);
+   this.worldBounds.syncBoundsWithArrays();
   }
   if (data.regions) {
    this.worldBounds.setRegionBounds(
@@ -75,63 +75,6 @@ export const DVEW = {
   this.__settingsHaveBeenSynced = true;
  },
 
- runRGBLightUpdateQue() {
-  const queue = this.worldData.getRGBLightUpdateQue();
-  while (queue.length != 0) {
-   const position = queue.shift();
-   if (!position) break;
-   this.worldGeneration.illumantionManager.runRGBFloodFillAt(
-    position[0],
-    position[1],
-    position[2]
-   );
-  }
-  this.worldData.clearRGBLightUpdateQue();
- },
-
- clearRGBLightUpdateQue() {
-  this.worldData.clearRGBLightUpdateQue();
- },
-
- runRGBLightRemoveQue() {
-  const queue = this.worldData.getRGBLightRemoveQue();
-  while (queue.length != 0) {
-   const position = queue.shift();
-   if (!position) break;
-   this.worldGeneration.illumantionManager.runRGBFloodRemoveAt(
-    true,
-    position[0],
-    position[1],
-    position[2]
-   );
-  }
-  this.worldData.clearRGBLightRemoveQue();
- },
-
- clearRGBLightRemoveQue() {
-  this.worldData.clearRGBLightRemoveQue();
- },
-
- runChunkRebuildQue() {
-  const queue = this.worldData.getChunkRebuildQue();
-  while (queue.length != 0) {
-   const position = queue.shift();
-   if (!position) break;
-   const substance = this.worldData.getSubstanceNeededToRebuild(
-    position[0],
-    position[1],
-    position[2]
-   );
-   if (substance.all) {
-    this.buildChunk(position[0], position[1], position[2]);
-   }
-  }
-  this.worldData.clearChunkRebuildQue();
- },
-
- clearChunkRebuildQue() {
-  this.worldData.clearChunkRebuildQue();
- },
 
  /**# Remove Chunk
   * ---

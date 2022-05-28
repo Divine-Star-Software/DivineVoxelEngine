@@ -43,11 +43,14 @@ export const WorldGen = {
                             continue;
                         }
                         let flip = Math.random();
-                        if (flip <= 0.02) {
+                        if (flip >= 0.1) {
+                            continue;
+                        }
+                        if (flip <= 0.01) {
                             DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", x, topY, z);
                             continue;
                         }
-                        if (flip >= 0.02 && flip <= 0.04) {
+                        if (flip >= 0.01 && flip <= 0.02) {
                             DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, topY, z);
                             let flip2 = Math.random();
                             if (flip2 < 0.01) {
@@ -55,7 +58,7 @@ export const WorldGen = {
                             }
                             continue;
                         }
-                        if (flip >= 0.04 && flip <= 0.08) {
+                        if (flip >= 0.02 && flip <= 0.03) {
                             DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, topY, z);
                             continue;
                         }

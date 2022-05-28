@@ -17,7 +17,7 @@ export const VoxelHelper = {
         "solid-magma": true,
         "transparent-solid": true,
         "transparent-flora": true,
-        "transparent-transparent": true,
+        "transparent-transparent": false,
         "transparent-fluid": true,
         "transparent-magma": true,
         "flora-solid": true,

@@ -3,6 +3,7 @@ import type {
  ChunkVoxels,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
+import { MatrixLoadedChunk } from "Meta/Matrix/MatrixData.js";
 //objects
 import { Util } from "../../Global/Util.helper.js";
 
@@ -14,6 +15,7 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
  * to build chunk meshes.
  */
 export const ChunkProcessor = {
+ heightByte: Util.getHeightByte(),
  voxelByte: Util.getVoxelByte(),
  faceByte: Util.getFaceByte(),
  _3dArray: Util.getFlat3DArray(),
@@ -76,18 +78,24 @@ export const ChunkProcessor = {
  },
 
  makeAllChunkTemplates(
-  voxels: ChunkVoxels,
+  chunk: MatrixLoadedChunk,
   chunkX: number,
   chunkY: number,
   chunkZ: number
  ): FullChunkTemplate {
+  const voxels = chunk.voxels;
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEB.worldBounds.chunkXSize;
   let maxZ = DVEB.worldBounds.chunkZSize;
   let maxY = DVEB.worldBounds.chunkYSize;
+  let minY = 0;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
-    for (let y = 0; y < maxY; y++) {
+   // let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
+   // let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap);
+   // console.log(minY,maxY);
+
+    for (let y = minY; y < maxY; y++) {
      const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(rawVoxelData) == 0) continue;
      const voxelCheck = DVEB.worldMatrix.getVoxel(
@@ -243,14 +251,14 @@ export const ChunkProcessor = {
        faceBit
       );
      }
-     if (this.exposedFaces[1] ) {
+     if (this.exposedFaces[1]) {
       faceBit = this.faceByte.setFaceRotateState(
        "bottom",
        this.faceStates[1],
        faceBit
       );
      }
-     if (this.exposedFaces[2] ) {
+     if (this.exposedFaces[2]) {
       faceBit = this.faceByte.setFaceRotateState(
        "east",
        this.faceStates[2],
@@ -264,7 +272,7 @@ export const ChunkProcessor = {
        faceBit
       );
      }
-     if (this.exposedFaces[4] ) {
+     if (this.exposedFaces[4]) {
       faceBit = this.faceByte.setFaceRotateState(
        "south",
        this.faceStates[4],

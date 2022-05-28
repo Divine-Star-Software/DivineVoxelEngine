@@ -20,7 +20,7 @@ export const WorldMatrix = {
     regionVoxelPalettes: {},
     threadName: "",
     syncChunkBounds() {
-        this.worldBounds.syncBoundsWithFlat3DArray(this._3dArray);
+        this.worldBounds.syncBoundsWithArrays();
     },
     /**# Await Chunk Load
      * ---
@@ -88,7 +88,7 @@ export const WorldMatrix = {
      * ---
      * To be only called by the Matrix Hub.
      */
-    __setChunk(x, y, z, chunkSAB, chunkStateSAB) {
+    __setChunk(x, y, z, voxelsSAB, voxelStatesSAB, heightMapSAB, minMaxMapSAB, chunkStateSAB) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
         let region = this.regions[regionKey];
         if (!region) {
@@ -96,7 +96,10 @@ export const WorldMatrix = {
         }
         const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
         region.chunks[chunkKey] = {
-            voxels: new Uint32Array(chunkSAB),
+            voxels: new Uint32Array(voxelsSAB),
+            voxelStates: new Uint32Array(voxelStatesSAB),
+            heightMap: new Uint32Array(heightMapSAB),
+            minMaxMap: new Uint32Array(minMaxMapSAB),
             chunkStates: new Uint8Array(chunkStateSAB),
         };
     },

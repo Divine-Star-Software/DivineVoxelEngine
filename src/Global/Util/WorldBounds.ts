@@ -1,5 +1,6 @@
-import type { Flat3DArray } from "Global/Util/Flat3DArray";
-import { PositionMatrix } from "Meta/Util.types";
+import { Flat3DArray } from "./Flat3DArray.js";
+import { HeightMapArray } from "./HeightMapArray.js";
+import type { PositionMatrix } from "Meta/Util.types";
 
 /**# World Bounds
  * ---
@@ -8,7 +9,7 @@ import { PositionMatrix } from "Meta/Util.types";
  * A refernce is held to all classes that need it.
  */
 export const WorldBounds = {
- //this is done to ensure that the voxel engine does not break. 
+ //this is done to ensure that the voxel engine does not break.
  get __maxChunkYSize() {
   return 128;
  },
@@ -38,9 +39,11 @@ export const WorldBounds = {
  __chunkPosition: { x: 0, y: 0, z: 0 },
  __voxelPosition: { x: 0, y: 0, z: 0 },
 
- syncBoundsWithFlat3DArray(flat3dArray: typeof Flat3DArray) {
-  flat3dArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
+ syncBoundsWithArrays() {
+  Flat3DArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
+  HeightMapArray.setBounds(this.chunkXSize, 2, this.chunkZSize);
  },
+
  setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number) {
   this.chunkXPow2 = pow2X;
   this.chunkXSize = 2 ** pow2X;

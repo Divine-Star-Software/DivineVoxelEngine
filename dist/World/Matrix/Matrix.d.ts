@@ -1,13 +1,5 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-declare type MatrixRegionData = {
-    threadsLoadedIn: Record<string, boolean>;
-    chunks: MatrixChunkData;
-};
-declare type MatrixChunkData = Record<string, {
-    chunkStates: Uint8Array;
-    chunkStatesSAB: SharedArrayBuffer;
-    chunkSAB: SharedArrayBuffer;
-}>;
+import { MatrixRegionData } from "Meta/Matrix/MatrixData.js";
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -45,27 +37,7 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
-        syncBoundsWithFlat3DArray(flat3dArray: {
-            bounds: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            _position: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
-            getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
-            setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
-            deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
-            getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
-        }): void;
+        syncBoundsWithArrays(): void;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -105,11 +77,13 @@ export declare const Matrix: {
     getMatrixChunkData(x: number, y: number, z: number): false | {
         chunkStates: Uint8Array;
         chunkStatesSAB: SharedArrayBuffer;
-        chunkSAB: SharedArrayBuffer;
+        voxelsSAB: SharedArrayBuffer;
+        voxelsStatesSAB: SharedArrayBuffer;
+        minMaxMapSAB: SharedArrayBuffer;
+        heightMapSAB: SharedArrayBuffer;
     };
     getMatrixRegionData(x: number, y: number, z: number): false | MatrixRegionData;
     addRegionToMatrix(x: number, y: number, z: number): MatrixRegionData;
     removeRegionFromMatrix(x: number, y: number, z: number): false | undefined;
     deleteThreadFromRegion(threadId: string, x: number, y: number, z: number): false | undefined;
 };
-export {};

@@ -7,6 +7,7 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
  * to build chunk meshes.
  */
 export const ChunkProcessor = {
+    heightByte: Util.getHeightByte(),
     voxelByte: Util.getVoxelByte(),
     faceByte: Util.getFaceByte(),
     _3dArray: Util.getFlat3DArray(),
@@ -67,14 +68,19 @@ export const ChunkProcessor = {
             },
         };
     },
-    makeAllChunkTemplates(voxels, chunkX, chunkY, chunkZ) {
+    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
+        const voxels = chunk.voxels;
         const template = this.getBaseTemplateNew();
         let maxX = DVEB.worldBounds.chunkXSize;
         let maxZ = DVEB.worldBounds.chunkZSize;
         let maxY = DVEB.worldBounds.chunkYSize;
+        let minY = 0;
         for (let x = 0; x < maxX; x++) {
             for (let z = 0; z < maxZ; z++) {
-                for (let y = 0; y < maxY; y++) {
+                // let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
+                // let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap);
+                // console.log(minY,maxY);
+                for (let y = minY; y < maxY; y++) {
                     const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
                     if (this.voxelByte.getId(rawVoxelData) == 0)
                         continue;

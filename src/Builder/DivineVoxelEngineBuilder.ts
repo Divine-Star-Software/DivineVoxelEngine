@@ -53,7 +53,7 @@ export const DVEB = {
     data.chunks.chunkYPow2,
     data.chunks.chunkZPow2
    );
-   this.worldBounds.syncBoundsWithFlat3DArray(this._3dFlatArray);
+   this.worldBounds.syncBoundsWithArrays();
   }
   if (data.regions) {
    this.worldBounds.setRegionBounds(
@@ -94,7 +94,7 @@ export const DVEB = {
    }
   }
   const template = this.chunkProccesor.makeAllChunkTemplates(
-   chunk.voxels,
+   chunk,
    chunkX,
    chunkY,
    chunkZ

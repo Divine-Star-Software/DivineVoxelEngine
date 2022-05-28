@@ -1,3 +1,5 @@
+import { Flat3DArray } from "./Flat3DArray.js";
+import { HeightMapArray } from "./HeightMapArray.js";
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.
@@ -5,7 +7,7 @@
  * A refernce is held to all classes that need it.
  */
 export const WorldBounds = {
-    //this is done to ensure that the voxel engine does not break. 
+    //this is done to ensure that the voxel engine does not break.
     get __maxChunkYSize() {
         return 128;
     },
@@ -29,8 +31,9 @@ export const WorldBounds = {
     __regionPosition: { x: 0, y: 0, z: 0 },
     __chunkPosition: { x: 0, y: 0, z: 0 },
     __voxelPosition: { x: 0, y: 0, z: 0 },
-    syncBoundsWithFlat3DArray(flat3dArray) {
-        flat3dArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
+    syncBoundsWithArrays() {
+        Flat3DArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
+        HeightMapArray.setBounds(this.chunkXSize, 2, this.chunkZSize);
     },
     setChunkBounds(pow2X, pow2Y, pow2Z) {
         this.chunkXPow2 = pow2X;

@@ -19,7 +19,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
   )}`;
   if (DVER) {
    //@ts-ignore
-   chunkPosition.innerHTML = DVER?.util
+   chunkPosition.innerHTML = DVER.UTIL
     .getWorldBounds()
     .getChunkKeyFromPosition(
      positionWatch.position.x,

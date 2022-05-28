@@ -1,10 +1,11 @@
 import { VoxelTemplateSubstanceType } from "Meta/index";
+import { PositionMatrix } from "Meta/Util.types.js";
 /**# Height Byte
  * ---
  * Interpets height map data.
  */
 export declare const HeightByte: {
-    _3dFlatArray: {
+    heightMapArray: {
         bounds: {
             x: number;
             y: number;
@@ -17,13 +18,28 @@ export declare const HeightByte: {
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels): number;
-        getValueUseObj(position: import("Meta/index").PositionMatrix, array: import("Meta/index").ChunkVoxels): number;
+        getValueUseObj(position: PositionMatrix, array: import("Meta/index").ChunkVoxels): number;
         setValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("Meta/index").PositionMatrix, array: import("Meta/index").ChunkVoxels, value: number): void;
+        setValueUseObj(position: PositionMatrix, array: import("Meta/index").ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels): void;
-        deleteUseObj(position: import("Meta/index").PositionMatrix, array: import("Meta/index").ChunkVoxels): void;
+        deleteUseObj(position: PositionMatrix, array: import("Meta/index").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("Meta/index").PositionMatrix;
+        getXYZ(index: number): PositionMatrix;
+    };
+    positionByte: {
+        _poisiton: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getY(byteData: number): number;
+        getPosition(byteData: number): {
+            x: number;
+            y: number;
+            z: number;
+        };
+        setPosition(x: number, y: number, z: number): number;
+        setPositionUseObj(positionObj: PositionMatrix): number;
     };
     _getHeightMapData: Record<VoxelTemplateSubstanceType, (byteData: number) => number>;
     _setHeightMapData: Record<VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -31,7 +47,9 @@ export declare const HeightByte: {
     _markSubstanceAsExposed: Record<VoxelTemplateSubstanceType, (data: number) => number>;
     _isSubstanceExposed: Record<VoxelTemplateSubstanceType, (data: number) => boolean>;
     getStartingHeightMapValue(): number;
-    setNewHeightDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+    updateChunkMinMax(voxelPOS: PositionMatrix, minMax: Uint32Array): void;
+    calculateHeightRemoveDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
+    calculateHeightAddDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
     getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
     getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
     isSubstanceExposed(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;

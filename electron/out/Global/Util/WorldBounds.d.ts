@@ -1,5 +1,4 @@
-import type { Flat3DArray } from "Global/Util/Flat3DArray";
-import { PositionMatrix } from "Meta/Util.types";
+import type { PositionMatrix } from "Meta/Util.types";
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.
@@ -37,7 +36,7 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
-    syncBoundsWithFlat3DArray(flat3dArray: typeof Flat3DArray): void;
+    syncBoundsWithArrays(): void;
     setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
     setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
     getRegionPosition(x: number, y: number, z: number): {

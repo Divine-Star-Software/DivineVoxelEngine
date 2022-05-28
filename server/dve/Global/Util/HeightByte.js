@@ -1,10 +1,12 @@
-import { Flat3DArray } from "./Flat3DArray.js";
+import { HeightMapArray } from "./HeightMapArray.js";
+import { PositionByte } from "./PositionByte.js";
 /**# Height Byte
  * ---
  * Interpets height map data.
  */
 export const HeightByte = {
-    _3dFlatArray: Flat3DArray,
+    heightMapArray: HeightMapArray,
+    positionByte: PositionByte,
     _getHeightMapData: {
         solid: (byteData) => {
             return (byteData & 0x7f) >>> 0;
@@ -83,22 +85,54 @@ export const HeightByte = {
         //this number will mark all substances as not exposed and/or non existent in the chunk.
         return 0x80808080;
     },
-    setNewHeightDataForSubstance(height, substance, x, z, heightMap) {
+    updateChunkMinMax(voxelPOS, minMax) {
+        const currentMin = this.positionByte.getY(minMax[0]);
+        const currentMax = this.positionByte.getY(minMax[1]);
+        if (currentMin < voxelPOS.y) {
+            minMax[0] = this.positionByte.setPositionUseObj(voxelPOS);
+        }
+        if (currentMax > voxelPOS.y) {
+            minMax[1] = this.positionByte.setPositionUseObj(voxelPOS);
+        }
+    },
+    calculateHeightRemoveDataForSubstance(height, substance, x, z, heightMap) {
         let minY = this.getMinYForSubstance(substance, x, z, heightMap);
         let maxY = this.getMaxYForSubstance(substance, x, z, heightMap);
-        if (minY == height || maxY == height)
-            return;
-        if (height < minY) {
-            this.setMinYForSubstance(height, substance, x, z, heightMap);
-            return;
+        //nothing to do here since it won't affect anything.
+        if (height > minY && height < maxY)
+            return false;
+        if (minY == maxY && minY == height) {
+            this.setMinYForSubstance(0, substance, x, z, heightMap);
+            this.setMaxYForSubstance(0, substance, x, z, heightMap);
+            this.markSubstanceAsNotExposed(substance, x, z, heightMap);
         }
-        if (height > maxY) {
+        if (height == minY || height == maxY) {
+            /**
+             * @TODO when the bottom minY or maxY has been removed must recalucate the heightmpa for that XZ.
+             */
+            return true;
+        }
+    },
+    calculateHeightAddDataForSubstance(height, substance, x, z, heightMap) {
+        let minY = this.getMinYForSubstance(substance, x, z, heightMap);
+        let maxY = this.getMaxYForSubstance(substance, x, z, heightMap);
+        if (!this.isSubstanceExposed(substance, x, z, heightMap)) {
+            this.markSubstanceAsExposed(substance, x, z, heightMap);
+            this.setMinYForSubstance(height, substance, x, z, heightMap);
             this.setMaxYForSubstance(height, substance, x, z, heightMap);
             return;
         }
+        //nothing to do here since it won't affect anything.
+        // if (height > minY && height < maxY) return;
+        if (height < minY) {
+            this.setMinYForSubstance(height, substance, x, z, heightMap);
+        }
+        if (height > maxY) {
+            this.setMaxYForSubstance(height, substance, x, z, heightMap);
+        }
     },
     getLowestExposedVoxel(x, z, heightMap) {
-        const value = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        const value = this.heightMapArray.getValue(x, 0, z, heightMap);
         let min = this._getHeightMapData["solid"](value);
         let min2 = this._getHeightMapData["fluid"](value);
         if (min2 < min) {
@@ -115,7 +149,7 @@ export const HeightByte = {
         return min;
     },
     getHighestExposedVoxel(x, z, heightMap) {
-        const value = this._3dFlatArray.getValue(x, 1, z, heightMap);
+        const value = this.heightMapArray.getValue(x, 1, z, heightMap);
         let max = this._getHeightMapData["solid"](value);
         let max2 = this._getHeightMapData["fluid"](value);
         if (max2 > max) {
@@ -132,35 +166,35 @@ export const HeightByte = {
         return max;
     },
     isSubstanceExposed(substance, x, z, heightMap) {
-        let value = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
         return this._isSubstanceExposed[substance](value);
     },
     markSubstanceAsExposed(substance, x, z, heightMap) {
-        let value = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
         value = this._markSubstanceAsExposed[substance](value);
-        this._3dFlatArray.setValue(x, 0, z, heightMap, value);
+        this.heightMapArray.setValue(x, 0, z, heightMap, value);
     },
     markSubstanceAsNotExposed(substance, x, z, heightMap) {
-        let value = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
         value = this._markSubstanceAsNotExposed[substance](value);
-        this._3dFlatArray.setValue(x, 0, z, heightMap, value);
+        this.heightMapArray.setValue(x, 0, z, heightMap, value);
     },
     setMinYForSubstance(height, substance, x, z, heightMap) {
-        let byteData = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        let byteData = this.heightMapArray.getValue(x, 0, z, heightMap);
         byteData = this._setHeightMapData[substance](height, byteData);
-        this._3dFlatArray.setValue(x, 0, z, heightMap, byteData);
+        this.heightMapArray.setValue(x, 0, z, heightMap, byteData);
     },
     getMinYForSubstance(substance, x, z, heightMap) {
-        let byteData = this._3dFlatArray.getValue(x, 0, z, heightMap);
+        let byteData = this.heightMapArray.getValue(x, 0, z, heightMap);
         return this._getHeightMapData[substance](byteData);
     },
     setMaxYForSubstance(height, substance, x, z, heightMap) {
-        let byteData = this._3dFlatArray.getValue(x, 1, z, heightMap);
+        let byteData = this.heightMapArray.getValue(x, 1, z, heightMap);
         byteData = this._setHeightMapData[substance](height, byteData);
-        this._3dFlatArray.setValue(x, 1, z, heightMap, byteData);
+        this.heightMapArray.setValue(x, 1, z, heightMap, byteData);
     },
     getMaxYForSubstance(substance, x, z, heightMap) {
-        let byteData = this._3dFlatArray.getValue(x, 1, z, heightMap);
+        let byteData = this.heightMapArray.getValue(x, 1, z, heightMap);
         return this._getHeightMapData[substance](byteData);
     },
 };

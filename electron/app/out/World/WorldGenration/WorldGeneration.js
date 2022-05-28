@@ -1,7 +1,5 @@
 //objects
 import { Util } from "../../Global/Util.helper.js";
-import { ChunkDataHelper } from "./ChunkData/ChunkDataHelper.js";
-import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/VoxelPaletteHelper.js";
 /**# World Generation
  * ---
@@ -11,8 +9,6 @@ export const WorldGeneration = {
     worldBounds: Util.getWorldBounds(),
     voxelByte: Util.getVoxelByte(),
     heightByte: Util.getHeightByte(),
-    chunkDataHelper: ChunkDataHelper,
-    illumantionManager: IlluminationManager,
     voxelPalette: VoxelPaletteManager,
     paintVoxel(voxelPalletId) {
         return this.voxelByte.setId(voxelPalletId, 0);
@@ -43,6 +39,8 @@ export const WorldGeneration = {
         while (i--) {
             heightMap[i] = startingValue;
         }
+        const minMaxMapSAB = new SharedArrayBuffer(4 * 2);
+        const minMaxMap = new Uint32Array(minMaxMapSAB);
         return {
             proto: proto,
             voxelsSAB: chunkSAB,
@@ -51,6 +49,8 @@ export const WorldGeneration = {
             voxelsStates: chunkStatesVoxels,
             heightMapSAB: heightMapSAB,
             heightMap: heightMap,
+            minMaxMapSAB: minMaxMapSAB,
+            minMaxMap: minMaxMap,
             isEmpty: empty,
             position: [],
         };

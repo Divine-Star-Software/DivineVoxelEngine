@@ -26,9 +26,9 @@ await DVER.$INIT({
  lighting: {
   doAO: true,
   doRGBLight: true,
-  doSunLight: true,
+  doSunLight: false,
   autoRGBLight: true,
-  autoSunLight: true,
+  autoSunLight: false,
  },
 });
 

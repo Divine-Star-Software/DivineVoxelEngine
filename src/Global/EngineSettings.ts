@@ -42,10 +42,10 @@ export const EngineSettings = {
   },
   lighting: {
    doAO: true,
-   doSunLight: true,
+   doSunLight: false,
    doRGBLight: true,
    autoRGBLight: true,
-   autoSunLight: true,
+   autoSunLight: false,
   },
   materials: {
    doAO: true,

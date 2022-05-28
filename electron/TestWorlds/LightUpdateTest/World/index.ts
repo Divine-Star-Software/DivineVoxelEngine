@@ -1,4 +1,4 @@
-import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
+/* import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
@@ -140,3 +140,4 @@ const start = () => {
   
  });
 })();
+ */
