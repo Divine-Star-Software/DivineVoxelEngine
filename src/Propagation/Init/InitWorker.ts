@@ -1,9 +1,9 @@
-import type { DVEWGInitData } from "Meta/WorldGeneration/DVEWG";
+import type { DVEPInitData } from "Meta/Propagation/DVEP";
 import type { DivineVoxelEnginePropagation } from "Propagation/DivineVoxelEngineWorldPropagation";
 
 export async function InitWorker(
  DVEWG: DivineVoxelEnginePropagation,
- initData: DVEWGInitData
+ initData: DVEPInitData
 ) {
  DVEWG.renderComm.onReady = initData.onReady;
  if (initData.onMessage) {

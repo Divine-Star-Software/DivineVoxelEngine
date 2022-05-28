@@ -10,7 +10,7 @@ https://github.com/electron/electron/issues/11934
 */
 app.commandLine.appendSwitch("--disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
-app.commandLine.appendSwitch("js-flags", "--max-old-space-size=6000");
+app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
 
 const APP_INIT = async () => {
  session.defaultSession.webRequest.onHeadersReceived(
@@ -40,11 +40,10 @@ const CreateMainWindow = async () => {
   fullscreen: false,
   webPreferences: {
    nodeIntegration: true,
-   nodeIntegrationInWorker: true,
+   nodeIntegrationInWorker: false,
    contextIsolation: false,
    devTools: true,
    spellcheck: false,
-
    backgroundThrottling: false,
   },
   backgroundColor: "#000000",

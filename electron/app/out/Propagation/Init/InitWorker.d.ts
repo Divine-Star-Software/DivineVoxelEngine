@@ -1,3 +1,3 @@
-import type { DVEWGInitData } from "Meta/WorldGeneration/DVEWG";
+import type { DVEPInitData } from "Meta/Propagation/DVEP";
 import type { DivineVoxelEnginePropagation } from "Propagation/DivineVoxelEngineWorldPropagation";
-export declare function InitWorker(DVEWG: DivineVoxelEnginePropagation, initData: DVEWGInitData): Promise<void>;
+export declare function InitWorker(DVEWG: DivineVoxelEnginePropagation, initData: DVEPInitData): Promise<void>;

@@ -227,13 +227,6 @@ export const WorldData = {
     },
     addChunk(x, y, z) {
         const chunk = DVEW.worldGeneration.getBlankChunk(false);
-        if (DVEW.engineSettings.settings.lighting?.doSunLight ||
-            DVEW.engineSettings.settings.lighting?.doRGBLight) {
-            if (DVEW.engineSettings.settings.lighting?.autoRGBLight ||
-                DVEW.engineSettings.settings.lighting?.autoSunLight) {
-                DVEW.worldGeneration.chunkDataHelper.fillWithAir(chunk);
-            }
-        }
         this.setChunk(x, y, z, chunk);
         return chunk;
     },

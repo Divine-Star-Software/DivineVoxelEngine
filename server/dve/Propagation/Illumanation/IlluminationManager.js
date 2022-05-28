@@ -30,19 +30,19 @@ export const IlluminationManager = {
         }
     },
     populateChunkAirWithInitlSunLight(chunk) {
-        const heightMap = chunk.heightMap;
-        const voxels = chunk.voxels;
-        for (let x = 0; x < 16; x++) {
-            for (let z = 0; z < 16; z++) {
-                const y = heightMap[x][z];
-                const voxel = this._3dArray.getValue(x, y, z, voxels);
-                const voxelId = this.voxelByte.getId(voxel);
-                if (voxelId == 0) {
-                    const nl = this.lightByte.getFullSunLight(voxel);
-                    const newVoxel = this.voxelByte.encodeLightIntoVoxelData(voxel, nl);
-                    this._3dArray.setValue(x, y, z, voxels, newVoxel);
-                }
+        /*   const heightMap = chunk.heightMap;
+          const voxels = chunk.voxels;
+          for (let x = 0; x < 16; x++) {
+           for (let z = 0; z < 16; z++) {
+            const y = heightMap[x][z];
+            const voxel = this._3dArray.getValue(x, y, z, voxels);
+            const voxelId = this.voxelByte.getId(voxel);
+            if (voxelId == 0) {
+             const nl = this.lightByte.getFullSunLight(voxel);
+             const newVoxel = this.voxelByte.encodeLightIntoVoxelData(voxel, nl);
+             this._3dArray.setValue(x, y, z, voxels, newVoxel);
             }
-        }
+           }
+          } */
     },
 };

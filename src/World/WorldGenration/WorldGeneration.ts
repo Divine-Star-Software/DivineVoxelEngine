@@ -14,6 +14,7 @@ import { VoxelPaletteManager as VoxelPaletteManager } from "./VoxelPalettes/Voxe
 export const WorldGeneration = {
  worldBounds: Util.getWorldBounds(),
  voxelByte: Util.getVoxelByte(),
+ heightByte: Util.getHeightByte(),
  chunkDataHelper: ChunkDataHelper,
  illumantionManager: IlluminationManager,
  voxelPalette: VoxelPaletteManager,
@@ -44,14 +45,23 @@ export const WorldGeneration = {
    this.worldBounds.chunkTotalVoxels * 4
   );
   const chunkStatesVoxels = new Uint32Array(chunkSAB);
+  const heightMapSAB = new SharedArrayBuffer(
+   this.worldBounds.chunkArea * 4 * 2
+  );
+  const heightMap = new Uint32Array(heightMapSAB);
+  let i = heightMap.length;
+  let startingValue = this.heightByte.getStartingHeightMapValue();
+  while (i--) {
+   heightMap[i] = startingValue;
+  }
   return {
    proto: proto,
    voxelsSAB: chunkSAB,
    voxels: chunkVoxels,
    voxelsStatesSAB: chunkStatesSAB,
    voxelsStates: chunkStatesVoxels,
-   maxMinHeight: [],
-   heightMap: [],
+   heightMapSAB: heightMapSAB,
+   heightMap: heightMap,
    isEmpty: empty,
    position: [],
   };

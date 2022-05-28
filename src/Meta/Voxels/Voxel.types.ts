@@ -11,6 +11,15 @@ export type VoxelSubstanceType =
  | "flora"
  | "fluid"
  | "magma";
+/**VoxelT emplateS ubstance Type
+ * ---
+ * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.  
+ */
+ export type VoxelTemplateSubstanceType = 
+ | "solid"
+ | "flora"
+ | "fluid"
+ | "magma";
 
 export type VoxelProcessData = {
  exposedFaces: number[];
@@ -63,13 +72,6 @@ export type VoxelData = {
  lightValue?: number;
 };
 
-export interface VoxelInteface {
- data: VoxelData;
- trueShapeId: number;
- voxelHelper: any;
- hooks: Record<VoxelHooks, Function>;
- process(data: VoxelProcessData): void;
-}
 
 export type VoxelBuilderThreadObject = {
  data: VoxelData;

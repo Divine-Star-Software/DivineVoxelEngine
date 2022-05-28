@@ -6,6 +6,11 @@ import type { DivineVoxelEngineBuilder } from "../../Builder/DivineVoxelEngineBu
  * Transparent voxels will not cause the faces of solid voxels next to them to be culled they also have double sided rendering.
  */
 export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fluid" | "magma";
+/**VoxelT emplateS ubstance Type
+ * ---
+ * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
+ */
+export declare type VoxelTemplateSubstanceType = "solid" | "flora" | "fluid" | "magma";
 export declare type VoxelProcessData = {
     exposedFaces: number[];
     faceStates: number[];
@@ -41,13 +46,6 @@ export declare type VoxelData = {
     lightSource?: boolean;
     lightValue?: number;
 };
-export interface VoxelInteface {
-    data: VoxelData;
-    trueShapeId: number;
-    voxelHelper: any;
-    hooks: Record<VoxelHooks, Function>;
-    process(data: VoxelProcessData): void;
-}
 export declare type VoxelBuilderThreadObject = {
     data: VoxelData;
     trueShapeId: number;

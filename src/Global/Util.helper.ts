@@ -6,6 +6,7 @@ import { WorldBounds } from "./Util/WorldBounds.js";
 import { GetWorkerPort } from "./Util/GetWorkerPort.js";
 import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
 import { FaceByte } from "./Util/FaceByte.js";
+import { HeightByte } from "./Util/HeightByte.js";
 
 export const Util = {
  createPromiseCheck: CreatePromiseCheck,
@@ -23,6 +24,9 @@ export const Util = {
  },
  getFaceByte() {
   return FaceByte;
+ },
+ getHeightByte() {
+  return HeightByte;
  },
  getVoxelByte() {
   return VoxelByte;

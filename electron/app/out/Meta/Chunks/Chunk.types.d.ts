@@ -16,8 +16,8 @@ export declare type ChunkData = {
     voxels: Uint32Array;
     voxelsStatesSAB: SharedArrayBuffer;
     voxelsStates: Uint32Array;
-    maxMinHeight: number[];
-    heightMap: number[][];
+    heightMapSAB: SharedArrayBuffer;
+    heightMap: Uint32Array;
     isEmpty: boolean;
     position: number[];
 };

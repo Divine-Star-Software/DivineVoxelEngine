@@ -33,7 +33,7 @@ export const DVER = {
 
  renderedEntites: RenderedEntitesManager,
 
- util: Util,
+ UTIL: Util,
 
  _handleOptions() {
   const data = this.engineSettings.settings;

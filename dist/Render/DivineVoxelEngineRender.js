@@ -24,7 +24,7 @@ export const DVER = {
     meshManager: MeshManager,
     textureManager: TextureManager,
     renderedEntites: RenderedEntitesManager,
-    util: Util,
+    UTIL: Util,
     _handleOptions() {
         const data = this.engineSettings.settings;
         if (data.textureOptions) {

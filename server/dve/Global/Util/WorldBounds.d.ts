@@ -7,6 +7,7 @@ import { PositionMatrix } from "Meta/Util.types";
  * A refernce is held to all classes that need it.
  */
 export declare const WorldBounds: {
+    __maxChunkYSize: number;
     chunkXPow2: number;
     chunkYPow2: number;
     chunkZPow2: number;
@@ -14,6 +15,7 @@ export declare const WorldBounds: {
     chunkYSize: number;
     chunkZSize: number;
     chunkTotalVoxels: number;
+    chunkArea: number;
     regionXPow2: number;
     regionYPow2: number;
     regionZPow2: number;

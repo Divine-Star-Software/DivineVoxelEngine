@@ -9,6 +9,7 @@ import {
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+import { VoxelTemplateSubstanceType } from "../../out/Meta/index.js";
 
 RegisterTexutres(DVER);
 
@@ -52,3 +53,30 @@ const init = async () => {
 
 RunInit(init);
 
+const _3dFlatArray = DVER.UTIL.getFlat3DArray();
+const heightByte = DVER.UTIL.getHeightByte();
+const testHeightMapSAB = new SharedArrayBuffer(
+ DVER.worldBounds.chunkArea * 4 * 2
+);
+const testHeightMap = new Uint32Array(testHeightMapSAB);
+
+let startValue = heightByte.getStartingHeightMapValue();
+let i = testHeightMap.length;
+while (i--) {
+ testHeightMap[i] = startValue;
+}
+const x = 0;
+const z = 0;
+const minY = 50;
+const maxY = 100;
+const t1 = (substance: VoxelTemplateSubstanceType) => {
+ console.log(`test 1 [[[[${substance}]]]]`);
+ console.log(heightByte.isSubstanceExposed(substance, x, z, testHeightMap));
+ const before = _3dFlatArray.getValue(x, 0, z, testHeightMap);
+ console.log(before);
+ heightByte.markSubstanceAsExposed(substance, x, z, testHeightMap);
+ console.log(heightByte.isSubstanceExposed(substance, x, z, testHeightMap));
+ const after = _3dFlatArray.getValue(x, 0, z, testHeightMap);
+ console.log(after);
+ console.log("==============================");
+};

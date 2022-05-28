@@ -12,6 +12,12 @@ export declare type EngineSettingsData = {
     };
     world?: {
         voxelPaletteMode: "global" | "per-region";
+        maxX: number;
+        minX: number;
+        maxZ: number;
+        minZ: number;
+        maxY: number;
+        minY: number;
     };
     regions?: {
         regionXPow2: number;
@@ -26,7 +32,6 @@ export declare type EngineSettingsData = {
     };
     updating?: {
         autoRebuild: boolean;
-        rebuildMode: "sync" | "async";
     };
     lighting?: {
         doAO: boolean;

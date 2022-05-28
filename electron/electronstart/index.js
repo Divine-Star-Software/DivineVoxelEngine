@@ -10,7 +10,7 @@ https://github.com/electron/electron/issues/11934
 */
 app.commandLine.appendSwitch("--disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
-app.commandLine.appendSwitch("js-flags", "--max-old-space-size=6000");
+app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
 const APP_INIT = async () => {
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
         //enable headers to enable shared array buffer
@@ -24,7 +24,6 @@ const APP_INIT = async () => {
     });
     const editorWindow = await CreateMainWindow();
 };
-console.log("hello");
 app.whenReady().then(async () => {
     await APP_INIT();
 });
@@ -36,7 +35,7 @@ const CreateMainWindow = async () => {
         fullscreen: false,
         webPreferences: {
             nodeIntegration: true,
-            nodeIntegrationInWorker: true,
+            nodeIntegrationInWorker: false,
             contextIsolation: false,
             devTools: true,
             spellcheck: false,

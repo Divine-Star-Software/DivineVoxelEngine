@@ -26,6 +26,7 @@ export declare const WorldMatrix: {
         getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
     };
     worldBounds: {
+        __maxChunkYSize: number;
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -33,6 +34,7 @@ export declare const WorldMatrix: {
         chunkYSize: number;
         chunkZSize: number;
         chunkTotalVoxels: number;
+        chunkArea: number;
         regionXPow2: number;
         regionYPow2: number;
         regionZPow2: number;

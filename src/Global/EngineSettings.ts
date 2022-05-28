@@ -16,10 +16,15 @@ export const EngineSettings = {
   },
   updating: {
    autoRebuild: true,
-   rebuildMode: "async",
   },
   world: {
    voxelPaletteMode: "global",
+   maxX : Infinity,
+   minX : -Infinity,
+   maxZ : Infinity,
+   minZ : -Infinity,
+   maxY : 0,
+   minY : 256
   },
   regions: {
    regionXPow2: 9,

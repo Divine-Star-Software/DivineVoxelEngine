@@ -112,7 +112,7 @@ export const FaceByte = {
             return (newBit >>> 26) & 0b11;
         },
     },
-    markExposedFace: {
+    _markExposedFace: {
         top: (faceBit) => {
             return faceBit | (1 << 0);
         },
@@ -132,7 +132,7 @@ export const FaceByte = {
             return faceBit | (1 << 25);
         },
     },
-    checkExposedFace: {
+    _checkExposedFace: {
         top: (faceBit) => {
             return ((faceBit >>> 0) & 1) == 1;
         },
@@ -153,10 +153,10 @@ export const FaceByte = {
         },
     },
     markFaceAsExposed(direction, rawData) {
-        return this.markExposedFace[direction](rawData);
+        return this._markExposedFace[direction](rawData);
     },
     isFaceExposed(direction, rawData) {
-        return this.checkExposedFace[direction](rawData);
+        return this._checkExposedFace[direction](rawData);
     },
     setFaceRotateState(direction, state, rawData) {
         return this._setFaceRotateState[direction](state, rawData);

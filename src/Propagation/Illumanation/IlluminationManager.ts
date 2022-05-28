@@ -50,7 +50,7 @@ export const IlluminationManager = {
  },
 
  populateChunkAirWithInitlSunLight(chunk: ChunkData) {
-  const heightMap = chunk.heightMap;
+/*   const heightMap = chunk.heightMap;
   const voxels = chunk.voxels;
   for (let x = 0; x < 16; x++) {
    for (let z = 0; z < 16; z++) {
@@ -63,7 +63,7 @@ export const IlluminationManager = {
      this._3dArray.setValue(x, y, z, voxels, newVoxel);
     }
    }
-  }
+  } */
  },
 };
  

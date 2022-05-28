@@ -5,6 +5,13 @@
  * A refernce is held to all classes that need it.
  */
 export const WorldBounds = {
+    //this is done to ensure that the voxel engine does not break. 
+    get __maxChunkYSize() {
+        return 128;
+    },
+    set __maxChunkYSize(data) {
+        throw new Error("Max Chunk Y Size can not be overridden.");
+    },
     chunkXPow2: 4,
     chunkYPow2: 7,
     chunkZPow2: 4,
@@ -12,6 +19,7 @@ export const WorldBounds = {
     chunkYSize: 128,
     chunkZSize: 16,
     chunkTotalVoxels: 16 * 128 * 16,
+    chunkArea: 16 * 16,
     regionXPow2: 9,
     regionYPow2: 7,
     regionZPow2: 9,
@@ -29,9 +37,13 @@ export const WorldBounds = {
         this.chunkXSize = 2 ** pow2X;
         this.chunkYPow2 = pow2Y;
         this.chunkYSize = 2 ** pow2Y;
+        if (this.chunkYSize > this.__maxChunkYSize) {
+            throw new Error(`Chunk Y size is bigger then the limit. Should be equal to or less than ${this.__maxChunkYSize}.`);
+        }
         this.chunkZPow2 = pow2Z;
         this.chunkZSize = 2 ** pow2Z;
         this.chunkTotalVoxels = this.chunkXSize * this.chunkYSize * this.chunkZSize;
+        this.chunkArea = this.chunkXSize * this.chunkZSize;
     },
     setRegionBounds(pow2X, pow2Y, pow2Z) {
         this.regionXPow2 = pow2X;

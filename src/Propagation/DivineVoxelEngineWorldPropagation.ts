@@ -1,5 +1,5 @@
 //types
-import type { DVEWGInitData } from "Meta/WorldGeneration/DVEWG.js";
+import type { DVEPInitData } from "Meta/Propagation/DVEP.js";
 import type { EngineSettingsData, VoxelSubstanceType } from "Meta/index.js";
 //objects
 import { EngineSettings } from "../Global/EngineSettings.js";
@@ -66,7 +66,7 @@ export const DVEP = {
   );
  },
  reStart() {},
- async $INIT(initData: DVEWGInitData) {
+ async $INIT(initData: DVEPInitData) {
   await InitWorker(this, initData);
   this.worldComm.sendMessage("ready", []);
  },

@@ -14,13 +14,13 @@ export const ChunkDataHelper = {
         }
     },
     createHeightMap(chunk, chunkX, chunkY, chunkZ) {
-        const heightMap = [];
-        for (let x = 0; x < 16; x++) {
-            heightMap[x] = [];
-            for (let z = 0; z < 16; z++) {
-                heightMap[x][z] = chunkY + 127;
-            }
-        }
-        chunk.heightMap = heightMap;
+        /*   const heightMap: number[][] = [];
+          for (let x = 0; x < 16; x++) {
+           heightMap[x] = [];
+           for (let z = 0; z < 16; z++) {
+            heightMap[x][z] = chunkY + 127;
+           }
+          }
+          chunk.heightMap = heightMap; */
     },
 };

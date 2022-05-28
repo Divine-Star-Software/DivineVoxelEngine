@@ -14,8 +14,6 @@ export const WorldGen = {
   y: number,
   z: number
  ) {
-  bottomChunk.maxMinHeight[0] = 0;
-  bottomChunk.maxMinHeight[1] = minY;
   const chunkVoxels = bottomChunk.voxels;
   let dreamstone = DVEW.worldGeneration.paintVoxel(
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
@@ -32,10 +30,6 @@ export const WorldGen = {
 
   if (y < Math.floor(Math.random() * minY)) {
    this._3dArray.setValue(x, y, z, chunkVoxels, dreamstone);
-
-   if (y < bottomChunk.maxMinHeight[0]) {
-    bottomChunk.maxMinHeight[0] = y;
-   }
 
    if (Math.random() > 0.8) {
     this._3dArray.setValue(x, y + 1, z, chunkVoxels, dreamGrasss);
@@ -58,8 +52,6 @@ export const WorldGen = {
     "default"
    )
   );
-  bottomChunk.maxMinHeight[0] = minY;
-  bottomChunk.maxMinHeight[1] = maxY;
 
   let chunkVoxels;
   let cy = y;
@@ -190,8 +182,6 @@ export const WorldGen = {
   z: number
  ) {
   const chunkVoxels = bottomChunk.voxels;
-  bottomChunk.maxMinHeight[0] = minY - 7;
-  bottomChunk.maxMinHeight[1] = minY;
 
   const dreamstone = DVEW.worldGeneration.paintVoxel(
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
@@ -224,8 +214,6 @@ export const WorldGen = {
   z: number
  ) {
   const chunkVoxels = bottomChunk.voxels;
-  bottomChunk.maxMinHeight[0] = minY - 8;
-  bottomChunk.maxMinHeight[1] = minY;
 
   let dreamstone = DVEW.worldGeneration.paintVoxel(
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
@@ -314,8 +302,7 @@ export const WorldGen = {
   z: number
  ) {
   const chunkVoxels = bottomChunk.voxels;
-  bottomChunk.maxMinHeight[0] = minY;
-  bottomChunk.maxMinHeight[1] = minY + 1;
+
   let dreamGrassBlock = DVEW.worldGeneration.paintVoxel(
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
     "dve:dreamgrassblock",

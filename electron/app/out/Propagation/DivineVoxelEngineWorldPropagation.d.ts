@@ -1,7 +1,7 @@
-import type { DVEWGInitData } from "Meta/WorldGeneration/DVEWG.js";
+import type { DVEPInitData } from "Meta/Propagation/DVEP.js";
 import type { EngineSettingsData, VoxelSubstanceType } from "Meta/index.js";
 export declare const DVEP: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -13,8 +13,8 @@ export declare const DVEP: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -41,14 +41,53 @@ export declare const DVEP: {
             _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
             _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceRotateState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-            markExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-            checkExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => boolean>;
+            _markExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
+            _checkExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => boolean>;
             markFaceAsExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
             isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
             setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
             getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
             setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
             getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+        };
+        getHeightByte(): {
+            _3dFlatArray: {
+                bounds: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                _position: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                setBounds(x: number, y: number, z: number): void;
+                getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): number;
+                setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("Meta/index.js").PositionMatrix, array: import("Meta/index.js").ChunkVoxels): void;
+                getIndex(x: number, y: number, z: number): number;
+                getXYZ(index: number): import("Meta/index.js").PositionMatrix;
+            };
+            _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
+            _setHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
+            _markSubstanceAsNotExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
+            _markSubstanceAsExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
+            _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
+            getStartingHeightMapValue(): number;
+            setNewHeightDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+            getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+            getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+            isSubstanceExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
+            markSubstanceAsExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+            markSubstanceAsNotExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+            setMinYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+            getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+            setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+            getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
         getVoxelByte(): {
             setId(id: number, value: number): number;
@@ -82,6 +121,7 @@ export declare const DVEP: {
             removeSunLight(sl: number): number;
         };
         getWorldBounds(): {
+            __maxChunkYSize: number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -89,6 +129,7 @@ export declare const DVEP: {
             chunkYSize: number;
             chunkZSize: number;
             chunkTotalVoxels: number;
+            chunkArea: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -178,6 +219,7 @@ export declare const DVEP: {
         radToDeg(radians: number): number;
     };
     worldBounds: {
+        __maxChunkYSize: number;
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -185,6 +227,7 @@ export declare const DVEP: {
         chunkYSize: number;
         chunkZSize: number;
         chunkTotalVoxels: number;
+        chunkArea: number;
         regionXPow2: number;
         regionYPow2: number;
         regionZPow2: number;
@@ -303,6 +346,7 @@ export declare const DVEP: {
             getXYZ(index: number): import("Meta/index.js").PositionMatrix;
         };
         worldBounds: {
+            __maxChunkYSize: number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -310,6 +354,7 @@ export declare const DVEP: {
             chunkYSize: number;
             chunkZSize: number;
             chunkTotalVoxels: number;
+            chunkArea: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -587,7 +632,7 @@ export declare const DVEP: {
     syncSettings(data: EngineSettingsData): void;
     isReady(): boolean;
     reStart(): void;
-    $INIT(initData: DVEWGInitData): Promise<void>;
+    $INIT(initData: DVEPInitData): Promise<void>;
     rebuildQueMap: Record<string, boolean>;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     runRGBFloodFill(x: number, y: number, z: number): void;
