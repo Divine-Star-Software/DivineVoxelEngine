@@ -42,9 +42,9 @@ export const TextureManager = {
   path: string,
   substance: VoxelSubstanceType
  ) {
-  if (!texture.varations) return count;
-  for (const varation of Object.keys(texture.varations)) {
-   const data = texture.varations[varation];
+  if (!texture.variations) return count;
+  for (const varation of Object.keys(texture.variations)) {
+   const data = texture.variations[varation];
    if (data.frames == 0) {
     this.uvTextureMap[substance][`${texture.id}:${varation}`] = count;
     texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);

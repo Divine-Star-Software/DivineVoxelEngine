@@ -50,7 +50,4 @@ export type EngineSettingsData = {
   doSunLight: boolean;
   doRGBLight: boolean;
  };
- meshing?: {
-  maxBuilderThreads: number;
- };
 };

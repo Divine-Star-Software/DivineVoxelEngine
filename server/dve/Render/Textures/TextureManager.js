@@ -24,10 +24,10 @@ export const TextureManager = {
         flora: {},
     },
     _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, substance) {
-        if (!texture.varations)
+        if (!texture.variations)
             return count;
-        for (const varation of Object.keys(texture.varations)) {
-            const data = texture.varations[varation];
+        for (const varation of Object.keys(texture.variations)) {
+            const data = texture.variations[varation];
             if (data.frames == 0) {
                 this.uvTextureMap[substance][`${texture.id}:${varation}`] = count;
                 texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);

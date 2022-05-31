@@ -54,9 +54,6 @@ export const EngineSettings = {
    disableFloraShaderEffects: false,
    disableFluidShaderEffects: false,
   },
-  meshing: {
-   maxBuilderThreads: 6,
-  },
  },
 
  syncSettings(data: EngineSettingsData) {

@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -99,8 +99,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -811,7 +811,6 @@ export declare const DVEW: {
         paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
-        insertData(x: number, y: number, z: number, data: number): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;

@@ -63,7 +63,7 @@ path?: string;
 * - dreamstone/default.png
 * - dreamstone/grassy-top.png
 */
-varations?: Record<string, TextureAnimationData>;
+variations?: Record<string, TextureAnimationData>;
 }
 & TextureAnimationData
 ;

@@ -55,7 +55,7 @@ export const WorldGeneration = {
   const minMaxMap = new Uint32Array(minMaxMapSAB);
 
   return {
-   proto: proto,
+   proto: 0,
    voxelsSAB: chunkSAB,
    voxels: chunkVoxels,
    voxelsStatesSAB: chunkStatesSAB,

@@ -235,17 +235,6 @@ export const WorldData = {
              */
         }
     },
-    insertData(x, y, z, data) {
-        let region = this.getRegion(x, y, z);
-        if (!region) {
-            region = this.addRegion(x, y, z);
-        }
-        let chunk = this.getChunk(x, y, z);
-        if (!chunk) {
-            chunk = this.addChunk(x, y, z);
-        }
-        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
-    },
     getChunk(x, y, z) {
         const region = this.getRegion(x, y, z);
         if (!region)

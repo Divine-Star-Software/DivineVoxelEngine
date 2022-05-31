@@ -19,13 +19,13 @@ export const SolidMesh = {
         mesh.isPickable = false;
         mesh.checkCollisions = true;
         mesh.doNotSerialize = true;
+        mesh.receiveShadows = true;
         return mesh;
     },
     async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
         const chunkVertexData = new BABYLON.VertexData();
         chunkVertexData.positions = positions;
         chunkVertexData.indices = indicies;
-        // chunkVertexData.colors = linearColors;
         chunkVertexData.applyToMesh(mesh, true);
         mesh.setVerticesData("cuv3", uvs, false, 3);
         mesh.setVerticesData("aoColors", aoColors, false, 4);
@@ -35,5 +35,5 @@ export const SolidMesh = {
         mesh.material = SolidMaterial.material;
         mesh.freezeWorldMatrix();
         return mesh;
-    }
+    },
 };

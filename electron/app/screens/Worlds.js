@@ -42,6 +42,11 @@ export const Worlds = [
              world: "ServerTest",
              }, */
             {
+                title: "Shadow Test",
+                description: "Used to test dynamic lights and shadows.",
+                world: "ShadowTest",
+            },
+            {
                 title: "Nexus & Matrix Test",
                 description: "Used to test the Nexus and Matrix parts of the engine.",
                 world: "NexusMatrixTest",

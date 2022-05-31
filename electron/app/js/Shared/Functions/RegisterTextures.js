@@ -4,7 +4,7 @@ export function RegisterTexutres(DVER) {
         name: "Debug Texture",
         id: "debug",
         frames: 0,
-        varations: {
+        variations: {
             top: { frames: 0 },
             bottom: { frames: 0 },
             north: { frames: 0 },
@@ -17,7 +17,7 @@ export function RegisterTexutres(DVER) {
         name: "Light Debug Texture",
         id: "light-debug",
         frames: 0,
-        varations: {
+        variations: {
             "light-level-0": { frames: 0 },
             "light-level-1": { frames: 0 },
             "light-level-2": { frames: 0 },
@@ -40,7 +40,7 @@ export function RegisterTexutres(DVER) {
         name: "Dream Stone Textures",
         id: "dreamstone",
         frames: 0,
-        varations: {
+        variations: {
             "grassy-top": { frames: 0 },
             "grassy-side": { frames: 0 },
         },
@@ -49,7 +49,7 @@ export function RegisterTexutres(DVER) {
         name: "Dream Stone Pillar",
         id: "dreamstone-pillar",
         frames: 0,
-        varations: {
+        variations: {
             "side-bottom": { frames: 0 },
             "side-top": { frames: 0 },
             top: { frames: 0 },
@@ -69,7 +69,7 @@ export function RegisterTexutres(DVER) {
         name: "Liquid Dream Ether Texture",
         id: "liquid-dream-ether",
         frames: 0,
-        varations: {
+        variations: {
             still: {
                 frames: 6,
                 animKeys: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],

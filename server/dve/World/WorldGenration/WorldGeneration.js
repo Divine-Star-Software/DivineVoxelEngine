@@ -42,7 +42,7 @@ export const WorldGeneration = {
         const minMaxMapSAB = new SharedArrayBuffer(4 * 2);
         const minMaxMap = new Uint32Array(minMaxMapSAB);
         return {
-            proto: proto,
+            proto: 0,
             voxelsSAB: chunkSAB,
             voxels: chunkVoxels,
             voxelsStatesSAB: chunkStatesSAB,

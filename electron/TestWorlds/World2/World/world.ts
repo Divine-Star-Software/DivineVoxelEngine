@@ -9,7 +9,6 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
  onReady: () => {},
 });
-console.log("start");
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 
 WorldGen.generateChunk(0, 0);
@@ -32,6 +31,5 @@ for (let x = startX; x <= endX; x += 16) {
   DVEW.buildChunk(x, 0, z);
  }
 }
-DVEW.buildChunk(0, 0, 0);
 
 (self as any).DVEW = DVEW;

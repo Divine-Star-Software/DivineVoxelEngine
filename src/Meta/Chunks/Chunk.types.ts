@@ -13,7 +13,8 @@ export type ChunkTemplate = {
 export type ChunkVoxels = number[] | Uint32Array;
 
 export type ChunkData = {
- proto: boolean;
+ proto: number;
+ isEmpty: boolean;
  voxelsSAB: SharedArrayBuffer;
  voxels: Uint32Array;
  voxelsStatesSAB: SharedArrayBuffer;
@@ -22,7 +23,7 @@ export type ChunkData = {
  heightMap: Uint32Array;
  minMaxMapSAB : SharedArrayBuffer;
  minMaxMap: Uint32Array;
- isEmpty: boolean;
+
  position: number[];
 };
 export type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

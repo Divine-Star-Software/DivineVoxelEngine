@@ -13,6 +13,12 @@ export const ShapeManager = {
         }
         return this.shapes[shapeId];
     },
+    getShapeId(shapeId) {
+        if (!this.shapeMap[shapeId]) {
+            throw new Error(`%${shapeId} does not exists.`);
+        }
+        return this.shapeMap[shapeId];
+    },
     getShapeMap() {
         return this.shapeMap;
     },

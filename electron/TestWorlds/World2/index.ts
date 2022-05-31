@@ -9,7 +9,6 @@ import {
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { VoxelTemplateSubstanceType } from "../../out/Meta/index.js";
 
 RegisterTexutres(DVER);
 

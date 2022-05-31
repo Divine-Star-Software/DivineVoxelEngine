@@ -5,5 +5,6 @@ export declare const ShapeManager: {
     shapeCount: number;
     registerShape(shapeObject: VoxelShapeInterface): void;
     getShape(shapeId: number): VoxelShapeInterface;
+    getShapeId(shapeId: string): number;
     getShapeMap(): Record<string, number>;
 };

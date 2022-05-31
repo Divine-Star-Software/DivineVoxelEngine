@@ -5,7 +5,11 @@
   "type": "module",
   "typings": "dist/index.ts",
   "description": "TypeScript Voxel Engine - Uses Babylon.js",
-  "keywords": ["voxel","voxel engine","babylon.js"],
+  "keywords": [
+    "voxel",
+    "voxel engine",
+    "babylon.js"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.11.7",
-    "babylonjs": "^4.2.0",
+    "babylonjs": "^5.8.2",
     "esbuild": "^0.14.14",
     "rollup": "^2.66.1",
     "rollup-plugin-dts": "^4.1.0",

@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
 import type { DVEBInitData } from "Meta/Builder/DVEB.js";
 export declare const DVEB: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     _3dFlatArray: {
@@ -92,8 +92,8 @@ export declare const DVEB: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -541,6 +541,7 @@ export declare const DVEB: {
         shapeCount: number;
         registerShape(shapeObject: import("../Meta/index.js").VoxelShapeInterface): void;
         getShape(shapeId: number): import("../Meta/index.js").VoxelShapeInterface;
+        getShapeId(shapeId: string): number;
         getShapeMap(): Record<string, number>;
     };
     shapeHelper: {

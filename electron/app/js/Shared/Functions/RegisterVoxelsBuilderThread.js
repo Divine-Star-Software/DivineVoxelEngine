@@ -1,6 +1,6 @@
 //voxels
 import { DebugBoxVoxelBuilderThread } from "../../Shared/Voxels/Solid/DebugBox/DebugBox.voxel.builder.js";
-import { DreamGrassBlockVoxelBuilderThread } from "../../Shared/Voxels/Solid/DreamGrass/DreamGrass.voxel.builder.js";
+import { DreamGrassBlockVoxelBuilderThread } from "../Voxels/Solid/DreamGrass/DreamGrassBlock.voxel.builder.js";
 import { DreamStoneVoxelBuilderThread } from "../../Shared/Voxels/Solid/DreamStone/DreamStone.voxel.builder.js";
 import { DreamStonePillarVoxelBuilderThread } from "../../Shared/Voxels/Solid/DreamStonePillar/DreamStonePillar.voxel.builder.js";
 import { DreamLampVoxelBuilderThread } from "../../Shared/Voxels/Solid/DreamLamp/DreamLamp.voxel.builder.js";

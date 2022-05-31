@@ -193,7 +193,6 @@ export declare const WorldData: {
     paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: PositionMatrix, voxelData: VoxelData, chunk: ChunkData): void;
     __handleHeightMapUpdateForVoxelRemove(voxelPOS: PositionMatrix, voxelData: VoxelData, chunk: ChunkData): void;
-    insertData(x: number, y: number, z: number, data: number): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;
     removeChunk(x: number, y: number, z: number): false | undefined;
     setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInThreads?: boolean): void;

@@ -30,7 +30,6 @@ export const LightByte = {
   * ---
   * Give an array of light values it will return an encoded light number.
   * @param values
-  * @returns
   */
  setLightValues(values: number[]) {
   let value = (0 & ~(0xf << 0)) | (values[0] << 0);
@@ -47,7 +46,6 @@ export const LightByte = {
   * - 2: Green Light
   * - 3: Blue Light
   * @param value
-  * @returns
   */
  getLightValues(value: number) {
   this._lightValues[0] = (value & (0x0f << 0)) >> 0;
@@ -62,7 +60,6 @@ export const LightByte = {
   * Used for RGB light remove.
   * @param n1
   * @param n2
-  * @returns
   */
  isLessThanForRGBRemove(n1: number, n2: number) {
   let r1 = (n1 & (0x0f << 4)) >> 4;
@@ -79,7 +76,6 @@ export const LightByte = {
   * Used for RGB light add.
   * @param n1
   * @param n2
-  * @returns
   */
  isLessThanForRGBAdd(n1: number, n2: number) {
   let r1 = ((n1 & (0x0f << 4)) >> 4) + 2;
@@ -96,7 +92,6 @@ export const LightByte = {
   * Used for RGB light remove.
   * @param n1
   * @param n2
-  * @returns
   */
  isGreaterOrEqualThanForRGBRemove(n1: number, n2: number) {
   let r1 = (n1 & (0x0f << 4)) >> 4;
@@ -111,8 +106,7 @@ export const LightByte = {
  /**# Get Minus One For RGB
   * ---
   * Returns the RGB light values minus one.
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  getMinusOneForRGB(sl: number) {
   let r = ((sl & (0x0f << 4)) >> 4) - 1;
@@ -132,7 +126,7 @@ export const LightByte = {
  /**# Remove RGB Light
   * ---
   * Removes all RGB light from an encoded light value.
-  * @param sl
+  * @param sl - source light value
   */
  removeRGBLight(sl: number) {
   let bv = sl;
@@ -145,8 +139,7 @@ export const LightByte = {
  /**# Get Full Sun Light
   * --
   * Alters the encoded light number passed to it to give it full sun light.
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  getFullSunLight(sl: number) {
   return (sl & ~(0xf << 0)) | (0b1111 << 0);
@@ -158,7 +151,6 @@ export const LightByte = {
   * Used to check all neighbors expect down.
   * @param n1
   * @param n2
-  * @returns
   */
  isLessThanForSunAdd(n1: number, n2: number) {
   let sl1 = ((n1 & (0x0f << 0)) >> 0) + 2;
@@ -171,7 +163,6 @@ export const LightByte = {
   * Used to check only the down neighbor.
   * @param n1
   * @param n2
-  * @returns
   */
  isLessThanForSunAddDown(n1: number, n2: number) {
   let sl1 = (n1 & (0x0f << 0)) >> 0;
@@ -183,7 +174,6 @@ export const LightByte = {
   * Gets the sun light value for sun light addition when setting the
   * down neighbor.
   * @param currentVoxel
-  * @returns
   */
  getSunLightForUnderVoxel(currentVoxel: number) {
   let sl1 = (currentVoxel & (0x0f << 0)) >> 0;
@@ -197,8 +187,7 @@ export const LightByte = {
   * ---
   * Returns the sun light level passed to it minus one.
   * Used for sun light addition on all neighbors expect the down one.
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  getMinusOneForSun(sl: number) {
   let sun = ((sl & (0x0f << 0)) >> 0) - 1;
@@ -210,8 +199,7 @@ export const LightByte = {
   * Compares two encoded light values sun light values.
   * Used for sun light removal.
   * @param n1
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  isLessThanForSunRemove(n1: number, sl: number) {
   let s1 = (n1 & (0x0f << 0)) >> 0;
@@ -223,8 +211,7 @@ export const LightByte = {
   * Compares two encoded light values sun light values.
   * Used for sun light removal.
   * @param n1
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  isGreaterOrEqualThanForSunRemove(n1: number, sl: number) {
   let s1 = (n1 & (0x0f << 0)) >> 0;
@@ -236,8 +223,7 @@ export const LightByte = {
   * Compares two encoded light values sun light values.
   * Used for sun light removal in the downward direction only.
   * @param n1
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  sunLightCompareForDownSunRemove(n1: number, sl: number) {
   let s2 = (sl & (0x0f << 0)) >> 0;
@@ -248,8 +234,7 @@ export const LightByte = {
  /**# Remove Sun Light
   * ---
   * Removes the sun light from a light encoded value.
-  * @param sl
-  * @returns
+  * @param sl - source light value
   */
  removeSunLight(sl: number) {
   return (sl & ~(0xf << 0)) | (0 << 0);
