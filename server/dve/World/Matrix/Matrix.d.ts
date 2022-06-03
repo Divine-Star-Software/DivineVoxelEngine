@@ -1,5 +1,5 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import { MatrixRegionData } from "Meta/Matrix/MatrixData.js";
+import { MatrixRegionData } from "Meta/Matrix/Matrix.types.js";
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -64,6 +64,8 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     regions: Record<string, MatrixRegionData>;
     isChunkInMatrix(x: number, y: number, z: number): boolean;

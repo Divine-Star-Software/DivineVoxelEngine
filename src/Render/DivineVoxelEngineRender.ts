@@ -25,7 +25,7 @@ export const DVER = {
  builderCommManager: BuilderCommManager,
  propagationCommManager: PropagationCommManager,
 
- engineSettings: EngineSettings,
+ settings: EngineSettings,
  renderManager: RenderManager,
  meshManager: MeshManager,
 
@@ -36,7 +36,7 @@ export const DVER = {
  UTIL: Util,
 
  _handleOptions() {
-  const data = this.engineSettings.settings;
+  const data = this.settings.settings;
   if (data.textureOptions) {
    if (data.textureOptions.width && data.textureOptions.height) {
     this.renderManager.textureCreator.defineTextureDimensions(
@@ -48,8 +48,9 @@ export const DVER = {
  },
 
  _syncSettings(data: EngineSettingsData) {
-  this.engineSettings.syncSettings(data);
-  const copy = this.engineSettings.getSettingsCopy();
+  this.settings.syncSettings(data);
+  this.settings.syncWithWorldBounds(this.worldBounds);
+  const copy = this.settings.getSettingsCopy();
   this.worldComm.sendMessage("sync-settings", [copy]);
   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
@@ -70,7 +71,7 @@ export const DVER = {
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
   await BuildInitalMeshes(this, data.scene);
-  if (this.engineSettings.settings.nexus?.enabled) {
+  if (this.settings.settings.nexus?.enabled) {
    this.renderedEntites.setScene(data.scene);
   }
   this.worldComm.sendMessage("start", []);

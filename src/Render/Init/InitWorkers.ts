@@ -5,7 +5,7 @@ export function InitWorkers(
  DVER: DivineVoxelEngineRender,
  initData: DVERInitData
 ) {
- DVER.engineSettings.syncSettings(initData);
+ DVER.settings.syncSettings(initData);
  DVER._handleOptions();
 
  if (typeof initData.worldWorker == "string") {

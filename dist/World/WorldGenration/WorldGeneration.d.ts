@@ -63,6 +63,8 @@ export declare const WorldGeneration: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     voxelByte: {
         setId(id: number, value: number): number;

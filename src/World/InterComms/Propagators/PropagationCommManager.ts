@@ -15,7 +15,6 @@ import { VoxelSubstanceType } from "Meta/index.js";
 export const PropagationCommManager = {
  count: 0,
  numWorldGens: 0,
- states: <Int32Array>new Int32Array(),
 
  __numLightUpdates: 0,
 
@@ -23,11 +22,9 @@ export const PropagationCommManager = {
 
  worldGensConnected: 0,
 
- $INIT() {
-  const sab = new SharedArrayBuffer(4 * 4);
-  PropagationCommManager.states = new Int32Array(sab);
+ $INIT(statesSAB: SharedArrayBuffer) {
   for (const propagators of this.propagators) {
-   propagators.sendMessage(-1, [sab]);
+   propagators.sendMessage(-1, [statesSAB]);
   }
  },
 
@@ -90,70 +87,35 @@ export const PropagationCommManager = {
   return true;
  },
 
- _chunkRebuildQueMap: <
-  Record<string, Record<VoxelSubstanceType | "all", boolean>>
- >{},
- _chunkRebuildQue: <number[][]>[],
-
- __addToRebuildQue(
-  x: number,
-  y: number,
-  z: number,
-  substance: VoxelSubstanceType | "all"
- ) {
-  const chunk = DVEW.worldData.getChunk(x, y, z);
-  if (!chunk) return;
-  const chunkPOS = DVEW.worldBounds.getChunkPosition(x, y, z);
-  const chunkKey = DVEW.worldBounds.getChunkKey(chunkPOS);
-  if (!this._chunkRebuildQueMap[chunkKey]) {
-   this._chunkRebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
-   //@ts-ignore
-   this._chunkRebuildQueMap[chunkKey] = {};
-   this._chunkRebuildQueMap[chunkKey][substance] = true;
-  } else {
-   this._chunkRebuildQueMap[chunkKey][substance] = true;
-  }
- },
-
- awaitAllLightUpdates() {
-  return DVEW.UTIL.createPromiseCheck({
-   check: () => {
-    return PropagationCommManager.__numLightUpdates == 0;
-   },
-   checkInterval: 1,
-  });
- },
-
- runRebuildQue() {
-  const queue = this._chunkRebuildQue;
-  while (queue.length != 0) {
-   const position = queue.shift();
-   if (!position) break;
-   DVEW.buildChunk(position[0], position[1], position[2]);
-  }
- },
-
- runRGBFloodFillAt(x: number, y: number, z: number) {
-  const comm = this.propagators[this.count];
-  comm.sendMessage(0, [x, y, z]);
+ __handleCount() {
   this.count++;
   if (this.count >= this.numWorldGens) {
    this.count = 0;
   }
+ },
+ runRGBFloodFillAt(x: number, y: number, z: number) {
+  const comm = this.propagators[this.count];
+  comm.sendMessage(0, [x, y, z]);
+  this.__handleCount();
  },
  runRGBFloodRemoveAt(x: number, y: number, z: number) {
   const comm = this.propagators[this.count];
   comm.sendMessage(1, [x, y, z]);
-  this.count++;
-  if (this.count >= this.numWorldGens) {
-   this.count = 0;
-  }
+  this.__handleCount();
  },
-
- areRGBLightUpdatesAllDone() {
-  return Atomics.load(this.states, 0) == 0;
+ runSunLightForWorldColumn(x: number, z: number) {
+  const comm = this.propagators[this.count];
+  comm.sendMessage(2, [x, z]);
+  this.__handleCount();
  },
- areRGBLightRemovesAllDone() {
-  return Atomics.load(this.states, 1) == 0;
+ runSunFillAt(x: number, y: number, z: number) {
+  const comm = this.propagators[this.count];
+  comm.sendMessage(3, [x, y, z]);
+  this.__handleCount();
+ },
+ runSunRemoveAt(x: number, y: number, z: number) {
+  const comm = this.propagators[this.count];
+  comm.sendMessage(4, [x, y, z]);
+  this.__handleCount();
  },
 };

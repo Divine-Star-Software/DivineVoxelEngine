@@ -111,4 +111,11 @@ export const WorldBounds = {
     getVoxelPosition(x, y, z) {
         return this.getVoxelPositionFromChunkPosition(x, y, z, this.getChunkPosition(x, y, z));
     },
+    getWorldColumnKeyFromObj(position) {
+        return `${position.x}-${position.z}`;
+    },
+    getWorldColumnKey(x, z) {
+        const chunkPOS = this.getChunkPosition(x, 0, z);
+        return this.getWorldColumnKeyFromObj(chunkPOS);
+    },
 };

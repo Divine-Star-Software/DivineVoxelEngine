@@ -6,9 +6,7 @@ import { WorldGen } from "./WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({
- onReady: () => {},
-});
+await DVEW.$INIT({ onReady: () => {} });
 
 let startX = -64;
 let startZ = -64;
@@ -20,6 +18,8 @@ for (let x = startX; x < endX; x += 16) {
   WorldGen.generateChunk(x, 0, z);
  }
 }
+
+DVEW.queues.runWorldColumnSunLightQue();
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {

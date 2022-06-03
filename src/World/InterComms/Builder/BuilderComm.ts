@@ -12,7 +12,7 @@ export const GetNewBuilderComm = (count: number, port: InterCommPortTypes) => {
  });
  newComm.onSetPort((port) => {
   DVEW.matrixCentralHub.registerThread(threadName, port);
-  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+  if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
    DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
   }
  });

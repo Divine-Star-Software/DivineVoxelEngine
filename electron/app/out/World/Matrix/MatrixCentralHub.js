@@ -56,7 +56,7 @@ export const MatrixCentralHub = {
         };
     },
     syncChunk(x, y, z) {
-        if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+        if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
             if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
                 this.syncRegionVoxelPalette(x, y, z);
             }
@@ -93,7 +93,7 @@ export const MatrixCentralHub = {
         }
     },
     syncChunkInThread(threadId, x, y, z) {
-        if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+        if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
             if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
                 this.syncRegionVoxelPalette(x, y, z);
             }
@@ -155,10 +155,13 @@ export const MatrixCentralHub = {
         if (!matrixRegionData) {
             matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
         }
-        for (const chunkKeys of Object.keys(region.chunks)) {
-            const chunk = region.chunks[chunkKeys];
-            for (const threadId of Object.keys(this.threads)) {
-                this.syncChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+        for (const worldColumnKeys of Object.keys(region.chunks)) {
+            const worldColumn = region.chunks[worldColumnKeys];
+            for (const chunkKey of Object.keys(worldColumn)) {
+                const chunk = worldColumn[chunkKey];
+                for (const threadId of Object.keys(this.threads)) {
+                    this.syncChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+                }
             }
         }
     },
@@ -170,9 +173,12 @@ export const MatrixCentralHub = {
         if (!matrixRegionData) {
             matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
         }
-        for (const chunkKeys of Object.keys(region.chunks)) {
-            const chunk = region.chunks[chunkKeys];
-            this.syncChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+        for (const worldColumnKeys of Object.keys(region.chunks)) {
+            const worldColumn = region.chunks[worldColumnKeys];
+            for (const chunkKey of Object.keys(worldColumn)) {
+                const chunk = worldColumn[chunkKey];
+                this.syncChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+            }
         }
     },
     releaseRegion(x, y, z) {
@@ -183,11 +189,13 @@ export const MatrixCentralHub = {
         if (!matrixRegionData) {
             matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
         }
-        for (const chunkKeys of Object.keys(region.chunks)) {
-            const chunk = region.chunks[chunkKeys];
-            for (const threadId of Object.keys(this.threads)) {
-                delete matrixRegionData.threadsLoadedIn[threadId];
-                this.releaseChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+        for (const worldColumnKeys of Object.keys(region.chunks)) {
+            const worldColumn = region.chunks[worldColumnKeys];
+            for (const chunkKey of Object.keys(worldColumn)) {
+                const chunk = worldColumn[chunkKey];
+                for (const threadId of Object.keys(this.threads)) {
+                    this.releaseChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+                }
             }
         }
         DVEW.matrix.removeRegionFromMatrix(x, y, z);
@@ -201,9 +209,12 @@ export const MatrixCentralHub = {
             matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
         }
         delete matrixRegionData.threadsLoadedIn[threadId];
-        for (const chunkKeys of Object.keys(region.chunks)) {
-            const chunk = region.chunks[chunkKeys];
-            this.releaseChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+        for (const worldColumnKeys of Object.keys(region.chunks)) {
+            const worldColumn = region.chunks[worldColumnKeys];
+            for (const chunkKey of Object.keys(worldColumn)) {
+                const chunk = worldColumn[chunkKey];
+                this.releaseChunkInThread(threadId, chunk.position[0], chunk.position[1], chunk.position[2]);
+            }
         }
     },
     syncGlobalVoxelPalette() {

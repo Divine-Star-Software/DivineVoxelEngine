@@ -31,6 +31,7 @@ export const SetUpDefaultScene = (engine) => {
     scene.fogEnabled = true;
     scene.autoClear = false;
     scene.autoClearDepthAndStencil = false;
+    // scene.debugLayer.show();
     return scene;
 };
 export const SetUpDarkScene = (engine) => {

@@ -31,7 +31,7 @@ export const DVEW = {
  __renderIsDone: false,
 
  UTIL: Util,
- engineSettings: EngineSettings,
+ settings: EngineSettings,
 
  matrix: Matrix,
  matrixCentralHub: MatrixCentralHub,
@@ -39,42 +39,27 @@ export const DVEW = {
  nexusComm: NexusComm,
  renderComm: RenderComm,
  builderCommManager: BuilderCommManager,
- propagationCommManager : PropagationCommManager,
+ propagationCommManager: PropagationCommManager,
 
  worldGeneration: WorldGeneration,
  worldData: WorldData,
  voxelManager: VoxelManager,
- queues : QueuesManager,
+ queues: QueuesManager,
 
  isReady() {
   let ready =
    DVEW.builderCommManager.isReady() &&
-   DVEW.propagationCommManager.isReady() && 
+   DVEW.propagationCommManager.isReady() &&
    DVEW.__settingsHaveBeenSynced &&
    DVEW.__renderIsDone;
   return ready;
  },
 
  syncSettings(data: EngineSettingsData) {
-  this.engineSettings.syncSettings(data);
-  if (data.chunks) {
-   this.worldBounds.setChunkBounds(
-    data.chunks.chunkXPow2,
-    data.chunks.chunkYPow2,
-    data.chunks.chunkZPow2
-   );
-   this.worldBounds.syncBoundsWithArrays();
-  }
-  if (data.regions) {
-   this.worldBounds.setRegionBounds(
-    data.regions.regionXPow2,
-    data.regions.regionYPow2,
-    data.regions.regionZPow2
-   );
-  }
+  this.settings.syncSettings(data);
+  this.settings.syncWithWorldBounds(this.worldBounds);
   this.__settingsHaveBeenSynced = true;
  },
-
 
  /**# Remove Chunk
   * ---

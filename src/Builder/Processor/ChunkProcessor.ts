@@ -3,7 +3,7 @@ import type {
  ChunkVoxels,
  FullChunkTemplate,
 } from "Meta/Chunks/Chunk.types.js";
-import { MatrixLoadedChunk } from "Meta/Matrix/MatrixData.js";
+import { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 //objects
 import { Util } from "../../Global/Util.helper.js";
 
@@ -87,13 +87,13 @@ export const ChunkProcessor = {
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEB.worldBounds.chunkXSize;
   let maxZ = DVEB.worldBounds.chunkZSize;
-  let maxY = DVEB.worldBounds.chunkYSize;
-  let minY = 0;
+ // let maxY = DVEB.worldBounds.chunkYSize;
+//  let minY = 0;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
-   // let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
-   // let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap);
-   // console.log(minY,maxY);
+     let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
+     let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
+    // console.log(minY,maxY);
 
     for (let y = minY; y < maxY; y++) {
      const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
@@ -109,9 +109,11 @@ export const ChunkProcessor = {
      const voxelObject = DVEB.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
 
-     let baseTemplate = template[voxelObject.data.substance];
+     let baseTemplate;
      if (voxelObject.data.substance == "transparent") {
       baseTemplate = template["solid"];
+     } else {
+      baseTemplate = template[voxelObject.data.substance];
      }
 
      let faceBit = 0;

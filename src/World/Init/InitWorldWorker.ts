@@ -22,7 +22,7 @@ export async function InitWorldWorker(
   },
   checkInterval: 1,
   onReady : () => {
-      DVEW.propagationCommManager.$INIT();
+      DVEW.queues.$INIT();
   }
  });
 }

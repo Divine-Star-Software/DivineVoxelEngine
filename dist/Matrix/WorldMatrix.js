@@ -94,13 +94,18 @@ export const WorldMatrix = {
         if (!region) {
             region = this._createRegion(x, y, z);
         }
-        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-        region.chunks[chunkKey] = {
+        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
+        if (!region.chunks[worldColumnKey])
+            region.chunks[worldColumnKey] = {};
+        region.chunks[worldColumnKey][chunkKey] = {
             voxels: new Uint32Array(voxelsSAB),
             voxelStates: new Uint32Array(voxelStatesSAB),
             heightMap: new Uint32Array(heightMapSAB),
             minMaxMap: new Uint32Array(minMaxMapSAB),
             chunkStates: new Uint8Array(chunkStateSAB),
+            position: [chunkPOS.x, chunkPOS.y, chunkPOS.z],
         };
     },
     getRegion(x, y, z) {
@@ -125,11 +130,23 @@ export const WorldMatrix = {
         const region = this.getRegion(x, y, z);
         if (!region)
             return false;
-        const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-        const chunk = region.chunks[chunkKey];
-        if (!chunk)
+        const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        if (!region.chunks[worldColumnKey])
             return false;
-        return chunk;
+        const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
+        if (!region.chunks[worldColumnKey][chunkKey])
+            return false;
+        return region.chunks[worldColumnKey][chunkKey];
+    },
+    getWorldColumn(x, z) {
+        const region = this.getRegion(x, 0, z);
+        if (!region)
+            return false;
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z);
+        if (!region.chunks[worldColumnKey])
+            return false;
+        return region.chunks[worldColumnKey];
     },
     isChunkLocked(x, y, z) {
         const chunk = this.getChunk(x, y, z);

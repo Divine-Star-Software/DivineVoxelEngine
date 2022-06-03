@@ -12,10 +12,57 @@ export const QueuesManager = {
  _RGBLightRemoveQue: <number[][]>[],
  _RGBLightUpdateQue: <number[][]>[],
 
+ _worldColumnSunLightPropMap: <Record<string, boolean>>{},
+ _worldColumnSunLightPropQue: <number[][]>[],
+
  _chunkRebuildQueMap: <
   Record<string, Record<VoxelSubstanceType | "all", boolean>>
  >{},
  _chunkRebuildQue: <number[][]>[],
+
+ __statesSAB: new SharedArrayBuffer(4 * 4),
+ __states: new Uint32Array(),
+ __stateIndexes: {
+  RGBLightUpdate: 0,
+  RGBLightRemove: 1,
+  worldColumnSunLightProp: 2,
+  sunLightUpdate: 3,
+  sunLightRemove: 4,
+ },
+
+ $INIT() {
+  this.__states = new Uint32Array(this.__statesSAB);
+  DVEW.propagationCommManager.$INIT(this.__statesSAB);
+ },
+
+ addWorldColumnToSunLightQue(x: number, z: number) {
+  const worldColumnKey = `${x}-${z}`;
+  if (!this._worldColumnSunLightPropMap[worldColumnKey]) {
+   this._worldColumnSunLightPropQue.push([x, z]);
+   this._worldColumnSunLightPropMap[worldColumnKey] = true;
+  }
+ },
+
+ runWorldColumnSunLightQue() {
+  const queue = this._worldColumnSunLightPropQue;
+  while (queue.length != 0) {
+   const position = queue.shift();
+   if (!position) break;
+   Atomics.add(this.__states, this.__stateIndexes.worldColumnSunLightProp, 1);
+   DVEW.propagationCommManager.runSunLightForWorldColumn(
+    position[0],
+    position[1]
+   );
+  }
+  this._worldColumnSunLightPropMap = {};
+  this._worldColumnSunLightPropQue = [];
+ },
+
+ areWorldColumnSunLightUpdatsDone() {
+  return (
+   Atomics.load(this.__states, this.__stateIndexes.worldColumnSunLightProp) == 0
+  );
+ },
 
  addToRGBUpdateQue(x: number, y: number, z: number) {
   this._RGBLightUpdateQue.push([x, y, z]);
@@ -30,7 +77,7 @@ export const QueuesManager = {
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
-   Atomics.add(DVEW.propagationCommManager.states, 0, 1);
+   Atomics.add(this.__states, this.__stateIndexes.RGBLightUpdate, 1);
    DVEW.propagationCommManager.runRGBFloodFillAt(
     position[0],
     position[1],
@@ -45,7 +92,7 @@ export const QueuesManager = {
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
-   Atomics.add(DVEW.propagationCommManager.states, 1, 1);
+   Atomics.add(this.__states, this.__stateIndexes.RGBLightRemove, 1);
    DVEW.propagationCommManager.runRGBFloodRemoveAt(
     position[0],
     position[1],
@@ -58,7 +105,7 @@ export const QueuesManager = {
  awaitAllRGBLightUpdates() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return DVEW.propagationCommManager.areRGBLightUpdatesAllDone();
+    return QueuesManager.areRGBLightUpdatesAllDone();
    },
    checkInterval: 1,
   });
@@ -66,10 +113,17 @@ export const QueuesManager = {
  awaitAllRGBLightRemove() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return DVEW.propagationCommManager.areRGBLightRemovesAllDone();
+    return QueuesManager.areRGBLightRemovesAllDone();
    },
    checkInterval: 1,
   });
+ },
+
+ areRGBLightUpdatesAllDone() {
+  return Atomics.load(this.__states, this.__stateIndexes.RGBLightUpdate) == 0;
+ },
+ areRGBLightRemovesAllDone() {
+  return Atomics.load(this.__states, this.__stateIndexes.RGBLightRemove) == 0;
  },
 
  addToRebuildQue(
@@ -102,7 +156,6 @@ export const QueuesManager = {
   this._chunkRebuildQue = [];
   this._chunkRebuildQueMap = {};
  },
-
 
  awaitAllChunksToBeBuilt() {
   return DVEW.UTIL.createPromiseCheck({

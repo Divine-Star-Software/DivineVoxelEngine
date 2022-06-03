@@ -43,6 +43,8 @@ export const SetUpDefaultScene = (engine: BABYLON.Engine) => {
  scene.autoClear = false;
  scene.autoClearDepthAndStencil = false;
 
+// scene.debugLayer.show();
+
  return scene;
 };
 
@@ -55,6 +57,7 @@ export const SetUpDarkScene = (engine: BABYLON.Engine) => {
   earthGravity / assumedFramesPerSecond,
   0
  );
+
 
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
  scene.fogDensity = 0.008;

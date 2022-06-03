@@ -41,8 +41,7 @@ export const DVEP = {
         this.__settingsHaveBeenSynced = true;
     },
     isReady() {
-        return (this.__settingsHaveBeenSynced &&
-            this.worldComm.port !== undefined);
+        return this.__settingsHaveBeenSynced && this.worldComm.port !== undefined;
     },
     reStart() { },
     async $INIT(initData) {
@@ -67,6 +66,18 @@ export const DVEP = {
     runRGBFloodRemove(x, y, z) {
         this.illumination.runRGBFloodRemoveAt(true, x, y, z);
         this.queues.finishRGBLightRemove();
+        this.rebuildQueMap = {};
+    },
+    runSunLightForWorldColumn(x, z) {
+        const worldColumn = this.worldMatrix.getWorldColumn(x, z);
+        for (const chunkKey of Object.keys(worldColumn)) {
+            console.log(chunkKey);
+        }
+    },
+    runSunFloodFill(x, y, z) {
+        this.rebuildQueMap = {};
+    },
+    runSunFloodRemove(x, y, z) {
         this.rebuildQueMap = {};
     },
 };

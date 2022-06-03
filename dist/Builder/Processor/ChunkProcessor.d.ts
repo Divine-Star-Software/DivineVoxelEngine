@@ -1,5 +1,5 @@
 import type { ChunkVoxels, FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
-import { MatrixLoadedChunk } from "Meta/Matrix/MatrixData.js";
+import { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates

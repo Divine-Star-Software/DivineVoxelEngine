@@ -2,7 +2,7 @@ import { ChunkData } from "Meta/Chunks/Chunk.types";
 
 export type WorldRegion = {
  palette?: WorldRegionPalette;
- chunks: Record<string, ChunkData>;
+ chunks: Record<string,Record<string, ChunkData>>;
 };
 
 export type WorldRegionPalette =  {

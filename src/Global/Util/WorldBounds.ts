@@ -138,4 +138,11 @@ export const WorldBounds = {
    this.getChunkPosition(x, y, z)
   );
  },
+ getWorldColumnKeyFromObj(position: PositionMatrix) {
+  return `${position.x}-${position.z}`;
+ },
+ getWorldColumnKey(x: number, z: number) {
+  const chunkPOS = this.getChunkPosition(x, 0, z);
+  return this.getWorldColumnKeyFromObj(chunkPOS);
+ },
 };

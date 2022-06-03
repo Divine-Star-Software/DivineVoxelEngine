@@ -8,15 +8,12 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const PropagationCommManager = {
     count: 0,
     numWorldGens: 0,
-    states: new Int32Array(),
     __numLightUpdates: 0,
     propagators: [],
     worldGensConnected: 0,
-    $INIT() {
-        const sab = new SharedArrayBuffer(4 * 4);
-        PropagationCommManager.states = new Int32Array(sab);
+    $INIT(statesSAB) {
         for (const propagators of this.propagators) {
-            propagators.sendMessage(-1, [sab]);
+            propagators.sendMessage(-1, [statesSAB]);
         }
     },
     addPropagator(port) {
@@ -50,61 +47,35 @@ export const PropagationCommManager = {
             return false;
         return true;
     },
-    _chunkRebuildQueMap: {},
-    _chunkRebuildQue: [],
-    __addToRebuildQue(x, y, z, substance) {
-        const chunk = DVEW.worldData.getChunk(x, y, z);
-        if (!chunk)
-            return;
-        const chunkPOS = DVEW.worldBounds.getChunkPosition(x, y, z);
-        const chunkKey = DVEW.worldBounds.getChunkKey(chunkPOS);
-        if (!this._chunkRebuildQueMap[chunkKey]) {
-            this._chunkRebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
-            //@ts-ignore
-            this._chunkRebuildQueMap[chunkKey] = {};
-            this._chunkRebuildQueMap[chunkKey][substance] = true;
-        }
-        else {
-            this._chunkRebuildQueMap[chunkKey][substance] = true;
-        }
-    },
-    awaitAllLightUpdates() {
-        return DVEW.UTIL.createPromiseCheck({
-            check: () => {
-                return PropagationCommManager.__numLightUpdates == 0;
-            },
-            checkInterval: 1,
-        });
-    },
-    runRebuildQue() {
-        const queue = this._chunkRebuildQue;
-        while (queue.length != 0) {
-            const position = queue.shift();
-            if (!position)
-                break;
-            DVEW.buildChunk(position[0], position[1], position[2]);
+    __handleCount() {
+        this.count++;
+        if (this.count >= this.numWorldGens) {
+            this.count = 0;
         }
     },
     runRGBFloodFillAt(x, y, z) {
         const comm = this.propagators[this.count];
         comm.sendMessage(0, [x, y, z]);
-        this.count++;
-        if (this.count >= this.numWorldGens) {
-            this.count = 0;
-        }
+        this.__handleCount();
     },
     runRGBFloodRemoveAt(x, y, z) {
         const comm = this.propagators[this.count];
         comm.sendMessage(1, [x, y, z]);
-        this.count++;
-        if (this.count >= this.numWorldGens) {
-            this.count = 0;
-        }
+        this.__handleCount();
     },
-    areRGBLightUpdatesAllDone() {
-        return Atomics.load(this.states, 0) == 0;
+    runSunLightForWorldColumn(x, z) {
+        const comm = this.propagators[this.count];
+        comm.sendMessage(2, [x, z]);
+        this.__handleCount();
     },
-    areRGBLightRemovesAllDone() {
-        return Atomics.load(this.states, 1) == 0;
+    runSunFillAt(x, y, z) {
+        const comm = this.propagators[this.count];
+        comm.sendMessage(3, [x, y, z]);
+        this.__handleCount();
+    },
+    runSunRemoveAt(x, y, z) {
+        const comm = this.propagators[this.count];
+        comm.sendMessage(4, [x, y, z]);
+        this.__handleCount();
     },
 };

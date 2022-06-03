@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { WorldBounds } from "./Util/WorldBounds";
 
 /**# Engine Settings
  * ---
@@ -19,12 +20,12 @@ export const EngineSettings = {
   },
   world: {
    voxelPaletteMode: "global",
-   maxX : Infinity,
-   minX : -Infinity,
-   maxZ : Infinity,
-   minZ : -Infinity,
-   maxY : 0,
-   minY : 256
+   maxX: Infinity,
+   minX: -Infinity,
+   maxZ: Infinity,
+   minZ: -Infinity,
+   maxY: 0,
+   minY: 256,
   },
   regions: {
    regionXPow2: 9,
@@ -65,7 +66,32 @@ export const EngineSettings = {
   }
  },
 
+ syncWithWorldBounds(worldBounds: typeof WorldBounds) {
+  if (this.settings.chunks) {
+   worldBounds.setChunkBounds(
+    this.settings.chunks.chunkXPow2,
+    this.settings.chunks.chunkYPow2,
+    this.settings.chunks.chunkZPow2
+   );
+   worldBounds.syncBoundsWithArrays();
+  }
+  if (this.settings.regions) {
+   worldBounds.setRegionBounds(
+    this.settings.regions.regionXPow2,
+    this.settings.regions.regionYPow2,
+    this.settings.regions.regionZPow2
+   );
+  }
+ },
+
  getSettingsCopy() {
   return JSON.parse(JSON.stringify(this.settings));
+ },
+
+ doSunPropagation() {
+  return this.settings.lighting?.autoSunLight == true;
+ },
+ doRGBPropagation() {
+  return this.settings.lighting?.autoRGBLight == true;
  },
 };

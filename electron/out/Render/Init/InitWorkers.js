@@ -1,5 +1,5 @@
 export function InitWorkers(DVER, initData) {
-    DVER.engineSettings.syncSettings(initData);
+    DVER.settings.syncSettings(initData);
     DVER._handleOptions();
     if (typeof initData.worldWorker == "string") {
         const worker = DVER.__createWorker(initData.worldWorker);

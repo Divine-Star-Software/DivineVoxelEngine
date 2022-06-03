@@ -14,7 +14,7 @@ export async function InitWorldWorker(DVEW, initData) {
         },
         checkInterval: 1,
         onReady: () => {
-            DVEW.propagationCommManager.$INIT();
+            DVEW.queues.$INIT();
         }
     });
 }

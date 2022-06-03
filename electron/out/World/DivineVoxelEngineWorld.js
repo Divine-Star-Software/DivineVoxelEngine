@@ -25,7 +25,7 @@ export const DVEW = {
     __settingsHaveBeenSynced: false,
     __renderIsDone: false,
     UTIL: Util,
-    engineSettings: EngineSettings,
+    settings: EngineSettings,
     matrix: Matrix,
     matrixCentralHub: MatrixCentralHub,
     nexusComm: NexusComm,
@@ -44,14 +44,8 @@ export const DVEW = {
         return ready;
     },
     syncSettings(data) {
-        this.engineSettings.syncSettings(data);
-        if (data.chunks) {
-            this.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
-            this.worldBounds.syncBoundsWithArrays();
-        }
-        if (data.regions) {
-            this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
-        }
+        this.settings.syncSettings(data);
+        this.settings.syncWithWorldBounds(this.worldBounds);
         this.__settingsHaveBeenSynced = true;
     },
     /**# Remove Chunk

@@ -14,10 +14,10 @@ export const VoxelManager = {
 
  registerVoxelData(voxel: VoxelData) {
   this.voxels[voxel.id] = voxel;
-  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+  if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
    DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
   }
-  if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region") {
+  if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
    DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(
     voxel
    );

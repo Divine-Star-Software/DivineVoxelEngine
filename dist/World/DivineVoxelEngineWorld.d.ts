@@ -72,10 +72,7 @@ export declare const DVEW: {
             z: number;
         };
         getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-        getChunkKeyFromPosition(x: number, y: number, z: number): string; /**# Delete Chunk
-         * ---
-         * Deletes a chunk from world data and releases it from all threads.
-         */
+        getChunkKeyFromPosition(x: number, y: number, z: number): string;
         getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
         getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
@@ -88,6 +85,8 @@ export declare const DVEW: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
@@ -289,10 +288,7 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
             getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
             getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
@@ -305,6 +301,8 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         getInfoByte(number?: number): {
             maxBit: number;
@@ -325,10 +323,73 @@ export declare const DVEW: {
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
-    engineSettings: {
+    settings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
+        syncWithWorldBounds(worldBounds: {
+            __maxChunkYSize: number;
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            chunkArea: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithArrays(): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
+        }): void;
         getSettingsCopy(): any;
+        doSunPropagation(): boolean;
+        doRGBPropagation(): boolean;
     };
     matrix: {
         updateDieTime: number;
@@ -377,10 +438,7 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
             getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
             getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
@@ -393,8 +451,10 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
-        regions: Record<string, import("../Meta/Matrix/MatrixData.js").MatrixRegionData>;
+        regions: Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixRegionData>;
         isChunkInMatrix(x: number, y: number, z: number): boolean;
         isRegionInMatrix(x: number, y: number, z: number): boolean;
         isChunkLocked(x: number, y: number, z: number): boolean;
@@ -411,8 +471,8 @@ export declare const DVEW: {
             minMaxMapSAB: SharedArrayBuffer;
             heightMapSAB: SharedArrayBuffer;
         };
-        getMatrixRegionData(x: number, y: number, z: number): false | import("../Meta/Matrix/MatrixData.js").MatrixRegionData;
-        addRegionToMatrix(x: number, y: number, z: number): import("../Meta/Matrix/MatrixData.js").MatrixRegionData;
+        getMatrixRegionData(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixRegionData;
+        addRegionToMatrix(x: number, y: number, z: number): import("../Meta/Matrix/Matrix.types.js").MatrixRegionData;
         removeRegionFromMatrix(x: number, y: number, z: number): false | undefined;
         deleteThreadFromRegion(threadId: string, x: number, y: number, z: number): false | undefined;
     };
@@ -456,26 +516,22 @@ export declare const DVEW: {
     propagationCommManager: {
         count: number;
         numWorldGens: number;
-        states: Int32Array;
         __numLightUpdates: number;
         propagators: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
         worldGensConnected: number;
-        $INIT(): void;
+        $INIT(statesSAB: SharedArrayBuffer): void;
         addPropagator(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
         syncRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
         releaseRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
-        _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
-        _chunkRebuildQue: number[][];
-        __addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        awaitAllLightUpdates(): Promise<boolean>;
-        runRebuildQue(): void;
+        __handleCount(): void;
         runRGBFloodFillAt(x: number, y: number, z: number): void;
         runRGBFloodRemoveAt(x: number, y: number, z: number): void;
-        areRGBLightUpdatesAllDone(): boolean;
-        areRGBLightRemovesAllDone(): boolean;
+        runSunLightForWorldColumn(x: number, z: number): void;
+        runSunFillAt(x: number, y: number, z: number): void;
+        runSunRemoveAt(x: number, y: number, z: number): void;
     };
     worldGeneration: {
         worldBounds: {
@@ -523,10 +579,7 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
             getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
             getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
@@ -539,6 +592,8 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         voxelByte: {
             setId(id: number, value: number): number;
@@ -624,7 +679,6 @@ export declare const DVEW: {
     };
     worldData: {
         regions: Record<string, import("../Meta/World/WorldData/World.types.js").WorldRegion>;
-        chunks: Record<string, import("../Meta/index.js").ChunkData>;
         heightByte: {
             heightMapArray: {
                 bounds: {
@@ -778,10 +832,7 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
             getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
             getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
@@ -794,6 +845,8 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         runRebuildCheck(x: number, y: number, z: number): void;
         getCurrentWorldDataSize(): number;
@@ -834,14 +887,31 @@ export declare const DVEW: {
         _numRGBLightRemoves: number;
         _RGBLightRemoveQue: number[][];
         _RGBLightUpdateQue: number[][];
+        _worldColumnSunLightPropMap: Record<string, boolean>;
+        _worldColumnSunLightPropQue: number[][];
         _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
         _chunkRebuildQue: number[][];
+        __statesSAB: SharedArrayBuffer;
+        __states: Uint32Array;
+        __stateIndexes: {
+            RGBLightUpdate: number;
+            RGBLightRemove: number;
+            worldColumnSunLightProp: number;
+            sunLightUpdate: number;
+            sunLightRemove: number;
+        };
+        $INIT(): void;
+        addWorldColumnToSunLightQue(x: number, z: number): void;
+        runWorldColumnSunLightQue(): void;
+        areWorldColumnSunLightUpdatsDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
         runRGBUpdateQue(): void;
         runRGBRemoveQue(): void;
         awaitAllRGBLightUpdates(): Promise<boolean>;
         awaitAllRGBLightRemove(): Promise<boolean>;
+        areRGBLightUpdatesAllDone(): boolean;
+        areRGBLightRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
         runRebuildQue(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;

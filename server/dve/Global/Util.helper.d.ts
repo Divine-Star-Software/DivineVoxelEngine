@@ -209,6 +209,8 @@ export declare const Util: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     getInfoByte(number?: number): {
         maxBit: number;

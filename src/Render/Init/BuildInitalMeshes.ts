@@ -24,7 +24,7 @@ export async function BuildInitalMeshes(
    solidTextures
   );
  DVER.renderManager.solidMaterial.createMaterial(
-  DVER.engineSettings.settings,
+  DVER.settings.settings,
   scene,
   combinedChunkTextures,
   solidAnimations,
@@ -61,7 +61,7 @@ export async function BuildInitalMeshes(
    fluidTextures
   );
  DVER.renderManager.fluidMaterial.createMaterial(
-  DVER.engineSettings.settings,
+  DVER.settings.settings,
   scene,
   combinedFluidTextures,
   fluidAnimations,

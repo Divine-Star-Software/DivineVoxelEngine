@@ -59,6 +59,8 @@ export declare const DVER: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
@@ -80,10 +82,73 @@ export declare const DVER: {
         setPropagators(worldGens: Worker[]): void;
         syncSettings(data: any): void;
     };
-    engineSettings: {
+    settings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
+        syncWithWorldBounds(worldBounds: {
+            __maxChunkYSize: number;
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            chunkArea: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithArrays(): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
+        }): void;
         getSettingsCopy(): any;
+        doSunPropagation(): boolean;
+        doRGBPropagation(): boolean;
     };
     renderManager: {
         shaderBuilder: {
@@ -216,8 +281,8 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -419,6 +484,8 @@ export declare const DVER: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         getInfoByte(number?: number): {
             maxBit: number;

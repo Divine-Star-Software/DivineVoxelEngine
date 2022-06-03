@@ -63,7 +63,6 @@ const voxelPaletteGetFunctions = <
 export const WorldData = {
  regions: <Record<string, WorldRegion>>{},
 
- chunks: <Record<string, ChunkData>>{},
 
 
  heightByte: Util.getHeightByte(),
@@ -71,7 +70,6 @@ export const WorldData = {
  voxelByte: Util.getVoxelByte(),
  _3dArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
-
 
  runRebuildCheck(x: number, y: number, z: number) {
   DVEW.queues.addToRebuildQue(x, y, z, "all");
@@ -82,7 +80,6 @@ export const WorldData = {
   DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
   DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
  },
-
 
  getCurrentWorldDataSize() {
   const data = JSON.stringify(this.regions);
@@ -226,7 +223,7 @@ export const WorldData = {
 
  addRegion(x: number, y: number, z: number): WorldRegion {
   let regionPalette =
-   DVEW.engineSettings.settings.world?.voxelPaletteMode == "per-region";
+   DVEW.settings.settings.world?.voxelPaletteMode == "per-region";
   const newRegion = DVEW.worldGeneration.getBlankRegion(regionPalette);
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   this.regions[regionKey] = newRegion;
@@ -266,17 +263,23 @@ export const WorldData = {
   }
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
-   DVEW.engineSettings.settings.world?.voxelPaletteMode
+   DVEW.settings.settings.world?.voxelPaletteMode
   ](voxelId, voxelStateId, region);
   if (data < 0) return;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
   this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
-  if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+  if (DVEW.settings.doRGBPropagation()) {
    const voxel = DVEW.voxelManager.getVoxel(voxelId);
    if (voxel.lightSource && voxel.lightValue) {
     DVEW.queues.addToRGBUpdateQue(x, y, z);
    }
+  }
+  if (DVEW.settings.doSunPropagation()) {
+   DVEW.queues.addWorldColumnToSunLightQue(
+    chunk.position[0],
+    chunk.position[1]
+   );
   }
  },
 
@@ -296,7 +299,7 @@ export const WorldData = {
    voxelPOS.z,
    chunk.heightMap
   );
-  this.heightByte.updateChunkMinMax(voxelPOS,chunk.heightMap);
+  this.heightByte.updateChunkMinMax(voxelPOS, chunk.heightMap);
  },
 
  __handleHeightMapUpdateForVoxelRemove(
@@ -326,9 +329,12 @@ export const WorldData = {
  getChunk(x: number, y: number, z: number): ChunkData | false {
   const region = this.getRegion(x, y, z);
   if (!region) return false;
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
-  if (!region.chunks[chunkKey]) return false;
-  return region.chunks[chunkKey];
+  const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
+  const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
+  const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+  if (!region.chunks[worldColumnKey]) return false;
+  if (!region.chunks[worldColumnKey][chunkKey]) return false;
+  return region.chunks[worldColumnKey][chunkKey];
  },
 
  removeChunk(x: number, y: number, z: number) {
@@ -351,11 +357,17 @@ export const WorldData = {
   }
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
+  const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
   const chunks = region.chunks;
   chunk.position[0] = chunkPOS.x;
   chunk.position[1] = chunkPOS.y;
   chunk.position[2] = chunkPOS.z;
-  chunks[chunkKey] = chunk;
+
+  if(!chunks[worldColumnKey]) {
+    chunks[worldColumnKey] = {};
+  }
+  
+  chunks[worldColumnKey][chunkKey] = chunk;
   if (doNotSyncInThreads) return;
   DVEW.builderCommManager.syncChunkInAllBuilders(
    chunkPOS.x,
@@ -390,7 +402,7 @@ export const WorldData = {
   }
   const data = voxelPaletteGetFunctions[
    //@ts-ignore
-   DVEW.engineSettings.settings.world?.voxelPaletteMode
+   DVEW.settings.settings.world?.voxelPaletteMode
   ](voxelId, voxelStateId, region);
   if (data < 0) return;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
@@ -398,13 +410,13 @@ export const WorldData = {
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
   this.runRebuildCheck(x, y, z);
   let needLightUpdate = false;
-  if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+  if (DVEW.settings.settings.lighting?.autoRGBLight) {
    if (voxelData.lightSource && voxelData.lightValue) {
     needLightUpdate = true;
     DVEW.queues.addToRGBUpdateQue(x, y, z);
    }
   }
-  if (DVEW.engineSettings.settings.updating?.autoRebuild) {
+  if (DVEW.settings.settings.updating?.autoRebuild) {
    if (needLightUpdate) {
     DVEW.queues.runRGBUpdateQue();
     await DVEW.queues.awaitAllRGBLightUpdates();
@@ -424,7 +436,7 @@ export const WorldData = {
   this.__handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk);
   this.runRebuildCheck(x, y, z);
   let needLightUpdate = false;
-  if (DVEW.engineSettings.settings.lighting?.autoRGBLight) {
+  if (DVEW.settings.settings.lighting?.autoRGBLight) {
    if (voxelData.lightSource && voxelData.lightValue) {
     DVEW.queues.addToRGBRemoveQue(x, y, z);
     needLightUpdate = true;
@@ -437,7 +449,7 @@ export const WorldData = {
    }
   }
 
-  if (DVEW.engineSettings.settings.updating?.autoRebuild) {
+  if (DVEW.settings.settings.updating?.autoRebuild) {
    if (needLightUpdate) {
     DVEW.queues.runRGBRemoveQue();
     await DVEW.queues.awaitAllRGBLightRemove();

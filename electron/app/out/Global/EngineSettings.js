@@ -22,7 +22,7 @@ export const EngineSettings = {
             maxZ: Infinity,
             minZ: -Infinity,
             maxY: 0,
-            minY: 256
+            minY: 256,
         },
         regions: {
             regionXPow2: 9,
@@ -61,7 +61,22 @@ export const EngineSettings = {
             }
         }
     },
+    syncWithWorldBounds(worldBounds) {
+        if (this.settings.chunks) {
+            worldBounds.setChunkBounds(this.settings.chunks.chunkXPow2, this.settings.chunks.chunkYPow2, this.settings.chunks.chunkZPow2);
+            worldBounds.syncBoundsWithArrays();
+        }
+        if (this.settings.regions) {
+            worldBounds.setRegionBounds(this.settings.regions.regionXPow2, this.settings.regions.regionYPow2, this.settings.regions.regionZPow2);
+        }
+    },
     getSettingsCopy() {
         return JSON.parse(JSON.stringify(this.settings));
+    },
+    doSunPropagation() {
+        return this.settings.lighting?.autoSunLight == true;
+    },
+    doRGBPropagation() {
+        return this.settings.lighting?.autoRGBLight == true;
     },
 };

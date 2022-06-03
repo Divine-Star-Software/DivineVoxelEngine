@@ -9,7 +9,6 @@ import { PositionMatrix } from "Meta/Util.types.js";
  */
 export declare const WorldData: {
     regions: Record<string, WorldRegion>;
-    chunks: Record<string, ChunkData>;
     heightByte: {
         heightMapArray: {
             bounds: {
@@ -176,6 +175,8 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     runRebuildCheck(x: number, y: number, z: number): void;
     getCurrentWorldDataSize(): number;

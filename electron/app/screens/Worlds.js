@@ -7,7 +7,7 @@ export const Worlds = [
                 title: "Dream Space",
                 description: `A dream like location filled with liquid dream ether. 
     You can break and place voxels.`,
-                world: "World1",
+                world: "DreamSpace",
             },
             {
                 title: "Simple",

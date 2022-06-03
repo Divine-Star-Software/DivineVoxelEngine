@@ -8,7 +8,7 @@ export const GetNewPropagationComm = (count, port) => {
     newComm.onSetPort((port) => {
         newComm.name = threadName;
         DVEW.matrixCentralHub.registerThread(threadName, port);
-        if (DVEW.engineSettings.settings.world?.voxelPaletteMode == "global") {
+        if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
             DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
         }
     });

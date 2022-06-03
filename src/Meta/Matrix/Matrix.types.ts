@@ -6,12 +6,13 @@ export type MatrixLoadedChunk = {
  heightMap: Uint32Array;
  minMaxMap : Uint32Array;
  chunkStates: Uint8Array;
+ position : number[]
 };
 export type MatrixLoadedRegion = Record<
  string,
  {
   palette?: WorldRegionPalette;
-  chunks: Record<string, MatrixLoadedChunk>;
+  chunks: Record<string,Record<string, MatrixLoadedChunk>>;
  }
 >;
 

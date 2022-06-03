@@ -1,4 +1,4 @@
-import type { MatrixLoadedRegion } from "../Meta/Matrix/MatrixData";
+import type { MatrixLoadedChunk, MatrixLoadedRegion } from "../Meta/Matrix/Matrix.types";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 /**# World Matrix
  * ---
@@ -48,7 +48,14 @@ export declare const WorldMatrix: {
             z: number;
         };
         __chunkPosition: {
-            x: number;
+            /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
+            x: number; /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
             y: number;
             z: number;
         };
@@ -66,7 +73,14 @@ export declare const WorldMatrix: {
             z: number;
         };
         getChunkPosition(x: number, y: number, z: number): {
-            x: number;
+            /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
+            x: number; /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
             y: number;
             z: number;
         };
@@ -84,6 +98,8 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types").PositionMatrix): string;
+        getWorldColumnKey(x: number, z: number): string;
     };
     voxelByte: {
         setId(id: number, value: number): number;
@@ -121,14 +137,15 @@ export declare const WorldMatrix: {
     __setChunk(x: number, y: number, z: number, voxelsSAB: SharedArrayBuffer, voxelStatesSAB: SharedArrayBuffer, heightMapSAB: SharedArrayBuffer, minMaxMapSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
     getRegion(x: number, y: number, z: number): false | {
         palette?: WorldRegionPalette | undefined;
-        chunks: Record<string, import("../Meta/Matrix/MatrixData").MatrixLoadedChunk>;
+        chunks: Record<string, Record<string, MatrixLoadedChunk>>;
     };
     /**# Remove Chunk
      * ---
      * To be only called by the Matrix Hub.
      */
     __removeChunk(x: number, y: number, z: number): false | undefined;
-    getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/MatrixData").MatrixLoadedChunk;
+    getChunk(x: number, y: number, z: number): false | MatrixLoadedChunk;
+    getWorldColumn(x: number, z: number): false | Record<string, MatrixLoadedChunk>;
     isChunkLocked(x: number, y: number, z: number): boolean;
     lockChunk(x: number, y: number, z: number): boolean;
     unLockChunk(x: number, y: number, z: number): boolean;

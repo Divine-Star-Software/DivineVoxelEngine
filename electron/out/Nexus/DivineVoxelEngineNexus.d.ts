@@ -214,6 +214,8 @@ export declare const DVEN: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("Meta/index.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         getInfoByte(number?: number): {
             maxBit: number;
@@ -240,7 +242,70 @@ export declare const DVEN: {
     engineSettings: {
         settings: EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
+        syncWithWorldBounds(worldBounds: {
+            __maxChunkYSize: number;
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            chunkArea: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithArrays(): void;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("Meta/index.js").PositionMatrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("Meta/index.js").PositionMatrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").PositionMatrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getWorldColumnKeyFromObj(position: import("Meta/index.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
+        }): void;
         getSettingsCopy(): any;
+        doSunPropagation(): boolean;
+        doRGBPropagation(): boolean;
     };
     worldMatrix: {
         _3dArray: {
@@ -322,6 +387,8 @@ export declare const DVEN: {
                 y: number;
                 z: number;
             };
+            getWorldColumnKeyFromObj(position: import("Meta/index.js").PositionMatrix): string;
+            getWorldColumnKey(x: number, z: number): string;
         };
         voxelByte: {
             setId(id: number, value: number): number;
@@ -331,7 +398,7 @@ export declare const DVEN: {
         };
         updateDieTime: number;
         loadDieTime: number;
-        regions: import("../Meta/Matrix/MatrixData.js").MatrixLoadedRegion;
+        regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
         chunks: Record<string, Uint32Array>;
         chunkStates: Record<string, Uint8Array>;
         paletteMode: number;
@@ -351,10 +418,11 @@ export declare const DVEN: {
         __setChunk(x: number, y: number, z: number, voxelsSAB: SharedArrayBuffer, voxelStatesSAB: SharedArrayBuffer, heightMapSAB: SharedArrayBuffer, minMaxMapSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
         getRegion(x: number, y: number, z: number): false | {
             palette?: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette | undefined;
-            chunks: Record<string, import("../Meta/Matrix/MatrixData.js").MatrixLoadedChunk>;
+            chunks: Record<string, Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>>;
         };
         __removeChunk(x: number, y: number, z: number): false | undefined;
-        getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/MatrixData.js").MatrixLoadedChunk;
+        getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
+        getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;

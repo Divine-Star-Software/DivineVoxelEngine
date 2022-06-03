@@ -68,4 +68,6 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
+    getWorldColumnKeyFromObj(position: PositionMatrix): string;
+    getWorldColumnKey(x: number, z: number): string;
 };

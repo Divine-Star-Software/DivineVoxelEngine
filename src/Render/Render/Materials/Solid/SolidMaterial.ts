@@ -107,6 +107,8 @@ export const SolidMaterial = {
   texture.hasAlpha = true;
   this.material.setTexture("arrayTex", texture);
 
+
+
   this.material.setFloat("sunLightLevel", 1);
   this.material.setFloat("baseLevel", 0.1);
   this.material.onBind = (mesh) => {
