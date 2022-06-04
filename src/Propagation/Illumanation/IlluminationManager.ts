@@ -11,10 +11,12 @@ import {
     runRGBFloodFill,
    } from "./Functions/RGBFloodLight.js";
    import {
+     PopulateWorldColumnWithSunLight,
     runSunLightRemove,
     runSunLightRemoveAt,
     runSunLightUpdate,
     runSunLightUpdateAt,
+    RunSunLightUpdateAtMaxY,
    } from "./Functions/SunLight.js";
 export const IlluminationManager = {
  lightByte: Util.getLightByte(),
@@ -29,10 +31,14 @@ export const IlluminationManager = {
  runRGBFloodFill: runRGBFloodFill,
  runRGBFloodRemoveAt: runRGBFloodRemoveAt,
  runRGBFloodRemove: runRGBFloodRemove,
+ populateWorldColumnWithSunLight : PopulateWorldColumnWithSunLight,
+ runSunLightUpdateAtMaxY : RunSunLightUpdateAtMaxY,
  _RGBlightUpdateQue: <number[][]>[],
  _RGBlightRemovalQue: <number[][]>[],
  _sunLightUpdateQue: <number[][]>[],
  _sunLightRemoveQue: <number[][]>[],
+
+ _visitSunMap : <Record<string,boolean>>  {},
 
  addChunkToSunLightUpdate(
   chunk: ChunkData,

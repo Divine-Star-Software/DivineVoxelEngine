@@ -133,20 +133,20 @@ export const VoxelHelper = {
 
  processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
   if (
-   DVEB.engineSettings.settings.lighting?.doRGBLight ||
-   DVEB.engineSettings.settings.lighting?.doSunLight
+   DVEB.settings.settings.lighting?.doRGBLight ||
+   DVEB.settings.settings.lighting?.doSunLight
   ) {
    this.calculateVoxelLight(data, voxel);
   }
-  if (DVEB.engineSettings.settings.lighting?.doAO) {
+  if (DVEB.settings.settings.lighting?.doAO) {
    this.calculateVoxelAO(data, voxel);
   }
  },
 
  calculateVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
   if (
-   !DVEB.engineSettings.settings.lighting?.doSunLight &&
-   !DVEB.engineSettings.settings.lighting?.doRGBLight
+   !DVEB.settings.settings.lighting?.doSunLight &&
+   !DVEB.settings.settings.lighting?.doRGBLight
   )
    return;
   this.calculdateVoxelLight(
@@ -158,7 +158,7 @@ export const VoxelHelper = {
  },
 
  calculateVoxelAO(data: VoxelProcessData, voxel: VoxelData) {
-  if (!DVEB.engineSettings.settings.lighting?.doAO) return;
+  if (!DVEB.settings.settings.lighting?.doAO) return;
   if (data.exposedFaces[0]) {
    BuildAmbientOcclusion(
     voxel,

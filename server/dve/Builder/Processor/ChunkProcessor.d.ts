@@ -14,25 +14,40 @@ export declare const ChunkProcessor: {
                 z: number;
             };
             _position: {
-                x: number;
+                x: number; /**# Chunk Processor
+                 * ---
+                 * Takes the given world data and generates templates
+                 * to build chunk meshes.
+                 */
                 y: number;
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
-            getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels): number;
+            getValueUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): number;
+            getValueUseObjSafe(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): any;
             setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels, value: number): void;
+            setValueUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels, value: number): void;
+            setValueUseObjSafe(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: ChunkVoxels): void;
-            deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels): void;
+            deleteUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
+            getXYZ(index: number): import("../../Meta/Util.types.js").Position3Matrix;
         };
         positionByte: {
             _poisiton: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            _positionMasks: {
+                x: number;
+                z: number;
+                y: number; /**# Chunk Processor
+                 * ---
+                 * Takes the given world data and generates templates
+                 * to build chunk meshes.
+                 */
             };
             getY(byteData: number): number;
             getPosition(byteData: number): {
@@ -41,7 +56,7 @@ export declare const ChunkProcessor: {
                 z: number;
             };
             setPosition(x: number, y: number, z: number): number;
-            setPositionUseObj(positionObj: import("../../Meta/Util.types.js").PositionMatrix): number;
+            setPositionUseObj(positionObj: import("../../Meta/Util.types.js").Position3Matrix): number;
         };
         _getHeightMapData: Record<import("../../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
         _setHeightMapData: Record<import("../../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -49,7 +64,9 @@ export declare const ChunkProcessor: {
         _markSubstanceAsExposed: Record<import("../../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
         _isSubstanceExposed: Record<import("../../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
-        updateChunkMinMax(voxelPOS: import("../../Meta/Util.types.js").PositionMatrix, minMax: Uint32Array): void;
+        updateChunkMinMax(voxelPOS: import("../../Meta/Util.types.js").Position3Matrix, minMax: Uint32Array): void;
+        getChunkMin(minMax: Uint32Array): number;
+        getChunkMax(minMax: Uint32Array): number;
         calculateHeightRemoveDataForSubstance(height: number, substance: import("../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
         calculateHeightAddDataForSubstance(height: number, substance: import("../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
         getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
@@ -89,19 +106,25 @@ export declare const ChunkProcessor: {
             z: number;
         };
         _position: {
-            x: number;
+            x: number; /**# Chunk Processor
+             * ---
+             * Takes the given world data and generates templates
+             * to build chunk meshes.
+             */
             y: number;
             z: number;
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
-        getValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels): number;
+        getValueUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): number;
+        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): any;
         setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels, value: number): void;
+        setValueUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels, value: number): void;
+        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: ChunkVoxels): void;
-        deleteUseObj(position: import("../../Meta/Util.types.js").PositionMatrix, array: ChunkVoxels): void;
+        deleteUseObj(position: import("../../Meta/Util.types.js").Position3Matrix, array: ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("../../Meta/Util.types.js").PositionMatrix;
+        getXYZ(index: number): import("../../Meta/Util.types.js").Position3Matrix;
     };
     chunkTemplates: Record<number, Record<number, number[][]>>;
     exposedFaces: number[];

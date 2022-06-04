@@ -1,11 +1,11 @@
-import { PositionMatrix } from "../../../out/Meta/Util.types";
+import { Position3Matrix } from "../../../out/Meta/Util.types";
 
 const face1 = (
  positions: number[],
  indices: number[],
  uvs: number[],
  colors: number[],
- position: PositionMatrix,
+ position: Position3Matrix,
  startingIndices: number,
  width: number = 0.5,
  height: number = 0.5,
@@ -47,7 +47,7 @@ const face2 = (
  indices: number[],
  uvs: number[],
  colors: number[],
- position: PositionMatrix,
+ position: Position3Matrix,
  startingIndices: number,
  width: number = 0.5,
  height: number = 0.5,

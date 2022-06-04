@@ -63,19 +63,24 @@ export const PropagationCommManager = {
         comm.sendMessage(1, [x, y, z]);
         this.__handleCount();
     },
-    runSunLightForWorldColumn(x, z) {
+    runSunLightForWorldColumn(x, z, maxY) {
         const comm = this.propagators[this.count];
-        comm.sendMessage(2, [x, z]);
+        comm.sendMessage(2, [x, z, maxY]);
+        this.__handleCount();
+    },
+    runSunFillAtMaxY(x, y, maxY) {
+        const comm = this.propagators[this.count];
+        comm.sendMessage(3, [x, y, maxY]);
         this.__handleCount();
     },
     runSunFillAt(x, y, z) {
         const comm = this.propagators[this.count];
-        comm.sendMessage(3, [x, y, z]);
+        comm.sendMessage(4, [x, y, z]);
         this.__handleCount();
     },
     runSunRemoveAt(x, y, z) {
         const comm = this.propagators[this.count];
-        comm.sendMessage(4, [x, y, z]);
+        comm.sendMessage(5, [x, y, z]);
         this.__handleCount();
     },
 };

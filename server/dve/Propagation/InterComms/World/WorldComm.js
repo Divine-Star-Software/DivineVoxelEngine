@@ -25,15 +25,22 @@ worldComm.messageFunctions = {
         //run sun light propagation for world column
         const x = data[1];
         const z = data[2];
-        DVEP.runSunLightForWorldColumn(x, z);
+        const maxY = data[3];
+        DVEP.runSunLightForWorldColumn(x, z, maxY);
     },
     3: (data) => {
+        const x = data[1];
+        const z = data[2];
+        const maxY = data[3];
+        DVEP.runSunFloodFillAtMaxY(x, z, maxY);
+    },
+    4: (data) => {
         const x = data[1];
         const y = data[2];
         const z = data[3];
         DVEP.runSunFloodFill(x, y, z);
     },
-    4: (data) => {
+    5: (data) => {
         const x = data[1];
         const y = data[2];
         const z = data[3];

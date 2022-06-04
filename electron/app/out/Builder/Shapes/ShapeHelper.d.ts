@@ -37,6 +37,7 @@ export declare const ShapeHelper: {
         getFullSunLight(sl: number): number;
         isLessThanForSunAdd(n1: number, n2: number): boolean;
         isLessThanForSunAddDown(n1: number, n2: number): boolean;
+        isLessThanForSunAddUp(n1: number, n2: number): boolean;
         getSunLightForUnderVoxel(currentVoxel: number): number;
         getMinusOneForSun(sl: number): number;
         isLessThanForSunRemove(n1: number, sl: number): boolean;

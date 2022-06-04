@@ -8,6 +8,14 @@ export declare const Matrix: {
     updateDieTime: number;
     worldBounds: {
         __maxChunkYSize: number;
+        bounds: {
+            MinZ: number;
+            MaxZ: number;
+            MinX: number;
+            MaxX: number;
+            MinY: number;
+            MaxY: number;
+        };
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -27,6 +35,10 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
+        __worldColumnPosition: {
+            x: number;
+            z: number;
+        };
         __chunkPosition: {
             x: number;
             y: number;
@@ -38,6 +50,7 @@ export declare const Matrix: {
             z: number;
         };
         syncBoundsWithArrays(): void;
+        setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -50,11 +63,11 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("../../Meta/Util.types.js").PositionMatrix): string;
+        getChunkKey(chunkPOS: import("../../Meta/Util.types.js").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../../Meta/Util.types.js").PositionMatrix): string;
+        getRegionKey(regionPOS: import("../../Meta/Util.types.js").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../../Meta/Util.types.js").PositionMatrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../../Meta/Util.types.js").Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -64,8 +77,12 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("../../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKeyFromObj(position: import("../../Meta/Util.types.js").Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
+        getWorldColumnPosition(x: number, z: number): {
+            x: number;
+            z: number;
+        };
     };
     regions: Record<string, MatrixRegionData>;
     isChunkInMatrix(x: number, y: number, z: number): boolean;

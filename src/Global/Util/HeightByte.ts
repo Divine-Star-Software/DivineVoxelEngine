@@ -1,5 +1,5 @@
 import { VoxelTemplateSubstanceType } from "Meta/index";
-import { PositionMatrix } from "Meta/Util.types.js";
+import { Position3Matrix } from "Meta/Util.types.js";
 import { HeightMapArray } from "./HeightMapArray.js";
 import { PositionByte } from "./PositionByte.js";
 /**# Height Byte
@@ -106,17 +106,22 @@ export const HeightByte = {
   return 0x80808080;
  },
 
- updateChunkMinMax(voxelPOS: PositionMatrix, minMax: Uint32Array) {
+ updateChunkMinMax(voxelPOS: Position3Matrix, minMax: Uint32Array) {
   const currentMin = this.positionByte.getY(minMax[0]);
   const currentMax = this.positionByte.getY(minMax[1]);
-  if (currentMin < voxelPOS.y) {
+  if (voxelPOS.y < currentMin) {
    minMax[0] = this.positionByte.setPositionUseObj(voxelPOS);
   }
-  if (currentMax > voxelPOS.y) {
+  if (voxelPOS.y > currentMax) {
    minMax[1] = this.positionByte.setPositionUseObj(voxelPOS);
   }
  },
-
+ getChunkMin(minMax: Uint32Array) {
+  return this.positionByte.getY(minMax[0]);
+ },
+ getChunkMax(minMax: Uint32Array) {
+  return this.positionByte.getY(minMax[1]);
+ },
  calculateHeightRemoveDataForSubstance(
   height: number,
   substance: VoxelTemplateSubstanceType,

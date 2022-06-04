@@ -213,9 +213,6 @@ export const WorldData = {
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
         }
-        if (DVEW.settings.doSunPropagation()) {
-            DVEW.queues.addWorldColumnToSunLightQue(chunk.position[0], chunk.position[1]);
-        }
     },
     __handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk) {
         let substance = voxelData.substance;
@@ -223,7 +220,7 @@ export const WorldData = {
             substance = "solid";
         }
         this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
-        this.heightByte.updateChunkMinMax(voxelPOS, chunk.heightMap);
+        this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
     },
     __handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk) {
         let substance = voxelData.substance;
@@ -348,6 +345,74 @@ export const WorldData = {
             this.setAir(x, y, z, 0);
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
+        }
+    },
+    getWorldColumn(x, z) {
+        const region = this.getRegion(x, this.worldBounds.bounds.MinY, z);
+        if (!region) {
+            return false;
+        }
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z);
+        const worldWolumn = region.chunks[worldColumnKey];
+        if (!worldWolumn)
+            return;
+        return worldWolumn;
+    },
+    getRelativeMaxWorldColumnHeight(x, z) {
+        const chunkWidth = this.worldBounds.chunkXSize;
+        const chunkDepth = this.worldBounds.chunkZSize;
+        let maxHeight = -Infinity;
+        const center = this.getAbsoluteHeightOfWorldColumn(x, z);
+        if (center > maxHeight)
+            maxHeight = center;
+        const north = this.getAbsoluteHeightOfWorldColumn(x, z + chunkDepth);
+        if (north > maxHeight)
+            maxHeight = north;
+        const south = this.getAbsoluteHeightOfWorldColumn(x, z - chunkDepth);
+        if (south > maxHeight)
+            maxHeight = south;
+        const east = this.getAbsoluteHeightOfWorldColumn(x + chunkWidth, z);
+        if (east > maxHeight)
+            maxHeight = east;
+        const west = this.getAbsoluteHeightOfWorldColumn(x - chunkWidth, z);
+        if (west > maxHeight)
+            maxHeight = west;
+        const northEast = this.getAbsoluteHeightOfWorldColumn(x + chunkWidth, z + chunkDepth);
+        if (northEast > maxHeight)
+            maxHeight = northEast;
+        const northWest = this.getAbsoluteHeightOfWorldColumn(x - chunkWidth, z + chunkDepth);
+        if (northWest > maxHeight)
+            maxHeight = northWest;
+        const southEast = this.getAbsoluteHeightOfWorldColumn(x + chunkWidth, z + chunkDepth);
+        if (southEast > maxHeight)
+            maxHeight = southEast;
+        const southWest = this.getAbsoluteHeightOfWorldColumn(x - chunkWidth, z + chunkDepth);
+        if (southWest > maxHeight)
+            maxHeight = southWest;
+        return maxHeight;
+    },
+    getAbsoluteHeightOfWorldColumn(x, z) {
+        const worldColumn = this.getWorldColumn(x, z);
+        if (!worldColumn)
+            return -Infinity;
+        const chunkKeys = Object.keys(worldColumn);
+        if (chunkKeys.length == 0)
+            return -Infinity;
+        let maxHeight = -Infinity;
+        for (const chunkKey of chunkKeys) {
+            const chunk = worldColumn[chunkKey];
+            const chunkMax = this.heightByte.getChunkMax(chunk.minMaxMap) + chunk.position[1];
+            if (maxHeight < chunkMax) {
+                maxHeight = chunkMax;
+            }
+        }
+        return maxHeight + 1;
+    },
+    fillWorldCollumnWithChunks(x, z) {
+        for (let y = this.worldBounds.bounds.MinY; y < this.worldBounds.bounds.MaxY; y += this.worldBounds.chunkYSize) {
+            if (!this.getChunk(x, y, z)) {
+                this.addChunk(x, y, z);
+            }
         }
     },
 };

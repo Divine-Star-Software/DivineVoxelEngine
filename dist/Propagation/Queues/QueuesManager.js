@@ -12,4 +12,13 @@ export const QueuesManager = {
     finishRGBLightRemove() {
         Atomics.sub(this.states, 1, 1);
     },
+    finishWorldColumnSunLightProp() {
+        Atomics.sub(this.states, 2, 1);
+    },
+    finishSunLightUpdateAtMaxY() {
+        Atomics.sub(this.states, 3, 1);
+    },
+    finishSunLightUpdate() {
+        Atomics.sub(this.states, 4, 1);
+    },
 };

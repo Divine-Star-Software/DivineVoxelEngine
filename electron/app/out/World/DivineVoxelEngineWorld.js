@@ -75,7 +75,17 @@ export const DVEW = {
     buildChunk(chunkX, chunkY, chunkZ) {
         this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
     },
+    buildWorldColumn(x, z) {
+        const worldColumn = this.worldData.getWorldColumn(x, z);
+        if (!worldColumn)
+            return false;
+        for (const chunkKey of Object.keys(worldColumn)) {
+            const chunk = worldColumn[chunkKey];
+            this.buildChunk(chunk.position[0], chunk.position[1], chunk.position[2]);
+        }
+    },
     async $INIT(data) {
+        this.settings.setContext("DVEW");
         await InitWorldWorker(this, data);
     },
 };

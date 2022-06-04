@@ -1,5 +1,5 @@
 import { CreateGUI } from "../GUI/index.js";
-import { PositionMatrix } from "../../../out/Meta/Util.types";
+import { Position3Matrix } from "../../../out/Meta/Util.types";
 import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 
 export const SetUpEngine = (canvas: HTMLCanvasElement) => {
@@ -72,8 +72,8 @@ export const SetUpDarkScene = (engine: BABYLON.Engine) => {
 export const SetUpDefaultCamera = (
  scene: BABYLON.Scene,
  canvas: HTMLCanvasElement,
- startPosition: PositionMatrix = { x: 0, y: 30, z: -2 },
- startTarget: PositionMatrix = { x: 0, y: 0, z: 0 }
+ startPosition: Position3Matrix = { x: 0, y: 30, z: -2 },
+ startTarget: Position3Matrix = { x: 0, y: 0, z: 0 }
 ) => {
  const target = new BABYLON.Vector3(
   startTarget.x,

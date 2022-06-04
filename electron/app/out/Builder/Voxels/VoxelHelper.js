@@ -101,22 +101,22 @@ export const VoxelHelper = {
         return this.lightValueFunctions[type](this.getLight(x, y, z));
     },
     processVoxelLight(data, voxel) {
-        if (DVEB.engineSettings.settings.lighting?.doRGBLight ||
-            DVEB.engineSettings.settings.lighting?.doSunLight) {
+        if (DVEB.settings.settings.lighting?.doRGBLight ||
+            DVEB.settings.settings.lighting?.doSunLight) {
             this.calculateVoxelLight(data, voxel);
         }
-        if (DVEB.engineSettings.settings.lighting?.doAO) {
+        if (DVEB.settings.settings.lighting?.doAO) {
             this.calculateVoxelAO(data, voxel);
         }
     },
     calculateVoxelLight(data, voxel) {
-        if (!DVEB.engineSettings.settings.lighting?.doSunLight &&
-            !DVEB.engineSettings.settings.lighting?.doRGBLight)
+        if (!DVEB.settings.settings.lighting?.doSunLight &&
+            !DVEB.settings.settings.lighting?.doRGBLight)
             return;
         this.calculdateVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z);
     },
     calculateVoxelAO(data, voxel) {
-        if (!DVEB.engineSettings.settings.lighting?.doAO)
+        if (!DVEB.settings.settings.lighting?.doAO)
             return;
         if (data.exposedFaces[0]) {
             BuildAmbientOcclusion(voxel, data.aoTemplate, data.chunkX, data.chunkY, data.chunkZ, data.x, data.y, data.z, "top");

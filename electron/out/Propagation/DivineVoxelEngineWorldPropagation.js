@@ -20,7 +20,7 @@ export const DVEP = {
     UTIL: Util,
     worldBounds: Util.getWorldBounds(),
     _3dFlatArray: Util.getFlat3DArray(),
-    engineSettings: EngineSettings,
+    settings: EngineSettings,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
     worldComm: WorldComm,
@@ -30,14 +30,8 @@ export const DVEP = {
     voxelHelper: VoxelHelper,
     queues: QueuesManager,
     syncSettings(data) {
-        this.engineSettings.syncSettings(data);
-        if (data.chunks) {
-            this.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
-            this.worldBounds.syncBoundsWithArrays();
-        }
-        if (data.regions) {
-            this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
-        }
+        this.settings.syncSettings(data);
+        this.settings.syncWithWorldBounds(this.worldBounds);
         this.__settingsHaveBeenSynced = true;
     },
     isReady() {
@@ -45,6 +39,7 @@ export const DVEP = {
     },
     reStart() { },
     async $INIT(initData) {
+        this.settings.setContext("DVEP");
         await InitWorker(this, initData);
         this.worldComm.sendMessage("ready", []);
     },
@@ -68,14 +63,19 @@ export const DVEP = {
         this.queues.finishRGBLightRemove();
         this.rebuildQueMap = {};
     },
-    runSunLightForWorldColumn(x, z) {
-        const worldColumn = this.worldMatrix.getWorldColumn(x, z);
-        for (const chunkKey of Object.keys(worldColumn)) {
-            console.log(chunkKey);
-        }
+    runSunLightForWorldColumn(x, z, maxY) {
+        this.illumination.populateWorldColumnWithSunLight(x, z, maxY);
+        this.queues.finishWorldColumnSunLightProp();
     },
     runSunFloodFill(x, y, z) {
-        this.rebuildQueMap = {};
+        this.illumination.runSunLightUpdateAt(x, y, z);
+        this.queues.finishSunLightUpdate();
+    },
+    runSunFloodFillAtMaxY(x, z, maxY) {
+        const t1 = performance.now();
+        this.illumination.runSunLightUpdateAtMaxY(x, z, maxY);
+        const t2 = performance.now();
+        this.queues.finishSunLightUpdateAtMaxY();
     },
     runSunFloodRemove(x, y, z) {
         this.rebuildQueMap = {};

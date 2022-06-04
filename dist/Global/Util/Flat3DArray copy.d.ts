@@ -1,5 +1,5 @@
 import { ChunkVoxels } from "Meta/Chunks/Chunk.types";
-import { PositionMatrix } from "Meta/Util.types";
+import { Position3Matrix } from "Meta/Util.types";
 /**# Flat 3D Array
  * ---
  * Used to treat a 1d array as a 3d array.
@@ -17,11 +17,11 @@ export declare const Flat3DArray: {
     };
     setBounds(x: number, y: number, z: number): void;
     getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
-    getValueUseObj(position: PositionMatrix, array: ChunkVoxels): number;
+    getValueUseObj(position: Position3Matrix, array: ChunkVoxels): number;
     setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
-    setValueUseObj(position: PositionMatrix, array: ChunkVoxels, value: number): void;
+    setValueUseObj(position: Position3Matrix, array: ChunkVoxels, value: number): void;
     deleteValue(x: number, y: number, z: number, array: ChunkVoxels): void;
-    deleteUseObj(position: PositionMatrix, array: ChunkVoxels): void;
+    deleteUseObj(position: Position3Matrix, array: ChunkVoxels): void;
     getIndex(x: number, y: number, z: number): number;
-    getXYZ(index: number): PositionMatrix;
+    getXYZ(index: number): Position3Matrix;
 };

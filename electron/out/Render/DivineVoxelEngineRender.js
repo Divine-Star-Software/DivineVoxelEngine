@@ -49,6 +49,7 @@ export const DVER = {
         this._handleOptions();
     },
     async $INIT(initData) {
+        this.settings.setContext("DVER");
         InitWorkers(this, initData);
     },
     async $SCENEINIT(data) {

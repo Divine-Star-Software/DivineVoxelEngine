@@ -1,5 +1,5 @@
 import { ChunkVoxels } from "Meta/Chunks/Chunk.types";
-import { PositionMatrix } from "Meta/Util.types";
+import { Position3Matrix } from "Meta/Util.types";
 
 /**# Flat 3D Array
  * ---
@@ -29,40 +29,61 @@ export const Flat3DArray = {
  getValue(x: number, y: number, z: number, array: ChunkVoxels) {
   return array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y];
  },
- getValueUseObj(position: PositionMatrix, array: ChunkVoxels) {
+ getValueUseObj(position: Position3Matrix, array: ChunkVoxels) {
   return array[
    position.x +
     position.y * this.bounds.x +
     position.z * this.bounds.z * this.bounds.y
   ];
  },
+ getValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels) {
+  return (Atomics as any).load(
+   array,
+   position.x +
+    position.y * this.bounds.x +
+    position.z * this.bounds.z * this.bounds.y
+  );
+ },
  setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number) {
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
  },
- setValueUseObj(position: PositionMatrix, array: ChunkVoxels, value: number) {
+ setValueUseObj(position: Position3Matrix, array: ChunkVoxels, value: number) {
   array[
    position.x +
     position.y * this.bounds.x +
     position.z * this.bounds.z * this.bounds.y
   ] = value;
  },
+ setValueUseObjSafe(
+  position: Position3Matrix,
+  array: ChunkVoxels,
+  value: number
+ ) {
+  (Atomics as any).store(
+   array,
+   position.x +
+    position.y * this.bounds.x +
+    position.z * this.bounds.z * this.bounds.y,
+   value
+  );
+ },
 
  deleteValue(x: number, y: number, z: number, array: ChunkVoxels) {
   //@ts-ignore
   array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = undefined;
  },
- deleteUseObj(position: PositionMatrix, array: ChunkVoxels) {
+ deleteUseObj(position: Position3Matrix, array: ChunkVoxels) {
   //@ts-ignore
   array[
    position.x +
     position.y * this.bounds.x +
     position.z * this.bounds.z * this.bounds.y
-  ]  = undefined;;
+  ] = undefined;
  },
  getIndex(x: number, y: number, z: number) {
   return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
  },
- getXYZ(index: number): PositionMatrix {
+ getXYZ(index: number): Position3Matrix {
   this._position.x = index % this.bounds.x >> 0;
   this._position.y = (index / this.bounds.x) % this.bounds.y >> 0;
   this._position.z = (index / (this.bounds.x * this.bounds.y)) >> 0;

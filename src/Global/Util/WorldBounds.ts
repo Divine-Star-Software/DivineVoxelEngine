@@ -1,6 +1,6 @@
 import { Flat3DArray } from "./Flat3DArray.js";
 import { HeightMapArray } from "./HeightMapArray.js";
-import type { PositionMatrix } from "Meta/Util.types";
+import type { Position3Matrix } from "Meta/Util.types";
 
 /**# World Bounds
  * ---
@@ -16,6 +16,15 @@ export const WorldBounds = {
  set __maxChunkYSize(data: number) {
   throw new Error("Max Chunk Y Size can not be overridden.");
  },
+ bounds: {
+  MinZ: -Infinity,
+  MaxZ: Infinity,
+  MinX: -Infinity,
+  MaxX: Infinity,
+  MinY: 0,
+  MaxY: 258,
+ },
+
  chunkXPow2: 4,
  chunkYPow2: 7,
  chunkZPow2: 4,
@@ -28,20 +37,36 @@ export const WorldBounds = {
  chunkArea: 16 * 16,
 
  regionXPow2: 9,
- regionYPow2: 7,
+ regionYPow2: 9,
  regionZPow2: 9,
 
  regionXSize: 512,
- regionYSize: 128,
+ regionYSize: 512,
  regionZSize: 512,
 
  __regionPosition: { x: 0, y: 0, z: 0 },
+ __worldColumnPosition: { x: 0, z: 0 },
  __chunkPosition: { x: 0, y: 0, z: 0 },
  __voxelPosition: { x: 0, y: 0, z: 0 },
 
  syncBoundsWithArrays() {
   Flat3DArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
   HeightMapArray.setBounds(this.chunkXSize, 2, this.chunkZSize);
+ },
+ setWorldBounds(
+  minX: number,
+  maxX: number,
+  minZ: number,
+  maxZ: number,
+  minY: number,
+  maxY: number
+ ) {
+  this.bounds.MinX = minX;
+  this.bounds.MaxX = maxX;
+  this.bounds.MinX = minZ;
+  this.bounds.MaxZ = maxZ;
+  this.bounds.MinY = minY;
+  this.bounds.MaxY = maxY;
  },
 
  setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number) {
@@ -85,14 +110,14 @@ export const WorldBounds = {
   this.__chunkPosition.z = (z >> this.chunkZPow2) << this.chunkZPow2;
   return this.__chunkPosition;
  },
- getChunkKey(chunkPOS: PositionMatrix) {
+ getChunkKey(chunkPOS: Position3Matrix) {
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
  getChunkKeyFromPosition(x: number, y: number, z: number) {
   const chunkPOS = this.getChunkPosition(x, y, z);
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
- getRegionKey(regionPOS: PositionMatrix) {
+ getRegionKey(regionPOS: Position3Matrix) {
   return `${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`;
  },
  getRegionKeyFromPosition(x: number, y: number, z: number) {
@@ -108,7 +133,7 @@ export const WorldBounds = {
   x: number,
   y: number,
   z: number,
-  chunkPOS: PositionMatrix
+  chunkPOS: Position3Matrix
  ) {
   this.__voxelPosition.x = Math.abs(x - chunkPOS.x);
   if (x < 0) {
@@ -138,11 +163,17 @@ export const WorldBounds = {
    this.getChunkPosition(x, y, z)
   );
  },
- getWorldColumnKeyFromObj(position: PositionMatrix) {
+ getWorldColumnKeyFromObj(position: Position3Matrix) {
   return `${position.x}-${position.z}`;
  },
  getWorldColumnKey(x: number, z: number) {
   const chunkPOS = this.getChunkPosition(x, 0, z);
   return this.getWorldColumnKeyFromObj(chunkPOS);
  },
+ getWorldColumnPosition(x : number,z:number) {
+    const chunkPOS = this.getChunkPosition(x, 0, z);
+    this.__worldColumnPosition.x = chunkPOS.x;
+    this.__worldColumnPosition.z = chunkPOS.z;
+    return this.__worldColumnPosition;
+ }
 };

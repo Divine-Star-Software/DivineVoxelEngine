@@ -65,7 +65,7 @@ export const DVER = {
  },
 
  async $INIT(initData: DVERInitData) {
-    
+  this.settings.setContext("DVER");
    InitWorkers(this, initData);
  },
 

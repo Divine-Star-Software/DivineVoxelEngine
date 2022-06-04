@@ -1,7 +1,7 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
 import type { VoxelData, VoxelTemplateSubstanceType } from "Meta/Voxels/Voxel.types.js";
 import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
-import { PositionMatrix } from "Meta/Util.types.js";
+import { Position3Matrix } from "Meta/Util.types.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -23,19 +23,26 @@ export declare const WorldData: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
-            getValueUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+            getValueUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+            getValueUseObjSafe(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): any;
             setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-            setValueUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+            setValueUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+            setValueUseObjSafe(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
-            deleteUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+            deleteUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): PositionMatrix;
+            getXYZ(index: number): Position3Matrix;
         };
         positionByte: {
             _poisiton: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            _positionMasks: {
+                x: number;
+                z: number;
+                y: number;
             };
             getY(byteData: number): number;
             getPosition(byteData: number): {
@@ -44,7 +51,7 @@ export declare const WorldData: {
                 z: number;
             };
             setPosition(x: number, y: number, z: number): number;
-            setPositionUseObj(positionObj: PositionMatrix): number;
+            setPositionUseObj(positionObj: Position3Matrix): number;
         };
         _getHeightMapData: Record<VoxelTemplateSubstanceType, (byteData: number) => number>;
         _setHeightMapData: Record<VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -52,7 +59,9 @@ export declare const WorldData: {
         _markSubstanceAsExposed: Record<VoxelTemplateSubstanceType, (data: number) => number>;
         _isSubstanceExposed: Record<VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
-        updateChunkMinMax(voxelPOS: PositionMatrix, minMax: Uint32Array): void;
+        updateChunkMinMax(voxelPOS: Position3Matrix, minMax: Uint32Array): void;
+        getChunkMin(minMax: Uint32Array): number;
+        getChunkMax(minMax: Uint32Array): number;
         calculateHeightRemoveDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
         calculateHeightAddDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
         getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
@@ -83,6 +92,7 @@ export declare const WorldData: {
         getFullSunLight(sl: number): number;
         isLessThanForSunAdd(n1: number, n2: number): boolean;
         isLessThanForSunAddDown(n1: number, n2: number): boolean;
+        isLessThanForSunAddUp(n1: number, n2: number): boolean;
         getSunLightForUnderVoxel(currentVoxel: number): number;
         getMinusOneForSun(sl: number): number;
         isLessThanForSunRemove(n1: number, sl: number): boolean;
@@ -109,16 +119,26 @@ export declare const WorldData: {
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
-        getValueUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+        getValueUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): number;
+        getValueUseObjSafe(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): any;
         setValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
-        setValueUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+        setValueUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
+        setValueUseObjSafe(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
-        deleteUseObj(position: PositionMatrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
+        deleteUseObj(position: Position3Matrix, array: import("Meta/Chunks/Chunk.types").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): PositionMatrix;
+        getXYZ(index: number): Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
+        bounds: {
+            MinZ: number;
+            MaxZ: number;
+            MinX: number;
+            MaxX: number;
+            MinY: number;
+            MaxY: number;
+        };
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -138,6 +158,10 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
+        __worldColumnPosition: {
+            x: number;
+            z: number;
+        };
         __chunkPosition: {
             x: number;
             y: number;
@@ -149,6 +173,7 @@ export declare const WorldData: {
             z: number;
         };
         syncBoundsWithArrays(): void;
+        setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -161,11 +186,11 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: PositionMatrix): string;
+        getChunkKey(chunkPOS: Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: PositionMatrix): string;
+        getRegionKey(regionPOS: Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: PositionMatrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -175,8 +200,12 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: PositionMatrix): string;
+        getWorldColumnKeyFromObj(position: Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
+        getWorldColumnPosition(x: number, z: number): {
+            x: number;
+            z: number;
+        };
     };
     runRebuildCheck(x: number, y: number, z: number): void;
     getCurrentWorldDataSize(): number;
@@ -192,11 +221,15 @@ export declare const WorldData: {
     getRegion(x: number, y: number, z: number): false | WorldRegion;
     addChunk(x: number, y: number, z: number): ChunkData;
     paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: PositionMatrix, voxelData: VoxelData, chunk: ChunkData): void;
-    __handleHeightMapUpdateForVoxelRemove(voxelPOS: PositionMatrix, voxelData: VoxelData, chunk: ChunkData): void;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
+    __handleHeightMapUpdateForVoxelRemove(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;
     removeChunk(x: number, y: number, z: number): false | undefined;
     setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInThreads?: boolean): void;
     requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
     requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
+    getWorldColumn(x: number, z: number): false | Record<string, ChunkData> | undefined;
+    getRelativeMaxWorldColumnHeight(x: number, z: number): number;
+    getAbsoluteHeightOfWorldColumn(x: number, z: number): number;
+    fillWorldCollumnWithChunks(x: number, z: number): void;
 };

@@ -19,7 +19,8 @@ export declare const PropagationCommManager: {
     __handleCount(): void;
     runRGBFloodFillAt(x: number, y: number, z: number): void;
     runRGBFloodRemoveAt(x: number, y: number, z: number): void;
-    runSunLightForWorldColumn(x: number, z: number): void;
+    runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
+    runSunFillAtMaxY(x: number, y: number, maxY: number): void;
     runSunFillAt(x: number, y: number, z: number): void;
     runSunRemoveAt(x: number, y: number, z: number): void;
 };

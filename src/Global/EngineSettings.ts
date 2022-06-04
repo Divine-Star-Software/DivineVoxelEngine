@@ -1,11 +1,20 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { WorldBounds } from "./Util/WorldBounds";
 
+type EngineSettingsContext =
+ | "DVEW"
+ | "DVER"
+ | "DVEP"
+ | "DVEB"
+ | "DVEN"
+ | "MatrixLoadedThread";
+
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
  */
 export const EngineSettings = {
+ context: <EngineSettingsContext>"MatrixLoadedThread",
  settings: <EngineSettingsData>{
   nexus: {
    enabled: true,
@@ -29,7 +38,7 @@ export const EngineSettings = {
   },
   regions: {
    regionXPow2: 9,
-   regionYPow2: 7,
+   regionYPow2: 9,
    regionZPow2: 9,
   },
   chunks: {
@@ -55,13 +64,31 @@ export const EngineSettings = {
    disableFloraShaderEffects: false,
    disableFluidShaderEffects: false,
   },
+ 
+ },
+
+ setContext(context: EngineSettingsContext) {
+  this.context = context;
  },
 
  syncSettings(data: EngineSettingsData) {
-  for (const key of Object.keys(data)) {
-   if ((this as any).settings[key]) {
-    //@ts-ignore
-    (this as any).settings[key] = data[key];
+  //safetly set data without prototype pollution
+  for (const settingsKey of Object.keys(data)) {
+   if (settingsKey.includes("__")) {
+    throw new Error("Can not include properties with multpile underscores.");
+   }
+   if ((this as any).settings[settingsKey] !== undefined) {
+    for (const propertyKey of Object.keys((data as any)[settingsKey])) {
+     if (propertyKey.includes("__")) {
+      throw new Error("Can not include properties with multpile underscores.");
+     }
+     if ((this as any).settings[settingsKey][propertyKey] !== undefined) {
+      //@ts-ignore
+      (this as any).settings[settingsKey][propertyKey] = (data as any)[
+       settingsKey
+      ][propertyKey];
+     }
+    }
    }
   }
  },
@@ -80,6 +107,16 @@ export const EngineSettings = {
     this.settings.regions.regionXPow2,
     this.settings.regions.regionYPow2,
     this.settings.regions.regionZPow2
+   );
+  }
+  if (this.settings.world) {
+   worldBounds.setWorldBounds(
+    this.settings.world.minX,
+    this.settings.world.maxX,
+    this.settings.world.minZ,
+    this.settings.world.maxZ,
+    this.settings.world.minY,
+    this.settings.world.maxY
    );
   }
  },

@@ -1,4 +1,4 @@
-import type { PositionMatrix } from "Meta/Util.types";
+import type { Position3Matrix } from "Meta/Util.types";
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.
@@ -7,6 +7,14 @@ import type { PositionMatrix } from "Meta/Util.types";
  */
 export declare const WorldBounds: {
     __maxChunkYSize: number;
+    bounds: {
+        MinZ: number;
+        MaxZ: number;
+        MinX: number;
+        MaxX: number;
+        MinY: number;
+        MaxY: number;
+    };
     chunkXPow2: number;
     chunkYPow2: number;
     chunkZPow2: number;
@@ -26,6 +34,10 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
+    __worldColumnPosition: {
+        x: number;
+        z: number;
+    };
     __chunkPosition: {
         x: number;
         y: number;
@@ -37,6 +49,7 @@ export declare const WorldBounds: {
         z: number;
     };
     syncBoundsWithArrays(): void;
+    setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
     setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
     setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
     getRegionPosition(x: number, y: number, z: number): {
@@ -49,16 +62,16 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
-    getChunkKey(chunkPOS: PositionMatrix): string;
+    getChunkKey(chunkPOS: Position3Matrix): string;
     getChunkKeyFromPosition(x: number, y: number, z: number): string;
-    getRegionKey(regionPOS: PositionMatrix): string;
+    getRegionKey(regionPOS: Position3Matrix): string;
     getRegionKeyFromPosition(x: number, y: number, z: number): string;
     /**# Get Voxel Position From Chunk Position
      * ---
      * Returns the x/y/z index of the voxel in the chunk.
      * Used to find actual index in the chunk array.
      */
-    getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: PositionMatrix): {
+    getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Position3Matrix): {
         x: number;
         y: number;
         z: number;
@@ -68,6 +81,10 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
-    getWorldColumnKeyFromObj(position: PositionMatrix): string;
+    getWorldColumnKeyFromObj(position: Position3Matrix): string;
     getWorldColumnKey(x: number, z: number): string;
+    getWorldColumnPosition(x: number, z: number): {
+        x: number;
+        z: number;
+    };
 };

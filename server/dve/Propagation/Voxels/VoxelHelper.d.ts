@@ -23,6 +23,7 @@ export declare const VoxelHelper: {
         getFullSunLight(sl: number): number;
         isLessThanForSunAdd(n1: number, n2: number): boolean;
         isLessThanForSunAddDown(n1: number, n2: number): boolean;
+        isLessThanForSunAddUp(n1: number, n2: number): boolean;
         getSunLightForUnderVoxel(currentVoxel: number): number;
         getMinusOneForSun(sl: number): number;
         isLessThanForSunRemove(n1: number, sl: number): boolean;
@@ -41,6 +42,7 @@ export declare const VoxelHelper: {
      * Returns the raw light value for a voxel.
      */
     getLight(x: number, y: number, z: number): number;
+    setFullSun(x: number, y: number, z: number): void;
     setLight(x: number, y: number, z: number, lightValue: number): void;
     setAir(x: number, y: number, z: number, lightValue: number): void;
     getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;

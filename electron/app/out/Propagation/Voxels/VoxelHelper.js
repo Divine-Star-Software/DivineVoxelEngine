@@ -46,6 +46,19 @@ export const VoxelHelper = {
         }
         return -1;
     },
+    setFullSun(x, y, z) {
+        let data = DVEP.worldMatrix.getData(x, y, z);
+        if (data === -1) {
+            return;
+        }
+        ;
+        const voxelId = this.voxelByte.getId(data);
+        if (voxelId == 0) {
+            const nl = this.lightByte.getFullSunLight(data);
+            const newVoxel = this.voxelByte.encodeLightIntoVoxelData(data, nl);
+            DVEP.worldMatrix.setData(x, y, z, newVoxel);
+        }
+    },
     setLight(x, y, z, lightValue) {
         let data = DVEP.worldMatrix.getData(x, y, z);
         if (data === -1)

@@ -1,4 +1,4 @@
-import type { PositionMatrix } from "Meta/Util.types";
+import type { Position3Matrix } from "Meta/Util.types";
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions
@@ -35,7 +35,7 @@ import type { PositionMatrix } from "Meta/Util.types";
 * The current AO index.
 * @var aoIndex: number[];
 * The relative chunk position that the voxel is being added.
-* @var position: PositionMatrix;
+* @var position: Position3Matrix;
 */
 export declare type VoxelShapeAddData = {
     positions: number[];
@@ -57,7 +57,7 @@ export declare type VoxelShapeAddData = {
     lightIndex: number;
     aoTemplate: number[];
     aoIndex: number;
-    position: PositionMatrix;
+    position: Position3Matrix;
 };
 export declare type VoxelShapeAddReturnData = {
     newIndicieIndex: number;

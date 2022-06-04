@@ -137,7 +137,7 @@ export const LightByte = {
      * @param sl - source light value
      */
     getFullSunLight(sl) {
-        return (sl & ~(0xf << 0)) | (0b1111 << 0);
+        return sl | 0b1111;
     },
     /**# Is Less Than For Sun Add
      * ---
@@ -159,9 +159,21 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForSunAddDown(n1, n2) {
-        let sl1 = (n1 & (0x0f << 0)) >> 0;
-        let sl2 = (n2 & (0x0f << 0)) >> 0;
-        return sl1 < sl2;
+        let sl1 = n1 & 0xf;
+        let sl2 = n2 & 0xf;
+        if (sl2 == 0xf) {
+            return sl1 < sl2;
+        }
+        return sl1 + 2 < sl2;
+    },
+    isLessThanForSunAddUp(n1, n2) {
+        let sl1 = n1 & 0xf;
+        let sl2 = n2 & 0xf;
+        if (sl1 == sl2)
+            return false;
+        if (sl2 == 0xf || sl1 == 0xf)
+            return false;
+        return sl1 + 2 < sl2;
     },
     /**# Get Sun Light For Under Voxel
      * ---
@@ -170,12 +182,12 @@ export const LightByte = {
      * @param currentVoxel
      */
     getSunLightForUnderVoxel(currentVoxel) {
-        let sl1 = (currentVoxel & (0x0f << 0)) >> 0;
-        if (sl1 == 0b1111) {
-            return (currentVoxel & ~(0xf << 0)) | (0b1111 << 0);
+        let sl1 = currentVoxel & 0xf;
+        if (sl1 == 0xf) {
+            return (currentVoxel & 0x0) | 0xf;
         }
         else {
-            return (currentVoxel & ~(0xf << 0)) | (sl1-- << 0);
+            return (currentVoxel & 0x0) | (sl1 - 1);
         }
     },
     /**# Get Minus One For Sun
@@ -185,7 +197,7 @@ export const LightByte = {
      * @param sl - source light value
      */
     getMinusOneForSun(sl) {
-        let sun = ((sl & (0x0f << 0)) >> 0) - 1;
+        let sun = ((sl & (0x0f << 0)) >> 0) - 2;
         if (sun < 0)
             sun = 0;
         return (sun & ~(0xf << 0)) | (sun << 0);

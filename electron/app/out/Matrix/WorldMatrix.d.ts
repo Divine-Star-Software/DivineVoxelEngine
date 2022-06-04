@@ -18,16 +18,26 @@ export declare const WorldMatrix: {
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels): number;
-        getValueUseObj(position: import("../Meta/Util.types").PositionMatrix, array: import("../Meta/index").ChunkVoxels): number;
+        getValueUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): number;
+        getValueUseObjSafe(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): any;
         setValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("../Meta/Util.types").PositionMatrix, array: import("../Meta/index").ChunkVoxels, value: number): void;
+        setValueUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels, value: number): void;
+        setValueUseObjSafe(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels): void;
-        deleteUseObj(position: import("../Meta/Util.types").PositionMatrix, array: import("../Meta/index").ChunkVoxels): void;
+        deleteUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("../Meta/Util.types").PositionMatrix;
+        getXYZ(index: number): import("../Meta/Util.types").Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
+        bounds: {
+            MinZ: number;
+            MaxZ: number;
+            MinX: number;
+            MaxX: number;
+            MinY: number;
+            MaxY: number;
+        };
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -47,15 +57,12 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
+        __worldColumnPosition: {
+            x: number;
+            z: number;
+        };
         __chunkPosition: {
-            /**# Await Chunk Load
-             * ---
-             * Wait for a chunk to loaded into the matrix  for use.
-             */
-            x: number; /**# Await Chunk Load
-             * ---
-             * Wait for a chunk to loaded into the matrix  for use.
-             */
+            x: number;
             y: number;
             z: number;
         };
@@ -65,6 +72,7 @@ export declare const WorldMatrix: {
             z: number;
         };
         syncBoundsWithArrays(): void;
+        setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -73,22 +81,15 @@ export declare const WorldMatrix: {
             z: number;
         };
         getChunkPosition(x: number, y: number, z: number): {
-            /**# Await Chunk Load
-             * ---
-             * Wait for a chunk to loaded into the matrix  for use.
-             */
-            x: number; /**# Await Chunk Load
-             * ---
-             * Wait for a chunk to loaded into the matrix  for use.
-             */
+            x: number;
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("../Meta/Util.types").PositionMatrix): string;
+        getChunkKey(chunkPOS: import("../Meta/Util.types").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../Meta/Util.types").PositionMatrix): string;
+        getRegionKey(regionPOS: import("../Meta/Util.types").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types").PositionMatrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types").Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -98,8 +99,12 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("../Meta/Util.types").PositionMatrix): string;
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types").Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
+        getWorldColumnPosition(x: number, z: number): {
+            x: number;
+            z: number;
+        };
     };
     voxelByte: {
         setId(id: number, value: number): number;

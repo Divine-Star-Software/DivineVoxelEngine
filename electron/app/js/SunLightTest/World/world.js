@@ -10,6 +10,12 @@ let endZ = 64;
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
+        DVEW.queues.addWorldColumnToSunLightQue(x, z);
+    }
+}
+for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+        DVEW.buildWorldColumn(x, z);
     }
 }
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();

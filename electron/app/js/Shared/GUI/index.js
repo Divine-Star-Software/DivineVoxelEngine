@@ -8,10 +8,11 @@ export const CreateGUI = (DVER) => {
         //@ts-ignore
         position.innerHTML = `${positionWatch.position.x.toFixed(2)} ${positionWatch.position.y.toFixed(2)} ${positionWatch.position.z.toFixed(2)}`;
         if (DVER) {
-            //@ts-ignore
-            chunkPosition.innerHTML = DVER.UTIL
+            const pos = DVER.UTIL
                 .getWorldBounds()
-                .getChunkKeyFromPosition(positionWatch.position.x, positionWatch.position.y, positionWatch.position.z);
+                .getChunkPosition(positionWatch.position.x, positionWatch.position.y, positionWatch.position.z);
+            //@ts-ignore
+            chunkPosition.innerHTML = `chunk: x: ${pos.x} y: ${pos.y} z: ${pos.z}`;
         }
     };
 };

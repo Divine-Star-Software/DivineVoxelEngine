@@ -24,7 +24,7 @@ export const DVEB = {
     _3dFlatArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
     UTIL: Util,
-    engineSettings: EngineSettings,
+    settings: EngineSettings,
     renderComm: RenderComm,
     worldComm: WorldComm,
     worldMatrix: WorldMatrix,
@@ -38,14 +38,8 @@ export const DVEB = {
     chunkMesher: ChunkMeshBuilder,
     chunkProccesor: ChunkProcessor,
     syncSettings(data) {
-        this.engineSettings.syncSettings(data);
-        if (data.chunks) {
-            this.worldBounds.setChunkBounds(data.chunks.chunkXPow2, data.chunks.chunkYPow2, data.chunks.chunkZPow2);
-            this.worldBounds.syncBoundsWithArrays();
-        }
-        if (data.regions) {
-            this.worldBounds.setRegionBounds(data.regions.regionXPow2, data.regions.regionYPow2, data.regions.regionZPow2);
-        }
+        this.settings.syncSettings(data);
+        this.settings.syncWithWorldBounds(this.worldBounds);
         this.__settingsHaveBeenSynced = true;
     },
     reStart() { },
@@ -58,6 +52,7 @@ export const DVEB = {
             DVEB.__settingsHaveBeenSynced);
     },
     async $INIT(initData) {
+        this.settings.setContext("DVEB");
         await InitWorker(this, initData);
         this.worldComm.sendMessage("ready", []);
     },

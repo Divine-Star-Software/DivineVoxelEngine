@@ -14,7 +14,7 @@ RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
- "./World/index.js",
+ "./World/world.js",
  "../Shared/Builder/builder.js",
  "../Shared/Propagators/propagators.js"
 );
@@ -30,6 +30,21 @@ await DVER.$INIT({
   autoRGBLight: true,
   autoSunLight: true,
  },
+ chunks: {
+  chunkXPow2: 4,
+  chunkYPow2: 6,
+  chunkZPow2: 4,
+  autoHeightMap: true,
+ },
+ world: {
+  voxelPaletteMode: "global",
+  minZ: -64,
+  maxZ: 64,
+  minX: -64,
+  maxX: 64,
+  minY: 0,
+  maxY: 128,
+ },
 });
 
 const init = async () => {
@@ -41,7 +56,7 @@ const init = async () => {
 
  await DVER.$SCENEINIT({ scene: scene });
 
- runRenderLoop(engine, scene, camera);
+ runRenderLoop(engine, scene, camera, DVER);
 };
 
 RunInit(init);

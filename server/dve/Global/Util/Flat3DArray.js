@@ -28,6 +28,11 @@ export const Flat3DArray = {
             position.y * this.bounds.x +
             position.z * this.bounds.z * this.bounds.y];
     },
+    getValueUseObjSafe(position, array) {
+        return Atomics.load(array, position.x +
+            position.y * this.bounds.x +
+            position.z * this.bounds.z * this.bounds.y);
+    },
     setValue(x, y, z, array, value) {
         array[x + y * this.bounds.x + z * this.bounds.z * this.bounds.y] = value;
     },
@@ -35,6 +40,11 @@ export const Flat3DArray = {
         array[position.x +
             position.y * this.bounds.x +
             position.z * this.bounds.z * this.bounds.y] = value;
+    },
+    setValueUseObjSafe(position, array, value) {
+        Atomics.store(array, position.x +
+            position.y * this.bounds.x +
+            position.z * this.bounds.z * this.bounds.y, value);
     },
     deleteValue(x, y, z, array) {
         //@ts-ignore
@@ -45,7 +55,6 @@ export const Flat3DArray = {
         array[position.x +
             position.y * this.bounds.x +
             position.z * this.bounds.z * this.bounds.y] = undefined;
-        ;
     },
     getIndex(x, y, z) {
         return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;

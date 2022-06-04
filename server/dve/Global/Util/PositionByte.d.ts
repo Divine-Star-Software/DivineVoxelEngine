@@ -1,4 +1,4 @@
-import { PositionMatrix } from "Meta/Util.types";
+import { Position3Matrix } from "Meta/Util.types";
 /**# PositionByte
  * ---
  * Handles encoding a 32 bit float with a voxel space posiiton.
@@ -9,6 +9,11 @@ export declare const PositionByte: {
         y: number;
         z: number;
     };
+    _positionMasks: {
+        x: number;
+        z: number;
+        y: number;
+    };
     getY(byteData: number): number;
     getPosition(byteData: number): {
         x: number;
@@ -16,5 +21,5 @@ export declare const PositionByte: {
         z: number;
     };
     setPosition(x: number, y: number, z: number): number;
-    setPositionUseObj(positionObj: PositionMatrix): number;
+    setPositionUseObj(positionObj: Position3Matrix): number;
 };

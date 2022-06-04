@@ -1,5 +1,5 @@
- import type { IlluminationManager } from "../IlluminationManager";
- import {DVEP} from "../../DivineVoxelEngineWorldPropagation.js";
+import type { IlluminationManager } from "../IlluminationManager";
+import { DVEP } from "../../DivineVoxelEngineWorldPropagation.js";
 export function runSunLightRemoveAt(
  this: typeof IlluminationManager,
  x: number,
@@ -101,48 +101,91 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const y = node[1];
   const z = node[2];
   const sl = DVEP.voxelHelper.getLight(x, y, z);
+  if (this._visitSunMap[`${x}-${y}-${z}`]) {
+   continue;
+  }
+  this._visitSunMap[`${x}-${y}-${z}`] = true;
+  if (sl == 0) continue;
 
   const n1 = DVEP.voxelHelper.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
-   this._sunLightUpdateQue.push([x - 1, y, z]);
-   DVEP.voxelHelper.setLight(x - 1, y, z, this.lightByte.getMinusOneForSun(sl));
+   if (!this._visitSunMap[`${x - 1}-${y}-${z}`]) {
+    this._sunLightUpdateQue.push([x - 1, y, z]);
+    DVEP.voxelHelper.setLight(
+     x - 1,
+     y,
+     z,
+     this.lightByte.getMinusOneForSun(sl)
+    );
+   }
   }
 
   const n2 = DVEP.voxelHelper.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
-   this._sunLightUpdateQue.push([x + 1, y, z]);
-   DVEP.voxelHelper.setLight(x + 1, y, z, this.lightByte.getMinusOneForSun(sl));
+   if (!this._visitSunMap[`${x + 1}-${y}-${z}`]) {
+    this._sunLightUpdateQue.push([x + 1, y, z]);
+    DVEP.voxelHelper.setLight(
+     x + 1,
+     y,
+     z,
+     this.lightByte.getMinusOneForSun(sl)
+    );
+   }
   }
 
   const n3 = DVEP.voxelHelper.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
-   this._sunLightUpdateQue.push([x, y, z - 1]);
-   DVEP.voxelHelper.setLight(x, y, z - 1, this.lightByte.getMinusOneForSun(sl));
+   if (!this._visitSunMap[`${x}-${y}-${z - 1}`]) {
+    this._sunLightUpdateQue.push([x, y, z - 1]);
+    DVEP.voxelHelper.setLight(
+     x,
+     y,
+     z - 1,
+     this.lightByte.getMinusOneForSun(sl)
+    );
+   }
   }
 
   const n4 = DVEP.voxelHelper.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
-   this._sunLightUpdateQue.push([x, y, z + 1]);
-   DVEP.voxelHelper.setLight(x, y, z + 1, this.lightByte.getMinusOneForSun(sl));
+   if (!this._visitSunMap[`${x}-${y}-${z + 1}`]) {
+    this._sunLightUpdateQue.push([x, y, z + 1]);
+    DVEP.voxelHelper.setLight(
+     x,
+     y,
+     z + 1,
+     this.lightByte.getMinusOneForSun(sl)
+    );
+   }
   }
 
   const n5 = DVEP.voxelHelper.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
-   this._sunLightUpdateQue.push([x, y - 1, z]);
-   DVEP.voxelHelper.setLight(
-    x,
-    y - 1,
-    z,
-    this.lightByte.getSunLightForUnderVoxel(sl)
-   );
+   if (!this._visitSunMap[`${x}-${y - 1}-${z}`]) {
+    this._sunLightUpdateQue.push([x, y - 1, z]);
+    DVEP.voxelHelper.setLight(
+     x,
+     y - 1,
+     z,
+     this.lightByte.getSunLightForUnderVoxel(sl)
+    );
+   }
   }
 
   const n6 = DVEP.voxelHelper.getLight(x, y + 1, z);
-  if (n6 > -1 && this.lightByte.isLessThanForSunAdd(n6, sl)) {
-   this._sunLightUpdateQue.push([x, y + 1, z]);
-   DVEP.voxelHelper.setLight(x, y + 1, z, this.lightByte.getMinusOneForSun(sl));
+  if (n6 > -1 && this.lightByte.isLessThanForSunAddUp(n6, sl)) {
+   if (!this._visitSunMap[`${x}-${y + 1}-${z}`]) {
+    this._sunLightUpdateQue.push([x, y + 1, z]);
+    DVEP.voxelHelper.setLight(
+     x,
+     y + 1,
+     z,
+     this.lightByte.getMinusOneForSun(sl)
+    );
+   }
   }
  }
+ this._visitSunMap = {};
 }
 
 export function runSunLightUpdateAt(
@@ -154,4 +197,34 @@ export function runSunLightUpdateAt(
  this._sunLightUpdateQue.push([x, y, z]);
  this.runSunLightUpdate();
 }
- 
+
+export function PopulateWorldColumnWithSunLight(
+ x: number,
+ z: number,
+ maxY: number
+) {
+ for (let ix = x; ix < x + DVEP.worldBounds.chunkXSize; ix++) {
+  for (let iz = z; iz < z + DVEP.worldBounds.chunkZSize; iz++) {
+   let iy = maxY;
+   let worldY = DVEP.worldBounds.bounds.MaxY;
+   while (iy <= worldY) {
+    DVEP.voxelHelper.setFullSun(ix, iy, iz);
+    iy++;
+   }
+  }
+ }
+}
+
+export function RunSunLightUpdateAtMaxY(
+ this: typeof IlluminationManager,
+ x: number,
+ z: number,
+ maxY: number
+) {
+ for (let ix = x; ix < x + DVEP.worldBounds.chunkXSize; ix++) {
+  for (let iz = z; iz < z + DVEP.worldBounds.chunkZSize; iz++) {
+   this._sunLightUpdateQue.push([ix, maxY, iz]);
+   this.runSunLightUpdate();
+  }
+ }
+}

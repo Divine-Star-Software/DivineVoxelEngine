@@ -19,7 +19,7 @@ export const DVEN = {
  __connectedToWorld: false,
 
  UTIL: Util,
- engineSettings: EngineSettings,
+ settings: EngineSettings,
 
  worldMatrix: WorldMatrix,
  matrixHub: MatrixHub,
@@ -29,7 +29,10 @@ export const DVEN = {
 
  nexusEntites: NexusEntites,
 
+ worldBounds : Util.getWorldBounds(),
+
  async $INIT(data: DVENInitData) {
+    this.settings.setContext("DVEN");  
   await InitNexusWorker(this, data);
  },
 
@@ -38,22 +41,8 @@ export const DVEN = {
  },
 
  syncSettings(data: EngineSettingsData) {
-  this.engineSettings.syncSettings(data);
-  if (data.chunks) {
-   this.worldMatrix.worldBounds.setChunkBounds(
-    data.chunks.chunkXPow2,
-    data.chunks.chunkYPow2,
-    data.chunks.chunkZPow2
-   );
-   this.worldMatrix.syncChunkBounds();
-  }
-  if (data.regions) {
-   this.worldMatrix.worldBounds.setRegionBounds(
-    data.regions.regionXPow2,
-    data.regions.regionYPow2,
-    data.regions.regionZPow2
-   );
-  }
+  this.settings.syncSettings(data);
+  this.settings.syncWithWorldBounds(this.worldBounds);
  },
 
  /**# Load chunk into Nexus

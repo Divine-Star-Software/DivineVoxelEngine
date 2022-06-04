@@ -84,6 +84,7 @@ export declare const LightByte: {
      * @param n2
      */
     isLessThanForSunAddDown(n1: number, n2: number): boolean;
+    isLessThanForSunAddUp(n1: number, n2: number): boolean;
     /**# Get Sun Light For Under Voxel
      * ---
      * Gets the sun light value for sun light addition when setting the

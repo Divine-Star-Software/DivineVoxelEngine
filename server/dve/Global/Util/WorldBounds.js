@@ -14,6 +14,14 @@ export const WorldBounds = {
     set __maxChunkYSize(data) {
         throw new Error("Max Chunk Y Size can not be overridden.");
     },
+    bounds: {
+        MinZ: -Infinity,
+        MaxZ: Infinity,
+        MinX: -Infinity,
+        MaxX: Infinity,
+        MinY: 0,
+        MaxY: 258,
+    },
     chunkXPow2: 4,
     chunkYPow2: 7,
     chunkZPow2: 4,
@@ -23,17 +31,26 @@ export const WorldBounds = {
     chunkTotalVoxels: 16 * 128 * 16,
     chunkArea: 16 * 16,
     regionXPow2: 9,
-    regionYPow2: 7,
+    regionYPow2: 9,
     regionZPow2: 9,
     regionXSize: 512,
-    regionYSize: 128,
+    regionYSize: 512,
     regionZSize: 512,
     __regionPosition: { x: 0, y: 0, z: 0 },
+    __worldColumnPosition: { x: 0, z: 0 },
     __chunkPosition: { x: 0, y: 0, z: 0 },
     __voxelPosition: { x: 0, y: 0, z: 0 },
     syncBoundsWithArrays() {
         Flat3DArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
         HeightMapArray.setBounds(this.chunkXSize, 2, this.chunkZSize);
+    },
+    setWorldBounds(minX, maxX, minZ, maxZ, minY, maxY) {
+        this.bounds.MinX = minX;
+        this.bounds.MaxX = maxX;
+        this.bounds.MinX = minZ;
+        this.bounds.MaxZ = maxZ;
+        this.bounds.MinY = minY;
+        this.bounds.MaxY = maxY;
     },
     setChunkBounds(pow2X, pow2Y, pow2Z) {
         this.chunkXPow2 = pow2X;
@@ -118,4 +135,10 @@ export const WorldBounds = {
         const chunkPOS = this.getChunkPosition(x, 0, z);
         return this.getWorldColumnKeyFromObj(chunkPOS);
     },
+    getWorldColumnPosition(x, z) {
+        const chunkPOS = this.getChunkPosition(x, 0, z);
+        this.__worldColumnPosition.x = chunkPOS.x;
+        this.__worldColumnPosition.z = chunkPOS.z;
+        return this.__worldColumnPosition;
+    }
 };

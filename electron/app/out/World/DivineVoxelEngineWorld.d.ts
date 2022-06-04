@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -19,16 +19,26 @@ export declare const DVEW: {
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-        getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+        getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+        getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
         setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+        setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+        setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-        deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+        deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+        getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
+        bounds: {
+            MinZ: number;
+            MaxZ: number;
+            MinX: number;
+            MaxX: number;
+            MinY: number;
+            MaxY: number;
+        };
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -41,11 +51,19 @@ export declare const DVEW: {
         regionYPow2: number;
         regionZPow2: number;
         regionXSize: number;
+        /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         regionYSize: number;
         regionZSize: number;
         __regionPosition: {
             x: number;
             y: number;
+            z: number;
+        };
+        __worldColumnPosition: {
+            x: number;
             z: number;
         };
         __chunkPosition: {
@@ -59,6 +77,7 @@ export declare const DVEW: {
             z: number;
         };
         syncBoundsWithArrays(): void;
+        setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -71,11 +90,11 @@ export declare const DVEW: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+        getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+        getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -85,8 +104,12 @@ export declare const DVEW: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+        getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
+        getWorldColumnPosition(x: number, z: number): {
+            x: number;
+            z: number;
+        };
     };
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
@@ -98,8 +121,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -113,13 +136,15 @@ export declare const DVEW: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
             setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
         getFaceByte(): {
             _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -148,13 +173,15 @@ export declare const DVEW: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
             setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
         getHeightByte(): {
             heightMapArray: {
@@ -170,19 +197,26 @@ export declare const DVEW: {
                 };
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
                 setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+                getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
             positionByte: {
                 _poisiton: {
                     x: number;
                     y: number;
                     z: number;
+                };
+                _positionMasks: {
+                    x: number;
+                    z: number;
+                    y: number;
                 };
                 getY(byteData: number): number;
                 getPosition(byteData: number): {
@@ -191,7 +225,7 @@ export declare const DVEW: {
                     z: number;
                 };
                 setPosition(x: number, y: number, z: number): number;
-                setPositionUseObj(positionObj: import("../Meta/Util.types.js").PositionMatrix): number;
+                setPositionUseObj(positionObj: import("../Meta/Util.types.js").Position3Matrix): number;
             };
             _getHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
             _setHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -199,7 +233,9 @@ export declare const DVEW: {
             _markSubstanceAsExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, minMax: Uint32Array): void;
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, minMax: Uint32Array): void;
+            getChunkMin(minMax: Uint32Array): number;
+            getChunkMax(minMax: Uint32Array): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
             calculateHeightAddDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
@@ -236,6 +272,7 @@ export declare const DVEW: {
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
+            isLessThanForSunAddUp(n1: number, n2: number): boolean;
             getSunLightForUnderVoxel(currentVoxel: number): number;
             getMinusOneForSun(sl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
@@ -245,6 +282,14 @@ export declare const DVEW: {
         };
         getWorldBounds(): {
             __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -257,11 +302,19 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
                 x: number;
                 y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
                 z: number;
             };
             __chunkPosition: {
@@ -275,6 +328,7 @@ export declare const DVEW: {
                 z: number;
             };
             syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -287,11 +341,11 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
                 x: number;
                 y: number;
                 z: number;
@@ -301,8 +355,12 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
             getWorldColumnKey(x: number, z: number): string;
+            getWorldColumnPosition(x: number, z: number): {
+                x: number;
+                z: number;
+            };
         };
         getInfoByte(number?: number): {
             maxBit: number;
@@ -324,10 +382,20 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN";
         settings: EngineSettingsData;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN"): void;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -340,11 +408,19 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
                 x: number;
                 y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
                 z: number;
             };
             __chunkPosition: {
@@ -358,6 +434,7 @@ export declare const DVEW: {
                 z: number;
             };
             syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -370,11 +447,11 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
                 x: number;
                 y: number;
                 z: number;
@@ -384,8 +461,12 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
             getWorldColumnKey(x: number, z: number): string;
+            getWorldColumnPosition(x: number, z: number): {
+                x: number;
+                z: number;
+            };
         }): void;
         getSettingsCopy(): any;
         doSunPropagation(): boolean;
@@ -395,6 +476,14 @@ export declare const DVEW: {
         updateDieTime: number;
         worldBounds: {
             __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -407,11 +496,19 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
                 x: number;
                 y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
                 z: number;
             };
             __chunkPosition: {
@@ -425,6 +522,7 @@ export declare const DVEW: {
                 z: number;
             };
             syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -437,11 +535,11 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
                 x: number;
                 y: number;
                 z: number;
@@ -451,8 +549,12 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
             getWorldColumnKey(x: number, z: number): string;
+            getWorldColumnPosition(x: number, z: number): {
+                x: number;
+                z: number;
+            };
         };
         regions: Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixRegionData>;
         isChunkInMatrix(x: number, y: number, z: number): boolean;
@@ -529,13 +631,22 @@ export declare const DVEW: {
         __handleCount(): void;
         runRGBFloodFillAt(x: number, y: number, z: number): void;
         runRGBFloodRemoveAt(x: number, y: number, z: number): void;
-        runSunLightForWorldColumn(x: number, z: number): void;
+        runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
+        runSunFillAtMaxY(x: number, y: number, maxY: number): void;
         runSunFillAt(x: number, y: number, z: number): void;
         runSunRemoveAt(x: number, y: number, z: number): void;
     };
     worldGeneration: {
         worldBounds: {
             __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -548,11 +659,19 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
                 x: number;
                 y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
                 z: number;
             };
             __chunkPosition: {
@@ -566,6 +685,7 @@ export declare const DVEW: {
                 z: number;
             };
             syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -578,11 +698,11 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
                 x: number;
                 y: number;
                 z: number;
@@ -592,8 +712,12 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
             getWorldColumnKey(x: number, z: number): string;
+            getWorldColumnPosition(x: number, z: number): {
+                x: number;
+                z: number;
+            };
         };
         voxelByte: {
             setId(id: number, value: number): number;
@@ -615,19 +739,26 @@ export declare const DVEW: {
                 };
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
                 setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+                getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
             positionByte: {
                 _poisiton: {
                     x: number;
                     y: number;
                     z: number;
+                };
+                _positionMasks: {
+                    x: number;
+                    z: number;
+                    y: number;
                 };
                 getY(byteData: number): number;
                 getPosition(byteData: number): {
@@ -636,7 +767,7 @@ export declare const DVEW: {
                     z: number;
                 };
                 setPosition(x: number, y: number, z: number): number;
-                setPositionUseObj(positionObj: import("../Meta/Util.types.js").PositionMatrix): number;
+                setPositionUseObj(positionObj: import("../Meta/Util.types.js").Position3Matrix): number;
             };
             _getHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
             _setHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -644,7 +775,9 @@ export declare const DVEW: {
             _markSubstanceAsExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, minMax: Uint32Array): void;
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, minMax: Uint32Array): void;
+            getChunkMin(minMax: Uint32Array): number;
+            getChunkMax(minMax: Uint32Array): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
             calculateHeightAddDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
@@ -693,19 +826,26 @@ export declare const DVEW: {
                 };
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-                getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+                getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
                 setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-                setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+                setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-                deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
                 getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+                getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
             positionByte: {
                 _poisiton: {
                     x: number;
                     y: number;
                     z: number;
+                };
+                _positionMasks: {
+                    x: number;
+                    z: number;
+                    y: number;
                 };
                 getY(byteData: number): number;
                 getPosition(byteData: number): {
@@ -714,7 +854,7 @@ export declare const DVEW: {
                     z: number;
                 };
                 setPosition(x: number, y: number, z: number): number;
-                setPositionUseObj(positionObj: import("../Meta/Util.types.js").PositionMatrix): number;
+                setPositionUseObj(positionObj: import("../Meta/Util.types.js").Position3Matrix): number;
             };
             _getHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
             _setHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -722,7 +862,9 @@ export declare const DVEW: {
             _markSubstanceAsExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, minMax: Uint32Array): void;
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, minMax: Uint32Array): void;
+            getChunkMin(minMax: Uint32Array): number;
+            getChunkMax(minMax: Uint32Array): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
             calculateHeightAddDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
@@ -753,6 +895,7 @@ export declare const DVEW: {
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
+            isLessThanForSunAddUp(n1: number, n2: number): boolean;
             getSunLightForUnderVoxel(currentVoxel: number): number;
             getMinusOneForSun(sl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
@@ -779,16 +922,26 @@ export declare const DVEW: {
             };
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): any;
             setValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").PositionMatrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../Meta/Util.types.js").PositionMatrix;
+            getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
         worldBounds: {
             __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -801,11 +954,19 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
                 x: number;
                 y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
                 z: number;
             };
             __chunkPosition: {
@@ -819,6 +980,7 @@ export declare const DVEW: {
                 z: number;
             };
             syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -831,11 +993,11 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").PositionMatrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").PositionMatrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
                 x: number;
                 y: number;
                 z: number;
@@ -845,8 +1007,12 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").PositionMatrix): string;
+            getWorldColumnKeyFromObj(position: import("../Meta/Util.types.js").Position3Matrix): string;
             getWorldColumnKey(x: number, z: number): string;
+            getWorldColumnPosition(x: number, z: number): {
+                x: number;
+                z: number;
+            };
         };
         runRebuildCheck(x: number, y: number, z: number): void;
         getCurrentWorldDataSize(): number;
@@ -862,13 +1028,17 @@ export declare const DVEW: {
         getRegion(x: number, y: number, z: number): false | import("../Meta/World/WorldData/World.types.js").WorldRegion;
         addChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
         paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
-        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
-        __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").PositionMatrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
+        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
+        __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
         requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
         requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
+        getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/index.js").ChunkData> | undefined;
+        getRelativeMaxWorldColumnHeight(x: number, z: number): number;
+        getAbsoluteHeightOfWorldColumn(x: number, z: number): number;
+        fillWorldCollumnWithChunks(x: number, z: number): void;
     };
     voxelManager: {
         voxels: Record<string, import("../Meta/index.js").VoxelData>;
@@ -887,7 +1057,7 @@ export declare const DVEW: {
         _numRGBLightRemoves: number;
         _RGBLightRemoveQue: number[][];
         _RGBLightUpdateQue: number[][];
-        _worldColumnSunLightPropMap: Record<string, boolean>;
+        _worldColumnSunLightPropMap: Record<string, number>;
         _worldColumnSunLightPropQue: number[][];
         _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
         _chunkRebuildQue: number[][];
@@ -897,13 +1067,19 @@ export declare const DVEW: {
             RGBLightUpdate: number;
             RGBLightRemove: number;
             worldColumnSunLightProp: number;
+            sunLgithUpdateMaxY: number;
             sunLightUpdate: number;
             sunLightRemove: number;
         };
         $INIT(): void;
         addWorldColumnToSunLightQue(x: number, z: number): void;
-        runWorldColumnSunLightQue(): void;
+        runWorldColumnSunLightAndUpateQue(): Promise<void>;
+        awaitAllWorldColumnSunLightProp(): Promise<boolean>;
         areWorldColumnSunLightUpdatsDone(): boolean;
+        awaitAllSunLightUpdatesAtMaxY(): Promise<boolean>;
+        areAllSunLightUpdatesAtMaxYDone(): boolean;
+        awaitAllSunLightUpdates(): Promise<boolean>;
+        areAllSunLightUpdatesDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
         runRGBUpdateQue(): void;
@@ -930,6 +1106,7 @@ export declare const DVEW: {
      */
     deleteChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
+    buildWorldColumn(x: number, z: number): false | undefined;
     $INIT(data: DVEWInitData): Promise<void>;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

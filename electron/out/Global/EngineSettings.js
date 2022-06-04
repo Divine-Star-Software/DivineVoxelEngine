@@ -3,6 +3,7 @@
  * Handles common settings for all contexts
  */
 export const EngineSettings = {
+    context: "MatrixLoadedThread",
     settings: {
         nexus: {
             enabled: true,
@@ -26,7 +27,7 @@ export const EngineSettings = {
         },
         regions: {
             regionXPow2: 9,
-            regionYPow2: 7,
+            regionYPow2: 9,
             regionZPow2: 9,
         },
         chunks: {
@@ -53,11 +54,25 @@ export const EngineSettings = {
             disableFluidShaderEffects: false,
         },
     },
+    setContext(context) {
+        this.context = context;
+    },
     syncSettings(data) {
-        for (const key of Object.keys(data)) {
-            if (this.settings[key]) {
-                //@ts-ignore
-                this.settings[key] = data[key];
+        //safetly set data without prototype pollution
+        for (const settingsKey of Object.keys(data)) {
+            if (settingsKey.includes("__")) {
+                throw new Error("Can not include properties with multpile underscores.");
+            }
+            if (this.settings[settingsKey] !== undefined) {
+                for (const propertyKey of Object.keys(data[settingsKey])) {
+                    if (propertyKey.includes("__")) {
+                        throw new Error("Can not include properties with multpile underscores.");
+                    }
+                    if (this.settings[settingsKey][propertyKey] !== undefined) {
+                        //@ts-ignore
+                        this.settings[settingsKey][propertyKey] = data[settingsKey][propertyKey];
+                    }
+                }
             }
         }
     },
@@ -68,6 +83,9 @@ export const EngineSettings = {
         }
         if (this.settings.regions) {
             worldBounds.setRegionBounds(this.settings.regions.regionXPow2, this.settings.regions.regionYPow2, this.settings.regions.regionZPow2);
+        }
+        if (this.settings.world) {
+            worldBounds.setWorldBounds(this.settings.world.minX, this.settings.world.maxX, this.settings.world.minZ, this.settings.world.maxZ, this.settings.world.minY, this.settings.world.maxY);
         }
     },
     getSettingsCopy() {

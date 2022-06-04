@@ -2,7 +2,7 @@
 import { Util } from "../../Global/Util.helper.js";
 //functions
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill, } from "./Functions/RGBFloodLight.js";
-import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, } from "./Functions/SunLight.js";
+import { PopulateWorldColumnWithSunLight, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, } from "./Functions/SunLight.js";
 export const IlluminationManager = {
     lightByte: Util.getLightByte(),
     voxelByte: Util.getVoxelByte(),
@@ -16,10 +16,13 @@ export const IlluminationManager = {
     runRGBFloodFill: runRGBFloodFill,
     runRGBFloodRemoveAt: runRGBFloodRemoveAt,
     runRGBFloodRemove: runRGBFloodRemove,
+    populateWorldColumnWithSunLight: PopulateWorldColumnWithSunLight,
+    runSunLightUpdateAtMaxY: RunSunLightUpdateAtMaxY,
     _RGBlightUpdateQue: [],
     _RGBlightRemovalQue: [],
     _sunLightUpdateQue: [],
     _sunLightRemoveQue: [],
+    _visitSunMap: {},
     addChunkToSunLightUpdate(chunk, chunkX, chunkY, chunkZ) {
         const heightMap = chunk.heightMap;
         const voxels = chunk.voxels;

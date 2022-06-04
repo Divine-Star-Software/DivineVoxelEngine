@@ -1,5 +1,5 @@
 import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
-import type { PositionMatrix } from "../../../out/Meta/Util.types";
+import type { Position3Matrix } from "../../../out/Meta/Util.types";
 
 export class Player {
  absPositionArray: Float32Array;
@@ -33,7 +33,7 @@ export class Player {
  velocity: BABYLON.Vector3 = BABYLON.Vector3.Zero(); // global
 
  lookingAtBlock = false;
- blockLookingAtPosition: PositionMatrix = { x: 0, y: 0, z: 0 };
+ blockLookingAtPosition: Position3Matrix = { x: 0, y: 0, z: 0 };
 
  playerCube: BABYLON.Mesh;
 

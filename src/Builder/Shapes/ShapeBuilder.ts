@@ -1,12 +1,12 @@
 import type { VoxelShapeAddData } from "Meta/index";
-import type { DirectionNames, PositionMatrix } from "Meta/Util.types";
+import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
 type DimenionsMatrix = { width: number; height: number; depth: number };
 export const ShapeBuilder = {
  faceFunctions: <
   Record<
    DirectionNames,
    (
-    origion: PositionMatrix,
+    origion: Position3Matrix,
     dimensions: DimenionsMatrix,
     data: VoxelShapeAddData,
     flip ?: boolean
@@ -280,7 +280,7 @@ export const ShapeBuilder = {
 
  addFace(
   direction: DirectionNames,
-  origion: PositionMatrix,
+  origion: Position3Matrix,
   dimensions: DimenionsMatrix,
   data: VoxelShapeAddData,
   flip = false,

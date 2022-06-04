@@ -1,6 +1,6 @@
 //types
 import type { IlluminationManager } from "../IlluminationManager";
-import type { PositionMatrix } from "Meta/Util.types";
+import type { Position3Matrix } from "Meta/Util.types";
 //objects
 import {DVEP} from "../../DivineVoxelEngineWorldPropagation.js";
 
@@ -86,7 +86,7 @@ export function runRGBFloodRemoveAt(
 }
 export function runRGBFloodRemove(
  this: typeof IlluminationManager,
- lightSource?: PositionMatrix
+ lightSource?: Position3Matrix
 ) {
  while (this._RGBlightRemovalQue.length != 0) {
   const node = this._RGBlightRemovalQue.shift();
