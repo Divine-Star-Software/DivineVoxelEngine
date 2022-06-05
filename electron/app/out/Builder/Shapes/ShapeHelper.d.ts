@@ -51,6 +51,8 @@ export declare const ShapeHelper: {
     produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
     calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
+    calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
     calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
-    calculateAOColor(colors: number[], chunkAmbientOcculusion: number[], startIndex: number): void;
+    calculateAOColor(aoColors: number[], aoTemplate: number[], aoTemplateIndex: number): void;
+    calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
 };

@@ -62,6 +62,9 @@ export const SharedVertexShader = {
   uniform float doSun;
   uniform float doColor;
   `,
+    useTime: `
+ uniform float time;
+ `,
     setUVInMain: `
     animIndex = getUVFace(cuv3.z);
     vUV = cuv3;
@@ -98,5 +101,5 @@ export const SharedVertexShader = {
     `,
     doNormals: `
  vNormal = normal;
- `
+ `,
 };

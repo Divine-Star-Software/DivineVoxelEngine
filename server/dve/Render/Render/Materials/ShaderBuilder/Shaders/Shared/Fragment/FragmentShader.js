@@ -40,7 +40,9 @@ export const SharedFragmentShader = {
     `,
     getLight: `
     vec4 getLight(vec4 base) {
-        return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
+     //   return base * ( ((rgbLColor * vDoRGB)  +  vec4(1,1,1,1)) + baseLevel );
+     //   return base * ( ((sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
+      return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun  * sunLightLevel)) + baseLevel );
     }
     `,
     doFog: `
@@ -48,5 +50,5 @@ export const SharedFragmentShader = {
         float fog = CalcFogFactor();
         return fog * base.rgb + (1.0 - fog) * vFogColor;
     }
-    `
+    `,
 };

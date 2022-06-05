@@ -46,6 +46,8 @@ export declare const DVER: {
         };
         syncBoundsWithArrays(): void;
         setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+        isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+        isPositonInBounds(x: number, y: number, z: number): boolean;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -149,6 +151,8 @@ export declare const DVER: {
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -188,7 +192,7 @@ export declare const DVER: {
     };
     renderManager: {
         shaderBuilder: {
-            buildFloraVertexSahder(uniformRegister?: string, animationFunction?: string): string;
+            buildFloraVertexShader(uniformRegister?: string, animationFunction?: string): string;
             buildFluidVertexShader(uniformRegister?: string, animationFunction?: string): string;
             buildSolidVertexShader(uniformRegister?: string, animationFunction?: string): string;
             buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string): string;
@@ -243,8 +247,10 @@ export declare const DVER: {
             material: BABYLON.ShaderMaterial | null;
             context: CanvasRenderingContext2D | null;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            setSunLightLevel(level: number): void;
+            setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
+            createMaterial(settings: EngineSettingsData, scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
         };
         fluidMaterial: {
             material: BABYLON.ShaderMaterial | null;
@@ -521,6 +527,8 @@ export declare const DVER: {
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {

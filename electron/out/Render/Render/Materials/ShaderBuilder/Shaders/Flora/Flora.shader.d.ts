@@ -1,6 +1,4 @@
 export declare const floraShaders: {
-    vertexTop: string;
-    vertexMain: string;
-    fragTop: string;
+    setPosition: string;
     fragMain: string;
 };

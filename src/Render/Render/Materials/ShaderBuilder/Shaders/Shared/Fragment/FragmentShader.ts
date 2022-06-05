@@ -1,17 +1,15 @@
-
 export const SharedFragmentShader = {
-
-    top : `
+ top: `
     precision highp float;
     precision highp sampler2DArray;
     `,
-    optionVariables : `
+ optionVariables: `
     uniform float sunLightLevel;
     uniform float baseLevel;
     varying float vDoSun;
     varying float vDoRGB;
     `,
-    varsNormal : `
+ varsNormal: `
     uniform sampler2DArray arrayTex;
     varying vec3 vUV;
     varying vec4 aoColor;
@@ -21,7 +19,7 @@ export const SharedFragmentShader = {
     varying vec3 vNormal;
     varying float animIndex;
     `,
-    varsNoAO : `
+ varsNoAO: `
     uniform sampler2DArray arrayTex;
     varying vec3 vUV;
     varying vec4 rgbLColor;
@@ -30,26 +28,27 @@ export const SharedFragmentShader = {
     varying vec3 vNormal;
     varying float animIndex;
     `,
-    getColor : `
+ getColor: `
     vec4 getColor(vec4 base) {
         return base * vColors;
      }
     `,
-    getAO : `
+ getAO: `
     vec4 getAO(vec4 base) {
         return  base * mix(base, aoColor , 1.0);
     }
     `,
-    getLight : `
+ getLight: `
     vec4 getLight(vec4 base) {
-        return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
+     //   return base * ( ((rgbLColor * vDoRGB)  +  vec4(1,1,1,1)) + baseLevel );
+     //   return base * ( ((sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
+      return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun  * sunLightLevel)) + baseLevel );
     }
     `,
-    doFog : `
+ doFog: `
     vec3 doFog(vec4 base) {
         float fog = CalcFogFactor();
         return fog * base.rgb + (1.0 - fog) * vFogColor;
     }
-    `
-
-}
+    `,
+};

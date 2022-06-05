@@ -18,6 +18,15 @@ export const WorldGen = {
        z + chunkZ
       );
      }
+     if (y == baseY + 6) {
+      DVEW.worldData.paintVoxel(
+       "dve:dreamgrass",
+       "default",
+       x + chunkX,
+       y + chunkY,
+       z + chunkZ
+      );
+     }
     }
    }
   }

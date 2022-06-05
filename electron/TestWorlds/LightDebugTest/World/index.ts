@@ -35,6 +35,7 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
+//await DVEW.worldData.requestVoxelBeRemoved(-1, 5, 0);
 
 /* setTimeout(async ()=>{
     console.log("remove");

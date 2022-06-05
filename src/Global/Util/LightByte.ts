@@ -116,7 +116,7 @@ export const LightByte = {
   let b = ((sl & (0x0f << 12)) >> 12) - 1;
   if (b < 0) b = 0;
 
-  let bv = 0;
+  let bv = sl;
   bv = (bv & ~(0xf << 4)) | (r << 4);
   bv = (bv & ~(0xf << 8)) | (g << 8);
   bv = (bv & ~(0xf << 12)) | (b << 12);

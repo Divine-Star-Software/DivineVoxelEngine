@@ -68,7 +68,18 @@ export const WorldBounds = {
   this.bounds.MinY = minY;
   this.bounds.MaxY = maxY;
  },
-
+ isPositonOutsideOfBounds(x: number, y: number, z: number) {
+  if (x < this.bounds.MinX || x > this.bounds.MaxX) return true;
+  if (y < this.bounds.MinY || y > this.bounds.MaxY) return true;
+  if (z < this.bounds.MinZ || z > this.bounds.MaxZ) return true;
+  return false;
+ },
+ isPositonInBounds(x: number, y: number, z: number) {
+  if (x >= this.bounds.MinX && x <= this.bounds.MaxX) return true;
+  if (y >= this.bounds.MinY && y <= this.bounds.MaxY) return true;
+  if (z >= this.bounds.MinZ && z <= this.bounds.MaxZ) return true;
+  return false;
+ },
  setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number) {
   this.chunkXPow2 = pow2X;
   this.chunkXSize = 2 ** pow2X;
@@ -170,10 +181,10 @@ export const WorldBounds = {
   const chunkPOS = this.getChunkPosition(x, 0, z);
   return this.getWorldColumnKeyFromObj(chunkPOS);
  },
- getWorldColumnPosition(x : number,z:number) {
-    const chunkPOS = this.getChunkPosition(x, 0, z);
-    this.__worldColumnPosition.x = chunkPOS.x;
-    this.__worldColumnPosition.z = chunkPOS.z;
-    return this.__worldColumnPosition;
- }
+ getWorldColumnPosition(x: number, z: number) {
+  const chunkPOS = this.getChunkPosition(x, 0, z);
+  this.__worldColumnPosition.x = chunkPOS.x;
+  this.__worldColumnPosition.z = chunkPOS.z;
+  return this.__worldColumnPosition;
+ },
 };

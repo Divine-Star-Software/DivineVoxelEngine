@@ -17,15 +17,27 @@ import { SharedVertexShader } from "./Shaders/Shared/Vertex/VertexShader.js";
  * Helps construct raw text shaders.
  */
 export const ShaderBuilder = {
-    buildFloraVertexSahder(uniformRegister = "", animationFunction = "") {
+    buildFloraVertexShader(uniformRegister = "", animationFunction = "") {
         return `
-${floraShaders.vertexTop}
-
+${SharedVertexShader.top}
+${SharedVertexShader.attributes}
+${SharedVertexShader.uniforams}
+${SharedVertexShader.varying}
+${SharedVertexShader.optionVars}
+${SharedVertexShader.useTime}
+${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
-
 ${animationFunction}
-
-${floraShaders.vertexMain}
+${CommonShader.getMainFunction(`
+ ${floraShaders.setPosition}
+ ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.setUVInMain}
+ ${SharedVertexShader.doAO}
+ ${SharedVertexShader.doRGB}
+ ${SharedVertexShader.doSun}
+ ${SharedVertexShader.doColors}
+ ${SharedVertexShader.doNormals}
+`)}
 `;
     },
     buildFluidVertexShader(uniformRegister = "", animationFunction = "") {
@@ -35,11 +47,11 @@ ${SharedVertexShader.attributesNoAO}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying}
 ${SharedVertexShader.optionVars}
+${SharedVertexShader.useTime}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${animationFunction}
-${fluidShaders.vertexVars}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
@@ -117,16 +129,19 @@ ${fluidShaders.fragMain}
     },
     buildFloraFragmentShader() {
         return `
-${SharedFogFunctions.fogFragConstants}
-
-${floraShaders.fragTop}
-
-${SharedFogFunctions.fogFragVars}
-
-${SharedFogFunctions.fogFragFunction}
-
-${floraShaders.fragMain}
-`;
+  ${SharedFragmentShader.top}
+  ${SharedFogFunctions.fogFragConstants}
+  ${SharedFragmentShader.optionVariables}
+  ${SharedFragmentShader.varsNormal}
+  ${SharedFogFunctions.fogFragVars}
+  ${SharedFogFunctions.fogFragFunction}
+  ${SharedFragmentShader.getColor}
+  ${SharedFragmentShader.getAO}
+  ${SharedFragmentShader.getLight}
+  ${SharedFragmentShader.doFog}
+  ${CommonShader.getMainFunction(`
+  ${solidShaders.fragMain}
+  `)}`;
     },
     buildMagmaFragmentShader() {
         return `
@@ -146,7 +161,7 @@ ${magmaShaders.fragMain}
             return this.buildMagmaVertexShader(uniformRegister, animationFunction);
         }
         if (voxelSubstance == "flora") {
-            return this.buildFloraVertexSahder(uniformRegister, animationFunction);
+            return this.buildFloraVertexShader(uniformRegister, animationFunction);
         }
         if (voxelSubstance == "fluid") {
             return this.buildFluidVertexShader(uniformRegister, animationFunction);
@@ -170,5 +185,5 @@ ${magmaShaders.fragMain}
             return this.buildFloraFragmentShader();
         }
         return "";
-    }
+    },
 };

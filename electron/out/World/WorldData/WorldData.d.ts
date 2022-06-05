@@ -174,6 +174,8 @@ export declare const WorldData: {
         };
         syncBoundsWithArrays(): void;
         setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+        isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+        isPositonInBounds(x: number, y: number, z: number): boolean;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {

@@ -40,7 +40,7 @@ export const QueuesManager = {
             const z = position[1];
             DVEW.worldData.fillWorldCollumnWithChunks(x, z);
             const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(x, z);
-            const maxY = DVEW.worldData.getAbsoluteHeightOfWorldColumn(x, z);
+            const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
             this._worldColumnSunLightPropMap[worldColumnKey] = maxY;
             Atomics.add(this.__states, this.__stateIndexes.worldColumnSunLightProp, 1);
             DVEW.propagationCommManager.runSunLightForWorldColumn(x, z, maxY);
@@ -56,16 +56,9 @@ export const QueuesManager = {
             const z = position[1];
             DVEW.propagationCommManager.runSunFillAtMaxY(x, z, maxY);
             Atomics.add(this.__states, this.__stateIndexes.sunLgithUpdateMaxY, 1);
-            /*    for (let ix = x; ix < x + DVEW.worldBounds.chunkXSize; ix++) {
-             for (let iz = z; iz < z + DVEW.worldBounds.chunkZSize; iz++) {
-              Atomics.add(this.__states, this.__stateIndexes.sunLightUpdate, 1);
-              DVEW.propagationCommManager.runSunFillAt(ix, maxY, iz);
-             }
-            } */
         }
         this._worldColumnSunLightPropMap = {};
         this._worldColumnSunLightPropQue = [];
-        // await this.awaitAllSunLightUpdates();
         await this.awaitAllSunLightUpdatesAtMaxY();
     },
     awaitAllWorldColumnSunLightProp() {

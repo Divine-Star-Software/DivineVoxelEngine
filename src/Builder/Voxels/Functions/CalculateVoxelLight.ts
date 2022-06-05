@@ -189,14 +189,13 @@ export function VoxelLightMixCalc(
  if (b == 0) zeroCheck.b++;
 
  for (let i = 6; i > 0; i -= 3) {
-  const check = this.getLight(
+  const neighborLightValue = this.getLight(
    checkSet[i] + x,
    checkSet[i + 1] + y,
    checkSet[i + 2] + z
   );
-  if(check == -1)continue;
+  if (neighborLightValue == -1) continue;
 
-  let neighborLightValue: number = check;
   const values = this.lightByte.getLightValues(neighborLightValue);
   let nw = values[0];
   let nr = values[1];
@@ -208,7 +207,7 @@ export function VoxelLightMixCalc(
   if (ng == 0) zeroCheck.g++;
   if (nb == 0) zeroCheck.b++;
 
-  if (!check) continue;
+  if (!neighborLightValue) continue;
 
   if (nw < w && w > 0) {
    w--;
@@ -266,12 +265,14 @@ export function VoxelLightMixCalc(
   newValues[3] = b;
  }
 
+
+ const returnValue = this.lightByte.setLightValues(newValues);
+ vertexStates[vertex].totalZero = totalZero;
+ vertexStates[vertex].value = returnValue;
+
  zeroCheck.w = 0;
  zeroCheck.r = 0;
  zeroCheck.b = 0;
  zeroCheck.g = 0;
- const returnValue = this.lightByte.setLightValues(newValues);
- vertexStates[vertex].totalZero = totalZero;
- vertexStates[vertex].value = returnValue;
  return returnValue;
 }

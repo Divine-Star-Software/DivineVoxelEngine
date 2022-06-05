@@ -48,9 +48,11 @@ export const FloraMesh: VoxelMeshInterface = {
   chunkVertexData.indices = indicies;
 
   chunkVertexData.applyToMesh(mesh, true);
-
   mesh.setVerticesData("cuv3", uvs, false, 3);
-  mesh.setVerticesData("colors", aoColors, false, 4);
+  mesh.setVerticesData("aoColors", aoColors, false, 4);
+  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
+  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
+  mesh.setVerticesData("colors", colors, false, 4);
 
   mesh.material = FloraMaterial.getMaterial();
   mesh.freezeWorldMatrix();

@@ -14,7 +14,7 @@ export async function BuildInitalMeshes(DVER, scene) {
     const floraAnimations = DVER.textureManager.processedTextureData.textureAnimations.flora;
     const floraAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.flora;
     const combinedFloraTextures = await DVER.renderManager.textureCreator.createMaterialTexture(scene, floraTextures);
-    DVER.renderManager.floraMaterial.createMaterial(scene, combinedFloraTextures, floraAnimations, floraAnimationTimes);
+    DVER.renderManager.floraMaterial.createMaterial(DVER.settings.settings, scene, combinedFloraTextures, floraAnimations, floraAnimationTimes);
     const fluidTextures = DVER.textureManager.processedTextureData.texturePaths.fluid;
     const fluidAnimations = DVER.textureManager.processedTextureData.textureAnimations.fluid;
     const fluidAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.fluid;

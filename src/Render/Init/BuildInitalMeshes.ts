@@ -43,6 +43,7 @@ export async function BuildInitalMeshes(
    floraTextures
   );
  DVER.renderManager.floraMaterial.createMaterial(
+  DVER.settings.settings,
   scene,
   combinedFloraTextures,
   floraAnimations,

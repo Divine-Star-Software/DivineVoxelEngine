@@ -1,21 +1,19 @@
 export const SharedVertexShader = {
-
-
-  top  : `
+ top: `
   precision highp float;
   `,
-  standardPositionMain : `
+ standardPositionMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
   gl_Position = worldViewProjection * vec4(position, 1.0); 
   `,
-  uniforams : `
+ uniforams: `
   uniform mat4 worldViewProjection;
   uniform mat4 world;      
   uniform vec3 worldMatrix;                
   uniform mat4 view;                    
   uniform mat4 viewProjection;       
   `,
-  attributes : `
+ attributes: `
   attribute vec3 position;
   attribute vec3 normal;
   attribute vec3 cuv3;
@@ -24,7 +22,7 @@ export const SharedVertexShader = {
   attribute vec4 sunLightColors;
   attribute vec4 colors;
   `,
-  attributesNoAO : `
+ attributesNoAO: `
   attribute vec3 position;
   attribute vec3 normal;
   attribute vec3 cuv3;
@@ -32,7 +30,7 @@ export const SharedVertexShader = {
   attribute vec4 sunLightColors;
   attribute vec4 colors;
   `,
-  varying : `
+ varying: `
   varying vec3 vUV;
   varying vec3 vNormal;
   varying vec4 aoColor;
@@ -41,7 +39,7 @@ export const SharedVertexShader = {
   varying vec4 vColors;
   varying float animIndex;
   `,
-  varyingNoAO : `
+ varyingNoAO: `
   varying vec3 vUV;
   varying vec3 vNormal;
   varying vec4 rgbLColor;
@@ -49,7 +47,7 @@ export const SharedVertexShader = {
   varying vec4 vColors;
   varying float animIndex;
   `,
-  optionVars : `
+ optionVars: `
   varying float vDoSun;
   varying float vDoRGB;
   uniform float doAO;
@@ -57,13 +55,17 @@ export const SharedVertexShader = {
   uniform float doSun;
   uniform float doColor;
   `,
-  optionVarsNoAO : `
+ optionVarsNoAO: `
   varying float vDoSun;
   varying float vDoRGB;
   uniform float doRGB;
   uniform float doSun;
   uniform float doColor;
   `,
+ useTime: `
+ uniform float time;
+ `,
+
  setUVInMain: `
     animIndex = getUVFace(cuv3.z);
     vUV = cuv3;
@@ -102,5 +104,5 @@ export const SharedVertexShader = {
     `,
  doNormals: `
  vNormal = normal;
- `
+ `,
 };

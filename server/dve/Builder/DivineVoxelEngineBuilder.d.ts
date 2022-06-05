@@ -72,6 +72,8 @@ export declare const DVEB: {
         };
         syncBoundsWithArrays(): void;
         setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+        isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+        isPositonInBounds(x: number, y: number, z: number): boolean;
         setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
         getRegionPosition(x: number, y: number, z: number): {
@@ -317,6 +319,8 @@ export declare const DVEB: {
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -419,6 +423,8 @@ export declare const DVEB: {
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -530,6 +536,8 @@ export declare const DVEB: {
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
             setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
             getRegionPosition(x: number, y: number, z: number): {
@@ -604,7 +612,7 @@ export declare const DVEB: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number): false | undefined;
-        getData(x: number, y: number, z: number): number;
+        getData(x: number, y: number, z: number): any;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
     };
     matrixHub: {
@@ -750,8 +758,10 @@ export declare const DVEB: {
         produceShapeReturnData(shapeData: import("../Meta/index.js").VoxelShapeAddData): import("../Meta/index.js").VoxelShapeAddReturnData;
         toLinearSpace(r: number, g: number, b: number, a: number): number[];
         calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
+        calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
         calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
-        calculateAOColor(colors: number[], chunkAmbientOcculusion: number[], startIndex: number): void;
+        calculateAOColor(aoColors: number[], aoTemplate: number[], aoTemplateIndex: number): void;
+        calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
     };
     shapeBuilder: {
         faceFunctions: Record<import("../Meta/Util.types.js").DirectionNames, (origion: import("../Meta/Util.types.js").Position3Matrix, dimensions: {

@@ -5,6 +5,18 @@ export const FloraMaterial = {
     getMaterial() {
         return this.material;
     },
+    setSunLightLevel(level) {
+        if (!this.material) {
+            throw new Error("Material must be created first before it can be updated.");
+        }
+        this.material.setFloat("sunLightLevel", level);
+    },
+    setBaseLevel(level) {
+        if (!this.material) {
+            throw new Error("Material must be created first before it can be updated.");
+        }
+        this.material.setFloat("baseLevel", level);
+    },
     updateMaterialSettings(settings) {
         if (!this.material) {
             throw new Error("Material must be created first before it can be updated.");
@@ -34,14 +46,22 @@ export const FloraMaterial = {
             this.material.setFloat("doColor", 0.0);
         }
     },
-    createMaterial(scene, texture, animations, animationTimes) {
+    createMaterial(settings, scene, texture, animations, animationTimes) {
         const animData = DVER.renderManager.animationManager.registerAnimations("flora", animations, animationTimes);
         BABYLON.Effect.ShadersStore["floraVertexShader"] =
             DVER.renderManager.shaderBuilder.getDefaultVertexShader("flora", animData.uniformRegisterCode, animData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["floraFragmentShader"] =
             DVER.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
         const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
-            attributes: ["position", "normal", "cuv3", "colors"],
+            attributes: [
+                "position",
+                "normal",
+                "cuv3",
+                "aoColors",
+                "colors",
+                "rgbLightColors",
+                "sunLightColors",
+            ],
             uniforms: [
                 "world",
                 "view",
@@ -50,11 +70,14 @@ export const FloraMaterial = {
                 "worldViewProjection",
                 "vFogInfos",
                 "vFogColor",
-                "baseLightColor",
+                "sunLightLevel",
+                "baseLevel",
                 "projection",
-                "anim1Index",
                 "arrayTex",
-                "time",
+                "doAO",
+                "doSun",
+                "doRGB",
+                "doColor",
                 ...animData.uniforms,
             ],
             needAlphaBlending: false,
@@ -82,6 +105,7 @@ export const FloraMaterial = {
         });
         this.material = shaderMaterial;
         DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
+        this.updateMaterialSettings(settings);
         return this.material;
     },
 };

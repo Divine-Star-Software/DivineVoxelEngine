@@ -72,9 +72,7 @@ export const DVEP = {
         this.queues.finishSunLightUpdate();
     },
     runSunFloodFillAtMaxY(x, z, maxY) {
-        const t1 = performance.now();
         this.illumination.runSunLightUpdateAtMaxY(x, z, maxY);
-        const t2 = performance.now();
         this.queues.finishSunLightUpdateAtMaxY();
     },
     runSunFloodRemove(x, y, z) {

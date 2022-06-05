@@ -59,6 +59,22 @@ export const ShapeHelper = {
   }
  },
 
+ calculateLightColorFromValue(
+  RGBlightColors: number[],
+  sunlightColors: number[],
+  lightValue: number
+ ) {
+  const values = this.lightByte.getLightValues(lightValue);
+  const w = this.lightMap[values[0]];
+  const r = this.lightMap[values[1]];
+  const g = this.lightMap[values[2]];
+  const b = this.lightMap[values[3]];
+  for (let v = 0; v < 4; v++) {
+   sunlightColors.push(w, w, w, 1);
+   RGBlightColors.push(r, g, b, 1);
+  }
+ },
+
  calculateSunightColor(
   sunLight: number[],
   sunLightTemplate: number[],
@@ -74,14 +90,20 @@ export const ShapeHelper = {
  },
 
  calculateAOColor(
-  colors: number[],
-  chunkAmbientOcculusion: number[],
-  startIndex: number
+  aoColors: number[],
+  aoTemplate: number[],
+  aoTemplateIndex: number
  ) {
   for (let v = 0; v < 4; v++) {
-   const aColor = chunkAmbientOcculusion[startIndex + v];
+   const aColor = aoTemplate[aoTemplateIndex + v];
    const newColor = this.toLinearSpace(aColor, aColor, aColor, aColor);
-   colors.push(newColor[0], newColor[1], newColor[2], 1);
+   aoColors.push(newColor[0], newColor[1], newColor[2], 1);
+  }
+ },
+ calculateAOColorFromValue(aoColors: number[], aoValue: number) {
+  for (let v = 0; v < 4; v++) {
+   const newColor = this.toLinearSpace(aoValue, aoValue, aoValue, aoValue);
+   aoColors.push(newColor[0], newColor[1], newColor[2], 1);
   }
  },
 };

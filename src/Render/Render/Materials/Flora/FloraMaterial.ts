@@ -9,6 +9,19 @@ export const FloraMaterial = {
   return this.material;
  },
 
+ setSunLightLevel(level: number) {
+  if (!this.material) {
+   throw new Error("Material must be created first before it can be updated.");
+  }
+  this.material.setFloat("sunLightLevel", level);
+ },
+ setBaseLevel(level: number) {
+  if (!this.material) {
+   throw new Error("Material must be created first before it can be updated.");
+  }
+  this.material.setFloat("baseLevel", level);
+ },
+
  updateMaterialSettings(settings: EngineSettingsData) {
   if (!this.material) {
    throw new Error("Material must be created first before it can be updated.");
@@ -36,6 +49,7 @@ export const FloraMaterial = {
  },
 
  createMaterial(
+  settings: EngineSettingsData,
   scene: BABYLON.Scene,
   texture: BABYLON.RawTexture2DArray,
   animations: number[][],
@@ -57,7 +71,15 @@ export const FloraMaterial = {
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
 
   const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
-   attributes: ["position", "normal", "cuv3", "colors"],
+   attributes: [
+    "position",
+    "normal",
+    "cuv3",
+    "aoColors",
+    "colors",
+    "rgbLightColors",
+    "sunLightColors",
+   ],
    uniforms: [
     "world",
     "view",
@@ -66,11 +88,14 @@ export const FloraMaterial = {
     "worldViewProjection",
     "vFogInfos",
     "vFogColor",
-    "baseLightColor",
+    "sunLightLevel",
+    "baseLevel",
     "projection",
-    "anim1Index",
     "arrayTex",
-    "time",
+    "doAO",
+    "doSun",
+    "doRGB",
+    "doColor",
     ...animData.uniforms,
    ],
 
@@ -84,7 +109,7 @@ export const FloraMaterial = {
   shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
   shaderMaterial.backFaceCulling = false;
   // shaderMaterial.separateCullingPass = false;
- // shaderMaterial.needDepthPrePass = true;
+  // shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
    const effect = shaderMaterial.getEffect();
@@ -111,6 +136,7 @@ export const FloraMaterial = {
 
   DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
 
+  this.updateMaterialSettings(settings);
   return this.material;
  },
 };

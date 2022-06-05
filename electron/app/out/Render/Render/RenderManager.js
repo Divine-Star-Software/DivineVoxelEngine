@@ -27,9 +27,11 @@ export const RenderManager = {
     setSunLevel(level) {
         this.solidMaterial.setSunLightLevel(level);
         this.fluidMaterial.setSunLightLevel(level);
+        this.floraMaterial.setSunLightLevel(level);
     },
     setBaseLevel(level) {
         this.solidMaterial.setBaseLevel(level);
         this.fluidMaterial.setBaseLevel(level);
+        this.floraMaterial.setBaseLevel(level);
     },
 };
