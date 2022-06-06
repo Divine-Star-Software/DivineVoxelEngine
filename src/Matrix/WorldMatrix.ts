@@ -238,7 +238,7 @@ export const WorldMatrix = {
  setData(x: number, y: number, z: number, data: number) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return false;
-  this._3dArray.setValueUseObjSafe(
+  this._3dArray.setValueUseObj(
    this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels,
    data
@@ -248,7 +248,7 @@ export const WorldMatrix = {
  getData(x: number, y: number, z: number) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return -1;
-  return this._3dArray.getValueUseObjSafe(
+  return this._3dArray.getValueUseObj(
    this.worldBounds.getVoxelPosition(x, y, z),
    chunk.voxels
   );

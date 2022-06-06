@@ -10,6 +10,8 @@ export const WorldGen = {
         let noHole = Math.random() > 0.2;
         let add = Math.random() > 0.5 ? -1 : 1;
         let spaceHeight = (15 + Math.random() * 3 * add) >> 0;
+        let lampMax = 5;
+        let currentLamp = 0;
         // let noHole = true;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
@@ -17,6 +19,12 @@ export const WorldGen = {
                 if (Math.random() > 0.9 && !holeMade && !noHole) {
                     hole = true;
                     holeMade = true;
+                }
+                let addLamp = false;
+                let flip = Math.random();
+                if (flip > 0.5 && flip < 0.55 && currentLamp < lampMax) {
+                    addLamp = true;
+                    currentLamp++;
                 }
                 let spikeHeight = (2 + Math.random() * 3) >> 0;
                 for (let y = 0; y < this.chunkHeight; y++) {
@@ -42,13 +50,18 @@ export const WorldGen = {
                         if (Math.random() > 0.9) {
                             DVEW.worldData.paintVoxel("dve:dreamgrass", "default", tx, ty + 1, tz);
                         }
+                        if (addLamp) {
+                            DVEW.worldData.paintVoxel("dve:dreamlamp", "default", tx, ty, tz);
+                        }
                     }
                     if (y == maxY + add * spaceHeight + spikeHeight + 1) {
                         if (Math.random() > 0.9) {
                             DVEW.worldData.paintVoxel("dve:dreamgrass", "default", tx, ty, tz);
                         }
                         else {
-                            DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", tx, ty, tz);
+                            if (Math.random() > 0.98) {
+                                DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", tx, ty, tz);
+                            }
                         }
                     }
                     if (y >= maxY + add * spaceHeight - spikeHeight &&

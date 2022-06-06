@@ -17,7 +17,7 @@ await DVER.$INIT({
     },
     chunks: {
         chunkXPow2: 4,
-        chunkYPow2: 6,
+        chunkYPow2: 7,
         chunkZPow2: 4,
         autoHeightMap: true,
     },
@@ -41,6 +41,7 @@ const init = async () => {
     DVER.renderManager.setBaseLevel(0.0);
     DVER.renderManager.setSunLevel(1);
     //DVER.renderManager.setSunLevel(0.01);
+    DVER.renderManager.setBaseLevel(0.05);
     const dayNightCyle = {
         tick: 0,
         value: 0,

@@ -8,6 +8,11 @@ export declare const LightByte: {
     getR(value: number): number;
     getG(value: number): number;
     getB(value: number): number;
+    setS(value: number, sl: number): number;
+    setR(value: number, sl: number): number;
+    setG(value: number, sl: number): number;
+    setB(value: number, sl: number): number;
+    hasRGBLight(sl: number): boolean;
     decodeLightFromVoxelData(voxelData: number): number;
     encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     /**# Set Light Values
@@ -55,7 +60,7 @@ export declare const LightByte: {
      * Returns the RGB light values minus one.
      * @param sl - source light value
      */
-    getMinusOneForRGB(sl: number): number;
+    getMinusOneForRGB(sl: number, n1: number): number;
     /**# Remove RGB Light
      * ---
      * Removes all RGB light from an encoded light value.

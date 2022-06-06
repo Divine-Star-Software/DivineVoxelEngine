@@ -33,8 +33,8 @@ export const EngineSettings = {
    minX: -Infinity,
    maxZ: Infinity,
    minZ: -Infinity,
-   maxY: 0,
-   minY: 256,
+   maxY: 256,
+   minY: 0,
   },
   regions: {
    regionXPow2: 9,

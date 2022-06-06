@@ -5,16 +5,39 @@
 export const LightByte = {
     _lightValues: [],
     getS(value) {
-        return (value & (0x0f << 0)) >> 0;
+        return (value & (0xf << 0)) >> 0;
     },
     getR(value) {
-        return (value & (0x0f << 4)) >> 4;
+        return (value & (0xf << 4)) >> 4;
     },
     getG(value) {
-        return (value & (0x0f << 8)) >> 8;
+        return (value & (0xf << 8)) >> 8;
     },
     getB(value) {
-        return (value & (0x0f << 12)) >> 12;
+        return (value & (0xf << 12)) >> 12;
+    },
+    setS(value, sl) {
+        return (sl & ~(0xf << 0)) | (value << 0);
+    },
+    setR(value, sl) {
+        return (sl & ~(0xf << 4)) | (value << 4);
+    },
+    setG(value, sl) {
+        return (sl & ~(0xf << 8)) | (value << 8);
+    },
+    setB(value, sl) {
+        return (sl & ~(0xf << 12)) | (value << 12);
+    },
+    hasRGBLight(sl) {
+        if (sl < 0)
+            return false;
+        if (this.getR(sl) > 0)
+            return true;
+        if (this.getG(sl) > 0)
+            return true;
+        if (this.getB(sl) > 0)
+            return true;
+        return false;
     },
     decodeLightFromVoxelData(voxelData) {
         return (voxelData & (0xffff << 0)) >> 0;
@@ -28,11 +51,11 @@ export const LightByte = {
      * @param values
      */
     setLightValues(values) {
-        let value = (0 & ~(0xf << 0)) | (values[0] << 0);
-        value = (value & ~(0xf << 4)) | (values[1] << 4);
-        value = (value & ~(0xf << 8)) | (values[2] << 8);
-        value = (value & ~(0xf << 12)) | (values[3] << 12);
-        return value;
+        let value = 0;
+        value = this.setS(values[0], value);
+        value = this.setR(values[1], value);
+        value = this.setG(values[2], value);
+        return this.setB(values[3], value);
     },
     /**# Get Light Values
      * ---
@@ -44,10 +67,10 @@ export const LightByte = {
      * @param value
      */
     getLightValues(value) {
-        this._lightValues[0] = (value & (0x0f << 0)) >> 0;
-        this._lightValues[1] = (value & (0x0f << 4)) >> 4;
-        this._lightValues[2] = (value & (0x0f << 8)) >> 8;
-        this._lightValues[3] = (value & (0x0f << 12)) >> 12;
+        this._lightValues[0] = this.getS(value);
+        this._lightValues[1] = this.getR(value);
+        this._lightValues[2] = this.getG(value);
+        this._lightValues[3] = this.getB(value);
         return this._lightValues;
     },
     /**# Is Less Than For RGB Remove
@@ -58,12 +81,12 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForRGBRemove(n1, n2) {
-        let r1 = (n1 & (0x0f << 4)) >> 4;
-        let g1 = (n1 & (0x0f << 8)) >> 8;
-        let b1 = (n1 & (0x0f << 12)) >> 12;
-        let r2 = (n2 & (0x0f << 4)) >> 4;
-        let g2 = (n2 & (0x0f << 8)) >> 8;
-        let b2 = (n2 & (0x0f << 12)) >> 12;
+        let r1 = this.getR(n1);
+        let g1 = this.getG(n1);
+        let b1 = this.getB(n1);
+        let r2 = this.getR(n2);
+        let g2 = this.getG(n2);
+        let b2 = this.getB(n2);
         return r1 < r2 || g1 < g2 || b1 < b2;
     },
     /**# Is Less Than For RGB Add
@@ -74,12 +97,12 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForRGBAdd(n1, n2) {
-        let r1 = ((n1 & (0x0f << 4)) >> 4) + 2;
-        let g1 = ((n1 & (0x0f << 8)) >> 8) + 2;
-        let b1 = ((n1 & (0x0f << 12)) >> 12) + 2;
-        let r2 = (n2 & (0x0f << 4)) >> 4;
-        let g2 = (n2 & (0x0f << 8)) >> 8;
-        let b2 = (n2 & (0x0f << 12)) >> 12;
+        let r1 = this.getR(n1) + 2;
+        let g1 = this.getG(n1) + 2;
+        let b1 = this.getB(n1) + 2;
+        let r2 = this.getR(n2);
+        let g2 = this.getG(n2);
+        let b2 = this.getB(n2);
         return r1 <= r2 || g1 <= g2 || b1 <= b2;
     },
     /**# Is Greater Or Equal Than For RGB Remove
@@ -90,12 +113,12 @@ export const LightByte = {
      * @param n2
      */
     isGreaterOrEqualThanForRGBRemove(n1, n2) {
-        let r1 = (n1 & (0x0f << 4)) >> 4;
-        let g1 = (n1 & (0x0f << 8)) >> 8;
-        let b1 = (n1 & (0x0f << 12)) >> 12;
-        let r2 = (n2 & (0x0f << 4)) >> 4;
-        let g2 = (n2 & (0x0f << 8)) >> 8;
-        let b2 = (n2 & (0x0f << 12)) >> 12;
+        let r1 = this.getR(n1);
+        let g1 = this.getG(n1);
+        let b1 = this.getB(n1);
+        let r2 = this.getR(n2);
+        let g2 = this.getG(n2);
+        let b2 = this.getB(n2);
         return r1 >= r2 || g1 >= g2 || b1 >= b2;
     },
     /**# Get Minus One For RGB
@@ -103,20 +126,22 @@ export const LightByte = {
      * Returns the RGB light values minus one.
      * @param sl - source light value
      */
-    getMinusOneForRGB(sl) {
-        let r = ((sl & (0x0f << 4)) >> 4) - 1;
+    getMinusOneForRGB(sl, n1) {
+        let s = this.getS(n1);
+        let r = this.getR(sl) - 1;
         if (r < 0)
             r = 0;
-        let g = ((sl & (0x0f << 8)) >> 8) - 1;
+        let g = this.getG(sl) - 1;
         if (g < 0)
             g = 0;
-        let b = ((sl & (0x0f << 12)) >> 12) - 1;
+        let b = this.getB(sl) - 1;
         if (b < 0)
             b = 0;
-        let bv = sl;
-        bv = (bv & ~(0xf << 4)) | (r << 4);
-        bv = (bv & ~(0xf << 8)) | (g << 8);
-        bv = (bv & ~(0xf << 12)) | (b << 12);
+        let bv = 0;
+        bv = this.setS(s, bv);
+        bv = this.setR(r, bv);
+        bv = this.setG(g, bv);
+        bv = this.setB(b, bv);
         return bv;
     },
     /**# Remove RGB Light
@@ -125,10 +150,12 @@ export const LightByte = {
      * @param sl - source light value
      */
     removeRGBLight(sl) {
-        let bv = sl;
-        bv = (bv & ~(0xf << 4)) | (0 << 4);
-        bv = (bv & ~(0xf << 8)) | (0 << 8);
-        bv = (bv & ~(0xf << 12)) | (0 << 12);
+        let s = this.getS(sl);
+        let bv = 0;
+        bv = this.setR(0, bv);
+        bv = this.setG(0, bv);
+        bv = this.setB(0, bv);
+        bv = this.setS(s, bv);
         return bv;
     },
     /**# Get Full Sun Light

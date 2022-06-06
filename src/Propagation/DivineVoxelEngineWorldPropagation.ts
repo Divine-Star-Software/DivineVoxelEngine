@@ -86,6 +86,7 @@ export const DVEP = {
  },
  runSunLightForWorldColumn(x: number, z: number, maxY: number) {
   this.illumination.populateWorldColumnWithSunLight(x, z, maxY);
+
   this.queues.finishWorldColumnSunLightProp();
  },
  runSunFloodFill(x: number, y: number, z: number) {

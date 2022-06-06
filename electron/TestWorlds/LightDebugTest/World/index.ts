@@ -15,31 +15,28 @@ await DVEW.$INIT({
  onReady: () => {},
 });
 
-let startX = -64;
-let startZ = -64;
-let endX = 64;
-let endZ = 64;
+let startX = -32;
+let startZ = -32;
+let endX = 32;
+let endZ = 32;
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateChunk(x, 0, z);
+  DVEW.queues.addWorldColumnToSunLightQue(x, z);
  }
 }
-
+await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
-  DVEW.buildChunk(x, 0, z);
+  DVEW.buildWorldColumn(x, z);
  }
 }
-
 const x = 0;
 const z = 0;
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
-//await DVEW.worldData.requestVoxelBeRemoved(-1, 5, 0);
 
-/* setTimeout(async ()=>{
-    console.log("remove");
-    await DVEW.worldData.requestVoxelBeRemoved(x, 6, z);
-    DVEW.worldGeneration.illumantionManager.runRGBFloodRemoveAt(false,x,6,z);
-    DVEW.worldGeneration.illumantionManager.runRGBFloodRemove();
-},1000) */
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
+
+setTimeout(async () => {
+ await DVEW.worldData.requestVoxelBeRemoved(x, 6, z);
+}, 1000);

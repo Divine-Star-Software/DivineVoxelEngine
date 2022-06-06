@@ -13,7 +13,7 @@ await DVER.$INIT({
         doRGBLight: true,
         doSunLight: true,
         autoRGBLight: true,
-        autoSunLight: false,
+        autoSunLight: true,
     },
 });
 const init = async () => {
@@ -24,7 +24,7 @@ const init = async () => {
     SetUpDefaultSkybox(scene);
     CreateWorldAxis(scene, 10);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setSunLevel(1);
+    DVER.renderManager.setSunLevel(0.5);
     runRenderLoop(engine, scene, camera);
 };
 RunInit(init);

@@ -18,7 +18,7 @@ export const WorldGen = {
        z + chunkZ
       );
      }
-     if (y == baseY + 6) {
+/*      if (y == baseY + 6) {
       DVEW.worldData.paintVoxel(
        "dve:dreamgrass",
        "default",
@@ -26,7 +26,7 @@ export const WorldGen = {
        y + chunkY,
        z + chunkZ
       );
-     }
+     } */
     }
    }
   }

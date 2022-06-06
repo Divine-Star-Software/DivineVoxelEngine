@@ -23,10 +23,12 @@ worldComm.messageFunctions = {
   DVEP.runRGBFloodRemove(x, y, z);
  },
  2: (data) => {
+
   //run sun light propagation for world column
   const x = data[1];
   const z = data[2];
   const maxY = data[3];
+
   DVEP.runSunLightForWorldColumn(x, z, maxY);
  },
  3: (data) => {

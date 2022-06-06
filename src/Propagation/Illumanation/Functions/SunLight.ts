@@ -101,6 +101,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const y = node[1];
   const z = node[2];
   const sl = DVEP.voxelHelper.getLight(x, y, z);
+
   if (sl == 0) continue;
 
   const n1 = DVEP.voxelHelper.getLight(x - 1, y, z);

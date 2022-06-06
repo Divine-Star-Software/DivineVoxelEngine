@@ -254,6 +254,11 @@ export declare const DVEB: {
             getR(value: number): number;
             getG(value: number): number;
             getB(value: number): number;
+            setS(value: number, sl: number): number;
+            setR(value: number, sl: number): number;
+            setG(value: number, sl: number): number;
+            setB(value: number, sl: number): number;
+            hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -261,7 +266,7 @@ export declare const DVEB: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number): number;
+            getMinusOneForRGB(sl: number, n1: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
@@ -612,7 +617,7 @@ export declare const DVEB: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number): false | undefined;
-        getData(x: number, y: number, z: number): any;
+        getData(x: number, y: number, z: number): number;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
     };
     matrixHub: {
@@ -666,6 +671,11 @@ export declare const DVEB: {
             getR(value: number): number;
             getG(value: number): number;
             getB(value: number): number;
+            setS(value: number, sl: number): number;
+            setR(value: number, sl: number): number;
+            setG(value: number, sl: number): number;
+            setB(value: number, sl: number): number;
+            hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -673,7 +683,7 @@ export declare const DVEB: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number): number;
+            getMinusOneForRGB(sl: number, n1: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
@@ -732,6 +742,11 @@ export declare const DVEB: {
             getR(value: number): number;
             getG(value: number): number;
             getB(value: number): number;
+            setS(value: number, sl: number): number;
+            setR(value: number, sl: number): number;
+            setG(value: number, sl: number): number;
+            setB(value: number, sl: number): number;
+            hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -739,7 +754,7 @@ export declare const DVEB: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number): number;
+            getMinusOneForRGB(sl: number, n1: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;

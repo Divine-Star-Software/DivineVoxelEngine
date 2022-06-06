@@ -109,12 +109,12 @@ export const WorldData = {
      return voxelData.lightValue;
     }
     if (voxelData.substance == "solid") {
-     return 0;
+     return -1;
     }
     return this.voxelByte.decodeLightFromVoxelData(voxel[2]);
    }
   }
-  return 0;
+  return -1;
  },
 
  removeData(x: number, y: number, z: number) {
