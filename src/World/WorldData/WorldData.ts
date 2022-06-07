@@ -506,6 +506,7 @@ export const WorldData = {
   let maxHeight = -Infinity;
   for (const chunkKey of chunkKeys) {
    const chunk = worldColumn[chunkKey];
+  
    const chunkMax =
     this.heightByte.getChunkMax(chunk.minMaxMap) + chunk.position[1];
    if (maxHeight < chunkMax) {

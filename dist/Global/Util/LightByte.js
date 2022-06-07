@@ -5,7 +5,7 @@
 export const LightByte = {
     _lightValues: [],
     getS(value) {
-        return (value & (0xf << 0)) >> 0;
+        return value & 0xf;
     },
     getR(value) {
         return (value & (0xf << 4)) >> 4;
@@ -17,7 +17,7 @@ export const LightByte = {
         return (value & (0xf << 12)) >> 12;
     },
     setS(value, sl) {
-        return (sl & ~(0xf << 0)) | (value << 0);
+        return (sl & ~0xf) | value;
     },
     setR(value, sl) {
         return (sl & ~(0xf << 4)) | (value << 4);
@@ -186,8 +186,8 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForSunAdd(n1, n2) {
-        let sl1 = ((n1 & (0x0f << 0)) >> 0) + 2;
-        let sl2 = (n2 & (0x0f << 0)) >> 0;
+        let sl1 = ((n1 & (0xf << 0)) >> 0) + 2;
+        let sl2 = (n2 & (0xf << 0)) >> 0;
         return sl1 <= sl2;
     },
     /**# Is Less Than For Sun Add Down
@@ -220,14 +220,24 @@ export const LightByte = {
      * down neighbor.
      * @param currentVoxel
      */
-    getSunLightForUnderVoxel(currentVoxel) {
-        let sl1 = currentVoxel & 0xf;
-        if (sl1 == 0xf) {
-            return (currentVoxel & 0x0) | 0xf;
+    getSunLightForUnderVoxel(sl, nl) {
+        let s = this.getS(sl);
+        let sn = this.getS(nl);
+        if (s == 15) {
+            sn = s;
         }
-        else {
-            return (currentVoxel & 0x0) | (sl1 - 1);
+        if (s < 15) {
+            sn = s - 2;
         }
+        let r = this.getR(nl);
+        let g = this.getG(nl);
+        let b = this.getB(nl);
+        let bv = 0;
+        bv = this.setS(sn, bv);
+        bv = this.setR(r, bv);
+        bv = this.setG(g, bv);
+        bv = this.setB(b, bv);
+        return bv;
     },
     /**# Get Minus One For Sun
      * ---
@@ -235,11 +245,23 @@ export const LightByte = {
      * Used for sun light addition on all neighbors expect the down one.
      * @param sl - source light value
      */
-    getMinusOneForSun(sl) {
-        let sun = ((sl & (0x0f << 0)) >> 0) - 2;
-        if (sun < 0)
-            sun = 0;
-        return (sun & ~(0xf << 0)) | (sun << 0);
+    getMinusOneForSun(sl, nl) {
+        let s = this.getS(sl) - 2;
+        if (s < 0)
+            s = 0;
+        let sn = this.getS(nl);
+        if (s < sn) {
+            s = sn;
+        }
+        let r = this.getR(nl);
+        let g = this.getG(nl);
+        let b = this.getB(nl);
+        let bv = 0;
+        bv = this.setS(s, bv);
+        bv = this.setR(r, bv);
+        bv = this.setG(g, bv);
+        bv = this.setB(b, bv);
+        return bv;
     },
     /**# Is Less Than For Sun Remove
      * ---

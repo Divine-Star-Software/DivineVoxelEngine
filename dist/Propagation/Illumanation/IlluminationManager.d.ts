@@ -1,6 +1,5 @@
-import type { ChunkData } from "Meta/index.js";
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
-import { PopulateWorldColumnWithSunLight, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY } from "./Functions/SunLight.js";
+import { PopulateWorldColumnWithSunLight, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
 export declare const IlluminationManager: {
     lightByte: {
         _lightValues: number[];
@@ -26,58 +25,28 @@ export declare const IlluminationManager: {
         isLessThanForSunAdd(n1: number, n2: number): boolean;
         isLessThanForSunAddDown(n1: number, n2: number): boolean;
         isLessThanForSunAddUp(n1: number, n2: number): boolean;
-        getSunLightForUnderVoxel(currentVoxel: number): number;
-        getMinusOneForSun(sl: number): number;
+        getSunLightForUnderVoxel(sl: number, nl: number): number;
+        getMinusOneForSun(sl: number, nl: number): number;
         isLessThanForSunRemove(n1: number, sl: number): boolean;
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
-    };
-    voxelByte: {
-        setId(id: number, value: number): number;
-        getId(value: number): number;
-        decodeLightFromVoxelData(voxelData: number): number;
-        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-    };
-    _3dArray: {
-        bounds: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        _position: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        setBounds(x: number, y: number, z: number): void;
-        getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
-        getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): number;
-        getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): any;
-        setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-        setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-        deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
-        deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): void;
-        getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("Meta/index.js").Position3Matrix;
     };
     air: number[];
     runSunLightUpdateAt: typeof runSunLightUpdateAt;
     runSunLightUpdate: typeof runSunLightUpdate;
     runSunLightRemove: typeof runSunLightRemove;
     runSunLightRemoveAt: typeof runSunLightRemoveAt;
+    populateWorldColumnWithSunLight: typeof PopulateWorldColumnWithSunLight;
+    runSunLightUpdateAtMaxY: typeof RunSunLightUpdateAtMaxY;
+    sunLightAboveCheck: typeof SunLightAboveCheck;
+    _sunLightUpdateQue: number[][];
+    _sunLightRemoveQue: number[][];
     runRGBFloodFillAt: typeof runRGBFloodFillAt;
     runRGBFloodFill: typeof runRGBFloodFill;
     runRGBFloodRemoveAt: typeof runRGBFloodRemoveAt;
     runRGBFloodRemove: typeof runRGBFloodRemove;
-    populateWorldColumnWithSunLight: typeof PopulateWorldColumnWithSunLight;
-    runSunLightUpdateAtMaxY: typeof RunSunLightUpdateAtMaxY;
     _RGBlightUpdateQue: number[][];
     _RGBlightRemovalQue: number[][];
-    _sunLightUpdateQue: number[][];
-    _sunLightRemoveQue: number[][];
     _visitSunMap: Record<string, boolean>;
-    addChunkToSunLightUpdate(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
-    populateChunkAirWithInitlSunLight(chunk: ChunkData): void;
 };

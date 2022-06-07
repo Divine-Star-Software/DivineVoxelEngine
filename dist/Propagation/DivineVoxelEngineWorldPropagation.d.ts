@@ -170,8 +170,8 @@ export declare const DVEP: {
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
             isLessThanForSunAddUp(n1: number, n2: number): boolean;
-            getSunLightForUnderVoxel(currentVoxel: number): number;
-            getMinusOneForSun(sl: number): number;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
@@ -613,7 +613,7 @@ export declare const DVEP: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number): false | undefined;
-        getData(x: number, y: number, z: number): number;
+        getData(x: number, y: number, z: number): any;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
     };
     matrixHub: {
@@ -662,60 +662,30 @@ export declare const DVEP: {
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
             isLessThanForSunAddUp(n1: number, n2: number): boolean;
-            getSunLightForUnderVoxel(currentVoxel: number): number;
-            getMinusOneForSun(sl: number): number;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
-        };
-        voxelByte: {
-            setId(id: number, value: number): number;
-            getId(value: number): number;
-            decodeLightFromVoxelData(voxelData: number): number;
-            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-        };
-        _3dArray: {
-            bounds: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            _position: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): number;
-            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): any;
-            setValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: import("Meta/index.js").ChunkVoxels): void;
-            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: import("Meta/index.js").ChunkVoxels): void;
-            getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("Meta/index.js").Position3Matrix;
         };
         air: number[];
         runSunLightUpdateAt: typeof import("./Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
         runSunLightUpdate: typeof import("./Illumanation/Functions/SunLight.js").runSunLightUpdate;
         runSunLightRemove: typeof import("./Illumanation/Functions/SunLight.js").runSunLightRemove;
         runSunLightRemoveAt: typeof import("./Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
+        populateWorldColumnWithSunLight: typeof import("./Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
+        runSunLightUpdateAtMaxY: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
+        sunLightAboveCheck: typeof import("./Illumanation/Functions/SunLight.js").SunLightAboveCheck;
+        _sunLightUpdateQue: number[][];
+        _sunLightRemoveQue: number[][];
         runRGBFloodFillAt: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
         runRGBFloodFill: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
         runRGBFloodRemoveAt: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemoveAt;
         runRGBFloodRemove: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
-        populateWorldColumnWithSunLight: typeof import("./Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
-        runSunLightUpdateAtMaxY: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
         _RGBlightUpdateQue: number[][];
         _RGBlightRemovalQue: number[][];
-        _sunLightUpdateQue: number[][];
-        _sunLightRemoveQue: number[][];
         _visitSunMap: Record<string, boolean>;
-        addChunkToSunLightUpdate(chunk: import("Meta/index.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number): void;
-        populateChunkAirWithInitlSunLight(chunk: import("Meta/index.js").ChunkData): void;
     };
     voxelManager: {
         voxels: Record<string, import("Meta/index.js").VoxelData>;
@@ -758,8 +728,8 @@ export declare const DVEP: {
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
             isLessThanForSunAddUp(n1: number, n2: number): boolean;
-            getSunLightForUnderVoxel(currentVoxel: number): number;
-            getMinusOneForSun(sl: number): number;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;

@@ -168,8 +168,8 @@ export declare const DVEN: {
             isLessThanForSunAdd(n1: number, n2: number): boolean;
             isLessThanForSunAddDown(n1: number, n2: number): boolean;
             isLessThanForSunAddUp(n1: number, n2: number): boolean;
-            getSunLightForUnderVoxel(currentVoxel: number): number;
-            getMinusOneForSun(sl: number): number;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
             isLessThanForSunRemove(n1: number, sl: number): boolean;
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
@@ -508,7 +508,7 @@ export declare const DVEN: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number): false | undefined;
-        getData(x: number, y: number, z: number): number;
+        getData(x: number, y: number, z: number): any;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
     };
     matrixHub: {

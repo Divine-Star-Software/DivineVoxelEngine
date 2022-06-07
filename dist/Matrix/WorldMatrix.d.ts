@@ -161,6 +161,6 @@ export declare const WorldMatrix: {
         chunkStates: Uint8Array;
     }) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number): false | undefined;
-    getData(x: number, y: number, z: number): number;
+    getData(x: number, y: number, z: number): any;
     getVoxelNumberID(x: number, y: number, z: number): number | false;
 };

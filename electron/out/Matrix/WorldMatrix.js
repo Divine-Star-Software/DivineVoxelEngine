@@ -192,13 +192,13 @@ export const WorldMatrix = {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return false;
-        this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
+        this._3dArray.setValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
     },
     getData(x, y, z) {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return -1;
-        return this._3dArray.getValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels);
+        return this._3dArray.getValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels);
     },
     getVoxelNumberID(x, y, z) {
         const rawVoxelData = this.getData(x, y, z);

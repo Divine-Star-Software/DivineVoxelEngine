@@ -15,7 +15,7 @@ RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
- "./World/index.js",
+ "./World/world.js",
  "../Shared/Builder/builder.js",
  "../Shared/Propagators/propagators.js",
 );
@@ -43,7 +43,7 @@ const init = async () => {
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setSunLevel(0.5);
 
- runRenderLoop(engine, scene, camera);
+ runRenderLoop(engine, scene, camera,DVER);
 };
 
 RunInit(init);

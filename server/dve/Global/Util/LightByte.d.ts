@@ -96,14 +96,14 @@ export declare const LightByte: {
      * down neighbor.
      * @param currentVoxel
      */
-    getSunLightForUnderVoxel(currentVoxel: number): number;
+    getSunLightForUnderVoxel(sl: number, nl: number): number;
     /**# Get Minus One For Sun
      * ---
      * Returns the sun light level passed to it minus one.
      * Used for sun light addition on all neighbors expect the down one.
      * @param sl - source light value
      */
-    getMinusOneForSun(sl: number): number;
+    getMinusOneForSun(sl: number, nl: number): number;
     /**# Is Less Than For Sun Remove
      * ---
      * Compares two encoded light values sun light values.
