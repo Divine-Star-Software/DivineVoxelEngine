@@ -36,12 +36,12 @@ export const LightByte = {
   return (sl & ~(0xf << 12)) | (value << 12);
  },
 
- hasRGBLight(sl : number) {
-    if(sl < 0) return false;
-    if(this.getR(sl) > 0) return true;
-    if(this.getG(sl) > 0) return true;
-    if(this.getB(sl) > 0) return true;
-    return false;
+ hasRGBLight(sl: number) {
+  if (sl < 0) return false;
+  if (this.getR(sl) > 0) return true;
+  if (this.getG(sl) > 0) return true;
+  if (this.getB(sl) > 0) return true;
+  return false;
  },
 
  decodeLightFromVoxelData(voxelData: number) {
@@ -132,22 +132,37 @@ export const LightByte = {
   * Returns the RGB light values minus one.
   * @param sl - source light value
   */
- getMinusOneForRGB(sl: number, n1 : number) {
-   let s = this.getS(n1);
-   let r = this.getR(sl) - 1;
-   if (r < 0) r = 0;
-   let g = this.getG(sl) - 1;
-   if (g < 0) g = 0;
-   let b = this.getB(sl) - 1;
-   if (b < 0) b = 0;
- 
-   let bv = 0;
-   bv = this.setS(s, bv);
-   bv = this.setR(r, bv);
-   bv = this.setG(g, bv);
-   bv = this.setB(b, bv);
-   return bv;
-  },
+ getMinusOneForRGB(sl: number, nl: number) {
+  let s = this.getS(nl);
+
+  let r = this.getR(sl) - 1;
+  if (r < 0) r = 0;
+  let rn = this.getR(nl);
+  if (r < rn) {
+   r = rn;
+  }
+
+  let g = this.getG(sl) - 1;
+  if (g < 0) g = 0;
+  let gn = this.getG(nl);
+  if (g < gn) {
+   g = gn;
+  }
+
+  let b = this.getB(sl) - 1;
+  if (b < 0) b = 0;
+  let bn = this.getB(nl);
+  if (b < bn) {
+   b = bn;
+  }
+
+  let bv = 0;
+  bv = this.setS(s, bv);
+  bv = this.setR(r, bv);
+  bv = this.setG(g, bv);
+  bv = this.setB(b, bv);
+  return bv;
+ },
 
  /**# Remove RGB Light
   * ---

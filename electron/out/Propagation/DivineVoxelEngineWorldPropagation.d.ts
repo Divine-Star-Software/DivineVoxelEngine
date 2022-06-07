@@ -164,7 +164,7 @@ export declare const DVEP: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number, n1: number): number;
+            getMinusOneForRGB(sl: number, nl: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
@@ -656,7 +656,7 @@ export declare const DVEP: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number, n1: number): number;
+            getMinusOneForRGB(sl: number, nl: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;
@@ -752,7 +752,7 @@ export declare const DVEP: {
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number, n1: number): number;
+            getMinusOneForRGB(sl: number, nl: number): number;
             removeRGBLight(sl: number): number;
             getFullSunLight(sl: number): number;
             isLessThanForSunAdd(n1: number, n2: number): boolean;

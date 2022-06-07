@@ -126,17 +126,29 @@ export const LightByte = {
      * Returns the RGB light values minus one.
      * @param sl - source light value
      */
-    getMinusOneForRGB(sl, n1) {
-        let s = this.getS(n1);
+    getMinusOneForRGB(sl, nl) {
+        let s = this.getS(nl);
         let r = this.getR(sl) - 1;
         if (r < 0)
             r = 0;
+        let rn = this.getR(nl);
+        if (r < rn) {
+            r = rn;
+        }
         let g = this.getG(sl) - 1;
         if (g < 0)
             g = 0;
+        let gn = this.getG(nl);
+        if (g < gn) {
+            g = gn;
+        }
         let b = this.getB(sl) - 1;
         if (b < 0)
             b = 0;
+        let bn = this.getB(nl);
+        if (b < bn) {
+            b = bn;
+        }
         let bv = 0;
         bv = this.setS(s, bv);
         bv = this.setR(r, bv);

@@ -18,42 +18,72 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
   const n1 = DVEP.voxelHelper.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForRGBAdd(n1, sl)) {
    this._RGBlightUpdateQue.push([x - 1, y, z]);
-   DVEP.voxelHelper.setLight(x - 1, y, z, this.lightByte.getMinusOneForRGB(sl,n1));
+   DVEP.voxelHelper.setLight(
+    x - 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForRGB(sl, n1)
+   );
    DVEP.addToRebuildQue(x - 1, y, z, "all");
   }
 
   const n2 = DVEP.voxelHelper.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForRGBAdd(n2, sl)) {
    this._RGBlightUpdateQue.push([x + 1, y, z]);
-   DVEP.voxelHelper.setLight(x + 1, y, z, this.lightByte.getMinusOneForRGB(sl,n2));
+   DVEP.voxelHelper.setLight(
+    x + 1,
+    y,
+    z,
+    this.lightByte.getMinusOneForRGB(sl, n2)
+   );
    DVEP.addToRebuildQue(x + 1, y, z, "all");
   }
 
   const n3 = DVEP.voxelHelper.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForRGBAdd(n3, sl)) {
    this._RGBlightUpdateQue.push([x, y, z - 1]);
-   DVEP.voxelHelper.setLight(x, y, z - 1, this.lightByte.getMinusOneForRGB(sl,n3));
+   DVEP.voxelHelper.setLight(
+    x,
+    y,
+    z - 1,
+    this.lightByte.getMinusOneForRGB(sl, n3)
+   );
    DVEP.addToRebuildQue(x, y, z - 1, "all");
   }
 
   const n4 = DVEP.voxelHelper.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForRGBAdd(n4, sl)) {
    this._RGBlightUpdateQue.push([x, y, z + 1]);
-   DVEP.voxelHelper.setLight(x, y, z + 1, this.lightByte.getMinusOneForRGB(sl,n4));
+   DVEP.voxelHelper.setLight(
+    x,
+    y,
+    z + 1,
+    this.lightByte.getMinusOneForRGB(sl, n4)
+   );
    DVEP.addToRebuildQue(x, y, z + 1, "all");
   }
 
   const n5 = DVEP.voxelHelper.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForRGBAdd(n5, sl)) {
    this._RGBlightUpdateQue.push([x, y - 1, z]);
-   DVEP.voxelHelper.setLight(x, y - 1, z, this.lightByte.getMinusOneForRGB(sl,n5));
+   DVEP.voxelHelper.setLight(
+    x,
+    y - 1,
+    z,
+    this.lightByte.getMinusOneForRGB(sl, n5)
+   );
    DVEP.addToRebuildQue(x, y - 1, z, "all");
   }
 
   const n6 = DVEP.voxelHelper.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForRGBAdd(n6, sl)) {
    this._RGBlightUpdateQue.push([x, y + 1, z]);
-   DVEP.voxelHelper.setLight(x, y + 1, z, this.lightByte.getMinusOneForRGB(sl,n6));
+   DVEP.voxelHelper.setLight(
+    x,
+    y + 1,
+    z,
+    this.lightByte.getMinusOneForRGB(sl, n6)
+   );
    DVEP.addToRebuildQue(x, y + 1, z, "all");
   }
  }

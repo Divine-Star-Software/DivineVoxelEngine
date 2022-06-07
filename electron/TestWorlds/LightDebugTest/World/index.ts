@@ -26,7 +26,7 @@ for (let x = startX; x < endX; x += 16) {
   DVEW.queues.addWorldColumnToSunLightQue(x, z);
  }
 }
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+//await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   DVEW.buildWorldColumn(x, z);
@@ -37,6 +37,11 @@ const z = 0;
 
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
 
-setTimeout(async () => {
+
+await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", "default", x - 6, 6, z);
+
+await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", "default", x + 6, 6, z);
+/* setTimeout(async () => {
  await DVEW.worldData.requestVoxelBeRemoved(x, 6, z);
 }, 1000);
+ */

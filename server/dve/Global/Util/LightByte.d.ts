@@ -60,7 +60,7 @@ export declare const LightByte: {
      * Returns the RGB light values minus one.
      * @param sl - source light value
      */
-    getMinusOneForRGB(sl: number, n1: number): number;
+    getMinusOneForRGB(sl: number, nl: number): number;
     /**# Remove RGB Light
      * ---
      * Removes all RGB light from an encoded light value.
