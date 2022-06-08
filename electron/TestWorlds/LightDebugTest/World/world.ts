@@ -31,9 +31,8 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
+//await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
-console.log("done");
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {

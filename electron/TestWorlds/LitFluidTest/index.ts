@@ -15,16 +15,18 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
- import.meta.url,
- "./World/world.js",
- "../Shared/Builder/builder.js",
- "../Shared/Propagators/propagators.js"
-);
-
-await DVER.$INIT({
- worldWorker: workers.worldWorker,
- builderWorker: workers.builderWorkers,
- propagationWorker: workers.propagationWorkers,
+   import.meta.url,
+   "./World/world.js",
+   "../Shared/Builder/builder.js",
+   "../Shared/Propagators/propagators.js",
+   "../Shared/Constructor/constructor.js"
+  );
+  
+  await DVER.$INIT({
+   worldWorker: workers.worldWorker,
+   builderWorker: workers.builderWorkers,
+   propagationWorker: workers.propagationWorkers,
+   constructorWorker : workers.constructorWorkers,
  lighting: {
     doAO: true,
     doRGBLight: true,

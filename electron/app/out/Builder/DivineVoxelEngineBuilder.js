@@ -71,4 +71,5 @@ export const DVEB = {
         return true;
     },
 };
+console.log("hello from builder");
 DVEB.environment = Util.getEnviorment();

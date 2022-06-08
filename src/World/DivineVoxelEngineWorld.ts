@@ -12,8 +12,7 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 //inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
-import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
-import { PropagationCommManager } from "./InterComms/Propagators/PropagationCommManager.js";
+import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
@@ -38,8 +37,7 @@ export const DVEW = {
 
  nexusComm: NexusComm,
  renderComm: RenderComm,
- builderCommManager: BuilderCommManager,
- propagationCommManager: PropagationCommManager,
+ constructorCommManager : ConstructorCommManager,
 
  worldGeneration: WorldGeneration,
  worldData: WorldData,
@@ -48,8 +46,9 @@ export const DVEW = {
 
  isReady() {
   let ready =
-   DVEW.builderCommManager.isReady() &&
-   DVEW.propagationCommManager.isReady() &&
+ //  DVEW.builderCommManager.isReady() &&
+ //  DVEW.propagationCommManager.isReady() &&
+   DVEW.constructorCommManager.isReady() &&
    DVEW.__settingsHaveBeenSynced &&
    DVEW.__renderIsDone;
   return ready;
@@ -92,7 +91,7 @@ export const DVEW = {
  },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
+  this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
  },
 
  buildWorldColumn(x: number, z: number) {
@@ -112,3 +111,4 @@ export const DVEW = {
 
 export type DivineVoxelEngineWorld = typeof DVEW;
 DVEW.environment = Util.getEnviorment();
+console.log("hello from world");

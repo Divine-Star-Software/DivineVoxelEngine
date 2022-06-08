@@ -273,7 +273,6 @@ export const WorldData = {
     DVEW.queues.addToRGBUpdateQue(x, y, z);
    }
   }
-
  },
 
  __handleHeightMapUpdateForVoxelAdd(
@@ -362,12 +361,17 @@ export const WorldData = {
 
   chunks[worldColumnKey][chunkKey] = chunk;
   if (doNotSyncInThreads) return;
-  DVEW.builderCommManager.syncChunkInAllBuilders(
+/*   DVEW.builderCommManager.syncChunkInAllBuilders(
    chunkPOS.x,
    chunkPOS.y,
    chunkPOS.z
   );
   DVEW.propagationCommManager.syncChunkInAllWorldGens(
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z
+  ); */
+  DVEW.constructorCommManager.syncChunkInAllThreads(
    chunkPOS.x,
    chunkPOS.y,
    chunkPOS.z
@@ -506,7 +510,7 @@ export const WorldData = {
   let maxHeight = -Infinity;
   for (const chunkKey of chunkKeys) {
    const chunk = worldColumn[chunkKey];
-  
+
    const chunkMax =
     this.heightByte.getChunkMax(chunk.minMaxMap) + chunk.position[1];
    if (maxHeight < chunkMax) {

@@ -10,21 +10,19 @@ import { MeshManager } from "./Meshes/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
-import { BuilderCommManager } from "./InterComms/Builders/BuilderCommManager.js";
-import { PropagationCommManager } from "./InterComms/Propagators/PropagationCommManager.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
+import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 
 
 export const DVER = {
  worldBounds: Util.getWorldBounds(),
  worldComm: WorldComm,
  nexusComm: NexusComm,
- builderCommManager: BuilderCommManager,
- propagationCommManager: PropagationCommManager,
-
+ constructorCommManager : ConstructorCommManager,
+ 
  settings: EngineSettings,
  renderManager: RenderManager,
  meshManager: MeshManager,
@@ -55,8 +53,9 @@ export const DVER = {
   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }
-  this.builderCommManager.syncSettings(copy);
-  this.propagationCommManager.syncSettings(copy);
+ // this.builderCommManager.syncSettings(copy);
+ // this.propagationCommManager.syncSettings(copy);
+   this.constructorCommManager.syncSettings(copy);
  },
 
  async reStart(data: EngineSettingsData): Promise<void> {

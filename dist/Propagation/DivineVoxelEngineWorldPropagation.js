@@ -79,4 +79,5 @@ export const DVEP = {
         this.rebuildQueMap = {};
     },
 };
+console.log("hello from propagation");
 DVEP.environment = Util.getEnviorment();

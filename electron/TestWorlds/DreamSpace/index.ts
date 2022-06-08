@@ -17,13 +17,15 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/index.js",
  "../Shared/Builder/builder.js",
- "../Shared/Propagators/propagators.js"
+ "../Shared/Propagators/propagators.js",
+ "../Shared/Constructor/constructor.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  propagationWorker: workers.propagationWorkers,
+ constructorWorker : workers.constructorWorkers,
  lighting: {
   doAO: true,
   doRGBLight: false,

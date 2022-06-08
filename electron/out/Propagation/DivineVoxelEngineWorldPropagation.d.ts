@@ -1,7 +1,7 @@
 import type { DVEPInitData } from "Meta/Propagation/DVEP.js";
 import type { EngineSettingsData, VoxelSubstanceType } from "Meta/index.js";
 export declare const DVEP: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -13,8 +13,8 @@ export declare const DVEP: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -380,9 +380,9 @@ export declare const DVEP: {
         getXYZ(index: number): import("Meta/index.js").Position3Matrix;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
         settings: EngineSettingsData;
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;

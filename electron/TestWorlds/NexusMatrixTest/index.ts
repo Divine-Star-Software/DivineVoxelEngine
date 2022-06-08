@@ -20,6 +20,7 @@ const workers = SetUpWorkers(
  "./World/index.js",
  "../Shared/Builder/builder.js",
  "../Shared/Propagators/propagators.js",
+ "../Shared/Constructor/constructor.js",
  "./Nexus/index.js"
 );
 
@@ -27,6 +28,7 @@ await DVER.$INIT({
  worldWorker: workers.worldWorker,
  builderWorker: workers.builderWorkers,
  propagationWorker : workers.propagationWorkers,
+ constructorWorker : workers.constructorWorkers,
  nexusWorker: workers.nexusWorker,
  nexus: {
   enabled: true,

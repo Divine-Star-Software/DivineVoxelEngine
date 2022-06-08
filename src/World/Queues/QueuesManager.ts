@@ -2,6 +2,8 @@
 import { VoxelSubstanceType } from "Meta/index";
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
+import { QueuesIndexes } from "../../Shared/Queues.js";
+
 
 export const QueuesManager = {
  _numChunksRebuilding: 0,
@@ -22,18 +24,10 @@ export const QueuesManager = {
 
  __statesSAB: new SharedArrayBuffer(4 * 8),
  __states: new Uint32Array(),
- __stateIndexes: {
-  RGBLightUpdate: 0,
-  RGBLightRemove: 1,
-  worldColumnSunLightProp: 2,
-  sunLgithUpdateMaxY: 3,
-  sunLightUpdate: 4,
-  sunLightRemove: 5,
- },
 
  $INIT() {
   this.__states = new Uint32Array(this.__statesSAB);
-  DVEW.propagationCommManager.$INIT(this.__statesSAB);
+  DVEW.constructorCommManager.$INIT(this.__statesSAB);
  },
 
  addWorldColumnToSunLightQue(x: number, z: number) {
@@ -55,8 +49,8 @@ export const QueuesManager = {
    const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(x, z);
    const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
    this._worldColumnSunLightPropMap[worldColumnKey] = maxY;
-   Atomics.add(this.__states, this.__stateIndexes.worldColumnSunLightProp, 1);
-   DVEW.propagationCommManager.runSunLightForWorldColumn(x, z, maxY);
+   Atomics.add(this.__states, QueuesIndexes.worldColumnSunLightProp, 1);
+   DVEW.constructorCommManager.runSunLightForWorldColumn(x, z, maxY);
   }
   await this.awaitAllWorldColumnSunLightProp();
   while (queue.length != 0) {
@@ -70,8 +64,8 @@ export const QueuesManager = {
    const maxY = this._worldColumnSunLightPropMap[worldColumnKey];
    const x = position[0];
    const z = position[1];
-   DVEW.propagationCommManager.runSunFillAtMaxY(x, z, maxY);
-   Atomics.add(this.__states, this.__stateIndexes.sunLgithUpdateMaxY, 1);
+   DVEW.constructorCommManager.runSunFillAtMaxY(x, z, maxY);
+   Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
   }
 
   this._worldColumnSunLightPropMap = {};
@@ -89,7 +83,7 @@ export const QueuesManager = {
  },
  areWorldColumnSunLightUpdatsDone() {
   return (
-   Atomics.load(this.__states, this.__stateIndexes.worldColumnSunLightProp) == 0
+   Atomics.load(this.__states, QueuesIndexes.worldColumnSunLightProp) == 0
   );
  },
  awaitAllSunLightUpdatesAtMaxY() {
@@ -101,9 +95,7 @@ export const QueuesManager = {
   });
  },
  areAllSunLightUpdatesAtMaxYDone() {
-  return (
-   Atomics.load(this.__states, this.__stateIndexes.sunLgithUpdateMaxY) == 0
-  );
+  return Atomics.load(this.__states, QueuesIndexes.sunLgithUpdateMaxY) == 0;
  },
 
  awaitAllSunLightUpdates() {
@@ -115,7 +107,7 @@ export const QueuesManager = {
   });
  },
  areAllSunLightUpdatesDone() {
-  return Atomics.load(this.__states, this.__stateIndexes.sunLightUpdate) == 0;
+  return Atomics.load(this.__states, QueuesIndexes.sunLightUpdate) == 0;
  },
 
  addToRGBUpdateQue(x: number, y: number, z: number) {
@@ -131,8 +123,8 @@ export const QueuesManager = {
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
-   Atomics.add(this.__states, this.__stateIndexes.RGBLightUpdate, 1);
-   DVEW.propagationCommManager.runRGBFloodFillAt(
+   Atomics.add(this.__states, QueuesIndexes.RGBLightUpdate, 1);
+   DVEW.constructorCommManager.runRGBFloodFillAt(
     position[0],
     position[1],
     position[2]
@@ -146,8 +138,8 @@ export const QueuesManager = {
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
-   Atomics.add(this.__states, this.__stateIndexes.RGBLightRemove, 1);
-   DVEW.propagationCommManager.runRGBFloodRemoveAt(
+   Atomics.add(this.__states, QueuesIndexes.RGBLightRemove, 1);
+   DVEW.constructorCommManager.runRGBFloodRemoveAt(
     position[0],
     position[1],
     position[2]
@@ -174,10 +166,10 @@ export const QueuesManager = {
  },
 
  areRGBLightUpdatesAllDone() {
-  return Atomics.load(this.__states, this.__stateIndexes.RGBLightUpdate) == 0;
+  return Atomics.load(this.__states, QueuesIndexes.RGBLightUpdate) == 0;
  },
  areRGBLightRemovesAllDone() {
-  return Atomics.load(this.__states, this.__stateIndexes.RGBLightRemove) == 0;
+  return Atomics.load(this.__states, QueuesIndexes.RGBLightRemove) == 0;
  },
 
  addToRebuildQue(

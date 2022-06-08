@@ -6,6 +6,7 @@ type EngineSettingsContext =
  | "DVER"
  | "DVEP"
  | "DVEB"
+ | "DVEC"
  | "DVEN"
  | "MatrixLoadedThread";
 

@@ -85,26 +85,18 @@ export declare const DVER: {
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         $INIT(): void;
     };
-    builderCommManager: {
+    constructorCommManager: {
         count: number;
-        builders: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+        constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
         $INIT(): void;
-        createBuilders(path: string, numBuilders?: number): void;
-        setBuilders(builders: Worker[]): void;
-        syncSettings(data: any): void;
-    };
-    propagationCommManager: {
-        count: number;
-        worldGens: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
-        $INIT(): void;
-        createPropagators(path: string, numWorldGens?: number): void;
-        setPropagators(worldGens: Worker[]): void;
+        createConstructors(path: string, numBuilders?: number): void;
+        setConstructors(constructors: Worker[]): void;
         syncSettings(data: any): void;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
         settings: EngineSettingsData;
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;
@@ -285,9 +277,12 @@ export declare const DVER: {
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
         handleUpdate(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
+        handleUpdateN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
         requestChunkBeRemoved(chunkKey: string): void;
-        _updateMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _buildNewMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _updateMeshN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _buildNewMeshN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _updateMeshO(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _buildNewMeshO(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
     };
     textureManager: {
         defaultTexturePath: string;

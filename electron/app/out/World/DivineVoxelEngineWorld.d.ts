@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -26,6 +26,11 @@ export declare const DVEW: {
         setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
         deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
         deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+        /**# Remove Chunk
+         * ---
+         * Removes a chunk from the render thread.
+         * Can also delete the chunk from world ata.
+         */
         getIndex(x: number, y: number, z: number): number;
         getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
     };
@@ -51,10 +56,6 @@ export declare const DVEW: {
         regionYPow2: number;
         regionZPow2: number;
         regionXSize: number;
-        /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
         regionYSize: number;
         regionZSize: number;
         __regionPosition: {
@@ -123,8 +124,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -145,6 +146,11 @@ export declare const DVEW: {
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
             deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            /**# Remove Chunk
+             * ---
+             * Removes a chunk from the render thread.
+             * Can also delete the chunk from world ata.
+             */
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -182,6 +188,11 @@ export declare const DVEW: {
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
             deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            /**# Remove Chunk
+             * ---
+             * Removes a chunk from the render thread.
+             * Can also delete the chunk from world ata.
+             */
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -206,6 +217,11 @@ export declare const DVEW: {
                 setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                /**# Remove Chunk
+                 * ---
+                 * Removes a chunk from the render thread.
+                 * Can also delete the chunk from world ata.
+                 */
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
@@ -309,10 +325,6 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
@@ -391,9 +403,9 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
         settings: EngineSettingsData;
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;
@@ -417,10 +429,6 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
@@ -507,10 +515,6 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
@@ -615,33 +619,21 @@ export declare const DVEW: {
         onReady: () => void;
         onRestart: () => void;
     };
-    builderCommManager: {
+    constructorCommManager: {
         count: number;
-        numBuilders: number;
-        builders: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
-        buildersConnected: number;
-        addBuilder(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
-        syncChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;
-        releaseChunkInAllBuilders(chunkX: number, chunkY: number, chunkZ: number): void;
-        syncRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
-        releaseRegionInAllBuilders(regionX: number, regionY: number, regionZ: number): void;
-        isReady(): boolean;
-        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
-    };
-    propagationCommManager: {
-        count: number;
-        numWorldGens: number;
+        numConstructors: number;
         __numLightUpdates: number;
-        propagators: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
-        worldGensConnected: number;
+        constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+        constructorsConnected: number;
         $INIT(statesSAB: SharedArrayBuffer): void;
-        addPropagator(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
-        syncChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
-        releaseChunkInAllWorldGens(chunkX: number, chunkY: number, chunkZ: number): void;
-        syncRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
-        releaseRegionInAllWorldGens(regionX: number, regionY: number, regionZ: number): void;
+        addThread(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
+        syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
+        releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
+        syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
+        releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
         __handleCount(): void;
+        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
         runRGBFloodFillAt(x: number, y: number, z: number): void;
         runRGBFloodRemoveAt(x: number, y: number, z: number): void;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
@@ -672,10 +664,6 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
@@ -761,6 +749,11 @@ export declare const DVEW: {
                 setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                /**# Remove Chunk
+                 * ---
+                 * Removes a chunk from the render thread.
+                 * Can also delete the chunk from world ata.
+                 */
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
@@ -817,6 +810,10 @@ export declare const DVEW: {
             registerVoxelForPerRegionVoxelPalette(voxel: import("../Meta/index.js").VoxelData): void;
             getGlobalVoxelPalette(): Record<number, string>;
             getGlobalVoxelPaletteRecord(): Record<string, string[]>;
+            /**# Delete Chunk
+             * ---
+             * Deletes a chunk from world data and releases it from all threads.
+             */
             getVoxelDataFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: number): false | string[];
             getVoxelPaletteIdFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number | false;
             addToRegionsVoxelPalette(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number;
@@ -848,6 +845,11 @@ export declare const DVEW: {
                 setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
                 deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
                 deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+                /**# Remove Chunk
+                 * ---
+                 * Removes a chunk from the render thread.
+                 * Can also delete the chunk from world ata.
+                 */
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
             };
@@ -949,6 +951,11 @@ export declare const DVEW: {
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels, value: number): void;
             deleteValue(x: number, y: number, z: number, array: import("../Meta/index.js").ChunkVoxels): void;
             deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: import("../Meta/index.js").ChunkVoxels): void;
+            /**# Remove Chunk
+             * ---
+             * Removes a chunk from the render thread.
+             * Can also delete the chunk from world ata.
+             */
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -974,10 +981,6 @@ export declare const DVEW: {
             regionYPow2: number;
             regionZPow2: number;
             regionXSize: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionYSize: number;
             regionZSize: number;
             __regionPosition: {
@@ -1085,14 +1088,6 @@ export declare const DVEW: {
         _chunkRebuildQue: number[][];
         __statesSAB: SharedArrayBuffer;
         __states: Uint32Array;
-        __stateIndexes: {
-            RGBLightUpdate: number;
-            RGBLightRemove: number;
-            worldColumnSunLightProp: number;
-            sunLgithUpdateMaxY: number;
-            sunLightUpdate: number;
-            sunLightRemove: number;
-        };
         $INIT(): void;
         addWorldColumnToSunLightQue(x: number, z: number): void;
         runWorldColumnSunLightAndUpateQue(): Promise<void>;

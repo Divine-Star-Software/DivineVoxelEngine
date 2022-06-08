@@ -11,25 +11,15 @@ export function InitWorkers(DVER, initData) {
     else {
         throw Error("Supplied data for World Worker is not correct. Must be path to worker or a worker.");
     }
-    if (typeof initData.builderWorker == "string") {
-        DVER.builderCommManager.createBuilders(initData.builderWorker);
+    if (typeof initData.constructorWorker == "string") {
+        DVER.constructorCommManager.createConstructors(initData.constructorWorker);
     }
-    else if (Array.isArray(initData.builderWorker) &&
-        initData.builderWorker[0] instanceof Worker) {
-        DVER.builderCommManager.setBuilders(initData.builderWorker);
-    }
-    else {
-        throw Error("Supplied data for the Builder Workers is not correct. Must be path to worker or an array workers.");
-    }
-    if (typeof initData.propagationWorker == "string") {
-        DVER.propagationCommManager.createPropagators(initData.propagationWorker);
-    }
-    else if (Array.isArray(initData.propagationWorker) &&
-        initData.propagationWorker[0] instanceof Worker) {
-        DVER.propagationCommManager.setPropagators(initData.propagationWorker);
+    else if (Array.isArray(initData.constructorWorker) &&
+        initData.constructorWorker[0] instanceof Worker) {
+        DVER.constructorCommManager.setConstructors(initData.constructorWorker);
     }
     else {
-        throw Error("Supplied data for the World Generation Workers is not correct. Must be path to worker or an array workers.");
+        throw Error("Supplied data for the Constructor Workers is not correct. Must be path to worker or an array workers.");
     }
     if (initData.nexusWorker && initData.nexus?.enabled) {
         if (typeof initData.nexusWorker == "string") {
@@ -46,13 +36,14 @@ export function InitWorkers(DVER, initData) {
     }
     DVER._syncSettings(initData);
     DVER.textureManager.generateTexturesData();
-    DVER.builderCommManager.$INIT();
-    DVER.propagationCommManager.$INIT();
+    //DVER.builderCommManager.$INIT();
+    // DVER.propagationCommManager.$INIT();
+    DVER.constructorCommManager.$INIT();
     //terminate all workers
     window.addEventListener("beforeunload", () => {
-        for (const builder of DVER.builderCommManager.builders) {
+        for (const constructor of DVER.constructorCommManager.constructors) {
             //@ts-ignore
-            builder.port.terminate();
+            constructor.port.terminate();
         }
         //@ts-ignore
         DVER.worldComm.port.terminate();

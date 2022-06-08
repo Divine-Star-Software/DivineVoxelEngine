@@ -11,14 +11,6 @@ export declare const QueuesManager: {
     _chunkRebuildQue: number[][];
     __statesSAB: SharedArrayBuffer;
     __states: Uint32Array;
-    __stateIndexes: {
-        RGBLightUpdate: number;
-        RGBLightRemove: number;
-        worldColumnSunLightProp: number;
-        sunLgithUpdateMaxY: number;
-        sunLightUpdate: number;
-        sunLightRemove: number;
-    };
     $INIT(): void;
     addWorldColumnToSunLightQue(x: number, z: number): void;
     runWorldColumnSunLightAndUpateQue(): Promise<void>;

@@ -272,8 +272,17 @@ export const WorldData = {
         chunks[worldColumnKey][chunkKey] = chunk;
         if (doNotSyncInThreads)
             return;
-        DVEW.builderCommManager.syncChunkInAllBuilders(chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        DVEW.propagationCommManager.syncChunkInAllWorldGens(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        /*   DVEW.builderCommManager.syncChunkInAllBuilders(
+           chunkPOS.x,
+           chunkPOS.y,
+           chunkPOS.z
+          );
+          DVEW.propagationCommManager.syncChunkInAllWorldGens(
+           chunkPOS.x,
+           chunkPOS.y,
+           chunkPOS.z
+          ); */
+        DVEW.constructorCommManager.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
     async requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
         const voxelData = DVEW.voxelManager.getVoxel(voxelId);

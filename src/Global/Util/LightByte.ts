@@ -231,11 +231,11 @@ export const LightByte = {
  getSunLightForUnderVoxel(sl: number, nl: number) {
   let s = this.getS(sl);
   let sn = this.getS(nl);
-  if (s == 15) {
+  if (s == 0xf) {
    sn = s;
   }
-  if (s < 15) {
-    sn = s - 2;  
+  if (s < 0xf) {
+   sn = s - 2;
   }
   let r = this.getR(nl);
   let g = this.getG(nl);

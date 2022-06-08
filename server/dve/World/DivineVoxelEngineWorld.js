@@ -9,8 +9,7 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 //inter comms
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
-import { BuilderCommManager } from "./InterComms/Builder/BuilderCommManager.js";
-import { PropagationCommManager } from "./InterComms/Propagators/PropagationCommManager.js";
+import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
@@ -30,15 +29,16 @@ export const DVEW = {
     matrixCentralHub: MatrixCentralHub,
     nexusComm: NexusComm,
     renderComm: RenderComm,
-    builderCommManager: BuilderCommManager,
-    propagationCommManager: PropagationCommManager,
+    constructorCommManager: ConstructorCommManager,
     worldGeneration: WorldGeneration,
     worldData: WorldData,
     voxelManager: VoxelManager,
     queues: QueuesManager,
     isReady() {
-        let ready = DVEW.builderCommManager.isReady() &&
-            DVEW.propagationCommManager.isReady() &&
+        let ready = 
+        //  DVEW.builderCommManager.isReady() &&
+        //  DVEW.propagationCommManager.isReady() &&
+        DVEW.constructorCommManager.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
             DVEW.__renderIsDone;
         return ready;
@@ -73,7 +73,7 @@ export const DVEW = {
         this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
     },
     buildChunk(chunkX, chunkY, chunkZ) {
-        this.builderCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
+        this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
     },
     buildWorldColumn(x, z) {
         const worldColumn = this.worldData.getWorldColumn(x, z);
@@ -90,3 +90,4 @@ export const DVEW = {
     },
 };
 DVEW.environment = Util.getEnviorment();
+console.log("hello from world");

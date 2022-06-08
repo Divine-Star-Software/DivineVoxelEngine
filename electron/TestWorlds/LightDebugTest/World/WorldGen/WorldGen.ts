@@ -10,15 +10,22 @@ export const WorldGen = {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= baseY + 5) {
-      DVEW.worldData.paintVoxel(
+      /*       DVEW.worldData.paintVoxel(
        "dve:lightdebug",
+       "default",
+       x + chunkX,
+       y + chunkY,
+       z + chunkZ
+      ); */
+      DVEW.worldData.paintVoxel(
+       "dve:dreamstone",
        "default",
        x + chunkX,
        y + chunkY,
        z + chunkZ
       );
      }
-/*      if (y == baseY + 6) {
+     if (y == baseY + 6) {
       DVEW.worldData.paintVoxel(
        "dve:dreamgrass",
        "default",
@@ -26,7 +33,7 @@ export const WorldGen = {
        y + chunkY,
        z + chunkZ
       );
-     } */
+     }
     }
    }
   }

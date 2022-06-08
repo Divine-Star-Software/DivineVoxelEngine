@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { WorldBounds } from "./Util/WorldBounds";
-declare type EngineSettingsContext = "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEN" | "MatrixLoadedThread";
+declare type EngineSettingsContext = "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
