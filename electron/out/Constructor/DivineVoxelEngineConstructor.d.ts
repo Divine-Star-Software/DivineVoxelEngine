@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -722,8 +722,12 @@ export declare const DVEC: {
             runSunLightRemoveAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
             populateWorldColumnWithSunLight: typeof import("./Propagation/Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
             runSunLightUpdateAtMaxY: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
+            runSunLightFloodDown: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightFloodDown;
+            runSunLightFloodOut: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightFloodOut;
             sunLightAboveCheck: typeof import("./Propagation/Illumanation/Functions/SunLight.js").SunLightAboveCheck;
             _sunLightUpdateQue: number[][];
+            _sunLightFloodDownQue: number[][];
+            _sunLightFloodOutQue: Record<string, number[][]>;
             _sunLightRemoveQue: number[][];
             runRGBFloodFillAt: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
             runRGBFloodFill: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
@@ -739,9 +743,10 @@ export declare const DVEC: {
         runRGBFloodFill(x: number, y: number, z: number): void;
         runRGBFloodRemove(x: number, y: number, z: number): void;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
-        runSunFloodFill(x: number, y: number, z: number): void;
         runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
-        runSunFloodRemove(x: number, y: number, z: number): void;
+        runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
+        runSunLightUpdate(x: number, y: number, z: number): void;
+        runSunLightRemoe(x: number, y: number, z: number): void;
     };
     queues: {
         states: Int32Array;
@@ -751,7 +756,9 @@ export declare const DVEC: {
         finishRGBLightRemove(): void;
         finishWorldColumnSunLightProp(): void;
         finishSunLightUpdateAtMaxY(): void;
+        finishSunLightUpdateMaxYFlood(): void;
         finishSunLightUpdate(): void;
+        finishSunLightRemove(): void;
     };
     worldMatrix: {
         _3dArray: {

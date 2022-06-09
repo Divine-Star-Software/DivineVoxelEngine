@@ -1,5 +1,5 @@
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
-import { PopulateWorldColumnWithSunLight, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
+import { PopulateWorldColumnWithSunLight, RunSunLightFloodDown, RunSunLightFloodOut, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
 export declare const IlluminationManager: {
     lightByte: {
         _lightValues: number[];
@@ -39,8 +39,12 @@ export declare const IlluminationManager: {
     runSunLightRemoveAt: typeof runSunLightRemoveAt;
     populateWorldColumnWithSunLight: typeof PopulateWorldColumnWithSunLight;
     runSunLightUpdateAtMaxY: typeof RunSunLightUpdateAtMaxY;
+    runSunLightFloodDown: typeof RunSunLightFloodDown;
+    runSunLightFloodOut: typeof RunSunLightFloodOut;
     sunLightAboveCheck: typeof SunLightAboveCheck;
     _sunLightUpdateQue: number[][];
+    _sunLightFloodDownQue: number[][];
+    _sunLightFloodOutQue: Record<string, number[][]>;
     _sunLightRemoveQue: number[][];
     runRGBFloodFillAt: typeof runRGBFloodFillAt;
     runRGBFloodFill: typeof runRGBFloodFill;

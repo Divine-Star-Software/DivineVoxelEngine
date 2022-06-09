@@ -87,10 +87,12 @@ export const ConstructorCommManager = {
  },
 
  __handleCount() {
+  let countReturn = this.count;
   this.count++;
   if (this.count >= this.numConstructors) {
    this.count = 0;
   }
+  return countReturn;
  },
 
  requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number) {
@@ -101,17 +103,17 @@ export const ConstructorCommManager = {
    chunkY,
    chunkZ,
   ]);
-  this.__handleCount();
+  return this.__handleCount();
  },
  runRGBFloodFillAt(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.RGBlightUpdate, [x, y, z]);
-  this.__handleCount();
- }, 
+  return this.__handleCount();
+ },
  runRGBFloodRemoveAt(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.RGBlightRemove, [x, y, z]);
-  this.__handleCount();
+  return this.__handleCount();
  },
  runSunLightForWorldColumn(x: number, z: number, maxY: number) {
   const comm = this.constructors[this.count];
@@ -120,7 +122,7 @@ export const ConstructorCommManager = {
    z,
    maxY,
   ]);
-  this.__handleCount();
+  return this.__handleCount();
  },
  runSunFillAtMaxY(x: number, y: number, maxY: number) {
   const comm = this.constructors[this.count];
@@ -129,16 +131,25 @@ export const ConstructorCommManager = {
    y,
    maxY,
   ]);
-  this.__handleCount();
+  return this.__handleCount();
+ },
+ runSunFillMaxYFlood(x: number, y: number, maxY: number, thread : number) {
+  const comm = this.constructors[thread];
+  comm.sendMessage(WorldToConstructorMessages.runSunLightUpdateMaxYFlood, [
+   x,
+   y,
+   maxY
+  ]);
+  return thread;
  },
  runSunFillAt(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.sunLightUpdate, [x, y, z]);
-  this.__handleCount();
+  return this.__handleCount();
  },
  runSunRemoveAt(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
-  this.__handleCount();
+  return this.__handleCount();
  },
 };

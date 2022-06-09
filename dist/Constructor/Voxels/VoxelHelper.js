@@ -77,7 +77,7 @@ export const VoxelHelper = {
     getLight(x, y, z) {
         const rawVoxelData = DVEC.worldMatrix.getData(x, y, z);
         if (rawVoxelData < 0)
-            return -1;
+            return 0;
         if (rawVoxelData >= 0) {
             const voxelId = this.voxelByte.getId(rawVoxelData);
             if (voxelId == 0) {

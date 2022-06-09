@@ -52,7 +52,7 @@ const init = async () => {
  CreateWorldAxis(scene, 10);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setSunLevel(0.5);
+ DVER.renderManager.setSunLevel(0.8);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

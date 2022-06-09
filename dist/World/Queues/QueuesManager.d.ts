@@ -5,7 +5,10 @@ export declare const QueuesManager: {
     _numRGBLightRemoves: number;
     _RGBLightRemoveQue: number[][];
     _RGBLightUpdateQue: number[][];
-    _worldColumnSunLightPropMap: Record<string, number>;
+    _worldColumnSunLightPropMap: Record<string, {
+        max: number;
+        thread: number;
+    }>;
     _worldColumnSunLightPropQue: number[][];
     _chunkRebuildQueMap: Record<string, Record<VoxelSubstanceType | "all", boolean>>;
     _chunkRebuildQue: number[][];
@@ -18,6 +21,8 @@ export declare const QueuesManager: {
     areWorldColumnSunLightUpdatsDone(): boolean;
     awaitAllSunLightUpdatesAtMaxY(): Promise<boolean>;
     areAllSunLightUpdatesAtMaxYDone(): boolean;
+    awaitAllSunLightUpdatesMaxYFlood(): Promise<boolean>;
+    areAllSunLightUpdatesMaxYFloodDone(): boolean;
     awaitAllSunLightUpdates(): Promise<boolean>;
     areAllSunLightUpdatesDone(): boolean;
     addToRGBUpdateQue(x: number, y: number, z: number): void;

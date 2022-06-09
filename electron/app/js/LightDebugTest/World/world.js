@@ -11,10 +11,11 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
     onReady: () => { },
 });
-let startX = -16;
-let startZ = -16;
-let endX = 16;
-let endZ = 16;
+const depth = 32;
+let startX = -depth;
+let startZ = -depth;
+let endX = depth;
+let endZ = depth;
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
@@ -23,7 +24,7 @@ for (let x = startX; x < endX; x += 16) {
 }
 const x = 0;
 const z = 0;
-//await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 console.log("done");
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {

@@ -39,8 +39,12 @@ export declare const DVEP: {
         runSunLightRemoveAt: typeof import("./Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
         populateWorldColumnWithSunLight: typeof import("./Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
         runSunLightUpdateAtMaxY: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
+        runSunLightFloodDown: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightFloodDown;
+        runSunLightFloodOut: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightFloodOut;
         sunLightAboveCheck: typeof import("./Illumanation/Functions/SunLight.js").SunLightAboveCheck;
         _sunLightUpdateQue: number[][];
+        _sunLightFloodDownQue: number[][];
+        _sunLightFloodOutQue: Record<string, number[][]>;
         _sunLightRemoveQue: number[][];
         runRGBFloodFillAt: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
         runRGBFloodFill: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
@@ -56,8 +60,9 @@ export declare const DVEP: {
     runRGBFloodFill(x: number, y: number, z: number): void;
     runRGBFloodRemove(x: number, y: number, z: number): void;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
-    runSunFloodFill(x: number, y: number, z: number): void;
     runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
-    runSunFloodRemove(x: number, y: number, z: number): void;
+    runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
+    runSunLightUpdate(x: number, y: number, z: number): void;
+    runSunLightRemoe(x: number, y: number, z: number): void;
 };
 export declare type DivineVoxelEnginePropagation = typeof DVEP;

@@ -9,6 +9,8 @@ import {
 } from "./Functions/RGBFloodLight.js";
 import {
  PopulateWorldColumnWithSunLight,
+ RunSunLightFloodDown,
+ RunSunLightFloodOut,
  runSunLightRemove,
  runSunLightRemoveAt,
  runSunLightUpdate,
@@ -24,10 +26,15 @@ export const IlluminationManager = {
  runSunLightUpdate:  runSunLightUpdate,
  runSunLightRemove: runSunLightRemove,
  runSunLightRemoveAt: runSunLightRemoveAt,
+
  populateWorldColumnWithSunLight: PopulateWorldColumnWithSunLight,
  runSunLightUpdateAtMaxY: RunSunLightUpdateAtMaxY,
+ runSunLightFloodDown : RunSunLightFloodDown,
+ runSunLightFloodOut : RunSunLightFloodOut,
  sunLightAboveCheck : SunLightAboveCheck,
  _sunLightUpdateQue: <number[][]>[],
+ _sunLightFloodDownQue: <number[][]>[],
+ _sunLightFloodOutQue: <Record<string,number[][]>>{},
  _sunLightRemoveQue: <number[][]>[],
  //rgb
  runRGBFloodFillAt: runRGBFloodFillAt,

@@ -83,18 +83,6 @@ export function runSunLightRemove() {
     }
     this.runSunLightUpdate();
 }
-export function SunLightAboveCheck(sl, x, y, z) {
-    const nl = DVEC.voxelHelper.getLight(x, y + 1, z);
-    if (nl == -1)
-        return false;
-    const sunLevel = this.lightByte.getS(nl);
-    if (sunLevel == 0xf) {
-        const newLight = this.lightByte.setS(0xf, sl);
-        DVEC.voxelHelper.setLight(x, y, z, newLight);
-        return true;
-    }
-    return false;
-}
 export function runSunLightUpdate() {
     while (this._sunLightUpdateQue.length != 0) {
         const node = this._sunLightUpdateQue.shift();
@@ -137,10 +125,6 @@ export function runSunLightUpdate() {
             }
             else {
                 const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
-                if (voxel.substance == "solid") {
-                    this._sunLightUpdateQue.push([x, y - 1, z]);
-                    DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getSunLightForUnderVoxel(sl, n5));
-                }
                 if (voxel.substance == "flora" || voxel.substance == "fluid") {
                     this._sunLightUpdateQue.push([x, y - 1, z]);
                     DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getMinusOneForSun(sl, n5));
@@ -153,7 +137,6 @@ export function runSunLightUpdate() {
             DVEC.voxelHelper.setLight(x, y + 1, z, this.lightByte.getMinusOneForSun(sl, n6));
         }
     }
-    this._visitSunMap = {};
 }
 export function runSunLightUpdateAt(x, y, z) {
     this._sunLightUpdateQue.push([x, y, z]);
@@ -171,11 +154,138 @@ export function PopulateWorldColumnWithSunLight(x, z, maxY) {
         }
     }
 }
+export function SunLightAboveCheck(x, y, z) {
+    const nl = DVEC.voxelHelper.getLight(x, y + 1, z);
+    if (nl == -1)
+        return false;
+    const sunLevel = this.lightByte.getS(nl);
+    if (sunLevel != 0xf) {
+        const voxelData = DVEC.worldMatrix.getVoxel(x, y, z);
+        if (!voxelData) {
+            return false;
+        }
+        if (voxelData[0] == "dve:air") {
+            return true;
+        }
+        else {
+            const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
+            if (voxel.substance == "solid") {
+                return false;
+            }
+            if (voxel.substance == "flora" || voxel.substance == "fluid") {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+export function RunSunLightFloodDown(x, z) {
+    const floodOutQueue = [];
+    this._sunLightFloodOutQue[`${x}-${z}`] = floodOutQueue;
+    while (this._sunLightFloodDownQue.length != 0) {
+        const node = this._sunLightFloodDownQue.shift();
+        if (!node) {
+            break;
+        }
+        const x = node[0];
+        const y = node[1];
+        const z = node[2];
+        const sl = DVEC.voxelHelper.getLight(x, y, z);
+        const sunLightLevel = this.lightByte.getS(sl);
+        this._visitSunMap[`${x}-${y}-${z}`] = true;
+        if (sunLightLevel == 0)
+            continue;
+        let add = false;
+        if (this.sunLightAboveCheck(x - 1, y, z)) {
+            add = true;
+        }
+        if (this.sunLightAboveCheck(x + 1, y, z)) {
+            add = true;
+        }
+        if (this.sunLightAboveCheck(x, y, z - 1)) {
+            add = true;
+        }
+        if (this.sunLightAboveCheck(x, y, z + 1)) {
+            add = true;
+        }
+        if (add) {
+            floodOutQueue.push([x, y, z]);
+        }
+        const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+        if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
+            const voxelData = DVEC.worldMatrix.getVoxel(x, y - 1, z);
+            if (!voxelData || voxelData[0] == "dve:air") {
+                this._sunLightFloodDownQue.push([x, y - 1, z]);
+                DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getSunLightForUnderVoxel(sl, n5));
+            }
+            else {
+                const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
+                if (voxel.substance == "flora" || voxel.substance == "fluid") {
+                    this._sunLightFloodDownQue.push([x, y - 1, z]);
+                    DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getMinusOneForSun(sl, n5));
+                }
+            }
+        }
+    }
+}
+export function RunSunLightFloodOut(x, z) {
+    const queue = this._sunLightFloodOutQue[`${x}-${z}`];
+    while (queue.length != 0) {
+        const node = queue.shift();
+        if (!node) {
+            break;
+        }
+        const x = node[0];
+        const y = node[1];
+        const z = node[2];
+        const sl = DVEC.voxelHelper.getLight(x, y, z);
+        const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+        if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
+            queue.push([x - 1, y, z]);
+            DVEC.voxelHelper.setLight(x - 1, y, z, this.lightByte.getMinusOneForSun(sl, n1));
+        }
+        const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+        if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
+            queue.push([x + 1, y, z]);
+            DVEC.voxelHelper.setLight(x + 1, y, z, this.lightByte.getMinusOneForSun(sl, n2));
+        }
+        const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+        if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
+            queue.push([x, y, z - 1]);
+            DVEC.voxelHelper.setLight(x, y, z - 1, this.lightByte.getMinusOneForSun(sl, n3));
+        }
+        const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+        if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
+            queue.push([x, y, z + 1]);
+            DVEC.voxelHelper.setLight(x, y, z + 1, this.lightByte.getMinusOneForSun(sl, n4));
+        }
+        const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+        if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
+            const voxelData = DVEC.worldMatrix.getVoxel(x, y - 1, z);
+            if (!voxelData || voxelData[0] == "dve:air") {
+                queue.push([x, y - 1, z]);
+                DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getSunLightForUnderVoxel(sl, n5));
+            }
+            else {
+                const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
+                if (voxel.substance == "flora" || voxel.substance == "fluid") {
+                    queue.push([x, y - 1, z]);
+                    DVEC.voxelHelper.setLight(x, y - 1, z, this.lightByte.getMinusOneForSun(sl, n5));
+                }
+            }
+        }
+        const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+        if (n6 > -1 && this.lightByte.isLessThanForSunAddUp(n6, sl)) {
+            queue.push([x, y + 1, z]);
+            DVEC.voxelHelper.setLight(x, y + 1, z, this.lightByte.getMinusOneForSun(sl, n6));
+        }
+    }
+}
 export function RunSunLightUpdateAtMaxY(x, z, maxY) {
     for (let ix = x; ix < x + DVEC.worldBounds.chunkXSize; ix++) {
         for (let iz = z; iz < z + DVEC.worldBounds.chunkZSize; iz++) {
-            this._sunLightUpdateQue.push([ix, maxY, iz]);
+            this._sunLightFloodDownQue.push([ix, maxY, iz]);
         }
     }
-    this.runSunLightUpdate();
+    this.runSunLightFloodDown(x, z);
 }

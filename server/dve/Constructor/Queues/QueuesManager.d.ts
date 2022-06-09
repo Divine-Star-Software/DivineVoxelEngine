@@ -6,5 +6,7 @@ export declare const QueuesManager: {
     finishRGBLightRemove(): void;
     finishWorldColumnSunLightProp(): void;
     finishSunLightUpdateAtMaxY(): void;
+    finishSunLightUpdateMaxYFlood(): void;
     finishSunLightUpdate(): void;
+    finishSunLightRemove(): void;
 };

@@ -45,16 +45,22 @@ export const DVEP = {
 
   DVEC.queues.finishWorldColumnSunLightProp();
  },
- runSunFloodFill(x: number, y: number, z: number) {
-  this.illumination.runSunLightUpdateAt(x, y, z);
-  DVEC.queues.finishSunLightUpdate();
- },
+
  runSunFloodFillAtMaxY(x: number, z: number, maxY: number) {
   this.illumination.runSunLightUpdateAtMaxY(x, z, maxY);
   DVEC.queues.finishSunLightUpdateAtMaxY();
  },
- runSunFloodRemove(x: number, y: number, z: number) {
+ runSunFloodFillMaxYFlood(x: number, z: number, maxY: number) {
+   this.illumination.runSunLightFloodOut(x,z);
+  DVEC.queues.finishSunLightUpdateMaxYFlood();
+ },
+ runSunLightUpdate(x: number, y: number, z: number) {
+    this.illumination.runSunLightUpdateAt(x, y, z);
+    DVEC.queues.finishSunLightUpdate();
+   },
+ runSunLightRemoe(x: number, y: number, z: number) {
   this.rebuildQueMap = {};
+  DVEC.queues.finishSunLightRemove();
  },
 };
 

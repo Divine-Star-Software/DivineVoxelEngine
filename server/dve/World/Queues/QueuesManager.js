@@ -21,12 +21,13 @@ export const QueuesManager = {
         const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(x, z);
         if (!this._worldColumnSunLightPropMap[worldColumnKey]) {
             this._worldColumnSunLightPropQue.push([x, z]);
-            this._worldColumnSunLightPropMap[worldColumnKey] = -Infinity;
+            this._worldColumnSunLightPropMap[worldColumnKey] = { max: 0, thread: 0 };
         }
     },
     async runWorldColumnSunLightAndUpateQue() {
         const queue = this._worldColumnSunLightPropQue;
         let i = queue.length;
+        //stage 1 fill with full sun light
         while (i--) {
             const position = queue[i];
             const x = position[0];
@@ -34,25 +35,38 @@ export const QueuesManager = {
             DVEW.worldData.fillWorldCollumnWithChunks(x, z);
             const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(x, z);
             const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
-            this._worldColumnSunLightPropMap[worldColumnKey] = maxY;
             Atomics.add(this.__states, QueuesIndexes.worldColumnSunLightProp, 1);
             DVEW.constructorCommManager.runSunLightForWorldColumn(x, z, maxY);
+            this._worldColumnSunLightPropMap[worldColumnKey] = { max: maxY, thread: 0 };
         }
+        i = queue.length;
         await this.awaitAllWorldColumnSunLightProp();
+        //stage 2 flood down from maxY
+        while (i--) {
+            const position = queue[i];
+            const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(position[0], position[1]);
+            const data = this._worldColumnSunLightPropMap[worldColumnKey];
+            const x = position[0];
+            const z = position[1];
+            data.thread = DVEW.constructorCommManager.runSunFillAtMaxY(x, z, data.max);
+            Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
+        }
+        await this.awaitAllSunLightUpdatesAtMaxY();
+        //stage 3 flood out from maxY
         while (queue.length != 0) {
             const position = queue.shift();
             if (!position)
                 break;
             const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(position[0], position[1]);
-            const maxY = this._worldColumnSunLightPropMap[worldColumnKey];
+            const data = this._worldColumnSunLightPropMap[worldColumnKey];
             const x = position[0];
             const z = position[1];
-            DVEW.constructorCommManager.runSunFillAtMaxY(x, z, maxY);
-            Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
+            data.thread = DVEW.constructorCommManager.runSunFillMaxYFlood(x, z, data.max, data.thread);
+            Atomics.add(this.__states, QueuesIndexes.sunLightMaxYFlood, 1);
         }
         this._worldColumnSunLightPropMap = {};
         this._worldColumnSunLightPropQue = [];
-        await this.awaitAllSunLightUpdatesAtMaxY();
+        await this.awaitAllSunLightUpdatesMaxYFlood();
     },
     awaitAllWorldColumnSunLightProp() {
         return DVEW.UTIL.createPromiseCheck({
@@ -75,6 +89,17 @@ export const QueuesManager = {
     },
     areAllSunLightUpdatesAtMaxYDone() {
         return Atomics.load(this.__states, QueuesIndexes.sunLgithUpdateMaxY) == 0;
+    },
+    awaitAllSunLightUpdatesMaxYFlood() {
+        return DVEW.UTIL.createPromiseCheck({
+            check: () => {
+                return QueuesManager.areAllSunLightUpdatesMaxYFloodDone();
+            },
+            checkInterval: 1,
+        });
+    },
+    areAllSunLightUpdatesMaxYFloodDone() {
+        return Atomics.load(this.__states, QueuesIndexes.sunLightMaxYFlood) == 0;
     },
     awaitAllSunLightUpdates() {
         return DVEW.UTIL.createPromiseCheck({

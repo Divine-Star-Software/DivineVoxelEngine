@@ -5,6 +5,7 @@ export declare const WorldToConstructorMessages: {
     RGBlightRemove: number;
     fillWorldColumnWithSunLight: number;
     runSunLightUpdateAtMaxY: number;
+    runSunLightUpdateMaxYFlood: number;
     sunLightUpdate: number;
     sunLightRemove: number;
 };

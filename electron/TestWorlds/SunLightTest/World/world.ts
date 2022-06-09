@@ -49,13 +49,13 @@ for (let x = startX; x < endX; x += 16) {
   DVEW.buildWorldColumn(x, z);
  }
 }
-DVEW.queues.runRGBUpdateQue();
+/* DVEW.queues.runRGBUpdateQue();
 await DVEW.queues.awaitAllRGBLightUpdates();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   DVEW.buildWorldColumn(x, z);
  }
 }
-
+ */
 
 (self as any).DVEW = DVEW;

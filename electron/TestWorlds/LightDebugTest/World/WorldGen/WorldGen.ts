@@ -9,7 +9,7 @@ export const WorldGen = {
   for (let x = 0; x < +this.chunkWidth; x++) {
    for (let z = 0; z < this.chunkDepth; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
-     if (y <= baseY ) {
+     if (y <= baseY + 5) {
            DVEW.worldData.paintVoxel(
        "dve:lightdebug",
        "default",
@@ -26,13 +26,13 @@ export const WorldGen = {
       ); */
      }
      if (y == baseY + 6) {
-      DVEW.worldData.paintVoxel(
+/*       DVEW.worldData.paintVoxel(
        "dve:dreamgrass",
        "default",
        x + chunkX,
        y + chunkY,
        z + chunkZ
-      );
+      ); */
      }
     }
    }

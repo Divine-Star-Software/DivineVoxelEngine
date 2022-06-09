@@ -3,6 +3,7 @@ export const QueuesIndexes = {
     RGBLightRemove: 1,
     worldColumnSunLightProp: 2,
     sunLgithUpdateMaxY: 3,
-    sunLightUpdate: 4,
-    sunLightRemove: 5,
+    sunLightMaxYFlood: 4,
+    sunLightUpdate: 5,
+    sunLightRemove: 6,
 };

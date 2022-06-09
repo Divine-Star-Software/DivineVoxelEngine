@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -124,8 +124,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -632,14 +632,15 @@ export declare const DVEW: {
         syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
-        __handleCount(): void;
-        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): void;
-        runRGBFloodFillAt(x: number, y: number, z: number): void;
-        runRGBFloodRemoveAt(x: number, y: number, z: number): void;
-        runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
-        runSunFillAtMaxY(x: number, y: number, maxY: number): void;
-        runSunFillAt(x: number, y: number, z: number): void;
-        runSunRemoveAt(x: number, y: number, z: number): void;
+        __handleCount(): number;
+        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
+        runRGBFloodFillAt(x: number, y: number, z: number): number;
+        runRGBFloodRemoveAt(x: number, y: number, z: number): number;
+        runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
+        runSunFillAtMaxY(x: number, y: number, maxY: number): number;
+        runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
+        runSunFillAt(x: number, y: number, z: number): number;
+        runSunRemoveAt(x: number, y: number, z: number): number;
     };
     worldGeneration: {
         worldBounds: {
@@ -1082,7 +1083,10 @@ export declare const DVEW: {
         _numRGBLightRemoves: number;
         _RGBLightRemoveQue: number[][];
         _RGBLightUpdateQue: number[][];
-        _worldColumnSunLightPropMap: Record<string, number>;
+        _worldColumnSunLightPropMap: Record<string, {
+            max: number;
+            thread: number;
+        }>;
         _worldColumnSunLightPropQue: number[][];
         _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
         _chunkRebuildQue: number[][];
@@ -1095,6 +1099,8 @@ export declare const DVEW: {
         areWorldColumnSunLightUpdatsDone(): boolean;
         awaitAllSunLightUpdatesAtMaxY(): Promise<boolean>;
         areAllSunLightUpdatesAtMaxYDone(): boolean;
+        awaitAllSunLightUpdatesMaxYFlood(): Promise<boolean>;
+        areAllSunLightUpdatesMaxYFloodDone(): boolean;
         awaitAllSunLightUpdates(): Promise<boolean>;
         areAllSunLightUpdatesDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;

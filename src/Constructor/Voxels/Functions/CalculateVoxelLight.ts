@@ -166,7 +166,7 @@ export function CalculateVoxelLight(
 }
 
 const newValues: number[] = [];
-const zeroCheck = { w: 0, r: 0, g: 0, b: 0 };
+const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 
 export function VoxelLightMixCalc(
  this: typeof VoxelHelper,
@@ -178,12 +178,12 @@ export function VoxelLightMixCalc(
  vertex: 1 | 2 | 3 | 4
 ) {
  const values = this.lightByte.getLightValues(voxelLigtValue);
- let w = values[0];
+ let s = values[0];
  let r = values[1];
  let g = values[2];
  let b = values[3];
 
- if (w == 0) zeroCheck.w++;
+ if (s == 0) zeroCheck.s++;
  if (r == 0) zeroCheck.r++;
  if (g == 0) zeroCheck.g++;
  if (b == 0) zeroCheck.b++;
@@ -197,23 +197,24 @@ export function VoxelLightMixCalc(
   if (neighborLightValue == -1) continue;
 
   const values = this.lightByte.getLightValues(neighborLightValue);
-  let nw = values[0];
+  let ns = values[0];
   let nr = values[1];
   let ng = values[2];
   let nb = values[3];
 
-  if (nw == 0) zeroCheck.w++;
+  if (ns == 0) zeroCheck.s++;
   if (nr == 0) zeroCheck.r++;
   if (ng == 0) zeroCheck.g++;
   if (nb == 0) zeroCheck.b++;
 
   if (!neighborLightValue) continue;
+  if(ns == 15) continue; 
 
-  if (nw < w && w > 0) {
-   w--;
+  if (ns < s && s > 0) {
+   s--;
   }
-  if (nw > w && w < 15) {
-   w++;
+  if (ns > s && s < 15) {
+   s++;
   }
 
   if (nr < r && r > 0) {
@@ -240,11 +241,11 @@ export function VoxelLightMixCalc(
 
  let zeroTolerance = 2;
  let totalZero = true;
- if (zeroCheck.w >= zeroTolerance) {
+ if (zeroCheck.s >= zeroTolerance) {
   newValues[0] = 0;
  } else {
   totalZero = false;
-  newValues[0] = w;
+  newValues[0] = s;
  }
  if (zeroCheck.r >= zeroTolerance) {
   newValues[1] = 0;
@@ -270,7 +271,7 @@ export function VoxelLightMixCalc(
  vertexStates[vertex].totalZero = totalZero;
  vertexStates[vertex].value = returnValue;
 
- zeroCheck.w = 0;
+ zeroCheck.s = 0;
  zeroCheck.r = 0;
  zeroCheck.b = 0;
  zeroCheck.g = 0;

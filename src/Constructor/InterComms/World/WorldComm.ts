@@ -59,13 +59,22 @@ worldComm.messageFunctions[WorldToConstructorMessages.runSunLightUpdateAtMaxY] =
   DVEC.DVEP.runSunFloodFillAtMaxY(x, z, maxY);
  };
 
+worldComm.messageFunctions[
+ WorldToConstructorMessages.runSunLightUpdateMaxYFlood
+] = (data) => {
+ const x = data[1];
+ const z = data[2];
+ const maxY = data[3];
+ DVEC.DVEP.runSunFloodFillMaxYFlood(x, z, maxY);
+};
+
 worldComm.messageFunctions[WorldToConstructorMessages.sunLightUpdate] = (
  data
 ) => {
  const x = data[1];
  const y = data[2];
  const z = data[3];
- DVEC.DVEP.runSunFloodFill(x, y, z);
+ DVEC.DVEP.runSunLightUpdate(x, y, z);
 };
 
 worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (
@@ -74,6 +83,5 @@ worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (
  const x = data[1];
  const y = data[2];
  const z = data[3];
- DVEC.DVEP.runSunFloodRemove(x, y, z);
+ DVEC.DVEP.runSunLightRemoe(x, y, z);
 };
-
