@@ -70,47 +70,6 @@ function visitAll(
  return positons;
 }
 
-function plotLine3d(
- x0: number,
- y0: number,
- z0: number,
- x1: number,
- y1: number,
- z1: number
-) {
- const pooints = [];
- const dx = Math.abs(x1 - x0),
-  sx = x0 < x1 ? 1 : -1;
- const dy = Math.abs(y1 - y0),
-  sy = y0 < y1 ? 1 : -1;
- const dz = Math.abs(z1 - z0),
-  sz = z0 < z1 ? 1 : -1;
- let dm = Math.max(dx, dy, dz),
-  i = dm;
- x1 = y1 = z1 = dm / 2;
- while (true) {
-  pooints.push(x0, y0, z0);
-  if (i-- == 0) break;
-  x1 -= dx;
-  if (x1 < 0) {
-   x1 += dm;
-   x0 += sx;
-  }
-  y1 -= dy;
-  if (y1 < 0) {
-   y1 += dm;
-   y0 += sy;
-  }
-  z1 -= dz;
-  if (z1 < 0) {
-   z1 += dm;
-   z0 += sz;
-  }
- }
-
- return pooints;
-}
-
 /**# Player Watcher
  * ---
  * Keeps track of the players movement and
@@ -172,7 +131,7 @@ export class PlayerWatcher {
    const chunkY = (pAbsY >> 7) << 7;
    const chunkZ = (pAbsZ >> 4) << 4;
 
-/*    let i = 0;
+   /*    let i = 0;
 
    for (i; i < data.length; i += 3) {
     const x = data[i];
@@ -190,16 +149,19 @@ export class PlayerWatcher {
  */
    //below player
 
-   const belowVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY - 2, pAbsZ);
+   const belowVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY - 3, pAbsZ);
+
    if (belowVoxel && belowVoxel[0] != -1) {
-    this.playerStatesArray[0] = 1;
+    if ((belowVoxel as any)[0].substance != "fluid") {
+     this.playerStatesArray[0] = 1;
+    }
    } else {
     this.playerStatesArray[0] = 0;
    }
 
-   const headVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY , pAbsZ);
+   const headVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY, pAbsZ);
    if (headVoxel && headVoxel[0] != -1) {
-     //@ts-ignore
+    //@ts-ignore
     if (headVoxel[0].substance == "fluid") {
      this.playerStatesArray[1] = 1;
     } else {
@@ -208,9 +170,6 @@ export class PlayerWatcher {
    } else {
     this.playerStatesArray[1] = 0;
    }
-
-
-   
   }, 10);
  }
 }

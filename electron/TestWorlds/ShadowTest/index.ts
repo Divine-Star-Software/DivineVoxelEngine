@@ -9,23 +9,19 @@ import {
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { VoxelTemplateSubstanceType } from "../../out/Meta/index.js";
+
 
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
-  import.meta.url,
-  "./World/index.js",
-  "../Shared/Builder/builder.js",
-  "../Shared/Propagators/propagators.js",
-  "../Shared/Constructor/constructor.js"
- );
- 
- await DVER.$INIT({
-  worldWorker: workers.worldWorker,
-  builderWorker: workers.builderWorkers,
-  propagationWorker: workers.propagationWorkers,
-  constructorWorker : workers.constructorWorkers,
+ import.meta.url,
+ "./World/world.js",
+ "../Shared/Constructor/constructor.js"
+);
+
+await DVER.$INIT({
+ worldWorker: workers.worldWorker,
+ constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -65,13 +61,17 @@ const setUpLightAndShadows = (scene: BABYLON.Scene) => {
  for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
   const mesh = DVER.meshManager.meshes.solid[meshKey];
   //@ts-ignore
-  mesh.material.shadowDepthWrapper =  new BABYLON.ShadowDepthWrapper(mesh.material, scene);
+  mesh.material.shadowDepthWrapper = new BABYLON.ShadowDepthWrapper(
+      //@ts-ignore
+   mesh.material,
+   scene
+  );
   mesh.receiveShadows = true;
   mesh.material = mat;
   shadowGenerator.addShadowCaster(mesh);
  }
 
-/*  const ground = BABYLON.MeshBuilder.CreateGround(
+ /*  const ground = BABYLON.MeshBuilder.CreateGround(
   "ground",
   { width: 80, height: 80, subdivisions: 1 },
   scene

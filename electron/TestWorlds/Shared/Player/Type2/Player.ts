@@ -12,11 +12,6 @@ export class Player {
  normalFog = new BABYLON.Color3(1 / 255, 1 / 255, 1 / 255);
  fluidFog = new BABYLON.Color3(150 / 255, 0 / 255, 150 / 255);
  scene: BABYLON.Scene;
- cachedVelocity = new BABYLON.Vector3();
-
- active = true;
- breaking = false;
- placing = true;
  forward = new BABYLON.Vector3(0, 0, 1);
  camera: BABYLON.FreeCamera;
  ready = false;
@@ -24,23 +19,14 @@ export class Player {
  jumped = false;
  jumping = false;
  jumpTime = 28;
+ jumpCount = this.jumpTime;
  speed = 0.15;
  moveForward = false;
  moveBackward = false;
  moveLeft = false;
  moveRight = false;
- jumpCount = this.jumpTime;
+
  velocity: BABYLON.Vector3 = BABYLON.Vector3.Zero(); // global
-
- lookingAtBlock = false;
- blockLookingAtPosition: Position3Matrix = { x: 0, y: 0, z: 0 };
-
- playerCube: BABYLON.Mesh;
-
- checkDownCollision = false;
-
- bottomRay: BABYLON.Ray;
- camRay: BABYLON.Ray;
 
  constructor(private DVER: DivineVoxelEngineRender) {}
 
@@ -68,80 +54,8 @@ export class Player {
   this.DVER.worldComm.sendMessage("connect-player", arrays);
  }
 
- calculateGameZone(positionX: number, positionZ: number) {
-  const chunkpositionX = (positionX >> 4) << 4;
-  const chunkpositionZ = (positionZ >> 4) << 4;
-
-  return [chunkpositionX, chunkpositionZ];
- }
-
- /**# Directions
-  * ---
-  * 0 -> north
-  * 1 -> north west
-  * 2 -> north east
-  * 3 -> east
-  * 4 -> west;
-  * 5 -> south
-  * 6 -> south east
-  * 7 -> south east
-  *
-  * @param direction
-  */
- _getDirection(direction: BABYLON.Vector3) {
-  //  console.log(direction.x, direction.y, direction.z);
-  if (direction.x > -0.4 && direction.x < 0.4 && direction.z > 0) {
-   //   console.log("north");
-   this.playerDirectionArray[0] = 0;
-  }
-  if (direction.x < -0.4 && direction.x > -0.7 && direction.z > 0) {
-   //   console.log("north west");
-   this.playerDirectionArray[0] = 1;
-  }
-  if (direction.x > 0.4 && direction.x < 0.7 && direction.z > 0) {
-   //   console.log("north east");
-   this.playerDirectionArray[0] = 2;
-  }
-  if (
-   direction.x > 0.7 &&
-   direction.x < 1 &&
-   direction.z > -0.6 &&
-   direction.z < 0.6
-  ) {
-   //   console.log("east");
-   this.playerDirectionArray[0] = 3;
-  }
-  if (
-   direction.x < 0.7 &&
-   direction.x > 1 &&
-   direction.z < -0.6 &&
-   direction.z > 0.6
-  ) {
-   //     console.log("west");
-   this.playerDirectionArray[0] = 4;
-  }
-  if (direction.x > -0.7 && direction.x < -0.05 && direction.z < 0) {
-   //   console.log("south west");
-   this.playerDirectionArray[0] = 6;
-  }
-  if (direction.x > -0.2 && direction.x < 0.9 && direction.z < 0) {
-   //console.log("south east");
-   this.playerDirectionArray[0] = 7;
-  }
-
-  if (direction.x > -0.4 && direction.x < 0.4 && direction.z < 0) {
-   //    console.log("south");
-   this.playerDirectionArray[0] = 5;
-  }
-
-  /*     if (direction.z > -0.6 && direction.z < 0.6 && direction.x < 0) {
-      console.log("west");
-      this.playerDirectionArray[0] = 3;
-    } */
- }
-
  async update() {
-  if (!this.ready || !this.active) return;
+  if (!this.ready) return;
   if (this.DVER.meshManager.runningUpdate) return;
   if (this.playerStatesArray[1]) {
    this.scene.fogDensity = 0.3;
@@ -166,28 +80,12 @@ export class Player {
   // console.log(this.playerPickPosition);
 
   const direction = this.camera.getDirection(this.forward);
-
   this.playerDirectionArray[0] = direction.x;
   this.playerDirectionArray[1] = direction.y;
   this.playerDirectionArray[2] = direction.z;
-  // this._getDirection(direction);
-  /* 
-  this.playerCube.position.x = this.playerPickPosition[0] + 0.5;
-  this.playerCube.position.y = this.playerPickPosition[1] + 0.5;
-  this.playerCube.position.z = this.playerPickPosition[2] + 0.5; */
-  // console.log(this.camera.getDirection(this.forward));
-
-  const x = Math.round(this.hitbox.position.x);
-  //  const y = Math.floor(this.hitbox.position.y);
-  const z = Math.round(this.hitbox.position.z);
-
   this.absPositionArray[0] = this.hitbox.position.x;
   this.absPositionArray[1] = this.hitbox.position.y + 0.5;
   this.absPositionArray[2] = this.hitbox.position.z;
-
-  const chunk = this.calculateGameZone(x, z);
-  this.chunkPositionArray[0] = chunk[0];
-  this.chunkPositionArray[1] = chunk[1];
 
   if (this.jumping) {
    if (this.jumpCount == 0) {
@@ -204,116 +102,6 @@ export class Player {
    this.jumped = false;
   }
  }
-
- _doAction(action: "break" | "place") {
-  const position = new BABYLON.Vector3(
-   this.hitbox.position.x,
-   this.hitbox.position.y + 0.5,
-   this.hitbox.position.z
-  );
-  const camRay = this.camera.getForwardRay(6, undefined, position);
-  this.camRay = camRay;
-
-  const camPick = this.hitbox.getScene().pickWithRay(this.camRay);
-
-  if (camPick) {
-   if (camPick.hit) {
-    if (camPick.pickedMesh && camPick.faceId !== undefined) {
-     const x = Math.floor(this.playerCube.position.x);
-     const y = Math.floor(this.playerCube.position.y);
-     const z = Math.floor(this.playerCube.position.z);
-
-     if (action == "break") {
-      this.blockLookingAtPosition.x = x;
-      this.blockLookingAtPosition.y = y;
-      this.blockLookingAtPosition.z = z;
-      return;
-     }
-     if (action == "place") {
-      console.log(x, y, z);
-      let normal: BABYLON.Vector3 = BABYLON.Vector3.Zero();
-      normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-      //  console.log(normal);
-      if (normal.x == 1) {
-       this.blockLookingAtPosition.x = x + 1;
-       this.blockLookingAtPosition.y = y;
-       this.blockLookingAtPosition.z = z;
-
-       return;
-      }
-      if (normal.x == -1) {
-       this.blockLookingAtPosition.x = x - 1;
-       this.blockLookingAtPosition.y = y;
-       this.blockLookingAtPosition.z = z;
-
-       return;
-      }
-      if (normal.z == 1) {
-       this.blockLookingAtPosition.x = x;
-       this.blockLookingAtPosition.y = y;
-       this.blockLookingAtPosition.z = z + 1;
-
-       return;
-      }
-      if (normal.z == -1) {
-       this.blockLookingAtPosition.x = x;
-       this.blockLookingAtPosition.y = y;
-       this.blockLookingAtPosition.z = z - 1;
-
-       return;
-      }
-      if (normal.y == 1) {
-       this.blockLookingAtPosition.x = x;
-       this.blockLookingAtPosition.y = y + 1;
-       this.blockLookingAtPosition.z = z;
-
-       return;
-      }
-      if (normal.y == -1) {
-       this.blockLookingAtPosition.x = x;
-       this.blockLookingAtPosition.y = y - 1;
-       this.blockLookingAtPosition.z = z;
-
-       return;
-      }
-     }
-
-     //    console.log(this.blockLookingAtPosition);
-    }
-   }
-  }
- }
-
- _setUpPlayerCube() {
-  const cubeMaterial = new BABYLON.StandardMaterial(
-   "block",
-   this.hitbox.getScene()
-  );
-  cubeMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-  cubeMaterial.alpha = 0.3;
-  const cube = BABYLON.MeshBuilder.CreateBox(
-   "playerblockdisplay",
-   { size: 1.1 },
-   this.hitbox.getScene()
-  );
-  cube.isPickable = true;
-  cube.material = cubeMaterial;
-
-  cube.enableEdgesRendering();
-  cube.edgesWidth = 0.3;
-  cube.edgesColor = new BABYLON.Color4(0, 0, 0, 0.8);
-
-  cube.convertToFlatShadedMesh();
-  cube.updateFacetData();
-  const positions = cube.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-  const indicies = cube.getIndices();
-  const calculatedNormals: number[] = [];
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-  cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
-  this.playerCube = cube;
- }
-
- _setUpPlayerCamera() {}
 
  async _createParticleSystem(scene: BABYLON.Scene) {
   const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
@@ -374,7 +162,7 @@ export class Player {
 
   this.hitbox = BABYLON.MeshBuilder.CreateBox(
    "player-hitbox",
-   { width: 0.7, height: 2, depth: 0.7 },
+   { width: 0.5, height: 2, depth: 0.5 },
    scene
   );
 
@@ -383,7 +171,7 @@ export class Player {
   this.camera = camera;
   // this.camera.position.y = 1;
   this.hitbox.checkCollisions = true;
-  this.hitbox.ellipsoid = new BABYLON.Vector3(0.45, 0.9, 0.45);
+ // this.hitbox.ellipsoid = new BABYLON.Vector3(0.5,1, 0.5)
   this.hitbox.isPickable = false;
   //this.hitbox.showBoundingBox = true;
   this.hitbox.isVisible = false;
@@ -392,40 +180,15 @@ export class Player {
   this.hitbox.position.z = -120;
   this.hitbox.position.y = 150;
 
-  this.bottomRay = new BABYLON.Ray(
-   new BABYLON.Vector3(0, 0, 0),
-   new BABYLON.Vector3(0, -1, 0),
-   1
-  );
-  const bottomRayHelper = new BABYLON.RayHelper(this.bottomRay);
-  bottomRayHelper.attachToMesh(
-   this.hitbox,
-   new BABYLON.Vector3(0, -1, 0),
-   new BABYLON.Vector3(0, -0.5, 0)
-  );
-
   const camNode = new BABYLON.TransformNode("camnode", scene);
   camera.parent = camNode;
   camNode.position.y = 0.5;
   camNode.parent = this.hitbox;
 
-  this._setUpPlayerCube();
-  this._setUpPlayerCamera();
-
-  document.addEventListener("click", (event: MouseEvent) => {});
-
   document.addEventListener(
    "keydown",
    (event: KeyboardEvent) => {
     switch (event.key) {
-     case "1":
-      this.placing = true;
-      this.breaking = false;
-      break;
-     case "2":
-      this.placing = false;
-      this.breaking = true;
-      break;
      case "ArrowUp":
      case "w":
       this.moveForward = true;
@@ -443,7 +206,7 @@ export class Player {
       this.moveRight = true;
       break;
      case " ":
-      if (this.playerStatesArray[0] && !this.jumping) {
+      if (this.playerStatesArray[0] && !this.jumping) {//
        this.jumped = true;
        this.jumping = true;
        this.velocity.y = 0.15;

@@ -13,18 +13,14 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
-    import.meta.url,
-    "./World/index.js",
-    "../Shared/Builder/builder.js",
-    "../Shared/Propagators/propagators.js",
-    "../Shared/Constructor/constructor.js"
-   );
-   
-   await DVER.$INIT({
-    worldWorker: workers.worldWorker,
-    builderWorker: workers.builderWorkers,
-    propagationWorker: workers.propagationWorkers,
-    constructorWorker : workers.constructorWorkers,
+ import.meta.url,
+ "./World/world.js",
+ "../Shared/Constructor/constructor.js"
+);
+
+await DVER.$INIT({
+ worldWorker: workers.worldWorker,
+ constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -49,7 +45,7 @@ const init = async () => {
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);
 
- runRenderLoop(engine, scene, camera,DVER);
+ runRenderLoop(engine, scene, camera, DVER);
 };
 
 RunInit(init);

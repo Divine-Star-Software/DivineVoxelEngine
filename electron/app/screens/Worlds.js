@@ -42,9 +42,19 @@ export const Worlds = [
              world: "ServerTest",
              }, */
             {
-                title: "Shadow Test",
-                description: "Used to test dynamic lights and shadows.",
-                world: "ShadowTest",
+                title: "Sun Light Test",
+                description: "Used to test sun light.",
+                world: "SunLightTest",
+            },
+            {
+                title: "Ocean Test",
+                description: "Used to test out fluid voxels.",
+                world: "OceanTest",
+            },
+            {
+                title: "Light Debug Test",
+                description: "Used to debug light gradient issues.",
+                world: "LightDebugTest",
             },
             {
                 title: "Nexus & Matrix Test",
@@ -55,16 +65,6 @@ export const Worlds = [
                 title: "Shape Test",
                 description: "Used to work on different voxel shapes.",
                 world: "ShapeTest",
-            },
-            {
-                title: "Ocean Test",
-                description: "Used to test out fluid voxels.",
-                world: "OceanTest",
-            },
-            {
-                title: "Sun Light Test",
-                description: "Used to test sun light.",
-                world: "SunLightTest",
             },
             {
                 title: "Lit Fluid Test",
@@ -87,9 +87,9 @@ export const Worlds = [
                 world: "LightTest",
             },
             {
-                title: "Light Debug Test",
-                description: "Used to debug light gradient issues.",
-                world: "LightDebugTest",
+                title: "Shadow Test",
+                description: "Used to test dynamic lights and shadows.",
+                world: "ShadowTest",
             },
         ],
     },
