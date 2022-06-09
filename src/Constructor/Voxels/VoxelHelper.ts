@@ -105,7 +105,7 @@ export const VoxelHelper = {
   */
  getLight(x: number, y: number, z: number): number {
   const rawVoxelData = DVEC.worldMatrix.getData(x, y, z);
-  if (rawVoxelData < 0) return 0;
+  if (rawVoxelData < 0) return -1;
 
   if (rawVoxelData >= 0) {
    const voxelId = this.voxelByte.getId(rawVoxelData);
@@ -125,7 +125,7 @@ export const VoxelHelper = {
     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
    }
   }
-  return 0;
+  return -1;
  },
 
  setAir(x: number, y: number, z: number, lightValue: number) {

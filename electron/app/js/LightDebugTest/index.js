@@ -16,6 +16,15 @@ await DVER.$INIT({
         autoRGBLight: true,
         autoSunLight: true,
     },
+    world: {
+        voxelPaletteMode: "global",
+        minX: -Infinity,
+        maxX: Infinity,
+        minZ: -Infinity,
+        maxZ: Infinity,
+        minY: 0,
+        maxY: 128,
+    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();
@@ -29,3 +38,4 @@ const init = async () => {
     runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);
+window.DVER = DVER;

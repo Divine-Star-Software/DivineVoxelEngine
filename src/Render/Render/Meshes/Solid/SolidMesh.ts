@@ -29,12 +29,9 @@ export const SolidMesh: VoxelMeshInterface = {
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("solid", scene);
-  mesh.alphaIndex = 0;
   mesh.isPickable = false;
   mesh.checkCollisions = true;
   mesh.doNotSerialize = true;
-  mesh.receiveShadows = true;
-
   return mesh;
  },
 

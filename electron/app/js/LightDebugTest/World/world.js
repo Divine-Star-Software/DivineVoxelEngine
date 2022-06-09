@@ -11,10 +11,10 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
     onReady: () => { },
 });
-let startX = -32;
-let startZ = -32;
-let endX = 32;
-let endZ = 32;
+let startX = -16;
+let startZ = -16;
+let endX = 16;
+let endZ = 16;
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
@@ -23,11 +23,20 @@ for (let x = startX; x < endX; x += 16) {
 }
 const x = 0;
 const z = 0;
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
 //await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+console.log("done");
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        DVEW.buildWorldColumn(x, z);
+        DVEW.buildChunk(x, 0, z);
     }
 }
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
+setTimeout(() => {
+    for (let x = startX; x < endX; x += 16) {
+        for (let z = startZ; z < endZ; z += 16) {
+            DVEW.buildChunk(x, 0, z);
+        }
+    }
+    console.log("build");
+}, 2000);
 self.DVEW = DVEW;

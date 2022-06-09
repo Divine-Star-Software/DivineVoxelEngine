@@ -76,4 +76,4 @@ worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (
  const z = data[3];
  DVEC.DVEP.runSunFloodRemove(x, y, z);
 };
-//worldComm.onMessage = (event) => console.log(event.data,event.ports);
+

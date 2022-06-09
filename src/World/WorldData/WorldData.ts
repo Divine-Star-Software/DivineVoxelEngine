@@ -415,6 +415,7 @@ export const WorldData = {
   }
   if (DVEW.settings.settings.updating?.autoRebuild) {
    if (needLightUpdate) {
+     
     DVEW.queues.runRGBUpdateQue();
     await DVEW.queues.awaitAllRGBLightUpdates();
    }

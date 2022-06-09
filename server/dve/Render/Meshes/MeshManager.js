@@ -24,20 +24,12 @@ export const MeshManager = {
         this.scene = scene;
     },
     reStart() { },
-    handleUpdate(type, chunkKey, data) {
-        if (!this.meshes[type][chunkKey]) {
-            this._buildNewMeshO(type, chunkKey, data);
-        }
-        else {
-            this._updateMeshO(type, chunkKey, data);
-        }
-    },
     handleUpdateN(type, chunkKey, data) {
         if (!this.meshes[type][chunkKey]) {
-            this._buildNewMeshN(type, chunkKey, data);
+            this._buildNewMesh(type, chunkKey, data);
         }
         else {
-            this._updateMeshN(type, chunkKey, data);
+            this._updateMesh(type, chunkKey, data);
         }
     },
     requestChunkBeRemoved(chunkKey) {
@@ -48,7 +40,7 @@ export const MeshManager = {
             }
         }
     },
-    async _updateMeshN(type, chunkKey, data) {
+    async _updateMesh(type, chunkKey, data) {
         if (!this.scene)
             return;
         this.scene.unfreezeActiveMeshes();
@@ -65,7 +57,7 @@ export const MeshManager = {
         this.runningUpdate = false;
         this.scene.freeActiveMeshes();
     },
-    async _buildNewMeshN(type, chunkKey, data) {
+    async _buildNewMesh(type, chunkKey, data) {
         if (!this.scene)
             return;
         this.scene.unfreezeActiveMeshes();
@@ -78,41 +70,6 @@ export const MeshManager = {
         const sunLightColors = new Float32Array(data[9]);
         const colors = new Float32Array(data[10]);
         const uvs = new Float32Array(data[11]);
-        this.meshMakers[type].createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs);
-        //chunkMesh.updateFacetData();
-        this.meshes[type][chunkKey] = mesh;
-        this.scene.freeActiveMeshes();
-    },
-    async _updateMeshO(type, chunkKey, data) {
-        if (!this.scene)
-            return;
-        this.scene.unfreezeActiveMeshes();
-        this.runningUpdate = true;
-        const mesh = this.meshes[type][chunkKey];
-        const positions = new Float32Array(data[4]);
-        const indicies = new Int32Array(data[5]);
-        const aoColors = new Float32Array(data[6]);
-        const rgbLightColors = new Float32Array(data[7]);
-        const sunLightColors = new Float32Array(data[8]);
-        const colors = new Float32Array(data[9]);
-        const uvs = new Float32Array(data[10]);
-        this.meshMakers[type].rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs);
-        this.runningUpdate = false;
-        this.scene.freeActiveMeshes();
-    },
-    async _buildNewMeshO(type, chunkKey, data) {
-        if (!this.scene)
-            return;
-        this.scene.unfreezeActiveMeshes();
-        const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
-        mesh.setEnabled(true);
-        const positions = new Float32Array(data[4]);
-        const indicies = new Int32Array(data[5]);
-        const aoColors = new Float32Array(data[6]);
-        const rgbLightColors = new Float32Array(data[7]);
-        const sunLightColors = new Float32Array(data[8]);
-        const colors = new Float32Array(data[9]);
-        const uvs = new Float32Array(data[10]);
         this.meshMakers[type].createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs);
         //chunkMesh.updateFacetData();
         this.meshes[type][chunkKey] = mesh;

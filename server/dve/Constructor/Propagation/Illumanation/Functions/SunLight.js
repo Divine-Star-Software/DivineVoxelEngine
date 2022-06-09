@@ -105,7 +105,8 @@ export function runSunLightUpdate() {
         const y = node[1];
         const z = node[2];
         const sl = DVEC.voxelHelper.getLight(x, y, z);
-        if (sl == 0)
+        const sunLightLevel = this.lightByte.getS(sl);
+        if (sunLightLevel == 0)
             continue;
         const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
         if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {

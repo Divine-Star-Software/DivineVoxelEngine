@@ -14,23 +14,32 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
-    import.meta.url,
-    "./World/world.js",
-    "../Shared/Builder/builder.js",
-    "../Shared/Propagators/propagators.js",
-    "../Shared/Constructor/constructor.js"
-   );
-   await DVER.$INIT({
-    worldWorker: workers.worldWorker,
-    builderWorker: workers.builderWorkers,
-    propagationWorker: workers.propagationWorkers,
-    constructorWorker : workers.constructorWorkers,
+ import.meta.url,
+ "./World/world.js",
+ "../Shared/Builder/builder.js",
+ "../Shared/Propagators/propagators.js",
+ "../Shared/Constructor/constructor.js"
+);
+await DVER.$INIT({
+ worldWorker: workers.worldWorker,
+ builderWorker: workers.builderWorkers,
+ propagationWorker: workers.propagationWorkers,
+ constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
   doRGBLight: true,
   doSunLight: true,
   autoRGBLight: true,
   autoSunLight: true,
+ },
+ world: {
+  voxelPaletteMode: "global",
+  minX: -Infinity,
+  maxX: Infinity,
+  minZ: -Infinity,
+  maxZ: Infinity,
+  minY: 0,
+  maxY: 128,
  },
 });
 
@@ -45,7 +54,10 @@ const init = async () => {
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setSunLevel(0.5);
 
- runRenderLoop(engine, scene, camera,DVER);
+ runRenderLoop(engine, scene, camera, DVER);
 };
 
 RunInit(init);
+
+
+(window as any).DVER = DVER;

@@ -24,13 +24,6 @@ const workers = SetUpWorkers(
    builderWorker: workers.builderWorkers,
    propagationWorker: workers.propagationWorkers,
    constructorWorker : workers.constructorWorkers,
- lighting: {
-    doAO: true,
-    doRGBLight: true,
-    doSunLight: false,
-    autoRGBLight: true,
-    autoSunLight: false,
-   },
 });
 
 const init = async () => {

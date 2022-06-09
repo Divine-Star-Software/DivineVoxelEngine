@@ -276,13 +276,10 @@ export declare const DVER: {
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
-        handleUpdate(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
         handleUpdateN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
         requestChunkBeRemoved(chunkKey: string): void;
-        _updateMeshN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _buildNewMeshN(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _updateMeshO(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _buildNewMeshO(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _updateMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _buildNewMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
     };
     textureManager: {
         defaultTexturePath: string;

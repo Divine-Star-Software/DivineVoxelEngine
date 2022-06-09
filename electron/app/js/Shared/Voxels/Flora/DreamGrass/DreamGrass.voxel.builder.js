@@ -11,5 +11,6 @@ export const DreamGrassVoxelBuilderThread = {
         const lightValue = DVEB.voxelHelper.getLight(data.x + data.chunkX, data.y + data.chunkY, data.z + data.chunkZ);
         data.aoTemplate.push(1, 1);
         data.lightTemplate.push(lightValue, lightValue);
+        //data.lightTemplate.push(0xf, 0xf);
     },
 };

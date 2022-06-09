@@ -50,6 +50,15 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   },
  });
 
+ DVER.textureManager.registerTexture("flora", {
+  name: "Dream Stone Textures",
+  id: "dreamgrassblock",
+  frames: 0,
+  variations: {
+   "grassy-top": { frames: 0 },
+  },
+ });
+
  DVER.textureManager.registerTexture("solid", {
   name: "Dream Stone Pillar",
   id: "dreamstone-pillar",

@@ -5,5 +5,5 @@ RegisterVoxelsForConstructor(DVEC);
 await DVEC.$INIT({ onReady: () => {} });
 if (DVEC.environment == "browser") {
  //testing purposes only
- (self as any).DVEB = DVEC;
+ (self as any).DVEC = DVEC;
 }

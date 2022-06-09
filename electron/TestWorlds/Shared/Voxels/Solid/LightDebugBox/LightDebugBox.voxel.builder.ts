@@ -105,7 +105,7 @@ export const LightDebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
    trueX,
    trueY + 1,
    trueZ,
-   "r"
+   "s"
   );
   let uv = lightDebugBoxTextures[light];
 

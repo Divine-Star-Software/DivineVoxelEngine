@@ -29,7 +29,7 @@ export const LightDebugBoxVoxelBuilderThread = {
         const trueX = data.chunkX + data.x;
         const trueY = data.chunkY + data.y;
         const trueZ = data.chunkZ + data.z;
-        const light = DVEB.voxelHelper.getLightValue(trueX, trueY + 1, trueZ, "r");
+        const light = DVEB.voxelHelper.getLightValue(trueX, trueY + 1, trueZ, "s");
         let uv = lightDebugBoxTextures[light];
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);

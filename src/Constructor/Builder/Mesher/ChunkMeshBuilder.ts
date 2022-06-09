@@ -97,6 +97,7 @@ export const ChunkMeshBuilder = {
    const colorsArray = new Float32Array(colors);
    const uvArray = new Float32Array(uvs);
 
+
    DVEC.renderComm.sendMessage(
     ConstructorToRenderMessages.setChunk,
     [

@@ -7,8 +7,8 @@ export const DreamGrassBlockVoxelBuilderThread: VoxelBuilderThreadObject = {
  hooks: {},
  process: function (data, DVEB) {
   const uv = DVEB.textureManager.getTextureUV(
-   "solid",
-   "dreamstone",
+   "flora",
+   "dreamgrassblock",
    "grassy-top"
   );
 
