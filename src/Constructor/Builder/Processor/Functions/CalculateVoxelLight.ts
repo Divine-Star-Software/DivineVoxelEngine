@@ -1,5 +1,5 @@
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import { VoxelHelper } from "../VoxelHelper.js";
+import type { ChunkProcessor } from "../ChunkProcessor.js";
 const vertexStates = {
  1: {
   totalZero: false,
@@ -52,20 +52,13 @@ const handleAdd = (data: VoxelProcessData, face: number) => {
  }
 };
 
-const voxelLightChecks = {
+const lightCheckSets = {
  top: {
   1: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
   2: [-1, 1, 0, 0, 1, 1, -1, 1, 1],
   3: [1, 1, 0, 0, 1, 1, 1, 1, 1],
   4: [1, 1, 0, 0, 1, -1, 1, 1, -1],
  },
- top0: {
-  1: [-1, 1, 0, 0, 1, -1, -1, 1, -1],
-  2: [-1, 1, 1, -1, 1, 0, 0, 1, 1],
-  3: [1, 1, 0, 0, 1, 1, 1, 1, 1],
-  4: [1, 1, 0, 0, 1, -1, 1, 1, -1],
- },
-
  bottom: {
   1: [0, -1, -1, -1, -1, 0, -1, -1, -1],
   2: [0, -1, -1, 1, -1, 0, 1, -1, -1],
@@ -99,7 +92,7 @@ const voxelLightChecks = {
 };
 
 export function CalculateVoxelLight(
- this: typeof VoxelHelper,
+ this: typeof ChunkProcessor,
  data: VoxelProcessData,
  tx: number,
  ty: number,
@@ -107,60 +100,60 @@ export function CalculateVoxelLight(
 ) {
  //top
  if (data.exposedFaces[0]) {
-  let l = this.getLight(tx, ty + 1, tz);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.top[4], 4);
+  let l = this.worldMatrix.getLight(tx, ty + 1, tz);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.top[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.top[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.top[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.top[4], 4);
   handleAdd(data, 0);
  }
 
  //bottom
  if (data.exposedFaces[1]) {
-  let l = this.getLight(tx, ty - 1, tz);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.bottom[4], 4);
+  let l = this.worldMatrix.getLight(tx, ty - 1, tz);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.bottom[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.bottom[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.bottom[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.bottom[4], 4);
   handleAdd(data, 1);
  }
 
  //east
  if (data.exposedFaces[2]) {
-  let l = this.getLight(tx + 1, ty, tz);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.east[4], 4);
+  let l = this.worldMatrix.getLight(tx + 1, ty, tz);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.east[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.east[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.east[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.east[4], 4);
   handleAdd(data, 2);
  }
 
  //west
  if (data.exposedFaces[3]) {
-  let l = this.getLight(tx - 1, ty, tz);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.west[4], 4);
+  let l = this.worldMatrix.getLight(tx - 1, ty, tz);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.west[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.west[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.west[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.west[4], 4);
   handleAdd(data, 3);
  }
 
  //south
  if (data.exposedFaces[4]) {
-  let l = this.getLight(tx, ty, tz - 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.south[4], 4);
+  let l = this.worldMatrix.getLight(tx, ty, tz - 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.south[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.south[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.south[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.south[4], 4);
   handleAdd(data, 4);
  }
  //north
  if (data.exposedFaces[5]) {
-  let l = this.getLight(tx, ty, tz + 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[1], 1);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[2], 2);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[3], 3);
-  this.voxellightMixCalc(l, tx, ty, tz, voxelLightChecks.north[4], 4);
+  let l = this.worldMatrix.getLight(tx, ty, tz + 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.north[1], 1);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.north[2], 2);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.north[3], 3);
+  this.voxellightMixCalc(l, tx, ty, tz, lightCheckSets.north[4], 4);
   handleAdd(data, 5);
  }
 }
@@ -169,7 +162,7 @@ const newValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 
 export function VoxelLightMixCalc(
- this: typeof VoxelHelper,
+ this: typeof ChunkProcessor,
  voxelLigtValue: number,
  x: number,
  y: number,
@@ -188,8 +181,8 @@ export function VoxelLightMixCalc(
  if (g == 0) zeroCheck.g++;
  if (b == 0) zeroCheck.b++;
 
- for (let i = 6; i > 0; i -= 3) {
-  const neighborLightValue = this.getLight(
+ for (let i = 0; i < 9; i += 3) {
+  const neighborLightValue = this.worldMatrix.getLight(
    checkSet[i] + x,
    checkSet[i + 1] + y,
    checkSet[i + 2] + z
@@ -208,7 +201,7 @@ export function VoxelLightMixCalc(
   if (nb == 0) zeroCheck.b++;
 
   if (!neighborLightValue) continue;
-  if(ns == 15) continue; 
+  if (ns == 15) continue;
 
   if (ns < s && s > 0) {
    s--;
@@ -265,7 +258,6 @@ export function VoxelLightMixCalc(
   totalZero = false;
   newValues[3] = b;
  }
-
 
  const returnValue = this.lightByte.setLightValues(newValues);
  vertexStates[vertex].totalZero = totalZero;

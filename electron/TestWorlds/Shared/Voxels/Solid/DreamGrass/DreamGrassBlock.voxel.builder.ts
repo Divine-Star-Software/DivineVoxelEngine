@@ -32,6 +32,6 @@ export const DreamGrassBlockVoxelBuilderThread: VoxelBuilderThreadObject = {
   }
   data.shapeTemplate.push(this.trueShapeId);
   data.shapeStateTemplate.push(0);
-  DVEB.voxelHelper.processVoxelLight(data, this.data);
+  DVEB.processor.processVoxelLight(data, this.data);
  },
 };

@@ -1,4 +1,5 @@
 import type { MatrixLoadedChunk, MatrixLoadedRegion } from "../Meta/Matrix/Matrix.types";
+import type { VoxelManager } from "Constructor/Voxels/VoxelManager";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 /**# World Matrix
  * ---
@@ -114,6 +115,37 @@ export declare const WorldMatrix: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     };
+    lightByte: {
+        _lightValues: number[];
+        getS(value: number): number;
+        getR(value: number): number;
+        getG(value: number): number;
+        getB(value: number): number;
+        setS(value: number, sl: number): number;
+        setR(value: number, sl: number): number;
+        setG(value: number, sl: number): number;
+        setB(value: number, sl: number): number;
+        hasRGBLight(sl: number): boolean;
+        decodeLightFromVoxelData(voxelData: number): number;
+        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        setLightValues(values: number[]): number;
+        getLightValues(value: number): number[];
+        isLessThanForRGBRemove(n1: number, n2: number): boolean;
+        isLessThanForRGBAdd(n1: number, n2: number): boolean;
+        isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+        getMinusOneForRGB(sl: number, nl: number): number;
+        removeRGBLight(sl: number): number;
+        getFullSunLight(sl: number): number;
+        isLessThanForSunAdd(n1: number, n2: number): boolean;
+        isLessThanForSunAddDown(n1: number, n2: number): boolean;
+        isLessThanForSunAddUp(n1: number, n2: number): boolean;
+        getSunLightForUnderVoxel(sl: number, nl: number): number;
+        getMinusOneForSun(sl: number, nl: number): number;
+        isLessThanForSunRemove(n1: number, sl: number): boolean;
+        isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+        sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+        removeSunLight(sl: number): number;
+    };
     updateDieTime: number;
     loadDieTime: number;
     regions: MatrixLoadedRegion;
@@ -123,7 +155,22 @@ export declare const WorldMatrix: {
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteRecord: Record<string, string[]>;
     regionVoxelPalettes: Record<string, Record<number, string>>;
+    voxelManager: {
+        voxelObjects: Record<string, import("../Meta/index").VoxelBuilderThreadObject>;
+        setShapeMap(shapeMap: Record<string, number>): void;
+        getVoxel(id: string): import("../Meta/index").VoxelBuilderThreadObject;
+        getVoxelData(id: string): import("../Meta/index").VoxelData;
+        registerVoxel(voxel: import("../Meta/index").VoxelBuilderThreadObject): void;
+        runVoxelHookForAll(hook: any): void;
+    } | null;
+    lightValueFunctions: {
+        r: (value: number) => number;
+        g: (value: number) => number;
+        b: (value: number) => number;
+        s: (value: number) => number;
+    };
     threadName: string;
+    setVoxelManager(voxelManager: typeof VoxelManager): void;
     syncChunkBounds(): void;
     /**# Await Chunk Load
      * ---
@@ -134,6 +181,7 @@ export declare const WorldMatrix: {
     __syncRegionData(x: number, y: number, z: number, palette: WorldRegionPalette): void;
     __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | string[];
+    getVoxelData(x: number, y: number, z: number): false | import("../Meta/index").VoxelData;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
     };
@@ -163,4 +211,9 @@ export declare const WorldMatrix: {
     setData(x: number, y: number, z: number, data: number): false | undefined;
     getData(x: number, y: number, z: number): any;
     getVoxelNumberID(x: number, y: number, z: number): number | false;
+    getLight(x: number, y: number, z: number): number;
+    setAir(x: number, y: number, z: number, lightValue: number): void;
+    setFullSun(x: number, y: number, z: number): void;
+    setLight(x: number, y: number, z: number, lightValue: number): void;
+    getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
 };

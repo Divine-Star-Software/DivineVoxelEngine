@@ -8,6 +8,7 @@ export async function InitWorker(DVEC, initData) {
     }
     const renderPort = await DVEC.UTIL.getWorkerPort(DVEC.environment);
     DVEC.renderComm.setPort(renderPort);
+    DVEC.worldMatrix.setVoxelManager(DVEC.voxelManager);
     DVEC.DVEB.$INIT();
     DVEC.DVEP.$INIT();
     DVEC.voxelManager.setShapeMap(DVEC.DVEB.shapeManager.shapeMap);

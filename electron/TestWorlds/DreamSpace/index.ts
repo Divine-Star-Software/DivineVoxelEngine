@@ -46,8 +46,7 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.0);
- DVER.renderManager.setSunLevel(0.5);
+ DVER.renderManager.setBaseLevel(0.8);
  player.createPlayerSharedArrays();
  player.createPlayer(scene, camera);
  (window as any).player = player;
@@ -55,7 +54,7 @@ const init = async () => {
   setInterval(() => {
    player.update();
   }, 10);
- }, 35_000);
+ }, 15_000);
 
  runRenderLoop(engine, scene, player.hitbox);
 };

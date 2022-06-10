@@ -6,7 +6,7 @@ export declare const Util: {
         failTimeOut?: number | undefined;
         onFail?: (() => any) | undefined;
     }) => Promise<boolean>;
-    getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+    getWorkerPort: (environment: "node" | "browser") => Promise<any>;
     getEnviorment(): "node" | "browser";
     getFlat3DArray(): {
         bounds: {

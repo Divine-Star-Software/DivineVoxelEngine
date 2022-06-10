@@ -14,15 +14,14 @@ import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
-import { TextureManager } from "./Textures/TextureManager.js";
+import { TextureManager } from "./Builder/Textures/TextureManager.js";
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
  __connectedToWorld: false,
- __queueStatesSet : false,
+ __queueStatesSet: false,
  _3dFlatArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
  UTIL: Util,
@@ -31,7 +30,7 @@ export const DVEC = {
  DVEB: DVEB,
  DVEP: DVEP,
 
- queues : QueuesManager,
+ queues: QueuesManager,
 
  worldMatrix: WorldMatrix,
  matrixHub: MatrixHub,
@@ -39,9 +38,7 @@ export const DVEC = {
  renderComm: RenderComm,
  worldComm: WorldComm,
 
- voxelManager : VoxelManager,
- voxelHelper : VoxelHelper,
- textureManager : TextureManager,
+ voxelManager: VoxelManager,
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
@@ -52,24 +49,19 @@ export const DVEC = {
 
  isReady() {
   return (
-    DVEC.__connectedToWorld &&
+   DVEC.__connectedToWorld &&
     DVEC.matrixHub.worldPort !== undefined &&
-  //  DVEC.voxelManager.shapMapIsSet() &&
-   DVEC.worldComm.port !== null &&
- //  DVEC.textureManager.isReady() &&
-   DVEC.__settingsHaveBeenSynced,
-   DVEC.textureManager.isReady()
+    DVEC.worldComm.port !== null &&
+    DVEC.__settingsHaveBeenSynced,
+   DVEB.textureManager.isReady()
   );
  },
 
-
  async $INIT(initData: DVECInitData) {
-    this.settings.setContext("DVEC");
-    await InitWorker(this, initData);
-   this.worldComm.sendMessage("ready", []);
-   },
-
-
+  this.settings.setContext("DVEC");
+  await InitWorker(this, initData);
+  this.worldComm.sendMessage("ready", []);
+ },
 };
 export type DivineVoxelEngineConstructor = typeof DVEC;
 

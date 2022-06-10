@@ -1,11 +1,18 @@
 //types
 import type { FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
+import type { VoxelData, VoxelProcessData } from "Meta/index.js";
 //objects
 import { Util } from "../../../Global/Util.helper.js";
-
+import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+//functions
+import {
+ CalculateVoxelLight,
+ VoxelLightMixCalc,
+} from "./Functions/CalculateVoxelLight.js";
+import { CalculateVoxelAO, voxelAOCalc } from "./Functions/CalculateVoxelAO.js";
 
 /**# Chunk Processor
  * ---
@@ -17,6 +24,12 @@ export const ChunkProcessor = {
  voxelByte: Util.getVoxelByte(),
  faceByte: Util.getFaceByte(),
  _3dArray: Util.getFlat3DArray(),
+ lightByte: Util.getLightByte(),
+ worldMatrix: WorldMatrix,
+ voxellightMixCalc: VoxelLightMixCalc,
+ calculdateVoxelLight: CalculateVoxelLight,
+ calculateVoxelAO: CalculateVoxelAO,
+ voxelAOCalc: voxelAOCalc,
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
@@ -118,7 +131,7 @@ export const ChunkProcessor = {
      let faceBit = 0;
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "top",
        voxelObject,
        x + chunkX,
@@ -135,7 +148,7 @@ export const ChunkProcessor = {
      }
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "bottom",
        voxelObject,
        x + chunkX,
@@ -152,7 +165,7 @@ export const ChunkProcessor = {
      }
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "east",
        voxelObject,
        x + chunkX + 1,
@@ -169,7 +182,7 @@ export const ChunkProcessor = {
      }
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "west",
        voxelObject,
        x + chunkX - 1,
@@ -186,7 +199,7 @@ export const ChunkProcessor = {
      }
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "south",
        voxelObject,
        x + chunkX,
@@ -203,7 +216,7 @@ export const ChunkProcessor = {
      }
 
      if (
-      DVEC.voxelHelper.voxelFaceCheck(
+      DVEB.voxelHelper.voxelFaceCheck(
        "north",
        voxelObject,
        x + chunkX,
@@ -240,7 +253,7 @@ export const ChunkProcessor = {
        y: y,
        z: z,
       },
-      DVEC as any
+      DVEB as any
      );
 
      baseTemplate.positionTemplate.push(x, y, z);
@@ -294,4 +307,37 @@ export const ChunkProcessor = {
   }
   return template;
  },
+
+ processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
+  if (
+   DVEC.settings.settings.lighting?.doRGBLight ||
+   DVEC.settings.settings.lighting?.doSunLight
+  ) {
+   this.calculateVoxelLight(data, voxel);
+  }
+  if (DVEC.settings.settings.lighting?.doAO) {
+   this.calculateVoxelAO(
+    data,
+    voxel,
+    data.chunkX + data.x,
+    data.chunkY + data.y,
+    data.chunkZ + data.z
+   );
+  }
+ },
+
+ calculateVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
+  if (
+   !DVEC.settings.settings.lighting?.doSunLight &&
+   !DVEC.settings.settings.lighting?.doRGBLight
+  )
+   return;
+  this.calculdateVoxelLight(
+   data,
+   data.chunkX + data.x,
+   data.chunkY + data.y,
+   data.chunkZ + data.z
+  );
+ },
+
 };

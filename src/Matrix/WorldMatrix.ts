@@ -4,6 +4,7 @@ import type {
  MatrixLoadedChunk,
  MatrixLoadedRegion,
 } from "../Meta/Matrix/Matrix.types";
+import type { VoxelManager } from "Constructor/Voxels/VoxelManager";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
@@ -16,6 +17,7 @@ export const WorldMatrix = {
  _3dArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
  voxelByte: Util.getVoxelByte(),
+ lightByte: Util.getLightByte(),
 
  //two minutes
  updateDieTime: 120000,
@@ -31,7 +33,28 @@ export const WorldMatrix = {
  globalVoxelPaletteRecord: <Record<string, string[]>>{},
  regionVoxelPalettes: <Record<string, Record<number, string>>>{},
 
+ voxelManager: <null | typeof VoxelManager>null,
+
+ lightValueFunctions: {
+  r: (value: number) => {
+   return WorldMatrix.lightByte.getR(value);
+  },
+  g: (value: number) => {
+   return WorldMatrix.lightByte.getG(value);
+  },
+  b: (value: number) => {
+   return WorldMatrix.lightByte.getB(value);
+  },
+  s: (value: number) => {
+   return WorldMatrix.lightByte.getS(value);
+  },
+ },
+
  threadName: "",
+
+ setVoxelManager(voxelManager: typeof VoxelManager) {
+  this.voxelManager = voxelManager;
+ },
 
  syncChunkBounds(): void {
   this.worldBounds.syncBoundsWithArrays();
@@ -104,6 +127,19 @@ export const WorldMatrix = {
   if (numericVoxelId == 0) return ["dve:air"];
   const paletteId = palette[numericVoxelId];
   return record[paletteId];
+ },
+
+ getVoxelData(x: number, y: number, z: number) {
+  if (!this.voxelManager) {
+   throw new Error(
+    `A voxel manager must be set in order for this function to work. `
+   );
+  }
+  const voxelCheck = this.getVoxel(x, y, z);
+  if (!voxelCheck || voxelCheck[0] == "dve:air") return false;
+  const voxelData = this.voxelManager.getVoxelData(voxelCheck[0]);
+  if (!voxelData) return false;
+  return voxelData;
  },
 
  _createRegion(x: number, y: number, z: number) {
@@ -258,5 +294,56 @@ export const WorldMatrix = {
   const rawVoxelData = this.getData(x, y, z);
   if (rawVoxelData < 0) return false;
   return this.voxelByte.getId(rawVoxelData);
+ },
+
+ getLight(x: number, y: number, z: number): number {
+  const rawVoxelData = this.getData(x, y, z);
+  if (rawVoxelData < 0) return 0;
+
+  if (rawVoxelData >= 0) {
+   const voxelId = this.voxelByte.getId(rawVoxelData);
+   if (voxelId == 0) {
+    return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+   } else {
+    const voxel = this.getVoxel(x, y, z);
+    if (!voxel) return -1;
+    if (!this.voxelManager) {
+     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+    } else {
+     const voxelData = this.voxelManager.getVoxel(voxel[0]);
+
+     if (voxelData.data.lightSource && voxelData.data.lightValue) {
+      return voxelData.data.lightValue;
+     }
+     if (voxelData.data.substance == "solid") {
+      return -1;
+     }
+     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+    }
+   }
+  }
+  return -1;
+ },
+
+ setAir(x: number, y: number, z: number, lightValue: number) {
+  let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
+  this.setData(x, y, z, data);
+ },
+
+ setFullSun(x: number, y: number, z: number) {
+  const value = this.getLight(x, y, z);
+  const newValue = this.lightByte.setS(0xf, value);
+  this.setLight(x, y, z, newValue);
+ },
+
+ setLight(x: number, y: number, z: number, lightValue: number) {
+  let data = this.getData(x, y, z);
+  if (data === -1) return;
+  data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
+  this.setData(x, y, z, data);
+ },
+
+ getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s") {
+  return this.lightValueFunctions[type](this.getLight(x, y, z));
  },
 };

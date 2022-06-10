@@ -19,7 +19,7 @@ DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
 await DVEW.$INIT({
     onReady: () => { },
 });
-const numChunks = 10;
+const numChunks = 5;
 let startX = -16 * numChunks;
 let startZ = -16 * numChunks;
 let endX = 16 * numChunks;

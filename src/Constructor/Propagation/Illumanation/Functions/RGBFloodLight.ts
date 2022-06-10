@@ -14,12 +14,12 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
 
-  const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+  const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForRGBAdd(n1, sl)) {
    this._RGBlightUpdateQue.push([x - 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x - 1,
     y,
     z,
@@ -28,10 +28,10 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
    DVEP.addToRebuildQue(x - 1, y, z, "all");
   }
 
-  const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+  const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForRGBAdd(n2, sl)) {
    this._RGBlightUpdateQue.push([x + 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x + 1,
     y,
     z,
@@ -40,10 +40,10 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
    DVEP.addToRebuildQue(x + 1, y, z, "all");
   }
 
-  const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+  const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForRGBAdd(n3, sl)) {
    this._RGBlightUpdateQue.push([x, y, z - 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z - 1,
@@ -52,10 +52,10 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
    DVEP.addToRebuildQue(x, y, z - 1, "all");
   }
 
-  const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+  const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForRGBAdd(n4, sl)) {
    this._RGBlightUpdateQue.push([x, y, z + 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z + 1,
@@ -64,10 +64,10 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
    DVEP.addToRebuildQue(x, y, z + 1, "all");
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForRGBAdd(n5, sl)) {
    this._RGBlightUpdateQue.push([x, y - 1, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y - 1,
     z,
@@ -76,10 +76,10 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
    DVEP.addToRebuildQue(x, y - 1, z, "all");
   }
 
-  const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+  const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForRGBAdd(n6, sl)) {
    this._RGBlightUpdateQue.push([x, y + 1, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y + 1,
     z,
@@ -128,9 +128,9 @@ export function runRGBFloodRemove(
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
 
-  const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+  const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   const n1HasRGB = this.lightByte.hasRGBLight(n1);
   if (n1HasRGB && this.lightByte.isLessThanForRGBRemove(n1, sl)) {
    this._RGBlightRemovalQue.push([x - 1, y, z]);
@@ -142,7 +142,7 @@ export function runRGBFloodRemove(
    }
   }
 
-  const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+  const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
   const n2HasRGB = this.lightByte.hasRGBLight(n2);
   if (n2HasRGB && this.lightByte.isLessThanForRGBRemove(n2, sl)) {
    this._RGBlightRemovalQue.push([x + 1, y, z]);
@@ -154,7 +154,7 @@ export function runRGBFloodRemove(
    }
   }
 
-  const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+  const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
   const n3HasRGB = this.lightByte.hasRGBLight(n3);
   if (n3HasRGB && this.lightByte.isLessThanForRGBRemove(n3, sl)) {
    this._RGBlightRemovalQue.push([x, y, z - 1]);
@@ -166,7 +166,7 @@ export function runRGBFloodRemove(
    }
   }
 
-  const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+  const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
   const n4HasRGB = this.lightByte.hasRGBLight(n4);
   if (n4HasRGB && this.lightByte.isLessThanForRGBRemove(n4, sl)) {
    this._RGBlightRemovalQue.push([x, y, z + 1]);
@@ -178,7 +178,7 @@ export function runRGBFloodRemove(
    }
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   const n5HasRGB = this.lightByte.hasRGBLight(n5);
   if (n5HasRGB && this.lightByte.isLessThanForRGBRemove(n5, sl)) {
    this._RGBlightRemovalQue.push([x, y - 1, z]);
@@ -190,7 +190,7 @@ export function runRGBFloodRemove(
    }
   }
 
-  const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+  const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
   const n6HasRGB = this.lightByte.hasRGBLight(n6);
   if (n6HasRGB && this.lightByte.isLessThanForRGBRemove(n6, sl)) {
    this._RGBlightRemovalQue.push([x, y + 1, z]);
@@ -202,12 +202,12 @@ export function runRGBFloodRemove(
    }
   }
   const nl = this.lightByte.removeRGBLight(sl);
-  DVEC.voxelHelper.setLight(x, y, z, nl);
+  DVEC.worldMatrix.setLight(x, y, z, nl);
   DVEP.addToRebuildQue(x, y, z, "all");
  }
 
  if (lightSource) {
-    DVEC.voxelHelper.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
+    DVEC.worldMatrix.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
   this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
  }
 

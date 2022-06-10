@@ -16,7 +16,7 @@ export const FloraMesh = {
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("flora", scene);
         mesh.isPickable = false;
-        mesh.checkCollisions = true;
+        mesh.checkCollisions = false;
         mesh.doNotSerialize = true;
         return mesh;
     },

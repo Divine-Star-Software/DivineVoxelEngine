@@ -1,6 +1,11 @@
 //objects
 import { Util } from "../../../Global/Util.helper.js";
+import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+//functions
+import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
+import { CalculateVoxelAO, voxelAOCalc } from "./Functions/CalculateVoxelAO.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -11,6 +16,12 @@ export const ChunkProcessor = {
     voxelByte: Util.getVoxelByte(),
     faceByte: Util.getFaceByte(),
     _3dArray: Util.getFlat3DArray(),
+    lightByte: Util.getLightByte(),
+    worldMatrix: WorldMatrix,
+    voxellightMixCalc: VoxelLightMixCalc,
+    calculdateVoxelLight: CalculateVoxelLight,
+    calculateVoxelAO: CalculateVoxelAO,
+    voxelAOCalc: voxelAOCalc,
     chunkTemplates: {},
     exposedFaces: [],
     faceStates: [],
@@ -97,7 +108,7 @@ export const ChunkProcessor = {
                         baseTemplate = template[voxelObject.data.substance];
                     }
                     let faceBit = 0;
-                    if (DVEC.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         this.exposedFaces[0] = 1;
                         this.faceStates[0] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("top", faceBit);
@@ -106,7 +117,7 @@ export const ChunkProcessor = {
                         this.exposedFaces[0] = 0;
                         this.faceStates[0] = -1;
                     }
-                    if (DVEC.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         this.exposedFaces[1] = 1;
                         this.faceStates[1] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("bottom", faceBit);
@@ -115,7 +126,7 @@ export const ChunkProcessor = {
                         this.exposedFaces[1] = 0;
                         this.faceStates[1] = -1;
                     }
-                    if (DVEC.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[2] = 1;
                         this.faceStates[2] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("east", faceBit);
@@ -124,7 +135,7 @@ export const ChunkProcessor = {
                         this.exposedFaces[2] = 0;
                         this.faceStates[2] = -1;
                     }
-                    if (DVEC.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[3] = 1;
                         this.faceStates[3] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("west", faceBit);
@@ -133,7 +144,7 @@ export const ChunkProcessor = {
                         this.exposedFaces[3] = 0;
                         this.faceStates[3] = -1;
                     }
-                    if (DVEC.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         this.exposedFaces[4] = 1;
                         this.faceStates[4] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("south", faceBit);
@@ -142,7 +153,7 @@ export const ChunkProcessor = {
                         this.exposedFaces[4] = 0;
                         this.faceStates[4] = -1;
                     }
-                    if (DVEC.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         this.exposedFaces[5] = 1;
                         this.faceStates[5] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("north", faceBit);
@@ -170,7 +181,7 @@ export const ChunkProcessor = {
                         x: x,
                         y: y,
                         z: z,
-                    }, DVEC);
+                    }, DVEB);
                     baseTemplate.positionTemplate.push(x, y, z);
                     if (this.exposedFaces[0]) {
                         faceBit = this.faceByte.setFaceRotateState("top", this.faceStates[0], faceBit);
@@ -195,5 +206,20 @@ export const ChunkProcessor = {
             }
         }
         return template;
+    },
+    processVoxelLight(data, voxel) {
+        if (DVEC.settings.settings.lighting?.doRGBLight ||
+            DVEC.settings.settings.lighting?.doSunLight) {
+            this.calculateVoxelLight(data, voxel);
+        }
+        if (DVEC.settings.settings.lighting?.doAO) {
+            this.calculateVoxelAO(data, voxel, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z);
+        }
+    },
+    calculateVoxelLight(data, voxel) {
+        if (!DVEC.settings.settings.lighting?.doSunLight &&
+            !DVEC.settings.settings.lighting?.doRGBLight)
+            return;
+        this.calculdateVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z);
     },
 };

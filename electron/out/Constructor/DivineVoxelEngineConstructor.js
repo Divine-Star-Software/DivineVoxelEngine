@@ -11,9 +11,7 @@ import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { VoxelHelper } from "./Voxels/VoxelHelper.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
-import { TextureManager } from "./Textures/TextureManager.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
@@ -31,8 +29,6 @@ export const DVEC = {
     renderComm: RenderComm,
     worldComm: WorldComm,
     voxelManager: VoxelManager,
-    voxelHelper: VoxelHelper,
-    textureManager: TextureManager,
     syncSettings(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
@@ -42,11 +38,9 @@ export const DVEC = {
     isReady() {
         return (DVEC.__connectedToWorld &&
             DVEC.matrixHub.worldPort !== undefined &&
-            //  DVEC.voxelManager.shapMapIsSet() &&
             DVEC.worldComm.port !== null &&
-            //  DVEC.textureManager.isReady() &&
             DVEC.__settingsHaveBeenSynced,
-            DVEC.textureManager.isReady());
+            DVEB.textureManager.isReady());
     },
     async $INIT(initData) {
         this.settings.setContext("DVEC");

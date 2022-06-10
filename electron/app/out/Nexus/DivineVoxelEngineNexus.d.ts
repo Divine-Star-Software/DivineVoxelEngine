@@ -1,7 +1,7 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __connectedToWorld: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -11,8 +11,8 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -275,9 +275,9 @@ export declare const DVEN: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
         settings: EngineSettingsData;
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;
@@ -473,6 +473,37 @@ export declare const DVEN: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         };
+        lightByte: {
+            _lightValues: number[];
+            getS(value: number): number;
+            getR(value: number): number;
+            getG(value: number): number;
+            getB(value: number): number;
+            setS(value: number, sl: number): number;
+            setR(value: number, sl: number): number;
+            setG(value: number, sl: number): number;
+            setB(value: number, sl: number): number;
+            hasRGBLight(sl: number): boolean;
+            decodeLightFromVoxelData(voxelData: number): number;
+            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            setLightValues(values: number[]): number;
+            getLightValues(value: number): number[];
+            isLessThanForRGBRemove(n1: number, n2: number): boolean;
+            isLessThanForRGBAdd(n1: number, n2: number): boolean;
+            isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+            getMinusOneForRGB(sl: number, nl: number): number;
+            removeRGBLight(sl: number): number;
+            getFullSunLight(sl: number): number;
+            isLessThanForSunAdd(n1: number, n2: number): boolean;
+            isLessThanForSunAddDown(n1: number, n2: number): boolean;
+            isLessThanForSunAddUp(n1: number, n2: number): boolean;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
+            isLessThanForSunRemove(n1: number, sl: number): boolean;
+            isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+            sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+            removeSunLight(sl: number): number;
+        };
         updateDieTime: number;
         loadDieTime: number;
         regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -482,13 +513,36 @@ export declare const DVEN: {
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
         regionVoxelPalettes: Record<string, Record<number, string>>;
+        voxelManager: {
+            voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+            setShapeMap(shapeMap: Record<string, number>): void;
+            getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+            getVoxelData(id: string): import("Meta/index.js").VoxelData;
+            registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+            runVoxelHookForAll(hook: any): void;
+        } | null;
+        lightValueFunctions: {
+            r: (value: number) => number;
+            g: (value: number) => number;
+            b: (value: number) => number;
+            s: (value: number) => number;
+        };
         threadName: string;
+        setVoxelManager(voxelManager: {
+            voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+            setShapeMap(shapeMap: Record<string, number>): void;
+            getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+            getVoxelData(id: string): import("Meta/index.js").VoxelData;
+            registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+            runVoxelHookForAll(hook: any): void;
+        }): void;
         syncChunkBounds(): void;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
         __syncRegionData(x: number, y: number, z: number, palette: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette): void;
         __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
         getVoxel(x: number, y: number, z: number): false | string[];
+        getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
         _createRegion(x: number, y: number, z: number): {
             chunks: {};
         };
@@ -510,6 +564,11 @@ export declare const DVEN: {
         setData(x: number, y: number, z: number, data: number): false | undefined;
         getData(x: number, y: number, z: number): any;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
+        getLight(x: number, y: number, z: number): number;
+        setAir(x: number, y: number, z: number, lightValue: number): void;
+        setFullSun(x: number, y: number, z: number): void;
+        setLight(x: number, y: number, z: number, lightValue: number): void;
+        getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
     };
     matrixHub: {
         messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;

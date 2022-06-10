@@ -101,7 +101,7 @@ export const LightDebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
   const trueY = data.chunkY + data.y;
   const trueZ = data.chunkZ + data.z;
 
-  const light = DVEB.voxelHelper.getLightValue(
+  const light = DVEB.processor.worldMatrix.getLightValue(
    trueX,
    trueY + 1,
    trueZ,
@@ -129,6 +129,6 @@ export const LightDebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
   }
   data.shapeTemplate.push(this.trueShapeId);
   data.shapeStateTemplate.push(0);
-  DVEB.voxelHelper.processVoxelLight(data, this.data);
+  DVEB.processor.processVoxelLight(data, this.data);
  },
 };

@@ -1,3 +1,4 @@
+import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
 import { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
 
 /**# Voxel Substance Type
@@ -79,9 +80,9 @@ export type VoxelBuilderThreadObject = {
  trueShapeId: number;
  hooks: Record<
   VoxelBuilderThreadHooks,
-  (DVEB: DivineVoxelEngineConstructor) => any
+  (DVEB: DivineVoxelEngineBuilder) => any
  >;
- process(data: VoxelProcessData, DVEB: DivineVoxelEngineConstructor): void;
+ process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };
 
 export type VoxelWorldThreadObject = {

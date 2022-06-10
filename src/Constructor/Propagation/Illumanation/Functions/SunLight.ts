@@ -20,9 +20,9 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
 
-  const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+  const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > 0 && this.lightByte.isLessThanForSunRemove(n1, sl)) {
    this._sunLightRemoveQue.push([x - 1, y, z]);
   } else {
@@ -33,7 +33,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+  const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
   if (n2 > 0 && this.lightByte.isLessThanForSunRemove(n2, sl)) {
    this._sunLightRemoveQue.push([x + 1, y, z]);
   } else {
@@ -44,7 +44,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+  const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
   if (n3 > 0 && this.lightByte.isLessThanForSunRemove(n3, sl)) {
    this._sunLightRemoveQue.push([x, y, z - 1]);
   } else {
@@ -55,7 +55,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+  const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
   if (n4 > 0 && this.lightByte.isLessThanForSunRemove(n4, sl)) {
    this._sunLightRemoveQue.push([x, y, z + 1]);
   } else {
@@ -66,7 +66,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   if (n5 > 0 && this.lightByte.sunLightCompareForDownSunRemove(n5, sl)) {
    this._sunLightRemoveQue.push([x, y - 1, z]);
   } else {
@@ -77,7 +77,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+  const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
   if (n6 > 0 && this.lightByte.isLessThanForSunRemove(n6, sl)) {
    this._sunLightRemoveQue.push([x, y + 1, z]);
   } else {
@@ -87,7 +87,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
     }
    }
   }
-  DVEC.voxelHelper.setLight(x, y, z, this.lightByte.removeSunLight(sl));
+  DVEC.worldMatrix.setLight(x, y, z, this.lightByte.removeSunLight(sl));
  }
  this.runSunLightUpdate();
 }
@@ -101,14 +101,14 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
   const sunLightLevel = this.lightByte.getS(sl);
   if (sunLightLevel == 0) continue;
 
-  const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+  const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
    this._sunLightUpdateQue.push([x - 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x - 1,
     y,
     z,
@@ -116,10 +116,10 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    );
   }
 
-  const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+  const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
   if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
    this._sunLightUpdateQue.push([x + 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x + 1,
     y,
     z,
@@ -127,10 +127,10 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    );
   }
 
-  const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+  const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
   if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
    this._sunLightUpdateQue.push([x, y, z - 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z - 1,
@@ -138,10 +138,10 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    );
   }
 
-  const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+  const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
   if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
    this._sunLightUpdateQue.push([x, y, z + 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z + 1,
@@ -149,12 +149,12 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    );
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
    const voxelData = DVEC.worldMatrix.getVoxel(x, y - 1, z);
    if (!voxelData || voxelData[0] == "dve:air") {
     this._sunLightUpdateQue.push([x, y - 1, z]);
-    DVEC.voxelHelper.setLight(
+    DVEC.worldMatrix.setLight(
      x,
      y - 1,
      z,
@@ -164,7 +164,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
     const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
     if (voxel.substance == "flora" || voxel.substance == "fluid") {
      this._sunLightUpdateQue.push([x, y - 1, z]);
-     DVEC.voxelHelper.setLight(
+     DVEC.worldMatrix.setLight(
       x,
       y - 1,
       z,
@@ -174,10 +174,10 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+  const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForSunAddUp(n6, sl)) {
    this._sunLightUpdateQue.push([x, y + 1, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y + 1,
     z,
@@ -207,7 +207,7 @@ export function PopulateWorldColumnWithSunLight(
    let iy = maxY;
    let worldY = DVEC.worldBounds.bounds.MaxY;
    while (iy <= worldY) {
-    DVEC.voxelHelper.setFullSun(ix, iy, iz);
+    DVEC.worldMatrix.setFullSun(ix, iy, iz);
     iy++;
    }
   }
@@ -220,7 +220,7 @@ export function SunLightAboveCheck(
  y: number,
  z: number
 ) {
- const nl = DVEC.voxelHelper.getLight(x, y + 1, z);
+ const nl = DVEC.worldMatrix.getLight(x, y + 1, z);
  const sunLevel = this.lightByte.getS(nl);
  if (sunLevel != 0xf || nl == -1) {
   const voxelData = DVEC.worldMatrix.getVoxel(x, y, z);
@@ -254,7 +254,7 @@ export function RunSunLightFloodDown(
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
   const sunLightLevel = this.lightByte.getS(sl);
   this._visitSunMap[`${x}-${y}-${z}`] = true;
   if (sunLightLevel == 0) continue;
@@ -280,12 +280,12 @@ export function RunSunLightFloodDown(
    floodOutQueue.push([x, y, z]);
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
    const voxelData = DVEC.worldMatrix.getVoxel(x, y - 1, z);
    if (!voxelData || voxelData[0] == "dve:air") {
     this._sunLightFloodDownQue.push([x, y - 1, z]);
-    DVEC.voxelHelper.setLight(
+    DVEC.worldMatrix.setLight(
      x,
      y - 1,
      z,
@@ -295,7 +295,7 @@ export function RunSunLightFloodDown(
     const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
     if (voxel.substance == "flora" || voxel.substance == "fluid") {
      this._sunLightFloodDownQue.push([x, y - 1, z]);
-     DVEC.voxelHelper.setLight(
+     DVEC.worldMatrix.setLight(
       x,
       y - 1,
       z,
@@ -321,13 +321,13 @@ export function RunSunLightFloodOut(
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  const sl = DVEC.voxelHelper.getLight(x, y, z);
+  const sl = DVEC.worldMatrix.getLight(x, y, z);
 
-  const n1 = DVEC.voxelHelper.getLight(x - 1, y, z);
+  const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
 
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
    queue.push([x - 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x - 1,
     y,
     z,
@@ -335,11 +335,11 @@ export function RunSunLightFloodOut(
    );
   }
 
-  const n2 = DVEC.voxelHelper.getLight(x + 1, y, z);
+  const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
 
   if (n2 > -1 && this.lightByte.isLessThanForSunAdd(n2, sl)) {
    queue.push([x + 1, y, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x + 1,
     y,
     z,
@@ -347,11 +347,11 @@ export function RunSunLightFloodOut(
    );
   }
 
-  const n3 = DVEC.voxelHelper.getLight(x, y, z - 1);
+  const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
 
   if (n3 > -1 && this.lightByte.isLessThanForSunAdd(n3, sl)) {
    queue.push([x, y, z - 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z - 1,
@@ -359,11 +359,11 @@ export function RunSunLightFloodOut(
    );
   }
 
-  const n4 = DVEC.voxelHelper.getLight(x, y, z + 1);
+  const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
 
   if (n4 > -1 && this.lightByte.isLessThanForSunAdd(n4, sl)) {
    queue.push([x, y, z + 1]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y,
     z + 1,
@@ -371,12 +371,12 @@ export function RunSunLightFloodOut(
    );
   }
 
-  const n5 = DVEC.voxelHelper.getLight(x, y - 1, z);
+  const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
   if (n5 > -1 && this.lightByte.isLessThanForSunAddDown(n5, sl)) {
    const voxelData = DVEC.worldMatrix.getVoxel(x, y - 1, z);
    if (!voxelData || voxelData[0] == "dve:air") {
     queue.push([x, y - 1, z]);
-    DVEC.voxelHelper.setLight(
+    DVEC.worldMatrix.setLight(
      x,
      y - 1,
      z,
@@ -386,7 +386,7 @@ export function RunSunLightFloodOut(
     const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
     if (voxel.substance == "flora" || voxel.substance == "fluid") {
      queue.push([x, y - 1, z]);
-     DVEC.voxelHelper.setLight(
+     DVEC.worldMatrix.setLight(
       x,
       y - 1,
       z,
@@ -396,10 +396,10 @@ export function RunSunLightFloodOut(
    }
   }
 
-  const n6 = DVEC.voxelHelper.getLight(x, y + 1, z);
+  const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
   if (n6 > -1 && this.lightByte.isLessThanForSunAddUp(n6, sl)) {
    queue.push([x, y + 1, z]);
-   DVEC.voxelHelper.setLight(
+   DVEC.worldMatrix.setLight(
     x,
     y + 1,
     z,

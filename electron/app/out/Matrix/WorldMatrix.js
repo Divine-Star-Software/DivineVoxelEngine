@@ -8,6 +8,7 @@ export const WorldMatrix = {
     _3dArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
     voxelByte: Util.getVoxelByte(),
+    lightByte: Util.getLightByte(),
     //two minutes
     updateDieTime: 120000,
     loadDieTime: 10000,
@@ -18,7 +19,25 @@ export const WorldMatrix = {
     globalVoxelPalette: {},
     globalVoxelPaletteRecord: {},
     regionVoxelPalettes: {},
+    voxelManager: null,
+    lightValueFunctions: {
+        r: (value) => {
+            return WorldMatrix.lightByte.getR(value);
+        },
+        g: (value) => {
+            return WorldMatrix.lightByte.getG(value);
+        },
+        b: (value) => {
+            return WorldMatrix.lightByte.getB(value);
+        },
+        s: (value) => {
+            return WorldMatrix.lightByte.getS(value);
+        },
+    },
     threadName: "",
+    setVoxelManager(voxelManager) {
+        this.voxelManager = voxelManager;
+    },
     syncChunkBounds() {
         this.worldBounds.syncBoundsWithArrays();
     },
@@ -75,6 +94,18 @@ export const WorldMatrix = {
             return ["dve:air"];
         const paletteId = palette[numericVoxelId];
         return record[paletteId];
+    },
+    getVoxelData(x, y, z) {
+        if (!this.voxelManager) {
+            throw new Error(`A voxel manager must be set in order for this function to work. `);
+        }
+        const voxelCheck = this.getVoxel(x, y, z);
+        if (!voxelCheck || voxelCheck[0] == "dve:air")
+            return false;
+        const voxelData = this.voxelManager.getVoxelData(voxelCheck[0]);
+        if (!voxelData)
+            return false;
+        return voxelData;
     },
     _createRegion(x, y, z) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
@@ -205,5 +236,54 @@ export const WorldMatrix = {
         if (rawVoxelData < 0)
             return false;
         return this.voxelByte.getId(rawVoxelData);
+    },
+    getLight(x, y, z) {
+        const rawVoxelData = this.getData(x, y, z);
+        if (rawVoxelData < 0)
+            return 0;
+        if (rawVoxelData >= 0) {
+            const voxelId = this.voxelByte.getId(rawVoxelData);
+            if (voxelId == 0) {
+                return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+            }
+            else {
+                const voxel = this.getVoxel(x, y, z);
+                if (!voxel)
+                    return -1;
+                if (!this.voxelManager) {
+                    return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+                }
+                else {
+                    const voxelData = this.voxelManager.getVoxel(voxel[0]);
+                    if (voxelData.data.lightSource && voxelData.data.lightValue) {
+                        return voxelData.data.lightValue;
+                    }
+                    if (voxelData.data.substance == "solid") {
+                        return -1;
+                    }
+                    return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+                }
+            }
+        }
+        return -1;
+    },
+    setAir(x, y, z, lightValue) {
+        let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
+        this.setData(x, y, z, data);
+    },
+    setFullSun(x, y, z) {
+        const value = this.getLight(x, y, z);
+        const newValue = this.lightByte.setS(0xf, value);
+        this.setLight(x, y, z, newValue);
+    },
+    setLight(x, y, z, lightValue) {
+        let data = this.getData(x, y, z);
+        if (data === -1)
+            return;
+        data = this.lightByte.encodeLightIntoVoxelData(data, lightValue);
+        this.setData(x, y, z, data);
+    },
+    getLightValue(x, y, z, type) {
+        return this.lightValueFunctions[type](this.getLight(x, y, z));
     },
 };

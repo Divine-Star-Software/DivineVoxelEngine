@@ -3,9 +3,10 @@ import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
-import { TextureManager } from "../Textures/TextureManager.js";
+import { TextureManager } from "./Textures/TextureManager.js";
 import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
 import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
+import { VoxelHelper } from "./Processor/VoxelHelper.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
 export const DVEB = {
@@ -14,7 +15,8 @@ export const DVEB = {
     shapeHelper: ShapeHelper,
     shapeBuilder: ShapeBuilder,
     chunkMesher: ChunkMeshBuilder,
-    chunkProccesor: ChunkProcessor,
+    processor: ChunkProcessor,
+    voxelHelper: VoxelHelper,
     async $INIT() {
         InitBuilder(this);
     },
@@ -28,7 +30,7 @@ export const DVEB = {
                 return;
             }
         }
-        const template = this.chunkProccesor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
+        const template = this.processor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ);
         this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template);
         return true;
     },

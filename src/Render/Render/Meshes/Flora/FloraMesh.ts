@@ -28,7 +28,7 @@ export const FloraMesh: VoxelMeshInterface = {
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("flora", scene);
   mesh.isPickable = false;
-  mesh.checkCollisions = true;
+  mesh.checkCollisions = false;
   mesh.doNotSerialize = true;
   return mesh;
  },
