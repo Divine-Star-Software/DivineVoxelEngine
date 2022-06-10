@@ -187,7 +187,7 @@ export const WorldGen = {
             }
         }
     },
-    generateChunkNormal(chunkX, chunkZ) {
+    generateWorldColumn(chunkX, chunkZ) {
         let toss = Math.random();
         let maxY = 256;
         let spiked = false;

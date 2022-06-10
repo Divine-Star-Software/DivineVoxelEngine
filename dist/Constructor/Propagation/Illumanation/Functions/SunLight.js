@@ -156,10 +156,8 @@ export function PopulateWorldColumnWithSunLight(x, z, maxY) {
 }
 export function SunLightAboveCheck(x, y, z) {
     const nl = DVEC.voxelHelper.getLight(x, y + 1, z);
-    if (nl == -1)
-        return false;
     const sunLevel = this.lightByte.getS(nl);
-    if (sunLevel != 0xf) {
+    if (sunLevel != 0xf || nl == -1) {
         const voxelData = DVEC.worldMatrix.getVoxel(x, y, z);
         if (!voxelData) {
             return false;
@@ -169,10 +167,7 @@ export function SunLightAboveCheck(x, y, z) {
         }
         else {
             const voxel = DVEC.voxelManager.getVoxel(voxelData[0]).data;
-            if (voxel.substance == "solid") {
-                return false;
-            }
-            if (voxel.substance == "flora" || voxel.substance == "fluid") {
+            if (voxel.substance != "magma") {
                 return true;
             }
         }

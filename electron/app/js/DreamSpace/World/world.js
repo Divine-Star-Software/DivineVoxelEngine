@@ -24,11 +24,14 @@ let startX = -16 * numChunks;
 let startZ = -16 * numChunks;
 let endX = 16 * numChunks;
 let endZ = 16 * numChunks;
+const t1 = performance.now();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        WorldGen.generateChunkNormal(x, z);
+        WorldGen.generateWorldColumn(x, z);
     }
 }
+const t2 = performance.now();
+console.log(t2 - t1);
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         for (let y = 0; y < 8; y++) {

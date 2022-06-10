@@ -31,7 +31,8 @@ for (let x = startX; x < endX; x += 16) {
         DVEW.buildChunk(x, 0, z);
     }
 }
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 6, z);
+await DVEW.worldData.requestVoxelBeRemoved(x, 10, z);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 11, z);
 setTimeout(() => {
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {

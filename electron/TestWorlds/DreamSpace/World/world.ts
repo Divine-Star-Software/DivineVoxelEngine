@@ -7,7 +7,7 @@ RegisterVoxels(DVEW);
 
 const playerWatcher = new PlayerWatcher(DVEW);
 
-DVEW.renderComm.listenForMessage("voxel-add",async (data, event) => {
+DVEW.renderComm.listenForMessage("voxel-add", async (data, event) => {
  await DVEW.worldData.requestVoxelAdd(
   "dve:dreamstone",
   "default",
@@ -17,9 +17,9 @@ DVEW.renderComm.listenForMessage("voxel-add",async (data, event) => {
  );
  //DVEW.runChunkRebuildQue();
 });
-DVEW.renderComm.listenForMessage("voxel-remove",async (data, event) => {
-await DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
-// DVEW.runChunkRebuildQue();
+DVEW.renderComm.listenForMessage("voxel-remove", async (data, event) => {
+ await DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
+ // DVEW.runChunkRebuildQue();
 });
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
  playerWatcher.setPlayerSharedArrays(data);
@@ -36,11 +36,14 @@ let startZ = -16 * numChunks;
 let endX = 16 * numChunks;
 let endZ = 16 * numChunks;
 
+const t1 = performance.now();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
-    WorldGen.generateChunkNormal(x, z);
+  WorldGen.generateWorldColumn(x, z);
  }
 }
+const t2 = performance.now();
+console.log(t2 - t1);
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {

@@ -434,7 +434,7 @@ export const WorldGen = {
   }
  },
 
- generateChunkNormal(chunkX: number, chunkZ: number) {
+ generateWorldColumn(chunkX: number, chunkZ: number) {
   let toss = Math.random();
 
   let maxY = 256;
