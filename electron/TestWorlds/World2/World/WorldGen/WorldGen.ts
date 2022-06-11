@@ -58,7 +58,7 @@ export const WorldGen = {
        DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, topY, z);
        let flip2 = Math.random();
        if (flip2 < 0.01) {
-        DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, topY + 1, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 1, z);
        }
        continue;
       }

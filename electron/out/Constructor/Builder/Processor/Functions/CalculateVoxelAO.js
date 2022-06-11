@@ -122,7 +122,7 @@ export function voxelAOCalc(voxelData, tx, ty, tz, checkSet, vertex) {
                 continue;
             }
         }
-        value *= 0.75;
+        value *= 0.65;
     }
     vertexStates[vertex].value = value;
 }

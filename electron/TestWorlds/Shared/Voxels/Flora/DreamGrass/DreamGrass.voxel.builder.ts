@@ -17,6 +17,6 @@ export const DreamGrassVoxelBuilderThread: VoxelBuilderThreadObject = {
   );
   data.aoTemplate.push(1, 1);
   data.lightTemplate.push(lightValue, lightValue);
- //data.lightTemplate.push(0xf, 0xf);
+  //data.lightTemplate.push(0xf, 0xf);
  },
 };

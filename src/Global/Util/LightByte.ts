@@ -35,6 +35,10 @@
   setB(value: number, sl: number) {
    return (sl & ~(0xf << 12)) | (value << 12);
   },
+
+  removeS(sl:number) {
+    return this.setS(0,sl); 
+  },
  
   hasRGBLight(sl: number) {
    if (sl < 0) return false;

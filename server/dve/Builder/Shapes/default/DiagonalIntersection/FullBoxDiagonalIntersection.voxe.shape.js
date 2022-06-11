@@ -5,12 +5,12 @@ const shapeDimensions = {
     height: 0.5,
 };
 const processFace = (data) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
+    const uv = data.unTemplate[data.template.uvTemplateIndex];
     data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     DVEB.shapeHelper.calculateAOColorFromValue(data.AOColors, data.aoTemplate[data.aoIndex]);
     DVEB.shapeHelper.calculateLightColorFromValue(data.RGBLightColors, data.sunLightColors, data.lightTemplate[data.lightIndex]);
     data.indicieIndex += 4;
-    data.uvTemplateIndex += 1;
+    data.template.uvTemplateIndex += 1;
     data.lightIndex += 1;
     data.colorIndex += 1;
     data.aoIndex += 1;

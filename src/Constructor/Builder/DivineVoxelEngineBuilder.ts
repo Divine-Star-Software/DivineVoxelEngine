@@ -1,15 +1,15 @@
+import { type EngineSettingsData } from "Meta/index.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
-import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
+import { Processor } from "./Processor/Processor.js";
 import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
-
 
 export const DVEB = {
  textureManager: TextureManager,
@@ -17,11 +17,15 @@ export const DVEB = {
  shapeHelper: ShapeHelper,
  shapeBuilder: ShapeBuilder,
  chunkMesher: ChunkMeshBuilder,
- processor: ChunkProcessor,
- voxelHelper : VoxelHelper,
+ processor: Processor,
+ voxelHelper: VoxelHelper,
 
  async $INIT() {
   InitBuilder(this);
+ },
+
+ syncSettings(settings: EngineSettingsData) {
+  this.processor.syncSettings(settings);
  },
 
  async buildChunk(chunkX: number, chunkY: number, chunkZ: number) {

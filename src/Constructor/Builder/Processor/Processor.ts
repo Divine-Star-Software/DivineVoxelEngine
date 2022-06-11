@@ -1,7 +1,11 @@
 //types
 import type { FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
-import type { VoxelData, VoxelProcessData } from "Meta/index.js";
+import type {
+ EngineSettingsData,
+ VoxelData,
+ VoxelProcessData,
+} from "Meta/index.js";
 //objects
 import { Util } from "../../../Global/Util.helper.js";
 import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
@@ -9,30 +13,50 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 //functions
 import {
- CalculateVoxelLight,
- VoxelLightMixCalc,
+ CalculateVoxelLightN,
+ VoxelLightMixCalcN,
 } from "./Functions/CalculateVoxelLight.js";
-import { CalculateVoxelAO, voxelAOCalc } from "./Functions/CalculateVoxelAO.js";
 
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
  * to build chunk meshes.
  */
-export const ChunkProcessor = {
+export const Processor = {
  heightByte: Util.getHeightByte(),
  voxelByte: Util.getVoxelByte(),
  faceByte: Util.getFaceByte(),
  _3dArray: Util.getFlat3DArray(),
  lightByte: Util.getLightByte(),
  worldMatrix: WorldMatrix,
- voxellightMixCalc: VoxelLightMixCalc,
- calculdateVoxelLight: CalculateVoxelLight,
- calculateVoxelAO: CalculateVoxelAO,
- voxelAOCalc: voxelAOCalc,
+ voxellightMixCalc: VoxelLightMixCalcN,
+ doVoxelLight: CalculateVoxelLightN,
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
+ voxelProcessData: <VoxelProcessData>{
+  voxelState: "",
+  voxelData: 0,
+  exposedFaces: [],
+  faceStates: [],
+  shapeTemplate: [],
+  shapeStateTemplate: [],
+  uvTemplate: [],
+  colorTemplate: [],
+  aoTemplate: [],
+  lightTemplate: [],
+  chunkX: 0,
+  chunkY: 0,
+  chunkZ: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+ },
+ settings: {
+  doAO: true,
+  doSun: true,
+  doRGB: true,
+ },
  getBaseTemplateNew(): FullChunkTemplate {
   return {
    solid: {
@@ -98,15 +122,12 @@ export const ChunkProcessor = {
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEC.worldBounds.chunkXSize;
   let maxZ = DVEC.worldBounds.chunkZSize;
-  // let maxY = DVEB.worldBounds.chunkYSize;
-  //  let minY = 0;
+
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
     let maxY =
      this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
-    // console.log(minY,maxY);
-
     for (let y = minY; y < maxY; y++) {
      const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(rawVoxelData) == 0) continue;
@@ -120,13 +141,6 @@ export const ChunkProcessor = {
 
      const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
      const voxelState = voxelCheck[1];
-
-     let baseTemplate;
-     if (voxelObject.data.substance == "transparent") {
-      baseTemplate = template["solid"];
-     } else {
-      baseTemplate = template[voxelObject.data.substance];
-     }
 
      let faceBit = 0;
 
@@ -234,6 +248,13 @@ export const ChunkProcessor = {
 
      if (faceBit == 0) continue;
 
+     let baseTemplate;
+     if (voxelObject.data.substance == "transparent") {
+      baseTemplate = template["solid"];
+     } else {
+      baseTemplate = template[voxelObject.data.substance];
+     }
+
      voxelObject.process(
       {
        voxelState: voxelState,
@@ -308,36 +329,40 @@ export const ChunkProcessor = {
   return template;
  },
 
- processVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
-  if (
-   DVEC.settings.settings.lighting?.doRGBLight ||
-   DVEC.settings.settings.lighting?.doSunLight
-  ) {
-   this.calculateVoxelLight(data, voxel);
-  }
-  if (DVEC.settings.settings.lighting?.doAO) {
-   this.calculateVoxelAO(
-    data,
-    voxel,
-    data.chunkX + data.x,
-    data.chunkY + data.y,
-    data.chunkZ + data.z
-   );
-  }
+ processVoxelLight(data: VoxelProcessData, ignoreAO = false): void {
+  this.doVoxelLight(
+   data,
+   data.chunkX + data.x,
+   data.chunkY + data.y,
+   data.chunkZ + data.z,
+   ignoreAO
+  );
  },
 
  calculateVoxelLight(data: VoxelProcessData, voxel: VoxelData): void {
-  if (
+  /*   if (
    !DVEC.settings.settings.lighting?.doSunLight &&
    !DVEC.settings.settings.lighting?.doRGBLight
   )
    return;
-  this.calculdateVoxelLight(
+  this.calculdateVoxelLightO(
    data,
    data.chunkX + data.x,
    data.chunkY + data.y,
    data.chunkZ + data.z
-  );
+  ); */
  },
 
+ syncSettings(settings: EngineSettingsData) {
+  const materials = settings.materials;
+  if (materials?.doAO) {
+   this.settings.doAO = true;
+  }
+  if (materials?.doRGBLight) {
+   this.settings.doRGB = true;
+  }
+  if (materials?.doSunLight) {
+   this.settings.doSun = true;
+  }
+ },
 };

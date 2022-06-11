@@ -259,6 +259,7 @@ export declare const DVEC: {
             setR(value: number, sl: number): number;
             setG(value: number, sl: number): number;
             setB(value: number, sl: number): number;
+            removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
@@ -510,6 +511,7 @@ export declare const DVEC: {
                 setR(value: number, sl: number): number;
                 setG(value: number, sl: number): number;
                 setB(value: number, sl: number): number;
+                removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
@@ -683,6 +685,7 @@ export declare const DVEC: {
                 setR(value: number, sl: number): number;
                 setG(value: number, sl: number): number;
                 setB(value: number, sl: number): number;
+                removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
@@ -824,6 +827,7 @@ export declare const DVEC: {
                     setR(value: number, sl: number): number;
                     setG(value: number, sl: number): number;
                     setB(value: number, sl: number): number;
+                    removeS(sl: number): number;
                     hasRGBLight(sl: number): boolean;
                     decodeLightFromVoxelData(voxelData: number): number;
                     encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
@@ -911,23 +915,29 @@ export declare const DVEC: {
                 setLight(x: number, y: number, z: number, lightValue: number): void;
                 getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
             };
-            voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
-            calculdateVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
-            calculateVoxelAO: typeof import("./Builder/Processor/Functions/CalculateVoxelAO.js").CalculateVoxelAO;
-            voxelAOCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelAO.js").voxelAOCalc;
+            voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalcN;
+            doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLightN;
             chunkTemplates: Record<number, Record<number, number[][]>>;
             exposedFaces: number[];
             faceStates: number[];
+            voxelProcessData: import("Meta/index.js").VoxelProcessData;
+            settings: {
+                doAO: boolean;
+                doSun: boolean;
+                doRGB: boolean;
+            };
             getBaseTemplateNew(): import("Meta/index.js").FullChunkTemplate;
             makeAllChunkTemplates(chunk: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number): import("Meta/index.js").FullChunkTemplate;
-            processVoxelLight(data: import("Meta/index.js").VoxelProcessData, voxel: import("Meta/index.js").VoxelData): void;
+            processVoxelLight(data: import("Meta/index.js").VoxelProcessData, ignoreAO?: boolean): void;
             calculateVoxelLight(data: import("Meta/index.js").VoxelProcessData, voxel: import("Meta/index.js").VoxelData): void;
+            syncSettings(settings: EngineSettingsData): void;
         };
         voxelHelper: {
             substanceRules: Record<string, boolean>;
             voxelFaceCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelBuilderThreadObject, x: number, y: number, z: number): boolean;
         };
         $INIT(): Promise<void>;
+        syncSettings(settings: EngineSettingsData): void;
         buildChunk(chunkX: number, chunkY: number, chunkZ: number): Promise<true | undefined>;
     };
     DVEP: {
@@ -942,6 +952,7 @@ export declare const DVEC: {
                 setR(value: number, sl: number): number;
                 setG(value: number, sl: number): number;
                 setB(value: number, sl: number): number;
+                removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
@@ -1128,6 +1139,7 @@ export declare const DVEC: {
             setR(value: number, sl: number): number;
             setG(value: number, sl: number): number;
             setB(value: number, sl: number): number;
+            removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;

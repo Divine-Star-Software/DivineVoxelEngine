@@ -15,7 +15,7 @@ await DVEW.$INIT({
  onReady: () => {},
 });
 
-const depth = 32;
+const depth = 16;
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;
@@ -33,13 +33,16 @@ const z = 0;
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 console.log("done");
 
+//-1 10 0 
+//0 10 -1
+
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   DVEW.buildChunk(x, 0, z);
  }
 }
 await DVEW.worldData.requestVoxelBeRemoved(x, 10, z);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 11, z);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x - 7, 20, z);
 setTimeout(() => {
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {

@@ -15,6 +15,13 @@ await DVER.$INIT({
         autoRGBLight: false,
         autoSunLight: false,
     },
+    materials: {
+        doAO: true,
+        doRGBLight: false,
+        doSunLight: false,
+        disableFloraShaderEffects: false,
+        disableFluidShaderEffects: false
+    },
     chunks: {
         chunkXPow2: 4,
         chunkZPow2: 4,

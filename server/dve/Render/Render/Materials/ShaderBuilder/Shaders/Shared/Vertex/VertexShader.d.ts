@@ -8,8 +8,9 @@ export declare const SharedVertexShader: {
     varyingNoAO: string;
     optionVars: string;
     optionVarsNoAO: string;
-    useTime: string;
+    useTime(passTime: boolean): string;
     setUVInMain: string;
+    passTime: string;
     doAO: string;
     doRGB: string;
     doSun: string;

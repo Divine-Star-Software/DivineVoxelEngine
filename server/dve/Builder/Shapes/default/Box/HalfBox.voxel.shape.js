@@ -5,7 +5,7 @@ const shapeDimensions = {
     height: 0.25,
 };
 const processDefaultFaceData = (data, halfUV = false, flip = false) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
+    const uv = data.unTemplate[data.template.uvTemplateIndex];
     /**
      * @todo Add to shape builder a way to auto add certain UV types and check for flips
      */
@@ -17,7 +17,7 @@ const processDefaultFaceData = (data, halfUV = false, flip = false) => {
     }
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-    data.uvTemplateIndex += 1;
+    data.template.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;
     data.aoIndex += 4;

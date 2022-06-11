@@ -12,9 +12,27 @@ export const WorldGen = {
      if (x == 7 && z == 7 && y == baseY + 10) {
       continue;
      }
+     if (x == 7 && y <= baseY + 15 && z != 7)  {
+      DVEW.worldData.paintVoxel(
+       "dve:dreamstonepillar",
+       "default",
+       x + chunkX,
+       y + chunkY,
+       z + chunkZ
+      );
+     }
+     if (x == 8 && y <= baseY + 15 && z == 10)  {
+        DVEW.worldData.paintVoxel(
+         "dve:dreamstonepillar",
+         "default",
+         x + chunkX,
+         y + chunkY,
+         z + chunkZ
+        );
+       }
      if (y <= baseY + 3 || y == baseY + 10) {
       DVEW.worldData.paintVoxel(
-       "dve:lightdebug",
+       "dve:dreamstonepillar",
        "default",
        x + chunkX,
        y + chunkY,

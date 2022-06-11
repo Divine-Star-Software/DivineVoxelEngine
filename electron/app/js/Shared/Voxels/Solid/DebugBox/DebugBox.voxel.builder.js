@@ -30,6 +30,6 @@ export const DebugBoxVoxelBuilderThread = {
         }
         data.shapeTemplate.push(this.trueShapeId);
         data.shapeStateTemplate.push(0);
-        DVEB.processor.processVoxelLight(data, this.data);
+        DVEB.processor.processVoxelLight(data);
     },
 };

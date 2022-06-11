@@ -28,6 +28,9 @@ export const LightByte = {
     setB(value, sl) {
         return (sl & ~(0xf << 12)) | (value << 12);
     },
+    removeS(sl) {
+        return this.setS(0, sl);
+    },
     hasRGBLight(sl) {
         if (sl < 0)
             return false;

@@ -4,7 +4,7 @@ import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
-import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
+import { Processor } from "./Processor/Processor.js";
 import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
 //functions
@@ -15,10 +15,13 @@ export const DVEB = {
     shapeHelper: ShapeHelper,
     shapeBuilder: ShapeBuilder,
     chunkMesher: ChunkMeshBuilder,
-    processor: ChunkProcessor,
+    processor: Processor,
     voxelHelper: VoxelHelper,
     async $INIT() {
         InitBuilder(this);
+    },
+    syncSettings(settings) {
+        this.processor.syncSettings(settings);
     },
     async buildChunk(chunkX, chunkY, chunkZ) {
         let chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);

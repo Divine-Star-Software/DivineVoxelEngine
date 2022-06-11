@@ -62,14 +62,28 @@ export const SharedVertexShader = {
   uniform float doSun;
   uniform float doColor;
   `,
- useTime: `
- uniform float time;
- `,
+
+ useTime(passTime: boolean) {
+  let timeUniform = `
+   uniform float time;
+   `;
+  if (passTime) {
+   timeUniform += `
+   varying float vTime;
+      `;
+  }
+
+  return timeUniform;
+ },
 
  setUVInMain: `
     animIndex = getUVFace(cuv3.z);
     vUV = cuv3;
     `,
+
+ passTime: `
+  vTime = time;
+  `,
 
  doAO: `
     if(doAO == 1.0){

@@ -21,7 +21,7 @@ export const ShapeHelper = {
     produceShapeReturnData(shapeData) {
         return {
             newIndicieIndex: shapeData.indicieIndex,
-            newUVTemplateIndex: shapeData.uvTemplateIndex,
+            newUVTemplateIndex: shapedata.template.uvTemplateIndex,
             newColorIndex: shapeData.colorIndex,
             newlightIndex: shapeData.lightIndex,
             newAOIndex: shapeData.aoIndex,

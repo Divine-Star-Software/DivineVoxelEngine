@@ -33,6 +33,7 @@ export const DVEC = {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
         this.__settingsHaveBeenSynced = true;
+        DVEB.syncSettings(data);
     },
     reStart() { },
     isReady() {

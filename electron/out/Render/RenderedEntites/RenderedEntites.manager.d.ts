@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { EntityTypes } from "Meta/Entity/Entity.types";
 import type { RenderedEntity, RenderedEntityData, RenderedEntityInterface } from "Meta/Entity/RenderedEntity.types";
 export declare const RenderedEntitesManager: {

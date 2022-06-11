@@ -149,6 +149,7 @@ export declare const Util: {
         setR(value: number, sl: number): number;
         setG(value: number, sl: number): number;
         setB(value: number, sl: number): number;
+        removeS(sl: number): number;
         hasRGBLight(sl: number): boolean;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;

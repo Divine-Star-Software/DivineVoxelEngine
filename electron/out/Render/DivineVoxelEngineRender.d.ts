@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -458,6 +459,7 @@ export declare const DVER: {
             setR(value: number, sl: number): number;
             setG(value: number, sl: number): number;
             setB(value: number, sl: number): number;
+            removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;

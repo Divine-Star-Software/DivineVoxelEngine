@@ -24,13 +24,15 @@ ${SharedVertexShader.attributes}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying}
 ${SharedVertexShader.optionVars}
-${SharedVertexShader.useTime}
+${ShaderNoiseFunctions.fluid}
+${SharedVertexShader.useTime(true)}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${animationFunction}
 ${CommonShader.getMainFunction(`
  ${floraShaders.setPosition}
  ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
  ${SharedVertexShader.doAO}
  ${SharedVertexShader.doRGB}
@@ -47,7 +49,7 @@ ${SharedVertexShader.attributesNoAO}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying}
 ${SharedVertexShader.optionVars}
-${SharedVertexShader.useTime}
+${SharedVertexShader.useTime(false)}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
@@ -139,8 +141,10 @@ ${fluidShaders.fragMain}
   ${SharedFragmentShader.getAO}
   ${SharedFragmentShader.getLight}
   ${SharedFragmentShader.doFog}
+  ${SharedFragmentShader.hsv2rgbSmooth}
+  ${SharedFragmentShader.useTime}
   ${CommonShader.getMainFunction(`
-  ${solidShaders.fragMain}
+  ${floraShaders.fragMain}
   `)}`;
     },
     buildMagmaFragmentShader() {

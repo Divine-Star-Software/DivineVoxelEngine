@@ -31,6 +31,6 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelBuilderThreadObject = {
   }
   data.shapeStateTemplate.push(0);
   data.shapeTemplate.push(this.trueShapeId);
-  DVEB.processor.calculateVoxelLight(data, this.data);
+  DVEB.processor.processVoxelLight(data, true);
  },
 };

@@ -5,7 +5,7 @@ const shapeDimensions = {
     height: 0.5,
 };
 const processDefaultFaceData = (data, flip) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
+    const uv = data.unTemplate[data.template.uvTemplateIndex];
     if (!flip) {
         data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
     }
@@ -13,7 +13,7 @@ const processDefaultFaceData = (data, flip) => {
         data.uvs.push(1, 0, uv, 1, 1, uv, 0, 1, uv, 0, 0, uv);
     }
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-    data.uvTemplateIndex += 1;
+    data.template.uvTemplateIndex += 1;
     data.lightIndex += 4;
     data.colorIndex += 4;
     data.aoIndex += 4;
