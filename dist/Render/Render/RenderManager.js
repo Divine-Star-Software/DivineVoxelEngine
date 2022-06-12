@@ -23,7 +23,14 @@ export const RenderManager = {
     floraMesh: FloraMesh,
     fluidMesh: FluidMesh,
     magmaMesh: MagmaMesh,
+    scene: null,
     reStart() { },
+    setScene(scene) {
+        this.scene = scene;
+    },
+    getScene() {
+        return this.scene;
+    },
     setSunLevel(level) {
         this.solidMaterial.setSunLightLevel(level);
         this.fluidMaterial.setSunLightLevel(level);

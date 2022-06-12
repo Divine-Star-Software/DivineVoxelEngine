@@ -1,4 +1,4 @@
-import { ConstructorToWorldMessages } from "../../../Shared/InterComms/ConstructorToWorld.js";
+import { ConstructorToWorldMessages } from "../../../Constants/InterComms/ConstructorToWorld.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const GetNewConstructorComm = (count, port) => {

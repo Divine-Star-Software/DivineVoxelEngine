@@ -1,13 +1,25 @@
 //types
-import type { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
+import type {
+ FullChunkTemplate,
+ VoxelSubstanceType,
+ VoxelTemplateSubstanceType,
+} from "Meta/index";
 //objects
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import { ConstructorToRenderMessages } from "../../../Shared/InterComms/ConstructorToRender.js";
-import { ConstructorToWorldMessages } from "../../../Shared/InterComms/ConstructorToWorld.js";
+import {
+ ConstructorToRenderMessages,
+ SetChunkDataIndexes,
+} from "../../../Constants/InterComms/ConstructorToRender.js";
+import { ConstructorToWorldMessages } from "../../../Constants/InterComms/ConstructorToWorld.js";
 
 export const ChunkMeshBuilder = {
- voxelBuildOrder: <VoxelSubstanceType[]>["solid", "flora", "fluid", "magma"],
+ voxelBuildOrder: <VoxelTemplateSubstanceType[]>[
+  "solid",
+  "flora",
+  "fluid",
+  "magma",
+ ],
  voxelTypeMap: {
   solid: 0,
   flora: 1,
@@ -29,6 +41,7 @@ export const ChunkMeshBuilder = {
    if (baseTemplate.positionTemplate.length == 0) continue;
 
    const positions: number[] = [];
+   const normals: number[] = [];
    const indices: number[] = [];
    const uvs: number[] = [];
    const AOColors: number[] = [];
@@ -59,6 +72,7 @@ export const ChunkMeshBuilder = {
     const shape = DVEB.shapeManager.getShape(shapeId);
     const newIndexes = shape.addToChunkMesh({
      positions: positions,
+     normals: normals,
      indices: indices,
      RGBLightColors: RGBLightColors,
      sunLightColors: sunLightColors,
@@ -90,6 +104,7 @@ export const ChunkMeshBuilder = {
    }
 
    const positionArray = new Float32Array(positions);
+   const normalsArray = new Float32Array(normals);
    const indiciesArray = new Int32Array(indices);
    const AOColorsArray = new Float32Array(AOColors);
    const RGBLightColorsArray = new Float32Array(RGBLightColors);
@@ -97,31 +112,38 @@ export const ChunkMeshBuilder = {
    const colorsArray = new Float32Array(colors);
    const uvArray = new Float32Array(uvs);
 
+   const message: any[] = [];
+   message[SetChunkDataIndexes.voxelSubstanceType - 1] =
+    this.voxelTypeMap[type];
+   message[SetChunkDataIndexes.chunkX - 1] = chunkX;
+   message[SetChunkDataIndexes.chunkY - 1] = chunkY;
+   message[SetChunkDataIndexes.chunkZ - 1] = chunkZ;
+   message[SetChunkDataIndexes.positionArray - 1] = positionArray.buffer;
+   message[SetChunkDataIndexes.normalsArray - 1] = normalsArray.buffer;
+   message[SetChunkDataIndexes.indiciesArray - 1] = indiciesArray.buffer;
+   message[SetChunkDataIndexes.AOColorsArray - 1] = AOColorsArray.buffer;
+   message[SetChunkDataIndexes.RGBLightColorsArray - 1] =
+    RGBLightColorsArray.buffer;
+   message[SetChunkDataIndexes.sunLightColorsArray - 1] =
+    sunLightColorsArray.buffer;
+   message[SetChunkDataIndexes.colorsArray - 1] = colorsArray.buffer;
+   message[SetChunkDataIndexes.uvArray - 1] = uvArray.buffer;
+
+   const transfers = [
+    positionArray.buffer,
+    normalsArray.buffer,
+    indiciesArray.buffer,
+    AOColorsArray.buffer,
+    RGBLightColorsArray.buffer,
+    sunLightColorsArray.buffer,
+    colorsArray.buffer,
+    uvArray.buffer,
+   ];
 
    DVEC.renderComm.sendMessage(
     ConstructorToRenderMessages.setChunk,
-    [
-     (this as any).voxelTypeMap[type],
-     chunkX,
-     chunkY,
-     chunkZ,
-     positionArray.buffer,
-     indiciesArray.buffer,
-     AOColorsArray.buffer,
-     RGBLightColorsArray.buffer,
-     sunLightColorsArray.buffer,
-     colorsArray.buffer,
-     uvArray.buffer,
-    ],
-    [
-     positionArray.buffer,
-     indiciesArray.buffer,
-     AOColorsArray.buffer,
-     RGBLightColorsArray.buffer,
-     sunLightColorsArray.buffer,
-     colorsArray.buffer,
-     uvArray.buffer,
-    ]
+    message,
+    transfers
    );
   }
   DVEC.worldComm.sendMessage(ConstructorToWorldMessages.chunkDoneBuilding, []);

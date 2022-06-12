@@ -5,6 +5,8 @@ export declare const QueuesManager: {
     _numRGBLightRemoves: number;
     _RGBLightRemoveQue: number[][];
     _RGBLightUpdateQue: number[][];
+    _SunLightRemoveQue: number[][];
+    _SunLightUpdateQue: number[][];
     _worldColumnSunLightPropMap: Record<string, {
         max: number;
         thread: number;
@@ -23,8 +25,20 @@ export declare const QueuesManager: {
     areAllSunLightUpdatesAtMaxYDone(): boolean;
     awaitAllSunLightUpdatesMaxYFlood(): Promise<boolean>;
     areAllSunLightUpdatesMaxYFloodDone(): boolean;
+    /**
+     * Sun Light
+     */
+    addToSunLightUpdateQue(x: number, y: number, z: number): void;
+    addToSunLightRemoveQue(x: number, y: number, z: number): void;
+    runSunLightUpdateQue(): void;
+    runSunLightRemoveQue(): void;
     awaitAllSunLightUpdates(): Promise<boolean>;
-    areAllSunLightUpdatesDone(): boolean;
+    awaitAllSunLightRemove(): Promise<boolean>;
+    areSunLightUpdatesAllDone(): boolean;
+    areSunLightRemovesAllDone(): boolean;
+    /**
+     * RGB Light
+     */
     addToRGBUpdateQue(x: number, y: number, z: number): void;
     addToRGBRemoveQue(x: number, y: number, z: number): void;
     runRGBUpdateQue(): void;
@@ -33,6 +47,9 @@ export declare const QueuesManager: {
     awaitAllRGBLightRemove(): Promise<boolean>;
     areRGBLightUpdatesAllDone(): boolean;
     areRGBLightRemovesAllDone(): boolean;
+    /**
+     * Chunks
+     */
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     runRebuildQue(): void;
     awaitAllChunksToBeBuilt(): Promise<boolean>;

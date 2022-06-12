@@ -18,11 +18,11 @@ export declare const ConstructorCommManager: {
     isReady(): boolean;
     __handleCount(): number;
     requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
-    runRGBFloodFillAt(x: number, y: number, z: number): number;
-    runRGBFloodRemoveAt(x: number, y: number, z: number): number;
+    runRGBLightUpdate(x: number, y: number, z: number): number;
+    runRGBUpdate(x: number, y: number, z: number): number;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
     runSunFillAtMaxY(x: number, y: number, maxY: number): number;
     runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
-    runSunFillAt(x: number, y: number, z: number): number;
-    runSunRemoveAt(x: number, y: number, z: number): number;
+    runSunLightUpdate(x: number, y: number, z: number): number;
+    runSunLightRemove(x: number, y: number, z: number): number;
 };

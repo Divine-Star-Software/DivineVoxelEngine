@@ -5,7 +5,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen.js";
 
 RegisterVoxels(DVEW);
-const depth = 64;
+const depth = 128;
 const fillWorldColumns = () => {
  let startX = -depth - 16;
  let startZ = -depth - 16;

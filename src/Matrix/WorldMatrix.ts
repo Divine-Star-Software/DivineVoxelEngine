@@ -125,6 +125,7 @@ export const WorldMatrix = {
   if (numericVoxelId === false) return false;
 
   if (numericVoxelId == 0) return ["dve:air"];
+  if (numericVoxelId == 1) return ["dve:barrier"];
   const paletteId = palette[numericVoxelId];
   return record[paletteId];
  },
@@ -136,7 +137,12 @@ export const WorldMatrix = {
    );
   }
   const voxelCheck = this.getVoxel(x, y, z);
-  if (!voxelCheck || voxelCheck[0] == "dve:air") return false;
+  if (!voxelCheck) {
+   return false;
+  }
+
+  if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
+   return false;
   const voxelData = this.voxelManager.getVoxelData(voxelCheck[0]);
   if (!voxelData) return false;
   return voxelData;
@@ -304,6 +310,9 @@ export const WorldMatrix = {
    const voxelId = this.voxelByte.getId(rawVoxelData);
    if (voxelId == 0) {
     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
+   }
+   if (voxelId == 1) {
+    return -1;
    } else {
     const voxel = this.getVoxel(x, y, z);
     if (!voxel) return -1;
@@ -345,5 +354,21 @@ export const WorldMatrix = {
 
  getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s") {
   return this.lightValueFunctions[type](this.getLight(x, y, z));
+ },
+
+ sameVoxel(
+  x: number,
+  y: number,
+  z: number,
+  cx: number,
+  cy: number,
+  cz: number
+ ) {
+  const v1 = this.getData(x, y, z);
+  const v2 = this.getData(cx, cy, cz);
+  if (v1 < 0 || v2 < 0) return false;
+  const v1ID = this.voxelByte.getId(v1);
+  const v2ID = this.voxelByte.getId(v2);
+  return v1ID == v2ID;
  },
 };

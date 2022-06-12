@@ -13,6 +13,11 @@ export const DreamStonePillarVoxelBuilderThread = {
          "side-bottom"
         );
        */
+        if (
+        //@ts-ignore
+        !DVEB.processor.worldMatrix.sameVoxel(data.x + data.chunkX, data.y + data.chunkY, data.z + data.chunkZ, data.x + data.chunkX, data.y + data.chunkY + 1, data.z + data.chunkZ)) {
+            sideUV = sideTopUV;
+        }
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topBottomUV);
             sideUV = sideTopUV;

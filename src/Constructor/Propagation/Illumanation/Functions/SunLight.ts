@@ -1,6 +1,6 @@
 import type { IlluminationManager } from "../IlluminationManager";
 import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
-import { DVEP } from "../../DivineVoxelEngineWorldPropagation.js";
+import { DVEP } from "../../DivineVoxelEnginePropagation.js";
 export function runSunLightRemoveAt(
  this: typeof IlluminationManager,
  x: number,
@@ -8,9 +8,14 @@ export function runSunLightRemoveAt(
  z: number
 ) {
  this._sunLightRemoveQue.push([x, y, z]);
- this.runSunLightRemove();
+ this.runSunLightRemove(x, y, z);
 }
-export function runSunLightRemove(this: typeof IlluminationManager) {
+export function runSunLightRemove(
+ this: typeof IlluminationManager,
+ x: number,
+ y: number,
+ z: number
+) {
  while (this._sunLightRemoveQue.length != 0) {
   const node = this._sunLightRemoveQue.shift();
   if (!node) {
@@ -21,7 +26,9 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
   const y = node[1];
   const z = node[2];
   const sl = DVEC.worldMatrix.getLight(x, y, z);
-
+  const sunLightLevel = this.lightByte.getS(sl);
+  if (sunLightLevel == 0) continue;
+  DVEP.addToRebuildQue(x, y, z, "all");
   const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > 0 && this.lightByte.isLessThanForSunRemove(n1, sl)) {
    this._sunLightRemoveQue.push([x - 1, y, z]);
@@ -89,6 +96,8 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
   }
   DVEC.worldMatrix.setLight(x, y, z, this.lightByte.removeSunLight(sl));
  }
+
+ DVEC.worldMatrix.setData(x, y, z, DVEC.UTIL.getVoxelByte().setId(1, 0));
  this.runSunLightUpdate();
 }
 
@@ -104,7 +113,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const sl = DVEC.worldMatrix.getLight(x, y, z);
   const sunLightLevel = this.lightByte.getS(sl);
   if (sunLightLevel == 0) continue;
-
+  DVEP.addToRebuildQue(x, y, z, "all");
   const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForSunAdd(n1, sl)) {
    this._sunLightUpdateQue.push([x - 1, y, z]);
@@ -256,7 +265,7 @@ export function RunSunLightFloodDown(
   const z = node[2];
   const sl = DVEC.worldMatrix.getLight(x, y, z);
   const sunLightLevel = this.lightByte.getS(sl);
-  this._visitSunMap[`${x}-${y}-${z}`] = true;
+  this._visitMap[`${x}-${y}-${z}`] = true;
   if (sunLightLevel == 0) continue;
 
   let add = false;

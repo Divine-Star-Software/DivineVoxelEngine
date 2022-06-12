@@ -282,8 +282,8 @@
    * @param sl - source light value
    */
   isLessThanForSunRemove(n1: number, sl: number) {
-   let s1 = (n1 & (0x0f << 0)) >> 0;
-   let s2 = (sl & (0x0f << 0)) >> 0;
+   let s1 = this.getS(n1);
+   let s2 = this.getS(sl);
    return s1 < s2;
   },
   /**# Is Greater Or Equal Than For Sun Remove
@@ -294,9 +294,9 @@
    * @param sl - source light value
    */
   isGreaterOrEqualThanForSunRemove(n1: number, sl: number) {
-   let s1 = (n1 & (0x0f << 0)) >> 0;
-   let s2 = (sl & (0x0f << 0)) >> 0;
-   return s1 >= s2;
+    let s1 =  this.getS(n1);
+    let s2 = this.getS(sl);
+   return s2 >= s1;
   },
   /**# Sun Light Compare For Down Sun Remove
    * ---
@@ -306,9 +306,9 @@
    * @param sl - source light value
    */
   sunLightCompareForDownSunRemove(n1: number, sl: number) {
-   let s2 = (sl & (0x0f << 0)) >> 0;
+   let s2 = this.getS(sl);
    if (s2 == 0b1111) return true;
-   let s1 = (n1 & (0x0f << 0)) >> 0;
+   let s1 = this.getS(n1);
    return s1 < s2;
   },
   /**# Remove Sun Light
@@ -317,6 +317,6 @@
    * @param sl - source light value
    */
   removeSunLight(sl: number) {
-   return (sl & ~(0xf << 0)) | (0 << 0);
+   return this.removeS(sl);
   },
  };

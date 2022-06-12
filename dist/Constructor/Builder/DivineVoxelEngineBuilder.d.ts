@@ -87,7 +87,7 @@ export declare const DVEB: {
         }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
     };
     chunkMesher: {
-        voxelBuildOrder: import("Meta/index.js").VoxelSubstanceType[];
+        voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
         voxelTypeMap: {
             solid: number;
             flora: number;
@@ -444,9 +444,10 @@ export declare const DVEB: {
             setFullSun(x: number, y: number, z: number): void;
             setLight(x: number, y: number, z: number, lightValue: number): void;
             getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
+            sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
         };
-        voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalcN;
-        doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLightN;
+        voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
+        doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
         chunkTemplates: Record<number, Record<number, number[][]>>;
         exposedFaces: number[];
         faceStates: number[];

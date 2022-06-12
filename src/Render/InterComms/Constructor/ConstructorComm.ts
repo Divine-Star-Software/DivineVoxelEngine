@@ -7,7 +7,7 @@ import type { VoxelSubstanceType } from "Meta/index.js";
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-import { ConstructorToRenderMessages } from "../../../Shared/InterComms/ConstructorToRender.js";
+import { ConstructorToRenderMessages } from "../../../Constants/InterComms/ConstructorToRender.js";
 
 const handleUpdate = (substance: VoxelSubstanceType, data: any) => {
  const chunkX = data[2];
@@ -38,13 +38,16 @@ const substanceFunctionMap = {
   handleUpdate("magma", data);
  },
 };
-export const GetNewConstructorComm = (count: number, port: InterCommPortTypes) => {
+export const GetNewConstructorComm = (
+ count: number,
+ port: InterCommPortTypes
+) => {
  const newComm: InterCommInterface = CreateInterComm(
   `render-constructor-${count}`,
   { ready: false }
  );
  newComm.messageFunctions[ConstructorToRenderMessages.setChunk] = (data) => {
-  const substance : 0 | 1 | 2 | 3  = data[1];
+  const substance: 0 | 1 | 2 | 3 = data[1];
   substanceFunctionMap[substance](data);
  };
  newComm.setPort(port);

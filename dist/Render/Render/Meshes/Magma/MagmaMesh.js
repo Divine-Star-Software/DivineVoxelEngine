@@ -1,23 +1,20 @@
-import { MagmaMaterial } from "../../Materials/Magma/MagmaMaterial.js";
 export const MagmaMesh = {
-    rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    async rebuildMeshGeometory(mesh, data) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
-        const calculatedNormals = [];
-        chunkVertexData.positions = positions;
-        chunkVertexData.indices = indicies;
-        chunkVertexData.normals = calculatedNormals;
-        BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+        chunkVertexData.positions = data.positionArray;
+        chunkVertexData.indices = data.indiciesArray;
+        chunkVertexData.normals = data.normalsArray;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("cuv3", uvs, false, 3);
-        //mesh.setVerticesData("aoColors", aoColors, false, 4);
-        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        mesh.setVerticesData("colors", colors, false, 4);
+        mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+        mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+        mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+        mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
+        return mesh;
     },
     createTemplateMesh(scene) {
-        const mesh = new BABYLON.Mesh("magma", scene);
+        const mesh = new BABYLON.Mesh("fluid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = false;
         mesh.checkCollisions = false;
@@ -25,19 +22,17 @@ export const MagmaMesh = {
         mesh.doNotSerialize = true;
         return mesh;
     },
-    createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    async createMeshGeometory(mesh, data) {
+        mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
-        const calculatedNormals = [];
-        BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-        chunkVertexData.positions = positions;
-        chunkVertexData.indices = indicies;
+        chunkVertexData.positions = data.positionArray;
+        chunkVertexData.indices = data.indiciesArray;
+        chunkVertexData.normals = data.normalsArray;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("cuv3", uvs, false, 3);
-        //mesh.setVerticesData("aoColors", aoColors, false, 4);
-        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        mesh.setVerticesData("colors", colors, false, 4);
-        mesh.material = MagmaMaterial.getMaterial();
+        mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+        mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+        mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+        mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
         return mesh;
     },

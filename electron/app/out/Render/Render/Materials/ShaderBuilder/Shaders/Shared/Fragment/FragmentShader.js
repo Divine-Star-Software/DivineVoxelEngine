@@ -17,7 +17,9 @@ export const SharedFragmentShader = {
     varying vec4 sunLColor;
     varying vec4 vColors;
     varying vec3 vNormal;
+    varying float vNColor;
     varying float animIndex;
+
     `,
     varsNoAO: `
     uniform sampler2DArray arrayTex;
@@ -26,6 +28,7 @@ export const SharedFragmentShader = {
     varying vec4 sunLColor;
     varying vec4 vColors;
     varying vec3 vNormal;
+    varying float vNColor;
     varying float animIndex;
     `,
     useTime: `
@@ -43,9 +46,8 @@ export const SharedFragmentShader = {
     `,
     getLight: `
     vec4 getLight(vec4 base) {
-     //   return base * ( ((rgbLColor * vDoRGB)  +  vec4(1,1,1,1)) + baseLevel );
-     //   return base * ( ((sunLColor * vDoSun)  * sunLightLevel) + baseLevel );
-      return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun  * sunLightLevel)) + baseLevel );
+
+      return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun  * sunLightLevel * vNColor)) + baseLevel) ;
     }
     `,
     doFog: `

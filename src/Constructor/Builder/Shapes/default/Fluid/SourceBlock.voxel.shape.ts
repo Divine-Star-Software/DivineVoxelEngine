@@ -2,7 +2,7 @@ import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
 import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
-} from "Meta/Builder/Shapes/VoxelShape.interface";
+} from "Meta/Voxels/VoxelShape.types";
 
 type BoxFaceFunction = (data: VoxelShapeAddData) => void;
 

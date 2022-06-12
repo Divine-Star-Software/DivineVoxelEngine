@@ -45,11 +45,12 @@ ${CommonShader.getMainFunction(`
     buildFluidVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
+${fluidShaders.vertexVars}
 ${SharedVertexShader.attributesNoAO}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying}
 ${SharedVertexShader.optionVars}
-${SharedVertexShader.useTime(false)}
+${SharedVertexShader.useTime(true)}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
@@ -57,6 +58,7 @@ ${animationFunction}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
  ${SharedVertexShader.doRGB}
  ${SharedVertexShader.doSun}
@@ -117,6 +119,7 @@ ${solidShaders.fragMain}
     buildFluidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
+${fluidShaders.fragVars}
 ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables}
 ${SharedFragmentShader.varsNoAO}
@@ -125,6 +128,8 @@ ${SharedFogFunctions.fogFragFunction}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getLight}
 ${SharedFragmentShader.doFog}
+${SharedFragmentShader.useTime}
+
 ${CommonShader.getMainFunction(`
 ${fluidShaders.fragMain}
 `)}`;

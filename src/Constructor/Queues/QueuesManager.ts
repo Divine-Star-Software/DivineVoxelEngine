@@ -1,13 +1,9 @@
-import { QueuesIndexes } from "../../Shared/Queues.js";
+import { QueuesIndexes } from "../../Constants/Queues.js";
 
 export const QueuesManager = {
- states: <Int32Array>new Int32Array(),
-
- setQueueStates(states: Int32Array) {
+ states: <Uint32Array>new Uint32Array(),
+ setQueueStates(states: Uint32Array) {
   this.states = states;
- },
- startRGBLightUpdate() {
-  this.states[0]++;
  },
  finishRGBLightUpdate() {
   Atomics.sub(this.states, QueuesIndexes.RGBLightUpdate, 1);

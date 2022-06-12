@@ -17,7 +17,7 @@ export const WorldGeneration = {
         let paletteData = {};
         if (palette) {
             paletteData = {
-                count: 0,
+                count: 2,
                 map: {},
                 record: {},
             };

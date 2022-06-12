@@ -69,14 +69,14 @@ export const WorldBounds = {
   this.bounds.MaxY = maxY;
  },
  isPositonOutsideOfBounds(x: number, y: number, z: number) {
-  if (x < this.bounds.MinX || x > this.bounds.MaxX) return true;
   if (y < this.bounds.MinY || y > this.bounds.MaxY) return true;
+  if (x < this.bounds.MinX || x > this.bounds.MaxX) return true;
   if (z < this.bounds.MinZ || z > this.bounds.MaxZ) return true;
   return false;
  },
  isPositonInBounds(x: number, y: number, z: number) {
-  if (x >= this.bounds.MinX && x <= this.bounds.MaxX) return true;
   if (y >= this.bounds.MinY && y <= this.bounds.MaxY) return true;
+  if (x >= this.bounds.MinX && x <= this.bounds.MaxX) return true;
   if (z >= this.bounds.MinZ && z <= this.bounds.MaxZ) return true;
   return false;
  },

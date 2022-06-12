@@ -9,13 +9,11 @@ export const ShapeBuilder = {
     origion: Position3Matrix,
     dimensions: DimenionsMatrix,
     data: VoxelShapeAddData,
-    flip ?: boolean
+    flip?: boolean
    ) => void
   >
  >{
-  top: (origion, dimensions, data,flip) => {
-
-
+  top: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -56,10 +54,10 @@ export const ShapeBuilder = {
     data.indicieIndex + 1,
     data.indicieIndex
    );
+   data.normals.push(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0);
    data.indicieIndex += 4;
   },
-  bottom: (origion, dimensions, data,flip) => {
-
+  bottom: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -99,10 +97,11 @@ export const ShapeBuilder = {
     data.indicieIndex + 2,
     data.indicieIndex
    );
+   data.normals.push(0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0);
    data.indicieIndex += 4;
   },
-  south: (origion, dimensions, data,flip) => {
-
+  //front
+  south: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -142,10 +141,12 @@ export const ShapeBuilder = {
     data.indicieIndex + 2,
     data.indicieIndex
    );
+   data.normals.push(0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1);
+
    data.indicieIndex += 4;
   },
-  north: (origion, dimensions, data,flip) => {
-
+  //back
+  north: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + dimensions.width,
@@ -185,10 +186,11 @@ export const ShapeBuilder = {
     data.indicieIndex + 2,
     data.indicieIndex
    );
+   data.normals.push(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1);
    data.indicieIndex += 4;
   },
-  west:(origion, dimensions, data,flip) => {
-
+  //left
+  west: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + -dimensions.width,
@@ -229,10 +231,11 @@ export const ShapeBuilder = {
     data.indicieIndex + 2,
     data.indicieIndex
    );
+   data.normals.push(-1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0);
    data.indicieIndex += 4;
   },
-  east: (origion, dimensions, data,flip) => {
-
+  //right
+  east: (origion, dimensions, data, flip) => {
    if (!flip) {
     data.positions.push(
      origion.x + dimensions.width,
@@ -274,6 +277,7 @@ export const ShapeBuilder = {
     data.indicieIndex + 2,
     data.indicieIndex
    );
+   data.normals.push(1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0);
    data.indicieIndex += 4;
   },
  },
@@ -283,8 +287,8 @@ export const ShapeBuilder = {
   origion: Position3Matrix,
   dimensions: DimenionsMatrix,
   data: VoxelShapeAddData,
-  flip = false,
+  flip = false
  ) {
-  this.faceFunctions[direction](origion, dimensions, data,flip);
+  this.faceFunctions[direction](origion, dimensions, data, flip);
  },
 };

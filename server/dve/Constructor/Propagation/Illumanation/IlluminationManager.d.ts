@@ -53,5 +53,5 @@ export declare const IlluminationManager: {
     runRGBFloodRemove: typeof runRGBFloodRemove;
     _RGBlightUpdateQue: number[][];
     _RGBlightRemovalQue: number[][];
-    _visitSunMap: Record<string, boolean>;
+    _visitMap: Record<string, boolean>;
 };

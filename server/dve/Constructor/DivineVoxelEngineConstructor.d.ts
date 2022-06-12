@@ -557,7 +557,7 @@ export declare const DVEC: {
             }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
         };
         chunkMesher: {
-            voxelBuildOrder: import("Meta/index.js").VoxelSubstanceType[];
+            voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
             voxelTypeMap: {
                 solid: number;
                 flora: number;
@@ -914,9 +914,10 @@ export declare const DVEC: {
                 setFullSun(x: number, y: number, z: number): void;
                 setLight(x: number, y: number, z: number, lightValue: number): void;
                 getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
+                sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
             };
-            voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalcN;
-            doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLightN;
+            voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
+            doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
             chunkTemplates: Record<number, Record<number, number[][]>>;
             exposedFaces: number[];
             faceStates: number[];
@@ -994,7 +995,7 @@ export declare const DVEC: {
             runRGBFloodRemove: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
             _RGBlightUpdateQue: number[][];
             _RGBlightRemovalQue: number[][];
-            _visitSunMap: Record<string, boolean>;
+            _visitMap: Record<string, boolean>;
         };
         rebuildQueMap: Record<string, boolean>;
         $INIT(): void;
@@ -1005,12 +1006,11 @@ export declare const DVEC: {
         runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
         runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
         runSunLightUpdate(x: number, y: number, z: number): void;
-        runSunLightRemoe(x: number, y: number, z: number): void;
+        runSunLightRemove(x: number, y: number, z: number): void;
     };
     queues: {
-        states: Int32Array;
-        setQueueStates(states: Int32Array): void;
-        startRGBLightUpdate(): void;
+        states: Uint32Array;
+        setQueueStates(states: Uint32Array): void;
         finishRGBLightUpdate(): void;
         finishRGBLightRemove(): void;
         finishWorldColumnSunLightProp(): void;
@@ -1226,6 +1226,7 @@ export declare const DVEC: {
         setFullSun(x: number, y: number, z: number): void;
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
+        sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
         messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;

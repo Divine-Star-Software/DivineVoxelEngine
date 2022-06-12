@@ -130,7 +130,7 @@ const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
-export function CalculateVoxelLightN(data, tx, ty, tz, ignoreAO = false) {
+export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false) {
     if (this.settings.doAO && !ignoreAO) {
         currentVoxelData.voxelData = this.worldMatrix.getVoxelData(tx, ty, tz);
     }
@@ -296,7 +296,7 @@ const doAO = (checkVoxel) => {
 const AOEnd = (vertex) => {
     AOVerotexStates[vertex].value = AOValues.a;
 };
-export function VoxelLightMixCalcN(x, y, z, checkSet, vertex) {
+export function VoxelLightMixCalc(x, y, z, checkSet, vertex) {
     if (this.settings.doRGB || this.settings.doSun) {
         const values = this.lightByte.getLightValues(currentVoxelData.light);
         if (this.settings.doSun) {
@@ -344,7 +344,6 @@ export function VoxelLightMixCalcN(x, y, z, checkSet, vertex) {
             doAO(checkVoxel);
         }
     }
-    //end
     if (this.settings.doSun || this.settings.doRGB) {
         lightEnd(vertex);
     }

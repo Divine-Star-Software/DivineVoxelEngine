@@ -1,7 +1,7 @@
 import type { FullChunkTemplate } from "Meta/Chunks/Chunk.types.js";
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 import type { EngineSettingsData, VoxelData, VoxelProcessData } from "Meta/index.js";
-import { CalculateVoxelLightN, VoxelLightMixCalcN } from "./Functions/CalculateVoxelLight.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -355,9 +355,10 @@ export declare const Processor: {
         setFullSun(x: number, y: number, z: number): void;
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
+        sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
-    voxellightMixCalc: typeof VoxelLightMixCalcN;
-    doVoxelLight: typeof CalculateVoxelLightN;
+    voxellightMixCalc: typeof VoxelLightMixCalc;
+    doVoxelLight: typeof CalculateVoxelLight;
     chunkTemplates: Record<number, Record<number, number[][]>>;
     exposedFaces: number[];
     faceStates: number[];

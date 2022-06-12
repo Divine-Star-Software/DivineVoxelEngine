@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 export declare const RenderManager: {
     shaderBuilder: {
         buildFloraVertexShader(uniformRegister?: string, animationFunction?: string): string;
@@ -81,7 +80,10 @@ export declare const RenderManager: {
     floraMesh: import("../../Meta/index.js").VoxelMeshInterface;
     fluidMesh: import("../../Meta/index.js").VoxelMeshInterface;
     magmaMesh: import("../../Meta/index.js").VoxelMeshInterface;
+    scene: BABYLON.Scene | null;
     reStart(): void;
+    setScene(scene: BABYLON.Scene): void;
+    getScene(): BABYLON.Scene | null;
     setSunLevel(level: number): void;
     setBaseLevel(level: number): void;
 };

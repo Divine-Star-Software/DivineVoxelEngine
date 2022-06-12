@@ -37,13 +37,43 @@ export const WorldData = {
     _3dArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
     runRebuildCheck(x, y, z) {
-        DVEW.queues.addToRebuildQue(x, y, z, "all");
         DVEW.queues.addToRebuildQue(x + 1, y, z, "all");
         DVEW.queues.addToRebuildQue(x - 1, y, z, "all");
         DVEW.queues.addToRebuildQue(x, y + 1, z, "all");
         DVEW.queues.addToRebuildQue(x, y - 1, z, "all");
         DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
         DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
+        DVEW.queues.addToRebuildQue(x, y, z, "all");
+    },
+    __lightQueCheck(remove = false, x, y, z) {
+        const l = this.getLight(x, y, z);
+        if (l > 0) {
+            if (this.lightByte.getS(l) > 0) {
+                if (!remove) {
+                    DVEW.queues.addToSunLightUpdateQue(x, y, z);
+                }
+                else {
+                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                }
+            }
+            if (this.lightByte.hasRGBLight(l)) {
+                if (!remove) {
+                    DVEW.queues.addToRGBUpdateQue(x, y, z);
+                }
+                else {
+                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                }
+            }
+        }
+    },
+    runLightUpdateCheck(x, y, z, remove = false) {
+        this.__lightQueCheck(remove, x, y, z);
+        this.__lightQueCheck(remove, x + 1, y, z);
+        this.__lightQueCheck(remove, x - 1, y, z);
+        this.__lightQueCheck(remove, x, y + 1, z);
+        this.__lightQueCheck(remove, x, y - 1, z);
+        this.__lightQueCheck(remove, x, y, z + 1);
+        this.__lightQueCheck(remove, x, y, z - 1);
     },
     getCurrentWorldDataSize() {
         const data = JSON.stringify(this.regions);
@@ -126,13 +156,13 @@ export const WorldData = {
         if (!region)
             return false;
         const voxelData = this.getData(x, y, z);
-        if (voxelData < 0)
+        if (voxelData < 0 || voxelData === false)
             return false;
         let globalPalette = true;
         if (region.palette) {
             globalPalette = false;
         }
-        if (voxelData) {
+        if (voxelData >= 0) {
             const voxelId = this.voxelByte.getId(voxelData);
             if (voxelId == 0) {
                 return [-1, voxelData, 0];
@@ -272,17 +302,31 @@ export const WorldData = {
         chunks[worldColumnKey][chunkKey] = chunk;
         if (doNotSyncInThreads)
             return;
-        /*   DVEW.builderCommManager.syncChunkInAllBuilders(
-           chunkPOS.x,
-           chunkPOS.y,
-           chunkPOS.z
-          );
-          DVEW.propagationCommManager.syncChunkInAllWorldGens(
-           chunkPOS.x,
-           chunkPOS.y,
-           chunkPOS.z
-          ); */
         DVEW.constructorCommManager.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+    },
+    async __runLightRemoveAndUpdates(remove = true, update = true) {
+        if (remove) {
+            if (DVEW.settings.doRGBPropagation()) {
+                DVEW.queues.runRGBRemoveQue();
+                await DVEW.queues.awaitAllRGBLightRemove();
+            }
+            if (DVEW.settings.doSunPropagation()) {
+                DVEW.queues.runSunLightRemoveQue();
+                await DVEW.queues.awaitAllSunLightRemove();
+            }
+        }
+        if (update) {
+            if (DVEW.settings.doRGBPropagation()) {
+                DVEW.queues.runRGBUpdateQue();
+            }
+            if (DVEW.settings.doSunPropagation()) {
+                DVEW.queues.runSunLightUpdateQue();
+            }
+            await Promise.all([
+                DVEW.queues.awaitAllRGBLightUpdates(),
+                DVEW.queues.awaitAllSunLightUpdates(),
+            ]);
+        }
     },
     async requestVoxelAdd(voxelId, voxelStateId, x, y, z) {
         const voxelData = DVEW.voxelManager.getVoxel(voxelId);
@@ -301,11 +345,26 @@ export const WorldData = {
         DVEW.settings.settings.world?.voxelPaletteMode](voxelId, voxelStateId, region);
         if (data < 0)
             return;
+        const l = this.getLight(x, y, z);
+        if (l > 0) {
+            if (DVEW.settings.doRGBPropagation()) {
+                if (this.lightByte.hasRGBLight(l)) {
+                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                }
+            }
+            if (DVEW.settings.doSunPropagation()) {
+                if (this.lightByte.getS(l) > 0) {
+                    DVEW.queues.addToSunLightRemoveQue(x, y - 1, z);
+                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                }
+            }
+            await this.__runLightRemoveAndUpdates(true, false);
+        }
+        let needLightUpdate = false;
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
         this.runRebuildCheck(x, y, z);
-        let needLightUpdate = false;
         if (DVEW.settings.settings.lighting?.autoRGBLight) {
             if (voxelData.lightSource && voxelData.lightValue) {
                 needLightUpdate = true;
@@ -314,8 +373,7 @@ export const WorldData = {
         }
         if (DVEW.settings.settings.updating?.autoRebuild) {
             if (needLightUpdate) {
-                DVEW.queues.runRGBUpdateQue();
-                await DVEW.queues.awaitAllRGBLightUpdates();
+                await this.__runLightRemoveAndUpdates(false, true);
             }
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
@@ -332,26 +390,22 @@ export const WorldData = {
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this.__handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk);
         this.runRebuildCheck(x, y, z);
-        let needLightUpdate = false;
-        if (DVEW.settings.settings.lighting?.autoRGBLight) {
-            if (voxelData.lightSource && voxelData.lightValue) {
+        const l = this.getLight(x, y, z);
+        if (l > 0) {
+            this.setAir(x, y, z, l);
+            if (DVEW.settings.doRGBPropagation()) {
                 DVEW.queues.addToRGBRemoveQue(x, y, z);
-                needLightUpdate = true;
             }
-            else {
-                let light = this.getLight(x, y, z);
-                if (light > 0) {
-                    DVEW.queues.addToRGBRemoveQue(x, y, z);
-                    needLightUpdate = true;
-                }
+            if (DVEW.settings.doSunPropagation()) {
+                DVEW.queues.addToSunLightRemoveQue(x, y, z);
             }
         }
-        if (DVEW.settings.settings.updating?.autoRebuild) {
-            if (needLightUpdate) {
-                DVEW.queues.runRGBRemoveQue();
-                await DVEW.queues.awaitAllRGBLightRemove();
-            }
+        if (l < 0) {
             this.setAir(x, y, z, 0);
+            this.runLightUpdateCheck(x, y, z);
+        }
+        if (DVEW.settings.settings.updating?.autoRebuild) {
+            await this.__runLightRemoveAndUpdates(true, true);
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
         }

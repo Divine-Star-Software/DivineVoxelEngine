@@ -1,12 +1,14 @@
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
-import { QueuesIndexes } from "../../Shared/Queues.js";
+import { QueuesIndexes } from "../../Constants/Queues.js";
 export const QueuesManager = {
     _numChunksRebuilding: 0,
     _numRGBLightUpdates: 0,
     _numRGBLightRemoves: 0,
     _RGBLightRemoveQue: [],
     _RGBLightUpdateQue: [],
+    _SunLightRemoveQue: [],
+    _SunLightUpdateQue: [],
     _worldColumnSunLightPropMap: {},
     _worldColumnSunLightPropQue: [],
     _chunkRebuildQueMap: {},
@@ -101,17 +103,62 @@ export const QueuesManager = {
     areAllSunLightUpdatesMaxYFloodDone() {
         return Atomics.load(this.__states, QueuesIndexes.sunLightMaxYFlood) == 0;
     },
+    /**
+     * Sun Light
+     */
+    addToSunLightUpdateQue(x, y, z) {
+        this._SunLightUpdateQue.push([x, y, z]);
+    },
+    addToSunLightRemoveQue(x, y, z) {
+        this._SunLightRemoveQue.push([x, y, z]);
+    },
+    runSunLightUpdateQue() {
+        const queue = this._SunLightUpdateQue;
+        while (queue.length != 0) {
+            const position = queue.shift();
+            if (!position)
+                break;
+            Atomics.add(this.__states, QueuesIndexes.sunLightUpdate, 1);
+            DVEW.constructorCommManager.runSunLightUpdate(position[0], position[1], position[2]);
+        }
+        this._SunLightUpdateQue = [];
+    },
+    runSunLightRemoveQue() {
+        const queue = this._SunLightRemoveQue;
+        while (queue.length != 0) {
+            const position = queue.shift();
+            if (!position)
+                break;
+            Atomics.add(this.__states, QueuesIndexes.sunLightRemove, 1);
+            DVEW.constructorCommManager.runSunLightRemove(position[0], position[1], position[2]);
+        }
+        this._SunLightRemoveQue = [];
+    },
     awaitAllSunLightUpdates() {
         return DVEW.UTIL.createPromiseCheck({
             check: () => {
-                return QueuesManager.areAllSunLightUpdatesDone();
+                return QueuesManager.areSunLightUpdatesAllDone();
             },
             checkInterval: 1,
         });
     },
-    areAllSunLightUpdatesDone() {
+    awaitAllSunLightRemove() {
+        return DVEW.UTIL.createPromiseCheck({
+            check: () => {
+                return QueuesManager.areSunLightRemovesAllDone();
+            },
+            checkInterval: 1,
+        });
+    },
+    areSunLightUpdatesAllDone() {
         return Atomics.load(this.__states, QueuesIndexes.sunLightUpdate) == 0;
     },
+    areSunLightRemovesAllDone() {
+        return Atomics.load(this.__states, QueuesIndexes.sunLightRemove) == 0;
+    },
+    /**
+     * RGB Light
+     */
     addToRGBUpdateQue(x, y, z) {
         this._RGBLightUpdateQue.push([x, y, z]);
     },
@@ -125,7 +172,7 @@ export const QueuesManager = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.RGBLightUpdate, 1);
-            DVEW.constructorCommManager.runRGBFloodFillAt(position[0], position[1], position[2]);
+            DVEW.constructorCommManager.runRGBLightUpdate(position[0], position[1], position[2]);
         }
         this._RGBLightUpdateQue = [];
     },
@@ -136,7 +183,7 @@ export const QueuesManager = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.RGBLightRemove, 1);
-            DVEW.constructorCommManager.runRGBFloodRemoveAt(position[0], position[1], position[2]);
+            DVEW.constructorCommManager.runRGBUpdate(position[0], position[1], position[2]);
         }
         this._RGBLightRemoveQue = [];
     },
@@ -162,6 +209,9 @@ export const QueuesManager = {
     areRGBLightRemovesAllDone() {
         return Atomics.load(this.__states, QueuesIndexes.RGBLightRemove) == 0;
     },
+    /**
+     * Chunks
+     */
     addToRebuildQue(x, y, z, substance) {
         const chunk = DVEW.worldData.getChunk(x, y, z);
         if (!chunk)

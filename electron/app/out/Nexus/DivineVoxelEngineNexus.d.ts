@@ -571,6 +571,7 @@ export declare const DVEN: {
         setFullSun(x: number, y: number, z: number): void;
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
+        sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
         messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;

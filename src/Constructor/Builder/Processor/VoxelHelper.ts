@@ -51,7 +51,7 @@ export const VoxelHelper = {
   z: number
  ) {
   const checkVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
-  if (checkVoxelId && checkVoxelId[0] == "dve:air") return true;
+  if (checkVoxelId && (checkVoxelId[0] == "dve:air" || checkVoxelId[0] == "dve:barrier")) return true;
   if (!checkVoxelId) return true;
   const checkVoxelObject = DVEC.voxelManager.getVoxel(checkVoxelId[0]);
   if (

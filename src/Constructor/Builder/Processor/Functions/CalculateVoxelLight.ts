@@ -161,7 +161,7 @@ const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
 
-export function CalculateVoxelLightN(
+export function CalculateVoxelLight(
  this: typeof Processor,
  data: VoxelProcessData,
  tx: number,
@@ -234,7 +234,7 @@ export function CalculateVoxelLightN(
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[3], 3);
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[4], 4);
   handleAdd(data, 5);
- }
+ } 
 }
 
 const doRGB = (neighborLightValue: number) => {
@@ -340,7 +340,7 @@ const AOEnd = (vertex: Vertexes) => {
  AOVerotexStates[vertex].value = AOValues.a;
 };
 
-export function VoxelLightMixCalcN(
+export function VoxelLightMixCalc(
  this: typeof Processor,
  x: number,
  y: number,
@@ -393,7 +393,6 @@ export function VoxelLightMixCalcN(
    doAO(checkVoxel);
   }
  }
- //end
 
  if (this.settings.doSun || this.settings.doRGB) {
   lightEnd(vertex);

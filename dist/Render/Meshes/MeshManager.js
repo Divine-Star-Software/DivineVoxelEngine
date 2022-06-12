@@ -1,3 +1,4 @@
+import { SetChunkDataIndexes } from "../../Constants/InterComms/ConstructorToRender.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
 export const MeshManager = {
     scene: null,
@@ -25,11 +26,22 @@ export const MeshManager = {
     },
     reStart() { },
     handleUpdateN(type, chunkKey, data) {
+        const meshData = {
+            positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
+            normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
+            indiciesArray: new Int32Array(data[SetChunkDataIndexes.indiciesArray]),
+            AOColorsArray: new Float32Array(data[SetChunkDataIndexes.AOColorsArray]),
+            RGBLightColorsArray: new Float32Array(data[SetChunkDataIndexes.RGBLightColorsArray]),
+            sunLightColorsArray: new Float32Array(data[SetChunkDataIndexes.sunLightColorsArray]),
+            colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
+            uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
+            extra: [],
+        };
         if (!this.meshes[type][chunkKey]) {
-            this._buildNewMesh(type, chunkKey, data);
+            this._buildNewMesh(type, chunkKey, meshData);
         }
         else {
-            this._updateMesh(type, chunkKey, data);
+            this._updateMesh(type, chunkKey, meshData);
         }
     },
     requestChunkBeRemoved(chunkKey) {
@@ -43,18 +55,9 @@ export const MeshManager = {
     async _updateMesh(type, chunkKey, data) {
         if (!this.scene)
             return;
-        this.scene.unfreezeActiveMeshes();
-        this.runningUpdate = true;
         const mesh = this.meshes[type][chunkKey];
-        const positions = new Float32Array(data[5]);
-        const indicies = new Int32Array(data[6]);
-        const aoColors = new Float32Array(data[7]);
-        const rgbLightColors = new Float32Array(data[8]);
-        const sunLightColors = new Float32Array(data[9]);
-        const colors = new Float32Array(data[10]);
-        const uvs = new Float32Array(data[11]);
-        this.meshMakers[type].rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs);
-        this.runningUpdate = false;
+        this.scene.unfreezeActiveMeshes();
+        this.meshMakers[type].createMeshGeometory(mesh, data);
         this.scene.freeActiveMeshes();
     },
     async _buildNewMesh(type, chunkKey, data) {
@@ -63,15 +66,7 @@ export const MeshManager = {
         this.scene.unfreezeActiveMeshes();
         const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
         mesh.setEnabled(true);
-        const positions = new Float32Array(data[5]);
-        const indicies = new Int32Array(data[6]);
-        const aoColors = new Float32Array(data[7]);
-        const rgbLightColors = new Float32Array(data[8]);
-        const sunLightColors = new Float32Array(data[9]);
-        const colors = new Float32Array(data[10]);
-        const uvs = new Float32Array(data[11]);
-        this.meshMakers[type].createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs);
-        //chunkMesh.updateFacetData();
+        this.meshMakers[type].createMeshGeometory(mesh, data);
         this.meshes[type][chunkKey] = mesh;
         this.scene.freeActiveMeshes();
     },

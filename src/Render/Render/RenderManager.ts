@@ -28,7 +28,17 @@ export const RenderManager = {
  fluidMesh: FluidMesh,
  magmaMesh: MagmaMesh,
 
+ scene: <BABYLON.Scene | null>null,
+
  reStart() {},
+
+ setScene(scene: BABYLON.Scene) {
+  this.scene = scene;
+ },
+
+ getScene() {
+  return this.scene;
+ },
 
  setSunLevel(level: number) {
   this.solidMaterial.setSunLightLevel(level);

@@ -1,5 +1,4 @@
 import type { Position3Matrix } from "Meta/Util.types";
-
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions
@@ -38,49 +37,46 @@ import type { Position3Matrix } from "Meta/Util.types";
 * The relative chunk position that the voxel is being added.
 * @var position: Position3Matrix;
 */
-export type VoxelShapeAddData = {
- //actual mesh data
- positions: number[];
- indices: number[];
- RGBLightColors: number[];
- sunLightColors: number[];
- AOColors: number[];
- colors: number[];
- uvs: number[];
- face: number;
- indicieIndex: number;
- //chunk template data
- shapeStateTemplate : number[],
- shapeStateIndex : number,
- unTemplate: number[];
- uvTemplateIndex: number;
- colorTemplate: number[];
- colorIndex: number;
- lightTemplate: number[];
- lightIndex: number;
- aoTemplate: number[];
- aoIndex: number;
- position: Position3Matrix;
+export declare type VoxelShapeAddData = {
+    positions: number[];
+    normals: number[];
+    indices: number[];
+    RGBLightColors: number[];
+    sunLightColors: number[];
+    AOColors: number[];
+    colors: number[];
+    uvs: number[];
+    face: number;
+    indicieIndex: number;
+    shapeStateTemplate: number[];
+    shapeStateIndex: number;
+    unTemplate: number[];
+    uvTemplateIndex: number;
+    colorTemplate: number[];
+    colorIndex: number;
+    lightTemplate: number[];
+    lightIndex: number;
+    aoTemplate: number[];
+    aoIndex: number;
+    position: Position3Matrix;
 };
-
-export type VoxelShapeAddReturnData = {
- newIndicieIndex: number;
- newUVTemplateIndex: number;
- newColorIndex: number;
- newlightIndex: number;
- newAOIndex: number;
+export declare type VoxelShapeAddReturnData = {
+    newIndicieIndex: number;
+    newUVTemplateIndex: number;
+    newColorIndex: number;
+    newlightIndex: number;
+    newAOIndex: number;
 };
-
 /**# Voxel Shape
  * ---
  * Describes a basic voxel shape such as a box or half box.
  * Voxel shapes are used by the mesh bulder to generate the mush.
  * It checks with the voxel shape to build the proper mesh.
  */
-export type VoxelShapeInterface = {
- id: string;
- /**# Add To Chunk Mesh
-  * ---
-  */
- addToChunkMesh(data: VoxelShapeAddData): VoxelShapeAddReturnData;
+export declare type VoxelShapeInterface = {
+    id: string;
+    /**# Add To Chunk Mesh
+     * ---
+     */
+    addToChunkMesh(data: VoxelShapeAddData): VoxelShapeAddReturnData;
 };

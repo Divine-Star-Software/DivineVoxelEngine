@@ -90,4 +90,3 @@ export const DVEW = {
     },
 };
 DVEW.environment = Util.getEnviorment();
-console.log("hello from world");

@@ -31,7 +31,7 @@ export const VoxelHelper = {
     },
     voxelFaceCheck(face, voxel, x, y, z) {
         const checkVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
-        if (checkVoxelId && checkVoxelId[0] == "dve:air")
+        if (checkVoxelId && (checkVoxelId[0] == "dve:air" || checkVoxelId[0] == "dve:barrier"))
             return true;
         if (!checkVoxelId)
             return true;

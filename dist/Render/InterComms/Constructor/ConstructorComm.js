@@ -1,7 +1,7 @@
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-import { ConstructorToRenderMessages } from "../../../Shared/InterComms/ConstructorToRender.js";
+import { ConstructorToRenderMessages } from "../../../Constants/InterComms/ConstructorToRender.js";
 const handleUpdate = (substance, data) => {
     const chunkX = data[2];
     const chunkY = data[3];

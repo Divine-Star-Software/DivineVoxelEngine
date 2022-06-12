@@ -1,7 +1,7 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { ConstructorToWorldMessages } from "../../Shared/InterComms/ConstructorToWorld.js";
+import { ConstructorToWorldMessages } from "../../Constants/InterComms/ConstructorToWorld.js";
 export const DVEP = {
     illumination: IlluminationManager,
     rebuildQueMap: {},

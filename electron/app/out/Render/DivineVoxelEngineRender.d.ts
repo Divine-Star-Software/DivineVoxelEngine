@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -265,7 +264,10 @@ export declare const DVER: {
         floraMesh: import("../Meta/index.js").VoxelMeshInterface;
         fluidMesh: import("../Meta/index.js").VoxelMeshInterface;
         magmaMesh: import("../Meta/index.js").VoxelMeshInterface;
+        scene: BABYLON.Scene | null;
         reStart(): void;
+        setScene(scene: BABYLON.Scene): void;
+        getScene(): BABYLON.Scene | null;
         setSunLevel(level: number): void;
         setBaseLevel(level: number): void;
     };

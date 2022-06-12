@@ -4,7 +4,7 @@ import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 //functions
-import { CalculateVoxelLightN, VoxelLightMixCalcN, } from "./Functions/CalculateVoxelLight.js";
+import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -17,8 +17,8 @@ export const Processor = {
     _3dArray: Util.getFlat3DArray(),
     lightByte: Util.getLightByte(),
     worldMatrix: WorldMatrix,
-    voxellightMixCalc: VoxelLightMixCalcN,
-    doVoxelLight: CalculateVoxelLightN,
+    voxellightMixCalc: VoxelLightMixCalc,
+    doVoxelLight: CalculateVoxelLight,
     chunkTemplates: {},
     exposedFaces: [],
     faceStates: [],
@@ -116,6 +116,8 @@ export const Processor = {
                     if (!voxelCheck)
                         continue;
                     const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
+                    if (!voxelObject)
+                        continue;
                     const voxelState = voxelCheck[1];
                     let faceBit = 0;
                     if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {

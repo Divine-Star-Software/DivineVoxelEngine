@@ -1,4 +1,4 @@
-import { WorldToConstructorMessages } from "../../../Shared/InterComms/WorldToConstructor.js";
+import { WorldToConstructorMessages } from "../../../Constants/InterComms/WorldToConstructor.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 const worldComm = CreateInterComm("builder-world", {});
@@ -10,7 +10,7 @@ worldComm.onMessage = (event) => {
     }
 };
 worldComm.messageFunctions[WorldToConstructorMessages.setQueueStates] = (data) => {
-    const queueStates = new Int32Array(data[1]);
+    const queueStates = new Uint32Array(data[1]);
     DVEC.queues.setQueueStates(queueStates);
     DVEC.__queueStatesSet = true;
 };
@@ -59,5 +59,5 @@ worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (data) =
     const x = data[1];
     const y = data[2];
     const z = data[3];
-    DVEC.DVEP.runSunLightRemoe(x, y, z);
+    DVEC.DVEP.runSunLightRemove(x, y, z);
 };

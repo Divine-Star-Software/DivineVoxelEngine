@@ -6,12 +6,20 @@ export const floraShaders = {
  vec3 p = position;
  vec3 nP = normalize(position);
 
- if(abs(nP.y) > .0) {
- if(cuv3.y == 0. || cuv3.z == 1.) {
- float heightX = fbm(posWorld.xz * 0.1 + time * 0.05);
+ if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
+ float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
  p.xz += heightX * 0.05;
  }
-} 
+if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
+    float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+    p.xz -= heightX * 0.06;
+}
+
+if(normal.y == 1. ) {
+    float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+    p.xz += heightX * 0.05;
+}
+    
 
  //p.z += cos(float(gl_VertexID) + time) * 0.05;
 

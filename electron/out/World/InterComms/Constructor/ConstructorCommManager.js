@@ -1,7 +1,7 @@
 //comms
 import { GetNewConstructorComm } from "./ConstructorComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-import { WorldToConstructorMessages } from "../../../Shared/InterComms/WorldToConstructor.js";
+import { WorldToConstructorMessages } from "../../../Constants/InterComms/WorldToConstructor.js";
 /**# World Gen Comm Manager
  * ---
  * Handles all world gen comms. .
@@ -68,12 +68,12 @@ export const ConstructorCommManager = {
         ]);
         return this.__handleCount();
     },
-    runRGBFloodFillAt(x, y, z) {
+    runRGBLightUpdate(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.RGBlightUpdate, [x, y, z]);
         return this.__handleCount();
     },
-    runRGBFloodRemoveAt(x, y, z) {
+    runRGBUpdate(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.RGBlightRemove, [x, y, z]);
         return this.__handleCount();
@@ -96,6 +96,7 @@ export const ConstructorCommManager = {
         ]);
         return this.__handleCount();
     },
+    //Must send thread number returned from runSunFillAtMaxY
     runSunFillMaxYFlood(x, y, maxY, thread) {
         const comm = this.constructors[thread];
         comm.sendMessage(WorldToConstructorMessages.runSunLightUpdateMaxYFlood, [
@@ -105,12 +106,12 @@ export const ConstructorCommManager = {
         ]);
         return thread;
     },
-    runSunFillAt(x, y, z) {
+    runSunLightUpdate(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.sunLightUpdate, [x, y, z]);
         return this.__handleCount();
     },
-    runSunRemoveAt(x, y, z) {
+    runSunLightRemove(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
         return this.__handleCount();

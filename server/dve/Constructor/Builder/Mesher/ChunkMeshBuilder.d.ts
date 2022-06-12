@@ -1,6 +1,6 @@
-import type { FullChunkTemplate, VoxelSubstanceType } from "Meta/index";
+import type { FullChunkTemplate, VoxelTemplateSubstanceType } from "Meta/index";
 export declare const ChunkMeshBuilder: {
-    voxelBuildOrder: VoxelSubstanceType[];
+    voxelBuildOrder: VoxelTemplateSubstanceType[];
     voxelTypeMap: {
         solid: number;
         flora: number;

@@ -2,7 +2,7 @@
 import { VoxelSubstanceType } from "Meta/index";
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
-import { QueuesIndexes } from "../../Shared/Queues.js";
+import { QueuesIndexes } from "../../Constants/Queues.js";
 
 export const QueuesManager = {
  _numChunksRebuilding: 0,
@@ -12,6 +12,9 @@ export const QueuesManager = {
 
  _RGBLightRemoveQue: <number[][]>[],
  _RGBLightUpdateQue: <number[][]>[],
+
+ _SunLightRemoveQue: <number[][]>[],
+ _SunLightUpdateQue: <number[][]>[],
 
  _worldColumnSunLightPropMap: <
   Record<string, { max: number; thread: number }>
@@ -70,7 +73,7 @@ export const QueuesManager = {
    Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
   }
   await this.awaitAllSunLightUpdatesAtMaxY();
- //stage 3 flood out from maxY
+  //stage 3 flood out from maxY
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
@@ -82,7 +85,12 @@ export const QueuesManager = {
    const data = this._worldColumnSunLightPropMap[worldColumnKey];
    const x = position[0];
    const z = position[1];
-   data.thread = DVEW.constructorCommManager.runSunFillMaxYFlood(x, z, data.max,data.thread);
+   data.thread = DVEW.constructorCommManager.runSunFillMaxYFlood(
+    x,
+    z,
+    data.max,
+    data.thread
+   );
    Atomics.add(this.__states, QueuesIndexes.sunLightMaxYFlood, 1);
   }
   this._worldColumnSunLightPropMap = {};
@@ -127,17 +135,75 @@ export const QueuesManager = {
   return Atomics.load(this.__states, QueuesIndexes.sunLightMaxYFlood) == 0;
  },
 
+ /**
+  * Sun Light
+  */
+
+ addToSunLightUpdateQue(x: number, y: number, z: number) {
+  this._SunLightUpdateQue.push([x, y, z]);
+ },
+
+ addToSunLightRemoveQue(x: number, y: number, z: number) {
+  this._SunLightRemoveQue.push([x, y, z]);
+ },
+
+ runSunLightUpdateQue() {
+  const queue = this._SunLightUpdateQue;
+  while (queue.length != 0) {
+   const position = queue.shift();
+   if (!position) break;
+   Atomics.add(this.__states, QueuesIndexes.sunLightUpdate, 1);
+   DVEW.constructorCommManager.runSunLightUpdate(
+    position[0],
+    position[1],
+    position[2]
+   );
+  }
+  this._SunLightUpdateQue = [];
+ },
+
+ runSunLightRemoveQue() {
+  const queue = this._SunLightRemoveQue;
+  while (queue.length != 0) {
+   const position = queue.shift();
+   if (!position) break;
+   Atomics.add(this.__states, QueuesIndexes.sunLightRemove, 1);
+   DVEW.constructorCommManager.runSunLightRemove(
+    position[0],
+    position[1],
+    position[2]
+   );
+  }
+  this._SunLightRemoveQue = [];
+ },
+
  awaitAllSunLightUpdates() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areAllSunLightUpdatesDone();
+    return QueuesManager.areSunLightUpdatesAllDone();
    },
    checkInterval: 1,
   });
  },
- areAllSunLightUpdatesDone() {
+ awaitAllSunLightRemove() {
+  return DVEW.UTIL.createPromiseCheck({
+   check: () => {
+    return QueuesManager.areSunLightRemovesAllDone();
+   },
+   checkInterval: 1,
+  });
+ },
+
+ areSunLightUpdatesAllDone() {
   return Atomics.load(this.__states, QueuesIndexes.sunLightUpdate) == 0;
  },
+ areSunLightRemovesAllDone() {
+  return Atomics.load(this.__states, QueuesIndexes.sunLightRemove) == 0;
+ },
+
+ /**
+  * RGB Light
+  */
 
  addToRGBUpdateQue(x: number, y: number, z: number) {
   this._RGBLightUpdateQue.push([x, y, z]);
@@ -153,7 +219,7 @@ export const QueuesManager = {
    const position = queue.shift();
    if (!position) break;
    Atomics.add(this.__states, QueuesIndexes.RGBLightUpdate, 1);
-   DVEW.constructorCommManager.runRGBFloodFillAt(
+   DVEW.constructorCommManager.runRGBLightUpdate(
     position[0],
     position[1],
     position[2]
@@ -168,7 +234,7 @@ export const QueuesManager = {
    const position = queue.shift();
    if (!position) break;
    Atomics.add(this.__states, QueuesIndexes.RGBLightRemove, 1);
-   DVEW.constructorCommManager.runRGBFloodRemoveAt(
+   DVEW.constructorCommManager.runRGBUpdate(
     position[0],
     position[1],
     position[2]
@@ -200,6 +266,10 @@ export const QueuesManager = {
  areRGBLightRemovesAllDone() {
   return Atomics.load(this.__states, QueuesIndexes.RGBLightRemove) == 0;
  },
+
+ /**
+  * Chunks
+  */
 
  addToRebuildQue(
   x: number,

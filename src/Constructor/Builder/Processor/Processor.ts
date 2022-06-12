@@ -13,8 +13,8 @@ import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 //functions
 import {
- CalculateVoxelLightN,
- VoxelLightMixCalcN,
+ CalculateVoxelLight,
+ VoxelLightMixCalc,
 } from "./Functions/CalculateVoxelLight.js";
 
 /**# Chunk Processor
@@ -29,8 +29,8 @@ export const Processor = {
  _3dArray: Util.getFlat3DArray(),
  lightByte: Util.getLightByte(),
  worldMatrix: WorldMatrix,
- voxellightMixCalc: VoxelLightMixCalcN,
- doVoxelLight: CalculateVoxelLightN,
+ voxellightMixCalc: VoxelLightMixCalc,
+ doVoxelLight: CalculateVoxelLight,
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
@@ -140,6 +140,7 @@ export const Processor = {
      if (!voxelCheck) continue;
 
      const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
+     if (!voxelObject) continue;
      const voxelState = voxelCheck[1];
 
      let faceBit = 0;

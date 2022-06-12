@@ -3,7 +3,7 @@
  * Used to help decode voxel ids and states from per-region voxel palettes.
  */
 export const VoxelPaletteManager = {
-    globalVoxelPaletteIndex: 1,
+    globalVoxelPaletteIndex: 2,
     perRegionVoxelRecord: {},
     globalVoxelPalette: {},
     globalVoxelPaletteMap: {},

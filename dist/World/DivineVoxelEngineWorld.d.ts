@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -124,8 +124,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -635,13 +635,13 @@ export declare const DVEW: {
         isReady(): boolean;
         __handleCount(): number;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
-        runRGBFloodFillAt(x: number, y: number, z: number): number;
-        runRGBFloodRemoveAt(x: number, y: number, z: number): number;
+        runRGBLightUpdate(x: number, y: number, z: number): number;
+        runRGBUpdate(x: number, y: number, z: number): number;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
         runSunFillAtMaxY(x: number, y: number, maxY: number): number;
         runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
-        runSunFillAt(x: number, y: number, z: number): number;
-        runSunRemoveAt(x: number, y: number, z: number): number;
+        runSunLightUpdate(x: number, y: number, z: number): number;
+        runSunLightRemove(x: number, y: number, z: number): number;
     };
     worldGeneration: {
         worldBounds: {
@@ -1043,6 +1043,8 @@ export declare const DVEW: {
             };
         };
         runRebuildCheck(x: number, y: number, z: number): void;
+        __lightQueCheck(remove: boolean | undefined, x: number, y: number, z: number): void;
+        runLightUpdateCheck(x: number, y: number, z: number, remove?: boolean): void;
         getCurrentWorldDataSize(): number;
         getCurrentWorldDataString(): string;
         setAir(x: number, y: number, z: number, lightValue: number): void;
@@ -1061,6 +1063,7 @@ export declare const DVEW: {
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
+        __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
         requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
         requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
         getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/index.js").ChunkData> | undefined;
@@ -1085,6 +1088,8 @@ export declare const DVEW: {
         _numRGBLightRemoves: number;
         _RGBLightRemoveQue: number[][];
         _RGBLightUpdateQue: number[][];
+        _SunLightRemoveQue: number[][];
+        _SunLightUpdateQue: number[][];
         _worldColumnSunLightPropMap: Record<string, {
             max: number;
             thread: number;
@@ -1095,6 +1100,10 @@ export declare const DVEW: {
         __statesSAB: SharedArrayBuffer;
         __states: Uint32Array;
         $INIT(): void;
+        /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         addWorldColumnToSunLightQue(x: number, z: number): void;
         runWorldColumnSunLightAndUpateQue(): Promise<void>;
         awaitAllWorldColumnSunLightProp(): Promise<boolean>;
@@ -1103,8 +1112,14 @@ export declare const DVEW: {
         areAllSunLightUpdatesAtMaxYDone(): boolean;
         awaitAllSunLightUpdatesMaxYFlood(): Promise<boolean>;
         areAllSunLightUpdatesMaxYFloodDone(): boolean;
+        addToSunLightUpdateQue(x: number, y: number, z: number): void;
+        addToSunLightRemoveQue(x: number, y: number, z: number): void;
+        runSunLightUpdateQue(): void;
+        runSunLightRemoveQue(): void;
         awaitAllSunLightUpdates(): Promise<boolean>;
-        areAllSunLightUpdatesDone(): boolean;
+        awaitAllSunLightRemove(): Promise<boolean>;
+        areSunLightUpdatesAllDone(): boolean;
+        areSunLightRemovesAllDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
         runRGBUpdateQue(): void;

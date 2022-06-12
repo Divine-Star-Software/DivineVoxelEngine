@@ -2,7 +2,7 @@ import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
 import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
-} from "Meta/Builder/Shapes/VoxelShape.interface";
+} from "Meta/Voxels/VoxelShape.types";
 
 type BoxFaceFunction = (data: VoxelShapeAddData) => void;
 
@@ -17,12 +17,7 @@ const processDefaultFaceData = (data: VoxelShapeAddData, flip: boolean) => {
  if (!flip) {
   data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
  } else {
-    data.uvs.push(0, 1, uv, 0, 0, uv, 1, 0, uv, 1, 1, uv);
-
-
-
- //data.uvs.push(1, 0, uv, 1, 1, uv, 0, 1, uv, 0, 0, uv);
-
+  data.uvs.push(0, 1, uv, 0, 0, uv, 1, 0, uv, 1, 1, uv);
  }
  DVEB.shapeHelper.calculateLightColor(
   data.RGBLightColors,

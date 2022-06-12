@@ -1,17 +1,18 @@
 import { FluidMaterial } from "../../Materials/Fluid/FluidMaterial.js";
 export const FluidMesh = {
-    async rebuildMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    async rebuildMeshGeometory(mesh, data) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
-        chunkVertexData.positions = positions;
-        chunkVertexData.indices = indicies;
+        chunkVertexData.positions = data.positionArray;
+        chunkVertexData.indices = data.indiciesArray;
+        chunkVertexData.normals = data.normalsArray;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("cuv3", uvs, false, 3);
-        //mesh.setVerticesData("aoColors", aoColors, false, 4);
-        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        mesh.setVerticesData("colors", colors, false, 4);
+        mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+        mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+        mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+        mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
+        return mesh;
     },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("fluid", scene);
@@ -22,19 +23,19 @@ export const FluidMesh = {
         mesh.doNotSerialize = true;
         return mesh;
     },
-    async createMeshGeometory(mesh, positions, indicies, aoColors, rgbLightColors, sunLightColors, colors, uvs) {
+    async createMeshGeometory(mesh, data) {
+        mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
-        chunkVertexData.positions = positions;
-        chunkVertexData.indices = indicies;
-        // chunkVertexData.colors = linearColors;
+        chunkVertexData.positions = data.positionArray;
+        chunkVertexData.indices = data.indiciesArray;
+        chunkVertexData.normals = data.normalsArray;
         chunkVertexData.applyToMesh(mesh, true);
-        mesh.setVerticesData("cuv3", uvs, false, 3);
-        //mesh.setVerticesData("aoColors", aoColors, false, 4);
-        mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-        mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-        mesh.setVerticesData("colors", colors, false, 4);
-        mesh.material = FluidMaterial.getMaterial();
+        mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+        mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+        mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+        mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
+        mesh.material = FluidMaterial.getMaterial();
         return mesh;
     },
 };

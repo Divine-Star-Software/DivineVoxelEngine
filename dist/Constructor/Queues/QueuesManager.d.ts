@@ -1,7 +1,6 @@
 export declare const QueuesManager: {
-    states: Int32Array;
-    setQueueStates(states: Int32Array): void;
-    startRGBLightUpdate(): void;
+    states: Uint32Array;
+    setQueueStates(states: Uint32Array): void;
     finishRGBLightUpdate(): void;
     finishRGBLightRemove(): void;
     finishWorldColumnSunLightProp(): void;

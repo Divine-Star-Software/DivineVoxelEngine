@@ -2,38 +2,24 @@ import type { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface"
 import { MagmaMaterial } from "../../Materials/Magma/MagmaMaterial.js";
 
 export const MagmaMesh: VoxelMeshInterface = {
- rebuildMeshGeometory(
-  mesh: BABYLON.Mesh,
-  positions: Float32Array,
-  indicies: Int32Array,
-  aoColors: Float32Array,
-  rgbLightColors: Float32Array,
-  sunLightColors: Float32Array,
-  colors: Float32Array,
-  uvs: Float32Array
- ) {
+
+ async rebuildMeshGeometory(mesh, data) {
   mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
-  const calculatedNormals: number[] = [];
-
-  chunkVertexData.positions = positions;
-  chunkVertexData.indices = indicies;
-  chunkVertexData.normals = calculatedNormals;
-
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+  chunkVertexData.positions = data.positionArray;
+  chunkVertexData.indices = data.indiciesArray;
+  chunkVertexData.normals = data.normalsArray;
   chunkVertexData.applyToMesh(mesh, true);
-
-  mesh.setVerticesData("cuv3", uvs, false, 3);
-  //mesh.setVerticesData("aoColors", aoColors, false, 4);
-  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-  mesh.setVerticesData("colors", colors, false, 4);
-
+  mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+  mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+  mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+  mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
+  return mesh;
  },
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  const mesh = new BABYLON.Mesh("magma", scene);
+  const mesh = new BABYLON.Mesh("fluid", scene);
   mesh.alphaIndex = 0;
   mesh.isPickable = false;
   mesh.checkCollisions = false;
@@ -42,34 +28,18 @@ export const MagmaMesh: VoxelMeshInterface = {
   return mesh;
  },
 
- createMeshGeometory(
-  mesh: BABYLON.Mesh,
-  positions: Float32Array,
-  indicies: Int32Array,
-  aoColors: Float32Array,
-  rgbLightColors: Float32Array,
-  sunLightColors: Float32Array,
-  colors: Float32Array,
-  uvs: Float32Array
- ) {
+ async createMeshGeometory(mesh, data) {
+  mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
-  const calculatedNormals: number[] = [];
-  BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
-  chunkVertexData.positions = positions;
-  chunkVertexData.indices = indicies;
-
+  chunkVertexData.positions = data.positionArray;
+  chunkVertexData.indices = data.indiciesArray;
+  chunkVertexData.normals = data.normalsArray;
   chunkVertexData.applyToMesh(mesh, true);
-
-  mesh.setVerticesData("cuv3", uvs, false, 3);
-  //mesh.setVerticesData("aoColors", aoColors, false, 4);
-  mesh.setVerticesData("rgbLightColors", rgbLightColors, false, 4);
-  mesh.setVerticesData("sunLightColors", sunLightColors, false, 4);
-  mesh.setVerticesData("colors", colors, false, 4);
-
-  mesh.material = MagmaMaterial.getMaterial();
-
+  mesh.setVerticesData("cuv3", data.uvArray, false, 3);
+  mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
+  mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
+  mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
-
   return mesh;
  },
 };

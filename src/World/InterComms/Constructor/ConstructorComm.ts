@@ -2,7 +2,7 @@ import type {
  InterCommInterface,
  InterCommPortTypes,
 } from "Meta/Comms/InterComm.types";
-import { ConstructorToWorldMessages } from "../../../Shared/InterComms/ConstructorToWorld.js";
+import { ConstructorToWorldMessages } from "../../../Constants/InterComms/ConstructorToWorld.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 

@@ -111,4 +111,3 @@ export const DVEW = {
 
 export type DivineVoxelEngineWorld = typeof DVEW;
 DVEW.environment = Util.getEnviorment();
-console.log("hello from world");

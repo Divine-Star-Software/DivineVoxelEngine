@@ -274,8 +274,8 @@ export const LightByte = {
      * @param sl - source light value
      */
     isLessThanForSunRemove(n1, sl) {
-        let s1 = (n1 & (0x0f << 0)) >> 0;
-        let s2 = (sl & (0x0f << 0)) >> 0;
+        let s1 = this.getS(n1);
+        let s2 = this.getS(sl);
         return s1 < s2;
     },
     /**# Is Greater Or Equal Than For Sun Remove
@@ -286,9 +286,9 @@ export const LightByte = {
      * @param sl - source light value
      */
     isGreaterOrEqualThanForSunRemove(n1, sl) {
-        let s1 = (n1 & (0x0f << 0)) >> 0;
-        let s2 = (sl & (0x0f << 0)) >> 0;
-        return s1 >= s2;
+        let s1 = this.getS(n1);
+        let s2 = this.getS(sl);
+        return s2 >= s1;
     },
     /**# Sun Light Compare For Down Sun Remove
      * ---
@@ -298,10 +298,10 @@ export const LightByte = {
      * @param sl - source light value
      */
     sunLightCompareForDownSunRemove(n1, sl) {
-        let s2 = (sl & (0x0f << 0)) >> 0;
+        let s2 = this.getS(sl);
         if (s2 == 0b1111)
             return true;
-        let s1 = (n1 & (0x0f << 0)) >> 0;
+        let s1 = this.getS(n1);
         return s1 < s2;
     },
     /**# Remove Sun Light
@@ -310,6 +310,6 @@ export const LightByte = {
      * @param sl - source light value
      */
     removeSunLight(sl) {
-        return (sl & ~(0xf << 0)) | (0 << 0);
+        return this.removeS(sl);
     },
 };

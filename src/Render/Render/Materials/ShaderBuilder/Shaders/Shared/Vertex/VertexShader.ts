@@ -33,6 +33,7 @@ export const SharedVertexShader = {
  varying: `
   varying vec3 vUV;
   varying vec3 vNormal;
+  varying float vNColor;
   varying vec4 aoColor;
   varying vec4 rgbLColor;
   varying vec4 sunLColor;
@@ -42,6 +43,7 @@ export const SharedVertexShader = {
  varyingNoAO: `
   varying vec3 vUV;
   varying vec3 vNormal;
+  varying float vNColor;
   varying vec4 rgbLColor;
   varying vec4 sunLColor;
   varying vec4 vColors;
@@ -118,5 +120,15 @@ export const SharedVertexShader = {
     `,
  doNormals: `
  vNormal = normal;
+ if(normal.y == 1.) {
+   vNColor = 1.2;
+ }
+ if(normal.y == -1.) {
+   vNColor = .4;
+ }
+ if(abs(normal.x) == 1. || abs(normal.z)  == 1. ) {
+   vNColor = 1.;
+ }
+
  `,
 };
