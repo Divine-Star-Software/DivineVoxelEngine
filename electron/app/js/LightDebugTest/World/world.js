@@ -11,7 +11,7 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
     onReady: () => { },
 });
-const depth = 16;
+const depth = 32;
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;

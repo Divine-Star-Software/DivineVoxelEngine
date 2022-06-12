@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 export declare const RenderManager: {
     shaderBuilder: {
         buildFloraVertexShader(uniformRegister?: string, animationFunction?: string): string;

@@ -54,35 +54,16 @@ export const Worlds: WorldsData = [
     world: "SunLightTest",
    },
    {
-    title: "Ocean Test",
-    description: "Used to test out fluid voxels.",
-    world: "OceanTest",
-   },
-   {
     title: "Light Debug Test",
     description: "Used to debug light gradient issues.",
     world: "LightDebugTest",
-   },
-   {
-    title: "Nexus & Matrix Test",
-    description: "Used to test the Nexus and Matrix parts of the engine.",
-    world: "NexusMatrixTest",
-   },
-   {
-    title: "Shape Test",
-    description: "Used to work on different voxel shapes.",
-    world: "ShapeTest",
    },
    {
     title: "Lit Fluid Test",
     description: "Used to test the lighting of fluid voxels.",
     world: "LitFluidTest",
    },
-   {
-    title: "Light Update Test",
-    description: "Used to test light updates on voxel add/remove.",
-    world: "LightUpdateTest",
-   },
+
    {
     title: "Huge Light Test",
     description: "Used to test a lot of light sources",
@@ -93,7 +74,21 @@ export const Worlds: WorldsData = [
     description: "Used to test a lot of constant light updates.",
     world: "LightTest",
    },
-
+   {
+    title: "Nexus & Matrix Test",
+    description: "Used to test the Nexus and Matrix parts of the engine.",
+    world: "NexusMatrixTest",
+   },
+   {
+    title: "Ocean Test",
+    description: "Used to test out fluid voxels.",
+    world: "OceanTest",
+   },
+   {
+    title: "Shape Test",
+    description: "Used to work on different voxel shapes.",
+    world: "ShapeTest",
+   },
    {
     title: "Shadow Test",
     description: "Used to test dynamic lights and shadows.",
