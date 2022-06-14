@@ -14,7 +14,6 @@ export const SolidMesh = {
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
         mesh.material = SolidMaterial.getMaterial();
-        mesh.freezeWorldMatrix();
     },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("solid", scene);

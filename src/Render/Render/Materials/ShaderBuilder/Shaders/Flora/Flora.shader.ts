@@ -33,6 +33,7 @@ if(normal.y == 1. ) {
  if (rgb.a < 0.5) { 
      discard;
  }
+ 
  rgb = getColor(rgb);
  rgb = getAO(rgb);
  vec4 mixLight = getLight(rgb);

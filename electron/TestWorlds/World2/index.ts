@@ -9,7 +9,7 @@ import {
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-
+import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
@@ -46,6 +46,7 @@ const init = async () => {
  DVER.renderManager.setBaseLevel(1);
 
  runRenderLoop(engine, scene, camera, DVER);
+
 };
 
 RunInit(init);

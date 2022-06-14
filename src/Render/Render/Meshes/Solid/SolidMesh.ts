@@ -16,7 +16,6 @@ export const SolidMesh: VoxelMeshInterface = {
   mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
   mesh.material = SolidMaterial.getMaterial();
-  mesh.freezeWorldMatrix();
  },
 
  createTemplateMesh(scene: BABYLON.Scene) {
@@ -41,6 +40,7 @@ export const SolidMesh: VoxelMeshInterface = {
   mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
   mesh.material = SolidMaterial.getMaterial();
+
   return mesh;
  },
 };

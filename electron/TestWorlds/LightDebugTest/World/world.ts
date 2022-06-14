@@ -3,14 +3,6 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 
-/*  DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z);
- DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x + 5, 6, z);
- DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x - 5, 6, z);
- DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z + 5);
- DVEW.worldGeneration.illumantionManager.runRGBFloodFillAt(x, 6, z - 5); */
-
-//DVEW.runChunkRebuildQue();
-
 await DVEW.$INIT({
  onReady: () => {},
 });

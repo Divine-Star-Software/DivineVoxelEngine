@@ -1,3 +1,7 @@
+import { BoundingBox } from "./Classes/BoundingBox.js";
+import { Plane } from "./Classes/Plane.js";
+import { SimpleBoundingBox } from "./Classes/SimpleBoundingBox.js";
+import { Vector3 } from "./Classes/Vector3.js";
 import { VisitAll } from "./Functions/VisitAll.js";
 /**# Divine Voxel Engine Math
  * ---
@@ -14,5 +18,28 @@ export const DVEM = {
      * @returns an array of numbers with a stride of 3 for positions
      */
     visitAll: VisitAll,
+    getPositionVector3(x, y, z) {
+        return new Vector3(x, y, z);
+    },
+    getPlane(pv1, pv2, pv3, pv4) {
+        return new Plane({
+            v1: pv1,
+            v2: pv2,
+            v3: pv3,
+            v4: pv4,
+        });
+    },
+    getSimpleBoundingBox(origion, dimensions) {
+        return new SimpleBoundingBox(origion, dimensions);
+    },
+    getBoundingBox(data) {
+        return new BoundingBox(data);
+    },
+    convertToGridSpace(position) {
+        position[0] = Math.round(position[0]) >> 0;
+        position[1] = Math.round(position[1]) >> 0;
+        position[2] = Math.round(position[2]) >> 0;
+        return position;
+    }
 };
 DVEM.visitAll;
