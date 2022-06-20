@@ -40,8 +40,8 @@ export class Plane {
   minProperty: "minX" | "minY" | "minZ",
   maxProperty: "maxX" | "maxY" | "maxZ"
  ) {
-  const c1 = v1.getVector();
-  const c2 = v2.getVector();
+  const c1 = v1;
+  const c2 = v2;
 
   if (c1[axis] < this[minProperty]) {
    if (c1[axis] <= c2[axis]) {

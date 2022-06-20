@@ -47,19 +47,24 @@ export const SetUpDarkScene = (engine) => {
     scene.autoClearDepthAndStencil = false;
     return scene;
 };
-export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30, z: -2 }, startTarget = { x: 0, y: 0, z: 0 }) => {
+export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30, z: -2 }, startTarget = { x: 0, y: 0, z: 0 }, makeActiveCamera = true, attachControls = true, name = "main") => {
     const target = new BABYLON.Vector3(startTarget.x, startTarget.y, startTarget.z);
-    const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
+    const camera = new BABYLON.FreeCamera(name, BABYLON.Vector3.Zero(), scene);
     camera.fov = 1.5;
     camera.minZ = 0.01;
     camera.maxZ = 500;
     camera.angularSensibility = 4000;
+    camera.speed = camera.speed * 0.2;
     camera.position.x = startPosition.x;
     camera.position.y = startPosition.y;
     camera.position.z = startPosition.z;
     camera.setTarget(target);
-    scene.activeCamera = camera;
-    camera.attachControl(canvas, true);
+    if (makeActiveCamera) {
+        scene.activeCamera = camera;
+    }
+    if (attachControls) {
+        camera.attachControl(canvas, true);
+    }
     return camera;
 };
 export const SetUpDefaultSkybox = (scene) => {

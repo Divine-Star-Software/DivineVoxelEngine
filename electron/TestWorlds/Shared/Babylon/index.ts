@@ -43,7 +43,7 @@ export const SetUpDefaultScene = (engine: BABYLON.Engine) => {
  scene.autoClear = false;
  scene.autoClearDepthAndStencil = false;
 
-// scene.debugLayer.show();
+ // scene.debugLayer.show();
 
  return scene;
 };
@@ -57,7 +57,6 @@ export const SetUpDarkScene = (engine: BABYLON.Engine) => {
   earthGravity / assumedFramesPerSecond,
   0
  );
-
 
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
  scene.fogDensity = 0.008;
@@ -73,27 +72,35 @@ export const SetUpDefaultCamera = (
  scene: BABYLON.Scene,
  canvas: HTMLCanvasElement,
  startPosition: Position3Matrix = { x: 0, y: 30, z: -2 },
- startTarget: Position3Matrix = { x: 0, y: 0, z: 0 }
+ startTarget: Position3Matrix = { x: 0, y: 0, z: 0 },
+ makeActiveCamera = true,
+ attachControls = true,
+ name = "main"
 ) => {
  const target = new BABYLON.Vector3(
   startTarget.x,
   startTarget.y,
   startTarget.z
  );
- const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
+ const camera = new BABYLON.FreeCamera(name, BABYLON.Vector3.Zero(), scene);
 
  camera.fov = 1.5;
  camera.minZ = 0.01;
  camera.maxZ = 500;
  camera.angularSensibility = 4000;
+ camera.speed = camera.speed * 0.2;
 
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;
  camera.position.z = startPosition.z;
  camera.setTarget(target);
+ if (makeActiveCamera) {
+  scene.activeCamera = camera;
+ }
 
- scene.activeCamera = camera;
+ if(attachControls) {
  camera.attachControl(canvas, true);
+ }
  return camera;
 };
 

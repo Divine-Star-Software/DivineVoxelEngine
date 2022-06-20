@@ -15,6 +15,19 @@ import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
 
 RegisterTexutres(DVER);
 
+const ready = { ready: false };
+const testBoxes: any[] = [];
+let playerPostionArray = new Float32Array();
+DVER.worldComm.listenForMessage("connect-player-data", (data) => {
+ playerPostionArray = new Float32Array(data[1]);
+ ready.ready = true;
+});
+
+const cameras: any = {
+ freeCam: null,
+ playerCam: null,
+};
+
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
@@ -54,6 +67,7 @@ const init = async () => {
  const engine = SetUpEngine(canvas);
  const scene = SetUpDarkScene(engine);
  const camera = SetUpDefaultCamera(scene, canvas);
+ cameras.freeCam = camera;
  SetUpDefaultSkybox(scene);
  CreateWorldAxis(scene, 10);
 
@@ -66,189 +80,162 @@ const init = async () => {
   new BABYLON.Vector3(0, 1, 0),
   scene
  );
- physicsTest(scene);
+ setUpOptions(scene);
+ physicsTest(scene, canvas);
  // checkPointTest(scene);
 };
 
-const physicsTest = async (scene: BABYLON.Scene) => {
+const addNewGuiButton = (
+ parent: HTMLElement,
+ text: string,
+ onClick: Function
+) => {
+ const button = document.createElement("button");
+ button.innerText = text;
+ button.className = "gui-button";
+ button.addEventListener("click", (event) => {
+  onClick(event);
+ });
+ parent.append(button);
+};
+
+const setUpOptions = (scene: BABYLON.Scene) => {
+ const optionsMenu = document.getElementById("gui-buttons");
+ if (!optionsMenu) return;
+ addNewGuiButton(optionsMenu, "Main Camera", () => {
+  scene.activeCamera = cameras.freeCam;
+ });
+ addNewGuiButton(optionsMenu, "Player Cameera", () => {
+  scene.activeCamera = cameras.playerCam;
+ });
+ addNewGuiButton(optionsMenu, "Toggle Test Boxes", () => {
+  for (const box of testBoxes) {
+   box.setEnabled(!box.isEnabled());
+  }
+ });
+};
+
+const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
+ const posVector3 = DVEM.getVector3(0, 0.5, 0);
+ const playerCamera = SetUpDefaultCamera(
+  scene,
+  canvas,
+  posVector3,
+  { x: 0, y: 0, z: 0 },
+  false,
+  false,
+  "playercam"
+ );
+
+ playerCamera.attachControl(canvas, true);
+ playerCamera.inputs.removeByType("FreeCameraKeyboardMoveInput");
+
  const playerHitBox = BABYLON.MeshBuilder.CreateBox(
   "player-hitbox",
   { width: 0.8, height: 2, depth: 0.8 },
   scene
  );
+ cameras.playerCam = playerCamera;
 
- const ready = { ready: false };
-
- let playerPostionArray = new Float32Array();
-
- DVER.worldComm.listenForMessage("connect-player-data", (data) => {
-  playerPostionArray = new Float32Array(data[1]);
-  ready.ready = true;
- });
+ const camNode = new BABYLON.TransformNode("camnode", scene);
+ playerCamera.parent = camNode;
+ camNode.position.y = 0.5;
+ camNode.parent = playerHitBox;
 
  await DVER.UTIL.createPromiseCheck({
   check: () => ready.ready,
   checkInterval: 1,
  });
 
+ const playerDirectionSAB = new SharedArrayBuffer(4 * 3);
+ const playerStatesSAB = new SharedArrayBuffer(4);
+ const playerDirection = new Float32Array(playerDirectionSAB);
+ const playerStates = new Uint8Array(playerStatesSAB);
+
+ window.addEventListener("keydown", (event) => {
+  if (event.key == "w" || event.key == "W") {
+   playerStates[0] = 1;
+  }
+  if (event.key == "s" || event.key == "S") {
+   playerStates[0] = 2;
+  }
+  if (event.key == " ") {
+   playerStates[1] = 1;
+  }
+ });
+ window.addEventListener("keyup", (event) => {
+  if (
+   event.key == "w" ||
+   event.key == "W" ||
+   event.key == "s" ||
+   event.key == "S"
+  ) {
+   playerStates[0] = 0;
+  }
+  if (event.key == " ") {
+   playerStates[1] = 0;
+  }
+ });
+
+ DVER.worldComm.sendMessage("connect-player-states", [
+  playerDirectionSAB,
+  playerStatesSAB,
+ ]);
+
+ const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(7, 7, 5), {
+  w: 0.8,
+  h: 2,
+  d: 0.8,
+ });
+
+ const testMat = new BABYLON.StandardMaterial("", scene);
+ testMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
+ const testBox = BABYLON.MeshBuilder.CreateBox(
+  "player-hitbox",
+  { width: 1, height: 1, depth: 1 },
+  scene
+ );
+ testBox.material = testMat;
+ testBox.visibility = 0.2;
+
+ const checkPoints = playerBoundinBox.getVoxelCheckPoints();
+ for (const point of checkPoints) {
+  const newBox = testBox.clone();
+  testBoxes.push(newBox);
+  newBox.position.x = point[0];
+  newBox.position.y = point[1];
+  newBox.position.z = point[2];
+ }
+
  setInterval(() => {
-    
-  playerHitBox.position.x = playerPostionArray[0] + .4;
+  playerHitBox.position.x = playerPostionArray[0];
   playerHitBox.position.y = playerPostionArray[1];
-  playerHitBox.position.z = playerPostionArray[2] + .4;
+  playerHitBox.position.z = playerPostionArray[2];
+
+  playerBoundinBox.setCheckOrigion(
+   playerHitBox.position.x,
+   playerHitBox.position.y,
+   playerHitBox.position.z
+  );
+  const checkPoints = playerBoundinBox.getVoxelCheckPoints();
+  let k = 0;
+  for (const point of checkPoints) {
+   DVEM.convertToOrigionGridSpace(point);
+   const newBox = testBoxes[k];
+   newBox.position.x = point[0];
+   newBox.position.y = point[1];
+   newBox.position.z = point[2];
+   k++;
+  }
+
+  const camera = scene.activeCamera;
+  if (!camera) return;
+  const forward = camera.getDirection(new BABYLON.Vector3(0, 0, 1));
+  playerDirection[0] = forward.x;
+  playerDirection[1] = forward.y;
+  playerDirection[2] = forward.z;
  }, 10);
 };
 
-const checkPointTest = (scene: BABYLON.Scene) => {
- const simpleBoundingBox = DVEM.getSimpleBoundingBox(
-  DVEM.getPositionVector3(0, 6.5, 0),
-  { w: 0.8, h: 2, d: 0.8 }
- );
-
- const playerHitBox = BABYLON.MeshBuilder.CreateBox(
-  "player-hitbox",
-  { width: 0.8, height: 2, depth: 0.8 },
-  scene
- );
-
- const voxelCheckBox = BABYLON.MeshBuilder.CreateBox(
-  "player-hitbox",
-  { width: 1, height: 1, depth: 1 },
-  scene
- );
-
- const origionBox = BABYLON.MeshBuilder.CreateBox(
-  "player-hitbox",
-  { width: 1, height: 1, depth: 1 },
-  scene
- );
-
- const origionVoxelBox = BABYLON.MeshBuilder.CreateBox(
-  "player-hitbox",
-  { width: 1, height: 1, depth: 1 },
-  scene
- );
-
- const checkBox = BABYLON.MeshBuilder.CreateBox(
-  "checkbox",
-  { width: 1, height: 1, depth: 1 },
-  scene
- );
-
- const checkBoxMat = new BABYLON.StandardMaterial("", scene);
- checkBoxMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
- const voxelCheckMat = new BABYLON.StandardMaterial("", scene);
- voxelCheckMat.diffuseColor = new BABYLON.Color3(0, 0, 1);
- const orgionMat = new BABYLON.StandardMaterial("", scene);
- orgionMat.diffuseColor = new BABYLON.Color3(1, 0, 1);
- const orgionVoxelMat = new BABYLON.StandardMaterial("", scene);
- orgionVoxelMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
-
- checkBox.material = checkBoxMat;
- voxelCheckBox.material = voxelCheckMat;
- origionBox.material = orgionMat;
- origionVoxelBox.material = orgionVoxelMat;
- checkBox.visibility = 0.2;
- voxelCheckBox.visibility = 0.3;
- origionBox.visibility = 0.2;
- origionVoxelBox.visibility = 0.3;
-
- const origionBoxes: any[] = [];
- const origionCheckBoxes: any[] = [];
- const checkBoxes: any[] = [];
- const checkBoxesVxels: any[] = [];
-
- const boxOrogion = simpleBoundingBox.origion.getVector();
- playerHitBox.position.x = boxOrogion.x + 0.4;
- playerHitBox.position.y = boxOrogion.y + 0.5;
- playerHitBox.position.z = boxOrogion.z + 0.4;
-
- const origionPoints = simpleBoundingBox.getCurrentOrigionPoints();
- console.log(origionPoints);
- for (const point of origionPoints) {
-  const newCheckBox = origionBox.clone();
-  origionBoxes.push(newCheckBox);
-  const newVoxelCheck = origionVoxelBox.clone();
-  origionCheckBoxes.push(newVoxelCheck);
-  newCheckBox.position.x = point[0] + 0.5;
-  newCheckBox.position.y = point[1] + 0.5;
-  newCheckBox.position.z = point[2] + 0.5;
-  DVEM.convertToGridSpace(point);
-  newVoxelCheck.position.x = point[0] + 0.5;
-  newVoxelCheck.position.y = point[1] + 0.5;
-  newVoxelCheck.position.z = point[2] + 0.5;
- }
-
- simpleBoundingBox.setCheckOrigion(
-  boxOrogion.x + 10,
-  boxOrogion.y,
-  boxOrogion.z
- );
-
- const points = simpleBoundingBox.getVoxelCheckPoints();
- console.log(points);
- for (const point of points) {
-  const newCheckBox = checkBox.clone();
-  checkBoxes.push(newCheckBox);
-  const newVoxelCheck = voxelCheckBox.clone();
-  checkBoxesVxels.push(newVoxelCheck);
-  newCheckBox.position.x = point[0] + 0.5;
-  newCheckBox.position.y = point[1] + 0.5;
-  newCheckBox.position.z = point[2] + 0.5;
-  DVEM.convertToGridSpace(point);
-  newVoxelCheck.position.x = point[0] + 0.5;
-  newVoxelCheck.position.y = point[1] + 0.5;
-  newVoxelCheck.position.z = point[2] + 0.5;
- }
-
- setInterval(() => {
-  const boxOrogion = simpleBoundingBox.origion.getVector();
-  playerHitBox.position.x = boxOrogion.x + 0.5;
-  playerHitBox.position.y = boxOrogion.y + 0.5;
-  playerHitBox.position.z = boxOrogion.z + 0.5;
-  simpleBoundingBox.updateOrigion(
-   boxOrogion.x - 0.01,
-   boxOrogion.y,
-   boxOrogion.z - 0.01
-  );
-
-  const points = simpleBoundingBox.getCurrentOrigionPoints();
-  let k = 0;
-  for (const point of points) {
-   const newCheckBox = origionBoxes[k];
-   newCheckBox.position.x = point[0] + 0.5;
-   newCheckBox.position.y = point[1] + 0.5;
-   newCheckBox.position.z = point[2] + 0.5;
-   DVEM.convertToGridSpace(point);
-   const newVoxelCheck = origionCheckBoxes[k];
-   newVoxelCheck.position.x = point[0] + 0.5;
-   newVoxelCheck.position.y = point[1] + 0.5;
-   newVoxelCheck.position.z = point[2] + 0.5;
-   k++;
-  }
-  simpleBoundingBox.setCheckOrigion(
-   boxOrogion.x - 0.02,
-   boxOrogion.y,
-   boxOrogion.z - 0.02
-  );
-
-  const checkPoint = simpleBoundingBox.getVoxelCheckPoints();
-  k = 0;
-  for (const point of checkPoint) {
-   const newCheckBox = checkBoxes[k];
-   newCheckBox.position.x = point[0] + 0.5;
-   newCheckBox.position.y = point[1] + 0.5;
-   newCheckBox.position.z = point[2] + 0.5;
-   DVEM.convertToGridSpace(point);
-   const newVoxelCheck = checkBoxesVxels[k];
-   newVoxelCheck.position.x = point[0] + 0.5;
-   newVoxelCheck.position.y = point[1] + 0.5;
-   newVoxelCheck.position.z = point[2] + 0.5;
-   k++;
-  }
- }, 100);
-};
-
 RunInit(init);
-
 (window as any).DVER = DVER;

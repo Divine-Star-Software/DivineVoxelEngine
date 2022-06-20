@@ -13,7 +13,7 @@
     "@types/node": "^17.0.23",
     "@types/ws": "^8.5.3",
     "babylonjs": "^5.8.2",
-    "electron": "^16.0.7"
+    "electron": "^19.0.4"
   },
   "dependencies": {
     "ds-element-tree": "0.0.7"

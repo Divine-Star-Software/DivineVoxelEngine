@@ -23,6 +23,7 @@ export declare class SimpleBoundingBox {
     checkOrigion: Vector3;
     _voxelCheckMap: Record<string, boolean>;
     _voxelCheckPoints: number[][];
+    _voxelBottomCheckPoints: number[][];
     _voxelOrigionPoints: number[][];
     constructor(origion: Vector3, dimensions: DimensionsVector3);
     _updateBounds(): void;
@@ -32,6 +33,7 @@ export declare class SimpleBoundingBox {
     setCheckOrigion(x: number, y: number, z: number): void;
     getCurrentOrigionPoints(): number[][];
     getVoxelCheckPoints(): number[][];
+    getVoxelBottomCheckPoints(): number[][];
     _getPositionKey(x: number, y: number, z: number): string;
     isPointInsideBox(point: Position3Matrix): boolean;
     doesBoxIntersect(testBox: BoundsObject): boolean;

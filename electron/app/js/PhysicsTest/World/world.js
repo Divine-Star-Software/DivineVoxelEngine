@@ -6,7 +6,7 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({
     onReady: () => { },
 });
-const depth = 64;
+const depth = 16;
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;
@@ -14,7 +14,6 @@ let endZ = depth;
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
-        DVEW.queues.addWorldColumnToSunLightQue(x, z);
     }
 }
 for (let x = startX; x < endX; x += 16) {
@@ -22,39 +21,149 @@ for (let x = startX; x < endX; x += 16) {
         DVEW.buildChunk(x, 0, z);
     }
 }
-const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getPositionVector3(3, 7, 0), { w: 0.8, h: 2, d: 0.8 });
-const voxelBoundingBox = DVEM.getSimpleBoundingBox(DVEM.getPositionVector3(0, 0, 0), { w: 1, h: 1, d: 1 });
+const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(10, 10, 7), {
+    w: 0.8,
+    h: 2,
+    d: 0.8,
+});
+const voxelBoundingBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(0, 0, 0), {
+    w: 1,
+    h: 1,
+    d: 1,
+});
 const playerPositionSAB = new SharedArrayBuffer(4 * 3);
 const playerPosition = new Float32Array(playerPositionSAB);
-playerPosition[0] = 3;
-playerPosition[1] = 7;
+playerPosition[0] = playerBoundinBox.origion.x;
+playerPosition[1] = playerBoundinBox.origion.y;
+playerPosition[2] = playerBoundinBox.origion.z;
 DVEW.renderComm.sendMessage("connect-player-data", [playerPositionSAB]);
-const velocity = { x: 1, y: 0, z: 1.3 };
-const speed = 0.1;
+let playerDirection = new Float32Array();
+let playerStates = new Uint8Array();
+const ready = { ready: false };
+DVEW.renderComm.listenForMessage("connect-player-states", (data) => {
+    playerDirection = new Float32Array(data[1]);
+    playerStates = new Uint8Array(data[2]);
+    ready.ready = true;
+});
+console.log(playerDirection, playerStates);
+await DVEW.UTIL.createPromiseCheck({
+    checkInterval: 1,
+    check: () => ready.ready,
+});
+const gravityStates = {
+    flaoting: false,
+};
+const jumpStates = {
+    count: 0,
+    max: 60,
+    jumping: false,
+    canJump: true,
+};
+const velocity = { x: 0, y: -1, z: 0 };
+const speed = 0.05;
+const checkPoint = DVEM.getVector3(0, 0, 0);
 setInterval(async () => {
-    const origion = playerBoundinBox.origion.getVector();
-    playerBoundinBox.setCheckOrigion(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
-    const checkPoints = playerBoundinBox.getVoxelCheckPoints();
-    for (const point of checkPoints) {
-        DVEM.convertToGridSpace(point);
-        voxelBoundingBox.updateOrigion(point[0], point[1], point[2]);
+    if (playerStates[0] == 1) {
+        velocity.x = playerDirection[0];
+        velocity.z = playerDirection[2];
+    }
+    else if (playerStates[0] == 2) {
+        velocity.x = playerDirection[0] * -1;
+        velocity.z = playerDirection[2] * -1;
+    }
+    else {
+        velocity.x = 0;
+        velocity.z = 0;
+    }
+    if (playerStates[1] == 1 && !jumpStates.jumping && jumpStates.canJump) {
+        jumpStates.jumping = true;
+        jumpStates.canJump = false;
+        velocity.y = 1;
+        playerStates[1] = 0;
+    }
+    if (jumpStates.jumping && velocity.y > -1 && gravityStates.flaoting) {
+        if (jumpStates.count >= jumpStates.max) {
+            jumpStates.count = 0;
+            velocity.y = 0;
+            jumpStates.jumping = false;
+        }
+        else {
+            velocity.y -= 0.01;
+            jumpStates.count++;
+        }
+    }
+    if (gravityStates.flaoting && velocity.y > -1) {
+        if (!jumpStates.jumping) {
+            velocity.y -= 0.01;
+        }
+    }
+    const origion = playerBoundinBox.origion;
+    checkPoint.updateVector(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
+    const checkVector = checkPoint;
+    checkVector.roundVector(2);
+    playerBoundinBox.setCheckOrigion(checkVector.x, checkVector.y, checkVector.z);
+    const sideCheckPoints = playerBoundinBox.getVoxelCheckPoints();
+    let doNotUpdate = false;
+    let applyGravity = false;
+    gravityStates.flaoting = true;
+    for (const point of sideCheckPoints) {
         const voxel = DVEW.worldData.getVoxel(point[0], point[1], point[2]);
+        DVEM.convertToOrigionGridSpace(point);
+        voxelBoundingBox.updateOrigion(point[0], point[1], point[2]);
         if (!voxel)
             continue;
         if (voxel[0] == -1)
             continue;
         if (playerBoundinBox.doesBoxIntersect(voxelBoundingBox.bounds)) {
-            velocity.x = 0;
-            setTimeout(() => {
-                velocity.x = -1.5;
-                console.log(velocity.x);
-            }, 100);
-            continue;
+            let wall = false;
+            if (point[0] > checkPoint.x && velocity.x > 0) {
+                velocity.x = 0;
+                wall = true;
+                applyGravity = true;
+            }
+            if (point[2] > checkPoint.z && velocity.z > 0) {
+                velocity.z = 0;
+                wall = true;
+                applyGravity = true;
+            }
+            if (point[0] < checkPoint.x && velocity.x < 0) {
+                velocity.x = 0;
+                wall = true;
+                applyGravity = true;
+            }
+            if (point[2] < checkPoint.z && velocity.z < 0) {
+                velocity.z = 0;
+                wall = true;
+                applyGravity = true;
+            }
+            if (point[1] < checkPoint.y - playerBoundinBox.dimensions.h / 2 &&
+                velocity.y < 0) {
+                if (playerBoundinBox.bounds.minY - 0.01 < voxelBoundingBox.bounds.maxY &&
+                    playerBoundinBox.bounds.minY.toFixed(2) !=
+                        voxelBoundingBox.bounds.maxY.toFixed(2)) {
+                    origion.y += 0.01;
+                }
+                velocity.y = 0;
+                jumpStates.canJump = true;
+                gravityStates.flaoting = false;
+                // applyGravity = false;
+            }
+            else {
+                console.log("nope");
+            }
+            if (point[1] >= checkPoint.y && velocity.y > 0) {
+                applyGravity = true;
+                console.log("apply");
+            }
         }
     }
-    playerBoundinBox.updateOrigion(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
-    playerPosition[0] = origion.x;
-    playerPosition[1] = origion.y;
-    playerPosition[2] = origion.z;
-}, 100);
+    origion.roundVector(2);
+    //console.log("after", velocity.x, velocity.y, velocity.z);
+    if (!doNotUpdate) {
+        playerBoundinBox.updateOrigion(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
+        playerPosition[0] = origion.x;
+        playerPosition[1] = origion.y;
+        playerPosition[2] = origion.z;
+    }
+}, 10);
 self.DVEW = DVEW;

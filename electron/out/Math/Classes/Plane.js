@@ -22,8 +22,8 @@ export class Plane {
         this._minMaxCompare(this.v3, this.v4);
     }
     _compareVales(v1, v2, axis, minProperty, maxProperty) {
-        const c1 = v1.getVector();
-        const c2 = v2.getVector();
+        const c1 = v1;
+        const c2 = v2;
         if (c1[axis] < this[minProperty]) {
             if (c1[axis] <= c2[axis]) {
                 this[minProperty] = c1[axis];

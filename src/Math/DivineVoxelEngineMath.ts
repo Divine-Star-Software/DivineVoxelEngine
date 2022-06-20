@@ -20,7 +20,7 @@ export const DVEM = {
   */
  visitAll: VisitAll,
 
- getPositionVector3(x: number, y: number, z: number) {
+ getVector3(x: number, y: number, z: number) {
   return new Vector3(x, y, z);
  },
 
@@ -41,12 +41,12 @@ export const DVEM = {
   return new BoundingBox(data);
  },
 
- convertToGridSpace(position : number[]) {
-    position[0] = Math.round(position[0]) >> 0;
-    position[1] = Math.round(position[1]) >> 0;
-    position[2] = Math.round(position[2]) >> 0;
-    return position;
- }
+ convertToOrigionGridSpace(position: number[]) {
+  position[0] = Math.round(position[0]) + 0.5;
+  position[1] = Math.round(position[1]) + 0.5;
+  position[2] = Math.round(position[2]) + 0.5;
+  return position;
+ },
 };
 
 export type DivineVoxelEngineMath = typeof DVEM;

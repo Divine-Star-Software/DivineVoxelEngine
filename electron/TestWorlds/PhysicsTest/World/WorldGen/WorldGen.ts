@@ -18,7 +18,11 @@ export const WorldGen = {
        z + chunkZ
       );
      }
-     if (y > baseY + 5 && y <= baseY + 7 && z == 0 && x == 0) {
+     if (
+      y > baseY + 5 &&
+      y <= baseY + 6 &&
+      (z == 0 || x == 0 || z == 15 || x == 15)
+     ) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
        "default",

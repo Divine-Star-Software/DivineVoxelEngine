@@ -18,7 +18,7 @@ export const DVEM = {
      * @returns an array of numbers with a stride of 3 for positions
      */
     visitAll: VisitAll,
-    getPositionVector3(x, y, z) {
+    getVector3(x, y, z) {
         return new Vector3(x, y, z);
     },
     getPlane(pv1, pv2, pv3, pv4) {
@@ -35,11 +35,11 @@ export const DVEM = {
     getBoundingBox(data) {
         return new BoundingBox(data);
     },
-    convertToGridSpace(position) {
-        position[0] = Math.round(position[0]) >> 0;
-        position[1] = Math.round(position[1]) >> 0;
-        position[2] = Math.round(position[2]) >> 0;
+    convertToOrigionGridSpace(position) {
+        position[0] = Math.round(position[0]) + 0.5;
+        position[1] = Math.round(position[1]) + 0.5;
+        position[2] = Math.round(position[2]) + 0.5;
         return position;
-    }
+    },
 };
 DVEM.visitAll;
