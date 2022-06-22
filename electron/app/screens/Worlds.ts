@@ -20,11 +20,11 @@ export const Worlds: WorldsData = [
     description: `A simple 9 chunk area with different voxel types.`,
     world: "World2",
    },
-   /*    {
+   {
     title: "Noise World",
     description: `A world generated using perlin noise.`,
-    world: "World3",
-   }, */
+    world: "NoiseWorld",
+   },
   ],
  },
  {

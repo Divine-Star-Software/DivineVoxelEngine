@@ -65,15 +65,17 @@ await DVER.$INIT({
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
- const scene = SetUpDarkScene(engine);
+ const scene = SetUpDefaultScene(engine);
  const camera = SetUpDefaultCamera(scene, canvas);
  cameras.freeCam = camera;
  SetUpDefaultSkybox(scene);
+
  CreateWorldAxis(scene, 10);
 
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);
 
+ //@ts-ignore
  runRenderLoop(engine, scene, camera, DVER);
  const hemLight = new BABYLON.HemisphericLight(
   "",
@@ -136,7 +138,6 @@ const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
   scene
  );
  cameras.playerCam = playerCamera;
-
  const camNode = new BABYLON.TransformNode("camnode", scene);
  playerCamera.parent = camNode;
  camNode.position.y = 0.5;
@@ -207,7 +208,7 @@ const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
   newBox.position.z = point[2];
  }
 
- setInterval(() => {
+ scene.registerAfterRender(() => {
   playerHitBox.position.x = playerPostionArray[0];
   playerHitBox.position.y = playerPostionArray[1];
   playerHitBox.position.z = playerPostionArray[2];
@@ -230,11 +231,11 @@ const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
 
   const camera = scene.activeCamera;
   if (!camera) return;
-  const forward = camera.getDirection(new BABYLON.Vector3(0, 0, 1));
-  playerDirection[0] = forward.x;
-  playerDirection[1] = forward.y;
-  playerDirection[2] = forward.z;
- }, 10);
+  const direction = playerCamera.getDirection(new BABYLON.Vector3(0, 0, 1));
+  playerDirection[0] = direction.x;
+  playerDirection[1] = direction.y;
+  playerDirection[2] = direction.z;
+ });
 };
 
 RunInit(init);

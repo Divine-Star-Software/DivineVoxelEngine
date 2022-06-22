@@ -1,4 +1,4 @@
-import { SetUpEngine, SetUpCanvas, SetUpDarkScene, SetUpDefaultCamera, SetUpDefaultSkybox, CreateWorldAxis, runRenderLoop, } from "../Shared/Babylon/index.js";
+import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, CreateWorldAxis, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
@@ -46,13 +46,14 @@ await DVER.$INIT({
 const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
-    const scene = SetUpDarkScene(engine);
+    const scene = SetUpDefaultScene(engine);
     const camera = SetUpDefaultCamera(scene, canvas);
     cameras.freeCam = camera;
     SetUpDefaultSkybox(scene);
     CreateWorldAxis(scene, 10);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(1);
+    //@ts-ignore
     runRenderLoop(engine, scene, camera, DVER);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     setUpOptions(scene);
@@ -147,7 +148,7 @@ const physicsTest = async (scene, canvas) => {
         newBox.position.y = point[1];
         newBox.position.z = point[2];
     }
-    setInterval(() => {
+    scene.registerAfterRender(() => {
         playerHitBox.position.x = playerPostionArray[0];
         playerHitBox.position.y = playerPostionArray[1];
         playerHitBox.position.z = playerPostionArray[2];
@@ -165,11 +166,11 @@ const physicsTest = async (scene, canvas) => {
         const camera = scene.activeCamera;
         if (!camera)
             return;
-        const forward = camera.getDirection(new BABYLON.Vector3(0, 0, 1));
-        playerDirection[0] = forward.x;
-        playerDirection[1] = forward.y;
-        playerDirection[2] = forward.z;
-    }, 10);
+        const direction = playerCamera.getDirection(new BABYLON.Vector3(0, 0, 1));
+        playerDirection[0] = direction.x;
+        playerDirection[1] = direction.y;
+        playerDirection[2] = direction.z;
+    });
 };
 RunInit(init);
 window.DVER = DVER;

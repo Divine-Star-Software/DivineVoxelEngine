@@ -21,7 +21,7 @@ for (let x = startX; x < endX; x += 16) {
         DVEW.buildChunk(x, 0, z);
     }
 }
-const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(10, 10, 7), {
+const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(10, 7, 7), {
     w: 0.8,
     h: 2,
     d: 0.8,
@@ -31,6 +31,7 @@ const voxelBoundingBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(0, 0, 0), {
     h: 1,
     d: 1,
 });
+const directionVector = DVEM.getVector3(0, 0, 0);
 const playerPositionSAB = new SharedArrayBuffer(4 * 3);
 const playerPosition = new Float32Array(playerPositionSAB);
 playerPosition[0] = playerBoundinBox.origion.x;
@@ -45,7 +46,6 @@ DVEW.renderComm.listenForMessage("connect-player-states", (data) => {
     playerStates = new Uint8Array(data[2]);
     ready.ready = true;
 });
-console.log(playerDirection, playerStates);
 await DVEW.UTIL.createPromiseCheck({
     checkInterval: 1,
     check: () => ready.ready,
@@ -55,17 +55,21 @@ const gravityStates = {
 };
 const jumpStates = {
     count: 0,
-    max: 60,
+    max: 20,
     jumping: false,
     canJump: true,
 };
-const velocity = { x: 0, y: -1, z: 0 };
+const velocity = { x: 0, y: 0, z: 0 };
 const speed = 0.05;
+const gravity = 0.01;
+let jumpSpeed = 0.01;
 const checkPoint = DVEM.getVector3(0, 0, 0);
-setInterval(async () => {
+const controlsUpdate = () => {
+    directionVector.updateVector(playerDirection[0], 0, playerDirection[2]);
+    directionVector.roundVector(2);
     if (playerStates[0] == 1) {
-        velocity.x = playerDirection[0];
-        velocity.z = playerDirection[2];
+        velocity.x = directionVector.x;
+        velocity.z = directionVector.z;
     }
     else if (playerStates[0] == 2) {
         velocity.x = playerDirection[0] * -1;
@@ -78,7 +82,8 @@ setInterval(async () => {
     if (playerStates[1] == 1 && !jumpStates.jumping && jumpStates.canJump) {
         jumpStates.jumping = true;
         jumpStates.canJump = false;
-        velocity.y = 1;
+        velocity.y = 0.2;
+        jumpSpeed = 0.05;
         playerStates[1] = 0;
     }
     if (jumpStates.jumping && velocity.y > -1 && gravityStates.flaoting) {
@@ -97,15 +102,17 @@ setInterval(async () => {
             velocity.y -= 0.01;
         }
     }
-    const origion = playerBoundinBox.origion;
-    checkPoint.updateVector(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
+    if (!gravityStates.flaoting) {
+        velocity.y = 0;
+    }
+};
+const yUpdate = (origion) => {
+    checkPoint.updateVector(origion.x + speed * velocity.x, origion.y + velocity.y, origion.z + speed * velocity.z);
     const checkVector = checkPoint;
     checkVector.roundVector(2);
     playerBoundinBox.setCheckOrigion(checkVector.x, checkVector.y, checkVector.z);
     const sideCheckPoints = playerBoundinBox.getVoxelCheckPoints();
-    let doNotUpdate = false;
-    let applyGravity = false;
-    gravityStates.flaoting = true;
+    let foundGround = false;
     for (const point of sideCheckPoints) {
         const voxel = DVEW.worldData.getVoxel(point[0], point[1], point[2]);
         DVEM.convertToOrigionGridSpace(point);
@@ -115,55 +122,71 @@ setInterval(async () => {
         if (voxel[0] == -1)
             continue;
         if (playerBoundinBox.doesBoxIntersect(voxelBoundingBox.bounds)) {
-            let wall = false;
-            if (point[0] > checkPoint.x && velocity.x > 0) {
-                velocity.x = 0;
-                wall = true;
-                applyGravity = true;
-            }
-            if (point[2] > checkPoint.z && velocity.z > 0) {
-                velocity.z = 0;
-                wall = true;
-                applyGravity = true;
-            }
-            if (point[0] < checkPoint.x && velocity.x < 0) {
-                velocity.x = 0;
-                wall = true;
-                applyGravity = true;
-            }
-            if (point[2] < checkPoint.z && velocity.z < 0) {
-                velocity.z = 0;
-                wall = true;
-                applyGravity = true;
-            }
             if (point[1] < checkPoint.y - playerBoundinBox.dimensions.h / 2 &&
-                velocity.y < 0) {
-                if (playerBoundinBox.bounds.minY - 0.01 < voxelBoundingBox.bounds.maxY &&
+                velocity.y <= 0) {
+                if (playerBoundinBox.bounds.minY - gravity < voxelBoundingBox.bounds.maxY &&
                     playerBoundinBox.bounds.minY.toFixed(2) !=
                         voxelBoundingBox.bounds.maxY.toFixed(2)) {
-                    origion.y += 0.01;
+                    origion.y += gravity;
                 }
+                foundGround = true;
                 velocity.y = 0;
                 jumpStates.canJump = true;
-                gravityStates.flaoting = false;
-                // applyGravity = false;
-            }
-            else {
-                console.log("nope");
             }
             if (point[1] >= checkPoint.y && velocity.y > 0) {
-                applyGravity = true;
                 console.log("apply");
             }
         }
     }
-    origion.roundVector(2);
-    //console.log("after", velocity.x, velocity.y, velocity.z);
-    if (!doNotUpdate) {
-        playerBoundinBox.updateOrigion(origion.x + speed * velocity.x, origion.y + speed * velocity.y, origion.z + speed * velocity.z);
-        playerPosition[0] = origion.x;
-        playerPosition[1] = origion.y;
-        playerPosition[2] = origion.z;
+    if (!foundGround) {
+        gravityStates.flaoting = true;
     }
+};
+const xzUpdate = (origion) => {
+    checkPoint.updateVector(origion.x + speed * velocity.x, origion.y + velocity.y, origion.z + speed * velocity.z);
+    const checkVector = checkPoint;
+    checkVector.roundVector(2);
+    playerBoundinBox.setCheckOrigion(checkVector.x, checkVector.y, checkVector.z);
+    const sideCheckPoints = playerBoundinBox.getVoxelCheckPoints();
+    let foundGround = false;
+    for (const point of sideCheckPoints) {
+        const voxel = DVEW.worldData.getVoxel(point[0], point[1], point[2]);
+        DVEM.convertToOrigionGridSpace(point);
+        voxelBoundingBox.updateOrigion(point[0], point[1], point[2]);
+        if (!voxel)
+            continue;
+        if (voxel[0] == -1)
+            continue;
+        if (playerBoundinBox.doesBoxIntersect(voxelBoundingBox.bounds)) {
+            if (point[0] > checkPoint.x && velocity.x > 0) {
+                velocity.x = 0;
+            }
+            if (point[2] > checkPoint.z && velocity.z > 0) {
+                velocity.z = 0;
+            }
+            if (point[0] < checkPoint.x && velocity.x < 0) {
+                velocity.x = 0;
+            }
+            if (point[2] < checkPoint.z && velocity.z < 0) {
+                velocity.z = 0;
+            }
+        }
+    }
+    if (!foundGround) {
+        gravityStates.flaoting = true;
+    }
+};
+const origionUpdate = (origion) => {
+    playerBoundinBox.updateOrigion(origion.x + speed * velocity.x, origion.y + velocity.y, origion.z + speed * velocity.z);
+    playerPosition[0] = origion.x;
+    playerPosition[1] = origion.y;
+    playerPosition[2] = origion.z;
+};
+setInterval(async () => {
+    controlsUpdate();
+    const origion = playerBoundinBox.origion;
+    yUpdate(origion);
+    xzUpdate(origion);
+    origionUpdate(origion);
 }, 10);
 self.DVEW = DVEW;

@@ -49,7 +49,7 @@ export const SetUpDarkScene = (engine) => {
 };
 export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30, z: -2 }, startTarget = { x: 0, y: 0, z: 0 }, makeActiveCamera = true, attachControls = true, name = "main") => {
     const target = new BABYLON.Vector3(startTarget.x, startTarget.y, startTarget.z);
-    const camera = new BABYLON.FreeCamera(name, BABYLON.Vector3.Zero(), scene);
+    const camera = new BABYLON.UniversalCamera(name, BABYLON.Vector3.Zero(), scene);
     camera.fov = 1.5;
     camera.minZ = 0.01;
     camera.maxZ = 500;
