@@ -21,12 +21,20 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
- lighting: {
-  doAO: true,
-  doRGBLight: false,
-  doSunLight: false,
-  autoRGBLight: false,
-  autoSunLight: false,
+ chunks: {
+  chunkXPow2: 4,
+  chunkYPow2: 7,
+  chunkZPow2: 4,
+  autoHeightMap: true,
+ },
+ world: {
+  voxelPaletteMode: "global",
+  minZ: -Infinity,
+  maxZ: Infinity,
+  minX: -Infinity,
+  maxX: Infinity,
+  minY: 0,
+  maxY: 128,
  },
 });
 
@@ -43,10 +51,9 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+ DVER.renderManager.setSunLevel(0.8);
 
  runRenderLoop(engine, scene, camera, DVER);
-
 };
 
 RunInit(init);

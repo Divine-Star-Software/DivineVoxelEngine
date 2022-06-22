@@ -6,15 +6,17 @@ await DVEW.$INIT({
     onReady: () => { },
 });
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
-let startX = -64;
-let startZ = -64;
-let endX = 64;
-let endZ = 64;
+let startX = -128;
+let startZ = -128;
+let endX = 128;
+let endZ = 128;
 for (let x = startX; x <= endX; x += 16) {
     for (let z = startZ; z <= endZ; z += 16) {
         WorldGen.generateChunk(x, z);
+        DVEW.queues.addWorldColumnToSunLightQue(x, z);
     }
 }
+await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 for (let x = startX; x <= endX; x += 16) {
     for (let z = startZ; z <= endZ; z += 16) {
         DVEW.buildChunk(x, 0, z);
