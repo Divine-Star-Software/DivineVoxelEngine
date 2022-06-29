@@ -59,6 +59,14 @@ export const WorldGen = {
        let flip2 = Math.random();
        if (flip2 < 0.01) {
         DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 1, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 2, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 3, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 4, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 4, z + 1);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 4, z - 1);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x + 1, topY + 4, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x - 1, topY + 4, z);
+        DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", x, topY + 5, z);
        }
        continue;
       }

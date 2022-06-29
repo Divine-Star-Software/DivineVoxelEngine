@@ -32,6 +32,6 @@ varying float vFlow;
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  gl_FragColor = vec4(finalColor.rgb ,0.4 ); 
+  gl_FragColor = vec4(finalColor.rgb , .8 ); 
 `,
 };

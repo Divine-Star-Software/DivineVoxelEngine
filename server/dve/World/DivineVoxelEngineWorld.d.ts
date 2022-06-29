@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -124,8 +124,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -405,8 +405,64 @@ export declare const DVEW: {
     };
     settings: {
         context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
-        settings: EngineSettingsData;
+        settings: {
+            nexus: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            textureOptions: {
+                animationTime: number;
+                width: number;
+                height: number;
+            };
+            updating: {
+                autoRebuild: boolean;
+            };
+            world: {
+                voxelPaletteMode: string;
+                maxX: number;
+                minX: number;
+                maxZ: number;
+                minZ: number;
+                maxY: number;
+                minY: number;
+            };
+            regions: {
+                regionXPow2: number;
+                regionYPow2: number;
+                regionZPow2: number;
+            };
+            chunks: {
+                autoHeightMap: boolean;
+                chunkXPow2: number;
+                chunkYPow2: number;
+                chunkZPow2: number;
+            };
+            voxels: {
+                doColors: boolean;
+            };
+            lighting: {
+                doAO: boolean;
+                doSunLight: boolean;
+                doRGBLight: boolean;
+                autoRGBLight: boolean;
+                autoSunLight: boolean;
+            };
+            materials: {
+                doAO: boolean;
+                doSunLight: boolean;
+                doRGBLight: boolean;
+                disableFloraShaderEffects: boolean;
+                disableFluidShaderEffects: boolean;
+            };
+            data: {
+                enabled: boolean;
+                saveChunkTemplates: boolean;
+                saveWorldData: boolean;
+            };
+        };
         setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
             __maxChunkYSize: number;
@@ -489,6 +545,7 @@ export declare const DVEW: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
     };
@@ -1122,7 +1179,7 @@ export declare const DVEW: {
         areSunLightRemovesAllDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
-        runRGBUpdateQue(): void;
+        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         runRGBRemoveQue(): void;
         awaitAllRGBLightUpdates(): Promise<boolean>;
         awaitAllRGBLightRemove(): Promise<boolean>;

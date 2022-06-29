@@ -6,7 +6,8 @@ export const EngineSettings = {
     context: "MatrixLoadedThread",
     settings: {
         nexus: {
-            enabled: true,
+            enabled: false,
+            autoSyncChunks: false,
         },
         textureOptions: {
             animationTime: 20,
@@ -53,9 +54,17 @@ export const EngineSettings = {
             disableFloraShaderEffects: false,
             disableFluidShaderEffects: false,
         },
+        data: {
+            enabled: false,
+            saveChunkTemplates: false,
+            saveWorldData: false,
+        },
     },
     setContext(context) {
         this.context = context;
+    },
+    getSettings() {
+        return this.settings;
     },
     syncSettings(data) {
         //safetly set data without prototype pollution
@@ -90,6 +99,9 @@ export const EngineSettings = {
     },
     getSettingsCopy() {
         return JSON.parse(JSON.stringify(this.settings));
+    },
+    syncChunksInNexus() {
+        return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
     },
     doSunPropagation() {
         return this.settings.lighting?.autoSunLight == true;

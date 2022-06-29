@@ -165,16 +165,31 @@ export const QueuesManager = {
     addToRGBRemoveQue(x, y, z) {
         this._RGBLightRemoveQue.push([x, y, z]);
     },
-    runRGBUpdateQue() {
+    runRGBUpdateQue(filter) {
+        const reQueue = [];
         const queue = this._RGBLightUpdateQue;
         while (queue.length != 0) {
             const position = queue.shift();
             if (!position)
                 break;
+            if (filter) {
+                const filterReturn = filter(position[0], position[1], position[2]);
+                if (filterReturn == 0)
+                    continue;
+                if (filterReturn == 1) {
+                    reQueue.push([position[0], position[1], position[2]]);
+                    continue;
+                }
+            }
             Atomics.add(this.__states, QueuesIndexes.RGBLightUpdate, 1);
             DVEW.constructorCommManager.runRGBLightUpdate(position[0], position[1], position[2]);
         }
-        this._RGBLightUpdateQue = [];
+        if (!filter) {
+            this._RGBLightUpdateQue = [];
+        }
+        else {
+            this._RGBLightUpdateQue = reQueue;
+        }
     },
     runRGBRemoveQue() {
         const queue = this._RGBLightRemoveQue;

@@ -8,7 +8,6 @@ const perlin2 = new PerlinNoise3d();
 const waveLength = 50;
 const xOffSet = 1_000;
 const zOffSet = 1_000;
-console.log(perlin);
 export const WorldGen = {
  chunkDepth: 16,
  chunkWidth: 16,
@@ -24,28 +23,28 @@ export const WorldGen = {
       DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
       continue;
      }
-     if (y == 1) {
-      DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x, y, z);
-      continue;
-     }
+
      const height =
       (perlin.get(
        (x + xOffSet) / waveLength,
        y / waveLength,
        (z + zOffSet) / waveLength
       ) *
-       120) >>>
+       120 ) >>>
       0;
-     const carve = perlin2.get(
-      (x + xOffSet) / waveLength,
-      y / waveLength,
-      (z + zOffSet) / waveLength
-     );
-     if (y < height && carve > 0.5) {
+     const carve =
+      perlin2.get((x + xOffSet) / 30, y / 30, (z + zOffSet) / 30) * 0.9;
+
+     if (y < height && !(carve > 0.5 && carve < 0.6)) {
       DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
       let flip = Math.random();
-      if (flip > 0.98) {
+      if (flip > 0.92) {
        DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, y + 1, z);
+      }
+     } else {
+      if (y <= 6) {
+       DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x, y, z);
+       continue;
       }
      }
     }

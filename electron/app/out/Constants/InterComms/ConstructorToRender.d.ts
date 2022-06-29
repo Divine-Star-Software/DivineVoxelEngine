@@ -1,24 +1,6 @@
 export declare const ConstructorToRenderMessages: {
     setChunk: number;
 };
-/**
- *
- *
- *      (this as any).voxelTypeMap[type],
-     chunkX,
-     chunkY,
-     chunkZ,
-     positionArray.buffer,
-     indiciesArray.buffer,
-     AOColorsArray.buffer,
-     RGBLightColorsArray.buffer,
-     sunLightColorsArray.buffer,
-     colorsArray.buffer,
-     uvArray.buffer,
- */
-/**# SetChunkDataIndexes
- * CAn be modified.
- */
 export declare let SetChunkDataIndexes: {
     __mainMessage: number;
     voxelSubstanceType: number;

@@ -5,7 +5,7 @@ export function InitWorkers(
  DVER: DivineVoxelEngineRender,
  initData: DVERInitData
 ) {
- DVER.settings.syncSettings(initData);
+ DVER.settings.syncSettings(<any>initData);
  DVER._handleOptions();
 
  if (typeof initData.worldWorker == "string") {
@@ -18,7 +18,6 @@ export function InitWorkers(
    "Supplied data for World Worker is not correct. Must be path to worker or a worker."
   );
  }
-
 
  if (typeof initData.constructorWorker == "string") {
   DVER.constructorCommManager.createConstructors(initData.constructorWorker);
@@ -47,11 +46,11 @@ export function InitWorkers(
   DVER.nexusComm.$INIT();
  }
 
- DVER._syncSettings(initData);
+ DVER._syncSettings(<any>initData);
 
  DVER.textureManager.generateTexturesData();
  //DVER.builderCommManager.$INIT();
-// DVER.propagationCommManager.$INIT();
+ // DVER.propagationCommManager.$INIT();
  DVER.constructorCommManager.$INIT();
 
  //terminate all workers

@@ -1,7 +1,7 @@
 import { WorldToConstructorMessages } from "../../../Constants/InterComms/WorldToConstructor.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-const worldComm = CreateInterComm("builder-world", {});
+const worldComm = CreateInterComm("constructor-world", {});
 export const WorldComm = worldComm;
 worldComm.onMessage = (event) => {
     DVEC.matrixHub.onMessage(event, (messageEvent) => { });

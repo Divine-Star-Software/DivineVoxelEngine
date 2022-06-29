@@ -14,6 +14,11 @@ await DVER.$INIT({
         autoRGBLight: false,
         autoSunLight: false,
     },
+    data: {
+        enabled: true,
+        saveChunkTemplates: true,
+        saveWorldData: true,
+    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();

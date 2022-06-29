@@ -4,7 +4,7 @@ const renderCommBase = {
  onReady: () => {},
  onRestart: () => {},
 };
-const renderComm = CreateInterComm("builder-render", renderCommBase);
+const renderComm = CreateInterComm("constructor-render", renderCommBase);
 export const RenderComm = renderComm;
 renderComm.messageFunctions = {
  "connect-world": (data, event) => {

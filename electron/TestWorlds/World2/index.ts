@@ -28,6 +28,11 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
+ data: {
+  enabled: true,
+  saveChunkTemplates: true,
+  saveWorldData: true,
+ },
 });
 
 const init = async () => {
@@ -46,7 +51,6 @@ const init = async () => {
  DVER.renderManager.setBaseLevel(1);
 
  runRenderLoop(engine, scene, camera, DVER);
-
 };
 
 RunInit(init);

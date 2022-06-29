@@ -16,9 +16,10 @@ type EngineSettingsContext =
  */
 export const EngineSettings = {
  context: <EngineSettingsContext>"MatrixLoadedThread",
- settings: <EngineSettingsData>{
+ settings: {
   nexus: {
-   enabled: true,
+   enabled: false,
+   autoSyncChunks: false,
   },
   textureOptions: {
    animationTime: 20,
@@ -65,11 +66,19 @@ export const EngineSettings = {
    disableFloraShaderEffects: false,
    disableFluidShaderEffects: false,
   },
- 
+  data: {
+   enabled: false,
+   saveChunkTemplates: false,
+   saveWorldData: false,
+  },
  },
 
  setContext(context: EngineSettingsContext) {
   this.context = context;
+ },
+
+ getSettings() {
+  return <EngineSettingsData>this.settings;
  },
 
  syncSettings(data: EngineSettingsData) {
@@ -124,6 +133,10 @@ export const EngineSettings = {
 
  getSettingsCopy() {
   return JSON.parse(JSON.stringify(this.settings));
+ },
+
+ syncChunksInNexus() {
+  return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
  },
 
  doSunPropagation() {

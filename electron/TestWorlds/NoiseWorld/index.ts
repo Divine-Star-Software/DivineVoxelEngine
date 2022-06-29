@@ -52,7 +52,7 @@ const init = async () => {
 
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setSunLevel(0.8);
-
+ DVER.renderManager.setBaseLevel(0.0);
  runRenderLoop(engine, scene, camera, DVER);
 };
 

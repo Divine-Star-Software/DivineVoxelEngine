@@ -41,7 +41,7 @@ export declare const QueuesManager: {
      */
     addToRGBUpdateQue(x: number, y: number, z: number): void;
     addToRGBRemoveQue(x: number, y: number, z: number): void;
-    runRGBUpdateQue(): void;
+    runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
     runRGBRemoveQue(): void;
     awaitAllRGBLightUpdates(): Promise<boolean>;
     awaitAllRGBLightRemove(): Promise<boolean>;

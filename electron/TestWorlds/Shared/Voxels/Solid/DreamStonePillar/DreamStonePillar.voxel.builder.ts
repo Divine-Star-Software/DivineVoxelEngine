@@ -25,7 +25,6 @@ export const DreamStonePillarVoxelBuilderThread: VoxelBuilderThreadObject = {
  */
 
   if (
-   //@ts-ignore
    !DVEB.processor.worldMatrix.sameVoxel(
     data.x + data.chunkX,
     data.y + data.chunkY,

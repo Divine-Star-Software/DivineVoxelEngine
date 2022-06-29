@@ -1,16 +1,17 @@
 export declare type EngineSettingsData = {
-    nexus?: {
+    nexus: {
+        enabled: boolean;
+        autoSyncChunks: boolean;
+    };
+    server: {
         enabled: boolean;
     };
-    server?: {
-        enabled: boolean;
-    };
-    textureOptions?: {
+    textureOptions: {
         width: number;
         height: number;
         animationTime: number;
     };
-    world?: {
+    world: {
         voxelPaletteMode: "global" | "per-region";
         maxX: number;
         minX: number;
@@ -19,35 +20,40 @@ export declare type EngineSettingsData = {
         maxY: number;
         minY: number;
     };
-    regions?: {
+    regions: {
         regionXPow2: number;
         regionYPow2: number;
         regionZPow2: number;
     };
-    chunks?: {
+    chunks: {
         autoHeightMap: boolean;
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
     };
-    updating?: {
+    updating: {
         autoRebuild: boolean;
     };
-    lighting?: {
+    lighting: {
         doAO: boolean;
         doSunLight: boolean;
         doRGBLight: boolean;
         autoRGBLight: boolean;
         autoSunLight: boolean;
     };
-    voxels?: {
+    voxels: {
         doColors: boolean;
     };
-    materials?: {
+    materials: {
         disableFloraShaderEffects: boolean;
         disableFluidShaderEffects: boolean;
         doAO: boolean;
         doSunLight: boolean;
         doRGBLight: boolean;
+    };
+    data: {
+        enabled: boolean;
+        saveChunkTemplates: boolean;
+        saveWorldData: boolean;
     };
 };

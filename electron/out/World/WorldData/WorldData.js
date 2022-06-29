@@ -303,6 +303,9 @@ export const WorldData = {
         if (doNotSyncInThreads)
             return;
         DVEW.constructorCommManager.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        if (DVEW.settings.syncChunksInNexus()) {
+            DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        }
     },
     async __runLightRemoveAndUpdates(remove = true, update = true) {
         if (remove) {

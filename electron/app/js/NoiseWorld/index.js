@@ -31,6 +31,7 @@ const init = async () => {
     SetUpDefaultSkybox(scene);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setSunLevel(0.8);
+    DVER.renderManager.setBaseLevel(0.0);
     runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);
