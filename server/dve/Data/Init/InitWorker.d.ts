@@ -1,3 +1,3 @@
-import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
-import type { DVECInitData } from "Meta/Constructor/DVEC";
-export declare function InitWorker(DVEC: DivineVoxelEngineConstructor, initData: DVECInitData): Promise<void>;
+import type { DivineVoxelEngineData } from "Data/DivineStarVoxelEngineData";
+import type { DVEDInitData } from "Meta/Data/DVED";
+export declare function InitWorker(DVED: DivineVoxelEngineData, initData: DVEDInitData): Promise<void>;

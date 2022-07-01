@@ -3,7 +3,16 @@ const { app, BrowserWindow, nativeImage } = require("electron");
 const ipcMain = require("electron").ipcMain;
 const { promises: fs } = require("fs");
 const path = require("path");
+const ws = require("ws");
 const { session } = require("electron");
+const zlib = require("zlib");
+const compress = (input) => {
+    return zlib.deflateSync(input);
+};
+const deCompress = (input) => {
+    //@ts-ignore
+    return zlib.inflateSync(input).toString();
+};
 /*
 *fix webgl context lost
 https://github.com/electron/electron/issues/11934
@@ -23,6 +32,7 @@ const APP_INIT = async () => {
         });
     });
     const editorWindow = await CreateMainWindow();
+    setUpDataServer();
 };
 app.whenReady().then(async () => {
     await APP_INIT();
@@ -59,4 +69,36 @@ const CreateMainWindow = async () => {
         }, 1000);
     });
     return mainWindow;
+};
+const setUpDataServer = () => {
+    console.log("set up server");
+    const wss = new ws.WebSocketServer({ port: 8080 });
+    wss.on("connection", function connection(ws) {
+        console.log("connected");
+        ws.on("message", async function message(data) {
+            const dataParse = JSON.parse(data);
+            if (dataParse.action == "save-region") {
+                console.log(dataParse.action);
+                const compressed = compress(dataParse.region);
+                await fs.writeFile(`./data/${dataParse.name}`, compressed);
+            }
+            if (dataParse.action == "load-region") {
+                console.log(dataParse.action);
+                const name = dataParse.name;
+                const directory = await fs.readdir("./data");
+                for (const file of directory) {
+                    if (file.includes(name)) {
+                        const path = `./data/${file}`;
+                        const rawData = await fs.readFile(path);
+                        const data = deCompress(rawData);
+                        ws.send(JSON.stringify({
+                            action: "load-region",
+                            region: data,
+                        }));
+                    }
+                }
+            }
+        });
+        //ws.send("something");
+    });
 };

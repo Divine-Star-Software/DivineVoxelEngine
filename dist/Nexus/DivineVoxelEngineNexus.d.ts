@@ -282,6 +282,10 @@ export declare const DVEN: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
+            data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
             textureOptions: {
                 animationTime: number;
                 width: number;
@@ -326,11 +330,6 @@ export declare const DVEN: {
                 doRGBLight: boolean;
                 disableFloraShaderEffects: boolean;
                 disableFluidShaderEffects: boolean;
-            };
-            data: {
-                enabled: boolean;
-                saveChunkTemplates: boolean;
-                saveWorldData: boolean;
             };
         };
         setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
@@ -417,6 +416,7 @@ export declare const DVEN: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInDataThread(): boolean;
         syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;

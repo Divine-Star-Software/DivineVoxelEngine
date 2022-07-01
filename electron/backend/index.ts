@@ -2,7 +2,18 @@ const { app, BrowserWindow, nativeImage } = require("electron");
 const ipcMain: Electron.IpcMain = require("electron").ipcMain;
 const { promises: fs } = require("fs");
 const path = require("path");
+const ws = require("ws");
 const { session } = require("electron");
+const zlib = require("zlib");
+
+const compress = (input: string) => {
+ return zlib.deflateSync(input);
+};
+
+const deCompress = (input: any) => {
+ //@ts-ignore
+ return zlib.inflateSync(input).toString();
+};
 
 /*
 *fix webgl context lost
@@ -22,10 +33,11 @@ const APP_INIT = async () => {
      "Cross-Origin-Embedder-Policy": ["require-corp"],
      "Cross-Origin-Opener-Policy": ["same-origin"],
     },
-});
+   });
   }
  );
  const editorWindow = await CreateMainWindow();
+ setUpDataServer();
 };
 
 app.whenReady().then(async () => {
@@ -70,4 +82,40 @@ const CreateMainWindow = async () => {
  });
 
  return mainWindow;
+};
+
+const setUpDataServer = () => {
+ console.log("set up server");
+ const wss = new ws.WebSocketServer({ port: 8080 });
+ wss.on("connection", function connection(ws: any) {
+  console.log("connected");
+  ws.on("message", async function message(data: any) {
+   const dataParse = JSON.parse(data);
+   if (dataParse.action == "save-region") {
+    console.log(dataParse.action);
+    const compressed = compress(dataParse.region);
+    await fs.writeFile(`./data/${dataParse.name}`, compressed);
+   }
+   if (dataParse.action == "load-region") {
+    console.log(dataParse.action);
+    const name = dataParse.name;
+    const directory: string[] = await fs.readdir("./data");
+    for (const file of directory) {
+     if (file.includes(name)) {
+      const path = `./data/${file}`;
+      const rawData = await fs.readFile(path);
+      const data = deCompress(rawData);
+      ws.send(
+       JSON.stringify({
+        action: "load-region",
+        region: data,
+       })
+      );
+     }
+    }
+   }
+  });
+
+  //ws.send("something");
+ });
 };

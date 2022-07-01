@@ -34,6 +34,19 @@ export function InitWorkers(DVER, initData) {
         }
         DVER.nexusComm.$INIT();
     }
+    if (initData.dataWorker && initData.data?.enabled) {
+        if (typeof initData.dataWorker == "string") {
+            const worker = DVER.__createWorker(initData.dataWorker);
+            DVER.dataComm.setPort(worker);
+        }
+        else if (initData.dataWorker instanceof Worker) {
+            DVER.dataComm.setPort(initData.dataWorker);
+        }
+        else {
+            throw Error("Supplied data for Data Worker is not correct. Must be path to worker or a worker.");
+        }
+        DVER.dataComm.$INIT();
+    }
     DVER._syncSettings(initData);
     DVER.textureManager.generateTexturesData();
     //DVER.builderCommManager.$INIT();

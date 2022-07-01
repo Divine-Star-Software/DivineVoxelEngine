@@ -11,15 +11,10 @@ export const SetUpWorkers = (
  basePath: string,
  worldPath: string,
  constructorPath: string,
- nexusPath?: string
-): {
- worldWorker: Worker;
- constructorWorkers: Worker[];
- nexusWorker?: Worker | null;
-} => {
- const wPath = new URL(worldPath, basePath);
-
- const worldWorker = new Worker(wPath, {
+ nexusPath: string | false | null | undefined = null,
+ dataPath: string | false | null | undefined = null
+) => {
+ const worldWorker = new Worker(new URL(worldPath, basePath), {
   type: "module",
  });
 
@@ -40,9 +35,19 @@ export const SetUpWorkers = (
   });
  }
 
+ let dataWorker = null;
+
+ if (dataPath) {
+  dataWorker = new Worker(new URL(dataPath, basePath), {
+   type: "module",
+  });
+dataWorker.onerror = (event)=>console.log(event);
+ }
+
  return {
   worldWorker: worldWorker,
   constructorWorkers: constructorWorkers,
   nexusWorker: nexusWorker,
+  dataWorker: dataWorker,
  };
 };

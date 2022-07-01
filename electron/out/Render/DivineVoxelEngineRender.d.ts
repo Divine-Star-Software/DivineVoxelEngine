@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -86,6 +85,9 @@ export declare const DVER: {
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         $INIT(): void;
     };
+    dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        $INIT(): void;
+    };
     constructorCommManager: {
         count: number;
         constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
@@ -95,9 +97,13 @@ export declare const DVER: {
         syncSettings(data: any): void;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            data: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -146,13 +152,8 @@ export declare const DVER: {
                 disableFloraShaderEffects: boolean;
                 disableFluidShaderEffects: boolean;
             };
-            data: {
-                enabled: boolean;
-                saveChunkTemplates: boolean;
-                saveWorldData: boolean;
-            };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -236,6 +237,7 @@ export declare const DVER: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInDataThread(): boolean;
         syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
@@ -376,8 +378,8 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;

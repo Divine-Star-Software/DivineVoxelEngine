@@ -178,5 +178,6 @@ export declare const WorldGeneration: {
     };
     paintVoxel(voxelPalletId: number): number;
     getBlankRegion(palette?: boolean): WorldRegion;
+    createChunkFromDataThread(data: any[]): ChunkData;
     getBlankChunk(empty?: boolean, proto?: boolean): ChunkData;
 };

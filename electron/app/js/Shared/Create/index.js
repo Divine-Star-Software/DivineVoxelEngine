@@ -6,9 +6,8 @@ export const RunInit = (init) => {
         }
     }, 10);
 };
-export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath) => {
-    const wPath = new URL(worldPath, basePath);
-    const worldWorker = new Worker(wPath, {
+export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = null, dataPath = null) => {
+    const worldWorker = new Worker(new URL(worldPath, basePath), {
         type: "module",
     });
     const constructorWorkers = [];
@@ -24,9 +23,17 @@ export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath) =>
             type: "module",
         });
     }
+    let dataWorker = null;
+    if (dataPath) {
+        dataWorker = new Worker(new URL(dataPath, basePath), {
+            type: "module",
+        });
+        dataWorker.onerror = (event) => console.log(event);
+    }
     return {
         worldWorker: worldWorker,
         constructorWorkers: constructorWorkers,
         nexusWorker: nexusWorker,
+        dataWorker: dataWorker,
     };
 };

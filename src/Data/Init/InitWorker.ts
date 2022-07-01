@@ -1,26 +1,25 @@
-import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
-import type { DVECInitData } from "Meta/Constructor/DVEC";
+import type { DivineVoxelEngineData } from "Data/DivineStarVoxelEngineData";
+import type { DVEDInitData } from "Meta/Data/DVED";
 
 export async function InitWorker(
- DVEC: DivineVoxelEngineConstructor,
- initData: DVECInitData
+ DVED: DivineVoxelEngineData,
+ initData: DVEDInitData
 ) {
- DVEC.renderComm.onReady = initData.onReady;
+ DVED.renderComm.onReady = initData.onReady;
  if (initData.onMessage) {
-  DVEC.renderComm.onMessage = initData.onMessage;
+  DVED.renderComm.onMessage = initData.onMessage;
  }
  if (initData.onRestart) {
-  DVEC.renderComm.onRestart = initData.onRestart;
+  DVED.renderComm.onRestart = initData.onRestart;
  }
 
- const renderPort = await DVEC.UTIL.getWorkerPort(DVEC.environment);
- DVEC.renderComm.setPort(renderPort);
+ const renderPort = await DVED.UTIL.getWorkerPort(DVED.environment);
+ DVED.renderComm.setPort(renderPort);
 
 
-
- await DVEC.UTIL.createPromiseCheck({
+ await DVED.UTIL.createPromiseCheck({
   check: () => {
-   return DVEC.isReady();
+   return DVED.isReady();
   },
   checkInterval: 1,
  });

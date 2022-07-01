@@ -27,6 +27,24 @@ export const WorldGeneration = {
             ...paletteData,
         };
     },
+    createChunkFromDataThread(data) {
+        const chunkX = data[1];
+        const chunkY = data[2];
+        const chunkZ = data[3];
+        return {
+            proto: 0,
+            voxelsSAB: data[4],
+            voxels: new Uint32Array(data[4]),
+            voxelsStatesSAB: data[5],
+            voxelsStates: new Uint32Array(data[5]),
+            heightMapSAB: data[6],
+            heightMap: new Uint32Array(data[6]),
+            minMaxMapSAB: data[7],
+            minMaxMap: new Uint32Array(data[7]),
+            isEmpty: false,
+            position: [chunkX, chunkY, chunkZ],
+        };
+    },
     getBlankChunk(empty = true, proto = true) {
         const chunkSAB = new SharedArrayBuffer(this.worldBounds.chunkTotalVoxels * 4);
         const chunkVoxels = new Uint32Array(chunkSAB);

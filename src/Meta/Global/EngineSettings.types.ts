@@ -3,6 +3,10 @@ export type EngineSettingsData = {
   enabled: boolean;
   autoSyncChunks : boolean;
  };
+ data : {
+   enabled : boolean;
+   autoSyncChunks : boolean;
+}
  server: {
   enabled: boolean;
  };
@@ -51,9 +55,5 @@ export type EngineSettingsData = {
   doSunLight: boolean;
   doRGBLight: boolean;
  };
- data : {
-    enabled : boolean;
-    saveChunkTemplates : boolean;
-    saveWorldData : boolean;
- }
+
 };

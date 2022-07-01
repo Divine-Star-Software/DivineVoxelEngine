@@ -406,6 +406,14 @@ export const WorldData = {
     chunkPOS.z
    );
   }
+  if (DVEW.settings.syncChunkInDataThread()) {
+   DVEW.matrixCentralHub.syncChunkInThread(
+    "data",
+    chunkPOS.x,
+    chunkPOS.y,
+    chunkPOS.z
+   );
+  }
  },
 
  async __runLightRemoveAndUpdates(remove = true, update = true) {

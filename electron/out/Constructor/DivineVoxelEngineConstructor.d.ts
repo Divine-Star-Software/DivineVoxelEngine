@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -381,9 +381,13 @@ export declare const DVEC: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            data: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -432,13 +436,8 @@ export declare const DVEC: {
                 disableFloraShaderEffects: boolean;
                 disableFluidShaderEffects: boolean;
             };
-            data: {
-                enabled: boolean;
-                saveChunkTemplates: boolean;
-                saveWorldData: boolean;
-            };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -522,6 +521,7 @@ export declare const DVEC: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInDataThread(): boolean;
         syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;

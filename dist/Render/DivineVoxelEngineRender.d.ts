@@ -86,6 +86,9 @@ export declare const DVER: {
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         $INIT(): void;
     };
+    dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        $INIT(): void;
+    };
     constructorCommManager: {
         count: number;
         constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
@@ -98,6 +101,10 @@ export declare const DVER: {
         context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
         settings: {
             nexus: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            data: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -145,11 +152,6 @@ export declare const DVER: {
                 doRGBLight: boolean;
                 disableFloraShaderEffects: boolean;
                 disableFluidShaderEffects: boolean;
-            };
-            data: {
-                enabled: boolean;
-                saveChunkTemplates: boolean;
-                saveWorldData: boolean;
             };
         };
         setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
@@ -236,6 +238,7 @@ export declare const DVER: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInDataThread(): boolean;
         syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;

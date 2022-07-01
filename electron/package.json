@@ -16,6 +16,7 @@
     "electron": "^19.0.4"
   },
   "dependencies": {
-    "ds-element-tree": "0.0.7"
+    "ds-element-tree": "0.0.7",
+    "ws": "^8.8.0"
   }
 }

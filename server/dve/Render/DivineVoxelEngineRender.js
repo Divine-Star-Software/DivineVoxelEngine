@@ -6,6 +6,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
+import { DataComm } from "./InterComms/Data/DataComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
@@ -16,6 +17,7 @@ export const DVER = {
     worldBounds: Util.getWorldBounds(),
     worldComm: WorldComm,
     nexusComm: NexusComm,
+    dataComm: DataComm,
     constructorCommManager: ConstructorCommManager,
     settings: EngineSettings,
     renderManager: RenderManager,
@@ -38,6 +40,9 @@ export const DVER = {
         this.worldComm.sendMessage("sync-settings", [copy]);
         if (this.nexusComm.port) {
             this.nexusComm.sendMessage("sync-settings", [copy]);
+        }
+        if (this.dataComm.port) {
+            this.dataComm.sendMessage("sync-settings", [copy]);
         }
         // this.builderCommManager.syncSettings(copy);
         // this.propagationCommManager.syncSettings(copy);

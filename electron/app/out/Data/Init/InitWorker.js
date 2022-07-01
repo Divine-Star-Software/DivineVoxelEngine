@@ -1,16 +1,16 @@
-export async function InitWorker(DVEC, initData) {
-    DVEC.renderComm.onReady = initData.onReady;
+export async function InitWorker(DVED, initData) {
+    DVED.renderComm.onReady = initData.onReady;
     if (initData.onMessage) {
-        DVEC.renderComm.onMessage = initData.onMessage;
+        DVED.renderComm.onMessage = initData.onMessage;
     }
     if (initData.onRestart) {
-        DVEC.renderComm.onRestart = initData.onRestart;
+        DVED.renderComm.onRestart = initData.onRestart;
     }
-    const renderPort = await DVEC.UTIL.getWorkerPort(DVEC.environment);
-    DVEC.renderComm.setPort(renderPort);
-    await DVEC.UTIL.createPromiseCheck({
+    const renderPort = await DVED.UTIL.getWorkerPort(DVED.environment);
+    DVED.renderComm.setPort(renderPort);
+    await DVED.UTIL.createPromiseCheck({
         check: () => {
-            return DVEC.isReady();
+            return DVED.isReady();
         },
         checkInterval: 1,
     });

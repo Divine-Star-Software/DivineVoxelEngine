@@ -9,6 +9,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
+import { DataComm } from "./InterComms/Data/DataComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
@@ -17,10 +18,12 @@ import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 
 
+
 export const DVER = {
  worldBounds: Util.getWorldBounds(),
  worldComm: WorldComm,
  nexusComm: NexusComm,
+ dataComm  : DataComm,
  constructorCommManager : ConstructorCommManager,
  
  settings: EngineSettings,
@@ -53,6 +56,9 @@ export const DVER = {
   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }
+  if (this.dataComm.port) {
+    this.dataComm.sendMessage("sync-settings", [copy]);
+   }
  // this.builderCommManager.syncSettings(copy);
  // this.propagationCommManager.syncSettings(copy);
    this.constructorCommManager.syncSettings(copy);

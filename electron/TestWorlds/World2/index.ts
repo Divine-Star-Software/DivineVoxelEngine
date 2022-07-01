@@ -15,12 +15,15 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "../Shared/Constructor/constructor.js"
+ "../Shared/Constructor/constructor.js",
+ null,
+ "./Data/data.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
+ dataWorker: workers.dataWorker,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -30,8 +33,7 @@ await DVER.$INIT({
  },
  data: {
   enabled: true,
-  saveChunkTemplates: true,
-  saveWorldData: true,
+  autoSyncChunks: true,
  },
 });
 

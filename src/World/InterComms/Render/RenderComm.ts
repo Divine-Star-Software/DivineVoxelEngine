@@ -26,11 +26,16 @@ renderComm.messageFunctions = {
   const port = event.ports[0];
   DVEW.nexusComm.setPort(port);
  },
+ "connect-data": (data, event) => {
+  if (!event) return;
+  const port = event.ports[0];
+  DVEW.dataComm.setPort(port);
+ },
  "connect-constructor": (data, event) => {
-    if (!event) return;
-    const port = event.ports[0];
-    DVEW.constructorCommManager.addThread(port); 
-   },
+  if (!event) return;
+  const port = event.ports[0];
+  DVEW.constructorCommManager.addThread(port);
+ },
 };
 
 //renderComm.onMessage = (event) => console.log(event.data,event.ports);

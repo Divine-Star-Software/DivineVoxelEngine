@@ -12,6 +12,10 @@ export declare const EngineSettings: {
             enabled: boolean;
             autoSyncChunks: boolean;
         };
+        data: {
+            enabled: boolean;
+            autoSyncChunks: boolean;
+        };
         textureOptions: {
             animationTime: number;
             width: number;
@@ -57,17 +61,13 @@ export declare const EngineSettings: {
             disableFloraShaderEffects: boolean;
             disableFluidShaderEffects: boolean;
         };
-        data: {
-            enabled: boolean;
-            saveChunkTemplates: boolean;
-            saveWorldData: boolean;
-        };
     };
     setContext(context: EngineSettingsContext): void;
     getSettings(): EngineSettingsData;
     syncSettings(data: EngineSettingsData): void;
     syncWithWorldBounds(worldBounds: typeof WorldBounds): void;
     getSettingsCopy(): any;
+    syncChunkInDataThread(): boolean;
     syncChunksInNexus(): boolean;
     doSunPropagation(): boolean;
     doRGBPropagation(): boolean;

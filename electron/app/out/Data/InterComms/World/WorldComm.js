@@ -1,6 +1,5 @@
-import { WorldToConstructorMessages } from "../../../Constants/InterComms/WorldToConstructor.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-import { DVED } from "Data/DivineStarVoxelEngineData.js";
+import { DVED } from "../../DivineStarVoxelEngineData.js";
 const worldComm = CreateInterComm("data-world", {});
 export const WorldComm = worldComm;
 worldComm.onMessage = (event) => {
@@ -8,6 +7,4 @@ worldComm.onMessage = (event) => {
     if (event.data[0] == "set-world-port") {
         DVED.__connectedToWorld = true;
     }
-};
-worldComm.messageFunctions[WorldToConstructorMessages.RGBlightUpdate] = (data) => {
 };

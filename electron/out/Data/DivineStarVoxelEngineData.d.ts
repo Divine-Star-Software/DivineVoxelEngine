@@ -1,6 +1,7 @@
-import { EngineSettingsData } from "Meta/index.js";
+import type { DVEDInitData } from "Meta/Data/DVED.js";
+import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVED: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -115,8 +116,8 @@ export declare const DVED: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -386,6 +387,10 @@ export declare const DVED: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
+            data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
             textureOptions: {
                 animationTime: number;
                 width: number;
@@ -430,11 +435,6 @@ export declare const DVED: {
                 doRGBLight: boolean;
                 disableFloraShaderEffects: boolean;
                 disableFluidShaderEffects: boolean;
-            };
-            data: {
-                enabled: boolean;
-                saveChunkTemplates: boolean;
-                saveWorldData: boolean;
             };
         };
         setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
@@ -521,6 +521,7 @@ export declare const DVED: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInDataThread(): boolean;
         syncChunksInNexus(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
@@ -755,9 +756,17 @@ export declare const DVED: {
         onReady: () => void;
         onRestart: () => void;
     };
+    dataManager: {
+        dataHanlder: import("../Meta/Data/DataHandler.type.js").DataHandler | null;
+        setDataHandler(handler: import("../Meta/Data/DataHandler.type.js").DataHandler): void;
+        loadRegion(x: number, y: number, z: number): Promise<void>;
+        _convertArrayToSAB(array: number[], type: "UInt32" | "UInt8"): SharedArrayBuffer;
+        _convertSABtoArray(array: number[] | Uint32Array | Uint8Array): number[];
+        saveRegion(x: number, y: number, z: number): void;
+    };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;
     isReady(): boolean;
-    $INIT(): void;
+    $INIT(data: DVEDInitData): Promise<void>;
 };
 export declare type DivineVoxelEngineData = typeof DVED;

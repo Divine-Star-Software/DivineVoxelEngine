@@ -9,6 +9,10 @@ export const EngineSettings = {
             enabled: false,
             autoSyncChunks: false,
         },
+        data: {
+            enabled: false,
+            autoSyncChunks: false,
+        },
         textureOptions: {
             animationTime: 20,
             width: 16,
@@ -54,11 +58,6 @@ export const EngineSettings = {
             disableFloraShaderEffects: false,
             disableFluidShaderEffects: false,
         },
-        data: {
-            enabled: false,
-            saveChunkTemplates: false,
-            saveWorldData: false,
-        },
     },
     setContext(context) {
         this.context = context;
@@ -99,6 +98,9 @@ export const EngineSettings = {
     },
     getSettingsCopy() {
         return JSON.parse(JSON.stringify(this.settings));
+    },
+    syncChunkInDataThread() {
+        return this.settings.data.enabled && this.settings.data.autoSyncChunks;
     },
     syncChunksInNexus() {
         return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
