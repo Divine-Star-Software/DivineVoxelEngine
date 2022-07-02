@@ -14,4 +14,5 @@ dataComm.messageFunctions["set-chunk"] = (data) => {
  DVEW.worldData.setChunk(chunkX, chunkY, chunkZ, chunk);
 };
 
+
 export const DataComm = dataComm;

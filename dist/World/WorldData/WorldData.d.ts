@@ -218,8 +218,6 @@ export declare const WorldData: {
     runRebuildCheck(x: number, y: number, z: number): void;
     __lightQueCheck(remove: boolean | undefined, x: number, y: number, z: number): void;
     runLightUpdateCheck(x: number, y: number, z: number, remove?: boolean): void;
-    getCurrentWorldDataSize(): number;
-    getCurrentWorldDataString(): string;
     setAir(x: number, y: number, z: number, lightValue: number): void;
     setLight(x: number, y: number, z: number, lightValue: number): void;
     getLight(x: number, y: number, z: number): number;

@@ -759,10 +759,33 @@ export declare const DVED: {
     dataManager: {
         dataHanlder: import("../Meta/Data/DataHandler.type.js").DataHandler | null;
         setDataHandler(handler: import("../Meta/Data/DataHandler.type.js").DataHandler): void;
+        saveChunk(x: number, y: number, z: number): void;
+        loadChunk(x: number, y: number, z: number): void;
+        _pos: {
+            x: number;
+            y: number;
+            z: number;
+            newIndex: number;
+        };
+        _sab: {
+            sab: SharedArrayBuffer;
+            newIndex: number;
+        };
         loadRegion(x: number, y: number, z: number): Promise<void>;
-        _convertArrayToSAB(array: number[], type: "UInt32" | "UInt8"): SharedArrayBuffer;
-        _convertSABtoArray(array: number[] | Uint32Array | Uint8Array): number[];
+        _getSAB(regionArray: Uint32Array, currentIndex: number, arrayLength: number): {
+            sab: SharedArrayBuffer;
+            newIndex: number;
+        };
+        _getPos(regionArray: Uint32Array, currentIndex: number): {
+            x: number;
+            y: number;
+            z: number;
+            newIndex: number;
+        };
         saveRegion(x: number, y: number, z: number): void;
+        _addPositionToBuffer(x: number, y: number, z: number, regionArray: Uint32Array, currentIndex: number): number;
+        _addArrayToBuffer(regionArray: Uint32Array, currentIndex: number, array: Uint32Array): number;
+        _getRegionBufferSize(totalChunks: number): number;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

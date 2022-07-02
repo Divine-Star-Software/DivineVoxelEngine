@@ -75,13 +75,6 @@ export const WorldData = {
         this.__lightQueCheck(remove, x, y, z + 1);
         this.__lightQueCheck(remove, x, y, z - 1);
     },
-    getCurrentWorldDataSize() {
-        const data = JSON.stringify(this.regions);
-        return new Blob([data]).size;
-    },
-    getCurrentWorldDataString() {
-        return JSON.stringify(this.regions);
-    },
     setAir(x, y, z, lightValue) {
         let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
         this.setData(x, y, z, data);

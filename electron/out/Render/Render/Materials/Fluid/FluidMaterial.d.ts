@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const FluidMaterial: {
     material: BABYLON.ShaderMaterial | null;

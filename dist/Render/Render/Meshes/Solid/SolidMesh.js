@@ -13,7 +13,7 @@ export const SolidMesh = {
         mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
-        mesh.material = SolidMaterial.getMaterial();
+        mesh.geometry?.clearCachedData();
     },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("solid", scene);
@@ -36,6 +36,7 @@ export const SolidMesh = {
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
         mesh.material = SolidMaterial.getMaterial();
+        mesh.geometry?.clearCachedData();
         return mesh;
     },
 };

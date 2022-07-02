@@ -13,6 +13,7 @@ export const FloraMesh = {
         mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
+        mesh.geometry?.clearCachedData();
     },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("flora", scene);
@@ -35,6 +36,7 @@ export const FloraMesh = {
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
         mesh.material = FloraMaterial.getMaterial();
+        mesh.geometry?.clearCachedData();
         return mesh;
     },
 };

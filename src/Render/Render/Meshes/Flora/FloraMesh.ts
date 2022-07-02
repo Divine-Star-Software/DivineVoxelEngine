@@ -15,6 +15,7 @@ export const FloraMesh: VoxelMeshInterface = {
   mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
   mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
+  mesh.geometry?.clearCachedData();
  },
 
  createTemplateMesh(scene: BABYLON.Scene) {
@@ -39,6 +40,7 @@ export const FloraMesh: VoxelMeshInterface = {
   mesh.setVerticesData("colors", data.colorsArray, false, 4);
   mesh.freezeWorldMatrix();
   mesh.material = FloraMaterial.getMaterial();
+  mesh.geometry?.clearCachedData();
   return mesh;
  },
 };

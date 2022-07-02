@@ -2,14 +2,16 @@ import { DataServer } from "./DataServer.js";
 export const DataHanlder = {
     async getRegion(x, y, z) {
         const region = await DataServer.awaitRegionLoad(x, y, z);
+        DataServer.flush();
         return region;
     },
-    async saveRegion(x, y, z, dataString) {
-        const dataSend = {
-            action: "save-region",
-            name: `region-${x}-${y}-${z}.dved`,
-            region: dataString,
-        };
-        DataServer.sendMessage(JSON.stringify(dataSend));
+    async saveRegion(x, y, z, regionArray) {
+        DataServer.sendMessage(regionArray);
+    },
+    async getChunk(x, y, z) {
+        return new Uint32Array();
+    },
+    async saveChunk(x, y, z, chunkArray) {
+        DataServer.sendMessage(chunkArray);
     },
 };

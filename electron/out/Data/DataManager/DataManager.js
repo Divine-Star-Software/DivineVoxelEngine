@@ -5,55 +5,76 @@ export const DataManager = {
     setDataHandler(handler) {
         this.dataHanlder = handler;
     },
+    saveChunk(x, y, z) { },
+    loadChunk(x, y, z) { },
+    _pos: { x: 0, y: 0, z: 0, newIndex: 0 },
+    _sab: { sab: new SharedArrayBuffer(0), newIndex: 0 },
     async loadRegion(x, y, z) {
         if (!this.dataHanlder) {
             throw new Error("A data hanlder must be set.");
         }
-        const rawRegionData = await this.dataHanlder.getRegion(x, y, z);
-        const region = JSON.parse(rawRegionData);
-        for (const worldColumnKey of Object.keys(region.chunks)) {
-            const worldColumn = region.chunks[worldColumnKey];
-            for (const chunkKey of Object.keys(worldColumn)) {
-                const chunk = region.chunks[worldColumnKey][chunkKey];
-                const voxelSAB = this._convertArrayToSAB(chunk.voxels, "UInt32");
-                const voxelStatesSAB = this._convertArrayToSAB(chunk.voxelStates, "UInt32");
-                const heightMapSAB = this._convertArrayToSAB(chunk.heightMap, "UInt32");
-                const minMaxMap = this._convertArrayToSAB(chunk.minMaxMap, "UInt32");
-                DVED.worldComm.sendMessage("set-chunk", [
-                    chunk.position[0],
-                    chunk.position[1],
-                    chunk.position[2],
-                    voxelSAB,
-                    voxelStatesSAB,
-                    heightMapSAB,
-                    minMaxMap,
-                ]);
-            }
+        const rawRegion = await this.dataHanlder.getRegion(x, y, z);
+        const voxelArrayLengths = rawRegion[1];
+        const heightMapArrayLength = rawRegion[2];
+        const minMaxLength = rawRegion[3];
+        let currentIndex = this._getPos(rawRegion, 3).newIndex;
+        currentIndex++;
+        while (currentIndex < rawRegion.length) {
+            const chunkPOS = this._getPos(rawRegion, currentIndex);
+            currentIndex = chunkPOS.newIndex;
+            let SABData = this._getSAB(rawRegion, currentIndex, voxelArrayLengths);
+            const voxelSAB = SABData.sab;
+            currentIndex = SABData.newIndex;
+            SABData = this._getSAB(rawRegion, currentIndex, voxelArrayLengths);
+            const voxelStatesSAB = SABData.sab;
+            currentIndex = SABData.newIndex;
+            SABData = this._getSAB(rawRegion, currentIndex, heightMapArrayLength);
+            const heightMapSAB = SABData.sab;
+            currentIndex = SABData.newIndex;
+            SABData = this._getSAB(rawRegion, currentIndex, minMaxLength);
+            const minMaxMap = SABData.sab;
+            currentIndex = SABData.newIndex;
+            DVED.worldComm.sendMessage("set-chunk", [
+                chunkPOS.x,
+                chunkPOS.y,
+                chunkPOS.z,
+                voxelSAB,
+                voxelStatesSAB,
+                heightMapSAB,
+                minMaxMap,
+            ]);
         }
+        this._sab = { sab: new SharedArrayBuffer(0), newIndex: 0 };
     },
-    _convertArrayToSAB(array, type) {
-        let sab = new SharedArrayBuffer(0);
-        let typeArray = new Uint32Array();
-        if (type == "UInt32") {
-            sab = new SharedArrayBuffer(array.length * 4);
-            typeArray = new Uint32Array(sab);
+    _getSAB(regionArray, currentIndex, arrayLength) {
+        const sab = new SharedArrayBuffer(arrayLength * 4);
+        const tempArray = new Uint32Array(sab);
+        let k = 0;
+        for (let i = currentIndex; i < currentIndex + arrayLength; i++) {
+            tempArray[k] = regionArray[i];
+            k++;
         }
-        if (type == "UInt8") {
-            sab = new SharedArrayBuffer(array.length);
-            typeArray = new Uint8Array(sab);
-        }
-        for (let i = 0; i < array.length; i++) {
-            typeArray[i] = array[i];
-        }
-        return sab;
+        this._sab.sab = sab;
+        this._sab.newIndex = currentIndex += arrayLength;
+        return this._sab;
     },
-    _convertSABtoArray(array) {
-        const returnArray = [];
-        for (let i = 0; i < array.length; i++) {
-            returnArray[i] = array[i];
+    _getPos(regionArray, currentIndex) {
+        this._pos.x = regionArray[currentIndex + 1];
+        if (regionArray[currentIndex] == 1) {
+            this._pos.x *= -1;
         }
-        return returnArray;
+        this._pos.y = regionArray[currentIndex + 3];
+        if (regionArray[currentIndex + 2] == 1) {
+            this._pos.y *= -1;
+        }
+        this._pos.z = regionArray[currentIndex + 5];
+        if (regionArray[currentIndex + 6] == 1) {
+            this._pos.z *= -1;
+        }
+        this._pos.newIndex = currentIndex += 6;
+        return this._pos;
     },
+    //this is just a test of converting a whole region into a typed array
     saveRegion(x, y, z) {
         if (!this.dataHanlder) {
             throw new Error("A data hanlder must be set.");
@@ -63,27 +84,73 @@ export const DataManager = {
             console.warn(`Region ${x}-${y}-${z} does not exists!`);
             return;
         }
-        const newRegion = {
-            chunks: {},
-        };
+        let totalChunks = 0;
+        for (const worldColumnKey of Object.keys(region.chunks)) {
+            totalChunks += Object.keys(region.chunks[worldColumnKey]).length;
+        }
+        const totalSize = this._getRegionBufferSize(totalChunks);
+        const regionBuffer = new ArrayBuffer(totalSize);
+        const regionArray = new Uint32Array(regionBuffer);
+        //set message
+        regionArray[0] = 0;
+        //set chunk voxel and voxel state array size
+        regionArray[1] = DVED.worldBounds.chunkTotalVoxels;
+        regionArray[2] = DVED.worldBounds.chunkArea * 2;
+        regionArray[3] = 2;
+        let currentIndex = 3;
+        currentIndex = this._addPositionToBuffer(x, y, z, regionArray, currentIndex);
+        currentIndex++;
         for (const worldColumnKey of Object.keys(region.chunks)) {
             const worldColumn = region.chunks[worldColumnKey];
             for (const chunkKey of Object.keys(worldColumn)) {
-                if (!newRegion.chunks[worldColumnKey]) {
-                    newRegion.chunks[worldColumnKey] = {};
-                }
                 const chunk = worldColumn[chunkKey];
-                const newChunk = {
-                    voxels: this._convertSABtoArray(chunk.voxels),
-                    voxelStates: this._convertSABtoArray(chunk.voxelStates),
-                    heightMap: this._convertSABtoArray(chunk.heightMap),
-                    minMaxMap: this._convertSABtoArray(chunk.minMaxMap),
-                    position: chunk.position,
-                };
-                newRegion.chunks[worldColumnKey][chunkKey] = newChunk;
+                const position = chunk.position;
+                currentIndex = this._addPositionToBuffer(position[0], position[1], position[2], regionArray, currentIndex);
+                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.voxels);
+                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.voxelStates);
+                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.heightMap);
+                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.minMaxMap);
             }
         }
-        const dataSendString = JSON.stringify(newRegion);
-        this.dataHanlder.saveRegion(x, y, z, dataSendString);
+        this.dataHanlder.saveRegion(x, y, z, regionArray);
+    },
+    _addPositionToBuffer(x, y, z, regionArray, currentIndex) {
+        if (x < 0) {
+            regionArray[currentIndex] = 1;
+        }
+        regionArray[currentIndex + 1] = Math.abs(x);
+        if (y < 0) {
+            regionArray[currentIndex + 2] = 1;
+        }
+        regionArray[currentIndex + 3] = Math.abs(y);
+        if (z < 0) {
+            regionArray[currentIndex + 4] = 1;
+        }
+        regionArray[currentIndex + 5] = Math.abs(z);
+        return (currentIndex += 6);
+    },
+    _addArrayToBuffer(regionArray, currentIndex, array) {
+        for (let i = 0; i < array.length; i++) {
+            regionArray[currentIndex + i] = array[i];
+        }
+        return currentIndex + array.length;
+    },
+    _getRegionBufferSize(totalChunks) {
+        let returnValue = 0;
+        //message index
+        returnValue += 3;
+        //regions position
+        returnValue += 6;
+        //chunks positions
+        returnValue += 6 * totalChunks;
+        //voxels
+        returnValue += totalChunks * DVED.worldBounds.chunkTotalVoxels;
+        //voxel states
+        returnValue += totalChunks * DVED.worldBounds.chunkTotalVoxels;
+        //height map
+        returnValue += totalChunks * DVED.worldBounds.chunkArea * 2;
+        //min max map
+        returnValue += totalChunks * 2;
+        return returnValue * 4;
     },
 };
