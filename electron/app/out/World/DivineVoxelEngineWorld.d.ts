@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -123,8 +123,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -1175,7 +1175,7 @@ export declare const DVEW: {
         areRGBLightUpdatesAllDone(): boolean;
         areRGBLightRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        runRebuildQue(): void;
+        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
     };
     isReady(): boolean;

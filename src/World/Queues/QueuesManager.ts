@@ -4,6 +4,8 @@ import { VoxelSubstanceType } from "Meta/index";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { QueuesIndexes } from "../../Constants/Queues.js";
 
+type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
+
 export const QueuesManager = {
  _numChunksRebuilding: 0,
 
@@ -213,7 +215,7 @@ export const QueuesManager = {
   this._RGBLightRemoveQue.push([x, y, z]);
  },
 
- runRGBUpdateQue(filter?: (x: number, y: number, z: number) => 0 | 1 | 2) {
+ runRGBUpdateQue(filter?: QueueFilter) {
   const reQueue: any[] = [];
 
   const queue = this._RGBLightUpdateQue;
@@ -307,15 +309,35 @@ export const QueuesManager = {
   }
  },
 
- runRebuildQue() {
+ runRebuildQue(filter?: QueueFilter) {
   const queue = this._chunkRebuildQue;
+  const reQueue: number[][] = [];
+
   while (queue.length != 0) {
    const position = queue.shift();
    if (!position) break;
+   if (filter) {
+    const filterReturn = filter(position[0], position[1], position[2]);
+    if (filterReturn == 0) continue;
+    if (filterReturn == 1) {
+     reQueue.push([position[0], position[1], position[2]]);
+     continue;
+    }
+   }
+   delete this._chunkRebuildQueMap[
+    DVEW.worldBounds.getChunkKeyFromPosition(
+     position[0],
+     position[1],
+     position[2]
+    )
+   ];
    DVEW.buildChunk(position[0], position[1], position[2]);
   }
-  this._chunkRebuildQue = [];
-  this._chunkRebuildQueMap = {};
+  if (filter) {
+   this._chunkRebuildQue = reQueue;
+  } else {
+   this._chunkRebuildQue = [];
+  }
  },
 
  awaitAllChunksToBeBuilt() {

@@ -243,16 +243,31 @@ export const QueuesManager = {
             this._chunkRebuildQueMap[chunkKey][substance] = true;
         }
     },
-    runRebuildQue() {
+    runRebuildQue(filter) {
         const queue = this._chunkRebuildQue;
+        const reQueue = [];
         while (queue.length != 0) {
             const position = queue.shift();
             if (!position)
                 break;
+            if (filter) {
+                const filterReturn = filter(position[0], position[1], position[2]);
+                if (filterReturn == 0)
+                    continue;
+                if (filterReturn == 1) {
+                    reQueue.push([position[0], position[1], position[2]]);
+                    continue;
+                }
+            }
+            delete this._chunkRebuildQueMap[DVEW.worldBounds.getChunkKeyFromPosition(position[0], position[1], position[2])];
             DVEW.buildChunk(position[0], position[1], position[2]);
         }
-        this._chunkRebuildQue = [];
-        this._chunkRebuildQueMap = {};
+        if (filter) {
+            this._chunkRebuildQue = reQueue;
+        }
+        else {
+            this._chunkRebuildQue = [];
+        }
     },
     awaitAllChunksToBeBuilt() {
         return DVEW.UTIL.createPromiseCheck({

@@ -1,4 +1,5 @@
 import { VoxelSubstanceType } from "Meta/index";
+declare type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
 export declare const QueuesManager: {
     _numChunksRebuilding: number;
     _numRGBLightUpdates: number;
@@ -41,7 +42,7 @@ export declare const QueuesManager: {
      */
     addToRGBUpdateQue(x: number, y: number, z: number): void;
     addToRGBRemoveQue(x: number, y: number, z: number): void;
-    runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+    runRGBUpdateQue(filter?: QueueFilter | undefined): void;
     runRGBRemoveQue(): void;
     awaitAllRGBLightUpdates(): Promise<boolean>;
     awaitAllRGBLightRemove(): Promise<boolean>;
@@ -51,6 +52,7 @@ export declare const QueuesManager: {
      * Chunks
      */
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
-    runRebuildQue(): void;
+    runRebuildQue(filter?: QueueFilter | undefined): void;
     awaitAllChunksToBeBuilt(): Promise<boolean>;
 };
+export {};
