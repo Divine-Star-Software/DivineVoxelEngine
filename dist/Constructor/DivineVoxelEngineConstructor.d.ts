@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
