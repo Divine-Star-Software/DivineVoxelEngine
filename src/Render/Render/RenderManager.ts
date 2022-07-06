@@ -12,6 +12,7 @@ import { SolidMaterial } from "./Materials/Solid/SolidMaterial.js";
 import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
 import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
 import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
+import { EngineSettingsData } from "Meta/index.js";
 
 export const RenderManager = {
  shaderBuilder: ShaderBuilder,
@@ -34,6 +35,13 @@ export const RenderManager = {
 
  setScene(scene: BABYLON.Scene) {
   this.scene = scene;
+ },
+
+ syncSettings(settings: EngineSettingsData) {
+  this.solidMesh.syncSettings(settings);
+  this.floraMesh.syncSettings(settings);
+  this.fluidMesh.syncSettings(settings);
+  this.magmaMesh.syncSettings(settings);
  },
 
  getScene() {

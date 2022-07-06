@@ -54,6 +54,15 @@ export declare const EngineSettings: {
             autoRGBLight: boolean;
             autoSunLight: boolean;
         };
+        meshes: {
+            clearChachedGeometry: boolean;
+            checkMagmaCollisions: boolean;
+            checkFluidCollisions: boolean;
+            checkFloraCollisions: boolean;
+            checkSolidCollisions: boolean;
+            seralize: boolean;
+            pickable: boolean;
+        };
         materials: {
             doAO: boolean;
             doSunLight: boolean;

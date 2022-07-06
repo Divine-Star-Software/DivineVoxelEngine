@@ -145,6 +145,15 @@ export declare const DVER: {
                 autoRGBLight: boolean;
                 autoSunLight: boolean;
             };
+            meshes: {
+                clearChachedGeometry: boolean;
+                checkMagmaCollisions: boolean;
+                checkFluidCollisions: boolean;
+                checkFloraCollisions: boolean;
+                checkSolidCollisions: boolean;
+                seralize: boolean;
+                pickable: boolean;
+            };
             materials: {
                 doAO: boolean;
                 doSunLight: boolean;
@@ -327,6 +336,7 @@ export declare const DVER: {
         scene: BABYLON.Scene | null;
         reStart(): void;
         setScene(scene: BABYLON.Scene): void;
+        syncSettings(settings: EngineSettingsData): void;
         getScene(): BABYLON.Scene | null;
         setSunLevel(level: number): void;
         setBaseLevel(level: number): void;

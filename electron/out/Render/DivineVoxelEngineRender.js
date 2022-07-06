@@ -37,6 +37,7 @@ export const DVER = {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
         const copy = this.settings.getSettingsCopy();
+        this.renderManager.syncSettings(copy);
         this.worldComm.sendMessage("sync-settings", [copy]);
         if (this.nexusComm.port) {
             this.nexusComm.sendMessage("sync-settings", [copy]);

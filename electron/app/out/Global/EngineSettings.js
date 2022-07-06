@@ -51,6 +51,15 @@ export const EngineSettings = {
             autoRGBLight: true,
             autoSunLight: true,
         },
+        meshes: {
+            clearChachedGeometry: false,
+            checkMagmaCollisions: false,
+            checkFluidCollisions: false,
+            checkFloraCollisions: false,
+            checkSolidCollisions: true,
+            seralize: false,
+            pickable: false,
+        },
         materials: {
             doAO: true,
             doSunLight: true,

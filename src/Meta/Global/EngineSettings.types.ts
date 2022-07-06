@@ -48,6 +48,15 @@ export type EngineSettingsData = {
  voxels: {
   doColors: boolean;
  };
+ meshes : {
+  clearChachedGeometry : boolean;
+  checkMagmaCollisions : boolean;
+  checkFluidCollisions : boolean;
+  checkFloraCollisions : boolean;
+  checkSolidCollisions : boolean;
+  seralize : boolean;
+  pickable : boolean;
+ };
  materials: {
   disableFloraShaderEffects: boolean;
   disableFluidShaderEffects: boolean;

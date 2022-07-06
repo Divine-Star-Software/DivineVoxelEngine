@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -119,8 +119,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -384,7 +384,7 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -432,6 +432,15 @@ export declare const DVEW: {
                 autoRGBLight: boolean;
                 autoSunLight: boolean;
             };
+            meshes: {
+                clearChachedGeometry: boolean;
+                checkMagmaCollisions: boolean;
+                checkFluidCollisions: boolean;
+                checkFloraCollisions: boolean;
+                checkSolidCollisions: boolean;
+                seralize: boolean;
+                pickable: boolean;
+            };
             materials: {
                 doAO: boolean;
                 doSunLight: boolean;
@@ -440,7 +449,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {

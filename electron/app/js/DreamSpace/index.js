@@ -20,14 +20,17 @@ await DVER.$INIT({
         doRGBLight: false,
         doSunLight: false,
         disableFloraShaderEffects: false,
-        disableFluidShaderEffects: false
+        disableFluidShaderEffects: false,
     },
     chunks: {
         chunkXPow2: 4,
         chunkZPow2: 4,
         chunkYPow2: 5,
-        autoHeightMap: true
-    }
+        autoHeightMap: true,
+    },
+    meshes: {
+        clearChachedGeometry: false,
+    },
 });
 const init = async () => {
     const player = new Player(DVER);

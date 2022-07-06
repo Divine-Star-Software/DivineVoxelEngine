@@ -21,7 +21,7 @@ const workers = SetUpWorkers(
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
- constructorWorker : workers.constructorWorkers,
+ constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -29,19 +29,22 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
- materials : {
-    doAO: true,
-    doRGBLight: false,
-    doSunLight: false,
-    disableFloraShaderEffects : false,
-    disableFluidShaderEffects : false
+ materials: {
+  doAO: true,
+  doRGBLight: false,
+  doSunLight: false,
+  disableFloraShaderEffects: false,
+  disableFluidShaderEffects: false,
  },
- chunks : {
-     chunkXPow2 : 4,
-     chunkZPow2 : 4,
-     chunkYPow2 : 5,
-     autoHeightMap : true
- }
+ chunks: {
+  chunkXPow2: 4,
+  chunkZPow2: 4,
+  chunkYPow2: 5,
+  autoHeightMap: true,
+ },
+ meshes: {
+  clearChachedGeometry: false,
+ },
 });
 
 const init = async () => {

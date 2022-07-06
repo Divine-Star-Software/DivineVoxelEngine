@@ -28,6 +28,12 @@ export const RenderManager = {
     setScene(scene) {
         this.scene = scene;
     },
+    syncSettings(settings) {
+        this.solidMesh.syncSettings(settings);
+        this.floraMesh.syncSettings(settings);
+        this.fluidMesh.syncSettings(settings);
+        this.magmaMesh.syncSettings(settings);
+    },
     getScene() {
         return this.scene;
     },

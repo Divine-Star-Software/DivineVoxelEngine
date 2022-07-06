@@ -17,15 +17,13 @@ import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 
-
-
 export const DVER = {
  worldBounds: Util.getWorldBounds(),
  worldComm: WorldComm,
  nexusComm: NexusComm,
- dataComm  : DataComm,
- constructorCommManager : ConstructorCommManager,
- 
+ dataComm: DataComm,
+ constructorCommManager: ConstructorCommManager,
+
  settings: EngineSettings,
  renderManager: RenderManager,
  meshManager: MeshManager,
@@ -52,16 +50,17 @@ export const DVER = {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
   const copy = this.settings.getSettingsCopy();
+  this.renderManager.syncSettings(copy);
   this.worldComm.sendMessage("sync-settings", [copy]);
   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }
   if (this.dataComm.port) {
-    this.dataComm.sendMessage("sync-settings", [copy]);
-   }
- // this.builderCommManager.syncSettings(copy);
- // this.propagationCommManager.syncSettings(copy);
-   this.constructorCommManager.syncSettings(copy);
+   this.dataComm.sendMessage("sync-settings", [copy]);
+  }
+  // this.builderCommManager.syncSettings(copy);
+  // this.propagationCommManager.syncSettings(copy);
+  this.constructorCommManager.syncSettings(copy);
  },
 
  async reStart(data: EngineSettingsData): Promise<void> {
@@ -71,7 +70,7 @@ export const DVER = {
 
  async $INIT(initData: DVERInitData) {
   this.settings.setContext("DVER");
-   InitWorkers(this, initData);
+  InitWorkers(this, initData);
  },
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {

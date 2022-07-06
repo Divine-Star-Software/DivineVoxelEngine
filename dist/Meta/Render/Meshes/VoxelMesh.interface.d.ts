@@ -1,8 +1,14 @@
 /// <reference types="babylonjs" />
+import { EngineSettingsData } from "Meta/index";
 export interface VoxelMeshInterface {
+    pickable: boolean;
+    checkCollisions: boolean;
+    seralize: boolean;
+    clearCachedGeometry: boolean;
     rebuildMeshGeometory(chunkMesh: BABYLON.Mesh, data: MeshSetData): void;
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
     createMeshGeometory(mesh: BABYLON.Mesh, data: MeshSetData): void;
+    syncSettings(settings: EngineSettingsData): void;
 }
 export declare type MeshSetData = {
     positionArray: Float32Array;

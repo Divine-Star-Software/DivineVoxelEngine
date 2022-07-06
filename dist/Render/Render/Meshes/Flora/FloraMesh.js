@@ -1,5 +1,9 @@
 import { FloraMaterial } from "../../Materials/Flora/FloraMaterial.js";
 export const FloraMesh = {
+    pickable: false,
+    checkCollisions: false,
+    seralize: false,
+    clearCachedGeometry: false,
     async rebuildMeshGeometory(mesh, data) {
         mesh.unfreezeWorldMatrix();
         const chunkVertexData = new BABYLON.VertexData();
@@ -13,14 +17,33 @@ export const FloraMesh = {
         mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
-        //mesh.geometry?.clearCachedData();
+        if (this.clearCachedGeometry) {
+            mesh.geometry?.clearCachedData();
+        }
     },
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("flora", scene);
-        mesh.isPickable = false;
-        mesh.checkCollisions = false;
-        mesh.doNotSerialize = true;
+        mesh.isPickable = this.pickable;
+        mesh.checkCollisions = this.checkCollisions;
+        if (!this.checkCollisions) {
+            mesh.doNotSyncBoundingInfo = true;
+        }
+        mesh.doNotSerialize = this.seralize;
         return mesh;
+    },
+    syncSettings(settings) {
+        if (settings.meshes.pickable) {
+            this.pickable = true;
+        }
+        if (settings.meshes.clearChachedGeometry) {
+            this.clearCachedGeometry = true;
+        }
+        if (settings.meshes.checkFloraCollisions) {
+            this.checkCollisions = true;
+        }
+        if (settings.meshes.seralize) {
+            this.seralize = true;
+        }
     },
     async createMeshGeometory(mesh, data) {
         mesh.unfreezeWorldMatrix();
@@ -36,7 +59,9 @@ export const FloraMesh = {
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         mesh.freezeWorldMatrix();
         mesh.material = FloraMaterial.getMaterial();
-        //mesh.geometry?.clearCachedData();
+        if (this.clearCachedGeometry) {
+            mesh.geometry?.clearCachedData();
+        }
         return mesh;
     },
 };
