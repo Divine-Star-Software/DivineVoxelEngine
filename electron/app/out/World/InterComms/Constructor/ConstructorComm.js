@@ -28,7 +28,7 @@ export const GetNewConstructorComm = (count, port) => {
         DVEW.queues.addToRebuildQue(x, y, z, substance);
     };
     newComm.messageFunctions[ConstructorToWorldMessages.chunkDoneBuilding] = (data) => {
-        DVEW.queues._numChunksRebuilding--;
+        // DVEW.queues._numChunksRebuilding--;
     };
     return newComm;
 };

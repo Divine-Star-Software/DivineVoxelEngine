@@ -13,7 +13,7 @@ export const QueuesManager = {
     _worldColumnSunLightPropQue: [],
     _chunkRebuildQueMap: {},
     _chunkRebuildQue: [],
-    __statesSAB: new SharedArrayBuffer(4 * 8),
+    __statesSAB: new SharedArrayBuffer(4 * 10),
     __states: new Uint32Array(),
     $INIT() {
         this.__states = new Uint32Array(this.__statesSAB);
@@ -269,12 +269,18 @@ export const QueuesManager = {
             this._chunkRebuildQue = [];
         }
     },
+    addToRebuildQueTotal() {
+        Atomics.add(this.__states, QueuesIndexes.chunksBuilding, 1);
+    },
     awaitAllChunksToBeBuilt() {
         return DVEW.UTIL.createPromiseCheck({
             check: () => {
-                return QueuesManager._numChunksRebuilding == 0;
+                return QueuesManager.areAllChunksDoneBuilding();
             },
             checkInterval: 1,
         });
+    },
+    areAllChunksDoneBuilding() {
+        return Atomics.load(this.__states, QueuesIndexes.chunksBuilding) == 0;
     },
 };

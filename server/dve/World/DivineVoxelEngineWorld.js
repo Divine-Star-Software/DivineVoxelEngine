@@ -75,6 +75,7 @@ export const DVEW = {
         this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
     },
     buildChunk(chunkX, chunkY, chunkZ) {
+        this.queues.addToRebuildQueTotal();
         this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
     },
     buildWorldColumn(x, z) {

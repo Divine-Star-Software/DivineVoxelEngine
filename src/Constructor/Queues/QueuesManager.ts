@@ -26,4 +26,7 @@ export const QueuesManager = {
  finishSunLightRemove() {
   Atomics.sub(this.states, QueuesIndexes.sunLightRemove, 1);
  },
+ finishBuildingChunk() {
+  Atomics.sub(this.states, QueuesIndexes.chunksBuilding, 1);
+ },
 };

@@ -18,7 +18,6 @@ import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorComm
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
 
-
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -37,10 +36,10 @@ export const DVEW = {
  matrix: Matrix,
  matrixCentralHub: MatrixCentralHub,
 
- dataComm : DataComm,
+ dataComm: DataComm,
  nexusComm: NexusComm,
  renderComm: RenderComm,
- constructorCommManager : ConstructorCommManager,
+ constructorCommManager: ConstructorCommManager,
 
  worldGeneration: WorldGeneration,
  worldData: WorldData,
@@ -49,8 +48,8 @@ export const DVEW = {
 
  isReady() {
   let ready =
- //  DVEW.builderCommManager.isReady() &&
- //  DVEW.propagationCommManager.isReady() &&
+   //  DVEW.builderCommManager.isReady() &&
+   //  DVEW.propagationCommManager.isReady() &&
    DVEW.constructorCommManager.isReady() &&
    DVEW.__settingsHaveBeenSynced &&
    DVEW.__renderIsDone;
@@ -94,6 +93,7 @@ export const DVEW = {
  },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+  this.queues.addToRebuildQueTotal();
   this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
  },
 

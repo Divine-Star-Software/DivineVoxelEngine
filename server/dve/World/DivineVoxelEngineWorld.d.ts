@@ -50,10 +50,6 @@ export declare const DVEW: {
         regionXPow2: number;
         regionYPow2: number;
         regionZPow2: number;
-        /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
         regionXSize: number;
         regionYSize: number;
         regionZSize: number;
@@ -309,10 +305,6 @@ export declare const DVEW: {
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
@@ -472,10 +464,6 @@ export declare const DVEW: {
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
@@ -564,10 +552,6 @@ export declare const DVEW: {
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
@@ -682,10 +666,6 @@ export declare const DVEW: {
         constructorsConnected: number;
         $INIT(statesSAB: SharedArrayBuffer): void;
         addThread(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
-        /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
         syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
@@ -693,10 +673,6 @@ export declare const DVEW: {
         isReady(): boolean;
         __handleCount(): number;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
-        /**# Delete Chunk
-         * ---
-         * Deletes a chunk from world data and releases it from all threads.
-         */
         runRGBLightUpdate(x: number, y: number, z: number): number;
         runRGBUpdate(x: number, y: number, z: number): number;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
@@ -727,10 +703,6 @@ export declare const DVEW: {
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
@@ -1031,10 +1003,6 @@ export declare const DVEW: {
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             regionXSize: number;
             regionYSize: number;
             regionZSize: number;
@@ -1176,7 +1144,9 @@ export declare const DVEW: {
         areRGBLightRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
         runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        addToRebuildQueTotal(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
+        areAllChunksDoneBuilding(): boolean;
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;

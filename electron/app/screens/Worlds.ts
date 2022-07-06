@@ -95,6 +95,11 @@ export const Worlds: WorldsData = [
     world: "ShapeTest",
    },
    {
+    title: "Crash Test",
+    description: "Used to stress test the engine.",
+    world: "CrashTest",
+   },
+   {
     title: "Shadow Test",
     description: "Used to test dynamic lights and shadows.",
     world: "ShadowTest",

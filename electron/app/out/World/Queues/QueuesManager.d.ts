@@ -53,6 +53,8 @@ export declare const QueuesManager: {
      */
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     runRebuildQue(filter?: QueueFilter | undefined): void;
+    addToRebuildQueTotal(): void;
     awaitAllChunksToBeBuilt(): Promise<boolean>;
+    areAllChunksDoneBuilding(): boolean;
 };
 export {};

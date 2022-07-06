@@ -97,7 +97,6 @@ export const ConstructorCommManager = {
 
  requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number) {
   const comm = this.constructors[this.count];
-  DVEW.queues._numChunksRebuilding++;
   comm.sendMessage(WorldToConstructorMessages.buildChunk, [
    chunkX,
    chunkY,

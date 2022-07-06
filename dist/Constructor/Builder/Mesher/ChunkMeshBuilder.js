@@ -2,7 +2,6 @@
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { ConstructorToRenderMessages, SetChunkDataIndexes, } from "../../../Constants/InterComms/ConstructorToRender.js";
-import { ConstructorToWorldMessages } from "../../../Constants/InterComms/ConstructorToWorld.js";
 export const ChunkMeshBuilder = {
     voxelBuildOrder: [
         "solid",
@@ -113,6 +112,6 @@ export const ChunkMeshBuilder = {
             ];
             DVEC.renderComm.sendMessage(ConstructorToRenderMessages.setChunk, message, transfers);
         }
-        DVEC.worldComm.sendMessage(ConstructorToWorldMessages.chunkDoneBuilding, []);
+        DVEC.queues.finishBuildingChunk();
     },
 };

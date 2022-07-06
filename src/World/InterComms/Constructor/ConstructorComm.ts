@@ -37,7 +37,7 @@ export const GetNewConstructorComm = (count: number, port: InterCommPortTypes) =
  }
 
  newComm.messageFunctions[ConstructorToWorldMessages.chunkDoneBuilding] = (data)=>{
-  DVEW.queues._numChunksRebuilding--;
+ // DVEW.queues._numChunksRebuilding--;
  }
 
  return newComm;

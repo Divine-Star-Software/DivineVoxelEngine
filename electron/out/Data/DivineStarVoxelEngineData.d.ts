@@ -1,7 +1,7 @@
 import type { DVEDInitData } from "Meta/Data/DVED.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVED: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVED: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;

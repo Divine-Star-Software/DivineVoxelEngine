@@ -6,4 +6,5 @@ export declare const QueuesIndexes: {
     sunLightMaxYFlood: number;
     sunLightUpdate: number;
     sunLightRemove: number;
+    chunksBuilding: number;
 };

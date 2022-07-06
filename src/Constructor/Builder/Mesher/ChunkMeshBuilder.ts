@@ -146,6 +146,6 @@ export const ChunkMeshBuilder = {
     transfers
    );
   }
-  DVEC.worldComm.sendMessage(ConstructorToWorldMessages.chunkDoneBuilding, []);
+  DVEC.queues.finishBuildingChunk();
  },
 };

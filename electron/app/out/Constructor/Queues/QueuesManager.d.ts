@@ -8,4 +8,5 @@ export declare const QueuesManager: {
     finishSunLightUpdateMaxYFlood(): void;
     finishSunLightUpdate(): void;
     finishSunLightRemove(): void;
+    finishBuildingChunk(): void;
 };
