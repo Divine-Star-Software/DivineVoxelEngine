@@ -42,6 +42,11 @@ export const Worlds = [
              world: "ServerTest",
              }, */
             {
+                title: "Data Test",
+                description: "Used to test loading in voxel data.",
+                world: "DataTest",
+            },
+            {
                 title: "Physics Test",
                 description: "Used to test physics.",
                 world: "PhysicsTest",

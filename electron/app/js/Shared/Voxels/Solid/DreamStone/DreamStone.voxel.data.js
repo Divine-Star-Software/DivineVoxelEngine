@@ -3,5 +3,5 @@ export const DreamStoneVoxelData = {
     shapeId: "Box",
     id: "dve:dreamstone",
     substance: "solid",
-    defaultState: ["dve:dreamstone", 0],
+    states: ['no-grass']
 };

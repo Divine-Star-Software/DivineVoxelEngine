@@ -5,5 +5,4 @@ export const DreamStonePillarVoxelData: VoxelData = {
     shapeId: "Box",
     id: "dve:dreamstonepillar",
     substance: "solid",
-    defaultState: ["dve:dreamstonepillar", 0],
    };

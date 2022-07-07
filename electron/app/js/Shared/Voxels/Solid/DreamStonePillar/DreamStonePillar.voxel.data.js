@@ -3,5 +3,4 @@ export const DreamStonePillarVoxelData = {
     shapeId: "Box",
     id: "dve:dreamstonepillar",
     substance: "solid",
-    defaultState: ["dve:dreamstonepillar", 0],
 };

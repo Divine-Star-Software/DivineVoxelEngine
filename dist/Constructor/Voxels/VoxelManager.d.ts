@@ -1,9 +1,9 @@
-import type { VoxelHooks, VoxelBuilderThreadObject, VoxelData } from "Meta/Voxels/Voxel.types";
+import type { VoxelHooks, VoxelConstructorObject, VoxelData } from "Meta/Voxels/Voxel.types";
 export declare const VoxelManager: {
-    voxelObjects: Record<string, VoxelBuilderThreadObject>;
+    voxelObjects: Record<string, VoxelConstructorObject>;
     setShapeMap(shapeMap: Record<string, number>): void;
-    getVoxel(id: string): VoxelBuilderThreadObject;
+    getVoxel(id: string): VoxelConstructorObject;
     getVoxelData(id: string): VoxelData;
-    registerVoxel(voxel: VoxelBuilderThreadObject): void;
+    registerVoxel(voxel: VoxelConstructorObject): void;
     runVoxelHookForAll(hook: VoxelHooks): void;
 };

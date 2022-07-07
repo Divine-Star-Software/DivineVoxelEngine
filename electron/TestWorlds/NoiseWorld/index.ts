@@ -36,6 +36,10 @@ await DVER.$INIT({
   minY: 0,
   maxY: 128,
  },
+ meshes : {
+    checkSolidCollisions : false,
+    clearChachedGeometry : true,
+ }
 });
 
 const init = async () => {

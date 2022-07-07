@@ -15,13 +15,9 @@ export type VoxelSubstanceType =
  | "magma";
 /**VoxelT emplateS ubstance Type
  * ---
- * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.  
+ * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
  */
- export type VoxelTemplateSubstanceType = 
- | "solid"
- | "flora"
- | "fluid"
- | "magma";
+export type VoxelTemplateSubstanceType = "solid" | "flora" | "fluid" | "magma";
 
 export type VoxelProcessData = {
  exposedFaces: number[];
@@ -50,7 +46,7 @@ export type VoxelHooks =
  | "afterAfter"
  | any;
 
-export type VoxelBuilderThreadHooks = "texturesRegistered" | any;
+export type VoxelConstructorThreadHooks = "texturesRegistered" | any;
 
 export type VoxelWorldThreadHooks =
  | "beforeAdd"
@@ -68,24 +64,19 @@ export type VoxelData = {
  shapeId: string;
  id: string;
  substance: VoxelSubstanceType;
- defaultState: any[];
- states?: any[];
+ states?: string[];
  lightSource?: boolean;
  lightValue?: number;
 };
 
-
-export type VoxelBuilderThreadObject = {
+export type VoxelConstructorObject = {
  data: VoxelData;
  trueShapeId: number;
  hooks: Record<
-  VoxelBuilderThreadHooks,
+  VoxelConstructorThreadHooks,
   (DVEB: DivineVoxelEngineBuilder) => any
  >;
  process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };
 
-export type VoxelWorldThreadObject = {
- data: VoxelData;
- hooks: Record<VoxelWorldThreadHooks, Function>;
-};
+

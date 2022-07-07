@@ -7,25 +7,13 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 RegisterVoxels(DVEW);
 const load = () => {
  console.log("load");
- let startX = 0;
- let startZ = 0;
- let endX = 512;
- let endZ = 512;
+ let startX = -16;
+ let startZ = -16;
+ let endX = 16;
+ let endZ = 16;
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
    DVEW.buildChunk(x, 0, z);
-  }
- }
-};
-const generate = () => {
- console.log("generate");
- let startX = 0;
- let startZ = 0;
- let endX = 512;
- let endZ = 512;
- for (let x = startX; x <= endX; x += 16) {
-  for (let z = startZ; z <= endZ; z += 16) {
-   WorldGen.generateChunk(x, z);
   }
  }
 };
@@ -36,8 +24,8 @@ await DVEW.$INIT({
 });
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
-/* 
- WorldGen.generateChunk(0, 0);
+
+WorldGen.generateChunk(0, 0);
 WorldGen.generateChunk(-16, 0);
 WorldGen.generateChunk(16, 0);
 WorldGen.generateChunk(0, 16);
@@ -46,11 +34,10 @@ WorldGen.generateChunk(0, -16);
 WorldGen.generateChunk(-16, 16, "pillar");
 WorldGen.generateChunk(16, 16);
 WorldGen.generateChunk(16, -16, "pillar");
-WorldGen.generateChunk(-16, -16); 
-*/
+WorldGen.generateChunk(-16, -16);
+DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 40, -1);
+DVEW.worldData.paintVoxel("dve:dreamstone", "no-grass", 0, 40, 0);
 
-/*  generate();
-load(); 
-DVEW.dataComm.sendMessage("load", []);   */
+load();
 
 (self as any).DVEW = DVEW;

@@ -6,7 +6,7 @@ import type { WorldRegion } from "Meta/World/WorldData/World.types";
  * Used to help decode voxel ids and states from per-region voxel palettes.
  */
 export const VoxelPaletteManager = {
- globalVoxelPaletteIndex : 2,
+ globalVoxelPaletteIndex: 2,
  perRegionVoxelRecord: <Record<string, string[]>>{},
  globalVoxelPalette: <Record<number, string>>{},
  globalVoxelPaletteMap: <Record<string, number>>{},

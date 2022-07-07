@@ -1,7 +1,7 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { DreamLampVoxelData } from "./DreamLamp.voxel.data.js";
 
-export const DreamLampVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const DreamLampVoxelBuilderThread: VoxelConstructorObject = {
  data: DreamLampVoxelData,
  trueShapeId: 1,
  hooks: {},

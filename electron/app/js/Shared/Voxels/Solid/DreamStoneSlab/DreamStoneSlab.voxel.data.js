@@ -3,5 +3,4 @@ export const DreamStoneSlabVoxelData = {
     shapeId: "HalfBox",
     id: "dve:dreamstoneslab",
     substance: "transparent",
-    defaultState: ["dve:dreamstoneslab", 0],
 };

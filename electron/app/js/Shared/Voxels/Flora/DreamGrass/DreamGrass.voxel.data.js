@@ -3,5 +3,4 @@ export const DreamGrassVoxelData = {
     shapeId: "FullBoxDiagonalIntersection",
     id: "dve:dreamgrass",
     substance: "flora",
-    defaultState: ["dve:dreamgrass", 0],
 };

@@ -389,11 +389,11 @@ export declare const DVEB: {
             globalVoxelPaletteRecord: Record<string, string[]>;
             regionVoxelPalettes: Record<string, Record<number, string>>;
             voxelManager: {
-                voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+                voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
                 setShapeMap(shapeMap: Record<string, number>): void;
-                getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+                getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
                 getVoxelData(id: string): import("Meta/index.js").VoxelData;
-                registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+                registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
                 runVoxelHookForAll(hook: any): void;
             } | null;
             lightValueFunctions: {
@@ -404,11 +404,11 @@ export declare const DVEB: {
             };
             threadName: string;
             setVoxelManager(voxelManager: {
-                voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+                voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
                 setShapeMap(shapeMap: Record<string, number>): void;
-                getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+                getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
                 getVoxelData(id: string): import("Meta/index.js").VoxelData;
-                registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+                registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
                 runVoxelHookForAll(hook: any): void;
             }): void;
             syncChunkBounds(): void;
@@ -465,7 +465,7 @@ export declare const DVEB: {
     };
     voxelHelper: {
         substanceRules: Record<string, boolean>;
-        voxelFaceCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelBuilderThreadObject, x: number, y: number, z: number): boolean;
+        voxelFaceCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, x: number, y: number, z: number): boolean;
     };
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;

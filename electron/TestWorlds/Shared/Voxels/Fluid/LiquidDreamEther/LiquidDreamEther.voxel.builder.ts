@@ -1,7 +1,7 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { LiquidDreamEtherVoxelData } from "./LiquidDreamEther.voxel.data.js";
 
-export const LiquidDreamEtherVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
  data: LiquidDreamEtherVoxelData,
  trueShapeId: 1,
  hooks: {},

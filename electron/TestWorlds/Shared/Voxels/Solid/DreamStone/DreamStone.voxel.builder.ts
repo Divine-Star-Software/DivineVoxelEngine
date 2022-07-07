@@ -1,11 +1,11 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { DreamStoneVoxelData } from "./DreamStone.voxel.data.js";
 
-export const DreamStoneVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const DreamStoneVoxelBuilderThread: VoxelConstructorObject = {
  data: DreamStoneVoxelData,
  trueShapeId: 1,
  hooks: {},
- process:function (data, DVEB)  {
+ process: function (data, DVEB) {
   let topUV = DVEB.textureManager.getTextureUV(
    "solid",
    "dreamstone",
@@ -17,10 +17,17 @@ export const DreamStoneVoxelBuilderThread: VoxelBuilderThreadObject = {
    "dreamstone",
    "grassy-side"
   );
+  if (data.voxelState == "no-grass") {
+    sideUV = bottomUV;
+    topUV = bottomUV;
+   }
 
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(topUV);
   } else {
+   sideUV = bottomUV;
+  }
+  if (data.voxelState == "no-grass") {
    sideUV = bottomUV;
   }
   if (data.exposedFaces[1]) {

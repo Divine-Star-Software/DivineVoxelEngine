@@ -1,6 +1,6 @@
-import type { VoxelHooks, VoxelBuilderThreadObject } from "Meta/Voxels/Voxel.types";
+import type { VoxelHooks, VoxelConstructorObject } from "Meta/Voxels/Voxel.types";
 export declare const VoxelManager: {
-    voxelObjects: Record<string, VoxelBuilderThreadObject>;
+    voxelObjects: Record<string, VoxelConstructorObject>;
     shapeMap: Record<string, number>;
     shapeMapHasBeenSet: boolean;
     fluidShapeMap: Record<string, number>;
@@ -8,7 +8,7 @@ export declare const VoxelManager: {
     setShapeMap(shapeMap: Record<string, number>): void;
     shapMapIsSet(): boolean;
     fluidShapMapIsSet(): boolean;
-    getVoxel(id: string): VoxelBuilderThreadObject;
-    registerVoxel(voxel: VoxelBuilderThreadObject): void;
+    getVoxel(id: string): VoxelConstructorObject;
+    registerVoxel(voxel: VoxelConstructorObject): void;
     runVoxelHookForAll(hook: VoxelHooks): void;
 };

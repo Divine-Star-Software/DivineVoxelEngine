@@ -1,14 +1,14 @@
 //types
 import type {
  VoxelHooks,
- VoxelBuilderThreadObject,
+ VoxelConstructorObject,
  VoxelData,
 } from "Meta/Voxels/Voxel.types";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 
 export const VoxelManager = {
- voxelObjects: <Record<string, VoxelBuilderThreadObject>>{},
+ voxelObjects: <Record<string, VoxelConstructorObject>>{},
  setShapeMap(shapeMap: Record<string, number>) {
   for (const voxelId of Object.keys(this.voxelObjects)) {
    const voxel = this.voxelObjects[voxelId];
@@ -16,7 +16,7 @@ export const VoxelManager = {
   }
  },
 
- getVoxel(id: string): VoxelBuilderThreadObject {
+ getVoxel(id: string): VoxelConstructorObject {
   return this.voxelObjects[id];
  },
 
@@ -24,7 +24,7 @@ export const VoxelManager = {
   return this.voxelObjects[id].data;
  },
 
- registerVoxel(voxel: VoxelBuilderThreadObject) {
+ registerVoxel(voxel: VoxelConstructorObject) {
   this.voxelObjects[voxel.data.id] = voxel;
  },
 

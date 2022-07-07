@@ -1,7 +1,7 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { DebugBoxVoxelData } from "./DebugBox.voxel.data.js";
 
-export const DebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const DebugBoxVoxelBuilderThread: VoxelConstructorObject = {
  data: DebugBoxVoxelData,
  trueShapeId: 1,
  hooks: {},

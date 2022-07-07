@@ -3,5 +3,4 @@ export const LiquidDreamEtherVoxelData = {
     shapeId: "FluidSourceBlock",
     id: "dve:liquiddreamether",
     substance: "fluid",
-    defaultState: ["dve:liquiddreamether", 0],
 };

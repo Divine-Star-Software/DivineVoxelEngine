@@ -16,24 +16,17 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
  "../Shared/Constructor/constructor.js",
- null,
- "./Data/data.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
- dataWorker: workers.dataWorker,
  lighting: {
   doAO: true,
   doRGBLight: false,
   doSunLight: false,
   autoRGBLight: false,
   autoSunLight: false,
- },
- data: {
-  enabled: true,
-  autoSyncChunks: true,
  },
 });
 

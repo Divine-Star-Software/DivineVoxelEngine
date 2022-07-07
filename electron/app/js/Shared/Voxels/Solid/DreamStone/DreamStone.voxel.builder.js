@@ -7,10 +7,17 @@ export const DreamStoneVoxelBuilderThread = {
         let topUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
         let bottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone");
         let sideUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
+        if (data.voxelState == "no-grass") {
+            sideUV = bottomUV;
+            topUV = bottomUV;
+        }
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
         }
         else {
+            sideUV = bottomUV;
+        }
+        if (data.voxelState == "no-grass") {
             sideUV = bottomUV;
         }
         if (data.exposedFaces[1]) {

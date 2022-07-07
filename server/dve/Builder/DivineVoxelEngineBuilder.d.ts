@@ -644,7 +644,7 @@ export declare const DVEB: {
         setUVTextureMap(data: Record<import("../Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
     };
     voxelManager: {
-        voxelObjects: Record<string, import("../Meta/index.js").VoxelBuilderThreadObject>;
+        voxelObjects: Record<string, import("../Meta/index.js").VoxelConstructorObject>;
         shapeMap: Record<string, number>;
         shapeMapHasBeenSet: boolean;
         fluidShapeMap: Record<string, number>;
@@ -652,8 +652,8 @@ export declare const DVEB: {
         setShapeMap(shapeMap: Record<string, number>): void;
         shapMapIsSet(): boolean;
         fluidShapMapIsSet(): boolean;
-        getVoxel(id: string): import("../Meta/index.js").VoxelBuilderThreadObject;
-        registerVoxel(voxel: import("../Meta/index.js").VoxelBuilderThreadObject): void;
+        getVoxel(id: string): import("../Meta/index.js").VoxelConstructorObject;
+        registerVoxel(voxel: import("../Meta/index.js").VoxelConstructorObject): void;
         runVoxelHookForAll(hook: any): void;
     };
     voxelHelper: {
@@ -705,7 +705,7 @@ export declare const DVEB: {
         };
         getTrueShapeId(id: string): number;
         getTrueFluidShapeId(id: string): number;
-        voxelFaceCheck(face: import("../Meta/Util.types.js").DirectionNames, voxel: import("../Meta/index.js").VoxelBuilderThreadObject, x: number, y: number, z: number): boolean;
+        voxelFaceCheck(face: import("../Meta/Util.types.js").DirectionNames, voxel: import("../Meta/index.js").VoxelConstructorObject, x: number, y: number, z: number): boolean;
         getLight(x: number, y: number, z: number): number;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
         processVoxelLight(data: import("../Meta/index.js").VoxelProcessData, voxel: import("../Meta/index.js").VoxelData): void;

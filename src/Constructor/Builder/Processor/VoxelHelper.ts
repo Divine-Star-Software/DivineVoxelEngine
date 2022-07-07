@@ -2,7 +2,7 @@
 import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
 import type {
  DirectionNames,
- VoxelBuilderThreadObject,
+ VoxelConstructorObject,
  VoxelData,
 } from "Meta/index";
 //objects
@@ -45,7 +45,7 @@ export const VoxelHelper = {
 
  voxelFaceCheck(
   face: DirectionNames,
-  voxel: VoxelBuilderThreadObject,
+  voxel: VoxelConstructorObject,
   x: number,
   y: number,
   z: number

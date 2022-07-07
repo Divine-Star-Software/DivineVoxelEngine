@@ -3,21 +3,16 @@ import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js", null, "./Data/data.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,
-    dataWorker: workers.dataWorker,
     lighting: {
         doAO: true,
         doRGBLight: false,
         doSunLight: false,
         autoRGBLight: false,
         autoSunLight: false,
-    },
-    data: {
-        enabled: true,
-        autoSyncChunks: true,
     },
 });
 const init = async () => {

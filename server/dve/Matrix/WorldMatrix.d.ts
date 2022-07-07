@@ -161,11 +161,11 @@ export declare const WorldMatrix: {
     globalVoxelPaletteRecord: Record<string, string[]>;
     regionVoxelPalettes: Record<string, Record<number, string>>;
     voxelManager: {
-        voxelObjects: Record<string, import("../Meta/index").VoxelBuilderThreadObject>;
+        voxelObjects: Record<string, import("../Meta/index").VoxelConstructorObject>;
         setShapeMap(shapeMap: Record<string, number>): void;
-        getVoxel(id: string): import("../Meta/index").VoxelBuilderThreadObject;
+        getVoxel(id: string): import("../Meta/index").VoxelConstructorObject;
         getVoxelData(id: string): import("../Meta/index").VoxelData;
-        registerVoxel(voxel: import("../Meta/index").VoxelBuilderThreadObject): void;
+        registerVoxel(voxel: import("../Meta/index").VoxelConstructorObject): void;
         runVoxelHookForAll(hook: any): void;
     } | null;
     lightValueFunctions: {

@@ -1,4 +1,4 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { LightDebugBoxVoxelData } from "./LightDebugBox.voxel.data.js";
 
 let lightDebugBoxTextures : Record<number,number> = {
@@ -6,7 +6,7 @@ let lightDebugBoxTextures : Record<number,number> = {
 };
 
 
-export const LightDebugBoxVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
  data: LightDebugBoxVoxelData,
  trueShapeId: 1,
  hooks : {

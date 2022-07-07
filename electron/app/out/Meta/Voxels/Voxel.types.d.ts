@@ -30,7 +30,7 @@ export declare type VoxelProcessData = {
     z: number;
 };
 export declare type VoxelHooks = "texturesRegistered" | "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
-export declare type VoxelBuilderThreadHooks = "texturesRegistered" | any;
+export declare type VoxelConstructorThreadHooks = "texturesRegistered" | any;
 export declare type VoxelWorldThreadHooks = "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
 /**# Voxel Data
  * ---
@@ -41,18 +41,13 @@ export declare type VoxelData = {
     shapeId: string;
     id: string;
     substance: VoxelSubstanceType;
-    defaultState: any[];
-    states?: any[];
+    states?: string[];
     lightSource?: boolean;
     lightValue?: number;
 };
-export declare type VoxelBuilderThreadObject = {
+export declare type VoxelConstructorObject = {
     data: VoxelData;
     trueShapeId: number;
-    hooks: Record<VoxelBuilderThreadHooks, (DVEB: DivineVoxelEngineBuilder) => any>;
+    hooks: Record<VoxelConstructorThreadHooks, (DVEB: DivineVoxelEngineBuilder) => any>;
     process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
-};
-export declare type VoxelWorldThreadObject = {
-    data: VoxelData;
-    hooks: Record<VoxelWorldThreadHooks, Function>;
 };

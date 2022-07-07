@@ -5,6 +5,5 @@ export const LightDebugBoxVoxelData: VoxelData = {
     shapeId: "Box",
     id: "dve:lightdebug",
     substance: "solid",
-    defaultState: ["dve:lightdebug", 0],
     lightSource: false,
    };

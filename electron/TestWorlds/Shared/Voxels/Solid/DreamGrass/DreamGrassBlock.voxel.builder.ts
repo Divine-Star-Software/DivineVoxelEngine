@@ -1,7 +1,7 @@
-import type { VoxelBuilderThreadObject } from "../../../../../out/Meta/index.js";
+import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 import { DreamGrassBlockVoxelData } from "./DreamGrassBlock.voxel.data.js";
 
-export const DreamGrassBlockVoxelBuilderThread: VoxelBuilderThreadObject = {
+export const DreamGrassBlockVoxelBuilderThread: VoxelConstructorObject = {
  data: DreamGrassBlockVoxelData,
  trueShapeId: 1,
  hooks: {},

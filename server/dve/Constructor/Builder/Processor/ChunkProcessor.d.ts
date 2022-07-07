@@ -314,11 +314,11 @@ export declare const ChunkProcessor: {
         globalVoxelPaletteRecord: Record<string, string[]>;
         regionVoxelPalettes: Record<string, Record<number, string>>;
         voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
             setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
             getVoxelData(id: string): VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
             runVoxelHookForAll(hook: any): void;
         } | null;
         lightValueFunctions: {
@@ -329,11 +329,11 @@ export declare const ChunkProcessor: {
         };
         threadName: string;
         setVoxelManager(voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelBuilderThreadObject>;
+            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
             setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelBuilderThreadObject;
+            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
             getVoxelData(id: string): VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelBuilderThreadObject): void;
+            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
             runVoxelHookForAll(hook: any): void;
         }): void;
         syncChunkBounds(): void;
