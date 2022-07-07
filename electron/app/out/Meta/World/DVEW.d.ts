@@ -1,5 +1,5 @@
 export declare type DVEWInitData = {
-    onReady: () => void;
+    onReady?: () => void;
     onMessage?: (event: any) => void;
     onRestart?: () => void;
 };

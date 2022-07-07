@@ -4,9 +4,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 const playerWatcher = new PlayerWatcher(DVEW);
 RegisterVoxels(DVEW);
-await DVEW.$INIT({
-    onReady: () => { },
-});
+await DVEW.$INIT({});
 let startX = -32;
 let startZ = -32;
 let endX = 32;

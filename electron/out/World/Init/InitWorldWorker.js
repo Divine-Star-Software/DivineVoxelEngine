@@ -1,5 +1,7 @@
 export async function InitWorldWorker(DVEW, initData) {
-    DVEW.renderComm.onReady = initData.onReady;
+    if (initData.onReady) {
+        DVEW.renderComm.onReady = initData.onReady;
+    }
     if (initData.onMessage) {
         DVEW.renderComm.onMessage = initData.onMessage;
     }

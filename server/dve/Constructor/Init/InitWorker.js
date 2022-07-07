@@ -1,5 +1,7 @@
 export async function InitWorker(DVEC, initData) {
-    DVEC.renderComm.onReady = initData.onReady;
+    if (initData.onReady) {
+        DVEC.renderComm.onReady = initData.onReady;
+    }
     if (initData.onMessage) {
         DVEC.renderComm.onMessage = initData.onMessage;
     }

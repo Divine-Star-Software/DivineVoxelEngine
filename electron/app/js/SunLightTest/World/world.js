@@ -15,7 +15,7 @@ const fillWorldColumns = () => {
         }
     }
 };
-await DVEW.$INIT({ onReady: () => { } });
+await DVEW.$INIT({});
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;

@@ -4,10 +4,8 @@ import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
 console.log("HELLO FROM NEXUS");
 
 RegisterEntitesInNexus(DVEN);
-const start = () => {};
-await DVEN.$INIT({
- onReady: start,
-});
+
+await DVEN.$INIT({});
 
 DVEN.worldComm.listenForMessage("done", async (data, event) => {
  DVEN.nexusEntites.spawnEntity("entity-1", { x: 0, y: 15, z: 0 });

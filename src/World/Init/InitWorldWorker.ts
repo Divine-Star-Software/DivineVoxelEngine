@@ -5,7 +5,9 @@ export async function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld,
  initData: DVEWInitData
 ): Promise<any> {
- DVEW.renderComm.onReady = initData.onReady;
+ if(initData.onReady) {
+    DVEW.renderComm.onReady = initData.onReady;
+ }
  if (initData.onMessage) {
   DVEW.renderComm.onMessage = initData.onMessage;
  }

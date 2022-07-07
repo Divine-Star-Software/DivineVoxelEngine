@@ -5,10 +5,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({
- onReady: () => {},
-});
-
+await DVEW.$INIT({});
 const topBottomTest = async () => {
  let startX = -16;
  let startZ = -16;

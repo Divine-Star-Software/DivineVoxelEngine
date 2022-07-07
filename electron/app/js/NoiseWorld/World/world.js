@@ -2,9 +2,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 RegisterVoxels(DVEW);
-await DVEW.$INIT({
-    onReady: () => { },
-});
+await DVEW.$INIT({});
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 let startX = -128;
 let startZ = -128;

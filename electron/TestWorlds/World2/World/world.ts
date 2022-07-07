@@ -18,9 +18,7 @@ const load = () => {
 };
 RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
-await DVEW.$INIT({
- onReady: () => {},
-});
+await DVEW.$INIT({});
 
 //DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */

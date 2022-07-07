@@ -5,7 +5,9 @@ export async function InitWorker(
  DVEC: DivineVoxelEngineConstructor,
  initData: DVECInitData
 ) {
- DVEC.renderComm.onReady = initData.onReady;
+ if (initData.onReady) {
+  DVEC.renderComm.onReady = initData.onReady;
+ }
  if (initData.onMessage) {
   DVEC.renderComm.onMessage = initData.onMessage;
  }

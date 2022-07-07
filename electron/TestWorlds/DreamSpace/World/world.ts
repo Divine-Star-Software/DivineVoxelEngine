@@ -26,9 +26,7 @@ DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
  playerWatcher.startWatchingPlayer();
 });
 
-await DVEW.$INIT({
- onReady: () => {},
-});
+await DVEW.$INIT({});
 
 const numChunks = 5;
 let startX = -16 * numChunks;

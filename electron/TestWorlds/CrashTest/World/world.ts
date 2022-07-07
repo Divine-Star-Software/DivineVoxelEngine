@@ -27,9 +27,7 @@ const generate = () => {
  }
 };
 
-await DVEW.$INIT({
- onReady: () => {},
-});
+await DVEW.$INIT({});
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 
 generate();

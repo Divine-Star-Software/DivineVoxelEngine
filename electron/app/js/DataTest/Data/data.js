@@ -1,7 +1,7 @@
 import { DVED } from "../../../out/Data/DivineStarVoxelEngineData.js";
 import { DataHanlder } from "./DataHandler.js";
 import { DataServer } from "./DataServer.js";
-await DVED.$INIT({ onReady: () => { } });
+await DVED.$INIT({});
 DVED.dataManager.setDataHandler(DataHanlder);
 /* DVED.worldComm.listenForMessage("load", () => {
  runTest();

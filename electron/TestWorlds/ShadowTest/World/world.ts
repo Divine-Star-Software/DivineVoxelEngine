@@ -6,9 +6,7 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({
- onReady: () => {},
-});
+await DVEW.$INIT({});
 console.log("start");
 DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 

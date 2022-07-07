@@ -2,9 +2,7 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-await DVEW.$INIT({
-    onReady: () => { },
-});
+await DVEW.$INIT({});
 const depth = 32;
 let startX = -depth;
 let startZ = -depth;
