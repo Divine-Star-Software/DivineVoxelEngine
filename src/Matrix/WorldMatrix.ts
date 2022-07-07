@@ -8,6 +8,8 @@ import type { VoxelManager } from "Constructor/Voxels/VoxelManager";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
+import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
+import { VoxelData } from "Meta/index";
 
 /**# World Matrix
  * ---
@@ -32,8 +34,7 @@ export const WorldMatrix = {
  globalVoxelPalette: <Record<number, string>>{},
  globalVoxelPaletteRecord: <Record<string, string[]>>{},
 
-
- voxelManager: <null | typeof VoxelManager>null,
+ voxelManager: <VoxelManagerInterface | null>null,
 
  lightValueFunctions: {
   r: (value: number) => {
@@ -52,7 +53,7 @@ export const WorldMatrix = {
 
  threadName: "",
 
- setVoxelManager(voxelManager: typeof VoxelManager) {
+ setVoxelManager(voxelManager: VoxelManagerInterface) {
   this.voxelManager = voxelManager;
  },
 
@@ -88,7 +89,6 @@ export const WorldMatrix = {
   this.globalVoxelPaletteRecord = record;
  },
 
-
  getVoxel(x: number, y: number, z: number) {
   let palette = this.globalVoxelPalette;
   let record = this.globalVoxelPaletteRecord;
@@ -103,7 +103,7 @@ export const WorldMatrix = {
   return record[paletteId];
  },
 
- getVoxelData(x: number, y: number, z: number) {
+ getVoxelData(x: number, y: number, z: number): VoxelData | false {
   if (!this.voxelManager) {
    throw new Error(
     `A voxel manager must be set in order for this function to work. `
@@ -292,12 +292,12 @@ export const WorldMatrix = {
     if (!this.voxelManager) {
      return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
     } else {
-     const voxelData = this.voxelManager.getVoxel(voxel[0]);
+     const voxelData = this.voxelManager.getVoxelData(voxel[0]);
 
-     if (voxelData.data.lightSource && voxelData.data.lightValue) {
-      return voxelData.data.lightValue;
+     if (voxelData.lightSource && voxelData.lightValue) {
+      return voxelData.lightValue;
      }
-     if (voxelData.data.substance == "solid") {
+     if (voxelData.substance == "solid") {
       return -1;
      }
      return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);

@@ -5,7 +5,9 @@ export async function InitWorker(
  DVED: DivineVoxelEngineData,
  initData: DVEDInitData
 ) {
- DVED.renderComm.onReady = initData.onReady;
+ if (initData.onReady) {
+  DVED.renderComm.onReady = initData.onReady;
+ }
  if (initData.onMessage) {
   DVED.renderComm.onMessage = initData.onMessage;
  }
@@ -15,7 +17,6 @@ export async function InitWorker(
 
  const renderPort = await DVED.UTIL.getWorkerPort(DVED.environment);
  DVED.renderComm.setPort(renderPort);
-
 
  await DVED.UTIL.createPromiseCheck({
   check: () => {

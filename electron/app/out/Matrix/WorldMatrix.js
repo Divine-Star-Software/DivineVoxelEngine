@@ -239,11 +239,11 @@ export const WorldMatrix = {
                     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);
                 }
                 else {
-                    const voxelData = this.voxelManager.getVoxel(voxel[0]);
-                    if (voxelData.data.lightSource && voxelData.data.lightValue) {
-                        return voxelData.data.lightValue;
+                    const voxelData = this.voxelManager.getVoxelData(voxel[0]);
+                    if (voxelData.lightSource && voxelData.lightValue) {
+                        return voxelData.lightValue;
                     }
-                    if (voxelData.data.substance == "solid") {
+                    if (voxelData.substance == "solid") {
                         return -1;
                     }
                     return this.voxelByte.decodeLightFromVoxelData(rawVoxelData);

@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -388,8 +387,8 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;

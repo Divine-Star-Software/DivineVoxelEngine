@@ -579,32 +579,15 @@ export declare const DVEN: {
         paletteMode: number;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
-        voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-            setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-            getVoxelData(id: string): import("Meta/index.js").VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-            runVoxelHookForAll(hook: any): void;
-        } | null;
+        voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
         lightValueFunctions: {
             r: (value: number) => number;
             g: (value: number) => number;
             b: (value: number) => number;
             s: (value: number) => number;
         };
-        /**# Load chunk into Nexus
-         * Load a chunk into the shared nexus thread.
-         */
         threadName: string;
-        setVoxelManager(voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-            setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-            getVoxelData(id: string): import("Meta/index.js").VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-            runVoxelHookForAll(hook: any): void;
-        }): void;
+        setVoxelManager(voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;

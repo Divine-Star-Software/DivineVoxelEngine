@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -922,14 +922,7 @@ export declare const DVEC: {
                 paletteMode: number;
                 globalVoxelPalette: Record<number, string>;
                 globalVoxelPaletteRecord: Record<string, string[]>;
-                voxelManager: {
-                    voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-                    setShapeMap(shapeMap: Record<string, number>): void;
-                    getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-                    getVoxelData(id: string): import("Meta/index.js").VoxelData;
-                    registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-                    runVoxelHookForAll(hook: any): void;
-                } | null;
+                voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
                 lightValueFunctions: {
                     r: (value: number) => number;
                     g: (value: number) => number;
@@ -937,14 +930,7 @@ export declare const DVEC: {
                     s: (value: number) => number;
                 };
                 threadName: string;
-                setVoxelManager(voxelManager: {
-                    voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-                    setShapeMap(shapeMap: Record<string, number>): void;
-                    getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-                    getVoxelData(id: string): import("Meta/index.js").VoxelData;
-                    registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-                    runVoxelHookForAll(hook: any): void;
-                }): void;
+                setVoxelManager(voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
                 syncChunkBounds(): void;
                 awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
                 __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
@@ -1232,14 +1218,7 @@ export declare const DVEC: {
         paletteMode: number;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
-        voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-            setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-            getVoxelData(id: string): import("Meta/index.js").VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-            runVoxelHookForAll(hook: any): void;
-        } | null;
+        voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
         lightValueFunctions: {
             r: (value: number) => number;
             g: (value: number) => number;
@@ -1247,14 +1226,7 @@ export declare const DVEC: {
             s: (value: number) => number;
         };
         threadName: string;
-        setVoxelManager(voxelManager: {
-            voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
-            setShapeMap(shapeMap: Record<string, number>): void;
-            getVoxel(id: string): import("Meta/index.js").VoxelConstructorObject;
-            getVoxelData(id: string): import("Meta/index.js").VoxelData;
-            registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
-            runVoxelHookForAll(hook: any): void;
-        }): void;
+        setVoxelManager(voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;

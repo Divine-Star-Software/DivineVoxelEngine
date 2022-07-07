@@ -41,6 +41,10 @@ export declare type VoxelData = {
     shapeId: string;
     id: string;
     substance: VoxelSubstanceType;
+    physics?: {
+        boundingBoxId: string;
+        checkCollisions: boolean;
+    };
     states?: string[];
     lightSource?: boolean;
     lightValue?: number;

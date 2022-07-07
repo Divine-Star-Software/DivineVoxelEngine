@@ -60,13 +60,17 @@ export type VoxelWorldThreadHooks =
  * This the needed information for each voxel.
  */
 export type VoxelData = {
- name: string;
- shapeId: string;
- id: string;
- substance: VoxelSubstanceType;
- states?: string[];
- lightSource?: boolean;
- lightValue?: number;
+    name: string;
+    shapeId: string;
+    id: string;
+    substance: VoxelSubstanceType;
+    physics?: {
+    boundingBoxId: string;
+    checkCollisions: boolean;
+    };
+    states?: string[];
+    lightSource?: boolean;
+    lightValue?: number;
 };
 
 export type VoxelConstructorObject = {
@@ -78,5 +82,3 @@ export type VoxelConstructorObject = {
  >;
  process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };
-
-

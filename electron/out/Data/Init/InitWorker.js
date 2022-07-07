@@ -1,5 +1,7 @@
 export async function InitWorker(DVED, initData) {
-    DVED.renderComm.onReady = initData.onReady;
+    if (initData.onReady) {
+        DVED.renderComm.onReady = initData.onReady;
+    }
     if (initData.onMessage) {
         DVED.renderComm.onMessage = initData.onMessage;
     }

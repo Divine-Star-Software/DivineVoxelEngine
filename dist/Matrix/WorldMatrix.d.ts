@@ -1,6 +1,7 @@
 import type { MatrixLoadedChunk, MatrixLoadedRegion } from "../Meta/Matrix/Matrix.types";
-import type { VoxelManager } from "Constructor/Voxels/VoxelManager";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
+import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
+import { VoxelData } from "Meta/index";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
@@ -18,16 +19,16 @@ export declare const WorldMatrix: {
             z: number;
         };
         setBounds(x: number, y: number, z: number): void;
-        getValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels): number;
-        getValueUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): number;
-        getValueUseObjSafe(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): any;
-        setValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels, value: number): void;
-        setValueUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels, value: number): void;
-        setValueUseObjSafe(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels, value: number): void;
-        deleteValue(x: number, y: number, z: number, array: import("../Meta/index").ChunkVoxels): void;
-        deleteUseObj(position: import("../Meta/Util.types").Position3Matrix, array: import("../Meta/index").ChunkVoxels): void;
+        getValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels): number;
+        getValueUseObj(position: import("Meta/index").Position3Matrix, array: import("Meta/index").ChunkVoxels): number;
+        getValueUseObjSafe(position: import("Meta/index").Position3Matrix, array: import("Meta/index").ChunkVoxels): any;
+        setValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels, value: number): void;
+        setValueUseObj(position: import("Meta/index").Position3Matrix, array: import("Meta/index").ChunkVoxels, value: number): void;
+        setValueUseObjSafe(position: import("Meta/index").Position3Matrix, array: import("Meta/index").ChunkVoxels, value: number): void;
+        deleteValue(x: number, y: number, z: number, array: import("Meta/index").ChunkVoxels): void;
+        deleteUseObj(position: import("Meta/index").Position3Matrix, array: import("Meta/index").ChunkVoxels): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("../Meta/Util.types").Position3Matrix;
+        getXYZ(index: number): import("Meta/index").Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
@@ -83,20 +84,16 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        /**# Set Chunk
-         * ---
-         * To be only called by the Matrix Hub.
-         */
         getChunkPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("../Meta/Util.types").Position3Matrix): string;
+        getChunkKey(chunkPOS: import("Meta/index").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../Meta/Util.types").Position3Matrix): string;
+        getRegionKey(regionPOS: import("Meta/index").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types").Position3Matrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index").Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -106,7 +103,7 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("../Meta/Util.types").Position3Matrix): string;
+        getWorldColumnKeyFromObj(position: import("Meta/index").Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
         getWorldColumnPosition(x: number, z: number): {
             x: number;
@@ -159,14 +156,7 @@ export declare const WorldMatrix: {
     paletteMode: number;
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteRecord: Record<string, string[]>;
-    voxelManager: {
-        voxelObjects: Record<string, import("../Meta/index").VoxelConstructorObject>;
-        setShapeMap(shapeMap: Record<string, number>): void;
-        getVoxel(id: string): import("../Meta/index").VoxelConstructorObject;
-        getVoxelData(id: string): import("../Meta/index").VoxelData;
-        registerVoxel(voxel: import("../Meta/index").VoxelConstructorObject): void;
-        runVoxelHookForAll(hook: any): void;
-    } | null;
+    voxelManager: VoxelManagerInterface | null;
     lightValueFunctions: {
         r: (value: number) => number;
         g: (value: number) => number;
@@ -174,7 +164,7 @@ export declare const WorldMatrix: {
         s: (value: number) => number;
     };
     threadName: string;
-    setVoxelManager(voxelManager: typeof VoxelManager): void;
+    setVoxelManager(voxelManager: VoxelManagerInterface): void;
     syncChunkBounds(): void;
     /**# Await Chunk Load
      * ---
@@ -183,7 +173,7 @@ export declare const WorldMatrix: {
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
     getVoxel(x: number, y: number, z: number): false | string[];
-    getVoxelData(x: number, y: number, z: number): false | import("../Meta/index").VoxelData;
+    getVoxelData(x: number, y: number, z: number): VoxelData | false;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
     };

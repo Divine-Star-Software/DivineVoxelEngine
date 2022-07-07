@@ -7,6 +7,9 @@ export declare type EngineSettingsData = {
         enabled: boolean;
         autoSyncChunks: boolean;
     };
+    physics: {
+        enabled: boolean;
+    };
     server: {
         enabled: boolean;
     };

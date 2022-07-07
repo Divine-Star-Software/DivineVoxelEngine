@@ -1,12 +1,15 @@
 export type EngineSettingsData = {
  nexus: {
   enabled: boolean;
-  autoSyncChunks : boolean;
+  autoSyncChunks: boolean;
  };
- data : {
-   enabled : boolean;
-   autoSyncChunks : boolean;
-}
+ data: {
+  enabled: boolean;
+  autoSyncChunks: boolean;
+ };
+ physics: {
+  enabled: boolean;
+ };
  server: {
   enabled: boolean;
  };
@@ -16,12 +19,12 @@ export type EngineSettingsData = {
   animationTime: number;
  };
  world: {
-  maxX : number,
-  minX : number,
-  maxZ : number,
-  minZ : number,
-  maxY : number,
-  minY : number
+  maxX: number;
+  minX: number;
+  maxZ: number;
+  minZ: number;
+  maxY: number;
+  minY: number;
  };
  regions: {
   regionXPow2: number;
@@ -47,14 +50,14 @@ export type EngineSettingsData = {
  voxels: {
   doColors: boolean;
  };
- meshes : {
-  clearChachedGeometry : boolean;
-  checkMagmaCollisions : boolean;
-  checkFluidCollisions : boolean;
-  checkFloraCollisions : boolean;
-  checkSolidCollisions : boolean;
-  seralize : boolean;
-  pickable : boolean;
+ meshes: {
+  clearChachedGeometry: boolean;
+  checkMagmaCollisions: boolean;
+  checkFluidCollisions: boolean;
+  checkFloraCollisions: boolean;
+  checkSolidCollisions: boolean;
+  seralize: boolean;
+  pickable: boolean;
  };
  materials: {
   disableFloraShaderEffects: boolean;
@@ -63,5 +66,4 @@ export type EngineSettingsData = {
   doSunLight: boolean;
   doRGBLight: boolean;
  };
-
 };
