@@ -17,8 +17,4 @@ export declare const MatrixCentralHub: {
     releaseRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
     syncGlobalVoxelPalette(): void;
     syncGlobalVoxelPaletteInThread(threadId: string): void;
-    syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
-    syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-    releaseRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
-    releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
 };

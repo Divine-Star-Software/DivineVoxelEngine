@@ -9,9 +9,7 @@ export const GetNewConstructorComm = (count, port) => {
     newComm.onSetPort((port) => {
         newComm.name = threadName;
         DVEW.matrixCentralHub.registerThread(threadName, port);
-        if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
-            DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
-        }
+        DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
     });
     newComm.setPort(port);
     DVEW.constructorCommManager.numConstructors++;

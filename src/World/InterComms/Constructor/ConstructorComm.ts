@@ -6,8 +6,10 @@ import { ConstructorToWorldMessages } from "../../../Constants/InterComms/Constr
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 
-
-export const GetNewConstructorComm = (count: number, port: InterCommPortTypes) => {
+export const GetNewConstructorComm = (
+ count: number,
+ port: InterCommPortTypes
+) => {
  const threadName = `constructor-${count}`;
  const newComm: InterCommInterface = CreateInterComm(threadName, {
   ready: false,
@@ -15,30 +17,32 @@ export const GetNewConstructorComm = (count: number, port: InterCommPortTypes) =
  newComm.onSetPort((port) => {
   newComm.name = threadName;
   DVEW.matrixCentralHub.registerThread(threadName, port);
-  if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
-   DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
-  }
+  DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
  });
  newComm.setPort(port);
  DVEW.constructorCommManager.numConstructors++;
  newComm.messageFunctions = {
   ready: (data, event) => {
-    DVEW.constructorCommManager.constructorsConnected++;
+   DVEW.constructorCommManager.constructorsConnected++;
   },
  };
 
- newComm.messageFunctions[ConstructorToWorldMessages.addToRebuildQue] = (data)=>{
+ newComm.messageFunctions[ConstructorToWorldMessages.addToRebuildQue] = (
+  data
+ ) => {
   const x = data[1];
   const y = data[2];
   const z = data[3];
   const substance = data[4];
 
   DVEW.queues.addToRebuildQue(x, y, z, substance);
- }
+ };
 
- newComm.messageFunctions[ConstructorToWorldMessages.chunkDoneBuilding] = (data)=>{
- // DVEW.queues._numChunksRebuilding--;
- }
+ newComm.messageFunctions[ConstructorToWorldMessages.chunkDoneBuilding] = (
+  data
+ ) => {
+  // DVEW.queues._numChunksRebuilding--;
+ };
 
  return newComm;
 };

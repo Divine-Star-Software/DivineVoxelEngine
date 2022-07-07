@@ -29,30 +29,6 @@ export const MatrixCentralHub = {
    const thread = data[1];
    MatrixCentralHub.syncGlobalVoxelPaletteInThread(thread);
   },
-  "sync-region-voxel-palette": (data, event) => {
-   const thread = data[1];
-   const regionX = data[2];
-   const regionY = data[3];
-   const regionZ = data[4];
-   MatrixCentralHub.syncRegionVoxelPaletteInThread(
-    thread,
-    regionX,
-    regionY,
-    regionZ
-   );
-  },
-  "release-region-voxel-palette": (data, event) => {
-   const thread = data[1];
-   const regionX = data[2];
-   const regionY = data[3];
-   const regionZ = data[4];
-   MatrixCentralHub.releaseRegionVoxelPaletteInThread(
-    thread,
-    regionX,
-    regionY,
-    regionZ
-   );
-  },
  },
 
  registerThread(threadId: string, thread: InterCommPortTypes) {
@@ -73,12 +49,6 @@ export const MatrixCentralHub = {
  },
 
  syncChunk(x: number, y: number, z: number) {
-  if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
-   if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
-    this.syncRegionVoxelPalette(x, y, z);
-   }
-  }
-
   let chunkSABs: SharedArrayBuffer[] = [];
   if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
    const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
@@ -110,11 +80,6 @@ export const MatrixCentralHub = {
  },
 
  syncChunkInThread(threadId: string, x: number, y: number, z: number) {
-  if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
-   if (!DVEW.matrix.isRegionInMatrix(x, y, z)) {
-    this.syncRegionVoxelPalette(x, y, z);
-   }
-  }
   let chunkSABs: SharedArrayBuffer[] = [];
   if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
    const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
@@ -278,86 +243,6 @@ export const MatrixCentralHub = {
    "sync-global-palette",
    globalVoxelPalette,
    globalVoxelPaletteRecord,
-  ]);
- },
-
- syncRegionVoxelPalette(x: number, y: number, z: number) {
-  const region = DVEW.worldData.getRegion(x, y, z);
-  if (!region) return false;
-  const regionVoxelPalette = region.palette;
-  if (!regionVoxelPalette) return false;
-  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
-  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
-  if (!matrixRegionData) {
-   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
-  }
-  for (const threadId of Object.keys(this.threads)) {
-   matrixRegionData.threadsLoadedIn[threadId] = true;
-   this.threads[threadId].postMessage([
-    "sync-region-data",
-    regionVoxelPalette,
-    regionPOS.x,
-    regionPOS.y,
-    regionPOS.z,
-   ]);
-  }
- },
-
- syncRegionVoxelPaletteInThread(
-  threadId: string,
-  x: number,
-  y: number,
-  z: number
- ) {
-  const region = DVEW.worldData.getRegion(x, y, z);
-  if (!region) return false;
-  const regionVoxelPalette = region.palette;
-  if (!regionVoxelPalette) return false;
-  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
-  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
-  if (!matrixRegionData) {
-   matrixRegionData = DVEW.matrix.addRegionToMatrix(x, y, z);
-  }
-  matrixRegionData.threadsLoadedIn[threadId] = true;
-  this.threads[threadId].postMessage([
-   "sync-region-data",
-   regionVoxelPalette,
-   regionPOS.x,
-   regionPOS.y,
-   regionPOS.z,
-  ]);
- },
-
- releaseRegionVoxelPalette(x: number, y: number, z: number) {
-  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
-  if (!matrixRegionData) return false;
-  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
-  for (const threadId of Object.keys(this.threads)) {
-   delete matrixRegionData.threadsLoadedIn[threadId];
-   this.threads[threadId].postMessage([
-    "release-region-palette",
-    regionPOS.x,
-    regionPOS.y,
-    regionPOS.z,
-   ]);
-  }
- },
-
- releaseRegionVoxelPaletteInThread(
-  threadId: string,
-  x: number,
-  y: number,
-  z: number
- ) {
-  let matrixRegionData = DVEW.matrix.getMatrixRegionData(x, y, z);
-  if (!matrixRegionData) return false;
-  delete matrixRegionData.threadsLoadedIn[threadId];
-  const regionPOS = DVEW.worldBounds.getRegionPosition(x, y, z);
-  this.threads[threadId].postMessage([
-   "release-region-palette",
-   regionPOS.x,
-   regionPOS.y,
-   regionPOS.z,
   ]);
  },
 };

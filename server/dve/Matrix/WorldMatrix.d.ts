@@ -83,6 +83,10 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
+        /**# Set Chunk
+         * ---
+         * To be only called by the Matrix Hub.
+         */
         getChunkPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
@@ -104,10 +108,6 @@ export declare const WorldMatrix: {
         };
         getWorldColumnKeyFromObj(position: import("../Meta/Util.types").Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
-        /**# Remove Chunk
-         * ---
-         * To be only called by the Matrix Hub.
-         */
         getWorldColumnPosition(x: number, z: number): {
             x: number;
             z: number;
@@ -159,7 +159,6 @@ export declare const WorldMatrix: {
     paletteMode: number;
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteRecord: Record<string, string[]>;
-    regionVoxelPalettes: Record<string, Record<number, string>>;
     voxelManager: {
         voxelObjects: Record<string, import("../Meta/index").VoxelConstructorObject>;
         setShapeMap(shapeMap: Record<string, number>): void;
@@ -183,8 +182,6 @@ export declare const WorldMatrix: {
      */
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
-    __syncRegionData(x: number, y: number, z: number, palette: WorldRegionPalette): void;
-    __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
     getVoxel(x: number, y: number, z: number): false | string[];
     getVoxelData(x: number, y: number, z: number): false | import("../Meta/index").VoxelData;
     _createRegion(x: number, y: number, z: number): {

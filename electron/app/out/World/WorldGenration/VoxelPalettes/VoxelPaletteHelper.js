@@ -1,10 +1,9 @@
 /**# Voxel Palette Manager
  * ---
- * Used to help decode voxel ids and states from per-region voxel palettes.
+ * Used to help decode voxel ids and states from voxel palettes.
  */
 export const VoxelPaletteManager = {
     globalVoxelPaletteIndex: 2,
-    perRegionVoxelRecord: {},
     globalVoxelPalette: {},
     globalVoxelPaletteMap: {},
     globalVoxelPaletteRecord: {},
@@ -42,16 +41,6 @@ export const VoxelPaletteManager = {
             }
         }
     },
-    registerVoxelForPerRegionVoxelPalette(voxel) {
-        const defaultId = `${voxel.id}:default`;
-        this.perRegionVoxelRecord[defaultId] = [voxel.id, "default"];
-        if (voxel.states) {
-            for (const state of voxel.states) {
-                const stateID = `${voxel.id}:${state}`;
-                this.perRegionVoxelRecord[stateID] = [voxel.id, state];
-            }
-        }
-    },
     getGlobalVoxelPalette() {
         return this.globalVoxelPalette;
     },
@@ -61,29 +50,5 @@ export const VoxelPaletteManager = {
      */
     getGlobalVoxelPaletteRecord() {
         return this.globalVoxelPaletteRecord;
-    },
-    getVoxelDataFromRegion(region, voxelId) {
-        if (!region.palette)
-            return false;
-        const palette = region.palette;
-        const stringId = palette.palette[voxelId];
-        return palette.record[stringId];
-    },
-    getVoxelPaletteIdFromRegion(region, voxelId, voxelState) {
-        if (!region.palette)
-            return false;
-        const palette = region.palette;
-        return palette.map[`${voxelId}:${voxelState}`];
-    },
-    addToRegionsVoxelPalette(region, voxelId, voxelState) {
-        if (!region.palette)
-            return 0;
-        const palette = region.palette;
-        const id = `${voxelId}:${voxelState}`;
-        palette.record[palette.count] = [id, voxelState];
-        palette.map[id] = palette.count;
-        palette.palette[palette.count] = id;
-        palette.count++;
-        return palette.count - 1;
     },
 };

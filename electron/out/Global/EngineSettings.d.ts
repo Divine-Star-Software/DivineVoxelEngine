@@ -25,7 +25,6 @@ export declare const EngineSettings: {
             autoRebuild: boolean;
         };
         world: {
-            voxelPaletteMode: string;
             maxX: number;
             minX: number;
             maxZ: number;

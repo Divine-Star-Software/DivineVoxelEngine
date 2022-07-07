@@ -10,12 +10,7 @@ export const VoxelManager = {
     },
     registerVoxelData(voxel) {
         this.voxels[voxel.id] = voxel;
-        if (DVEW.settings.settings.world?.voxelPaletteMode == "global") {
-            DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
-        }
-        if (DVEW.settings.settings.world?.voxelPaletteMode == "per-region") {
-            DVEW.worldGeneration.voxelPalette.registerVoxelForPerRegionVoxelPalette(voxel);
-        }
+        DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
     },
     getCurrentVoxelSize() {
         const data = JSON.stringify(this.voxels);

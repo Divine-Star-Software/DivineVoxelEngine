@@ -11,48 +11,16 @@ import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 import { Position3Matrix } from "Meta/Util.types.js";
 
-const voxelPaletteGetFunctions = <
- Record<
-  string,
-  (voxelId: string, voxelStateId: string, region?: WorldRegion) => number
- >
->{
- global: (voxelId: string, voxelStateId: string) => {
-  const paletteId =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-    voxelId,
-    voxelStateId
-   );
-  if (paletteId) {
-   return DVEW.worldGeneration.paintVoxel(paletteId);
-  }
-  return -1;
- },
- "per-region": (
-  voxelId: string,
-  voxelStateId: string,
-  region?: WorldRegion
- ) => {
-  if (!region) return -1;
-  const paletteId =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromRegion(
-    region,
-    voxelId,
-    voxelStateId
-   );
-  if (paletteId) {
-   return DVEW.worldGeneration.paintVoxel(paletteId);
-  } else {
-   const newPaletteId =
-    DVEW.worldGeneration.voxelPalette.addToRegionsVoxelPalette(
-     region,
-     voxelId,
-     voxelStateId
-    );
-   if (!newPaletteId) return -1;
-   return DVEW.worldGeneration.paintVoxel(newPaletteId);
-  }
- },
+const getVoxelPallid = (voxelId: string, voxelStateId: string) => {
+ const paletteId =
+  DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+   voxelId,
+   voxelStateId
+  );
+ if (paletteId) {
+  return DVEW.worldGeneration.paintVoxel(paletteId);
+ }
+ return -1;
 };
 
 /**# World Data
@@ -108,8 +76,6 @@ export const WorldData = {
   this.__lightQueCheck(remove, x, y, z + 1);
   this.__lightQueCheck(remove, x, y, z - 1);
  },
-
-
 
  setAir(x: number, y: number, z: number, lightValue: number) {
   let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
@@ -191,6 +157,18 @@ export const WorldData = {
   );
  },
 
+ getVoxelPaletteId(voxelId: string, voxelStateId: string) {
+  const paletteId =
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+    voxelId,
+    voxelStateId
+   );
+  if (paletteId) {
+   return DVEW.worldGeneration.paintVoxel(paletteId);
+  }
+  return -1;
+ },
+
  getVoxel(
   x: number,
   y: number,
@@ -202,11 +180,6 @@ export const WorldData = {
 
   if (voxelData < 0 || voxelData === false) return false;
 
-  let globalPalette = true;
-  if (region.palette) {
-   globalPalette = false;
-  }
-
   if (voxelData >= 0) {
    const voxelId = this.voxelByte.getId(voxelData);
 
@@ -215,26 +188,13 @@ export const WorldData = {
    } else {
     let voxelTrueID: string = "";
     let voxelState: string = "";
-    if (globalPalette) {
-     const check =
-      DVEW.worldGeneration.voxelPalette.getVoxelDataFromGlobalPalette(voxelId);
-     if (check) {
-      voxelTrueID = check[0];
-      voxelState = check[1];
-     } else {
-      return false;
-     }
+    const check =
+     DVEW.worldGeneration.voxelPalette.getVoxelDataFromGlobalPalette(voxelId);
+    if (check) {
+     voxelTrueID = check[0];
+     voxelState = check[1];
     } else {
-     const check = DVEW.worldGeneration.voxelPalette.getVoxelDataFromRegion(
-      region,
-      voxelId
-     );
-     if (check) {
-      voxelTrueID = check[0];
-      voxelState = check[1];
-     } else {
-      return false;
-     }
+     return false;
     }
 
     const voxel = DVEW.voxelManager.getVoxel(voxelTrueID);
@@ -246,9 +206,7 @@ export const WorldData = {
  },
 
  addRegion(x: number, y: number, z: number): WorldRegion {
-  let regionPalette =
-   DVEW.settings.settings.world?.voxelPaletteMode == "per-region";
-  const newRegion = DVEW.worldGeneration.getBlankRegion(regionPalette);
+  const newRegion = DVEW.worldGeneration.getBlankRegion();
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   this.regions[regionKey] = newRegion;
   return newRegion;
@@ -285,10 +243,7 @@ export const WorldData = {
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
   }
-  const data = voxelPaletteGetFunctions[
-   //@ts-ignore
-   DVEW.settings.settings.world?.voxelPaletteMode
-  ](voxelId, voxelStateId, region);
+  const data = this.getVoxelPaletteId(voxelId, voxelStateId);
   if (data < 0) return;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
@@ -454,10 +409,7 @@ export const WorldData = {
   if (!chunk) {
    chunk = this.addChunk(x, y, z);
   }
-  const data = voxelPaletteGetFunctions[
-   //@ts-ignore
-   DVEW.settings.settings.world?.voxelPaletteMode
-  ](voxelId, voxelStateId, region);
+  const data = this.getVoxelPaletteId(voxelId, voxelStateId);
   if (data < 0) return;
 
   const l = this.getLight(x, y, z);

@@ -16,7 +16,6 @@ export declare type EngineSettingsData = {
         animationTime: number;
     };
     world: {
-        voxelPaletteMode: "global" | "per-region";
         maxX: number;
         minX: number;
         maxZ: number;

@@ -224,6 +224,7 @@ export declare const WorldData: {
     removeData(x: number, y: number, z: number): false | undefined;
     getData(x: number, y: number, z: number): number | false;
     setData(x: number, y: number, z: number, data: number): void | -1;
+    getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
     getVoxel(x: number, y: number, z: number): [VoxelData | number, string | number, number] | false;
     addRegion(x: number, y: number, z: number): WorldRegion;
     getRegion(x: number, y: number, z: number): false | WorldRegion;

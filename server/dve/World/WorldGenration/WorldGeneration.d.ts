@@ -162,22 +162,17 @@ export declare const WorldGeneration: {
     };
     voxelPalette: {
         globalVoxelPaletteIndex: number;
-        perRegionVoxelRecord: Record<string, string[]>;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteMap: Record<string, number>;
         globalVoxelPaletteRecord: Record<string, string[]>;
         getVoxelPaletteIdFromGlobalPalette(voxelTrueId: string, voxelStateId: string): number;
         getVoxelDataFromGlobalPalette(voxelId: number): string[];
         registerVoxelForGlobalPalette(voxel: import("../../Meta/index.js").VoxelData): void;
-        registerVoxelForPerRegionVoxelPalette(voxel: import("../../Meta/index.js").VoxelData): void;
         getGlobalVoxelPalette(): Record<number, string>;
         getGlobalVoxelPaletteRecord(): Record<string, string[]>;
-        getVoxelDataFromRegion(region: WorldRegion, voxelId: number): false | string[];
-        getVoxelPaletteIdFromRegion(region: WorldRegion, voxelId: string, voxelState: string): number | false;
-        addToRegionsVoxelPalette(region: WorldRegion, voxelId: string, voxelState: string): number;
     };
     paintVoxel(voxelPalletId: number): number;
-    getBlankRegion(palette?: boolean): WorldRegion;
+    getBlankRegion(): WorldRegion;
     createChunkFromDataThread(data: any[]): ChunkData;
     getBlankChunk(empty?: boolean, proto?: boolean): ChunkData;
 };

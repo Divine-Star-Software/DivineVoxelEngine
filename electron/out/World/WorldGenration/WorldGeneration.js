@@ -13,18 +13,9 @@ export const WorldGeneration = {
     paintVoxel(voxelPalletId) {
         return this.voxelByte.setId(voxelPalletId, 0);
     },
-    getBlankRegion(palette = false) {
-        let paletteData = {};
-        if (palette) {
-            paletteData = {
-                count: 2,
-                map: {},
-                record: {},
-            };
-        }
+    getBlankRegion() {
         return {
             chunks: {},
-            ...paletteData,
         };
     },
     createChunkFromDataThread(data) {

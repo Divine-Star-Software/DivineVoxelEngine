@@ -400,7 +400,6 @@ export declare const DVEC: {
                 autoRebuild: boolean;
             };
             world: {
-                voxelPaletteMode: string;
                 maxX: number;
                 minX: number;
                 maxZ: number;
@@ -923,7 +922,6 @@ export declare const DVEC: {
                 paletteMode: number;
                 globalVoxelPalette: Record<number, string>;
                 globalVoxelPaletteRecord: Record<string, string[]>;
-                regionVoxelPalettes: Record<string, Record<number, string>>;
                 voxelManager: {
                     voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
                     setShapeMap(shapeMap: Record<string, number>): void;
@@ -950,8 +948,6 @@ export declare const DVEC: {
                 syncChunkBounds(): void;
                 awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
                 __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
-                __syncRegionData(x: number, y: number, z: number, palette: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette): void;
-                __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
                 getVoxel(x: number, y: number, z: number): false | string[];
                 getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
                 _createRegion(x: number, y: number, z: number): {
@@ -1236,7 +1232,6 @@ export declare const DVEC: {
         paletteMode: number;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
-        regionVoxelPalettes: Record<string, Record<number, string>>;
         voxelManager: {
             voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;
             setShapeMap(shapeMap: Record<string, number>): void;
@@ -1263,8 +1258,6 @@ export declare const DVEC: {
         syncChunkBounds(): void;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
-        __syncRegionData(x: number, y: number, z: number, palette: import("../Meta/World/WorldData/World.types.js").WorldRegionPalette): void;
-        __removeRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
         getVoxel(x: number, y: number, z: number): false | string[];
         getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
         _createRegion(x: number, y: number, z: number): {
@@ -1307,8 +1300,6 @@ export declare const DVEC: {
         _syncChunk(data: any[]): void;
         _releaseChunk(data: any[]): void;
         _syncGlobalVoxelPalette(data: any[]): void;
-        _syncRegionData(data: any[]): void;
-        _releaseRegionVoxelPalette(data: any[]): void;
         _setThreadName(data: any[]): void;
     };
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {

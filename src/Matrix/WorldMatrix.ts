@@ -31,7 +31,7 @@ export const WorldMatrix = {
  paletteMode: 0,
  globalVoxelPalette: <Record<number, string>>{},
  globalVoxelPaletteRecord: <Record<string, string[]>>{},
- regionVoxelPalettes: <Record<string, Record<number, string>>>{},
+
 
  voxelManager: <null | typeof VoxelManager>null,
 
@@ -88,37 +88,10 @@ export const WorldMatrix = {
   this.globalVoxelPaletteRecord = record;
  },
 
- __syncRegionData(
-  x: number,
-  y: number,
-  z: number,
-  palette: WorldRegionPalette
- ) {
-  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
-  const region = this.regions[regionKey];
-  region.palette = palette;
- },
-
- __removeRegionVoxelPalette(x: number, y: number, z: number) {
-  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
-  if (!this.regionVoxelPalettes[regionKey]) return false;
-  delete this.regionVoxelPalettes[regionKey];
- },
 
  getVoxel(x: number, y: number, z: number) {
   let palette = this.globalVoxelPalette;
   let record = this.globalVoxelPaletteRecord;
-
-  if (this.paletteMode == 1) {
-   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
-   const region = this.regions[regionKey];
-   if (region && region?.palette) {
-    palette = region.palette.palette;
-    record = region.palette.record;
-   } else {
-    return false;
-   }
-  }
 
   const numericVoxelId = this.getVoxelNumberID(x, y, z);
 

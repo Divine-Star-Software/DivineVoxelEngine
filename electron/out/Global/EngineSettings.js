@@ -22,7 +22,6 @@ export const EngineSettings = {
             autoRebuild: true,
         },
         world: {
-            voxelPaletteMode: "global",
             maxX: Infinity,
             minX: -Infinity,
             maxZ: Infinity,

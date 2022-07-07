@@ -1,7 +1,6 @@
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
-RegisterVoxels(DVEW);
 const load = () => {
     console.log("load");
     let startX = -16;
@@ -14,11 +13,12 @@ const load = () => {
         }
     }
 };
+RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({
     onReady: () => { },
 });
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+//DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
 WorldGen.generateChunk(0, 0);
 WorldGen.generateChunk(-16, 0);

@@ -19,18 +19,9 @@ export const WorldGeneration = {
   return this.voxelByte.setId(voxelPalletId, 0);
  },
 
- getBlankRegion(palette: boolean = false): WorldRegion {
-  let paletteData = {};
-  if (palette) {
-   paletteData = {
-    count: 2,
-    map: {},
-    record: {},
-   };
-  }
+ getBlankRegion(): WorldRegion {
   return {
    chunks: {},
-   ...paletteData,
   };
  },
 

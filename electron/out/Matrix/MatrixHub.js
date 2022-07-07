@@ -15,12 +15,6 @@ export const MatrixHub = {
         "sync-global-palette": (data) => {
             MatrixHub._syncGlobalVoxelPalette(data);
         },
-        "sync-region-data": (data) => {
-            MatrixHub._syncRegionData(data);
-        },
-        "release-region-palette": (data) => {
-            MatrixHub._releaseRegionVoxelPalette(data);
-        },
         "set-thread-name": (data) => {
             MatrixHub._setThreadName(data);
         },
@@ -94,19 +88,6 @@ export const MatrixHub = {
     },
     _syncGlobalVoxelPalette(data) {
         WorldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
-    },
-    _syncRegionData(data) {
-        const palette = data[1];
-        const regionX = data[2];
-        const regionY = data[3];
-        const regionZ = data[4];
-        WorldMatrix.__syncRegionData(regionX, regionY, regionZ, palette);
-    },
-    _releaseRegionVoxelPalette(data) {
-        const regionX = data[1];
-        const regionY = data[2];
-        const regionZ = data[3];
-        WorldMatrix.__removeRegionVoxelPalette(regionX, regionY, regionZ);
     },
     _setThreadName(data) {
         this.threadName = data[1];

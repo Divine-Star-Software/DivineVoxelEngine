@@ -52,7 +52,6 @@ await DVER.$INIT({
   disableFluidShaderEffects: false,
  },
  world: {
-  voxelPaletteMode: "global",
   minX: -Infinity,
   maxX: Infinity,
   minZ: -Infinity,

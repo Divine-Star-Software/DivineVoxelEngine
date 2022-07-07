@@ -403,7 +403,6 @@ export declare const DVEW: {
                 autoRebuild: boolean;
             };
             world: {
-                voxelPaletteMode: string;
                 maxX: number;
                 minX: number;
                 maxZ: number;
@@ -656,10 +655,6 @@ export declare const DVEW: {
         releaseRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
         syncGlobalVoxelPalette(): void;
         syncGlobalVoxelPaletteInThread(threadId: string): void;
-        syncRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
-        syncRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-        releaseRegionVoxelPalette(x: number, y: number, z: number): false | undefined;
-        releaseRegionVoxelPaletteInThread(threadId: string, x: number, y: number, z: number): false | undefined;
     };
     dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
@@ -844,22 +839,17 @@ export declare const DVEW: {
         };
         voxelPalette: {
             globalVoxelPaletteIndex: number;
-            perRegionVoxelRecord: Record<string, string[]>;
             globalVoxelPalette: Record<number, string>;
             globalVoxelPaletteMap: Record<string, number>;
             globalVoxelPaletteRecord: Record<string, string[]>;
             getVoxelPaletteIdFromGlobalPalette(voxelTrueId: string, voxelStateId: string): number;
             getVoxelDataFromGlobalPalette(voxelId: number): string[];
             registerVoxelForGlobalPalette(voxel: import("../Meta/index.js").VoxelData): void;
-            registerVoxelForPerRegionVoxelPalette(voxel: import("../Meta/index.js").VoxelData): void;
             getGlobalVoxelPalette(): Record<number, string>;
             getGlobalVoxelPaletteRecord(): Record<string, string[]>;
-            getVoxelDataFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: number): false | string[];
-            getVoxelPaletteIdFromRegion(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number | false;
-            addToRegionsVoxelPalette(region: import("../Meta/World/WorldData/World.types.js").WorldRegion, voxelId: string, voxelState: string): number;
         };
         paintVoxel(voxelPalletId: number): number;
-        getBlankRegion(palette?: boolean): import("../Meta/World/WorldData/World.types.js").WorldRegion;
+        getBlankRegion(): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         createChunkFromDataThread(data: any[]): import("../Meta/index.js").ChunkData;
         getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
     };
@@ -1080,6 +1070,7 @@ export declare const DVEW: {
         removeData(x: number, y: number, z: number): false | undefined;
         getData(x: number, y: number, z: number): number | false;
         setData(x: number, y: number, z: number, data: number): void | -1;
+        getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
         getVoxel(x: number, y: number, z: number): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
         addRegion(x: number, y: number, z: number): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         getRegion(x: number, y: number, z: number): false | import("../Meta/World/WorldData/World.types.js").WorldRegion;

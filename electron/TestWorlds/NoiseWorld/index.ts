@@ -28,7 +28,6 @@ await DVER.$INIT({
   autoHeightMap: true,
  },
  world: {
-  voxelPaletteMode: "global",
   minZ: -Infinity,
   maxZ: Infinity,
   minX: -Infinity,
