@@ -12,7 +12,10 @@ const shapeDimensions = {
 
 const processFace = (data: VoxelShapeAddData) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
+ const ouv = data.overylayUVTemplate[data.overylayUVTemplateIndex];
  data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+ data.overlayUVs.push(0, 0, ouv, 1, 0, ouv, 1, 1, ouv, 0, 1, ouv);
+
  DVEB.shapeHelper.calculateAOColorFromValue(
   data.AOColors,
   data.aoTemplate[data.aoIndex]
@@ -26,6 +29,7 @@ const processFace = (data: VoxelShapeAddData) => {
 
  data.indicieIndex += 4;
  data.uvTemplateIndex += 1;
+ data.overylayUVTemplateIndex += 1;
  data.lightIndex += 1;
  data.colorIndex += 1;
  data.aoIndex += 1;

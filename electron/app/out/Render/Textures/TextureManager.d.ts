@@ -4,12 +4,16 @@ import type { TextureProccesedData } from "Meta/Render/Textures/Texture.types";
 export declare const TextureManager: {
     defaultTexturePath: string;
     processedTextureData: TextureProccesedData;
+    overlayProcessedTextureData: TextureProccesedData;
     textureData: TextureData;
     textureExtension: Record<VoxelSubstanceType, string>;
     textures: Record<VoxelSubstanceType, TextureData[]>;
     uvTextureMap: Record<VoxelSubstanceType, Record<string, number>>;
-    _processVariations(texture: TextureData, texturePaths: string[], animations: Record<VoxelSubstanceType, number[][]>, textureAnimatioTimes: Record<VoxelSubstanceType, number[][]>, extension: string, count: number, path: string, substance: VoxelSubstanceType): number;
-    generateTexturesData(): TextureProccesedData;
+    overylayTextures: Record<VoxelSubstanceType, TextureData[]>;
+    overlayUVTextureMap: Record<VoxelSubstanceType, Record<string, number>>;
+    substances: VoxelSubstanceType[];
+    _processVariations(texture: TextureData, texturePaths: string[], animations: Record<VoxelSubstanceType, number[][]>, textureAnimatioTimes: Record<VoxelSubstanceType, number[][]>, extension: string, count: number, path: string, substance: VoxelSubstanceType, overlay?: boolean): number;
+    generateTexturesData(overlay?: boolean): void;
     defineDefaultTexturePath(path: string): void;
     defineDefaultTextureExtension(voxelSubstanceType: VoxelSubstanceType, ext: string): void;
     getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string | undefined): number;

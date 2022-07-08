@@ -6,12 +6,13 @@ export const ConstructorCommManager = {
     count: 0,
     constructors: [],
     $INIT() {
-        for (const builder of this.constructors) {
+        for (const constructor of this.constructors) {
             const channel = new MessageChannel();
-            DVER.worldComm.sendMessage("connect-constructor", [builder.name], [channel.port1]);
-            builder.sendMessage("connect-world", [], [channel.port2]);
-            builder.sendMessage("sync-uv-texuture-data", [
+            DVER.worldComm.sendMessage("connect-constructor", [constructor.name], [channel.port1]);
+            constructor.sendMessage("connect-world", [], [channel.port2]);
+            constructor.sendMessage("sync-uv-texuture-data", [
                 DVER.textureManager.uvTextureMap,
+                DVER.textureManager.overlayUVTextureMap,
             ]);
         }
     },

@@ -157,6 +157,7 @@ export const ChunkMesher = {
     overlayUVArray.buffer,
    ];
 
+
    DVEC.renderComm.sendMessage(
     ConstructorToRenderMessages.setChunk,
     message,

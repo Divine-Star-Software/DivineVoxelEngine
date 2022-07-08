@@ -49,6 +49,10 @@ export declare type TextureData = {
     * If the texture is not in the default path specify it here.
     */
     path?: string;
+    /**# Overlay
+     * If the texture is an overlay specify it here.
+     */
+    overlay?: boolean;
     /**# Varations
     * The name of the texture must be default with the folder being its ID.
     * Variations allow you to add variations to the same texture.

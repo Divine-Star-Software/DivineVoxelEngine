@@ -15,7 +15,6 @@ import { DVECInitData } from "Meta/Constructor/DVEC.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
-import { TextureManager } from "./Builder/Textures/TextureManager.js";
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",

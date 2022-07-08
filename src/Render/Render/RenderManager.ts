@@ -1,5 +1,5 @@
-import { AnimationManager } from "./Materials/Animations/AnimationManager.js";
-import { ShaderBuilder } from "./Materials/ShaderBuilder/ShaderBuilder.js";
+import { AnimationManager } from "./Animations/AnimationManager.js";
+import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 
 //meshes

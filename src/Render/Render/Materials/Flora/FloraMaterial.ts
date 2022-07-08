@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const FloraMaterial = {
@@ -48,66 +49,79 @@ export const FloraMaterial = {
   }
  },
 
- createMaterial(
-  settings: EngineSettingsData,
-  scene: BABYLON.Scene,
-  texture: BABYLON.RawTexture2DArray,
-  animations: number[][],
-  animationTimes: number[][]
- ): BABYLON.ShaderMaterial {
+ createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
   const animData = DVER.renderManager.animationManager.registerAnimations(
    "flora",
-   animations,
-   animationTimes
+   data.animations,
+   data.animationTimes
   );
+  const overlayAnimData =
+   DVER.renderManager.animationManager.registerAnimations(
+    "flora",
+    data.overlayAnimations,
+    data.overlayAnimationTimes,
+    true
+   );
+
 
   BABYLON.Effect.ShadersStore["floraVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "flora",
     animData.uniformRegisterCode,
-    animData.animationFunctionCode
+    animData.animationFunctionCode,
+    overlayAnimData.uniformRegisterCode,
+    overlayAnimData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["floraFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("flora");
 
-  const shaderMaterial = new BABYLON.ShaderMaterial("flora", scene, "flora", {
-   attributes: [
-    "position",
-    "normal",
-    "faceData",
-    "ocuv3",
-    "cuv3",
-    "aoColors",
-    "colors",
-    "rgbLightColors",
-    "sunLightColors",
-   ],
-   uniforms: [
-    "world",
-    "view",
-    "viewProjection",
-    "worldView",
-    "worldViewProjection",
-    "vFogInfos",
-    "vFogColor",
-    "sunLightLevel",
-    "baseLevel",
-    "projection",
-    "arrayTex",
-    "doAO",
-    "doSun",
-    "doRGB",
-    "doColor",
-    ...animData.uniforms,
-   ],
+  const shaderMaterial = new BABYLON.ShaderMaterial(
+   "flora",
+   data.scene,
+   "flora",
+   {
+    attributes: [
+     "position",
+     "normal",
+     "faceData",
+     "cuv3",
+     "ocuv3",
+     "aoColors",
+     "colors",
+     "rgbLightColors",
+     "sunLightColors",
+    ],
+    uniforms: [
+     "world",
+     "view",
+     "viewProjection",
+     "worldView",
+     "worldViewProjection",
+     "vFogInfos",
+     "vFogColor",
+     "sunLightLevel",
+     "baseLevel",
+     "projection",
+     "arrayTex",
+     "overlayTex",
+     "doAO",
+     "doSun",
+     "doRGB",
+     "doColor",
+     ...animData.uniforms,
+     ...overlayAnimData.uniforms,
+    ],
 
-   needAlphaBlending: false,
-   needAlphaTesting: true,
-  });
+    needAlphaBlending: false,
+    needAlphaTesting: true,
+   }
+  );
   shaderMaterial.fogEnabled = true;
-  texture.hasAlpha = true;
+  data.texture.hasAlpha = true;
+  data.overlayTexture.hasAlpha = true;
 
-  shaderMaterial.setTexture("arrayTex", texture);
+  shaderMaterial.setTexture("arrayTex", data.texture);
+  shaderMaterial.setTexture("overlayTex", data.overlayTexture);
   shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
   shaderMaterial.backFaceCulling = false;
   // shaderMaterial.separateCullingPass = false;
@@ -115,6 +129,7 @@ export const FloraMaterial = {
 
   shaderMaterial.onBind = (mesh) => {
    const effect = shaderMaterial.getEffect();
+   const scene = mesh.getScene();
    if (!effect) return;
 
    effect.setFloat4(
@@ -129,7 +144,7 @@ export const FloraMaterial = {
   };
 
   let time = 0;
-  scene.registerBeforeRender(function () {
+  data.scene.registerBeforeRender(function () {
    time += 0.08;
    shaderMaterial.setFloat("time", time);
   });
@@ -138,7 +153,7 @@ export const FloraMaterial = {
 
   DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
 
-  this.updateMaterialSettings(settings);
+  this.updateMaterialSettings(data.settings);
   return this.material;
  },
 };

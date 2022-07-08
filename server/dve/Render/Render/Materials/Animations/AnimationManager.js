@@ -12,15 +12,23 @@ export const AnimationManager = {
      * @param animations
      * @returns
      */
-    registerAnimations(voxelSubstanceType, animations, animationTimes) {
+    registerAnimations(voxelSubstanceType, animations, animationTimes, overlay = false) {
         const returnUniforms = [];
         let uniformRegisterCode = `//animations\n`;
         let animationFunctionCode = `
   float getUVFace(float uv) {
   `;
+        if (overlay) {
+            animationFunctionCode = `
+  float getOverlayUVFace(float uv) {
+  `;
+        }
         let i = 0;
         for (const anim of animations) {
-            const shaderId = `anim${i}`;
+            let shaderId = `anim${i}`;
+            if (overlay) {
+                shaderId = "o" + shaderId;
+            }
             let keyCounts = [];
             const animTime = animationTimes[i];
             if (animTime.length == 1) {
@@ -80,5 +88,5 @@ export const AnimationManager = {
                 }
             }
         }, 50);
-    }
+    },
 };

@@ -1,3 +1,24 @@
+const setUpMaterial = async (DVER, scene, substance, material) => {
+    const textures = DVER.textureManager.processedTextureData.texturePaths[substance];
+    const animations = DVER.textureManager.processedTextureData.textureAnimations[substance];
+    const animationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
+    const _2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(scene, textures);
+    const overlayTextures = DVER.textureManager.overlayProcessedTextureData.texturePaths[substance];
+    const overlayAimations = DVER.textureManager.overlayProcessedTextureData.textureAnimations[substance];
+    const overlayAnimationTimes = DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[substance];
+    const Overlay2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(scene, overlayTextures);
+    const materialCreateData = {
+        settings: DVER.settings.getSettings(),
+        scene: scene,
+        texture: _2dTextureArray,
+        animations: animations,
+        animationTimes: animationTimes,
+        overlayTexture: Overlay2dTextureArray,
+        overlayAnimations: overlayAimations,
+        overlayAnimationTimes: overlayAnimationTimes,
+    };
+    material.createMaterial(materialCreateData);
+};
 export async function BuildInitalMeshes(DVER, scene) {
     if (!DVER.textureManager.processedTextureData) {
         throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
@@ -6,25 +27,9 @@ export async function BuildInitalMeshes(DVER, scene) {
     DVER.meshManager.$INIT();
     await DVER.renderManager.textureCreator.setUpImageCreation();
     DVER.meshManager.setScene(scene);
-    const solidTextures = DVER.textureManager.processedTextureData.texturePaths.solid;
-    const solidAnimations = DVER.textureManager.processedTextureData.textureAnimations.solid;
-    const soidAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.solid;
-    const combinedChunkTextures = await DVER.renderManager.textureCreator.createMaterialTexture(scene, solidTextures);
-    DVER.renderManager.solidMaterial.createMaterial(DVER.settings.getSettings(), scene, combinedChunkTextures, solidAnimations, soidAnimationTimes);
-    const floraTextures = DVER.textureManager.processedTextureData.texturePaths.flora;
-    const floraAnimations = DVER.textureManager.processedTextureData.textureAnimations.flora;
-    const floraAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.flora;
-    const combinedFloraTextures = await DVER.renderManager.textureCreator.createMaterialTexture(scene, floraTextures);
-    DVER.renderManager.floraMaterial.createMaterial(DVER.settings.getSettings(), scene, combinedFloraTextures, floraAnimations, floraAnimationTimes);
-    const fluidTextures = DVER.textureManager.processedTextureData.texturePaths.fluid;
-    const fluidAnimations = DVER.textureManager.processedTextureData.textureAnimations.fluid;
-    const fluidAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.fluid;
-    const combinedFluidTextures = await DVER.renderManager.textureCreator.createMaterialTexture(scene, fluidTextures);
-    DVER.renderManager.fluidMaterial.createMaterial(DVER.settings.getSettings(), scene, combinedFluidTextures, fluidAnimations, fluidAnimationTimes);
-    const magmaTextures = DVER.textureManager.processedTextureData.texturePaths.magma;
-    const magmaAnimations = DVER.textureManager.processedTextureData.textureAnimations.magma;
-    const magmaAnimationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes.magma;
-    const combinedMagmaTextures = await DVER.renderManager.textureCreator.createMaterialTexture(scene, magmaTextures);
-    DVER.renderManager.magmaMaterial.createMaterial(scene, combinedMagmaTextures, magmaAnimations, magmaAnimationTimes);
+    await setUpMaterial(DVER, scene, "solid", DVER.renderManager.solidMaterial);
+    await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
+    await setUpMaterial(DVER, scene, "fluid", DVER.renderManager.fluidMaterial);
+    await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
     DVER.renderManager.animationManager.startAnimations();
 }

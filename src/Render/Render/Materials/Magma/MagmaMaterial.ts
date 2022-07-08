@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const MagmaMaterial = {
@@ -35,62 +36,73 @@ export const MagmaMaterial = {
   }
  },
 
- createMaterial(
-  scene: BABYLON.Scene,
-  texture: BABYLON.RawTexture2DArray,
-  animations: number[][],
-  animationTimes: number[][]
- ): BABYLON.ShaderMaterial {
+ createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
   const animData = DVER.renderManager.animationManager.registerAnimations(
    "magma",
-   animations,
-   animationTimes
+   data.animations,
+   data.animationTimes
+  );
+  const overlayAnimData =
+  DVER.renderManager.animationManager.registerAnimations(
+   "magma",
+   data.overlayAnimations,
+   data.overlayAnimationTimes,
+   true
   );
 
   BABYLON.Effect.ShadersStore["magmaVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "magma",
     animData.uniformRegisterCode,
-    animData.animationFunctionCode
+    animData.animationFunctionCode,
+    overlayAnimData.uniformRegisterCode,
+    overlayAnimData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["magmaFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
 
-  const shaderMaterial = new BABYLON.ShaderMaterial("magma", scene, "magma", {
-   attributes: [
-    "position",
-    "normal",
-    "faceData",
-    "ocuv3",
-    "cuv3",
-    "colors",
-    "rgbLightColors"
-   ],
-   uniforms: [
-    "world",
-    "view",
-    "viewProjection",
-    "worldView",
-    "worldViewProjection",
-    "vFogInfos",
-    "vFogColor",
-    "baseLightColor",
-    "projection",
-    "anim1Index",
-    "arrayTex",
-    ...animData.uniforms,
-   ],
-   needAlphaBlending: true,
-   needAlphaTesting: false,
-  });
+  const shaderMaterial = new BABYLON.ShaderMaterial(
+   "magma",
+   data.scene,
+   "magma",
+   {
+    attributes: [
+     "position",
+     "normal",
+     "faceData",
+     "ocuv3",
+     "cuv3",
+     "colors",
+     "rgbLightColors",
+    ],
+    uniforms: [
+     "world",
+     "view",
+     "viewProjection",
+     "worldView",
+     "worldViewProjection",
+     "vFogInfos",
+     "vFogColor",
+     "baseLightColor",
+     "projection",
+     "anim1Index",
+     "arrayTex",
+     ...animData.uniforms,
+     ...overlayAnimData.uniforms,
+    ],
+    needAlphaBlending: true,
+    needAlphaTesting: false,
+   }
+  );
   shaderMaterial.fogEnabled = true;
 
-  shaderMaterial.setTexture("arrayTex", texture);
+  shaderMaterial.setTexture("arrayTex", data.texture);
 
   shaderMaterial.needDepthPrePass = true;
 
   shaderMaterial.onBind = (mesh) => {
    const effect = shaderMaterial.getEffect();
+   const scene = mesh.getScene();
    if (!effect) return;
 
    effect.setFloat4(

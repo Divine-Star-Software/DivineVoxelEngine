@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 export declare const SolidMaterial: {
     material: BABYLON.ShaderMaterial | null;
     context: CanvasRenderingContext2D | null;
@@ -6,6 +7,6 @@ export declare const SolidMaterial: {
     setSunLightLevel(level: number): void;
     setBaseLevel(level: number): void;
     updateMaterialSettings(settings: EngineSettingsData): void;
-    createMaterial(settings: EngineSettingsData, scene: BABYLON.Scene, texture: BABYLON.RawTexture2DArray, animations: number[][], animationTimes: number[][]): BABYLON.ShaderMaterial;
+    createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial;
     overrideMaterial(material: any): void;
 };

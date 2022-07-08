@@ -82,6 +82,18 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   frames: 0,
  });
 
+ DVER.textureManager.registerTexture("flora", {
+  name: "Dream Grass Texture",
+  id: "dreamgrass",
+  frames: 0,
+ });
+ DVER.textureManager.registerTexture("flora", {
+  name: "Dream Grass Texture",
+  id: "dreamgrass-overlay",
+  frames: 0,
+  overlay: true,
+ });
+
  DVER.textureManager.registerTexture("fluid", {
   name: "Liquid Dream Ether Texture",
   id: "liquid-dream-ether",
@@ -93,5 +105,43 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
     globalFrameTime: 2,
    },
   },
+ });
+
+ DVER.textureManager.registerTexture("fluid", {
+  name: "Foam",
+  id: "foam",
+  frames: 0,
+  variations: {
+   bottom: { frames: 0 },
+   top: { frames: 0 },
+   left: { frames: 0 },
+   right: { frames: 0 },
+   cbl: { frames: 0 },
+   cblbr: { frames: 0 },
+   cblbrtl: { frames: 0 },
+   cblbrtr: { frames: 0 },
+   cbltltr: { frames: 0 },
+   cbr: { frames: 0 },
+   cbrtl: { frames: 0 },
+   cbrtltr: { frames: 0 },
+   cbrtr: { frames: 0 },
+   ctl: { frames: 0 },
+   ctlbr: { frames: 0 },
+   ctltr: { frames: 0 },
+   ctr: { frames: 0 },
+   lb: { frames: 0 },
+   lr: { frames: 0 },
+   lrb: { frames: 0 },
+   lrbt: { frames: 0 },
+   lrt: { frames: 0 },
+   lt: { frames: 0 },
+   ltb: { frames: 0 },
+   rb: { frames: 0 },
+   rt: { frames: 0 },
+   rtb: { frames: 0 },
+   tb: { frames: 0 },
+  },
+
+  overlay: true,
  });
 }

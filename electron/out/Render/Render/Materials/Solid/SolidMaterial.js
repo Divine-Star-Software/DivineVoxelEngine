@@ -46,13 +46,14 @@ export const SolidMaterial = {
             this.material.setFloat("doColor", 0.0);
         }
     },
-    createMaterial(settings, scene, texture, animations, animationTimes) {
-        const animData = DVER.renderManager.animationManager.registerAnimations("solid", animations, animationTimes);
+    createMaterial(data) {
+        const animData = DVER.renderManager.animationManager.registerAnimations("solid", data.animations, data.animationTimes);
+        const overlayAnimData = DVER.renderManager.animationManager.registerAnimations("solid", data.overlayAnimations, data.overlayAnimationTimes, true);
         BABYLON.Effect.ShadersStore["solidVertexShader"] =
-            DVER.renderManager.shaderBuilder.getDefaultVertexShader("solid", animData.uniformRegisterCode, animData.animationFunctionCode);
+            DVER.renderManager.shaderBuilder.getDefaultVertexShader("solid", animData.uniformRegisterCode, animData.animationFunctionCode, overlayAnimData.uniformRegisterCode, overlayAnimData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["solidFragmentShader"] =
             DVER.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
-        this.material = new BABYLON.ShaderMaterial("solid", scene, "solid", {
+        this.material = new BABYLON.ShaderMaterial("solid", data.scene, "solid", {
             attributes: [
                 "position",
                 "normal",
@@ -81,26 +82,28 @@ export const SolidMaterial = {
                 "doRGB",
                 "doColor",
                 ...animData.uniforms,
+                ...overlayAnimData.uniforms,
             ],
             needAlphaBlending: false,
             needAlphaTesting: true,
         });
         //this.material.forceDepthWrite = true;
         this.material.fogEnabled = true;
-        texture.hasAlpha = true;
-        this.material.setTexture("arrayTex", texture);
+        data.texture.hasAlpha = true;
+        this.material.setTexture("arrayTex", data.texture);
         this.material.setFloat("sunLightLevel", 1);
         this.material.setFloat("baseLevel", 0.1);
         this.material.onBind = (mesh) => {
             if (!this.material)
                 return;
             const effect = this.material.getEffect();
+            const scene = mesh.getScene();
             if (!effect)
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);
             effect.setColor3("vFogColor", scene.fogColor);
         };
-        this.updateMaterialSettings(settings);
+        this.updateMaterialSettings(data.settings);
         DVER.renderManager.animationManager.registerMaterial("solid", this.material);
         return this.material;
     },

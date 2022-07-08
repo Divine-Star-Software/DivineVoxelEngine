@@ -50,7 +50,7 @@ export const MeshManager = {
    sunLightColorsArray: new Float32Array(
     data[SetChunkDataIndexes.sunLightColorsArray]
    ),
-   colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
+colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
    uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
    overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
    extra: [],

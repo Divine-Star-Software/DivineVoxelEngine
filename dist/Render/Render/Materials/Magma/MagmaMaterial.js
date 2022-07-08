@@ -34,13 +34,14 @@ export const MagmaMaterial = {
             this.material.setFloat("doColor", 0.0);
         }
     },
-    createMaterial(scene, texture, animations, animationTimes) {
-        const animData = DVER.renderManager.animationManager.registerAnimations("magma", animations, animationTimes);
+    createMaterial(data) {
+        const animData = DVER.renderManager.animationManager.registerAnimations("magma", data.animations, data.animationTimes);
+        const overlayAnimData = DVER.renderManager.animationManager.registerAnimations("magma", data.overlayAnimations, data.overlayAnimationTimes, true);
         BABYLON.Effect.ShadersStore["magmaVertexShader"] =
-            DVER.renderManager.shaderBuilder.getDefaultVertexShader("magma", animData.uniformRegisterCode, animData.animationFunctionCode);
+            DVER.renderManager.shaderBuilder.getDefaultVertexShader("magma", animData.uniformRegisterCode, animData.animationFunctionCode, overlayAnimData.uniformRegisterCode, overlayAnimData.animationFunctionCode);
         BABYLON.Effect.ShadersStore["magmaFragmentShader"] =
             DVER.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
-        const shaderMaterial = new BABYLON.ShaderMaterial("magma", scene, "magma", {
+        const shaderMaterial = new BABYLON.ShaderMaterial("magma", data.scene, "magma", {
             attributes: [
                 "position",
                 "normal",
@@ -48,7 +49,7 @@ export const MagmaMaterial = {
                 "ocuv3",
                 "cuv3",
                 "colors",
-                "rgbLightColors"
+                "rgbLightColors",
             ],
             uniforms: [
                 "world",
@@ -63,15 +64,17 @@ export const MagmaMaterial = {
                 "anim1Index",
                 "arrayTex",
                 ...animData.uniforms,
+                ...overlayAnimData.uniforms,
             ],
             needAlphaBlending: true,
             needAlphaTesting: false,
         });
         shaderMaterial.fogEnabled = true;
-        shaderMaterial.setTexture("arrayTex", texture);
+        shaderMaterial.setTexture("arrayTex", data.texture);
         shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
             const effect = shaderMaterial.getEffect();
+            const scene = mesh.getScene();
             if (!effect)
                 return;
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);

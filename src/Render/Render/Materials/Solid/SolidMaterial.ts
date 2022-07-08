@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const SolidMaterial = {
@@ -48,30 +49,33 @@ export const SolidMaterial = {
   }
  },
 
- createMaterial(
-  settings: EngineSettingsData,
-  scene: BABYLON.Scene,
-  texture: BABYLON.RawTexture2DArray,
-  animations: number[][],
-  animationTimes: number[][]
- ): BABYLON.ShaderMaterial {
+ createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
   const animData = DVER.renderManager.animationManager.registerAnimations(
    "solid",
-   animations,
-   animationTimes
+   data.animations,
+   data.animationTimes
   );
+  const overlayAnimData =
+   DVER.renderManager.animationManager.registerAnimations(
+    "solid",
+    data.overlayAnimations,
+    data.overlayAnimationTimes,
+    true
+   );
 
   BABYLON.Effect.ShadersStore["solidVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "solid",
     animData.uniformRegisterCode,
-    animData.animationFunctionCode
+    animData.animationFunctionCode,
+    overlayAnimData.uniformRegisterCode,
+    overlayAnimData.animationFunctionCode
    );
 
   BABYLON.Effect.ShadersStore["solidFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
 
-  this.material = new BABYLON.ShaderMaterial("solid", scene, "solid", {
+  this.material = new BABYLON.ShaderMaterial("solid", data.scene, "solid", {
    attributes: [
     "position",
     "normal",
@@ -100,22 +104,22 @@ export const SolidMaterial = {
     "doRGB",
     "doColor",
     ...animData.uniforms,
+    ...overlayAnimData.uniforms,
    ],
    needAlphaBlending: false,
    needAlphaTesting: true,
   });
   //this.material.forceDepthWrite = true;
   this.material.fogEnabled = true;
-  texture.hasAlpha = true;
-  this.material.setTexture("arrayTex", texture);
-
-
+  data.texture.hasAlpha = true;
+  this.material.setTexture("arrayTex", data.texture);
 
   this.material.setFloat("sunLightLevel", 1);
   this.material.setFloat("baseLevel", 0.1);
   this.material.onBind = (mesh) => {
    if (!this.material) return;
    const effect = this.material.getEffect();
+   const scene = mesh.getScene();
    if (!effect) return;
 
    effect.setFloat4(
@@ -128,7 +132,7 @@ export const SolidMaterial = {
    effect.setColor3("vFogColor", scene.fogColor);
   };
 
-  this.updateMaterialSettings(settings);
+  this.updateMaterialSettings(data.settings);
 
   DVER.renderManager.animationManager.registerMaterial("solid", this.material);
 

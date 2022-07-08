@@ -14,10 +14,13 @@ const shapeDimensions = {
 
 const processDefaultFaceData = (data: VoxelShapeAddData, flip: boolean) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
+ const ouv = data.overylayUVTemplate[data.overylayUVTemplateIndex];
  if (!flip) {
   data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+  data.overlayUVs.push(0, 0, ouv, 1, 0, ouv, 1, 1, ouv, 0, 1, ouv);
  } else {
   data.uvs.push(0, 1, uv, 0, 0, uv, 1, 0, uv, 1, 1, uv);
+  data.overlayUVs.push(0, 1, ouv, 0, 0, ouv, 1, 0, ouv, 1, 1, ouv);
  }
  DVEB.shapeHelper.calculateLightColor(
   data.RGBLightColors,
@@ -31,6 +34,7 @@ const processDefaultFaceData = (data: VoxelShapeAddData, flip: boolean) => {
   data.aoIndex
  );
  data.uvTemplateIndex += 1;
+ data.overylayUVTemplateIndex += 1;
  data.lightIndex += 4;
  data.colorIndex += 4;
  data.aoIndex += 4;

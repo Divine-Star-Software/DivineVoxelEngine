@@ -16,7 +16,7 @@ import { SharedVertexShader } from "./Shaders/Shared/Vertex/VertexShader.js";
  * Helps construct raw text shaders.
  */
 export const ShaderBuilder = {
-    buildFloraVertexShader(uniformRegister = "", animationFunction = "") {
+    buildFloraVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
 ${SharedVertexShader.attributes()}
@@ -27,7 +27,9 @@ ${ShaderNoiseFunctions.fluid}
 ${SharedVertexShader.useTime(true)}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
+${overlayUniformRegister}
 ${animationFunction}
+${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${floraShaders.setPosition}
  ${SharedFogFunctions.fogVertexMain}
@@ -41,7 +43,7 @@ ${CommonShader.getMainFunction(`
 `)}
 `;
     },
-    buildFluidVertexShader(uniformRegister = "", animationFunction = "") {
+    buildFluidVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
 ${fluidShaders.vertexVars}
@@ -53,7 +55,9 @@ ${SharedVertexShader.useTime(true)}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
+${overlayUniformRegister}
 ${animationFunction}
+${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
@@ -66,7 +70,7 @@ ${CommonShader.getMainFunction(`
 `)}
 `;
     },
-    buildSolidVertexShader(uniformRegister = "", animationFunction = "") {
+    buildSolidVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
 ${SharedVertexShader.attributes()}
@@ -75,7 +79,9 @@ ${SharedVertexShader.varying()}
 ${SharedVertexShader.optionVars()}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
+${overlayUniformRegister}
 ${animationFunction}
+${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${SharedVertexShader.standardPositionMain}
  ${SharedFogFunctions.fogVertexMain}
@@ -88,7 +94,7 @@ ${CommonShader.getMainFunction(`
 `)}
 `;
     },
-    buildMagmaVertexShader(uniformRegister = "", animationFunction = "") {
+    buildMagmaVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
 ${fluidShaders.vertexVars}
@@ -100,7 +106,9 @@ ${SharedVertexShader.useTime(true)}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
+${overlayUniformRegister}
 ${animationFunction}
+${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
@@ -180,18 +188,18 @@ ${CommonShader.getMainFunction(`
 ${solidShaders.fragMain}
 `)}`;
     },
-    getDefaultVertexShader(voxelSubstance, uniformRegister = "", animationFunction = "") {
+    getDefaultVertexShader(voxelSubstance, uniformRegister = "", animationFunction = "", overlayUniformRegister = "", ovlerayAnimationFunction = "") {
         if (voxelSubstance == "magma") {
-            return this.buildMagmaVertexShader(uniformRegister, animationFunction);
+            return this.buildMagmaVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
         if (voxelSubstance == "flora") {
-            return this.buildFloraVertexShader(uniformRegister, animationFunction);
+            return this.buildFloraVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
         if (voxelSubstance == "fluid") {
-            return this.buildFluidVertexShader(uniformRegister, animationFunction);
+            return this.buildFluidVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
         if (voxelSubstance == "solid") {
-            return this.buildSolidVertexShader(uniformRegister, animationFunction);
+            return this.buildSolidVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
         return "";
     },

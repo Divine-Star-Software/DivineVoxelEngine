@@ -1,4 +1,5 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const FluidMaterial = {
@@ -48,73 +49,86 @@ export const FluidMaterial = {
   }
  },
 
- createMaterial(
-  settings: EngineSettingsData,
-  scene: BABYLON.Scene,
-  texture: BABYLON.RawTexture2DArray,
-  animations: number[][],
-  animationTimes: number[][]
- ): BABYLON.ShaderMaterial {
+ createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
   const animData = DVER.renderManager.animationManager.registerAnimations(
    "fluid",
-   animations,
-   animationTimes
+   data.animations,
+   data.animationTimes
   );
+  const overlayAnimData =
+   DVER.renderManager.animationManager.registerAnimations(
+    "fluid",
+    data.overlayAnimations,
+    data.overlayAnimationTimes,
+    true
+   );
 
+ 
   BABYLON.Effect.ShadersStore["fluidVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "fluid",
     animData.uniformRegisterCode,
-    animData.animationFunctionCode
+    animData.animationFunctionCode,
+    overlayAnimData.uniformRegisterCode,
+    overlayAnimData.animationFunctionCode
    );
   BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
-  const shaderMaterial = new BABYLON.ShaderMaterial("fluid", scene, "fluid", {
-   attributes: [
-    "position",
-    "normal",
-    "faceData",
-    "ocuv3",
-    "cuv3",
-    "colors",
-    "rgbLightColors",
-    "sunLightColors",
-   ],
-   uniforms: [
-    "world",
-    "view",
-    "viewProjection",
-    "worldView",
-    "worldMatrix",
-    "worldViewProjection",
-    "vFogInfos",
-    "vFogColor",
-    "sunLightLevel",
-    "baseLevel",
-    "projection",
-    "arrayTex",
-    "doSun",
-    "doRGB",
-    "doColor",
-    "time",
-    ...animData.uniforms,
-   ],
-   needAlphaBlending: true,
-   needAlphaTesting: false,
-  });
-  texture.hasAlpha = true;
+  const shaderMaterial = new BABYLON.ShaderMaterial(
+   "fluid",
+   data.scene,
+   "fluid",
+   {
+    attributes: [
+     "position",
+     "normal",
+     "faceData",
+     "ocuv3",
+     "cuv3",
+     "colors",
+     "rgbLightColors",
+     "sunLightColors",
+    ],
+    uniforms: [
+     "world",
+     "view",
+     "viewProjection",
+     "worldView",
+     "worldMatrix",
+     "worldViewProjection",
+     "vFogInfos",
+     "vFogColor",
+     "sunLightLevel",
+     "baseLevel",
+     "projection",
+     "arrayTex",
+     "overlayTex",
+     "doSun",
+     "doRGB",
+     "doColor",
+     "time",
+     ...animData.uniforms,
+     ...overlayAnimData.uniforms,
+    ],
+    needAlphaBlending: true,
+    needAlphaTesting: false,
+   }
+  );
+  data.texture.hasAlpha = true;
   this.material = shaderMaterial;
   // shaderMaterial.needDepthPrePass = true;
   shaderMaterial.separateCullingPass = true;
   shaderMaterial.backFaceCulling = false;
   shaderMaterial.forceDepthWrite = true;
 
-  shaderMaterial.setTexture("arrayTex", texture);
+  shaderMaterial.setTexture("arrayTex", data.texture);
+  shaderMaterial.setTexture("overlayTex", data.overlayTexture);
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
 
   shaderMaterial.onBind = (mesh) => {
    const effect = shaderMaterial.getEffect();
+   const scene = mesh.getScene();
    if (!effect) return;
 
    effect.setFloat4(
@@ -128,10 +142,10 @@ export const FluidMaterial = {
    //  effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-  this.updateMaterialSettings(settings);
+  this.updateMaterialSettings(data.settings);
 
   let time = 0;
-  scene.registerBeforeRender(function () {
+  data.scene.registerBeforeRender(function () {
    time += 0.005;
    shaderMaterial.setFloat("time", time);
   });

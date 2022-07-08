@@ -3,9 +3,11 @@ export declare const DVEB: {
     textureManager: {
         textureDataHasBeenSet: boolean;
         uvTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
-        getTextureUV(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, textureId: string, varation?: string | undefined): number;
-        isReady(): boolean;
+        overlayUVTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
+        getTextureUV(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, textureId: string, varation?: string | false | null | undefined, overlay?: boolean): number;
         setUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
+        setOverlayUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
+        isReady(): boolean;
     };
     shapeManager: {
         shapes: Record<number, import("Meta/index.js").VoxelShapeInterface>;

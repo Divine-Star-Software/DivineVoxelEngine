@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 export declare const AnimationManager: {
     animatedMaterials: Record<VoxelSubstanceType, BABYLON.ShaderMaterial>;
@@ -19,7 +20,7 @@ export declare const AnimationManager: {
      * @param animations
      * @returns
      */
-    registerAnimations(voxelSubstanceType: VoxelSubstanceType, animations: number[][], animationTimes: number[][]): {
+    registerAnimations(voxelSubstanceType: VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): {
         uniforms: string[];
         uniformRegisterCode: string;
         animationFunctionCode: string;

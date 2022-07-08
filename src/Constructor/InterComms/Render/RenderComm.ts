@@ -1,5 +1,5 @@
- import { CreateInterComm } from "../../../Comms/InterComm.js";
-import {DVEC} from "../../DivineVoxelEngineConstructor.js";
+import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 const renderCommBase = {
  onReady: () => {},
  onRestart: () => {},
@@ -17,14 +17,14 @@ renderComm.messageFunctions = {
   DVEC.syncSettings(settings);
  },
  "re-start": (data, event) => {
-    DVEC.reStart();
+  DVEC.reStart();
   renderComm.onRestart();
  },
  "sync-uv-texuture-data": (data, event) => {
   const uvTextureMap = data[1];
+  const overlayUVTextureMap = data[2];
   DVEC.DVEB.textureManager.setUVTextureMap(uvTextureMap);
+  DVEC.DVEB.textureManager.setOverlayUVTextureMap(overlayUVTextureMap);
   DVEC.voxelManager.runVoxelHookForAll("texturesRegistered");
  },
 };
-
-

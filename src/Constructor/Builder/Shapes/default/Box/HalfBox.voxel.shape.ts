@@ -18,13 +18,13 @@ const processDefaultFaceData = (
  flip = false
 ) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
- /**
-  * @todo Add to shape builder a way to auto add certain UV types and check for flips
-  */
+ const ouv = data.overylayUVTemplate[data.overylayUVTemplateIndex];
  if (!halfUV) {
   data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+  data.overlayUVs.push(0, 0, ouv, 1, 0, ouv, 1, 1, uv, 0, 1, ouv);
  } else {
   data.uvs.push(0, 0, uv, 1, 0, uv, 1, 0.5, uv, 0, 0.5, uv);
+  data.overlayUVs.push(0, 0, ouv, 1, 0, ouv, 1, 0.5, ouv, 0, 0.5, ouv);
  }
 
  DVEB.shapeHelper.calculateLightColor(
@@ -39,6 +39,7 @@ const processDefaultFaceData = (
   data.aoIndex
  );
  data.uvTemplateIndex += 1;
+ data.overylayUVTemplateIndex += 1;
  data.lightIndex += 4;
  data.colorIndex += 4;
  data.aoIndex += 4;

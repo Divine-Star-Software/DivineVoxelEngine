@@ -63,8 +63,7 @@ export function InitWorkers(
  DVER._syncSettings(<any>initData);
 
  DVER.textureManager.generateTexturesData();
- //DVER.builderCommManager.$INIT();
- // DVER.propagationCommManager.$INIT();
+ DVER.textureManager.generateTexturesData(true);
  DVER.constructorCommManager.$INIT();
 
  //terminate all workers
