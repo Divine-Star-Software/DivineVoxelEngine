@@ -37,11 +37,12 @@ export const MeshManager = {
 
  reStart() {},
 
- handleUpdateN(type: VoxelSubstanceType, chunkKey: string, data: any) {
+ handleUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
   const meshData: MeshSetData = {
    positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
    normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
    indiciesArray: new Int32Array(data[SetChunkDataIndexes.indiciesArray]),
+   faceDataArray: new Int32Array(data[SetChunkDataIndexes.faceDataArray]),
    AOColorsArray: new Float32Array(data[SetChunkDataIndexes.AOColorsArray]),
    RGBLightColorsArray: new Float32Array(
     data[SetChunkDataIndexes.RGBLightColorsArray]
@@ -51,6 +52,7 @@ export const MeshManager = {
    ),
    colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
    uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
+   overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
    extra: [],
   };
 

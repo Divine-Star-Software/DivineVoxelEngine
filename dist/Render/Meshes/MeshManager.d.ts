@@ -8,7 +8,7 @@ export declare const MeshManager: {
     $INIT(): void;
     setScene(scene: BABYLON.Scene): void;
     reStart(): void;
-    handleUpdateN(type: VoxelSubstanceType, chunkKey: string, data: any): void;
+    handleUpdate(type: VoxelSubstanceType, chunkKey: string, data: any): void;
     requestChunkBeRemoved(chunkKey: string): void;
     _updateMesh(type: VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
     _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;

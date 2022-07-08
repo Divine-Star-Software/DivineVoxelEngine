@@ -11,7 +11,9 @@ const { session } = require("electron");
 *fix webgl context lost
 https://github.com/electron/electron/issues/11934
 */
-app.commandLine.appendSwitch("--disable-gpu-process-crash-limit");
+app.commandLine.appendSwitch('enable-features', "SharedArrayBuffer");
+app.commandLine.appendSwitch('enable-unsafe-webgpu');
+app.commandLine.appendSwitch("disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
 app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
 

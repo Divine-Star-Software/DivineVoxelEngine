@@ -74,6 +74,8 @@ export const FloraMaterial = {
    attributes: [
     "position",
     "normal",
+    "faceData",
+    "ocuv3",
     "cuv3",
     "aoColors",
     "colors",

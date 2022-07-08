@@ -21,7 +21,7 @@ const handleUpdate = (substance: VoxelSubstanceType, data: any) => {
  /**
   * @TODO change over the handle update function to handle the new data index
   */
- DVER.meshManager.handleUpdateN(substance, chunkKey, data);
+ DVER.meshManager.handleUpdate(substance, chunkKey, data);
 };
 
 const substanceFunctionMap = {

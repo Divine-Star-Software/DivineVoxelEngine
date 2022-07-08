@@ -1,6 +1,7 @@
-import type { VoxelData, VoxelProcessData } from "Meta/Voxels/Voxel.types";
+import type { VoxelData } from "Meta/Voxels/Voxel.types";
 import type { Processor } from "../Processor.js";
 import { Util } from "../../../../Global/Util.helper.js";
+import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 type Nullable<T> = T | false | null;
 const lightByte = Util.getLightByte();
 type Vertexes = 1 | 2 | 3 | 4;

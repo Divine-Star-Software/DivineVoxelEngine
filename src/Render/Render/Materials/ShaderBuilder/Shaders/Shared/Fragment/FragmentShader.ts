@@ -3,34 +3,40 @@ export const SharedFragmentShader = {
     precision highp float;
     precision highp sampler2DArray;
     `,
- optionVariables: `
+ optionVariables(ao: boolean = true) {
+  let options = `
     uniform float sunLightLevel;
     uniform float baseLevel;
     varying float vDoSun;
     varying float vDoRGB;
-    `,
- varsNormal: `
+    `;
+  if (ao) {
+   options += `
+    varying float vDoAO; 
+      `;
+  }
+  return options;
+ },
+ varying(ao: boolean = true) {
+  let varying = `
     uniform sampler2DArray arrayTex;
     varying vec3 vUV;
+    varying vec3 vOVUV;
+    varying float vFaceData;
+    varying vec4 rgbLColor;
+    varying vec4 sunLColor;
+    varying vec4 vColors;
+    varying vec3 vNormal;
+    varying float vNColor;
+    varying float animIndex;
+    `;
+  if (ao) {
+   varying += `
     varying vec4 aoColor;
-    varying vec4 rgbLColor;
-    varying vec4 sunLColor;
-    varying vec4 vColors;
-    varying vec3 vNormal;
-    varying float vNColor;
-    varying float animIndex;
-
-    `,
- varsNoAO: `
-    uniform sampler2DArray arrayTex;
-    varying vec3 vUV;
-    varying vec4 rgbLColor;
-    varying vec4 sunLColor;
-    varying vec4 vColors;
-    varying vec3 vNormal;
-    varying float vNColor;
-    varying float animIndex;
-    `,
+      `;
+  }
+  return varying;
+ },
  useTime: `
     varying float vTime;
     `,
@@ -57,12 +63,12 @@ export const SharedFragmentShader = {
     }
     `,
 
-    hsv2rgbSmooth : `
+ hsv2rgbSmooth: `
 vec3 hsv2rgbSmooth( in vec3 c )
    {
       vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
       rgb = rgb*rgb*(3.0-2.0*rgb); 
       return c.z * mix( vec3(1.0), rgb, c.y);
    }
-    `
+    `,
 };

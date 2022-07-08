@@ -1,5 +1,6 @@
-import type { FullChunkTemplate, VoxelTemplateSubstanceType } from "Meta/index";
-export declare const ChunkMeshBuilder: {
+import type { VoxelTemplateSubstanceType } from "Meta/index";
+import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+export declare const Mesher: {
     voxelBuildOrder: VoxelTemplateSubstanceType[];
     voxelTypeMap: {
         solid: number;

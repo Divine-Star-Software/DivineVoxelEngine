@@ -13,57 +13,59 @@ export const SharedVertexShader = {
   uniform mat4 view;                    
   uniform mat4 viewProjection;       
   `,
- attributes: `
+ attributes(ao: boolean = true) {
+  let attributes = `
   attribute vec3 position;
   attribute vec3 normal;
   attribute vec3 cuv3;
-  attribute vec4 aoColors;
+  attribute vec3 ocuv3;
+  attribute float faceData;
   attribute vec4 rgbLightColors;
   attribute vec4 sunLightColors;
   attribute vec4 colors;
-  `,
- attributesNoAO: `
-  attribute vec3 position;
-  attribute vec3 normal;
-  attribute vec3 cuv3;
-  attribute vec4 rgbLightColors;
-  attribute vec4 sunLightColors;
-  attribute vec4 colors;
-  `,
- varying: `
+  `;
+  if (ao) {
+   attributes += `
+   attribute vec4 aoColors;
+   `;
+  }
+  return attributes;
+ },
+ varying(ao: boolean = true) {
+  let varying = `
   varying vec3 vUV;
+  varying vec3 vOVUV;
+  varying float vFaceData;
   varying vec3 vNormal;
-  varying float vNColor;
-  varying vec4 aoColor;
-  varying vec4 rgbLColor;
-  varying vec4 sunLColor;
-  varying vec4 vColors;
-  varying float animIndex;
-  `,
- varyingNoAO: `
-  varying vec3 vUV;
-  varying vec3 vNormal;
+  //vectory nomral sun light color scale
   varying float vNColor;
   varying vec4 rgbLColor;
   varying vec4 sunLColor;
   varying vec4 vColors;
   varying float animIndex;
-  `,
- optionVars: `
+  `;
+  if (ao) {
+   varying += `
+   varying vec4 aoColor;
+   `;
+  }
+  return varying;
+ },
+ optionVars(ao: boolean = true) {
+  let optionVars = `
   varying float vDoSun;
   varying float vDoRGB;
-  uniform float doAO;
   uniform float doRGB;
   uniform float doSun;
   uniform float doColor;
-  `,
- optionVarsNoAO: `
-  varying float vDoSun;
-  varying float vDoRGB;
-  uniform float doRGB;
-  uniform float doSun;
-  uniform float doColor;
-  `,
+ `;
+  if (optionVars) {
+   optionVars += `
+   uniform float doAO;
+   `;
+  }
+  return optionVars;
+ },
 
  useTime(passTime: boolean) {
   let timeUniform = `

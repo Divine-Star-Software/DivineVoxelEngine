@@ -56,6 +56,8 @@ export const FluidMaterial = {
             attributes: [
                 "position",
                 "normal",
+                "faceData",
+                "ocuv3",
                 "cuv3",
                 "colors",
                 "rgbLightColors",

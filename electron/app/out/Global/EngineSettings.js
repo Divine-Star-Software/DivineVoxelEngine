@@ -114,9 +114,12 @@ export const EngineSettings = {
         return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
     },
     doSunPropagation() {
-        return this.settings.lighting?.autoSunLight == true;
+        return this.settings.lighting.autoSunLight == true;
     },
     doRGBPropagation() {
-        return this.settings.lighting?.autoRGBLight == true;
+        return this.settings.lighting.autoRGBLight == true;
+    },
+    doLight() {
+        return this.doRGBPropagation() || this.doSunPropagation();
     },
 };

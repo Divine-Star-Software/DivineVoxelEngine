@@ -6,7 +6,7 @@ import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
-import { ChunkMeshBuilder } from "./Mesher/ChunkMeshBuilder.js";
+import { ChunkMesher } from "./Mesher/ChunMesher.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
@@ -16,7 +16,7 @@ export const DVEB = {
  shapeManager: ShapeManager,
  shapeHelper: ShapeHelper,
  shapeBuilder: ShapeBuilder,
- chunkMesher: ChunkMeshBuilder,
+ chunkMesher: ChunkMesher,
  processor: Processor,
  voxelHelper: VoxelHelper,
 

@@ -79,5 +79,6 @@ export declare const EngineSettings: {
     syncChunksInNexus(): boolean;
     doSunPropagation(): boolean;
     doRGBPropagation(): boolean;
+    doLight(): boolean;
 };
 export {};

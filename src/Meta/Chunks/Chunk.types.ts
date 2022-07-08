@@ -1,16 +1,4 @@
-import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
-export type ChunkTemplate = {
- positionTemplate: number[];
- faceTemplate: number[];
- uvTemplate: number[];
- shapeTemplate: number[];
- shapeStateTemplate: number[];
- lightTemplate: number[];
- aoTemplate: number[];
- colorTemplate: number[];
-};
-
-export type ChunkVoxels = number[] | Uint32Array;
+export type ChunkVoxels = Uint32Array;
 
 export type ChunkData = {
  proto: number;
@@ -19,11 +7,10 @@ export type ChunkData = {
  voxels: Uint32Array;
  voxelsStatesSAB: SharedArrayBuffer;
  voxelsStates: Uint32Array;
- heightMapSAB : SharedArrayBuffer;
+ heightMapSAB: SharedArrayBuffer;
  heightMap: Uint32Array;
- minMaxMapSAB : SharedArrayBuffer;
+ minMaxMapSAB: SharedArrayBuffer;
  minMaxMap: Uint32Array;
 
  position: number[];
 };
-export type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

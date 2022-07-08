@@ -43,11 +43,13 @@ export type VoxelShapeAddData = {
  positions: number[];
  normals: number[];
  indices: number[];
+ faceData : number[];
  RGBLightColors: number[];
  sunLightColors: number[];
  AOColors: number[];
  colors: number[];
  uvs: number[];
+ overlayUVs: number[];
  face: number;
  indicieIndex: number;
 
@@ -56,6 +58,8 @@ export type VoxelShapeAddData = {
  shapeStateIndex : number,
  unTemplate: number[];
  uvTemplateIndex: number;
+ overylayUVTemplate: number[];
+ overylayUVTemplateIndex: number;
  colorTemplate: number[];
  colorIndex: number;
  lightTemplate: number[];
@@ -68,6 +72,7 @@ export type VoxelShapeAddData = {
 export type VoxelShapeAddReturnData = {
  newIndicieIndex: number;
  newUVTemplateIndex: number;
+ newOverlayUVTemplateIndex: number;
  newColorIndex: number;
  newlightIndex: number;
  newAOIndex: number;

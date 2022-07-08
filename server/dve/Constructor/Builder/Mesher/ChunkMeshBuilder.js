@@ -2,7 +2,7 @@
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { ConstructorToRenderMessages, SetChunkDataIndexes, } from "../../../Constants/InterComms/ConstructorToRender.js";
-export const ChunkMeshBuilder = {
+export const Mesher = {
     voxelBuildOrder: [
         "solid",
         "flora",

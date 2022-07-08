@@ -460,25 +460,28 @@ export const WorldData = {
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   this.__handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk);
   this.runRebuildCheck(x, y, z);
-  const l = this.getLight(x, y, z);
 
-  if (l > 0) {
-   this.setAir(x, y, z, l);
-   if (DVEW.settings.doRGBPropagation()) {
-    DVEW.queues.addToRGBRemoveQue(x, y, z);
+  if (DVEW.settings.doLight()) {
+   const l = this.getLight(x, y, z);
+   if (l > 0) {
+    this.setAir(x, y, z, l);
+    if (DVEW.settings.doRGBPropagation()) {
+     DVEW.queues.addToRGBRemoveQue(x, y, z);
+    }
+    if (DVEW.settings.doSunPropagation()) {
+     DVEW.queues.addToSunLightRemoveQue(x, y, z);
+    }
    }
-   if (DVEW.settings.doSunPropagation()) {
-    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+   if (l < 0) {
+    this.setAir(x, y, z, 0);
+    this.runLightUpdateCheck(x, y, z);
    }
-  }
-  if (l < 0) {
-   this.setAir(x, y, z, 0);
-   this.runLightUpdateCheck(x, y, z);
+  } else {
+    this.setAir(x, y, z, 0);
   }
 
   if (DVEW.settings.settings.updating?.autoRebuild) {
    await this.__runLightRemoveAndUpdates(true, true);
-
    DVEW.queues.runRebuildQue();
    await DVEW.queues.awaitAllChunksToBeBuilt();
   }

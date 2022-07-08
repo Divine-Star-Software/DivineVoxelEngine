@@ -4,13 +4,12 @@
 //shaders
 import { floraShaders } from "./Shaders/Flora/Flora.shader.js";
 import { fluidShaders } from "./Shaders/Fluid/Fluid.shaders.js";
-import { magmaShaders } from "./Shaders/Magma/Magma.shader.js";
 import { solidShaders } from "./Shaders/Solid/Solid.shader.js";
 //shared functions
 import { SharedFogFunctions } from "./Shaders/Shared/Fog/FogShaderFunctions.js";
 import { ShaderNoiseFunctions } from "./Shaders/Shared/Noise/NoiseShaderFunctions.js";
 import { SharedFragmentShader } from "./Shaders/Shared/Fragment/FragmentShader.js";
-import { CommonShader } from "./Shaders/Shared/CommShader.js";
+import { CommonShader } from "./Shaders/Shared/ComonShader.js";
 import { SharedVertexShader } from "./Shaders/Shared/Vertex/VertexShader.js";
 /**# ShaderBuilder
  *---
@@ -20,10 +19,10 @@ export const ShaderBuilder = {
     buildFloraVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
-${SharedVertexShader.attributes}
+${SharedVertexShader.attributes()}
 ${SharedVertexShader.uniforams}
-${SharedVertexShader.varying}
-${SharedVertexShader.optionVars}
+${SharedVertexShader.varying()}
+${SharedVertexShader.optionVars()}
 ${ShaderNoiseFunctions.fluid}
 ${SharedVertexShader.useTime(true)}
 ${SharedFogFunctions.fogVertexTop}
@@ -46,10 +45,10 @@ ${CommonShader.getMainFunction(`
         return `
 ${SharedVertexShader.top}
 ${fluidShaders.vertexVars}
-${SharedVertexShader.attributesNoAO}
+${SharedVertexShader.attributes(false)}
 ${SharedVertexShader.uniforams}
-${SharedVertexShader.varying}
-${SharedVertexShader.optionVars}
+${SharedVertexShader.varying(false)}
+${SharedVertexShader.optionVars(false)}
 ${SharedVertexShader.useTime(true)}
 ${ShaderNoiseFunctions.fluid}
 ${SharedFogFunctions.fogVertexTop}
@@ -70,10 +69,10 @@ ${CommonShader.getMainFunction(`
     buildSolidVertexShader(uniformRegister = "", animationFunction = "") {
         return `
 ${SharedVertexShader.top}
-${SharedVertexShader.attributes}
+${SharedVertexShader.attributes()}
 ${SharedVertexShader.uniforams}
-${SharedVertexShader.varying}
-${SharedVertexShader.optionVars}
+${SharedVertexShader.varying()}
+${SharedVertexShader.optionVars()}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${animationFunction}
@@ -91,21 +90,34 @@ ${CommonShader.getMainFunction(`
     },
     buildMagmaVertexShader(uniformRegister = "", animationFunction = "") {
         return `
-${magmaShaders.vertexTop}
-
+${SharedVertexShader.top}
+${fluidShaders.vertexVars}
+${SharedVertexShader.attributes(false)}
+${SharedVertexShader.uniforams}
+${SharedVertexShader.varying(false)}
+${SharedVertexShader.optionVars(false)}
+${SharedVertexShader.useTime(true)}
+${ShaderNoiseFunctions.fluid}
+${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
-
 ${animationFunction}
-
-${magmaShaders.vertexMain}
-`;
+${CommonShader.getMainFunction(`
+ ${fluidShaders.vertexWave}
+ ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.passTime}
+ ${SharedVertexShader.setUVInMain}
+ ${SharedVertexShader.doRGB}
+ ${SharedVertexShader.doSun}
+ ${SharedVertexShader.doColors}
+ ${SharedVertexShader.doNormals}
+`)}`;
     },
     buildSolidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
 ${SharedFogFunctions.fogFragConstants}
-${SharedFragmentShader.optionVariables}
-${SharedFragmentShader.varsNormal}
+${SharedFragmentShader.optionVariables()}
+${SharedFragmentShader.varying()}
 ${SharedFogFunctions.fogFragVars}
 ${SharedFogFunctions.fogFragFunction}
 ${SharedFragmentShader.getColor}
@@ -121,8 +133,8 @@ ${solidShaders.fragMain}
 ${SharedFragmentShader.top}
 ${fluidShaders.fragVars}
 ${SharedFogFunctions.fogFragConstants}
-${SharedFragmentShader.optionVariables}
-${SharedFragmentShader.varsNoAO}
+${SharedFragmentShader.optionVariables(false)}
+${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
 ${SharedFogFunctions.fogFragFunction}
 ${SharedFragmentShader.getColor}
@@ -138,8 +150,8 @@ ${fluidShaders.fragMain}
         return `
   ${SharedFragmentShader.top}
   ${SharedFogFunctions.fogFragConstants}
-  ${SharedFragmentShader.optionVariables}
-  ${SharedFragmentShader.varsNormal}
+  ${SharedFragmentShader.optionVariables()}
+  ${SharedFragmentShader.varying()}
   ${SharedFogFunctions.fogFragVars}
   ${SharedFogFunctions.fogFragFunction}
   ${SharedFragmentShader.getColor}
@@ -154,16 +166,19 @@ ${fluidShaders.fragMain}
     },
     buildMagmaFragmentShader() {
         return `
+${SharedFragmentShader.top}
 ${SharedFogFunctions.fogFragConstants}
-
-${magmaShaders.fragTop}
-
+${SharedFragmentShader.optionVariables(false)}
+${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-
 ${SharedFogFunctions.fogFragFunction}
-
-${magmaShaders.fragMain}
-`;
+${SharedFragmentShader.getColor}
+${SharedFragmentShader.getAO}
+${SharedFragmentShader.getLight}
+${SharedFragmentShader.doFog}
+${CommonShader.getMainFunction(`
+${solidShaders.fragMain}
+`)}`;
     },
     getDefaultVertexShader(voxelSubstance, uniformRegister = "", animationFunction = "") {
         if (voxelSubstance == "magma") {

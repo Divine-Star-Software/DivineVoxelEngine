@@ -10,9 +10,11 @@ export declare let SetChunkDataIndexes: {
     positionArray: number;
     normalsArray: number;
     indiciesArray: number;
+    faceDataArray: number;
     AOColorsArray: number;
     RGBLightColorsArray: number;
     sunLightColorsArray: number;
     colorsArray: number;
     uvArray: number;
+    overlayUVArray: number;
 };

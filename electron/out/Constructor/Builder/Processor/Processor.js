@@ -22,24 +22,6 @@ export const Processor = {
     chunkTemplates: {},
     exposedFaces: [],
     faceStates: [],
-    voxelProcessData: {
-        voxelState: "",
-        voxelData: 0,
-        exposedFaces: [],
-        faceStates: [],
-        shapeTemplate: [],
-        shapeStateTemplate: [],
-        uvTemplate: [],
-        colorTemplate: [],
-        aoTemplate: [],
-        lightTemplate: [],
-        chunkX: 0,
-        chunkY: 0,
-        chunkZ: 0,
-        x: 0,
-        y: 0,
-        z: 0,
-    },
     settings: {
         doAO: true,
         doSun: true,
@@ -51,6 +33,7 @@ export const Processor = {
                 positionTemplate: [],
                 faceTemplate: [],
                 uvTemplate: [],
+                overlayUVTemplate: [],
                 shapeTemplate: [],
                 shapeStateTemplate: [],
                 colorTemplate: [],
@@ -61,6 +44,7 @@ export const Processor = {
                 positionTemplate: [],
                 faceTemplate: [],
                 uvTemplate: [],
+                overlayUVTemplate: [],
                 shapeTemplate: [],
                 shapeStateTemplate: [],
                 colorTemplate: [],
@@ -71,6 +55,7 @@ export const Processor = {
                 positionTemplate: [],
                 faceTemplate: [],
                 uvTemplate: [],
+                overlayUVTemplate: [],
                 shapeTemplate: [],
                 shapeStateTemplate: [],
                 colorTemplate: [],
@@ -81,6 +66,7 @@ export const Processor = {
                 positionTemplate: [],
                 faceTemplate: [],
                 uvTemplate: [],
+                overlayUVTemplate: [],
                 shapeTemplate: [],
                 shapeStateTemplate: [],
                 colorTemplate: [],
@@ -91,6 +77,7 @@ export const Processor = {
                 positionTemplate: [],
                 faceTemplate: [],
                 uvTemplate: [],
+                overlayUVTemplate: [],
                 shapeTemplate: [],
                 shapeStateTemplate: [],
                 colorTemplate: [],
@@ -190,6 +177,7 @@ export const Processor = {
                         faceStates: this.faceStates,
                         shapeTemplate: baseTemplate.shapeTemplate,
                         shapeStateTemplate: baseTemplate.shapeStateTemplate,
+                        overlayUVTemplate: baseTemplate.overlayUVTemplate,
                         uvTemplate: baseTemplate.uvTemplate,
                         colorTemplate: baseTemplate.colorTemplate,
                         aoTemplate: baseTemplate.aoTemplate,
@@ -228,19 +216,6 @@ export const Processor = {
     },
     processVoxelLight(data, ignoreAO = false) {
         this.doVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z, ignoreAO);
-    },
-    calculateVoxelLight(data, voxel) {
-        /*   if (
-         !DVEC.settings.settings.lighting?.doSunLight &&
-         !DVEC.settings.settings.lighting?.doRGBLight
-        )
-         return;
-        this.calculdateVoxelLightO(
-         data,
-         data.chunkX + data.x,
-         data.chunkY + data.y,
-         data.chunkZ + data.z
-        ); */
     },
     syncSettings(settings) {
         const materials = settings.materials;

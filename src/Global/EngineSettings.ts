@@ -151,9 +151,13 @@ export const EngineSettings = {
  },
 
  doSunPropagation() {
-  return this.settings.lighting?.autoSunLight == true;
+  return this.settings.lighting.autoSunLight == true;
  },
  doRGBPropagation() {
-  return this.settings.lighting?.autoRGBLight == true;
+  return this.settings.lighting.autoRGBLight == true;
+ },
+
+ doLight() {
+  return this.doRGBPropagation() || this.doSunPropagation();
  },
 };

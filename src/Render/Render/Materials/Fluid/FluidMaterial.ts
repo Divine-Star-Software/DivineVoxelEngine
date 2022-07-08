@@ -46,7 +46,7 @@ export const FluidMaterial = {
   } else {
    this.material.setFloat("doColor", 0.0);
   }
- }, 
+ },
 
  createMaterial(
   settings: EngineSettingsData,
@@ -73,6 +73,8 @@ export const FluidMaterial = {
    attributes: [
     "position",
     "normal",
+    "faceData",
+    "ocuv3",
     "cuv3",
     "colors",
     "rgbLightColors",
@@ -102,11 +104,11 @@ export const FluidMaterial = {
   });
   texture.hasAlpha = true;
   this.material = shaderMaterial;
- // shaderMaterial.needDepthPrePass = true;
+  // shaderMaterial.needDepthPrePass = true;
   shaderMaterial.separateCullingPass = true;
   shaderMaterial.backFaceCulling = false;
   shaderMaterial.forceDepthWrite = true;
-  
+
   shaderMaterial.setTexture("arrayTex", texture);
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);

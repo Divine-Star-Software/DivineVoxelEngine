@@ -25,16 +25,18 @@ export const MeshManager = {
         this.scene = scene;
     },
     reStart() { },
-    handleUpdateN(type, chunkKey, data) {
+    handleUpdate(type, chunkKey, data) {
         const meshData = {
             positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
             normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
             indiciesArray: new Int32Array(data[SetChunkDataIndexes.indiciesArray]),
+            faceDataArray: new Int32Array(data[SetChunkDataIndexes.faceDataArray]),
             AOColorsArray: new Float32Array(data[SetChunkDataIndexes.AOColorsArray]),
             RGBLightColorsArray: new Float32Array(data[SetChunkDataIndexes.RGBLightColorsArray]),
             sunLightColorsArray: new Float32Array(data[SetChunkDataIndexes.sunLightColorsArray]),
             colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
             uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
+            overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
             extra: [],
         };
         if (!this.meshes[type][chunkKey]) {

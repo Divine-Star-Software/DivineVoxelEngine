@@ -57,7 +57,15 @@ export const MagmaMaterial = {
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("magma");
 
   const shaderMaterial = new BABYLON.ShaderMaterial("magma", scene, "magma", {
-   attributes: ["position", "normal", "cuv3", "colors"],
+   attributes: [
+    "position",
+    "normal",
+    "faceData",
+    "ocuv3",
+    "cuv3",
+    "colors",
+    "rgbLightColors"
+   ],
    uniforms: [
     "world",
     "view",

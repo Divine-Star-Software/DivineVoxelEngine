@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
 import { EngineSettingsData } from "Meta/index";
-export interface VoxelMeshInterface {
+export declare type VoxelMeshInterface = {
     pickable: boolean;
     checkCollisions: boolean;
     seralize: boolean;
@@ -9,15 +9,19 @@ export interface VoxelMeshInterface {
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
     createMeshGeometory(mesh: BABYLON.Mesh, data: MeshSetData): void;
     syncSettings(settings: EngineSettingsData): void;
-}
+} & {
+    [key: string]: any;
+};
 export declare type MeshSetData = {
     positionArray: Float32Array;
     normalsArray: Float32Array;
     indiciesArray: Int32Array;
+    faceDataArray: Int32Array;
     AOColorsArray: Float32Array;
     RGBLightColorsArray: Float32Array;
     sunLightColorsArray: Float32Array;
     colorsArray: Float32Array;
     uvArray: Float32Array;
+    overlayUVArray: Float32Array;
     extra: any;
 };

@@ -1,7 +1,7 @@
 import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
-} from "Meta/Voxels/VoxelShape.types";
+} from "Meta/Constructor/VoxelShape.types";
 import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
 
 const shapeDimensions = {
@@ -103,7 +103,6 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
   data.position.y += shapeDimensions.height;
   faceFunctions[0](data);
   faceFunctions[1](data);
-
   return DVEB.shapeHelper.produceShapeReturnData(data);
  },
 };

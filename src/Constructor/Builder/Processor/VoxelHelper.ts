@@ -1,14 +1,7 @@
 //types
-import type { VoxelProcessData } from "Meta/Voxels/Voxel.types";
-import type {
- DirectionNames,
- VoxelConstructorObject,
- VoxelData,
-} from "Meta/index";
+import type { DirectionNames, VoxelConstructorObject } from "Meta/index";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-
-//functions
 
 export const VoxelHelper = {
  substanceRules: <Record<string, boolean>>{
@@ -51,7 +44,11 @@ export const VoxelHelper = {
   z: number
  ) {
   const checkVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
-  if (checkVoxelId && (checkVoxelId[0] == "dve:air" || checkVoxelId[0] == "dve:barrier")) return true;
+  if (
+   checkVoxelId &&
+   (checkVoxelId[0] == "dve:air" || checkVoxelId[0] == "dve:barrier")
+  )
+   return true;
   if (!checkVoxelId) return true;
   const checkVoxelObject = DVEC.voxelManager.getVoxel(checkVoxelId[0]);
   if (

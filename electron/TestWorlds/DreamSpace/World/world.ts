@@ -19,7 +19,6 @@ DVEW.renderComm.listenForMessage("voxel-add", async (data, event) => {
 });
 DVEW.renderComm.listenForMessage("voxel-remove", async (data, event) => {
  await DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
- // DVEW.runChunkRebuildQue();
 });
 DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
  playerWatcher.setPlayerSharedArrays(data);

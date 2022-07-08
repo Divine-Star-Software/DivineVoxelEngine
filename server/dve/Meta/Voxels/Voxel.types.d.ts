@@ -1,4 +1,5 @@
 import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 /**# Voxel Substance Type
  * ---
  * All solid and transparent voxels are grouped together in the same mesh per chunk.
@@ -11,24 +12,6 @@ export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "fl
  * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
  */
 export declare type VoxelTemplateSubstanceType = "solid" | "flora" | "fluid" | "magma";
-export declare type VoxelProcessData = {
-    exposedFaces: number[];
-    faceStates: number[];
-    voxelData: number;
-    voxelState: string;
-    uvTemplate: number[];
-    shapeTemplate: number[];
-    shapeStateTemplate: number[];
-    colorTemplate: number[];
-    lightTemplate: number[];
-    aoTemplate: number[];
-    chunkX: number;
-    chunkY: number;
-    chunkZ: number;
-    x: number;
-    y: number;
-    z: number;
-};
 export declare type VoxelHooks = "texturesRegistered" | "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;
 export declare type VoxelConstructorThreadHooks = "texturesRegistered" | any;
 export declare type VoxelWorldThreadHooks = "beforeAdd" | "afterAdd" | "beforeRemove" | "afterAfter" | any;

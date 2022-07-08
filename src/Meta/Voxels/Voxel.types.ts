@@ -1,5 +1,5 @@
-import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
-import { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
+import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder"
+import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 
 /**# Voxel Substance Type
  * ---
@@ -18,25 +18,6 @@ export type VoxelSubstanceType =
  * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
  */
 export type VoxelTemplateSubstanceType = "solid" | "flora" | "fluid" | "magma";
-
-export type VoxelProcessData = {
- exposedFaces: number[];
- faceStates: number[];
- voxelData: number;
- voxelState: string;
- uvTemplate: number[];
- shapeTemplate: number[];
- shapeStateTemplate: number[];
- colorTemplate: number[];
- lightTemplate: number[];
- aoTemplate: number[];
- chunkX: number;
- chunkY: number;
- chunkZ: number;
- x: number;
- y: number;
- z: number;
-};
 
 export type VoxelHooks =
  | "texturesRegistered"
@@ -60,17 +41,17 @@ export type VoxelWorldThreadHooks =
  * This the needed information for each voxel.
  */
 export type VoxelData = {
-    name: string;
-    shapeId: string;
-    id: string;
-    substance: VoxelSubstanceType;
-    physics?: {
-    boundingBoxId: string;
-    checkCollisions: boolean;
-    };
-    states?: string[];
-    lightSource?: boolean;
-    lightValue?: number;
+ name: string;
+ shapeId: string;
+ id: string;
+ substance: VoxelSubstanceType;
+ physics?: {
+  boundingBoxId: string;
+  checkCollisions: boolean;
+ };
+ states?: string[];
+ lightSource?: boolean;
+ lightValue?: number;
 };
 
 export type VoxelConstructorObject = {
