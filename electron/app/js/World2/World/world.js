@@ -18,7 +18,7 @@ DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({});
 //DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
-WorldGen.generateChunk(0, 0);
+WorldGen.generateChunk(0, 0, "pond");
 WorldGen.generateChunk(-16, 0);
 WorldGen.generateChunk(16, 0);
 WorldGen.generateChunk(0, 16);
@@ -27,6 +27,7 @@ WorldGen.generateChunk(-16, 16, "pillar");
 WorldGen.generateChunk(16, 16);
 WorldGen.generateChunk(16, -16, "pillar");
 WorldGen.generateChunk(-16, -16);
+DVEW.worldData.paintVoxel("dve:debugbox", "default", 0, 40, 5);
 DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 40, -1);
 DVEW.worldData.paintVoxel("dve:dreamstone", "no-grass", 0, 40, 0);
 load();

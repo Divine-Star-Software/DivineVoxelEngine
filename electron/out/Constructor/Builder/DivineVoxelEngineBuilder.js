@@ -1,6 +1,7 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
+import { UVHelper } from "./Shapes/UVHelper.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
@@ -14,6 +15,7 @@ export const DVEB = {
     shapeManager: ShapeManager,
     shapeHelper: ShapeHelper,
     shapeBuilder: ShapeBuilder,
+    uvHelper: UVHelper,
     chunkMesher: ChunkMesher,
     processor: Processor,
     voxelHelper: VoxelHelper,

@@ -36,7 +36,7 @@ export const FloraMesh = {
         chunkVertexData.normals = data.normalsArray;
         chunkVertexData.applyToMesh(mesh, false);
         mesh.setVerticesData("cuv3", data.uvArray, false, 3);
-        mesh.setVerticesData("ocuv3", data.overlayUVArray, false, 3);
+        mesh.setVerticesData("ocuv3", data.overlayUVArray, false, 4);
         mesh.setVerticesData("faceData", data.uvArray, false, 1);
         mesh.setVerticesData("aoColors", data.AOColorsArray, false, 4);
         mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);

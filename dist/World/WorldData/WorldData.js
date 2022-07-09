@@ -268,11 +268,14 @@ export const WorldData = {
         if (doNotSyncInThreads)
             return;
         DVEW.constructorCommManager.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        if (DVEW.settings.syncChunksInNexus()) {
+        if (DVEW.settings.syncChunksInNexusThread()) {
             DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkPOS.x, chunkPOS.y, chunkPOS.z);
         }
         if (DVEW.settings.syncChunkInDataThread()) {
             DVEW.matrixCentralHub.syncChunkInThread("data", chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        }
+        if (DVEW.settings.syncChunkInFXThread()) {
+            DVEW.matrixCentralHub.syncChunkInThread("fx", chunkPOS.x, chunkPOS.y, chunkPOS.z);
         }
     },
     async __runLightRemoveAndUpdates(remove = true, update = true) {

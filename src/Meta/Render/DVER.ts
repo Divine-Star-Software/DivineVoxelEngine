@@ -7,7 +7,9 @@ export type DVERInitData = {
     constructorWorker: string | Worker[];
     nexusWorker?: string | Worker | null; 
     dataWorker?: string | Worker | null; 
+    fxWorker?: string | Worker | null; 
 } & RecursivePartial<EngineSettingsData>;
 
 
 
+  

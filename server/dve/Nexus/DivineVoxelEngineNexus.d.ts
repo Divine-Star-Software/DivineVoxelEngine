@@ -1,7 +1,7 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __connectedToWorld: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -11,8 +11,8 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -276,13 +276,17 @@ export declare const DVEN: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
             data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -340,7 +344,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -424,8 +428,9 @@ export declare const DVEN: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInFXThread(): boolean;
         syncChunkInDataThread(): boolean;
-        syncChunksInNexus(): boolean;
+        syncChunksInNexusThread(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;

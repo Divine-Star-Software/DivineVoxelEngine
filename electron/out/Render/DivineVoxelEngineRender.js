@@ -7,6 +7,7 @@ import { MeshManager } from "./Meshes/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
 import { DataComm } from "./InterComms/Data/DataComm.js";
+import { FXComm } from "./InterComms/FX/FXComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //functions
@@ -18,6 +19,7 @@ export const DVER = {
     worldComm: WorldComm,
     nexusComm: NexusComm,
     dataComm: DataComm,
+    fxComm: FXComm,
     constructorCommManager: ConstructorCommManager,
     settings: EngineSettings,
     renderManager: RenderManager,
@@ -44,6 +46,9 @@ export const DVER = {
         }
         if (this.dataComm.port) {
             this.dataComm.sendMessage("sync-settings", [copy]);
+        }
+        if (this.fxComm.port) {
+            this.fxComm.sendMessage("sync-settings", [copy]);
         }
         // this.builderCommManager.syncSettings(copy);
         // this.propagationCommManager.syncSettings(copy);

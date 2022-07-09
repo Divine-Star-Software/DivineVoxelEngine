@@ -1,5 +1,5 @@
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-import { DVED } from "../../DivineStarVoxelEngineData.js";
+import { DVED } from "../../DivineVoxelEngineData.js";
 
 const worldComm = CreateInterComm("data-world", {});
 export const WorldComm = worldComm;

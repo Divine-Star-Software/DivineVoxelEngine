@@ -3,6 +3,7 @@ import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
+import { DirectionNames } from "Meta/Util.types.js";
 
 type BoxFaceFunction = (data: VoxelShapeAddData) => void;
 
@@ -12,16 +13,21 @@ const shapeDimensions = {
  height: 0.5,
 };
 
-const processDefaultFaceData = (data: VoxelShapeAddData, flip: boolean) => {
+const processDefaultFaceData = (
+ face: DirectionNames,
+ data: VoxelShapeAddData,
+ flip: boolean
+) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
- const ouv = data.overylayUVTemplate[data.overylayUVTemplateIndex];
- if (!flip) {
-  data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
-  data.overlayUVs.push(0, 0, ouv, 1, 0, ouv, 1, 1, ouv, 0, 1, ouv);
- } else {
-  data.uvs.push(0, 1, uv, 0, 0, uv, 1, 0, uv, 1, 1, uv);
-  data.overlayUVs.push(0, 1, ouv, 0, 0, ouv, 1, 0, ouv, 1, 1, ouv);
- }
+ DVEB.uvHelper.addUVs(face, {
+  uvs: data.uvs,
+  uv: uv,
+  startPercent: 0,
+  endPerfect: 1,
+  flipped: flip,
+  rotoate: 0,
+ });
+ DVEB.uvHelper.processOverlayUVs(data);
  DVEB.shapeHelper.calculateLightColor(
   data.RGBLightColors,
   data.sunLightColors,
@@ -34,7 +40,7 @@ const processDefaultFaceData = (data: VoxelShapeAddData, flip: boolean) => {
   data.aoIndex
  );
  data.uvTemplateIndex += 1;
- data.overylayUVTemplateIndex += 1;
+ data.overylayUVTemplateIndex += 4;
  data.lightIndex += 4;
  data.colorIndex += 4;
  data.aoIndex += 4;
@@ -45,7 +51,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
  0: (data: VoxelShapeAddData) => {
   const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "top");
   DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data, flip);
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("top", data, flip);
  },
  //add bottom face
  1: (data: VoxelShapeAddData) => {
@@ -57,19 +63,19 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    flip
   );
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("bottom", data, flip);
  },
  //add east face
  2: (data: VoxelShapeAddData) => {
   const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "east");
   DVEB.shapeBuilder.addFace("east", data.position, shapeDimensions, data, flip);
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("east", data, flip);
  },
  //add west face
  3: (data: VoxelShapeAddData) => {
   const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "west");
   DVEB.shapeBuilder.addFace("west", data.position, shapeDimensions, data, flip);
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("west", data, flip);
  },
  //add north face
  4: (data: VoxelShapeAddData) => {
@@ -81,7 +87,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    flip
   );
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("north", data, flip);
  },
  //add south face
  5: (data: VoxelShapeAddData) => {
@@ -93,7 +99,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    flip
   );
-  processDefaultFaceData(data, flip);
+  processDefaultFaceData("south", data, flip);
  },
 };
 

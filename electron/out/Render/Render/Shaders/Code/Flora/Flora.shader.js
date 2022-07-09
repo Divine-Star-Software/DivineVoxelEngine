@@ -28,16 +28,17 @@ if(normal.y == 1. ) {
     fragMain: `
 
  vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
- vec4 oRGB = rgb;
- oRGB =  texture(overlayTex, vec3(vOVUV.x,vOVUV.y,overlayAnimIndex)) ;
+// vec4 oRGB = rgb;
+// oRGB =  texture(overlayTex, vec3(vOVUV.x,vOVUV.y,overlayAnimIndex)) ;
  
   
-if (rgb.a < 0.85 && oRGB.a < 0.85) { 
+if (rgb.a < 0.85 ) { 
      discard;
 }
-if(oRGB.a > 0.85) {
-    rgb = oRGB;
-}
+
+//if(oRGB.a > 0.85) {
+//    rgb = oRGB;
+//}
  
  rgb = getColor(rgb);
  rgb = getAO(rgb);

@@ -88,6 +88,25 @@ export declare const DVEB: {
             depth: number;
         }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
     };
+    uvHelper: {
+        uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: {
+            uvs: number[];
+            uv: number;
+            startPercent: number;
+            endPerfect: number;
+            flipped: boolean;
+            rotoate: number;
+        }) => void>;
+        addUVs(face: import("Meta/index.js").DirectionNames, data: {
+            uvs: number[];
+            uv: number;
+            startPercent: number;
+            endPerfect: number;
+            flipped: boolean;
+            rotoate: number;
+        }): void;
+        processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
+    };
     chunkMesher: {
         voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
         voxelTypeMap: {

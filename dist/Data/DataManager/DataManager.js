@@ -1,5 +1,5 @@
 //objects
-import { DVED } from "../DivineStarVoxelEngineData.js";
+import { DVED } from "../DivineVoxelEngineData.js";
 export const DataManager = {
     dataHanlder: null,
     setDataHandler(handler) {

@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineData } from "Data/DivineStarVoxelEngineData";
+import type { DivineVoxelEngineData } from "Data/DivineVoxelEngineData";
 import type { DVEDInitData } from "Meta/Data/DVED";
 
 export async function InitWorker(

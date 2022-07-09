@@ -7,6 +7,10 @@ export type EngineSettingsData = {
   enabled: boolean;
   autoSyncChunks: boolean;
  };
+ fx: {
+  enabled: boolean;
+  autoSyncChunks: boolean;
+ };
  physics: {
   enabled: boolean;
  };

@@ -16,6 +16,10 @@ export declare const EngineSettings: {
             enabled: boolean;
             autoSyncChunks: boolean;
         };
+        fx: {
+            enabled: boolean;
+            autoSyncChunks: boolean;
+        };
         textureOptions: {
             animationTime: number;
             width: number;
@@ -75,8 +79,9 @@ export declare const EngineSettings: {
     syncSettings(data: EngineSettingsData): void;
     syncWithWorldBounds(worldBounds: typeof WorldBounds): void;
     getSettingsCopy(): any;
+    syncChunkInFXThread(): boolean;
     syncChunkInDataThread(): boolean;
-    syncChunksInNexus(): boolean;
+    syncChunksInNexusThread(): boolean;
     doSunPropagation(): boolean;
     doRGBPropagation(): boolean;
     doLight(): boolean;

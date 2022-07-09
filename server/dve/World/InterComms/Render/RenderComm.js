@@ -21,6 +21,12 @@ renderComm.messageFunctions = {
         const settings = event.data[1];
         DVEW.syncSettings(settings);
     },
+    "connect-constructor": (data, event) => {
+        if (!event)
+            return;
+        const port = event.ports[0];
+        DVEW.constructorCommManager.addThread(port);
+    },
     "connect-nexus": (data, event) => {
         if (!event)
             return;
@@ -33,11 +39,11 @@ renderComm.messageFunctions = {
         const port = event.ports[0];
         DVEW.dataComm.setPort(port);
     },
-    "connect-constructor": (data, event) => {
+    "connect-fx": (data, event) => {
         if (!event)
             return;
         const port = event.ports[0];
-        DVEW.constructorCommManager.addThread(port);
+        DVEW.fxComm.setPort(port);
     },
 };
 //renderComm.onMessage = (event) => console.log(event.data,event.ports);

@@ -25,6 +25,10 @@ export const EngineSettings = {
    enabled: false,
    autoSyncChunks: false,
   },
+  fx: {
+   enabled: false,
+   autoSyncChunks: false,
+  },
   textureOptions: {
    animationTime: 20,
    width: 16,
@@ -142,11 +146,15 @@ export const EngineSettings = {
   return JSON.parse(JSON.stringify(this.settings));
  },
 
+ syncChunkInFXThread() {
+  return this.settings.fx.enabled && this.settings.fx.autoSyncChunks;
+ },
+
  syncChunkInDataThread() {
   return this.settings.data.enabled && this.settings.data.autoSyncChunks;
  },
 
- syncChunksInNexus() {
+ syncChunksInNexusThread() {
   return this.settings.nexus.enabled && this.settings.nexus.autoSyncChunks;
  },
 

@@ -12,7 +12,8 @@ export const SetUpWorkers = (
  worldPath: string,
  constructorPath: string,
  nexusPath: string | false | null | undefined = null,
- dataPath: string | false | null | undefined = null
+ dataPath: string | false | null | undefined = null,
+ fxPath: string | false | null | undefined = null
 ) => {
  const worldWorker = new Worker(new URL(worldPath, basePath), {
   type: "module",
@@ -36,12 +37,17 @@ export const SetUpWorkers = (
  }
 
  let dataWorker = null;
-
  if (dataPath) {
   dataWorker = new Worker(new URL(dataPath, basePath), {
    type: "module",
   });
-dataWorker.onerror = (event)=>console.log(event);
+ }
+
+ let fxWorker = null;
+ if (fxPath) {
+  fxWorker = new Worker(new URL(fxPath, basePath), {
+   type: "module",
+  });
  }
 
  return {
@@ -49,5 +55,6 @@ dataWorker.onerror = (event)=>console.log(event);
   constructorWorkers: constructorWorkers,
   nexusWorker: nexusWorker,
   dataWorker: dataWorker,
+  fxWorker: fxWorker,
  };
 };

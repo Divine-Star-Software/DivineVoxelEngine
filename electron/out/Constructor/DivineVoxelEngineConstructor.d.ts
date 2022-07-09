@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -381,13 +381,17 @@ export declare const DVEC: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
             data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -445,7 +449,7 @@ export declare const DVEC: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -529,8 +533,9 @@ export declare const DVEC: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInFXThread(): boolean;
         syncChunkInDataThread(): boolean;
-        syncChunksInNexus(): boolean;
+        syncChunksInNexusThread(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
@@ -623,6 +628,25 @@ export declare const DVEC: {
                 height: number;
                 depth: number;
             }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
+        };
+        uvHelper: {
+            uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: {
+                uvs: number[];
+                uv: number;
+                startPercent: number;
+                endPerfect: number;
+                flipped: boolean;
+                rotoate: number;
+            }) => void>;
+            addUVs(face: import("Meta/index.js").DirectionNames, data: {
+                uvs: number[];
+                uv: number;
+                startPercent: number;
+                endPerfect: number;
+                flipped: boolean;
+                rotoate: number;
+            }): void;
+            processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
         };
         chunkMesher: {
             voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];

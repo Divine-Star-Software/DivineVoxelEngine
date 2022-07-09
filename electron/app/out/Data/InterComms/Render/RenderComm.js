@@ -1,4 +1,4 @@
-import { DVED } from "../../DivineStarVoxelEngineData.js";
+import { DVED } from "../../DivineVoxelEngineData.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 const renderCommBase = {
     onReady: () => { },

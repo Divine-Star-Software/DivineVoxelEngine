@@ -5,6 +5,7 @@ import {
  SetUpDefaultSkybox,
  runRenderLoop,
  SetUpDefaultScene,
+ CreateWorldAxis,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
@@ -15,12 +16,20 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "../Shared/Constructor/constructor.js"
+ "../Shared/Constructor/constructor.js",
+ null,
+ null,
+ "./FX/fx.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
+ fxWorker : workers.fxWorker,
+ fx: {
+  enabled: true,
+  autoSyncChunks: true,
+ },
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -42,6 +51,7 @@ const init = async () => {
  );
  SetUpDefaultSkybox(scene);
 
+ CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);
 

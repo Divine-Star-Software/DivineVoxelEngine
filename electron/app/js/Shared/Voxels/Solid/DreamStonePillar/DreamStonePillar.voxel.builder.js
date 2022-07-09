@@ -29,19 +29,19 @@ export const DreamStonePillarVoxelBuilderThread = {
         }
         if (data.exposedFaces[2]) {
             data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0);
+            data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         if (data.exposedFaces[3]) {
             data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0);
+            data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         if (data.exposedFaces[4]) {
             data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0);
+            data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0);
+            data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         data.shapeTemplate.push(this.trueShapeId);
         data.shapeStateTemplate.push(0);

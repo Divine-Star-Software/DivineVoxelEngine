@@ -235,7 +235,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[3], 3);
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[4], 4);
   handleAdd(data, 5);
- } 
+ }
 }
 
 const doRGB = (neighborLightValue: number) => {

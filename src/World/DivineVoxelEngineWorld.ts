@@ -10,6 +10,7 @@ import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 //inter comms
+import { FXComm } from "./InterComms/FX/FXComm.js";
 import { DataComm } from "./InterComms/Data/DataComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
@@ -17,6 +18,7 @@ import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorComm
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
+
 
 /**# Divine Voxel Engine World
  * ---
@@ -36,6 +38,7 @@ export const DVEW = {
  matrix: Matrix,
  matrixCentralHub: MatrixCentralHub,
 
+ fxComm : FXComm,
  dataComm: DataComm,
  nexusComm: NexusComm,
  renderComm: RenderComm,

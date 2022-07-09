@@ -47,6 +47,19 @@ export function InitWorkers(DVER, initData) {
         }
         DVER.dataComm.$INIT();
     }
+    if (initData.fxWorker && initData.fx?.enabled) {
+        if (typeof initData.fxWorker == "string") {
+            const worker = DVER.__createWorker(initData.fxWorker);
+            DVER.fxComm.setPort(worker);
+        }
+        else if (initData.fxWorker instanceof Worker) {
+            DVER.fxComm.setPort(initData.fxWorker);
+        }
+        else {
+            throw Error("Supplied data for FX Worker is not correct. Must be path to worker or a worker.");
+        }
+        DVER.fxComm.$INIT();
+    }
     DVER._syncSettings(initData);
     DVER.textureManager.generateTexturesData();
     DVER.textureManager.generateTexturesData(true);

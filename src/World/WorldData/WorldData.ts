@@ -347,7 +347,7 @@ export const WorldData = {
    chunkPOS.y,
    chunkPOS.z
   );
-  if (DVEW.settings.syncChunksInNexus()) {
+  if (DVEW.settings.syncChunksInNexusThread()) {
    DVEW.matrixCentralHub.syncChunkInThread(
     "nexus",
     chunkPOS.x,
@@ -358,6 +358,14 @@ export const WorldData = {
   if (DVEW.settings.syncChunkInDataThread()) {
    DVEW.matrixCentralHub.syncChunkInThread(
     "data",
+    chunkPOS.x,
+    chunkPOS.y,
+    chunkPOS.z
+   );
+  }
+  if (DVEW.settings.syncChunkInFXThread()) {
+   DVEW.matrixCentralHub.syncChunkInThread(
+    "fx",
     chunkPOS.x,
     chunkPOS.y,
     chunkPOS.z
@@ -477,7 +485,7 @@ export const WorldData = {
     this.runLightUpdateCheck(x, y, z);
    }
   } else {
-    this.setAir(x, y, z, 0);
+   this.setAir(x, y, z, 0);
   }
 
   if (DVEW.settings.settings.updating?.autoRebuild) {

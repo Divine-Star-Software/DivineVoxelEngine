@@ -22,7 +22,7 @@ export const SharedFragmentShader = {
     uniform sampler2DArray arrayTex;
     uniform sampler2DArray overlayTex;
     varying vec3 vUV;
-    varying vec3 vOVUV;
+    varying vec4 vOVUV;
     varying float vFaceData;
     varying vec4 rgbLColor;
     varying vec4 sunLColor;

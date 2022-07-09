@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -119,8 +119,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -384,13 +384,17 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
             data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -448,7 +452,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -532,8 +536,9 @@ export declare const DVEW: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInFXThread(): boolean;
         syncChunkInDataThread(): boolean;
-        syncChunksInNexus(): boolean;
+        syncChunksInNexusThread(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
@@ -645,6 +650,10 @@ export declare const DVEW: {
     matrixCentralHub: {
         threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
         _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
+        /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunk(x: number, y: number, z: number): false | undefined;
         syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
@@ -657,6 +666,7 @@ export declare const DVEW: {
         syncGlobalVoxelPalette(): void;
         syncGlobalVoxelPaletteInThread(threadId: string): void;
     };
+    fxComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {

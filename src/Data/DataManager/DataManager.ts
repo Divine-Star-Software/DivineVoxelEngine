@@ -1,7 +1,7 @@
 //types
 import type { DataHandler } from "Meta/Data/DataHandler.type";
 //objects
-import { DVED } from "../DivineStarVoxelEngineData.js";
+import { DVED } from "../DivineVoxelEngineData.js";
 
 export const DataManager = {
  dataHanlder: <DataHandler | null>null,

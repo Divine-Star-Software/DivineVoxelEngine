@@ -18,7 +18,7 @@ export const SharedVertexShader = {
   attribute vec3 position;
   attribute vec3 normal;
   attribute vec3 cuv3;
-  attribute vec3 ocuv3;
+  attribute vec4 ocuv3;
   attribute float faceData;
   attribute vec4 rgbLightColors;
   attribute vec4 sunLightColors;
@@ -34,7 +34,7 @@ export const SharedVertexShader = {
  varying(ao: boolean = true) {
   let varying = `
   varying vec3 vUV;
-  varying vec3 vOVUV;
+  varying vec4 vOVUV;
   varying float vFaceData;
   varying vec3 vNormal;
   //vectory nomral sun light color scale
@@ -83,9 +83,11 @@ export const SharedVertexShader = {
 
  setUVInMain: `
     animIndex = getUVFace(cuv3.z);
-    overlayAnimIndex = getOverlayUVFace(ocuv3.z);
     vUV = cuv3;
-    vOVUV = ocuv3;
+    vOVUV.x = getOverlayUVFace(ocuv3.x);
+    vOVUV.y = getOverlayUVFace(ocuv3.y);
+    vOVUV.z = getOverlayUVFace(ocuv3.z);
+    vOVUV.w = getOverlayUVFace(ocuv3.w);
     `,
 
  passTime: `

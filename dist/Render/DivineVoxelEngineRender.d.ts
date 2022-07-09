@@ -88,6 +88,9 @@ export declare const DVER: {
     dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         $INIT(): void;
     };
+    fxComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        $INIT(): void;
+    };
     constructorCommManager: {
         count: number;
         constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
@@ -104,6 +107,10 @@ export declare const DVER: {
                 autoSyncChunks: boolean;
             };
             data: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+            };
+            fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
             };
@@ -245,8 +252,9 @@ export declare const DVER: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInFXThread(): boolean;
         syncChunkInDataThread(): boolean;
-        syncChunksInNexus(): boolean;
+        syncChunksInNexusThread(): boolean;
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
