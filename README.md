@@ -19,7 +19,7 @@ A JavaScript voxel game engine written in TypeScript that uses Babylon.Js.
 Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki) to get started.
 
 Need help or want to share your creations? Join the discord: 
-[Discord](https://discord.gg/jQCNHU5UCV)
+[Discord](https://discord.gg/98xEVU7TKn)
 
 ## Features
 
