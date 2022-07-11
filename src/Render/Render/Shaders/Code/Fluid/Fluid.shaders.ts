@@ -28,8 +28,8 @@ varying float vFlow;
 `,
 
  fragMain: `
-  float x = vUV.x - vTime * vFlow;
-  vec4 rgb =  texture(arrayTex, vec3(x,vUV.y,animIndex));
+  float y = vUV.y - vTime * vFlow;
+  vec4 rgb =  texture(arrayTex, vec3(vUV.x,y,animIndex));
   vec4 oRGB1 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.x));
   vec4 oRGB2 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.y));
   vec4 oRGB3 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.z));

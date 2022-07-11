@@ -29,6 +29,7 @@ const init = async () => {
     CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(1);
+    //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);
