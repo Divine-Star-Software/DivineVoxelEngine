@@ -630,21 +630,34 @@ export declare const DVEC: {
             }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
         };
         uvHelper: {
+            uvRotations: Record<"top" | "side" | "bottom", Record<0 | 90 | 180 | 270, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
             uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: {
                 uvs: number[];
                 uv: number;
-                startPercent: number;
-                endPerfect: number;
+                width: {
+                    start: number;
+                    end: number;
+                };
+                height: {
+                    start: number;
+                    end: number;
+                };
                 flipped: boolean;
-                rotoate: number;
+                rotoate: 0 | 90 | 180 | 270;
             }) => void>;
             addUVs(face: import("Meta/index.js").DirectionNames, data: {
                 uvs: number[];
                 uv: number;
-                startPercent: number;
-                endPerfect: number;
+                width: {
+                    start: number;
+                    end: number;
+                };
+                height: {
+                    start: number;
+                    end: number;
+                };
                 flipped: boolean;
-                rotoate: number;
+                rotoate: 0 | 90 | 180 | 270;
             }): void;
             processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
         };
