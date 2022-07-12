@@ -174,7 +174,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );
@@ -185,7 +185,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );
@@ -196,7 +196,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );
@@ -207,7 +207,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );
@@ -218,7 +218,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );
@@ -229,7 +229,7 @@ export const UVHelper = {
     data.width.start,
     data.width.end,
     data.height.start,
-    data.width.end,
+    data.height.end,
     data.flipped,
     data.uvs
    );

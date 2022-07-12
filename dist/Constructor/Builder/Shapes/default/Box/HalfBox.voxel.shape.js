@@ -4,13 +4,29 @@ const shapeDimensions = {
     depth: 0.5,
     height: 0.25,
 };
-const processDefaultFaceData = (data, halfUV = false, flip = false) => {
+const processDefaultFaceData = (face, data, halfUV = false) => {
+    const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+    DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);
     const uv = data.unTemplate[data.uvTemplateIndex];
     if (!halfUV) {
-        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+        DVEB.uvHelper.addUVs(face, {
+            uvs: data.uvs,
+            uv: uv,
+            width: { start: 0, end: 1 },
+            height: { start: 0, end: 1 },
+            flipped: flip,
+            rotoate: 0,
+        });
     }
     else {
-        data.uvs.push(0, 0, uv, 1, 0, uv, 1, 0.5, uv, 0, 0.5, uv);
+        DVEB.uvHelper.addUVs(face, {
+            uvs: data.uvs,
+            uv: uv,
+            width: { start: 0, end: 1 },
+            height: { start: 0, end: 0.5 },
+            flipped: flip,
+            rotoate: 0,
+        });
     }
     DVEB.uvHelper.processOverlayUVs(data);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
@@ -24,39 +40,27 @@ const processDefaultFaceData = (data, halfUV = false, flip = false) => {
 const faceFunctions = {
     //add top face
     0: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "top");
-        DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, flip);
+        processDefaultFaceData("top", data);
     },
     //add bottom face
     1: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "bottom");
-        DVEB.shapeBuilder.addFace("bottom", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, flip);
+        processDefaultFaceData("bottom", data);
     },
     //add east face
     2: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "east");
-        DVEB.shapeBuilder.addFace("east", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, true, flip);
+        processDefaultFaceData("east", data, true);
     },
     //add west face
     3: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "west");
-        DVEB.shapeBuilder.addFace("west", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, true, flip);
-    },
-    //add north face
-    4: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "south");
-        DVEB.shapeBuilder.addFace("south", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, true, flip);
+        processDefaultFaceData("west", data, true);
     },
     //add south face
+    4: (data) => {
+        processDefaultFaceData("south", data, true);
+    },
+    //add north face
     5: (data) => {
-        const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "north");
-        DVEB.shapeBuilder.addFace("north", data.position, shapeDimensions, data, flip);
-        processDefaultFaceData(data, true, flip);
+        processDefaultFaceData("north", data, true);
     },
 };
 export const HalfBoxVoxelShape = {

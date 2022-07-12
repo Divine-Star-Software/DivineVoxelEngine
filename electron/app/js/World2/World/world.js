@@ -30,5 +30,6 @@ WorldGen.generateChunk(-16, -16);
 DVEW.worldData.paintVoxel("dve:debugbox", "default", 0, 40, 5);
 DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 40, -1);
 DVEW.worldData.paintVoxel("dve:dreamstone", "no-grass", 0, 40, 0);
+DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", 0, 40, -2);
 load();
 self.DVEW = DVEW;

@@ -151,22 +151,22 @@ export const UVHelper = {
     },
     uvFunctions: {
         top: (data) => {
-            UVHelper.uvRotations.top[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.top[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
         bottom: (data) => {
-            UVHelper.uvRotations.bottom[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.bottom[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
         north: (data) => {
-            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
         south: (data) => {
-            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
         east: (data) => {
-            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
         west: (data) => {
-            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.width.end, data.flipped, data.uvs);
+            UVHelper.uvRotations.side[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
         },
     },
     addUVs(face, data) {
