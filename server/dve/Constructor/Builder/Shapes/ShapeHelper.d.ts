@@ -6,6 +6,8 @@ import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
  */
 export declare const ShapeHelper: {
     faceByte: {
+        _rotationMap: Record<import("../../../Meta/Constructor/Mesher.types.js").Rotations, number>;
+        _rotationReverseMap: Record<number, import("../../../Meta/Constructor/Mesher.types.js").Rotations>;
         _setFaceTextureState: Record<DirectionNames, (state: number, faceBit: number) => number>;
         _getFaceTextureState: Record<DirectionNames, (faceBit: number) => number>;
         _setFaceRotateState: Record<DirectionNames, (state: number, faceBit: number) => number>;
@@ -16,8 +18,8 @@ export declare const ShapeHelper: {
         isFaceExposed(direction: DirectionNames, rawData: number): boolean;
         setFaceRotateState(direction: DirectionNames, state: number, rawData: number): number;
         getFaceRotateState(direction: DirectionNames, rawData: number): number;
-        setFaceTextureState(direction: DirectionNames, state: number, rawData: number): number;
-        getFaceTextureState(direction: DirectionNames, rawData: number): number;
+        setFaceTextureState(direction: DirectionNames, rotation: import("../../../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
+        getFaceTextureState(direction: DirectionNames, rawData: number): import("../../../Meta/Constructor/Mesher.types.js").Rotations;
     };
     lightByte: {
         _lightValues: number[];
@@ -53,6 +55,7 @@ export declare const ShapeHelper: {
     };
     lightMap: number[];
     shouldFaceFlip(faceBit: number, faceDirection: DirectionNames): boolean;
+    getTextureRotation(faceBit: number, faceDirection: DirectionNames): import("../../../Meta/Constructor/Mesher.types.js").Rotations;
     isFaceExposexd(faceBit: number, faceDirection: DirectionNames): boolean;
     produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;
     toLinearSpace(r: number, g: number, b: number, a: number): number[];

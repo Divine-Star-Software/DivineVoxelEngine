@@ -142,6 +142,8 @@ export declare const DVEC: {
             getXYZ(index: number): import("Meta/index.js").Position3Matrix;
         };
         getFaceByte(): {
+            _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
+            _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
             _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
             _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -152,8 +154,8 @@ export declare const DVEC: {
             isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
             setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
             getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-            setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-            getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
+            getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
         };
         getHeightMapArray(): {
             bounds: {
@@ -561,6 +563,8 @@ export declare const DVEC: {
         };
         shapeHelper: {
             faceByte: {
+                _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
+                _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
                 _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
                 _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
                 _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -571,8 +575,8 @@ export declare const DVEC: {
                 isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
                 setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
                 getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
+                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
             };
             lightByte: {
                 _lightValues: number[];
@@ -608,6 +612,7 @@ export declare const DVEC: {
             };
             lightMap: number[];
             shouldFaceFlip(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
+            getTextureRotation(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): import("../Meta/Constructor/Mesher.types.js").Rotations;
             isFaceExposexd(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
             produceShapeReturnData(shapeData: import("Meta/index.js").VoxelShapeAddData): import("Meta/index.js").VoxelShapeAddReturnData;
             toLinearSpace(r: number, g: number, b: number, a: number): number[];
@@ -630,35 +635,9 @@ export declare const DVEC: {
             }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
         };
         uvHelper: {
-            uvRotations: Record<"top" | "side" | "bottom", Record<0 | 90 | 180 | 270, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
-            uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: {
-                uvs: number[];
-                uv: number;
-                width: {
-                    start: number;
-                    end: number;
-                };
-                height: {
-                    start: number;
-                    end: number;
-                };
-                flipped: boolean;
-                rotoate: 0 | 90 | 180 | 270;
-            }) => void>;
-            addUVs(face: import("Meta/index.js").DirectionNames, data: {
-                uvs: number[];
-                uv: number;
-                width: {
-                    start: number;
-                    end: number;
-                };
-                height: {
-                    start: number;
-                    end: number;
-                };
-                flipped: boolean;
-                rotoate: 0 | 90 | 180 | 270;
-            }): void;
+            uvRotations: Record<"top" | "bottom" | "side", Record<import("../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
+            uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData) => void>;
+            addUVs(face: import("Meta/index.js").DirectionNames, data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData): void;
             processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
         };
         chunkMesher: {
@@ -744,6 +723,8 @@ export declare const DVEC: {
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             };
             faceByte: {
+                _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
+                _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
                 _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
                 _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
                 _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -754,8 +735,8 @@ export declare const DVEC: {
                 isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
                 setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
                 getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
+                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
             };
             _3dArray: {
                 bounds: {
@@ -1009,6 +990,7 @@ export declare const DVEC: {
             chunkTemplates: Record<number, Record<number, number[][]>>;
             exposedFaces: number[];
             faceStates: number[];
+            textureRotation: import("../Meta/Constructor/Mesher.types.js").Rotations[];
             settings: {
                 doAO: boolean;
                 doSun: boolean;

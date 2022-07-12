@@ -10,9 +10,18 @@ const shapeDimensions = {
  height: 0.5,
 };
 
-const processFace = (data: VoxelShapeAddData) => {
+const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
- data.uvs.push(0, 0, uv, 1, 0, uv, 1, 1, uv, 0, 1, uv);
+ const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
+ const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+ DVEB.uvHelper.addUVs(face, {
+  uvs: data.uvs,
+  uv: uv,
+  width: { start: 0, end: 1 },
+  height: { start: 0, end: 1 },
+  flipped: flip,
+  rotoate: rotation,
+ });
  DVEB.uvHelper.processOverlayUVs(data);
 
  DVEB.shapeHelper.calculateAOColorFromValue(
@@ -62,7 +71,7 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
   );
   data.normals.push(0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1);
 
-  processFace(data);
+  processFace("north", data);
  },
 
  1: (data: VoxelShapeAddData) => {
@@ -94,7 +103,7 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
   );
   data.normals.push(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 1);
 
-  processFace(data);
+  processFace("south", data);
  },
 };
 

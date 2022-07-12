@@ -13,6 +13,7 @@ import {
 } from "./Functions/CalculateVoxelLight.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import { Rotations } from "Meta/Constructor/Mesher.types.js";
 
 /**# Chunk Processor
  * ---
@@ -31,6 +32,7 @@ export const Processor = {
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
+ textureRotation: <Rotations[]>[],
  settings: {
   doAO: true,
   doSun: true,
@@ -140,6 +142,7 @@ export const Processor = {
      ) {
       this.exposedFaces[0] = 1;
       this.faceStates[0] = 0;
+      this.textureRotation[0] = 0;
       faceBit = this.faceByte.markFaceAsExposed("top", faceBit);
      } else {
       this.exposedFaces[0] = 0;
@@ -157,6 +160,7 @@ export const Processor = {
      ) {
       this.exposedFaces[1] = 1;
       this.faceStates[1] = 0;
+      this.textureRotation[1] = 0;
       faceBit = this.faceByte.markFaceAsExposed("bottom", faceBit);
      } else {
       this.exposedFaces[1] = 0;
@@ -174,6 +178,7 @@ export const Processor = {
      ) {
       this.exposedFaces[2] = 1;
       this.faceStates[2] = 0;
+      this.textureRotation[2] = 0;
       faceBit = this.faceByte.markFaceAsExposed("east", faceBit);
      } else {
       this.exposedFaces[2] = 0;
@@ -191,6 +196,7 @@ export const Processor = {
      ) {
       this.exposedFaces[3] = 1;
       this.faceStates[3] = 0;
+      this.textureRotation[3] = 0;
       faceBit = this.faceByte.markFaceAsExposed("west", faceBit);
      } else {
       this.exposedFaces[3] = 0;
@@ -208,6 +214,7 @@ export const Processor = {
      ) {
       this.exposedFaces[4] = 1;
       this.faceStates[4] = 0;
+      this.textureRotation[4] = 0;
       faceBit = this.faceByte.markFaceAsExposed("south", faceBit);
      } else {
       this.exposedFaces[4] = 0;
@@ -225,6 +232,7 @@ export const Processor = {
      ) {
       this.exposedFaces[5] = 1;
       this.faceStates[5] = 0;
+      this.textureRotation[5] = 0;
       faceBit = this.faceByte.markFaceAsExposed("north", faceBit);
      } else {
       this.exposedFaces[5] = 0;
@@ -246,6 +254,7 @@ export const Processor = {
        voxelData: rawVoxelData,
        exposedFaces: this.exposedFaces,
        faceStates: this.faceStates,
+       textureRotations : this.textureRotation,
        shapeTemplate: baseTemplate.shapeTemplate,
        shapeStateTemplate: baseTemplate.shapeStateTemplate,
        overlayUVTemplate: baseTemplate.overlayUVTemplate,
@@ -271,11 +280,21 @@ export const Processor = {
        this.faceStates[0],
        faceBit
       );
+      faceBit = this.faceByte.setFaceTextureState(
+       "top",
+       this.textureRotation[0],
+       faceBit
+      );
      }
      if (this.exposedFaces[1]) {
       faceBit = this.faceByte.setFaceRotateState(
        "bottom",
        this.faceStates[1],
+       faceBit
+      );
+      faceBit = this.faceByte.setFaceTextureState(
+       "bottom",
+       this.textureRotation[1],
        faceBit
       );
      }
@@ -285,11 +304,21 @@ export const Processor = {
        this.faceStates[2],
        faceBit
       );
+      faceBit = this.faceByte.setFaceTextureState(
+       "east",
+       this.textureRotation[2],
+       faceBit
+      );
      }
      if (this.exposedFaces[3]) {
       faceBit = this.faceByte.setFaceRotateState(
        "west",
        this.faceStates[3],
+       faceBit
+      );
+      faceBit = this.faceByte.setFaceTextureState(
+       "west",
+       this.textureRotation[3],
        faceBit
       );
      }
@@ -299,11 +328,21 @@ export const Processor = {
        this.faceStates[4],
        faceBit
       );
+      faceBit = this.faceByte.setFaceTextureState(
+       "south",
+       this.textureRotation[4],
+       faceBit
+      );
      }
      if (this.exposedFaces[5]) {
       faceBit = this.faceByte.setFaceRotateState(
        "north",
        this.faceStates[5],
+       faceBit
+      );
+      faceBit = this.faceByte.setFaceTextureState(
+       "north",
+       this.textureRotation[5],
        faceBit
       );
      }

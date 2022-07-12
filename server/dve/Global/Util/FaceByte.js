@@ -8,6 +8,18 @@ const faceMasks = {
     west: 0b11111_00000_00000_00000_00000_00000,
 };
 export const FaceByte = {
+    _rotationMap: {
+        0: 0,
+        90: 1,
+        180: 2,
+        270: 3,
+    },
+    _rotationReverseMap: {
+        0: 0,
+        1: 90,
+        2: 180,
+        3: 270,
+    },
     _setFaceTextureState: {
         top: (state, faceBit) => {
             faceBit = (faceBit & (0b00 << 3)) | faceBit;
@@ -164,10 +176,12 @@ export const FaceByte = {
     getFaceRotateState(direction, rawData) {
         return this._getFaceRotateState[direction](rawData);
     },
-    setFaceTextureState(direction, state, rawData) {
+    setFaceTextureState(direction, rotation, rawData) {
+        const state = this._rotationMap[rotation];
         return this._setFaceTextureState[direction](state, rawData);
     },
     getFaceTextureState(direction, rawData) {
-        return this._getFaceTextureState[direction](rawData);
+        const state = this._getFaceTextureState[direction](rawData);
+        return this._rotationReverseMap[state];
     },
 };

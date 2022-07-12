@@ -1,3 +1,4 @@
+import { Rotations } from "Meta/Constructor/Mesher.types";
 import { DirectionNames } from "Meta/Util.types";
 // (this.byteValue >>> index) & 1
 
@@ -10,6 +11,19 @@ const faceMasks = <Record<DirectionNames, number>>{
  west: 0b11111_00000_00000_00000_00000_00000,
 };
 export const FaceByte = {
+ _rotationMap: <Record<Rotations, number>>{
+  0: 0,
+  90: 1,
+  180: 2,
+  270: 3,
+ },
+ _rotationReverseMap: <Record<number, Rotations>>{
+  0: 0,
+  1: 90,
+  2: 180,
+  3: 270,
+ },
+
  _setFaceTextureState: <
   Record<DirectionNames, (state: number, faceBit: number) => number>
  >{
@@ -176,12 +190,14 @@ export const FaceByte = {
  },
  setFaceTextureState(
   direction: DirectionNames,
-  state: number,
+  rotation: Rotations,
   rawData: number
  ) {
+  const state = this._rotationMap[rotation];
   return this._setFaceTextureState[direction](state, rawData);
  },
  getFaceTextureState(direction: DirectionNames, rawData: number) {
-  return this._getFaceTextureState[direction](rawData);
+  const state = this._getFaceTextureState[direction](rawData);
+  return this._rotationReverseMap[state];
  },
 };

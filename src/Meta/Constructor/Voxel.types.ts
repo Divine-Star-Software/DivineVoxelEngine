@@ -1,6 +1,9 @@
+import { Rotations } from "./Mesher.types";
+
 export type VoxelProcessData = {
  exposedFaces: number[];
  faceStates: number[];
+ textureRotations: Rotations[];
  voxelData: number;
  voxelState: string;
  uvTemplate: number[];

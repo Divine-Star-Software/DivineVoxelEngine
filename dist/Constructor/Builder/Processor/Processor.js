@@ -22,6 +22,7 @@ export const Processor = {
     chunkTemplates: {},
     exposedFaces: [],
     faceStates: [],
+    textureRotation: [],
     settings: {
         doAO: true,
         doSun: true,
@@ -110,6 +111,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {
                         this.exposedFaces[0] = 1;
                         this.faceStates[0] = 0;
+                        this.textureRotation[0] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("top", faceBit);
                     }
                     else {
@@ -119,6 +121,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - 1, z + chunkZ)) {
                         this.exposedFaces[1] = 1;
                         this.faceStates[1] = 0;
+                        this.textureRotation[1] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("bottom", faceBit);
                     }
                     else {
@@ -128,6 +131,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + 1, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[2] = 1;
                         this.faceStates[2] = 0;
+                        this.textureRotation[2] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("east", faceBit);
                     }
                     else {
@@ -137,6 +141,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - 1, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[3] = 1;
                         this.faceStates[3] = 0;
+                        this.textureRotation[3] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("west", faceBit);
                     }
                     else {
@@ -146,6 +151,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - 1)) {
                         this.exposedFaces[4] = 1;
                         this.faceStates[4] = 0;
+                        this.textureRotation[4] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("south", faceBit);
                     }
                     else {
@@ -155,6 +161,7 @@ export const Processor = {
                     if (DVEB.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + 1)) {
                         this.exposedFaces[5] = 1;
                         this.faceStates[5] = 0;
+                        this.textureRotation[5] = 0;
                         faceBit = this.faceByte.markFaceAsExposed("north", faceBit);
                     }
                     else {
@@ -175,6 +182,7 @@ export const Processor = {
                         voxelData: rawVoxelData,
                         exposedFaces: this.exposedFaces,
                         faceStates: this.faceStates,
+                        textureRotations: this.textureRotation,
                         shapeTemplate: baseTemplate.shapeTemplate,
                         shapeStateTemplate: baseTemplate.shapeStateTemplate,
                         overlayUVTemplate: baseTemplate.overlayUVTemplate,
@@ -192,21 +200,27 @@ export const Processor = {
                     baseTemplate.positionTemplate.push(x, y, z);
                     if (this.exposedFaces[0]) {
                         faceBit = this.faceByte.setFaceRotateState("top", this.faceStates[0], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("top", this.textureRotation[0], faceBit);
                     }
                     if (this.exposedFaces[1]) {
                         faceBit = this.faceByte.setFaceRotateState("bottom", this.faceStates[1], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("bottom", this.textureRotation[1], faceBit);
                     }
                     if (this.exposedFaces[2]) {
                         faceBit = this.faceByte.setFaceRotateState("east", this.faceStates[2], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("east", this.textureRotation[2], faceBit);
                     }
                     if (this.exposedFaces[3]) {
                         faceBit = this.faceByte.setFaceRotateState("west", this.faceStates[3], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("west", this.textureRotation[3], faceBit);
                     }
                     if (this.exposedFaces[4]) {
                         faceBit = this.faceByte.setFaceRotateState("south", this.faceStates[4], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("south", this.textureRotation[4], faceBit);
                     }
                     if (this.exposedFaces[5]) {
                         faceBit = this.faceByte.setFaceRotateState("north", this.faceStates[5], faceBit);
+                        faceBit = this.faceByte.setFaceTextureState("north", this.textureRotation[5], faceBit);
                     }
                     baseTemplate.faceTemplate.push(faceBit);
                 }

@@ -15,6 +15,9 @@ export const ShapeHelper = {
     shouldFaceFlip(faceBit, faceDirection) {
         return this.faceByte.getFaceRotateState(faceDirection, faceBit) == 1;
     },
+    getTextureRotation(faceBit, faceDirection) {
+        return this.faceByte.getFaceTextureState(faceDirection, faceBit);
+    },
     isFaceExposexd(faceBit, faceDirection) {
         return this.faceByte.isFaceExposed(faceDirection, faceBit);
     },

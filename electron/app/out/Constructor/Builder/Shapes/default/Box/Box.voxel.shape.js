@@ -7,6 +7,7 @@ const shapeDimensions = {
 const processDefaultFaceData = (face, data) => {
     const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
     DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);
+    const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
     const uv = data.unTemplate[data.uvTemplateIndex];
     DVEB.uvHelper.addUVs(face, {
         uvs: data.uvs,
@@ -14,7 +15,7 @@ const processDefaultFaceData = (face, data) => {
         width: { start: 0, end: 1 },
         height: { start: 0, end: 1 },
         flipped: flip,
-        rotoate: 0,
+        rotoate: rotation,
     });
     DVEB.uvHelper.processOverlayUVs(data);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);

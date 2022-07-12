@@ -20,13 +20,14 @@ const processDefaultFaceData = (
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
  DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);
  const uv = data.unTemplate[data.uvTemplateIndex];
+ const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  DVEB.uvHelper.addUVs(face, {
   uvs: data.uvs,
   uv: uv,
   width: { start: 0, end: 1 },
   height: { start: 0, end: 1 },
   flipped: flip,
-  rotoate: 0,
+  rotoate: rotation,
  });
 
  DVEB.uvHelper.processOverlayUVs(data);

@@ -1,17 +1,8 @@
+import { Rotations, UVFunctionData } from "Meta/Constructor/Mesher.types";
 import { VoxelShapeAddData } from "Meta/index";
 import { DirectionNames } from "Meta/Util.types";
 
-type UVCords = { start: number; end: number };
-type Rotations = 0 | 90 | 180 | 270;
 
-type UVFunctionData = {
- uvs: number[];
- uv: number;
- width: UVCords;
- height: UVCords;
- flipped: boolean;
- rotoate: Rotations;
-};
 /**
  * |||||||||||||||||||||||||||||||||||||
  * [TOP & BOTTOM]

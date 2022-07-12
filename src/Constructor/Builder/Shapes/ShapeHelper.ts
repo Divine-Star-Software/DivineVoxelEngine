@@ -20,6 +20,10 @@ export const ShapeHelper = {
   return this.faceByte.getFaceRotateState(faceDirection, faceBit) == 1;
  },
 
+ getTextureRotation(faceBit: number, faceDirection: DirectionNames) {
+  return this.faceByte.getFaceTextureState(faceDirection, faceBit);
+ },
+
  isFaceExposexd(faceBit: number, faceDirection: DirectionNames) {
   return this.faceByte.isFaceExposed(faceDirection, faceBit);
  },

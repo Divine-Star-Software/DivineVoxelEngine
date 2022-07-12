@@ -145,6 +145,8 @@ export declare const DVEW: {
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
         getFaceByte(): {
+            _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
+            _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
             _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
             _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -155,8 +157,8 @@ export declare const DVEW: {
             isFaceExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
             setFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
             getFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
-            setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
-            getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+            setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
+            getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
         };
         getHeightMapArray(): {
             bounds: {

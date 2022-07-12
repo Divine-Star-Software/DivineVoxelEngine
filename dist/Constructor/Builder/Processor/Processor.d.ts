@@ -3,6 +3,7 @@ import type { EngineSettingsData, VoxelData } from "Meta/index.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import { Rotations } from "Meta/Constructor/Mesher.types.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -81,6 +82,8 @@ export declare const Processor: {
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     };
     faceByte: {
+        _rotationMap: Record<Rotations, number>;
+        _rotationReverseMap: Record<number, Rotations>;
         _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
         _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
         _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -91,8 +94,8 @@ export declare const Processor: {
         isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
         setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
         getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-        setFaceTextureState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-        getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
+        setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: Rotations, rawData: number): number;
+        getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): Rotations;
     };
     _3dArray: {
         bounds: {
@@ -179,6 +182,11 @@ export declare const Processor: {
                 MinZ: number;
                 MaxZ: number;
                 MinX: number;
+                /**# Chunk Processor
+                 * ---
+                 * Takes the given world data and generates templates
+                 * to build chunk meshes.
+                 */
                 MaxX: number;
                 MinY: number;
                 MaxY: number;
@@ -346,6 +354,7 @@ export declare const Processor: {
     chunkTemplates: Record<number, Record<number, number[][]>>;
     exposedFaces: number[];
     faceStates: number[];
+    textureRotation: Rotations[];
     settings: {
         doAO: boolean;
         doSun: boolean;
