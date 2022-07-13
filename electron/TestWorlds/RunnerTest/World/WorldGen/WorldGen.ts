@@ -39,7 +39,7 @@ export const WorldGen = {
        if (y <= baseY + height && x >= 6 && x <= 9) {
         DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
-         "default",
+         "default", 0,
          x + chunkX,
          y + chunkY,
          z + chunkZ
@@ -47,7 +47,7 @@ export const WorldGen = {
         if (y == baseY + height && Math.random() < 0.5) {
          DVEW.worldData.paintVoxel(
           "dve:dreamlamp",
-          "default",
+          "default", 0,
           x + chunkX,
           y + chunkY,
           z + chunkZ
@@ -58,7 +58,7 @@ export const WorldGen = {
        if (y <= baseY - 5) {
         DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
-         "default",
+         "default", 0,
          x + chunkX,
          y + chunkY,
          z + chunkZ
@@ -67,7 +67,7 @@ export const WorldGen = {
        if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
         DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
-         "default",
+         "default", 0,
          x + chunkX,
          y + chunkY,
          z + chunkZ
@@ -77,7 +77,7 @@ export const WorldGen = {
        if (y <= baseY - 5) {
         DVEW.worldData.paintVoxel(
          "dve:dreamstonepillar",
-         "default",
+         "default", 0,
          x + chunkX,
          y + chunkY,
          z + chunkZ
@@ -86,7 +86,7 @@ export const WorldGen = {
        if (y >= baseY - 5 && y <= baseY - 1) {
         DVEW.worldData.paintVoxel(
          "dve:liquiddreamether",
-         "default",
+         "default", 0,
          x + chunkX,
          y + chunkY,
          z + chunkZ
@@ -99,7 +99,7 @@ export const WorldGen = {
       if (y <= baseY - 5) {
        DVEW.worldData.paintVoxel(
         "dve:dreamstonepillar",
-        "default",
+        "default", 0,
         x + chunkX,
         y + chunkY,
         z + chunkZ
@@ -109,7 +109,7 @@ export const WorldGen = {
       if (y >= baseY - 5 && y <= baseY - 1) {
        DVEW.worldData.paintVoxel(
         "dve:liquiddreamether",
-        "default",
+        "default", 0,
         x + chunkX,
         y + chunkY,
         z + chunkZ
@@ -121,7 +121,7 @@ export const WorldGen = {
       if (y <= maxY) {
        DVEW.worldData.paintVoxel(
         "dve:dreamstone",
-        "default",
+        "default", 0,
         x + chunkX,
         y + chunkY,
         z + chunkZ

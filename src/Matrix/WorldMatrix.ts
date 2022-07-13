@@ -103,6 +103,13 @@ export const WorldMatrix = {
   return record[paletteId];
  },
 
+ getVoxelShapeState(x: number, y: number, z: number) {
+  let data = this.getData(x, y, z,true);
+  if (!data) data = 0;
+  data = this.voxelByte.getShapeState(data);
+  return data;
+ },
+
  getVoxelData(x: number, y: number, z: number): VoxelData | false {
   if (!this.voxelManager) {
    throw new Error(
@@ -260,12 +267,14 @@ export const WorldMatrix = {
   );
  },
 
- getData(x: number, y: number, z: number) {
+ getData(x: number, y: number, z: number, state = false) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return -1;
+  let array = chunk.voxels;
+  if (state) array = chunk.voxelStates;
   return this._3dArray.getValueUseObjSafe(
    this.worldBounds.getVoxelPosition(x, y, z),
-   chunk.voxels
+   array
   );
  },
 

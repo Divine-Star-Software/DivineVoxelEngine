@@ -11,6 +11,7 @@ export const DreamStoneVoxelBuilderThread = {
             sideUV = bottomUV;
             topUV = bottomUV;
         }
+        //top
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
         }
@@ -20,28 +21,32 @@ export const DreamStoneVoxelBuilderThread = {
         if (data.voxelState == "no-grass") {
             sideUV = bottomUV;
         }
+        //bottom
         if (data.exposedFaces[1]) {
             data.uvTemplate.push(bottomUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);
         }
+        //east
         if (data.exposedFaces[2]) {
             data.uvTemplate.push(sideUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);
         }
+        //west
         if (data.exposedFaces[3]) {
             data.uvTemplate.push(sideUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);
         }
+        //south face
         if (data.exposedFaces[4]) {
             data.uvTemplate.push(sideUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);
         }
+        //north face
         if (data.exposedFaces[5]) {
             data.uvTemplate.push(sideUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         data.shapeTemplate.push(this.trueShapeId);
-        data.shapeStateTemplate.push(0);
         DVEB.processor.processVoxelLight(data);
         return;
     },

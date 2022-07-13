@@ -8,7 +8,7 @@ export const WorldGen = {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (z % 2 == 0 && x % 2 == 0 || y % 2 == 0) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
                     }
                 }
             }

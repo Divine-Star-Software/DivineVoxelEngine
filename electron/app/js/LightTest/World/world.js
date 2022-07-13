@@ -27,7 +27,7 @@ const run = async () => {
                 await DVEW.worldData.requestVoxelBeRemoved(endX + 7 - 16, y + 7, z + 7);
             }
             await DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, y + 7, z + 7);
-            await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x + 7, y + 7, z + 7);
+            await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, x + 7, y + 7, z + 7);
         }
     }
     run();

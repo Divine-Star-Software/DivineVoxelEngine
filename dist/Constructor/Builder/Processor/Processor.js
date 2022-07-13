@@ -177,14 +177,16 @@ export const Processor = {
                     else {
                         baseTemplate = template[voxelObject.data.substance];
                     }
+                    const voxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+                    baseTemplate.shapeStateTemplate.push(voxelShapeState);
                     voxelObject.process({
                         voxelState: voxelState,
                         voxelData: rawVoxelData,
+                        voxelShapeState: voxelShapeState,
                         exposedFaces: this.exposedFaces,
                         faceStates: this.faceStates,
                         textureRotations: this.textureRotation,
                         shapeTemplate: baseTemplate.shapeTemplate,
-                        shapeStateTemplate: baseTemplate.shapeStateTemplate,
                         overlayUVTemplate: baseTemplate.overlayUVTemplate,
                         uvTemplate: baseTemplate.uvTemplate,
                         colorTemplate: baseTemplate.colorTemplate,

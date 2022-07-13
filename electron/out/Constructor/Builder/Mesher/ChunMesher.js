@@ -61,8 +61,7 @@ export const ChunkMesher = {
                     overlayUVs: overlayUVS,
                     indicieIndex: indicieIndex,
                     //chunks template
-                    shapeStateTemplate: baseTemplate.shapeStateTemplate,
-                    shapeStateIndex: shapeStateIndex,
+                    shapeState: baseTemplate.shapeStateTemplate[shapeStateIndex],
                     unTemplate: baseTemplate.uvTemplate,
                     uvTemplateIndex: uvIndex,
                     overylayUVTemplate: baseTemplate.overlayUVTemplate,

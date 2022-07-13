@@ -59,5 +59,5 @@ const init = async () => {
 
  runRenderLoop(engine, scene, camera, DVER);
 };
-
+(window as any).DVER = DVER;
 RunInit(init);

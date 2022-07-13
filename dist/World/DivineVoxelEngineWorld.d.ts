@@ -253,6 +253,8 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
         };
         getLightByte(): {
             _lightValues: number[];
@@ -784,6 +786,8 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
         };
         heightByte: {
             heightMapArray: {
@@ -970,6 +974,8 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
         };
         _3dArray: {
             bounds: {
@@ -1081,21 +1087,21 @@ export declare const DVEW: {
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLight(x: number, y: number, z: number): number;
         removeData(x: number, y: number, z: number): false | undefined;
-        getData(x: number, y: number, z: number): number | false;
+        getData(x: number, y: number, z: number, state?: boolean): number | false;
         setData(x: number, y: number, z: number, data: number): void | -1;
         getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
         getVoxel(x: number, y: number, z: number): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
         addRegion(x: number, y: number, z: number): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         getRegion(x: number, y: number, z: number): false | import("../Meta/World/WorldData/World.types.js").WorldRegion;
         addChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
-        paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
+        paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
         __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
-        requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
+        requestVoxelAdd(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): Promise<void>;
         requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
         getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/index.js").ChunkData> | undefined;
         getRelativeMaxWorldColumnHeight(x: number, z: number): number;

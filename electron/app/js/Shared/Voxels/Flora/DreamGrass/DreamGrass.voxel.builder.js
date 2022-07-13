@@ -5,7 +5,6 @@ export const DreamGrassVoxelBuilderThread = {
     hooks: {},
     process: function (data, DVEB) {
         const uv = DVEB.textureManager.getTextureUV("flora", "dreamgrass");
-        data.shapeStateTemplate.push(0);
         data.shapeTemplate.push(this.trueShapeId);
         data.uvTemplate.push(uv, uv);
         data.overlayUVTemplate.push(0, 0, 0, 0);

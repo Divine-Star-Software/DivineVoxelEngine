@@ -140,6 +140,8 @@ export declare const Util: {
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        getShapeState(voxelData: number): number;
+        setShapeState(voxelData: number, shapeState: number): number;
     };
     getLightByte(): {
         _lightValues: number[];

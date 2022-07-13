@@ -87,8 +87,7 @@ export const ChunkMesher = {
      overlayUVs: overlayUVS,
      indicieIndex: indicieIndex,
      //chunks template
-     shapeStateTemplate: baseTemplate.shapeStateTemplate,
-     shapeStateIndex: shapeStateIndex,
+     shapeState: baseTemplate.shapeStateTemplate[shapeStateIndex],
      unTemplate: baseTemplate.uvTemplate,
      uvTemplateIndex: uvIndex,
      overylayUVTemplate: baseTemplate.overlayUVTemplate,
@@ -156,7 +155,6 @@ export const ChunkMesher = {
     uvArray.buffer,
     overlayUVArray.buffer,
    ];
-
 
    DVEC.renderComm.sendMessage(
     ConstructorToRenderMessages.setChunk,

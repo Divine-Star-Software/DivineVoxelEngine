@@ -74,6 +74,13 @@ export const WorldMatrix = {
         const paletteId = palette[numericVoxelId];
         return record[paletteId];
     },
+    getVoxelShapeState(x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        data = this.voxelByte.getShapeState(data);
+        return data;
+    },
     getVoxelData(x, y, z) {
         if (!this.voxelManager) {
             throw new Error(`A voxel manager must be set in order for this function to work. `);
@@ -207,11 +214,14 @@ export const WorldMatrix = {
             return false;
         this._3dArray.setValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
     },
-    getData(x, y, z) {
+    getData(x, y, z, state = false) {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return -1;
-        return this._3dArray.getValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels);
+        let array = chunk.voxels;
+        if (state)
+            array = chunk.voxelStates;
+        return this._3dArray.getValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), array);
     },
     getVoxelNumberID(x, y, z) {
         const rawVoxelData = this.getData(x, y, z);

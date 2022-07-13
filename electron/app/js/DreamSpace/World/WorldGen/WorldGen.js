@@ -7,9 +7,9 @@ export const WorldGen = {
     minY: 60,
     generateCrazyChunk(chunkX, chunkY, chunkZ, x, y, z) {
         if (y < Math.floor(Math.random() * this.minY)) {
-            DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             if (Math.random() > 0.8) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
             }
         }
     },
@@ -20,7 +20,7 @@ export const WorldGen = {
                 y == this.minY + 54 ||
                 y == this.minY + 56 ||
                 y == this.minY + 86) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 0 || z == 0 || x == 15 || z == 15) {
@@ -31,7 +31,7 @@ export const WorldGen = {
                 y == this.minY + 58 ||
                 y == this.minY + 84 ||
                 y == this.minY + 88) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 1 || z == 1 || x == 14 || z == 14) {
@@ -43,7 +43,7 @@ export const WorldGen = {
                 y == this.minY + 82 ||
                 y == this.minY + 86 ||
                 y == this.minY + 90) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 2 || z == 2 || x == 13 || z == 13) {
@@ -55,7 +55,7 @@ export const WorldGen = {
                 y == this.minY + 80 ||
                 y == this.minY + 88 ||
                 y == this.minY + 92) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 3 || z == 3 || x == 12 || z == 12) {
@@ -67,7 +67,7 @@ export const WorldGen = {
                 y == this.minY + 78 ||
                 y == this.minY + 90 ||
                 y == this.minY + 94) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 4 || z == 4 || x == 11 || z == 11) {
@@ -78,7 +78,7 @@ export const WorldGen = {
                 y == this.minY + 66 ||
                 y == this.minY + 74 ||
                 y == this.minY + 96) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 5 || z == 5 || x == 10 || z == 10) {
@@ -89,7 +89,7 @@ export const WorldGen = {
                 y == this.minY + 68 ||
                 y == this.minY + 72 ||
                 y == this.minY + 98) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (x == 6 || z == 6 || x == 9 || z == 9) {
@@ -98,92 +98,92 @@ export const WorldGen = {
                 y == this.minY + 42 ||
                 y == this.minY + 70 ||
                 this.minY + 100) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
         if (y < this.minY) {
-            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
         }
     },
     generatePondChunk(chunkX, chunkY, chunkZ, x, y, z) {
         if (y < this.minY - 6) {
-            DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
         }
         if (y >= this.minY - 6 && y <= this.minY) {
-            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
         }
     },
     generateHoleChunk(chunkX, chunkY, chunkZ, x, y, z) {
         if (x == 0 || z == 0 || x == 15 || z == 15) {
             if (y == this.minY) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 1 || z == 1 || x == 14 || z == 14) {
             if (y == this.minY - 1) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 2 || z == 2 || x == 13 || z == 13) {
             if (y == this.minY - 2) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 3 || z == 3 || x == 12 || z == 12) {
             if (y == this.minY - 3) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 4 || z == 4 || x == 11 || z == 11) {
             if (y == this.minY - 4) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 5 || z == 5 || x == 10 || z == 10) {
             if (y == this.minY - 5) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (x == 6 || z == 6 || x == 9 || z == 9) {
             if (y == this.minY - 6) {
-                DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
                 if (Math.random() > 0.8) {
-                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                    DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
                 }
             }
         }
         if (y < this.minY - 7) {
-            DVEW.worldData.paintVoxel("dve:dreamstone", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             if (Math.random() > 0.8) {
-                DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y + 1, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y + 1, chunkZ + z);
             }
         }
     },
     generateNormalChunk(chunkX, chunkY, chunkZ, x, y, z) {
         if (y < this.minY) {
-            DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", chunkX + x, chunkY + y, chunkZ + z);
+            DVEW.worldData.paintVoxel("dve:dreamgrassblock", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
         }
         if (y == this.minY) {
             if (Math.random() > 0.8) {
-                DVEW.worldData.paintVoxel("dve:dreamgrass", "default", chunkX + x, chunkY + y, chunkZ + z);
+                DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, chunkX + x, chunkY + y, chunkZ + z);
             }
         }
     },

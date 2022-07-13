@@ -250,6 +250,8 @@ export declare const DVEC: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
         };
         getLightByte(): {
             _lightValues: number[];
@@ -721,6 +723,8 @@ export declare const DVEC: {
                 getId(value: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+                getShapeState(voxelData: number): number;
+                setShapeState(voxelData: number, shapeState: number): number;
             };
             faceByte: {
                 _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
@@ -902,6 +906,8 @@ export declare const DVEC: {
                     getId(value: number): number;
                     decodeLightFromVoxelData(voxelData: number): number;
                     encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+                    getShapeState(voxelData: number): number;
+                    setShapeState(voxelData: number, shapeState: number): number;
                 };
                 lightByte: {
                     _lightValues: number[];
@@ -956,6 +962,7 @@ export declare const DVEC: {
                 awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
                 __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
                 getVoxel(x: number, y: number, z: number): false | string[];
+                getVoxelShapeState(x: number, y: number, z: number): any;
                 getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
                 _createRegion(x: number, y: number, z: number): {
                     chunks: {};
@@ -976,7 +983,7 @@ export declare const DVEC: {
                     chunkStates: Uint8Array;
                 }) => {}): false | Promise<boolean>;
                 setData(x: number, y: number, z: number, data: number): false | undefined;
-                getData(x: number, y: number, z: number): any;
+                getData(x: number, y: number, z: number, state?: boolean): any;
                 getVoxelNumberID(x: number, y: number, z: number): number | false;
                 getLight(x: number, y: number, z: number): number;
                 setAir(x: number, y: number, z: number, lightValue: number): void;
@@ -1197,6 +1204,8 @@ export declare const DVEC: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
         };
         lightByte: {
             _lightValues: number[];
@@ -1251,6 +1260,7 @@ export declare const DVEC: {
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
         __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
         getVoxel(x: number, y: number, z: number): false | string[];
+        getVoxelShapeState(x: number, y: number, z: number): any;
         getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
         _createRegion(x: number, y: number, z: number): {
             chunks: {};
@@ -1271,7 +1281,7 @@ export declare const DVEC: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number): false | undefined;
-        getData(x: number, y: number, z: number): any;
+        getData(x: number, y: number, z: number, state?: boolean): any;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
         getLight(x: number, y: number, z: number): number;
         setAir(x: number, y: number, z: number, lightValue: number): void;

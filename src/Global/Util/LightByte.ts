@@ -7,7 +7,6 @@
   getS(value: number) {
    return value & 0xf;
   },
- 
   getR(value: number) {
    return (value & (0xf << 4)) >> 4;
   },

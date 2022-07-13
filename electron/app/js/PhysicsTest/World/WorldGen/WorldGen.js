@@ -11,12 +11,12 @@ export const WorldGen = {
                 let add = (Math.random() * 2) >> 0;
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= baseY + 5) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (y > baseY + 5 &&
                         y <= baseY + 6 + add &&
                         (z == 0 || x == 0 || z == 15 || x == 15)) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                 }
             }

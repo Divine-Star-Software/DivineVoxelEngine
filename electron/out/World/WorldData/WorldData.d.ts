@@ -111,6 +111,8 @@ export declare const WorldData: {
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        getShapeState(voxelData: number): number;
+        setShapeState(voxelData: number, shapeState: number): number;
     };
     _3dArray: {
         bounds: {
@@ -222,21 +224,21 @@ export declare const WorldData: {
     setLight(x: number, y: number, z: number, lightValue: number): void;
     getLight(x: number, y: number, z: number): number;
     removeData(x: number, y: number, z: number): false | undefined;
-    getData(x: number, y: number, z: number): number | false;
+    getData(x: number, y: number, z: number, state?: boolean): number | false;
     setData(x: number, y: number, z: number, data: number): void | -1;
     getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
     getVoxel(x: number, y: number, z: number): [VoxelData | number, string | number, number] | false;
     addRegion(x: number, y: number, z: number): WorldRegion;
     getRegion(x: number, y: number, z: number): false | WorldRegion;
     addChunk(x: number, y: number, z: number): ChunkData;
-    paintVoxel(voxelId: string, voxelStateId: string, x: number, y: number, z: number): void;
+    paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     __handleHeightMapUpdateForVoxelRemove(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;
     removeChunk(x: number, y: number, z: number): false | undefined;
     setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInThreads?: boolean): void;
     __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
-    requestVoxelAdd(voxelId: string, voxelStateId: string, x: number, y: number, z: number): Promise<void>;
+    requestVoxelAdd(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): Promise<void>;
     requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
     getWorldColumn(x: number, z: number): false | Record<string, ChunkData> | undefined;
     getRelativeMaxWorldColumnHeight(x: number, z: number): number;

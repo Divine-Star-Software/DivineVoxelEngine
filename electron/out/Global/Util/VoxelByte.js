@@ -1,3 +1,8 @@
+const voxelStateMasks = {
+    level: 0b1111_11,
+    shapeState: 0b1111_1111_11_00_0000,
+    extraVoxelId: 0xffff,
+};
 /**# Voxel Byte
  * ---
  * Used to decode voxel data.
@@ -14,5 +19,11 @@ export const VoxelByte = {
     },
     encodeLightIntoVoxelData(voxelData, encodedLight) {
         return (voxelData & ~(0xffff << 0)) | (encodedLight << 0);
-    }
+    },
+    getShapeState(voxelData) {
+        return (voxelData & voxelStateMasks.shapeState) >> 6;
+    },
+    setShapeState(voxelData, shapeState) {
+        return (voxelData & ~voxelStateMasks.shapeState) | (shapeState << 6);
+    },
 };

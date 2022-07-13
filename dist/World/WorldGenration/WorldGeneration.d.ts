@@ -87,9 +87,15 @@ export declare const WorldGeneration: {
     };
     voxelByte: {
         setId(id: number, value: number): number;
+        /**# World Generation
+         * ---
+         * Helps with creating the needed data for chunks and world generation things.
+         */
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        getShapeState(voxelData: number): number;
+        setShapeState(voxelData: number, shapeState: number): number;
     };
     heightByte: {
         heightMapArray: {

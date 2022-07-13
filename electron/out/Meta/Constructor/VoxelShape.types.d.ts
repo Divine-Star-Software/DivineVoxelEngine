@@ -50,8 +50,7 @@ export declare type VoxelShapeAddData = {
     overlayUVs: number[];
     face: number;
     indicieIndex: number;
-    shapeStateTemplate: number[];
-    shapeStateIndex: number;
+    shapeState: number;
     unTemplate: number[];
     uvTemplateIndex: number;
     overylayUVTemplate: number[];

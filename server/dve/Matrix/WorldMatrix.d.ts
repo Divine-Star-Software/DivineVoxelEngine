@@ -115,6 +115,8 @@ export declare const WorldMatrix: {
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        getShapeState(voxelData: number): number;
+        setShapeState(voxelData: number, shapeState: number): number;
     };
     lightByte: {
         _lightValues: number[];
@@ -173,6 +175,7 @@ export declare const WorldMatrix: {
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
     getVoxel(x: number, y: number, z: number): false | string[];
+    getVoxelShapeState(x: number, y: number, z: number): any;
     getVoxelData(x: number, y: number, z: number): VoxelData | false;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
@@ -201,7 +204,7 @@ export declare const WorldMatrix: {
         chunkStates: Uint8Array;
     }) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number): false | undefined;
-    getData(x: number, y: number, z: number): any;
+    getData(x: number, y: number, z: number, state?: boolean): any;
     getVoxelNumberID(x: number, y: number, z: number): number | false;
     getLight(x: number, y: number, z: number): number;
     setAir(x: number, y: number, z: number, lightValue: number): void;

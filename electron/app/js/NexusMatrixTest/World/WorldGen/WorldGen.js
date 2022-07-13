@@ -18,10 +18,10 @@ export const WorldGen = {
                 currentY = currentY >> 0;
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y < currentY) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (Math.random() < 0.01 && y == currentY) {
-                        DVEW.worldData.paintVoxel("dve:dreamlamp", "default", x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                 }
             }

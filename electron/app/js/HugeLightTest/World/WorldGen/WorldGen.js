@@ -13,10 +13,10 @@ export const WorldGen = {
                     const ty = chunkY + y;
                     const tz = chunkZ + z;
                     if (y < maxY - 2) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", tx, ty, tz);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
                     }
                     if (y == maxY - 2) {
-                        DVEW.worldData.paintVoxel("dve:dreamlamp", "default", tx, ty, tz);
+                        DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, tx, ty, tz);
                     }
                 }
             }

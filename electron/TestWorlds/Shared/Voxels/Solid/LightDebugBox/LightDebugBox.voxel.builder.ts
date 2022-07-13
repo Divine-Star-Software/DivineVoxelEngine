@@ -131,7 +131,7 @@ export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
    data.overlayUVTemplate.push(0,0,0,0);
   }
   data.shapeTemplate.push(this.trueShapeId);
-  data.shapeStateTemplate.push(0);
+  
   DVEB.processor.processVoxelLight(data);
  },
 };

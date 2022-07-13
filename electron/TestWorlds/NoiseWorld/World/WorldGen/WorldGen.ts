@@ -20,7 +20,7 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y == 0) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
       continue;
      }
 
@@ -36,14 +36,14 @@ export const WorldGen = {
       perlin2.get((x + xOffSet) / 30, y / 30, (z + zOffSet) / 30) * 0.9;
 
      if (y < height && !(carve > 0.5 && carve < 0.6)) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
       let flip = Math.random();
       if (flip > 0.92) {
-       DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, y + 1, z);
+       DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y + 1, z);
       }
      } else {
       if (y <= 6) {
-       DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x, y, z);
+       DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x, y, z);
        continue;
       }
      }

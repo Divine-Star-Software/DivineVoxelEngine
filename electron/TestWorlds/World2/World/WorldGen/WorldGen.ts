@@ -11,14 +11,14 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= baseY - 1) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
      }
      if (y > baseY - 1 && y < baseY + 1) {
-      DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x, y, z);
      }
      if (y <= baseY + 2 && baseY >= baseY) {
       if (x == chunkX + 15 || z == chunkZ + 15 || x == chunkX || z == chunkZ) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
       }
      }
      if (y <= baseY + 1 && baseY >= baseY) {
@@ -47,7 +47,7 @@ export const WorldGen = {
        (z == chunkZ + 2 && x == chunkX + 13) ||
        (z == chunkZ + 1 && x == chunkX + 13)
       ) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
       }
      }
     }
@@ -62,10 +62,10 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y < baseY) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
      }
      if (y == topY) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
      }
      if (y >= baseY && y < topY) {
       if (
@@ -78,7 +78,7 @@ export const WorldGen = {
 
        if (z % 2 == 0) continue;
 
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
       }
      }
     }
@@ -92,7 +92,7 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y < groundY) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
       continue;
      }
      let flip = Math.random();
@@ -100,72 +100,72 @@ export const WorldGen = {
       continue;
      }
      if (flip <= 0.01) {
-      DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", x, topY, z);
+      DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", 0, x, topY, z);
       continue;
      }
      if (flip >= 0.01 && flip <= 0.02) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", "default", x, topY, z);
+      DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, topY, z);
       let flip2 = Math.random();
       if (flip2 < 0.01) {
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 1,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 2,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 3,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 4,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 4,
         z + 1
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 4,
         z - 1
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x + 1,
         topY + 4,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x - 1,
         topY + 4,
         z
        );
        DVEW.worldData.paintVoxel(
         "dve:dreamgrassblock",
-        "default",
+        "default", 0,
         x,
         topY + 5,
         z
@@ -174,7 +174,7 @@ export const WorldGen = {
       continue;
      }
      if (flip >= 0.02 && flip <= 0.03) {
-      DVEW.worldData.paintVoxel("dve:dreamgrass", "default", x, topY, z);
+      DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, topY, z);
       continue;
      }
     }

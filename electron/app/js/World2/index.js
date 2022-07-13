@@ -32,4 +32,5 @@ const init = async () => {
     //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };
+window.DVER = DVER;
 RunInit(init);

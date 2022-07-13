@@ -46,7 +46,7 @@ export const DreamStoneSlabVoxelBuilderThread: VoxelConstructorObject = {
   }
 
   data.shapeTemplate.push(this.trueShapeId);
-  data.shapeStateTemplate.push(0);
+  
   DVEB.processor.processVoxelLight(data);
   return;
  },

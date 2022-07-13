@@ -5,17 +5,17 @@ export const WorldGen = {
     chunkHeight: 32,
     _type0(tx, ty, tz) {
         if (ty == 16) {
-            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", tx, ty, tz);
+            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
         }
     },
     _type1(tx, ty, tz) {
         if (tz == 1) {
-            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", tx, ty, tz);
+            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
         }
     },
     _type2(tx, ty, tz) {
         if (tx == 30) {
-            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", tx, ty, tz);
+            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
         }
     },
     generateChunk(chunkX, chunkY, chunkZ, type) {

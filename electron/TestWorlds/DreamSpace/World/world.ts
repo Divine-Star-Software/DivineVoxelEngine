@@ -10,7 +10,7 @@ const playerWatcher = new PlayerWatcher(DVEW);
 DVEW.renderComm.listenForMessage("voxel-add", async (data, event) => {
  await DVEW.worldData.requestVoxelAdd(
   "dve:dreamstone",
-  "default",
+  "default", 0,
   data[1],
   data[2],
   data[3]

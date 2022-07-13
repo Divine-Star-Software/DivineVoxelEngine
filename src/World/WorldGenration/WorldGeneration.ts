@@ -50,7 +50,7 @@ export const WorldGeneration = {
   const chunkStatesSAB = new SharedArrayBuffer(
    this.worldBounds.chunkTotalVoxels * 4
   );
-  const chunkStatesVoxels = new Uint32Array(chunkSAB);
+  const chunkStatesVoxels = new Uint32Array(chunkStatesSAB);
   const heightMapSAB = new SharedArrayBuffer(
    this.worldBounds.chunkArea * 4 * 2
   );

@@ -26,8 +26,8 @@ const runLightRemove = () => {
 };
 const runAdd = () => {
  setTimeout(async () => {
-  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 10, 0);
-  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 10, -10);
+  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 0, 10, 0);
+  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 0, 10, -10);
   runLightRemove();
  }, 2000);
 };
@@ -55,7 +55,7 @@ await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 //0 10 -1
 buildAll();
 setTimeout(async () => {
- await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", x, 12, z + 5);
+ await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, x, 12, z + 5);
  runRemove();
 }, 2000);
 (self as any).DVEW = DVEW;
