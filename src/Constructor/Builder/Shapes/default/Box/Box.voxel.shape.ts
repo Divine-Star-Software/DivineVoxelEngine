@@ -22,7 +22,6 @@ const processDefaultFaceData = (
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];
 
-
  DVEB.uvHelper.addUVs(face, {
   uvs: data.uvs,
   uv: uv,

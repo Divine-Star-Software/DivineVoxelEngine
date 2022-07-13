@@ -5,8 +5,51 @@ declare type DimenionsMatrix = {
     height: number;
     depth: number;
 };
+declare const defaultTransform: {
+    v1: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    v2: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    v3: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    v4: {
+        x: number;
+        y: number;
+        z: number;
+    };
+};
 export declare const ShapeBuilder: {
-    faceFunctions: Record<DirectionNames, (origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean | undefined) => void>;
-    addFace(direction: DirectionNames, origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean): void;
+    faceFunctions: Record<DirectionNames, (origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, transform: typeof defaultTransform, flip?: boolean | undefined) => void>;
+    addFace(direction: DirectionNames, origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean, transform?: {
+        v1: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        v2: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        v3: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        v4: {
+            x: number;
+            y: number;
+            z: number;
+        };
+    }): void;
 };
 export {};

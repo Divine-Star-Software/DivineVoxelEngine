@@ -629,12 +629,54 @@ export declare const DVEC: {
                 width: number;
                 height: number;
                 depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean | undefined) => void>;
+            }, data: import("Meta/index.js").VoxelShapeAddData, transform: {
+                v1: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v2: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v4: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+            }, flip?: boolean | undefined) => void>;
             addFace(direction: import("Meta/index.js").DirectionNames, origion: import("Meta/index.js").Position3Matrix, dimensions: {
                 width: number;
                 height: number;
                 depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean): void;
+            }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean, transform?: {
+                v1: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v2: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+                v4: {
+                    x: number;
+                    y: number;
+                    z: number;
+                };
+            }): void;
         };
         uvHelper: {
             uvRotations: Record<"top" | "bottom" | "side", Record<import("../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
