@@ -38,32 +38,6 @@ const processDefaultFaceData = (face, data, halfUV = false) => {
     data.colorIndex += 4;
     data.aoIndex += 4;
 };
-const faceFunctions = {
-    //add top face
-    0: (data) => {
-        processDefaultFaceData("top", data);
-    },
-    //add bottom face
-    1: (data) => {
-        processDefaultFaceData("bottom", data);
-    },
-    //add east face
-    2: (data) => {
-        processDefaultFaceData("east", data, true);
-    },
-    //add west face
-    3: (data) => {
-        processDefaultFaceData("west", data, true);
-    },
-    //add south face
-    4: (data) => {
-        processDefaultFaceData("south", data, true);
-    },
-    //add north face
-    5: (data) => {
-        processDefaultFaceData("north", data, true);
-    },
-};
 export const HalfBoxVoxelShape = {
     id: "HalfBox",
     addToChunkMesh(data) {
@@ -71,22 +45,22 @@ export const HalfBoxVoxelShape = {
         data.position.z += shapeDimensions.depth;
         data.position.y += shapeDimensions.height;
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
-            faceFunctions[0](data);
+            processDefaultFaceData("top", data);
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
-            faceFunctions[1](data);
+            processDefaultFaceData("bottom", data);
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "east")) {
-            faceFunctions[2](data);
+            processDefaultFaceData("east", data, true);
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "west")) {
-            faceFunctions[3](data);
+            processDefaultFaceData("west", data, true);
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "south")) {
-            faceFunctions[4](data);
+            processDefaultFaceData("south", data, true);
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "north")) {
-            faceFunctions[5](data);
+            processDefaultFaceData("north", data, true);
         }
         return DVEB.shapeHelper.produceShapeReturnData(data);
     },

@@ -10,6 +10,7 @@ import { DreamLampVoxelData } from "../Voxels/Solid/DreamLamp/DreamLamp.voxel.da
 import { DreamGrassVoxelData } from "../Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
 import { LiquidDreamEtherVoxelData } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
 import { DreamStoneSlabVoxelData } from "../Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
+import { DreamVineVoxelData } from "../Voxels/Flora/DreamVine/DreamVine.voxel.data.js";
 
 export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
  DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
@@ -22,6 +23,7 @@ export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
 
  //flora
  DVEW.voxelManager.registerVoxelData(DreamGrassVoxelData);
+ DVEW.voxelManager.registerVoxelData(DreamVineVoxelData);
 
  //fluid
  DVEW.voxelManager.registerVoxelData(LiquidDreamEtherVoxelData);

@@ -10,6 +10,7 @@ import { LightDebugBoxVoxelBuilderThread } from "../Voxels/Solid/LightDebugBox/L
 import { LiquidDreamEtherVoxelBuilderThread } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.builder.js";
 import { DreamGrassVoxelBuilderThread } from "../Voxels/Flora/DreamGrass/DreamGrass.voxel.builder.js";
 import { DreamStoneSlabVoxelBuilderThread } from "../Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.builder.js";
+import { DreamVineVoxelBuilderThread } from "../Voxels/Flora/DreamVine/DreamVine.voxel.builder.js";
 
 
 export function RegisterVoxelsForConstructor(DVEC: DivineVoxelEngineConstructor) {
@@ -23,6 +24,7 @@ export function RegisterVoxelsForConstructor(DVEC: DivineVoxelEngineConstructor)
  DVEC.voxelManager.registerVoxel(DreamStoneSlabVoxelBuilderThread);
  //flora
  DVEC.voxelManager.registerVoxel(DreamGrassVoxelBuilderThread);
+ DVEC.voxelManager.registerVoxel(DreamVineVoxelBuilderThread);
  //fluid
  DVEC.voxelManager.registerVoxel(LiquidDreamEtherVoxelBuilderThread);
 }

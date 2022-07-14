@@ -38,6 +38,17 @@ DVEW.worldData.paintVoxel("dve:debugbox", "default", 0, 0, 40, 6);
 DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 0, 40, -1);
 DVEW.worldData.paintVoxel("dve:dreamstone", "no-grass", 0, 0, 40, 0);
 DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", 0, 0, 40, -2);
+
+for (let y = 35; y < 50; y++) {
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 1, 3, y, -2);
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 0, 3, y, 0);
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 2, 3, y, 2);
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 3, 3, y, 4);
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 4, 3, y, 6);
+ DVEW.worldData.paintVoxel("dve:dreamvine", "default", 5, 3, y, 8);
+}
+
+console.log(DVEW.worldData.getVoxel(-1, 49, 1));
 load();
 
 (self as any).DVEW = DVEW;

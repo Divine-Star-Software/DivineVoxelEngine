@@ -3,9 +3,7 @@ import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
-import { DirectionNames } from "Meta/Util.types.js";
-
-type BoxFaceFunction = (data: VoxelShapeAddData) => void;
+import type { DirectionNames } from "Meta/Util.types.js";
 
 const shapeDimensions = {
  width: 0.5,
@@ -13,25 +11,12 @@ const shapeDimensions = {
  height: 0.5,
 };
 
-const testTransform = {
- v1: { x: -2, y: 0, z: 0 },
- v2: { x: 0, y: 0, z: 0 },
- v3: { x: 0, y: 0, z: 0 },
- v4: { x: -2, y: 0, z: 0 },
-};
-
 const processDefaultFaceData = (
  face: DirectionNames,
  data: VoxelShapeAddData
 ) => {
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
- DVEB.shapeBuilder.addFace(
-  face,
-  data.position,
-  shapeDimensions,
-  data,
-  flip,
- );
+ DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];
 
@@ -62,33 +47,6 @@ const processDefaultFaceData = (
  data.aoIndex += 4;
 };
 
-const faceFunctions: Record<number, BoxFaceFunction> = {
- //add top face
- 0: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("top", data);
- },
- //add bottom face
- 1: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("bottom", data);
- },
- //add east face
- 2: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("east", data);
- },
- //add west face
- 3: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("west", data);
- },
- //add north face
- 4: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("south", data);
- },
- //add south face
- 5: (data: VoxelShapeAddData) => {
-  processDefaultFaceData("north", data);
- },
-};
-
 export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
  addToChunkMesh(data: VoxelShapeAddData) {
@@ -96,22 +54,22 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   data.position.z += shapeDimensions.depth;
   data.position.y += shapeDimensions.height;
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
-   faceFunctions[0](data);
+   processDefaultFaceData("top", data);
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
-   faceFunctions[1](data);
+   processDefaultFaceData("bottom", data);
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "east")) {
-   faceFunctions[2](data);
+   processDefaultFaceData("east", data);
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "west")) {
-   faceFunctions[3](data);
+   processDefaultFaceData("west", data);
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "south")) {
-   faceFunctions[4](data);
+   processDefaultFaceData("south", data);
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "north")) {
-   faceFunctions[5](data);
+   processDefaultFaceData("north", data);
   }
   return DVEB.shapeHelper.produceShapeReturnData(data);
  },

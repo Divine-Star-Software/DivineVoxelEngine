@@ -89,6 +89,7 @@ export const Processor = {
     },
     makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
         const voxels = chunk.voxels;
+        const voxelStates = chunk.voxelStates;
         const template = this.getBaseTemplateNew();
         let maxX = DVEC.worldBounds.chunkXSize;
         let maxZ = DVEC.worldBounds.chunkZSize;
@@ -177,7 +178,7 @@ export const Processor = {
                     else {
                         baseTemplate = template[voxelObject.data.substance];
                     }
-                    const voxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+                    const voxelShapeState = this.worldMatrix.getVoxelShapeState(chunkX + x, chunkY + y, chunkZ + z);
                     baseTemplate.shapeStateTemplate.push(voxelShapeState);
                     voxelObject.process({
                         voxelState: voxelState,

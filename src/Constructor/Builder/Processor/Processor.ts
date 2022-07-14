@@ -105,6 +105,7 @@ export const Processor = {
   chunkZ: number
  ): FullChunkTemplate {
   const voxels = chunk.voxels;
+  const voxelStates = chunk.voxelStates;
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEC.worldBounds.chunkXSize;
   let maxZ = DVEC.worldBounds.chunkZSize;
@@ -243,23 +244,26 @@ export const Processor = {
 
      let baseTemplate;
      if (voxelObject.data.substance == "transparent") {
-      baseTemplate = template["solid"];
+    baseTemplate = template["solid"];
      } else {
       baseTemplate = template[voxelObject.data.substance];
      }
-     
 
-     const voxelShapeState = this.worldMatrix.getVoxelShapeState(x,y,z);
+     const voxelShapeState = this.worldMatrix.getVoxelShapeState(
+      chunkX + x,
+      chunkY + y,
+      chunkZ + z
+     );
      baseTemplate.shapeStateTemplate.push(voxelShapeState);
 
      voxelObject.process(
       {
        voxelState: voxelState,
        voxelData: rawVoxelData,
-       voxelShapeState : voxelShapeState,
+       voxelShapeState: voxelShapeState,
        exposedFaces: this.exposedFaces,
        faceStates: this.faceStates,
-       textureRotations : this.textureRotation,
+       textureRotations: this.textureRotation,
        shapeTemplate: baseTemplate.shapeTemplate,
        overlayUVTemplate: baseTemplate.overlayUVTemplate,
        uvTemplate: baseTemplate.uvTemplate,
