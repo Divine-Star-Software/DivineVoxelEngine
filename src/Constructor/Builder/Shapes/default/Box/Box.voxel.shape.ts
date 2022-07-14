@@ -13,12 +13,25 @@ const shapeDimensions = {
  height: 0.5,
 };
 
+const testTransform = {
+ v1: { x: -2, y: 0, z: 0 },
+ v2: { x: 0, y: 0, z: 0 },
+ v3: { x: 0, y: 0, z: 0 },
+ v4: { x: -2, y: 0, z: 0 },
+};
+
 const processDefaultFaceData = (
  face: DirectionNames,
  data: VoxelShapeAddData
 ) => {
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
- DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);
+ DVEB.shapeBuilder.addFace(
+  face,
+  data.position,
+  shapeDimensions,
+  data,
+  flip,
+ );
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];
 

@@ -4,6 +4,12 @@ const shapeDimensions = {
     depth: 0.5,
     height: 0.5,
 };
+const testTransform = {
+    v1: { x: -2, y: 0, z: 0 },
+    v2: { x: 0, y: 0, z: 0 },
+    v3: { x: 0, y: 0, z: 0 },
+    v4: { x: -2, y: 0, z: 0 },
+};
 const processDefaultFaceData = (face, data) => {
     const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
     DVEB.shapeBuilder.addFace(face, data.position, shapeDimensions, data, flip);

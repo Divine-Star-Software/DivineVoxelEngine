@@ -14,28 +14,29 @@ const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
- DVEB.uvHelper.addUVs(face, {
-  uvs: data.uvs,
-  uv: uv,
-  width: { start: 0, end: 1 },
-  height: { start: 0, end: 1 },
-  flipped: flip,
-  rotoate: rotation,
- });
- DVEB.uvHelper.processOverlayUVs(data);
+ for (let i = 0; i < 2; i++) {
+  DVEB.uvHelper.addUVs(face, {
+   uvs: data.uvs,
+   uv: uv,
+   width: { start: 0, end: 1 },
+   height: { start: 0, end: 1 },
+   flipped: flip,
+   rotoate: rotation,
+  });
+  DVEB.uvHelper.processOverlayUVs(data);
 
- DVEB.shapeHelper.calculateAOColorFromValue(
-  data.AOColors,
-  data.aoTemplate[data.aoIndex]
- );
+  DVEB.shapeHelper.calculateAOColorFromValue(
+   data.AOColors,
+   data.aoTemplate[data.aoIndex]
+  );
 
- DVEB.shapeHelper.calculateLightColorFromValue(
-  data.RGBLightColors,
-  data.sunLightColors,
-  data.lightTemplate[data.lightIndex]
- );
+  DVEB.shapeHelper.calculateLightColorFromValue(
+   data.RGBLightColors,
+   data.sunLightColors,
+   data.lightTemplate[data.lightIndex]
+  );
+ }
 
- data.indicieIndex += 4;
  data.uvTemplateIndex += 1;
  data.overylayUVTemplateIndex += 4;
  data.lightIndex += 1;
@@ -43,67 +44,59 @@ const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
  data.aoIndex += 1;
 };
 
+const transform1 = {
+ v1: { x: 0, y: 0, z: -1 },
+ v2: { x: 0, y: 0, z: 0 },
+ v3: { x: 0, y: 0, z: 0 },
+ v4: { x: 0, y: 0, z: -1 },
+};
+const transform2 = {
+ v1: { x: 0, y: 0, z: 1 },
+ v2: { x: 0, y: 0, z: 0 },
+ v3: { x: 0, y: 0, z: 0 },
+ v4: { x: 0, y: 0, z: 1 },
+};
 const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
  0: (data: VoxelShapeAddData) => {
-  data.positions.push(
-   data.position.x - shapeDimensions.width,
-   data.position.y + shapeDimensions.height,
-   data.position.z + -shapeDimensions.depth,
-   data.position.x + shapeDimensions.width,
-   data.position.y + shapeDimensions.height,
-   data.position.z + shapeDimensions.depth,
-   data.position.x + shapeDimensions.width,
-   data.position.y + -shapeDimensions.height,
-   data.position.z + shapeDimensions.depth,
-
-   data.position.x - shapeDimensions.width,
-   data.position.y + -shapeDimensions.height,
-   data.position.z + -shapeDimensions.depth
+  DVEB.shapeBuilder.addFace(
+   "north",
+   data.position,
+   shapeDimensions,
+   data,
+   false,
+   transform1
   );
-  data.indices.push(
-   data.indicieIndex + 2,
-   data.indicieIndex + 1,
-   data.indicieIndex,
-
-   data.indicieIndex + 3,
-   data.indicieIndex + 2,
-   data.indicieIndex
+  DVEB.shapeBuilder.addFace(
+   "south",
+   data.position,
+   shapeDimensions,
+   data,
+   false,
+   transform2
   );
-  data.normals.push(0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1);
-
   processFace("north", data);
  },
 
  1: (data: VoxelShapeAddData) => {
-  data.positions.push(
-   data.position.x + -shapeDimensions.width,
-   data.position.y + shapeDimensions.height,
-   data.position.z + shapeDimensions.depth,
-
-   data.position.x + shapeDimensions.width,
-   data.position.y + shapeDimensions.height,
-   data.position.z + -shapeDimensions.depth,
-
-   data.position.x + shapeDimensions.width,
-   data.position.y + -shapeDimensions.height,
-   data.position.z + -shapeDimensions.depth,
-
-   data.position.x + -shapeDimensions.width,
-   data.position.y + -shapeDimensions.height,
-   data.position.z + shapeDimensions.depth
+  data.position.z -= 1;
+  DVEB.shapeBuilder.addFace(
+   "north",
+   data.position,
+   shapeDimensions,
+   data,
+   false,
+   transform2
   );
-  data.indices.push(
-   data.indicieIndex + 2,
-   data.indicieIndex + 1,
-   data.indicieIndex,
-
-   data.indicieIndex + 3,
-   data.indicieIndex + 2,
-   data.indicieIndex
+  data.position.z += 2;
+  DVEB.shapeBuilder.addFace(
+   "south",
+   data.position,
+   shapeDimensions,
+   data,
+   false,
+   transform1
   );
-  data.normals.push(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 1);
-
-  processFace("south", data);
+  processFace("north", data);
  },
 };
 
