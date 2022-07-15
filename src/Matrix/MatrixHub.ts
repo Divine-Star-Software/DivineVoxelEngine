@@ -17,6 +17,7 @@ export const MatrixHub = {
    MatrixHub._releaseChunk(data);
   },
   "sync-global-palette": (data) => {
+  
    MatrixHub._syncGlobalVoxelPalette(data);
   },
   "set-thread-name": (data) => {
@@ -39,23 +40,49 @@ export const MatrixHub = {
   const data = event.data;
   if (!data || !data[0]) return;
   const message = data[0];
+
   if (this.messageFunctions[message]) {
    this.messageFunctions[message](data, event);
    return;
   }
+
   runAfter(event);
  },
 
- async requestChunkSync(chunkX: number, chunkY: number, chunkZ: number) {
+ /**# Request Chunk Sync
+  *
+  * Will sync a chunk if it exists.
+  *
+  */
+ async requestChunkSync(x: number, y: number, z: number) {
   if (!this.worldPort) return;
+  const chunkPOS = WorldMatrix.worldBounds.getChunkPosition(x, y, z);
   this.worldPort.postMessage([
    "matrix-sync-chunk",
    this.threadName,
-   chunkX,
-   chunkY,
-   chunkZ,
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z,
   ]);
-  return await WorldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
+  return await WorldMatrix.awaitChunkLoad(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+ },
+
+ /**# Request Chunk Load
+  *
+  * Will sync a chunk if it exists.
+  *
+  */
+ async requestChunkLoad(x: number, y: number, z: number) {
+  if (!this.worldPort) return;
+  const chunkPOS = WorldMatrix.worldBounds.getChunkPosition(x, y, z);
+  this.worldPort.postMessage([
+   "matrix-load-chunk",
+   this.threadName,
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z,
+  ]);
+  return await WorldMatrix.awaitChunkLoad(chunkPOS.x, chunkPOS.y, chunkPOS.z);
  },
 
  requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number) {
@@ -105,7 +132,8 @@ export const MatrixHub = {
  },
 
  _syncGlobalVoxelPalette(data: any[]) {
-  WorldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
+
+  WorldMatrix.__setGlobalVoxelPalette(data[1], data[2],data[3]);
  },
 
  _setThreadName(data: any[]) {

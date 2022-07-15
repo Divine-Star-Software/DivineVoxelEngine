@@ -38,10 +38,13 @@ export const GetNewConstructorComm = (
   DVEW.queues.addToRebuildQue(x, y, z, substance);
  };
 
- newComm.messageFunctions[ConstructorToWorldMessages.chunkDoneBuilding] = (
+ newComm.messageFunctions[ConstructorToWorldMessages.addToRGBLightUpdateQue] = (
   data
  ) => {
-  // DVEW.queues._numChunksRebuilding--;
+  const x = data[1];
+  const y = data[2];
+  const z = data[3];
+  DVEW.queues.addToRGBUpdateQue(x, y, z);
  };
 
  return newComm;

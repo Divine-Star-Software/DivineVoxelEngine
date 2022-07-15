@@ -13,6 +13,16 @@ export const MatrixCentralHub = {
             const chunkZ = data[4];
             MatrixCentralHub.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
         },
+        "matrix-load-chunk": (data, event) => {
+            const thread = data[1];
+            const chunkX = data[2];
+            const chunkY = data[3];
+            const chunkZ = data[4];
+            if (!DVEW.worldData.getChunk(chunkX, chunkY, chunkZ)) {
+                DVEW.worldData.addChunk(chunkX, chunkY, chunkZ);
+            }
+            MatrixCentralHub.syncChunkInThread(thread, chunkX, chunkY, chunkZ);
+        },
         "matrix-release-chunk": (data, event) => {
             const thread = data[1];
             const chunkX = data[2];
@@ -196,21 +206,25 @@ export const MatrixCentralHub = {
     syncGlobalVoxelPalette() {
         const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
         const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
+        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
         for (const threadId of Object.keys(this.threads)) {
             this.threads[threadId].postMessage([
                 "sync-global-palette",
                 globalVoxelPalette,
                 globalVoxelPaletteRecord,
+                gloablVoxelPaletteMap,
             ]);
         }
     },
     syncGlobalVoxelPaletteInThread(threadId) {
         const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
         const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
+        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
         this.threads[threadId].postMessage([
             "sync-global-palette",
             globalVoxelPalette,
             globalVoxelPaletteRecord,
+            gloablVoxelPaletteMap,
         ]);
     },
 };

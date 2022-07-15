@@ -49,6 +49,11 @@ export const Worlds: WorldsData = [
     world: "ServerTest",
     }, */
    {
+    title: "World Gen Test",
+    description: "Used to test multi-threading world generating.",
+    world: "WorldGenTest",
+   },
+   {
     title: "Data Test",
     description: "Used to test loading in voxel data.",
     world: "DataTest",
@@ -93,11 +98,6 @@ export const Worlds: WorldsData = [
     title: "Ocean Test",
     description: "Used to test out fluid voxels.",
     world: "OceanTest",
-   },
-   {
-    title: "Shape Test",
-    description: "Used to work on different voxel shapes.",
-    world: "ShapeTest",
    },
    {
     title: "Crash Test",

@@ -33,6 +33,7 @@ export const WorldMatrix = {
  paletteMode: 0,
  globalVoxelPalette: <Record<number, string>>{},
  globalVoxelPaletteRecord: <Record<string, string[]>>{},
+ globalVoxelPaletteMap: <Record<string, number>>{},
 
  voxelManager: <VoxelManagerInterface | null>null,
 
@@ -61,6 +62,10 @@ export const WorldMatrix = {
   this.worldBounds.syncBoundsWithArrays();
  },
 
+ getVoxelPalleteId(voxelId: string, voxelState: string) {
+    return this.globalVoxelPaletteMap[`${voxelId}:${voxelState}`];
+ },
+
  /**# Await Chunk Load
   * ---
   * Wait for a chunk to loaded into the matrix  for use.
@@ -83,10 +88,12 @@ export const WorldMatrix = {
 
  __setGlobalVoxelPalette(
   palette: Record<number, string>,
-  record: Record<string, string[]>
+  record: Record<string, string[]>,
+  map: Record<string, number>
  ) {
   this.globalVoxelPalette = palette;
   this.globalVoxelPaletteRecord = record;
+  this.globalVoxelPaletteMap = map;
  },
 
  getVoxel(x: number, y: number, z: number) {
@@ -104,7 +111,7 @@ export const WorldMatrix = {
  },
 
  getVoxelShapeState(x: number, y: number, z: number) {
-  let data = this.getData(x, y, z,true);
+  let data = this.getData(x, y, z, true);
   if (!data) data = 0;
   data = this.voxelByte.getShapeState(data);
   return data;

@@ -9,7 +9,6 @@ export type VoxelProcessData = {
  voxelShapeState : number;
  uvTemplate: number[];
  overlayUVTemplate: number[];
- shapeTemplate: number[];
  colorTemplate: number[];
  lightTemplate: number[];
  aoTemplate: number[];

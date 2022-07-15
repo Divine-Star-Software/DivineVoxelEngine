@@ -1,13 +1,6 @@
 //obejcts
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
-const getVoxelPallid = (voxelId, voxelStateId) => {
-    const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
-    if (paletteId) {
-        return DVEW.worldGeneration.paintVoxel(paletteId);
-    }
-    return -1;
-};
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -135,7 +128,7 @@ export const WorldData = {
     getVoxelPaletteId(voxelId, voxelStateId) {
         const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
         if (paletteId) {
-            return DVEW.worldGeneration.paintVoxel(paletteId);
+            return this.voxelByte.setId(paletteId, 0);
         }
         return -1;
     },

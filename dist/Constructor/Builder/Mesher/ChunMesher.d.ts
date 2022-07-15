@@ -8,5 +8,5 @@ export declare const ChunkMesher: {
         fluid: number;
         magma: number;
     };
-    buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate): void;
+    buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: FullChunkTemplate, LOD?: number): void;
 };

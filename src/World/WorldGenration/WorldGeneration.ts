@@ -15,9 +15,7 @@ export const WorldGeneration = {
  heightByte: Util.getHeightByte(),
  voxelPalette: VoxelPaletteManager,
 
- paintVoxel(voxelPalletId: number) {
-  return this.voxelByte.setId(voxelPalletId, 0);
- },
+
 
  getBlankRegion(): WorldRegion {
   return {

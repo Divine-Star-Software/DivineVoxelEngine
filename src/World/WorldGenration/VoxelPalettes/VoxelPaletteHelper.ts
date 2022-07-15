@@ -1,6 +1,5 @@
 import type { VoxelData } from "Meta/Voxels/Voxel.types";
 
-
 /**# Voxel Palette Manager
  * ---
  * Used to help decode voxel ids and states from voxel palettes.
@@ -17,10 +16,10 @@ export const VoxelPaletteManager = {
   * This is what is actually stored in the chunk voxels.
   */
  getVoxelPaletteIdFromGlobalPalette(
-  voxelTrueId: string,
-  voxelStateId: string
+  voxelId: string,
+  voxelState: string
  ): number {
-  return this.globalVoxelPaletteMap[`${voxelTrueId}:${voxelStateId}`];
+  return this.globalVoxelPaletteMap[`${voxelId}:${voxelState}`];
  },
  /**# Get Voxel True Id From Global Palette
   * ---
@@ -52,6 +51,9 @@ export const VoxelPaletteManager = {
 
  getGlobalVoxelPalette() {
   return this.globalVoxelPalette;
+ },
+ getGlobalVoxelPaletteMap() {
+  return this.globalVoxelPaletteMap;
  },
  /**# Get Global Voxel Palette Record
   * ---

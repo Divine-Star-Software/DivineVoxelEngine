@@ -56,5 +56,8 @@ export declare const QueuesManager: {
     addToRebuildQueTotal(): void;
     awaitAllChunksToBeBuilt(): Promise<boolean>;
     areAllChunksDoneBuilding(): boolean;
+    addToGenerationTotal(): void;
+    areAllGenerationsDone(): boolean;
+    awaitAllGenerationsToBeDone(): Promise<boolean>;
 };
 export {};

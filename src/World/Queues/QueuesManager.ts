@@ -341,7 +341,7 @@ export const QueuesManager = {
  },
 
  addToRebuildQueTotal() {
-    Atomics.add(this.__states,  QueuesIndexes.chunksBuilding, 1);
+  Atomics.add(this.__states, QueuesIndexes.chunksBuilding, 1);
  },
 
  awaitAllChunksToBeBuilt() {
@@ -355,5 +355,22 @@ export const QueuesManager = {
 
  areAllChunksDoneBuilding() {
   return Atomics.load(this.__states, QueuesIndexes.chunksBuilding) == 0;
+ },
+
+ addToGenerationTotal() {
+  Atomics.add(this.__states, QueuesIndexes.generating, 1);
+ },
+
+ areAllGenerationsDone() {
+  return Atomics.load(this.__states, QueuesIndexes.generating) == 0;
+ },
+
+ awaitAllGenerationsToBeDone() {
+  return DVEW.UTIL.createPromiseCheck({
+   check: () => {
+    return QueuesManager.areAllGenerationsDone();
+   },
+   checkInterval: 1,
+  });
  },
 };

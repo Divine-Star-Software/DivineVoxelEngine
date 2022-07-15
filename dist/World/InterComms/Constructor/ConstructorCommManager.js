@@ -101,7 +101,7 @@ export const ConstructorCommManager = {
         comm.sendMessage(WorldToConstructorMessages.runSunLightUpdateMaxYFlood, [
             x,
             y,
-            maxY
+            maxY,
         ]);
         return thread;
     },
@@ -113,6 +113,11 @@ export const ConstructorCommManager = {
     runSunLightRemove(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
+        return this.__handleCount();
+    },
+    runGeneration(x, z, data) {
+        const comm = this.constructors[this.count];
+        comm.sendMessage(WorldToConstructorMessages.generate, [x, z, data]);
         return this.__handleCount();
     },
 };

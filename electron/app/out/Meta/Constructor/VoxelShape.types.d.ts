@@ -38,6 +38,7 @@ import type { Position3Matrix } from "Meta/Util.types";
 * @var position: Position3Matrix;
 */
 export declare type VoxelShapeAddData = {
+    LOD: number;
     positions: number[];
     normals: number[];
     indices: number[];

@@ -91,6 +91,10 @@ export declare const WorldMatrix: {
         };
         getChunkKey(chunkPOS: import("Meta/index").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
+        /**# Set Chunk
+         * ---
+         * To be only called by the Matrix Hub.
+         */
         getRegionKey(regionPOS: import("Meta/index").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
         getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index").Position3Matrix): {
@@ -158,6 +162,7 @@ export declare const WorldMatrix: {
     paletteMode: number;
     globalVoxelPalette: Record<number, string>;
     globalVoxelPaletteRecord: Record<string, string[]>;
+    globalVoxelPaletteMap: Record<string, number>;
     voxelManager: VoxelManagerInterface | null;
     lightValueFunctions: {
         r: (value: number) => number;
@@ -168,12 +173,13 @@ export declare const WorldMatrix: {
     threadName: string;
     setVoxelManager(voxelManager: VoxelManagerInterface): void;
     syncChunkBounds(): void;
+    getVoxelPalleteId(voxelId: string, voxelState: string): number;
     /**# Await Chunk Load
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
      */
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-    __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
+    __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
     getVoxel(x: number, y: number, z: number): false | string[];
     getVoxelShapeState(x: number, y: number, z: number): any;
     getVoxelData(x: number, y: number, z: number): VoxelData | false;

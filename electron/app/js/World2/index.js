@@ -12,6 +12,9 @@ await DVER.$INIT({
         enabled: true,
         autoSyncChunks: true,
     },
+    chunks: {
+        chunkYPow2: 4,
+    },
     lighting: {
         doAO: true,
         doRGBLight: false,
@@ -24,11 +27,25 @@ const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
-    const camera = SetUpDefaultCamera(scene, canvas, { x: 15, y: 36, z: 7 }, { x: 7, y: 30, z: 7 });
+    const camera = SetUpDefaultCamera(scene, canvas, { x: -45, y: 55, z: 7 }, { x: 7, y: 30, z: 7 });
     SetUpDefaultSkybox(scene);
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(1);
+    const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
+    const mat = new BABYLON.StandardMaterial("");
+    mat.diffuseColor = new BABYLON.Color3(1, 0, 1);
+    //mat.diffuseColor.b = 1;
+    const chunkMarker = BABYLON.MeshBuilder.CreateBox("", {
+        width: 16,
+        depth: 16,
+        height: 128,
+    });
+    chunkMarker.material = mat;
+    chunkMarker.visibility = 0.5;
+    chunkMarker.position.x = 8;
+    chunkMarker.position.z = 8;
+    chunkMarker.position.y = 128 / 2;
     //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };

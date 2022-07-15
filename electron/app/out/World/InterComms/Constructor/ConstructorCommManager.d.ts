@@ -25,4 +25,5 @@ export declare const ConstructorCommManager: {
     runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
     runSunLightUpdate(x: number, y: number, z: number): number;
     runSunLightRemove(x: number, y: number, z: number): number;
+    runGeneration(x: number, z: number, data: any): number;
 };

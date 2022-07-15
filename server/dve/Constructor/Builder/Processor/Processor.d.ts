@@ -10,6 +10,7 @@ import { Rotations } from "Meta/Constructor/Mesher.types.js";
  * to build chunk meshes.
  */
 export declare const Processor: {
+    LOD: number;
     heightByte: {
         heightMapArray: {
             bounds: {
@@ -311,6 +312,7 @@ export declare const Processor: {
         paletteMode: number;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
+        globalVoxelPaletteMap: Record<string, number>;
         voxelManager: import("../../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
         lightValueFunctions: {
             r: (value: number) => number;
@@ -321,8 +323,9 @@ export declare const Processor: {
         threadName: string;
         setVoxelManager(voxelManager: import("../../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
+        getVoxelPalleteId(voxelId: string, voxelState: string): number;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-        __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
+        __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
         getVoxel(x: number, y: number, z: number): false | string[];
         getVoxelShapeState(x: number, y: number, z: number): any;
         getVoxelData(x: number, y: number, z: number): false | VoxelData;
@@ -366,7 +369,7 @@ export declare const Processor: {
         doRGB: boolean;
     };
     getBaseTemplateNew(): FullChunkTemplate;
-    makeAllChunkTemplates(chunk: MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number): FullChunkTemplate;
+    makeAllChunkTemplates(chunk: MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;
 };

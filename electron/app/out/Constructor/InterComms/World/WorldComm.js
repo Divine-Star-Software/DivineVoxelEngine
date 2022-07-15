@@ -61,3 +61,9 @@ worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (data) =
     const z = data[3];
     DVEC.DVEP.runSunLightRemove(x, y, z);
 };
+worldComm.messageFunctions[WorldToConstructorMessages.generate] = async (data) => {
+    const x = data[1];
+    const z = data[2];
+    const genData = data[3];
+    await DVEC.DVEWG.generate(x, z, genData);
+};

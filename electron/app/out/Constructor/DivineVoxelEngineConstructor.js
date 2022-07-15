@@ -3,6 +3,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
 import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
+import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
 //inter comms
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
@@ -23,6 +24,7 @@ export const DVEC = {
     settings: EngineSettings,
     DVEB: DVEB,
     DVEP: DVEP,
+    DVEWG: DVEWG,
     queues: QueuesManager,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,

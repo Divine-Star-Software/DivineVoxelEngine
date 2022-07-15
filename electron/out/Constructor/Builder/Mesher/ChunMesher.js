@@ -15,7 +15,7 @@ export const ChunkMesher = {
         fluid: 2,
         magma: 3,
     },
-    buildChunkMesh(chunkX, chunkY, chunkZ, template) {
+    buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD = 1) {
         let i = this.voxelBuildOrder.length;
         while (i--) {
             const type = this.voxelBuildOrder[i];
@@ -48,6 +48,7 @@ export const ChunkMesher = {
                 const shapeId = baseTemplate.shapeTemplate[shapeIndex];
                 const shape = DVEB.shapeManager.getShape(shapeId);
                 const newIndexes = shape.addToChunkMesh({
+                    LOD: LOD,
                     //mesh data
                     positions: positions,
                     normals: normals,

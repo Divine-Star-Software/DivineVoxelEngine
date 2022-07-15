@@ -10,9 +10,6 @@ export const WorldGeneration = {
     voxelByte: Util.getVoxelByte(),
     heightByte: Util.getHeightByte(),
     voxelPalette: VoxelPaletteManager,
-    paintVoxel(voxelPalletId) {
-        return this.voxelByte.setId(voxelPalletId, 0);
-    },
     getBlankRegion() {
         return {
             chunks: {},

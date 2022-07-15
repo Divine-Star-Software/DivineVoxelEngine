@@ -1,27 +1,11 @@
 //types
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import type {
- VoxelData,
- VoxelSubstanceType,
- VoxelTemplateSubstanceType,
-} from "Meta/Voxels/Voxel.types.js";
+import type { VoxelData } from "Meta/Voxels/Voxel.types.js";
 import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
 //obejcts
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 import { Position3Matrix } from "Meta/Util.types.js";
-
-const getVoxelPallid = (voxelId: string, voxelStateId: string) => {
- const paletteId =
-  DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
-   voxelId,
-   voxelStateId
-  );
- if (paletteId) {
-  return DVEW.worldGeneration.paintVoxel(paletteId);
- }
- return -1;
-};
 
 /**# World Data
  * ---
@@ -169,7 +153,7 @@ export const WorldData = {
     voxelStateId
    );
   if (paletteId) {
-   return DVEW.worldGeneration.paintVoxel(paletteId);
+   return this.voxelByte.setId(paletteId, 0);
   }
   return -1;
  },

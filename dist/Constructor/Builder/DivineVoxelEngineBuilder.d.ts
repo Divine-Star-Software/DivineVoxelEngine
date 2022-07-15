@@ -147,9 +147,10 @@ export declare const DVEB: {
             fluid: number;
             magma: number;
         };
-        buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate): void;
+        buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
     };
     processor: {
+        LOD: number;
         heightByte: {
             heightMapArray: {
                 bounds: {
@@ -446,6 +447,7 @@ export declare const DVEB: {
             paletteMode: number;
             globalVoxelPalette: Record<number, string>;
             globalVoxelPaletteRecord: Record<string, string[]>;
+            globalVoxelPaletteMap: Record<string, number>;
             voxelManager: import("../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
             lightValueFunctions: {
                 r: (value: number) => number;
@@ -456,8 +458,9 @@ export declare const DVEB: {
             threadName: string;
             setVoxelManager(voxelManager: import("../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
             syncChunkBounds(): void;
+            getVoxelPalleteId(voxelId: string, voxelState: string): number;
             awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-            __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
+            __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
             getVoxel(x: number, y: number, z: number): false | string[];
             getVoxelShapeState(x: number, y: number, z: number): any;
             getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
@@ -501,7 +504,7 @@ export declare const DVEB: {
             doRGB: boolean;
         };
         getBaseTemplateNew(): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-        makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
     };
@@ -511,6 +514,6 @@ export declare const DVEB: {
     };
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;
-    buildChunk(chunkX: number, chunkY: number, chunkZ: number): Promise<true | undefined>;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
 };
 export declare type DivineVoxelEngineBuilder = typeof DVEB;

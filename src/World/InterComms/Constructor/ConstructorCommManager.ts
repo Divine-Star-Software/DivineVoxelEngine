@@ -133,12 +133,12 @@ export const ConstructorCommManager = {
   return this.__handleCount();
  },
  //Must send thread number returned from runSunFillAtMaxY
- runSunFillMaxYFlood(x: number, y: number, maxY: number, thread : number) {
+ runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number) {
   const comm = this.constructors[thread];
   comm.sendMessage(WorldToConstructorMessages.runSunLightUpdateMaxYFlood, [
    x,
    y,
-   maxY
+   maxY,
   ]);
   return thread;
  },
@@ -150,6 +150,12 @@ export const ConstructorCommManager = {
  runSunLightRemove(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
+  return this.__handleCount();
+ },
+
+ runGeneration(x: number, z: number, data: any) {
+  const comm = this.constructors[this.count];
+  comm.sendMessage(WorldToConstructorMessages.generate, [x, z, data]);
   return this.__handleCount();
  },
 };

@@ -40,17 +40,41 @@ export const MatrixHub = {
         }
         runAfter(event);
     },
-    async requestChunkSync(chunkX, chunkY, chunkZ) {
+    /**# Request Chunk Sync
+     *
+     * Will sync a chunk if it exists.
+     *
+     */
+    async requestChunkSync(x, y, z) {
         if (!this.worldPort)
             return;
+        const chunkPOS = WorldMatrix.worldBounds.getChunkPosition(x, y, z);
         this.worldPort.postMessage([
             "matrix-sync-chunk",
             this.threadName,
-            chunkX,
-            chunkY,
-            chunkZ,
+            chunkPOS.x,
+            chunkPOS.y,
+            chunkPOS.z,
         ]);
-        return await WorldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
+        return await WorldMatrix.awaitChunkLoad(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+    },
+    /**# Request Chunk Load
+     *
+     * Will sync a chunk if it exists.
+     *
+     */
+    async requestChunkLoad(x, y, z) {
+        if (!this.worldPort)
+            return;
+        const chunkPOS = WorldMatrix.worldBounds.getChunkPosition(x, y, z);
+        this.worldPort.postMessage([
+            "matrix-load-chunk",
+            this.threadName,
+            chunkPOS.x,
+            chunkPOS.y,
+            chunkPOS.z,
+        ]);
+        return await WorldMatrix.awaitChunkLoad(chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
     requestChunkRelease(chunkX, chunkY, chunkZ) {
         if (!this.worldPort)
@@ -87,7 +111,7 @@ export const MatrixHub = {
         WorldMatrix.__removeChunk(chunkX, chunkY, chunkZ);
     },
     _syncGlobalVoxelPalette(data) {
-        WorldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
+        WorldMatrix.__setGlobalVoxelPalette(data[1], data[2], data[3]);
     },
     _setThreadName(data) {
         this.threadName = data[1];

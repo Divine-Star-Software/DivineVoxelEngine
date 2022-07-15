@@ -654,10 +654,6 @@ export declare const DVEW: {
     matrixCentralHub: {
         threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
         _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
-        /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
         registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunk(x: number, y: number, z: number): false | undefined;
         syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
@@ -699,6 +695,7 @@ export declare const DVEW: {
         runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
         runSunLightUpdate(x: number, y: number, z: number): number;
         runSunLightRemove(x: number, y: number, z: number): number;
+        runGeneration(x: number, z: number, data: any): number;
     };
     worldGeneration: {
         worldBounds: {
@@ -859,13 +856,13 @@ export declare const DVEW: {
             globalVoxelPalette: Record<number, string>;
             globalVoxelPaletteMap: Record<string, number>;
             globalVoxelPaletteRecord: Record<string, string[]>;
-            getVoxelPaletteIdFromGlobalPalette(voxelTrueId: string, voxelStateId: string): number;
+            getVoxelPaletteIdFromGlobalPalette(voxelId: string, voxelState: string): number;
             getVoxelDataFromGlobalPalette(voxelId: number): string[];
             registerVoxelForGlobalPalette(voxel: import("../Meta/index.js").VoxelData): void;
             getGlobalVoxelPalette(): Record<number, string>;
+            getGlobalVoxelPaletteMap(): Record<string, number>;
             getGlobalVoxelPaletteRecord(): Record<string, string[]>;
         };
-        paintVoxel(voxelPalletId: number): number;
         getBlankRegion(): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         createChunkFromDataThread(data: any[]): import("../Meta/index.js").ChunkData;
         getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
@@ -1166,6 +1163,9 @@ export declare const DVEW: {
         addToRebuildQueTotal(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
         areAllChunksDoneBuilding(): boolean;
+        addToGenerationTotal(): void;
+        areAllGenerationsDone(): boolean;
+        awaitAllGenerationsToBeDone(): Promise<boolean>;
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;
@@ -1181,6 +1181,7 @@ export declare const DVEW: {
      */
     deleteChunk(chunkX: number, chunkY: number, chunkZ: number): void;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
+    generate(x: number, z: number, data?: any): void;
     buildWorldColumn(x: number, z: number): false | undefined;
     $INIT(data: DVEWInitData): Promise<void>;
 };

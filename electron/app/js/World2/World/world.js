@@ -9,7 +9,7 @@ const load = () => {
     let endZ = 16;
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.buildChunk(x, 0, z);
+            DVEW.buildWorldColumn(x, z);
         }
     }
 };
@@ -40,6 +40,5 @@ for (let y = 35; y < 50; y++) {
     DVEW.worldData.paintVoxel("dve:dreamvine", "default", 4, 3, y, 6);
     DVEW.worldData.paintVoxel("dve:dreamvine", "default", 5, 3, y, 8);
 }
-console.log(DVEW.worldData.getVoxel(-1, 49, 1));
 load();
 self.DVEW = DVEW;

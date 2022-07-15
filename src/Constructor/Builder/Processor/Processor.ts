@@ -21,6 +21,7 @@ import { Rotations } from "Meta/Constructor/Mesher.types.js";
  * to build chunk meshes.
  */
 export const Processor = {
+ LOD : 1,
  heightByte: Util.getHeightByte(),
  voxelByte: Util.getVoxelByte(),
  faceByte: Util.getFaceByte(),
@@ -102,20 +103,24 @@ export const Processor = {
   chunk: MatrixLoadedChunk,
   chunkX: number,
   chunkY: number,
-  chunkZ: number
+  chunkZ: number,
+  LOD = 1
  ): FullChunkTemplate {
+  this.LOD = LOD;
   const voxels = chunk.voxels;
-  const voxelStates = chunk.voxelStates;
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEC.worldBounds.chunkXSize;
   let maxZ = DVEC.worldBounds.chunkZSize;
 
-  for (let x = 0; x < maxX; x++) {
-   for (let z = 0; z < maxZ; z++) {
+  let LODx = (LOD / 2 ) >> 0;
+  let LODy = (LOD / 2 ) >> 0;
+  let LODz = (LOD / 2 ) >> 0;
+  for (let x = 0; x < maxX + LODx; x += LOD) {
+   for (let z = 0; z < maxZ + LODz; z += LOD) {
     let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
     let maxY =
      this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
-    for (let y = minY; y < maxY; y++) {
+    for (let y = minY; y < maxY + LODy; y += LOD) {
      const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
      if (this.voxelByte.getId(rawVoxelData) == 0) continue;
      const voxelCheck = DVEC.worldMatrix.getVoxel(
@@ -137,7 +142,7 @@ export const Processor = {
        "top",
        voxelObject,
        x + chunkX,
-       y + chunkY + 1,
+       y + chunkY + LOD,
        z + chunkZ
       )
      ) {
@@ -155,7 +160,7 @@ export const Processor = {
        "bottom",
        voxelObject,
        x + chunkX,
-       y + chunkY - 1,
+       y + chunkY - LOD,
        z + chunkZ
       )
      ) {
@@ -172,7 +177,7 @@ export const Processor = {
       DVEB.voxelHelper.voxelFaceCheck(
        "east",
        voxelObject,
-       x + chunkX + 1,
+       x + chunkX + LOD,
        y + chunkY,
        z + chunkZ
       )
@@ -190,7 +195,7 @@ export const Processor = {
       DVEB.voxelHelper.voxelFaceCheck(
        "west",
        voxelObject,
-       x + chunkX - 1,
+       x + chunkX - LOD,
        y + chunkY,
        z + chunkZ
       )
@@ -210,7 +215,7 @@ export const Processor = {
        voxelObject,
        x + chunkX,
        y + chunkY,
-       z + chunkZ - 1
+       z + chunkZ - LOD
       )
      ) {
       this.exposedFaces[4] = 1;
@@ -228,7 +233,7 @@ export const Processor = {
        voxelObject,
        x + chunkX,
        y + chunkY,
-       z + chunkZ + 1
+       z + chunkZ + LOD
       )
      ) {
       this.exposedFaces[5] = 1;
@@ -244,7 +249,7 @@ export const Processor = {
 
      let baseTemplate;
      if (voxelObject.data.substance == "transparent") {
-    baseTemplate = template["solid"];
+      baseTemplate = template["solid"];
      } else {
       baseTemplate = template[voxelObject.data.substance];
      }
@@ -264,7 +269,6 @@ export const Processor = {
        exposedFaces: this.exposedFaces,
        faceStates: this.faceStates,
        textureRotations: this.textureRotation,
-       shapeTemplate: baseTemplate.shapeTemplate,
        overlayUVTemplate: baseTemplate.overlayUVTemplate,
        uvTemplate: baseTemplate.uvTemplate,
        colorTemplate: baseTemplate.colorTemplate,
@@ -280,6 +284,7 @@ export const Processor = {
       DVEB as any
      );
 
+     baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
      baseTemplate.positionTemplate.push(x, y, z);
 
      if (this.exposedFaces[0]) {
@@ -368,7 +373,8 @@ export const Processor = {
    data.chunkX + data.x,
    data.chunkY + data.y,
    data.chunkZ + data.z,
-   ignoreAO
+   ignoreAO,
+   this.LOD
   );
  },
 

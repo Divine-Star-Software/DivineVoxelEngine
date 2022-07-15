@@ -30,7 +30,7 @@ export const DVEB = {
   this.processor.syncSettings(settings);
  },
 
- async buildChunk(chunkX: number, chunkY: number, chunkZ: number) {
+ async buildChunk(chunkX: number, chunkY: number, chunkZ: number,LOD = 1) {
   let chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) {
    await DVEC.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
@@ -44,9 +44,10 @@ export const DVEB = {
    chunk,
    chunkX,
    chunkY,
-   chunkZ
+   chunkZ,
+   LOD
   );
-  this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template);
+  this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template,LOD);
   return true;
  },
 };

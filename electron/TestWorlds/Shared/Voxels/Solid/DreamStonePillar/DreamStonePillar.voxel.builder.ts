@@ -64,7 +64,7 @@ export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
    data.overlayUVTemplate.push(0,0,0,0);
   }
 
-  data.shapeTemplate.push(this.trueShapeId);
+
   
   DVEB.processor.processVoxelLight(data);
  },

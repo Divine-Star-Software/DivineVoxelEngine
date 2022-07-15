@@ -12,8 +12,8 @@ export const VoxelPaletteManager = {
      * Gets the number id for use of actual world generation.
      * This is what is actually stored in the chunk voxels.
      */
-    getVoxelPaletteIdFromGlobalPalette(voxelTrueId, voxelStateId) {
-        return this.globalVoxelPaletteMap[`${voxelTrueId}:${voxelStateId}`];
+    getVoxelPaletteIdFromGlobalPalette(voxelId, voxelState) {
+        return this.globalVoxelPaletteMap[`${voxelId}:${voxelState}`];
     },
     /**# Get Voxel True Id From Global Palette
      * ---
@@ -43,6 +43,9 @@ export const VoxelPaletteManager = {
     },
     getGlobalVoxelPalette() {
         return this.globalVoxelPalette;
+    },
+    getGlobalVoxelPaletteMap() {
+        return this.globalVoxelPaletteMap;
     },
     /**# Get Global Voxel Palette Record
      * ---

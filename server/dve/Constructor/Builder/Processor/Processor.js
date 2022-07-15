@@ -11,6 +11,7 @@ import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVo
  * to build chunk meshes.
  */
 export const Processor = {
+    LOD: 1,
     heightByte: Util.getHeightByte(),
     voxelByte: Util.getVoxelByte(),
     faceByte: Util.getFaceByte(),
@@ -87,17 +88,20 @@ export const Processor = {
             },
         };
     },
-    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ) {
+    makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD = 1) {
+        this.LOD = LOD;
         const voxels = chunk.voxels;
-        const voxelStates = chunk.voxelStates;
         const template = this.getBaseTemplateNew();
         let maxX = DVEC.worldBounds.chunkXSize;
         let maxZ = DVEC.worldBounds.chunkZSize;
-        for (let x = 0; x < maxX; x++) {
-            for (let z = 0; z < maxZ; z++) {
+        let LODx = (LOD / 2) >> 0;
+        let LODy = (LOD / 2) >> 0;
+        let LODz = (LOD / 2) >> 0;
+        for (let x = 0; x < maxX + LODx; x += LOD) {
+            for (let z = 0; z < maxZ + LODz; z += LOD) {
                 let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
                 let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
-                for (let y = minY; y < maxY; y++) {
+                for (let y = minY; y < maxY + LODy; y += LOD) {
                     const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
                     if (this.voxelByte.getId(rawVoxelData) == 0)
                         continue;
@@ -109,7 +113,7 @@ export const Processor = {
                         continue;
                     const voxelState = voxelCheck[1];
                     let faceBit = 0;
-                    if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("top", voxelObject, x + chunkX, y + chunkY + LOD, z + chunkZ)) {
                         this.exposedFaces[0] = 1;
                         this.faceStates[0] = 0;
                         this.textureRotation[0] = 0;
@@ -119,7 +123,7 @@ export const Processor = {
                         this.exposedFaces[0] = 0;
                         this.faceStates[0] = -1;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - 1, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("bottom", voxelObject, x + chunkX, y + chunkY - LOD, z + chunkZ)) {
                         this.exposedFaces[1] = 1;
                         this.faceStates[1] = 0;
                         this.textureRotation[1] = 0;
@@ -129,7 +133,7 @@ export const Processor = {
                         this.exposedFaces[1] = 0;
                         this.faceStates[1] = -1;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("east", voxelObject, x + chunkX + LOD, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[2] = 1;
                         this.faceStates[2] = 0;
                         this.textureRotation[2] = 0;
@@ -139,7 +143,7 @@ export const Processor = {
                         this.exposedFaces[2] = 0;
                         this.faceStates[2] = -1;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - 1, y + chunkY, z + chunkZ)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("west", voxelObject, x + chunkX - LOD, y + chunkY, z + chunkZ)) {
                         this.exposedFaces[3] = 1;
                         this.faceStates[3] = 0;
                         this.textureRotation[3] = 0;
@@ -149,7 +153,7 @@ export const Processor = {
                         this.exposedFaces[3] = 0;
                         this.faceStates[3] = -1;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("south", voxelObject, x + chunkX, y + chunkY, z + chunkZ - LOD)) {
                         this.exposedFaces[4] = 1;
                         this.faceStates[4] = 0;
                         this.textureRotation[4] = 0;
@@ -159,7 +163,7 @@ export const Processor = {
                         this.exposedFaces[4] = 0;
                         this.faceStates[4] = -1;
                     }
-                    if (DVEB.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + 1)) {
+                    if (DVEB.voxelHelper.voxelFaceCheck("north", voxelObject, x + chunkX, y + chunkY, z + chunkZ + LOD)) {
                         this.exposedFaces[5] = 1;
                         this.faceStates[5] = 0;
                         this.textureRotation[5] = 0;
@@ -187,7 +191,6 @@ export const Processor = {
                         exposedFaces: this.exposedFaces,
                         faceStates: this.faceStates,
                         textureRotations: this.textureRotation,
-                        shapeTemplate: baseTemplate.shapeTemplate,
                         overlayUVTemplate: baseTemplate.overlayUVTemplate,
                         uvTemplate: baseTemplate.uvTemplate,
                         colorTemplate: baseTemplate.colorTemplate,
@@ -200,6 +203,7 @@ export const Processor = {
                         y: y,
                         z: z,
                     }, DVEB);
+                    baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
                     baseTemplate.positionTemplate.push(x, y, z);
                     if (this.exposedFaces[0]) {
                         faceBit = this.faceByte.setFaceRotateState("top", this.faceStates[0], faceBit);
@@ -232,7 +236,7 @@ export const Processor = {
         return template;
     },
     processVoxelLight(data, ignoreAO = false) {
-        this.doVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z, ignoreAO);
+        this.doVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z, ignoreAO, this.LOD);
     },
     syncSettings(settings) {
         const materials = settings.materials;

@@ -5,6 +5,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
 import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
+import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
 //inter comms
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
@@ -15,6 +16,7 @@ import { DVECInitData } from "Meta/Constructor/DVEC.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
+
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
@@ -28,6 +30,8 @@ export const DVEC = {
 
  DVEB: DVEB,
  DVEP: DVEP,
+ DVEWG : DVEWG,
+
 
  queues: QueuesManager,
 

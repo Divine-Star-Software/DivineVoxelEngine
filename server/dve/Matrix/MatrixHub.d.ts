@@ -10,7 +10,18 @@ export declare const MatrixHub: {
     threadName: string;
     setThreadName(threadName: string): void;
     onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void): void;
-    requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean | undefined>;
+    /**# Request Chunk Sync
+     *
+     * Will sync a chunk if it exists.
+     *
+     */
+    requestChunkSync(x: number, y: number, z: number): Promise<boolean | undefined>;
+    /**# Request Chunk Load
+     *
+     * Will sync a chunk if it exists.
+     *
+     */
+    requestChunkLoad(x: number, y: number, z: number): Promise<boolean | undefined>;
     requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
     _setWorldPort(port: MessagePort): void;
     _syncChunk(data: any[]): void;

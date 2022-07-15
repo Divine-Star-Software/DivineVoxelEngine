@@ -591,18 +591,22 @@ export declare const DVEN: {
         paletteMode: number;
         globalVoxelPalette: Record<number, string>;
         globalVoxelPaletteRecord: Record<string, string[]>;
+        globalVoxelPaletteMap: Record<string, number>;
         voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
         lightValueFunctions: {
             r: (value: number) => number;
-            g: (value: number) => number;
+            g: (value: number) => number; /**# Load chunk into Nexus
+             * Load a chunk into the shared nexus thread.
+             */
             b: (value: number) => number;
             s: (value: number) => number;
         };
         threadName: string;
         setVoxelManager(voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
+        getVoxelPalleteId(voxelId: string, voxelState: string): number;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-        __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>): void;
+        __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
         getVoxel(x: number, y: number, z: number): false | string[];
         getVoxelShapeState(x: number, y: number, z: number): any;
         getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
@@ -640,7 +644,8 @@ export declare const DVEN: {
         threadName: string;
         setThreadName(threadName: string): void;
         onMessage(event: MessageEvent<any>, runAfter: (event: MessageEvent<any>) => any): void;
-        requestChunkSync(chunkX: number, chunkY: number, chunkZ: number): Promise<boolean | undefined>;
+        requestChunkSync(x: number, y: number, z: number): Promise<boolean | undefined>;
+        requestChunkLoad(x: number, y: number, z: number): Promise<boolean | undefined>;
         requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
         _setWorldPort(port: MessagePort): void;
         _syncChunk(data: any[]): void;

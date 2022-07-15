@@ -100,6 +100,12 @@ export const DVEW = {
   this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
  },
 
+
+ generate(x : number, z : number,data : any = []) {
+    this.queues.addToGenerationTotal();
+    this.constructorCommManager.runGeneration(x,z,data);
+ },
+
  buildWorldColumn(x: number, z: number) {
   const worldColumn = this.worldData.getWorldColumn(x, z);
   if (!worldColumn) return false;

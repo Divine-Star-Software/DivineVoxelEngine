@@ -1,5 +1,5 @@
 import type { ChunkData } from "Meta/Chunks/Chunk.types";
-import type { VoxelData, VoxelTemplateSubstanceType } from "Meta/Voxels/Voxel.types.js";
+import type { VoxelData } from "Meta/Voxels/Voxel.types.js";
 import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
 import { Position3Matrix } from "Meta/Util.types.js";
 /**# World Data
@@ -53,26 +53,26 @@ export declare const WorldData: {
             setPosition(x: number, y: number, z: number): number;
             setPositionUseObj(positionObj: Position3Matrix): number;
         };
-        _getHeightMapData: Record<VoxelTemplateSubstanceType, (byteData: number) => number>;
-        _setHeightMapData: Record<VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
-        _markSubstanceAsNotExposed: Record<VoxelTemplateSubstanceType, (data: number) => number>;
-        _markSubstanceAsExposed: Record<VoxelTemplateSubstanceType, (data: number) => number>;
-        _isSubstanceExposed: Record<VoxelTemplateSubstanceType, (data: number) => boolean>;
+        _getHeightMapData: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
+        _setHeightMapData: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
+        _markSubstanceAsNotExposed: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (data: number) => number>;
+        _markSubstanceAsExposed: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (data: number) => number>;
+        _isSubstanceExposed: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
         updateChunkMinMax(voxelPOS: Position3Matrix, minMax: Uint32Array): void;
         getChunkMin(minMax: Uint32Array): number;
         getChunkMax(minMax: Uint32Array): number;
-        calculateHeightRemoveDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
-        calculateHeightAddDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
+        calculateHeightAddDataForSubstance(height: number, substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
         getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
         getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
-        isSubstanceExposed(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
-        markSubstanceAsExposed(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        markSubstanceAsNotExposed(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        setMinYForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        getMinYForSubstance(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
-        setMaxYForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        getMaxYForSubstance(substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+        isSubstanceExposed(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
+        markSubstanceAsExposed(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        markSubstanceAsNotExposed(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        setMinYForSubstance(height: number, substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        getMinYForSubstance(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+        setMaxYForSubstance(height: number, substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        getMaxYForSubstance(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
     };
     lightByte: {
         _lightValues: number[];

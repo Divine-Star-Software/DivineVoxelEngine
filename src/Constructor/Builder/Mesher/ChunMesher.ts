@@ -30,7 +30,8 @@ export const ChunkMesher = {
   chunkX: number,
   chunkY: number,
   chunkZ: number,
-  template: FullChunkTemplate
+  template: FullChunkTemplate,
+  LOD = 1
  ) {
   let i = this.voxelBuildOrder.length;
 
@@ -74,6 +75,7 @@ export const ChunkMesher = {
     const shapeId = baseTemplate.shapeTemplate[shapeIndex];
     const shape = DVEB.shapeManager.getShape(shapeId);
     const newIndexes = shape.addToChunkMesh({
+     LOD : LOD,
      //mesh data
      positions: positions,
      normals: normals,

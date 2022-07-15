@@ -18,6 +18,7 @@ export const WorldMatrix = {
     paletteMode: 0,
     globalVoxelPalette: {},
     globalVoxelPaletteRecord: {},
+    globalVoxelPaletteMap: {},
     voxelManager: null,
     lightValueFunctions: {
         r: (value) => {
@@ -40,6 +41,9 @@ export const WorldMatrix = {
     syncChunkBounds() {
         this.worldBounds.syncBoundsWithArrays();
     },
+    getVoxelPalleteId(voxelId, voxelState) {
+        return this.globalVoxelPaletteMap[`${voxelId}:${voxelState}`];
+    },
     /**# Await Chunk Load
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
@@ -57,9 +61,10 @@ export const WorldMatrix = {
             },
         });
     },
-    __setGlobalVoxelPalette(palette, record) {
+    __setGlobalVoxelPalette(palette, record, map) {
         this.globalVoxelPalette = palette;
         this.globalVoxelPaletteRecord = record;
+        this.globalVoxelPaletteMap = map;
     },
     getVoxel(x, y, z) {
         let palette = this.globalVoxelPalette;

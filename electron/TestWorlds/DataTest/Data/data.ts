@@ -1,4 +1,4 @@
-import { DVED } from "../../../out/Data/DivineStarVoxelEngineData.js";
+import { DVED } from "../../../out/Data/DivineVoxelEngineData.js";
 import { DataHanlder } from "./DataHandler.js";
 import { DataServer } from "./DataServer.js";
 await DVED.$INIT({});
