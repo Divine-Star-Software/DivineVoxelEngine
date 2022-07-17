@@ -6,6 +6,8 @@ export const QueuesIndexes = {
     sunLightMaxYFlood: 4,
     sunLightUpdate: 5,
     sunLightRemove: 6,
-    chunksBuilding: 7,
-    generating: 8,
+    flowsRunning: 7,
+    flowsRemoving: 8,
+    chunksBuilding: 9,
+    generating: 10,
 };

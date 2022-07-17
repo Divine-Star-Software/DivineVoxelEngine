@@ -30,6 +30,8 @@ ${uniformRegister}
 ${overlayUniformRegister}
 ${animationFunction}
 ${overlayAnimationFunction}
+${SharedVertexShader.getAnimationType}
+${SharedVertexShader.animationFunctions}
 ${CommonShader.getMainFunction(`
  ${floraShaders.setPosition}
  ${SharedFogFunctions.fogVertexMain}

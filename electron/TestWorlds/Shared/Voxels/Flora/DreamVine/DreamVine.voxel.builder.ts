@@ -6,7 +6,7 @@ export const DreamVineVoxelBuilderThread: VoxelConstructorObject = {
  trueShapeId: 1,
  hooks: {},
  process: function (data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV("flora", "dreamgrass");
+  const uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");
   
 
   data.uvTemplate.push(uv, uv);

@@ -403,6 +403,10 @@ export declare const DVER: {
         }) => Promise<boolean>;
         getWorkerPort: (environment: "node" | "browser") => Promise<any>;
         getEnviorment(): "node" | "browser";
+        getMeshFaceDataByte(): {
+            setAnimationType(animationType: number, rawData: number): number;
+            getAnimationType(rawData: number): number;
+        };
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -535,6 +539,10 @@ export declare const DVER: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };

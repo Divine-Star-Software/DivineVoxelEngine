@@ -1,5 +1,13 @@
 import { DivineVoxelEngineWorldGeneration } from "../../../../out/Constructor/WorldGeneration/DivineVoxelEngineWorldGeneration";
 
+import { PerlinNoise3d } from "../../../Shared/Noise/Perlin.js";
+const perlin = new PerlinNoise3d();
+const perlin2 = new PerlinNoise3d();
+perlin.noiseSeed(12341234);
+perlin2.noiseSeed(989989989);
+const waveLength = 50;
+const xOffSet = 1_000;
+const zOffSet = 1_000;
 export const WorldGen = {
  chunkDepth: 16,
  chunkWidth: 16,
@@ -11,107 +19,32 @@ export const WorldGen = {
   chunkZ: number,
   data: any
  ) {
-  let type = "default";
-
   let topY = 31;
   let groundY = 31;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
-     if (y < groundY) {
-      DVEWG.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
+     if (y == 0) {
+      await DVEWG.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
       continue;
      }
-     let flip = Math.random();
-     if (flip >= 0.1) {
-      continue;
-     }
-     if (flip <= 0.01) {
-      await DVEWG.paintVoxel("dve:dreamstoneslab", "default", 0, x, topY, z);
-      continue;
-     }
-     if (flip >= 0.01 && flip <= 0.02) {
-      await DVEWG.paintVoxel("dve:dreamstone", "default", 0, x, topY, z);
-      let flip2 = Math.random();
-      if (flip2 < 0.01) {
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 1,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 2,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 3,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 4,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 4,
-        z + 1
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 4,
-        z - 1
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x + 1,
-        topY + 4,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x - 1,
-        topY + 4,
-        z
-       );
-       await DVEWG.paintVoxel(
-        "dve:dreamgrassblock",
-        "default",
-        0,
-        x,
-        topY + 5,
-        z
-       );
+
+     const height =
+      (perlin.get(
+       (x + xOffSet) / waveLength,
+       y / waveLength,
+       (z + zOffSet) / waveLength
+      ) *
+       120) >>>
+      0;
+
+
+     if (y < height) {
+      await DVEWG.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
+      let flip = Math.random();
+      if (flip > 0.92) {
+       await DVEWG.paintVoxel("dve:dreamgrass", "default", 0, x, y + 1, z);
       }
-      continue;
-     }
-     if (flip >= 0.02 && flip <= 0.03) {
-      await DVEWG.paintVoxel("dve:dreamgrass", "default", 0, x, topY, z);
-      continue;
      }
     }
    }

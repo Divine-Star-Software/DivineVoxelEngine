@@ -4,8 +4,10 @@ import type { VoxelSubstanceType } from "Meta/index.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 import { ConstructorToWorldMessages } from "../../Constants/InterComms/ConstructorToWorld.js";
+import { FlowManager } from "./Flow/FlowManager.js";
 export const DVEP = {
  illumination: IlluminationManager,
+ flow: FlowManager,
  rebuildQueMap: <Record<string, boolean>>{},
 
  $INIT() {},
@@ -28,6 +30,11 @@ export const DVEP = {
     substance,
    ]);
   }
+ },
+
+ runRebuildQue() {
+  DVEC.worldComm.sendMessage(ConstructorToWorldMessages.runRebuildQue, []);
+  this.rebuildQueMap = {};
  },
 
  runRGBFloodFill(x: number, y: number, z: number) {
@@ -66,6 +73,19 @@ export const DVEP = {
   this.illumination.runSunLightRemoveAt(x, y, z);
   DVEC.queues.finishSunLightRemove();
   this.rebuildQueMap = {};
+ },
+
+ async runFlowAt(x: number, y: number, z: number) {
+ await this.flow.runFlow(x, y, z);
+  console.log("RUN FLOW", x, y, z);
+  DVEC.queues.finishFlowRun();
+  this.rebuildQueMap = {};
+ },
+
+ removeFlowAt(x: number, y: number, z: number) {
+  // this.flow.runFlow(x, y, z);
+  DVEC.queues.finishFlowRemove();
+  // this.rebuildQueMap = {};
  },
 };
 

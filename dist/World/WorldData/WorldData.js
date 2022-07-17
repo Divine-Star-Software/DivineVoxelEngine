@@ -99,6 +99,21 @@ export const WorldData = {
             return false;
         }
     },
+    getLevelState(x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        const state = this.voxelByte.decodeLevelStateFromVoxelData(data);
+        return state;
+    },
+    setLevelState(state, x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        data = this.voxelByte.encodeLevelStateIntoVoxelData(data, state);
+        console.log(data, state);
+        this.setData(x, y, z, data, true);
+    },
     getData(x, y, z, state = false) {
         const region = this.getRegion(x, y, z);
         if (!region) {
@@ -114,7 +129,7 @@ export const WorldData = {
         }
         return this._3dArray.getValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), array);
     },
-    setData(x, y, z, data) {
+    setData(x, y, z, data, state = false) {
         const region = this.getRegion(x, y, z);
         if (!region) {
             return -1;
@@ -123,7 +138,11 @@ export const WorldData = {
         if (!chunk || chunk.isEmpty) {
             return -1;
         }
-        return this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
+        let array = chunk.voxels;
+        if (state) {
+            array = chunk.voxelsStates;
+        }
+        return this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), array, data);
     },
     getVoxelPaletteId(voxelId, voxelStateId) {
         const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
@@ -203,6 +222,9 @@ export const WorldData = {
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
         let stateData = this.voxelByte.setShapeState(0, shapeState);
+        if (voxelData.substance == "fluid" || voxelData.substance == "magma") {
+            stateData = this.voxelByte.encodeLevelIntoVoxelData(stateData, 0b1111);
+        }
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
         if (DVEW.settings.doRGBPropagation()) {

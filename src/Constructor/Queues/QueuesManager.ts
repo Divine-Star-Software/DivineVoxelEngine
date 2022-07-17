@@ -29,6 +29,12 @@ export const QueuesManager = {
  finishBuildingChunk() {
   Atomics.sub(this.states, QueuesIndexes.chunksBuilding, 1);
  },
+ finishFlowRun() {
+  Atomics.sub(this.states, QueuesIndexes.flowsRunning, 1);
+ },
+ finishFlowRemove() {
+  Atomics.sub(this.states, QueuesIndexes.flowsRemoving, 1);
+ },
  finishGenerating() {
   Atomics.sub(this.states, QueuesIndexes.generating, 1);
  },

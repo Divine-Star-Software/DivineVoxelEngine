@@ -95,12 +95,18 @@ export const ConstructorCommManager = {
   return countReturn;
  },
 
- requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number) {
+ requestFullChunkBeBuilt(
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
+  LOD = 1
+ ) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.buildChunk, [
    chunkX,
    chunkY,
    chunkZ,
+   LOD,
   ]);
   return this.__handleCount();
  },
@@ -150,6 +156,18 @@ export const ConstructorCommManager = {
  runSunLightRemove(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
+  return this.__handleCount();
+ },
+
+ runFlow(x: number, y: number, z: number) {
+  const comm = this.constructors[this.count];
+  comm.sendMessage(WorldToConstructorMessages.runFlow, [x, y, z]);
+  return this.__handleCount();
+ },
+ 
+ removeFlow(x: number, y: number, z: number) {
+  const comm = this.constructors[this.count];
+  comm.sendMessage(WorldToConstructorMessages.removeFlow, [x, y, z]);
   return this.__handleCount();
  },
 

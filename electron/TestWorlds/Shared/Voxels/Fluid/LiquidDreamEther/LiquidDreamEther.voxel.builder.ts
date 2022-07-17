@@ -134,7 +134,12 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
   );
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
-   getFoamUV(DVEB, data);
+   if (data.level == 15) {
+    getFoamUV(DVEB, data);
+   } else {
+    data.overlayUVTemplate.push(0, 0, 0, 0);
+   }
+
    //data.overlayUVTemplate.push(foamUV,foamUV ,foamUV,foamUV);
   }
   if (data.exposedFaces[1]) {
@@ -157,8 +162,7 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
    data.uvTemplate.push(uv);
    data.overlayUVTemplate.push(0, 0, 0, 0);
   }
-  
- 
+
   DVEB.processor.processVoxelLight(data, true);
  },
 };

@@ -42,7 +42,7 @@ export const MeshManager = {
    positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
    normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
    indiciesArray: new Int32Array(data[SetChunkDataIndexes.indiciesArray]),
-   faceDataArray: new Int32Array(data[SetChunkDataIndexes.faceDataArray]),
+   faceDataArray: new Float32Array(data[SetChunkDataIndexes.faceDataArray]),
    AOColorsArray: new Float32Array(data[SetChunkDataIndexes.AOColorsArray]),
    RGBLightColorsArray: new Float32Array(
     data[SetChunkDataIndexes.RGBLightColorsArray]

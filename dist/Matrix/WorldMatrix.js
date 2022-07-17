@@ -9,6 +9,7 @@ export const WorldMatrix = {
     worldBounds: Util.getWorldBounds(),
     voxelByte: Util.getVoxelByte(),
     lightByte: Util.getLightByte(),
+    heightByte: Util.getHeightByte(),
     //two minutes
     updateDieTime: 120000,
     loadDieTime: 10000,
@@ -41,7 +42,7 @@ export const WorldMatrix = {
     syncChunkBounds() {
         this.worldBounds.syncBoundsWithArrays();
     },
-    getVoxelPalleteId(voxelId, voxelState) {
+    getVoxelPalette(voxelId, voxelState) {
         return this.globalVoxelPaletteMap[`${voxelId}:${voxelState}`];
     },
     /**# Await Chunk Load
@@ -83,8 +84,69 @@ export const WorldMatrix = {
         let data = this.getData(x, y, z, true);
         if (!data)
             data = 0;
-        data = this.voxelByte.getShapeState(data);
-        return data;
+        return this.voxelByte.getShapeState(data);
+    },
+    getLevel(x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        return this.voxelByte.decodeLevelFromVoxelData(data);
+    },
+    setLevel(level, x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        data = this.voxelByte.encodeLevelIntoVoxelData(data, level);
+        this.setData(x, y, z, data, true);
+    },
+    getLeveState(x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        const state = this.voxelByte.decodeLevelStateFromVoxelData(data);
+        return state;
+    },
+    setLevelState(state, x, y, z) {
+        let data = this.getData(x, y, z, true);
+        if (!data)
+            data = 0;
+        data = this.voxelByte.encodeLevelStateIntoVoxelData(data, state);
+        this.setData(x, y, z, data, true);
+    },
+    setVoxel(voxelId, voxelStateId, shapeState, x, y, z) {
+        const chunk = this.getChunk(x, y, z);
+        if (!this.voxelManager) {
+            throw new Error("Voxel Manager must be set.");
+        }
+        if (!chunk)
+            return false;
+        const voxelData = this.voxelManager.getVoxelData(voxelId);
+        if (!voxelData) {
+            throw Error(`Voxel data with ID ${voxelId} does not exists`);
+        }
+        const data = this.getVoxelPaletteNumberId(voxelId, voxelStateId);
+        if (data < 0)
+            return false;
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+        let stateData = this.voxelByte.setShapeState(0, shapeState);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxelStates, stateData);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+    },
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk) {
+        let substance = voxelData.substance;
+        if (substance == "transparent") {
+            substance = "solid";
+        }
+        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
+        this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+    },
+    getVoxelPaletteNumberId(voxelId, voxelStateId) {
+        const paletteId = WorldMatrix.getVoxelPalette(voxelId, voxelStateId);
+        if (paletteId) {
+            return this.voxelByte.setId(paletteId, 0);
+        }
+        return -1;
     },
     getVoxelData(x, y, z) {
         if (!this.voxelManager) {
@@ -213,11 +275,14 @@ export const WorldMatrix = {
             },
         });
     },
-    setData(x, y, z, data) {
+    setData(x, y, z, data, state = false) {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return false;
-        this._3dArray.setValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), chunk.voxels, data);
+        let array = chunk.voxels;
+        if (state)
+            array = chunk.voxelStates;
+        this._3dArray.setValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), array, data);
     },
     getData(x, y, z, state = false) {
         const chunk = this.getChunk(x, y, z);
@@ -237,7 +302,7 @@ export const WorldMatrix = {
     getLight(x, y, z) {
         const rawVoxelData = this.getData(x, y, z);
         if (rawVoxelData < 0)
-            return 0;
+            return -1;
         if (rawVoxelData >= 0) {
             const voxelId = this.voxelByte.getId(rawVoxelData);
             if (voxelId == 0) {

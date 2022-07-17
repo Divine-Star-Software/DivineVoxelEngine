@@ -1,5 +1,6 @@
 const voxelStateMasks = {
- level: 0b1111_11,
+ level: 0b00_1111,
+ levelState: 0b11_0000,
  shapeState: 0b1111_1111_11_00_0000,
  extraVoxelId: 0xffff,
 };
@@ -18,10 +19,24 @@ export const VoxelByte = {
  },
 
  decodeLightFromVoxelData(voxelData: number) {
-  return (voxelData & (0xffff << 0)) >> 0;
+  return voxelData & 0xffff;
  },
  encodeLightIntoVoxelData(voxelData: number, encodedLight: number) {
-  return (voxelData & ~(0xffff << 0)) | (encodedLight << 0);
+  return (voxelData & ~0xffff) | encodedLight;
+ },
+
+ decodeLevelFromVoxelData(stateData: number) {
+  return stateData & voxelStateMasks.level;
+ },
+ encodeLevelIntoVoxelData(stateData: number, level: number) {
+  return (stateData & ~voxelStateMasks.level) | level;
+ },
+
+ decodeLevelStateFromVoxelData(stateData: number) {
+  return (stateData & voxelStateMasks.levelState) >> 4;
+ },
+ encodeLevelStateIntoVoxelData(stateData: number, levelState: number) {
+  return (stateData & ~voxelStateMasks.levelState) | (levelState << 4);
  },
 
  getShapeState(voxelData: number) {

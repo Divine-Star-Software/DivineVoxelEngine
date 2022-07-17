@@ -16,7 +16,7 @@ export declare type MeshSetData = {
     positionArray: Float32Array;
     normalsArray: Float32Array;
     indiciesArray: Int32Array;
-    faceDataArray: Int32Array;
+    faceDataArray: Float32Array;
     AOColorsArray: Float32Array;
     RGBLightColorsArray: Float32Array;
     sunLightColorsArray: Float32Array;

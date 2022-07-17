@@ -162,6 +162,20 @@ const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
 
+const fallBackLight = (
+ processor: typeof Processor,
+ x: number,
+ y: number,
+ z: number
+) => {
+ const light = processor.worldMatrix.getLight(x, y, z);
+ if (light >= 0) {
+  currentVoxelData.light = light;
+ } else {
+  currentVoxelData.light = 0;
+ }
+};
+
 export function CalculateVoxelLight(
  this: typeof Processor,
  data: VoxelProcessData,
@@ -182,6 +196,9 @@ export function CalculateVoxelLight(
  //top
  if (data.exposedFaces[0]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx, ty + 1, tz);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.top[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.top[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.top[3], 3, LOD);
@@ -192,6 +209,9 @@ export function CalculateVoxelLight(
  //bottom
  if (data.exposedFaces[1]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx, ty - 1, tz);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[3], 3, LOD);
@@ -202,6 +222,9 @@ export function CalculateVoxelLight(
  //east
  if (data.exposedFaces[2]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx + 1, ty, tz);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.east[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.east[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.east[3], 3, LOD);
@@ -212,6 +235,9 @@ export function CalculateVoxelLight(
  //west
  if (data.exposedFaces[3]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx - 1, ty, tz);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.west[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.west[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.west[3], 3, LOD);
@@ -222,6 +248,9 @@ export function CalculateVoxelLight(
  //south
  if (data.exposedFaces[4]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz - 1);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.south[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.south[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.south[3], 3, LOD);
@@ -231,6 +260,9 @@ export function CalculateVoxelLight(
  //north
  if (data.exposedFaces[5]) {
   currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz + 1);
+  if (currentVoxelData.light < 0) {
+   fallBackLight(this, tx, ty, tz);
+  }
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[1], 1, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[2], 2, LOD);
   this.voxellightMixCalc(tx, ty, tz, checkSets.north[3], 3, LOD);

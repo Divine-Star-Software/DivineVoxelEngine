@@ -8,6 +8,8 @@ export declare const QueuesManager: {
     _RGBLightUpdateQue: number[][];
     _SunLightRemoveQue: number[][];
     _SunLightUpdateQue: number[][];
+    _runFlowQue: number[][];
+    _removeFlowQue: number[][];
     _worldColumnSunLightPropMap: Record<string, {
         max: number;
         thread: number;
@@ -48,6 +50,17 @@ export declare const QueuesManager: {
     awaitAllRGBLightRemove(): Promise<boolean>;
     areRGBLightUpdatesAllDone(): boolean;
     areRGBLightRemovesAllDone(): boolean;
+    /**
+     * Flow
+     */
+    addToFlowRunQue(x: number, y: number, z: number): void;
+    addToFlowRemoveQue(x: number, y: number, z: number): void;
+    runFlowRuneQue(filter?: QueueFilter | undefined): void;
+    runFlowRemoveQue(): void;
+    awaitAllFlowRuns(): Promise<boolean>;
+    awaitAllFlowRemoves(): Promise<boolean>;
+    areFlowRunsAllDone(): boolean;
+    areFlowRemovesAllDone(): boolean;
     /**
      * Chunks
      */

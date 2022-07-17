@@ -1,5 +1,5 @@
-import type { DirectionNames, VoxelConstructorObject } from "Meta/index";
+import type { VoxelData } from "Meta/index";
 export declare const VoxelHelper: {
     substanceRules: Record<string, boolean>;
-    voxelFaceCheck(face: DirectionNames, voxel: VoxelConstructorObject, x: number, y: number, z: number): boolean;
+    substanceRuleCheck(voxel: VoxelData, neightborVoxel: VoxelData): boolean;
 };

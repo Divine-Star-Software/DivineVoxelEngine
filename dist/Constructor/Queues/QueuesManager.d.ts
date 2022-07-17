@@ -9,5 +9,7 @@ export declare const QueuesManager: {
     finishSunLightUpdate(): void;
     finishSunLightRemove(): void;
     finishBuildingChunk(): void;
+    finishFlowRun(): void;
+    finishFlowRemove(): void;
     finishGenerating(): void;
 };

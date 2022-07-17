@@ -18,7 +18,7 @@ export const Worlds: WorldsData = [
    {
     title: "Simple",
     description: `A simple 9 chunk area with different voxel types.`,
-    world: "World2",
+    world: "Simple",
    },
    {
     title: "Noise World",
@@ -48,6 +48,11 @@ export const Worlds: WorldsData = [
     description: "Used to test Divine Voxel Engine Server.",
     world: "ServerTest",
     }, */
+   {
+    title: "Water/Magma Flow Test",
+    description: "Used to test water and magma flow.",
+    world: "WaterFlowTest",
+   },
    {
     title: "World Gen Test",
     description: "Used to test multi-threading world generating.",

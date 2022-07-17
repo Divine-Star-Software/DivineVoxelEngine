@@ -8,6 +8,7 @@ import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
 import { FaceByte } from "./Util/FaceByte.js";
 import { HeightByte } from "./Util/HeightByte.js";
 import { HeightMapArray } from "./Util/HeightMapArray.js";
+import { MeshFaceDataByte } from "./Util/MeshFaceDataBytes.js";
 export const Util = {
     createPromiseCheck: CreatePromiseCheck,
     getWorkerPort: GetWorkerPort,
@@ -18,6 +19,9 @@ export const Util = {
             environment = "node";
         }
         return environment;
+    },
+    getMeshFaceDataByte() {
+        return MeshFaceDataByte;
     },
     getFlat3DArray() {
         return Flat3DArray;

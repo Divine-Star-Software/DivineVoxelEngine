@@ -25,6 +25,9 @@ export const GetNewConstructorComm = (count, port) => {
         const substance = data[4];
         DVEW.queues.addToRebuildQue(x, y, z, substance);
     };
+    newComm.messageFunctions[ConstructorToWorldMessages.runRebuildQue] = (data) => {
+        DVEW.queues.runRebuildQue();
+    };
     newComm.messageFunctions[ConstructorToWorldMessages.addToRGBLightUpdateQue] = (data) => {
         const x = data[1];
         const y = data[2];

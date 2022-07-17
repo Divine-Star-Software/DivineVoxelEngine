@@ -1,5 +1,6 @@
-import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder"
+import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
+import { DirectionNames } from "Meta/Util.types";
 
 /**# Voxel Substance Type
  * ---
@@ -61,5 +62,20 @@ export type VoxelConstructorObject = {
   VoxelConstructorThreadHooks,
   (DVEB: DivineVoxelEngineBuilder) => any
  >;
+
+ cullFace?: {
+  (
+   face: DirectionNames,
+   substanceResult: boolean,
+   shapeResult: boolean,
+   neighborVoxel: VoxelData,
+   voxelState: string,
+   shapeState: number,
+   x: number,
+   y: number,
+   z: number
+  ): boolean;
+ };
+
  process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };

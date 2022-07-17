@@ -1,6 +1,11 @@
 //types
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
-import type { EngineSettingsData, VoxelData } from "Meta/index.js";
+import type {
+ DirectionNames,
+ EngineSettingsData,
+ VoxelConstructorObject,
+ VoxelData,
+} from "Meta/index.js";
 //objects
 import { Util } from "../../../Global/Util.helper.js";
 import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
@@ -14,6 +19,7 @@ import {
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
+import { CalculateFlow } from "./Functions/CalculateFlow.js";
 
 /**# Chunk Processor
  * ---
@@ -21,13 +27,14 @@ import { Rotations } from "Meta/Constructor/Mesher.types.js";
  * to build chunk meshes.
  */
 export const Processor = {
- LOD : 1,
+ LOD: 1,
  heightByte: Util.getHeightByte(),
  voxelByte: Util.getVoxelByte(),
  faceByte: Util.getFaceByte(),
  _3dArray: Util.getFlat3DArray(),
  lightByte: Util.getLightByte(),
  worldMatrix: WorldMatrix,
+ calculatFlow: CalculateFlow,
  voxellightMixCalc: VoxelLightMixCalc,
  doVoxelLight: CalculateVoxelLight,
  chunkTemplates: <Record<number, Record<number, number[][]>>>{},
@@ -84,6 +91,7 @@ export const Processor = {
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
+    flowTemplate: [],
    },
    magma: {
     positionTemplate: [],
@@ -95,8 +103,99 @@ export const Processor = {
     colorTemplate: [],
     lightTemplate: [],
     aoTemplate: [],
+    flowTemplate: [],
    },
   };
+ },
+
+ faceIndexMap: <Record<DirectionNames, number>>{
+  top: 0,
+  bottom: 1,
+  east: 2,
+  west: 3,
+  south: 4,
+  north: 5,
+ },
+
+ cullCheck(
+  face: DirectionNames,
+  voxel: VoxelConstructorObject,
+  voxelState: string,
+  shapeState: number,
+  x: number,
+  y: number,
+  z: number,
+  faceBit: number
+ ) {
+  const neightborVoxel = this.worldMatrix.getVoxelData(x, y, z);
+  let finalResult = false;
+  if (neightborVoxel) {
+   const nv = DVEC.voxelManager.getVoxel(neightborVoxel.id);
+   let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(
+    voxel.data,
+    neightborVoxel
+   );
+
+   const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
+   const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
+   const neighborVoxelShapState = this.worldMatrix.getVoxelShapeState(x, y, z);
+   let shapeResult = shape.cullFace(
+    face,
+    substanceRuleResult,
+    shapeState,
+    voxel.data,
+    neightborVoxel,
+    neighborVoxelShape,
+    neighborVoxelShapState
+   );
+   if (!voxel.cullFace) {
+    finalResult = shapeResult;
+   } else {
+    finalResult = voxel.cullFace(
+     face,
+     substanceRuleResult,
+     shapeResult,
+     neightborVoxel,
+     voxelState,
+     shapeState,
+     x,
+     y,
+     z
+    );
+   }
+  } else {
+   finalResult = true;
+  }
+
+  const faceIndex = this.faceIndexMap[face];
+  if (finalResult) {
+   this.exposedFaces[faceIndex] = 1;
+   this.faceStates[faceIndex] = 0;
+   this.textureRotation[faceIndex] = 0;
+   faceBit = this.faceByte.markFaceAsExposed(face, faceBit);
+  } else {
+   this.exposedFaces[faceIndex] = 0;
+   this.faceStates[faceIndex] = -1;
+   this.textureRotation[faceIndex] = 0;
+  }
+  return faceBit;
+ },
+
+ faceStateCheck(face: DirectionNames, faceBit: number) {
+  const faceIndex = this.faceIndexMap[face];
+  if (this.exposedFaces[faceIndex]) {
+   faceBit = this.faceByte.setFaceRotateState(
+    face,
+    this.faceStates[faceIndex],
+    faceBit
+   );
+   faceBit = this.faceByte.setFaceTextureState(
+    face,
+    this.textureRotation[faceIndex],
+    faceBit
+   );
+  }
+  return faceBit;
  },
 
  makeAllChunkTemplates(
@@ -112,138 +211,101 @@ export const Processor = {
   let maxX = DVEC.worldBounds.chunkXSize;
   let maxZ = DVEC.worldBounds.chunkZSize;
 
-  let LODx = (LOD / 2 ) >> 0;
-  let LODy = (LOD / 2 ) >> 0;
-  let LODz = (LOD / 2 ) >> 0;
-  for (let x = 0; x < maxX + LODx; x += LOD) {
-   for (let z = 0; z < maxZ + LODz; z += LOD) {
+  for (let x = 0; x < maxX; x += LOD) {
+   for (let z = 0; z < maxZ; z += LOD) {
     let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
     let maxY =
      this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
-    for (let y = minY; y < maxY + LODy; y += LOD) {
-     const rawVoxelData = this._3dArray.getValue(x, y, z, voxels);
-     if (this.voxelByte.getId(rawVoxelData) == 0) continue;
+    for (let y = minY; y < maxY; y += LOD) {
      const voxelCheck = DVEC.worldMatrix.getVoxel(
       chunkX + x,
       chunkY + y,
       chunkZ + z
      );
 
-     if (!voxelCheck) continue;
+     if (
+      !voxelCheck ||
+      voxelCheck[0] == "dve:air" ||
+      voxelCheck[0] == "dve:barrier"
+     )
+      continue;
 
      const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
      if (!voxelObject) continue;
      const voxelState = voxelCheck[1];
 
+     const voxelShapeState = this.worldMatrix.getVoxelShapeState(
+      chunkX + x,
+      chunkY + y,
+      chunkZ + z
+     );
+
      let faceBit = 0;
 
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "top",
-       voxelObject,
-       x + chunkX,
-       y + chunkY + LOD,
-       z + chunkZ
-      )
-     ) {
-      this.exposedFaces[0] = 1;
-      this.faceStates[0] = 0;
-      this.textureRotation[0] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("top", faceBit);
-     } else {
-      this.exposedFaces[0] = 0;
-      this.faceStates[0] = -1;
-     }
+     let tx = x + chunkX;
+     let ty = y + chunkY;
+     let tz = z + chunkZ;
 
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "bottom",
-       voxelObject,
-       x + chunkX,
-       y + chunkY - LOD,
-       z + chunkZ
-      )
-     ) {
-      this.exposedFaces[1] = 1;
-      this.faceStates[1] = 0;
-      this.textureRotation[1] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("bottom", faceBit);
-     } else {
-      this.exposedFaces[1] = 0;
-      this.faceStates[1] = -1;
-     }
-
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "east",
-       voxelObject,
-       x + chunkX + LOD,
-       y + chunkY,
-       z + chunkZ
-      )
-     ) {
-      this.exposedFaces[2] = 1;
-      this.faceStates[2] = 0;
-      this.textureRotation[2] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("east", faceBit);
-     } else {
-      this.exposedFaces[2] = 0;
-      this.faceStates[2] = -1;
-     }
-
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "west",
-       voxelObject,
-       x + chunkX - LOD,
-       y + chunkY,
-       z + chunkZ
-      )
-     ) {
-      this.exposedFaces[3] = 1;
-      this.faceStates[3] = 0;
-      this.textureRotation[3] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("west", faceBit);
-     } else {
-      this.exposedFaces[3] = 0;
-      this.faceStates[3] = -1;
-     }
-
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "south",
-       voxelObject,
-       x + chunkX,
-       y + chunkY,
-       z + chunkZ - LOD
-      )
-     ) {
-      this.exposedFaces[4] = 1;
-      this.faceStates[4] = 0;
-      this.textureRotation[4] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("south", faceBit);
-     } else {
-      this.exposedFaces[4] = 0;
-      this.faceStates[4] = -1;
-     }
-
-     if (
-      DVEB.voxelHelper.voxelFaceCheck(
-       "north",
-       voxelObject,
-       x + chunkX,
-       y + chunkY,
-       z + chunkZ + LOD
-      )
-     ) {
-      this.exposedFaces[5] = 1;
-      this.faceStates[5] = 0;
-      this.textureRotation[5] = 0;
-      faceBit = this.faceByte.markFaceAsExposed("north", faceBit);
-     } else {
-      this.exposedFaces[5] = 0;
-      this.faceStates[5] = -1;
-     }
+     faceBit = this.cullCheck(
+      "top",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx,
+      ty + LOD,
+      tz,
+      faceBit
+     );
+     faceBit = this.cullCheck(
+      "bottom",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx,
+      ty - LOD,
+      tz,
+      faceBit
+     );
+     faceBit = this.cullCheck(
+      "east",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx + LOD,
+      ty,
+      tz,
+      faceBit
+     );
+     faceBit = this.cullCheck(
+      "west",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx - LOD,
+      ty,
+      tz,
+      faceBit
+     );
+     faceBit = this.cullCheck(
+      "south",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx,
+      ty,
+      tz - LOD,
+      faceBit
+     );
+     faceBit = this.cullCheck(
+      "north",
+      voxelObject,
+      voxelState,
+      voxelShapeState,
+      tx,
+      ty,
+      tz + LOD,
+      faceBit
+     );
 
      if (faceBit == 0) continue;
 
@@ -254,18 +316,21 @@ export const Processor = {
       baseTemplate = template[voxelObject.data.substance];
      }
 
-     const voxelShapeState = this.worldMatrix.getVoxelShapeState(
-      chunkX + x,
-      chunkY + y,
-      chunkZ + z
-     );
      baseTemplate.shapeStateTemplate.push(voxelShapeState);
+
+     let level = 0;
+     if (
+      voxelObject.data.substance == "fluid" ||
+      voxelObject.data.substance == "magma"
+     ) {
+      level = this.worldMatrix.getLevel(tx, ty, tz);
+     }
 
      voxelObject.process(
       {
        voxelState: voxelState,
-       voxelData: rawVoxelData,
        voxelShapeState: voxelShapeState,
+       level: level,
        exposedFaces: this.exposedFaces,
        faceStates: this.faceStates,
        textureRotations: this.textureRotation,
@@ -287,80 +352,28 @@ export const Processor = {
      baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
      baseTemplate.positionTemplate.push(x, y, z);
 
-     if (this.exposedFaces[0]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "top",
-       this.faceStates[0],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "top",
-       this.textureRotation[0],
-       faceBit
-      );
-     }
-     if (this.exposedFaces[1]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "bottom",
-       this.faceStates[1],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "bottom",
-       this.textureRotation[1],
-       faceBit
-      );
-     }
-     if (this.exposedFaces[2]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "east",
-       this.faceStates[2],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "east",
-       this.textureRotation[2],
-       faceBit
-      );
-     }
-     if (this.exposedFaces[3]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "west",
-       this.faceStates[3],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "west",
-       this.textureRotation[3],
-       faceBit
-      );
-     }
-     if (this.exposedFaces[4]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "south",
-       this.faceStates[4],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "south",
-       this.textureRotation[4],
-       faceBit
-      );
-     }
-     if (this.exposedFaces[5]) {
-      faceBit = this.faceByte.setFaceRotateState(
-       "north",
-       this.faceStates[5],
-       faceBit
-      );
-      faceBit = this.faceByte.setFaceTextureState(
-       "north",
-       this.textureRotation[5],
-       faceBit
-      );
-     }
+     faceBit = this.faceStateCheck("top", faceBit);
+     faceBit = this.faceStateCheck("bottom", faceBit);
+     faceBit = this.faceStateCheck("east", faceBit);
+     faceBit = this.faceStateCheck("west", faceBit);
+     faceBit = this.faceStateCheck("south", faceBit);
+     faceBit = this.faceStateCheck("north", faceBit);
 
      baseTemplate.faceTemplate.push(faceBit);
+
+     if (
+      this.exposedFaces[0] &&
+      (voxelObject.data.substance == "fluid" ||
+       voxelObject.data.substance == "magma")
+     ) {
+      this.calculatFlow(
+       voxelObject.data,
+       tx,
+       ty,
+       tz,
+       (baseTemplate as any).flowTemplate
+      );
+     }
     }
    }
   }

@@ -3,6 +3,17 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT({});
+const fillWithChunks = () => {
+    let startX = -64;
+    let startZ = -64;
+    let endX = 64;
+    let endZ = 64;
+    for (let x = startX; x < endX; x += 16) {
+        for (let z = startZ; z < endZ; z += 16) {
+            DVEW.worldData.fillWorldCollumnWithChunks(x, z);
+        }
+    }
+};
 const topBottomTest = async () => {
     let startX = -16;
     let startZ = -16;
@@ -39,7 +50,10 @@ const eastWestTest = async () => {
     }
     await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, startX + 14, 16, 0);
 };
+fillWithChunks();
 topBottomTest();
 northSouthTest();
 eastWestTest();
+await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, -15, 17, 15);
+await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, -15, 17, 14);
 self.DVEW = DVEW;

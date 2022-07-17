@@ -1,7 +1,7 @@
 import type { MatrixLoadedChunk, MatrixLoadedRegion } from "../Meta/Matrix/Matrix.types";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
-import { VoxelData } from "Meta/index";
+import { Position3Matrix, VoxelData } from "Meta/index";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
@@ -20,15 +20,15 @@ export declare const WorldMatrix: {
         };
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
-        getValueUseObj(position: import("Meta/index").Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: import("Meta/index").Position3Matrix, array: Uint32Array): any;
+        getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
+        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
-        setValueUseObj(position: import("Meta/index").Position3Matrix, array: Uint32Array, value: number): void;
-        setValueUseObjSafe(position: import("Meta/index").Position3Matrix, array: Uint32Array, value: number): void;
+        setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
+        setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
         deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
-        deleteUseObj(position: import("Meta/index").Position3Matrix, array: Uint32Array): void;
+        deleteUseObj(position: Position3Matrix, array: Uint32Array): void;
         getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): import("Meta/index").Position3Matrix;
+        getXYZ(index: number): Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
@@ -89,15 +89,11 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("Meta/index").Position3Matrix): string;
+        getChunkKey(chunkPOS: Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        /**# Set Chunk
-         * ---
-         * To be only called by the Matrix Hub.
-         */
-        getRegionKey(regionPOS: import("Meta/index").Position3Matrix): string;
+        getRegionKey(regionPOS: Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index").Position3Matrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -107,7 +103,7 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("Meta/index").Position3Matrix): string;
+        getWorldColumnKeyFromObj(position: Position3Matrix): string;
         getWorldColumnKey(x: number, z: number): string;
         getWorldColumnPosition(x: number, z: number): {
             x: number;
@@ -119,6 +115,10 @@ export declare const WorldMatrix: {
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        decodeLevelFromVoxelData(stateData: number): number;
+        encodeLevelIntoVoxelData(stateData: number, level: number): number;
+        decodeLevelStateFromVoxelData(stateData: number): number;
+        encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
         getShapeState(voxelData: number): number;
         setShapeState(voxelData: number, shapeState: number): number;
     };
@@ -154,6 +154,71 @@ export declare const WorldMatrix: {
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
     };
+    heightByte: {
+        heightMapArray: {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array): number;
+            getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
+            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
+            setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
+            setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
+            setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
+            deleteUseObj(position: Position3Matrix, array: Uint32Array): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): Position3Matrix;
+        };
+        positionByte: {
+            _poisiton: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _positionMasks: {
+                x: number;
+                z: number;
+                y: number;
+            };
+            getY(byteData: number): number;
+            getPosition(byteData: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setPosition(x: number, y: number, z: number): number;
+            setPositionUseObj(positionObj: Position3Matrix): number;
+        };
+        _getHeightMapData: Record<import("Meta/index").VoxelTemplateSubstanceType, (byteData: number) => number>;
+        _setHeightMapData: Record<import("Meta/index").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
+        _markSubstanceAsNotExposed: Record<import("Meta/index").VoxelTemplateSubstanceType, (data: number) => number>;
+        _markSubstanceAsExposed: Record<import("Meta/index").VoxelTemplateSubstanceType, (data: number) => number>;
+        _isSubstanceExposed: Record<import("Meta/index").VoxelTemplateSubstanceType, (data: number) => boolean>;
+        getStartingHeightMapValue(): number;
+        updateChunkMinMax(voxelPOS: Position3Matrix, minMax: Uint32Array): void;
+        getChunkMin(minMax: Uint32Array): number;
+        getChunkMax(minMax: Uint32Array): number;
+        calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
+        calculateHeightAddDataForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+        getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+        isSubstanceExposed(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
+        markSubstanceAsExposed(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        markSubstanceAsNotExposed(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        setMinYForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        getMinYForSubstance(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+        setMaxYForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+        getMaxYForSubstance(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+    };
     updateDieTime: number;
     loadDieTime: number;
     regions: MatrixLoadedRegion;
@@ -173,7 +238,7 @@ export declare const WorldMatrix: {
     threadName: string;
     setVoxelManager(voxelManager: VoxelManagerInterface): void;
     syncChunkBounds(): void;
-    getVoxelPalleteId(voxelId: string, voxelState: string): number;
+    getVoxelPalette(voxelId: string, voxelState: string): number;
     /**# Await Chunk Load
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
@@ -181,7 +246,14 @@ export declare const WorldMatrix: {
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
     getVoxel(x: number, y: number, z: number): false | string[];
-    getVoxelShapeState(x: number, y: number, z: number): any;
+    getVoxelShapeState(x: number, y: number, z: number): number;
+    getLevel(x: number, y: number, z: number): number;
+    setLevel(level: number, x: number, y: number, z: number): void;
+    getLeveState(x: number, y: number, z: number): number;
+    setLevelState(state: number, x: number, y: number, z: number): void;
+    setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
+    getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
     getVoxelData(x: number, y: number, z: number): VoxelData | false;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
@@ -209,7 +281,7 @@ export declare const WorldMatrix: {
         voxels: Uint32Array;
         chunkStates: Uint8Array;
     }) => {}): false | Promise<boolean>;
-    setData(x: number, y: number, z: number, data: number): false | undefined;
+    setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
     getData(x: number, y: number, z: number, state?: boolean): any;
     getVoxelNumberID(x: number, y: number, z: number): number | false;
     getLight(x: number, y: number, z: number): number;

@@ -13,4 +13,6 @@ export declare const SharedVertexShader: {
     doSun: string;
     doColors: string;
     doNormals: string;
+    getAnimationType: string;
+    animationFunctions: string;
 };

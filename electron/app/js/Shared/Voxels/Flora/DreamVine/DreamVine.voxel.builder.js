@@ -4,7 +4,7 @@ export const DreamVineVoxelBuilderThread = {
     trueShapeId: 1,
     hooks: {},
     process: function (data, DVEB) {
-        const uv = DVEB.textureManager.getTextureUV("flora", "dreamgrass");
+        const uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");
         data.uvTemplate.push(uv, uv);
         data.overlayUVTemplate.push(0, 0, 0, 0);
         const lightValue = DVEB.processor.worldMatrix.getLight(data.x + data.chunkX, data.y + data.chunkY, data.z + data.chunkZ);

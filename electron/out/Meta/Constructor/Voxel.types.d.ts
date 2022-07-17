@@ -3,7 +3,7 @@ export declare type VoxelProcessData = {
     exposedFaces: number[];
     faceStates: number[];
     textureRotations: Rotations[];
-    voxelData: number;
+    level: number;
     voxelState: string;
     voxelShapeState: number;
     uvTemplate: number[];

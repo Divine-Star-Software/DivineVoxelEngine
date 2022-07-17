@@ -25,6 +25,13 @@ const processDefaultFaceData = (face, data) => {
     DVEB.uvHelper.processOverlayUVs(data);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
+    if (data.substance == "flora") {
+        let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(3, 0);
+        DVEB.shapeHelper.addFaceData(animData, data.faceData);
+    }
+    else {
+        DVEB.shapeHelper.addFaceData(0, data.faceData);
+    }
     data.uvTemplateIndex += 1;
     data.overylayUVTemplateIndex += 4;
     data.lightIndex += 4;
@@ -33,6 +40,9 @@ const processDefaultFaceData = (face, data) => {
 };
 export const BoxVoxelShape = {
     id: "Box",
+    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
+        return substanceResult;
+    },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width * data.LOD;
         data.position.z += shapeDimensions.depth * data.LOD;

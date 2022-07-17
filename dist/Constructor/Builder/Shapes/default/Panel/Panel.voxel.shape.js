@@ -20,6 +20,15 @@ const processDefaultFaceData = (face, data, flip) => {
         DVEB.shapeHelper.calculateAOColorFromValue(data.AOColors, data.aoTemplate[data.aoIndex]);
         DVEB.shapeHelper.calculateLightColorFromValue(data.RGBLightColors, data.sunLightColors, data.lightTemplate[data.lightIndex]);
     }
+    if (data.substance == "flora") {
+        let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(2, 0);
+        DVEB.shapeHelper.addFaceData(animData, data.faceData);
+        DVEB.shapeHelper.addFaceData(animData, data.faceData);
+    }
+    else {
+        DVEB.shapeHelper.addFaceData(0, data.faceData);
+        DVEB.shapeHelper.addFaceData(0, data.faceData);
+    }
     data.uvTemplateIndex += 2;
     data.overylayUVTemplateIndex += 4;
     data.lightIndex += 2;
@@ -78,6 +87,9 @@ const shapeStates = {
 };
 export const PanelVoxelShape = {
     id: "Panel",
+    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
+        return substanceResult;
+    },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width;
         data.position.z += shapeDimensions.depth;

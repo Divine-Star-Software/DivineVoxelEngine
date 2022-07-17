@@ -4,24 +4,20 @@ export const floraShaders = {
  setPosition: `
  vec4 posWorld = world * vec4(position, 1.0);
  vec3 p = position;
- vec3 nP = normalize(position);
 
- if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
- float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
- p.xz += heightX * 0.05;
- }
-if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
-    float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
-    p.xz -= heightX * 0.06;
-}
+ int animationType = getAnimationType();
 
-if(normal.y == 1. ) {
-    float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
-    p.xz += heightX * 0.05;
-}
-    
+ 
+    if(animationType == 1) {
+        p.xz = animType1(posWorld, p).xz;
+    }
+    if(animationType == 2) {
+        p.xz = animType2(posWorld, p).xz;
+    }
+    if(animationType == 3) {
+        p.xz = animType3(posWorld, p).xz;
+    }
 
- //p.z += cos(float(gl_VertexID) + time) * 0.05;
 
  vec4 worldPosition = world * vec4(p, 1.0);
  gl_Position = viewProjection * worldPosition; 

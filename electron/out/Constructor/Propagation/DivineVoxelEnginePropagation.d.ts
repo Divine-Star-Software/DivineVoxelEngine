@@ -55,9 +55,15 @@ export declare const DVEP: {
         _RGBlightRemovalQue: number[][];
         _visitMap: Record<string, boolean>;
     };
+    flow: {
+        _visitedMap: Record<string, boolean>;
+        _flowQue: number[][];
+        runFlow: typeof import("./Flow/Functions/RunFlow.js").RunFlow;
+    };
     rebuildQueMap: Record<string, boolean>;
     $INIT(): void;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
+    runRebuildQue(): void;
     runRGBFloodFill(x: number, y: number, z: number): void;
     runRGBFloodRemove(x: number, y: number, z: number): void;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
@@ -65,5 +71,7 @@ export declare const DVEP: {
     runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
     runSunLightUpdate(x: number, y: number, z: number): void;
     runSunLightRemove(x: number, y: number, z: number): void;
+    runFlowAt(x: number, y: number, z: number): Promise<void>;
+    removeFlowAt(x: number, y: number, z: number): void;
 };
 export declare type DivineVoxelEnginePropagation = typeof DVEP;

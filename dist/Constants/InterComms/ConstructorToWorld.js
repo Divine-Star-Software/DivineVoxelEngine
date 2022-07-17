@@ -1,4 +1,5 @@
 export const ConstructorToWorldMessages = {
     addToRebuildQue: 0,
-    addToRGBLightUpdateQue: 1,
+    runRebuildQue: 1,
+    addToRGBLightUpdateQue: 2,
 };

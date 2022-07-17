@@ -67,12 +67,17 @@ export declare const DVEB: {
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
         };
+        meshFaceData: {
+            setAnimationType(animationType: number, rawData: number): number;
+            getAnimationType(rawData: number): number;
+        };
         lightMap: number[];
         shouldFaceFlip(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
         getTextureRotation(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): import("../../Meta/Constructor/Mesher.types.js").Rotations;
         isFaceExposexd(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
         produceShapeReturnData(shapeData: import("Meta/index.js").VoxelShapeAddData): import("Meta/index.js").VoxelShapeAddReturnData;
         toLinearSpace(r: number, g: number, b: number, a: number): number[];
+        addFaceData(faceData: number, faceDataArray: number[]): void;
         calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
         calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
         calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
@@ -221,6 +226,10 @@ export declare const DVEB: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };
@@ -404,6 +413,10 @@ export declare const DVEB: {
                 getId(value: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+                decodeLevelFromVoxelData(stateData: number): number;
+                encodeLevelIntoVoxelData(stateData: number, level: number): number;
+                decodeLevelStateFromVoxelData(stateData: number): number;
+                encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
                 getShapeState(voxelData: number): number;
                 setShapeState(voxelData: number, shapeState: number): number;
             };
@@ -439,6 +452,71 @@ export declare const DVEB: {
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
             };
+            heightByte: {
+                heightMapArray: {
+                    bounds: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    };
+                    _position: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    };
+                    setBounds(x: number, y: number, z: number): void;
+                    getValue(x: number, y: number, z: number, array: Uint32Array): number;
+                    getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
+                    getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                    setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
+                    setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+                    setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+                    deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
+                    deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): void;
+                    getIndex(x: number, y: number, z: number): number;
+                    getXYZ(index: number): import("Meta/index.js").Position3Matrix;
+                };
+                positionByte: {
+                    _poisiton: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    };
+                    _positionMasks: {
+                        x: number;
+                        z: number;
+                        y: number;
+                    };
+                    getY(byteData: number): number;
+                    getPosition(byteData: number): {
+                        x: number;
+                        y: number;
+                        z: number;
+                    };
+                    setPosition(x: number, y: number, z: number): number;
+                    setPositionUseObj(positionObj: import("Meta/index.js").Position3Matrix): number;
+                };
+                _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
+                _setHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
+                _markSubstanceAsNotExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
+                _markSubstanceAsExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
+                _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
+                getStartingHeightMapValue(): number;
+                updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, minMax: Uint32Array): void;
+                getChunkMin(minMax: Uint32Array): number;
+                getChunkMax(minMax: Uint32Array): number;
+                calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
+                calculateHeightAddDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+                getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+                getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
+                isSubstanceExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
+                markSubstanceAsExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+                markSubstanceAsNotExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+                setMinYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+                getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+                setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
+                getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+            };
             updateDieTime: number;
             loadDieTime: number;
             regions: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -458,11 +536,18 @@ export declare const DVEB: {
             threadName: string;
             setVoxelManager(voxelManager: import("../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
             syncChunkBounds(): void;
-            getVoxelPalleteId(voxelId: string, voxelState: string): number;
+            getVoxelPalette(voxelId: string, voxelState: string): number;
             awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
             __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
             getVoxel(x: number, y: number, z: number): false | string[];
-            getVoxelShapeState(x: number, y: number, z: number): any;
+            getVoxelShapeState(x: number, y: number, z: number): number;
+            getLevel(x: number, y: number, z: number): number;
+            setLevel(level: number, x: number, y: number, z: number): void;
+            getLeveState(x: number, y: number, z: number): number;
+            setLevelState(state: number, x: number, y: number, z: number): void;
+            setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
+            __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: import("Meta/index.js").VoxelData, chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk): void;
+            getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
             getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
             _createRegion(x: number, y: number, z: number): {
                 chunks: {};
@@ -482,7 +567,7 @@ export declare const DVEB: {
                 voxels: Uint32Array;
                 chunkStates: Uint8Array;
             }) => {}): false | Promise<boolean>;
-            setData(x: number, y: number, z: number, data: number): false | undefined;
+            setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
             getData(x: number, y: number, z: number, state?: boolean): any;
             getVoxelNumberID(x: number, y: number, z: number): number | false;
             getLight(x: number, y: number, z: number): number;
@@ -492,6 +577,7 @@ export declare const DVEB: {
             getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
             sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
         };
+        calculatFlow: typeof import("./Processor/Functions/CalculateFlow.js").CalculateFlow;
         voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
         doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
         chunkTemplates: Record<number, Record<number, number[][]>>;
@@ -504,13 +590,16 @@ export declare const DVEB: {
             doRGB: boolean;
         };
         getBaseTemplateNew(): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
+        cullCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
+        faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
         makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
     };
     voxelHelper: {
         substanceRules: Record<string, boolean>;
-        voxelFaceCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, x: number, y: number, z: number): boolean;
+        substanceRuleCheck(voxel: import("Meta/index.js").VoxelData, neightborVoxel: import("Meta/index.js").VoxelData): boolean;
     };
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;

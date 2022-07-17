@@ -17,7 +17,7 @@ export declare const ConstructorCommManager: {
     releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
     isReady(): boolean;
     __handleCount(): number;
-    requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
+    requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): number;
     runRGBLightUpdate(x: number, y: number, z: number): number;
     runRGBUpdate(x: number, y: number, z: number): number;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
@@ -25,5 +25,7 @@ export declare const ConstructorCommManager: {
     runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
     runSunLightUpdate(x: number, y: number, z: number): number;
     runSunLightRemove(x: number, y: number, z: number): number;
+    runFlow(x: number, y: number, z: number): number;
+    removeFlow(x: number, y: number, z: number): number;
     runGeneration(x: number, z: number, data: any): number;
 };

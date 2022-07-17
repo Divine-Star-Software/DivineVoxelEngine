@@ -9,5 +9,6 @@ export type ChunkTemplate = {
     lightTemplate: number[];
     aoTemplate: number[];
     colorTemplate: number[];
+    flowTemplate?: number[];
    };
-   export type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;
+export type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;

@@ -47,6 +47,14 @@ const processDefaultFaceData = (
   data.aoTemplate,
   data.aoIndex
  );
+
+ if (data.substance == "flora") {
+  let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(3, 0);
+  DVEB.shapeHelper.addFaceData(animData, data.faceData);
+ } else {
+  DVEB.shapeHelper.addFaceData(0, data.faceData);
+ }
+
  data.uvTemplateIndex += 1;
  data.overylayUVTemplateIndex += 4;
  data.lightIndex += 4;
@@ -56,7 +64,17 @@ const processDefaultFaceData = (
 
 export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
- addToChunkMesh(data: VoxelShapeAddData) {
+ cullFace(
+  face,
+  substanceResult,
+  shapeState,
+  voxelData,
+  neighborVoxelData,
+  neighborVoxelShape
+ ) {
+  return substanceResult;
+ },
+ addToChunkMesh(data) {
   data.position.x += shapeDimensions.width * data.LOD;
   data.position.z += shapeDimensions.depth * data.LOD;
   data.position.y += shapeDimensions.height * data.LOD;

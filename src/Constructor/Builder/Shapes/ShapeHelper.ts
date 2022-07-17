@@ -10,6 +10,7 @@ import { Util } from "../../../Global/Util.helper.js";
 export const ShapeHelper = {
  faceByte: Util.getFaceByte(),
  lightByte: Util.getLightByte(),
+ meshFaceData: Util.getMeshFaceDataByte(),
  //Use for producing the light gradient
  lightMap: [
   0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
@@ -36,6 +37,7 @@ export const ShapeHelper = {
    newColorIndex: shapeData.colorIndex,
    newlightIndex: shapeData.lightIndex,
    newAOIndex: shapeData.aoIndex,
+   newFlowTemplateIndex: shapeData.flowTemplateIndex,
   };
  },
 
@@ -45,6 +47,10 @@ export const ShapeHelper = {
   b = b ** 2.2;
   a = a * 1;
   return [r, g, b, a];
+ },
+
+ addFaceData(faceData: number, faceDataArray: number[]) {
+  faceDataArray.push(faceData, faceData, faceData, faceData);
  },
 
  calculateLightColor(

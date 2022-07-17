@@ -1,5 +1,9 @@
 //types
-import type { DirectionNames, VoxelConstructorObject } from "Meta/index";
+import type {
+ DirectionNames,
+ VoxelConstructorObject,
+ VoxelData,
+} from "Meta/index";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 
@@ -36,26 +40,8 @@ export const VoxelHelper = {
   "magma-magma": false,
  },
 
- voxelFaceCheck(
-  face: DirectionNames,
-  voxel: VoxelConstructorObject,
-  x: number,
-  y: number,
-  z: number
- ) {
-  const checkVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
-  if (
-   checkVoxelId &&
-   (checkVoxelId[0] == "dve:air" || checkVoxelId[0] == "dve:barrier")
-  )
-   return true;
-  if (!checkVoxelId) return true;
-  const checkVoxelObject = DVEC.voxelManager.getVoxel(checkVoxelId[0]);
-  if (
-   this.substanceRules[
-    `${voxel.data.substance}-${checkVoxelObject.data.substance}`
-   ]
-  ) {
+ substanceRuleCheck(voxel: VoxelData, neightborVoxel: VoxelData) {
+  if (this.substanceRules[`${voxel.substance}-${neightborVoxel.substance}`]) {
    return true;
   } else {
    return false;

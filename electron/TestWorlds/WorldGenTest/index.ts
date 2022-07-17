@@ -22,6 +22,9 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
+ chunks: {
+  chunkYPow2: 4,
+ },
  lighting: {
   doAO: true,
   doRGBLight: false,
@@ -38,13 +41,12 @@ const init = async () => {
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x: 0, y: 55, z: -400
- },
-  { x: 7, y: 30, z: 0 }
+  { x: 0, y: 80, z: 0 },
+  { x: 7, y: 80, z: 0 }
  );
  //SetUpDefaultSkybox(scene);
-  camera.maxZ = 10000;
-  scene.fogDensity = 0;
+ camera.maxZ = 10000;
+ scene.fogDensity = 0;
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);

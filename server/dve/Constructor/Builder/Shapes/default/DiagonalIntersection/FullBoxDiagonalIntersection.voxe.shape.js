@@ -21,6 +21,15 @@ const processFace = (face, data) => {
         DVEB.shapeHelper.calculateAOColorFromValue(data.AOColors, data.aoTemplate[data.aoIndex]);
         DVEB.shapeHelper.calculateLightColorFromValue(data.RGBLightColors, data.sunLightColors, data.lightTemplate[data.lightIndex]);
     }
+    if (data.substance == "flora") {
+        let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(1, 0);
+        DVEB.shapeHelper.addFaceData(animData, data.faceData);
+        DVEB.shapeHelper.addFaceData(animData, data.faceData);
+    }
+    else {
+        DVEB.shapeHelper.addFaceData(0, data.faceData);
+        DVEB.shapeHelper.addFaceData(0, data.faceData);
+    }
     data.uvTemplateIndex += 1;
     data.overylayUVTemplateIndex += 4;
     data.lightIndex += 1;
@@ -55,6 +64,9 @@ const faceFunctions = {
 };
 export const FullBoxDiagonalIntersection = {
     id: "FullBoxDiagonalIntersection",
+    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
+        return substanceResult;
+    },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width;
         data.position.z += shapeDimensions.depth;

@@ -121,6 +121,10 @@ export declare const DVEW: {
         }) => Promise<boolean>;
         getWorkerPort: (environment: "node" | "browser") => Promise<any>;
         getEnviorment(): "node" | "browser";
+        getMeshFaceDataByte(): {
+            setAnimationType(animationType: number, rawData: number): number;
+            getAnimationType(rawData: number): number;
+        };
         getFlat3DArray(): {
             bounds: {
                 x: number;
@@ -253,6 +257,10 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };
@@ -687,7 +695,7 @@ export declare const DVEW: {
         releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         isReady(): boolean;
         __handleCount(): number;
-        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number): number;
+        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): number;
         runRGBLightUpdate(x: number, y: number, z: number): number;
         runRGBUpdate(x: number, y: number, z: number): number;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
@@ -695,6 +703,8 @@ export declare const DVEW: {
         runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
         runSunLightUpdate(x: number, y: number, z: number): number;
         runSunLightRemove(x: number, y: number, z: number): number;
+        runFlow(x: number, y: number, z: number): number;
+        removeFlow(x: number, y: number, z: number): number;
         runGeneration(x: number, z: number, data: any): number;
     };
     worldGeneration: {
@@ -783,6 +793,10 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };
@@ -971,6 +985,10 @@ export declare const DVEW: {
             getId(value: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };
@@ -1084,8 +1102,10 @@ export declare const DVEW: {
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLight(x: number, y: number, z: number): number;
         removeData(x: number, y: number, z: number): false | undefined;
+        getLevelState(x: number, y: number, z: number): number;
+        setLevelState(state: number, x: number, y: number, z: number): void;
         getData(x: number, y: number, z: number, state?: boolean): number | false;
-        setData(x: number, y: number, z: number, data: number): void | -1;
+        setData(x: number, y: number, z: number, data: number, state?: boolean): void | -1;
         getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
         getVoxel(x: number, y: number, z: number): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
         addRegion(x: number, y: number, z: number): import("../Meta/World/WorldData/World.types.js").WorldRegion;
@@ -1124,6 +1144,8 @@ export declare const DVEW: {
         _RGBLightUpdateQue: number[][];
         _SunLightRemoveQue: number[][];
         _SunLightUpdateQue: number[][];
+        _runFlowQue: number[][];
+        _removeFlowQue: number[][];
         _worldColumnSunLightPropMap: Record<string, {
             max: number;
             thread: number;
@@ -1158,6 +1180,14 @@ export declare const DVEW: {
         awaitAllRGBLightRemove(): Promise<boolean>;
         areRGBLightUpdatesAllDone(): boolean;
         areRGBLightRemovesAllDone(): boolean;
+        addToFlowRunQue(x: number, y: number, z: number): void;
+        addToFlowRemoveQue(x: number, y: number, z: number): void;
+        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runFlowRemoveQue(): void;
+        awaitAllFlowRuns(): Promise<boolean>;
+        awaitAllFlowRemoves(): Promise<boolean>;
+        areFlowRunsAllDone(): boolean;
+        areFlowRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
         runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         addToRebuildQueTotal(): void;
@@ -1180,9 +1210,9 @@ export declare const DVEW: {
      * Deletes a chunk from world data and releases it from all threads.
      */
     deleteChunk(chunkX: number, chunkY: number, chunkZ: number): void;
-    buildChunk(chunkX: number, chunkY: number, chunkZ: number): void;
+    buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): void;
     generate(x: number, z: number, data?: any): void;
-    buildWorldColumn(x: number, z: number): false | undefined;
+    buildWorldColumn(x: number, z: number, LOD?: number): false | undefined;
     $INIT(data: DVEWInitData): Promise<void>;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

@@ -76,21 +76,21 @@ export const DVEW = {
         this.worldData.removeChunk(chunkX, chunkY, chunkZ);
         this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
     },
-    buildChunk(chunkX, chunkY, chunkZ) {
+    buildChunk(chunkX, chunkY, chunkZ, LOD = 1) {
         this.queues.addToRebuildQueTotal();
-        this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ);
+        this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, LOD);
     },
     generate(x, z, data = []) {
         this.queues.addToGenerationTotal();
         this.constructorCommManager.runGeneration(x, z, data);
     },
-    buildWorldColumn(x, z) {
+    buildWorldColumn(x, z, LOD = 1) {
         const worldColumn = this.worldData.getWorldColumn(x, z);
         if (!worldColumn)
             return false;
         for (const chunkKey of Object.keys(worldColumn)) {
             const chunk = worldColumn[chunkKey];
-            this.buildChunk(chunk.position[0], chunk.position[1], chunk.position[2]);
+            this.buildChunk(chunk.position[0], chunk.position[1], chunk.position[2], LOD);
         }
     },
     async $INIT(data) {

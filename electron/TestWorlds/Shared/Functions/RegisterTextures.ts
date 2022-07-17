@@ -76,9 +76,9 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   frames: 0,
  });
 
- DVER.textureManager.registerTexture("flora", {
-  name: "Dream Grass Texture",
-  id: "dreamgrass",
+ DVER.textureManager.registerTexture("solid", {
+  name: "Dream Log Texture",
+  id: "dream-log",
   frames: 0,
  });
 
@@ -87,11 +87,17 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   id: "dreamgrass",
   frames: 0,
  });
+
  DVER.textureManager.registerTexture("flora", {
-  name: "Dream Grass Texture",
-  id: "dreamgrass-overlay",
+  name: "Dream Vine Texture",
+  id: "dream-vine",
   frames: 0,
-  overlay: true,
+ });
+
+ DVER.textureManager.registerTexture("flora", {
+  name: "Dream Leafs Texture",
+  id: "dream-leafs",
+  frames: 0,
  });
 
  DVER.textureManager.registerTexture("fluid", {

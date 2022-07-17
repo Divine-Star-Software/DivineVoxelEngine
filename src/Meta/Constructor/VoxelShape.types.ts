@@ -1,4 +1,5 @@
-import type { Position3Matrix } from "Meta/Util.types";
+import { VoxelData, VoxelSubstanceType } from "Meta/index";
+import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
 
 /** # Voxel Shape Add DAta
 ---
@@ -39,7 +40,8 @@ import type { Position3Matrix } from "Meta/Util.types";
 * @var position: Position3Matrix;
 */
 export type VoxelShapeAddData = {
- LOD : number,
+ LOD: number;
+ substance: VoxelSubstanceType;
  //actual mesh data
  positions: number[];
  normals: number[];
@@ -56,6 +58,8 @@ export type VoxelShapeAddData = {
 
  //chunk template data
  shapeState: number;
+ flowTemplateIndex?: number;
+ flowTemplate?: number[];
  unTemplate: number[];
  uvTemplateIndex: number;
  overylayUVTemplate: number[];
@@ -76,6 +80,7 @@ export type VoxelShapeAddReturnData = {
  newColorIndex: number;
  newlightIndex: number;
  newAOIndex: number;
+ newFlowTemplateIndex?: number;
 };
 
 /**# Voxel Shape
@@ -86,6 +91,16 @@ export type VoxelShapeAddReturnData = {
  */
 export type VoxelShapeInterface = {
  id: string;
+ cullFace(
+  face: DirectionNames,
+  substanceResult: boolean,
+  shapeState: number,
+  voxel: VoxelData,
+  neighborVoxel: VoxelData,
+  neighborVoxelShape: VoxelShapeInterface,
+  neighborVoxelShapeState: number
+ ): boolean;
+
  /**# Add To Chunk Mesh
   * ---
   */

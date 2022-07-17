@@ -58,12 +58,13 @@ export const ConstructorCommManager = {
         }
         return countReturn;
     },
-    requestFullChunkBeBuilt(chunkX, chunkY, chunkZ) {
+    requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, LOD = 1) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.buildChunk, [
             chunkX,
             chunkY,
             chunkZ,
+            LOD,
         ]);
         return this.__handleCount();
     },
@@ -113,6 +114,16 @@ export const ConstructorCommManager = {
     runSunLightRemove(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.sunLightRemove, [x, y, z]);
+        return this.__handleCount();
+    },
+    runFlow(x, y, z) {
+        const comm = this.constructors[this.count];
+        comm.sendMessage(WorldToConstructorMessages.runFlow, [x, y, z]);
+        return this.__handleCount();
+    },
+    removeFlow(x, y, z) {
+        const comm = this.constructors[this.count];
+        comm.sendMessage(WorldToConstructorMessages.removeFlow, [x, y, z]);
         return this.__handleCount();
     },
     runGeneration(x, z, data) {

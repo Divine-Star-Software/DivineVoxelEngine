@@ -17,7 +17,7 @@ if(normal.y == 0.) {
 vec4 posWorld = world * vec4(position, 1.0);
 vec3 p = position;
 float height = fbm(posWorld.xz * 0.08 + time);
-p.y += height * 0.1 - .3;
+p.y += height * 0.05;
 vec4 worldPosition = world * vec4(p, 1.0);
 
 gl_Position = viewProjection * worldPosition; 
@@ -34,14 +34,13 @@ varying float vFlow;
   vec4 oRGB2 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.y));
   vec4 oRGB3 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.z));
   vec4 oRGB4 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.w));
-
-
+  
   if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
       discard;
   }
+  
   if(oRGB1.a > 0.85) {
-   //   rgb = oRGB * rgb;
-        rgb = oRGB1;
+    rgb = oRGB1;
   }
   if(oRGB2.a > 0.85) {
       rgb = oRGB2;
@@ -52,6 +51,8 @@ varying float vFlow;
    if(oRGB4.a > 0.85) {
     rgb = oRGB4;
    }
+
+
   
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);

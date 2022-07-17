@@ -68,9 +68,9 @@ export function RegisterTexutres(DVER) {
         id: "dreamlamp",
         frames: 0,
     });
-    DVER.textureManager.registerTexture("flora", {
-        name: "Dream Grass Texture",
-        id: "dreamgrass",
+    DVER.textureManager.registerTexture("solid", {
+        name: "Dream Log Texture",
+        id: "dream-log",
         frames: 0,
     });
     DVER.textureManager.registerTexture("flora", {
@@ -79,10 +79,14 @@ export function RegisterTexutres(DVER) {
         frames: 0,
     });
     DVER.textureManager.registerTexture("flora", {
-        name: "Dream Grass Texture",
-        id: "dreamgrass-overlay",
+        name: "Dream Vine Texture",
+        id: "dream-vine",
         frames: 0,
-        overlay: true,
+    });
+    DVER.textureManager.registerTexture("flora", {
+        name: "Dream Leafs Texture",
+        id: "dream-leafs",
+        frames: 0,
     });
     DVER.textureManager.registerTexture("fluid", {
         name: "Liquid Dream Ether Texture",

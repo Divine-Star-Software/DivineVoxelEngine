@@ -5,7 +5,7 @@ export const WorldGen = {
  chunkHeight: 128,
 
  generatePondChunk(chunkX: number, chunkZ: number) {
-  let baseY = 31;
+  let baseY = 30;
   let topY = 50;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {

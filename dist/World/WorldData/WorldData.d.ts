@@ -111,6 +111,10 @@ export declare const WorldData: {
         getId(value: number): number;
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+        decodeLevelFromVoxelData(stateData: number): number;
+        encodeLevelIntoVoxelData(stateData: number, level: number): number;
+        decodeLevelStateFromVoxelData(stateData: number): number;
+        encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
         getShapeState(voxelData: number): number;
         setShapeState(voxelData: number, shapeState: number): number;
     };
@@ -224,8 +228,10 @@ export declare const WorldData: {
     setLight(x: number, y: number, z: number, lightValue: number): void;
     getLight(x: number, y: number, z: number): number;
     removeData(x: number, y: number, z: number): false | undefined;
+    getLevelState(x: number, y: number, z: number): number;
+    setLevelState(state: number, x: number, y: number, z: number): void;
     getData(x: number, y: number, z: number, state?: boolean): number | false;
-    setData(x: number, y: number, z: number, data: number): void | -1;
+    setData(x: number, y: number, z: number, data: number, state?: boolean): void | -1;
     getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
     getVoxel(x: number, y: number, z: number): [VoxelData | number, string | number, number] | false;
     addRegion(x: number, y: number, z: number): WorldRegion;

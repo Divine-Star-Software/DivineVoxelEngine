@@ -136,6 +136,58 @@ export const SharedVertexShader = {
  if(abs(normal.x) == 1. || abs(normal.z)  == 1. ) {
    vNColor = 1.;
  }
-
  `,
+ getAnimationType: `
+ int getAnimationType() {
+   highp int index = int(faceData);
+   return  index & 0xff;
+}
+ `,
+ animationFunctions: `
+ vec3 animType1(vec4 posWorld, vec3 p) {
+   if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
+      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      p.xz += heightX * 0.05;
+   }
+   if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
+      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      p.xz -= heightX * 0.06;
+   }
+   if(normal.y == 1. ) {
+      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      p.xz += heightX * 0.05;
+   }
+   return p;
+}
+
+vec3 animType2(vec4 posWorld, vec3 p) {
+   float height = fbm(posWorld.xz * 0.08 + time * .08 );
+   if(normal.z == 1.) {
+      p.z += height * 0.05;
+   } else
+   if(normal.z == -1.) {
+      p.z -= height * 0.05;
+   } else {
+      p.z += height * 0.05; 
+   }
+
+   if(normal.x == 1.) {
+      p.x += height * 0.05;
+   } else
+   if(normal.x == -1.) {
+      p.x -= height * 0.05;
+   } else {
+      p.x += height * 0.05; 
+   }
+
+   return p;
+}
+
+vec3 animType3(vec4 posWorld, vec3 p) {
+   float height = fbm(posWorld.xz * 0.08 + time * .08 );
+   p.xz += height * 0.05;
+   return p;
+}
+`,
+
 };

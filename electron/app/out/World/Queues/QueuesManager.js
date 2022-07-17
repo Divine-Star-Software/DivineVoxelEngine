@@ -9,11 +9,13 @@ export const QueuesManager = {
     _RGBLightUpdateQue: [],
     _SunLightRemoveQue: [],
     _SunLightUpdateQue: [],
+    _runFlowQue: [],
+    _removeFlowQue: [],
     _worldColumnSunLightPropMap: {},
     _worldColumnSunLightPropQue: [],
     _chunkRebuildQueMap: {},
     _chunkRebuildQue: [],
-    __statesSAB: new SharedArrayBuffer(4 * 10),
+    __statesSAB: new SharedArrayBuffer(4 * 12),
     __states: new Uint32Array(),
     $INIT() {
         this.__states = new Uint32Array(this.__statesSAB);
@@ -223,6 +225,74 @@ export const QueuesManager = {
     },
     areRGBLightRemovesAllDone() {
         return Atomics.load(this.__states, QueuesIndexes.RGBLightRemove) == 0;
+    },
+    /**
+     * Flow
+     */
+    addToFlowRunQue(x, y, z) {
+        this._runFlowQue.push([x, y, z]);
+    },
+    addToFlowRemoveQue(x, y, z) {
+        this._removeFlowQue.push([x, y, z]);
+    },
+    runFlowRuneQue(filter) {
+        const reQueue = [];
+        const queue = this._runFlowQue;
+        while (queue.length != 0) {
+            const position = queue.shift();
+            if (!position)
+                break;
+            if (filter) {
+                const filterReturn = filter(position[0], position[1], position[2]);
+                if (filterReturn == 0)
+                    continue;
+                if (filterReturn == 1) {
+                    reQueue.push([position[0], position[1], position[2]]);
+                    continue;
+                }
+            }
+            Atomics.add(this.__states, QueuesIndexes.flowsRunning, 1);
+            DVEW.constructorCommManager.runFlow(position[0], position[1], position[2]);
+        }
+        if (!filter) {
+            this._runFlowQue = [];
+        }
+        else {
+            this._runFlowQue = reQueue;
+        }
+    },
+    runFlowRemoveQue() {
+        const queue = this._removeFlowQue;
+        while (queue.length != 0) {
+            const position = queue.shift();
+            if (!position)
+                break;
+            Atomics.add(this.__states, QueuesIndexes.flowsRemoving, 1);
+            DVEW.constructorCommManager.removeFlow(position[0], position[1], position[2]);
+        }
+        this._removeFlowQue = [];
+    },
+    awaitAllFlowRuns() {
+        return DVEW.UTIL.createPromiseCheck({
+            check: () => {
+                return QueuesManager.areFlowRunsAllDone();
+            },
+            checkInterval: 1,
+        });
+    },
+    awaitAllFlowRemoves() {
+        return DVEW.UTIL.createPromiseCheck({
+            check: () => {
+                return QueuesManager.areFlowRemovesAllDone();
+            },
+            checkInterval: 1,
+        });
+    },
+    areFlowRunsAllDone() {
+        return Atomics.load(this.__states, QueuesIndexes.flowsRunning) == 0;
+    },
+    areFlowRemovesAllDone() {
+        return Atomics.load(this.__states, QueuesIndexes.flowsRemoving) == 0;
     },
     /**
      * Chunks

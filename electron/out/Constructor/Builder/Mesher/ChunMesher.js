@@ -41,6 +41,7 @@ export const ChunkMesher = {
             let uvIndex = 0;
             let overlayUVIndex = 0;
             let shapeStateIndex = 0;
+            let flowTemplateIndex = 0;
             for (let positionIndex = 0; positionIndex < baseTemplate.positionTemplate.length; positionIndex += 3) {
                 const x = baseTemplate.positionTemplate[positionIndex] + chunkX;
                 const y = baseTemplate.positionTemplate[positionIndex + 1] + chunkY;
@@ -48,6 +49,7 @@ export const ChunkMesher = {
                 const shapeId = baseTemplate.shapeTemplate[shapeIndex];
                 const shape = DVEB.shapeManager.getShape(shapeId);
                 const newIndexes = shape.addToChunkMesh({
+                    substance: type,
                     LOD: LOD,
                     //mesh data
                     positions: positions,
@@ -63,6 +65,8 @@ export const ChunkMesher = {
                     indicieIndex: indicieIndex,
                     //chunks template
                     shapeState: baseTemplate.shapeStateTemplate[shapeStateIndex],
+                    flowTemplateIndex: flowTemplateIndex,
+                    flowTemplate: baseTemplate.flowTemplate,
                     unTemplate: baseTemplate.uvTemplate,
                     uvTemplateIndex: uvIndex,
                     overylayUVTemplate: baseTemplate.overlayUVTemplate,
@@ -83,6 +87,9 @@ export const ChunkMesher = {
                 overlayUVIndex = newIndexes.newOverlayUVTemplateIndex;
                 RGBLightIndex = newIndexes.newlightIndex;
                 colorIndex = newIndexes.newColorIndex;
+                if (newIndexes.newFlowTemplateIndex !== undefined) {
+                    flowTemplateIndex = newIndexes.newFlowTemplateIndex;
+                }
                 shapeStateIndex++;
                 shapeIndex++;
                 faceIndex++;
@@ -90,7 +97,7 @@ export const ChunkMesher = {
             const positionArray = new Float32Array(positions);
             const normalsArray = new Float32Array(normals);
             const indiciesArray = new Int32Array(indices);
-            const faceDataArray = new Int32Array(faceData);
+            const faceDataArray = new Float32Array(faceData);
             const AOColorsArray = new Float32Array(AOColors);
             const RGBLightColorsArray = new Float32Array(RGBLightColors);
             const sunLightColorsArray = new Float32Array(sunLightColors);

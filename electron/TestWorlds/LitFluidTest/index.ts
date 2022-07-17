@@ -23,6 +23,9 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
+ world : {
+    minY : -16
+ },
  lighting: {
   doAO: true,
   doRGBLight: true,

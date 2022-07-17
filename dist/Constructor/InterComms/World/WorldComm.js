@@ -15,7 +15,7 @@ worldComm.messageFunctions[WorldToConstructorMessages.setQueueStates] = (data) =
     DVEC.__queueStatesSet = true;
 };
 worldComm.messageFunctions[WorldToConstructorMessages.buildChunk] = (data) => {
-    DVEC.DVEB.buildChunk(data[1], data[2], data[3]);
+    DVEC.DVEB.buildChunk(data[1], data[2], data[3], data[4]);
 };
 worldComm.messageFunctions[WorldToConstructorMessages.RGBlightUpdate] = (data) => {
     const x = data[1];
@@ -56,6 +56,18 @@ worldComm.messageFunctions[WorldToConstructorMessages.sunLightUpdate] = (data) =
     DVEC.DVEP.runSunLightUpdate(x, y, z);
 };
 worldComm.messageFunctions[WorldToConstructorMessages.sunLightRemove] = (data) => {
+    const x = data[1];
+    const y = data[2];
+    const z = data[3];
+    DVEC.DVEP.runSunLightRemove(x, y, z);
+};
+worldComm.messageFunctions[WorldToConstructorMessages.runFlow] = async (data) => {
+    const x = data[1];
+    const y = data[2];
+    const z = data[3];
+    await DVEC.DVEP.runFlowAt(x, y, z);
+};
+worldComm.messageFunctions[WorldToConstructorMessages.removeFlow] = (data) => {
     const x = data[1];
     const y = data[2];
     const z = data[3];

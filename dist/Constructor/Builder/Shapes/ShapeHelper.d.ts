@@ -53,12 +53,17 @@ export declare const ShapeHelper: {
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
     };
+    meshFaceData: {
+        setAnimationType(animationType: number, rawData: number): number;
+        getAnimationType(rawData: number): number;
+    };
     lightMap: number[];
     shouldFaceFlip(faceBit: number, faceDirection: DirectionNames): boolean;
     getTextureRotation(faceBit: number, faceDirection: DirectionNames): import("../../../Meta/Constructor/Mesher.types.js").Rotations;
     isFaceExposexd(faceBit: number, faceDirection: DirectionNames): boolean;
     produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData;
     toLinearSpace(r: number, g: number, b: number, a: number): number[];
+    addFaceData(faceData: number, faceDataArray: number[]): void;
     calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
     calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
     calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;

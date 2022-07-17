@@ -53,7 +53,7 @@ export const DVEWG = {
  },
 
  getVoxelPaletteId(voxelId: string, voxelStateId: string) {
-  const paletteId = WorldMatrix.getVoxelPalleteId(voxelId, voxelStateId);
+  const paletteId = WorldMatrix.getVoxelPalette(voxelId, voxelStateId);
   if (paletteId) {
    return this.voxelByte.setId(paletteId, 0);
   }

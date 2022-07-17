@@ -9,4 +9,6 @@ export const WorldToConstructorMessages = {
     runSunLightUpdateMaxYFlood: 6,
     sunLightUpdate: 7,
     sunLightRemove: 8,
+    runFlow: 9,
+    removeFlow: 10
 };

@@ -38,6 +38,14 @@ export const GetNewConstructorComm = (
   DVEW.queues.addToRebuildQue(x, y, z, substance);
  };
 
+ newComm.messageFunctions[ConstructorToWorldMessages.runRebuildQue] = (
+    data
+   ) => {
+
+  
+    DVEW.queues.runRebuildQue();
+   };
+
  newComm.messageFunctions[ConstructorToWorldMessages.addToRGBLightUpdateQue] = (
   data
  ) => {
