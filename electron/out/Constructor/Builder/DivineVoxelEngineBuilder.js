@@ -6,7 +6,7 @@ import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
-import { ChunkMesher } from "./Mesher/ChunMesher.js";
+import { ChunkMesher } from "./Mesher/ChunkMesher.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";

@@ -93,6 +93,7 @@ export const FluidMaterial = {
      "world",
      "view",
      "viewProjection",
+     "cameraPosition",
      "worldView",
      "worldMatrix",
      "worldViewProjection",

@@ -272,6 +272,8 @@ export declare const DVER: {
             buildMagmaFragmentShader(): string;
             getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
             getDefaultFragmentShader(voxelSubstance: import("../Meta/index.js").VoxelSubstanceType): string;
+            getSkyBoxFragmentShader(): string;
+            getSkyBoxVertexShader(): string;
         };
         textureCreator: {
             context: CanvasRenderingContext2D | null;
@@ -338,6 +340,16 @@ export declare const DVER: {
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
         };
+        skyBoxMaterial: {
+            material: BABYLON.ShaderMaterial | null;
+            context: CanvasRenderingContext2D | null;
+            getMaterial(): BABYLON.ShaderMaterial | null;
+            setSunLightLevel(level: number): void;
+            setBaseLevel(level: number): void;
+            updateMaterialSettings(settings: EngineSettingsData): void;
+            createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial;
+            overrideMaterial(material: any): void;
+        };
         solidMesh: import("../Meta/index.js").VoxelMeshInterface;
         floraMesh: import("../Meta/index.js").VoxelMeshInterface;
         fluidMesh: import("../Meta/index.js").VoxelMeshInterface;
@@ -347,6 +359,7 @@ export declare const DVER: {
         setScene(scene: BABYLON.Scene): void;
         syncSettings(settings: EngineSettingsData): void;
         getScene(): BABYLON.Scene | null;
+        createSkyBoxMaterial(scene?: BABYLON.Scene | undefined): BABYLON.ShaderMaterial | null;
         setSunLevel(level: number): void;
         setBaseLevel(level: number): void;
     };

@@ -63,6 +63,9 @@ export const SolidMaterial = {
     true
    );
 
+
+
+   
   BABYLON.Effect.ShadersStore["solidVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "solid",
@@ -75,7 +78,7 @@ export const SolidMaterial = {
   BABYLON.Effect.ShadersStore["solidFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
 
-  this.material = new BABYLON.ShaderMaterial("solid", data.scene, "solid", {
+  const shaderMaterial = new BABYLON.ShaderMaterial("solid", data.scene, "solid", {
    attributes: [
     "position",
     "normal",
@@ -90,6 +93,7 @@ export const SolidMaterial = {
    uniforms: [
     "world",
     "view",
+    "cameraPosition",
     "viewProjection",
     "worldView",
     "worldViewProjection",
@@ -103,12 +107,14 @@ export const SolidMaterial = {
     "doSun",
     "doRGB",
     "doColor",
+    "time",
     ...animData.uniforms,
     ...overlayAnimData.uniforms,
    ],
    needAlphaBlending: false,
    needAlphaTesting: true,
   });
+  this.material = shaderMaterial;
   //this.material.forceDepthWrite = true;
   this.material.fogEnabled = true;
   data.texture.hasAlpha = true;
@@ -135,6 +141,13 @@ export const SolidMaterial = {
   this.updateMaterialSettings(data.settings);
 
   DVER.renderManager.animationManager.registerMaterial("solid", this.material);
+
+
+  let time = 0;
+  data.scene.registerBeforeRender(function () {
+   time += 0.005;
+   shaderMaterial.setFloat("time", time);
+  });
 
   return this.material;
  },

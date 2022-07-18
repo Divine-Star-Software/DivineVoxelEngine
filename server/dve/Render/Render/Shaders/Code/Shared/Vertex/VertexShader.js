@@ -4,19 +4,20 @@ export const SharedVertexShader = {
   `,
     standardPositionMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
-  gl_Position = worldViewProjection * vec4(position, 1.0); 
+  vec3 p = position;
+  gl_Position = worldViewProjection * vec4(p, 1.0); 
   `,
     uniforams: `
   uniform mat4 worldViewProjection;
   uniform mat4 world;      
-  uniform vec3 worldMatrix;                
+  uniform vec3 worldMatrix;       
+  uniform vec3 cameraPosition;         
   uniform mat4 view;                    
   uniform mat4 viewProjection;       
   `,
     attributes(ao = true) {
         let attributes = `
-  attribute vec3 position;
-  attribute vec3 normal;
+  ${SharedVertexShader.defaultAttributes}
   attribute vec3 cuv3;
   attribute vec4 ocuv3;
   attribute float faceData;
@@ -31,6 +32,15 @@ export const SharedVertexShader = {
         }
         return attributes;
     },
+    defaultAttributes: `
+ attribute vec3 position;
+ attribute vec3 normal;
+ `,
+    defaultVarying: `
+ //for fog 
+ varying vec3 cameraPOS;
+ varying vec3 worldPOS;
+ `,
     varying(ao = true) {
         let varying = `
   varying vec3 vUV;
@@ -42,8 +52,10 @@ export const SharedVertexShader = {
   varying vec4 rgbLColor;
   varying vec4 sunLColor;
   varying vec4 vColors;
+  //texture animations
   varying float animIndex;
   varying float overlayAnimIndex;
+ ${SharedVertexShader.defaultVarying}
   `;
         if (ao) {
             varying += `
@@ -131,6 +143,10 @@ export const SharedVertexShader = {
    vNColor = 1.;
  }
  `,
+    updateVarying: `
+ cameraPOS = cameraPosition;
+ worldPOS = worldPosition.xyz;
+ `,
     getAnimationType: `
  int getAnimationType() {
    highp int index = int(faceData);
@@ -140,22 +156,22 @@ export const SharedVertexShader = {
     animationFunctions: `
  vec3 animType1(vec4 posWorld, vec3 p) {
    if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
-      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      float heightX = fbm(posWorld.xz * 0.1 + time);
       p.xz += heightX * 0.05;
    }
    if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
-      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      float heightX = fbm(posWorld.xz * 0.1 + time);
       p.xz -= heightX * 0.06;
    }
    if(normal.y == 1. ) {
-      float heightX = fbm(posWorld.xz * 0.1 + time * 0.08);
+      float heightX = fbm(posWorld.xz * 0.1 + time);
       p.xz += heightX * 0.05;
    }
    return p;
 }
 
 vec3 animType2(vec4 posWorld, vec3 p) {
-   float height = fbm(posWorld.xz * 0.08 + time * .08 );
+   float height = fbm(posWorld.xz * 0.08 + time );
    if(normal.z == 1.) {
       p.z += height * 0.05;
    } else
@@ -178,7 +194,7 @@ vec3 animType2(vec4 posWorld, vec3 p) {
 }
 
 vec3 animType3(vec4 posWorld, vec3 p) {
-   float height = fbm(posWorld.xz * 0.08 + time * .08 );
+   float height = fbm(posWorld.xz * 0.08 + time );
    p.xz += height * 0.05;
    return p;
 }

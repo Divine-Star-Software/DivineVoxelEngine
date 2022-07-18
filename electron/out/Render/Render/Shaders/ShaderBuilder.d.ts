@@ -14,4 +14,6 @@ export declare const ShaderBuilder: {
     buildMagmaFragmentShader(): string;
     getDefaultVertexShader(voxelSubstance: VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
     getDefaultFragmentShader(voxelSubstance: VoxelSubstanceType): string;
+    getSkyBoxFragmentShader(): string;
+    getSkyBoxVertexShader(): string;
 };

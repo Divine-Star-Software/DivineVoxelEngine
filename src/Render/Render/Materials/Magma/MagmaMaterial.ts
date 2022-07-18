@@ -82,6 +82,7 @@ export const MagmaMaterial = {
      "worldView",
      "worldViewProjection",
      "vFogInfos",
+     "cameraPosition",
      "vFogColor",
      "baseLightColor",
      "projection",

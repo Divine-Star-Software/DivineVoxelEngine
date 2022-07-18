@@ -31,7 +31,12 @@ const init = async () => {
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
     const camera = SetUpDefaultCamera(scene, canvas, { x: 15, y: 120, z: 7 }, { x: 7, y: 30, z: 7 });
-    SetUpDefaultSkybox(scene);
+    const box = SetUpDefaultSkybox(scene);
+    const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+    if (bmat) {
+        box.material = bmat;
+    }
+    scene.fogDensity = .005;
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setSunLevel(0.8);
     DVER.renderManager.setBaseLevel(0.0);

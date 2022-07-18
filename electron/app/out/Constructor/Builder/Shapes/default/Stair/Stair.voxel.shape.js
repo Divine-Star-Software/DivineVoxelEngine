@@ -33,10 +33,10 @@ const tempAOTemplte = (type, side, data, v1 = 1, v2 = 1) => {
     if (type == "top") {
         if (side == "top") {
             return [
-                v1,
                 data.aoTemplate[data.aoIndex],
-                data.aoTemplate[data.aoIndex + 1],
+                v1,
                 v2,
+                data.aoTemplate[data.aoIndex + 3],
             ];
         }
         if (side == "bottom") {
@@ -59,10 +59,49 @@ const tempAOTemplte = (type, side, data, v1 = 1, v2 = 1) => {
         }
         if (side == "bottom") {
             return [
-                data.aoTemplate[data.aoIndex + 2],
-                data.aoTemplate[data.aoIndex + 3],
                 v1,
                 v2,
+                data.aoTemplate[data.aoIndex + 2],
+                data.aoTemplate[data.aoIndex + 3],
+            ];
+        }
+    }
+    return [1, 1, 1, 1];
+};
+const tempLightTemplte = (type, side, data) => {
+    if (type == "top") {
+        if (side == "top") {
+            return [
+                data.lightTemplate[data.lightIndex],
+                data.lightTemplate[data.lightIndex + 1],
+                data.lightTemplate[data.lightIndex + 2],
+                data.lightTemplate[data.lightIndex + 3],
+            ];
+        }
+        if (side == "bottom") {
+            return [
+                data.lightTemplate[data.lightIndex],
+                data.lightTemplate[data.lightIndex + 1],
+                data.lightTemplate[data.lightIndex + 2],
+                data.lightTemplate[data.lightIndex + 3],
+            ];
+        }
+    }
+    if (type == "side") {
+        if (side == "top") {
+            return [
+                data.lightTemplate[data.lightIndex],
+                data.lightTemplate[data.lightIndex + 1],
+                data.lightTemplate[data.lightIndex + 2],
+                data.lightTemplate[data.lightIndex + 3],
+            ];
+        }
+        if (side == "bottom") {
+            return [
+                data.lightTemplate[data.lightIndex],
+                data.lightTemplate[data.lightIndex + 1],
+                data.lightTemplate[data.lightIndex + 2],
+                data.lightTemplate[data.lightIndex + 3],
             ];
         }
     }
@@ -108,6 +147,7 @@ const addHalfUV = (face, data, uv, start, end, ws = 0, we = 1, rotation = 0) => 
         flipped: false,
         rotoate: rotation,
     });
+    DVEB.uvHelper.processOverlayUVs(data);
 };
 const shapeStates = {
     0: (data) => {
@@ -121,13 +161,15 @@ const shapeStates = {
         //upper
         DVEB.shapeBuilder.addFace("top", position, topHalf, data, false);
         addHalfUV("top", data, topUV, 0, 0.5);
-        DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 1, 1], 0);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("top", "top", data), 0);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("top", "top", data), 0);
         //lower
         position.y -= 0.5;
         position.z += 0.5;
         DVEB.shapeBuilder.addFace("top", position, topHalf, data, false);
         addHalfUV("top", data, topUV, 0.5, 1);
         DVEB.shapeHelper.calculateAOColor(data.AOColors, [0.6, 1, 1, 0.6], 0);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("top", "top", data), 0);
         incrementIndexes(data);
         //################## Nomral
         setPositon(cachedPosition.x + boxDimensions.width, cachedPosition.y + boxDimensions.height, cachedPosition.z + boxDimensions.depth);
@@ -146,12 +188,14 @@ const shapeStates = {
             DVEB.shapeBuilder.addFace("east", position, sideHalf, data, false);
             addHalfUV("east", data, eastUV, 0.5, 1);
             DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
+            DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
             //upper
             setPositon(cachedPosition.x + sideQuater.width, cachedPosition.y + sideQuater.height, cachedPosition.z + sideQuater.depth);
             position.y += 0.5;
             DVEB.shapeBuilder.addFace("east", position, sideQuater, data, false);
             addHalfUV("east", data, eastUV, 0, 0.5, 0, 0.5);
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
+            DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "top", data), 0);
+            DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
             incrementIndexes(data);
         }
         /**
@@ -166,12 +210,14 @@ const shapeStates = {
             DVEB.shapeBuilder.addFace("west", position, sideHalf, data, false);
             addHalfUV("west", data, westUV, 0.5, 1);
             DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
+            DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
             //upper
             setPositon(cachedPosition.x + sideQuater.width, cachedPosition.y + sideQuater.height, cachedPosition.z + sideQuater.depth);
             position.y += 0.5;
             DVEB.shapeBuilder.addFace("west", position, sideQuater, data, false);
             addHalfUV("west", data, westUV, 0.5, 0, 0.5, 0);
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
+            DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "top", data), 0);
+            DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
             incrementIndexes(data);
         }
         //################## Nomral
@@ -181,7 +227,7 @@ const shapeStates = {
         }
         /**
       #####################
-      #  NORTH
+      #  North
       #####################
       */
         const southUV = data.unTemplate[data.uvTemplateIndex];
@@ -189,13 +235,15 @@ const shapeStates = {
         //lower
         DVEB.shapeBuilder.addFace("north", position, sideHalf, data, false);
         addHalfUV("south", data, southUV, 0.5, 1);
-        DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "top", data), 0);
+        DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
         //upper
         position.y += 0.5;
         position.z -= 0.5;
         DVEB.shapeBuilder.addFace("north", position, sideHalf, data, false);
         addHalfUV("south", data, southUV, 0, 0.5);
         DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
+        DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
         incrementIndexes(data);
     },
 };
@@ -220,7 +268,7 @@ export const StairVoxelShape = {
 };
 const exposedChecks = {
     0: (face, shapeState, nshape, nshapeState) => {
-        if (face == "top" || face == "south") {
+        if (face == "top" || face == "north") {
             return true;
         }
         if (nshape.id == "Stair") {
@@ -229,7 +277,7 @@ const exposedChecks = {
                     return false;
             }
         }
-        if (face == "bottom" || face == "north") {
+        if (face == "bottom" || face == "south") {
             if (nshape.id == "Box") {
                 if (shapeState == shapeState)
                     return false;

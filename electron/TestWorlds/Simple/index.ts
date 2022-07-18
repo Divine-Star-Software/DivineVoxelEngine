@@ -53,9 +53,14 @@ const init = async () => {
   { x: 2, y: 45, z: 7 },
   { x: 10, y: 30, z: 10 }
  );
- SetUpDefaultSkybox(scene);
+ const box = SetUpDefaultSkybox(scene);
+ const bmat =  DVER.renderManager.createSkyBoxMaterial(scene);
+ if(bmat) {
+  box.material = bmat;
+ }
 
- CreateWorldAxis(scene, 36);
+
+ //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);
 

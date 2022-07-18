@@ -16,7 +16,7 @@ export const SharedFogFunctions = {
     fogVertexMain: `
  fFogDistance = (view * worldPosition).z;
  `,
-    fogFragFunction: `
+    defaultFogFragFunction: `
     float CalcFogFactor()
     {
         float fogCoeff = 1.0;
@@ -40,4 +40,24 @@ export const SharedFogFunctions = {
         return clamp(fogCoeff, 0.0, 1.0);
     }
     `,
+    volumetricFogFunction: `
+  float CalcVFogFactor()
+  {
+    float fogDensity = vFogInfos.w;
+    float fogTime = vTime * .05;
+    vec3 fogOrigin = cameraPOS;
+    vec3 fogDirection = normalize(worldPOS - fogOrigin);
+    float fogDepth = distance(worldPOS, fogOrigin);
+    vec3 noiseSampleCoord = worldPOS * 0.00025 + vec3(
+        0.0, 0.0, fogTime * 0.025);
+    float noiseSample = fbm3(noiseSampleCoord + fbm3(noiseSampleCoord)) * 0.5 + 0.5;
+    fogDepth *= mix(noiseSample, 1.0, clamp((fogDepth - 5000.0) / 5000.0,0.,1.));
+    fogDepth *= fogDepth;
+    float heightFactor = 0.005;
+    float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (
+        1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
+    fogFactor = clamp(fogFactor,0.,1.);
+    return fogFactor;
+  }
+  `
 };

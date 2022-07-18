@@ -3,6 +3,8 @@ export declare const SharedVertexShader: {
     standardPositionMain: string;
     uniforams: string;
     attributes(ao?: boolean): string;
+    defaultAttributes: string;
+    defaultVarying: string;
     varying(ao?: boolean): string;
     optionVars(ao?: boolean): string;
     useTime(passTime: boolean): string;
@@ -13,6 +15,7 @@ export declare const SharedVertexShader: {
     doSun: string;
     doColors: string;
     doNormals: string;
+    updateVarying: string;
     getAnimationType: string;
     animationFunctions: string;
 };

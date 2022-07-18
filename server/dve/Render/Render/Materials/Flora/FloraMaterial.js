@@ -73,6 +73,7 @@ export const FloraMaterial = {
                 "worldViewProjection",
                 "vFogInfos",
                 "vFogColor",
+                "cameraPosition",
                 "sunLightLevel",
                 "baseLevel",
                 "projection",
@@ -108,7 +109,7 @@ export const FloraMaterial = {
         };
         let time = 0;
         data.scene.registerBeforeRender(function () {
-            time += 0.08;
+            time += 0.005;
             shaderMaterial.setFloat("time", time);
         });
         this.material = shaderMaterial;

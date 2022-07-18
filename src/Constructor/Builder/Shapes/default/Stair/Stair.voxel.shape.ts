@@ -48,10 +48,10 @@ const tempAOTemplte = (
  if (type == "top") {
   if (side == "top") {
    return [
-    v1,
     data.aoTemplate[data.aoIndex],
-    data.aoTemplate[data.aoIndex + 1],
+    v1,
     v2,
+    data.aoTemplate[data.aoIndex + 3],
    ];
   }
   if (side == "bottom") {
@@ -74,10 +74,54 @@ const tempAOTemplte = (
   }
   if (side == "bottom") {
    return [
-    data.aoTemplate[data.aoIndex + 2],
-    data.aoTemplate[data.aoIndex + 3],
     v1,
     v2,
+    data.aoTemplate[data.aoIndex + 2],
+    data.aoTemplate[data.aoIndex + 3],
+   ];
+  }
+ }
+ return [1, 1, 1, 1];
+};
+
+const tempLightTemplte = (
+ type: "top" | "side",
+ side: "top" | "bottom",
+ data: VoxelShapeAddData
+) => {
+ if (type == "top") {
+  if (side == "top") {
+   return [
+    data.lightTemplate[data.lightIndex],
+    data.lightTemplate[data.lightIndex + 1],
+    data.lightTemplate[data.lightIndex + 2],
+    data.lightTemplate[data.lightIndex + 3],
+   ];
+  }
+  if (side == "bottom") {
+   return [
+    data.lightTemplate[data.lightIndex],
+    data.lightTemplate[data.lightIndex + 1],
+    data.lightTemplate[data.lightIndex + 2],
+    data.lightTemplate[data.lightIndex + 3],
+   ];
+  }
+ }
+ if (type == "side") {
+  if (side == "top") {
+   return [
+    data.lightTemplate[data.lightIndex],
+    data.lightTemplate[data.lightIndex + 1],
+    data.lightTemplate[data.lightIndex + 2],
+    data.lightTemplate[data.lightIndex + 3],
+   ];
+  }
+  if (side == "bottom") {
+   return [
+    data.lightTemplate[data.lightIndex],
+    data.lightTemplate[data.lightIndex + 1],
+    data.lightTemplate[data.lightIndex + 2],
+    data.lightTemplate[data.lightIndex + 3],
    ];
   }
  }
@@ -150,6 +194,7 @@ const addHalfUV = (
   flipped: false,
   rotoate: rotation,
  });
+ DVEB.uvHelper.processOverlayUVs(data);
 };
 
 const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
@@ -159,6 +204,7 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
 #  TOP
 ##################### 
 */
+
   const topUV = data.unTemplate[data.uvTemplateIndex];
   setPositon(
    cachedPosition.x + topHalf.width,
@@ -168,13 +214,29 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   //upper
   DVEB.shapeBuilder.addFace("top", position, topHalf, data, false);
   addHalfUV("top", data, topUV, 0, 0.5);
-  DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 1, 1], 0);
+  DVEB.shapeHelper.calculateAOColor(
+   data.AOColors,
+   tempAOTemplte("top", "top", data),
+   0
+  );
+  DVEB.shapeHelper.calculateLightColor(
+   data.RGBLightColors,
+   data.sunLightColors,
+   tempLightTemplte("top", "top", data),
+   0
+  );
   //lower
   position.y -= 0.5;
   position.z += 0.5;
   DVEB.shapeBuilder.addFace("top", position, topHalf, data, false);
   addHalfUV("top", data, topUV, 0.5, 1);
   DVEB.shapeHelper.calculateAOColor(data.AOColors, [0.6, 1, 1, 0.6], 0);
+  DVEB.shapeHelper.calculateLightColor(
+   data.RGBLightColors,
+   data.sunLightColors,
+   tempLightTemplte("top", "top", data),
+   0
+  );
   incrementIndexes(data);
 
   //################## Nomral
@@ -207,6 +269,12 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
     tempAOTemplte("side", "bottom", data),
     0
    );
+   DVEB.shapeHelper.calculateLightColor(
+    data.RGBLightColors,
+    data.sunLightColors,
+    tempLightTemplte("side", "bottom", data),
+    0
+   );
    //upper
    setPositon(
     cachedPosition.x + sideQuater.width,
@@ -218,7 +286,13 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
    addHalfUV("east", data, eastUV, 0, 0.5, 0, 0.5);
    DVEB.shapeHelper.calculateAOColor(
     data.AOColors,
-    tempAOTemplte("side", "bottom", data),
+    tempAOTemplte("side", "top", data),
+    0
+   );
+   DVEB.shapeHelper.calculateLightColor(
+    data.RGBLightColors,
+    data.sunLightColors,
+    tempLightTemplte("side", "top", data),
     0
    );
    incrementIndexes(data);
@@ -243,6 +317,12 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
     tempAOTemplte("side", "bottom", data),
     0
    );
+   DVEB.shapeHelper.calculateLightColor(
+    data.RGBLightColors,
+    data.sunLightColors,
+    tempLightTemplte("side", "bottom", data),
+    0
+   );
    //upper
    setPositon(
     cachedPosition.x + sideQuater.width,
@@ -254,7 +334,13 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
    addHalfUV("west", data, westUV, 0.5, 0, 0.5, 0);
    DVEB.shapeHelper.calculateAOColor(
     data.AOColors,
-    tempAOTemplte("side", "bottom", data),
+    tempAOTemplte("side", "top", data),
+    0
+   );
+   DVEB.shapeHelper.calculateLightColor(
+    data.RGBLightColors,
+    data.sunLightColors,
+    tempLightTemplte("side", "top", data),
     0
    );
    incrementIndexes(data);
@@ -271,7 +357,7 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   }
   /**
 #####################
-#  NORTH
+#  North
 ##################### 
 */
   const southUV = data.unTemplate[data.uvTemplateIndex];
@@ -285,7 +371,13 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   addHalfUV("south", data, southUV, 0.5, 1);
   DVEB.shapeHelper.calculateAOColor(
    data.AOColors,
-   tempAOTemplte("side", "top", data),
+   tempAOTemplte("side", "bottom", data),
+   0
+  );
+  DVEB.shapeHelper.calculateLightColor(
+   data.RGBLightColors,
+   data.sunLightColors,
+   tempLightTemplte("side", "bottom", data),
    0
   );
   //upper
@@ -294,6 +386,12 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   DVEB.shapeBuilder.addFace("north", position, sideHalf, data, false);
   addHalfUV("south", data, southUV, 0, 0.5);
   DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
+  DVEB.shapeHelper.calculateLightColor(
+   data.RGBLightColors,
+   data.sunLightColors,
+   tempLightTemplte("side", "top", data),
+   0
+  );
   incrementIndexes(data);
  },
 };
@@ -343,7 +441,7 @@ const exposedChecks: Record<
  ) => boolean
 > = {
  0: (face, shapeState, nshape, nshapeState) => {
-  if (face == "top" || face == "south") {
+  if (face == "top" || face == "north") {
    return true;
   }
   if (nshape.id == "Stair") {
@@ -351,7 +449,7 @@ const exposedChecks: Record<
     if (shapeState == shapeState) return false;
    }
   }
-  if (face == "bottom" || face == "north") {
+  if (face == "bottom" || face == "south") {
    if (nshape.id == "Box") {
     if (shapeState == shapeState) return false;
    }

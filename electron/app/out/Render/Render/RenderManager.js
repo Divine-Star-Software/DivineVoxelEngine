@@ -11,6 +11,7 @@ import { SolidMaterial } from "./Materials/Solid/SolidMaterial.js";
 import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
 import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
 import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
+import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 export const RenderManager = {
     shaderBuilder: ShaderBuilder,
     textureCreator: TextureCreator,
@@ -19,6 +20,7 @@ export const RenderManager = {
     floraMaterial: FloraMaterial,
     fluidMaterial: FluidMaterial,
     magmaMaterial: MagmaMaterial,
+    skyBoxMaterial: SkyBoxMaterial,
     solidMesh: SolidMesh,
     floraMesh: FloraMesh,
     fluidMesh: FluidMesh,
@@ -36,6 +38,18 @@ export const RenderManager = {
     },
     getScene() {
         return this.scene;
+    },
+    createSkyBoxMaterial(scene) {
+        if (!this.scene && !scene) {
+            throw new Error(`Must set a scene first.`);
+        }
+        if (!this.scene && scene) {
+            this.skyBoxMaterial.createMaterial(scene);
+        }
+        if (this.scene && !scene) {
+            this.skyBoxMaterial.createMaterial(this.scene);
+        }
+        return this.skyBoxMaterial.getMaterial();
     },
     setSunLevel(level) {
         this.solidMaterial.setSunLightLevel(level);

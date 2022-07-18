@@ -49,6 +49,11 @@ export const Worlds: WorldsData = [
     world: "ServerTest",
     }, */
    {
+    title: "Shape Test Test",
+    description: "Used to test shapes and shape states.",
+    world: "ShapeTest",
+   },
+   {
     title: "Water/Magma Flow Test",
     description: "Used to test water and magma flow.",
     world: "WaterFlowTest",

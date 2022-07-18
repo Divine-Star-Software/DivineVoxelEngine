@@ -3,5 +3,6 @@ export declare const SharedFogFunctions: {
     fogFragVars: string;
     fogVertexTop: string;
     fogVertexMain: string;
-    fogFragFunction: string;
+    defaultFogFragFunction: string;
+    volumetricFogFunction: string;
 };

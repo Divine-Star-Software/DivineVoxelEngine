@@ -11,6 +11,7 @@ import { ShaderNoiseFunctions } from "./Code/Shared/Noise/NoiseShaderFunctions.j
 import { SharedFragmentShader } from "./Code/Shared/Fragment/FragmentShader.js";
 import { CommonShader } from "./Code/Shared/ComonShader.js";
 import { SharedVertexShader } from "./Code/Shared/Vertex/VertexShader.js";
+import { skyboxShaders } from "./Code/SkyBox/SkyBox.shader.js";
 /**# ShaderBuilder
  *---
  * Helps construct raw text shaders.
@@ -23,7 +24,7 @@ ${SharedVertexShader.attributes()}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying()}
 ${SharedVertexShader.optionVars()}
-${ShaderNoiseFunctions.fluid}
+${ShaderNoiseFunctions.fbm2}
 ${SharedVertexShader.useTime(true)}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
@@ -42,6 +43,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
+ ${SharedVertexShader.updateVarying}
 `)}
 `;
     },
@@ -54,7 +56,7 @@ ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
 ${SharedVertexShader.optionVars(false)}
 ${SharedVertexShader.useTime(true)}
-${ShaderNoiseFunctions.fluid}
+${ShaderNoiseFunctions.fbm2}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${overlayUniformRegister}
@@ -69,6 +71,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
+ ${SharedVertexShader.updateVarying}
 `)}
 `;
     },
@@ -78,6 +81,7 @@ ${SharedVertexShader.top}
 ${SharedVertexShader.attributes()}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying()}
+${SharedVertexShader.useTime(true)}
 ${SharedVertexShader.optionVars()}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
@@ -93,6 +97,8 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
+ ${SharedVertexShader.passTime}
+ ${SharedVertexShader.updateVarying}
 `)}
 `;
     },
@@ -105,7 +111,7 @@ ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
 ${SharedVertexShader.optionVars(false)}
 ${SharedVertexShader.useTime(true)}
-${ShaderNoiseFunctions.fluid}
+${ShaderNoiseFunctions.fbm2}
 ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${overlayUniformRegister}
@@ -120,20 +126,26 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
+ ${SharedVertexShader.updateVarying}
 `)}`;
     },
     buildSolidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
+${ShaderNoiseFunctions.fbm3}
+${SharedFragmentShader.useTime}
 ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables()}
 ${SharedFragmentShader.varying()}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.fogFragFunction}
+${SharedFogFunctions.defaultFogFragFunction}
+${SharedFogFunctions.volumetricFogFunction}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getAO}
 ${SharedFragmentShader.getLight}
 ${SharedFragmentShader.doFog}
+${SharedFragmentShader.doVFog}
+
 ${CommonShader.getMainFunction(`
 ${solidShaders.fragMain}
 `)}`;
@@ -142,15 +154,18 @@ ${solidShaders.fragMain}
         return `
 ${SharedFragmentShader.top}
 ${fluidShaders.fragVars}
+${SharedFragmentShader.useTime}
+${ShaderNoiseFunctions.fbm3}
 ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables(false)}
 ${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.fogFragFunction}
+${SharedFogFunctions.defaultFogFragFunction}
+${SharedFogFunctions.volumetricFogFunction}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getLight}
 ${SharedFragmentShader.doFog}
-${SharedFragmentShader.useTime}
+${SharedFragmentShader.doVFog}
 
 ${CommonShader.getMainFunction(`
 ${fluidShaders.fragMain}
@@ -159,17 +174,21 @@ ${fluidShaders.fragMain}
     buildFloraFragmentShader() {
         return `
   ${SharedFragmentShader.top}
+  ${SharedFragmentShader.hsv2rgbSmooth}
+  ${SharedFragmentShader.useTime}
+  ${ShaderNoiseFunctions.fbm3}
   ${SharedFogFunctions.fogFragConstants}
   ${SharedFragmentShader.optionVariables()}
   ${SharedFragmentShader.varying()}
   ${SharedFogFunctions.fogFragVars}
-  ${SharedFogFunctions.fogFragFunction}
+  ${SharedFogFunctions.defaultFogFragFunction}
+  ${SharedFogFunctions.volumetricFogFunction}
   ${SharedFragmentShader.getColor}
   ${SharedFragmentShader.getAO}
   ${SharedFragmentShader.getLight}
   ${SharedFragmentShader.doFog}
-  ${SharedFragmentShader.hsv2rgbSmooth}
-  ${SharedFragmentShader.useTime}
+  ${SharedFragmentShader.doVFog}
+
   ${CommonShader.getMainFunction(`
   ${floraShaders.fragMain}
   `)}`;
@@ -181,7 +200,7 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables(false)}
 ${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.fogFragFunction}
+${SharedFogFunctions.defaultFogFragFunction}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getAO}
 ${SharedFragmentShader.getLight}
@@ -219,5 +238,39 @@ ${solidShaders.fragMain}
             return this.buildFloraFragmentShader();
         }
         return "";
+    },
+    getSkyBoxFragmentShader() {
+        return `
+${SharedFragmentShader.top}
+${SharedFragmentShader.defaultVarying}
+${SharedFragmentShader.useTime}
+${ShaderNoiseFunctions.fbm3}
+${SharedFogFunctions.fogFragConstants}
+${SharedFogFunctions.fogFragVars}
+${SharedFogFunctions.volumetricFogFunction}
+${SharedFragmentShader.doVFog}
+#define speed 5.2
+#define k2PI (2.*3.14159265359)
+#define kStarDensity 0.4
+#define kMotionBlur 0.2
+#define kNumAngles 200.
+${CommonShader.getMainFunction(`
+${skyboxShaders.fragMain}
+`)}`;
+    },
+    getSkyBoxVertexShader() {
+        return `
+${SharedVertexShader.top}
+${SharedVertexShader.defaultAttributes}
+${SharedVertexShader.uniforams}
+${SharedVertexShader.defaultVarying}
+${SharedVertexShader.useTime(true)}
+${SharedFogFunctions.fogVertexTop}
+${CommonShader.getMainFunction(`
+ ${SharedVertexShader.standardPositionMain}
+ ${SharedVertexShader.passTime}
+ ${SharedVertexShader.updateVarying}
+`)}
+`;
     },
 };

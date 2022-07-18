@@ -1,3 +1,4 @@
 export declare const ShaderNoiseFunctions: {
-    fluid: string;
+    fbm2: string;
+    fbm3: string;
 };
