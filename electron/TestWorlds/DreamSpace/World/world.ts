@@ -10,7 +10,8 @@ const playerWatcher = new PlayerWatcher(DVEW);
 DVEW.renderComm.listenForMessage("voxel-add", async (data, event) => {
  await DVEW.worldData.requestVoxelAdd(
   "dve:dreamstone",
-  "default", 0,
+  "default",
+  0,
   data[1],
   data[2],
   data[3]
@@ -44,8 +45,6 @@ console.log(t2 - t1);
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
-  for (let y = 0; y < 8; y++) {
-   DVEW.buildChunk(x, 32 * y, z);
-  }
+  DVEW.buildWorldColumn(x, z);
  }
 }

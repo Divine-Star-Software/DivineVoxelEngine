@@ -1,18 +1,24 @@
 import type { VoxelShapeAddData } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
-declare type sideTypes = "normal" | "stair-top" | "stair-side" | "side";
-declare type stairData = {
+export declare type sideTypes = "normal" | "stair-top" | "stair-side" | "side";
+export declare type stairBuildData = {
     type: sideTypes;
-    transform1: {
-        x: 0;
-        y: 0;
-        z: 0;
+    _2dDimensionType?: boolean;
+    reverse?: boolean;
+    transform1?: {
+        x: number;
+        y: number;
+        z: number;
     };
-    transform2: {
-        x: 0;
-        y: 0;
-        z: 0;
+    transform2?: {
+        x: number;
+        y: number;
+        z: number;
     };
 };
-export declare const buildStar: (data: VoxelShapeAddData, stairData: Record<DirectionNames, stairData>) => void;
-export {};
+export declare const stairCachedPosition: {
+    x: number;
+    y: number;
+    z: number;
+};
+export declare const buildStair: (data: VoxelShapeAddData, stairData: Record<DirectionNames, stairBuildData>) => void;

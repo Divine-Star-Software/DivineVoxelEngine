@@ -152,13 +152,16 @@ const faceFunctions = {
     },
 };
 export const FluidSourceBlockVoxelShape = {
-    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
-        if (face == "top" &&
-            neighborVoxelData.substance != "fluid" &&
-            voxelData.id != neighborVoxelData.id) {
+    cullFace(data) {
+        if (data.face == "top" &&
+            data.neighborVoxel.substance != "fluid" &&
+            data.voxel.id != data.neighborVoxel.id) {
             return true;
         }
-        return substanceResult;
+        return data.substanceResult;
+    },
+    aoOverRide(data) {
+        return data.substanceResult;
     },
     id: "FluidSourceBlock",
     addToChunkMesh(data) {

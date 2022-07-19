@@ -47,8 +47,11 @@ const processDefaultFaceData = (face, data, halfUV = false) => {
 };
 export const HalfBoxVoxelShape = {
     id: "HalfBox",
-    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
-        return substanceResult;
+    cullFace(data) {
+        return data.substanceResult;
+    },
+    aoOverRide(data) {
+        return data.substanceResult;
     },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width;

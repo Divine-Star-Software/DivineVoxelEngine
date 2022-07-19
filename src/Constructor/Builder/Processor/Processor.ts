@@ -20,6 +20,7 @@ import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
+import { CullFaceOverride } from "Meta/Constructor/OverRide.types";
 
 /**# Chunk Processor
  * ---
@@ -127,41 +128,32 @@ export const Processor = {
   z: number,
   faceBit: number
  ) {
-  const neightborVoxel = this.worldMatrix.getVoxelData(x, y, z);
+  const neighborVoxel = this.worldMatrix.getVoxelData(x, y, z);
   let finalResult = false;
-  if (neightborVoxel) {
-   const nv = DVEC.voxelManager.getVoxel(neightborVoxel.id);
+  if (neighborVoxel) {
+   const nv = DVEC.voxelManager.getVoxel(neighborVoxel.id);
    let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(
     voxel.data,
-    neightborVoxel
+    neighborVoxel
    );
 
    const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
-   const neighborVoxelShapState = this.worldMatrix.getVoxelShapeState(x, y, z);
-   let shapeResult = shape.cullFace(
-    face,
-    substanceRuleResult,
-    shapeState,
-    voxel.data,
-    neightborVoxel,
-    neighborVoxelShape,
-    neighborVoxelShapState
-   );
+   const neighborVoxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+   const data: CullFaceOverride = {
+    face: face,
+    substanceResult: substanceRuleResult,
+    shapeState: shapeState,
+    voxel: voxel.data,
+    neighborVoxel: neighborVoxel,
+    neighborVoxelShape: neighborVoxelShape,
+    neighborVoxelShapeState: neighborVoxelShapeState,
+   };
+   let shapeResult = shape.cullFace(data);
    if (!voxel.cullFace) {
     finalResult = shapeResult;
    } else {
-    finalResult = voxel.cullFace(
-     face,
-     substanceRuleResult,
-     shapeResult,
-     neightborVoxel,
-     voxelState,
-     shapeState,
-     x,
-     y,
-     z
-    );
+    finalResult = voxel.cullFace(data);
    }
   } else {
    finalResult = true;

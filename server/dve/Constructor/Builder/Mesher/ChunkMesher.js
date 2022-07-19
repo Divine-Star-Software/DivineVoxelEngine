@@ -42,45 +42,58 @@ export const ChunkMesher = {
             let overlayUVIndex = 0;
             let shapeStateIndex = 0;
             let flowTemplateIndex = 0;
+            const shapeAddData = {
+                substance: type,
+                LOD: LOD,
+                //mesh data
+                positions: positions,
+                normals: normals,
+                indices: indices,
+                faceData: faceData,
+                RGBLightColors: RGBLightColors,
+                sunLightColors: sunLightColors,
+                colors: colors,
+                AOColors: AOColors,
+                uvs: uvs,
+                overlayUVs: overlayUVS,
+                indicieIndex: indicieIndex,
+                //chunks template
+                shapeState: 0,
+                flowTemplateIndex: flowTemplateIndex,
+                flowTemplate: baseTemplate.flowTemplate,
+                unTemplate: baseTemplate.uvTemplate,
+                uvTemplateIndex: uvIndex,
+                overylayUVTemplate: baseTemplate.overlayUVTemplate,
+                overylayUVTemplateIndex: overlayUVIndex,
+                colorTemplate: baseTemplate.colorTemplate,
+                colorIndex: colorIndex,
+                lightTemplate: baseTemplate.lightTemplate,
+                lightIndex: RGBLightIndex,
+                aoTemplate: baseTemplate.aoTemplate,
+                aoIndex: aoIndex,
+                //voxel data
+                face: 0,
+                position: { x: 0, y: 0, z: 0 },
+            };
             for (let positionIndex = 0; positionIndex < baseTemplate.positionTemplate.length; positionIndex += 3) {
                 const x = baseTemplate.positionTemplate[positionIndex] + chunkX;
                 const y = baseTemplate.positionTemplate[positionIndex + 1] + chunkY;
                 const z = baseTemplate.positionTemplate[positionIndex + 2] + chunkZ;
+                shapeAddData.indicieIndex = indicieIndex;
+                shapeAddData.face = baseTemplate.faceTemplate[faceIndex];
+                shapeAddData.shapeState = baseTemplate.shapeStateTemplate[shapeStateIndex];
+                shapeAddData.flowTemplateIndex = flowTemplateIndex;
+                shapeAddData.uvTemplateIndex = uvIndex;
+                shapeAddData.overylayUVTemplateIndex = overlayUVIndex;
+                shapeAddData.colorIndex = colorIndex;
+                shapeAddData.lightIndex = RGBLightIndex;
+                shapeAddData.aoIndex = aoIndex;
+                shapeAddData.position.x = x;
+                shapeAddData.position.y = y;
+                shapeAddData.position.z = z;
                 const shapeId = baseTemplate.shapeTemplate[shapeIndex];
                 const shape = DVEB.shapeManager.getShape(shapeId);
-                const newIndexes = shape.addToChunkMesh({
-                    substance: type,
-                    LOD: LOD,
-                    //mesh data
-                    positions: positions,
-                    normals: normals,
-                    indices: indices,
-                    faceData: faceData,
-                    RGBLightColors: RGBLightColors,
-                    sunLightColors: sunLightColors,
-                    colors: colors,
-                    AOColors: AOColors,
-                    uvs: uvs,
-                    overlayUVs: overlayUVS,
-                    indicieIndex: indicieIndex,
-                    //chunks template
-                    shapeState: baseTemplate.shapeStateTemplate[shapeStateIndex],
-                    flowTemplateIndex: flowTemplateIndex,
-                    flowTemplate: baseTemplate.flowTemplate,
-                    unTemplate: baseTemplate.uvTemplate,
-                    uvTemplateIndex: uvIndex,
-                    overylayUVTemplate: baseTemplate.overlayUVTemplate,
-                    overylayUVTemplateIndex: overlayUVIndex,
-                    colorTemplate: baseTemplate.colorTemplate,
-                    colorIndex: colorIndex,
-                    lightTemplate: baseTemplate.lightTemplate,
-                    lightIndex: RGBLightIndex,
-                    aoTemplate: baseTemplate.aoTemplate,
-                    aoIndex: aoIndex,
-                    //voxel data
-                    face: baseTemplate.faceTemplate[faceIndex],
-                    position: { x: x, y: y, z: z },
-                });
+                const newIndexes = shape.addToChunkMesh(shapeAddData);
                 indicieIndex = newIndexes.newIndicieIndex;
                 aoIndex = newIndexes.newAOIndex;
                 uvIndex = newIndexes.newUVTemplateIndex;

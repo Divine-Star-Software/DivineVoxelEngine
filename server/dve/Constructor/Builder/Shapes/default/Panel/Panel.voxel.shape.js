@@ -87,8 +87,14 @@ const shapeStates = {
 };
 export const PanelVoxelShape = {
     id: "Panel",
-    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
-        return substanceResult;
+    cullFace(data) {
+        return data.substanceResult;
+    },
+    aoOverRide(data) {
+        if (data.voxel.substance == "flora") {
+            return false;
+        }
+        return data.substanceResult;
     },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width;

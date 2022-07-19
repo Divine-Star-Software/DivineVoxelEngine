@@ -1,4 +1,5 @@
 import { Util } from "../../../../Global/Util.helper.js";
+import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 const lightByte = Util.getLightByte();
 const RGBvertexStates = {
     1: {
@@ -125,6 +126,9 @@ const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData = {
     light: 0,
     voxelData: false,
+    voxelObject: false,
+    shapeState: 0,
+    currentShape: false,
 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
@@ -141,7 +145,14 @@ const fallBackLight = (processor, x, y, z) => {
 };
 export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2) {
     if (this.settings.doAO && !ignoreAO) {
-        currentVoxelData.voxelData = this.worldMatrix.getVoxelData(tx, ty, tz);
+        const voxelId = this.worldMatrix.getVoxel(tx, ty, tz);
+        if (voxelId) {
+            const voxel = DVEC.voxelManager.getVoxel(voxelId[0]);
+            currentVoxelData.voxelObject = voxel;
+            currentVoxelData.voxelData = voxel.data;
+            currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
+        }
+        currentVoxelData.shapeState = this.worldMatrix.getVoxelShapeState(tx, ty, tz);
     }
     if (ignoreAO || !this.settings.doAO) {
         states.ignoreAO = true;
@@ -155,10 +166,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.top[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.top[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.top[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.top[4], 4, LOD);
+        this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[1], 1, LOD);
+        this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[2], 2, LOD);
+        this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[3], 3, LOD);
+        this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[4], 4, LOD);
         handleAdd(data, 0);
     }
     //bottom
@@ -167,10 +178,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.bottom[4], 4, LOD);
+        this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[1], 1, LOD);
+        this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[2], 2, LOD);
+        this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[3], 3, LOD);
+        this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[4], 4, LOD);
         handleAdd(data, 1);
     }
     //east
@@ -179,10 +190,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.east[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.east[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.east[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.east[4], 4, LOD);
+        this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[1], 1, LOD);
+        this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[2], 2, LOD);
+        this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[3], 3, LOD);
+        this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[4], 4, LOD);
         handleAdd(data, 2);
     }
     //west
@@ -191,10 +202,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.west[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.west[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.west[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.west[4], 4, LOD);
+        this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[1], 1, LOD);
+        this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[2], 2, LOD);
+        this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[3], 3, LOD);
+        this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[4], 4, LOD);
         handleAdd(data, 3);
     }
     //south
@@ -203,10 +214,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.south[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.south[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.south[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.south[4], 4, LOD);
+        this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[1], 1, LOD);
+        this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[2], 2, LOD);
+        this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[3], 3, LOD);
+        this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[4], 4, LOD);
         handleAdd(data, 4);
     }
     //north
@@ -215,10 +226,10 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
-        this.voxellightMixCalc(tx, ty, tz, checkSets.north[1], 1, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.north[2], 2, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.north[3], 3, LOD);
-        this.voxellightMixCalc(tx, ty, tz, checkSets.north[4], 4, LOD);
+        this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[1], 1, LOD);
+        this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[2], 2, LOD);
+        this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[3], 3, LOD);
+        this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[4], 4, LOD);
         handleAdd(data, 5);
     }
 }
@@ -302,28 +313,53 @@ const lightEnd = (vertex) => {
     zeroCheck.b = 0;
     zeroCheck.g = 0;
 };
-const doAO = (checkVoxel) => {
-    if (!checkVoxel || !currentVoxelData.voxelData) {
+const doAO = (face, x, y, z) => {
+    const neighborVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
+    if (!neighborVoxelId)
+        return;
+    const neighborVoxel = DVEC.voxelManager.getVoxel(neighborVoxelId[0]);
+    if (!neighborVoxel || !currentVoxelData.voxelData) {
         return;
     }
+    let finalResult = false;
+    let substanceRuleResult = true;
     const voxel = currentVoxelData.voxelData;
     if (voxel.substance == "transparent" || voxel.substance == "solid") {
-        if (checkVoxel.substance != "solid" &&
-            checkVoxel.substance != "transparent") {
-            return;
+        if (neighborVoxel.data.substance != "solid" &&
+            neighborVoxel.data.substance != "transparent") {
+            substanceRuleResult = false;
         }
     }
     else {
-        if (checkVoxel.substance !== voxel.substance) {
-            return;
+        if (neighborVoxel.data.substance !== voxel.substance) {
+            substanceRuleResult = false;
         }
     }
-    AOValues.a *= 0.65;
+    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(neighborVoxel.trueShapeId);
+    const neighborVoxelShapeState = DVEC.worldMatrix.getVoxelShapeState(x, y, z);
+    const aoCheckData = {
+        face: face,
+        substanceResult: substanceRuleResult,
+        shapeState: currentVoxelData.shapeState,
+        voxel: currentVoxelData.voxelData,
+        neighborVoxel: neighborVoxel.data,
+        neighborVoxelShape: neighborVoxelShape,
+        neighborVoxelShapeState: neighborVoxelShapeState,
+    };
+    if (currentVoxelData.currentShape) {
+        finalResult = currentVoxelData.currentShape.aoOverRide(aoCheckData);
+    }
+    if (currentVoxelData.voxelObject && currentVoxelData.voxelObject.aoOverRide) {
+        finalResult = currentVoxelData.voxelObject.aoOverRide(aoCheckData);
+    }
+    if (finalResult) {
+        AOValues.a *= 0.65;
+    }
 };
 const AOEnd = (vertex) => {
     AOVerotexStates[vertex].value = AOValues.a;
 };
-export function VoxelLightMixCalc(x, y, z, checkSet, vertex, LOD = 1) {
+export function VoxelLightMixCalc(face, x, y, z, checkSet, vertex, LOD = 1) {
     if (this.settings.doRGB || this.settings.doSun) {
         const values = this.lightByte.getLightValues(currentVoxelData.light);
         if (this.settings.doSun) {
@@ -367,8 +403,7 @@ export function VoxelLightMixCalc(x, y, z, checkSet, vertex, LOD = 1) {
             }
         }
         if (!states.ignoreAO) {
-            const checkVoxel = this.worldMatrix.getVoxelData(cx, cy, cz);
-            doAO(checkVoxel);
+            doAO(face, cx, cy, cz);
         }
     }
     if (this.settings.doSun || this.settings.doRGB) {

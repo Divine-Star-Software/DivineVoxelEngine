@@ -29,7 +29,9 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 //await DVEW.queues.runWorldColumnSunLightAndUpateQue();
-
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 3, 15, 17, 11);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 2, 13, 17, 11);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 1, 11, 17, 11);
 DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 9, 17, 11);
 
 DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 16, 11);
@@ -61,8 +63,6 @@ DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, -12, 17, 11);
 DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, -14, 16, 11);
 DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, -15, 17, 11);
 DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, -16, 16, 11);
-
-
 
 //-1 10 0
 //0 10 -1

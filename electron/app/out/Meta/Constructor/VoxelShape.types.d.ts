@@ -1,5 +1,6 @@
-import { VoxelData, VoxelSubstanceType } from "Meta/index";
-import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
+import { VoxelSubstanceType } from "Meta/index";
+import type { Position3Matrix } from "Meta/Util.types";
+import { AOAddOVerRide, CullFaceOverride } from "./OverRide.types";
 /** # Voxel Shape Add DAta
 ---
 * The chunk meshes positions
@@ -85,7 +86,8 @@ export declare type VoxelShapeAddReturnData = {
  */
 export declare type VoxelShapeInterface = {
     id: string;
-    cullFace(face: DirectionNames, substanceResult: boolean, shapeState: number, voxel: VoxelData, neighborVoxel: VoxelData, neighborVoxelShape: VoxelShapeInterface, neighborVoxelShapeState: number): boolean;
+    cullFace(data: CullFaceOverride): boolean;
+    aoOverRide(data: AOAddOVerRide): boolean;
     /**# Add To Chunk Mesh
      * ---
      */

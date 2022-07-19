@@ -64,8 +64,11 @@ const faceFunctions = {
 };
 export const FullBoxDiagonalIntersection = {
     id: "FullBoxDiagonalIntersection",
-    cullFace(face, substanceResult, shapeState, voxelData, neighborVoxelData, neighborVoxelShape) {
-        return substanceResult;
+    cullFace(data) {
+        return data.substanceResult;
+    },
+    aoOverRide(data) {
+        return data.substanceResult;
     },
     addToChunkMesh(data) {
         data.position.x += shapeDimensions.width;

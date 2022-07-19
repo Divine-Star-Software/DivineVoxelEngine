@@ -31,8 +31,6 @@ const t2 = performance.now();
 console.log(t2 - t1);
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        for (let y = 0; y < 8; y++) {
-            DVEW.buildChunk(x, 32 * y, z);
-        }
+        DVEW.buildWorldColumn(x, z);
     }
 }

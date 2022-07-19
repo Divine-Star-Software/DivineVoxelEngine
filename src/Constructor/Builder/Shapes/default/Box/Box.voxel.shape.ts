@@ -64,15 +64,19 @@ const processDefaultFaceData = (
 
 export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
- cullFace(
-  face,
-  substanceResult,
-  shapeState,
-  voxelData,
-  neighborVoxelData,
-  neighborVoxelShape
- ) {
-  return substanceResult;
+ cullFace(data) {
+  return data.substanceResult;
+ },
+ aoOverRide(data) {
+  if (data.neighborVoxelShape.id == "HalfBox") {
+   if (data.neighborVoxelShapeState == 0) {
+    return false;
+   }
+  }
+  if (data.neighborVoxelShape.id == "Box") {
+   return true;
+  }
+  return data.substanceResult;
  },
  addToChunkMesh(data) {
   data.position.x += shapeDimensions.width * data.LOD;

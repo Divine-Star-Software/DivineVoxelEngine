@@ -146,15 +146,14 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
 
 export const PanelVoxelShape: VoxelShapeInterface = {
  id: "Panel",
- cullFace(
-  face,
-  substanceResult,
-  shapeState,
-  voxelData,
-  neighborVoxelData,
-  neighborVoxelShape
- ) {
-  return substanceResult;
+ cullFace(data) {
+  return data.substanceResult;
+ },
+ aoOverRide(data) {
+  if (data.voxel.substance == "flora") {
+   return false;
+  }
+  return data.substanceResult;
  },
  addToChunkMesh(data: VoxelShapeAddData) {
   data.position.x += shapeDimensions.width;

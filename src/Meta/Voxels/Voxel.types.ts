@@ -1,4 +1,8 @@
 import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import {
+ AOAddOVerRide,
+ CullFaceOverride,
+} from "Meta/Constructor/OverRide.types";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 import { DirectionNames } from "Meta/Util.types";
 
@@ -64,18 +68,9 @@ export type VoxelConstructorObject = {
  >;
 
  cullFace?: {
-  (
-   face: DirectionNames,
-   substanceResult: boolean,
-   shapeResult: boolean,
-   neighborVoxel: VoxelData,
-   voxelState: string,
-   shapeState: number,
-   x: number,
-   y: number,
-   z: number
-  ): boolean;
+  (data: CullFaceOverride): boolean;
  };
 
+ aoOverRide?: { (data: AOAddOVerRide): boolean };
  process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };

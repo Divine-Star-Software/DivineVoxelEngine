@@ -111,15 +111,11 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
 
 export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
  id: "FullBoxDiagonalIntersection",
- cullFace(
-  face,
-  substanceResult,
-  shapeState,
-  voxelData,
-  neighborVoxelData,
-  neighborVoxelShape
- ) {
-  return substanceResult;
+ cullFace(data) {
+  return data.substanceResult;
+ },
+ aoOverRide(data) {
+  return data.substanceResult;
  },
  addToChunkMesh(data: VoxelShapeAddData) {
   data.position.x += shapeDimensions.width;

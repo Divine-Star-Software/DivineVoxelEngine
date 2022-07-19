@@ -25,14 +25,14 @@ await DVER.$INIT({
  constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
-  doRGBLight: true,
+  doRGBLight: false,
   doSunLight: false,
   autoRGBLight: true,
   autoSunLight: false,
  },
  materials: {
   doAO: true,
-  doRGBLight: true,
+  doRGBLight: false,
   doSunLight: false,
   disableFloraShaderEffects: false,
   disableFluidShaderEffects: false,
@@ -51,12 +51,12 @@ const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
  const scene = SetUpDarkScene(engine);
- const camera = SetUpDefaultCamera(scene, canvas,{x:6,y:18,z:17});
+ const camera = SetUpDefaultCamera(scene, canvas, { x: 6, y: 18, z: 17 });
  SetUpDefaultSkybox(scene);
- CreateWorldAxis(scene, 10);
+ //CreateWorldAxis(scene, 10);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.1);
+ DVER.renderManager.setBaseLevel(1);
  DVER.renderManager.setSunLevel(0);
 
  runRenderLoop(engine, scene, camera, DVER);

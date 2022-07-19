@@ -195,23 +195,19 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
 };
 
 export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
- cullFace(
-  face,
-  substanceResult,
-  shapeState,
-  voxelData,
-  neighborVoxelData,
-  neighborVoxelShape
- ) {
+ cullFace(data) {
   if (
-   face == "top" &&
-   neighborVoxelData.substance != "fluid" &&
-   voxelData.id != neighborVoxelData.id
+   data.face == "top" &&
+   data.neighborVoxel.substance != "fluid" &&
+   data.voxel.id != data.neighborVoxel.id
   ) {
    return true;
   }
 
-  return substanceResult;
+  return data.substanceResult;
+ },
+ aoOverRide(data) {
+  return data.substanceResult;
  },
  id: "FluidSourceBlock",
  addToChunkMesh(data: VoxelShapeAddData) {
