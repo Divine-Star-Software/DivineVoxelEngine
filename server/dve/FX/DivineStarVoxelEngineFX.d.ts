@@ -19,7 +19,7 @@ export declare const DVEFX: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -136,7 +136,7 @@ export declare const DVEFX: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -175,7 +175,7 @@ export declare const DVEFX: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -199,7 +199,7 @@ export declare const DVEFX: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -262,6 +262,7 @@ export declare const DVEFX: {
             setShapeState(voxelData: number, shapeState: number): number;
         };
         getLightByte(): {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
@@ -567,7 +568,7 @@ export declare const DVEFX: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -669,6 +670,7 @@ export declare const DVEFX: {
             setShapeState(voxelData: number, shapeState: number): number;
         };
         lightByte: {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
@@ -715,7 +717,7 @@ export declare const DVEFX: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -791,7 +793,7 @@ export declare const DVEFX: {
         getVoxelShapeState(x: number, y: number, z: number): number;
         getLevel(x: number, y: number, z: number): number;
         setLevel(level: number, x: number, y: number, z: number): void;
-        getLeveState(x: number, y: number, z: number): number;
+        getLevelState(x: number, y: number, z: number): number;
         setLevelState(state: number, x: number, y: number, z: number): void;
         setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: import("Meta/index.js").VoxelData, chunk: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk): void;
@@ -816,7 +818,7 @@ export declare const DVEFX: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
-        getData(x: number, y: number, z: number, state?: boolean): any;
+        getData(x: number, y: number, z: number, state?: boolean): number;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
         getLight(x: number, y: number, z: number): number;
         setAir(x: number, y: number, z: number, lightValue: number): void;

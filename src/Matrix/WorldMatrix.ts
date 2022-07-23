@@ -130,10 +130,10 @@ export const WorldMatrix = {
   this.setData(x, y, z, data, true);
  },
 
- getLeveState(x: number, y: number, z: number) {
+ getLevelState(x: number, y: number, z: number) {
   let data = this.getData(x, y, z, true);
   if (!data) data = 0;
-  const state =  this.voxelByte.decodeLevelStateFromVoxelData(data);
+  const state = this.voxelByte.decodeLevelStateFromVoxelData(data);
   return state;
  },
 
@@ -409,6 +409,7 @@ export const WorldMatrix = {
  setAir(x: number, y: number, z: number, lightValue: number) {
   let data = this.lightByte.encodeLightIntoVoxelData(0, lightValue);
   this.setData(x, y, z, data);
+  this.setData(x, y, z, 0, true);
  },
 
  setFullSun(x: number, y: number, z: number) {

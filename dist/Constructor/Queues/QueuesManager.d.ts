@@ -1,5 +1,5 @@
 export declare const QueuesManager: {
-    states: Uint32Array;
+    __states: Uint32Array;
     setQueueStates(states: Uint32Array): void;
     finishRGBLightUpdate(): void;
     finishRGBLightRemove(): void;
@@ -12,4 +12,6 @@ export declare const QueuesManager: {
     finishFlowRun(): void;
     finishFlowRemove(): void;
     finishGenerating(): void;
+    awaitAllChunksToBeBuilt(): Promise<boolean>;
+    areAllChunksDoneBuilding(): boolean;
 };

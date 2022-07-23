@@ -24,7 +24,7 @@ export declare const WorldData: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
@@ -75,6 +75,7 @@ export declare const WorldData: {
         getMaxYForSubstance(substance: import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
     };
     lightByte: {
+        SRS: number;
         _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
@@ -132,7 +133,7 @@ export declare const WorldData: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;

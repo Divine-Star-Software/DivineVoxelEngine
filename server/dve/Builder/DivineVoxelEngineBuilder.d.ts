@@ -779,12 +779,12 @@ export declare const DVEB: {
         calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
     };
     shapeBuilder: {
-        faceFunctions: Record<import("../Meta/Util.types.js").DirectionNames, (origion: import("../Meta/Util.types.js").Position3Matrix, dimensions: {
+        faceFunctions: Record<import("../Meta/Util.types.js").DirectionNames, (origin: import("../Meta/Util.types.js").Position3Matrix, dimensions: {
             width: number;
             height: number;
             depth: number;
         }, data: import("../Meta/index.js").VoxelShapeAddData, flip?: boolean | undefined) => void>;
-        addFace(direction: import("../Meta/Util.types.js").DirectionNames, origion: import("../Meta/Util.types.js").Position3Matrix, dimensions: {
+        addFace(direction: import("../Meta/Util.types.js").DirectionNames, origin: import("../Meta/Util.types.js").Position3Matrix, dimensions: {
             width: number;
             height: number;
             depth: number;

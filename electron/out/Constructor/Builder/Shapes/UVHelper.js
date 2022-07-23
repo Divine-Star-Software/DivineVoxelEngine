@@ -149,6 +149,14 @@ export const UVHelper = {
             },
         },
     },
+    advancedUVs: {
+        top: (uv, ws1, ws2, we1, we2, hs1, hs2, he1, he2, uvs) => {
+            uvs.push(ws1, he1, uv, ws2, hs1, uv, we1, hs2, uv, we2, he2, uv);
+        },
+        side: (uv, ws1, ws2, we1, we2, hs1, hs2, he1, he2, uvs) => {
+            uvs.push(ws1, hs1, uv, we1, hs2, uv, we2, he1, uv, ws2, he2, uv);
+        },
+    },
     uvFunctions: {
         top: (data) => {
             UVHelper.uvRotations.top[data.rotoate](data.uv, data.width.start, data.width.end, data.height.start, data.height.end, data.flipped, data.uvs);
@@ -172,6 +180,7 @@ export const UVHelper = {
     addUVs(face, data) {
         this.uvFunctions[face](data);
     },
+    addAdvancedUVs(uv, uvs, ws1, ws2, we1, we2, hs1, hs2, he1, he2) { },
     processOverlayUVs(data) {
         let k = data.overylayUVTemplateIndex;
         let i = 4;

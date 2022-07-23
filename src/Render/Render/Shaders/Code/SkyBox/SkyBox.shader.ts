@@ -3,6 +3,10 @@
 export const skyboxShaders = {
     fragMain: `
 
+
+
+
+    
           vec3 c = vFogColor.rgb;
           c.r -= .2;
           c.g -= .2;
@@ -12,6 +16,7 @@ export const skyboxShaders = {
           vec3 finalColor = doVFog(skyboxColor);
            
           gl_FragColor = vec4(finalColor.rgb,1);
-       `,
+     
+          `,
    };
    

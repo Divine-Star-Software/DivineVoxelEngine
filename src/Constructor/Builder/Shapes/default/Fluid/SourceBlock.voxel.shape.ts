@@ -101,7 +101,10 @@ const resetTransform = () => {
 
 const processDefaultFaceData = (
  face: DirectionNames,
- data: VoxelShapeAddData
+ data: VoxelShapeAddData,
+ offset1 = 0,
+ offset2 = 1,
+ override = false
 ) => {
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
  DVEB.shapeBuilder.addFace(
@@ -114,15 +117,48 @@ const processDefaultFaceData = (
  );
  const uv = data.unTemplate[data.uvTemplateIndex];
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
- DVEB.uvHelper.addUVs(face, {
-  uvs: data.uvs,
-  uv: uv,
-  width: { start: 0, end: 1 },
-  height: { start: 0, end: 1 },
-  flipped: flip,
-  rotoate: rotation,
- });
+ if (!override) {
+  DVEB.uvHelper.addUVs(face, {
+   uvs: data.uvs,
+   uv: uv,
+   width: { start: 0, end: 1 },
+   height: { start: 0, end: 1 },
+   flipped: flip,
+   rotoate: rotation,
+  });
+ } else {
+  let hs1 = offset1;
+  let hs2 = offset2;
+  let he1 = 1;
+  let he2 = 1;
+  let ws1 = 0;
+  let ws2 = 0;
+  let we1 = 1;
+  let we2 = 1;
+  data.uvs.push(
+   //v1
+   ws1,
+   hs1,
+   uv,
+   //v2
+   we1,
+   hs2,
+   uv,
+   //v3
+   we2,
+   he2,
+   uv,
+   //v4
+   ws2,
+   he1,
+   uv
+  );
+ }
 
+ //flowing +x +z || -x -z
+ //data.uvs.push(0.5,1,uv,1,0.5,uv,0.5,0,uv,0,0.5,uv);
+ //flowing -x +z || +x -z
+ //data.uvs.push(0,0.5,uv,0.5,1,uv,1,0.5,uv,0.5,0,uv);
  DVEB.uvHelper.processOverlayUVs(data);
  DVEB.shapeHelper.calculateLightColor(
   data.RGBLightColors,
@@ -163,18 +199,30 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
  //add east face
  2: (data: VoxelShapeAddData) => {
   //set();
+
   transform.v1.y = vertexLevels.v4v;
   transform.v2.y = vertexLevels.v3v;
-  transform.v3.y = -yTransform.y1;
-  transform.v4.y = -yTransform.y2;
-  processDefaultFaceData("east", data);
+
+  processDefaultFaceData(
+   "east",
+   data,
+   Math.abs(vertexLevels.v4v),
+   Math.abs(vertexLevels.v3v),
+   true
+  );
   resetTransform();
  },
  //add weest face
  3: (data: VoxelShapeAddData) => {
   transform.v1.y = vertexLevels.v2v;
   transform.v2.y = vertexLevels.v1v;
-  processDefaultFaceData("west", data);
+  processDefaultFaceData(
+   "west",
+   data,
+   Math.abs(vertexLevels.v2v),
+   Math.abs(vertexLevels.v1v),
+   true
+  );
   resetTransform();
  },
  //add south face
@@ -182,20 +230,44 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
   transform.v1.y = vertexLevels.v1v;
   transform.v2.y = vertexLevels.v4v;
 
-  processDefaultFaceData("south", data);
+  processDefaultFaceData(
+   "south",
+   data,
+   Math.abs(vertexLevels.v1v),
+   Math.abs(vertexLevels.v4v),
+   true
+  );
   resetTransform();
  },
  //add north face
  5: (data: VoxelShapeAddData) => {
   transform.v1.y = vertexLevels.v3v;
   transform.v2.y = vertexLevels.v2v;
-  processDefaultFaceData("north", data);
+  processDefaultFaceData(
+   "north",
+   data,
+   Math.abs(vertexLevels.v3v),
+   Math.abs(vertexLevels.v2v),
+   true
+  );
   resetTransform();
  },
 };
 
 export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
+ cullFaceFunctions: {},
+ aoOverRideFunctions: {},
+ registerShapeForCullFaceOverRide(shapeId, func) {
+  this.cullFaceFunctions[shapeId] = func;
+ },
+ registerShapeAOAddOverRide(shapeId, func) {
+  this.aoOverRideFunctions[shapeId] = func;
+ },
  cullFace(data) {
+  if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
+   return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+  }
+ 
   if (
    data.face == "top" &&
    data.neighborVoxel.substance != "fluid" &&
@@ -207,6 +279,9 @@ export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
   return data.substanceResult;
  },
  aoOverRide(data) {
+  if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
+   return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+  }
   return data.substanceResult;
  },
  id: "FluidSourceBlock",
@@ -219,6 +294,7 @@ export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
    data.position.y += shapeDimensions1.height;
    currentDimensions = shapeDimensions1;
   } else {
+   //make it a full 1x1x1
    data.position.x += shapeDimensions2.width;
    data.position.z += shapeDimensions2.depth;
    data.position.y += shapeDimensions2.height;

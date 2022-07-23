@@ -40,9 +40,9 @@ const directionVector = DVEM.getVector3(0, 0, 0);
 const playerPositionSAB = new SharedArrayBuffer(4 * 3);
 const playerPosition = new Float32Array(playerPositionSAB);
 
-playerPosition[0] = playerBoundinBox.origion.x;
-playerPosition[1] = playerBoundinBox.origion.y;
-playerPosition[2] = playerBoundinBox.origion.z;
+playerPosition[0] = playerBoundinBox.origin.x;
+playerPosition[1] = playerBoundinBox.origin.y;
+playerPosition[2] = playerBoundinBox.origin.z;
 DVEW.renderComm.sendMessage("connect-player-data", [playerPositionSAB]);
 
 let playerDirection = new Float32Array();
@@ -119,21 +119,21 @@ const controlsUpdate = () => {
  }
 };
 
-const yUpdate = (origion: Vector3) => {
+const yUpdate = (origin: Vector3) => {
  checkPoint.updateVector(
-  origion.x + speed * velocity.x,
-  origion.y + velocity.y,
-  origion.z + speed * velocity.z
+  origin.x + speed * velocity.x,
+  origin.y + velocity.y,
+  origin.z + speed * velocity.z
  );
  const checkVector = checkPoint;
  checkVector.roundVector(2);
- playerBoundinBox.setCheckOrigion(checkVector.x, checkVector.y, checkVector.z);
+ playerBoundinBox.setCheckOrigin(checkVector.x, checkVector.y, checkVector.z);
  const sideCheckPoints = playerBoundinBox.getVoxelCheckPoints();
  let foundGround = false;
  for (const point of sideCheckPoints) {
   const voxel = DVEW.worldData.getVoxel(point[0], point[1], point[2]);
-  DVEM.convertToOrigionGridSpace(point);
-  voxelBoundingBox.updateOrigion(point[0], point[1], point[2]);
+  DVEM.convertToOriginGridSpace(point);
+  voxelBoundingBox.updateOrigin(point[0], point[1], point[2]);
   if (!voxel) continue;
   if (voxel[0] == -1) continue;
   if (playerBoundinBox.doesBoxIntersect(voxelBoundingBox.bounds)) {
@@ -146,7 +146,7 @@ const yUpdate = (origion: Vector3) => {
      playerBoundinBox.bounds.minY.toFixed(2) !=
       voxelBoundingBox.bounds.maxY.toFixed(2)
     ) {
-     origion.y += gravity;
+     origin.y += gravity;
     }
     foundGround = true;
     velocity.y = 0;
@@ -162,21 +162,21 @@ const yUpdate = (origion: Vector3) => {
  }
 };
 
-const xzUpdate = (origion: Vector3) => {
+const xzUpdate = (origin: Vector3) => {
  checkPoint.updateVector(
-  origion.x + speed * velocity.x,
-  origion.y + velocity.y,
-  origion.z + speed * velocity.z
+  origin.x + speed * velocity.x,
+  origin.y + velocity.y,
+  origin.z + speed * velocity.z
  );
  const checkVector = checkPoint;
  checkVector.roundVector(2);
- playerBoundinBox.setCheckOrigion(checkVector.x, checkVector.y, checkVector.z);
+ playerBoundinBox.setCheckOrigin(checkVector.x, checkVector.y, checkVector.z);
  const sideCheckPoints = playerBoundinBox.getVoxelCheckPoints();
  let foundGround = false;
  for (const point of sideCheckPoints) {
   const voxel = DVEW.worldData.getVoxel(point[0], point[1], point[2]);
-  DVEM.convertToOrigionGridSpace(point);
-  voxelBoundingBox.updateOrigion(point[0], point[1], point[2]);
+  DVEM.convertToOriginGridSpace(point);
+  voxelBoundingBox.updateOrigin(point[0], point[1], point[2]);
   if (!voxel) continue;
   if (voxel[0] == -1) continue;
   if (playerBoundinBox.doesBoxIntersect(voxelBoundingBox.bounds)) {
@@ -199,24 +199,24 @@ const xzUpdate = (origion: Vector3) => {
  }
 };
 
-const origionUpdate = (origion: Vector3) => {
- playerBoundinBox.updateOrigion(
-  origion.x + speed * velocity.x,
-  origion.y + velocity.y,
-  origion.z + speed * velocity.z
+const originUpdate = (origin: Vector3) => {
+ playerBoundinBox.updateOrigin(
+  origin.x + speed * velocity.x,
+  origin.y + velocity.y,
+  origin.z + speed * velocity.z
  );
- playerPosition[0] = origion.x;
- playerPosition[1] = origion.y;
- playerPosition[2] = origion.z;
+ playerPosition[0] = origin.x;
+ playerPosition[1] = origin.y;
+ playerPosition[2] = origin.z;
 };
 
 setInterval(async () => {
  controlsUpdate();
 
- const origion = playerBoundinBox.origion;
- yUpdate(origion);
- xzUpdate(origion);
- origionUpdate(origion);
+ const origin = playerBoundinBox.origin;
+ yUpdate(origin);
+ xzUpdate(origin);
+ originUpdate(origin);
 }, 10);
 
 (self as any).DVEW = DVEW;

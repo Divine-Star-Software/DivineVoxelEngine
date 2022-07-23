@@ -3,6 +3,7 @@
  * Used to decode light color info.
  */
 export const LightByte = {
+    SRS: 2,
     _lightValues: [],
     getS(value) {
         return value & 0xf;
@@ -189,9 +190,9 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForSunAdd(n1, n2) {
-        let sl1 = ((n1 & (0xf << 0)) >> 0) + 2;
-        let sl2 = (n2 & (0xf << 0)) >> 0;
-        return sl1 <= sl2;
+        let sl1 = this.getS(n1);
+        let sl2 = this.getS(n2);
+        return sl1 + this.SRS < sl2;
     },
     /**# Is Less Than For Sun Add Down
      *
@@ -201,12 +202,12 @@ export const LightByte = {
      * @param n2
      */
     isLessThanForSunAddDown(n1, n2) {
-        let sl1 = n1 & 0xf;
-        let sl2 = n2 & 0xf;
+        let sl1 = this.getS(n1);
+        let sl2 = this.getS(n2);
         if (sl2 == 0xf) {
             return sl1 < sl2;
         }
-        return sl1 + 2 < sl2;
+        return sl1 + this.SRS < sl2;
     },
     isLessThanForSunAddUp(n1, n2) {
         let sl1 = n1 & 0xf;
@@ -215,7 +216,7 @@ export const LightByte = {
             return false;
         if (sl2 == 0xf || sl1 == 0xf)
             return false;
-        return sl1 + 2 < sl2;
+        return sl1 + this.SRS < sl2;
     },
     /**# Get Sun Light For Under Voxel
      * ---
@@ -230,7 +231,7 @@ export const LightByte = {
             sn = s;
         }
         if (s < 15) {
-            sn = s - 2;
+            sn = s - this.SRS;
         }
         let r = this.getR(nl);
         let g = this.getG(nl);
@@ -249,7 +250,7 @@ export const LightByte = {
      * @param sl - source light value
      */
     getMinusOneForSun(sl, nl) {
-        let s = this.getS(sl) - 2;
+        let s = this.getS(sl) - this.SRS;
         if (s < 0)
             s = 0;
         let sn = this.getS(nl);
@@ -288,7 +289,7 @@ export const LightByte = {
     isGreaterOrEqualThanForSunRemove(n1, sl) {
         let s1 = this.getS(n1);
         let s2 = this.getS(sl);
-        return s2 >= s1;
+        return s1 >= s2;
     },
     /**# Sun Light Compare For Down Sun Remove
      * ---
@@ -299,7 +300,7 @@ export const LightByte = {
      */
     sunLightCompareForDownSunRemove(n1, sl) {
         let s2 = this.getS(sl);
-        if (s2 == 0b1111)
+        if (s2 == 0xf)
             return true;
         let s1 = this.getS(n1);
         return s1 < s2;

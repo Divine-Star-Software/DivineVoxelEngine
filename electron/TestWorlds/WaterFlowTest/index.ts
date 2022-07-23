@@ -79,7 +79,7 @@ const init = async () => {
 
  //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
 
- CreateWorldAxis(scene, 36);
+ //CreateWorldAxis(scene, 36);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

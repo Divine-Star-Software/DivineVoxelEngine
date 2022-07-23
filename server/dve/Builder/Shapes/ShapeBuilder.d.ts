@@ -6,7 +6,7 @@ declare type DimenionsMatrix = {
     depth: number;
 };
 export declare const ShapeBuilder: {
-    faceFunctions: Record<DirectionNames, (origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean | undefined) => void>;
-    addFace(direction: DirectionNames, origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean): void;
+    faceFunctions: Record<DirectionNames, (origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean | undefined) => void>;
+    addFace(direction: DirectionNames, origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean): void;
 };
 export {};

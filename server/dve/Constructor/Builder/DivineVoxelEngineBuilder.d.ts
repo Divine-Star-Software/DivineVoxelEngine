@@ -36,6 +36,7 @@ export declare const DVEB: {
             getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Mesher.types.js").Rotations;
         };
         lightByte: {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
@@ -85,7 +86,7 @@ export declare const DVEB: {
         calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
     };
     shapeBuilder: {
-        faceFunctions: Record<import("Meta/index.js").DirectionNames, (origion: import("Meta/index.js").Position3Matrix, dimensions: {
+        faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Position3Matrix, dimensions: {
             width: number;
             height: number;
             depth: number;
@@ -111,7 +112,7 @@ export declare const DVEB: {
                 z: number;
             };
         }, flip?: boolean | undefined) => void>;
-        addFace(direction: import("Meta/index.js").DirectionNames, origion: import("Meta/index.js").Position3Matrix, dimensions: {
+        addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Position3Matrix, dimensions: {
             width: number;
             height: number;
             depth: number;
@@ -140,8 +141,10 @@ export declare const DVEB: {
     };
     uvHelper: {
         uvRotations: Record<"top" | "bottom" | "side", Record<import("../../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
+        advancedUVs: Record<"top" | "bottom" | "side", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
         uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: import("../../Meta/Constructor/Mesher.types.js").UVFunctionData) => void>;
         addUVs(face: import("Meta/index.js").DirectionNames, data: import("../../Meta/Constructor/Mesher.types.js").UVFunctionData): void;
+        addAdvancedUVs(uv: number, uvs: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number): void;
         processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
     };
     chunkMesher: {
@@ -171,7 +174,7 @@ export declare const DVEB: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -263,7 +266,7 @@ export declare const DVEB: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -273,6 +276,7 @@ export declare const DVEB: {
             getXYZ(index: number): import("Meta/index.js").Position3Matrix;
         };
         lightByte: {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
@@ -319,7 +323,7 @@ export declare const DVEB: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -421,6 +425,7 @@ export declare const DVEB: {
                 setShapeState(voxelData: number, shapeState: number): number;
             };
             lightByte: {
+                SRS: number;
                 _lightValues: number[];
                 getS(value: number): number;
                 getR(value: number): number;
@@ -467,7 +472,7 @@ export declare const DVEB: {
                     setBounds(x: number, y: number, z: number): void;
                     getValue(x: number, y: number, z: number, array: Uint32Array): number;
                     getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                    getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                    getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                     setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                     setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                     setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -543,7 +548,7 @@ export declare const DVEB: {
             getVoxelShapeState(x: number, y: number, z: number): number;
             getLevel(x: number, y: number, z: number): number;
             setLevel(level: number, x: number, y: number, z: number): void;
-            getLeveState(x: number, y: number, z: number): number;
+            getLevelState(x: number, y: number, z: number): number;
             setLevelState(state: number, x: number, y: number, z: number): void;
             setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
             __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: import("Meta/index.js").VoxelData, chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk): void;
@@ -568,7 +573,7 @@ export declare const DVEB: {
                 chunkStates: Uint8Array;
             }) => {}): false | Promise<boolean>;
             setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
-            getData(x: number, y: number, z: number, state?: boolean): any;
+            getData(x: number, y: number, z: number, state?: boolean): number;
             getVoxelNumberID(x: number, y: number, z: number): number | false;
             getLight(x: number, y: number, z: number): number;
             setAir(x: number, y: number, z: number, lightValue: number): void;
@@ -593,6 +598,7 @@ export declare const DVEB: {
         faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
         cullCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
+        _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, chunkX: number, chunkY: number, chunkZ: number): void;
         makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;

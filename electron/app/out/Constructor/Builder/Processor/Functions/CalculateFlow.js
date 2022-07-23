@@ -21,15 +21,22 @@ const checkSets = {
     ],
 };
 let currentId = "";
-export function CalculateFlow(voxelData, x, y, z, flowTemplate) {
+const flowStates = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+};
+export function CalculateFlow(voxelData, faceFlipped, x, y, z, flowTemplate) {
     currentId = voxelData.id;
     const currentLevel = getLevel(this, x, y, z);
-    const state = this.worldMatrix.getLeveState(x, y, z);
+    const state = this.worldMatrix.getLevelState(x, y, z);
     flowTemplate.push(state);
-    calculateFlowV(this, state, currentLevel, 1, x, y, z, flowTemplate);
-    calculateFlowV(this, state, currentLevel, 2, x, y, z, flowTemplate);
-    calculateFlowV(this, state, currentLevel, 3, x, y, z, flowTemplate);
-    calculateFlowV(this, state, currentLevel, 4, x, y, z, flowTemplate);
+    calculateFlowV(this, state, currentLevel, 1, x, y, z);
+    calculateFlowV(this, state, currentLevel, 2, x, y, z);
+    calculateFlowV(this, state, currentLevel, 3, x, y, z);
+    calculateFlowV(this, state, currentLevel, 4, x, y, z);
+    flowTemplate.push(flowStates[1], flowStates[2], flowStates[3], flowStates[4]);
 }
 const getLevel = (process, x, y, z) => {
     const voxel = process.worldMatrix.getVoxel(x, y, z);
@@ -38,16 +45,13 @@ const getLevel = (process, x, y, z) => {
     if (voxel[0] != currentId)
         return -1;
     const level = process.worldMatrix.getLevel(x, y, z);
-    const state = process.worldMatrix.getLeveState(x, y, z);
-    if (state == 1) {
-        return 15;
-    }
+    //const state = process.worldMatrix.getLeveState(x, y, z);
     return level;
 };
-const calculateFlowV = (process, state, cl, vertex, x, y, z, flowTemplate) => {
+const calculateFlowV = (process, state, cl, vertex, x, y, z) => {
     const checkSet = checkSets[vertex];
     if (cl == 15 && state != 1) {
-        flowTemplate.push(cl);
+        flowStates[vertex] = 15;
         return;
     }
     let finalLevel = cl;
@@ -65,15 +69,15 @@ const calculateFlowV = (process, state, cl, vertex, x, y, z, flowTemplate) => {
             totalZero = false;
         }
         if (finalLevel < level) {
-            finalLevel++;
+            finalLevel += 2;
         }
     }
     if (finalLevel > 15)
         finalLevel = 15;
     if (finalLevel < 0)
         finalLevel = 0;
-    if (totalZero && state == 1) {
+    if (totalZero && state == 1 && cl == 15) {
         finalLevel = 7;
     }
-    flowTemplate.push(finalLevel);
+    flowStates[vertex] = finalLevel;
 };

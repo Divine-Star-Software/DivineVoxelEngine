@@ -19,6 +19,10 @@ const runLightRemove = () => {
     setTimeout(async () => {
         await DVEW.worldData.requestVoxelBeRemoved(x, 12, z + 5);
         buildAll();
+        setInterval(() => {
+            console.log("build all");
+            buildAll();
+        }, 2000);
     }, 2000);
 };
 const runAdd = () => {
@@ -43,10 +47,14 @@ for (let x = startX; x < endX; x += 16) {
 }
 const x = 0;
 const z = 0;
+let t1 = performance.now();
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+let t2 = performance.now();
+console.log(t2 - t1);
 //-1 10 0
 //0 10 -1
 buildAll();
+await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", "default", 0, 23, 6, -8);
 setTimeout(async () => {
     await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, x, 12, z + 5);
     runRemove();

@@ -22,6 +22,7 @@ export declare const ShapeHelper: {
         getFaceTextureState(direction: DirectionNames, rawData: number): import("../../../Meta/Constructor/Mesher.types.js").Rotations;
     };
     lightByte: {
+        SRS: number;
         _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;

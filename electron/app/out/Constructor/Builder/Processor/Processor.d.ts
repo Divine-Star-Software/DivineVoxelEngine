@@ -27,7 +27,7 @@ export declare const Processor: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -119,7 +119,7 @@ export declare const Processor: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -129,6 +129,7 @@ export declare const Processor: {
         getXYZ(index: number): import("Meta/index.js").Position3Matrix;
     };
     lightByte: {
+        SRS: number;
         _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;
@@ -175,7 +176,7 @@ export declare const Processor: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -277,6 +278,7 @@ export declare const Processor: {
             setShapeState(voxelData: number, shapeState: number): number;
         };
         lightByte: {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;
@@ -323,7 +325,7 @@ export declare const Processor: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -399,7 +401,7 @@ export declare const Processor: {
         getVoxelShapeState(x: number, y: number, z: number): number;
         getLevel(x: number, y: number, z: number): number;
         setLevel(level: number, x: number, y: number, z: number): void;
-        getLeveState(x: number, y: number, z: number): number;
+        getLevelState(x: number, y: number, z: number): number;
         setLevelState(state: number, x: number, y: number, z: number): void;
         setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
@@ -424,7 +426,7 @@ export declare const Processor: {
             chunkStates: Uint8Array;
         }) => {}): false | Promise<boolean>;
         setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
-        getData(x: number, y: number, z: number, state?: boolean): any;
+        getData(x: number, y: number, z: number, state?: boolean): number;
         getVoxelNumberID(x: number, y: number, z: number): number | false;
         getLight(x: number, y: number, z: number): number;
         setAir(x: number, y: number, z: number, lightValue: number): void;
@@ -449,6 +451,7 @@ export declare const Processor: {
     faceIndexMap: Record<DirectionNames, number>;
     cullCheck(face: DirectionNames, voxel: VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
+    _process(template: FullChunkTemplate, x: number, y: number, z: number, chunkX: number, chunkY: number, chunkZ: number): void;
     makeAllChunkTemplates(chunk: MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;

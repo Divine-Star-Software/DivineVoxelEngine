@@ -151,11 +151,11 @@ const physicsTest = async (scene, canvas) => {
         playerHitBox.position.x = playerPostionArray[0];
         playerHitBox.position.y = playerPostionArray[1];
         playerHitBox.position.z = playerPostionArray[2];
-        playerBoundinBox.setCheckOrigion(playerHitBox.position.x, playerHitBox.position.y, playerHitBox.position.z);
+        playerBoundinBox.setCheckOrigin(playerHitBox.position.x, playerHitBox.position.y, playerHitBox.position.z);
         const checkPoints = playerBoundinBox.getVoxelCheckPoints();
         let k = 0;
         for (const point of checkPoints) {
-            DVEM.convertToOrigionGridSpace(point);
+            DVEM.convertToOriginGridSpace(point);
             const newBox = testBoxes[k];
             newBox.position.x = point[0];
             newBox.position.y = point[1];

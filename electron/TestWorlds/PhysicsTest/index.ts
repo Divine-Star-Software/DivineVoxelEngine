@@ -212,7 +212,7 @@ const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
   playerHitBox.position.y = playerPostionArray[1];
   playerHitBox.position.z = playerPostionArray[2];
 
-  playerBoundinBox.setCheckOrigion(
+  playerBoundinBox.setCheckOrigin(
    playerHitBox.position.x,
    playerHitBox.position.y,
    playerHitBox.position.z
@@ -220,7 +220,7 @@ const physicsTest = async (scene: BABYLON.Scene, canvas: HTMLCanvasElement) => {
   const checkPoints = playerBoundinBox.getVoxelCheckPoints();
   let k = 0;
   for (const point of checkPoints) {
-   DVEM.convertToOrigionGridSpace(point);
+   DVEM.convertToOriginGridSpace(point);
    const newBox = testBoxes[k];
    newBox.position.x = point[0];
    newBox.position.y = point[1];

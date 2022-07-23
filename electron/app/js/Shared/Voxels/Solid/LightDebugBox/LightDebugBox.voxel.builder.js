@@ -26,10 +26,18 @@ export const LightDebugBoxVoxelBuilderThread = {
         },
     },
     process: function (data, DVEB) {
-        const trueX = data.chunkX + data.x;
-        const trueY = data.chunkY + data.y;
-        const trueZ = data.chunkZ + data.z;
-        const light = DVEB.processor.worldMatrix.getLightValue(trueX, trueY + 1, trueZ, "r");
+        const trueX = data.x;
+        const trueY = data.y;
+        const trueZ = data.z;
+        /*
+       const light = DVEB.processor.worldMatrix.getLightValue(
+         trueX,
+         trueY + 1,
+         trueZ,
+         "s"
+        );
+        */
+        const light = DVEB.processor.worldMatrix.getLevel(data.x, data.y + 1, data.z);
         let uv = lightDebugBoxTextures[light];
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);

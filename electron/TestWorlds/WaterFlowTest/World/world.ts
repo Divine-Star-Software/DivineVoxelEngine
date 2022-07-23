@@ -30,17 +30,25 @@ RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({});
 
-DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 31, 7);
+DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 45, 7);
+;
 generate();
 load();
 
 setTimeout(async () => {
- DVEW.queues.addToFlowRunQue(7, 31, 7);
+ DVEW.queues.addToFlowRunQue(7, 45, 7);
+
  DVEW.queues.runFlowRuneQue();
 
  await DVEW.queues.awaitAllFlowRuns();
- console.log("done");
- load();
+
+ setTimeout(async () => {
+  DVEW.queues.addToFlowRemoveQue(7, 45, 7);
+  DVEW.queues.runFlowRemoveQue();
+  await DVEW.queues.awaitAllFlowRemoves();
+  console.log("all done");
+  load();
+ }, 1000);
 }, 2000);
 
 (self as any).DVEW = DVEW;

@@ -111,9 +111,9 @@ const getUV = (
 };
 
 const getFoamUV = (DVEB: DivineVoxelEngineBuilder, data: VoxelProcessData) => {
- const tx = data.x + data.chunkX;
- const ty = data.y + data.chunkY;
- const tz = data.z + data.chunkZ;
+ const tx = data.x;
+ const ty = data.y;
+ const tz = data.z;
  data.overlayUVTemplate.push(
   getUV("north", tx, ty, tz, DVEB),
   getUV("south", tx, ty, tz, DVEB),

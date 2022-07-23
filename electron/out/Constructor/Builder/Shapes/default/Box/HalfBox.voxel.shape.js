@@ -47,10 +47,37 @@ const processDefaultFaceData = (face, data, halfUV = false) => {
 };
 export const HalfBoxVoxelShape = {
     id: "HalfBox",
+    cullFaceFunctions: {},
+    aoOverRideFunctions: {},
+    registerShapeForCullFaceOverRide(shapeId, func) {
+        this.cullFaceFunctions[shapeId] = func;
+    },
+    registerShapeAOAddOverRide(shapeId, func) {
+        this.aoOverRideFunctions[shapeId] = func;
+    },
     cullFace(data) {
+        if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
+            return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+        }
+        if (data.neighborVoxelShape.id == "Box") {
+            if (data.face == "bottom") {
+                if (data.shapeState == 0) {
+                    return false;
+                }
+            }
+            if (data.face == "east" ||
+                data.face == "west" ||
+                data.face == "north" ||
+                data.face == "south") {
+                return false;
+            }
+        }
         return data.substanceResult;
     },
     aoOverRide(data) {
+        if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
+            return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+        }
         return data.substanceResult;
     },
     addToChunkMesh(data) {

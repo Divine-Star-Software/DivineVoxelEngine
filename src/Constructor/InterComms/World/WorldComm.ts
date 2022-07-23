@@ -101,7 +101,7 @@ worldComm.messageFunctions[WorldToConstructorMessages.removeFlow] = (data) => {
  const x = data[1];
  const y = data[2];
  const z = data[3];
- DVEC.DVEP.runSunLightRemove(x, y, z);
+ DVEC.DVEP.removeFlowAt(x, y, z);
 };
 
 worldComm.messageFunctions[WorldToConstructorMessages.generate] = async (

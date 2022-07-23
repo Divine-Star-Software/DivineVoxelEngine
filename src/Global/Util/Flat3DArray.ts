@@ -37,7 +37,7 @@ export const Flat3DArray = {
   ];
  },
  getValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels) {
-  return (Atomics as any).load(
+  return Atomics.load(
    array,
    position.x +
     position.y * this.bounds.x +
@@ -59,7 +59,7 @@ export const Flat3DArray = {
   array: ChunkVoxels,
   value: number
  ) {
-  (Atomics as any).store(
+  Atomics.store(
    array,
    position.x +
     position.y * this.bounds.x +

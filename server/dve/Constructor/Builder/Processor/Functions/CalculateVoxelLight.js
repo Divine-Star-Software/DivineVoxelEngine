@@ -39,21 +39,31 @@ const sunVertexStates = {
 };
 const AOVerotexStates = {
     1: {
-        totalZero: false,
+        totalLight: false,
         value: 1,
     },
     2: {
-        totalZero: false,
+        totalLight: false,
         value: 1,
     },
     3: {
-        totalZero: false,
+        totalLight: false,
         value: 1,
     },
     4: {
-        totalZero: false,
+        totalLight: false,
         value: 1,
     },
+};
+const swapSun = () => {
+    let s1 = lightByte.getS(RGBvertexStates[1].value);
+    let s2 = lightByte.getS(RGBvertexStates[2].value);
+    let s3 = lightByte.getS(RGBvertexStates[3].value);
+    let s4 = lightByte.getS(RGBvertexStates[4].value);
+    RGBvertexStates[1].value = lightByte.setS(0, RGBvertexStates[2].value);
+    RGBvertexStates[2].value = lightByte.setS(0, RGBvertexStates[1].value);
+    RGBvertexStates[3].value = lightByte.setS(0, RGBvertexStates[4].value);
+    RGBvertexStates[4].value = lightByte.setS(0, RGBvertexStates[3].value);
 };
 const flipCheck = () => {
     let t1 = !RGBvertexStates[1].totalZero &&
@@ -64,7 +74,33 @@ const flipCheck = () => {
         RGBvertexStates[2].totalZero &&
         !RGBvertexStates[3].totalZero &&
         RGBvertexStates[4].totalZero;
-    return t1 || t2;
+    let t3 = !sunVertexStates[1].totalZero &&
+        sunVertexStates[2].totalZero &&
+        sunVertexStates[3].totalZero &&
+        sunVertexStates[4].totalZero;
+    let t4 = sunVertexStates[1].totalZero &&
+        sunVertexStates[2].totalZero &&
+        !sunVertexStates[3].totalZero &&
+        sunVertexStates[4].totalZero;
+    let c3 = false;
+    if (!states.ignoreAO) {
+        let t5 = !AOVerotexStates[1].totalLight &&
+            AOVerotexStates[2].totalLight &&
+            AOVerotexStates[3].totalLight &&
+            AOVerotexStates[4].totalLight;
+        let t6 = AOVerotexStates[1].totalLight &&
+            AOVerotexStates[2].totalLight &&
+            !AOVerotexStates[3].totalLight &&
+            AOVerotexStates[4].totalLight;
+        let t7 = !AOVerotexStates[1].totalLight &&
+            AOVerotexStates[2].totalLight &&
+            !AOVerotexStates[3].totalLight &&
+            AOVerotexStates[4].totalLight;
+        c3 = t5 || t6 || t7;
+    }
+    let c1 = t1 || t2;
+    let c2 = t3 || t4;
+    return c1 || c2 || c3;
 };
 const handleAdd = (data, face) => {
     if (flipCheck()) {
@@ -129,6 +165,9 @@ const currentVoxelData = {
     voxelObject: false,
     shapeState: 0,
     currentShape: false,
+    x: 0,
+    y: 0,
+    z: 0,
 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
@@ -153,6 +192,13 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
             currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
         }
         currentVoxelData.shapeState = this.worldMatrix.getVoxelShapeState(tx, ty, tz);
+        currentVoxelData.x = tx;
+        currentVoxelData.y = ty;
+        currentVoxelData.z = tz;
+        AOVerotexStates[1].totalLight = true;
+        AOVerotexStates[2].totalLight = true;
+        AOVerotexStates[3].totalLight = true;
+        AOVerotexStates[4].totalLight = true;
     }
     if (ignoreAO || !this.settings.doAO) {
         states.ignoreAO = true;
@@ -171,6 +217,20 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[3], 3, LOD);
         this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[4], 4, LOD);
         handleAdd(data, 0);
+        if (data.x == 9 && data.y == 3 && data.z == -4) {
+            /*     console.log(
+                 RGBvertexStates[1].value,
+                 RGBvertexStates[2].value,
+                 RGBvertexStates[3].value,
+                 RGBvertexStates[4].value,
+                 "sun",
+                 sunVertexStates[1].totalZero,
+                 sunVertexStates[2].totalZero,
+                 sunVertexStates[3].totalZero,
+                 sunVertexStates[4].totalZero
+                 
+                 ) */
+        }
     }
     //bottom
     if (data.exposedFaces[1]) {
@@ -242,20 +302,11 @@ const doRGB = (neighborLightValue) => {
         zeroCheck.b++;
     if (!neighborLightValue)
         return;
-    if (nlValues.r < RGBValues.r && RGBValues.r > 0) {
-        RGBValues.r--;
-    }
     if (nlValues.r > RGBValues.r && RGBValues.r < 15) {
         RGBValues.r++;
     }
-    if (nlValues.g < RGBValues.g && RGBValues.g > 0) {
-        RGBValues.g--;
-    }
     if (nlValues.g > RGBValues.g && RGBValues.g < 15) {
         RGBValues.g++;
-    }
-    if (nlValues.b < RGBValues.b && RGBValues.b > 0) {
-        RGBValues.b--;
     }
     if (nlValues.b > RGBValues.b && RGBValues.b < 15) {
         RGBValues.b++;
@@ -266,11 +317,8 @@ const doSun = (neighborLightValue) => {
         zeroCheck.s++;
     if (!neighborLightValue)
         return;
-    if (nlValues.s < sunValues.s && sunValues.s > 0) {
-        sunValues.s--;
-    }
-    if (nlValues.s > sunValues.s && sunValues.s < 15) {
-        sunValues.s++;
+    if (sunValues.s < nlValues.s && sunValues.s < 15) {
+        sunValues.s += lightByte.SRS;
     }
 };
 const lightEnd = (vertex) => {
@@ -313,7 +361,7 @@ const lightEnd = (vertex) => {
     zeroCheck.b = 0;
     zeroCheck.g = 0;
 };
-const doAO = (face, x, y, z) => {
+const doAO = (face, vertex, x, y, z) => {
     const neighborVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
     if (!neighborVoxelId)
         return;
@@ -345,6 +393,12 @@ const doAO = (face, x, y, z) => {
         neighborVoxel: neighborVoxel.data,
         neighborVoxelShape: neighborVoxelShape,
         neighborVoxelShapeState: neighborVoxelShapeState,
+        x: currentVoxelData.x,
+        y: currentVoxelData.y,
+        z: currentVoxelData.z,
+        nx: x,
+        ny: y,
+        nz: z,
     };
     if (currentVoxelData.currentShape) {
         finalResult = currentVoxelData.currentShape.aoOverRide(aoCheckData);
@@ -353,6 +407,7 @@ const doAO = (face, x, y, z) => {
         finalResult = currentVoxelData.voxelObject.aoOverRide(aoCheckData);
     }
     if (finalResult) {
+        AOVerotexStates[vertex].totalLight = false;
         AOValues.a *= 0.65;
     }
 };
@@ -403,7 +458,7 @@ export function VoxelLightMixCalc(face, x, y, z, checkSet, vertex, LOD = 1) {
             }
         }
         if (!states.ignoreAO) {
-            doAO(face, cx, cy, cz);
+            doAO(face, vertex, cx, cy, cz);
         }
     }
     if (this.settings.doSun || this.settings.doRGB) {

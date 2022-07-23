@@ -37,6 +37,16 @@ export const MeshManager = {
 
  reStart() {},
 
+
+ removeChunkMesh(type : VoxelSubstanceType,chunkKey : string) {
+   const mesh = this.meshes[type][chunkKey];
+   if(!mesh) {
+      return;
+   }
+   mesh.dispose();
+   delete this.meshes[type][chunkKey];
+ },
+
  handleUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
   const meshData: MeshSetData = {
    positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),

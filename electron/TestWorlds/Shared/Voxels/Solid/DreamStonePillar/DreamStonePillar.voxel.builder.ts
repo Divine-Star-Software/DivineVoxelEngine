@@ -26,12 +26,12 @@ export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
 
   if (
    !DVEB.processor.worldMatrix.sameVoxel(
-    data.x + data.chunkX,
-    data.y + data.chunkY,
-    data.z + data.chunkZ,
-    data.x + data.chunkX,
-    data.y + data.chunkY + 1,
-    data.z + data.chunkZ
+    data.x,
+    data.y,
+    data.z,
+    data.x,
+    data.y + 1,
+    data.z
    )
   ) {
    sideUV = sideTopUV;
@@ -49,23 +49,21 @@ export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
   }
   if (data.exposedFaces[2]) {
    data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[3]) {
    data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[4]) {
    data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
 
-
-  
   DVEB.processor.processVoxelLight(data);
  },
 };

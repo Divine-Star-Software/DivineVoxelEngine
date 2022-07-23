@@ -33,7 +33,7 @@ const init = async () => {
     if (bmat) {
         box.material = bmat;
     }
-    //CreateWorldAxis(scene, 36);
+    // CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(1);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);

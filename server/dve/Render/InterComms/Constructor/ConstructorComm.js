@@ -32,6 +32,11 @@ export const GetNewConstructorComm = (count, port) => {
         const substance = data[1];
         substanceFunctionMap[substance](data);
     };
+    newComm.messageFunctions[ConstructorToRenderMessages.removeChunk] = (data) => {
+        const substance = data[1];
+        const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
+        DVER.meshManager.removeChunkMesh(substance, chunkKey);
+    };
     newComm.setPort(port);
     return newComm;
 };

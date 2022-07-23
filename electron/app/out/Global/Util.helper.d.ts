@@ -26,7 +26,7 @@ export declare const Util: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -65,7 +65,7 @@ export declare const Util: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -89,7 +89,7 @@ export declare const Util: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -152,6 +152,7 @@ export declare const Util: {
         setShapeState(voxelData: number, shapeState: number): number;
     };
     getLightByte(): {
+        SRS: number;
         _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;

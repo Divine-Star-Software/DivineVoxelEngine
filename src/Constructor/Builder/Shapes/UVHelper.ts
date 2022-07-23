@@ -2,7 +2,6 @@ import { Rotations, UVFunctionData } from "Meta/Constructor/Mesher.types";
 import { VoxelShapeAddData } from "Meta/index";
 import { DirectionNames } from "Meta/Util.types";
 
-
 /**
  * |||||||||||||||||||||||||||||||||||||
  * [TOP & BOTTOM]
@@ -158,6 +157,32 @@ export const UVHelper = {
    },
   },
  },
+
+ advancedUVs: <
+  Record<
+   "top" | "side" | "bottom",
+   (
+    uv: number,
+    ws1: number,
+    ws2: number,
+    we1: number,
+    we2: number,
+    hs1: number,
+    hs2: number,
+    he1: number,
+    he2: number,
+    uvs: number[]
+   ) => void
+  >
+ >{
+  top: (uv, ws1, ws2, we1, we2, hs1, hs2, he1, he2, uvs) => {
+   uvs.push(ws1, he1, uv, ws2, hs1, uv, we1, hs2, uv, we2, he2, uv);
+  },
+  side: (uv, ws1, ws2, we1, we2, hs1, hs2, he1, he2, uvs) => {
+   uvs.push(ws1, hs1, uv, we1, hs2, uv, we2, he1, uv, ws2, he2, uv);
+  },
+ },
+
  uvFunctions: <Record<DirectionNames, (data: UVFunctionData) => void>>{
   top: (data) => {
    UVHelper.uvRotations.top[data.rotoate](
@@ -230,6 +255,19 @@ export const UVHelper = {
  addUVs(face: DirectionNames, data: UVFunctionData) {
   this.uvFunctions[face](data);
  },
+
+ addAdvancedUVs(
+  uv: number,
+  uvs: number,
+  ws1: number,
+  ws2: number,
+  we1: number,
+  we2: number,
+  hs1: number,
+  hs2: number,
+  he1: number,
+  he2: number
+ ) {},
 
  processOverlayUVs(data: VoxelShapeAddData) {
   let k = data.overylayUVTemplateIndex;

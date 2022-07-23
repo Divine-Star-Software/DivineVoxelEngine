@@ -86,8 +86,12 @@ export declare type VoxelShapeAddReturnData = {
  */
 export declare type VoxelShapeInterface = {
     id: string;
+    cullFaceFunctions: Record<string, (data: CullFaceOverride) => boolean>;
+    aoOverRideFunctions: Record<string, (data: AOAddOVerRide) => boolean>;
     cullFace(data: CullFaceOverride): boolean;
+    registerShapeForCullFaceOverRide(shapeId: string, func: (data: CullFaceOverride) => boolean): void;
     aoOverRide(data: AOAddOVerRide): boolean;
+    registerShapeAOAddOverRide(shapeId: string, func: (data: AOAddOVerRide) => boolean): void;
     /**# Add To Chunk Mesh
      * ---
      */

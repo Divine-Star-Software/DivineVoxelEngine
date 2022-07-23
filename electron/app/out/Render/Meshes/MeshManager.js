@@ -25,6 +25,14 @@ export const MeshManager = {
         this.scene = scene;
     },
     reStart() { },
+    removeChunkMesh(type, chunkKey) {
+        const mesh = this.meshes[type][chunkKey];
+        if (!mesh) {
+            return;
+        }
+        mesh.dispose();
+        delete this.meshes[type][chunkKey];
+    },
     handleUpdate(type, chunkKey, data) {
         const meshData = {
             positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),

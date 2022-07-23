@@ -29,13 +29,13 @@ export const DVEM = {
             v4: pv4,
         });
     },
-    getSimpleBoundingBox(origion, dimensions) {
-        return new SimpleBoundingBox(origion, dimensions);
+    getSimpleBoundingBox(origin, dimensions) {
+        return new SimpleBoundingBox(origin, dimensions);
     },
     getBoundingBox(data) {
         return new BoundingBox(data);
     },
-    convertToOrigionGridSpace(position) {
+    convertToOriginGridSpace(position) {
         position[0] = Math.round(position[0]) + 0.5;
         position[1] = Math.round(position[1]) + 0.5;
         position[2] = Math.round(position[2]) + 0.5;

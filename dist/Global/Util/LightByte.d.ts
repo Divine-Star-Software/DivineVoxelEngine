@@ -3,6 +3,7 @@
  * Used to decode light color info.
  */
 export declare const LightByte: {
+    SRS: number;
     _lightValues: number[];
     getS(value: number): number;
     getR(value: number): number;

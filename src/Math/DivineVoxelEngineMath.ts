@@ -33,15 +33,15 @@ export const DVEM = {
   });
  },
 
- getSimpleBoundingBox(origion: Vector3, dimensions: DimensionsVector3) {
-  return new SimpleBoundingBox(origion, dimensions);
+ getSimpleBoundingBox(origin: Vector3, dimensions: DimensionsVector3) {
+  return new SimpleBoundingBox(origin, dimensions);
  },
 
  getBoundingBox(data: BoundingBoxData) {
   return new BoundingBox(data);
  },
 
- convertToOrigionGridSpace(position: number[]) {
+ convertToOriginGridSpace(position: number[]) {
   position[0] = Math.round(position[0]) + 0.5;
   position[1] = Math.round(position[1]) + 0.5;
   position[2] = Math.round(position[2]) + 0.5;

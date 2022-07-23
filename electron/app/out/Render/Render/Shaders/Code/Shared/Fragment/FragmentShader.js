@@ -65,9 +65,11 @@ export const SharedFragmentShader = {
     `,
     getLight: `
     vec4 getLight(vec4 base) {
-
-      return base * ( ((rgbLColor * vDoRGB)  +  (sunLColor * vDoSun  * sunLightLevel * vNColor)) + baseLevel) ;
-    }
+    
+      vec4 final = ( ((rgbLColor * vDoRGB)  +  ((sunLColor * vDoSun  * sunLightLevel * vNColor))  ) + baseLevel) ;
+     // final = clamp(final,0.,1.1);
+      return base * final; 
+   }
     `,
     doFog: `
     vec3 doFog(vec4 base) {

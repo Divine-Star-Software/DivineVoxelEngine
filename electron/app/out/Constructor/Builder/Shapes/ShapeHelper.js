@@ -46,11 +46,11 @@ export const ShapeHelper = {
     calculateLightColor(RGBlightColors, sunlightColors, lightTemplate, startIndex) {
         for (let v = 0; v < 4; v++) {
             const values = this.lightByte.getLightValues(lightTemplate[startIndex + v]);
-            const w = this.lightMap[values[0]];
+            const s = this.lightMap[values[0]];
             const r = this.lightMap[values[1]];
             const g = this.lightMap[values[2]];
             const b = this.lightMap[values[3]];
-            sunlightColors.push(w, w, w, 1);
+            sunlightColors.push(s, s, s, 1);
             RGBlightColors.push(r, g, b, 1);
         }
     },

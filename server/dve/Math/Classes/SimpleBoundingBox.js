@@ -1,6 +1,6 @@
 import { Vector3 } from "./Vector3.js";
 export class SimpleBoundingBox {
-    origion;
+    origin;
     dimensions;
     bounds = {
         minX: Infinity,
@@ -18,21 +18,21 @@ export class SimpleBoundingBox {
         minY: Infinity,
         maxY: -Infinity,
     };
-    checkOrigion = new Vector3(0, 0, 0);
+    checkOrigin = new Vector3(0, 0, 0);
     _voxelCheckMap = {};
     _voxelCheckPoints = [];
     _voxelBottomCheckPoints = [];
-    _voxelOrigionPoints = [];
-    constructor(origion, dimensions) {
-        this.origion = origion;
+    _voxelOriginPoints = [];
+    constructor(origin, dimensions) {
+        this.origin = origin;
         this.dimensions = dimensions;
-        const ov = origion;
-        this.checkOrigion.updateVector(ov.x, ov.y, ov.z);
+        const ov = origin;
+        this.checkOrigin.updateVector(ov.x, ov.y, ov.z);
         this._updateBounds();
         this._updateCheckBounds();
     }
     _updateBounds() {
-        const ov = this.origion;
+        const ov = this.origin;
         this.bounds.minX = ov.x - this.dimensions.w / 2;
         this.bounds.maxX = ov.x + this.dimensions.w / 2;
         this.bounds.minZ = ov.z - this.dimensions.d / 2;
@@ -41,7 +41,7 @@ export class SimpleBoundingBox {
         this.bounds.maxY = ov.y + this.dimensions.h / 2;
     }
     _updateCheckBounds() {
-        const cv = this.checkOrigion;
+        const cv = this.checkOrigin;
         this.checkBounds.minX = cv.x - this.dimensions.w / 2;
         this.checkBounds.maxX = cv.x + this.dimensions.w / 2;
         this.checkBounds.minZ = cv.z - this.dimensions.d / 2;
@@ -49,14 +49,14 @@ export class SimpleBoundingBox {
         this.checkBounds.minY = cv.y - this.dimensions.h / 2;
         this.checkBounds.maxY = cv.y + this.dimensions.h / 2;
     }
-    updateOrigion(x, y, z) {
-        this.origion.updateVector(x, y, z);
-        this.origion.roundVector(2);
+    updateOrigin(x, y, z) {
+        this.origin.updateVector(x, y, z);
+        this.origin.roundVector(2);
         this._updateBounds();
     }
-    setOrigionToCheckOrigion() {
-        const cv = this.checkOrigion;
-        this.origion.updateVector(cv.x, cv.y, cv.z);
+    setOriginToCheckOrigin() {
+        const cv = this.checkOrigin;
+        this.origin.updateVector(cv.x, cv.y, cv.z);
         this.bounds.minX = this.checkBounds.minX;
         this.bounds.maxX = this.checkBounds.maxX;
         this.bounds.minZ = this.checkBounds.minZ;
@@ -64,12 +64,12 @@ export class SimpleBoundingBox {
         this.bounds.minY = this.checkBounds.minY;
         this.bounds.maxY = this.checkBounds.maxY;
     }
-    setCheckOrigion(x, y, z) {
-        this.checkOrigion.updateVector(x, y, z);
+    setCheckOrigin(x, y, z) {
+        this.checkOrigin.updateVector(x, y, z);
         this._updateCheckBounds();
     }
-    getCurrentOrigionPoints() {
-        this._voxelOrigionPoints = [];
+    getCurrentOriginPoints() {
+        this._voxelOriginPoints = [];
         const mx = this.bounds.minX;
         const my = this.bounds.minY;
         const mz = this.bounds.minZ;
@@ -78,14 +78,14 @@ export class SimpleBoundingBox {
                 for (let z = mz - 1; z <= this.bounds.maxZ + 1; z++) {
                     const key = this._getPositionKey(x, y, z);
                     if (!this._voxelCheckMap[key]) {
-                        this._voxelOrigionPoints.push([x, y, z]);
+                        this._voxelOriginPoints.push([x, y, z]);
                         this._voxelCheckMap[key] = true;
                     }
                 }
             }
         }
         this._voxelCheckMap = {};
-        return this._voxelOrigionPoints;
+        return this._voxelOriginPoints;
     }
     getVoxelCheckPoints() {
         this._voxelCheckPoints = [];

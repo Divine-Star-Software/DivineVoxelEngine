@@ -18,7 +18,7 @@ export declare const Flat3DArray: {
     setBounds(x: number, y: number, z: number): void;
     getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
     getValueUseObj(position: Position3Matrix, array: ChunkVoxels): number;
-    getValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels): any;
+    getValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels): number;
     setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
     setValueUseObj(position: Position3Matrix, array: ChunkVoxels, value: number): void;
     setValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels, value: number): void;

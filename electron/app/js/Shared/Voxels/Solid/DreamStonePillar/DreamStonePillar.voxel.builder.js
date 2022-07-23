@@ -13,7 +13,7 @@ export const DreamStonePillarVoxelBuilderThread = {
          "side-bottom"
         );
        */
-        if (!DVEB.processor.worldMatrix.sameVoxel(data.x + data.chunkX, data.y + data.chunkY, data.z + data.chunkZ, data.x + data.chunkX, data.y + data.chunkY + 1, data.z + data.chunkZ)) {
+        if (!DVEB.processor.worldMatrix.sameVoxel(data.x, data.y, data.z, data.x, data.y + 1, data.z)) {
             sideUV = sideTopUV;
         }
         if (data.exposedFaces[0]) {

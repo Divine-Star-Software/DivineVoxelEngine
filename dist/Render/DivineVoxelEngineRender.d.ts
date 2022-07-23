@@ -371,6 +371,7 @@ export declare const DVER: {
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
+        removeChunkMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string): void;
         handleUpdate(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
         requestChunkBeRemoved(chunkKey: string): void;
         _updateMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
@@ -434,7 +435,7 @@ export declare const DVER: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -473,7 +474,7 @@ export declare const DVER: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -497,7 +498,7 @@ export declare const DVER: {
                 setBounds(x: number, y: number, z: number): void;
                 getValue(x: number, y: number, z: number, array: Uint32Array): number;
                 getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): any;
+                getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
                 setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
                 setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
                 setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
@@ -560,6 +561,7 @@ export declare const DVER: {
             setShapeState(voxelData: number, shapeState: number): number;
         };
         getLightByte(): {
+            SRS: number;
             _lightValues: number[];
             getS(value: number): number;
             getR(value: number): number;

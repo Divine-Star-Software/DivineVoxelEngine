@@ -64,10 +64,24 @@ const processDefaultFaceData = (
 
 export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
+ cullFaceFunctions: {},
+ aoOverRideFunctions: {},
+ registerShapeForCullFaceOverRide(shapeId, func) {
+  this.cullFaceFunctions[shapeId] = func;
+ },
+ registerShapeAOAddOverRide(shapeId, func) {
+  this.aoOverRideFunctions[shapeId] = func;
+ },
  cullFace(data) {
+  if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
+   return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+  }
   return data.substanceResult;
  },
  aoOverRide(data) {
+  if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
+   return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+  }
   if (data.neighborVoxelShape.id == "HalfBox") {
    if (data.neighborVoxelShapeState == 0) {
     return false;
@@ -76,6 +90,10 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   if (data.neighborVoxelShape.id == "Box") {
    return true;
   }
+  if (data.neighborVoxelShape.id == "Panel") {
+   return false;
+  }
+
   return data.substanceResult;
  },
  addToChunkMesh(data) {

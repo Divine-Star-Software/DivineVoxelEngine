@@ -19,7 +19,7 @@ export declare const DVEWG: {
             setBounds(x: number, y: number, z: number): void;
             getValue(x: number, y: number, z: number, array: Uint32Array): number;
             getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
+            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
             setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
             setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
             setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
@@ -95,7 +95,7 @@ export declare const DVEWG: {
         setBounds(x: number, y: number, z: number): void;
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): any;
+        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
         setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
         setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
         setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;

@@ -96,9 +96,9 @@ const getUV = (direction, x, y, z, DVEB) => {
     return uvsSets[direction][key](DVEB);
 };
 const getFoamUV = (DVEB, data) => {
-    const tx = data.x + data.chunkX;
-    const ty = data.y + data.chunkY;
-    const tz = data.z + data.chunkZ;
+    const tx = data.x;
+    const ty = data.y;
+    const tz = data.z;
     data.overlayUVTemplate.push(getUV("north", tx, ty, tz, DVEB), getUV("south", tx, ty, tz, DVEB), getUV("east", tx, ty, tz, DVEB), getUV("west", tx, ty, tz, DVEB));
 };
 export const LiquidDreamEtherVoxelBuilderThread = {

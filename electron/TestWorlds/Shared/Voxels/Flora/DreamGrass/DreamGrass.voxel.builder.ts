@@ -10,9 +10,9 @@ export const DreamGrassVoxelBuilderThread: VoxelConstructorObject = {
   data.uvTemplate.push(uv, uv);
   data.overlayUVTemplate.push(0, 0, 0, 0);
   const lightValue = DVEB.processor.worldMatrix.getLight(
-   data.x + data.chunkX,
-   data.y + data.chunkY,
-   data.z + data.chunkZ
+   data.x,
+   data.y,
+   data.z
   );
   data.aoTemplate.push(1, 1);
   data.lightTemplate.push(lightValue, lightValue);

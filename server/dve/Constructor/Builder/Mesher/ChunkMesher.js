@@ -20,8 +20,15 @@ export const ChunkMesher = {
         while (i--) {
             const type = this.voxelBuildOrder[i];
             const baseTemplate = template[type];
-            if (baseTemplate.positionTemplate.length == 0)
+            if (baseTemplate.positionTemplate.length == 0) {
+                DVEC.renderComm.sendMessage(ConstructorToRenderMessages.removeChunk, [
+                    type,
+                    chunkX,
+                    chunkY,
+                    chunkZ,
+                ]);
                 continue;
+            }
             const positions = [];
             const normals = [];
             const indices = [];

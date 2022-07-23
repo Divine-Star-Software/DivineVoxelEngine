@@ -107,7 +107,7 @@ export const WorldGen = {
   let baseY = 47;
   let yAdd = 0;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
-   for (let z = chunkZ - 10; z < this.chunkDepth + chunkZ; z++) {
+   for (let z = chunkZ; z < this.chunkDepth + chunkZ + 1; z++) {
     let tree = Math.random() > 0.9;
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y > 0 && y < baseY - 1) {
@@ -122,7 +122,7 @@ export const WorldGen = {
         this.generateTree(x, y  - 1, z);
         continue;
        } else {
-        DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y, z);
+      //  DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y, z);
        }
       }
      }

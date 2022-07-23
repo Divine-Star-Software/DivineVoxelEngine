@@ -1,5 +1,6 @@
 export const ConstructorToRenderMessages = {
  setChunk: 0,
+ removeChunk: 1,
 };
 export let SetChunkDataIndexes = {
  __mainMessage: 0,

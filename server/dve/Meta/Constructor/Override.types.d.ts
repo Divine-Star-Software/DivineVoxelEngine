@@ -9,6 +9,9 @@ export declare type CullFaceOverride = {
     neighborVoxel: VoxelData;
     neighborVoxelShape: VoxelShapeInterface;
     neighborVoxelShapeState: number;
+    x: number;
+    y: number;
+    z: number;
 };
 export declare type AOAddOVerRide = {
     face: DirectionNames;
@@ -18,4 +21,10 @@ export declare type AOAddOVerRide = {
     neighborVoxel: VoxelData;
     neighborVoxelShape: VoxelShapeInterface;
     neighborVoxelShapeState: number;
+    x: number;
+    y: number;
+    z: number;
+    nx: number;
+    ny: number;
+    nz: number;
 };

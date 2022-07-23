@@ -12,7 +12,7 @@ export const ShapeBuilder = {
   Record<
    DirectionNames,
    (
-    origion: Position3Matrix,
+    origin: Position3Matrix,
     dimensions: DimenionsMatrix,
     data: VoxelShapeAddData,
     transform: typeof defaultTransform,
@@ -20,44 +20,44 @@ export const ShapeBuilder = {
    ) => void
   >
  >{
-  top: (origion, dimensions, data, transform, flip) => {
+  top: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + dimensions.height + transform.v4.y,
-     origion.z + -dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + dimensions.height + transform.v4.y,
+     origin.z + -dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + -dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + -dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    }
    data.indices.push(
@@ -72,44 +72,44 @@ export const ShapeBuilder = {
    data.normals.push(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0);
    data.indicieIndex += 4;
   },
-  bottom: (origion, dimensions, data, transform, flip) => {
+  bottom: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + dimensions.width + transform.v2.x,
-     origion.y + -dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + dimensions.width + transform.v2.x,
+     origin.y + -dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + -dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + -dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + -dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + -dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + -dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + -dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    }
    data.indices.push(
@@ -124,44 +124,44 @@ export const ShapeBuilder = {
    data.indicieIndex += 4;
   },
   //front
-  south: (origion, dimensions, data, transform, flip) => {
+  south: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + -dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + -dimensions.depth + transform.v3.z,
      //v4
-     origion.x + -dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + -dimensions.depth + transform.v4.z
+     origin.x + -dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + -dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + -dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + -dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + -dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + -dimensions.depth + transform.v4.z
     );
    }
    data.indices.push(
@@ -177,44 +177,44 @@ export const ShapeBuilder = {
    data.indicieIndex += 4;
   },
   //back
-  north: (origion, dimensions, data, transform, flip) => {
+  north: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + dimensions.depth + transform.v1.z,
+     origin.x + dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + dimensions.depth + transform.v2.z,
      //v3
-     origion.x + -dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + -dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + dimensions.depth + transform.v1.z,
+     origin.x + dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + dimensions.depth + transform.v1.z,
      //v2
-     origion.x + dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + dimensions.depth + transform.v2.z,
+     origin.x + dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + dimensions.depth + transform.v2.z,
      //v3
-     origion.x + -dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + -dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + -dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + -dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    }
    data.indices.push(
@@ -229,44 +229,44 @@ export const ShapeBuilder = {
    data.indicieIndex += 4;
   },
   //left
-  west: (origion, dimensions, data, transform, flip) => {
+  west: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + -dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + -dimensions.depth + transform.v3.z,
+     origin.x + -dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + -dimensions.depth + transform.v3.z,
      //v4
-     origion.x + -dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + -dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + -dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + dimensions.depth + transform.v1.z,
+     origin.x + -dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + dimensions.depth + transform.v1.z,
      //v2
-     origion.x + -dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + dimensions.depth + transform.v2.z,
+     origin.x + -dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + dimensions.depth + transform.v2.z,
      //v3
-     origion.x + -dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + -dimensions.depth + transform.v3.z,
+     origin.x + -dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + -dimensions.depth + transform.v3.z,
      //v4
-     origion.x + -dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + -dimensions.depth + transform.v4.z
+     origin.x + -dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + -dimensions.depth + transform.v4.z
     );
    }
 
@@ -282,44 +282,44 @@ export const ShapeBuilder = {
    data.indicieIndex += 4;
   },
   //right
-  east: (origion, dimensions, data, transform, flip) => {
+  east: (origin, dimensions, data, transform, flip) => {
    if (!flip) {
     data.positions.push(
      //v1
-     origion.x + dimensions.width + transform.v1.x,
-     origion.y + dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + dimensions.width + transform.v1.x,
+     origin.y + dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + dimensions.depth + transform.v2.z,
+     origin.x + dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + -dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + -dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + -dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + -dimensions.depth + transform.v4.z
     );
    } else {
     data.positions.push(
      //v1
-     origion.x + dimensions.width + transform.v1.x,
-     origion.y + -dimensions.height + transform.v1.y,
-     origion.z + -dimensions.depth + transform.v1.z,
+     origin.x + dimensions.width + transform.v1.x,
+     origin.y + -dimensions.height + transform.v1.y,
+     origin.z + -dimensions.depth + transform.v1.z,
      //v2
-     origion.x + dimensions.width + transform.v2.x,
-     origion.y + dimensions.height + transform.v2.y,
-     origion.z + -dimensions.depth + transform.v2.z,
+     origin.x + dimensions.width + transform.v2.x,
+     origin.y + dimensions.height + transform.v2.y,
+     origin.z + -dimensions.depth + transform.v2.z,
      //v3
-     origion.x + dimensions.width + transform.v3.x,
-     origion.y + dimensions.height + transform.v3.y,
-     origion.z + dimensions.depth + transform.v3.z,
+     origin.x + dimensions.width + transform.v3.x,
+     origin.y + dimensions.height + transform.v3.y,
+     origin.z + dimensions.depth + transform.v3.z,
      //v4
-     origion.x + dimensions.width + transform.v4.x,
-     origion.y + -dimensions.height + transform.v4.y,
-     origion.z + dimensions.depth + transform.v4.z
+     origin.x + dimensions.width + transform.v4.x,
+     origin.y + -dimensions.height + transform.v4.y,
+     origin.z + dimensions.depth + transform.v4.z
     );
    }
 
@@ -339,12 +339,12 @@ export const ShapeBuilder = {
 
  addFace(
   direction: DirectionNames,
-  origion: Position3Matrix,
+  origin: Position3Matrix,
   dimensions: DimenionsMatrix,
   data: VoxelShapeAddData,
   flip = false,
   transform = defaultTransform
  ) {
-  this.faceFunctions[direction](origion, dimensions, data, transform, flip);
+  this.faceFunctions[direction](origin, dimensions, data, transform, flip);
  },
 };

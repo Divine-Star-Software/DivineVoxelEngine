@@ -19,67 +19,67 @@ export function runSunLightRemove(x, y, z) {
             continue;
         DVEP.addToRebuildQue(x, y, z, "all");
         const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
-        if (n1 > 0 && this.lightByte.isLessThanForSunRemove(n1, sl)) {
-            this._sunLightRemoveQue.push([x - 1, y, z]);
-        }
-        else {
-            if (n1 > 0) {
+        if (n1 > 0) {
+            if (this.lightByte.isLessThanForSunRemove(n1, sl)) {
+                this._sunLightRemoveQue.push([x - 1, y, z]);
+            }
+            else {
                 if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
                     this._sunLightUpdateQue.push([x - 1, y, z]);
                 }
             }
         }
         const n2 = DVEC.worldMatrix.getLight(x + 1, y, z);
-        if (n2 > 0 && this.lightByte.isLessThanForSunRemove(n2, sl)) {
-            this._sunLightRemoveQue.push([x + 1, y, z]);
-        }
-        else {
-            if (n2 > 0) {
-                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+        if (n2 > 0) {
+            if (this.lightByte.isLessThanForSunRemove(n2, sl)) {
+                this._sunLightRemoveQue.push([x + 1, y, z]);
+            }
+            else {
+                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n2, sl)) {
                     this._sunLightUpdateQue.push([x + 1, y, z]);
                 }
             }
         }
         const n3 = DVEC.worldMatrix.getLight(x, y, z - 1);
-        if (n3 > 0 && this.lightByte.isLessThanForSunRemove(n3, sl)) {
-            this._sunLightRemoveQue.push([x, y, z - 1]);
-        }
-        else {
-            if (n3 > 0) {
-                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+        if (n3 > 0) {
+            if (this.lightByte.isLessThanForSunRemove(n3, sl)) {
+                this._sunLightRemoveQue.push([x, y, z - 1]);
+            }
+            else {
+                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n3, sl)) {
                     this._sunLightUpdateQue.push([x, y, z - 1]);
                 }
             }
         }
         const n4 = DVEC.worldMatrix.getLight(x, y, z + 1);
-        if (n4 > 0 && this.lightByte.isLessThanForSunRemove(n4, sl)) {
-            this._sunLightRemoveQue.push([x, y, z + 1]);
-        }
-        else {
-            if (n4 > 0) {
-                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+        if (n4 > 0) {
+            if (this.lightByte.isLessThanForSunRemove(n4, sl)) {
+                this._sunLightRemoveQue.push([x, y, z + 1]);
+            }
+            else {
+                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n4, sl)) {
                     this._sunLightUpdateQue.push([x, y, z + 1]);
                 }
             }
         }
         const n5 = DVEC.worldMatrix.getLight(x, y - 1, z);
-        if (n5 > 0 && this.lightByte.sunLightCompareForDownSunRemove(n5, sl)) {
-            this._sunLightRemoveQue.push([x, y - 1, z]);
-        }
-        else {
-            if (n5 > 0) {
-                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+        if (n5 > 0) {
+            if (this.lightByte.sunLightCompareForDownSunRemove(n5, sl)) {
+                this._sunLightRemoveQue.push([x, y - 1, z]);
+            }
+            else {
+                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n5, sl)) {
                     this._sunLightUpdateQue.push([x, y - 1, z]);
                 }
             }
         }
         const n6 = DVEC.worldMatrix.getLight(x, y + 1, z);
-        if (n6 > 0 && this.lightByte.isLessThanForSunRemove(n6, sl)) {
-            this._sunLightRemoveQue.push([x, y + 1, z]);
-        }
-        else {
-            if (n6 > 0) {
-                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n1, sl)) {
+        if (n6 > 0) {
+            if (this.lightByte.isLessThanForSunRemove(n6, sl)) {
+                this._sunLightRemoveQue.push([x, y + 1, z]);
+            }
+            else {
+                if (this.lightByte.isGreaterOrEqualThanForSunRemove(n6, sl)) {
                     this._sunLightUpdateQue.push([x, y + 1, z]);
                 }
             }

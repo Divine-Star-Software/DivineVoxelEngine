@@ -28,8 +28,8 @@ declare const defaultTransform: {
     };
 };
 export declare const ShapeBuilder: {
-    faceFunctions: Record<DirectionNames, (origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, transform: typeof defaultTransform, flip?: boolean | undefined) => void>;
-    addFace(direction: DirectionNames, origion: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean, transform?: {
+    faceFunctions: Record<DirectionNames, (origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, transform: typeof defaultTransform, flip?: boolean | undefined) => void>;
+    addFace(direction: DirectionNames, origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData, flip?: boolean, transform?: {
         v1: {
             x: number;
             y: number;

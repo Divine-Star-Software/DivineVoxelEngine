@@ -2,6 +2,7 @@ import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodF
 import { PopulateWorldColumnWithSunLight, RunSunLightFloodDown, RunSunLightFloodOut, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
 export declare const IlluminationManager: {
     lightByte: {
+        SRS: number;
         _lightValues: number[];
         getS(value: number): number;
         getR(value: number): number;

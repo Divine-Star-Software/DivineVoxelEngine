@@ -117,6 +117,9 @@ export const Processor = {
                 neighborVoxel: neighborVoxel,
                 neighborVoxelShape: neighborVoxelShape,
                 neighborVoxelShapeState: neighborVoxelShapeState,
+                x: x,
+                y: y,
+                z: z,
             };
             let shapeResult = shape.cullFace(data);
             if (!voxel.cullFace) {
@@ -151,9 +154,76 @@ export const Processor = {
         }
         return faceBit;
     },
+    _process(template, x, y, z, chunkX, chunkY, chunkZ) {
+        const LOD = this.LOD;
+        const voxelCheck = DVEC.worldMatrix.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
+        if (!voxelCheck ||
+            voxelCheck[0] == "dve:air" ||
+            voxelCheck[0] == "dve:barrier")
+            return;
+        const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
+        if (!voxelObject)
+            return;
+        const voxelState = voxelCheck[1];
+        const voxelShapeState = this.worldMatrix.getVoxelShapeState(chunkX + x, chunkY + y, chunkZ + z);
+        let faceBit = 0;
+        let tx = x + chunkX;
+        let ty = y + chunkY;
+        let tz = z + chunkZ;
+        faceBit = this.cullCheck("top", voxelObject, voxelState, voxelShapeState, tx, ty + LOD, tz, faceBit);
+        faceBit = this.cullCheck("bottom", voxelObject, voxelState, voxelShapeState, tx, ty - LOD, tz, faceBit);
+        faceBit = this.cullCheck("east", voxelObject, voxelState, voxelShapeState, tx + LOD, ty, tz, faceBit);
+        faceBit = this.cullCheck("west", voxelObject, voxelState, voxelShapeState, tx - LOD, ty, tz, faceBit);
+        faceBit = this.cullCheck("south", voxelObject, voxelState, voxelShapeState, tx, ty, tz - LOD, faceBit);
+        faceBit = this.cullCheck("north", voxelObject, voxelState, voxelShapeState, tx, ty, tz + LOD, faceBit);
+        if (faceBit == 0)
+            return;
+        let baseTemplate;
+        if (voxelObject.data.substance == "transparent") {
+            baseTemplate = template["solid"];
+        }
+        else {
+            baseTemplate = template[voxelObject.data.substance];
+        }
+        baseTemplate.shapeStateTemplate.push(voxelShapeState);
+        let level = 0;
+        if (voxelObject.data.substance == "fluid" ||
+            voxelObject.data.substance == "magma") {
+            level = this.worldMatrix.getLevel(tx, ty, tz);
+        }
+        voxelObject.process({
+            voxelState: voxelState,
+            voxelShapeState: voxelShapeState,
+            level: level,
+            exposedFaces: this.exposedFaces,
+            faceStates: this.faceStates,
+            textureRotations: this.textureRotation,
+            overlayUVTemplate: baseTemplate.overlayUVTemplate,
+            uvTemplate: baseTemplate.uvTemplate,
+            colorTemplate: baseTemplate.colorTemplate,
+            aoTemplate: baseTemplate.aoTemplate,
+            lightTemplate: baseTemplate.lightTemplate,
+            x: tx,
+            y: ty,
+            z: tz,
+        }, DVEB);
+        baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
+        baseTemplate.positionTemplate.push(x, y, z);
+        faceBit = this.faceStateCheck("top", faceBit);
+        faceBit = this.faceStateCheck("bottom", faceBit);
+        faceBit = this.faceStateCheck("east", faceBit);
+        faceBit = this.faceStateCheck("west", faceBit);
+        faceBit = this.faceStateCheck("south", faceBit);
+        faceBit = this.faceStateCheck("north", faceBit);
+        baseTemplate.faceTemplate.push(faceBit);
+        if (this.exposedFaces[0] &&
+            (voxelObject.data.substance == "fluid" ||
+                voxelObject.data.substance == "magma")) {
+            this.calculatFlow(voxelObject.data, this.faceStates[0] == 1, tx, ty, tz, baseTemplate.flowTemplate);
+        }
+    },
     makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD = 1) {
         this.LOD = LOD;
-        const voxels = chunk.voxels;
         const template = this.getBaseTemplateNew();
         let maxX = DVEC.worldBounds.chunkXSize;
         let maxZ = DVEC.worldBounds.chunkZSize;
@@ -162,81 +232,14 @@ export const Processor = {
                 let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
                 let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
                 for (let y = minY; y < maxY; y += LOD) {
-                    const voxelCheck = DVEC.worldMatrix.getVoxel(chunkX + x, chunkY + y, chunkZ + z);
-                    if (!voxelCheck ||
-                        voxelCheck[0] == "dve:air" ||
-                        voxelCheck[0] == "dve:barrier")
-                        continue;
-                    const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
-                    if (!voxelObject)
-                        continue;
-                    const voxelState = voxelCheck[1];
-                    const voxelShapeState = this.worldMatrix.getVoxelShapeState(chunkX + x, chunkY + y, chunkZ + z);
-                    let faceBit = 0;
-                    let tx = x + chunkX;
-                    let ty = y + chunkY;
-                    let tz = z + chunkZ;
-                    faceBit = this.cullCheck("top", voxelObject, voxelState, voxelShapeState, tx, ty + LOD, tz, faceBit);
-                    faceBit = this.cullCheck("bottom", voxelObject, voxelState, voxelShapeState, tx, ty - LOD, tz, faceBit);
-                    faceBit = this.cullCheck("east", voxelObject, voxelState, voxelShapeState, tx + LOD, ty, tz, faceBit);
-                    faceBit = this.cullCheck("west", voxelObject, voxelState, voxelShapeState, tx - LOD, ty, tz, faceBit);
-                    faceBit = this.cullCheck("south", voxelObject, voxelState, voxelShapeState, tx, ty, tz - LOD, faceBit);
-                    faceBit = this.cullCheck("north", voxelObject, voxelState, voxelShapeState, tx, ty, tz + LOD, faceBit);
-                    if (faceBit == 0)
-                        continue;
-                    let baseTemplate;
-                    if (voxelObject.data.substance == "transparent") {
-                        baseTemplate = template["solid"];
-                    }
-                    else {
-                        baseTemplate = template[voxelObject.data.substance];
-                    }
-                    baseTemplate.shapeStateTemplate.push(voxelShapeState);
-                    let level = 0;
-                    if (voxelObject.data.substance == "fluid" ||
-                        voxelObject.data.substance == "magma") {
-                        level = this.worldMatrix.getLevel(tx, ty, tz);
-                    }
-                    voxelObject.process({
-                        voxelState: voxelState,
-                        voxelShapeState: voxelShapeState,
-                        level: level,
-                        exposedFaces: this.exposedFaces,
-                        faceStates: this.faceStates,
-                        textureRotations: this.textureRotation,
-                        overlayUVTemplate: baseTemplate.overlayUVTemplate,
-                        uvTemplate: baseTemplate.uvTemplate,
-                        colorTemplate: baseTemplate.colorTemplate,
-                        aoTemplate: baseTemplate.aoTemplate,
-                        lightTemplate: baseTemplate.lightTemplate,
-                        chunkX: chunkX,
-                        chunkY: chunkY,
-                        chunkZ: chunkZ,
-                        x: x,
-                        y: y,
-                        z: z,
-                    }, DVEB);
-                    baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
-                    baseTemplate.positionTemplate.push(x, y, z);
-                    faceBit = this.faceStateCheck("top", faceBit);
-                    faceBit = this.faceStateCheck("bottom", faceBit);
-                    faceBit = this.faceStateCheck("east", faceBit);
-                    faceBit = this.faceStateCheck("west", faceBit);
-                    faceBit = this.faceStateCheck("south", faceBit);
-                    faceBit = this.faceStateCheck("north", faceBit);
-                    baseTemplate.faceTemplate.push(faceBit);
-                    if (this.exposedFaces[0] &&
-                        (voxelObject.data.substance == "fluid" ||
-                            voxelObject.data.substance == "magma")) {
-                        this.calculatFlow(voxelObject.data, tx, ty, tz, baseTemplate.flowTemplate);
-                    }
+                    this._process(template, x, y, z, chunkX, chunkY, chunkZ);
                 }
             }
         }
         return template;
     },
     processVoxelLight(data, ignoreAO = false) {
-        this.doVoxelLight(data, data.chunkX + data.x, data.chunkY + data.y, data.chunkZ + data.z, ignoreAO, this.LOD);
+        this.doVoxelLight(data, data.x, data.y, data.z, ignoreAO, this.LOD);
     },
     syncSettings(settings) {
         const materials = settings.materials;

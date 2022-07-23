@@ -5,13 +5,27 @@ import { exposedChecks, StairData } from "./StairData.js";
 
 export const StairVoxelShape: VoxelShapeInterface = {
  id: "Stair",
+ cullFaceFunctions: {},
+ aoOverRideFunctions: {},
+ registerShapeForCullFaceOverRide(shapeId, func) {
+  this.cullFaceFunctions[shapeId] = func;
+ },
+ registerShapeAOAddOverRide(shapeId, func) {
+  this.aoOverRideFunctions[shapeId] = func;
+ },
  cullFace(data) {
+  if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
+   return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+  }
   if (exposedChecks[data.shapeState]) {
    return exposedChecks[data.shapeState](data);
   }
   return true;
  },
  aoOverRide(data) {
+  if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
+   return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+  }
   return data.substanceResult;
  },
  addToChunkMesh(data) {

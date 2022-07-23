@@ -43,8 +43,9 @@ export const SharedFogFunctions = {
     volumetricFogFunction: `
   float CalcVFogFactor()
   {
-    float fogDensity = vFogInfos.w;
-    float fogTime = vTime * .05;
+   // float fogDensity = vFogInfos.w;
+   float fogDensity = .001;
+    float fogTime = vTime * .5;
     vec3 fogOrigin = cameraPOS;
     vec3 fogDirection = normalize(worldPOS - fogOrigin);
     float fogDepth = distance(worldPOS, fogOrigin);
@@ -53,7 +54,7 @@ export const SharedFogFunctions = {
     float noiseSample = fbm3(noiseSampleCoord + fbm3(noiseSampleCoord)) * 0.5 + 0.5;
     fogDepth *= mix(noiseSample, 1.0, clamp((fogDepth - 5000.0) / 5000.0,0.,1.));
     fogDepth *= fogDepth;
-    float heightFactor = 0.005;
+    float heightFactor = 0.05;
     float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (
         1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
     fogFactor = clamp(fogFactor,0.,1.);

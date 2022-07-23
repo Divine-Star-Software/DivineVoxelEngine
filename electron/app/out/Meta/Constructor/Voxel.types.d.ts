@@ -11,9 +11,6 @@ export declare type VoxelProcessData = {
     colorTemplate: number[];
     lightTemplate: number[];
     aoTemplate: number[];
-    chunkX: number;
-    chunkY: number;
-    chunkZ: number;
     x: number;
     y: number;
     z: number;
