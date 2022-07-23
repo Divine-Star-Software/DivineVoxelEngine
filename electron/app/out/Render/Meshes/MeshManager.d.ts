@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 export declare const MeshManager: {

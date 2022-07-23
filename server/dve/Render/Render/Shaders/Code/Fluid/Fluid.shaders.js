@@ -5,12 +5,23 @@ export const fluidShaders = {
   `,
     vertexWave: `
 
+ /*
 if(normal.y == 0.) {
   vFlow = 1.;
 } else {
   vFlow = 0.;
 }
+*/
 
+
+float animationTest = float(getAnimationType());
+vFlow = 0.;
+if(animationTest == 1.) {
+  vFlow = 1.;
+}
+if(animationTest == 2.) {
+  vFlow = -1.;
+}
 
 vec4 posWorld = world * vec4(position, 1.0);
 vec3 p = position;
@@ -25,6 +36,7 @@ varying float vFlow;
 `,
     fragMain: `
   float y = vUV.y - vTime * 4. * vFlow;
+
   vec4 rgb =  texture(arrayTex, vec3(vUV.x,y,animIndex));
   vec4 oRGB1 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.x));
   vec4 oRGB2 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.y));

@@ -13,7 +13,6 @@ export async function RunFlow(x, y, z) {
         this.runRebuildQue();
         await this.wait(100);
     }
-    console.log("done");
 }
 export async function RunFlowPropagation() {
     const que = this._flowQue;
@@ -23,7 +22,6 @@ export async function RunFlowPropagation() {
         const y = node[1];
         const z = node[2];
         const l = this.getLevel(x, y, z);
-        this.addToRebuildQue(x, y, z);
         if (l <= 1) {
             continue;
         }

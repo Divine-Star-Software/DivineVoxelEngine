@@ -21,7 +21,6 @@ export async function RunFlow(
   await this.wait(100);
  }
 
- console.log("done");
 }
 
 export async function RunFlowPropagation(this: typeof FlowManager) {
@@ -32,7 +31,7 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
   const y = node[1];
   const z = node[2];
   const l = this.getLevel(x, y, z);
-  this.addToRebuildQue(x, y, z);
+  
   if (l <= 1) {
    continue;
   }

@@ -46,7 +46,7 @@ export const MagmaMesh: VoxelMeshInterface = {
   chunkVertexData.applyToMesh(mesh, false);
   mesh.setVerticesData("cuv3", data.uvArray, false, 3);
   mesh.setVerticesData("ocuv3", data.overlayUVArray, false, 4);
-  mesh.setVerticesData("faceData", data.uvArray, false, 1);
+  mesh.setVerticesData("faceData", data.faceDataArray, false, 1);
   mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
   mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
   mesh.setVerticesData("colors", data.colorsArray, false, 4);

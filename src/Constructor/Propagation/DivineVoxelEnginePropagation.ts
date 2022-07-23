@@ -76,14 +76,12 @@ export const DVEP = {
  },
 
  async runFlowAt(x: number, y: number, z: number) {
-  console.log("RUN FLOW", x, y, z);
   await this.flow.runFlow(x, y, z);
   DVEC.queues.finishFlowRun();
   this.rebuildQueMap = {};
  },
 
  async removeFlowAt(x: number, y: number, z: number) {
-  console.log("REMOVE FLOW", x, y, z);
   await this.flow.runFlowRemove(x, y, z);
   DVEC.queues.finishFlowRemove();
   this.rebuildQueMap = {};

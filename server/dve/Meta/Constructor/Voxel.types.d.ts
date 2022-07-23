@@ -4,6 +4,7 @@ export declare type VoxelProcessData = {
     faceStates: number[];
     textureRotations: Rotations[];
     level: number;
+    levelState: number;
     voxelState: string;
     voxelShapeState: number;
     uvTemplate: number[];

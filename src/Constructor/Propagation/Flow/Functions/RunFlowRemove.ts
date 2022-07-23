@@ -12,19 +12,18 @@ export async function RunFlowRemove(
 
  this.runRemoveCheck(x, y, z);
 
- console.log(this.currentVoxel);
+
  this.removeVoxel(x, y, z);
  while (this._flowRemoveQue.length != 0) {
+
   this.runRemovePropagation();
   this.runFlowReduce();
   this.runFlowNoChunkRebuild();
   this.runRebuildQue();
-  await this.wait(200);
-
-
+  await this.wait(100);
  }
 
- console.log("done");
+
 }
 
 export async function RunRemovePropagation(this: typeof FlowManager) {

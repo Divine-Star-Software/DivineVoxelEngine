@@ -21,6 +21,7 @@ const generate = () => {
  console.log("generate");
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
+   DVEW.worldData.fillWorldCollumnWithChunks(x, z);
    WorldGen.generateChunk(x, z);
   }
  }
@@ -30,25 +31,25 @@ RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({});
 
-DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 45, 7);
-;
+DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 38, 7);
+DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 0, 38, 7);
 generate();
 load();
 
 setTimeout(async () => {
- DVEW.queues.addToFlowRunQue(7, 45, 7);
-
+ DVEW.queues.addToFlowRunQue(7, 38, 7);
+ DVEW.queues.addToFlowRunQue(0, 38, 7);
  DVEW.queues.runFlowRuneQue();
 
  await DVEW.queues.awaitAllFlowRuns();
 
  setTimeout(async () => {
-  DVEW.queues.addToFlowRemoveQue(7, 45, 7);
+  DVEW.queues.addToFlowRemoveQue(7, 38, 7);
   DVEW.queues.runFlowRemoveQue();
   await DVEW.queues.awaitAllFlowRemoves();
   console.log("all done");
   load();
- }, 1000);
+ }, 3000);
 }, 2000);
 
 (self as any).DVEW = DVEW;

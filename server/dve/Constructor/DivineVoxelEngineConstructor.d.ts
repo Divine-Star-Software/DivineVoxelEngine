@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -116,8 +116,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getMeshFaceDataByte(): {
             setAnimationType(animationType: number, rawData: number): number;
             getAnimationType(rawData: number): number;
@@ -1508,12 +1508,15 @@ export declare const DVEC: {
             runFlowNoChunkRebuild: typeof import("./Propagation/Flow/Functions/RunFlowNoChunkBuild.js").RunFlowNoChunkBuild;
             runFlowIncrease: typeof import("./Propagation/Flow/Functions/RunFlow.js").RunFlowIncrease;
             runFlowPropagation: typeof import("./Propagation/Flow/Functions/RunFlow.js").RunFlowPropagation;
+            rebuildQue: number[][];
+            rebuildMap: Record<string, boolean>;
             addToMap(x: number, y: number, z: number): void;
             inMap(x: number, y: number, z: number): boolean;
             setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
             runRemoveCheck(x: number, y: number, z: number): void;
             setCurrentVoxel(x: number, y: number, z: number): boolean;
             runRebuildQue(): void;
+            __addToRebuildQue(x: number, y: number, z: number): void;
             addToRebuildQue(x: number, y: number, z: number): void;
             setLevel(level: number, x: number, y: number, z: number): void;
             removeVoxel(x: number, y: number, z: number): void;

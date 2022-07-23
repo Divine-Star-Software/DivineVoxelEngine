@@ -55,6 +55,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
  ${SharedVertexShader.updateVarying}
+ ${SharedVertexShader.passAnimationState}
 `)}
 `;
  },
@@ -78,6 +79,7 @@ ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${overlayUniformRegister}
 ${animationFunction}
+${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
@@ -89,6 +91,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
  ${SharedVertexShader.updateVarying}
+ ${SharedVertexShader.passAnimationState}
 `)}
 `;
  },
@@ -110,6 +113,7 @@ ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${overlayUniformRegister}
 ${animationFunction}
+${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${SharedVertexShader.standardPositionMain}
@@ -122,6 +126,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doNormals}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.updateVarying}
+ ${SharedVertexShader.passAnimationState}
 `)}
 `;
  },
@@ -145,6 +150,7 @@ ${SharedFogFunctions.fogVertexTop}
 ${uniformRegister}
 ${overlayUniformRegister}
 ${animationFunction}
+${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
  ${fluidShaders.vertexWave}
@@ -156,6 +162,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
  ${SharedVertexShader.updateVarying}
+ ${SharedVertexShader.passAnimationState}
 `)}`;
  },
 

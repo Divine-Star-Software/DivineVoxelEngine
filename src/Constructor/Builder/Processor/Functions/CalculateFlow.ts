@@ -37,8 +37,6 @@ const flowStates: Record<Vertexes, number> = {
  4: 0,
 };
 
-
-
 export function CalculateFlow(
  this: typeof Processor,
  voxelData: VoxelData,
@@ -71,7 +69,6 @@ const getLevel = (
  if (voxel[0] != currentId) return -1;
  const level = process.worldMatrix.getLevel(x, y, z);
  //const state = process.worldMatrix.getLeveState(x, y, z);
-
 
  return level;
 };
@@ -112,12 +109,12 @@ const calculateFlowV = (
   if (finalLevel < level) {
    finalLevel += 2;
   }
-  
  }
  if (finalLevel > 15) finalLevel = 15;
  if (finalLevel < 0) finalLevel = 0;
  if (totalZero && state == 1 && cl == 15) {
   finalLevel = 7;
  }
+
  flowStates[vertex] = finalLevel;
 };

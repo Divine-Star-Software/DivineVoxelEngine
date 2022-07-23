@@ -187,14 +187,14 @@ export const Processor = {
         }
         baseTemplate.shapeStateTemplate.push(voxelShapeState);
         let level = 0;
-        if (voxelObject.data.substance == "fluid" ||
-            voxelObject.data.substance == "magma") {
-            level = this.worldMatrix.getLevel(tx, ty, tz);
-        }
+        let levelState = 0;
+        level = this.worldMatrix.getLevel(tx, ty, tz);
+        levelState = this.worldMatrix.getLevelState(tx, ty, tz);
         voxelObject.process({
             voxelState: voxelState,
             voxelShapeState: voxelShapeState,
             level: level,
+            levelState: levelState,
             exposedFaces: this.exposedFaces,
             faceStates: this.faceStates,
             textureRotations: this.textureRotation,

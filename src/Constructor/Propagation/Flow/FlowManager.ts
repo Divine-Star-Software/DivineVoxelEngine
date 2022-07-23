@@ -12,6 +12,7 @@ import {
  RunFlowPropagation,
 } from "./Functions/RunFlow.js";
 import { DVEP } from "../DivineVoxelEnginePropagation.js";
+import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 export const FlowManager = {
  //voxelByte : Util.
 
@@ -29,6 +30,9 @@ export const FlowManager = {
  runFlowIncrease: RunFlowIncrease,
  runFlowPropagation: RunFlowPropagation,
 
+ rebuildQue: <number[][]>[],
+ rebuildMap: <Record<string, boolean>>{},
+
  addToMap(x: number, y: number, z: number) {
   this._visitedMap[`${x}-${y}-${z}`] = true;
  },
@@ -38,6 +42,9 @@ export const FlowManager = {
 
  setVoxel(level: number, levelState: number, x: number, y: number, z: number) {
   WorldMatrix.setVoxel(this.currentVoxel, "default", 0, x, y, z);
+  if(x == -1 && y == 40 && z == 7) {
+    console.log(this.currentVoxel)
+  }
   WorldMatrix.setLevel(level, x, y, z);
   if (levelState == 1) {
    WorldMatrix.setLevelState(levelState, x, y, z);
@@ -66,7 +73,6 @@ export const FlowManager = {
   if ((n4 > -1 && n4 < cl) || n4s == 1) {
    this._flowRemoveQue.push([x, y, z - 1]);
   }
-
  },
 
  setCurrentVoxel(x: number, y: number, z: number) {
@@ -82,15 +88,36 @@ export const FlowManager = {
  },
 
  runRebuildQue() {
-  DVEP.runRebuildQue();
+  while (this.rebuildQue.length !== 0) {
+   const node = this.rebuildQue.shift();
+   if (!node) break;
+   const x = node[0];
+   const y = node[1];
+   const z = node[2];
+   DVEC.DVEB.buildChunk(x, y, z);
+  }
+  this.rebuildMap = {};
+ },
+
+ __addToRebuildQue(x: number, y: number, z: number) {
+  const key = DVEC.worldBounds.getChunkKeyFromPosition(x, y, z);
+  const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
+  if(!this.worldMatrx.getChunk(chunkPOS.x,chunkPOS.y,chunkPOS.z)) return;
+  if (!this.rebuildMap[key]) {
+   this.rebuildMap[key] = true;
+
+   this.rebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
+  }
  },
  addToRebuildQue(x: number, y: number, z: number) {
-  DVEP.addToRebuildQue(x + 1, y, z, "all");
-  DVEP.addToRebuildQue(x - 1, y, z, "all");
-  DVEP.addToRebuildQue(x, y, z + 1, "all");
-  DVEP.addToRebuildQue(x, y, z - 1, "all");
-  DVEP.addToRebuildQue(x, y + 1, z, "all");
-  DVEP.addToRebuildQue(x, y - 1, z, "all");
+  this.__addToRebuildQue(x, y - 1, z);
+  this.__addToRebuildQue(x, y + 1, z);
+  this.__addToRebuildQue(x, y, z - 1);
+  this.__addToRebuildQue(x - 1, y, z);
+  this.__addToRebuildQue(x, y, z + 1);
+  this.__addToRebuildQue(x + 1, y, z);
+ 
+  
  },
  setLevel(level: number, x: number, y: number, z: number) {
   WorldMatrix.setLevel(level, x, y, z);

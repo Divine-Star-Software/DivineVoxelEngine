@@ -109,7 +109,7 @@ export const LiquidDreamEtherVoxelBuilderThread = {
         const uv = DVEB.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);
-            if (data.level == 15) {
+            if (data.level == 15 && data.levelState != 1) {
                 getFoamUV(DVEB, data);
             }
             else {

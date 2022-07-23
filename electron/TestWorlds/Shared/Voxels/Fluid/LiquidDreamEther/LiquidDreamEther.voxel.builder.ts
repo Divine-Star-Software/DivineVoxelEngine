@@ -134,7 +134,7 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
   );
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
-   if (data.level == 15) {
+   if (data.level == 15 && data.levelState != 1) {
     getFoamUV(DVEB, data);
    } else {
     data.overlayUVTemplate.push(0, 0, 0, 0);

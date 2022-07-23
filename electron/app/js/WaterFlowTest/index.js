@@ -47,7 +47,6 @@ const init = async () => {
      chunkMarker.position.z = 8;
      chunkMarker.position.y = 128 / 2; */
     //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
-    //CreateWorldAxis(scene, 36);
     runRenderLoop(engine, scene, camera, DVER);
 };
 window.DVER = DVER;

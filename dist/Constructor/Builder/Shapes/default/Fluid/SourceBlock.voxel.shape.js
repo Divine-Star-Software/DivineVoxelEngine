@@ -34,11 +34,10 @@ const vertexLevels = {
 };
 const sourceBlockTest = (data) => {
     if (data.flowTemplate && data.flowTemplateIndex != undefined) {
-        if ((data.flowTemplate[data.flowTemplateIndex + 1] == 15 &&
+        if (data.flowTemplate[data.flowTemplateIndex + 1] == 15 &&
             data.flowTemplate[data.flowTemplateIndex + 2] == 15 &&
             data.flowTemplate[data.flowTemplateIndex + 3] == 15 &&
-            data.flowTemplate[data.flowTemplateIndex + 4] == 15) ||
-            data.flowTemplate[data.flowTemplateIndex] == 1) {
+            data.flowTemplate[data.flowTemplateIndex + 4] == 15) {
             yTransform.y1 = 0;
             yTransform.y2 = 0;
             yTransform.y3 = 0;
@@ -47,6 +46,62 @@ const sourceBlockTest = (data) => {
         }
     }
     return false;
+};
+const flowState = { state: 0 };
+const getAngle = (data) => {
+    if (sourceBlockTest(data)) {
+        flowState.state = 0;
+        return 0;
+    }
+    const v1 = vertexLevels.v1l;
+    const v2 = vertexLevels.v2l;
+    const v3 = vertexLevels.v3l;
+    const v4 = vertexLevels.v4l;
+    if (v1 == v2 && v3 == v4 && v1 == v4 && v2 == v3) {
+        flowState.state = 0;
+        return 0;
+    }
+    if (v2 == v3 && v1 == v4 && v2 > v1) {
+        //flowing south
+        flowState.state = 1;
+        return 0;
+    }
+    if (v2 == v3 && v1 == v4 && v2 < v1) {
+        //flowing north
+        flowState.state = 2;
+        return 0;
+    }
+    if (v2 == v1 && v3 == v4 && v1 > v4) {
+        //flowing east
+        flowState.state = 2;
+        return 90;
+    }
+    if (v3 == v4 && v2 == v1 && v4 > v1) {
+        //flowing west
+        flowState.state = 1;
+        return 90;
+    }
+    if (v2 < v4) {
+        //flowing north west
+        flowState.state = 2;
+        return -45;
+    }
+    if (v2 > v4) {
+        //flowing south east
+        flowState.state = 1;
+        return -45;
+    }
+    if (v1 > v3) {
+        //flowing north east
+        flowState.state = 2;
+        return 45;
+    }
+    if (v1 < v3) {
+        //flowing south west
+        flowState.state = 1;
+        return 45;
+    }
+    return 0;
 };
 const calculateVertexLevels = (data) => {
     if (data.flowTemplate && data.flowTemplateIndex != undefined) {
@@ -76,22 +131,21 @@ const resetTransform = () => {
     transform.v3.y = 0;
     transform.v4.y = 0;
 };
-const processDefaultFaceData = (face, data, offset1 = 0, offset2 = 1, override = false) => {
+const processDefaultFaceData = (face, data, offset1 = 0, offset2 = 1, override = false, angle = 0) => {
     const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
     DVEB.shapeBuilder.addFace(face, data.position, currentDimensions, data, flip, transform);
     const uv = data.unTemplate[data.uvTemplateIndex];
-    const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
-    if (!override) {
+    if (!override && (angle == 90 || angle == 0)) {
         DVEB.uvHelper.addUVs(face, {
             uvs: data.uvs,
             uv: uv,
             width: { start: 0, end: 1 },
             height: { start: 0, end: 1 },
             flipped: flip,
-            rotoate: rotation,
+            rotoate: angle,
         });
     }
-    else {
+    if (override && angle == 0) {
         let hs1 = offset1;
         let hs2 = offset2;
         let he1 = 1;
@@ -110,19 +164,19 @@ const processDefaultFaceData = (face, data, offset1 = 0, offset2 = 1, override =
         //v4
         ws2, he1, uv);
     }
-    //flowing +x +z || -x -z
-    //data.uvs.push(0.5,1,uv,1,0.5,uv,0.5,0,uv,0,0.5,uv);
-    //flowing -x +z || +x -z
-    //data.uvs.push(0,0.5,uv,0.5,1,uv,1,0.5,uv,0.5,0,uv);
+    if (angle == 45) {
+        //flowing +x +z || -x -z
+        data.uvs.push(0.5, 1, uv, 1, 0.5, uv, 0.5, 0, uv, 0, 0.5, uv);
+    }
+    if (angle == -45) {
+        //flowing -x +z || +x -z
+        // data.uvs.push(0.5,0,uv,0,0.5,uv,0.5,1,uv,1,0.5,uv,);
+        data.uvs.push(1, 0.5, uv, 0.5, 0, uv, 0, 0.5, uv, 0.5, 1, uv);
+    }
+    let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(flowState.state, 0);
+    DVEB.shapeHelper.addFaceData(animData, data.faceData);
     DVEB.uvHelper.processOverlayUVs(data);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-    if (data.substance == "flora") {
-        let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(3, 0);
-        DVEB.shapeHelper.addFaceData(animData, data.faceData);
-    }
-    else {
-        DVEB.shapeHelper.addFaceData(0, data.faceData);
-    }
     data.uvTemplateIndex += 1;
     data.overylayUVTemplateIndex += 4;
     data.lightIndex += 4;
@@ -137,7 +191,8 @@ const faceFunctions = {
         transform.v2.y = vertexLevels.v2v + yTransform.y1;
         transform.v3.y = vertexLevels.v3v + yTransform.y1;
         transform.v4.y = vertexLevels.v4v + yTransform.y1;
-        processDefaultFaceData("top", data);
+        const angle = getAngle(data);
+        processDefaultFaceData("top", data, 0, 1, false, angle);
         resetTransform();
     },
     //add bottom face
@@ -149,6 +204,7 @@ const faceFunctions = {
         //set();
         transform.v1.y = vertexLevels.v4v;
         transform.v2.y = vertexLevels.v3v;
+        flowState.state = 1;
         processDefaultFaceData("east", data, Math.abs(vertexLevels.v4v), Math.abs(vertexLevels.v3v), true);
         resetTransform();
     },
@@ -156,6 +212,7 @@ const faceFunctions = {
     3: (data) => {
         transform.v1.y = vertexLevels.v2v;
         transform.v2.y = vertexLevels.v1v;
+        flowState.state = 1;
         processDefaultFaceData("west", data, Math.abs(vertexLevels.v2v), Math.abs(vertexLevels.v1v), true);
         resetTransform();
     },
@@ -163,6 +220,7 @@ const faceFunctions = {
     4: (data) => {
         transform.v1.y = vertexLevels.v1v;
         transform.v2.y = vertexLevels.v4v;
+        flowState.state = 1;
         processDefaultFaceData("south", data, Math.abs(vertexLevels.v1v), Math.abs(vertexLevels.v4v), true);
         resetTransform();
     },
@@ -170,6 +228,7 @@ const faceFunctions = {
     5: (data) => {
         transform.v1.y = vertexLevels.v3v;
         transform.v2.y = vertexLevels.v2v;
+        flowState.state = 1;
         processDefaultFaceData("north", data, Math.abs(vertexLevels.v3v), Math.abs(vertexLevels.v2v), true);
         resetTransform();
     },

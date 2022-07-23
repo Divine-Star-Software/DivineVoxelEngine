@@ -88,7 +88,7 @@ export const WorldMatrix = {
     },
     getLevel(x, y, z) {
         let data = this.getData(x, y, z, true);
-        if (!data)
+        if (data < 0)
             data = 0;
         return this.voxelByte.decodeLevelFromVoxelData(data);
     },

@@ -55,6 +55,8 @@ export const SharedVertexShader = {
   //texture animations
   varying float animIndex;
   varying float overlayAnimIndex;
+  //animation States
+  varying float vAnimation;
  ${SharedVertexShader.defaultVarying}
   `;
   if (ao) {
@@ -150,6 +152,9 @@ export const SharedVertexShader = {
  }
  `,
 
+ passAnimationState : `
+ vAnimation = float(getAnimationType());
+ `,
  updateVarying: `
  cameraPOS = cameraPosition;
  worldPOS = worldPosition.xyz;

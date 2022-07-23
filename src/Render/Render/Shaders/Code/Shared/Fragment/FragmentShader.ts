@@ -36,6 +36,8 @@ export const SharedFragmentShader = {
     //texture animations
     varying float animIndex;
     varying float overlayAnimIndex;
+    //animation States
+    varying float vAnimation;
    ${SharedFragmentShader.defaultVarying}
     `;
   if (ao) {

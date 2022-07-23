@@ -55,6 +55,8 @@ export const SharedVertexShader = {
   //texture animations
   varying float animIndex;
   varying float overlayAnimIndex;
+  //animation States
+  varying float vAnimation;
  ${SharedVertexShader.defaultVarying}
   `;
         if (ao) {
@@ -142,6 +144,9 @@ export const SharedVertexShader = {
  if(abs(normal.x) == 1. || abs(normal.z)  == 1. ) {
    vNColor = 1.;
  }
+ `,
+    passAnimationState: `
+ vAnimation = float(getAnimationType());
  `,
     updateVarying: `
  cameraPOS = cameraPosition;

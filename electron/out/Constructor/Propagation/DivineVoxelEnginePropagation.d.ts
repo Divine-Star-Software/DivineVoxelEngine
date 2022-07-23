@@ -342,12 +342,15 @@ export declare const DVEP: {
         runFlowNoChunkRebuild: typeof import("./Flow/Functions/RunFlowNoChunkBuild.js").RunFlowNoChunkBuild;
         runFlowIncrease: typeof import("./Flow/Functions/RunFlow.js").RunFlowIncrease;
         runFlowPropagation: typeof import("./Flow/Functions/RunFlow.js").RunFlowPropagation;
+        rebuildQue: number[][];
+        rebuildMap: Record<string, boolean>;
         addToMap(x: number, y: number, z: number): void;
         inMap(x: number, y: number, z: number): boolean;
         setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
         runRemoveCheck(x: number, y: number, z: number): void;
         setCurrentVoxel(x: number, y: number, z: number): boolean;
         runRebuildQue(): void;
+        __addToRebuildQue(x: number, y: number, z: number): void;
         addToRebuildQue(x: number, y: number, z: number): void;
         setLevel(level: number, x: number, y: number, z: number): void;
         removeVoxel(x: number, y: number, z: number): void;
