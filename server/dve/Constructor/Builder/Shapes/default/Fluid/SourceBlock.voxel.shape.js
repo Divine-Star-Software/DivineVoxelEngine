@@ -9,6 +9,7 @@ const shapeDimensions2 = {
     depth: 0.5,
     height: 0.5,
 };
+let topFaceExposed = false;
 let currentDimensions = shapeDimensions1;
 const transform = {
     v1: { x: 0, y: 0, z: 0 },
@@ -205,7 +206,7 @@ const faceFunctions = {
         transform.v1.y = vertexLevels.v4v;
         transform.v2.y = vertexLevels.v3v;
         flowState.state = 1;
-        processDefaultFaceData("east", data, Math.abs(vertexLevels.v4v), Math.abs(vertexLevels.v3v), true);
+        processDefaultFaceData("east", data, Math.abs(vertexLevels.v4v), Math.abs(vertexLevels.v3v), topFaceExposed);
         resetTransform();
     },
     //add weest face
@@ -213,7 +214,7 @@ const faceFunctions = {
         transform.v1.y = vertexLevels.v2v;
         transform.v2.y = vertexLevels.v1v;
         flowState.state = 1;
-        processDefaultFaceData("west", data, Math.abs(vertexLevels.v2v), Math.abs(vertexLevels.v1v), true);
+        processDefaultFaceData("west", data, Math.abs(vertexLevels.v2v), Math.abs(vertexLevels.v1v), topFaceExposed);
         resetTransform();
     },
     //add south face
@@ -221,7 +222,7 @@ const faceFunctions = {
         transform.v1.y = vertexLevels.v1v;
         transform.v2.y = vertexLevels.v4v;
         flowState.state = 1;
-        processDefaultFaceData("south", data, Math.abs(vertexLevels.v1v), Math.abs(vertexLevels.v4v), true);
+        processDefaultFaceData("south", data, Math.abs(vertexLevels.v1v), Math.abs(vertexLevels.v4v), topFaceExposed);
         resetTransform();
     },
     //add north face
@@ -229,7 +230,7 @@ const faceFunctions = {
         transform.v1.y = vertexLevels.v3v;
         transform.v2.y = vertexLevels.v2v;
         flowState.state = 1;
-        processDefaultFaceData("north", data, Math.abs(vertexLevels.v3v), Math.abs(vertexLevels.v2v), true);
+        processDefaultFaceData("north", data, Math.abs(vertexLevels.v3v), Math.abs(vertexLevels.v2v), topFaceExposed);
         resetTransform();
     },
 };
@@ -277,7 +278,11 @@ export const FluidSourceBlockVoxelShape = {
             currentDimensions = shapeDimensions2;
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
+            topFaceExposed = true;
             faceFunctions[0](data);
+        }
+        else {
+            topFaceExposed = false;
         }
         if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
             faceFunctions[1](data);

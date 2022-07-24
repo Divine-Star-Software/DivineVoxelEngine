@@ -23,10 +23,6 @@ const runLightRemove = () => {
  setTimeout(async () => {
   await DVEW.worldData.requestVoxelBeRemoved(x, 12, z + 5);
   buildAll();
-  setInterval(() => {
-   console.log("build all");
-   buildAll();
-  }, 2000);
  }, 2000);
 };
 const runAdd = () => {

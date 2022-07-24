@@ -2,7 +2,7 @@ import type {
  VoxelConstructorObject,
  VoxelData,
 } from "Meta/Voxels/Voxel.types";
-import type { Processor } from "../Processor.js";
+import { Processor } from "../Processor.js";
 import { Util } from "../../../../Global/Util.helper.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { AOAddOVerRide } from "Meta/Constructor/OverRide.types";
@@ -75,12 +75,25 @@ const swapSun = () => {
  let s3 = lightByte.getS(RGBvertexStates[3].value);
  let s4 = lightByte.getS(RGBvertexStates[4].value);
 
- RGBvertexStates[1].value = lightByte.setS(0, RGBvertexStates[2].value);
- RGBvertexStates[2].value = lightByte.setS(0, RGBvertexStates[1].value);
- RGBvertexStates[3].value = lightByte.setS(0, RGBvertexStates[4].value);
- RGBvertexStates[4].value = lightByte.setS(0, RGBvertexStates[3].value);
+ RGBvertexStates[1].value = lightByte.setS(s1, RGBvertexStates[1].value);
+ RGBvertexStates[2].value = lightByte.setS(s4, RGBvertexStates[2].value);
+ RGBvertexStates[3].value = lightByte.setS(s3, RGBvertexStates[3].value);
+ RGBvertexStates[4].value = lightByte.setS(s2, RGBvertexStates[4].value);
 };
-const flipCheck = () => {
+
+const swapRGB = () => {
+ let s1 = lightByte.getRGB(RGBvertexStates[1].value);
+ let s2 = lightByte.getRGB(RGBvertexStates[2].value);
+ let s3 = lightByte.getRGB(RGBvertexStates[3].value);
+ let s4 = lightByte.getRGB(RGBvertexStates[4].value);
+
+ RGBvertexStates[1].value = lightByte.setRGB(s1, RGBvertexStates[1].value);
+ RGBvertexStates[2].value = lightByte.setRGB(s4, RGBvertexStates[2].value);
+ RGBvertexStates[3].value = lightByte.setRGB(s3, RGBvertexStates[3].value);
+ RGBvertexStates[4].value = lightByte.setRGB(s2, RGBvertexStates[4].value);
+};
+
+const shouldRGBFlip = () => {
  let t1 =
   !RGBvertexStates[1].totalZero &&
   RGBvertexStates[2].totalZero &&
@@ -92,44 +105,70 @@ const flipCheck = () => {
   !RGBvertexStates[3].totalZero &&
   RGBvertexStates[4].totalZero;
 
+ return t1 || t2;
+};
 
-
- let t3 =
+const shouldSunFlip = () => {
+ if (Processor.settings.ignoreSun) return false;
+ let t1 =
   !sunVertexStates[1].totalZero &&
   sunVertexStates[2].totalZero &&
   sunVertexStates[3].totalZero &&
   sunVertexStates[4].totalZero;
- let t4 =
+ let t2 =
   sunVertexStates[1].totalZero &&
   sunVertexStates[2].totalZero &&
   !sunVertexStates[3].totalZero &&
   sunVertexStates[4].totalZero;
 
+ return t1 || t2;
+};
 
- let c3 = false;
+const shouldAOFlip = (sunFlip: boolean, rgbFlip: boolean) => {
+ let check = false;
  if (!states.ignoreAO) {
-  let t5 =
+  let t1 =
    !AOVerotexStates[1].totalLight &&
    AOVerotexStates[2].totalLight &&
    AOVerotexStates[3].totalLight &&
    AOVerotexStates[4].totalLight;
-  let t6 =
+  let t2 =
    AOVerotexStates[1].totalLight &&
    AOVerotexStates[2].totalLight &&
    !AOVerotexStates[3].totalLight &&
    AOVerotexStates[4].totalLight;
-  let t7 =
+  let t3 =
    !AOVerotexStates[1].totalLight &&
    AOVerotexStates[2].totalLight &&
    !AOVerotexStates[3].totalLight &&
    AOVerotexStates[4].totalLight;
-  c3 = t5 || t6 || t7;
+  const currentS = lightByte.getS(currentVoxelData.light);
+  const currentRGB = lightByte.getRGB(currentVoxelData.light);
+  if (sunFlip && currentS == 0) {
+   return false;
+  }
+  if (rgbFlip && currentRGB == 0) {
+   return false;
+  }
+  check = t1 || t2 || t3;
+ }
+ return check;
+};
+
+const flipCheck = () => {
+ const rgbFlip = shouldRGBFlip();
+ const sunFlip = shouldSunFlip();
+
+ if (rgbFlip && !sunFlip) {
+  swapSun();
+ }
+ if (!rgbFlip && sunFlip) {
+  swapRGB();
  }
 
- let c1 = t1 || t2;
- let c2 = t3 || t4;
+ const aoFlip = shouldAOFlip(sunFlip, rgbFlip);
 
- return c1 || c2 || c3;
+ return rgbFlip || sunFlip || aoFlip;
 };
 
 const handleAdd = (data: VoxelProcessData, face: number) => {
@@ -210,6 +249,7 @@ const states = { ignoreAO: false };
 const newRGBValues: number[] = [];
 const newSunValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
+const wallCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData: {
  light: number;
  voxelData: Nullable<VoxelData>;
@@ -292,21 +332,6 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[3], 3, LOD);
   this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[4], 4, LOD);
   handleAdd(data, 0);
-
-  if (data.x == 9 && data.y == 3 && data.z == -4) {
-   /*     console.log(
-        RGBvertexStates[1].value,
-        RGBvertexStates[2].value,
-        RGBvertexStates[3].value,
-        RGBvertexStates[4].value,
-        "sun",
-        sunVertexStates[1].totalZero,
-        sunVertexStates[2].totalZero,
-        sunVertexStates[3].totalZero,
-        sunVertexStates[4].totalZero
-        
-        ) */
-  }
  }
 
  //bottom
@@ -440,6 +465,11 @@ const lightEnd = (vertex: Vertexes) => {
  zeroCheck.r = 0;
  zeroCheck.b = 0;
  zeroCheck.g = 0;
+
+ wallCheck.s = 0;
+ wallCheck.r = 0;
+ wallCheck.b = 0;
+ wallCheck.g = 0;
 };
 
 const doAO = (
@@ -558,6 +588,11 @@ export function VoxelLightMixCalc(
     if (this.settings.doSun) {
      doSun(lightByte.getS(nl));
     }
+   } else {
+    wallCheck.r++;
+    wallCheck.g++;
+    wallCheck.b++;
+    wallCheck.s++;
    }
   }
   if (!states.ignoreAO) {

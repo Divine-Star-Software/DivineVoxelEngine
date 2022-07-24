@@ -12,18 +12,14 @@ export async function RunFlowRemove(
 
  this.runRemoveCheck(x, y, z);
 
-
  this.removeVoxel(x, y, z);
  while (this._flowRemoveQue.length != 0) {
-
   this.runRemovePropagation();
   this.runFlowReduce();
   this.runFlowNoChunkRebuild();
   this.runRebuildQue();
   await this.wait(100);
  }
-
-
 }
 
 export async function RunRemovePropagation(this: typeof FlowManager) {
@@ -83,13 +79,13 @@ export async function RunRemovePropagation(this: typeof FlowManager) {
   if (!this.inMap(x, y - 1, z)) {
    const n5 = this.getLevel(x, y - 1, z);
    const n5s = this.getLevelState(x, y - 1, z);
-  // if (((n5 == l || n5 < 2) && n5 > 0) || n5s == 1) {
-    if ( n5s == 1 && (l > - 1 && l == 1)) {
+   // if (((n5 == l || n5 < 2) && n5 > 0) || n5s == 1) {
+   if (n5s == 1 && l > -1 && l == 1) {
     this._flowRemoveQue.push([x, y - 1, z]);
    }
 
    if (n5 >= l) {
- //   this._flowQue.push([x, y - 1, z]);
+    //   this._flowQue.push([x, y - 1, z]);
    }
   }
  }
@@ -111,7 +107,7 @@ export async function RunFlowReduce(this: typeof FlowManager) {
   this.addToMap(x, y, z);
 
   const l = this.getLevel(x, y, z);
-  const state = this.getLevelState(x,y,z);
+  const state = this.getLevelState(x, y, z);
 
   if (l < 2) {
    if (Math.random() < 0.5 || state == 1) {
@@ -124,7 +120,11 @@ export async function RunFlowReduce(this: typeof FlowManager) {
    reque.push([x, y, z]);
   }
 
-  this.addToRebuildQue(x, y, z);
+  if (state == 1) {
+   this.addToRebuildQue(x, y, z, true);
+  } else {
+   this.addToRebuildQue(x, y, z);
+  }
  }
 
  this._flowRemoveQue = reque;

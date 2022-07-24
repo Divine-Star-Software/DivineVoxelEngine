@@ -48,6 +48,8 @@ export declare const DVEB: {
             setB(value: number, sl: number): number;
             removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
+            getRGB(sl: number): number;
+            setRGB(value: number, sl: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -288,6 +290,8 @@ export declare const DVEB: {
             setB(value: number, sl: number): number;
             removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
+            getRGB(sl: number): number;
+            setRGB(value: number, sl: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -437,6 +441,8 @@ export declare const DVEB: {
                 setB(value: number, sl: number): number;
                 removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
+                getRGB(sl: number): number;
+                setRGB(value: number, sl: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
@@ -593,6 +599,7 @@ export declare const DVEB: {
             doAO: boolean;
             doSun: boolean;
             doRGB: boolean;
+            ignoreSun: boolean;
         };
         getBaseTemplateNew(): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;

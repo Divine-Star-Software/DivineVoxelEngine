@@ -46,6 +46,7 @@ export const Processor = {
   doAO: true,
   doSun: true,
   doRGB: true,
+  ignoreSun : false
  },
  getBaseTemplateNew(): FullChunkTemplate {
   return {

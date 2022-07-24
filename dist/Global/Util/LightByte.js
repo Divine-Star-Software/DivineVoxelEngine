@@ -43,6 +43,16 @@ export const LightByte = {
             return true;
         return false;
     },
+    getRGB(sl) {
+        if (sl < 0)
+            return 0;
+        return (sl & 0xfff0) >> 4;
+    },
+    setRGB(value, sl) {
+        if (sl < 0)
+            return 0;
+        return (sl & ~0xfff0) | (value << 4);
+    },
     decodeLightFromVoxelData(voxelData) {
         return (voxelData & (0xffff << 0)) >> 0;
     },

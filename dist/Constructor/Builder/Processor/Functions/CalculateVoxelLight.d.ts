@@ -1,4 +1,4 @@
-import type { Processor } from "../Processor.js";
+import { Processor } from "../Processor.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { DirectionNames } from "Meta/Util.types.js";
 declare type Vertexes = 1 | 2 | 3 | 4;

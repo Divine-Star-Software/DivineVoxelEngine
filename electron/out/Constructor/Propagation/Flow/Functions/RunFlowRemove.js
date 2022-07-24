@@ -65,7 +65,7 @@ export async function RunRemovePropagation() {
             const n5 = this.getLevel(x, y - 1, z);
             const n5s = this.getLevelState(x, y - 1, z);
             // if (((n5 == l || n5 < 2) && n5 > 0) || n5s == 1) {
-            if (n5s == 1 && (l > -1 && l == 1)) {
+            if (n5s == 1 && l > -1 && l == 1) {
                 this._flowRemoveQue.push([x, y - 1, z]);
             }
             if (n5 >= l) {
@@ -103,7 +103,12 @@ export async function RunFlowReduce() {
             this.setLevel(l - 2, x, y, z);
             reque.push([x, y, z]);
         }
-        this.addToRebuildQue(x, y, z);
+        if (state == 1) {
+            this.addToRebuildQue(x, y, z, true);
+        }
+        else {
+            this.addToRebuildQue(x, y, z);
+        }
     }
     this._flowRemoveQue = reque;
     this._visitedMap = {};

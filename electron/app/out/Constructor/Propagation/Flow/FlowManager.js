@@ -2,6 +2,7 @@ import { RunFlowNoChunkBuild } from "./Functions/RunFlowNoChunkBuild.js";
 import { RunFlowReduce, RunFlowRemove, RunRemovePropagation, } from "./Functions/RunFlowRemove.js";
 import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { RunFlow, RunFlowIncrease, RunFlowPropagation, } from "./Functions/RunFlow.js";
+import { DVEP } from "../DivineVoxelEnginePropagation.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 export const FlowManager = {
     //voxelByte : Util.
@@ -68,6 +69,7 @@ export const FlowManager = {
         return true;
     },
     runRebuildQue() {
+        DVEP.runRebuildQue();
         while (this.rebuildQue.length !== 0) {
             const node = this.rebuildQue.shift();
             if (!node)
@@ -89,13 +91,23 @@ export const FlowManager = {
             this.rebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
         }
     },
-    addToRebuildQue(x, y, z) {
-        this.__addToRebuildQue(x, y - 1, z);
-        this.__addToRebuildQue(x, y + 1, z);
-        this.__addToRebuildQue(x, y, z - 1);
-        this.__addToRebuildQue(x - 1, y, z);
-        this.__addToRebuildQue(x, y, z + 1);
-        this.__addToRebuildQue(x + 1, y, z);
+    addToRebuildQue(x, y, z, sync = false) {
+        if (sync) {
+            this.__addToRebuildQue(x, y - 1, z);
+            this.__addToRebuildQue(x, y + 1, z);
+            this.__addToRebuildQue(x, y, z - 1);
+            this.__addToRebuildQue(x - 1, y, z);
+            this.__addToRebuildQue(x, y, z + 1);
+            this.__addToRebuildQue(x + 1, y, z);
+        }
+        else {
+            DVEP.addToRebuildQue(x, y - 1, z, "all");
+            DVEP.addToRebuildQue(x, y + 1, z, "all");
+            DVEP.addToRebuildQue(x, y, z - 1, "all");
+            DVEP.addToRebuildQue(x - 1, y, z, "all");
+            DVEP.addToRebuildQue(x, y, z + 1, "all");
+            DVEP.addToRebuildQue(x + 1, y, z, "all");
+        }
     },
     setLevel(level, x, y, z) {
         WorldMatrix.setLevel(level, x, y, z);

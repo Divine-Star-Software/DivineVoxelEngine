@@ -14,6 +14,8 @@ export declare const DVEP: {
             setB(value: number, sl: number): number;
             removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
+            getRGB(sl: number): number;
+            setRGB(value: number, sl: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
@@ -187,6 +189,8 @@ export declare const DVEP: {
                 setB(value: number, sl: number): number;
                 removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
+                getRGB(sl: number): number;
+                setRGB(value: number, sl: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
@@ -351,7 +355,7 @@ export declare const DVEP: {
         setCurrentVoxel(x: number, y: number, z: number): boolean;
         runRebuildQue(): void;
         __addToRebuildQue(x: number, y: number, z: number): void;
-        addToRebuildQue(x: number, y: number, z: number): void;
+        addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
         setLevel(level: number, x: number, y: number, z: number): void;
         removeVoxel(x: number, y: number, z: number): void;
         getLevel(x: number, y: number, z: number): number;

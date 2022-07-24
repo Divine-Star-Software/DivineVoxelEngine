@@ -19,6 +19,7 @@ const shapeDimensions2 = {
  height: 0.5,
 };
 
+let topFaceExposed = false;
 let currentDimensions = shapeDimensions1;
 
 const transform = {
@@ -277,7 +278,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    Math.abs(vertexLevels.v4v),
    Math.abs(vertexLevels.v3v),
-   true
+   topFaceExposed
   );
   resetTransform();
  },
@@ -291,7 +292,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    Math.abs(vertexLevels.v2v),
    Math.abs(vertexLevels.v1v),
-   true
+   topFaceExposed
   );
   resetTransform();
  },
@@ -305,7 +306,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    Math.abs(vertexLevels.v1v),
    Math.abs(vertexLevels.v4v),
-   true
+   topFaceExposed
   );
   resetTransform();
  },
@@ -319,7 +320,7 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
    data,
    Math.abs(vertexLevels.v3v),
    Math.abs(vertexLevels.v2v),
-   true
+   topFaceExposed
   );
   resetTransform();
  },
@@ -373,7 +374,10 @@ export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
   }
 
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
+   topFaceExposed = true;
    faceFunctions[0](data);
+  } else {
+   topFaceExposed = false;
   }
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
    faceFunctions[1](data);

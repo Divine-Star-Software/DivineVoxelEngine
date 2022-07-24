@@ -42,8 +42,8 @@ export const FlowManager = {
 
  setVoxel(level: number, levelState: number, x: number, y: number, z: number) {
   WorldMatrix.setVoxel(this.currentVoxel, "default", 0, x, y, z);
-  if(x == -1 && y == 40 && z == 7) {
-    console.log(this.currentVoxel)
+  if (x == -1 && y == 40 && z == 7) {
+   console.log(this.currentVoxel);
   }
   WorldMatrix.setLevel(level, x, y, z);
   if (levelState == 1) {
@@ -88,6 +88,7 @@ export const FlowManager = {
  },
 
  runRebuildQue() {
+  DVEP.runRebuildQue();
   while (this.rebuildQue.length !== 0) {
    const node = this.rebuildQue.shift();
    if (!node) break;
@@ -102,22 +103,29 @@ export const FlowManager = {
  __addToRebuildQue(x: number, y: number, z: number) {
   const key = DVEC.worldBounds.getChunkKeyFromPosition(x, y, z);
   const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
-  if(!this.worldMatrx.getChunk(chunkPOS.x,chunkPOS.y,chunkPOS.z)) return;
+  if (!this.worldMatrx.getChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z)) return;
   if (!this.rebuildMap[key]) {
    this.rebuildMap[key] = true;
 
    this.rebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
   }
  },
- addToRebuildQue(x: number, y: number, z: number) {
-  this.__addToRebuildQue(x, y - 1, z);
-  this.__addToRebuildQue(x, y + 1, z);
-  this.__addToRebuildQue(x, y, z - 1);
-  this.__addToRebuildQue(x - 1, y, z);
-  this.__addToRebuildQue(x, y, z + 1);
-  this.__addToRebuildQue(x + 1, y, z);
- 
-  
+ addToRebuildQue(x: number, y: number, z: number, sync = false) {
+  if (sync) {
+   this.__addToRebuildQue(x, y - 1, z);
+   this.__addToRebuildQue(x, y + 1, z);
+   this.__addToRebuildQue(x, y, z - 1);
+   this.__addToRebuildQue(x - 1, y, z);
+   this.__addToRebuildQue(x, y, z + 1);
+   this.__addToRebuildQue(x + 1, y, z);
+  } else {
+   DVEP.addToRebuildQue(x, y - 1, z, "all");
+   DVEP.addToRebuildQue(x, y + 1, z, "all");
+   DVEP.addToRebuildQue(x, y, z - 1, "all");
+   DVEP.addToRebuildQue(x - 1, y, z, "all");
+   DVEP.addToRebuildQue(x, y, z + 1, "all");
+   DVEP.addToRebuildQue(x + 1, y, z, "all");
+  }
  },
  setLevel(level: number, x: number, y: number, z: number) {
   WorldMatrix.setLevel(level, x, y, z);

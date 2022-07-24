@@ -48,6 +48,16 @@ export const LightByte = {
   return false;
  },
 
+ getRGB(sl: number) {
+  if (sl < 0) return 0;
+  return (sl & 0xfff0) >> 4;
+ },
+
+ setRGB(value: number, sl: number) {
+  if (sl < 0) return 0;
+  return (sl & ~0xfff0) | (value << 4);
+ },
+
  decodeLightFromVoxelData(voxelData: number) {
   return (voxelData & (0xffff << 0)) >> 0;
  },
@@ -201,9 +211,9 @@ export const LightByte = {
   */
  isLessThanForSunAdd(n1: number, n2: number) {
   let sl1 = this.getS(n1);
-  let sl2 =  this.getS(n2);
- 
-  return sl1  + this.SRS  < sl2;
+  let sl2 = this.getS(n2);
+
+  return sl1 + this.SRS < sl2;
  },
  /**# Is Less Than For Sun Add Down
   *
@@ -225,7 +235,7 @@ export const LightByte = {
   let sl2 = n2 & 0xf;
   if (sl1 == sl2) return false;
   if (sl2 == 0xf || sl1 == 0xf) return false;
-  return sl1 + this.SRS  < sl2;
+  return sl1 + this.SRS < sl2;
  },
  /**# Get Sun Light For Under Voxel
   * ---

@@ -15,6 +15,8 @@ export declare const LightByte: {
     setB(value: number, sl: number): number;
     removeS(sl: number): number;
     hasRGBLight(sl: number): boolean;
+    getRGB(sl: number): number;
+    setRGB(value: number, sl: number): number;
     decodeLightFromVoxelData(voxelData: number): number;
     encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
     /**# Set Light Values
