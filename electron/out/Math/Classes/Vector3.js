@@ -119,7 +119,7 @@ export class Vector3 {
         return this._tv3;
     }
     getLength() {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z + this.z);
+        return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
     }
     divide(scalar) {
         this.x = this.x / scalar;

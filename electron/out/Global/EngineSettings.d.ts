@@ -11,6 +11,7 @@ export declare const EngineSettings: {
         nexus: {
             enabled: boolean;
             autoSyncChunks: boolean;
+            autoSyncVoxelPalette: boolean;
         };
         data: {
             enabled: boolean;
@@ -19,6 +20,7 @@ export declare const EngineSettings: {
         fx: {
             enabled: boolean;
             autoSyncChunks: boolean;
+            autoSyncVoxelPalette: boolean;
         };
         textureOptions: {
             animationTime: number;

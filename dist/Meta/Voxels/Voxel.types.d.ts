@@ -1,6 +1,6 @@
-import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
-import { AOAddOVerRide, CullFaceOverride } from "Meta/Constructor/OverRide.types";
-import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
+import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import type { AOAddOVerRide, CullFaceOverride } from "Meta/Constructor/OverRide.types";
+import type { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 /**# Voxel Substance Type
  * ---
  * All solid and transparent voxels are grouped together in the same mesh per chunk.
@@ -26,8 +26,7 @@ export declare type VoxelData = {
     id: string;
     substance: VoxelSubstanceType;
     physics?: {
-        boundingBoxId: string;
-        checkCollisions: boolean;
+        collider: string;
     };
     states?: string[];
     lightSource?: boolean;

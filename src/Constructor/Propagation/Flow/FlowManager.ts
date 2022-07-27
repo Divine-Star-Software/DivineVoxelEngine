@@ -88,7 +88,6 @@ export const FlowManager = {
  },
 
  runRebuildQue() {
-  DVEP.runRebuildQue();
   while (this.rebuildQue.length !== 0) {
    const node = this.rebuildQue.shift();
    if (!node) break;
@@ -97,6 +96,7 @@ export const FlowManager = {
    const z = node[2];
    DVEC.DVEB.buildChunk(x, y, z);
   }
+  DVEP.runRebuildQue();
   this.rebuildMap = {};
  },
 

@@ -20,6 +20,7 @@ export const EngineSettings = {
   nexus: {
    enabled: false,
    autoSyncChunks: false,
+   autoSyncVoxelPalette: false
   },
   data: {
    enabled: false,
@@ -28,6 +29,7 @@ export const EngineSettings = {
   fx: {
    enabled: false,
    autoSyncChunks: false,
+   autoSyncVoxelPalette: false
   },
   textureOptions: {
    animationTime: 20,

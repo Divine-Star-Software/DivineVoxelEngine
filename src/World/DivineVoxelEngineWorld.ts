@@ -63,6 +63,7 @@ export const DVEW = {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
   this.__settingsHaveBeenSynced = true;
+  
  },
 
  /**# Remove Chunk

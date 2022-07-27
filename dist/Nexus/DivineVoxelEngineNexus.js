@@ -8,6 +8,7 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 export const DVEN = {
@@ -20,9 +21,11 @@ export const DVEN = {
     worldComm: WorldComm,
     renderComm: RenderComm,
     nexusEntites: NexusEntites,
+    voxelManager: VoxelManager,
     worldBounds: Util.getWorldBounds(),
     async $INIT(data) {
         this.settings.setContext("DVEN");
+        WorldMatrix.setVoxelManager(this.voxelManager);
         await InitNexusWorker(this, data);
     },
     isReady() {

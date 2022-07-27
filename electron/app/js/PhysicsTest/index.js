@@ -5,20 +5,26 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 const ready = { ready: false };
-const testBoxes = [];
 let playerPostionArray = new Float32Array();
-DVER.worldComm.listenForMessage("connect-player-data", (data) => {
+DVER.nexusComm.listenForMessage("connect-player-data", (data) => {
     playerPostionArray = new Float32Array(data[1]);
     ready.ready = true;
 });
+let hitbox = false;
 const cameras = {
     freeCam: null,
     playerCam: null,
 };
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js", "./Nexus/nexus.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,
+    nexusWorker: workers.nexusWorker,
+    nexus: {
+        enabled: true,
+        autoSyncChunks: true,
+        autoSyncVoxelPalette: true,
+    },
     lighting: {
         doAO: true,
         doRGBLight: false,
@@ -74,14 +80,11 @@ const setUpOptions = (scene) => {
         return;
     addNewGuiButton(optionsMenu, "Main Camera", () => {
         scene.activeCamera = cameras.freeCam;
+        hitbox.setEnabled(true);
     });
     addNewGuiButton(optionsMenu, "Player Cameera", () => {
         scene.activeCamera = cameras.playerCam;
-    });
-    addNewGuiButton(optionsMenu, "Toggle Test Boxes", () => {
-        for (const box of testBoxes) {
-            box.setEnabled(!box.isEnabled());
-        }
+        hitbox.setEnabled(false);
     });
 };
 const physicsTest = async (scene, canvas) => {
@@ -89,11 +92,33 @@ const physicsTest = async (scene, canvas) => {
     const playerCamera = SetUpDefaultCamera(scene, canvas, posVector3, { x: 0, y: 0, z: 0 }, false, false, "playercam");
     playerCamera.attachControl(canvas, true);
     playerCamera.inputs.removeByType("FreeCameraKeyboardMoveInput");
+    /*
+    
+     const testBox1 = BABYLON.MeshBuilder.CreateBox(
+        "player-hitbox",
+        { width: 1, height: .5, depth: 1 },
+        scene
+       );
+    
+       testBox1.position.x = 7 + .5;
+       testBox1.position.y = 6;
+       testBox1.position.z = 10 + .5;
+    
+       const testBox2 = BABYLON.MeshBuilder.CreateBox(
+        "player-hitbox",
+        { width: 1, height: .5, depth: .5 },
+        scene
+       );
+    
+       testBox2.position.x = 7 + .5;
+       testBox2.position.y = 6 + .5;
+       testBox2.position.z = 10 + .25; */
     const playerHitBox = BABYLON.MeshBuilder.CreateBox("player-hitbox", { width: 0.8, height: 2, depth: 0.8 }, scene);
+    hitbox = playerHitBox;
     cameras.playerCam = playerCamera;
     const camNode = new BABYLON.TransformNode("camnode", scene);
     playerCamera.parent = camNode;
-    camNode.position.y = 0.5;
+    //camNode.position.y = 0.3;
     camNode.parent = playerHitBox;
     await DVER.UTIL.createPromiseCheck({
         check: () => ready.ready,
@@ -125,43 +150,14 @@ const physicsTest = async (scene, canvas) => {
             playerStates[1] = 0;
         }
     });
-    DVER.worldComm.sendMessage("connect-player-states", [
+    DVER.nexusComm.sendMessage("connect-player-states", [
         playerDirectionSAB,
         playerStatesSAB,
     ]);
-    const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(7, 7, 5), {
-        w: 0.8,
-        h: 2,
-        d: 0.8,
-    });
-    const testMat = new BABYLON.StandardMaterial("", scene);
-    testMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
-    const testBox = BABYLON.MeshBuilder.CreateBox("player-hitbox", { width: 1, height: 1, depth: 1 }, scene);
-    testBox.material = testMat;
-    testBox.visibility = 0.2;
-    const checkPoints = playerBoundinBox.getVoxelCheckPoints();
-    for (const point of checkPoints) {
-        const newBox = testBox.clone();
-        testBoxes.push(newBox);
-        newBox.position.x = point[0];
-        newBox.position.y = point[1];
-        newBox.position.z = point[2];
-    }
     scene.registerAfterRender(() => {
         playerHitBox.position.x = playerPostionArray[0];
         playerHitBox.position.y = playerPostionArray[1];
         playerHitBox.position.z = playerPostionArray[2];
-        playerBoundinBox.setCheckOrigin(playerHitBox.position.x, playerHitBox.position.y, playerHitBox.position.z);
-        const checkPoints = playerBoundinBox.getVoxelCheckPoints();
-        let k = 0;
-        for (const point of checkPoints) {
-            DVEM.convertToOriginGridSpace(point);
-            const newBox = testBoxes[k];
-            newBox.position.x = point[0];
-            newBox.position.y = point[1];
-            newBox.position.z = point[2];
-            k++;
-        }
         const camera = scene.activeCamera;
         if (!camera)
             return;

@@ -271,9 +271,6 @@ export declare const DVEN: {
                 z: number;
             };
         };
-        /**# Load chunk into Nexus
-         * Load a chunk into the shared nexus thread.
-         */
         getInfoByte(number?: number): {
             maxBit: number;
             minBit: number;
@@ -299,6 +296,7 @@ export declare const DVEN: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             data: {
                 enabled: boolean;
@@ -307,6 +305,7 @@ export declare const DVEN: {
             fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             textureOptions: {
                 animationTime: number;
@@ -683,6 +682,9 @@ export declare const DVEN: {
             r: (value: number) => number;
             g: (value: number) => number;
             b: (value: number) => number;
+            /**# Load chunk into Nexus
+             * Load a chunk into the shared nexus thread.
+             */
             s: (value: number) => number;
         };
         threadName: string;
@@ -761,6 +763,11 @@ export declare const DVEN: {
         _generateUUI(): string;
         spawnEntity(entityId: string, position: import("Meta/index.js").Position3Matrix, otherData?: any, identiferId?: string | undefined): void;
         ddSepawnEntity(entityId: string, identiferId: string): void;
+    };
+    voxelManager: {
+        voxelData: Record<string, import("Meta/index.js").VoxelData>;
+        getVoxelData(id: string): import("Meta/index.js").VoxelData;
+        registerVoxelData(data: import("Meta/index.js").VoxelData): void;
     };
     worldBounds: {
         __maxChunkYSize: number;

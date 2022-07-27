@@ -1,4 +1,5 @@
-import { DimensionsVector3 } from "Math/Types/Math.types.js";
+"use strict";
+/* import { DimensionsVector3 } from "Math/Types/Math.types.js";
 import { PhysicsObject } from "Meta/Physics/Physics.object.type";
 import { DVEPH } from "../../DivineVoxelEnginePhysics.js";
 
@@ -25,3 +26,4 @@ export const BoxPhysicsObject: PhysicsObject = {
   }
  },
 };
+ */ 

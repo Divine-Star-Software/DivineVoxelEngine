@@ -401,6 +401,7 @@ export declare const DVEFX: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             data: {
                 enabled: boolean;
@@ -409,6 +410,7 @@ export declare const DVEFX: {
             fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             textureOptions: {
                 animationTime: number;

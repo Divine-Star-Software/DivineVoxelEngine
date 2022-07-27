@@ -1,10 +1,9 @@
-import { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
-import {
+import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import type {
  AOAddOVerRide,
  CullFaceOverride,
 } from "Meta/Constructor/OverRide.types";
-import { VoxelProcessData } from "Meta/Constructor/Voxel.types";
-import { DirectionNames } from "Meta/Util.types";
+import type { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 
 /**# Voxel Substance Type
  * ---
@@ -51,8 +50,7 @@ export type VoxelData = {
  id: string;
  substance: VoxelSubstanceType;
  physics?: {
-  boundingBoxId: string;
-  checkCollisions: boolean;
+  collider: string;
  };
  states?: string[];
  lightSource?: boolean;

@@ -3,4 +3,7 @@ export const DreamStoneStairVoxelData = {
     shapeId: "Stair",
     id: "dve:dreamstone-stair",
     substance: "transparent",
+    physics: {
+        collider: "Stair",
+    },
 };

@@ -105,6 +105,7 @@ export declare const DVER: {
             nexus: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             data: {
                 enabled: boolean;
@@ -113,6 +114,7 @@ export declare const DVER: {
             fx: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
             };
             textureOptions: {
                 animationTime: number;

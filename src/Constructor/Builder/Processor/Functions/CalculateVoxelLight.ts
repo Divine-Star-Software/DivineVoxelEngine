@@ -70,27 +70,41 @@ const AOVerotexStates = {
 };
 
 const swapSun = () => {
- let s1 = lightByte.getS(RGBvertexStates[1].value);
- let s2 = lightByte.getS(RGBvertexStates[2].value);
- let s3 = lightByte.getS(RGBvertexStates[3].value);
- let s4 = lightByte.getS(RGBvertexStates[4].value);
+ let v1 = lightByte.getS(RGBvertexStates[1].value);
+ let v2 = lightByte.getS(RGBvertexStates[2].value);
+ let v3 = lightByte.getS(RGBvertexStates[3].value);
+ let v4 = lightByte.getS(RGBvertexStates[4].value);
 
- RGBvertexStates[1].value = lightByte.setS(s1, RGBvertexStates[1].value);
- RGBvertexStates[2].value = lightByte.setS(s4, RGBvertexStates[2].value);
- RGBvertexStates[3].value = lightByte.setS(s3, RGBvertexStates[3].value);
- RGBvertexStates[4].value = lightByte.setS(s2, RGBvertexStates[4].value);
+ RGBvertexStates[1].value = lightByte.setS(v1, RGBvertexStates[1].value);
+ RGBvertexStates[2].value = lightByte.setS(v4, RGBvertexStates[2].value);
+ RGBvertexStates[3].value = lightByte.setS(v3, RGBvertexStates[3].value);
+ RGBvertexStates[4].value = lightByte.setS(v2, RGBvertexStates[4].value);
 };
 
 const swapRGB = () => {
- let s1 = lightByte.getRGB(RGBvertexStates[1].value);
- let s2 = lightByte.getRGB(RGBvertexStates[2].value);
- let s3 = lightByte.getRGB(RGBvertexStates[3].value);
- let s4 = lightByte.getRGB(RGBvertexStates[4].value);
+ let v1 = lightByte.getRGB(RGBvertexStates[1].value);
+ let v2 = lightByte.getRGB(RGBvertexStates[2].value);
+ let v3 = lightByte.getRGB(RGBvertexStates[3].value);
+ let v4 = lightByte.getRGB(RGBvertexStates[4].value);
+ 
+ RGBvertexStates[2].value = lightByte.setRGB(v4, RGBvertexStates[2].value);
+ RGBvertexStates[1].value = lightByte.setRGB(v1, RGBvertexStates[1].value);
+ RGBvertexStates[4].value = lightByte.setRGB(v2, RGBvertexStates[4].value);
+ RGBvertexStates[3].value = lightByte.setRGB(v3, RGBvertexStates[3].value);
 
- RGBvertexStates[1].value = lightByte.setRGB(s1, RGBvertexStates[1].value);
- RGBvertexStates[2].value = lightByte.setRGB(s4, RGBvertexStates[2].value);
- RGBvertexStates[3].value = lightByte.setRGB(s3, RGBvertexStates[3].value);
- RGBvertexStates[4].value = lightByte.setRGB(s2, RGBvertexStates[4].value);
+};
+
+const swapAO = () => {
+ let v1 = AOVerotexStates[1].value;
+ let v2 = AOVerotexStates[2].value;
+ let v3 = AOVerotexStates[3].value;
+ let v4 = AOVerotexStates[4].value;
+
+ AOVerotexStates[1].value = v1;
+ AOVerotexStates[2].value = v2;
+ AOVerotexStates[3].value = v3;
+ AOVerotexStates[4].value = v4; 
+
 };
 
 const shouldRGBFlip = () => {
@@ -104,8 +118,13 @@ const shouldRGBFlip = () => {
   RGBvertexStates[2].totalZero &&
   !RGBvertexStates[3].totalZero &&
   RGBvertexStates[4].totalZero;
+ let t3 =
+  !RGBvertexStates[1].totalZero &&
+  RGBvertexStates[2].totalZero &&
+  !RGBvertexStates[3].totalZero &&
+  RGBvertexStates[4].totalZero;
 
- return t1 || t2;
+ return t1 || t2 || t3;
 };
 
 const shouldSunFlip = () => {
@@ -120,11 +139,16 @@ const shouldSunFlip = () => {
   sunVertexStates[2].totalZero &&
   !sunVertexStates[3].totalZero &&
   sunVertexStates[4].totalZero;
+ let t3 =
+  !sunVertexStates[1].totalZero &&
+  sunVertexStates[2].totalZero &&
+  !sunVertexStates[3].totalZero &&
+  sunVertexStates[4].totalZero;
 
- return t1 || t2;
+ return t1 || t2 || t3;
 };
 
-const shouldAOFlip = (sunFlip: boolean, rgbFlip: boolean) => {
+const shouldAOFlip = () => {
  let check = false;
  if (!states.ignoreAO) {
   let t1 =
@@ -142,14 +166,7 @@ const shouldAOFlip = (sunFlip: boolean, rgbFlip: boolean) => {
    AOVerotexStates[2].totalLight &&
    !AOVerotexStates[3].totalLight &&
    AOVerotexStates[4].totalLight;
-  const currentS = lightByte.getS(currentVoxelData.light);
-  const currentRGB = lightByte.getRGB(currentVoxelData.light);
-  if (sunFlip && currentS == 0) {
-   return false;
-  }
-  if (rgbFlip && currentRGB == 0) {
-   return false;
-  }
+
   check = t1 || t2 || t3;
  }
  return check;
@@ -166,7 +183,18 @@ const flipCheck = () => {
   swapRGB();
  }
 
- const aoFlip = shouldAOFlip(sunFlip, rgbFlip);
+ const aoFlip = shouldAOFlip();
+
+ if ((sunFlip || rgbFlip) && !aoFlip) {
+  swapAO();
+ }
+ 
+ if (!sunFlip && aoFlip) {
+  swapSun();
+ }
+ if (!rgbFlip && aoFlip) {
+  swapRGB();
+ }
 
  return rgbFlip || sunFlip || aoFlip;
 };
@@ -247,9 +275,7 @@ const checkSets = {
 };
 const states = { ignoreAO: false };
 const newRGBValues: number[] = [];
-const newSunValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
-const wallCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData: {
  light: number;
  voxelData: Nullable<VoxelData>;
@@ -311,6 +337,10 @@ export function CalculateVoxelLight(
   currentVoxelData.x = tx;
   currentVoxelData.y = ty;
   currentVoxelData.z = tz;
+  AOVerotexStates[1].value = 1;
+  AOVerotexStates[2].value = 1;
+  AOVerotexStates[3].value = 1;
+  AOVerotexStates[4].value = 1;
   AOVerotexStates[1].totalLight = true;
   AOVerotexStates[2].totalLight = true;
   AOVerotexStates[3].totalLight = true;
@@ -460,16 +490,10 @@ const lightEnd = (vertex: Vertexes) => {
  const returnValue = lightByte.setLightValues(newRGBValues);
  RGBvertexStates[vertex].totalZero = totalZero;
  RGBvertexStates[vertex].value = returnValue;
-
  zeroCheck.s = 0;
  zeroCheck.r = 0;
  zeroCheck.b = 0;
  zeroCheck.g = 0;
-
- wallCheck.s = 0;
- wallCheck.r = 0;
- wallCheck.b = 0;
- wallCheck.g = 0;
 };
 
 const doAO = (
@@ -481,6 +505,7 @@ const doAO = (
 ) => {
  const neighborVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
  if (!neighborVoxelId) return;
+ if (neighborVoxelId[0] == "dve:air") return;
  const neighborVoxel = DVEC.voxelManager.getVoxel(neighborVoxelId[0]);
  if (!neighborVoxel || !currentVoxelData.voxelData) {
   return;
@@ -588,11 +613,6 @@ export function VoxelLightMixCalc(
     if (this.settings.doSun) {
      doSun(lightByte.getS(nl));
     }
-   } else {
-    wallCheck.r++;
-    wallCheck.g++;
-    wallCheck.b++;
-    wallCheck.s++;
    }
   }
   if (!states.ignoreAO) {

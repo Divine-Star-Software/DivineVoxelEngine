@@ -1,8 +1,8 @@
 import { VoxelData } from "../../../../../out/Meta/index";
 
 export const DreamStonePillarVoxelData: VoxelData = {
-    name: "Dream Stone Pillar",
-    shapeId: "Box",
-    id: "dve:dreamstonepillar",
-    substance: "solid",
-   };
+ name: "Dream Stone Pillar",
+ shapeId: "Box",
+ id: "dve:dreamstonepillar",
+ substance: "solid",
+};

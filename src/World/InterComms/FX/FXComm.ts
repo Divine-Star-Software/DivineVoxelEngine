@@ -6,5 +6,4 @@ fxComm.onSetPort((port) => {
  DVEW.matrixCentralHub.registerThread("fx", port);
 });
 
-
 export const FXComm = fxComm;

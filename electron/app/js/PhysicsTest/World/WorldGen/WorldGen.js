@@ -8,7 +8,7 @@ export const WorldGen = {
         let baseY = 0;
         for (let x = 0; x < +this.chunkWidth; x++) {
             for (let z = 0; z < this.chunkDepth; z++) {
-                let add = (Math.random() * 2) >> 0;
+                let add = (Math.random() * 4) >> 0;
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= baseY + 5) {
                         DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);

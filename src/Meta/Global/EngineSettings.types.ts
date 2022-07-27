@@ -2,6 +2,7 @@ export type EngineSettingsData = {
  nexus: {
   enabled: boolean;
   autoSyncChunks: boolean;
+  autoSyncVoxelPalette : boolean;
  };
  data: {
   enabled: boolean;
@@ -10,6 +11,7 @@ export type EngineSettingsData = {
  fx: {
   enabled: boolean;
   autoSyncChunks: boolean;
+  autoSyncVoxelPalette : boolean;
  };
  physics: {
   enabled: boolean;

@@ -7,8 +7,9 @@ export const WorldGen = {
  generateChunk(chunkX: number, chunkY: number, chunkZ: number) {
   let baseY = 0;
   for (let x = 0; x < +this.chunkWidth; x++) {
+    
    for (let z = 0; z < this.chunkDepth; z++) {
-    let add =( Math.random() * 2) >> 0;
+    let add =( Math.random() * 4) >> 0;
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y <= baseY + 5) {
       DVEW.worldData.paintVoxel(
@@ -32,6 +33,7 @@ export const WorldGen = {
        z + chunkZ
       );
      }
+
     }
    }
   }

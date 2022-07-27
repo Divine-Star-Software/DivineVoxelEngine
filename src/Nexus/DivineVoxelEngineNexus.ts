@@ -11,6 +11,7 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 
@@ -29,10 +30,13 @@ export const DVEN = {
 
  nexusEntites: NexusEntites,
 
- worldBounds : Util.getWorldBounds(),
+ voxelManager: VoxelManager,
+
+ worldBounds: Util.getWorldBounds(),
 
  async $INIT(data: DVENInitData) {
-    this.settings.setContext("DVEN");  
+  this.settings.setContext("DVEN");
+  WorldMatrix.setVoxelManager(this.voxelManager);
   await InitNexusWorker(this, data);
  },
 

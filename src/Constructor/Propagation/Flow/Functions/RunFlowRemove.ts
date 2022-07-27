@@ -108,10 +108,12 @@ export async function RunFlowReduce(this: typeof FlowManager) {
 
   const l = this.getLevel(x, y, z);
   const state = this.getLevelState(x, y, z);
+  let syncRebuild = false;
 
   if (l < 2) {
    if (Math.random() < 0.5 || state == 1) {
     this.removeVoxel(x, y, z);
+    if (state == 1) syncRebuild = true;
    } else {
     reque.push([x, y, z]);
    }
@@ -120,11 +122,7 @@ export async function RunFlowReduce(this: typeof FlowManager) {
    reque.push([x, y, z]);
   }
 
-  if (state == 1) {
-   this.addToRebuildQue(x, y, z, true);
-  } else {
-   this.addToRebuildQue(x, y, z);
-  }
+  this.addToRebuildQue(x, y, z, syncRebuild);
  }
 
  this._flowRemoveQue = reque;
