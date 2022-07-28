@@ -1,4 +1,4 @@
-import { Vector3 } from "../../../out/Math/Classes/Vector3.js";
+/* import { Vector3 } from "../../../out/Math/Classes/Vector3.js";
 import { DVEM } from "../../../out/Math/DivineVoxelEngineMath.js";
 import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
 
@@ -200,4 +200,4 @@ const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(10, 7, 7), {
     yUpdate(origin);
     xzUpdate(origin);
     originUpdate(origin);
-   }, 10);
+   }, 10); */

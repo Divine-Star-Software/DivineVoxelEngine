@@ -67,10 +67,10 @@ export const WorldMatrix = {
         this.globalVoxelPaletteRecord = record;
         this.globalVoxelPaletteMap = map;
     },
-    getVoxel(x, y, z) {
+    getVoxel(x, y, z, secondary = false) {
         let palette = this.globalVoxelPalette;
         let record = this.globalVoxelPaletteRecord;
-        const numericVoxelId = this.getVoxelNumberID(x, y, z);
+        const numericVoxelId = this.getVoxelNumberID(x, y, z, secondary);
         if (numericVoxelId === false)
             return false;
         if (numericVoxelId == 0)
@@ -148,11 +148,11 @@ export const WorldMatrix = {
         }
         return -1;
     },
-    getVoxelData(x, y, z) {
+    getVoxelData(x, y, z, secondary = false) {
         if (!this.voxelManager) {
             throw new Error(`A voxel manager must be set in order for this function to work. `);
         }
-        const voxelCheck = this.getVoxel(x, y, z);
+        const voxelCheck = this.getVoxel(x, y, z, secondary);
         if (!voxelCheck) {
             return false;
         }
@@ -293,8 +293,8 @@ export const WorldMatrix = {
             array = chunk.voxelStates;
         return this._3dArray.getValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), array);
     },
-    getVoxelNumberID(x, y, z) {
-        const rawVoxelData = this.getData(x, y, z);
+    getVoxelNumberID(x, y, z, secondary = false) {
+        const rawVoxelData = this.getData(x, y, z, secondary);
         if (rawVoxelData < 0)
             return false;
         return this.voxelByte.getId(rawVoxelData);

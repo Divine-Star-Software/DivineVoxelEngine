@@ -7,4 +7,8 @@ export const DebugBoxVoxelData: VoxelData = {
  substance: "solid",
  lightSource: true,
  lightValue: 0b1111_1111_1111_0000,
+ physics : {
+    collider : "Box",
+    checkCollisions : true
+ }
 };

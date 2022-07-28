@@ -20,6 +20,12 @@ export class Vector3 {
   this.z = z;
  }
 
+ updateFromVec3(vector: Vector3) {
+  this.x = vector.x;
+  this.y = vector.y;
+  this.z = vector.z;
+ }
+
  roundVector(deciamlPoints = 2) {
   this.x = Number(this.x.toFixed(deciamlPoints));
   this.y = Number(this.y.toFixed(deciamlPoints));
@@ -75,10 +81,28 @@ export class Vector3 {
   return this;
  }
 
+ addFromVec3(vector: Vector3) {
+  this.x += vector.x;
+  this.y += vector.y;
+  this.z += vector.z;
+  return this;
+ }
+
+ isZero() {
+  return !this.x && !this.y && !this.z;
+ }
+
  subtractXYZ(subtract: number) {
   this.x = this.x - subtract;
   this.y = this.y - subtract;
   this.z = this.z - subtract;
+  return this;
+ }
+
+ subtractFromObj(vector: Vector3) {
+  this.x = this.x - vector.x;
+  this.y = this.y - vector.y;
+  this.z = this.z - vector.z;
   return this;
  }
 
@@ -157,7 +181,7 @@ export class Vector3 {
  }
 
  normalize() {
-    return this.divide(this.getLength());
+  return this.divide(this.getLength());
  }
 
  isEqual(vector3: Vector3) {

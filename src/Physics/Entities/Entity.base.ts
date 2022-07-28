@@ -1,22 +1,17 @@
 import { DVEM } from "../../Math/DivineVoxelEngineMath.js";
-import { WorldMatrix } from "../../Matrix/WorldMatrix.js";
 import { DVEPH } from "../DivineVoxelEnginePhysics.js";
-
+const ep = 0.001;
 export const EntityBase = {
- collideWithLevel: true,
+ active: true,
  //current position
- x: 0,
- y: 0,
- z: 0,
+ position: DVEM.getVector3(0, 0, 0),
+ direction: DVEM.getVector3(0, 0, 0),
  //previous position
- px: 0,
- py: 0,
- pz: 0,
+ previousPosiiton: DVEM.getVector3(0, 0, 0),
  //dimensions
- hx: 0.8,
- hy: 1.9,
- hz: 0.8,
+ hitBox: { w: 0.8, h: 1.8, d: 0.8 },
 
+ speed : 0.01,
  velocity: DVEM.getVector3(0, 0, 0),
 
  onGround: false,
@@ -32,27 +27,21 @@ export const EntityBase = {
  ) {},
 
  setPosition(x: number, y: number, z: number) {
-  this.x = x;
-  this.y = y;
-  this.z = z;
+  this.position.updateVector(x, y, z);
  },
  syncPosition(position: Float32Array) {
-  position[0] = this.x;
-  position[1] = this.y;
-  position[2] = this.z;
+  position[0] = this.position.x;
+  position[1] = this.position.y;
+  position[2] = this.position.z;
  },
  cachePosition() {
-  this.px = this.x;
-  this.py = this.y;
-  this.pz = this.z;
+  this.previousPosiiton.updateFromVec3(this.position);
  },
  setVelocity(x: number, y: number, z: number) {
   this.velocity.updateVector(x, y, z);
  },
  applyVelocity() {
-  this.x += this.velocity.x;
-  this.y += this.velocity.y;
-  this.z += this.velocity.z;
+  this.position.addFromVec3(this.velocity);
  },
 
  beforeUpdate() {},
@@ -62,46 +51,58 @@ export const EntityBase = {
   this.beforeUpdate();
   this.cachePosition();
   this.applyVelocity();
-  if (!this.collideWithLevel) return;
+  if (!this.active) return;
   this.onGround = false;
   //Notice there is a cycle. We may have to run the algorithm several times until the collision is resolved
   while (true) {
    // First we calculate the movement vector for this frame
    // This is the entity's current position minus its last position.
    // The last position is set at the beggining of each frame.
-   const dx = this.x - this.px;
-   const dy = this.y - this.py;
-   const dz = this.z - this.pz;
+   const dx = this.position.x - this.previousPosiiton.x;
+   const dy = this.position.y - this.previousPosiiton.y;
+   const dz = this.position.z - this.previousPosiiton.z;
 
    // These are the bounds of the AABB that may collide with the entity.
-   const minXi = Math.floor(Math.min(this.x, this.px) - this.hx / 2);
-   const maxXi = Math.floor(Math.max(this.x, this.px) + this.hx / 2);
-   const minYi = Math.floor(Math.min(this.y, this.py) - this.hy / 2);
-   const maxYi = Math.floor(Math.max(this.y, this.py) + this.hy / 2);
-   const minZi = Math.floor(Math.min(this.z, this.pz) - this.hz / 2);
-   const maxZi = Math.floor(Math.max(this.z, this.pz) + this.hz / 2);
+   const minX = Math.floor(
+    Math.min(this.position.x, this.previousPosiiton.x) - this.hitBox.w / 2
+   );
+   const maxX = Math.floor(
+    Math.max(this.position.x, this.previousPosiiton.x) + this.hitBox.w / 2
+   );
+   const minY = Math.floor(
+    Math.min(this.position.y, this.previousPosiiton.y) - this.hitBox.h / 2
+   );
+   const maxY = Math.floor(
+    Math.max(this.position.y, this.previousPosiiton.y) + this.hitBox.h / 2
+   );
+   const minZ = Math.floor(
+    Math.min(this.position.z, this.previousPosiiton.z) - this.hitBox.d / 2
+   );
+   const maxZ = Math.floor(
+    Math.max(this.position.z, this.previousPosiiton.z) + this.hitBox.d / 2
+   );
 
    let r = { h: 1, nx: 0, ny: 0, nz: 0 };
 
    // For each voxel that may collide with the entity, find the first that colides with it
-   for (let yi = minYi; yi <= maxYi; yi++) {
-    for (let zi = minZi; zi <= maxZi; zi++) {
-     for (let xi = minXi; xi <= maxXi; xi++) {
-      const colliderObject = DVEPH.getCollider(xi, yi, zi);
+   for (let y = minY; y <= maxY; y++) {
+    for (let z = minZ; z <= maxZ; z++) {
+     for (let x = minX; x <= maxX; x++) {
+      const colliderObject = DVEPH.getCollider(x, y, z);
       if (!colliderObject) continue;
 
-      const colliders = colliderObject.getColliderData(xi, yi, zi);
+      const colliders = colliderObject.getColliderData(x, y, z);
       const collidersLength = colliders.length;
       for (let i = 0; i < collidersLength; i++) {
        const collider = colliders[i];
        // Check swept collision
        const c = DVEPH.collisions.sweepAABB(
-        this.px - this.hx / 2,
-        this.py - this.hy / 2,
-        this.pz - this.hz / 2,
-        this.hx,
-        this.hy,
-        this.hz,
+        this.previousPosiiton.x - this.hitBox.w / 2,
+        this.previousPosiiton.y - this.hitBox.h / 2,
+        this.previousPosiiton.z - this.hitBox.d / 2,
+        this.hitBox.w,
+        this.hitBox.h,
+        this.hitBox.d,
         collider.position[0],
         collider.position[1],
         collider.position[2],
@@ -112,12 +113,12 @@ export const EntityBase = {
         dy,
         dz
        );
-       if (c.ny == 1) {
+       if (c.ny == 1 && c.h < .3) {
         this.onGround = true;
        }
 
        if (c.h < 1) {
-        this.doCollision(xi, yi, zi, collider.name, c);
+        this.doCollision(x, y, z, collider.name, c);
        }
        //Check if this collision is closer than the closest so far.
        if (c.h < r.h) {
@@ -130,32 +131,31 @@ export const EntityBase = {
 
    // Update the entity's position
    // We move the entity slightly away from the block in order to miss seams.
-   const ep = 0.001;
-   this.x = this.px + r.h * dx + ep * r.nx;
-   this.y = this.py + r.h * dy + ep * r.ny;
-   this.z = this.pz + r.h * dz + ep * r.nz;
+
+   this.position.x = this.previousPosiiton.x + r.h * dx + ep * r.nx;
+   this.position.y = this.previousPosiiton.y + r.h * dy + ep * r.ny;
+   this.position.z = this.previousPosiiton.z + r.h * dz + ep * r.nz;
 
    // If there was no collision, end the algorithm.
    if (r.h == 1) break;
 
-   // Wall Sliding
-   // c = a - (a.b)/(b.b) b
-   // c - slide vector (rejection of a over b)
-   // b - normal to the block
-   // a - remaining speed (= (1-h)*speed)
-   const BdotB = r.nx * r.nx + r.ny * r.ny + r.nz * r.nz;
-   if (BdotB != 0) {
-    // Store the current position for the next iteration
-    this.px = this.x;
-    this.py = this.y;
-    this.pz = this.z;
 
-    // Apply Slide
-    const AdotB = (1 - r.h) * (dx * r.nx + dy * r.ny + dz * r.nz);
-    this.x += (1 - r.h) * dx - (AdotB / BdotB) * r.nx;
-    this.y += (1 - r.h) * dy - (AdotB / BdotB) * r.ny;
-    this.z += (1 - r.h) * dz - (AdotB / BdotB) * r.nz;
-   }
+    // Wall Sliding
+    // c = a - (a.b)/(b.b) b
+    // c - slide vector (rejection of a over b)
+    // b - normal to the block
+    // a - remaining speed (= (1-h)*speed)
+    const BdotB = r.nx * r.nx + r.ny * r.ny + r.nz * r.nz;
+    if (BdotB != 0) {
+     // Store the current position for the next iteration
+     this.cachePosition();
+
+     // Apply Slide
+     const AdotB = (1 - r.h) * (dx * r.nx + dy * r.ny + dz * r.nz);
+     this.position.x += (1 - r.h) * dx - (AdotB / BdotB) * r.nx;
+     this.position.y += (1 - r.h) * dy - (AdotB / BdotB) * r.ny;
+     this.position.z += (1 - r.h) * dz - (AdotB / BdotB) * r.nz;
+    }
   }
   this.afterUpdate();
  },

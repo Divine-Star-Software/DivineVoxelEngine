@@ -22,7 +22,6 @@ const processDefaultFaceData = (
  data: VoxelShapeAddData
 ) => {
  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
-
  DVEB.shapeBuilder.addFace(face, data.position, tempDimensions, data, flip);
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];

@@ -236,11 +236,14 @@ export declare const WorldData: {
     getData(x: number, y: number, z: number, state?: boolean): number | false;
     setData(x: number, y: number, z: number, data: number, state?: boolean): void | -1;
     getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
-    getVoxel(x: number, y: number, z: number): [VoxelData | number, string | number, number] | false;
+    getVoxel(x: number, y: number, z: number, secondary?: boolean): [VoxelData | number, string | number, number] | false;
     addRegion(x: number, y: number, z: number): WorldRegion;
     getRegion(x: number, y: number, z: number): false | WorldRegion;
     addChunk(x: number, y: number, z: number): ChunkData;
     paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
+    addOrGetChunk(x: number, y: number, z: number): ChunkData;
+    _getStartingLeel(voxelData: VoxelData, stateData: number): number;
+    paintDualVoxel(voxelId: string, voxelStateId: string, shapeState: number, secondVoxelId: string, secondVoxelStateId: string, x: number, y: number, z: number): void;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     __handleHeightMapUpdateForVoxelRemove(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;

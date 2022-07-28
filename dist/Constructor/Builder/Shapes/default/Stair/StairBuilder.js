@@ -148,7 +148,7 @@ const incrementIndexes = (data) => {
     data.colorIndex += 4;
     data.aoIndex += 4;
 };
-const addHalfUV = (face, data, uv, start, end, ws = 0, we = 1, rotation = 0) => {
+const addHalfUV = (face, data, uv, rotation = 0, start, end, ws = 0, we = 1) => {
     DVEB.uvHelper.addUVs(face, {
         uvs: data.uvs,
         uv: uv,
@@ -180,10 +180,10 @@ const addStairTop = (face, stairData, data) => {
     //upper
     DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
     if (!doing2nd) {
-        addHalfUV(face, data, uv, 0, 0.5);
+        addHalfUV(face, data, uv, 180, 0, 0.5);
     }
     else {
-        addHalfUV(face, data, uv, 0, 1, 0, 0.5);
+        addHalfUV(face, data, uv, 180, 0, 1, 0, 0.5);
     }
     if (!reversed) {
         DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("top", "top", data), 0);
@@ -206,10 +206,10 @@ const addStairTop = (face, stairData, data) => {
     }
     DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
     if (!doing2nd) {
-        addHalfUV(face, data, uv, 0.5, 1);
+        addHalfUV(face, data, uv, 180, 0.5, 1);
     }
     else {
-        addHalfUV(face, data, uv, 0, 1, 0.5, 1);
+        addHalfUV(face, data, uv, 180, 0, 1, 0.5, 1);
     }
     if (!reversed) {
         if (!doing2nd) {
@@ -235,7 +235,7 @@ const addStairSide = (face, stairData, data) => {
     }
     //lower
     DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, uv, 0.5, 1);
+    addHalfUV(face, data, uv, 0, 0.5, 1);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
     //upper
@@ -245,7 +245,7 @@ const addStairSide = (face, stairData, data) => {
         position.z = position.z + stairData.transform2.z;
     }
     DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, uv, 0, 0.5);
+    addHalfUV(face, data, uv, 0, 0, 0.5);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
     incrementIndexes(data);
@@ -260,7 +260,7 @@ const addSide = (face, stairData, data) => {
     }
     //lower
     DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, eastUV, 0.5, 1);
+    addHalfUV(face, data, eastUV, 360, 0, 1, 0.5, 1);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
     //upper
@@ -275,7 +275,7 @@ const addSide = (face, stairData, data) => {
         position.z = position.z + stairData.transform2.z;
     }
     DVEB.shapeBuilder.addFace(face, position, quaterDim, data, false);
-    addHalfUV(face, data, eastUV, 0, 0.5, 0, 0.5);
+    addHalfUV(face, data, eastUV, 360, 0, 0.5, 0, 0.5);
     DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "top", data), 0);
     DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
     incrementIndexes(data);

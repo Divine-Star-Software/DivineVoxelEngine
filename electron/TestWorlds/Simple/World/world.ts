@@ -39,36 +39,23 @@ WorldGen.generateChunk(16, 16);
 
 WorldGen.generateChunk(-16, -16);
 
-/*
-DVEW.worldData.paintVoxel("dve:debugbox", "default", 2, 0, 40, 4);
-DVEW.worldData.paintVoxel("dve:debugbox", "default", 0, 0, 40, 6);
-DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 0, 40, -1);
-DVEW.worldData.paintVoxel("dve:dreamstone", "no-grass", 0, 0, 40, 0);
-DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", 0, 0, 40, -2);
-
-for (let y = 35; y < 50; y++) {
- //north
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 1, 3, y, -2);
- DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 3, y, -1);
- //south
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 0, 3, y, 0);
- //east
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 2, 3, y, 2);
- DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 4, y, 2);
- //west
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 3, 3, y, 4);
- DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, 2, y, 4);
- //top
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 4, 3, y, 6);
- //bottom
- DVEW.worldData.paintVoxel("dve:dreamvine", "default", 5, 3, y, 8);
-}
-*/
-
 DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 47, 7);
-load();
 
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 34, 11);
+
+
+load();
+DVEW.worldData.paintDualVoxel(
+    "dve:liquiddreamether",
+    "default",
+    0,
+    "dve:dreamgrass",
+    "default",
+    0,
+    40,
+    0
+   );
+
+
 
 setTimeout(() => {
  DVEW.queues.addToFlowRunQue(7, 47, 7);

@@ -3,7 +3,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT({});
-const depth = 16;
+const depth = 64;
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;

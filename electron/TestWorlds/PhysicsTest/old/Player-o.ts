@@ -1,4 +1,4 @@
-/* import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
+ import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
 import {DVEPH} from "../../../out/Physics/DivineVoxelEnginePhysics.js";
 
 export const Player = {
@@ -127,4 +127,4 @@ export const Player = {
         }
     }
 
-} */
+}

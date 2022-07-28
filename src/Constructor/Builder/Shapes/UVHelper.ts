@@ -95,6 +95,13 @@ export const UVHelper = {
      uvs.push(ws, he, uv, ws, hs, uv, we, hs, uv, we, he, uv);
     }
    },
+   360: (uv, ws, we, hs, he, flipped, uvs) => {
+    if (!flipped) {
+     uvs.push(he, we, uv, he, ws, uv, hs, ws, uv, hs, we, uv);
+    } else {
+     uvs.push(hs, we, uv, he, we, uv, he, ws, uv, hs, ws, uv);
+    }
+   },
   },
   bottom: {
    0: (uv, ws, we, hs, he, flipped, uvs) => {
@@ -125,6 +132,13 @@ export const UVHelper = {
      uvs.push(ws, hs, uv, we, hs, uv, we, he, uv, ws, he, uv);
     }
    },
+   360: (uv, ws, we, hs, he, flipped, uvs) => {
+    if (!flipped) {
+     uvs.push(he, ws, uv, hs, hs, uv, hs, we, uv, he, we, uv);
+    } else {
+     uvs.push(he, we, uv, he, ws, uv, hs, ws, uv, hs, we, uv);
+    }
+   },
   },
   side: {
    0: (uv, ws, we, hs, he, flipped, uvs) => {
@@ -153,6 +167,13 @@ export const UVHelper = {
      uvs.push(we, hs, uv, we, he, uv, ws, he, uv, ws, hs, uv);
     } else {
      uvs.push(ws, hs, uv, we, hs, uv, we, he, uv, ws, he, uv);
+    }
+   },
+   360: (uv, ws, we, hs, he, flipped, uvs) => {
+    if (!flipped) {
+     uvs.push(he, ws, uv, hs, ws, uv, hs, we, uv, he, we, uv);
+    } else {
+     uvs.push(he, we, uv, he, ws, uv, hs, ws, uv, hs, we, uv);
     }
    },
   },

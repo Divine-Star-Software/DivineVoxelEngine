@@ -248,7 +248,7 @@ export declare const WorldMatrix: {
      */
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
-    getVoxel(x: number, y: number, z: number): false | string[];
+    getVoxel(x: number, y: number, z: number, secondary?: boolean): false | string[];
     getVoxelShapeState(x: number, y: number, z: number): number;
     getLevel(x: number, y: number, z: number): number;
     setLevel(level: number, x: number, y: number, z: number): void;
@@ -257,7 +257,7 @@ export declare const WorldMatrix: {
     setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
     getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
-    getVoxelData(x: number, y: number, z: number): VoxelData | false;
+    getVoxelData(x: number, y: number, z: number, secondary?: boolean): VoxelData | false;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
     };
@@ -286,7 +286,7 @@ export declare const WorldMatrix: {
     }) => {}): false | Promise<boolean>;
     setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
     getData(x: number, y: number, z: number, state?: boolean): number;
-    getVoxelNumberID(x: number, y: number, z: number): number | false;
+    getVoxelNumberID(x: number, y: number, z: number, secondary?: boolean): number | false;
     getLight(x: number, y: number, z: number): number;
     setAir(x: number, y: number, z: number, lightValue: number): void;
     setFullSun(x: number, y: number, z: number): void;

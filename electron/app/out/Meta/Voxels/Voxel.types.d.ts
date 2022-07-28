@@ -27,6 +27,7 @@ export declare type VoxelData = {
     substance: VoxelSubstanceType;
     physics?: {
         collider: string;
+        checkCollisions: boolean;
     };
     states?: string[];
     lightSource?: boolean;

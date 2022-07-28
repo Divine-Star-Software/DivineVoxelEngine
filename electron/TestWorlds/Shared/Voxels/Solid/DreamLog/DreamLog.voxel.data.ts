@@ -5,4 +5,8 @@ export const DreamLogVoxelData: VoxelData ={
     shapeId: "Box",
     id: "dve:dream-log",
     substance: "solid",
+    physics : {
+        collider : "Box",
+        checkCollisions : true
+     }
    };

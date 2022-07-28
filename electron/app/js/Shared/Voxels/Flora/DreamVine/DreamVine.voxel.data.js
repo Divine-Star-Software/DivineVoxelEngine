@@ -3,4 +3,8 @@ export const DreamVineVoxelData = {
     shapeId: "Panel",
     id: "dve:dreamvine",
     substance: "flora",
+    physics: {
+        collider: "Box",
+        checkCollisions: true
+    }
 };

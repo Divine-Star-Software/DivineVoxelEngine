@@ -117,12 +117,12 @@ export const WorldGen = {
       if (y == baseY - 1) {
        DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
       }
-      if (y == baseY ) {
+      if (y == baseY) {
        if (tree) {
-        this.generateTree(x, y  - 1, z);
+        this.generateTree(x, y - 1, z);
         continue;
        } else {
-      //  DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y, z);
+        //  DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y, z);
        }
       }
      }
@@ -140,15 +140,28 @@ export const WorldGen = {
      if (y <= baseY - 1) {
       DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
      }
-     if (y > baseY - 1 && y < baseY + 1) {
-      DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x, y, z);
+     if (y >= baseY - 2 && y < baseY + 1) {
+      if (y == baseY - 2 && Math.random() > 0.8) {
+       DVEW.worldData.paintDualVoxel(
+        "dve:liquiddreamether",
+        "default",
+        0,
+        "dve:dreamgrass",
+        "default",
+        x,
+        y,
+        z
+       );
+      } else {
+       DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x, y, z);
+      }
      }
      if (y <= baseY + 2 && baseY >= baseY) {
       if (x == chunkX + 15 || z == chunkZ + 15 || x == chunkX || z == chunkZ) {
        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
       }
      }
-     if (y <= baseY + 1 && baseY >= baseY) {
+     if (y <= baseY + 2) {
       if (
        (z == chunkZ + 7 && x == chunkX + 7) ||
        (z == chunkZ + 8 && x == chunkX + 8) ||

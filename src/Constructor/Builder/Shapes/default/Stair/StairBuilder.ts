@@ -207,11 +207,11 @@ const addHalfUV = (
  face: DirectionNames,
  data: VoxelShapeAddData,
  uv: number,
+ rotation: Rotations = 0,
  start: number,
  end: number,
  ws = 0,
- we = 1,
- rotation: Rotations = 0
+ we = 1
 ) => {
  DVEB.uvHelper.addUVs(face, {
   uvs: data.uvs,
@@ -256,9 +256,9 @@ const addStairTop = (
  DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
 
  if (!doing2nd) {
-  addHalfUV(face, data, uv, 0, 0.5);
+  addHalfUV(face, data, uv, 180, 0, 0.5);
  } else {
-  addHalfUV(face, data, uv, 0, 1, 0, 0.5);
+  addHalfUV(face, data, uv, 180, 0, 1, 0, 0.5);
  }
 
  if (!reversed) {
@@ -296,9 +296,9 @@ const addStairTop = (
  DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
 
  if (!doing2nd) {
-  addHalfUV(face, data, uv, 0.5, 1);
+  addHalfUV(face, data, uv, 180, 0.5, 1);
  } else {
-  addHalfUV(face, data, uv, 0, 1, 0.5, 1);
+  addHalfUV(face, data, uv, 180, 0, 1, 0.5, 1);
  }
 
  if (!reversed) {
@@ -343,7 +343,7 @@ const addStairSide = (
 
  //lower
  DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
- addHalfUV(face, data, uv, 0.5, 1);
+ addHalfUV(face, data, uv, 0, 0.5, 1);
  DVEB.shapeHelper.calculateAOColor(
   data.AOColors,
   tempAOTemplte("side", "bottom", data),
@@ -363,7 +363,7 @@ const addStairSide = (
  }
 
  DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
- addHalfUV(face, data, uv, 0, 0.5);
+ addHalfUV(face, data, uv, 0, 0, 0.5);
  DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
  DVEB.shapeHelper.calculateLightColor(
   data.RGBLightColors,
@@ -393,7 +393,7 @@ const addSide = (
 
  //lower
  DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
- addHalfUV(face, data, eastUV, 0.5, 1);
+ addHalfUV(face, data, eastUV, 360, 0, 1, 0.5, 1);
  DVEB.shapeHelper.calculateAOColor(
   data.AOColors,
   tempAOTemplte("side", "bottom", data),
@@ -422,7 +422,7 @@ const addSide = (
  }
 
  DVEB.shapeBuilder.addFace(face, position, quaterDim, data, false);
- addHalfUV(face, data, eastUV, 0, 0.5, 0, 0.5);
+ addHalfUV(face, data, eastUV, 360, 0, 0.5, 0, 0.5);
  DVEB.shapeHelper.calculateAOColor(
   data.AOColors,
   tempAOTemplte("side", "top", data),

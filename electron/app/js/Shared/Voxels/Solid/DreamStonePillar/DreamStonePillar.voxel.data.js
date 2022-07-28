@@ -3,4 +3,8 @@ export const DreamStonePillarVoxelData = {
     shapeId: "Box",
     id: "dve:dreamstonepillar",
     substance: "solid",
+    physics: {
+        collider: "Box",
+        checkCollisions: true
+    }
 };

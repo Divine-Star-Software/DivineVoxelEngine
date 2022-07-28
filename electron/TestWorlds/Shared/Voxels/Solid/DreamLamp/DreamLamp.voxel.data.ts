@@ -7,4 +7,8 @@ export const DreamLampVoxelData: VoxelData ={
     substance: "solid",
     lightSource: true,
     lightValue: 0b1111_0000_1111_1111,
+    physics : {
+        collider : "Box",
+        checkCollisions : true
+     }
    };

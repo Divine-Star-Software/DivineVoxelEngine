@@ -46,7 +46,7 @@ export const Processor = {
   doAO: true,
   doSun: true,
   doRGB: true,
-  ignoreSun : false
+  ignoreSun: false,
  },
  getBaseTemplateNew(): FullChunkTemplate {
   return {
@@ -199,16 +199,16 @@ export const Processor = {
   x: number,
   y: number,
   z: number,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number
+  doSecondCheck = true
  ) {
   const LOD = this.LOD;
-  const voxelCheck = DVEC.worldMatrix.getVoxel(
-   chunkX + x,
-   chunkY + y,
-   chunkZ + z
-  );
+  const voxelCheck = DVEC.worldMatrix.getVoxel(x, y, z,!doSecondCheck);
+  if (doSecondCheck) {
+   const secondVoxel = DVEC.worldMatrix.getVoxel(x, y, z, true);
+   if (secondVoxel) {
+    this._process(template, x, y, z, false);
+   }
+  }
 
   if (
    !voxelCheck ||
@@ -221,26 +221,18 @@ export const Processor = {
   if (!voxelObject) return;
   const voxelState = voxelCheck[1];
 
-  const voxelShapeState = this.worldMatrix.getVoxelShapeState(
-   chunkX + x,
-   chunkY + y,
-   chunkZ + z
-  );
+  const voxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
 
   let faceBit = 0;
-
-  let tx = x + chunkX;
-  let ty = y + chunkY;
-  let tz = z + chunkZ;
 
   faceBit = this.cullCheck(
    "top",
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx,
-   ty + LOD,
-   tz,
+   x,
+   y + LOD,
+   z,
    faceBit
   );
   faceBit = this.cullCheck(
@@ -248,9 +240,9 @@ export const Processor = {
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx,
-   ty - LOD,
-   tz,
+   x,
+   y - LOD,
+   z,
    faceBit
   );
   faceBit = this.cullCheck(
@@ -258,9 +250,9 @@ export const Processor = {
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx + LOD,
-   ty,
-   tz,
+   x + LOD,
+   y,
+   z,
    faceBit
   );
   faceBit = this.cullCheck(
@@ -268,9 +260,9 @@ export const Processor = {
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx - LOD,
-   ty,
-   tz,
+   x - LOD,
+   y,
+   z,
    faceBit
   );
   faceBit = this.cullCheck(
@@ -278,9 +270,9 @@ export const Processor = {
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx,
-   ty,
-   tz - LOD,
+   x,
+   y,
+   z - LOD,
    faceBit
   );
   faceBit = this.cullCheck(
@@ -288,15 +280,16 @@ export const Processor = {
    voxelObject,
    voxelState,
    voxelShapeState,
-   tx,
-   ty,
-   tz + LOD,
+   x,
+   y,
+   z + LOD,
    faceBit
   );
 
   if (faceBit == 0) return;
 
   let baseTemplate;
+  0;
   if (voxelObject.data.substance == "transparent") {
    baseTemplate = template["solid"];
   } else {
@@ -307,8 +300,8 @@ export const Processor = {
 
   let level = 0;
   let levelState = 0;
-  level = this.worldMatrix.getLevel(tx, ty, tz);
-  levelState = this.worldMatrix.getLevelState(tx, ty, tz);
+  level = this.worldMatrix.getLevel(x, y, z);
+  levelState = this.worldMatrix.getLevelState(x, y, z);
 
   voxelObject.process(
    {
@@ -324,9 +317,9 @@ export const Processor = {
     colorTemplate: baseTemplate.colorTemplate,
     aoTemplate: baseTemplate.aoTemplate,
     lightTemplate: baseTemplate.lightTemplate,
-    x: tx,
-    y: ty,
-    z: tz,
+    x: x,
+    y: y,
+    z: z,
    },
    DVEB as any
   );
@@ -351,9 +344,9 @@ export const Processor = {
    this.calculatFlow(
     voxelObject.data,
     this.faceStates[0] == 1,
-    tx,
-    ty,
-    tz,
+    x,
+    y,
+    z,
     (baseTemplate as any).flowTemplate
    );
   }
@@ -377,7 +370,10 @@ export const Processor = {
     let maxY =
      this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
     for (let y = minY; y < maxY; y += LOD) {
-     this._process(template, x, y, z, chunkX, chunkY, chunkZ);
+     let tx = x + chunkX;
+     let ty = y + chunkY;
+     let tz = z + chunkZ;
+     this._process(template, tx, ty, tz);
     }
    }
   }

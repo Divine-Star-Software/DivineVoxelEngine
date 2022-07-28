@@ -17,6 +17,11 @@ export class Vector3 {
         this.y = y;
         this.z = z;
     }
+    updateFromVec3(vector) {
+        this.x = vector.x;
+        this.y = vector.y;
+        this.z = vector.z;
+    }
     roundVector(deciamlPoints = 2) {
         this.x = Number(this.x.toFixed(deciamlPoints));
         this.y = Number(this.y.toFixed(deciamlPoints));
@@ -64,10 +69,25 @@ export class Vector3 {
         this.z = this.z + add;
         return this;
     }
+    addFromVec3(vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        this.z += vector.z;
+        return this;
+    }
+    isZero() {
+        return !this.x && !this.y && !this.z;
+    }
     subtractXYZ(subtract) {
         this.x = this.x - subtract;
         this.y = this.y - subtract;
         this.z = this.z - subtract;
+        return this;
+    }
+    subtractFromObj(vector) {
+        this.x = this.x - vector.x;
+        this.y = this.y - vector.y;
+        this.z = this.z - vector.z;
         return this;
     }
     getAddXYZ(add) {

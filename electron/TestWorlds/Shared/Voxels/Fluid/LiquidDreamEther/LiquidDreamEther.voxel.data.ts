@@ -5,4 +5,8 @@ export const LiquidDreamEtherVoxelData: VoxelData = {
     shapeId: "FluidSourceBlock",
     id: "dve:liquiddreamether",
     substance: "fluid",
+    physics : {
+        collider : "Box",
+        checkCollisions : true
+     }
    };

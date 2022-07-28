@@ -161,15 +161,15 @@ export const SharedVertexShader = {
     animationFunctions: `
  vec3 animType1(vec4 posWorld, vec3 p) {
    if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
-      float heightX = fbm(posWorld.xz * 0.1 + time);
+      float heightX = fbm(posWorld.xz * 0.15 + time);
       p.xz += heightX * 0.05;
    }
    if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
-      float heightX = fbm(posWorld.xz * 0.1 + time);
+      float heightX = fbm(posWorld.xz * 0.15 + time);
       p.xz -= heightX * 0.06;
    }
    if(normal.y == 1. ) {
-      float heightX = fbm(posWorld.xz * 0.1 + time);
+      float heightX = fbm(posWorld.xz * 0.15 + time);
       p.xz += heightX * 0.05;
    }
    return p;

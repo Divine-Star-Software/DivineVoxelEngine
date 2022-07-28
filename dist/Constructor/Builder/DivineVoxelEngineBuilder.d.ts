@@ -142,8 +142,8 @@ export declare const DVEB: {
         }): void;
     };
     uvHelper: {
-        uvRotations: Record<"side" | "top" | "bottom", Record<import("../../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
-        advancedUVs: Record<"side" | "top" | "bottom", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
+        uvRotations: Record<"top" | "bottom" | "side", Record<import("../../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
+        advancedUVs: Record<"top" | "bottom" | "side", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
         uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: import("../../Meta/Constructor/Mesher.types.js").UVFunctionData) => void>;
         addUVs(face: import("Meta/index.js").DirectionNames, data: import("../../Meta/Constructor/Mesher.types.js").UVFunctionData): void;
         addAdvancedUVs(uv: number, uvs: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number): void;
@@ -550,7 +550,7 @@ export declare const DVEB: {
             getVoxelPalette(voxelId: string, voxelState: string): number;
             awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
             __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
-            getVoxel(x: number, y: number, z: number): false | string[];
+            getVoxel(x: number, y: number, z: number, secondary?: boolean): false | string[];
             getVoxelShapeState(x: number, y: number, z: number): number;
             getLevel(x: number, y: number, z: number): number;
             setLevel(level: number, x: number, y: number, z: number): void;
@@ -559,7 +559,7 @@ export declare const DVEB: {
             setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
             __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: import("Meta/index.js").VoxelData, chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk): void;
             getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
-            getVoxelData(x: number, y: number, z: number): false | import("Meta/index.js").VoxelData;
+            getVoxelData(x: number, y: number, z: number, secondary?: boolean): false | import("Meta/index.js").VoxelData;
             _createRegion(x: number, y: number, z: number): {
                 chunks: {};
             };
@@ -580,7 +580,7 @@ export declare const DVEB: {
             }) => {}): false | Promise<boolean>;
             setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
             getData(x: number, y: number, z: number, state?: boolean): number;
-            getVoxelNumberID(x: number, y: number, z: number): number | false;
+            getVoxelNumberID(x: number, y: number, z: number, secondary?: boolean): number | false;
             getLight(x: number, y: number, z: number): number;
             setAir(x: number, y: number, z: number, lightValue: number): void;
             setFullSun(x: number, y: number, z: number): void;
@@ -605,7 +605,7 @@ export declare const DVEB: {
         faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
         cullCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
-        _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, chunkX: number, chunkY: number, chunkZ: number): void;
+        _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
         makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;

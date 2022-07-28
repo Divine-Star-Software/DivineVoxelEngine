@@ -5,5 +5,6 @@ export const DreamStoneStairVoxelData = {
     substance: "transparent",
     physics: {
         collider: "Stair",
+        checkCollisions: true
     },
 };

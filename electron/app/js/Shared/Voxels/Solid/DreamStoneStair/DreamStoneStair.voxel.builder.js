@@ -4,7 +4,7 @@ export const DreamStoneStairVoxelBuilderThread = {
     trueShapeId: 1,
     hooks: {},
     process: function (data, DVEB) {
-        let uv = DVEB.textureManager.getTextureUV("solid", "dreamstone");
+        let uv = DVEB.textureManager.getTextureUV("solid", "debug", "top");
         //top
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);

@@ -3,4 +3,8 @@ export const DreamStoneSlabVoxelData = {
     shapeId: "HalfBox",
     id: "dve:dreamstoneslab",
     substance: "transparent",
+    physics: {
+        collider: "Box",
+        checkCollisions: true
+    }
 };

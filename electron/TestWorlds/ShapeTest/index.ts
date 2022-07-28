@@ -51,7 +51,7 @@ const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
  const scene = SetUpDarkScene(engine);
- const camera = SetUpDefaultCamera(scene, canvas, { x: 6, y: 18, z: 17 });
+ const camera = SetUpDefaultCamera(scene, canvas, { x: 30, y: 22, z: 14 });
  SetUpDefaultSkybox(scene);
  //CreateWorldAxis(scene, 10);
 

@@ -3,5 +3,9 @@ export const DreamStoneVoxelData = {
     shapeId: "Box",
     id: "dve:dreamstone",
     substance: "solid",
-    states: ['no-grass']
+    states: ['no-grass'],
+    physics: {
+        collider: "Box",
+        checkCollisions: true
+    }
 };

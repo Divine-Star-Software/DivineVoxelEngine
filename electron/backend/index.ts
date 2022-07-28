@@ -1,6 +1,6 @@
 //@ts-ignore
 const { Worker } = require("worker_threads");
-const { app, BrowserWindow, nativeImage } = require("electron");
+const { app, BrowserWindow, nativeImage,globalShortcut } = require("electron");
 const ipcMain: Electron.IpcMain = require("electron").ipcMain;
 
 const path = require("path");
@@ -34,8 +34,12 @@ const APP_INIT = async () => {
  const worker = new Worker("./electronstart/server/index.js");
 };
 
+
 app.whenReady().then(async () => {
  await APP_INIT();
+ globalShortcut.register("CommandOrControl+W", () => {
+    //do nothing 
+});
 });
 
 const CreateMainWindow = async () => {

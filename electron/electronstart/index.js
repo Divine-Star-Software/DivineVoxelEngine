@@ -1,7 +1,7 @@
 "use strict";
 //@ts-ignore
 const { Worker } = require("worker_threads");
-const { app, BrowserWindow, nativeImage } = require("electron");
+const { app, BrowserWindow, nativeImage, globalShortcut } = require("electron");
 const ipcMain = require("electron").ipcMain;
 const path = require("path");
 const { session } = require("electron");
@@ -30,6 +30,9 @@ const APP_INIT = async () => {
 };
 app.whenReady().then(async () => {
     await APP_INIT();
+    globalShortcut.register("CommandOrControl+W", () => {
+        //do nothing 
+    });
 });
 const CreateMainWindow = async () => {
     const mainWindow = new BrowserWindow({

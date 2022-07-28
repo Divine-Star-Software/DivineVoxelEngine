@@ -83,9 +83,9 @@ export const ChunkMesher = {
                 position: { x: 0, y: 0, z: 0 },
             };
             for (let positionIndex = 0; positionIndex < baseTemplate.positionTemplate.length; positionIndex += 3) {
-                const x = baseTemplate.positionTemplate[positionIndex] + chunkX;
-                const y = baseTemplate.positionTemplate[positionIndex + 1] + chunkY;
-                const z = baseTemplate.positionTemplate[positionIndex + 2] + chunkZ;
+                const x = baseTemplate.positionTemplate[positionIndex];
+                const y = baseTemplate.positionTemplate[positionIndex + 1];
+                const z = baseTemplate.positionTemplate[positionIndex + 2];
                 shapeAddData.indicieIndex = indicieIndex;
                 shapeAddData.face = baseTemplate.faceTemplate[faceIndex];
                 shapeAddData.shapeState = baseTemplate.shapeStateTemplate[shapeStateIndex];

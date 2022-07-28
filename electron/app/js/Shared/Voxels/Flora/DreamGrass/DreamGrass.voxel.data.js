@@ -3,4 +3,8 @@ export const DreamGrassVoxelData = {
     shapeId: "FullBoxDiagonalIntersection",
     id: "dve:dreamgrass",
     substance: "flora",
+    physics: {
+        collider: "",
+        checkCollisions: false,
+    },
 };

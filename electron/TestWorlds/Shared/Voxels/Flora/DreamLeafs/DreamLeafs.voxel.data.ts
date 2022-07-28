@@ -5,4 +5,8 @@ export const DreamLeafsVoxelData: VoxelData ={
     shapeId: "Box",
     id: "dve:dream-leafs",
     substance: "flora",
+    physics : {
+        collider : "Box",
+        checkCollisions : true
+     }
    };

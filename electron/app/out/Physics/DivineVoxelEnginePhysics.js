@@ -21,6 +21,8 @@ export const DVEPH = {
         if (!voxelData.physics) {
             return this.colliders.getCollider("Box");
         }
+        if (!voxelData.physics.checkCollisions)
+            return false;
         return this.colliders.getCollider(voxelData.physics.collider);
     },
     createEntityObject(base) {

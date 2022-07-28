@@ -1115,11 +1115,14 @@ export declare const DVEW: {
         getData(x: number, y: number, z: number, state?: boolean): number | false;
         setData(x: number, y: number, z: number, data: number, state?: boolean): void | -1;
         getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
-        getVoxel(x: number, y: number, z: number): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
+        getVoxel(x: number, y: number, z: number, secondary?: boolean): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
         addRegion(x: number, y: number, z: number): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         getRegion(x: number, y: number, z: number): false | import("../Meta/World/WorldData/World.types.js").WorldRegion;
         addChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
         paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
+        addOrGetChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
+        _getStartingLeel(voxelData: import("../Meta/index.js").VoxelData, stateData: number): number;
+        paintDualVoxel(voxelId: string, voxelStateId: string, shapeState: number, secondVoxelId: string, secondVoxelStateId: string, x: number, y: number, z: number): void;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;

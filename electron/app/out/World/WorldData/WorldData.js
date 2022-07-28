@@ -151,11 +151,8 @@ export const WorldData = {
         }
         return -1;
     },
-    getVoxel(x, y, z) {
-        const region = this.getRegion(x, y, z);
-        if (!region)
-            return false;
-        const voxelData = this.getData(x, y, z);
+    getVoxel(x, y, z, secondary = false) {
+        const voxelData = this.getData(x, y, z, secondary);
         if (voxelData < 0 || voxelData === false)
             return false;
         if (voxelData >= 0) {
@@ -208,6 +205,23 @@ export const WorldData = {
         const voxelData = DVEW.voxelManager.getVoxel(voxelId);
         if (!voxelData)
             return;
+        const chunk = this.addOrGetChunk(x, y, z);
+        const data = this.getVoxelPaletteId(voxelId, voxelStateId);
+        if (data < 0)
+            return;
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+        let stateData = this.voxelByte.setShapeState(0, shapeState);
+        stateData = this._getStartingLeel(voxelData, stateData);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+        if (DVEW.settings.doRGBPropagation()) {
+            if (voxelData.lightSource && voxelData.lightValue) {
+                DVEW.queues.addToRGBUpdateQue(x, y, z);
+            }
+        }
+    },
+    addOrGetChunk(x, y, z) {
         let region = this.getRegion(x, y, z);
         if (!region) {
             region = this.addRegion(x, y, z);
@@ -216,20 +230,37 @@ export const WorldData = {
         if (!chunk) {
             chunk = this.addChunk(x, y, z);
         }
-        const data = this.getVoxelPaletteId(voxelId, voxelStateId);
-        if (data < 0)
-            return;
-        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
-        let stateData = this.voxelByte.setShapeState(0, shapeState);
+        return chunk;
+    },
+    _getStartingLeel(voxelData, stateData) {
         if (voxelData.substance == "fluid" || voxelData.substance == "magma") {
             stateData = this.voxelByte.encodeLevelIntoVoxelData(stateData, 0b1111);
         }
+        return stateData;
+    },
+    paintDualVoxel(voxelId, voxelStateId, shapeState, secondVoxelId, secondVoxelStateId, x, y, z) {
+        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
+        const secondVoxelData = DVEW.voxelManager.getVoxel(secondVoxelId);
+        if (!secondVoxelData || !voxelData) {
+            throw new Error(`Either voxel with id : ${voxelId} or ${secondVoxelId} does not exists`);
+        }
+        const chunk = this.addOrGetChunk(x, y, z);
+        const mainId = this.getVoxelPaletteId(voxelId, voxelStateId);
+        const secondaryId = this.getVoxelPaletteId(secondVoxelId, secondVoxelStateId);
+        if (mainId < 0 || secondaryId < 0)
+            return;
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, secondVoxelData, chunk);
+        let stateData = this.voxelByte.setShapeState(secondaryId, shapeState);
+        stateData = this._getStartingLeel(voxelData, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
-        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, mainId);
         if (DVEW.settings.doRGBPropagation()) {
-            const voxel = DVEW.voxelManager.getVoxel(voxelId);
-            if (voxel.lightSource && voxel.lightValue) {
+            if (voxelData.lightSource && voxelData.lightValue) {
+                DVEW.queues.addToRGBUpdateQue(x, y, z);
+            }
+            if (secondVoxelData.lightSource && secondVoxelData.lightValue) {
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
         }

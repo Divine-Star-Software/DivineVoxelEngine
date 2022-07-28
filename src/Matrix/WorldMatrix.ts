@@ -97,11 +97,11 @@ export const WorldMatrix = {
   this.globalVoxelPaletteMap = map;
  },
 
- getVoxel(x: number, y: number, z: number) {
+ getVoxel(x: number, y: number, z: number, secondary = false) {
   let palette = this.globalVoxelPalette;
   let record = this.globalVoxelPaletteRecord;
 
-  const numericVoxelId = this.getVoxelNumberID(x, y, z);
+  const numericVoxelId = this.getVoxelNumberID(x, y, z, secondary);
 
   if (numericVoxelId === false) return false;
 
@@ -198,13 +198,18 @@ export const WorldMatrix = {
   return -1;
  },
 
- getVoxelData(x: number, y: number, z: number): VoxelData | false {
+ getVoxelData(
+  x: number,
+  y: number,
+  z: number,
+  secondary = false
+ ): VoxelData | false {
   if (!this.voxelManager) {
    throw new Error(
     `A voxel manager must be set in order for this function to work. `
    );
   }
-  const voxelCheck = this.getVoxel(x, y, z);
+  const voxelCheck = this.getVoxel(x, y, z, secondary);
   if (!voxelCheck) {
    return false;
   }
@@ -368,8 +373,8 @@ export const WorldMatrix = {
   );
  },
 
- getVoxelNumberID(x: number, y: number, z: number) {
-  const rawVoxelData = this.getData(x, y, z);
+ getVoxelNumberID(x: number, y: number, z: number, secondary = false) {
+  const rawVoxelData = this.getData(x, y, z, secondary);
   if (rawVoxelData < 0) return false;
   return this.voxelByte.getId(rawVoxelData);
  },

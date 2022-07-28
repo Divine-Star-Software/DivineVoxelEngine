@@ -9,6 +9,7 @@ export declare class Vector3 {
     };
     constructor(x: number, y: number, z: number);
     updateVector(x: number, y: number, z: number): void;
+    updateFromVec3(vector: Vector3): void;
     roundVector(deciamlPoints?: number): void;
     translate(x: number, y: number, z: number): this;
     getTranslated(x: number, y: number, z: number): {
@@ -29,7 +30,10 @@ export declare class Vector3 {
         z: number;
     };
     addXYZ(add: number): this;
+    addFromVec3(vector: Vector3): this;
+    isZero(): boolean;
     subtractXYZ(subtract: number): this;
+    subtractFromObj(vector: Vector3): this;
     getAddXYZ(add: number): {
         x: number;
         y: number;
