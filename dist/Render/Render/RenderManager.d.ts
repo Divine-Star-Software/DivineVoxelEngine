@@ -99,7 +99,7 @@ export declare const RenderManager: {
     setScene(scene: BABYLON.Scene): void;
     syncSettings(settings: EngineSettingsData): void;
     getScene(): BABYLON.Scene | null;
-    createSkyBoxMaterial(scene?: BABYLON.Scene | undefined): BABYLON.ShaderMaterial | null;
+    createSkyBoxMaterial(scene?: BABYLON.Scene): BABYLON.ShaderMaterial | null;
     setSunLevel(level: number): void;
     setBaseLevel(level: number): void;
 };

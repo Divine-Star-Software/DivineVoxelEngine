@@ -1,6 +1,7 @@
 import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
 import { buildStair, stairCachedPosition } from "./StairBuilder.js";
 import { exposedChecks, StairData } from "./StairData.js";
+import { StairAOBoxOverrides } from "./StairAO.overrides.js";
 export const StairVoxelShape = {
     id: "Stair",
     cullFaceFunctions: {},
@@ -36,3 +37,10 @@ export const StairVoxelShape = {
         return DVEB.shapeHelper.produceShapeReturnData(data);
     },
 };
+StairVoxelShape.registerShapeAOAddOverRide("Box", (data) => {
+    return data.substanceResult;
+    if (StairAOBoxOverrides[data.shapeState]) {
+        return StairAOBoxOverrides[data.shapeState](data);
+    }
+    return false;
+});

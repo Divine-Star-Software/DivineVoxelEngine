@@ -1,8 +1,14 @@
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+import { GenerateTemple } from "./Functions/GenerateTemple.js";
+import { GenerateStairChunk } from "./Functions/StairChunks.js";
 export const WorldGen = {
  chunkDepth: 16,
  chunkWidth: 16,
  chunkHeight: 128,
+
+ generateStairChunk : GenerateStairChunk,
+
+ generateTemplate : GenerateTemple,
 
  generateTree(x: number, y: number, z: number) {
   DVEW.worldData.paintVoxel("dve:dream-log", "default", 0, x, y + 1, z);
@@ -79,57 +85,7 @@ export const WorldGen = {
   DVEW.worldData.paintVoxel("dve:dream-leafs", "default", 0, x, y + 6, z);
  },
 
- generateStairChunk(chunkX: number, chunkZ: number) {
-  let baseY = 31;
-  let yAdd = 0;
-  for (let z = chunkZ - 1 + this.chunkDepth; z > chunkZ; z--) {
-   yAdd++;
-   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
-    for (let y = 0; y < this.chunkHeight; y++) {
-     if (y == 55 && z == chunkZ - 1) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
-      continue;
-     }
-     if (y == baseY + yAdd) {
-      if (x == chunkX || x == chunkX + 15) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
-      }
-      if (x > chunkX && x < chunkX + 15) {
-       DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, x, y, z);
-      }
-     }
-    }
-   }
-  }
- },
 
- generateTemplate(chunkX: number, chunkZ: number) {
-  let baseY = 47;
-  let yAdd = 0;
-  for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
-   for (let z = chunkZ; z < this.chunkDepth + chunkZ + 1; z++) {
-    let tree = Math.random() > 0.9;
-    for (let y = 0; y < this.chunkHeight; y++) {
-     if (y > 0 && y < baseY - 1) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
-     }
-     if (y >= baseY - 1) {
-      if (y == baseY - 1) {
-       DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
-      }
-      if (y == baseY) {
-       if (tree) {
-        this.generateTree(x, y - 1, z);
-        continue;
-       } else {
-        //  DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x, y, z);
-       }
-      }
-     }
-    }
-   }
-  }
- },
 
  generatePondChunk(chunkX: number, chunkZ: number) {
   let baseY = 31;
@@ -290,13 +246,8 @@ export const WorldGen = {
    this.generatePondChunk(chunkX, chunkZ);
   }
 
-  if (type == "temple") {
-   this.generateTemplate(chunkX, chunkZ);
-  }
 
-  if (type == "stair") {
-   this.generateStairChunk(chunkX, chunkZ);
-  }
+
 
   if (type == "default") {
    this.generateDefaultChunk(chunkX, chunkZ);

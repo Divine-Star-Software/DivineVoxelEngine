@@ -6,10 +6,10 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 
 const load = () => {
  console.log("load");
- let startX = -48;
- let startZ = -48;
- let endX = 48;
- let endZ = 48;
+ let startX = -64;
+ let startZ = -64;
+ let endX = 64;
+ let endZ = 64;
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
    if (DVEW.worldData.getWorldColumn(x, z)) {
@@ -25,13 +25,29 @@ await DVEW.$INIT({});
 
 //DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
-WorldGen.generateChunk(-16, 16, "pillar");
-WorldGen.generateChunk(16, -16, "pillar");
-WorldGen.generateChunk(0, -32, "stair");
-WorldGen.generateChunk(0, -48, "temple");
+WorldGen.generateChunk(-32, 16, "pillar");
+WorldGen.generateChunk(-32, -16, "pillar");
+WorldGen.generateChunk(32, 16, "pillar");
+WorldGen.generateChunk(32, -16, "pillar");
+WorldGen.generateChunk(-16, 32, "pillar");
+WorldGen.generateChunk(16, 32, "pillar");
+WorldGen.generateChunk(-16, -32, "pillar");
+WorldGen.generateChunk(16, -32, "pillar");
+
+WorldGen.generateStairChunk("south", 0, -32);
+WorldGen.generateTemplate("south", 0, -48);
+WorldGen.generateStairChunk("north", 0, 32);
+WorldGen.generateTemplate("north", 0, 48);
+WorldGen.generateStairChunk("east", 32, 0);
+WorldGen.generateTemplate("east", 48, 0);
+WorldGen.generateStairChunk("west", -32, 0);
+WorldGen.generateTemplate("west", -48, 0);
+
 WorldGen.generateChunk(0, 0, "pond");
 WorldGen.generateChunk(-16, 0);
+WorldGen.generateChunk(-16, 16);
 WorldGen.generateChunk(16, 0);
+WorldGen.generateChunk(16, -16);
 WorldGen.generateChunk(0, 16);
 WorldGen.generateChunk(0, -16);
 
@@ -41,21 +57,17 @@ WorldGen.generateChunk(-16, -16);
 
 DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 47, 7);
 
-
-
 load();
-DVEW.worldData.paintDualVoxel(
-    "dve:liquiddreamether",
-    "default",
-    0,
-    "dve:dreamgrass",
-    "default",
-    0,
-    40,
-    0
-   );
-
-
+/* DVEW.worldData.paintDualVoxel(
+ "dve:liquiddreamether",
+ "default",
+ 0,
+ "dve:dreamgrass",
+ "default",
+ 0,
+ 40,
+ 0
+); */
 
 setTimeout(() => {
  DVEW.queues.addToFlowRunQue(7, 47, 7);

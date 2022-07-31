@@ -44,7 +44,7 @@ export declare const QueuesManager: {
      */
     addToRGBUpdateQue(x: number, y: number, z: number): void;
     addToRGBRemoveQue(x: number, y: number, z: number): void;
-    runRGBUpdateQue(filter?: QueueFilter | undefined): void;
+    runRGBUpdateQue(filter?: QueueFilter): void;
     runRGBRemoveQue(): void;
     awaitAllRGBLightUpdates(): Promise<boolean>;
     awaitAllRGBLightRemove(): Promise<boolean>;
@@ -55,7 +55,7 @@ export declare const QueuesManager: {
      */
     addToFlowRunQue(x: number, y: number, z: number): void;
     addToFlowRemoveQue(x: number, y: number, z: number): void;
-    runFlowRuneQue(filter?: QueueFilter | undefined): void;
+    runFlowRuneQue(filter?: QueueFilter): void;
     runFlowRemoveQue(): void;
     awaitAllFlowRuns(): Promise<boolean>;
     awaitAllFlowRemoves(): Promise<boolean>;
@@ -65,7 +65,7 @@ export declare const QueuesManager: {
      * Chunks
      */
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
-    runRebuildQue(filter?: QueueFilter | undefined): void;
+    runRebuildQue(filter?: QueueFilter): void;
     addToRebuildQueTotal(): void;
     awaitAllChunksToBeBuilt(): Promise<boolean>;
     areAllChunksDoneBuilding(): boolean;

@@ -185,7 +185,7 @@ const physicsTest = async (scene, canvas) => {
         xzd.normalize();
         if (playerStates[PlayerStatesIndexes.movement] ==
             PlayerStatesValues.walkingForward) {
-            let runFactor = 0.03 * playerStates[PlayerStatesIndexes.running];
+            let runFactor = 0.02 * playerStates[PlayerStatesIndexes.running];
             let factor = 0.008 + runFactor;
             let yd = Math.abs(direction.y) > 0.5 ? 0 : 1;
             cameraRotation.x =

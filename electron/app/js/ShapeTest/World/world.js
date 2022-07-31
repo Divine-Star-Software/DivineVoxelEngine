@@ -7,7 +7,7 @@ const depth = 32;
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;
-let endZ = depth;
+let endZ = depth * 4;
 const buildAll = () => {
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
@@ -76,11 +76,18 @@ const doStairTest = (shapeState, x, y, z) => {
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", shapeState, x - 1, y + 1, z);
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", shapeState, x - 2, y, z);
 };
-//await DVEW.queues.runWorldColumnSunLightAndUpateQue();
-/* DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 3, 15, 17, 11);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 2, 13, 17, 11);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 1, 11, 17, 11);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 9, 17, 11); */
+doStairTest(15, 25, 25, 107);
+doStairTest(14, 25, 25, 99);
+doStairTest(13, 25, 25, 91);
+doStairTest(12, 25, 25, 83);
+doStairTest(11, 25, 16, 75);
+doStairTest(10, 25, 16, 68);
+doStairTest(9, 25, 16, 60);
+doStairTest(8, 25, 16, 52);
+doStairTest(7, 25, 25, 44);
+doStairTest(6, 25, 25, 36);
+doStairTest(5, 25, 25, 28);
+doStairTest(4, 25, 25, 20);
 doStairTest(0, 25, 16, 12);
 doStairTest(1, 25, 16, 4);
 doStairTest(2, 25, 16, -4);
@@ -88,6 +95,18 @@ doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
 buildAll();
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 107);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 99);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 91);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 83);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 75);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 68);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 60);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 52);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 44);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 36);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 28);
+await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 20);
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 12);
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, 4);
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 20, -4);

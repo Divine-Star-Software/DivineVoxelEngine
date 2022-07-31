@@ -33,3 +33,4 @@ Player.$INIT(playerStates, playerDirection, playerPosition);
 setInterval(() => {
  Player.update();
 }, 17);
+ 

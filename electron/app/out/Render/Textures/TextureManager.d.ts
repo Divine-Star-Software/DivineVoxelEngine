@@ -16,6 +16,6 @@ export declare const TextureManager: {
     generateTexturesData(overlay?: boolean): void;
     defineDefaultTexturePath(path: string): void;
     defineDefaultTextureExtension(voxelSubstanceType: VoxelSubstanceType, ext: string): void;
-    getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string | undefined): number;
+    getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string): number;
     registerTexture(voxelSubstanceType: VoxelSubstanceType, textureData: TextureData): void;
 };

@@ -14,115 +14,122 @@ const boxDimensions = {
     depth: 0.5,
     height: 0.5,
 };
-const topHalf1 = {
+const sd = {
     width: 0.5,
-    depth: 0.25,
-    height: 0.5,
-};
-const topHalf2 = {
-    width: 0.25,
     depth: 0.5,
     height: 0.5,
 };
-const sideHalf = {
-    width: 0.5,
-    depth: 0.5,
-    height: 0.25,
-};
-const sideQuater1 = {
-    width: 0.5,
-    depth: 0.25,
-    height: 0.25,
-};
-const sideQuater2 = {
-    width: 0.25,
-    depth: 0.5,
-    height: 0.25,
-};
-const tempAOTemplte = (type, side, data, v1 = 1, v2 = 1) => {
-    if (type == "top") {
-        if (side == "top") {
-            return [
-                data.aoTemplate[data.aoIndex],
-                v1,
-                v2,
-                data.aoTemplate[data.aoIndex + 3],
-            ];
-        }
-        if (side == "bottom") {
-            return [
-                v1,
-                data.aoTemplate[data.aoIndex + 2],
-                data.aoTemplate[data.aoIndex + 3],
-                v2,
-            ];
-        }
+const getAO = (aoValue, data) => {
+    if (aoValue <= 0) {
+        return data.aoTemplate[data.aoIndex + Math.abs(aoValue)];
     }
-    if (type == "side") {
-        if (side == "top") {
-            return [
-                v1,
-                data.aoTemplate[data.aoIndex],
-                data.aoTemplate[data.aoIndex + 1],
-                v2,
-            ];
-        }
-        if (side == "bottom") {
-            return [
-                v1,
-                v2,
-                data.aoTemplate[data.aoIndex + 2],
-                data.aoTemplate[data.aoIndex + 3],
-            ];
-        }
-    }
-    return [1, 1, 1, 1];
+    return aoValue;
 };
-const tempLightTemplte = (type, side, data) => {
-    if (type == "top") {
-        if (side == "top") {
-            return [
-                data.lightTemplate[data.lightIndex],
-                data.lightTemplate[data.lightIndex + 1],
-                data.lightTemplate[data.lightIndex + 2],
-                data.lightTemplate[data.lightIndex + 3],
-            ];
-        }
-        if (side == "bottom") {
-            return [
-                data.lightTemplate[data.lightIndex],
-                data.lightTemplate[data.lightIndex + 1],
-                data.lightTemplate[data.lightIndex + 2],
-                data.lightTemplate[data.lightIndex + 3],
-            ];
-        }
+const processAO = (stairAO, data) => {
+    DVEB.shapeHelper.calculateAOColor(data.AOColors, [
+        getAO(stairAO[0], data),
+        getAO(stairAO[1], data),
+        getAO(stairAO[2], data),
+        getAO(stairAO[3], data),
+    ], 0);
+};
+const getBrighttestLight = (data) => {
+    let max = data.lightTemplate[data.lightIndex];
+    if (max < data.lightTemplate[data.lightIndex + 1]) {
+        max = data.lightTemplate[data.lightIndex + 1];
     }
-    if (type == "side") {
-        if (side == "top") {
-            return [
-                data.lightTemplate[data.lightIndex],
-                data.lightTemplate[data.lightIndex + 1],
-                data.lightTemplate[data.lightIndex + 2],
-                data.lightTemplate[data.lightIndex + 3],
-            ];
-        }
-        if (side == "bottom") {
-            return [
-                data.lightTemplate[data.lightIndex],
-                data.lightTemplate[data.lightIndex + 1],
-                data.lightTemplate[data.lightIndex + 2],
-                data.lightTemplate[data.lightIndex + 3],
-            ];
-        }
+    if (max < data.lightTemplate[data.lightIndex + 2]) {
+        max = data.lightTemplate[data.lightIndex + 2];
     }
-    return [1, 1, 1, 1];
+    if (max < data.lightTemplate[data.lightIndex + 3]) {
+        max = data.lightTemplate[data.lightIndex + 3];
+    }
+    return max;
+};
+const processLight = (data) => {
+    const light = getBrighttestLight(data);
+    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, [light, light, light, light], 0);
 };
 const setPositon = (x, y, z) => {
     position.x = x;
     position.y = y;
     position.z = z;
 };
-const processDefaultFaceData = (face, data) => {
+const incrementIndexes = (data) => {
+    data.uvTemplateIndex += 1;
+    data.overylayUVTemplateIndex += 4;
+    data.lightIndex += 4;
+    data.colorIndex += 4;
+    data.aoIndex += 4;
+};
+const addUVs = (face, data, flip, uv, uvData) => {
+    DVEB.uvHelper.addUVs(face, {
+        uvs: data.uvs,
+        uv: uv,
+        width: { start: uvData.ws, end: uvData.we },
+        height: { start: uvData.hs, end: uvData.he },
+        flipped: flip,
+        rotoate: uvData.r,
+    });
+    DVEB.uvHelper.processOverlayUVs(data);
+};
+const addSide = (face, stairData, data) => {
+    const uv = data.unTemplate[data.uvTemplateIndex];
+    let dimensions = boxDimensions;
+    let flip = false;
+    if (stairData.flip && stairData.flip[1]) {
+        flip = stairData.flip[1];
+    }
+    if (stairData.dimensions && stairData.dimensions[1]) {
+        sd.width = stairData.dimensions[1][0];
+        sd.depth = stairData.dimensions[1][1];
+        sd.height = stairData.dimensions[1][2];
+        dimensions = sd;
+    }
+    setPositon(stairCachedPosition.x + dimensions.width, stairCachedPosition.y + dimensions.height, stairCachedPosition.z + dimensions.depth);
+    if (stairData.transform && stairData.transform[1]) {
+        position.x = position.x + stairData.transform[1][0];
+        position.y = position.y + stairData.transform[1][1];
+        position.z = position.z + stairData.transform[1][2];
+    }
+    //lower
+    DVEB.shapeBuilder.addFace(face, position, dimensions, data, flip);
+    if (stairData.uvs && stairData.uvs[1]) {
+        addUVs(face, data, flip, uv, stairData.uvs[1]);
+    }
+    if (stairData.StairAO && stairData.StairAO[1]) {
+        processAO(stairData.StairAO[1], data);
+    }
+    processLight(data);
+    //upper
+    flip = false;
+    if (stairData.flip && stairData.flip[2]) {
+        flip = stairData.flip[2];
+    }
+    if (stairData.dimensions && stairData.dimensions[2]) {
+        sd.width = stairData.dimensions[2][0];
+        sd.depth = stairData.dimensions[2][1];
+        sd.height = stairData.dimensions[2][2];
+        dimensions = sd;
+    }
+    setPositon(stairCachedPosition.x + dimensions.width, stairCachedPosition.y + dimensions.height, stairCachedPosition.z + dimensions.depth);
+    if (stairData.transform && stairData.transform[2]) {
+        position.x = position.x + stairData.transform[2][0];
+        position.y = position.y + stairData.transform[2][1];
+        position.z = position.z + stairData.transform[2][2];
+    }
+    DVEB.shapeBuilder.addFace(face, position, dimensions, data, flip);
+    if (stairData.uvs && stairData.uvs[2]) {
+        addUVs(face, data, flip, uv, stairData.uvs[2]);
+    }
+    if (stairData.StairAO && stairData.StairAO[2]) {
+        processAO(stairData.StairAO[2], data);
+    }
+    processLight(data);
+    incrementIndexes(data);
+};
+const addNomral = (face, stairData, data) => {
+    setPositon(stairCachedPosition.x + boxDimensions.width, stairCachedPosition.y + boxDimensions.height, stairCachedPosition.z + boxDimensions.depth);
     const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
     DVEB.shapeBuilder.addFace(face, position, boxDimensions, data, flip);
     const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
@@ -141,154 +148,11 @@ const processDefaultFaceData = (face, data) => {
     DVEB.shapeHelper.addFaceData(0, data.faceData);
     incrementIndexes(data);
 };
-const incrementIndexes = (data) => {
-    data.uvTemplateIndex += 1;
-    data.overylayUVTemplateIndex += 4;
-    data.lightIndex += 4;
-    data.colorIndex += 4;
-    data.aoIndex += 4;
-};
-const addHalfUV = (face, data, uv, rotation = 0, start, end, ws = 0, we = 1) => {
-    DVEB.uvHelper.addUVs(face, {
-        uvs: data.uvs,
-        uv: uv,
-        width: { start: ws, end: we },
-        height: { start: start, end: end },
-        flipped: false,
-        rotoate: rotation,
-    });
-    DVEB.uvHelper.processOverlayUVs(data);
-};
-const addStairTop = (face, stairData, data) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
-    let dimensions = topHalf1;
-    let doing2nd = false;
-    let reversed = false;
-    if (stairData._2dDimensionType) {
-        dimensions = topHalf2;
-        doing2nd = true;
-    }
-    if (stairData.reverse) {
-        reversed = true;
-    }
-    setPositon(stairCachedPosition.x + dimensions.width, stairCachedPosition.y + dimensions.height, stairCachedPosition.z + dimensions.depth);
-    if (stairData.transform1) {
-        position.x = position.x + stairData.transform1.x;
-        position.y = position.y + stairData.transform1.y;
-        position.z = position.z + stairData.transform1.z;
-    }
-    //upper
-    DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
-    if (!doing2nd) {
-        addHalfUV(face, data, uv, 180, 0, 0.5);
-    }
-    else {
-        addHalfUV(face, data, uv, 180, 0, 1, 0, 0.5);
-    }
-    if (!reversed) {
-        DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("top", "top", data), 0);
-    }
-    else {
-        if (!doing2nd) {
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 0.6, 0.6, 1], 0);
-        }
-        else {
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
-        }
-    }
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("top", "top", data), 0);
-    //lower
-    setPositon(stairCachedPosition.x + dimensions.width, stairCachedPosition.y + dimensions.height, stairCachedPosition.z + dimensions.depth);
-    if (stairData.transform2) {
-        position.x = position.x + stairData.transform2.x;
-        position.y = position.y + stairData.transform2.y;
-        position.z = position.z + stairData.transform2.z;
-    }
-    DVEB.shapeBuilder.addFace(face, position, dimensions, data, false);
-    if (!doing2nd) {
-        addHalfUV(face, data, uv, 180, 0.5, 1);
-    }
-    else {
-        addHalfUV(face, data, uv, 180, 0, 1, 0.5, 1);
-    }
-    if (!reversed) {
-        if (!doing2nd) {
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, [0.6, 1, 1, 0.6], 0);
-        }
-        else {
-            DVEB.shapeHelper.calculateAOColor(data.AOColors, [0.6, 0.6, 1, 1], 0);
-        }
-    }
-    else {
-        DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("top", "top", data), 0);
-    }
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("top", "top", data), 0);
-    incrementIndexes(data);
-};
-const addStairSide = (face, stairData, data) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
-    setPositon(stairCachedPosition.x + sideHalf.width, stairCachedPosition.y + sideHalf.height, stairCachedPosition.z + sideHalf.depth);
-    if (stairData.transform1) {
-        position.x = position.x + stairData.transform1.x;
-        position.y = position.y + stairData.transform1.y;
-        position.z = position.z + stairData.transform1.z;
-    }
-    //lower
-    DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, uv, 0, 0.5, 1);
-    DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
-    //upper
-    if (stairData.transform2) {
-        position.x = position.x + stairData.transform2.x;
-        position.y = position.y + stairData.transform2.y;
-        position.z = position.z + stairData.transform2.z;
-    }
-    DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, uv, 0, 0, 0.5);
-    DVEB.shapeHelper.calculateAOColor(data.AOColors, [1, 1, 0.6, 0.6], 0);
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
-    incrementIndexes(data);
-};
-const addSide = (face, stairData, data) => {
-    const eastUV = data.unTemplate[data.uvTemplateIndex];
-    setPositon(stairCachedPosition.x + sideHalf.width, stairCachedPosition.y + sideHalf.height, stairCachedPosition.z + sideHalf.depth);
-    if (stairData.transform1) {
-        position.x = position.x + stairData.transform1.x;
-        position.y = position.y + stairData.transform1.y;
-        position.z = position.z + stairData.transform1.z;
-    }
-    //lower
-    DVEB.shapeBuilder.addFace(face, position, sideHalf, data, false);
-    addHalfUV(face, data, eastUV, 360, 0, 1, 0.5, 1);
-    DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "bottom", data), 0);
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "bottom", data), 0);
-    //upper
-    let quaterDim = sideQuater1;
-    if (stairData._2dDimensionType) {
-        quaterDim = sideQuater2;
-    }
-    setPositon(stairCachedPosition.x + quaterDim.width, stairCachedPosition.y + quaterDim.height, stairCachedPosition.z + quaterDim.depth);
-    if (stairData.transform2) {
-        position.x = position.x + stairData.transform2.x;
-        position.y = position.y + stairData.transform2.y;
-        position.z = position.z + stairData.transform2.z;
-    }
-    DVEB.shapeBuilder.addFace(face, position, quaterDim, data, false);
-    addHalfUV(face, data, eastUV, 360, 0, 0.5, 0, 0.5);
-    DVEB.shapeHelper.calculateAOColor(data.AOColors, tempAOTemplte("side", "top", data), 0);
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, tempLightTemplte("side", "top", data), 0);
-    incrementIndexes(data);
-};
-const addNomral = (face, stairData, data) => {
-    setPositon(stairCachedPosition.x + boxDimensions.width, stairCachedPosition.y + boxDimensions.height, stairCachedPosition.z + boxDimensions.depth);
-    processDefaultFaceData(face, data);
-};
 const stairFunctions = {
     normal: addNomral,
     side: addSide,
-    "stair-top": addStairTop,
-    "stair-side": addStairSide,
+    "stair-top": addSide,
+    "stair-side": addSide,
 };
 export const buildStair = (data, stairData) => {
     if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {

@@ -11,6 +11,6 @@ export declare const NexusEntites: {
     _getID(): string;
     _unqiueId(): string;
     _generateUUI(): string;
-    spawnEntity(entityId: string, position: Position3Matrix, otherData?: any, identiferId?: string | undefined): void;
+    spawnEntity(entityId: string, position: Position3Matrix, otherData?: any, identiferId?: string): void;
     ddSepawnEntity(entityId: string, identiferId: string): void;
 };

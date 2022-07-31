@@ -700,8 +700,8 @@ export declare const DVEC: {
             }): void;
         };
         uvHelper: {
-            uvRotations: Record<"top" | "side" | "bottom", Record<import("../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
-            advancedUVs: Record<"top" | "side" | "bottom", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
+            uvRotations: Record<"top" | "bottom" | "side", Record<import("../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
+            advancedUVs: Record<"top" | "bottom" | "side", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
             uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData) => void>;
             addUVs(face: import("Meta/index.js").DirectionNames, data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData): void;
             addAdvancedUVs(uv: number, uvs: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number): void;
