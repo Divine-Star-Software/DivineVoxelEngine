@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { WorldBounds } from "./Util/WorldBounds";
-declare type EngineSettingsContext = "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "MatrixLoadedThread";
+declare type EngineSettingsContext = "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
@@ -18,6 +18,11 @@ export declare const EngineSettings: {
             autoSyncChunks: boolean;
         };
         fx: {
+            enabled: boolean;
+            autoSyncChunks: boolean;
+            autoSyncVoxelPalette: boolean;
+        };
+        richWorld: {
             enabled: boolean;
             autoSyncChunks: boolean;
             autoSyncVoxelPalette: boolean;
@@ -81,6 +86,8 @@ export declare const EngineSettings: {
     syncSettings(data: EngineSettingsData): void;
     syncWithWorldBounds(worldBounds: typeof WorldBounds): void;
     getSettingsCopy(): any;
+    syncChunkInRichWorldThread(): boolean;
+    richDataEnabled(): boolean;
     syncChunkInFXThread(): boolean;
     syncChunkInDataThread(): boolean;
     syncChunksInNexusThread(): boolean;

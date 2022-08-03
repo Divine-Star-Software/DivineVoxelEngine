@@ -14,6 +14,15 @@ export class Vector3 {
   this.z = z;
  }
 
+ updateFromArray(
+  array: number[] | Float32Array | Float64Array,
+  startIndex = 0
+ ) {
+  this.x = array[startIndex];
+  this.y = array[startIndex + 1];
+  this.z = array[startIndex + 2];
+ }
+
  updateVector(x: number, y: number, z: number) {
   this.x = x;
   this.y = y;

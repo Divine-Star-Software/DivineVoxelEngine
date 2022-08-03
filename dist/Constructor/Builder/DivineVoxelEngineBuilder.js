@@ -8,6 +8,8 @@ import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
 import { ChunkMesher } from "./Mesher/ChunkMesher.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
+import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
+import { EntityMesher } from "./Mesher/EntityMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
 export const DVEB = {
@@ -17,8 +19,10 @@ export const DVEB = {
     shapeBuilder: ShapeBuilder,
     uvHelper: UVHelper,
     chunkMesher: ChunkMesher,
+    entityMesher: EntityMesher,
     processor: Processor,
     voxelHelper: VoxelHelper,
+    entityConstructor: EntityConstructor,
     async $INIT() {
         InitBuilder(this);
     },
@@ -38,5 +42,10 @@ export const DVEB = {
         const template = this.processor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD);
         this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD);
         return true;
+    },
+    constructEntity() {
+        const template = this.processor.constructEntity();
+        this.entityMesher.buildEntityMesh(this.entityConstructor.pos.x, this.entityConstructor.pos.y, this.entityConstructor.pos.z, template.solid);
+        this.entityConstructor.clearEntityData();
     },
 };

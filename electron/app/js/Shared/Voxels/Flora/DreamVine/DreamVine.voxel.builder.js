@@ -8,8 +8,8 @@ export const DreamVineVoxelBuilderThread = {
         data.uvTemplate.push(uv, uv);
         data.overlayUVTemplate.push(0, 0, 0, 0);
         const lightValue = DVEB.processor.worldMatrix.getLight(data.x, data.y, data.z);
-        data.aoTemplate.push(1, 1);
-        data.lightTemplate.push(lightValue, lightValue);
+        data.aoTemplate.push(1);
+        data.lightTemplate.push(lightValue);
         //data.lightTemplate.push(0xf, 0xf);
     },
 };

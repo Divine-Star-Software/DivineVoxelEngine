@@ -48,7 +48,7 @@ const getBrighttestLight = (data) => {
 };
 const processLight = (data) => {
     const light = getBrighttestLight(data);
-    DVEB.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, [light, light, light, light], 0);
+    DVEB.shapeHelper.calculateLightColorFromValue(data.RGBLightColors, data.sunLightColors, light);
 };
 const setPositon = (x, y, z) => {
     position.x = x;

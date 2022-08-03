@@ -1,4 +1,4 @@
-import { ChunkVoxels } from "Meta/Chunks/Chunk.types";
+import { ChunkVoxels } from "Meta/World/WorldData/Chunk.types";
 import { Position3Matrix } from "Meta/Util.types";
 
 /**# Flat 3D Array

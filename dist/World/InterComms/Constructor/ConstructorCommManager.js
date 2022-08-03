@@ -131,4 +131,15 @@ export const ConstructorCommManager = {
         comm.sendMessage(WorldToConstructorMessages.generate, [x, z, data]);
         return this.__handleCount();
     },
+    constructEntity(x, y, z, width, depth, height, composed, voxelData, voxelStateData) {
+        const comm = this.constructors[this.count];
+        const transferArray = [];
+        const dataArray = [];
+        for (let i = 0; i < voxelData.length; i++) {
+            dataArray.push(voxelData[i], voxelStateData[i]);
+            transferArray.push(voxelData[i].buffer, voxelStateData[i].buffer);
+        }
+        comm.sendMessage(WorldToConstructorMessages.constructEntity, [x, y, z, width, depth, height, composed, ...transferArray], transferArray);
+        return this.__handleCount();
+    },
 };

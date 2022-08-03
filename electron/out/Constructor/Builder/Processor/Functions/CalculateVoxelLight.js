@@ -229,7 +229,7 @@ const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
 const fallBackLight = (processor, x, y, z) => {
-    const light = processor.worldMatrix.getLight(x, y, z);
+    const light = processor.getLight(x, y, z);
     if (light >= 0) {
         currentVoxelData.light = light;
     }
@@ -239,14 +239,14 @@ const fallBackLight = (processor, x, y, z) => {
 };
 export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2) {
     if (this.settings.doAO && !ignoreAO) {
-        const voxelId = this.worldMatrix.getVoxel(tx, ty, tz);
+        const voxelId = this.getVoxel(tx, ty, tz);
         if (voxelId) {
             const voxel = DVEC.voxelManager.getVoxel(voxelId[0]);
             currentVoxelData.voxelObject = voxel;
             currentVoxelData.voxelData = voxel.data;
             currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
         }
-        currentVoxelData.shapeState = this.worldMatrix.getVoxelShapeState(tx, ty, tz);
+        currentVoxelData.shapeState = this.getVoxelShapeState(tx, ty, tz);
         currentVoxelData.x = tx;
         currentVoxelData.y = ty;
         currentVoxelData.z = tz;
@@ -267,7 +267,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //top
     if (data.exposedFaces[0]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx, ty + 1, tz);
+        currentVoxelData.light = this.getLight(tx, ty + 1, tz);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -279,7 +279,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //bottom
     if (data.exposedFaces[1]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx, ty - 1, tz);
+        currentVoxelData.light = this.getLight(tx, ty - 1, tz);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -291,7 +291,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //east
     if (data.exposedFaces[2]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx + 1, ty, tz);
+        currentVoxelData.light = this.getLight(tx + 1, ty, tz);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -303,7 +303,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //west
     if (data.exposedFaces[3]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx - 1, ty, tz);
+        currentVoxelData.light = this.getLight(tx - 1, ty, tz);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -315,7 +315,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //south
     if (data.exposedFaces[4]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz - 1);
+        currentVoxelData.light = this.getLight(tx, ty, tz - 1);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -327,7 +327,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     }
     //north
     if (data.exposedFaces[5]) {
-        currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz + 1);
+        currentVoxelData.light = this.getLight(tx, ty, tz + 1);
         if (currentVoxelData.light < 0) {
             fallBackLight(this, tx, ty, tz);
         }
@@ -407,7 +407,7 @@ const lightEnd = (vertex) => {
     zeroCheck.g = 0;
 };
 const doAO = (face, vertex, x, y, z) => {
-    const neighborVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
+    const neighborVoxelId = Processor.getVoxel(x, y, z);
     if (!neighborVoxelId)
         return;
     if (neighborVoxelId[0] == "dve:air")
@@ -431,7 +431,7 @@ const doAO = (face, vertex, x, y, z) => {
         }
     }
     const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(neighborVoxel.trueShapeId);
-    const neighborVoxelShapeState = DVEC.worldMatrix.getVoxelShapeState(x, y, z);
+    const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
     const aoCheckData = {
         face: face,
         substanceResult: substanceRuleResult,
@@ -489,7 +489,7 @@ export function VoxelLightMixCalc(face, x, y, z, checkSet, vertex, LOD = 1) {
         const cy = checkSet[i + 1] * LOD + y;
         const cz = checkSet[i + 2] * LOD + z;
         if (this.settings.doRGB || this.settings.doSun) {
-            const nl = this.worldMatrix.getLight(cx, cy, cz);
+            const nl = this.getLight(cx, cy, cz);
             if (nl != -1) {
                 const values = lightByte.getLightValues(nl);
                 nlValues.s = values[0];

@@ -86,12 +86,11 @@ const swapRGB = () => {
  let v2 = lightByte.getRGB(RGBvertexStates[2].value);
  let v3 = lightByte.getRGB(RGBvertexStates[3].value);
  let v4 = lightByte.getRGB(RGBvertexStates[4].value);
- 
+
  RGBvertexStates[2].value = lightByte.setRGB(v4, RGBvertexStates[2].value);
  RGBvertexStates[1].value = lightByte.setRGB(v1, RGBvertexStates[1].value);
  RGBvertexStates[4].value = lightByte.setRGB(v2, RGBvertexStates[4].value);
  RGBvertexStates[3].value = lightByte.setRGB(v3, RGBvertexStates[3].value);
-
 };
 
 const swapAO = () => {
@@ -103,8 +102,7 @@ const swapAO = () => {
  AOVerotexStates[1].value = v1;
  AOVerotexStates[2].value = v2;
  AOVerotexStates[3].value = v3;
- AOVerotexStates[4].value = v4; 
-
+ AOVerotexStates[4].value = v4;
 };
 
 const shouldRGBFlip = () => {
@@ -188,7 +186,7 @@ const flipCheck = () => {
  if ((sunFlip || rgbFlip) && !aoFlip) {
   swapAO();
  }
- 
+
  if (!sunFlip && aoFlip) {
   swapSun();
  }
@@ -306,7 +304,7 @@ const fallBackLight = (
  y: number,
  z: number
 ) => {
- const light = processor.worldMatrix.getLight(x, y, z);
+ const light = processor.getLight(x, y, z);
  if (light >= 0) {
   currentVoxelData.light = light;
  } else {
@@ -324,7 +322,7 @@ export function CalculateVoxelLight(
  LOD = 2
 ) {
  if (this.settings.doAO && !ignoreAO) {
-  const voxelId = this.worldMatrix.getVoxel(tx, ty, tz);
+  const voxelId = this.getVoxel(tx, ty, tz);
   if (voxelId) {
    const voxel = DVEC.voxelManager.getVoxel(voxelId[0]);
    currentVoxelData.voxelObject = voxel;
@@ -333,7 +331,7 @@ export function CalculateVoxelLight(
     voxel.trueShapeId
    );
   }
-  currentVoxelData.shapeState = this.worldMatrix.getVoxelShapeState(tx, ty, tz);
+  currentVoxelData.shapeState = this.getVoxelShapeState(tx, ty, tz);
   currentVoxelData.x = tx;
   currentVoxelData.y = ty;
   currentVoxelData.z = tz;
@@ -353,7 +351,7 @@ export function CalculateVoxelLight(
  }
  //top
  if (data.exposedFaces[0]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx, ty + 1, tz);
+  currentVoxelData.light = this.getLight(tx, ty + 1, tz);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -366,7 +364,7 @@ export function CalculateVoxelLight(
 
  //bottom
  if (data.exposedFaces[1]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx, ty - 1, tz);
+  currentVoxelData.light = this.getLight(tx, ty - 1, tz);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -379,7 +377,7 @@ export function CalculateVoxelLight(
 
  //east
  if (data.exposedFaces[2]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx + 1, ty, tz);
+  currentVoxelData.light = this.getLight(tx + 1, ty, tz);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -392,7 +390,7 @@ export function CalculateVoxelLight(
 
  //west
  if (data.exposedFaces[3]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx - 1, ty, tz);
+  currentVoxelData.light = this.getLight(tx - 1, ty, tz);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -405,7 +403,7 @@ export function CalculateVoxelLight(
 
  //south
  if (data.exposedFaces[4]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz - 1);
+  currentVoxelData.light = this.getLight(tx, ty, tz - 1);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -417,7 +415,7 @@ export function CalculateVoxelLight(
  }
  //north
  if (data.exposedFaces[5]) {
-  currentVoxelData.light = this.worldMatrix.getLight(tx, ty, tz + 1);
+  currentVoxelData.light = this.getLight(tx, ty, tz + 1);
   if (currentVoxelData.light < 0) {
    fallBackLight(this, tx, ty, tz);
   }
@@ -503,7 +501,7 @@ const doAO = (
  y: number,
  z: number
 ) => {
- const neighborVoxelId = DVEC.worldMatrix.getVoxel(x, y, z);
+ const neighborVoxelId = Processor.getVoxel(x, y, z);
  if (!neighborVoxelId) return;
  if (neighborVoxelId[0] == "dve:air") return;
  const neighborVoxel = DVEC.voxelManager.getVoxel(neighborVoxelId[0]);
@@ -529,7 +527,7 @@ const doAO = (
  const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
   neighborVoxel.trueShapeId
  );
- const neighborVoxelShapeState = DVEC.worldMatrix.getVoxelShapeState(x, y, z);
+ const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
 
  const aoCheckData: AOAddOVerRide = {
   face: face,
@@ -600,7 +598,7 @@ export function VoxelLightMixCalc(
   const cz = checkSet[i + 2] * LOD + z;
 
   if (this.settings.doRGB || this.settings.doSun) {
-   const nl = this.worldMatrix.getLight(cx, cy, cz);
+   const nl = this.getLight(cx, cy, cz);
    if (nl != -1) {
     const values = lightByte.getLightValues(nl);
     nlValues.s = values[0];

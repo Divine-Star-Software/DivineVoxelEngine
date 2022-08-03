@@ -159,6 +159,9 @@ export declare const DVEB: {
         };
         buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
     };
+    entityMesher: {
+        buildEntityMesh(x: number, y: number, z: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
+    };
     processor: {
         LOD: number;
         heightByte: {
@@ -404,6 +407,7 @@ export declare const DVEB: {
                     y: number;
                     z: number;
                 };
+                getRichPositionKey(x: number, y: number, z: number): string;
                 getVoxelPosition(x: number, y: number, z: number): {
                     x: number;
                     y: number;
@@ -600,12 +604,21 @@ export declare const DVEB: {
             doSun: boolean;
             doRGB: boolean;
             ignoreSun: boolean;
+            entity: boolean;
+            composedEntity: number;
         };
         getBaseTemplateNew(): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
+        getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | string[];
+        getVoxelData(x: number, y: number, z: number, getSecond?: boolean): false | import("Meta/index.js").VoxelData;
+        getVoxelShapeState(x: number, y: number, z: number, getSecond?: boolean): number;
+        getVoxelLevel(x: number, y: number, z: number, getSecond?: boolean): number;
+        getVoxelLevelState(x: number, y: number, z: number, getSecond?: boolean): number;
+        getLight(x: number, y: number, z: number): number;
         cullCheck(face: import("Meta/index.js").DirectionNames, voxel: import("Meta/index.js").VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
         _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
+        constructEntity(composed?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         makeAllChunkTemplates(chunk: import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
@@ -614,8 +627,98 @@ export declare const DVEB: {
         substanceRules: Record<string, boolean>;
         substanceRuleCheck(voxel: import("Meta/index.js").VoxelData, neightborVoxel: import("Meta/index.js").VoxelData): boolean;
     };
+    entityConstructor: {
+        voxelData: Uint32Array[];
+        _3dArray: {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array): number;
+            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
+            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
+            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("Meta/index.js").Position3Matrix;
+        };
+        voxelByte: {
+            setId(id: number, value: number): number;
+            getId(value: number): number;
+            decodeLightFromVoxelData(voxelData: number): number;
+            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            decodeLevelFromVoxelData(stateData: number): number;
+            encodeLevelIntoVoxelData(stateData: number, level: number): number;
+            decodeLevelStateFromVoxelData(stateData: number): number;
+            encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
+            getShapeState(voxelData: number): number;
+            setShapeState(voxelData: number, shapeState: number): number;
+        };
+        lightByte: {
+            SRS: number;
+            _lightValues: number[];
+            getS(value: number): number;
+            getR(value: number): number;
+            getG(value: number): number;
+            getB(value: number): number;
+            setS(value: number, sl: number): number;
+            setR(value: number, sl: number): number;
+            setG(value: number, sl: number): number;
+            setB(value: number, sl: number): number;
+            removeS(sl: number): number;
+            hasRGBLight(sl: number): boolean;
+            getRGB(sl: number): number;
+            setRGB(value: number, sl: number): number;
+            decodeLightFromVoxelData(voxelData: number): number;
+            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
+            setLightValues(values: number[]): number;
+            getLightValues(value: number): number[];
+            isLessThanForRGBRemove(n1: number, n2: number): boolean;
+            isLessThanForRGBAdd(n1: number, n2: number): boolean;
+            isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
+            getMinusOneForRGB(sl: number, nl: number): number;
+            removeRGBLight(sl: number): number;
+            getFullSunLight(sl: number): number;
+            isLessThanForSunAdd(n1: number, n2: number): boolean;
+            isLessThanForSunAddDown(n1: number, n2: number): boolean;
+            isLessThanForSunAddUp(n1: number, n2: number): boolean;
+            getSunLightForUnderVoxel(sl: number, nl: number): number;
+            getMinusOneForSun(sl: number, nl: number): number;
+            isLessThanForSunRemove(n1: number, sl: number): boolean;
+            isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
+            sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
+            removeSunLight(sl: number): number;
+        };
+        pos: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        totalComposed: number;
+        width: number;
+        depth: number;
+        height: number;
+        setEntityData(x: number, y: number, z: number, width: number, height: number, depth: number, composed: number, voxelData: Uint32Array[]): void;
+        getVoxel(x: number, y: number, z: number, composed?: number): string[];
+        getLevel(x: number, y: number, z: number, composed?: number): number;
+        getLevelState(x: number, y: number, z: number, composed?: number): number;
+        getShapeState(x: number, y: number, z: number, composed?: number): number;
+        getLight(x: number, y: number, z: number, composed?: number): number;
+        clearEntityData(): void;
+    };
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;
     buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
+    constructEntity(): void;
 };
 export declare type DivineVoxelEngineBuilder = typeof DVEB;

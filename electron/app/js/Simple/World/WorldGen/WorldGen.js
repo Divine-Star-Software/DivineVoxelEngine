@@ -97,7 +97,7 @@ export const WorldGen = {
     },
     generatePillarChunk(chunkX, chunkZ) {
         let baseY = 31;
-        let topY = 50;
+        let topY = 80;
         for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                 let addVine = false;

@@ -11,4 +11,5 @@ export declare const WorldToConstructorMessages: {
     sunLightRemove: number;
     runFlow: number;
     removeFlow: number;
+    constructEntity: number;
 };

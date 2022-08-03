@@ -8,6 +8,8 @@ type EngineSettingsContext =
  | "DVEB"
  | "DVEC"
  | "DVEN"
+ | "DVEFX"
+ | "DVERW"
  | "MatrixLoadedThread";
 
 /**# Engine Settings
@@ -20,7 +22,7 @@ export const EngineSettings = {
   nexus: {
    enabled: false,
    autoSyncChunks: false,
-   autoSyncVoxelPalette: false
+   autoSyncVoxelPalette: false,
   },
   data: {
    enabled: false,
@@ -29,7 +31,12 @@ export const EngineSettings = {
   fx: {
    enabled: false,
    autoSyncChunks: false,
-   autoSyncVoxelPalette: false
+   autoSyncVoxelPalette: false,
+  },
+  richWorld: {
+   enabled: false,
+   autoSyncChunks: false,
+   autoSyncVoxelPalette: false,
   },
   textureOptions: {
    animationTime: 20,
@@ -146,6 +153,16 @@ export const EngineSettings = {
 
  getSettingsCopy() {
   return JSON.parse(JSON.stringify(this.settings));
+ },
+
+ syncChunkInRichWorldThread() {
+  return (
+   this.settings.richWorld.enabled && this.settings.richWorld.autoSyncChunks
+  );
+ },
+
+ richDataEnabled() {
+  return this.settings.richWorld.enabled;
  },
 
  syncChunkInFXThread() {

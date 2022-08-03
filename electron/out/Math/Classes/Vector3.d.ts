@@ -8,6 +8,7 @@ export declare class Vector3 {
         z: number;
     };
     constructor(x: number, y: number, z: number);
+    updateFromArray(array: number[] | Float32Array | Float64Array, startIndex?: number): void;
     updateVector(x: number, y: number, z: number): void;
     updateFromVec3(vector: Vector3): void;
     roundVector(deciamlPoints?: number): void;

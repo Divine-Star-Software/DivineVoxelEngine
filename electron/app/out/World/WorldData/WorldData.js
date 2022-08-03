@@ -115,10 +115,6 @@ export const WorldData = {
         this.setData(x, y, z, data, true);
     },
     getData(x, y, z, state = false) {
-        const region = this.getRegion(x, y, z);
-        if (!region) {
-            return false;
-        }
         const chunk = this.getChunk(x, y, z);
         if (!chunk || chunk.isEmpty) {
             return false;
@@ -130,10 +126,6 @@ export const WorldData = {
         return this._3dArray.getValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), array);
     },
     setData(x, y, z, data, state = false) {
-        const region = this.getRegion(x, y, z);
-        if (!region) {
-            return -1;
-        }
         const chunk = this.getChunk(x, y, z);
         if (!chunk || chunk.isEmpty) {
             return -1;
@@ -175,7 +167,7 @@ export const WorldData = {
                 if (!voxelStateRaw)
                     voxelStateRaw = 0;
                 const voxelShapeState = this.voxelByte.getShapeState(voxelStateRaw);
-                const voxel = DVEW.voxelManager.getVoxel(voxelTrueID);
+                const voxel = DVEW.voxelManager.getVoxelData(voxelTrueID);
                 return [voxel, voxelState, voxelShapeState];
             }
         }
@@ -202,7 +194,7 @@ export const WorldData = {
         return chunk;
     },
     paintVoxel(voxelId, voxelStateId, shapeState, x, y, z) {
-        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
+        const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
         if (!voxelData)
             return;
         const chunk = this.addOrGetChunk(x, y, z);
@@ -212,13 +204,16 @@ export const WorldData = {
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
         let stateData = this.voxelByte.setShapeState(0, shapeState);
-        stateData = this._getStartingLeel(voxelData, stateData);
+        stateData = this._getStartingLevel(voxelData, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
         if (DVEW.settings.doRGBPropagation()) {
             if (voxelData.lightSource && voxelData.lightValue) {
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
+        }
+        if (voxelData.rich) {
+            DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
         }
     },
     addOrGetChunk(x, y, z) {
@@ -232,15 +227,15 @@ export const WorldData = {
         }
         return chunk;
     },
-    _getStartingLeel(voxelData, stateData) {
+    _getStartingLevel(voxelData, stateData) {
         if (voxelData.substance == "fluid" || voxelData.substance == "magma") {
             stateData = this.voxelByte.encodeLevelIntoVoxelData(stateData, 0b1111);
         }
         return stateData;
     },
     paintDualVoxel(voxelId, voxelStateId, shapeState, secondVoxelId, secondVoxelStateId, x, y, z) {
-        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
-        const secondVoxelData = DVEW.voxelManager.getVoxel(secondVoxelId);
+        const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
+        const secondVoxelData = DVEW.voxelManager.getVoxelData(secondVoxelId);
         if (!secondVoxelData || !voxelData) {
             throw new Error(`Either voxel with id : ${voxelId} or ${secondVoxelId} does not exists`);
         }
@@ -253,7 +248,7 @@ export const WorldData = {
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, secondVoxelData, chunk);
         let stateData = this.voxelByte.setShapeState(secondaryId, shapeState);
-        stateData = this._getStartingLeel(voxelData, stateData);
+        stateData = this._getStartingLevel(voxelData, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
         this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, mainId);
         if (DVEW.settings.doRGBPropagation()) {
@@ -333,6 +328,9 @@ export const WorldData = {
         if (DVEW.settings.syncChunkInFXThread()) {
             DVEW.matrixCentralHub.syncChunkInThread("fx", chunkPOS.x, chunkPOS.y, chunkPOS.z);
         }
+        if (DVEW.settings.syncChunkInRichWorldThread()) {
+            DVEW.matrixCentralHub.syncChunkInThread("rich-world", chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        }
     },
     async __runLightRemoveAndUpdates(remove = true, update = true) {
         if (remove) {
@@ -359,7 +357,7 @@ export const WorldData = {
         }
     },
     async requestVoxelAdd(voxelId, voxelStateId, shapeState, x, y, z) {
-        const voxelData = DVEW.voxelManager.getVoxel(voxelId);
+        const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
         if (!voxelData)
             return;
         let region = this.getRegion(x, y, z);
@@ -408,6 +406,9 @@ export const WorldData = {
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
         }
+        if (voxelData.rich) {
+            DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
+        }
     },
     async requestVoxelBeRemoved(x, y, z) {
         const chunk = this.getChunk(x, y, z);
@@ -443,6 +444,9 @@ export const WorldData = {
             await this.__runLightRemoveAndUpdates(true, true);
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
+        }
+        if (voxelData.rich) {
+            DVEW.richWorldComm.removeRichData(x, y, z);
         }
     },
     getWorldColumn(x, z) {

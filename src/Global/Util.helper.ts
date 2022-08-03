@@ -9,6 +9,8 @@ import { FaceByte } from "./Util/FaceByte.js";
 import { HeightByte } from "./Util/HeightByte.js";
 import { HeightMapArray } from "./Util/HeightMapArray.js";
 import { MeshFaceDataByte } from "./Util/MeshFaceDataBytes.js";
+import { DataEncoder } from "./Util/DataEncoder.js";
+import { EntityFlat3dArray } from "./Util/EntityFlat3dArray.js";
 
 export const Util = {
  createPromiseCheck: CreatePromiseCheck,
@@ -20,6 +22,13 @@ export const Util = {
    environment = "node";
   }
   return environment;
+ },
+
+ getEntityFlat3dArray() {
+  return EntityFlat3dArray;
+ },
+ getDataEncoder() {
+  return DataEncoder;
  },
  getMeshFaceDataByte() {
   return MeshFaceDataByte;

@@ -1,5 +1,4 @@
 //types
-import type { DVEDInitData } from "Meta/Data/DVED.js";
 import type { EngineSettingsData } from "Meta/index.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
@@ -14,8 +13,6 @@ import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { DVEFXInitData } from "Meta/FX/DVEFX.js";
 
-
-
 export const DVEFX = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
@@ -26,14 +23,11 @@ export const DVEFX = {
  UTIL: Util,
  settings: EngineSettings,
 
-
  worldMatrix: WorldMatrix,
  matrixHub: MatrixHub,
 
  worldComm: WorldComm,
  renderComm: RenderComm,
-
-
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
@@ -51,9 +45,9 @@ export const DVEFX = {
   );
  },
 
-async $INIT(data : DVEFXInitData) {
-    await InitWorker(this,data);
-},
+ async $INIT(data: DVEFXInitData) {
+  await InitWorker(this, data);
+ },
 };
 
 export type DivineVoxelEngineFX = typeof DVEFX;

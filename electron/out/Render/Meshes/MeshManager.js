@@ -1,5 +1,6 @@
-import { SetChunkDataIndexes } from "../../Constants/InterComms/ConstructorToRender.js";
+import { ConstructEntityIndexes, SetChunkDataIndexes, } from "../../Constants/InterComms/ConstructorToRender.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
+import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
 export const MeshManager = {
     scene: null,
     runningUpdate: false,
@@ -10,6 +11,7 @@ export const MeshManager = {
         fluid: {},
         magma: {},
     },
+    entityMesh: EntityMesh,
     meshMakers: {},
     $INIT() {
         //@ts-ignore
@@ -33,7 +35,23 @@ export const MeshManager = {
         mesh.dispose();
         delete this.meshes[type][chunkKey];
     },
-    handleUpdate(type, chunkKey, data) {
+    handleEntityUpdate(x, y, z, data) {
+        const meshData = {
+            positionArray: new Float32Array(data[ConstructEntityIndexes.positionArray]),
+            normalsArray: new Float32Array(data[ConstructEntityIndexes.normalsArray]),
+            indiciesArray: new Int32Array(data[ConstructEntityIndexes.indiciesArray]),
+            faceDataArray: new Float32Array(data[ConstructEntityIndexes.faceDataArray]),
+            AOColorsArray: new Float32Array(data[ConstructEntityIndexes.AOColorsArray]),
+            RGBLightColorsArray: new Float32Array(data[ConstructEntityIndexes.RGBLightColorsArray]),
+            sunLightColorsArray: new Float32Array(data[ConstructEntityIndexes.sunLightColorsArray]),
+            colorsArray: new Float32Array(data[ConstructEntityIndexes.colorsArray]),
+            uvArray: new Float32Array(data[ConstructEntityIndexes.uvArray]),
+            overlayUVArray: new Float32Array(data[ConstructEntityIndexes.overlayUVArray]),
+            extra: [],
+        };
+        this.entityMesh.createMesh(x, y, z, meshData);
+    },
+    handleChunkUpdate(type, chunkKey, data) {
         const meshData = {
             positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
             normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),

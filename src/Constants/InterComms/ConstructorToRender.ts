@@ -1,6 +1,7 @@
 export const ConstructorToRenderMessages = {
  setChunk: 0,
  removeChunk: 1,
+ constructEntity: 2,
 };
 export let SetChunkDataIndexes = {
  __mainMessage: 0,
@@ -18,4 +19,21 @@ export let SetChunkDataIndexes = {
  colorsArray: 12,
  uvArray: 13,
  overlayUVArray: 14,
+};
+
+export let ConstructEntityIndexes = {
+ __mainMessage: 0,
+ x: 1,
+ y: 2,
+ z: 3,
+ positionArray: 4,
+ normalsArray: 5,
+ indiciesArray: 6,
+ faceDataArray: 7,
+ AOColorsArray: 8,
+ RGBLightColorsArray: 9,
+ sunLightColorsArray: 10,
+ colorsArray: 11,
+ uvArray: 12,
+ overlayUVArray: 13,
 };

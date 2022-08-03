@@ -15,7 +15,7 @@ export function GenerateStairChunk(
    if (x == chunkX + 15) {
     voxel = "dve:dreamstonepillar";
    }
-   GenerateDiagonalLine(direction, voxel, 0, 31, x, chunkZ + 16, chunkZ);
+   GenerateDiagonalLine(direction, voxel, 0, 30, x, chunkZ + 16, chunkZ - 1);
   }
  }
 
@@ -54,7 +54,7 @@ export function GenerateStairChunk(
    if (z == chunkZ + 15) {
     voxel = "dve:dreamstonepillar";
    }
-   GenerateDiagonalLine(direction, voxel, 1, 31, z, chunkX + 16, chunkX);
+   GenerateDiagonalLine(direction, voxel, 1, 30, z, chunkX + 16, chunkX - 1);
   }
  }
 }

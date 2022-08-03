@@ -6,7 +6,7 @@ await DVEW.$INIT({});
 const depth = 32;
 let startX = -depth;
 let startZ = -depth;
-let endX = depth;
+let endX = depth * 4;
 let endZ = depth * 4;
 const buildAll = () => {
     for (let x = startX; x < endX; x += 16) {
@@ -18,7 +18,7 @@ const buildAll = () => {
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
-        // DVEW.queues.addWorldColumnToSunLightQue(x, z);
+        DVEW.queues.addWorldColumnToSunLightQue(x, z);
     }
 }
 const x = 0;
@@ -76,6 +76,15 @@ const doStairTest = (shapeState, x, y, z) => {
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", shapeState, x - 1, y + 1, z);
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", shapeState, x - 2, y, z);
 };
+const doVineTest = (x, y, z) => {
+    for (let vy = y; vy < 60; vy++) {
+        DVEW.worldData.paintVoxel("dve:dreamvine", "default", 0, x, vy, z);
+        DVEW.worldData.paintVoxel("dve:dreamvine", "default", 1, x - 2, vy, z);
+        DVEW.worldData.paintVoxel("dve:dreamvine", "default", 2, x - 4, vy, z);
+        DVEW.worldData.paintVoxel("dve:dreamvine", "default", 3, x - 6, vy, z);
+    }
+};
+doVineTest(44, 22, 60);
 doStairTest(15, 25, 25, 107);
 doStairTest(14, 25, 25, 99);
 doStairTest(13, 25, 25, 91);
@@ -94,6 +103,7 @@ doStairTest(2, 25, 16, -4);
 doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
+await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 buildAll();
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 107);
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 30, 26, 99);

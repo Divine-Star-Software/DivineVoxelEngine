@@ -31,6 +31,8 @@ export const Processor = {
         doSun: true,
         doRGB: true,
         ignoreSun: false,
+        entity: false,
+        composedEntity: 1,
     },
     getBaseTemplateNew() {
         return {
@@ -101,15 +103,70 @@ export const Processor = {
         south: 4,
         north: 5,
     },
+    getVoxel(x, y, z, getSecond = false) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getVoxel(x, y, z, getSecond);
+        }
+        else {
+            if (getSecond)
+                return false;
+            return DVEB.entityConstructor.getVoxel(x, y, z);
+        }
+    },
+    getVoxelData(x, y, z, getSecond = false) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getVoxelData(x, y, z, getSecond);
+        }
+        else {
+            const voxelCheck = DVEB.entityConstructor.getVoxel(x, y, z);
+            if (!voxelCheck)
+                return false;
+            if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
+                return false;
+            return DVEC.voxelManager.getVoxelData(voxelCheck[0]);
+        }
+    },
+    getVoxelShapeState(x, y, z, getSecond = false) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getVoxelShapeState(x, y, z);
+        }
+        else {
+            return DVEB.entityConstructor.getShapeState(x, y, z);
+        }
+    },
+    getVoxelLevel(x, y, z, getSecond = false) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getLevel(x, y, z);
+        }
+        else {
+            return DVEB.entityConstructor.getLevel(x, y, z);
+        }
+    },
+    getVoxelLevelState(x, y, z, getSecond = false) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getLevelState(x, y, z);
+        }
+        else {
+            return DVEB.entityConstructor.getLevelState(x, y, z);
+        }
+    },
+    getLight(x, y, z) {
+        if (!this.settings.entity) {
+            return this.worldMatrix.getLight(x, y, z);
+        }
+        else {
+            return DVEB.entityConstructor.getLight(x, y, z);
+        }
+    },
     cullCheck(face, voxel, voxelState, shapeState, x, y, z, faceBit) {
-        const neighborVoxel = this.worldMatrix.getVoxelData(x, y, z);
+        const neighborVoxel = this.getVoxelData(x, y, z);
         let finalResult = false;
         if (neighborVoxel) {
             const nv = DVEC.voxelManager.getVoxel(neighborVoxel.id);
             let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(voxel.data, neighborVoxel);
             const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
             const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
-            const neighborVoxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+            const neighborVoxelShapeState = this.getVoxelShapeState(x, y, z);
             const data = {
                 face: face,
                 substanceResult: substanceRuleResult,
@@ -157,9 +214,9 @@ export const Processor = {
     },
     _process(template, x, y, z, doSecondCheck = true) {
         const LOD = this.LOD;
-        const voxelCheck = DVEC.worldMatrix.getVoxel(x, y, z, !doSecondCheck);
+        const voxelCheck = this.getVoxel(x, y, z, !doSecondCheck);
         if (doSecondCheck) {
-            const secondVoxel = DVEC.worldMatrix.getVoxel(x, y, z, true);
+            const secondVoxel = this.getVoxel(x, y, z, true);
             if (secondVoxel) {
                 this._process(template, x, y, z, false);
             }
@@ -172,7 +229,7 @@ export const Processor = {
         if (!voxelObject)
             return;
         const voxelState = voxelCheck[1];
-        const voxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+        const voxelShapeState = this.getVoxelShapeState(x, y, z);
         let faceBit = 0;
         faceBit = this.cullCheck("top", voxelObject, voxelState, voxelShapeState, x, y + LOD, z, faceBit);
         faceBit = this.cullCheck("bottom", voxelObject, voxelState, voxelShapeState, x, y - LOD, z, faceBit);
@@ -193,8 +250,8 @@ export const Processor = {
         baseTemplate.shapeStateTemplate.push(voxelShapeState);
         let level = 0;
         let levelState = 0;
-        level = this.worldMatrix.getLevel(x, y, z);
-        levelState = this.worldMatrix.getLevelState(x, y, z);
+        level = this.getVoxelLevel(x, y, z);
+        levelState = this.getVoxelLevelState(x, y, z);
         voxelObject.process({
             voxelState: voxelState,
             voxelShapeState: voxelShapeState,
@@ -227,7 +284,24 @@ export const Processor = {
             this.calculatFlow(voxelObject.data, this.faceStates[0] == 1, x, y, z, baseTemplate.flowTemplate);
         }
     },
+    constructEntity(composed = 1) {
+        this.settings.entity = true;
+        this.settings.composedEntity = composed;
+        const template = this.getBaseTemplateNew();
+        const maxX = DVEB.entityConstructor.width;
+        const maxY = DVEB.entityConstructor.height;
+        const maxZ = DVEB.entityConstructor.depth;
+        for (let x = 0; x < maxX; x++) {
+            for (let z = 0; z < maxZ; z++) {
+                for (let y = 0; y < maxY; y++) {
+                    this._process(template, x, y, z);
+                }
+            }
+        }
+        return template;
+    },
     makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD = 1) {
+        this.settings.entity = false;
         this.LOD = LOD;
         const template = this.getBaseTemplateNew();
         let maxX = DVEC.worldBounds.chunkXSize;

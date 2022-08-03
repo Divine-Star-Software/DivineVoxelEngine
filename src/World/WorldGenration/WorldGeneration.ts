@@ -1,5 +1,5 @@
 //types
-import { ChunkData } from "Meta/Chunks/Chunk.types";
+import { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import { WorldRegion } from "Meta/World/WorldData/World.types.js";
 //objects
 import { Util } from "../../Global/Util.helper.js";

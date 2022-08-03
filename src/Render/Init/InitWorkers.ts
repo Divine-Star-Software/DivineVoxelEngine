@@ -74,6 +74,20 @@ export function InitWorkers(
   DVER.fxComm.$INIT();
  }
 
+ if (initData.richWorldWorker && initData.richWorld?.enabled) {
+  if (typeof initData.richWorldWorker == "string") {
+   const worker = DVER.__createWorker(initData.richWorldWorker);
+   DVER.richWorldComm.setPort(worker);
+  } else if (initData.richWorldWorker instanceof Worker) {
+   DVER.richWorldComm.setPort(initData.richWorldWorker);
+  } else {
+   throw Error(
+    "Supplied data for Rich World Worker is not correct. Must be path to worker or a worker."
+   );
+  }
+  DVER.richWorldComm.$INIT();
+ }
+
  DVER._syncSettings(<any>initData);
 
  DVER.textureManager.generateTexturesData();

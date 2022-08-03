@@ -112,3 +112,30 @@ worldComm.messageFunctions[WorldToConstructorMessages.generate] = async (
  const genData = data[3];
  await DVEC.DVEWG.generate(x, z, genData);
 };
+
+worldComm.messageFunctions[WorldToConstructorMessages.constructEntity] = async (
+ data
+) => {
+ const x = data[1];
+ const y = data[2];
+ const z = data[3];
+ const width = data[4];
+ const depth = data[5];
+ const height = data[6];
+ const composed = data[7];
+ const arrays: Uint32Array[] = [];
+ for (let i = 8; i < 8 + 2 * composed; i += 2) {
+  arrays.push(new Uint32Array(data[i]), new Uint32Array(data[i + 1]));
+ }
+ DVEC.DVEB.entityConstructor.setEntityData(
+  x,
+  y,
+  z,
+  width,
+  depth,
+  height,
+  composed,
+  arrays
+ );
+ DVEC.DVEB.constructEntity();
+};

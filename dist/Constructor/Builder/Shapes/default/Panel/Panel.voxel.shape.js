@@ -31,9 +31,9 @@ const processDefaultFaceData = (face, data, flip) => {
     }
     data.uvTemplateIndex += 2;
     data.overylayUVTemplateIndex += 4;
-    data.lightIndex += 2;
-    data.colorIndex += 2;
-    data.aoIndex += 2;
+    data.lightIndex += 1;
+    data.colorIndex += 1;
+    data.aoIndex += 1;
 };
 const shapeStates = {
     0: (data) => {

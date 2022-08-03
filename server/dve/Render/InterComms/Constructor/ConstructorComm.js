@@ -10,7 +10,7 @@ const handleUpdate = (substance, data) => {
     /**
      * @TODO change over the handle update function to handle the new data index
      */
-    DVER.meshManager.handleUpdate(substance, chunkKey, data);
+    DVER.meshManager.handleChunkUpdate(substance, chunkKey, data);
 };
 const substanceFunctionMap = {
     0: (data) => {
@@ -36,6 +36,10 @@ export const GetNewConstructorComm = (count, port) => {
         const substance = data[1];
         const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
         DVER.meshManager.removeChunkMesh(substance, chunkKey);
+    };
+    newComm.messageFunctions[ConstructorToRenderMessages.constructEntity] = (data) => {
+        console.log(data);
+        DVER.meshManager.handleEntityUpdate(data[1], data[2], data[3], data);
     };
     newComm.setPort(port);
     return newComm;

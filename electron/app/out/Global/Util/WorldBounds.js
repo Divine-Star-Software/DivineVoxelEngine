@@ -143,6 +143,10 @@ export const WorldBounds = {
         }
         return this.__voxelPosition;
     },
+    getRichPositionKey(x, y, z) {
+        const POS = this.getVoxelPosition(x, y, z);
+        return `${POS.y}-${POS.x}-${POS.z}`;
+    },
     getVoxelPosition(x, y, z) {
         return this.getVoxelPositionFromChunkPosition(x, y, z, this.getChunkPosition(x, y, z));
     },

@@ -1,4 +1,4 @@
-import type { ChunkData } from "Meta/Chunks/Chunk.types";
+import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 import { MatrixRegionData } from "Meta/Matrix/Matrix.types.js";

@@ -1,4 +1,4 @@
-import { ChunkData } from "Meta/Chunks/Chunk.types";
+import { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import { WorldRegion } from "Meta/World/WorldData/World.types.js";
 /**# World Generation
  * ---
@@ -73,6 +73,7 @@ export declare const WorldGeneration: {
             y: number;
             z: number;
         };
+        getRichPositionKey(x: number, y: number, z: number): string;
         getVoxelPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
@@ -132,10 +133,6 @@ export declare const WorldGeneration: {
                 z: number;
                 y: number;
             };
-            /**# World Generation
-             * ---
-             * Helps with creating the needed data for chunks and world generation things.
-             */
             getY(byteData: number): number;
             getPosition(byteData: number): {
                 x: number;

@@ -12,6 +12,11 @@ export class Vector3 {
         this.y = y;
         this.z = z;
     }
+    updateFromArray(array, startIndex = 0) {
+        this.x = array[startIndex];
+        this.y = array[startIndex + 1];
+        this.z = array[startIndex + 2];
+    }
     updateVector(x, y, z) {
         this.x = x;
         this.y = y;

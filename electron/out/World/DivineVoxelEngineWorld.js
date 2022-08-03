@@ -5,9 +5,11 @@ import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { VoxelManager } from "../Voxels/VoxelManager.js";
+import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
 //inter comms
 import { FXComm } from "./InterComms/FX/FXComm.js";
+import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 import { DataComm } from "./InterComms/Data/DataComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
@@ -34,15 +36,14 @@ export const DVEW = {
     nexusComm: NexusComm,
     renderComm: RenderComm,
     constructorCommManager: ConstructorCommManager,
+    richWorldComm: RichWorldComm,
     worldGeneration: WorldGeneration,
     worldData: WorldData,
+    entityConstructor: EntityConstructor,
     voxelManager: VoxelManager,
     queues: QueuesManager,
     isReady() {
-        let ready = 
-        //  DVEW.builderCommManager.isReady() &&
-        //  DVEW.propagationCommManager.isReady() &&
-        DVEW.constructorCommManager.isReady() &&
+        let ready = DVEW.constructorCommManager.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
             DVEW.__renderIsDone;
         return ready;
@@ -99,3 +100,6 @@ export const DVEW = {
     },
 };
 DVEW.environment = Util.getEnviorment();
+DVEW.voxelManager.onRegister((voxel) => {
+    DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
+});

@@ -23,7 +23,7 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
- lighting: {
+/*  lighting: {
   doAO: true,
   doRGBLight: true,
   doSunLight: false,
@@ -36,7 +36,7 @@ await DVER.$INIT({
   doSunLight: false,
   disableFloraShaderEffects: false,
   disableFluidShaderEffects: false,
- },
+ }, */
  world: {
   minX: -Infinity,
   maxX: Infinity,
@@ -62,7 +62,7 @@ const init = async () => {
 
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0.1);
- DVER.renderManager.setSunLevel(0);
+ DVER.renderManager.setSunLevel(1);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

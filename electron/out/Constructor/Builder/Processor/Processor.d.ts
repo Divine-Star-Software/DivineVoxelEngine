@@ -255,6 +255,7 @@ export declare const Processor: {
                 y: number;
                 z: number;
             };
+            getRichPositionKey(x: number, y: number, z: number): string;
             getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
@@ -451,12 +452,21 @@ export declare const Processor: {
         doSun: boolean;
         doRGB: boolean;
         ignoreSun: boolean;
+        entity: boolean;
+        composedEntity: number;
     };
     getBaseTemplateNew(): FullChunkTemplate;
     faceIndexMap: Record<DirectionNames, number>;
+    getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | string[];
+    getVoxelData(x: number, y: number, z: number, getSecond?: boolean): false | VoxelData;
+    getVoxelShapeState(x: number, y: number, z: number, getSecond?: boolean): number;
+    getVoxelLevel(x: number, y: number, z: number, getSecond?: boolean): number;
+    getVoxelLevelState(x: number, y: number, z: number, getSecond?: boolean): number;
+    getLight(x: number, y: number, z: number): number;
     cullCheck(face: DirectionNames, voxel: VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
+    constructEntity(composed?: number): FullChunkTemplate;
     makeAllChunkTemplates(chunk: MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;

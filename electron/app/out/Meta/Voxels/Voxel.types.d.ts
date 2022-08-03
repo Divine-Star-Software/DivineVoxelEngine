@@ -25,6 +25,9 @@ export declare type VoxelData = {
     shapeId: string;
     id: string;
     substance: VoxelSubstanceType;
+    rich?: {
+        initalData: any;
+    };
     physics?: {
         collider: string;
         checkCollisions: boolean;

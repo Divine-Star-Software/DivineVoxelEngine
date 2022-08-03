@@ -92,11 +92,10 @@ const getBrighttestLight = (data: VoxelShapeAddData) => {
 
 const processLight = (data: VoxelShapeAddData) => {
  const light = getBrighttestLight(data);
- DVEB.shapeHelper.calculateLightColor(
+ DVEB.shapeHelper.calculateLightColorFromValue(
   data.RGBLightColors,
   data.sunLightColors,
-  [light, light, light, light],
-  0
+  light
  );
 };
 

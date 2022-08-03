@@ -1,4 +1,4 @@
-import type { ChunkData } from "Meta/Chunks/Chunk.types";
+import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import { MatrixRegionData } from "Meta/Matrix/Matrix.types.js";
 /**# Matrix
  * ---
@@ -74,6 +74,7 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
+        getRichPositionKey(x: number, y: number, z: number): string;
         getVoxelPosition(x: number, y: number, z: number): {
             x: number;
             y: number;

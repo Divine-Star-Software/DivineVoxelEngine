@@ -2,19 +2,21 @@ export type EngineSettingsData = {
  nexus: {
   enabled: boolean;
   autoSyncChunks: boolean;
-  autoSyncVoxelPalette : boolean;
+  autoSyncVoxelPalette: boolean;
  };
  data: {
   enabled: boolean;
   autoSyncChunks: boolean;
  };
+ richWorld: {
+  enabled: boolean;
+  autoSyncChunks: boolean;
+  autoSyncVoxelPalette: boolean;
+ };
  fx: {
   enabled: boolean;
   autoSyncChunks: boolean;
-  autoSyncVoxelPalette : boolean;
- };
- physics: {
-  enabled: boolean;
+  autoSyncVoxelPalette: boolean;
  };
  server: {
   enabled: boolean;

@@ -1,10 +1,14 @@
-import { SetChunkDataIndexes } from "../../Constants/InterComms/ConstructorToRender.js";
+import {
+ ConstructEntityIndexes,
+ SetChunkDataIndexes,
+} from "../../Constants/InterComms/ConstructorToRender.js";
 import type {
  MeshSetData,
  VoxelMeshInterface,
 } from "Meta/Render/Meshes/VoxelMesh.interface";
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 import { DVER } from "../DivineVoxelEngineRender.js";
+import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
 
 export const MeshManager = {
  scene: <BABYLON.Scene | null>null,
@@ -18,6 +22,7 @@ export const MeshManager = {
   magma: {},
  },
 
+ entityMesh: EntityMesh,
  meshMakers: <Record<VoxelSubstanceType, VoxelMeshInterface>>{},
 
  $INIT() {
@@ -37,17 +42,39 @@ export const MeshManager = {
 
  reStart() {},
 
-
- removeChunkMesh(type : VoxelSubstanceType,chunkKey : string) {
-   const mesh = this.meshes[type][chunkKey];
-   if(!mesh) {
-      return;
-   }
-   mesh.dispose();
-   delete this.meshes[type][chunkKey];
+ removeChunkMesh(type: VoxelSubstanceType, chunkKey: string) {
+  const mesh = this.meshes[type][chunkKey];
+  if (!mesh) {
+   return;
+  }
+  mesh.dispose();
+  delete this.meshes[type][chunkKey];
  },
 
- handleUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
+ handleEntityUpdate(x: number, y: number, z: number, data: any) {
+  const meshData: MeshSetData = {
+   positionArray: new Float32Array(data[ConstructEntityIndexes.positionArray]),
+   normalsArray: new Float32Array(data[ConstructEntityIndexes.normalsArray]),
+   indiciesArray: new Int32Array(data[ConstructEntityIndexes.indiciesArray]),
+   faceDataArray: new Float32Array(data[ConstructEntityIndexes.faceDataArray]),
+   AOColorsArray: new Float32Array(data[ConstructEntityIndexes.AOColorsArray]),
+   RGBLightColorsArray: new Float32Array(
+    data[ConstructEntityIndexes.RGBLightColorsArray]
+   ),
+   sunLightColorsArray: new Float32Array(
+    data[ConstructEntityIndexes.sunLightColorsArray]
+   ),
+   colorsArray: new Float32Array(data[ConstructEntityIndexes.colorsArray]),
+   uvArray: new Float32Array(data[ConstructEntityIndexes.uvArray]),
+   overlayUVArray: new Float32Array(
+    data[ConstructEntityIndexes.overlayUVArray]
+   ),
+   extra: [],
+  };
+  this.entityMesh.createMesh(x, y, z, meshData);
+ },
+
+ handleChunkUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
   const meshData: MeshSetData = {
    positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
    normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
@@ -60,12 +87,11 @@ export const MeshManager = {
    sunLightColorsArray: new Float32Array(
     data[SetChunkDataIndexes.sunLightColorsArray]
    ),
-colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
+   colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
    uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
    overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
    extra: [],
   };
-
 
   if (!this.meshes[type][chunkKey]) {
    this._buildNewMesh(type, chunkKey, meshData);

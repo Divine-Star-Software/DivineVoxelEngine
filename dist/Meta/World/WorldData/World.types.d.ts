@@ -1,7 +1,9 @@
-import { ChunkData } from "Meta/Chunks/Chunk.types";
+import { ChunkData, RichChunk } from "Meta/World/WorldData/Chunk.types";
 export declare type WorldRegion = {
-    palette?: WorldRegionPalette;
     chunks: Record<string, Record<string, ChunkData>>;
+};
+export declare type RichWorldRegion = {
+    chunks: Record<string, Record<string, RichChunk>>;
 };
 export declare type WorldRegionPalette = {
     count: number;

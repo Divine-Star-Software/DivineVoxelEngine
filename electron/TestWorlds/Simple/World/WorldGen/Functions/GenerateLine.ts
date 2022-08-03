@@ -16,6 +16,9 @@ const diagonalLineGenerators: Record<
   let y = yStart;
   for (let z = start; z < end; z++) {
    DVEW.worldData.paintVoxel(voxel, "default", shapeState, xzStart, y, z);
+   for(let zy = y - 1; zy >= yStart ; zy--) {
+    DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, xzStart, zy, z);
+   } 
    y++;
   }
  },
@@ -24,6 +27,9 @@ const diagonalLineGenerators: Record<
 
   for (let z = start; z > end; z--) {
    DVEW.worldData.paintVoxel(voxel, "default", shapeState, xzStart, y, z);
+   for(let zy = y - 1; zy >= yStart ; zy--) {
+    DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, xzStart, zy, z);
+   } 
    y++;
   }
  },
@@ -31,6 +37,9 @@ const diagonalLineGenerators: Record<
   let y = yStart;
   for (let x = start; x < end; x++) {
    DVEW.worldData.paintVoxel(voxel, "default", shapeState, x, y, xzStart);
+   for(let zy = y - 1; zy >= yStart ; zy--) {
+    DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, x, zy, xzStart);
+   } 
    y++;
   }
  },
@@ -38,8 +47,13 @@ const diagonalLineGenerators: Record<
   let y = yStart;
   for (let x = start; x > end; x--) {
    DVEW.worldData.paintVoxel(voxel, "default", shapeState, x, y, xzStart);
+
+   for(let zy = y - 1; zy >= yStart ; zy--) {
+    DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, x, zy, xzStart);
+   } 
    y++;
   }
+
  },
 };
 

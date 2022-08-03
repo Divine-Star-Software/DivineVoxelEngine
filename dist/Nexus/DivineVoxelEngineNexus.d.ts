@@ -13,6 +13,33 @@ export declare const DVEN: {
         }) => Promise<boolean>;
         getWorkerPort: (environment: "node" | "browser") => Promise<any>;
         getEnviorment(): "node" | "browser";
+        getEntityFlat3dArray(): {
+            bounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _position: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setBounds(x: number, y: number, z: number): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array): number;
+            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
+            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
+            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array): void;
+            getIndex(x: number, y: number, z: number): number;
+            getXYZ(index: number): import("Meta/index.js").Position3Matrix;
+        };
+        getDataEncoder(): {
+            setData(raw: number, value: number, offset: number, numBits: number): number;
+            getData(raw: number, offset: number, numBits: number): number;
+        };
         getMeshFaceDataByte(): {
             setAnimationType(animationType: number, rawData: number): number;
             getAnimationType(rawData: number): number;
@@ -156,6 +183,9 @@ export declare const DVEN: {
             getShapeState(voxelData: number): number;
             setShapeState(voxelData: number, shapeState: number): number;
         };
+        /**# Load chunk into Nexus
+         * Load a chunk into the shared nexus thread.
+         */
         getLightByte(): {
             SRS: number;
             _lightValues: number[];
@@ -259,6 +289,7 @@ export declare const DVEN: {
                 y: number;
                 z: number;
             };
+            getRichPositionKey(x: number, y: number, z: number): string;
             getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
@@ -291,7 +322,7 @@ export declare const DVEN: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -303,6 +334,11 @@ export declare const DVEN: {
                 autoSyncChunks: boolean;
             };
             fx: {
+                enabled: boolean;
+                autoSyncChunks: boolean;
+                autoSyncVoxelPalette: boolean;
+            };
+            richWorld: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
@@ -361,7 +397,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -432,6 +468,7 @@ export declare const DVEN: {
                 y: number;
                 z: number;
             };
+            getRichPositionKey(x: number, y: number, z: number): string;
             getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
@@ -445,6 +482,8 @@ export declare const DVEN: {
             };
         }): void;
         getSettingsCopy(): any;
+        syncChunkInRichWorldThread(): boolean;
+        richDataEnabled(): boolean;
         syncChunkInFXThread(): boolean;
         syncChunkInDataThread(): boolean;
         syncChunksInNexusThread(): boolean;
@@ -544,6 +583,7 @@ export declare const DVEN: {
                 y: number;
                 z: number;
             };
+            getRichPositionKey(x: number, y: number, z: number): string;
             getVoxelPosition(x: number, y: number, z: number): {
                 x: number;
                 y: number;
@@ -766,8 +806,10 @@ export declare const DVEN: {
     };
     voxelManager: {
         voxelData: Record<string, import("Meta/index.js").VoxelData>;
+        _onRegister: (data: import("Meta/index.js").VoxelData) => void;
         getVoxelData(id: string): import("Meta/index.js").VoxelData;
         registerVoxelData(data: import("Meta/index.js").VoxelData): void;
+        onRegister(func: (data: import("Meta/index.js").VoxelData) => void): void;
     };
     worldBounds: {
         __maxChunkYSize: number;
@@ -837,6 +879,7 @@ export declare const DVEN: {
             y: number;
             z: number;
         };
+        getRichPositionKey(x: number, y: number, z: number): string;
         getVoxelPosition(x: number, y: number, z: number): {
             x: number;
             y: number;

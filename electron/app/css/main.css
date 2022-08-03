@@ -25,9 +25,9 @@ body {
 }
 
 .optionsMenu {
-    display : none;
-    width: 100%;
-    height: 100%;
+ display: none;
+ width: 100%;
+ height: 100%;
 }
 
 .fps {
@@ -61,10 +61,41 @@ body {
 }
 
 .gui-button {
-background-color: rgba(51, 51, 51, 0.5);
-border: 1px solid rgba(184, 45, 240, 0.8);
-color: rgba(184, 45, 240, 0.8);
-z-index: 1000000;
-width: 150px;
-height: 50px;
+ background-color: rgba(51, 51, 51, 0.5);
+ border: 1px solid rgba(184, 45, 240, 0.8);
+ color: rgba(184, 45, 240, 0.8);
+ z-index: 1000000;
+ width: 150px;
+ height: 50px;
+}
+
+#rich-data {
+ color: cyan;
+ position: absolute;
+ background-color: rgba(0, 0, 0, 0.8);
+ z-index: 1000;
+ width: 100%;
+ height: 100%;
+ display: none;
+}
+
+#rich-data-display {
+ border: 1px solid cyan;
+ color: cyan;
+ margin: 10px;
+ font-size: 30px;
+ background-color: rgba(0, 0, 0, 0.5);
+}
+
+.rd-buttons button {
+ font-size: 30px;
+ padding: 10;
+ border: 1px solid cyan;
+ background-color: rgba(0, 0, 0, 0.5);
+ color: cyan;
+}
+
+.rd-buttons button:hover {
+ color: rgba(0, 0, 0, 0.5);
+ background-color: cyan;
 }

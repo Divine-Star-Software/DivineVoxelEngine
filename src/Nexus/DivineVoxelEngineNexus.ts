@@ -11,7 +11,7 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { VoxelManager } from "../Voxels/VoxelManager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 

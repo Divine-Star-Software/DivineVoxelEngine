@@ -50,6 +50,15 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   },
  });
 
+ DVER.textureManager.registerTexture("solid", {
+  name: "Dream Holder Textures",
+  id: "data-holder",
+  frames: 0,
+  variations: {
+   front: { frames: 0 },
+  },
+ });
+
  DVER.textureManager.registerTexture("flora", {
   name: "Dream Stone Textures",
   id: "dreamgrassblock",

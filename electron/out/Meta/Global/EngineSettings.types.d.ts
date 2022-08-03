@@ -8,13 +8,15 @@ export declare type EngineSettingsData = {
         enabled: boolean;
         autoSyncChunks: boolean;
     };
-    fx: {
+    richWorld: {
         enabled: boolean;
         autoSyncChunks: boolean;
         autoSyncVoxelPalette: boolean;
     };
-    physics: {
+    fx: {
         enabled: boolean;
+        autoSyncChunks: boolean;
+        autoSyncVoxelPalette: boolean;
     };
     server: {
         enabled: boolean;

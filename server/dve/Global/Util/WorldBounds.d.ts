@@ -78,6 +78,7 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
+    getRichPositionKey(x: number, y: number, z: number): string;
     getVoxelPosition(x: number, y: number, z: number): {
         x: number;
         y: number;

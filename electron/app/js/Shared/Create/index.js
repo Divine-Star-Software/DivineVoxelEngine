@@ -6,7 +6,7 @@ export const RunInit = (init) => {
         }
     }, 10);
 };
-export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = null, dataPath = null, fxPath = null) => {
+export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = null, dataPath = null, fxPath = null, richWorldPath = null) => {
     const worldWorker = new Worker(new URL(worldPath, basePath), {
         type: "module",
     });
@@ -35,11 +35,18 @@ export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = n
             type: "module",
         });
     }
+    let richWorldWorker = null;
+    if (richWorldPath) {
+        richWorldWorker = new Worker(new URL(richWorldPath, basePath), {
+            type: "module",
+        });
+    }
     return {
         worldWorker: worldWorker,
         constructorWorkers: constructorWorkers,
         nexusWorker: nexusWorker,
         dataWorker: dataWorker,
         fxWorker: fxWorker,
+        richWorldWorker: richWorldWorker
     };
 };

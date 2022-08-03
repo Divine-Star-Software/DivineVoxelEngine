@@ -45,5 +45,11 @@ renderComm.messageFunctions = {
         const port = event.ports[0];
         DVEW.fxComm.setPort(port);
     },
+    "connect-rich-world": (data, event) => {
+        if (!event)
+            return;
+        const port = event.ports[0];
+        DVEW.richWorldComm.setPort(port);
+    },
 };
 //renderComm.onMessage = (event) => console.log(event.data,event.ports);

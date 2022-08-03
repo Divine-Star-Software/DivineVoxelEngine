@@ -17,7 +17,7 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
-
+import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 
 export const DVER = {
  worldBounds: Util.getWorldBounds(),
@@ -25,6 +25,7 @@ export const DVER = {
  nexusComm: NexusComm,
  dataComm: DataComm,
  fxComm: FXComm,
+ richWorldComm: RichWorldComm,
  constructorCommManager: ConstructorCommManager,
 
  settings: EngineSettings,
@@ -64,8 +65,9 @@ export const DVER = {
   if (this.fxComm.port) {
    this.fxComm.sendMessage("sync-settings", [copy]);
   }
-  // this.builderCommManager.syncSettings(copy);
-  // this.propagationCommManager.syncSettings(copy);
+  if (this.richWorldComm.port) {
+   this.richWorldComm.sendMessage("sync-settings", [copy]);
+  }
   this.constructorCommManager.syncSettings(copy);
  },
 

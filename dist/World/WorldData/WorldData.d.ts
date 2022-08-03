@@ -1,4 +1,4 @@
-import type { ChunkData } from "Meta/Chunks/Chunk.types";
+import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import type { VoxelData } from "Meta/Voxels/Voxel.types.js";
 import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
 import { Position3Matrix } from "Meta/Util.types.js";
@@ -212,6 +212,7 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
+        getRichPositionKey(x: number, y: number, z: number): string;
         getVoxelPosition(x: number, y: number, z: number): {
             x: number;
             y: number;
@@ -242,7 +243,7 @@ export declare const WorldData: {
     addChunk(x: number, y: number, z: number): ChunkData;
     paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
     addOrGetChunk(x: number, y: number, z: number): ChunkData;
-    _getStartingLeel(voxelData: VoxelData, stateData: number): number;
+    _getStartingLevel(voxelData: VoxelData, stateData: number): number;
     paintDualVoxel(voxelId: string, voxelStateId: string, shapeState: number, secondVoxelId: string, secondVoxelStateId: string, x: number, y: number, z: number): void;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     __handleHeightMapUpdateForVoxelRemove(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;

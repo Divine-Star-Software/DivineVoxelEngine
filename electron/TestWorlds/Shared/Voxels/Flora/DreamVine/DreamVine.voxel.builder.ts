@@ -15,8 +15,8 @@ export const DreamVineVoxelBuilderThread: VoxelConstructorObject = {
    data.y,
    data.z
   );
-  data.aoTemplate.push(1, 1);
-  data.lightTemplate.push(lightValue, lightValue);
+  data.aoTemplate.push(1);
+  data.lightTemplate.push(lightValue);
   //data.lightTemplate.push(0xf, 0xf);
  },
 };

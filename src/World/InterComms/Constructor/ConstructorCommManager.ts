@@ -164,7 +164,7 @@ export const ConstructorCommManager = {
   comm.sendMessage(WorldToConstructorMessages.runFlow, [x, y, z]);
   return this.__handleCount();
  },
- 
+
  removeFlow(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.removeFlow, [x, y, z]);
@@ -174,6 +174,33 @@ export const ConstructorCommManager = {
  runGeneration(x: number, z: number, data: any) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.generate, [x, z, data]);
+  return this.__handleCount();
+ },
+
+ constructEntity(
+  x: number,
+  y: number,
+  z: number,
+  width: number,
+  depth: number,
+  height: number,
+  composed: number,
+  voxelData: Uint32Array[],
+  voxelStateData: Uint32Array[]
+ ) {
+  const comm = this.constructors[this.count];
+  const transferArray: any[] = [];
+  const dataArray: any[] = [];
+  for (let i = 0; i < voxelData.length; i++) {
+   dataArray.push(voxelData[i], voxelStateData[i]);
+   transferArray.push(voxelData[i].buffer, voxelStateData[i].buffer);
+  }
+
+  comm.sendMessage(
+   WorldToConstructorMessages.constructEntity,
+   [x, y, z, width, depth, height, composed, ...transferArray],
+   transferArray
+  );
   return this.__handleCount();
  },
 };

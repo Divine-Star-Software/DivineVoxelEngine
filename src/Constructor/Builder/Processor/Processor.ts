@@ -47,6 +47,8 @@ export const Processor = {
   doSun: true,
   doRGB: true,
   ignoreSun: false,
+  entity: false,
+  composedEntity: 1,
  },
  getBaseTemplateNew(): FullChunkTemplate {
   return {
@@ -119,6 +121,59 @@ export const Processor = {
   north: 5,
  },
 
+ getVoxel(x: number, y: number, z: number, getSecond = false) {
+  if (!this.settings.entity) {
+   return this.worldMatrix.getVoxel(x, y, z, getSecond);
+  } else {
+   if (getSecond) return false;
+   return DVEB.entityConstructor.getVoxel(x, y, z);
+  }
+ },
+
+ getVoxelData(x: number, y: number, z: number, getSecond = false) {
+  if (!this.settings.entity) {
+   return this.worldMatrix.getVoxelData(x, y, z, getSecond);
+  } else {
+   const voxelCheck = DVEB.entityConstructor.getVoxel(x, y, z);
+   if (!voxelCheck) return false;
+   if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
+    return false;
+   return DVEC.voxelManager.getVoxelData(voxelCheck[0]);
+  }
+ },
+
+ getVoxelShapeState(x: number, y: number, z: number, getSecond = false) {
+  if (!this.settings.entity) {
+   return this.worldMatrix.getVoxelShapeState(x, y, z);
+  } else {
+   return DVEB.entityConstructor.getShapeState(x, y, z);
+  }
+ },
+
+ getVoxelLevel(x: number, y: number, z: number, getSecond = false) {
+  if (!this.settings.entity) {
+   return this.worldMatrix.getLevel(x, y, z);
+  } else {
+   return DVEB.entityConstructor.getLevel(x, y, z);
+  }
+ },
+
+ getVoxelLevelState(x: number, y: number, z: number, getSecond = false) {
+  if (!this.settings.entity) {
+   return this.worldMatrix.getLevelState(x, y, z);
+  } else {
+   return DVEB.entityConstructor.getLevelState(x, y, z);
+  }
+ },
+
+ getLight(x: number, y: number, z: number) {
+  if (!this.settings.entity) {
+    return this.worldMatrix.getLight(x, y, z);
+   } else {
+    return DVEB.entityConstructor.getLight(x, y, z);
+   }
+ },
+
  cullCheck(
   face: DirectionNames,
   voxel: VoxelConstructorObject,
@@ -129,7 +184,7 @@ export const Processor = {
   z: number,
   faceBit: number
  ) {
-  const neighborVoxel = this.worldMatrix.getVoxelData(x, y, z);
+  const neighborVoxel = this.getVoxelData(x, y, z);
   let finalResult = false;
   if (neighborVoxel) {
    const nv = DVEC.voxelManager.getVoxel(neighborVoxel.id);
@@ -140,7 +195,7 @@ export const Processor = {
 
    const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
-   const neighborVoxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+   const neighborVoxelShapeState = this.getVoxelShapeState(x, y, z);
    const data: CullFaceOverride = {
     face: face,
     substanceResult: substanceRuleResult,
@@ -202,9 +257,9 @@ export const Processor = {
   doSecondCheck = true
  ) {
   const LOD = this.LOD;
-  const voxelCheck = DVEC.worldMatrix.getVoxel(x, y, z,!doSecondCheck);
+  const voxelCheck = this.getVoxel(x, y, z, !doSecondCheck);
   if (doSecondCheck) {
-   const secondVoxel = DVEC.worldMatrix.getVoxel(x, y, z, true);
+   const secondVoxel = this.getVoxel(x, y, z, true);
    if (secondVoxel) {
     this._process(template, x, y, z, false);
    }
@@ -221,7 +276,7 @@ export const Processor = {
   if (!voxelObject) return;
   const voxelState = voxelCheck[1];
 
-  const voxelShapeState = this.worldMatrix.getVoxelShapeState(x, y, z);
+  const voxelShapeState = this.getVoxelShapeState(x, y, z);
 
   let faceBit = 0;
 
@@ -300,8 +355,8 @@ export const Processor = {
 
   let level = 0;
   let levelState = 0;
-  level = this.worldMatrix.getLevel(x, y, z);
-  levelState = this.worldMatrix.getLevelState(x, y, z);
+  level = this.getVoxelLevel(x, y, z);
+  levelState = this.getVoxelLevelState(x, y, z);
 
   voxelObject.process(
    {
@@ -352,6 +407,23 @@ export const Processor = {
   }
  },
 
+ constructEntity(composed = 1) {
+  this.settings.entity = true;
+  this.settings.composedEntity = composed;
+  const template: FullChunkTemplate = this.getBaseTemplateNew();
+  const maxX = DVEB.entityConstructor.width;
+  const maxY = DVEB.entityConstructor.height;
+  const maxZ = DVEB.entityConstructor.depth;
+  for (let x = 0; x < maxX; x++) {
+   for (let z = 0; z < maxZ; z++) {
+    for (let y = 0; y < maxY; y++) {
+     this._process(template, x, y, z);
+    }
+   }
+  }
+  return template;
+ },
+
  makeAllChunkTemplates(
   chunk: MatrixLoadedChunk,
   chunkX: number,
@@ -359,6 +431,7 @@ export const Processor = {
   chunkZ: number,
   LOD = 1
  ): FullChunkTemplate {
+  this.settings.entity = false;
   this.LOD = LOD;
   const template: FullChunkTemplate = this.getBaseTemplateNew();
   let maxX = DVEC.worldBounds.chunkXSize;
