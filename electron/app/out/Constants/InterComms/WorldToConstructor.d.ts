@@ -12,4 +12,5 @@ export declare const WorldToConstructorMessages: {
     runFlow: number;
     removeFlow: number;
     constructEntity: number;
+    constructItem: number;
 };

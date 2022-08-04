@@ -1,7 +1,6 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const MagmaMaterial = {
     material: null,
-    context: null,
     getMaterial() {
         return this.material;
     },

@@ -11,6 +11,7 @@ export const WorldToConstructorMessages = {
  sunLightRemove: 8,
  runFlow : 9,
  removeFlow : 10,
- constructEntity : 11
+ constructEntity : 11,
+ constructItem : 12
 };
 

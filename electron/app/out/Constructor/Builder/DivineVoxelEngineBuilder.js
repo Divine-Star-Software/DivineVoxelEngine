@@ -10,6 +10,7 @@ import { ChunkMesher } from "./Mesher/ChunkMesher.js";
 import { VoxelHelper } from "./Processor/VoxelHelper.js";
 import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
 import { EntityMesher } from "./Mesher/EntityMesher.js";
+import { ItemMesher } from "./Mesher/ItemMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
 export const DVEB = {
@@ -20,6 +21,7 @@ export const DVEB = {
     uvHelper: UVHelper,
     chunkMesher: ChunkMesher,
     entityMesher: EntityMesher,
+    itemMesher: ItemMesher,
     processor: Processor,
     voxelHelper: VoxelHelper,
     entityConstructor: EntityConstructor,

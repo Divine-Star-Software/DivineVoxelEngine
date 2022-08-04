@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
-import { DVECInitData } from "Meta/Constructor/DVEC.js";
+import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -597,11 +597,11 @@ export declare const DVEC: {
     DVEB: {
         textureManager: {
             textureDataHasBeenSet: boolean;
-            uvTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
-            overlayUVTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
-            getTextureUV(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, textureId: string, varation?: string | false | null | undefined, overlay?: boolean): number;
-            setUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
-            setOverlayUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
+            uvTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
+            overlayUVTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
+            getTextureUV(textureType: import("Meta/index.js").TextureTypes, textureId: string, varation?: string | false | null, overlay?: boolean): number;
+            setUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
+            setOverlayUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
             isReady(): boolean;
         };
         shapeManager: {
@@ -687,7 +687,7 @@ export declare const DVEC: {
                 width: number;
                 height: number;
                 depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData, transform: {
+            }, data: import("Meta/index.js").VoxelShapeAddData | import("../Meta/Constructor/ItemShape.type.js").CreateItemData, transform: {
                 v1: {
                     x: number;
                     y: number;
@@ -713,7 +713,7 @@ export declare const DVEC: {
                 width: number;
                 height: number;
                 depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean, transform?: {
+            }, data: import("Meta/index.js").VoxelShapeAddData | import("../Meta/Constructor/ItemShape.type.js").CreateItemData, flip?: boolean, transform?: {
                 v1: {
                     x: number;
                     y: number;
@@ -756,6 +756,9 @@ export declare const DVEC: {
         };
         entityMesher: {
             buildEntityMesh(x: number, y: number, z: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
+        };
+        itemMesher: {
+            createItem(itemId: string, x: number, y: number, z: number): void;
         };
         processor: {
             LOD: number;
@@ -2209,6 +2212,15 @@ export declare const DVEC: {
         getVoxelData(id: string): import("Meta/index.js").VoxelData;
         registerVoxel(voxel: import("Meta/index.js").VoxelConstructorObject): void;
         runVoxelHookForAll(hook: any): void;
+    };
+    itemManager: {
+        itemObjects: Record<string, import("../Meta/Items/Item.types.js").ItemConstructorObject>;
+        itemShapes: Record<string, import("../Meta/Constructor/ItemShape.type.js").ItemShapeData>;
+        getItem(id: string): import("../Meta/Items/Item.types.js").ItemConstructorObject;
+        getItemData(id: string): import("../Meta/Items/Item.types.js").ItemData;
+        registerItem(item: import("../Meta/Items/Item.types.js").ItemConstructorObject): void;
+        registerItemShape(shapeData: import("../Meta/Constructor/ItemShape.type.js").ItemShapeData): void;
+        getItemShapeData(id: string): import("../Meta/Constructor/ItemShape.type.js").ItemShapeData;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

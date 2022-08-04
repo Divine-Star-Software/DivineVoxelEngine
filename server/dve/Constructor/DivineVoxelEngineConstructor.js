@@ -4,15 +4,17 @@ import { Util } from "../Global/Util.helper.js";
 import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
 import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
 import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
+import { VoxelManager } from "./Voxels/VoxelManager.js";
+import { QueuesManager } from "./Queues/QueuesManager.js";
+import { ItemManager } from "./Items/ItemManager.js";
 //inter comms
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+//functions
 import { InitWorker } from "./Init/InitWorker.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { QueuesManager } from "./Queues/QueuesManager.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
@@ -31,6 +33,7 @@ export const DVEC = {
     renderComm: RenderComm,
     worldComm: WorldComm,
     voxelManager: VoxelManager,
+    itemManager: ItemManager,
     syncSettings(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);

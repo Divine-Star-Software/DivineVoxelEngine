@@ -13,6 +13,16 @@ export function RegisterTexutres(DVER) {
             west: { frames: 0 },
         },
     });
+    DVER.textureManager.registerTexture("Item", {
+        name: "Debug Texture",
+        id: "debug",
+        frames: 0,
+    });
+    DVER.textureManager.registerTexture("Item", {
+        name: "Dream Vine Texture",
+        id: "dream-vine",
+        frames: 0,
+    });
     DVER.textureManager.registerTexture("solid", {
         name: "Light Debug Texture",
         id: "light-debug",

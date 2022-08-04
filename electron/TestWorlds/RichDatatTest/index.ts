@@ -10,13 +10,12 @@ import {
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "../Shared/Constructor/constructor.js",
+ "./Constructor/constructor.js",
  null,
  null,
  null,
@@ -51,9 +50,10 @@ const init = async () => {
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x: 2, y: 45, z: 7 },
+  { x: 2, y: 36, z: 7 },
   { x: 10, y: 30, z: 10 }
  );
+ camera.speed = .1;
  SetUpDefaultSkybox(scene);
 
  //CreateWorldAxis(scene, 36);

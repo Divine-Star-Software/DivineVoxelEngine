@@ -73,7 +73,6 @@ export const EntityMesh = {
             k += 0.01;
         }, 17);
         this._applyVertexData(mesh, data);
-        console.log(data);
         return mesh;
     },
 };

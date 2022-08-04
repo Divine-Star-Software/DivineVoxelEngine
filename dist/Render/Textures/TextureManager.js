@@ -9,6 +9,7 @@ export const TextureManager = {
         fluid: "png",
         magma: "png",
         flora: "png",
+        Item: "png",
     },
     textures: {
         solid: [],
@@ -16,6 +17,7 @@ export const TextureManager = {
         fluid: [],
         magma: [],
         flora: [],
+        Item: [],
     },
     uvTextureMap: {
         solid: {},
@@ -23,6 +25,7 @@ export const TextureManager = {
         fluid: {},
         magma: {},
         flora: {},
+        Item: {},
     },
     overylayTextures: {
         solid: [],
@@ -30,6 +33,7 @@ export const TextureManager = {
         fluid: [],
         magma: [],
         flora: [],
+        Item: [],
     },
     overlayUVTextureMap: {
         solid: {},
@@ -37,15 +41,17 @@ export const TextureManager = {
         fluid: {},
         magma: {},
         flora: {},
+        Item: {},
     },
-    substances: [
+    textureTypes: [
         "transparent",
         "fluid",
         "solid",
         "magma",
         "flora",
+        "Item",
     ],
-    _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, substance, overlay = false) {
+    _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay = false) {
         let map = this.uvTextureMap;
         if (overlay) {
             map = this.overlayUVTextureMap;
@@ -55,7 +61,7 @@ export const TextureManager = {
         for (const varation of Object.keys(texture.variations)) {
             const data = texture.variations[varation];
             if (data.frames == 0) {
-                map[substance][`${texture.id}:${varation}`] = count;
+                map[textureType][`${texture.id}:${varation}`] = count;
                 texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
                 count++;
             }
@@ -63,21 +69,21 @@ export const TextureManager = {
                 if (!data.animKeys)
                     throw new Error("Texture Varation must have supplied animKeys if frames are greater than 0.");
                 for (let i = 1; i <= data.frames; i++) {
-                    map[substance][`${texture.id}:${varation}-${i}`] = count;
+                    map[textureType][`${texture.id}:${varation}-${i}`] = count;
                     texturePaths.push(`${path}/${texture.id}/${varation}-${i}.${extension}`);
                     count++;
                 }
                 const trueKeys = [];
                 for (let i = 0; i < data.animKeys.length; i++) {
-                    trueKeys.push(map[substance][`${texture.id}:${varation}-${data.animKeys[i]}`]);
+                    trueKeys.push(map[textureType][`${texture.id}:${varation}-${data.animKeys[i]}`]);
                 }
                 if (data.animKeyFrameTimes) {
-                    textureAnimatioTimes[substance].push(data.animKeyFrameTimes);
+                    textureAnimatioTimes[textureType].push(data.animKeyFrameTimes);
                 }
                 if (data.globalFrameTime) {
-                    textureAnimatioTimes[substance].push([data.globalFrameTime]);
+                    textureAnimatioTimes[textureType].push([data.globalFrameTime]);
                 }
-                animations[substance].push(trueKeys);
+                animations[textureType].push(trueKeys);
             }
         }
         return count;
@@ -89,6 +95,7 @@ export const TextureManager = {
             magma: [],
             fluid: [],
             flora: [],
+            Item: [],
         };
         const textureAnimatioTimes = {
             solid: [],
@@ -96,6 +103,7 @@ export const TextureManager = {
             magma: [],
             fluid: [],
             flora: [],
+            Item: [],
         };
         const animations = {
             solid: [],
@@ -103,6 +111,7 @@ export const TextureManager = {
             magma: [],
             fluid: [],
             flora: [],
+            Item: [],
         };
         let textures = this.textures;
         if (overlay) {
@@ -112,41 +121,41 @@ export const TextureManager = {
         if (overlay) {
             map = this.overlayUVTextureMap;
         }
-        for (const substance of this.substances) {
+        for (const textureType of this.textureTypes) {
             let texturePaths = [];
             let count = 1;
-            const extension = this.textureExtension[substance];
-            for (const texture of textures[substance]) {
+            const extension = this.textureExtension[textureType];
+            for (const texture of textures[textureType]) {
                 let path = texture.path ? texture.path : this.defaultTexturePath;
                 if (texture.frames == 0) {
-                    map[substance][`${texture.id}`] = count;
+                    map[textureType][`${texture.id}`] = count;
                     texturePaths.push(`${path}/${texture.id}/default.${extension}`);
                     count++;
-                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, substance, overlay);
+                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay);
                 }
                 else {
                     if (!texture.animKeys)
                         throw new Error("Texture must have supplied animKeys if frames are greater than 0.");
-                    map[substance][`${texture.id}`] = count;
+                    map[textureType][`${texture.id}`] = count;
                     for (let i = 1; i < texture.frames; i++) {
                         texturePaths.push(`${path}/${texture.id}/default-${i}.${extension}`);
                         count++;
                     }
                     const trueKeys = [];
                     for (let i = 0; i < texture.animKeys.length; i++) {
-                        trueKeys.push(map[substance][`${texture.id}:default-${texture.animKeys[i]}`]);
+                        trueKeys.push(map[textureType][`${texture.id}:default-${texture.animKeys[i]}`]);
                     }
                     if (texture.animKeyFrameTimes) {
-                        textureAnimatioTimes[substance].push(texture.animKeyFrameTimes);
+                        textureAnimatioTimes[textureType].push(texture.animKeyFrameTimes);
                     }
                     if (texture.globalFrameTime) {
-                        textureAnimatioTimes[substance].push([texture.globalFrameTime]);
+                        textureAnimatioTimes[textureType].push([texture.globalFrameTime]);
                     }
-                    animations[substance].push(trueKeys);
-                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, substance);
+                    animations[textureType].push(trueKeys);
+                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType);
                 }
             }
-            returnTexturePaths[substance] = texturePaths;
+            returnTexturePaths[textureType] = texturePaths;
         }
         if (!overlay) {
             this.processedTextureData = {
@@ -166,21 +175,21 @@ export const TextureManager = {
     defineDefaultTexturePath(path) {
         this.defaultTexturePath = path;
     },
-    defineDefaultTextureExtension(voxelSubstanceType, ext) {
-        this.textureExtension[voxelSubstanceType] = ext;
+    defineDefaultTextureExtension(textureType, ext) {
+        this.textureExtension[textureType] = ext;
     },
-    getTextureUV(voxelSubstanceType, textureId, varation) {
+    getTextureUV(textureType, textureId, varation) {
         let id = textureId;
         if (varation) {
             id = `${textureId}:${varation}`;
         }
-        return this.uvTextureMap[voxelSubstanceType][id];
+        return this.uvTextureMap[textureType][id];
     },
-    registerTexture(voxelSubstanceType, textureData) {
+    registerTexture(textureType, textureData) {
         if (!textureData.overlay) {
-            this.textures[voxelSubstanceType].push(textureData);
+            this.textures[textureType].push(textureData);
             return;
         }
-        this.overylayTextures[voxelSubstanceType].push(textureData);
+        this.overylayTextures[textureType].push(textureData);
     },
 };

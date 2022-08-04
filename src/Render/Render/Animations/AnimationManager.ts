@@ -2,7 +2,9 @@ import { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 
 export const AnimationManager = {
  //@ts-ignore
- animatedMaterials: <Record<VoxelSubstanceType, BABYLON.ShaderMaterial>>{},
+ animatedMaterials: <
+  Record<VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>
+ >{},
 
  animCount: 0,
 
@@ -14,7 +16,7 @@ export const AnimationManager = {
    currentCount: number;
    keyCounts: number[];
 
-   substance: VoxelSubstanceType;
+   substance: VoxelSubstanceType | "Item";
   }[]
  >[],
 
@@ -28,7 +30,7 @@ export const AnimationManager = {
   * @returns
   */
  registerAnimations(
-  voxelSubstanceType: VoxelSubstanceType,
+  voxelSubstanceType: VoxelSubstanceType | "Item",
   animations: number[][],
   animationTimes: number[][],
   overlay = false
@@ -79,7 +81,6 @@ export const AnimationManager = {
    return ${shaderId};
   }`;
   }
-  
 
   animationFunctionCode += `
   return uv;
@@ -96,7 +97,7 @@ export const AnimationManager = {
  },
 
  registerMaterial(
-  voxelSubstanceType: VoxelSubstanceType,
+  voxelSubstanceType: VoxelSubstanceType | "Item",
   material: BABYLON.ShaderMaterial
  ) {
   this.animatedMaterials[voxelSubstanceType] = material;

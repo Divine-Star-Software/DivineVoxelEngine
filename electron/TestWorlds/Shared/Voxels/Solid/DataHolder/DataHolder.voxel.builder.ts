@@ -12,8 +12,6 @@ export const DataHolderVoxelBuilderThread: VoxelConstructorObject = {
    "front"
   );
   let sideUV = DVEB.textureManager.getTextureUV("solid", "data-holder");
-  console.log(frontUV);
-
   //top
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(sideUV);

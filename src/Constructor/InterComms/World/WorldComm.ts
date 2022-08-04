@@ -113,7 +113,7 @@ worldComm.messageFunctions[WorldToConstructorMessages.generate] = async (
  await DVEC.DVEWG.generate(x, z, genData);
 };
 
-worldComm.messageFunctions[WorldToConstructorMessages.constructEntity] = async (
+worldComm.messageFunctions[WorldToConstructorMessages.constructEntity] = (
  data
 ) => {
  const x = data[1];
@@ -138,4 +138,14 @@ worldComm.messageFunctions[WorldToConstructorMessages.constructEntity] = async (
   arrays
  );
  DVEC.DVEB.constructEntity();
+};
+
+worldComm.messageFunctions[WorldToConstructorMessages.constructItem] = (
+ data
+) => {
+ const itemId = data[1];
+ const x = data[2];
+ const y = data[3];
+ const z = data[4];
+ DVEC.DVEB.itemMesher.createItem(itemId,x,y,z);
 };

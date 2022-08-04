@@ -12,9 +12,9 @@ const shapeDimensions = {
 };
 
 const tempDimensions = {
- width: 1,
- depth: 1,
- height: 1,
+ width: 0.5,
+ depth: 0.5,
+ height: 0.5,
 };
 
 const processDefaultFaceData = (
@@ -102,6 +102,7 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   tempDimensions.width = shapeDimensions.width * data.LOD;
   tempDimensions.height = shapeDimensions.height * data.LOD;
   tempDimensions.depth = shapeDimensions.depth * data.LOD;
+
   if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
    processDefaultFaceData("top", data);
   }

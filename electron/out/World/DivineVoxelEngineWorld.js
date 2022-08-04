@@ -6,6 +6,7 @@ import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 import { VoxelManager } from "../Voxels/VoxelManager.js";
+import { ItemManager } from "../Items/ItemManager.js";
 import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
 //inter comms
 import { FXComm } from "./InterComms/FX/FXComm.js";
@@ -41,6 +42,7 @@ export const DVEW = {
     worldData: WorldData,
     entityConstructor: EntityConstructor,
     voxelManager: VoxelManager,
+    itemManager: ItemManager,
     queues: QueuesManager,
     isReady() {
         let ready = DVEW.constructorCommManager.isReady() &&
@@ -93,6 +95,9 @@ export const DVEW = {
             const chunk = worldColumn[chunkKey];
             this.buildChunk(chunk.position[0], chunk.position[1], chunk.position[2], LOD);
         }
+    },
+    createItem(itemId, x, y, z) {
+        this.constructorCommManager.constructItem(itemId, x, y, z);
     },
     async $INIT(data) {
         this.settings.setContext("DVEW");

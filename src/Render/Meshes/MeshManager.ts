@@ -1,5 +1,6 @@
 import {
  ConstructEntityIndexes,
+ ConstructItemIndexes,
  SetChunkDataIndexes,
 } from "../../Constants/InterComms/ConstructorToRender.js";
 import type {
@@ -9,6 +10,8 @@ import type {
 import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
+import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";
+import { ItemMeshSetData } from "Meta/Render/Meshes/ItemMesh.types.js";
 
 export const MeshManager = {
  scene: <BABYLON.Scene | null>null,
@@ -23,6 +26,7 @@ export const MeshManager = {
  },
 
  entityMesh: EntityMesh,
+ itemMesh: ItemMesh,
  meshMakers: <Record<VoxelSubstanceType, VoxelMeshInterface>>{},
 
  $INIT() {
@@ -49,6 +53,25 @@ export const MeshManager = {
   }
   mesh.dispose();
   delete this.meshes[type][chunkKey];
+ },
+
+ handleItemUpdate(x: number, y: number, z: number, data: any) {
+    console.log(data);
+  const meshData: ItemMeshSetData = {
+   positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
+   normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),
+   indiciesArray: new Int32Array(data[ConstructItemIndexes.indiciesArray]),
+   RGBLightColorsArray: new Float32Array(
+    data[ConstructItemIndexes.RGBLightColorsArray]
+   ),
+   sunLightColorsArray: new Float32Array(
+    data[ConstructItemIndexes.sunLightColorsArray]
+   ),
+   uvArray: new Float32Array(data[ConstructItemIndexes.uvArray]),
+   extra: [],
+  };
+
+  this.itemMesh.createMesh(x, y, z, meshData);
  },
 
  handleEntityUpdate(x: number, y: number, z: number, data: any) {

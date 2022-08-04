@@ -1,12 +1,14 @@
 /// <reference types="babylonjs" />
-import { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/index.js";
 export declare const RenderManager: {
     shaderBuilder: {
         buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
         buildFluidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
         buildSolidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
+        buildItemVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
         buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
         buildSolidFragmentShader(): string;
+        buildItemFragmentShader(): string;
         buildFluidFragmentShader(): string;
         buildFloraFragmentShader(): string;
         buildMagmaFragmentShader(): string;
@@ -27,7 +29,7 @@ export declare const RenderManager: {
         getTextureBuffer(imgPath: string, width?: number, height?: number): Promise<Uint8ClampedArray>;
     };
     animationManager: {
-        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
+        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
         animCount: number;
         animations: {
             uniformShaderId: string;
@@ -35,19 +37,18 @@ export declare const RenderManager: {
             currentFrame: number;
             currentCount: number;
             keyCounts: number[];
-            substance: import("Meta/index.js").VoxelSubstanceType;
+            substance: import("Meta/index.js").VoxelSubstanceType | "Item";
         }[];
-        registerAnimations(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): {
+        registerAnimations(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): {
             uniforms: string[];
             uniformRegisterCode: string;
             animationFunctionCode: string;
         };
-        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
+        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
     solidMaterial: {
         material: BABYLON.ShaderMaterial | null;
-        context: CanvasRenderingContext2D | null;
         getMaterial(): BABYLON.ShaderMaterial | null;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
@@ -57,7 +58,6 @@ export declare const RenderManager: {
     };
     floraMaterial: {
         material: BABYLON.ShaderMaterial | null;
-        context: CanvasRenderingContext2D | null;
         getMaterial(): BABYLON.ShaderMaterial | null;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
@@ -66,7 +66,6 @@ export declare const RenderManager: {
     };
     fluidMaterial: {
         material: BABYLON.ShaderMaterial | null;
-        context: CanvasRenderingContext2D | null;
         getMaterial(): BABYLON.ShaderMaterial | null;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
@@ -75,10 +74,19 @@ export declare const RenderManager: {
     };
     magmaMaterial: {
         material: BABYLON.ShaderMaterial | null;
-        context: CanvasRenderingContext2D | null;
         getMaterial(): BABYLON.ShaderMaterial | null;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+    };
+    itemMaterial: {
+        material: BABYLON.ShaderMaterial | null;
+        context: CanvasRenderingContext2D | null;
+        getMaterial(): BABYLON.ShaderMaterial | null;
+        setSunLightLevel(level: number): void;
+        setBaseLevel(level: number): void;
+        updateMaterialSettings(settings: EngineSettingsData): void;
+        createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+        overrideMaterial(material: any): void;
     };
     skyBoxMaterial: {
         material: BABYLON.ShaderMaterial | null;
@@ -94,6 +102,17 @@ export declare const RenderManager: {
     floraMesh: import("Meta/index.js").VoxelMeshInterface;
     fluidMesh: import("Meta/index.js").VoxelMeshInterface;
     magmaMesh: import("Meta/index.js").VoxelMeshInterface;
+    itemMesh: {
+        pickable: boolean;
+        checkCollisions: boolean;
+        seralize: boolean;
+        clearCachedGeometry: boolean;
+        createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
+        syncSettings(settings: EngineSettingsData): void;
+        _applyVertexData(mesh: BABYLON.Mesh, data: import("../../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): void;
+        rebuildMeshGeometory(mesh: BABYLON.Mesh, data: import("../../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
+        createMesh(x: number, y: number, z: number, data: import("../../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
+    };
     scene: BABYLON.Scene | null;
     reStart(): void;
     setScene(scene: BABYLON.Scene): void;

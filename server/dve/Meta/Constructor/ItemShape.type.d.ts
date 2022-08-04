@@ -1,20 +1,23 @@
 import { DirectionNames } from "Meta/Util.types";
-import { Rotations } from "./Mesher.types";
-export declare type ItemShapeType = {
+export declare type ItemShapeData = {
     id: string;
-    components: {
-        dimensions: [number, number, number, number];
-        transform?: [number, number, number, number];
-        faces: Record<DirectionNames, {
-            transform?: [number, number, number, number];
-            uvs: {
-                r: Rotations;
-                ws: number;
-                we: number;
-                hs: number;
-                he: number;
-                textureIndex: number;
-            };
-        }>;
+    faces: {
+        direction: DirectionNames;
+        position: [number, number, number];
+        dimensions: [number, number, number];
+        uvs: [number, number, number, number];
     }[];
+};
+export declare type CreateItemData = {
+    positions: number[];
+    normals: number[];
+    indices: number[];
+    RGBLightColors: number[];
+    sunLightColors: number[];
+    uvs: number[];
+    indicieIndex: number;
+    unTemplate: number[];
+    uvTemplateIndex: number;
+    lightTemplate: number[];
+    lightIndex: number;
 };

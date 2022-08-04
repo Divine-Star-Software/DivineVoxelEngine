@@ -63,8 +63,12 @@ export const GetNewConstructorComm = (
  newComm.messageFunctions[ConstructorToRenderMessages.constructEntity] = (
   data
  ) => {
-  console.log(data);
   DVER.meshManager.handleEntityUpdate(data[1], data[2], data[3], data);
+ };
+ newComm.messageFunctions[ConstructorToRenderMessages.constructItem] = (
+  data
+ ) => {
+  DVER.meshManager.handleItemUpdate(data[1], data[2], data[3], data);
  };
  newComm.setPort(port);
  return newComm;

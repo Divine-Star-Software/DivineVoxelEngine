@@ -1,3 +1,4 @@
+import { CreateItemData } from "Meta/Constructor/ItemShape.type";
 import type { VoxelShapeAddData } from "Meta/index";
 import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
 type DimenionsMatrix = { width: number; height: number; depth: number };
@@ -14,7 +15,7 @@ export const ShapeBuilder = {
    (
     origin: Position3Matrix,
     dimensions: DimenionsMatrix,
-    data: VoxelShapeAddData,
+    data: VoxelShapeAddData | CreateItemData,
     transform: typeof defaultTransform,
     flip?: boolean
    ) => void
@@ -341,7 +342,7 @@ export const ShapeBuilder = {
   direction: DirectionNames,
   origin: Position3Matrix,
   dimensions: DimenionsMatrix,
-  data: VoxelShapeAddData,
+  data: VoxelShapeAddData | CreateItemData,
   flip = false,
   transform = defaultTransform
  ) {

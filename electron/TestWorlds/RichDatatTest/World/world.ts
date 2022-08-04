@@ -4,6 +4,11 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { DVEM } from "../../../out/Math/DivineVoxelEngineMath.js";
 import { VoxelData } from "../../../out/Meta/index.js";
+import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
+
+RegisterVoxels(DVEW);
+RegisterItemData(DVEW);
+
 (self as any).DVEW = DVEW;
 let startX = -16;
 let startZ = -16;
@@ -40,7 +45,6 @@ DVEW.renderComm.listenForMessage("connect-camera", (data) => {
  ready = true;
 });
 
-RegisterVoxels(DVEW);
 await DVEW.$INIT({});
 
 generate();
@@ -104,24 +108,11 @@ setInterval(() => {
  }
 }, 20);
 
-for (let z = 0; z < 25; z += 5) {
- DVEW.entityConstructor.begin(3, 3, 3);
- DVEW.entityConstructor.fillLight(15, 15, 15, 15);
- DVEW.entityConstructor.addVoxel("dve:dreamstone-stair", "default", 0, 1, 1, 1);
- DVEW.entityConstructor.build(8, 33, z);
+DVEW.entityConstructor.begin(3, 3, 3);
+DVEW.entityConstructor.fillLight(15, 15, 15, 15);
+DVEW.entityConstructor.addVoxel("dve:dreamstone-stair", "default", 0, 1, 1, 1);
+DVEW.entityConstructor.build(8, 33, 0);
 
- DVEW.entityConstructor.begin(3, 3, 3);
- DVEW.entityConstructor.fillLight(15, 15, 15, 15);
- DVEW.entityConstructor.addVoxel("dve:dreamstonepillar", "default", 0, 1, 1, 1);
- DVEW.entityConstructor.build(4, 33, z);
 
- DVEW.entityConstructor.begin(3, 3, 3);
- DVEW.entityConstructor.fillLight(15, 15, 15, 15);
- DVEW.entityConstructor.addVoxel("dve:dreamlamp", "default", 0, 1, 1, 1);
- DVEW.entityConstructor.build(0, 33, z);
-
- DVEW.entityConstructor.begin(3, 3, 3);
- DVEW.entityConstructor.fillLight(15, 15, 15, 15);
- DVEW.entityConstructor.addVoxel("dve:dataholder", "default", 0, 1, 1, 1);
- DVEW.entityConstructor.build(-4, 33, z);
-}
+DVEW.createItem("dve:debug-item",3,35,0);
+DVEW.createItem("dve:dreamvine-item",3,35,5);

@@ -1,10 +1,10 @@
-import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import { TextureTypes } from "Meta/index";
 export declare const TextureManager: {
     textureDataHasBeenSet: boolean;
-    uvTextureMap: Record<VoxelSubstanceType, Record<string, number>>;
-    overlayUVTextureMap: Record<VoxelSubstanceType, Record<string, number>>;
-    getTextureUV(voxelSubstanceType: VoxelSubstanceType, textureId: string, varation?: string | false | null, overlay?: boolean): number;
-    setUVTextureMap(data: Record<VoxelSubstanceType, Record<string, number>>): void;
-    setOverlayUVTextureMap(data: Record<VoxelSubstanceType, Record<string, number>>): void;
+    uvTextureMap: Record<TextureTypes, Record<string, number>>;
+    overlayUVTextureMap: Record<TextureTypes, Record<string, number>>;
+    getTextureUV(textureType: TextureTypes, textureId: string, varation?: string | false | null, overlay?: boolean): number;
+    setUVTextureMap(data: Record<TextureTypes, Record<string, number>>): void;
+    setOverlayUVTextureMap(data: Record<TextureTypes, Record<string, number>>): void;
     isReady(): boolean;
 };

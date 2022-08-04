@@ -4,8 +4,6 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const MagmaMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
- context: <CanvasRenderingContext2D | null>null,
-
  getMaterial() {
   return this.material;
  },

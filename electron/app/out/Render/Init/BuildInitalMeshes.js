@@ -31,5 +31,6 @@ export async function BuildInitalMeshes(DVER, scene) {
     await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
     await setUpMaterial(DVER, scene, "fluid", DVER.renderManager.fluidMaterial);
     await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
+    await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
     DVER.renderManager.animationManager.startAnimations();
 }

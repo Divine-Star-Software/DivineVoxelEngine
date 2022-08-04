@@ -5,6 +5,7 @@
 import { floraShaders } from "./Code/Flora/Flora.shader.js";
 import { fluidShaders } from "./Code/Fluid/Fluid.shaders.js";
 import { solidShaders } from "./Code/Solid/Solid.shader.js";
+import { itemShaders } from "./Code/Item/Item.shader.js";
 //shared functions
 import { SharedFogFunctions } from "./Code/Shared/Fog/FogShaderFunctions.js";
 import { ShaderNoiseFunctions } from "./Code/Shared/Noise/NoiseShaderFunctions.js";
@@ -107,6 +108,34 @@ ${CommonShader.getMainFunction(`
 `)}
 `;
     },
+    buildItemVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
+        return `
+${SharedVertexShader.top}
+${SharedVertexShader.attributes(false)}
+${SharedVertexShader.uniforams}
+${SharedVertexShader.varying()}
+${SharedVertexShader.useTime(true)}
+${SharedVertexShader.optionVars()}
+${SharedFogFunctions.fogVertexTop}
+${uniformRegister}
+${overlayUniformRegister}
+${animationFunction}
+${SharedVertexShader.getAnimationType}
+${overlayAnimationFunction}
+${CommonShader.getMainFunction(`
+ ${SharedVertexShader.standardPositionMain}
+ ${SharedFogFunctions.fogVertexMain}
+ ${SharedVertexShader.setUVInMain}
+ ${SharedVertexShader.doRGB}
+ ${SharedVertexShader.doSun}
+ ${SharedVertexShader.doColors}
+ ${SharedVertexShader.doNormals}
+ ${SharedVertexShader.passTime}
+ ${SharedVertexShader.updateVarying}
+ ${SharedVertexShader.passAnimationState}
+`)}
+`;
+    },
     buildMagmaVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
@@ -155,6 +184,26 @@ ${SharedFragmentShader.doVFog}
 
 ${CommonShader.getMainFunction(`
 ${solidShaders.fragMain}
+`)}`;
+    },
+    buildItemFragmentShader() {
+        return `
+${SharedFragmentShader.top}
+${ShaderNoiseFunctions.fbm3}
+${SharedFragmentShader.useTime}
+${SharedFogFunctions.fogFragConstants}
+${SharedFragmentShader.optionVariables(false)}
+${SharedFragmentShader.varying(false)}
+${SharedFogFunctions.fogFragVars}
+${SharedFogFunctions.defaultFogFragFunction}
+${SharedFogFunctions.volumetricFogFunction}
+${SharedFragmentShader.getColor}
+${SharedFragmentShader.getLight}
+${SharedFragmentShader.doFog}
+${SharedFragmentShader.doVFog}
+
+${CommonShader.getMainFunction(`
+${itemShaders.fragMain}
 `)}`;
     },
     buildFluidFragmentShader() {
@@ -256,11 +305,6 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFogFunctions.fogFragVars}
 ${SharedFogFunctions.volumetricFogFunction}
 ${SharedFragmentShader.doVFog}
-#define speed 5.2
-#define k2PI (2.*3.14159265359)
-#define kStarDensity 0.4
-#define kMotionBlur 0.2
-#define kNumAngles 200.
 ${CommonShader.getMainFunction(`
 ${skyboxShaders.fragMain}
 `)}`;

@@ -142,4 +142,9 @@ export const ConstructorCommManager = {
         comm.sendMessage(WorldToConstructorMessages.constructEntity, [x, y, z, width, depth, height, composed, ...transferArray], transferArray);
         return this.__handleCount();
     },
+    constructItem(itemId, x, y, z) {
+        const comm = this.constructors[this.count];
+        comm.sendMessage(WorldToConstructorMessages.constructItem, [itemId, x, y, z]);
+        return this.__handleCount();
+    },
 };

@@ -290,10 +290,6 @@ export declare const DVEW: {
             decodeLevelStateFromVoxelData(stateData: number): number;
             encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             setShapeState(voxelData: number, shapeState: number): number;
         };
         getLightByte(): {
@@ -754,6 +750,7 @@ export declare const DVEW: {
         removeFlow(x: number, y: number, z: number): number;
         runGeneration(x: number, z: number, data: any): number;
         constructEntity(x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]): number;
+        constructItem(itemId: string, x: number, y: number, z: number): number;
     };
     richWorldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         setInitalData(voxelId: string, x: number, y: number, z: number): void;
@@ -851,10 +848,6 @@ export declare const DVEW: {
             decodeLevelStateFromVoxelData(stateData: number): number;
             encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             setShapeState(voxelData: number, shapeState: number): number;
         };
         heightByte: {
@@ -1050,10 +1043,6 @@ export declare const DVEW: {
             decodeLevelStateFromVoxelData(stateData: number): number;
             encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             setShapeState(voxelData: number, shapeState: number): number;
         };
         _3dArray: {
@@ -1229,10 +1218,6 @@ export declare const DVEW: {
             decodeLevelStateFromVoxelData(stateData: number): number;
             encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
             getShapeState(voxelData: number): number;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
             setShapeState(voxelData: number, shapeState: number): number;
         };
         lightByte: {
@@ -1291,6 +1276,13 @@ export declare const DVEW: {
         getVoxelData(id: string): import("../Meta/index.js").VoxelData;
         registerVoxelData(data: import("../Meta/index.js").VoxelData): void;
         onRegister(func: (data: import("../Meta/index.js").VoxelData) => void): void;
+    };
+    itemManager: {
+        itemData: Record<string, import("../Meta/Items/Item.types.js").ItemData>;
+        _onRegister: (data: import("../Meta/Items/Item.types.js").ItemData) => void;
+        getItemData(id: string): import("../Meta/Items/Item.types.js").ItemData;
+        registerItemData(data: import("../Meta/Items/Item.types.js").ItemData): void;
+        onRegister(func: (data: import("../Meta/Items/Item.types.js").ItemData) => void): void;
     };
     queues: {
         _numChunksRebuilding: number;
@@ -1369,6 +1361,7 @@ export declare const DVEW: {
     buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): void;
     generate(x: number, z: number, data?: any): void;
     buildWorldColumn(x: number, z: number, LOD?: number): false | undefined;
+    createItem(itemId: string, x: number, y: number, z: number): void;
     $INIT(data: DVEWInitData): Promise<void>;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

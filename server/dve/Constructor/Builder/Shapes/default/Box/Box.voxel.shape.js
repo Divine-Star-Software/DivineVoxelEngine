@@ -5,9 +5,9 @@ const shapeDimensions = {
     height: 0.5,
 };
 const tempDimensions = {
-    width: 1,
-    depth: 1,
-    height: 1,
+    width: 0.5,
+    depth: 0.5,
+    height: 0.5,
 };
 const processDefaultFaceData = (face, data) => {
     const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);

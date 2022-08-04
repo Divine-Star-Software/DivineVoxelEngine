@@ -1,7 +1,6 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const FloraMaterial = {
     material: null,
-    context: null,
     getMaterial() {
         return this.material;
     },

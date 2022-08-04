@@ -2,11 +2,11 @@ import { type EngineSettingsData } from "Meta/index.js";
 export declare const DVEB: {
     textureManager: {
         textureDataHasBeenSet: boolean;
-        uvTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
-        overlayUVTextureMap: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>;
-        getTextureUV(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType, textureId: string, varation?: string | false | null | undefined, overlay?: boolean): number;
-        setUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
-        setOverlayUVTextureMap(data: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, number>>): void;
+        uvTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
+        overlayUVTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
+        getTextureUV(textureType: import("Meta/index.js").TextureTypes, textureId: string, varation?: string | false | null, overlay?: boolean): number;
+        setUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
+        setOverlayUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
         isReady(): boolean;
     };
     shapeManager: {
@@ -92,7 +92,7 @@ export declare const DVEB: {
             width: number;
             height: number;
             depth: number;
-        }, data: import("Meta/index.js").VoxelShapeAddData, transform: {
+        }, data: import("Meta/index.js").VoxelShapeAddData | import("../../Meta/Constructor/ItemShape.type.js").CreateItemData, transform: {
             v1: {
                 x: number;
                 y: number;
@@ -118,7 +118,7 @@ export declare const DVEB: {
             width: number;
             height: number;
             depth: number;
-        }, data: import("Meta/index.js").VoxelShapeAddData, flip?: boolean, transform?: {
+        }, data: import("Meta/index.js").VoxelShapeAddData | import("../../Meta/Constructor/ItemShape.type.js").CreateItemData, flip?: boolean, transform?: {
             v1: {
                 x: number;
                 y: number;
@@ -161,6 +161,9 @@ export declare const DVEB: {
     };
     entityMesher: {
         buildEntityMesh(x: number, y: number, z: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
+    };
+    itemMesher: {
+        createItem(itemId: string, x: number, y: number, z: number): void;
     };
     processor: {
         LOD: number;

@@ -203,4 +203,10 @@ export const ConstructorCommManager = {
   );
   return this.__handleCount();
  },
+
+ constructItem(itemId: string, x: number, y: number, z: number) {
+  const comm = this.constructors[this.count];
+  comm.sendMessage(WorldToConstructorMessages.constructItem, [itemId, x, y, z]);
+  return this.__handleCount();
+ },
 };

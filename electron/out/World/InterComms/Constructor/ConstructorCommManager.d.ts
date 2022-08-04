@@ -29,4 +29,5 @@ export declare const ConstructorCommManager: {
     removeFlow(x: number, y: number, z: number): number;
     runGeneration(x: number, z: number, data: any): number;
     constructEntity(x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]): number;
+    constructItem(itemId: string, x: number, y: number, z: number): number;
 };

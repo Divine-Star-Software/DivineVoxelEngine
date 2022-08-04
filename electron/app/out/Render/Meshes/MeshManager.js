@@ -1,6 +1,7 @@
-import { ConstructEntityIndexes, SetChunkDataIndexes, } from "../../Constants/InterComms/ConstructorToRender.js";
+import { ConstructEntityIndexes, ConstructItemIndexes, SetChunkDataIndexes, } from "../../Constants/InterComms/ConstructorToRender.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
+import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";
 export const MeshManager = {
     scene: null,
     runningUpdate: false,
@@ -12,6 +13,7 @@ export const MeshManager = {
         magma: {},
     },
     entityMesh: EntityMesh,
+    itemMesh: ItemMesh,
     meshMakers: {},
     $INIT() {
         //@ts-ignore
@@ -34,6 +36,19 @@ export const MeshManager = {
         }
         mesh.dispose();
         delete this.meshes[type][chunkKey];
+    },
+    handleItemUpdate(x, y, z, data) {
+        console.log(data);
+        const meshData = {
+            positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
+            normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),
+            indiciesArray: new Int32Array(data[ConstructItemIndexes.indiciesArray]),
+            RGBLightColorsArray: new Float32Array(data[ConstructItemIndexes.RGBLightColorsArray]),
+            sunLightColorsArray: new Float32Array(data[ConstructItemIndexes.sunLightColorsArray]),
+            uvArray: new Float32Array(data[ConstructItemIndexes.uvArray]),
+            extra: [],
+        };
+        this.itemMesh.createMesh(x, y, z, meshData);
     },
     handleEntityUpdate(x, y, z, data) {
         const meshData = {
