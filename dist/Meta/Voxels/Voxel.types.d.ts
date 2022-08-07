@@ -25,6 +25,8 @@ export declare type VoxelData = {
     shapeId: string;
     id: string;
     substance: VoxelSubstanceType;
+    material: string;
+    hardnress: number;
     rich?: {
         initalData: any;
     };

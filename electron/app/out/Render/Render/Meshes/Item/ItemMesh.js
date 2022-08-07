@@ -53,8 +53,6 @@ export const ItemMesh = {
             throw new Error("Scene must be set to create entity mesh.");
         }
         const mesh = this.createTemplateMesh(DVER.renderManager.scene);
-        console.log(x, y, z);
-        console.log(data);
         mesh.unfreezeWorldMatrix();
         mesh.material = ItemMaterial.getMaterial();
         mesh.position.x = x;

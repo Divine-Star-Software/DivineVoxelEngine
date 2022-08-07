@@ -137,7 +137,7 @@ export const WorldData = {
         return this._3dArray.setValueUseObj(this.worldBounds.getVoxelPosition(x, y, z), array, data);
     },
     getVoxelPaletteId(voxelId, voxelStateId) {
-        const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(voxelId, voxelStateId);
+        const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(voxelId, voxelStateId);
         if (paletteId) {
             return this.voxelByte.setId(paletteId, 0);
         }
@@ -155,7 +155,7 @@ export const WorldData = {
             else {
                 let voxelTrueID = "";
                 let voxelState = "";
-                const check = DVEW.worldGeneration.voxelPalette.getVoxelDataFromGlobalPalette(voxelId);
+                const check = DVEW.worldGeneration.voxelPalette.getVoxelData(voxelId);
                 if (check) {
                     voxelTrueID = check[0];
                     voxelState = check[1];

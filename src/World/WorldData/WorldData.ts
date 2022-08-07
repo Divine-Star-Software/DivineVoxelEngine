@@ -158,7 +158,7 @@ export const WorldData = {
 
  getVoxelPaletteId(voxelId: string, voxelStateId: string) {
   const paletteId =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteIdFromGlobalPalette(
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
     voxelId,
     voxelStateId
    );
@@ -187,7 +187,7 @@ export const WorldData = {
     let voxelTrueID: string = "";
     let voxelState: string = "";
     const check =
-     DVEW.worldGeneration.voxelPalette.getVoxelDataFromGlobalPalette(voxelId);
+     DVEW.worldGeneration.voxelPalette.getVoxelData(voxelId);
     if (check) {
      voxelTrueID = check[0];
      voxelState = check[1];

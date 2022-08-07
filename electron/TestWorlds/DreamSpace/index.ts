@@ -30,7 +30,7 @@ await DVER.$INIT({
   autoSunLight: false,
  },
  materials: {
-  doAO: true,
+  doAO: false,
   doRGBLight: false,
   doSunLight: false,
   disableFloraShaderEffects: false,

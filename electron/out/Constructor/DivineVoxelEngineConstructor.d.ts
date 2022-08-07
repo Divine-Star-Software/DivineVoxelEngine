@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -1130,6 +1130,8 @@ export declare const DVEC: {
                     setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
                     getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
                 };
+                _air: string[];
+                _barrier: string[];
                 updateDieTime: number;
                 loadDieTime: number;
                 regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -1190,9 +1192,9 @@ export declare const DVEC: {
                 getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
                 sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
             };
-            calculatFlow: typeof import("./Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
-            voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
-            doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
+            calculatFlow: typeof import("../Constants/Meshing/Functions/CalculateFlow.js").CalculateFlow;
+            voxellightMixCalc: typeof import("../Constants/Meshing/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
+            doVoxelLight: typeof import("../Constants/Meshing/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
             chunkTemplates: Record<number, Record<number, number[][]>>;
             exposedFaces: number[];
             faceStates: number[];
@@ -1205,8 +1207,12 @@ export declare const DVEC: {
                 entity: boolean;
                 composedEntity: number;
             };
-            getBaseTemplateNew(): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+            voxelProcesseData: import("../Meta/Constructor/Voxel.types.js").VoxelProcessData;
+            cullFaceOverrideData: any;
+            aoOverRideData: any;
+            template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
             faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
+            $INIT(): void;
             getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | string[];
             getVoxelData(x: number, y: number, z: number, getSecond?: boolean): false | import("Meta/index.js").VoxelData;
             getVoxelShapeState(x: number, y: number, z: number, getSecond?: boolean): number;
@@ -1220,9 +1226,13 @@ export declare const DVEC: {
             makeAllChunkTemplates(chunk: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
             processVoxelLight(data: import("../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
             syncSettings(settings: EngineSettingsData): void;
+            flush(): void;
         };
         voxelHelper: {
+            substanceMap: Record<string, number>;
             substanceRules: Record<string, boolean>;
+            ruleMap: Record<number, boolean>;
+            $INIT(): void;
             substanceRuleCheck(voxel: import("Meta/index.js").VoxelData, neightborVoxel: import("Meta/index.js").VoxelData): boolean;
         };
         entityConstructor: {
@@ -1597,6 +1607,8 @@ export declare const DVEC: {
                     setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
                     getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
                 };
+                _air: string[];
+                _barrier: string[];
                 updateDieTime: number;
                 loadDieTime: number;
                 regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -2125,6 +2137,8 @@ export declare const DVEC: {
             setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
+        _air: string[];
+        _barrier: string[];
         updateDieTime: number;
         loadDieTime: number;
         regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;

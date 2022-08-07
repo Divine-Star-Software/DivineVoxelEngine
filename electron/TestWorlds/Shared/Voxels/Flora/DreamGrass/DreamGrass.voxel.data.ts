@@ -5,6 +5,8 @@ export const DreamGrassVoxelData: VoxelData = {
  shapeId: "FullBoxDiagonalIntersection",
  id: "dve:dreamgrass",
  substance: "flora",
+ material : "grass",
+ hardnress : 1000,
  physics: {
   collider: "",
   checkCollisions: false,

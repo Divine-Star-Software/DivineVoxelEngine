@@ -6,8 +6,6 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { WorldData } from "./WorldData/WorldData.js";
 import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
-import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
-import { Matrix } from "./Matrix/Matrix.js";
 import { VoxelManager } from "../Voxels/VoxelManager.js";
 import { ItemManager } from "../Items/ItemManager.js";
 import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
@@ -18,9 +16,14 @@ import { DataComm } from "./InterComms/Data/DataComm.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
+//matrix
+import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
+import { Matrix } from "./Matrix/Matrix.js";
+import { VoxelMatrix } from "./Matrix/VoxelMatrix.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
+
 
 /**# Divine Voxel Engine World
  * ---
@@ -39,6 +42,7 @@ export const DVEW = {
 
  matrix: Matrix,
  matrixCentralHub: MatrixCentralHub,
+ voxelMatrix : VoxelMatrix,
 
  fxComm: FXComm,
  dataComm: DataComm,
@@ -141,5 +145,5 @@ export type DivineVoxelEngineWorld = typeof DVEW;
 DVEW.environment = Util.getEnviorment();
 
 DVEW.voxelManager.onRegister((voxel) => {
- DVEW.worldGeneration.voxelPalette.registerVoxelForGlobalPalette(voxel);
+ DVEW.worldGeneration.voxelPalette.registerVoxel(voxel);
 });

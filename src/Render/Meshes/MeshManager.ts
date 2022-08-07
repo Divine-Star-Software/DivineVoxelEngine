@@ -56,7 +56,6 @@ export const MeshManager = {
  },
 
  handleItemUpdate(x: number, y: number, z: number, data: any) {
-    console.log(data);
   const meshData: ItemMeshSetData = {
    positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
    normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),

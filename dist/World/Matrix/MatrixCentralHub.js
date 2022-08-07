@@ -204,9 +204,9 @@ export const MatrixCentralHub = {
         }
     },
     syncGlobalVoxelPalette() {
-        const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
-        const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
-        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
+        const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getVoxelPalette();
+        const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
+        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
         for (const threadId of Object.keys(this.threads)) {
             this.threads[threadId].postMessage([
                 "sync-global-palette",
@@ -217,9 +217,9 @@ export const MatrixCentralHub = {
         }
     },
     syncGlobalVoxelPaletteInThread(threadId) {
-        const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
-        const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
-        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
+        const globalVoxelPalette = DVEW.worldGeneration.voxelPalette.getVoxelPalette();
+        const globalVoxelPaletteRecord = DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
+        const gloablVoxelPaletteMap = DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
         this.threads[threadId].postMessage([
             "sync-global-palette",
             globalVoxelPalette,

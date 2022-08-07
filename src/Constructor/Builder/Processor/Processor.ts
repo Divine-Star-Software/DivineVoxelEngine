@@ -15,11 +15,11 @@ import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import {
  CalculateVoxelLight,
  VoxelLightMixCalc,
-} from "./Functions/CalculateVoxelLight.js";
+} from "../../../Constants/Meshing/Functions/CalculateVoxelLight.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
-import { CalculateFlow } from "./Functions/CalculateFlow.js";
+import { CalculateFlow } from "../../../Constants/Meshing/Functions/CalculateFlow.js";
 import { CullFaceOverride } from "Meta/Constructor/OverRide.types";
 
 /**# Chunk Processor
@@ -50,66 +50,108 @@ export const Processor = {
   entity: false,
   composedEntity: 1,
  },
- getBaseTemplateNew(): FullChunkTemplate {
-  return {
-   solid: {
-    positionTemplate: [],
-    faceTemplate: [],
-    uvTemplate: [],
-    overlayUVTemplate: [],
-    shapeTemplate: [],
-    shapeStateTemplate: [],
-    colorTemplate: [],
-    lightTemplate: [],
-    aoTemplate: [],
-   },
-   transparent: {
-    positionTemplate: [],
-    faceTemplate: [],
-    uvTemplate: [],
-    overlayUVTemplate: [],
-    shapeTemplate: [],
-    shapeStateTemplate: [],
-    colorTemplate: [],
-    lightTemplate: [],
-    aoTemplate: [],
-   },
-   flora: {
-    positionTemplate: [],
-    faceTemplate: [],
-    uvTemplate: [],
-    overlayUVTemplate: [],
-    shapeTemplate: [],
-    shapeStateTemplate: [],
-    colorTemplate: [],
-    lightTemplate: [],
-    aoTemplate: [],
-   },
-   fluid: {
-    positionTemplate: [],
-    faceTemplate: [],
-    uvTemplate: [],
-    overlayUVTemplate: [],
-    shapeTemplate: [],
-    shapeStateTemplate: [],
-    colorTemplate: [],
-    lightTemplate: [],
-    aoTemplate: [],
-    flowTemplate: [],
-   },
-   magma: {
-    positionTemplate: [],
-    faceTemplate: [],
-    uvTemplate: [],
-    overlayUVTemplate: [],
-    shapeTemplate: [],
-    shapeStateTemplate: [],
-    colorTemplate: [],
-    lightTemplate: [],
-    aoTemplate: [],
-    flowTemplate: [],
-   },
-  };
+ voxelProcesseData: <VoxelProcessData>{
+  voxelState: "",
+  voxelShapeState: 0,
+  level: 0,
+  levelState: 0,
+  exposedFaces: [],
+  faceStates: [],
+  textureRotations: [],
+  overlayUVTemplate: [],
+  uvTemplate: [],
+  colorTemplate: [],
+  aoTemplate: [],
+  lightTemplate: [],
+  x: 0,
+  y: 0,
+  z: 0,
+ },
+ cullFaceOverrideData: <any>{
+  face: "south",
+  substanceResult: true,
+  shapeState: 0,
+  voxel: {},
+  neighborVoxel: 0,
+  neighborVoxelShape: {},
+  neighborVoxelShapeState: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+ },
+ aoOverRideData: <any>{
+  face: "",
+  substanceResult: true,
+  shapeState: 0,
+  voxel: {},
+  neighborVoxel: {},
+  neighborVoxelShape: {},
+  neighborVoxelShapeState: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+  nx: 0,
+  ny: 0,
+  nz: 0,
+ },
+ template: <FullChunkTemplate>{
+  solid: {
+   positionTemplate: [],
+   faceTemplate: [],
+   uvTemplate: [],
+   overlayUVTemplate: [],
+   shapeTemplate: [],
+   shapeStateTemplate: [],
+   colorTemplate: [],
+   lightTemplate: [],
+   aoTemplate: [],
+  },
+  transparent: {
+   positionTemplate: [],
+   faceTemplate: [],
+   uvTemplate: [],
+   overlayUVTemplate: [],
+   shapeTemplate: [],
+   shapeStateTemplate: [],
+   colorTemplate: [],
+   lightTemplate: [],
+   aoTemplate: [],
+  },
+  flora: {
+   positionTemplate: [],
+   faceTemplate: [],
+   uvTemplate: [],
+   overlayUVTemplate: [],
+   shapeTemplate: [],
+   shapeStateTemplate: [],
+   colorTemplate: [],
+   lightTemplate: [],
+   aoTemplate: [],
+  },
+  fluid: {
+   positionTemplate: [],
+   faceTemplate: [],
+   uvTemplate: [],
+   overlayUVTemplate: [],
+   shapeTemplate: [],
+   shapeStateTemplate: [],
+   colorTemplate: [],
+   lightTemplate: [],
+   aoTemplate: [],
+   flowTemplate: [],
+  },
+  magma: {
+   positionTemplate: [],
+   faceTemplate: [],
+   uvTemplate: [],
+   overlayUVTemplate: [],
+   shapeTemplate: [],
+   shapeStateTemplate: [],
+   colorTemplate: [],
+   lightTemplate: [],
+   aoTemplate: [],
+   flowTemplate: [],
+  },
  },
 
  faceIndexMap: <Record<DirectionNames, number>>{
@@ -119,6 +161,12 @@ export const Processor = {
   west: 3,
   south: 4,
   north: 5,
+ },
+
+ $INIT() {
+  this.voxelProcesseData.faceStates = this.faceStates;
+  this.voxelProcesseData.exposedFaces = this.exposedFaces;
+  this.voxelProcesseData.textureRotations = this.textureRotation;
  },
 
  getVoxel(x: number, y: number, z: number, getSecond = false) {
@@ -168,10 +216,10 @@ export const Processor = {
 
  getLight(x: number, y: number, z: number) {
   if (!this.settings.entity) {
-    return this.worldMatrix.getLight(x, y, z);
-   } else {
-    return DVEB.entityConstructor.getLight(x, y, z);
-   }
+   return this.worldMatrix.getLight(x, y, z);
+  } else {
+   return DVEB.entityConstructor.getLight(x, y, z);
+  }
  },
 
  cullCheck(
@@ -196,23 +244,22 @@ export const Processor = {
    const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
    const neighborVoxelShapeState = this.getVoxelShapeState(x, y, z);
-   const data: CullFaceOverride = {
-    face: face,
-    substanceResult: substanceRuleResult,
-    shapeState: shapeState,
-    voxel: voxel.data,
-    neighborVoxel: neighborVoxel,
-    neighborVoxelShape: neighborVoxelShape,
-    neighborVoxelShapeState: neighborVoxelShapeState,
-    x: x,
-    y: y,
-    z: z,
-   };
-   let shapeResult = shape.cullFace(data);
+   this.cullFaceOverrideData.face = face;
+   this.cullFaceOverrideData.substanceResult = substanceRuleResult;
+   this.cullFaceOverrideData.shapeState = shapeState;
+   this.cullFaceOverrideData.voxel = voxel;
+   this.cullFaceOverrideData.neighborVoxel = neighborVoxel;
+   this.cullFaceOverrideData.neighborVoxelShape = neighborVoxelShape;
+   this.cullFaceOverrideData.neighborVoxelShapeState = neighborVoxelShapeState;
+   this.cullFaceOverrideData.x = x;
+   this.cullFaceOverrideData.y = y;
+   this.cullFaceOverrideData.z = z;
+
+   let shapeResult = shape.cullFace(this.cullFaceOverrideData);
    if (!voxel.cullFace) {
     finalResult = shapeResult;
    } else {
-    finalResult = voxel.cullFace(data);
+    finalResult = voxel.cullFace(this.cullFaceOverrideData);
    }
   } else {
    finalResult = true;
@@ -358,26 +405,20 @@ export const Processor = {
   level = this.getVoxelLevel(x, y, z);
   levelState = this.getVoxelLevelState(x, y, z);
 
-  voxelObject.process(
-   {
-    voxelState: voxelState,
-    voxelShapeState: voxelShapeState,
-    level: level,
-    levelState: levelState,
-    exposedFaces: this.exposedFaces,
-    faceStates: this.faceStates,
-    textureRotations: this.textureRotation,
-    overlayUVTemplate: baseTemplate.overlayUVTemplate,
-    uvTemplate: baseTemplate.uvTemplate,
-    colorTemplate: baseTemplate.colorTemplate,
-    aoTemplate: baseTemplate.aoTemplate,
-    lightTemplate: baseTemplate.lightTemplate,
-    x: x,
-    y: y,
-    z: z,
-   },
-   DVEB as any
-  );
+  this.voxelProcesseData.voxelState = voxelState;
+  this.voxelProcesseData.voxelShapeState = voxelShapeState;
+  this.voxelProcesseData.level = level;
+  this.voxelProcesseData.levelState = levelState;
+  this.voxelProcesseData.x = x;
+  this.voxelProcesseData.y = y;
+  this.voxelProcesseData.z = z;
+  this.voxelProcesseData.overlayUVTemplate = baseTemplate.overlayUVTemplate;
+  this.voxelProcesseData.uvTemplate = baseTemplate.uvTemplate;
+  this.voxelProcesseData.colorTemplate = baseTemplate.colorTemplate;
+  this.voxelProcesseData.aoTemplate = baseTemplate.aoTemplate;
+  this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
+
+  voxelObject.process(this.voxelProcesseData, DVEB);
 
   baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
   baseTemplate.positionTemplate.push(x, y, z);
@@ -410,18 +451,18 @@ export const Processor = {
  constructEntity(composed = 1) {
   this.settings.entity = true;
   this.settings.composedEntity = composed;
-  const template: FullChunkTemplate = this.getBaseTemplateNew();
+
   const maxX = DVEB.entityConstructor.width;
   const maxY = DVEB.entityConstructor.height;
   const maxZ = DVEB.entityConstructor.depth;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
-     this._process(template, x, y, z);
+     this._process(this.template, x, y, z);
     }
    }
   }
-  return template;
+  return this.template;
  },
 
  makeAllChunkTemplates(
@@ -433,7 +474,7 @@ export const Processor = {
  ): FullChunkTemplate {
   this.settings.entity = false;
   this.LOD = LOD;
-  const template: FullChunkTemplate = this.getBaseTemplateNew();
+  const template: FullChunkTemplate = this.template;
   let maxX = DVEC.worldBounds.chunkXSize;
   let maxZ = DVEC.worldBounds.chunkZSize;
 
@@ -450,7 +491,7 @@ export const Processor = {
     }
    }
   }
-  return template;
+  return this.template;
  },
 
  processVoxelLight(data: VoxelProcessData, ignoreAO = false): void {
@@ -467,6 +508,28 @@ export const Processor = {
   }
   if (materials?.doSunLight) {
    this.settings.doSun = true;
+  }
+ },
+
+ flush() {
+  this.voxelProcesseData.voxelState = "";
+  this.voxelProcesseData.voxelShapeState = 0;
+  this.voxelProcesseData.level = 0;
+  this.voxelProcesseData.levelState = 0;
+  this.voxelProcesseData.x = 0;
+  this.voxelProcesseData.y = 0;
+  this.voxelProcesseData.z = 0;
+  this.voxelProcesseData.overlayUVTemplate = [];
+  this.voxelProcesseData.uvTemplate = [];
+  this.voxelProcesseData.colorTemplate = [];
+  this.voxelProcesseData.aoTemplate = [];
+  this.voxelProcesseData.lightTemplate = [];
+
+  for (const substance of Object.keys(this.template)) {
+   //@ts-ignore
+   for (const templateKey of Object.keys(this.template[substance])) {
+    (this as any).template[substance][templateKey] = [];
+   }
   }
  },
 };

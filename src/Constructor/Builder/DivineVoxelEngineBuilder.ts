@@ -54,6 +54,7 @@ export const DVEB = {
    LOD
   );
   this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD);
+  this.processor.flush();
   return true;
  },
 
@@ -66,6 +67,7 @@ export const DVEB = {
    template.solid
   );
   this.entityConstructor.clearEntityData();
+  this.processor.flush();
  },
 };
 

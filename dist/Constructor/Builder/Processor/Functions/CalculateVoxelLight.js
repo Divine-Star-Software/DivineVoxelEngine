@@ -432,26 +432,39 @@ const doAO = (face, vertex, x, y, z) => {
     }
     const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(neighborVoxel.trueShapeId);
     const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
-    const aoCheckData = {
-        face: face,
-        substanceResult: substanceRuleResult,
-        shapeState: currentVoxelData.shapeState,
-        voxel: currentVoxelData.voxelData,
-        neighborVoxel: neighborVoxel.data,
-        neighborVoxelShape: neighborVoxelShape,
-        neighborVoxelShapeState: neighborVoxelShapeState,
-        x: currentVoxelData.x,
-        y: currentVoxelData.y,
-        z: currentVoxelData.z,
-        nx: x,
-        ny: y,
-        nz: z,
-    };
+    /*  const aoCheckData: AOAddOVerRide = {
+     face: face,
+     substanceResult: substanceRuleResult,
+     shapeState: currentVoxelData.shapeState,
+     voxel: currentVoxelData.voxelData,
+     neighborVoxel: neighborVoxel.data,
+     neighborVoxelShape: neighborVoxelShape,
+     neighborVoxelShapeState: neighborVoxelShapeState,
+     x: currentVoxelData.x,
+     y: currentVoxelData.y,
+     z: currentVoxelData.z,
+     nx: x,
+     ny: y,
+     nz: z,
+    }; */
+    Processor.aoOverRideData.face = face;
+    Processor.aoOverRideData.substanceResult = substanceRuleResult;
+    Processor.aoOverRideData.shapeState = currentVoxelData.shapeState;
+    Processor.aoOverRideData.voxel = currentVoxelData.voxelData;
+    Processor.aoOverRideData.neighborVoxel = neighborVoxel.data;
+    Processor.aoOverRideData.neighborVoxelShape = neighborVoxelShape;
+    Processor.aoOverRideData.neighborVoxelShapeState = neighborVoxelShapeState;
+    Processor.aoOverRideData.x = currentVoxelData.x;
+    Processor.aoOverRideData.y = currentVoxelData.y;
+    Processor.aoOverRideData.z = currentVoxelData.z;
+    Processor.aoOverRideData.nx = x;
+    Processor.aoOverRideData.ny = y;
+    Processor.aoOverRideData.nz = z;
     if (currentVoxelData.currentShape) {
-        finalResult = currentVoxelData.currentShape.aoOverRide(aoCheckData);
+        finalResult = currentVoxelData.currentShape.aoOverRide(Processor.aoOverRideData);
     }
     if (currentVoxelData.voxelObject && currentVoxelData.voxelObject.aoOverRide) {
-        finalResult = currentVoxelData.voxelObject.aoOverRide(aoCheckData);
+        finalResult = currentVoxelData.voxelObject.aoOverRide(Processor.aoOverRideData);
     }
     if (finalResult) {
         AOVerotexStates[vertex].totalLight = false;

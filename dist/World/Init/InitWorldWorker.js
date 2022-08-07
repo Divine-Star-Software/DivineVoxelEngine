@@ -10,6 +10,7 @@ export async function InitWorldWorker(DVEW, initData) {
     }
     const renderPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
     DVEW.renderComm.setPort(renderPort);
+    DVEW.voxelMatrix.$INIT();
     await DVEW.UTIL.createPromiseCheck({
         check: () => {
             return DVEW.isReady();

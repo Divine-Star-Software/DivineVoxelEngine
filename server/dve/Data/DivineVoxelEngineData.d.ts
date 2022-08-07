@@ -811,6 +811,8 @@ export declare const DVED: {
             setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
+        _air: string[];
+        _barrier: string[];
         updateDieTime: number;
         loadDieTime: number;
         regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;

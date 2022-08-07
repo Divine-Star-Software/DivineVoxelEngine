@@ -1,10 +1,10 @@
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelData } from "Meta/index.js";
-import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "../../../Constants/Meshing/Functions/CalculateVoxelLight.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
-import { CalculateFlow } from "./Functions/CalculateFlow.js";
+import { CalculateFlow } from "../../../Constants/Meshing/Functions/CalculateFlow.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -380,6 +380,8 @@ export declare const Processor: {
             setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
+        _air: string[];
+        _barrier: string[];
         updateDieTime: number;
         loadDieTime: number;
         regions: import("Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -455,8 +457,12 @@ export declare const Processor: {
         entity: boolean;
         composedEntity: number;
     };
-    getBaseTemplateNew(): FullChunkTemplate;
+    voxelProcesseData: VoxelProcessData;
+    cullFaceOverrideData: any;
+    aoOverRideData: any;
+    template: FullChunkTemplate;
     faceIndexMap: Record<DirectionNames, number>;
+    $INIT(): void;
     getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | string[];
     getVoxelData(x: number, y: number, z: number, getSecond?: boolean): false | VoxelData;
     getVoxelShapeState(x: number, y: number, z: number, getSecond?: boolean): number;
@@ -470,4 +476,5 @@ export declare const Processor: {
     makeAllChunkTemplates(chunk: MatrixLoadedChunk, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;
+    flush(): void;
 };

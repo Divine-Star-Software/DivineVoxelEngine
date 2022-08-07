@@ -10,6 +10,8 @@ export const WorldMatrix = {
     voxelByte: Util.getVoxelByte(),
     lightByte: Util.getLightByte(),
     heightByte: Util.getHeightByte(),
+    _air: ["dve:air"],
+    _barrier: ["dve:barrier"],
     //two minutes
     updateDieTime: 120000,
     loadDieTime: 10000,
@@ -74,9 +76,9 @@ export const WorldMatrix = {
         if (numericVoxelId === false)
             return false;
         if (numericVoxelId == 0)
-            return ["dve:air"];
+            return this._air;
         if (numericVoxelId == 1)
-            return ["dve:barrier"];
+            return this._barrier;
         const paletteId = palette[numericVoxelId];
         return record[paletteId];
     },

@@ -4,6 +4,8 @@ export const DreamStoneVoxelData = {
     id: "dve:dreamstone",
     substance: "solid",
     states: ['no-grass'],
+    material: "stone",
+    hardnress: 1000,
     physics: {
         collider: "Box",
         checkCollisions: true

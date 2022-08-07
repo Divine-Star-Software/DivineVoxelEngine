@@ -223,6 +223,8 @@ export declare const WorldMatrix: {
         setMaxYForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
         getMaxYForSubstance(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
     };
+    _air: string[];
+    _barrier: string[];
     updateDieTime: number;
     loadDieTime: number;
     regions: MatrixLoadedRegion;

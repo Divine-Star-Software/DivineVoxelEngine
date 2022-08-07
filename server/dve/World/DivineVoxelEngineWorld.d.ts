@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -120,8 +120,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -181,7 +181,10 @@ export declare const DVEW: {
             _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
             _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>; /**# Delete Chunk
+             * ---
+             * Deletes a chunk from world data and releases it from all threads.
+             */
             _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
             _markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
             _checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
@@ -481,6 +484,10 @@ export declare const DVEW: {
             };
             lighting: {
                 doAO: boolean;
+                /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 doSunLight: boolean;
                 doRGBLight: boolean;
                 autoRGBLight: boolean;
@@ -717,6 +724,61 @@ export declare const DVEW: {
         syncGlobalVoxelPalette(): void;
         syncGlobalVoxelPaletteInThread(threadId: string): void;
     };
+    voxelMatrix: {
+        byteLength: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+            totalLength: number;
+        };
+        indexes: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
+        voxelData: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        voxelBuffer: ArrayBuffer;
+        voxelDataView: DataView;
+        voxelMap: Uint16Array;
+        $INIT(): void;
+        getVoxelData(id: number): {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        getSubstance(id: number): number;
+        getShapeId(id: number): number;
+        getHardness(id: number): number;
+        getCheckCollisions(id: number): number;
+        getColliderId(id: number): number;
+        isLightSource(id: number): number;
+        getLightValue(id: number): number;
+    };
     fxComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
@@ -916,16 +978,19 @@ export declare const DVEW: {
             getMaxYForSubstance(substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
         voxelPalette: {
-            globalVoxelPaletteIndex: number;
-            globalVoxelPalette: Record<number, string>;
-            globalVoxelPaletteMap: Record<string, number>;
-            globalVoxelPaletteRecord: Record<string, string[]>;
-            getVoxelPaletteIdFromGlobalPalette(voxelId: string, voxelState: string): number;
-            getVoxelDataFromGlobalPalette(voxelId: number): string[];
-            registerVoxelForGlobalPalette(voxel: import("../Meta/index.js").VoxelData): void;
-            getGlobalVoxelPalette(): Record<number, string>;
-            getGlobalVoxelPaletteMap(): Record<string, number>;
-            getGlobalVoxelPaletteRecord(): Record<string, string[]>;
+            voxelPaletteCount: number;
+            voxelPalette: Record<number, string>;
+            voxelPaletteMap: Record<string, number>;
+            voxelPaletteRecord: Record<string, string[]>;
+            getVoxelPaletteId(voxelId: string, voxelState: string): number;
+            getVoxelData(voxelId: number): string[];
+            registerVoxel(voxel: import("../Meta/index.js").VoxelData): void;
+            _register(id: string, stateId: string): void;
+            getVoxelPartentId(id: number): number;
+            isVoxelIdAState(id: number): boolean;
+            getVoxelPalette(): Record<number, string>;
+            getVoxelPaletteMap(): Record<string, number>;
+            getVoxelPaletteRecord(): Record<string, string[]>;
         };
         getBlankRegion(): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         createChunkFromDataThread(data: any[]): import("../Meta/index.js").ChunkData;

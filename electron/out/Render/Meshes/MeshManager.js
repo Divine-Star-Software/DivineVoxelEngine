@@ -38,7 +38,6 @@ export const MeshManager = {
         delete this.meshes[type][chunkKey];
     },
     handleItemUpdate(x, y, z, data) {
-        console.log(data);
         const meshData = {
             positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
             normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),

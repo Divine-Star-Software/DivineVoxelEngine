@@ -5,6 +5,8 @@ export const DreamGrassBlockVoxelData: VoxelData = {
     shapeId: "Box",
     id: "dve:dreamgrassblock",
     substance: "flora",
+    material : "stone",
+    hardnress : 1000,
     physics : {
         collider : "Box",
         checkCollisions : true

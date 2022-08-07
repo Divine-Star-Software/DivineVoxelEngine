@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const RenderManager: {
     shaderBuilder: {

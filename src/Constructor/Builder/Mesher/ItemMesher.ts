@@ -88,7 +88,7 @@ export const ItemMesher = {
   message[ConstructItemIndexes.sunLightColorsArray - 1] =
    sunLightColorsArray.buffer;
   message[ConstructItemIndexes.uvArray - 1] = uvArray.buffer;
-  console.log(createData);
+  
   const transfers = [
    positionArray.buffer,
    normalsArray.buffer,

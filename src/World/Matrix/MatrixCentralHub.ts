@@ -232,11 +232,11 @@ export const MatrixCentralHub = {
 
  syncGlobalVoxelPalette() {
   const globalVoxelPalette =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
+   DVEW.worldGeneration.voxelPalette.getVoxelPalette();
   const globalVoxelPaletteRecord =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
   const gloablVoxelPaletteMap =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
     "sync-global-palette",
@@ -249,11 +249,11 @@ export const MatrixCentralHub = {
 
  syncGlobalVoxelPaletteInThread(threadId: string) {
   const globalVoxelPalette =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPalette();
+   DVEW.worldGeneration.voxelPalette.getVoxelPalette();
   const globalVoxelPaletteRecord =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteRecord();
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
   const gloablVoxelPaletteMap =
-   DVEW.worldGeneration.voxelPalette.getGlobalVoxelPaletteMap();
+   DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
   this.threads[threadId].postMessage([
    "sync-global-palette",
    globalVoxelPalette,

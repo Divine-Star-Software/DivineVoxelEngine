@@ -708,6 +708,8 @@ export declare const DVEN: {
             setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
+        _air: string[];
+        _barrier: string[];
         updateDieTime: number;
         loadDieTime: number;
         regions: import("../Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
@@ -722,9 +724,6 @@ export declare const DVEN: {
             r: (value: number) => number;
             g: (value: number) => number;
             b: (value: number) => number;
-            /**# Load chunk into Nexus
-             * Load a chunk into the shared nexus thread.
-             */
             s: (value: number) => number;
         };
         threadName: string;

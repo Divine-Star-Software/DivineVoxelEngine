@@ -1,5 +1,5 @@
 import type { VoxelData } from "Meta/index";
-import type { Processor } from "../Processor";
+import type { Processor } from "../../../Constructor/Builder/Processor/Processor";
 
 const checkSets = {
  1: [

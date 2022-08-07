@@ -17,6 +17,7 @@ export async function InitWorldWorker(
 
  const renderPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
  DVEW.renderComm.setPort(renderPort);
+ DVEW.voxelMatrix.$INIT();
 
  await DVEW.UTIL.createPromiseCheck({
   check: () => {

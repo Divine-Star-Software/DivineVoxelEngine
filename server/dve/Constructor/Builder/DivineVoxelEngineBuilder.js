@@ -43,11 +43,13 @@ export const DVEB = {
         }
         const template = this.processor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD);
         this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD);
+        this.processor.flush();
         return true;
     },
     constructEntity() {
         const template = this.processor.constructEntity();
         this.entityMesher.buildEntityMesh(this.entityConstructor.pos.x, this.entityConstructor.pos.y, this.entityConstructor.pos.z, template.solid);
         this.entityConstructor.clearEntityData();
+        this.processor.flush();
     },
 };

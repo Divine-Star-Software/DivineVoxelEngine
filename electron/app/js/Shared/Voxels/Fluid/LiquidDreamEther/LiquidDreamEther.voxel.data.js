@@ -3,6 +3,8 @@ export const LiquidDreamEtherVoxelData = {
     shapeId: "FluidSourceBlock",
     id: "dve:liquiddreamether",
     substance: "fluid",
+    material: "water",
+    hardnress: 1000,
     physics: {
         collider: "Box",
         checkCollisions: true

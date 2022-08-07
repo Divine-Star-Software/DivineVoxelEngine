@@ -6,6 +6,8 @@ export const LightDebugBoxVoxelData: VoxelData = {
     id: "dve:lightdebug",
     substance: "solid",
     lightSource: false,
+    material : "stone",
+    hardnress : 1000,
     physics : {
         collider : "Box",
         checkCollisions : true

@@ -5,6 +5,8 @@ export const DreamStoneStairVoxelData: VoxelData = {
  shapeId: "Stair",
  id: "dve:dreamstone-stair",
  substance: "transparent",
+ material : "stone",
+ hardnress : 1000,
  physics: {
   collider: "Stair",
   checkCollisions : true
