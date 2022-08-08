@@ -19,6 +19,20 @@ export const VoxelDataIndexes = {
     lightSource: 0,
     lightValue: 0,
 };
+export const VoxelSubstanceMap = {
+    solid: 0,
+    transparent: 1,
+    flora: 2,
+    fluid: 3,
+    magma: 4,
+};
+export const VoxelSubstanceRecord = {
+    0: "solid",
+    1: "transparent",
+    2: "flora",
+    3: "fluid",
+    4: "magma",
+};
 let total = 0;
 Object.entries(VoxelDataByteLengths).forEach((value) => {
     total += value[1];

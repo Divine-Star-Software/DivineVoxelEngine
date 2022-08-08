@@ -31,8 +31,8 @@ RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({});
 
-DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 38, 7);
-DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 0, 38, 7);
+DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, 7, 38, 7);
+DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, 0, 38, 7);
 generate();
 load();
 

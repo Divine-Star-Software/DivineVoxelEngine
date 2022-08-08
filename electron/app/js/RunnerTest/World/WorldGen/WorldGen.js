@@ -33,38 +33,38 @@ export const WorldGen = {
                     if (type == "track") {
                         if (!fill) {
                             if (y <= baseY + height && x >= 6 && x <= 9) {
-                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                                 if (y == baseY + height && Math.random() < 0.5) {
-                                    DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                    DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                                 }
                             }
                             if (y <= baseY - 5) {
-                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                             }
                             if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
-                                DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }
                         else {
                             if (y <= baseY - 5) {
-                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                             }
                             if (y >= baseY - 5 && y <= baseY - 1) {
-                                DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                                DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                             }
                         }
                     }
                     if (type == "trench") {
                         if (y <= baseY - 5) {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         }
                         if (y >= baseY - 5 && y <= baseY - 1) {
-                            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         }
                     }
                     if (type == "wall") {
                         if (y <= maxY) {
-                            DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         }
                     }
                 }

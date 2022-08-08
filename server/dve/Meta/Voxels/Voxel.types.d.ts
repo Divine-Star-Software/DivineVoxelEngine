@@ -27,19 +27,17 @@ export declare type VoxelData = {
     substance: VoxelSubstanceType;
     material: string;
     hardnress: number;
-    rich?: {
-        initalData: any;
-    };
+    isRich?: boolean;
     physics?: {
         collider: string;
         checkCollisions: boolean;
     };
-    states?: string[];
+    states?: number;
     lightSource?: boolean;
     lightValue?: number;
 };
 export declare type VoxelConstructorObject = {
-    data: VoxelData;
+    id: string;
     trueShapeId: number;
     hooks: Record<VoxelConstructorThreadHooks, (DVEB: DivineVoxelEngineBuilder) => any>;
     cullFace?: {

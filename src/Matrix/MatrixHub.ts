@@ -1,4 +1,6 @@
 import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
+import { VoxelMatrix } from "./VoxelMatrix.js";
+import { MatrixMap } from "./MatrixMap.js";
 import { WorldMatrix } from "./WorldMatrix.js";
 
 /**# Matrix Hub
@@ -7,6 +9,9 @@ import { WorldMatrix } from "./WorldMatrix.js";
  * It syncs the chunk data.
  */
 export const MatrixHub = {
+ worldPort: <InterCommPortTypes | undefined>undefined,
+ threadName: "",
+ __threadNameSet: false,
  messageFunctions: <
   Record<string, (data: any, event: MessageEvent) => any | void>
  >{
@@ -16,8 +21,7 @@ export const MatrixHub = {
   "release-chunk": (data) => {
    MatrixHub._releaseChunk(data);
   },
-  "sync-global-palette": (data) => {
-  
+  "sync-voxel-palette": (data) => {
    MatrixHub._syncGlobalVoxelPalette(data);
   },
   "set-thread-name": (data) => {
@@ -27,15 +31,15 @@ export const MatrixHub = {
    const port = event.ports[0];
    MatrixHub._setWorldPort(port);
   },
+  "sync-voxel-data": (data) => {
+   MatrixHub._syncVoxelData(data);
+  },
  },
 
- worldPort: <InterCommPortTypes | undefined>undefined,
-
- threadName: "",
- setThreadName(threadName: string) {
-  this.threadName = threadName;
-  WorldMatrix.threadName = this.threadName;
+ isReady() {
+  return this.__threadNameSet && this.worldPort != undefined;
  },
+
  onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
   const data = event.data;
   if (!data || !data[0]) return;
@@ -124,6 +128,10 @@ export const MatrixHub = {
   );
  },
 
+ _syncVoxelData(data: any[]) {
+    VoxelMatrix.syncData(data[1],data[2]);
+ },
+
  _releaseChunk(data: any[]) {
   const chunkX = data[1];
   const chunkY = data[2];
@@ -132,12 +140,12 @@ export const MatrixHub = {
  },
 
  _syncGlobalVoxelPalette(data: any[]) {
-
-  WorldMatrix.__setGlobalVoxelPalette(data[1], data[2],data[3]);
+  WorldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
  },
 
  _setThreadName(data: any[]) {
   this.threadName = data[1];
   WorldMatrix.threadName = this.threadName;
+  this.__threadNameSet = true;
  },
 };

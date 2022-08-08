@@ -1,4 +1,5 @@
 //objects
+import { Queue } from "Global/Util/Queue.js";
 import { Util } from "../../../Global/Util.helper.js";
 //functions
 import {
@@ -23,18 +24,18 @@ export const IlluminationManager = {
  air: [-1, 0],
  //sun
  runSunLightUpdateAt: runSunLightUpdateAt,
- runSunLightUpdate:  runSunLightUpdate,
+ runSunLightUpdate: runSunLightUpdate,
  runSunLightRemove: runSunLightRemove,
  runSunLightRemoveAt: runSunLightRemoveAt,
 
  populateWorldColumnWithSunLight: PopulateWorldColumnWithSunLight,
  runSunLightUpdateAtMaxY: RunSunLightUpdateAtMaxY,
- runSunLightFloodDown : RunSunLightFloodDown,
- runSunLightFloodOut : RunSunLightFloodOut,
- sunLightAboveCheck : SunLightAboveCheck,
- _sunLightUpdateQue: <number[][]>[],
- _sunLightFloodDownQue: <number[][]>[],
- _sunLightFloodOutQue: <Record<string,number[][]>>{},
+ runSunLightFloodDown: RunSunLightFloodDown,
+ runSunLightFloodOut: RunSunLightFloodOut,
+ sunLightAboveCheck: SunLightAboveCheck,
+ _sunLightUpdateQue: <Queue<number[]>>Util.getAQueue<number[]>(),
+ _sunLightFloodDownQue: <Queue<number[]>>Util.getAQueue<number[]>(),
+ _sunLightFloodOutQue: <Record<string, Queue<number[]>>>{},
  _sunLightRemoveQue: <number[][]>[],
  //rgb
  runRGBFloodFillAt: runRGBFloodFillAt,

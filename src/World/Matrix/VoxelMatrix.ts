@@ -2,20 +2,15 @@ import { DVEW } from "../DivineVoxelEngineWorld.js";
 import {
  VoxelDataByteLengths,
  VoxelDataIndexes,
+ VoxelSubstanceMap,
 } from "../../Constants/Voxels/VoxelData.js";
-import { VoxelSubstanceType } from "Meta/index.js";
+import type { VoxelSubstanceType } from "Meta/index.js";
 
 export const VoxelMatrix = {
  byteLength: VoxelDataByteLengths,
  indexes: VoxelDataIndexes,
 
- substanceMap: <Record<VoxelSubstanceType, number>>{
-  solid: 0,
-  transparent: 1,
-  flora: 2,
-  fluid: 3,
-  magma: 4,
- },
+ substanceMap: VoxelSubstanceMap,
 
  voxelData: {
   substance: 0,
@@ -28,20 +23,28 @@ export const VoxelMatrix = {
   lightValue: 0,
  },
 
- voxelBuffer: new ArrayBuffer(0),
+ voxelBuffer: new SharedArrayBuffer(0),
  voxelDataView: new DataView(new ArrayBuffer(0)),
+ voxelMapBuffer: new SharedArrayBuffer(0),
  voxelMap: new Uint16Array(0),
 
+ __isReady: false,
+
  $INIT() {
+  const shapeMap = DVEW.matrixMap.shapeMap;
   const totalVoxels = Object.keys(DVEW.voxelManager.voxelData).length;
-  const buffer = new ArrayBuffer(totalVoxels * this.byteLength.totalLength);
+  const buffer = new SharedArrayBuffer(
+   totalVoxels * this.byteLength.totalLength
+  );
   const dv = new DataView(buffer);
 
   const totalRegisteredVoxels =
    DVEW.worldGeneration.voxelPalette.voxelPaletteCount;
-  const voxelMap = new Uint16Array(totalRegisteredVoxels);
+  const voxelMapBuffer = new SharedArrayBuffer(totalRegisteredVoxels * 2);
+  const voxelMap = new Uint16Array(voxelMapBuffer);
 
   const vp = DVEW.worldGeneration.voxelPalette;
+
   let currentCount = 0;
   let currentParent = 2;
 
@@ -59,8 +62,8 @@ export const VoxelMatrix = {
    const indexId = voxelMap[paletteId];
    if (done[indexId]) continue;
    done[indexId] = true;
-   const tvid = vp.getVoxelData(paletteId);
-   const vdata = DVEW.voxelManager.getVoxelData(tvid[0]);
+   const tvid = vp.getVoxelTrueId(paletteId);
+   const vdata = DVEW.voxelManager.getVoxelData(tvid);
    let index = indexId * this.byteLength.totalLength;
    //substance
    dv.setUint8(
@@ -68,7 +71,7 @@ export const VoxelMatrix = {
     this.substanceMap[vdata.substance]
    );
    //shapeId
-   dv.setUint16(index + this.indexes.shapeId, 0);
+   dv.setUint16(index + this.indexes.shapeId, shapeMap[vdata.shapeId]);
    //hardness
    dv.setUint16(index + this.indexes.hardness, vdata.hardnress);
    //material
@@ -86,12 +89,13 @@ export const VoxelMatrix = {
    //light source
    dv.setUint8(index + this.indexes.lightSource, vdata.lightSource ? 1 : 0);
    //light value
-   dv.setUint8(
+   dv.setUint16(
     index + this.indexes.lightValue,
     vdata.lightValue ? vdata.lightValue : 0
    );
   }
 
+  this.voxelMapBuffer = voxelMapBuffer;
   this.voxelMap = voxelMap;
   this.voxelBuffer = buffer;
   this.voxelDataView = dv;

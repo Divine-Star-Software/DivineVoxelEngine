@@ -83,6 +83,7 @@ export declare const RichData: {
         };
     };
     richRegions: Record<string, RichWorldRegion>;
+    initalData: Record<string, any>;
     getRegion(x: number, y: number, z: number): false | RichWorldRegion;
     getChunk(x: number, y: number, z: number): false | RichChunk;
     addRegion(x: number, y: number, z: number): false | RichWorldRegion;
@@ -90,4 +91,7 @@ export declare const RichData: {
     setData(x: number, y: number, z: number, data: any): void;
     getData<T>(x: number, y: number, z: number): false | T;
     removeData(x: number, y: number, z: number): void;
+    registerInitalDataForVoxel(voxelId: string, data: any): void;
+    hasInitalData(voxelId: string): boolean;
+    setInitalData(voxelId: string, x: number, y: number, z: number): void;
 };

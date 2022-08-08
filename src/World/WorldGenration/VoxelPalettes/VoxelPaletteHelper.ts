@@ -8,50 +8,48 @@ export const VoxelPaletteManager = {
  voxelPaletteCount: 2,
  voxelPalette: <Record<number, string>>{},
  voxelPaletteMap: <Record<string, number>>{},
- voxelPaletteRecord: <Record<string, string[]>>{},
 
- /**# Get Vooxel Id From Global Palette
+ /**# Get Vooxel Numeric Id
   * ---
   * Gets the number id for use of actual world generation.
   * This is what is actually stored in the chunk voxels.
   */
- getVoxelPaletteId(voxelId: string, voxelState: string): number {
-  return this.voxelPaletteMap[`${voxelId}:${voxelState}`];
+ getVoxelPaletteId(voxelId: string, voxelState: number): number {
+  return this.voxelPaletteMap[voxelId] + voxelState;
  },
- /**# Get Voxel True Id From Global Palette
+ /**# Get Voxel True Id
   * ---
   * Returns the string id and state from the global voxel palette.
   */
- getVoxelData(voxelId: number): string[] {
-  const id = this.voxelPalette[voxelId];
-  return this.voxelPaletteRecord[id];
+ getVoxelTrueId(voxelId: number): string {
+  return this.voxelPalette[voxelId];
  },
 
  registerVoxel(voxel: VoxelData) {
-  this._register(voxel.id, "default");
+  this.voxelPalette[this.voxelPaletteCount] = voxel.id;
+  this.voxelPaletteMap[voxel.id] = this.voxelPaletteCount;
   if (voxel.states) {
-   for (const state of voxel.states) {
-    this._register(voxel.id, state);
+   for (
+    let i = this.voxelPaletteCount;
+    i <= this.voxelPaletteCount + voxel.states;
+    i++
+   ) {
+    this.voxelPalette[i] = voxel.id;
    }
+   this.voxelPaletteCount += voxel.states;
   }
- },
-
- _register(id: string, stateId: string) {
-  const newId = `${id}:${stateId}`;
-  this.voxelPalette[this.voxelPaletteCount] = newId;
-  this.voxelPaletteMap[newId] = this.voxelPaletteCount;
-  this.voxelPaletteRecord[newId] = [id, stateId];
   this.voxelPaletteCount++;
  },
 
  getVoxelPartentId(id: number) {
-  const mainData = this.getVoxelData(id);
-  return this.getVoxelPaletteId(mainData[0], "default");
+  const mainData = this.getVoxelTrueId(id);
+  return this.getVoxelPaletteId(mainData, 0);
  },
 
- isVoxelIdAState(id: number) {
-  const mainData = this.getVoxelData(id);
-  return mainData[0] != "default";
+ getVoxelState(voxelId: number) {
+  const trueId = this.voxelPalette[voxelId];
+  const mapId = this.voxelPaletteMap[trueId];
+  return voxelId - mapId;
  },
 
  getVoxelPalette() {
@@ -59,12 +57,5 @@ export const VoxelPaletteManager = {
  },
  getVoxelPaletteMap() {
   return this.voxelPaletteMap;
- },
- /**# Get Global Voxel Palette Record
-  * ---
-  * Returns a record that maps voxel ids and states to already split array of values.
-  */
- getVoxelPaletteRecord() {
-  return this.voxelPaletteRecord;
  },
 };

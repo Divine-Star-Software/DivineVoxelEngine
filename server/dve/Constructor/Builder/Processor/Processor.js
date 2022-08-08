@@ -4,8 +4,8 @@ import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 //functions
-import { CalculateVoxelLight, VoxelLightMixCalc, } from "../../../Constants/Meshing/Functions/CalculateVoxelLight.js";
-import { CalculateFlow } from "../../../Constants/Meshing/Functions/CalculateFlow.js";
+import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
+import { CalculateFlow } from "./Functions/CalculateFlow.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -35,7 +35,7 @@ export const Processor = {
         composedEntity: 1,
     },
     voxelProcesseData: {
-        voxelState: "",
+        voxelState: 0,
         voxelShapeState: 0,
         level: 0,
         levelState: 0,
@@ -150,9 +150,20 @@ export const Processor = {
         this.voxelProcesseData.exposedFaces = this.exposedFaces;
         this.voxelProcesseData.textureRotations = this.textureRotation;
     },
+    getVoxelSubstance(x, y, z, getSecond = false) {
+        return this.worldMatrix.getVoxelSubstance(x, y, z, getSecond);
+    },
+    getVoxelShapeId(x, y, z, getSecond = false) {
+        return this.worldMatrix.getVoxelShapeId(x, y, z, getSecond);
+    },
     getVoxel(x, y, z, getSecond = false) {
         if (!this.settings.entity) {
-            return this.worldMatrix.getVoxel(x, y, z, getSecond);
+            const voxel = this.worldMatrix.getVoxel(x, y, z, getSecond);
+            if (!voxel)
+                return false;
+            if (voxel[0] == "dve:air")
+                return false;
+            return voxel;
         }
         else {
             if (getSecond)
@@ -160,19 +171,17 @@ export const Processor = {
             return DVEB.entityConstructor.getVoxel(x, y, z);
         }
     },
-    getVoxelData(x, y, z, getSecond = false) {
-        if (!this.settings.entity) {
-            return this.worldMatrix.getVoxelData(x, y, z, getSecond);
-        }
-        else {
-            const voxelCheck = DVEB.entityConstructor.getVoxel(x, y, z);
-            if (!voxelCheck)
-                return false;
-            if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
-                return false;
-            return DVEC.voxelManager.getVoxelData(voxelCheck[0]);
-        }
-    },
+    /*  getVoxelData(x: number, y: number, z: number, getSecond = false) {
+     if (!this.settings.entity) {
+      return this.worldMatrix.getVoxelData(x, y, z, getSecond);
+     } else {
+      const voxelCheck = DVEB.entityConstructor.getVoxel(x, y, z);
+      if (!voxelCheck) return false;
+      if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
+       return false;
+      return DVEC.voxelManager.getVoxelData(voxelCheck[0]);
+     }
+    }, */
     getVoxelShapeState(x, y, z, getSecond = false) {
         if (!this.settings.entity) {
             return this.worldMatrix.getVoxelShapeState(x, y, z);
@@ -205,31 +214,35 @@ export const Processor = {
             return DVEB.entityConstructor.getLight(x, y, z);
         }
     },
-    cullCheck(face, voxel, voxelState, shapeState, x, y, z, faceBit) {
-        const neighborVoxel = this.getVoxelData(x, y, z);
+    cullCheck(face, voxelId, voxelShapeId, voxelSubstance, shapeState, x, y, z, faceBit) {
+        const neighorVoxel = this.getVoxel(x, y, z);
         let finalResult = false;
-        if (neighborVoxel) {
-            const nv = DVEC.voxelManager.getVoxel(neighborVoxel.id);
-            let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(voxel.data, neighborVoxel);
-            const shape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
-            const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nv.trueShapeId);
+        if (neighorVoxel) {
+            const nvShapeId = this.getVoxelShapeId(x, y, z);
+            const neighorSustance = this.getVoxelSubstance(x, y, z);
+            let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(voxelSubstance, neighorSustance);
+            const voxelShape = DVEC.DVEB.shapeManager.getShape(voxelShapeId);
+            const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(nvShapeId);
             const neighborVoxelShapeState = this.getVoxelShapeState(x, y, z);
-            this.cullFaceOverrideData.face = face;
-            this.cullFaceOverrideData.substanceResult = substanceRuleResult;
-            this.cullFaceOverrideData.shapeState = shapeState;
-            this.cullFaceOverrideData.voxel = voxel;
-            this.cullFaceOverrideData.neighborVoxel = neighborVoxel;
-            this.cullFaceOverrideData.neighborVoxelShape = neighborVoxelShape;
-            this.cullFaceOverrideData.neighborVoxelShapeState = neighborVoxelShapeState;
-            this.cullFaceOverrideData.x = x;
-            this.cullFaceOverrideData.y = y;
-            this.cullFaceOverrideData.z = z;
-            let shapeResult = shape.cullFace(this.cullFaceOverrideData);
-            if (!voxel.cullFace) {
+            const cullFaceOverride = this.cullFaceOverrideData;
+            cullFaceOverride.face = face;
+            cullFaceOverride.substanceResult = substanceRuleResult;
+            cullFaceOverride.shapeState = shapeState;
+            cullFaceOverride.voxelId = voxelId;
+            cullFaceOverride.voxelSubstance = voxelSubstance;
+            cullFaceOverride.neighborVoxelId = neighorVoxel[0];
+            cullFaceOverride.neighborVoxelSubstance = neighorSustance;
+            cullFaceOverride.neighborVoxelShape = neighborVoxelShape;
+            cullFaceOverride.neighborVoxelShapeState = neighborVoxelShapeState;
+            cullFaceOverride.x = x;
+            cullFaceOverride.y = y;
+            cullFaceOverride.z = z;
+            let shapeResult = voxelShape.cullFace(this.cullFaceOverrideData);
+            if (!voxelShape.cullFace) {
                 finalResult = shapeResult;
             }
             else {
-                finalResult = voxel.cullFace(this.cullFaceOverrideData);
+                finalResult = voxelShape.cullFace(this.cullFaceOverrideData);
             }
         }
         else {
@@ -274,23 +287,25 @@ export const Processor = {
         if (!voxelObject)
             return;
         const voxelState = voxelCheck[1];
+        const voxelId = voxelCheck[0];
+        const voxelShapeId = this.getVoxelShapeId(x, y, z);
         const voxelShapeState = this.getVoxelShapeState(x, y, z);
+        const voxelSubstance = this.getVoxelSubstance(x, y, z);
         let faceBit = 0;
-        faceBit = this.cullCheck("top", voxelObject, voxelState, voxelShapeState, x, y + LOD, z, faceBit);
-        faceBit = this.cullCheck("bottom", voxelObject, voxelState, voxelShapeState, x, y - LOD, z, faceBit);
-        faceBit = this.cullCheck("east", voxelObject, voxelState, voxelShapeState, x + LOD, y, z, faceBit);
-        faceBit = this.cullCheck("west", voxelObject, voxelState, voxelShapeState, x - LOD, y, z, faceBit);
-        faceBit = this.cullCheck("south", voxelObject, voxelState, voxelShapeState, x, y, z - LOD, faceBit);
-        faceBit = this.cullCheck("north", voxelObject, voxelState, voxelShapeState, x, y, z + LOD, faceBit);
+        faceBit = this.cullCheck("top", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x, y + LOD, z, faceBit);
+        faceBit = this.cullCheck("bottom", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x, y - LOD, z, faceBit);
+        faceBit = this.cullCheck("east", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x + LOD, y, z, faceBit);
+        faceBit = this.cullCheck("west", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x - LOD, y, z, faceBit);
+        faceBit = this.cullCheck("south", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x, y, z - LOD, faceBit);
+        faceBit = this.cullCheck("north", voxelId, voxelShapeId, voxelSubstance, voxelShapeState, x, y, z + LOD, faceBit);
         if (faceBit == 0)
             return;
         let baseTemplate;
-        0;
-        if (voxelObject.data.substance == "transparent") {
+        if (voxelSubstance == "transparent") {
             baseTemplate = template["solid"];
         }
         else {
-            baseTemplate = template[voxelObject.data.substance];
+            baseTemplate = template[voxelSubstance];
         }
         baseTemplate.shapeStateTemplate.push(voxelShapeState);
         let level = 0;
@@ -310,7 +325,7 @@ export const Processor = {
         this.voxelProcesseData.aoTemplate = baseTemplate.aoTemplate;
         this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
         voxelObject.process(this.voxelProcesseData, DVEB);
-        baseTemplate.shapeTemplate.push(voxelObject.trueShapeId);
+        baseTemplate.shapeTemplate.push(voxelShapeId);
         baseTemplate.positionTemplate.push(x, y, z);
         faceBit = this.faceStateCheck("top", faceBit);
         faceBit = this.faceStateCheck("bottom", faceBit);
@@ -320,9 +335,8 @@ export const Processor = {
         faceBit = this.faceStateCheck("north", faceBit);
         baseTemplate.faceTemplate.push(faceBit);
         if (this.exposedFaces[0] &&
-            (voxelObject.data.substance == "fluid" ||
-                voxelObject.data.substance == "magma")) {
-            this.calculatFlow(voxelObject.data, this.faceStates[0] == 1, x, y, z, baseTemplate.flowTemplate);
+            (voxelSubstance == "fluid" || voxelSubstance == "magma")) {
+            this.calculatFlow(voxelId, this.faceStates[0] == 1, x, y, z, baseTemplate.flowTemplate);
         }
     },
     constructEntity(composed = 1) {
@@ -376,7 +390,7 @@ export const Processor = {
         }
     },
     flush() {
-        this.voxelProcesseData.voxelState = "";
+        this.voxelProcesseData.voxelState = 0;
         this.voxelProcesseData.voxelShapeState = 0;
         this.voxelProcesseData.level = 0;
         this.voxelProcesseData.levelState = 0;

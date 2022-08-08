@@ -1,10 +1,10 @@
 import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
-import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelData } from "Meta/index.js";
-import { CalculateVoxelLight, VoxelLightMixCalc } from "../../../Constants/Meshing/Functions/CalculateVoxelLight.js";
+import type { DirectionNames, EngineSettingsData, VoxelData, VoxelSubstanceType } from "Meta/index.js";
+import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
-import { CalculateFlow } from "../../../Constants/Meshing/Functions/CalculateFlow.js";
+import { CalculateFlow } from "./Functions/CalculateFlow.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -380,17 +380,79 @@ export declare const Processor: {
             setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
             getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
         };
-        _air: string[];
-        _barrier: string[];
+        voxelMatrix: {
+            byteLength: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+                totalLength: number;
+            };
+            indexes: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            matrixMap: {
+                substanceMap: Record<VoxelSubstanceType, number>;
+                substanceRecord: Record<number, VoxelSubstanceType>;
+            };
+            voxelData: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            voxelDataView: DataView;
+            voxelMap: Uint16Array;
+            syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+            getVoxelData(id: number): {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            getSubstance(id: number): number;
+            getTrueSubstance(id: number): VoxelSubstanceType;
+            getShapeId(id: number): number;
+            getHardness(id: number): number;
+            getCheckCollisions(id: number): number;
+            getColliderId(id: number): number;
+            isLightSource(id: number): number;
+            getLightValue(id: number): number;
+        };
+        _air: [string, number];
+        /**# Chunk Processor
+         * ---
+         * Takes the given world data and generates templates
+         * to build chunk meshes.
+         */
+        _barrier: [string, number];
         updateDieTime: number;
         loadDieTime: number;
         regions: import("Meta/Matrix/Matrix.types.js").MatrixLoadedRegion;
         chunks: Record<string, Uint32Array>;
         chunkStates: Record<string, Uint8Array>;
         paletteMode: number;
-        globalVoxelPalette: Record<number, string>;
-        globalVoxelPaletteRecord: Record<string, string[]>;
-        globalVoxelPaletteMap: Record<string, number>;
+        voxelPalette: Record<number, string>;
+        voxelPaletteMap: Record<string, number>;
         voxelManager: import("../../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface | null;
         lightValueFunctions: {
             r: (value: number) => number;
@@ -401,23 +463,28 @@ export declare const Processor: {
         threadName: string;
         setVoxelManager(voxelManager: import("../../../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
-        getVoxelPalette(voxelId: string, voxelState: string): number;
+        getVoxelPaletteNumericId(voxelId: string, voxelState: number): number;
         awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-        __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
-        getVoxel(x: number, y: number, z: number, secondary?: boolean): false | string[];
+        __setGlobalVoxelPalette(palette: Record<number, string>, map: Record<string, number>): void;
+        getVoxel(x: number, y: number, z: number, secondary?: boolean): false | [string, number];
         getVoxelShapeState(x: number, y: number, z: number): number;
         getLevel(x: number, y: number, z: number): number;
         setLevel(level: number, x: number, y: number, z: number): void;
         getLevelState(x: number, y: number, z: number): number;
         setLevelState(state: number, x: number, y: number, z: number): void;
-        setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
-        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
-        getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
+        setVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): false | undefined;
+        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelSubstance: VoxelSubstanceType, chunk: MatrixLoadedChunk): void;
+        getVoxelPaletteIdForWorldGen(voxelId: string, voxelStateId: number): number;
         getVoxelData(x: number, y: number, z: number, secondary?: boolean): false | VoxelData;
         _createRegion(x: number, y: number, z: number): {
             chunks: {};
         };
         __setChunk(x: number, y: number, z: number, voxelsSAB: SharedArrayBuffer, voxelStatesSAB: SharedArrayBuffer, heightMapSAB: SharedArrayBuffer, minMaxMapSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
+        getVoxelSubstance(x: number, y: number, z: number, secondary?: boolean): VoxelSubstanceType;
+        getVoxelShapeId(x: number, y: number, z: number, secondary?: boolean): number;
+        isVoxelALightSource(x: number, y: number, z: number, secondary?: boolean): boolean;
+        getLightSourceValue(x: number, y: number, z: number, secondary?: boolean): number;
+        isAir(x: number, y: number, z: number): boolean;
         getRegion(x: number, y: number, z: number): false | {
             palette?: import("../../../Meta/World/WorldData/World.types.js").WorldRegionPalette | undefined;
             chunks: Record<string, Record<string, MatrixLoadedChunk>>;
@@ -463,13 +530,14 @@ export declare const Processor: {
     template: FullChunkTemplate;
     faceIndexMap: Record<DirectionNames, number>;
     $INIT(): void;
-    getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | string[];
-    getVoxelData(x: number, y: number, z: number, getSecond?: boolean): false | VoxelData;
+    getVoxelSubstance(x: number, y: number, z: number, getSecond?: boolean): VoxelSubstanceType;
+    getVoxelShapeId(x: number, y: number, z: number, getSecond?: boolean): number;
+    getVoxel(x: number, y: number, z: number, getSecond?: boolean): false | [string, number];
     getVoxelShapeState(x: number, y: number, z: number, getSecond?: boolean): number;
     getVoxelLevel(x: number, y: number, z: number, getSecond?: boolean): number;
     getVoxelLevelState(x: number, y: number, z: number, getSecond?: boolean): number;
     getLight(x: number, y: number, z: number): number;
-    cullCheck(face: DirectionNames, voxel: VoxelConstructorObject, voxelState: string, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelId: string, voxelShapeId: number, voxelSubstance: VoxelSubstanceType, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;

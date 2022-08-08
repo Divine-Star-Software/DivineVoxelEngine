@@ -22,7 +22,7 @@ export const WorldGen = {
      if (y < currentY) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y + chunkY,
        z + chunkZ
@@ -32,7 +32,7 @@ export const WorldGen = {
      if (Math.random() < 0.01 && y == currentY) {
       DVEW.worldData.paintVoxel(
        "dve:dreamlamp",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y + chunkY,
        z + chunkZ

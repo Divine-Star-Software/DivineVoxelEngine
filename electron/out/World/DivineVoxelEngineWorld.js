@@ -17,6 +17,7 @@ import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorComm
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
 import { VoxelMatrix } from "./Matrix/VoxelMatrix.js";
+import { MatrixMap } from "./Matrix/MatrixMap.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
@@ -35,6 +36,7 @@ export const DVEW = {
     matrix: Matrix,
     matrixCentralHub: MatrixCentralHub,
     voxelMatrix: VoxelMatrix,
+    matrixMap: MatrixMap,
     fxComm: FXComm,
     dataComm: DataComm,
     nexusComm: NexusComm,
@@ -48,10 +50,10 @@ export const DVEW = {
     itemManager: ItemManager,
     queues: QueuesManager,
     isReady() {
-        let ready = DVEW.constructorCommManager.isReady() &&
+        return (DVEW.constructorCommManager.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
-            DVEW.__renderIsDone;
-        return ready;
+            DVEW.__renderIsDone &&
+            DVEW.matrixMap.isReady());
     },
     syncSettings(data) {
         this.settings.syncSettings(data);

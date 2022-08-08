@@ -1,8 +1,8 @@
 //types
-import type { VoxelData } from "Meta/index";
+import type { VoxelData, VoxelSubstanceType } from "Meta/index";
 
 export const VoxelHelper = {
- substanceMap: <Record<string, number>>{
+ substanceMap: <Record<VoxelSubstanceType, number>>{
   solid: 1,
   flora: 2,
   transparent: 3,
@@ -47,24 +47,20 @@ export const VoxelHelper = {
  $INIT() {
   for (const s1 of Object.keys(this.substanceMap)) {
    for (const s2 of Object.keys(this.substanceMap)) {
-    const v1 = this.substanceMap[s1];
-    const v2 = this.substanceMap[s2];
+    const v1 = (this as any).substanceMap[s1];
+    const v2 = (this as any).substanceMap[s2];
     const fv = v1 * 5 - 5 + v2;
     this.ruleMap[fv] = this.substanceRules[`${s1}-${s2}`];
    }
   }
+  (this as any).substanceRules = null;
  },
 
- substanceRuleCheck(voxel: VoxelData, neightborVoxel: VoxelData) {
+ substanceRuleCheck(voxel: VoxelSubstanceType, neightborVoxel: VoxelSubstanceType) {
   const v =
-   this.substanceMap[voxel.substance] * 5 -
+   this.substanceMap[voxel] * 5 -
    5 +
-   this.substanceMap[neightborVoxel.substance];
-/*   if (this.substanceRules[`${voxel.substance}-${neightborVoxel.substance}`]) {
-   return true;
-  } else {
-   return false;
-  } */
+   this.substanceMap[neightborVoxel];
   return this.ruleMap[v];
  },
 };

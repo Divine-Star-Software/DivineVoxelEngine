@@ -3,7 +3,6 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT({});
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 let startX = -128;
 let startZ = -128;
 let endX = 128;

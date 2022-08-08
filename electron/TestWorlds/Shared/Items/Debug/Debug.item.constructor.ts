@@ -1,10 +1,14 @@
 import { ItemConstructorObject } from "../../../../out/Meta/Items/Item.types";
-import { DebugItemData } from "./Debug.item.data.js";
-
+let uv = 0;
 export const DebugItemConstructorObject: ItemConstructorObject = {
- data: DebugItemData,
+ id: "dve:debug-item",
+ shapeId: "debug",
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   uv = DVEB.textureManager.getTextureUV("Item", "debug");
+  },
+ },
  process(data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV("Item", "debug");
   data.uvs.push(uv);
  },
 };

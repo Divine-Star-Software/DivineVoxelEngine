@@ -1,21 +1,6 @@
-import {
- DivineVoxelEngineBuilder,
- DVEB,
-} from "../../../../../out/Constructor/Builder/DivineVoxelEngineBuilder.js";
+import { DivineVoxelEngineBuilder } from "../../../../../out/Constructor/Builder/DivineVoxelEngineBuilder.js";
 import { VoxelProcessData } from "../../../../../out/Meta/Constructor/Voxel.types.js";
 import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
-import { LiquidDreamEtherVoxelData } from "./LiquidDreamEther.voxel.data.js";
-
-const sets = [
- [1, 0],
- [-1, 0],
- [0, 1],
- [0, -1],
- [1, 1],
- [-1, -1],
- [-1, 1],
- [1, -1],
-];
 
 const checkSets = {
  north: [
@@ -40,45 +25,26 @@ const checkSets = {
  ],
 };
 
-type uvFunc = (DVEB: DivineVoxelEngineBuilder) => number;
-const uvsSets: Record<string, Record<string, uvFunc>> = {
+const overlayTextures: number[] = [];
+
+const uvsSets: Record<string, Record<string, number>> = {
  north: {
-  "0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "top", true);
-  },
-  "1|0|1|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "ctr", true);
-  },
-  "1|1|0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "ctl", true);
-  },
-  "1|0|0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "ctltr", true);
-  },
+  "0|": 0,
+  "1|0|1|": 1,
+  "1|1|0|": 2,
+  "1|0|0|": 3,
  },
  south: {
-  "0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "bottom", true);
-  },
-  "1|0|1|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "cbr", true);
-  },
-  "1|1|0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "cbl", true);
-  },
-  "1|0|0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "cblbr", true);
-  },
+  "0|": 4,
+  "1|0|1|": 5,
+  "1|1|0|": 6,
+  "1|0|0|": 7,
  },
  east: {
-  "0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "right", true);
-  },
+  "0|": 8,
  },
  west: {
-  "0|": (DVEB) => {
-   return DVEB.textureManager.getTextureUV("fluid", "foam", "left", true);
-  },
+  "0|": 9,
  },
 };
 
@@ -106,8 +72,9 @@ const getUV = (
   }
  }
 
- if (!uvsSets[direction][key]) return 0;
- return uvsSets[direction][key](DVEB);
+ if (uvsSets[direction][key] == undefined) return 0;
+ const index = uvsSets[direction][key];
+ return overlayTextures[index];
 };
 
 const getFoamUV = (DVEB: DivineVoxelEngineBuilder, data: VoxelProcessData) => {
@@ -122,16 +89,32 @@ const getFoamUV = (DVEB: DivineVoxelEngineBuilder, data: VoxelProcessData) => {
  );
 };
 
+let uv = 0;
 export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
- data: LiquidDreamEtherVoxelData,
+ id: "dve:liquiddreamether",
  trueShapeId: 1,
- hooks: {},
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   uv = DVEB.textureManager.getTextureUV(
+    "fluid",
+    "liquid-dream-ether",
+    "still-1"
+   );
+   overlayTextures.push(
+    DVEB.textureManager.getTextureUV("fluid", "foam", "top", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "ctr", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "ctl", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "ctltr", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "bottom", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "cbr", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "cbl", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "cblbr", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "right", true),
+    DVEB.textureManager.getTextureUV("fluid", "foam", "left", true)
+   );
+  },
+ },
  process: function (data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV(
-   "fluid",
-   "liquid-dream-ether",
-   "still-1"
-  );
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
    if (data.level == 15 && data.levelState != 1) {
@@ -139,8 +122,6 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
    } else {
     data.overlayUVTemplate.push(0, 0, 0, 0);
    }
-
-   //data.overlayUVTemplate.push(foamUV,foamUV ,foamUV,foamUV);
   }
   if (data.exposedFaces[1]) {
    data.uvTemplate.push(uv);

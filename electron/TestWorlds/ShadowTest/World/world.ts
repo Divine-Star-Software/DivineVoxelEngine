@@ -8,7 +8,7 @@ RegisterVoxels(DVEW);
 
 await DVEW.$INIT({});
 console.log("start");
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+
 
 WorldGen.generateChunk(0, 0);
 WorldGen.generateChunk(-16, 0);

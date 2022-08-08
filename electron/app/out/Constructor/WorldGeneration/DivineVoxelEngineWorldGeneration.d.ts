@@ -188,9 +188,9 @@ export declare const DVEWG: {
     setWorldGen(worldGen: WorldGenInterface): void;
     generate(x: number, z: number, data: any): Promise<void>;
     __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
-    getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
-    _paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
+    getVoxelPaletteId(voxelId: string, voxelStateId: number): number;
+    _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
     _addToRGBLightUpdateQue(voxelData: VoxelData, x: number, y: number, z: number): void;
-    paintVoxel(voxelId: string, voxelState: string, shapeState: number, x: number, y: number, z: number): Promise<void>;
+    paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
 };
 export declare type DivineVoxelEngineWorldGeneration = typeof DVEWG;

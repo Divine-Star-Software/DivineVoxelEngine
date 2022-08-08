@@ -147,33 +147,21 @@ export const WorldData = {
         const voxelData = this.getData(x, y, z, secondary);
         if (voxelData < 0 || voxelData === false)
             return false;
-        if (voxelData >= 0) {
-            const voxelId = this.voxelByte.getId(voxelData);
-            if (voxelId == 0) {
-                return [-1, voxelData, 0];
-            }
-            else {
-                let voxelTrueID = "";
-                let voxelState = "";
-                const check = DVEW.worldGeneration.voxelPalette.getVoxelData(voxelId);
-                if (check) {
-                    voxelTrueID = check[0];
-                    voxelState = check[1];
-                }
-                else {
-                    return false;
-                }
-                let voxelStateRaw = this.getData(x, y, z, true);
-                if (!voxelStateRaw)
-                    voxelStateRaw = 0;
-                const voxelShapeState = this.voxelByte.getShapeState(voxelStateRaw);
-                const voxel = DVEW.voxelManager.getVoxelData(voxelTrueID);
-                return [voxel, voxelState, voxelShapeState];
-            }
-        }
-        else {
+        if (voxelData < 0)
             return false;
-        }
+        const voxelId = this.voxelByte.getId(voxelData);
+        if (voxelId == 0)
+            return [-1, voxelData, 0];
+        const voxelTrueID = DVEW.worldGeneration.voxelPalette.getVoxelTrueId(voxelId);
+        if (!voxelTrueID)
+            return false;
+        const voxelStateId = DVEW.worldGeneration.voxelPalette.getVoxelState(voxelId);
+        let voxelStateRaw = this.getData(x, y, z, true);
+        if (!voxelStateRaw)
+            voxelStateRaw = 0;
+        const voxelShapeState = this.voxelByte.getShapeState(voxelStateRaw);
+        const voxel = DVEW.voxelManager.getVoxelData(voxelTrueID);
+        return [voxel, voxelStateId, voxelShapeState];
     },
     addRegion(x, y, z) {
         const newRegion = DVEW.worldGeneration.getBlankRegion();
@@ -212,7 +200,7 @@ export const WorldData = {
                 DVEW.queues.addToRGBUpdateQue(x, y, z);
             }
         }
-        if (voxelData.rich) {
+        if (voxelData.isRich) {
             DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
         }
     },
@@ -406,7 +394,7 @@ export const WorldData = {
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
         }
-        if (voxelData.rich) {
+        if (voxelData.isRich) {
             DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
         }
     },
@@ -445,7 +433,7 @@ export const WorldData = {
             DVEW.queues.runRebuildQue();
             await DVEW.queues.awaitAllChunksToBeBuilt();
         }
-        if (voxelData.rich) {
+        if (voxelData.isRich) {
             DVEW.richWorldComm.removeRichData(x, y, z);
         }
     },

@@ -169,12 +169,13 @@ export function runRGBFloodRemove(lightSource) {
         DVEP.addToRebuildQue(x, y, z, "all");
     }
     if (lightSource) {
-        const voxelData = DVEC.worldMatrix.getVoxelData(lightSource.x, lightSource.y, lightSource.z);
+        const voxelData = DVEC.worldMatrix.getVoxel(lightSource.x, lightSource.y, lightSource.z);
         if (!voxelData) {
             DVEC.worldMatrix.setData(lightSource.x, lightSource.y, lightSource.z, DVEC.UTIL.getVoxelByte().setId(1, 0));
         }
         else {
-            if (voxelData.lightSource) {
+            const isLightSource = DVEC.worldMatrix.isVoxelALightSource(lightSource.x, lightSource.y, lightSource.z);
+            if (isLightSource) {
                 DVEC.worldMatrix.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
             }
         }

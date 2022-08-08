@@ -20,17 +20,17 @@ export const WorldGen = {
      if (y <= baseY + 5) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstone",
-       "default",
+       0,
        0,
        x + chunkX,
        y + chunkY,
        z + chunkZ
       );
      }
-     if (airPillar && y > baseY + 10 && y <= baseY + 10  + add ) {
+     if (airPillar && y > baseY + 10 && y <= baseY + 10 + add) {
       DVEW.worldData.paintVoxel(
        voxel,
-       "default",
+       0,
        0,
        x + chunkX,
        y + chunkY,
@@ -44,7 +44,7 @@ export const WorldGen = {
      ) {
       DVEW.worldData.paintVoxel(
        voxel,
-       "default",
+       0,
        0,
        x + chunkX,
        y + chunkY,
@@ -61,7 +61,7 @@ export const WorldGen = {
      ) {
       DVEW.worldData.paintVoxel(
        voxel,
-       "default",
+       0,
        0,
        x + chunkX,
        y + chunkY,
@@ -74,7 +74,7 @@ export const WorldGen = {
       if (flip) {
        DVEW.worldData.paintVoxel(
         "dve:dreamgrass",
-        "default",
+        0,
         0,
         x + chunkX,
         y + chunkY,

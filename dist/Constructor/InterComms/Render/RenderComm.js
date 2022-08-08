@@ -27,5 +27,9 @@ renderComm.messageFunctions = {
         DVEC.DVEB.textureManager.setUVTextureMap(uvTextureMap);
         DVEC.DVEB.textureManager.setOverlayUVTextureMap(overlayUVTextureMap);
         DVEC.voxelManager.runVoxelHookForAll("texturesRegistered");
+        DVEC.itemManager.runItemHookForAll("texturesRegistered");
+        DVEC.DVEB.textureManager.releaseTextureData();
+        DVEC.voxelManager.removeVoxelHookForAll("texturesRegistered");
+        DVEC.itemManager.removeItemHookForAll("texturesRegistered");
     },
 };

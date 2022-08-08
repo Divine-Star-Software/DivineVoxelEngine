@@ -23,8 +23,8 @@ const runLightRemove = () => {
 };
 const runAdd = () => {
     setTimeout(async () => {
-        await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 0, 10, 0);
-        await DVEW.worldData.requestVoxelAdd("dve:dreamstone", "default", 0, 0, 10, -10);
+        await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, 0);
+        await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, -10);
         runLightRemove();
     }, 2000);
 };
@@ -50,9 +50,9 @@ console.log(t2 - t1);
 //-1 10 0
 //0 10 -1
 buildAll();
-await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", "default", 0, 23, 6, -8);
+await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", 0, 0, 23, 6, -8);
 setTimeout(async () => {
-    await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, x, 12, z + 5);
+    await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, x, 12, z + 5);
     runRemove();
 }, 2000);
 self.DVEW = DVEW;

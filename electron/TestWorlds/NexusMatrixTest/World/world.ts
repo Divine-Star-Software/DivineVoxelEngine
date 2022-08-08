@@ -28,7 +28,7 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+
 DVEW.nexusComm.sendMessage("done", []);
 
 (self as any).DVEW = DVEW;

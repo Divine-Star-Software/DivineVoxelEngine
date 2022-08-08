@@ -1,47 +1,41 @@
 import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
-import { DreamGrassBlockVoxelData } from "./DreamGrassBlock.voxel.data.js";
-
+let uv = 0;
 export const DreamGrassBlockVoxelBuilderThread: VoxelConstructorObject = {
- data: DreamGrassBlockVoxelData,
+ id: "dve:dreamgrassblock",
  trueShapeId: 1,
- hooks: {},
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   uv = DVEB.textureManager.getTextureUV(
+    "flora",
+    "dreamgrassblock",
+    "grassy-top"
+   );
+  },
+ },
  process: function (data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV(
-   "flora",
-   "dreamgrassblock",
-   "grassy-top"
-  );
-
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
-   const ouv = DVEB.textureManager.getTextureUV(
-    "flora",
-    "dreamgrass-overlay",
-    false,
-    true
-   );
- 
-   data.overlayUVTemplate.push(ouv);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[1]) {
    data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[2]) {
    data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[3]) {
    data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[4]) {
    data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
   if (data.exposedFaces[5]) {
    data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0,0,0,0);
+   data.overlayUVTemplate.push(0, 0, 0, 0);
   }
 
   DVEB.processor.processVoxelLight(data);

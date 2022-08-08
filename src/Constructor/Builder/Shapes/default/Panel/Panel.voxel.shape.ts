@@ -158,7 +158,7 @@ export const PanelVoxelShape: VoxelShapeInterface = {
   if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
    return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
   }
-  if (data.voxel.substance == "flora") {
+  if (data.voxelSubstance == "flora") {
    return false;
   }
   return data.substanceResult;

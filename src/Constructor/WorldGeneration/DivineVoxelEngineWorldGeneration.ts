@@ -27,7 +27,6 @@ export const DVEWG = {
    throw new Error(`A World Generator must be set.`);
   }
 
- 
   await this.worldGen.generate(this, x, z, data);
 
   DVEC.queues.finishGenerating();
@@ -52,8 +51,8 @@ export const DVEWG = {
   this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
  },
 
- getVoxelPaletteId(voxelId: string, voxelStateId: string) {
-  const paletteId = WorldMatrix.getVoxelPalette(voxelId, voxelStateId);
+ getVoxelPaletteId(voxelId: string, voxelStateId: number) {
+  const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
   if (paletteId) {
    return this.voxelByte.setId(paletteId, 0);
   }
@@ -62,13 +61,13 @@ export const DVEWG = {
 
  _paintVoxel(
   voxelId: string,
-  voxelStateId: string,
+  voxelStateId: number,
   shapeState: number,
   x: number,
   y: number,
   z: number
  ) {
-  const chunk = WorldMatrix.getChunk(x, y, z);
+/*   const chunk = WorldMatrix.getChunk(x, y, z);
   if (!chunk) {
    throw new Error("Chunk could not be loaded");
   }
@@ -87,7 +86,7 @@ export const DVEWG = {
   this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
   if (DVEC.settings.doRGBPropagation()) {
    this._addToRGBLightUpdateQue(voxelData, x, y, z);
-  }
+  } */
  },
 
  _addToRGBLightUpdateQue(
@@ -106,7 +105,7 @@ export const DVEWG = {
 
  async paintVoxel(
   voxelId: string,
-  voxelState: string,
+  voxelState: number,
   shapeState: number,
   x: number,
   y: number,

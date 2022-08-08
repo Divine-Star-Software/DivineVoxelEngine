@@ -1,15 +1,23 @@
-import { DebugBoxVoxelData } from "./DebugBox.voxel.data.js";
+let topUV = 0;
+let bottomUV = 0;
+let northUV = 0;
+let southUV = 0;
+let eastUV = 0;
+let westUV = 0;
 export const DebugBoxVoxelBuilderThread = {
-    data: DebugBoxVoxelData,
+    id: "dve:debugbox",
     trueShapeId: 1,
-    hooks: {},
+    hooks: {
+        texturesRegistered: (DVEB) => {
+            topUV = DVEB.textureManager.getTextureUV("solid", "debug", "top");
+            bottomUV = DVEB.textureManager.getTextureUV("solid", "debug", "bottom");
+            northUV = DVEB.textureManager.getTextureUV("solid", "debug", "north");
+            southUV = DVEB.textureManager.getTextureUV("solid", "debug", "south");
+            eastUV = DVEB.textureManager.getTextureUV("solid", "debug", "east");
+            westUV = DVEB.textureManager.getTextureUV("solid", "debug", "west");
+        },
+    },
     process(data, DVEB) {
-        let topUV = DVEB.textureManager.getTextureUV("solid", "debug", "top");
-        let bottomUV = DVEB.textureManager.getTextureUV("solid", "debug", "bottom");
-        let northUV = DVEB.textureManager.getTextureUV("solid", "debug", "north");
-        let southUV = DVEB.textureManager.getTextureUV("solid", "debug", "south");
-        let eastUV = DVEB.textureManager.getTextureUV("solid", "debug", "east");
-        let westUV = DVEB.textureManager.getTextureUV("solid", "debug", "west");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
             data.overlayUVTemplate.push(0, 0, 0, 0);

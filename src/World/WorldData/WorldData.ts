@@ -156,12 +156,11 @@ export const WorldData = {
   );
  },
 
- getVoxelPaletteId(voxelId: string, voxelStateId: string) {
-  const paletteId =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
-    voxelId,
-    voxelStateId
-   );
+ getVoxelPaletteId(voxelId: string, voxelStateId: number) {
+  const paletteId = DVEW.worldGeneration.voxelPalette.getVoxelPaletteId(
+   voxelId,
+   voxelStateId
+  );
   if (paletteId) {
    return this.voxelByte.setId(paletteId, 0);
   }
@@ -175,35 +174,21 @@ export const WorldData = {
   secondary = false
  ): [VoxelData | number, string | number, number] | false {
   const voxelData = this.getData(x, y, z, secondary);
-
   if (voxelData < 0 || voxelData === false) return false;
+  if (voxelData < 0) return false;
+  const voxelId = this.voxelByte.getId(voxelData);
+  if (voxelId == 0) return [-1, voxelData, 0];
 
-  if (voxelData >= 0) {
-   const voxelId = this.voxelByte.getId(voxelData);
+  const voxelTrueID = DVEW.worldGeneration.voxelPalette.getVoxelTrueId(voxelId);
+  if (!voxelTrueID) return false;
+  const voxelStateId = DVEW.worldGeneration.voxelPalette.getVoxelState(voxelId);
 
-   if (voxelId == 0) {
-    return [-1, voxelData, 0];
-   } else {
-    let voxelTrueID: string = "";
-    let voxelState: string = "";
-    const check =
-     DVEW.worldGeneration.voxelPalette.getVoxelData(voxelId);
-    if (check) {
-     voxelTrueID = check[0];
-     voxelState = check[1];
-    } else {
-     return false;
-    }
-    let voxelStateRaw = this.getData(x, y, z, true);
-    if (!voxelStateRaw) voxelStateRaw = 0;
-    const voxelShapeState = this.voxelByte.getShapeState(voxelStateRaw);
+  let voxelStateRaw = this.getData(x, y, z, true);
+  if (!voxelStateRaw) voxelStateRaw = 0;
+  const voxelShapeState = this.voxelByte.getShapeState(voxelStateRaw);
 
-    const voxel = DVEW.voxelManager.getVoxelData(voxelTrueID);
-    return [voxel, voxelState, voxelShapeState];
-   }
-  } else {
-   return false;
-  }
+  const voxel = DVEW.voxelManager.getVoxelData(voxelTrueID);
+  return [voxel, voxelStateId, voxelShapeState];
  },
 
  addRegion(x: number, y: number, z: number): WorldRegion {
@@ -229,7 +214,7 @@ export const WorldData = {
 
  paintVoxel(
   voxelId: string,
-  voxelStateId: string,
+  voxelStateId: number,
   shapeState: number,
   x: number,
   y: number,
@@ -251,7 +236,7 @@ export const WorldData = {
     DVEW.queues.addToRGBUpdateQue(x, y, z);
    }
   }
-  if (voxelData.rich) {
+  if (voxelData.isRich) {
    DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
   }
  },
@@ -277,10 +262,10 @@ export const WorldData = {
 
  paintDualVoxel(
   voxelId: string,
-  voxelStateId: string,
+  voxelStateId: number,
   shapeState: number,
   secondVoxelId: string,
-  secondVoxelStateId: string,
+  secondVoxelStateId: number,
   x: number,
   y: number,
   z: number
@@ -465,7 +450,7 @@ export const WorldData = {
 
  async requestVoxelAdd(
   voxelId: string,
-  voxelStateId: string,
+  voxelStateId: number,
   shapeState: number,
   x: number,
   y: number,
@@ -526,7 +511,7 @@ export const WorldData = {
    await DVEW.queues.awaitAllChunksToBeBuilt();
   }
 
-  if (voxelData.rich) {
+  if (voxelData.isRich) {
    DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
   }
  },
@@ -566,7 +551,7 @@ export const WorldData = {
    await DVEW.queues.awaitAllChunksToBeBuilt();
   }
 
-  if (voxelData.rich) {
+  if (voxelData.isRich) {
    DVEW.richWorldComm.removeRichData(x, y, z);
   }
  },

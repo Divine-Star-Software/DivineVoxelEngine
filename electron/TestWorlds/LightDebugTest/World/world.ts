@@ -29,7 +29,7 @@ const runAdd = () => {
  setTimeout(async () => {
   await DVEW.worldData.requestVoxelAdd(
    "dve:dreamstone",
-   "default",
+   0,
    0,
    0,
    10,
@@ -37,7 +37,7 @@ const runAdd = () => {
   );
   await DVEW.worldData.requestVoxelAdd(
    "dve:dreamstone",
-   "default",
+   0,
    0,
    0,
    10,
@@ -72,12 +72,12 @@ console.log(t2 - t1);
 //-1 10 0
 //0 10 -1
 buildAll();
-await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", "default", 0, 23, 6, -8);
+await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", 0, 0, 23, 6, -8);
 
 setTimeout(async () => {
  await DVEW.worldData.requestVoxelAdd(
   "dve:debugbox",
-  "default",
+  0,
   0,
   x,
   12,

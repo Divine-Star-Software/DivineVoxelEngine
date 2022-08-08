@@ -41,23 +41,23 @@ export const WorldGen = {
                     let ty = y + chunkY;
                     let tz = z + chunkZ;
                     if (pillarFluid && y < spikeHeight + maxY + add * spaceHeight) {
-                        DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+                        DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
                         continue;
                     }
                     if (pondPilar && y <= pondY + pondPillarSpikeHeight) {
                         if (y == pondY + pondPillarSpikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
                         }
                         else {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                         }
                     }
                     else {
                         if (y <= 20 + pondSpikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                         }
                         if (y >= 20 + pondSpikeHeight && y <= pondY) {
-                            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
                         }
                     }
                     if (y >= maxY + add * spaceHeight - spikeHeight + 5 &&
@@ -69,28 +69,28 @@ export const WorldGen = {
                         }
                         if (y < maxY + spaceHeight) {
                             if (!pillar) {
-                                DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, tx, ty, tz);
+                                DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, tx, ty, tz);
                             }
                             else {
                                 if (y == maxY + add * spaceHeight - spikeHeight + 5) {
-                                    DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, tx, ty, tz);
+                                    DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
                                 }
                                 else {
-                                    DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                                    DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                                 }
                             }
                         }
                         else {
-                            DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, tx, ty, tz);
                         }
                     }
                     if (y == maxY + add * spaceHeight + spikeHeight + 1) {
                         if (Math.random() > 0.9) {
-                            DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamgrass", 0, 0, tx, ty, tz);
                         }
                         else {
                             if (Math.random() > 0.98) {
-                                DVEW.worldData.paintVoxel("dve:dreamstoneslab", "default", 0, tx, ty, tz);
+                                DVEW.worldData.paintVoxel("dve:dreamstoneslab", 0, 0, tx, ty, tz);
                             }
                         }
                     }
@@ -114,21 +114,21 @@ export const WorldGen = {
                     let tz = z + chunkZ;
                     if (!pillar) {
                         if (y <= maxY - spaceHeight + 1) {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                         }
                         if (y > maxY - spaceHeight && y <= maxY - spaceHeight + spikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                         }
                         if (y <= maxY && y >= maxY - spaceHeight + spikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
                         }
                     }
                     else {
                         if (y < maxY + spaceHeight + pillarHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
                         }
                         if (y == maxY + spaceHeight + pillarHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreamlamp", "default", 0, tx, ty, tz);
+                            DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
                         }
                     }
                 }

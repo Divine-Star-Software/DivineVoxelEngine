@@ -49,5 +49,4 @@ export const DVEN = {
         this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
     },
 };
-DVEN.matrixHub.setThreadName("nexus");
 DVEN.environment = Util.getEnviorment();

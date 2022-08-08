@@ -33,4 +33,5 @@ export async function BuildInitalMeshes(DVER, scene) {
     await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
     await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
     DVER.renderManager.animationManager.startAnimations();
+    DVER.textureManager.releaseTextureData();
 }

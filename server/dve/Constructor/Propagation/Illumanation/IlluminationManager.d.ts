@@ -1,3 +1,4 @@
+import { Queue } from "Global/Util/Queue.js";
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
 import { PopulateWorldColumnWithSunLight, RunSunLightFloodDown, RunSunLightFloodOut, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
 export declare const IlluminationManager: {
@@ -46,9 +47,9 @@ export declare const IlluminationManager: {
     runSunLightFloodDown: typeof RunSunLightFloodDown;
     runSunLightFloodOut: typeof RunSunLightFloodOut;
     sunLightAboveCheck: typeof SunLightAboveCheck;
-    _sunLightUpdateQue: number[][];
-    _sunLightFloodDownQue: number[][];
-    _sunLightFloodOutQue: Record<string, number[][]>;
+    _sunLightUpdateQue: Queue<number[]>;
+    _sunLightFloodDownQue: Queue<number[]>;
+    _sunLightFloodOutQue: Record<string, Queue<number[]>>;
     _sunLightRemoveQue: number[][];
     runRGBFloodFillAt: typeof runRGBFloodFillAt;
     runRGBFloodFill: typeof runRGBFloodFill;

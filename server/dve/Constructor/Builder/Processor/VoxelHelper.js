@@ -43,16 +43,12 @@ export const VoxelHelper = {
                 this.ruleMap[fv] = this.substanceRules[`${s1}-${s2}`];
             }
         }
+        this.substanceRules = null;
     },
     substanceRuleCheck(voxel, neightborVoxel) {
-        const v = this.substanceMap[voxel.substance] * 5 -
+        const v = this.substanceMap[voxel] * 5 -
             5 +
-            this.substanceMap[neightborVoxel.substance];
-        /*   if (this.substanceRules[`${voxel.substance}-${neightborVoxel.substance}`]) {
-           return true;
-          } else {
-           return false;
-          } */
+            this.substanceMap[neightborVoxel];
         return this.ruleMap[v];
     },
 };

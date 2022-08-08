@@ -5,11 +5,7 @@ export const DataHolderVoxelData = {
     substance: "solid",
     material: "stone",
     hardnress: 1000,
-    rich: {
-        initalData: {
-            data: "THIS A PLACE HOLDER DATA",
-        },
-    },
+    isRich: true,
     physics: {
         collider: "Box",
         checkCollisions: true,

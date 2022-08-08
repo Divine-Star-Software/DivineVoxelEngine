@@ -1,3 +1,4 @@
+import { VoxelSubstanceType } from "Meta/index";
 export declare const VoxelDataByteLengths: {
     substance: number;
     shapeId: number;
@@ -19,3 +20,5 @@ export declare const VoxelDataIndexes: {
     lightSource: number;
     lightValue: number;
 };
+export declare const VoxelSubstanceMap: Record<VoxelSubstanceType, number>;
+export declare const VoxelSubstanceRecord: Record<number, VoxelSubstanceType>;

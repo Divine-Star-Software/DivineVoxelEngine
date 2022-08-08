@@ -248,8 +248,8 @@ export const FluidSourceBlockVoxelShape = {
             return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
         }
         if (data.face == "top" &&
-            data.neighborVoxel.substance != "fluid" &&
-            data.voxel.id != data.neighborVoxel.id) {
+            data.neighborVoxelSubstance != "fluid" &&
+            data.voxelId != data.neighborVoxelId) {
             return true;
         }
         return data.substanceResult;

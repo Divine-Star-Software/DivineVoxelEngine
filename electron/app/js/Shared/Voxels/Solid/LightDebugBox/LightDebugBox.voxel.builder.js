@@ -1,7 +1,6 @@
-import { LightDebugBoxVoxelData } from "./LightDebugBox.voxel.data.js";
 let lightDebugBoxTextures = {};
 export const LightDebugBoxVoxelBuilderThread = {
-    data: LightDebugBoxVoxelData,
+    id: "dve:lightdebug",
     trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {

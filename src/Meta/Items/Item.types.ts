@@ -2,15 +2,19 @@ import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEn
 
 export type ItemData = {
  id: string;
- shapeId: string;
  data: any;
 };
 
 export type ItemProcessData = {
  uvs: number[];
 };
-
+export type ItemConstructorThreadHooks = "texturesRegistered" | any;
 export type ItemConstructorObject = {
- data: ItemData;
+ id: string;
+ shapeId: string;
+ hooks: Record<
+  ItemConstructorThreadHooks,
+  (DVEB: DivineVoxelEngineBuilder) => any
+ >;
  process(data: ItemProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };

@@ -15,7 +15,7 @@ export function runRGBFloodFill(this: typeof IlluminationManager) {
   const y = node[1];
   const z = node[2];
   const sl = DVEC.worldMatrix.getLight(x, y, z);
-  if(sl == -1) continue;
+  if (sl == -1) continue;
 
   const n1 = DVEC.worldMatrix.getLight(x - 1, y, z);
   if (n1 > -1 && this.lightByte.isLessThanForRGBAdd(n1, sl)) {
@@ -226,7 +226,7 @@ export function runRGBFloodRemove(
  }
 
  if (lightSource) {
-  const voxelData = DVEC.worldMatrix.getVoxelData(
+  const voxelData = DVEC.worldMatrix.getVoxel(
    lightSource.x,
    lightSource.y,
    lightSource.z
@@ -240,7 +240,12 @@ export function runRGBFloodRemove(
     DVEC.UTIL.getVoxelByte().setId(1, 0)
    );
   } else {
-   if (voxelData.lightSource) {
+   const isLightSource = DVEC.worldMatrix.isVoxelALightSource(
+    lightSource.x,
+    lightSource.y,
+    lightSource.z
+   );
+   if (isLightSource) {
     DVEC.worldMatrix.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
    }
   }

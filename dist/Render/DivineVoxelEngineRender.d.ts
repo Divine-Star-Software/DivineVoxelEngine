@@ -451,6 +451,7 @@ export declare const DVER: {
         defineDefaultTextureExtension(textureType: import("../Meta/index.js").TextureTypes, ext: string): void;
         getTextureUV(textureType: import("../Meta/index.js").TextureTypes, textureId: string, varation?: string | undefined): number;
         registerTexture(textureType: import("../Meta/index.js").TextureTypes, textureData: import("../Meta/index.js").TextureData): void;
+        releaseTextureData(): void;
     };
     renderedEntites: {
         scene: BABYLON.Scene | null;
@@ -474,6 +475,7 @@ export declare const DVER: {
         }) => Promise<boolean>;
         getWorkerPort: (environment: "node" | "browser") => Promise<any>;
         getEnviorment(): "node" | "browser";
+        getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -759,22 +761,6 @@ export declare const DVER: {
                 x: number;
                 z: number;
             };
-        };
-        getInfoByte(number?: number): {
-            maxBit: number;
-            minBit: number;
-            maxDec: number;
-            minDec: number;
-            byteValue: number;
-            getNumberValue(): number;
-            setNumberValue(newValue: number): void;
-            getBit(index: number): 0 | 1;
-            getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
-            getHalfByteDec(bitIndex: number): number;
-            setHalfByteBits(index: number, value: number): void;
-            setBit(index: number, value: 0 | 1): void;
-            toArray(): (0 | 1)[];
-            toString(delimiter?: string): string;
         };
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;

@@ -1,10 +1,9 @@
 import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
-import { LightDebugBoxVoxelData } from "./LightDebugBox.voxel.data.js";
 
 let lightDebugBoxTextures: Record<number, number> = {};
 
 export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
- data: LightDebugBoxVoxelData,
+ id: "dve:lightdebug",
  trueShapeId: 1,
  hooks: {
   texturesRegistered: (DVEB) => {

@@ -3,7 +3,7 @@ export const DreamStoneVoxelData = {
     shapeId: "Box",
     id: "dve:dreamstone",
     substance: "solid",
-    states: ['no-grass'],
+    states: 1,
     material: "stone",
     hardnress: 1000,
     physics: {

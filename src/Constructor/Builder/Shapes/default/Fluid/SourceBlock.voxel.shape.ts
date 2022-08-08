@@ -342,8 +342,8 @@ export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
 
   if (
    data.face == "top" &&
-   data.neighborVoxel.substance != "fluid" &&
-   data.voxel.id != data.neighborVoxel.id
+   data.neighborVoxelSubstance != "fluid" &&
+   data.voxelId != data.neighborVoxelId
   ) {
    return true;
   }

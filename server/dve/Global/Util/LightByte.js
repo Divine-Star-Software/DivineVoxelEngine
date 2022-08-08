@@ -220,8 +220,8 @@ export const LightByte = {
         return sl1 + this.SRS < sl2;
     },
     isLessThanForSunAddUp(n1, n2) {
-        let sl1 = n1 & 0xf;
-        let sl2 = n2 & 0xf;
+        let sl1 = this.getS(n1);
+        let sl2 = this.getS(n2);
         if (sl1 == sl2)
             return false;
         if (sl2 == 0xf || sl1 == 0xf)

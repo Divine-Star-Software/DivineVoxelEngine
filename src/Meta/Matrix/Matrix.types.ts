@@ -4,15 +4,15 @@ export type MatrixLoadedChunk = {
  voxels: Uint32Array;
  voxelStates: Uint32Array;
  heightMap: Uint32Array;
- minMaxMap : Uint32Array;
+ minMaxMap: Uint32Array;
  chunkStates: Uint8Array;
- position : number[]
+ position: number[];
 };
 export type MatrixLoadedRegion = Record<
  string,
  {
   palette?: WorldRegionPalette;
-  chunks: Record<string,Record<string, MatrixLoadedChunk>>;
+  chunks: Record<string, Record<string, MatrixLoadedChunk>>;
  }
 >;
 
@@ -28,7 +28,18 @@ export type MatrixChunkData = Record<
   chunkStatesSAB: SharedArrayBuffer;
   voxelsSAB: SharedArrayBuffer;
   voxelsStatesSAB: SharedArrayBuffer;
-  minMaxMapSAB : SharedArrayBuffer;
+  minMaxMapSAB: SharedArrayBuffer;
   heightMapSAB: SharedArrayBuffer;
  }
 >;
+
+export type MatrixVoxelData = {
+ substance: number;
+ shapeId: number;
+ hardness: number;
+ material: number;
+ checkCollision: number;
+ colliderId: number;
+ lightSource: number;
+ lightValue: number;
+};

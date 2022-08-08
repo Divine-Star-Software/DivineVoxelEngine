@@ -6,5 +6,6 @@ export declare const TextureManager: {
     getTextureUV(textureType: TextureTypes, textureId: string, varation?: string | false | null, overlay?: boolean): number;
     setUVTextureMap(data: Record<TextureTypes, Record<string, number>>): void;
     setOverlayUVTextureMap(data: Record<TextureTypes, Record<string, number>>): void;
+    releaseTextureData(): void;
     isReady(): boolean;
 };

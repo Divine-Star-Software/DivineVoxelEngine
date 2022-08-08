@@ -8,7 +8,7 @@ import { DVEM } from "../../../out/Math/DivineVoxelEngineMath.js";
 RegisterVoxels(DVEW);
 
 await DVEW.$INIT({});
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
+
 
 let startX = -128;
 let startZ = -128;

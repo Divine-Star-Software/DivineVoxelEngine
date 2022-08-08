@@ -1,13 +1,14 @@
 import type {
  VoxelConstructorObject,
  VoxelData,
+ VoxelSubstanceType,
 } from "Meta/Voxels/Voxel.types";
-import { Processor } from "../../../Constructor/Builder/Processor/Processor.js";
-import { Util } from "../../../Global/Util.helper.js";
+import { Processor } from "../Processor.js";
+import { Util } from "../../../../Global/Util.helper.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { AOAddOVerRide } from "Meta/Constructor/OverRide.types";
 import { DirectionNames } from "Meta/Util.types.js";
-import { DVEC } from "../../../Constructor/DivineVoxelEngineConstructor.js";
+import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { VoxelShapeInterface } from "Meta/index.js";
 type Nullable<T> = T | false | null;
 const lightByte = Util.getLightByte();
@@ -276,7 +277,8 @@ const newRGBValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData: {
  light: number;
- voxelData: Nullable<VoxelData>;
+ voxelSubstance: VoxelSubstanceType;
+ voxelId: string;
  shapeState: number;
  currentShape: Nullable<VoxelShapeInterface>;
  voxelObject: Nullable<VoxelConstructorObject>;
@@ -285,7 +287,8 @@ const currentVoxelData: {
  z: number;
 } = {
  light: 0,
- voxelData: false,
+ voxelSubstance: "solid",
+ voxelId: "",
  voxelObject: false,
  shapeState: 0,
  currentShape: false,
@@ -321,15 +324,15 @@ export function CalculateVoxelLight(
  ignoreAO = false,
  LOD = 2
 ) {
-  
  if (this.settings.doAO && !ignoreAO) {
   const voxelId = this.getVoxel(tx, ty, tz);
   if (voxelId) {
-   const voxel = DVEC.voxelManager.getVoxel(voxelId[0]);
-   currentVoxelData.voxelObject = voxel;
-   currentVoxelData.voxelData = voxel.data;
+   const voxelObject = DVEC.voxelManager.getVoxel(voxelId[0]);
+   currentVoxelData.voxelId = voxelId[0];
+   currentVoxelData.voxelObject = voxelObject;
+   currentVoxelData.voxelSubstance = this.getVoxelSubstance(tx, ty, tz);
    currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(
-    voxel.trueShapeId
+    voxelObject.trueShapeId
    );
   }
   currentVoxelData.shapeState = this.getVoxelShapeState(tx, ty, tz);
@@ -505,44 +508,47 @@ const doAO = (
  const neighborVoxelId = Processor.getVoxel(x, y, z);
  if (!neighborVoxelId) return;
  if (neighborVoxelId[0] == "dve:air") return;
- const neighborVoxel = DVEC.voxelManager.getVoxel(neighborVoxelId[0]);
- if (!neighborVoxel || !currentVoxelData.voxelData) {
+ const neighborVoxelSubstance = Processor.getVoxelSubstance(x, y, z);
+ if (!neighborVoxelSubstance || !currentVoxelData.voxelSubstance) {
   return;
  }
  let finalResult = false;
  let substanceRuleResult = true;
- const voxel = currentVoxelData.voxelData;
- if (voxel.substance == "transparent" || voxel.substance == "solid") {
+ const voxelSubstance = currentVoxelData.voxelSubstance;
+ if (voxelSubstance == "transparent" || voxelSubstance == "solid") {
   if (
-   neighborVoxel.data.substance != "solid" &&
-   neighborVoxel.data.substance != "transparent"
+   neighborVoxelSubstance != "solid" &&
+   neighborVoxelSubstance != "transparent"
   ) {
    substanceRuleResult = false;
   }
  } else {
-  if (neighborVoxel.data.substance !== voxel.substance) {
+  if (neighborVoxelSubstance !== voxelSubstance) {
    substanceRuleResult = false;
   }
  }
 
  const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
-  neighborVoxel.trueShapeId
+  Processor.getVoxelShapeId(x, y, z)
  );
  const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
 
- Processor.aoOverRideData.face = face;
- Processor.aoOverRideData.substanceResult = substanceRuleResult;
- Processor.aoOverRideData.shapeState = currentVoxelData.shapeState;
- Processor.aoOverRideData.voxel = currentVoxelData.voxelData;
- Processor.aoOverRideData.neighborVoxel = neighborVoxel.data;
- Processor.aoOverRideData.neighborVoxelShape = neighborVoxelShape;
- Processor.aoOverRideData.neighborVoxelShapeState = neighborVoxelShapeState;
- Processor.aoOverRideData.x = currentVoxelData.x;
- Processor.aoOverRideData.y = currentVoxelData.y;
- Processor.aoOverRideData.z = currentVoxelData.z;
- Processor.aoOverRideData.nx = x;
- Processor.aoOverRideData.ny = y;
- Processor.aoOverRideData.nz = z;
+ const aoOverRide : AOAddOVerRide  = Processor.aoOverRideData;
+ aoOverRide.face = face;
+ aoOverRide.substanceResult = substanceRuleResult;
+ aoOverRide.shapeState = currentVoxelData.shapeState;
+ aoOverRide.voxelId = currentVoxelData.voxelId;
+ aoOverRide.voxelSubstance = currentVoxelData.voxelSubstance;
+ aoOverRide.neighborVoxelId = neighborVoxelId[0];
+ aoOverRide.neighborVoxelSubstance = neighborVoxelSubstance;
+ aoOverRide.neighborVoxelShape = neighborVoxelShape;
+ aoOverRide.neighborVoxelShapeState = neighborVoxelShapeState;
+ aoOverRide.x = currentVoxelData.x;
+ aoOverRide.y = currentVoxelData.y;
+ aoOverRide.z = currentVoxelData.z;
+ aoOverRide.nx = x;
+ aoOverRide.ny = y;
+ aoOverRide.nz = z;
 
  if (currentVoxelData.currentShape) {
   finalResult = currentVoxelData.currentShape.aoOverRide(

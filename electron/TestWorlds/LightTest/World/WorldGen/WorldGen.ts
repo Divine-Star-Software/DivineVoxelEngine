@@ -15,7 +15,7 @@ export const WorldGen =  {
      if (y <= baseY + 5) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y + chunkY,
        z + chunkZ
@@ -25,7 +25,7 @@ export const WorldGen =  {
      if (y == baseY + 5 && x == 1 && z == 1) {
       DVEW.worldData.paintVoxel(
        "dve:debugbox",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y + chunkY,
        z + chunkZ

@@ -17,17 +17,17 @@ export const WorldGen = {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y == 0) {
-                        await DVEWG.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
+                        await DVEWG.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
                         continue;
                     }
                     const height = (perlin.get((x + xOffSet) / waveLength, y / waveLength, (z + zOffSet) / waveLength) *
                         120) >>>
                         0;
                     if (y < height) {
-                        await DVEWG.paintVoxel("dve:dreamstone", "default", 0, x, y, z);
+                        await DVEWG.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
                         let flip = Math.random();
                         if (flip > 0.92) {
-                            await DVEWG.paintVoxel("dve:dreamgrass", "default", 0, x, y + 1, z);
+                            await DVEWG.paintVoxel("dve:dreamgrass", 0, 0, x, y + 1, z);
                         }
                     }
                 }

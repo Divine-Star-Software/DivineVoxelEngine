@@ -17,7 +17,6 @@ export async function InitWorldWorker(
 
  const renderPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
  DVEW.renderComm.setPort(renderPort);
- DVEW.voxelMatrix.$INIT();
 
  await DVEW.UTIL.createPromiseCheck({
   check: () => {
@@ -25,15 +24,18 @@ export async function InitWorldWorker(
   },
   checkInterval: 1,
   onReady: () => {
+   DVEW.voxelMatrix.$INIT();
    DVEW.queues.$INIT();
    const nexusSettings = DVEW.settings.settings.nexus;
    if (nexusSettings.enabled && nexusSettings.autoSyncVoxelPalette) {
-    DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread("nexus");
+    DVEW.matrixCentralHub.syncVoxelPaletteInThread("nexus");
    }
    const fxSettigns = DVEW.settings.settings.fx;
    if (fxSettigns.enabled && fxSettigns.autoSyncVoxelPalette) {
-    DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread("fx");
+    DVEW.matrixCentralHub.syncVoxelPaletteInThread("fx");
    }
+   DVEW.matrixCentralHub.syncVoxelData();
+   DVEW.matrixMap.flush();
   },
  });
 }

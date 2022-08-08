@@ -1,3 +1,4 @@
+import { Queue } from "./Util/Queue.js";
 export declare const Util: {
     createPromiseCheck: (data: {
         check: () => boolean;
@@ -8,6 +9,7 @@ export declare const Util: {
     }) => Promise<boolean>;
     getWorkerPort: (environment: "node" | "browser") => Promise<any>;
     getEnviorment(): "node" | "browser";
+    getAQueue<T>(): Queue<T>;
     getEntityFlat3dArray(): {
         bounds: {
             x: number;
@@ -293,22 +295,6 @@ export declare const Util: {
             x: number;
             z: number;
         };
-    };
-    getInfoByte(number?: number): {
-        maxBit: number;
-        minBit: number;
-        maxDec: number;
-        minDec: number;
-        byteValue: number;
-        getNumberValue(): number;
-        setNumberValue(newValue: number): void;
-        getBit(index: number): 0 | 1;
-        getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
-        getHalfByteDec(bitIndex: number): number;
-        setHalfByteBits(index: number, value: number): void;
-        setBit(index: number, value: 0 | 1): void;
-        toArray(): (0 | 1)[];
-        toString(delimiter?: string): string;
     };
     degtoRad(degrees: number): number;
     radToDeg(radians: number): number;

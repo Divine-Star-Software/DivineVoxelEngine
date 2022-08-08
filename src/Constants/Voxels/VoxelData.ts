@@ -1,3 +1,5 @@
+import { VoxelSubstanceType } from "Meta/index";
+
 export const VoxelDataByteLengths = {
  substance: 1,
  shapeId: 2,
@@ -21,6 +23,22 @@ export const VoxelDataIndexes = {
  lightValue: 0,
 };
 
+export const VoxelSubstanceMap: Record<VoxelSubstanceType, number> = {
+ solid: 0,
+ transparent: 1,
+ flora: 2,
+ fluid: 3,
+ magma: 4,
+};
+
+export const VoxelSubstanceRecord: Record<number, VoxelSubstanceType> = {
+ 0: "solid",
+ 1: "transparent",
+ 2: "flora",
+ 3: "fluid",
+ 4: "magma",
+};
+
 let total = 0;
 Object.entries(VoxelDataByteLengths).forEach((value) => {
  total += value[1];
@@ -34,5 +52,3 @@ Object.entries(VoxelDataIndexes).forEach((value) => {
  //@ts-ignore
  currentIndex += VoxelDataByteLengths[value[0]];
 });
-
-

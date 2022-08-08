@@ -27,8 +27,8 @@ const flowStates = {
     3: 0,
     4: 0,
 };
-export function CalculateFlow(voxelData, faceFlipped, x, y, z, flowTemplate) {
-    currentId = voxelData.id;
+export function CalculateFlow(voxelId, faceFlipped, x, y, z, flowTemplate) {
+    currentId = voxelId;
     const currentLevel = getLevel(this, x, y, z);
     const state = this.worldMatrix.getLevelState(x, y, z);
     flowTemplate.push(state);

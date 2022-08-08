@@ -1,6 +1,11 @@
 //types
+import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ItemShapeData } from "Meta/Constructor/ItemShape.type";
-import type { ItemConstructorObject, ItemData } from "Meta/Items/Item.types.js";
+import type {
+ ItemConstructorObject,
+ ItemConstructorThreadHooks,
+ ItemData,
+} from "Meta/Items/Item.types.js";
 
 export const ItemManager = {
  itemObjects: <Record<string, ItemConstructorObject>>{},
@@ -10,12 +15,8 @@ export const ItemManager = {
   return this.itemObjects[id];
  },
 
- getItemData(id: string): ItemData {
-  return this.itemObjects[id].data;
- },
-
  registerItem(item: ItemConstructorObject) {
-  this.itemObjects[item.data.id] = item;
+  this.itemObjects[item.id] = item;
  },
 
  registerItemShape(shapeData: ItemShapeData) {
@@ -28,5 +29,20 @@ export const ItemManager = {
    throw new Error(`Item Shape with ID ${id} does not exists`);
   }
   return data;
+ },
+
+ runItemHookForAll(hook: ItemConstructorThreadHooks) {
+  for (const itemId of Object.keys(this.itemObjects)) {
+   const item = this.itemObjects[itemId];
+   if (!item.hooks[hook]) continue;
+   item.hooks[hook](DVEC.DVEB as any);
+  }
+ },
+ removeItemHookForAll(hook: ItemConstructorThreadHooks) {
+  for (const itemId of Object.keys(this.itemObjects)) {
+   const item = this.itemObjects[itemId];
+   if (!item.hooks[hook]) continue;
+   delete item.hooks[hook];
+  }
  },
 };

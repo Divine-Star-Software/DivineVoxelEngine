@@ -50,6 +50,7 @@ export const GetNewConstructorComm = (
   const substance: 0 | 1 | 2 | 3 = data[1];
   substanceFunctionMap[substance](data);
  };
+
  newComm.messageFunctions[ConstructorToRenderMessages.removeChunk] = (data) => {
   const substance: VoxelSubstanceType = data[1];
   const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(

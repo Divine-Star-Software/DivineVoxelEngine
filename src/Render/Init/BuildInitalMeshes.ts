@@ -78,4 +78,6 @@ export async function BuildInitalMeshes(
  await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
 
  DVER.renderManager.animationManager.startAnimations();
+
+ DVER.textureManager.releaseTextureData();
 }

@@ -12,7 +12,7 @@ export const WorldGen = {
      if (y > baseY && y <= maxY) {
       DVEW.worldData.paintVoxel(
        "dve:liquiddreamether",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y,
        z + chunkZ
@@ -21,7 +21,7 @@ export const WorldGen = {
      if (y == baseY) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstone",
-       "default", 0,
+       0, 0,
        x + chunkX,
        y,
        z + chunkZ

@@ -15,7 +15,7 @@ export const ItemMesher = {
   };
   item.process(itemProcessData, DVEC.DVEB);
 
-  const itemShapeData = DVEC.itemManager.getItemShapeData(item.data.shapeId);
+  const itemShapeData = DVEC.itemManager.getItemShapeData(item.shapeId);
   const faces = itemShapeData.faces;
 
   const position = { x: 0, y: 0, z: 0 };

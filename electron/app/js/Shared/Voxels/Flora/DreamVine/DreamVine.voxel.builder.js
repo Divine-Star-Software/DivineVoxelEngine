@@ -1,15 +1,17 @@
-import { DreamVineVoxelData } from "./DreamVine.voxel.data.js";
+let uv = 0;
 export const DreamVineVoxelBuilderThread = {
-    data: DreamVineVoxelData,
+    id: "dve:dreamvine",
     trueShapeId: 1,
-    hooks: {},
+    hooks: {
+        texturesRegistered: (DVEB) => {
+            uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");
+        },
+    },
     process: function (data, DVEB) {
-        const uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");
         data.uvTemplate.push(uv, uv);
         data.overlayUVTemplate.push(0, 0, 0, 0);
         const lightValue = DVEB.processor.worldMatrix.getLight(data.x, data.y, data.z);
         data.aoTemplate.push(1);
         data.lightTemplate.push(lightValue);
-        //data.lightTemplate.push(0xf, 0xf);
     },
 };

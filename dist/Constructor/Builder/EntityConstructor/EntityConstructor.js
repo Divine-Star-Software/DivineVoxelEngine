@@ -26,12 +26,12 @@ export const EntityConstructor = {
         const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
         const numericVoxelId = this.voxelByte.getId(voxelData);
         if (numericVoxelId == 0)
-            return ["dve:air"];
+            return WorldMatrix._air;
         if (numericVoxelId == 1)
-            return ["dve:barrier"];
-        const voxelPaletteId = WorldMatrix.globalVoxelPalette[numericVoxelId];
-        const trueVoxelId = WorldMatrix.globalVoxelPaletteRecord[voxelPaletteId];
-        return trueVoxelId;
+            return WorldMatrix._barrier;
+        const paletteId = WorldMatrix.voxelPalette[numericVoxelId];
+        const mapId = WorldMatrix.voxelPaletteMap[paletteId];
+        return [paletteId, numericVoxelId - mapId];
     },
     getLevel(x, y, z, composed = 1) {
         const rawVoxelData = this.voxelData[composed];

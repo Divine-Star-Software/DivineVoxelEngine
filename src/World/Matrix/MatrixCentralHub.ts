@@ -35,9 +35,9 @@ export const MatrixCentralHub = {
    const chunkZ = data[4];
    MatrixCentralHub.releaseChunkInThread(thread, chunkX, chunkY, chunkZ);
   },
-  "sync-global-voxel-palette": (data, event) => {
+  "sync-voxel-palette": (data, event) => {
    const thread = data[1];
-   MatrixCentralHub.syncGlobalVoxelPaletteInThread(thread);
+   MatrixCentralHub.syncVoxelPaletteInThread(thread);
   },
  },
 
@@ -230,35 +230,51 @@ export const MatrixCentralHub = {
   }
  },
 
- syncGlobalVoxelPalette() {
+ syncVoxelPalette() {
   const globalVoxelPalette =
    DVEW.worldGeneration.voxelPalette.getVoxelPalette();
-  const globalVoxelPaletteRecord =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
   const gloablVoxelPaletteMap =
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
   for (const threadId of Object.keys(this.threads)) {
    this.threads[threadId].postMessage([
-    "sync-global-palette",
+    "sync-voxel-palette",
     globalVoxelPalette,
-    globalVoxelPaletteRecord,
     gloablVoxelPaletteMap,
    ]);
   }
  },
 
- syncGlobalVoxelPaletteInThread(threadId: string) {
+ syncVoxelPaletteInThread(threadId: string) {
   const globalVoxelPalette =
    DVEW.worldGeneration.voxelPalette.getVoxelPalette();
-  const globalVoxelPaletteRecord =
-   DVEW.worldGeneration.voxelPalette.getVoxelPaletteRecord();
   const gloablVoxelPaletteMap =
    DVEW.worldGeneration.voxelPalette.getVoxelPaletteMap();
   this.threads[threadId].postMessage([
-   "sync-global-palette",
+   "sync-voxel-palette",
    globalVoxelPalette,
-   globalVoxelPaletteRecord,
    gloablVoxelPaletteMap,
+  ]);
+ },
+
+ syncVoxelData() {
+  const voxelBuffer = DVEW.voxelMatrix.voxelBuffer;
+  const voxelMapBuffer = DVEW.voxelMatrix.voxelMapBuffer;
+  for (const threadId of Object.keys(this.threads)) {
+   this.threads[threadId].postMessage([
+    "sync-voxel-data",
+    voxelBuffer,
+    voxelMapBuffer,
+   ]);
+  }
+ },
+
+ syncVoxelDataInThread(threadId: string) {
+  const voxelBuffer = DVEW.voxelMatrix.voxelBuffer;
+  const voxelMapBuffer = DVEW.voxelMatrix.voxelMapBuffer;
+  this.threads[threadId].postMessage([
+   "sync-voxel-data",
+   voxelBuffer,
+   voxelMapBuffer,
   ]);
  },
 };

@@ -1,4 +1,3 @@
-//objects
 import { Util } from "../../../Global/Util.helper.js";
 //functions
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill, } from "./Functions/RGBFloodLight.js";
@@ -16,8 +15,8 @@ export const IlluminationManager = {
     runSunLightFloodDown: RunSunLightFloodDown,
     runSunLightFloodOut: RunSunLightFloodOut,
     sunLightAboveCheck: SunLightAboveCheck,
-    _sunLightUpdateQue: [],
-    _sunLightFloodDownQue: [],
+    _sunLightUpdateQue: Util.getAQueue(),
+    _sunLightFloodDownQue: Util.getAQueue(),
     _sunLightFloodOutQue: {},
     _sunLightRemoveQue: [],
     //rgb

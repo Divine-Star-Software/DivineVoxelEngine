@@ -31,7 +31,7 @@ const topBottomTest = async () => {
    WorldGen.generateChunk(x, 0, z, 0);
   }
  }
- await DVEW.worldData.requestVoxelAdd("dve:debugbox", "default", 0, 0, 16, 0);
+ await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 0, 16, 0);
 };
 
 const northSouthTest = async () => {
@@ -47,7 +47,7 @@ const northSouthTest = async () => {
  }
  await DVEW.worldData.requestVoxelAdd(
   "dve:debugbox",
-  "default",
+  0,
   0,
   startX + 16,
   16,
@@ -68,7 +68,7 @@ const eastWestTest = async () => {
  }
  await DVEW.worldData.requestVoxelAdd(
   "dve:debugbox",
-  "default",
+  0,
   0,
   startX + 14,
   16,
@@ -83,7 +83,7 @@ eastWestTest();
 
 await DVEW.worldData.requestVoxelAdd(
  "dve:dreamstone",
- "default",
+ 0,
  0,
  -15,
  17,
@@ -91,7 +91,7 @@ await DVEW.worldData.requestVoxelAdd(
 );
 await DVEW.worldData.requestVoxelAdd(
  "dve:dreamstone",
- "default",
+ 0,
  0,
  -15,
  17,

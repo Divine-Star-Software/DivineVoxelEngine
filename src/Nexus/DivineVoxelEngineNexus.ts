@@ -66,6 +66,5 @@ export const DVEN = {
 };
 export type DivineVoxelEngineNexus = typeof DVEN;
 
-DVEN.matrixHub.setThreadName("nexus");
 
 DVEN.environment = Util.getEnviorment();

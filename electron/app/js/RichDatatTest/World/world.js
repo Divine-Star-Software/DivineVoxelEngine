@@ -19,7 +19,6 @@ const load = () => {
     }
 };
 const generate = () => {
-    console.log("generate");
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
             DVEW.worldData.fillWorldCollumnWithChunks(x, z);
@@ -39,11 +38,12 @@ DVEW.renderComm.listenForMessage("connect-camera", (data) => {
 });
 await DVEW.$INIT({});
 generate();
-DVEW.worldData.paintVoxel("dve:dataholder", "default", 0, 11, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", "default", 0, 9, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", "default", 0, 7, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", "default", 0, 5, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", "default", 0, 3, 31, 31);
+DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 11, 31, 31);
+DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 9, 31, 31);
+DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 7, 31, 31);
+DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 5, 31, 31);
+DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 3, 31, 31);
+DVEW.buildWorldColumn(0, 0);
 load();
 await DVEW.UTIL.createPromiseCheck({
     check: () => ready,
@@ -55,7 +55,7 @@ DVEW.renderComm.listenForMessage("pick-voxel", (data) => {
     const voxel = DVEW.worldData.getVoxel(pickedVector.x, pickedVector.y, pickedVector.z);
     if (voxel && voxel[0] != -1) {
         const voxelData = voxel[0];
-        if (voxelData.rich) {
+        if (voxelData.isRich) {
             DVEW.richWorldComm.sendMessage("pick-voxel", [
                 pickedVector.x,
                 pickedVector.y,
@@ -86,9 +86,13 @@ setInterval(() => {
         }
     }
 }, 20);
-DVEW.entityConstructor.begin(3, 3, 3);
-DVEW.entityConstructor.fillLight(15, 15, 15, 15);
-DVEW.entityConstructor.addVoxel("dve:dreamstone-stair", "default", 0, 1, 1, 1);
-DVEW.entityConstructor.build(8, 33, 0);
 DVEW.createItem("dve:debug-item", 3, 35, 0);
 DVEW.createItem("dve:dreamvine-item", 3, 35, 5);
+/* DVEW.entityConstructor.begin(3, 3, 3);
+DVEW.entityConstructor.fillLight(15, 15, 15, 15);
+DVEW.entityConstructor.addVoxel("dve:dreamstone-stair", 0, 0, 1, 1, 1);
+DVEW.entityConstructor.build(8, 33, 0);
+
+
+
+ */

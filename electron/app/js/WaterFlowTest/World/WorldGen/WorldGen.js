@@ -10,14 +10,14 @@ export const WorldGen = {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y < groundY) {
-                        DVEW.worldData.paintVoxel("dve:lightdebug", "default", 0, x, y, z);
+                        DVEW.worldData.paintVoxel("dve:lightdebug", 0, 0, x, y, z);
                         continue;
                     }
                     if (x == 7 && z == 7 && y < 38) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
                     }
                     if (x == 0 && z == 7 && y < 38) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
                     }
                 }
             }

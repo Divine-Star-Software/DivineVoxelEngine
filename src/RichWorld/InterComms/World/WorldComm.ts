@@ -16,9 +16,8 @@ worldComm.messageFunctions[WorldToRichWorldMessages.setInitalData] = (data) => {
  const x = data[2];
  const y = data[3];
  const z = data[4];
- const voxel = DVERW.voxelManager.getVoxelData(voxelId);
- if (voxel && voxel.rich) {
-  DVERW.richData.setData(x, y, z, voxel.rich.initalData);
+ if (DVERW.richData.hasInitalData(voxelId)) {
+  DVERW.richData.setInitalData(voxelId, x, y, z);
  }
 };
 

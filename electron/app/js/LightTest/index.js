@@ -14,6 +14,9 @@ await DVER.$INIT({
         autoRGBLight: true,
         autoSunLight: false,
     },
+    chunks: {
+        chunkYPow2: 4,
+    },
 });
 const init = async () => {
     const canvas = SetUpCanvas();

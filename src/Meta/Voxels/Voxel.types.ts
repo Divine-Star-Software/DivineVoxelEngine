@@ -51,20 +51,18 @@ export type VoxelData = {
  substance: VoxelSubstanceType;
  material: string;
  hardnress: number;
- rich?: {
-  initalData: any;
- };
+ isRich ?: boolean;
  physics?: {
   collider: string;
   checkCollisions: boolean;
  };
- states?: string[];
+ states?: number;
  lightSource?: boolean;
  lightValue?: number;
 };
 
 export type VoxelConstructorObject = {
- data: VoxelData;
+ id: string;
  trueShapeId: number;
  hooks: Record<
   VoxelConstructorThreadHooks,

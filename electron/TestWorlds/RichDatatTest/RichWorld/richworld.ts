@@ -1,6 +1,9 @@
-import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { DVERW } from "../../../out/RichWorld/DivineStarVoxelEngineRichWorld.js";
-RegisterVoxels(DVERW as any);
+
+DVERW.richData.registerInitalDataForVoxel("dve:dataholder", {
+ data: "THIS A PLACE HOLDER DATA",
+});
+
 await DVERW.$INIT({});
 
 const currentPickedVector = { x: 0, y: 0, z: 0 };

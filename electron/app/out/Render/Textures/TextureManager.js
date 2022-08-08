@@ -192,4 +192,10 @@ export const TextureManager = {
         }
         this.overylayTextures[textureType].push(textureData);
     },
+    releaseTextureData() {
+        this.overlayUVTextureMap = null;
+        this.uvTextureMap = null;
+        delete this.overlayUVTextureMap;
+        delete this.uvTextureMap;
+    },
 };

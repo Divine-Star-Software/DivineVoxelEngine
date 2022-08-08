@@ -216,7 +216,8 @@ const newRGBValues = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData = {
     light: 0,
-    voxelData: false,
+    voxelSubstance: "solid",
+    voxelId: "",
     voxelObject: false,
     shapeState: 0,
     currentShape: false,
@@ -241,10 +242,11 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     if (this.settings.doAO && !ignoreAO) {
         const voxelId = this.getVoxel(tx, ty, tz);
         if (voxelId) {
-            const voxel = DVEC.voxelManager.getVoxel(voxelId[0]);
-            currentVoxelData.voxelObject = voxel;
-            currentVoxelData.voxelData = voxel.data;
-            currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(voxel.trueShapeId);
+            const voxelObject = DVEC.voxelManager.getVoxel(voxelId[0]);
+            currentVoxelData.voxelId = voxelId[0];
+            currentVoxelData.voxelObject = voxelObject;
+            currentVoxelData.voxelSubstance = this.getVoxelSubstance(tx, ty, tz);
+            currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(voxelObject.trueShapeId);
         }
         currentVoxelData.shapeState = this.getVoxelShapeState(tx, ty, tz);
         currentVoxelData.x = tx;
@@ -412,54 +414,42 @@ const doAO = (face, vertex, x, y, z) => {
         return;
     if (neighborVoxelId[0] == "dve:air")
         return;
-    const neighborVoxel = DVEC.voxelManager.getVoxel(neighborVoxelId[0]);
-    if (!neighborVoxel || !currentVoxelData.voxelData) {
+    const neighborVoxelSubstance = Processor.getVoxelSubstance(x, y, z);
+    if (!neighborVoxelSubstance || !currentVoxelData.voxelSubstance) {
         return;
     }
     let finalResult = false;
     let substanceRuleResult = true;
-    const voxel = currentVoxelData.voxelData;
-    if (voxel.substance == "transparent" || voxel.substance == "solid") {
-        if (neighborVoxel.data.substance != "solid" &&
-            neighborVoxel.data.substance != "transparent") {
+    const voxelSubstance = currentVoxelData.voxelSubstance;
+    if (voxelSubstance == "transparent" || voxelSubstance == "solid") {
+        if (neighborVoxelSubstance != "solid" &&
+            neighborVoxelSubstance != "transparent") {
             substanceRuleResult = false;
         }
     }
     else {
-        if (neighborVoxel.data.substance !== voxel.substance) {
+        if (neighborVoxelSubstance !== voxelSubstance) {
             substanceRuleResult = false;
         }
     }
-    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(neighborVoxel.trueShapeId);
+    const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(Processor.getVoxelShapeId(x, y, z));
     const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
-    /*  const aoCheckData: AOAddOVerRide = {
-     face: face,
-     substanceResult: substanceRuleResult,
-     shapeState: currentVoxelData.shapeState,
-     voxel: currentVoxelData.voxelData,
-     neighborVoxel: neighborVoxel.data,
-     neighborVoxelShape: neighborVoxelShape,
-     neighborVoxelShapeState: neighborVoxelShapeState,
-     x: currentVoxelData.x,
-     y: currentVoxelData.y,
-     z: currentVoxelData.z,
-     nx: x,
-     ny: y,
-     nz: z,
-    }; */
-    Processor.aoOverRideData.face = face;
-    Processor.aoOverRideData.substanceResult = substanceRuleResult;
-    Processor.aoOverRideData.shapeState = currentVoxelData.shapeState;
-    Processor.aoOverRideData.voxel = currentVoxelData.voxelData;
-    Processor.aoOverRideData.neighborVoxel = neighborVoxel.data;
-    Processor.aoOverRideData.neighborVoxelShape = neighborVoxelShape;
-    Processor.aoOverRideData.neighborVoxelShapeState = neighborVoxelShapeState;
-    Processor.aoOverRideData.x = currentVoxelData.x;
-    Processor.aoOverRideData.y = currentVoxelData.y;
-    Processor.aoOverRideData.z = currentVoxelData.z;
-    Processor.aoOverRideData.nx = x;
-    Processor.aoOverRideData.ny = y;
-    Processor.aoOverRideData.nz = z;
+    const aoOverRide = Processor.aoOverRideData;
+    aoOverRide.face = face;
+    aoOverRide.substanceResult = substanceRuleResult;
+    aoOverRide.shapeState = currentVoxelData.shapeState;
+    aoOverRide.voxelId = currentVoxelData.voxelId;
+    aoOverRide.voxelSubstance = currentVoxelData.voxelSubstance;
+    aoOverRide.neighborVoxelId = neighborVoxelId[0];
+    aoOverRide.neighborVoxelSubstance = neighborVoxelSubstance;
+    aoOverRide.neighborVoxelShape = neighborVoxelShape;
+    aoOverRide.neighborVoxelShapeState = neighborVoxelShapeState;
+    aoOverRide.x = currentVoxelData.x;
+    aoOverRide.y = currentVoxelData.y;
+    aoOverRide.z = currentVoxelData.z;
+    aoOverRide.nx = x;
+    aoOverRide.ny = y;
+    aoOverRide.nz = z;
     if (currentVoxelData.currentShape) {
         finalResult = currentVoxelData.currentShape.aoOverRide(Processor.aoOverRideData);
     }

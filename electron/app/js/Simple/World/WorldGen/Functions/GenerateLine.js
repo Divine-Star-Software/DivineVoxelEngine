@@ -3,9 +3,9 @@ const diagonalLineGenerators = {
     north: (voxel, shapeState, yStart, xzStart, start, end) => {
         let y = yStart;
         for (let z = start; z < end; z++) {
-            DVEW.worldData.paintVoxel(voxel, "default", shapeState, xzStart, y, z);
+            DVEW.worldData.paintVoxel(voxel, 0, shapeState, xzStart, y, z);
             for (let zy = y - 1; zy >= yStart; zy--) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, xzStart, zy, z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, xzStart, zy, z);
             }
             y++;
         }
@@ -13,9 +13,9 @@ const diagonalLineGenerators = {
     south: (voxel, shapeState, yStart, xzStart, start, end) => {
         let y = yStart;
         for (let z = start; z > end; z--) {
-            DVEW.worldData.paintVoxel(voxel, "default", shapeState, xzStart, y, z);
+            DVEW.worldData.paintVoxel(voxel, 0, shapeState, xzStart, y, z);
             for (let zy = y - 1; zy >= yStart; zy--) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, xzStart, zy, z);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, xzStart, zy, z);
             }
             y++;
         }
@@ -23,9 +23,9 @@ const diagonalLineGenerators = {
     east: (voxel, shapeState, yStart, xzStart, start, end) => {
         let y = yStart;
         for (let x = start; x < end; x++) {
-            DVEW.worldData.paintVoxel(voxel, "default", shapeState, x, y, xzStart);
+            DVEW.worldData.paintVoxel(voxel, 0, shapeState, x, y, xzStart);
             for (let zy = y - 1; zy >= yStart; zy--) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, x, zy, xzStart);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, x, zy, xzStart);
             }
             y++;
         }
@@ -33,9 +33,9 @@ const diagonalLineGenerators = {
     west: (voxel, shapeState, yStart, xzStart, start, end) => {
         let y = yStart;
         for (let x = start; x > end; x--) {
-            DVEW.worldData.paintVoxel(voxel, "default", shapeState, x, y, xzStart);
+            DVEW.worldData.paintVoxel(voxel, 0, shapeState, x, y, xzStart);
             for (let zy = y - 1; zy >= yStart; zy--) {
-                DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", shapeState, x, zy, xzStart);
+                DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, x, zy, xzStart);
             }
             y++;
         }

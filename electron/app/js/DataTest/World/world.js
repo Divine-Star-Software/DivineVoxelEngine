@@ -28,7 +28,6 @@ const generate = () => {
 };
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT({});
-DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
 /*
  WorldGen.generateChunk(0, 0);

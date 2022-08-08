@@ -27,6 +27,12 @@ export const TextureManager = {
         this.textureDataHasBeenSet = true;
         this.overlayUVTextureMap = data;
     },
+    releaseTextureData() {
+        this.uvTextureMap = null;
+        this.overlayUVTextureMap = null;
+        delete this["uvTextureMap"];
+        delete this["overlayUVTextureMap"];
+    },
     isReady() {
         return this.textureDataHasBeenSet;
     },

@@ -6,7 +6,7 @@ export const TextureManager = {
  uvTextureMap: <Record<TextureTypes, Record<string, number>>>{},
  overlayUVTextureMap: <Record<TextureTypes, Record<string, number>>>{},
  getTextureUV(
-  textureType: TextureTypes ,
+  textureType: TextureTypes,
   textureId: string,
   varation: string | false | null = false,
   overlay: boolean = false
@@ -34,11 +34,16 @@ export const TextureManager = {
   this.uvTextureMap = data;
  },
 
- setOverlayUVTextureMap(
-  data: Record<TextureTypes, Record<string, number>>
- ) {
+ setOverlayUVTextureMap(data: Record<TextureTypes, Record<string, number>>) {
   this.textureDataHasBeenSet = true;
   this.overlayUVTextureMap = data;
+ },
+
+ releaseTextureData() {
+  (this as any).uvTextureMap = null;
+  (this as any).overlayUVTextureMap = null;
+  delete (this as any)["uvTextureMap"];
+  delete (this as any)["overlayUVTextureMap"];
  },
 
  isReady() {

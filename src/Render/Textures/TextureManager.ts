@@ -1,6 +1,8 @@
 import type { TextureData } from "Meta/Render/Textures/Texture.types";
-import type { TextureProccesedData,TextureTypes } from "Meta/Render/Textures/Texture.types";
-
+import type {
+ TextureProccesedData,
+ TextureTypes,
+} from "Meta/Render/Textures/Texture.types";
 
 export const TextureManager = {
  defaultTexturePath: "",
@@ -255,5 +257,12 @@ export const TextureManager = {
    return;
   }
   this.overylayTextures[textureType].push(textureData);
+ },
+
+ releaseTextureData() {
+  (this as any).overlayUVTextureMap = null;
+  (this as any).uvTextureMap = null;
+  delete (this as any).overlayUVTextureMap;
+  delete (this as any).uvTextureMap;
  },
 };

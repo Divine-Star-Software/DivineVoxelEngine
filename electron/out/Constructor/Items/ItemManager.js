@@ -1,14 +1,13 @@
+//types
+import { DVEC } from "../DivineVoxelEngineConstructor.js";
 export const ItemManager = {
     itemObjects: {},
     itemShapes: {},
     getItem(id) {
         return this.itemObjects[id];
     },
-    getItemData(id) {
-        return this.itemObjects[id].data;
-    },
     registerItem(item) {
-        this.itemObjects[item.data.id] = item;
+        this.itemObjects[item.id] = item;
     },
     registerItemShape(shapeData) {
         this.itemShapes[shapeData.id] = shapeData;
@@ -19,5 +18,21 @@ export const ItemManager = {
             throw new Error(`Item Shape with ID ${id} does not exists`);
         }
         return data;
+    },
+    runItemHookForAll(hook) {
+        for (const itemId of Object.keys(this.itemObjects)) {
+            const item = this.itemObjects[itemId];
+            if (!item.hooks[hook])
+                continue;
+            item.hooks[hook](DVEC.DVEB);
+        }
+    },
+    removeItemHookForAll(hook) {
+        for (const itemId of Object.keys(this.itemObjects)) {
+            const item = this.itemObjects[itemId];
+            if (!item.hooks[hook])
+                continue;
+            delete item.hooks[hook];
+        }
     },
 };

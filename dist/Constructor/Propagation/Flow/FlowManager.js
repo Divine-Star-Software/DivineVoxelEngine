@@ -27,10 +27,7 @@ export const FlowManager = {
         return this._visitedMap[`${x}-${y}-${z}`] == true;
     },
     setVoxel(level, levelState, x, y, z) {
-        WorldMatrix.setVoxel(this.currentVoxel, "default", 0, x, y, z);
-        if (x == -1 && y == 40 && z == 7) {
-            console.log(this.currentVoxel);
-        }
+        WorldMatrix.setVoxel(this.currentVoxel, 0, 0, x, y, z);
         WorldMatrix.setLevel(level, x, y, z);
         if (levelState == 1) {
             WorldMatrix.setLevelState(levelState, x, y, z);
@@ -60,12 +57,14 @@ export const FlowManager = {
         }
     },
     setCurrentVoxel(x, y, z) {
-        const voxelCheck = this.worldMatrx.getVoxelData(x, y, z);
-        if (!voxelCheck ||
-            (voxelCheck.substance != "fluid" && voxelCheck.substance != "magma")) {
+        const voxelCheck = this.worldMatrx.getVoxel(x, y, z);
+        if (!voxelCheck || voxelCheck[0] == "dve:air") {
             return false;
         }
-        this.currentVoxel = voxelCheck.id;
+        const substance = this.worldMatrx.getVoxelSubstance(x, y, z);
+        if (substance != "fluid" && substance != "magma")
+            return false;
+        this.currentVoxel = voxelCheck[0];
         return true;
     },
     runRebuildQue() {

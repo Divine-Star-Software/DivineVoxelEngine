@@ -80,7 +80,7 @@ export declare const EntityConstructor: {
     depth: number;
     height: number;
     setEntityData(x: number, y: number, z: number, width: number, height: number, depth: number, composed: number, voxelData: Uint32Array[]): void;
-    getVoxel(x: number, y: number, z: number, composed?: number): string[];
+    getVoxel(x: number, y: number, z: number, composed?: number): [string, number] | false;
     getLevel(x: number, y: number, z: number, composed?: number): number;
     getLevelState(x: number, y: number, z: number, composed?: number): number;
     getShapeState(x: number, y: number, z: number, composed?: number): number;

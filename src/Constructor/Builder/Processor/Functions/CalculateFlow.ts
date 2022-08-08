@@ -1,5 +1,5 @@
 import type { VoxelData } from "Meta/index";
-import type { Processor } from "../../../Constructor/Builder/Processor/Processor";
+import type { Processor } from "../Processor";
 
 const checkSets = {
  1: [
@@ -39,14 +39,14 @@ const flowStates: Record<Vertexes, number> = {
 
 export function CalculateFlow(
  this: typeof Processor,
- voxelData: VoxelData,
+ voxelId: string,
  faceFlipped: boolean,
  x: number,
  y: number,
  z: number,
  flowTemplate: number[]
 ) {
- currentId = voxelData.id;
+ currentId = voxelId;
  const currentLevel = getLevel(this, x, y, z);
  const state = this.worldMatrix.getLevelState(x, y, z);
 

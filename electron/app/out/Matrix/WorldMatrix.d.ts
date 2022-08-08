@@ -1,7 +1,7 @@
 import type { MatrixLoadedChunk, MatrixLoadedRegion } from "../Meta/Matrix/Matrix.types";
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
 import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
-import { Position3Matrix, VoxelData } from "Meta/index";
+import { Position3Matrix, VoxelData, VoxelSubstanceType } from "Meta/index";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
@@ -141,7 +141,10 @@ export declare const WorldMatrix: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): number[]; /**# Await Chunk Load
+         * ---
+         * Wait for a chunk to loaded into the matrix  for use.
+         */
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -223,17 +226,74 @@ export declare const WorldMatrix: {
         setMaxYForSubstance(height: number, substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
         getMaxYForSubstance(substance: import("Meta/index").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
     };
-    _air: string[];
-    _barrier: string[];
+    voxelMatrix: {
+        byteLength: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+            totalLength: number;
+        };
+        indexes: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        matrixMap: {
+            substanceMap: Record<VoxelSubstanceType, number>;
+            substanceRecord: Record<number, VoxelSubstanceType>;
+        };
+        voxelData: {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        voxelDataView: DataView;
+        voxelMap: Uint16Array;
+        syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+        getVoxelData(id: number): {
+            substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        getSubstance(id: number): number;
+        getTrueSubstance(id: number): VoxelSubstanceType;
+        getShapeId(id: number): number;
+        getHardness(id: number): number;
+        getCheckCollisions(id: number): number;
+        getColliderId(id: number): number;
+        isLightSource(id: number): number;
+        getLightValue(id: number): number;
+    };
+    _air: [string, number];
+    _barrier: [string, number];
     updateDieTime: number;
     loadDieTime: number;
     regions: MatrixLoadedRegion;
     chunks: Record<string, Uint32Array>;
     chunkStates: Record<string, Uint8Array>;
     paletteMode: number;
-    globalVoxelPalette: Record<number, string>;
-    globalVoxelPaletteRecord: Record<string, string[]>;
-    globalVoxelPaletteMap: Record<string, number>;
+    voxelPalette: Record<number, string>;
+    voxelPaletteMap: Record<string, number>;
     voxelManager: VoxelManagerInterface | null;
     lightValueFunctions: {
         r: (value: number) => number;
@@ -244,22 +304,22 @@ export declare const WorldMatrix: {
     threadName: string;
     setVoxelManager(voxelManager: VoxelManagerInterface): void;
     syncChunkBounds(): void;
-    getVoxelPalette(voxelId: string, voxelState: string): number;
+    getVoxelPaletteNumericId(voxelId: string, voxelState: number): number;
     /**# Await Chunk Load
      * ---
      * Wait for a chunk to loaded into the matrix  for use.
      */
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
-    __setGlobalVoxelPalette(palette: Record<number, string>, record: Record<string, string[]>, map: Record<string, number>): void;
-    getVoxel(x: number, y: number, z: number, secondary?: boolean): false | string[];
+    __setGlobalVoxelPalette(palette: Record<number, string>, map: Record<string, number>): void;
+    getVoxel(x: number, y: number, z: number, secondary?: boolean): [string, number] | false;
     getVoxelShapeState(x: number, y: number, z: number): number;
     getLevel(x: number, y: number, z: number): number;
     setLevel(level: number, x: number, y: number, z: number): void;
     getLevelState(x: number, y: number, z: number): number;
     setLevelState(state: number, x: number, y: number, z: number): void;
-    setVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): false | undefined;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
-    getVoxelPaletteNumberId(voxelId: string, voxelStateId: string): number;
+    setVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): false | undefined;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelSubstance: VoxelSubstanceType, chunk: MatrixLoadedChunk): void;
+    getVoxelPaletteIdForWorldGen(voxelId: string, voxelStateId: number): number;
     getVoxelData(x: number, y: number, z: number, secondary?: boolean): VoxelData | false;
     _createRegion(x: number, y: number, z: number): {
         chunks: {};
@@ -269,6 +329,11 @@ export declare const WorldMatrix: {
      * To be only called by the Matrix Hub.
      */
     __setChunk(x: number, y: number, z: number, voxelsSAB: SharedArrayBuffer, voxelStatesSAB: SharedArrayBuffer, heightMapSAB: SharedArrayBuffer, minMaxMapSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
+    getVoxelSubstance(x: number, y: number, z: number, secondary?: boolean): VoxelSubstanceType;
+    getVoxelShapeId(x: number, y: number, z: number, secondary?: boolean): number;
+    isVoxelALightSource(x: number, y: number, z: number, secondary?: boolean): boolean;
+    getLightSourceValue(x: number, y: number, z: number, secondary?: boolean): number;
+    isAir(x: number, y: number, z: number): boolean;
     getRegion(x: number, y: number, z: number): false | {
         palette?: WorldRegionPalette | undefined;
         chunks: Record<string, Record<string, MatrixLoadedChunk>>;

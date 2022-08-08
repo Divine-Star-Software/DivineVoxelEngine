@@ -21,11 +21,11 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 6, 5);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 7, 4);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 8, 3);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 9, 2);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", "default", 0, 7, 10, 1);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 6, 5);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 7, 4);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 8, 3);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 9, 2);
+DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 10, 1);
 
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {

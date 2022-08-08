@@ -33,15 +33,15 @@ export const EntityConstructor = {
 
   this._3dArray.setBounds(width, height, depth);
  },
- getVoxel(x: number, y: number, z: number, composed: number = 1) {
+ getVoxel(x: number, y: number, z: number, composed: number = 1) : [string,number] | false{
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
   const numericVoxelId = this.voxelByte.getId(voxelData);
-  if (numericVoxelId == 0) return ["dve:air"];
-  if (numericVoxelId == 1) return ["dve:barrier"];
-  const voxelPaletteId = WorldMatrix.globalVoxelPalette[numericVoxelId];
-  const trueVoxelId = WorldMatrix.globalVoxelPaletteRecord[voxelPaletteId];
-  return trueVoxelId;
+  if (numericVoxelId == 0) return WorldMatrix._air;
+  if (numericVoxelId == 1) return WorldMatrix._barrier;
+  const paletteId =  WorldMatrix.voxelPalette[numericVoxelId];
+  const mapId = WorldMatrix.voxelPaletteMap[paletteId];
+  return [paletteId, numericVoxelId - mapId];
  },
  getLevel(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed];

@@ -1,17 +1,18 @@
 import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
-import { DataHolderVoxelData } from "./DataHolder.voxel.data.js";
+
+let frontUV = 0;
+let sideUV = 0;
 
 export const DataHolderVoxelBuilderThread: VoxelConstructorObject = {
- data: DataHolderVoxelData,
+ id: "dve:dataholder",
  trueShapeId: 1,
- hooks: {},
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   frontUV = DVEB.textureManager.getTextureUV("solid", "data-holder", "front");
+   sideUV = DVEB.textureManager.getTextureUV("solid", "data-holder");
+  },
+ },
  process: function (data, DVEB) {
-  let frontUV = DVEB.textureManager.getTextureUV(
-   "solid",
-   "data-holder",
-   "front"
-  );
-  let sideUV = DVEB.textureManager.getTextureUV("solid", "data-holder");
   //top
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(sideUV);

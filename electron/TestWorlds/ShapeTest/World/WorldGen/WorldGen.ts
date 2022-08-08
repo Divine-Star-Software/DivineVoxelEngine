@@ -12,7 +12,7 @@ export const WorldGen = {
      if (y <= baseY + 15) {
       DVEW.worldData.paintVoxel(
        "dve:dreamstonepillar",
-       "default",
+       0,
        0,
        x + chunkX,
        y + chunkY,

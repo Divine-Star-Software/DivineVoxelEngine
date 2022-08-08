@@ -63,7 +63,7 @@ export const QueuesManager = {
    this._worldColumnSunLightPropMap[worldColumnKey] = { max: maxY, thread: 0 };
   }
   i = queue.length;
-  await this.awaitAllWorldColumnSunLightProp();
+
   //stage 2 flood down from maxY
   while (i--) {
    const position = queue[i];
@@ -77,6 +77,7 @@ export const QueuesManager = {
    data.thread = DVEW.constructorCommManager.runSunFillAtMaxY(x, z, data.max);
    Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
   }
+  await this.awaitAllWorldColumnSunLightProp();
   await this.awaitAllSunLightUpdatesAtMaxY();
   //stage 3 flood out from maxY
   while (queue.length != 0) {

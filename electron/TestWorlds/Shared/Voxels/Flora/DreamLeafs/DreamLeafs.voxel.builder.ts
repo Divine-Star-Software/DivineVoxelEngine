@@ -1,12 +1,14 @@
 import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
-import { DreamLeafsVoxelData } from "./DreamLeafs.voxel.data.js";
-
+let uv = 0;
 export const DreamLeafVoxelBuilderThread: VoxelConstructorObject = {
- data: DreamLeafsVoxelData,
+ id: "dve:dream-leafs",
  trueShapeId: 1,
- hooks: {},
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   uv = DVEB.textureManager.getTextureUV("flora", "dream-leafs");
+  },
+ },
  process: function (data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV("flora", "dream-leafs");
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(uv);
    data.overlayUVTemplate.push(0, 0, 0, 0);

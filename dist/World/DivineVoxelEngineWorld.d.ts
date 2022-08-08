@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -120,8 +120,9 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
+        getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -181,10 +182,7 @@ export declare const DVEW: {
             _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
             _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
             _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
             _markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
             _checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
@@ -195,6 +193,10 @@ export declare const DVEW: {
             setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
             getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
         };
+        /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         getHeightMapArray(): {
             bounds: {
                 x: number;
@@ -411,22 +413,6 @@ export declare const DVEW: {
                 z: number;
             };
         };
-        getInfoByte(number?: number): {
-            maxBit: number;
-            minBit: number;
-            maxDec: number;
-            minDec: number;
-            byteValue: number;
-            getNumberValue(): number;
-            setNumberValue(newValue: number): void;
-            getBit(index: number): 0 | 1;
-            getBitsArray(bitIndex: number, byteLength: number): (0 | 1)[];
-            getHalfByteDec(bitIndex: number): number;
-            setHalfByteBits(index: number, value: number): void;
-            setBit(index: number, value: 0 | 1): void;
-            toArray(): (0 | 1)[];
-            toString(delimiter?: string): string;
-        };
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
@@ -484,10 +470,6 @@ export declare const DVEW: {
             };
             lighting: {
                 doAO: boolean;
-                /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
                 doSunLight: boolean;
                 doRGBLight: boolean;
                 autoRGBLight: boolean;
@@ -721,8 +703,10 @@ export declare const DVEW: {
         syncRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
         releaseRegion(x: number, y: number, z: number): false | undefined;
         releaseRegionInThread(threadId: string, x: number, y: number, z: number): false | undefined;
-        syncGlobalVoxelPalette(): void;
-        syncGlobalVoxelPaletteInThread(threadId: string): void;
+        syncVoxelPalette(): void;
+        syncVoxelPaletteInThread(threadId: string): void;
+        syncVoxelData(): void;
+        syncVoxelDataInThread(threadId: string): void;
     };
     voxelMatrix: {
         byteLength: {
@@ -757,9 +741,11 @@ export declare const DVEW: {
             lightSource: number;
             lightValue: number;
         };
-        voxelBuffer: ArrayBuffer;
+        voxelBuffer: SharedArrayBuffer;
         voxelDataView: DataView;
+        voxelMapBuffer: SharedArrayBuffer;
         voxelMap: Uint16Array;
+        __isReady: boolean;
         $INIT(): void;
         getVoxelData(id: number): {
             substance: number;
@@ -778,6 +764,13 @@ export declare const DVEW: {
         getColliderId(id: number): number;
         isLightSource(id: number): number;
         getLightValue(id: number): number;
+    };
+    matrixMap: {
+        shapeMap: Record<string, number>;
+        __shapeMapSet: boolean;
+        isReady(): boolean;
+        setShapeMap(shapeMap: Record<string, number>): void;
+        flush(): void;
     };
     fxComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
     dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
@@ -981,16 +974,13 @@ export declare const DVEW: {
             voxelPaletteCount: number;
             voxelPalette: Record<number, string>;
             voxelPaletteMap: Record<string, number>;
-            voxelPaletteRecord: Record<string, string[]>;
-            getVoxelPaletteId(voxelId: string, voxelState: string): number;
-            getVoxelData(voxelId: number): string[];
+            getVoxelPaletteId(voxelId: string, voxelState: number): number;
+            getVoxelTrueId(voxelId: number): string;
             registerVoxel(voxel: import("../Meta/index.js").VoxelData): void;
-            _register(id: string, stateId: string): void;
             getVoxelPartentId(id: number): number;
-            isVoxelIdAState(id: number): boolean;
+            getVoxelState(voxelId: number): number;
             getVoxelPalette(): Record<number, string>;
             getVoxelPaletteMap(): Record<string, number>;
-            getVoxelPaletteRecord(): Record<string, string[]>;
         };
         getBlankRegion(): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         createChunkFromDataThread(data: any[]): import("../Meta/index.js").ChunkData;
@@ -1225,22 +1215,22 @@ export declare const DVEW: {
         setLevelState(state: number, x: number, y: number, z: number): void;
         getData(x: number, y: number, z: number, state?: boolean): number | false;
         setData(x: number, y: number, z: number, data: number, state?: boolean): void | -1;
-        getVoxelPaletteId(voxelId: string, voxelStateId: string): number;
+        getVoxelPaletteId(voxelId: string, voxelStateId: number): number;
         getVoxel(x: number, y: number, z: number, secondary?: boolean): false | [number | import("../Meta/index.js").VoxelData, string | number, number];
         addRegion(x: number, y: number, z: number): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         getRegion(x: number, y: number, z: number): false | import("../Meta/World/WorldData/World.types.js").WorldRegion;
         addChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
-        paintVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): void;
+        paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
         addOrGetChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
         _getStartingLevel(voxelData: import("../Meta/index.js").VoxelData, stateData: number): number;
-        paintDualVoxel(voxelId: string, voxelStateId: string, shapeState: number, secondVoxelId: string, secondVoxelStateId: string, x: number, y: number, z: number): void;
+        paintDualVoxel(voxelId: string, voxelStateId: number, shapeState: number, secondVoxelId: string, secondVoxelStateId: number, x: number, y: number, z: number): void;
         __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
         __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
-        requestVoxelAdd(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number): Promise<void>;
+        requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
         requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
         getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/index.js").ChunkData> | undefined;
         getRelativeMaxWorldColumnHeight(x: number, z: number): number;
@@ -1332,7 +1322,7 @@ export declare const DVEW: {
         begin(width: number, height: number, depth: number, composed?: number): void;
         setLight(s: number, r: number, g: number, b: number, x: number, y: number, z: number, composed?: number): void;
         fillLight(s: number, r: number, g: number, b: number, composed?: number): void;
-        addVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number, composed?: number): void;
+        addVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number, composed?: number): void;
         build(x: number, y: number, z: number): void;
     };
     voxelManager: {

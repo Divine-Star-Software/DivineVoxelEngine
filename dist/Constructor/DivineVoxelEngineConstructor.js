@@ -13,6 +13,8 @@ import { WorldComm } from "./InterComms/World/WorldComm.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
+import { MatrixMap } from "../Matrix/MatrixMap.js";
+import { VoxelMatrix } from "../Matrix/VoxelMatrix.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 export const DVEC = {
@@ -30,6 +32,8 @@ export const DVEC = {
     queues: QueuesManager,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
+    matrixMap: MatrixMap,
+    voxelMatrix: VoxelMatrix,
     renderComm: RenderComm,
     worldComm: WorldComm,
     voxelManager: VoxelManager,
@@ -45,7 +49,8 @@ export const DVEC = {
         return (DVEC.__connectedToWorld &&
             DVEC.matrixHub.worldPort !== undefined &&
             DVEC.worldComm.port !== null &&
-            DVEC.__settingsHaveBeenSynced,
+            DVEC.matrixHub.isReady() &&
+            DVEC.__settingsHaveBeenSynced &&
             DVEB.textureManager.isReady());
     },
     async $INIT(initData) {

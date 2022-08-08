@@ -85,7 +85,7 @@ export const EntityConstructor = {
 
  addVoxel(
   voxelId: string,
-  voxelStateId: string,
+  voxelStateId: number,
   shapeState: number,
   x: number,
   y: number,

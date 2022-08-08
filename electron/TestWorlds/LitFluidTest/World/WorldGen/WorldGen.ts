@@ -6,17 +6,17 @@ export const WorldGen = {
 
  _type0(tx: number, ty: number, tz: number) {
   if (ty == 16) {
-   DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+   DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
   }
  },
  _type1(tx: number, ty: number, tz: number) {
   if (tz == 1) {
-   DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+   DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
   }
  },
  _type2(tx: number, ty: number, tz: number) {
   if (tx == 30) {
-   DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, tx, ty, tz);
+   DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
   }
  },
 

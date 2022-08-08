@@ -2,6 +2,7 @@ import { Util } from "../../Global/Util.helper.js";
 export const RichData = {
     worldBounds: Util.getWorldBounds(),
     richRegions: {},
+    initalData: {},
     getRegion(x, y, z) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
         if (!this.richRegions[regionKey])
@@ -67,4 +68,14 @@ export const RichData = {
         const richKey = this.worldBounds.getRichPositionKey(x, y, z);
         delete chunk[richKey];
     },
+    registerInitalDataForVoxel(voxelId, data) {
+        this.initalData[voxelId] = data;
+    },
+    hasInitalData(voxelId) {
+        return this.initalData[voxelId] !== undefined;
+    },
+    setInitalData(voxelId, x, y, z) {
+        const data = this.initalData[voxelId];
+        this.setData(x, y, z, data);
+    }
 };

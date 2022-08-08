@@ -83,6 +83,6 @@ export declare const EntityConstructor: {
     begin(width: number, height: number, depth: number, composed?: number): void;
     setLight(s: number, r: number, g: number, b: number, x: number, y: number, z: number, composed?: number): void;
     fillLight(s: number, r: number, g: number, b: number, composed?: number): void;
-    addVoxel(voxelId: string, voxelStateId: string, shapeState: number, x: number, y: number, z: number, composed?: number): void;
+    addVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number, composed?: number): void;
     build(x: number, y: number, z: number): void;
 };

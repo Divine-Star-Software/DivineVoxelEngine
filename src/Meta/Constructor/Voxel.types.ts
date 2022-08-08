@@ -6,7 +6,7 @@ export type VoxelProcessData = {
  textureRotations: Rotations[];
  level: number;
  levelState: number;
- voxelState: string;
+ voxelState: number;
  voxelShapeState: number;
  uvTemplate: number[];
  overlayUVTemplate: number[];

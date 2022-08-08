@@ -1,4 +1,3 @@
-import { InfoByte } from "./Util/InfoByte.js";
 import { LightByte } from "./Util/LightByte.js";
 import { VoxelByte } from "./Util/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
@@ -11,6 +10,7 @@ import { HeightMapArray } from "./Util/HeightMapArray.js";
 import { MeshFaceDataByte } from "./Util/MeshFaceDataBytes.js";
 import { DataEncoder } from "./Util/DataEncoder.js";
 import { EntityFlat3dArray } from "./Util/EntityFlat3dArray.js";
+import { Queue } from "./Util/Queue.js";
 export const Util = {
     createPromiseCheck: CreatePromiseCheck,
     getWorkerPort: GetWorkerPort,
@@ -21,6 +21,9 @@ export const Util = {
             environment = "node";
         }
         return environment;
+    },
+    getAQueue() {
+        return new Queue();
     },
     getEntityFlat3dArray() {
         return EntityFlat3dArray;
@@ -51,10 +54,6 @@ export const Util = {
     },
     getWorldBounds() {
         return WorldBounds;
-    },
-    getInfoByte(number = 0) {
-        InfoByte.setNumberValue(number);
-        return InfoByte;
     },
     degtoRad(degrees) {
         return degrees * (Math.PI / 180);

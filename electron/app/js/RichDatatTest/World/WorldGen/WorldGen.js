@@ -10,7 +10,7 @@ export const WorldGen = {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y < groundY) {
-                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", "default", 0, x, y, z);
+                        DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
                         continue;
                     }
                 }

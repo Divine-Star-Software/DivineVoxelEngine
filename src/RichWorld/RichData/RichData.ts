@@ -5,6 +5,8 @@ export const RichData = {
  worldBounds: Util.getWorldBounds(),
  richRegions: <Record<string, RichWorldRegion>>{},
 
+ initalData: <Record<string, any>>{},
+
  getRegion(x: number, y: number, z: number) {
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   if (!this.richRegions[regionKey]) return false;
@@ -66,4 +68,15 @@ export const RichData = {
   const richKey = this.worldBounds.getRichPositionKey(x, y, z);
   delete chunk[richKey];
  },
+
+ registerInitalDataForVoxel(voxelId: string, data: any) {
+  this.initalData[voxelId] = data;
+ },
+ hasInitalData(voxelId: string) {
+   return this.initalData[voxelId] !== undefined;
+ },
+ setInitalData(voxelId: string,x: number, y: number, z: number) {
+     const data = this.initalData[voxelId];
+     this.setData(x,y,z,data);
+ }
 };

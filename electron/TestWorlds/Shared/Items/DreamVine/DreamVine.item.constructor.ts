@@ -1,10 +1,15 @@
 import { ItemConstructorObject } from "../../../../out/Meta/Items/Item.types";
-import { DreamvineItemData } from "./DreamVine.item.data.js";
 
+let uv = 0;
 export const DreamVineItemConstructorObject: ItemConstructorObject = {
- data: DreamvineItemData,
+ id: "dve:dreamvine-item",
+ shapeId: "vine",
+ hooks: {
+  texturesRegistered: (DVEB) => {
+   uv = DVEB.textureManager.getTextureUV("Item", "dream-vine");
+  },
+ },
  process(data, DVEB) {
-  const uv = DVEB.textureManager.getTextureUV("Item", "dream-vine");
   data.uvs.push(uv);
  },
 };

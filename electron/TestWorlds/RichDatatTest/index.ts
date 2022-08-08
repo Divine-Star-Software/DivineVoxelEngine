@@ -53,7 +53,7 @@ const init = async () => {
   { x: 2, y: 36, z: 7 },
   { x: 10, y: 30, z: 10 }
  );
- camera.speed = .1;
+ camera.speed = .5;
  SetUpDefaultSkybox(scene);
 
  //CreateWorldAxis(scene, 36);

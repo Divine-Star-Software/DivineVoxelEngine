@@ -3,7 +3,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
-const ddepth = 128;
+const ddepth = 64;
 let startX = -ddepth;
 let startZ = -ddepth;
 let endX = ddepth;
@@ -65,16 +65,19 @@ WorldGen.generateChunk(16, 16);
 
 WorldGen.generateChunk(-16, -16);
 
-DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, 7, 47, 7);
+DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, 7, 47, 7);
 fill();
+let t1 = performance.now();
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+let t2 = performance.now();
+console.log(t2 - t1);
 load();
 /* DVEW.worldData.paintDualVoxel(
  "dve:liquiddreamether",
- "default",
+ 0,
  0,
  "dve:dreamgrass",
- "default",
+ 0,
  0,
  40,
  0
@@ -85,8 +88,5 @@ setTimeout(() => {
  DVEW.queues.runFlowRuneQue();
 }, 2000);
 
-(DVEW as any).worldData.setLevelState(1, 0, 0, 0);
 
-const data = (DVEW as any).worldData.getLevelState(0, 0, 0);
-console.log(data);
 (self as any).DVEW = DVEW;

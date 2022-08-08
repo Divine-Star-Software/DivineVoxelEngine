@@ -18,28 +18,28 @@ export const WorldGen = {
                 }
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y <= baseY + 5) {
-                        DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (airPillar && y > baseY + 10 && y <= baseY + 10 + add) {
-                        DVEW.worldData.paintVoxel(voxel, "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                     }
                     if (y > baseY + 5 &&
                         y <= baseY + 6 + add &&
                         (z == 0 || x == 0 || z == 15 || x == 15)) {
-                        DVEW.worldData.paintVoxel(voxel, "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         continue;
                     }
                     if (middlePillar &&
                         y > baseY + 5 &&
                         y <= baseY + 6 + add * 1.5 &&
                         !(z == 0 || x == 0 || z == 15 || x == 15)) {
-                        DVEW.worldData.paintVoxel(voxel, "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         continue;
                     }
                     if (y == baseY + 6) {
                         let flip = Math.random() > 0.7;
                         if (flip) {
-                            DVEW.worldData.paintVoxel("dve:dreamgrass", "default", 0, x + chunkX, y + chunkY, z + chunkZ);
+                            DVEW.worldData.paintVoxel("dve:dreamgrass", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
                         }
                     }
                 }

@@ -1,18 +1,16 @@
-import { DreamStonePillarVoxelData } from "./DreamStonePillar.voxel.data.js";
+const uvs = [];
 export const DreamStonePillarVoxelBuilderThread = {
-    data: DreamStonePillarVoxelData,
+    id: "dve:dreamstonepillar",
     trueShapeId: 1,
-    hooks: {},
+    hooks: {
+        texturesRegistered: (DVEB) => {
+            uvs.push(DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "top"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top"));
+        },
+    },
     process: function (data, DVEB) {
-        let topBottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "top");
-        let sideUV = DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar");
-        let sideTopUV = DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top");
-        /*   let sideBottom = DVEB.textureManager.getTextureUV(
-         "solid",
-         "dreamstone-pillar",
-         "side-bottom"
-        );
-       */
+        let topBottomUV = uvs[0];
+        let sideUV = uvs[1];
+        let sideTopUV = uvs[2];
         if (!DVEB.processor.worldMatrix.sameVoxel(data.x, data.y, data.z, data.x, data.y + 1, data.z)) {
             sideUV = sideTopUV;
         }

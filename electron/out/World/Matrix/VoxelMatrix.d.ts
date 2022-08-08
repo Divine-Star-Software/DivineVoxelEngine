@@ -1,4 +1,4 @@
-import { VoxelSubstanceType } from "Meta/index.js";
+import type { VoxelSubstanceType } from "Meta/index.js";
 export declare const VoxelMatrix: {
     byteLength: {
         substance: number;
@@ -32,9 +32,11 @@ export declare const VoxelMatrix: {
         lightSource: number;
         lightValue: number;
     };
-    voxelBuffer: ArrayBuffer;
+    voxelBuffer: SharedArrayBuffer;
     voxelDataView: DataView;
+    voxelMapBuffer: SharedArrayBuffer;
     voxelMap: Uint16Array;
+    __isReady: boolean;
     $INIT(): void;
     getVoxelData(id: number): {
         substance: number;

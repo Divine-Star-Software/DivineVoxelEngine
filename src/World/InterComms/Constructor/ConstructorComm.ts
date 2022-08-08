@@ -17,7 +17,7 @@ export const GetNewConstructorComm = (
  newComm.onSetPort((port) => {
   newComm.name = threadName;
   DVEW.matrixCentralHub.registerThread(threadName, port);
-  DVEW.matrixCentralHub.syncGlobalVoxelPaletteInThread(threadName);
+  DVEW.matrixCentralHub.syncVoxelPaletteInThread(threadName);
  });
  newComm.setPort(port);
  DVEW.constructorCommManager.numConstructors++;
@@ -38,13 +38,14 @@ export const GetNewConstructorComm = (
   DVEW.queues.addToRebuildQue(x, y, z, substance);
  };
 
- newComm.messageFunctions[ConstructorToWorldMessages.runRebuildQue] = (
-    data
-   ) => {
+ newComm.messageFunctions[ConstructorToWorldMessages.runRebuildQue] = () => {
+  DVEW.queues.runRebuildQue();
+ };
 
-  
-    DVEW.queues.runRebuildQue();
-   };
+ newComm.messageFunctions[ConstructorToWorldMessages.syncShapeMap] = (data) => {
+  DVEW.matrixMap.setShapeMap(data[1]);
+ };
+
 
  newComm.messageFunctions[ConstructorToWorldMessages.addToRGBLightUpdateQue] = (
   data

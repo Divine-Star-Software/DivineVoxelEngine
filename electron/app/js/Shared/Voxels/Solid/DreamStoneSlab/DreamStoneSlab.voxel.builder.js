@@ -1,12 +1,17 @@
-import { DreamStoneSlabVoxelData } from "./DreamStoneSlab.voxel.data.js";
+let topUV = 0;
+let bottomUV = 0;
+let sideUV = 0;
 export const DreamStoneSlabVoxelBuilderThread = {
-    data: DreamStoneSlabVoxelData,
+    id: "dve:dreamstoneslab",
     trueShapeId: 1,
-    hooks: {},
+    hooks: {
+        texturesRegistered: (DVEB) => {
+            topUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
+            bottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone");
+            sideUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
+        },
+    },
     process: function (data, DVEB) {
-        let topUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
-        let bottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone");
-        let sideUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(topUV);
             data.overlayUVTemplate.push(0);

@@ -1,3 +1,4 @@
+import { VoxelMatrix } from "./VoxelMatrix.js";
 import { WorldMatrix } from "./WorldMatrix.js";
 /**# Matrix Hub
  * ---
@@ -5,6 +6,9 @@ import { WorldMatrix } from "./WorldMatrix.js";
  * It syncs the chunk data.
  */
 export const MatrixHub = {
+    worldPort: undefined,
+    threadName: "",
+    __threadNameSet: false,
     messageFunctions: {
         "sync-chunk": (data) => {
             MatrixHub._syncChunk(data);
@@ -12,7 +16,7 @@ export const MatrixHub = {
         "release-chunk": (data) => {
             MatrixHub._releaseChunk(data);
         },
-        "sync-global-palette": (data) => {
+        "sync-voxel-palette": (data) => {
             MatrixHub._syncGlobalVoxelPalette(data);
         },
         "set-thread-name": (data) => {
@@ -22,12 +26,12 @@ export const MatrixHub = {
             const port = event.ports[0];
             MatrixHub._setWorldPort(port);
         },
+        "sync-voxel-data": (data) => {
+            MatrixHub._syncVoxelData(data);
+        },
     },
-    worldPort: undefined,
-    threadName: "",
-    setThreadName(threadName) {
-        this.threadName = threadName;
-        WorldMatrix.threadName = this.threadName;
+    isReady() {
+        return this.__threadNameSet && this.worldPort != undefined;
     },
     onMessage(event, runAfter) {
         const data = event.data;
@@ -104,6 +108,9 @@ export const MatrixHub = {
         const chunkZ = data[8];
         WorldMatrix.__setChunk(chunkX, chunkY, chunkZ, voxelsSAB, voxelStatesSAB, heightMapSAB, minMaxMapSAB, chunkStateSAB);
     },
+    _syncVoxelData(data) {
+        VoxelMatrix.syncData(data[1], data[2]);
+    },
     _releaseChunk(data) {
         const chunkX = data[1];
         const chunkY = data[2];
@@ -111,10 +118,11 @@ export const MatrixHub = {
         WorldMatrix.__removeChunk(chunkX, chunkY, chunkZ);
     },
     _syncGlobalVoxelPalette(data) {
-        WorldMatrix.__setGlobalVoxelPalette(data[1], data[2], data[3]);
+        WorldMatrix.__setGlobalVoxelPalette(data[1], data[2]);
     },
     _setThreadName(data) {
         this.threadName = data[1];
         WorldMatrix.threadName = this.threadName;
+        this.__threadNameSet = true;
     },
 };

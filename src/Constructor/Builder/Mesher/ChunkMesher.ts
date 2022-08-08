@@ -19,6 +19,7 @@ export const ChunkMesher = {
   "fluid",
   "magma",
  ],
+
  voxelTypeMap: {
   solid: 0,
   flora: 1,
@@ -33,6 +34,7 @@ export const ChunkMesher = {
   template: FullChunkTemplate,
   LOD = 1
  ) {
+
   let i = this.voxelBuildOrder.length;
 
   while (i--) {
@@ -187,6 +189,7 @@ export const ChunkMesher = {
     uvArray.buffer,
     overlayUVArray.buffer,
    ];
+
 
    DVEC.renderComm.sendMessage(
     ConstructorToRenderMessages.setChunk,

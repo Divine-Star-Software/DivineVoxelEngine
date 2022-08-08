@@ -23,3 +23,13 @@ export declare type MatrixChunkData = Record<string, {
     minMaxMapSAB: SharedArrayBuffer;
     heightMapSAB: SharedArrayBuffer;
 }>;
+export declare type MatrixVoxelData = {
+    substance: number;
+    shapeId: number;
+    hardness: number;
+    material: number;
+    checkCollision: number;
+    colliderId: number;
+    lightSource: number;
+    lightValue: number;
+};

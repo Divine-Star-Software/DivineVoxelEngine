@@ -12,6 +12,8 @@ await DVER.$INIT({
     nexusWorker: workers.nexusWorker,
     nexus: {
         enabled: true,
+        autoSyncChunks: true,
+        autoSyncVoxelPalette: true
     },
     lighting: {
         doAO: true,

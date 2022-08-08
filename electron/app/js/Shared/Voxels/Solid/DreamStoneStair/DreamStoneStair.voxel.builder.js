@@ -1,11 +1,13 @@
-import { DreamStoneStairVoxelData } from "./DreamStoneStair.voxel.data.js";
+let uv = 0;
 export const DreamStoneStairVoxelBuilderThread = {
-    data: DreamStoneStairVoxelData,
+    id: "dve:dreamstone-stair",
     trueShapeId: 1,
-    hooks: {},
+    hooks: {
+        texturesRegistered: (DVEB) => {
+            uv = DVEB.textureManager.getTextureUV("solid", "dreamstone");
+        },
+    },
     process: function (data, DVEB) {
-        // let uv = DVEB.textureManager.getTextureUV("solid", "debug", "top");
-        let uv = DVEB.textureManager.getTextureUV("solid", "dreamstone");
         //top
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);

@@ -10,10 +10,10 @@ export const WorldGen = {
             for (let z = 0; z < this.chunkDepth; z++) {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     if (y > baseY && y <= maxY) {
-                        DVEW.worldData.paintVoxel("dve:liquiddreamether", "default", 0, x + chunkX, y, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x + chunkX, y, z + chunkZ);
                     }
                     if (y == baseY) {
-                        DVEW.worldData.paintVoxel("dve:dreamstone", "default", 0, x + chunkX, y, z + chunkZ);
+                        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x + chunkX, y, z + chunkZ);
                     }
                 }
             }
