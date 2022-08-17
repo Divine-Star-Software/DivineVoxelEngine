@@ -56,6 +56,24 @@ export const TextureManager = {
   Item: {},
  },
 
+ normalMapTextures: <Record<TextureTypes, TextureData[]>>{
+  solid: [],
+  transparent: [],
+  fluid: [],
+  magma: [],
+  flora: [],
+  Item: [],
+ },
+
+ noramlMapUVTexturesMap: <Record<TextureTypes, Record<string, number>>>{
+  solid: {},
+  transparent: {},
+  fluid: {},
+  magma: {},
+  flora: {},
+  Item: {},
+ },
+
  textureTypes: <TextureTypes[]>[
   "transparent",
   "fluid",
@@ -74,12 +92,16 @@ export const TextureManager = {
   count: number,
   path: string,
   textureType: TextureTypes,
-  overlay = false
+  overlay = false,
+  normalMap = false
  ) {
   let map = this.uvTextureMap;
   if (overlay) {
    map = this.overlayUVTextureMap;
   }
+  if (normalMap) {
+    map = this.overlayUVTextureMap;
+   }
 
   if (!texture.variations) return count;
   for (const varation of Object.keys(texture.variations)) {
@@ -117,7 +139,7 @@ export const TextureManager = {
 
   return count;
  },
- generateTexturesData(overlay = false) {
+ generateTexturesData(overlay = false, normalMap = false) {
   const returnTexturePaths: Record<TextureTypes, string[]> = {
    solid: [],
    transparent: [],
@@ -147,10 +169,16 @@ export const TextureManager = {
   if (overlay) {
    textures = this.overylayTextures;
   }
+  if (normalMap) {
+   textures = this.normalMapTextures;
+  }
 
   let map = this.uvTextureMap;
   if (overlay) {
    map = this.overlayUVTextureMap;
+  }
+  if (normalMap) {
+   map = this.noramlMapUVTexturesMap;
   }
 
   for (const textureType of this.textureTypes) {

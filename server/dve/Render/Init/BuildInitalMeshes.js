@@ -2,11 +2,17 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
     const textures = DVER.textureManager.processedTextureData.texturePaths[substance];
     const animations = DVER.textureManager.processedTextureData.textureAnimations[substance];
     const animationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
-    const _2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(scene, textures);
+    const _2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(`${substance}-diffuse`, scene, textures);
     const overlayTextures = DVER.textureManager.overlayProcessedTextureData.texturePaths[substance];
     const overlayAimations = DVER.textureManager.overlayProcessedTextureData.textureAnimations[substance];
     const overlayAnimationTimes = DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[substance];
-    const Overlay2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(scene, overlayTextures);
+    const Overlay2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(`${substance}-overlay`, scene, overlayTextures);
+    if (substance == "solid") {
+        DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
+    }
+    if (substance == "fluid") {
+        DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+    }
     const materialCreateData = {
         settings: DVER.settings.getSettings(),
         scene: scene,

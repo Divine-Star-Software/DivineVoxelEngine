@@ -208,7 +208,7 @@ export const WorldMatrix = {
     isVoxelALightSource(x, y, z, secondary = false) {
         const data = this.getData(x, y, z, secondary);
         const vid = this.voxelByte.getId(data);
-        return this.voxelMatrix.isLightSource(vid) == 1;
+        return this.voxelMatrix.isLightSource(vid);
     },
     getLightSourceValue(x, y, z, secondary = false) {
         const data = this.getData(x, y, z, secondary);

@@ -10,7 +10,6 @@ import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 
-
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
@@ -24,62 +23,92 @@ await DVER.$INIT({
  constructorWorker: workers.constructorWorkers,
  lighting: {
   doAO: true,
-  doRGBLight: false,
+  doRGBLight: true,
   doSunLight: false,
-  autoRGBLight: false,
+  autoRGBLight: true,
   autoSunLight: false,
  },
 });
 
 const setUpLightAndShadows = (scene: BABYLON.Scene) => {
  const light = new BABYLON.DirectionalLight(
-  "direct",
-  new BABYLON.Vector3(-1, -1, 0),
+  "light",
+  new BABYLON.Vector3(-1, -1, -0.1),
   scene
  );
+
+ /*  let goingUp = false;
+ setInterval(() => {
+  if (light.intensity <= 0) {
+   goingUp = true;
+  }
+  if (light.intensity >= 1) {
+   goingUp = false;
+  }
+  if (goingUp) {
+   light.direction.x -= 0.01;
+   light.intensity += 0.01;
+   if (scene.fogColor.r < 1) {
+    scene.fogColor.r += 0.01;
+   }
+   if (scene.fogColor.g < 1) {
+    scene.fogColor.g += 0.01;
+   }
+
+   if (scene.fogColor.b < 1) {
+    scene.fogColor.b += 0.01;
+   }
+  } else {
+   light.direction.x += 0.01;
+   light.intensity -= 0.01;
+   if (scene.fogColor.r > 0) {
+    scene.fogColor.r -= 0.01;
+   }
+   if (scene.fogColor.g > 0) {
+    scene.fogColor.g -= 0.01;
+   }
+   if (scene.fogColor.b > 0) {
+    scene.fogColor.b -= 0.01;
+   }
+  }
+ }, 100); */
+
  light.intensity = 1;
- light.position = new BABYLON.Vector3(-25, 60, 40);
- console.log(light.shadowMaxZ, light.shadowMinZ);
- const lightSphere = BABYLON.MeshBuilder.CreateSphere(
-  "lightSphere",
-  { segments: 16, diameter: 1 },
-  scene
- );
+ light.shadowMinZ = -90 * 2;
+ light.shadowMaxZ = 130 * 2;
 
- lightSphere.position = light.position;
- const testSphere = BABYLON.MeshBuilder.CreateSphere(
-  "lightSphere",
-  { segments: 16, diameter: 1 },
-  scene
- );
- testSphere.position = new BABYLON.Vector3(-27, 43, 8);
+ /*     scene.fogColor.r = 0;
+ scene.fogColor.g = 0;
+ scene.fogColor.b = 0;    */
+
  // const hemLight = new BABYLON.HemisphericLight("test",new BABYLON.Vector3(0,-1,0),scene);
- const shadowGenerator = new BABYLON.ShadowGenerator(2000, light);
+ const shadowGenerator = new BABYLON.ShadowGenerator(1024, light, true);
+ shadowGenerator.darkness = 0.1;
+ shadowGenerator.usePercentageCloserFiltering = true;
+ shadowGenerator.usePoissonSampling = true;
+ shadowGenerator.filteringQuality = BABYLON.ShadowGenerator.QUALITY_MEDIUM;
+ shadowGenerator.bias = 0.003;
+ (shadowGenerator as any).autoCalcDepthBounds = false;
 
- shadowGenerator.addShadowCaster(testSphere);
- const mat = new BABYLON.StandardMaterial("test", scene);
- for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
-  const mesh = DVER.meshManager.meshes.solid[meshKey];
-  //@ts-ignore
-  mesh.material.shadowDepthWrapper = new BABYLON.ShadowDepthWrapper(
-      //@ts-ignore
-   mesh.material,
-   scene
-  );
-  mesh.receiveShadows = true;
-  mesh.material = mat;
-  shadowGenerator.addShadowCaster(mesh);
- }
+ setTimeout(() => {
+  for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
+   const mesh = DVER.meshManager.meshes.solid[meshKey];
+   mesh.receiveShadows = true;
+   mesh.material = DVER.renderManager.solidStandardMaterial.getMaterial();
+   DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
+   shadowGenerator.addShadowCaster(mesh);
+  }
 
- /*  const ground = BABYLON.MeshBuilder.CreateGround(
-  "ground",
-  { width: 80, height: 80, subdivisions: 1 },
-  scene
- );
- ground.receiveShadows = true;
- ground.position.y = 35;
- ground.material = mat; */
- console.log("go");
+  for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
+   const mesh = DVER.meshManager.meshes.solid[meshKey];
+   DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
+  }
+  for (const meshKey of Object.keys(DVER.meshManager.meshes.fluid)) {
+   const mesh = DVER.meshManager.meshes.fluid[meshKey];
+   mesh.receiveShadows = true;
+   mesh.material = DVER.renderManager.fluidStandardMaterial.getMaterial();
+  }
+ }, 5000);
 };
 
 const init = async () => {
@@ -92,11 +121,41 @@ const init = async () => {
   { x: 15, y: 36, z: 7 },
   { x: 7, y: 30, z: 7 }
  );
+
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);
 
+/*  var pipeline = new BABYLON.DefaultRenderingPipeline(
+  "defaultPipeline",
+  true,
+  scene,
+  [camera]
+ );
+
+ pipeline.samples = 4;
+ pipeline.bloomEnabled = true;
+ pipeline.bloomThreshold = 0.1;
+ pipeline.bloomWeight = 2;
+ pipeline.bloomKernel = 256;
+ pipeline.bloomScale = 1; */
+ /* 
+  pipeline.depthOfFieldEnabled = true;
+ pipeline.depthOfField.focusDistance  = 2000;
+ pipeline.depthOfField.fStop  = 1.4
+ pipeline.depthOfFieldBlurLevel = BABYLON.DepthOfFieldEffectBlurLevel.Low;  */
+
+ /*  pipeline.chromaticAberrationEnabled = true;
+ pipeline.chromaticAberration.aberrationAmount = 300;
+ pipeline.chromaticAberration.radialIntensity = 1;
+ pipeline.chromaticAberration.alphaMode = 2;
+let i = 0;
+ setInterval(()=>{
+  pipeline.chromaticAberration.direction.x = Math.sin(i/10)
+  pipeline.chromaticAberration.direction.y = Math.cos(i/10)
+i++;
+ },10); */
  runRenderLoop(engine, scene, camera, DVER);
 
  setTimeout(() => {

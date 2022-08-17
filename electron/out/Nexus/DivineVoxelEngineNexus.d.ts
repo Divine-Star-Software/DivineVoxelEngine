@@ -304,7 +304,7 @@ export declare const DVEN: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -379,7 +379,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -745,7 +745,7 @@ export declare const DVEN: {
             getHardness(id: number): number;
             getCheckCollisions(id: number): number;
             getColliderId(id: number): number;
-            isLightSource(id: number): number;
+            isLightSource(id: number): boolean;
             getLightValue(id: number): number;
         };
         _air: [string, number];

@@ -15,6 +15,8 @@ import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
 import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { ItemMaterial } from "./Materials/Item/ItemMaterial.js";
+import { StandardSolidMaterial } from "./Materials/Solid/Standard/SolidMaterial.bjsmp.js";
+import { StandardFluidMaterial } from "./Materials/Fluid/Standard/FluidMaterial.bjsmp.js";
 export const RenderManager = {
     shaderBuilder: ShaderBuilder,
     textureCreator: TextureCreator,
@@ -24,6 +26,8 @@ export const RenderManager = {
     fluidMaterial: FluidMaterial,
     magmaMaterial: MagmaMaterial,
     itemMaterial: ItemMaterial,
+    solidStandardMaterial: StandardSolidMaterial,
+    fluidStandardMaterial: StandardFluidMaterial,
     skyBoxMaterial: SkyBoxMaterial,
     solidMesh: SolidMesh,
     floraMesh: FloraMesh,

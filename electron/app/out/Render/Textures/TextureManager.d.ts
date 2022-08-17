@@ -10,9 +10,11 @@ export declare const TextureManager: {
     uvTextureMap: Record<TextureTypes, Record<string, number>>;
     overylayTextures: Record<TextureTypes, TextureData[]>;
     overlayUVTextureMap: Record<TextureTypes, Record<string, number>>;
+    normalMapTextures: Record<TextureTypes, TextureData[]>;
+    noramlMapUVTexturesMap: Record<TextureTypes, Record<string, number>>;
     textureTypes: TextureTypes[];
-    _processVariations(texture: TextureData, texturePaths: string[], animations: Record<TextureTypes, number[][]>, textureAnimatioTimes: Record<TextureTypes, number[][]>, extension: string, count: number, path: string, textureType: TextureTypes, overlay?: boolean): number;
-    generateTexturesData(overlay?: boolean): void;
+    _processVariations(texture: TextureData, texturePaths: string[], animations: Record<TextureTypes, number[][]>, textureAnimatioTimes: Record<TextureTypes, number[][]>, extension: string, count: number, path: string, textureType: TextureTypes, overlay?: boolean, normalMap?: boolean): number;
+    generateTexturesData(overlay?: boolean, normalMap?: boolean): void;
     defineDefaultTexturePath(path: string): void;
     defineDefaultTextureExtension(textureType: TextureTypes, ext: string): void;
     getTextureUV(textureType: TextureTypes, textureId: string, varation?: string): number;

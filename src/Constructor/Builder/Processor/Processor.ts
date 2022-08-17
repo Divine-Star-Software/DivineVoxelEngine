@@ -174,6 +174,8 @@ export const Processor = {
   return this.worldMatrix.getVoxelSubstance(x, y, z, getSecond);
  },
 
+
+
  getVoxelShapeId(x: number, y: number, z: number, getSecond = false) {
   return this.worldMatrix.getVoxelShapeId(x, y, z, getSecond);
  },
@@ -190,17 +192,6 @@ export const Processor = {
   }
  },
 
- /*  getVoxelData(x: number, y: number, z: number, getSecond = false) {
-  if (!this.settings.entity) {
-   return this.worldMatrix.getVoxelData(x, y, z, getSecond);
-  } else {
-   const voxelCheck = DVEB.entityConstructor.getVoxel(x, y, z);
-   if (!voxelCheck) return false;
-   if (voxelCheck[0] == "dve:air" || voxelCheck[0] == "dve:barrier")
-    return false;
-   return DVEC.voxelManager.getVoxelData(voxelCheck[0]);
-  }
- }, */
 
  getVoxelShapeState(x: number, y: number, z: number, getSecond = false) {
   if (!this.settings.entity) {
@@ -343,9 +334,11 @@ export const Processor = {
   const voxelState = voxelCheck[1];
 
   const voxelId = voxelCheck[0];
-  const voxelShapeId = this.getVoxelShapeId(x, y, z);
+  const voxelTrueId = this.worldMatrix.getVoxelPaletteNumericId(voxelId, 0);
+  const voxelShapeId = this.worldMatrix.voxelMatrix.getShapeId(voxelTrueId);
   const voxelShapeState = this.getVoxelShapeState(x, y, z);
-  const voxelSubstance = this.getVoxelSubstance(x, y, z);
+  const voxelSubstance =
+   this.worldMatrix.voxelMatrix.getTrueSubstance(voxelTrueId);
 
   let faceBit = 0;
 
@@ -463,7 +456,6 @@ export const Processor = {
    this.exposedFaces[0] &&
    (voxelSubstance == "fluid" || voxelSubstance == "magma")
   ) {
- 
    this.calculatFlow(
     voxelId,
     this.faceStates[0] == 1,
@@ -518,7 +510,6 @@ export const Processor = {
     }
    }
   }
-
 
   return this.template;
  },

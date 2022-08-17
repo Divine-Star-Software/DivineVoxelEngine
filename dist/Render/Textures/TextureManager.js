@@ -43,6 +43,22 @@ export const TextureManager = {
         flora: {},
         Item: {},
     },
+    normalMapTextures: {
+        solid: [],
+        transparent: [],
+        fluid: [],
+        magma: [],
+        flora: [],
+        Item: [],
+    },
+    noramlMapUVTexturesMap: {
+        solid: {},
+        transparent: {},
+        fluid: {},
+        magma: {},
+        flora: {},
+        Item: {},
+    },
     textureTypes: [
         "transparent",
         "fluid",
@@ -51,9 +67,12 @@ export const TextureManager = {
         "flora",
         "Item",
     ],
-    _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay = false) {
+    _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay = false, normalMap = false) {
         let map = this.uvTextureMap;
         if (overlay) {
+            map = this.overlayUVTextureMap;
+        }
+        if (normalMap) {
             map = this.overlayUVTextureMap;
         }
         if (!texture.variations)
@@ -88,7 +107,7 @@ export const TextureManager = {
         }
         return count;
     },
-    generateTexturesData(overlay = false) {
+    generateTexturesData(overlay = false, normalMap = false) {
         const returnTexturePaths = {
             solid: [],
             transparent: [],
@@ -117,9 +136,15 @@ export const TextureManager = {
         if (overlay) {
             textures = this.overylayTextures;
         }
+        if (normalMap) {
+            textures = this.normalMapTextures;
+        }
         let map = this.uvTextureMap;
         if (overlay) {
             map = this.overlayUVTextureMap;
+        }
+        if (normalMap) {
+            map = this.noramlMapUVTexturesMap;
         }
         for (const textureType of this.textureTypes) {
             let texturePaths = [];

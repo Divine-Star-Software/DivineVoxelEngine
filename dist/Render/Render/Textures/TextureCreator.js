@@ -14,7 +14,7 @@ export const TextureCreator = {
         }
         this.context = context;
     },
-    async createMaterialTexture(scene, images, width = -1, height = -1) {
+    async createMaterialTexture(name, scene, images, width = -1, height = -1) {
         if (width == -1)
             width = this.imgWidth;
         if (height == -1)
@@ -43,6 +43,7 @@ export const TextureCreator = {
         let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
         const combinedImages = this._combineImageData(totalLength, resolvedImages);
         const _2DTextureArray = new BABYLON.RawTexture2DArray(combinedImages, width, height, images.length + 2, BABYLON.Engine.TEXTUREFORMAT_RGBA, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        _2DTextureArray.name = name;
         return _2DTextureArray;
     },
     _loadImages(imgPath, width, height) {

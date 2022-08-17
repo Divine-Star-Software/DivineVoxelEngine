@@ -24,6 +24,7 @@ export const TextureCreator  = {
  },
 
  async createMaterialTexture(
+  name : string,
   scene : BABYLON.Scene,
   images: string[],
   width: number = -1,
@@ -67,7 +68,7 @@ export const TextureCreator  = {
    false,
    BABYLON.Texture.NEAREST_SAMPLINGMODE
   );
-
+  _2DTextureArray.name = name;
 
 
   return _2DTextureArray;

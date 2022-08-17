@@ -277,6 +277,7 @@ const newRGBValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
 const currentVoxelData: {
  light: number;
+ isLightSource: boolean;
  voxelSubstance: VoxelSubstanceType;
  voxelId: string;
  shapeState: number;
@@ -287,6 +288,7 @@ const currentVoxelData: {
  z: number;
 } = {
  light: 0,
+ isLightSource: false,
  voxelSubstance: "solid",
  voxelId: "",
  voxelObject: false,
@@ -328,9 +330,16 @@ export function CalculateVoxelLight(
   const voxelId = this.getVoxel(tx, ty, tz);
   if (voxelId) {
    const voxelObject = DVEC.voxelManager.getVoxel(voxelId[0]);
+   const voxelTureId = DVEC.worldMatrix.getVoxelPaletteNumericId(voxelId[0], 0);
    currentVoxelData.voxelId = voxelId[0];
    currentVoxelData.voxelObject = voxelObject;
-   currentVoxelData.voxelSubstance = this.getVoxelSubstance(tx, ty, tz);
+   currentVoxelData.voxelSubstance =
+    this.worldMatrix.voxelMatrix.getTrueSubstance(voxelTureId);
+   currentVoxelData.isLightSource = this.worldMatrix.isVoxelALightSource(
+    tx,
+    ty,
+    tz
+   );
    currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(
     voxelObject.trueShapeId
    );
@@ -528,12 +537,18 @@ const doAO = (
   }
  }
 
+ const neightLightSource = Processor.worldMatrix.isVoxelALightSource(x, y, z);
+ if (currentVoxelData.isLightSource || neightLightSource) {
+  substanceRuleResult = false;
+
+ }
+
  const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
   Processor.getVoxelShapeId(x, y, z)
  );
  const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
 
- const aoOverRide : AOAddOVerRide  = Processor.aoOverRideData;
+ const aoOverRide: AOAddOVerRide = Processor.aoOverRideData;
  aoOverRide.face = face;
  aoOverRide.substanceResult = substanceRuleResult;
  aoOverRide.shapeState = currentVoxelData.shapeState;

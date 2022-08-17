@@ -105,7 +105,7 @@ export declare const DVER: {
         syncSettings(data: any): void;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -180,7 +180,7 @@ export declare const DVER: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -297,7 +297,7 @@ export declare const DVER: {
             imgHeight: number;
             defineTextureDimensions(width: number, height: number): void;
             setUpImageCreation(): void;
-            createMaterialTexture(scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray>;
+            createMaterialTexture(name: string, scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray>;
             _loadImages(imgPath: string, width: number, height: number): Promise<Uint8ClampedArray>;
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
             getTextureBuffer(imgPath: string, width?: number, height?: number): Promise<Uint8ClampedArray>;
@@ -361,6 +361,20 @@ export declare const DVER: {
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
             overrideMaterial(material: any): void;
+        };
+        solidStandardMaterial: {
+            material: BABYLON.StandardMaterial | null;
+            plugin: import("./Render/Materials/Solid/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;
+            $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene): void;
+            getMaterial(): BABYLON.StandardMaterial;
+        };
+        fluidStandardMaterial: {
+            material: BABYLON.StandardMaterial | null;
+            reflectionprobe: BABYLON.RenderTargetTexture | null;
+            plugin: import("./Render/Materials/Fluid/Standard/FluidMaterial.bjsmp.js").FluidMaterialPlugin | null;
+            $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
+            getMaterial(): BABYLON.StandardMaterial;
+            addToRenderList(mesh: BABYLON.Mesh): void;
         };
         skyBoxMaterial: {
             material: BABYLON.ShaderMaterial | null;
@@ -444,9 +458,11 @@ export declare const DVER: {
         uvTextureMap: Record<import("../Meta/index.js").TextureTypes, Record<string, number>>;
         overylayTextures: Record<import("../Meta/index.js").TextureTypes, import("../Meta/index.js").TextureData[]>;
         overlayUVTextureMap: Record<import("../Meta/index.js").TextureTypes, Record<string, number>>;
+        normalMapTextures: Record<import("../Meta/index.js").TextureTypes, import("../Meta/index.js").TextureData[]>;
+        noramlMapUVTexturesMap: Record<import("../Meta/index.js").TextureTypes, Record<string, number>>;
         textureTypes: import("../Meta/index.js").TextureTypes[];
-        _processVariations(texture: import("../Meta/index.js").TextureData, texturePaths: string[], animations: Record<import("../Meta/index.js").TextureTypes, number[][]>, textureAnimatioTimes: Record<import("../Meta/index.js").TextureTypes, number[][]>, extension: string, count: number, path: string, textureType: import("../Meta/index.js").TextureTypes, overlay?: boolean): number;
-        generateTexturesData(overlay?: boolean): void;
+        _processVariations(texture: import("../Meta/index.js").TextureData, texturePaths: string[], animations: Record<import("../Meta/index.js").TextureTypes, number[][]>, textureAnimatioTimes: Record<import("../Meta/index.js").TextureTypes, number[][]>, extension: string, count: number, path: string, textureType: import("../Meta/index.js").TextureTypes, overlay?: boolean, normalMap?: boolean): number;
+        generateTexturesData(overlay?: boolean, normalMap?: boolean): void;
         defineDefaultTexturePath(path: string): void;
         defineDefaultTextureExtension(textureType: import("../Meta/index.js").TextureTypes, ext: string): void;
         getTextureUV(textureType: import("../Meta/index.js").TextureTypes, textureId: string, varation?: string | undefined): number;

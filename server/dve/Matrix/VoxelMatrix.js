@@ -59,7 +59,7 @@ export const VoxelMatrix = {
     },
     isLightSource(id) {
         const index = this.voxelMap[id] * this.byteLength.totalLength;
-        return this.voxelDataView.getUint8(this.indexes.lightSource + index);
+        return this.voxelDataView.getUint8(this.indexes.lightSource + index) == 1;
     },
     getLightValue(id) {
         const index = this.voxelMap[id] * this.byteLength.totalLength;

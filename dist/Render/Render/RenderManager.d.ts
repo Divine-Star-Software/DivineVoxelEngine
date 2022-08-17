@@ -23,7 +23,7 @@ export declare const RenderManager: {
         imgHeight: number;
         defineTextureDimensions(width: number, height: number): void;
         setUpImageCreation(): void;
-        createMaterialTexture(scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray>;
+        createMaterialTexture(name: string, scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray>;
         _loadImages(imgPath: string, width: number, height: number): Promise<Uint8ClampedArray>;
         _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         getTextureBuffer(imgPath: string, width?: number, height?: number): Promise<Uint8ClampedArray>;
@@ -87,6 +87,20 @@ export declare const RenderManager: {
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
         overrideMaterial(material: any): void;
+    };
+    solidStandardMaterial: {
+        material: BABYLON.StandardMaterial | null;
+        plugin: import("./Materials/Solid/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;
+        $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene): void;
+        getMaterial(): BABYLON.StandardMaterial;
+    };
+    fluidStandardMaterial: {
+        material: BABYLON.StandardMaterial | null;
+        reflectionprobe: BABYLON.RenderTargetTexture | null;
+        plugin: import("./Materials/Fluid/Standard/FluidMaterial.bjsmp.js").FluidMaterialPlugin | null;
+        $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
+        getMaterial(): BABYLON.StandardMaterial;
+        addToRenderList(mesh: BABYLON.Mesh): void;
     };
     skyBoxMaterial: {
         material: BABYLON.ShaderMaterial | null;

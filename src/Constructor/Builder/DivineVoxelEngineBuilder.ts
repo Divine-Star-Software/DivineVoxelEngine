@@ -69,8 +69,6 @@ export const DVEB = {
   this.entityConstructor.clearEntityData();
   this.processor.flush();
  },
-
-
 };
 
 export type DivineVoxelEngineBuilder = typeof DVEB;

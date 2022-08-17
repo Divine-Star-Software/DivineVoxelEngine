@@ -435,7 +435,7 @@ export declare const Processor: {
             getHardness(id: number): number;
             getCheckCollisions(id: number): number;
             getColliderId(id: number): number;
-            isLightSource(id: number): number;
+            isLightSource(id: number): boolean;
             getLightValue(id: number): number;
         };
         _air: [string, number];

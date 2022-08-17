@@ -88,10 +88,10 @@ export const VoxelMatrix = {
  },
  isLightSource(id: number) {
   const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint8(this.indexes.lightSource + index);
+  return this.voxelDataView.getUint8(this.indexes.lightSource + index) == 1;
  },
  getLightValue(id: number) {
   const index = this.voxelMap[id] * this.byteLength.totalLength;
   return this.voxelDataView.getUint16(this.indexes.lightValue + index);
- },
+},
 };
