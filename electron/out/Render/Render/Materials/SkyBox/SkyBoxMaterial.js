@@ -57,6 +57,7 @@ export const SkyBoxMaterial = {
                 "world",
                 "view",
                 "cameraPosition",
+                "cameraDirection",
                 "viewProjection",
                 "worldView",
                 "worldViewProjection",
@@ -83,9 +84,16 @@ export const SkyBoxMaterial = {
             effect.setColor3("vFogColor", scene.fogColor);
         };
         let time = 0;
+        const forward = new BABYLON.Vector3(0, 0, 1);
+        const cameraDir = new BABYLON.Vector3(0, 0, 0);
         scene.registerBeforeRender(function () {
             time += 0.005;
             shaderMaterial.setFloat("time", time);
+            if (scene.activeCamera) {
+                const cam = scene.activeCamera;
+                cam.getDirectionToRef(forward, cameraDir);
+                shaderMaterial.setVector3("cameraDirection", cameraDir);
+            }
         });
         return this.material;
     },

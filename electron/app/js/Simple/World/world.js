@@ -55,7 +55,7 @@ WorldGen.generateChunk(0, -16);
 WorldGen.generateChunk(16, 16);
 WorldGen.generateChunk(-16, -16);
 DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, 7, 47, 7);
-fill();
+//fill();
 let t1 = performance.now();
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 let t2 = performance.now();

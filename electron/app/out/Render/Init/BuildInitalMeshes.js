@@ -7,11 +7,13 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
     const overlayAimations = DVER.textureManager.overlayProcessedTextureData.textureAnimations[substance];
     const overlayAnimationTimes = DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[substance];
     const Overlay2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(`${substance}-overlay`, scene, overlayTextures);
-    if (substance == "solid") {
-        DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
-    }
-    if (substance == "fluid") {
-        DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+    if (DVER.settings.getSettings().materials.mode == "standard") {
+        if (substance == "solid") {
+            DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
+        }
+        if (substance == "fluid") {
+            DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+        }
     }
     const materialCreateData = {
         settings: DVER.settings.getSettings(),

@@ -174,8 +174,6 @@ export const Processor = {
   return this.worldMatrix.getVoxelSubstance(x, y, z, getSecond);
  },
 
-
-
  getVoxelShapeId(x: number, y: number, z: number, getSecond = false) {
   return this.worldMatrix.getVoxelShapeId(x, y, z, getSecond);
  },
@@ -191,7 +189,6 @@ export const Processor = {
    return DVEB.entityConstructor.getVoxel(x, y, z);
   }
  },
-
 
  getVoxelShapeState(x: number, y: number, z: number, getSecond = false) {
   if (!this.settings.entity) {

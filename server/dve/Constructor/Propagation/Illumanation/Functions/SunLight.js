@@ -89,6 +89,8 @@ export function runSunLightRemove(x, y, z) {
     }
     DVEC.worldMatrix.setData(x, y, z, DVEC.UTIL.getVoxelByte().setId(1, 0));
     this.runSunLightUpdate();
+    DVEC.worldMatrix.setAir(x, y, z, 0);
+    this.checkForSunLight(x, y, z);
 }
 export function runSunLightUpdate() {
     while (this._sunLightUpdateQue.size > 0) {
@@ -164,7 +166,7 @@ export function PopulateWorldColumnWithSunLight(x, z, maxY) {
     }
 }
 export function SunLightAboveCheck(x, y, z) {
-    const nl = DVEC.worldMatrix.getLight(x, y + 1, z);
+    const nl = DVEC.worldMatrix.getLight(x, y, z);
     const sunLevel = this.lightByte.getS(nl);
     if (sunLevel == 0xf || nl == -1)
         return false;

@@ -36,13 +36,13 @@ await DVER.$INIT({
  world : {
   maxY : 128
  },
-/*  lighting: {
+  lighting: {
   doAO: true,
   doRGBLight: false,
   doSunLight: false,
   autoRGBLight: false,
   autoSunLight: false,
- },  */
+ },  
 });
 
 
@@ -67,13 +67,14 @@ const init = async () => {
  await DVER.$SCENEINIT({ scene: scene });
 
 
+
  const hemLight = new BABYLON.HemisphericLight(
   "",
   new BABYLON.Vector3(0, 1, 0),
   scene
  );
 
- DVER.renderManager.setBaseLevel(0);
+ DVER.renderManager.setBaseLevel(.8);
  DVER.renderManager.setSunLevel(0.8);
  const mat = new BABYLON.StandardMaterial("");
  mat.diffuseColor = new BABYLON.Color3(1, 0, 1);

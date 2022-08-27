@@ -410,7 +410,7 @@ export declare const DVEC: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -478,6 +478,7 @@ export declare const DVEC: {
                 pickable: boolean;
             };
             materials: {
+                mode: string;
                 doAO: boolean;
                 doSunLight: boolean;
                 doRGBLight: boolean;
@@ -485,7 +486,7 @@ export declare const DVEC: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -1436,6 +1437,8 @@ export declare const DVEC: {
             _RGBlightUpdateQue: number[][];
             _RGBlightRemovalQue: number[][];
             _visitMap: Record<string, boolean>;
+            checkForSunLight(x: number, y: number, z: number): void;
+            checkForRGBLight(x: number, y: number, z: number): void;
         };
         flow: {
             currentVoxel: string;

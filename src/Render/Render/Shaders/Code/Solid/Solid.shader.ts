@@ -10,7 +10,6 @@ export const solidShaders = {
         rgb = getAO(rgb);
         vec4 mixLight = getLight(rgb);
         vec3 finalColor = doVFog(mixLight);
-        
        gl_FragColor = vec4(finalColor.rgb , rgb.w ); 
     `,
 };

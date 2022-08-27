@@ -14,8 +14,8 @@ export declare const RenderManager: {
         buildMagmaFragmentShader(): string;
         getDefaultVertexShader(voxelSubstance: import("Meta/index.js").VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
         getDefaultFragmentShader(voxelSubstance: import("Meta/index.js").VoxelSubstanceType): string;
-        getSkyBoxFragmentShader(): string;
         getSkyBoxVertexShader(): string;
+        getSkyBoxFragmentShader(): string;
     };
     textureCreator: {
         context: CanvasRenderingContext2D | null;

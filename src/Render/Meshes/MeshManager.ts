@@ -114,7 +114,6 @@ export const MeshManager = {
    overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
    extra: [],
   };
-
   if (!this.meshes[type][chunkKey]) {
    this._buildNewMesh(type, chunkKey, meshData);
   } else {

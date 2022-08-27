@@ -81,11 +81,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n1HasRGB) {
-                if (!this._visitMap[`${x - 1}-${y}-${z}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
-                        this._RGBlightUpdateQue.push([x - 1, y, z]);
-                        this._visitMap[`${x - 1}-${y}-${z}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n1, sl)) {
+                    this._RGBlightUpdateQue.push([x - 1, y, z]);
                 }
             }
         }
@@ -96,11 +93,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n2HasRGB) {
-                if (!this._visitMap[`${x + 1}-${y}-${z}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n2, sl)) {
-                        this._RGBlightUpdateQue.push([x + 1, y, z]);
-                        this._visitMap[`${x + 1}-${y}-${z}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n2, sl)) {
+                    this._RGBlightUpdateQue.push([x + 1, y, z]);
                 }
             }
         }
@@ -111,11 +105,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n3HasRGB) {
-                if (!this._visitMap[`${x}-${y}-${z - 1}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n3, sl)) {
-                        this._RGBlightUpdateQue.push([x, y, z - 1]);
-                        this._visitMap[`${x}-${y}-${z - 1}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n3, sl)) {
+                    this._RGBlightUpdateQue.push([x, y, z - 1]);
                 }
             }
         }
@@ -126,11 +117,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n4HasRGB) {
-                if (!this._visitMap[`${x}-${y}-${z + 1}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n4, sl)) {
-                        this._RGBlightUpdateQue.push([x, y, z + 1]);
-                        this._visitMap[`${x}-${y}-${z + 1}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n4, sl)) {
+                    this._RGBlightUpdateQue.push([x, y, z + 1]);
                 }
             }
         }
@@ -141,11 +129,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n5HasRGB) {
-                if (!this._visitMap[`${x}-${y - 1}-${z}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n5, sl)) {
-                        this._RGBlightUpdateQue.push([x, y - 1, z]);
-                        this._visitMap[`${x}-${y - 1}-${z}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n5, sl)) {
+                    this._RGBlightUpdateQue.push([x, y - 1, z]);
                 }
             }
         }
@@ -156,11 +141,8 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             if (n6HasRGB) {
-                if (!this._visitMap[`${x}-${y + 1}-${z}`]) {
-                    if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n6, sl)) {
-                        this._RGBlightUpdateQue.push([x, y + 1, z]);
-                        this._visitMap[`${x}-${y + 1}-${z}`] = true;
-                    }
+                if (this.lightByte.isGreaterOrEqualThanForRGBRemove(n6, sl)) {
+                    this._RGBlightUpdateQue.push([x, y + 1, z]);
                 }
             }
         }
@@ -175,13 +157,19 @@ export function runRGBFloodRemove(lightSource) {
         }
         else {
             const isLightSource = DVEC.worldMatrix.isVoxelALightSource(lightSource.x, lightSource.y, lightSource.z);
-            if (isLightSource) {
+            if (isLightSource && voxelData[0] != "dve:air") {
                 DVEC.worldMatrix.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
             }
+            else {
+                DVEC.worldMatrix.setData(lightSource.x, lightSource.y, lightSource.z, DVEC.UTIL.getVoxelByte().setId(1, 0));
+            }
         }
-        const l = DVEC.worldMatrix.getLight(lightSource.x, lightSource.y, lightSource.z);
+        this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
+        this.runRGBFloodFill();
+        DVEC.worldMatrix.setAir(lightSource.x, lightSource.y, lightSource.z, 0);
         this._RGBlightUpdateQue.push([lightSource.x, lightSource.y, lightSource.z]);
     }
-    this._visitMap = {};
-    this.runRGBFloodFill();
+    else {
+        this.runRGBFloodFill();
+    }
 }

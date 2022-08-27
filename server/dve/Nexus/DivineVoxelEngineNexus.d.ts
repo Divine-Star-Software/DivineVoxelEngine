@@ -372,6 +372,7 @@ export declare const DVEN: {
                 pickable: boolean;
             };
             materials: {
+                mode: string;
                 doAO: boolean;
                 doSunLight: boolean;
                 doRGBLight: boolean;

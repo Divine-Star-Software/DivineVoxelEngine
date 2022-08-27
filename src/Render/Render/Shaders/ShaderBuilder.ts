@@ -363,21 +363,6 @@ ${solidShaders.fragMain}
   return "";
  },
 
- getSkyBoxFragmentShader() {
-  return `
-${SharedFragmentShader.top}
-${SharedFragmentShader.defaultVarying}
-${SharedFragmentShader.useTime}
-${ShaderNoiseFunctions.fbm3}
-${SharedFogFunctions.fogFragConstants}
-${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.volumetricFogFunction}
-${SharedFragmentShader.doVFog}
-${CommonShader.getMainFunction(`
-${skyboxShaders.fragMain}
-`)}`;
- },
-
  getSkyBoxVertexShader() {
   return `
 ${SharedVertexShader.top}
@@ -392,5 +377,20 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.updateVarying}
 `)}
 `;
+ },
+
+ getSkyBoxFragmentShader() {
+  return `
+${SharedFragmentShader.top}
+${SharedFragmentShader.defaultVarying}
+${SharedFragmentShader.useTime}
+${ShaderNoiseFunctions.fbm3}
+${SharedFogFunctions.fogFragConstants}
+${SharedFogFunctions.fogFragVars}
+${SharedFogFunctions.volumetricFogFunction}
+${SharedFragmentShader.doVFog}
+${CommonShader.getMainFunction(`
+${skyboxShaders.fragMain}
+`)}`;
  },
 };

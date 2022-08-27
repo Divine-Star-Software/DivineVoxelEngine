@@ -478,6 +478,7 @@ export declare const DVERW: {
                 pickable: boolean;
             };
             materials: {
+                mode: string;
                 doAO: boolean;
                 doSunLight: boolean;
                 doRGBLight: boolean;

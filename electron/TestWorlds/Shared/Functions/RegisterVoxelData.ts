@@ -15,6 +15,7 @@ import { DreamLeafsVoxelData } from "../Voxels/Flora/DreamLeafs/DreamLeafs.voxel
 import { DreamLogVoxelData } from "../Voxels/Solid/DreamLog/DreamLog.voxel.data.js";
 import { DreamStoneStairVoxelData } from "../Voxels/Solid/DreamStoneStair/DreamStoneStair.voxel.data.js";
 import { DataHolderVoxelData } from "../Voxels/Solid/DataHolder/DataHolder.voxel.data.js";
+import { MarkerBoxVoxelData } from "../Voxels/Solid/MarkerBox/MarkerBox.voxel.data.js";
 
 export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
  DVEW.voxelManager.registerVoxelData(DebugBoxVoxelData);
@@ -27,6 +28,7 @@ export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
  DVEW.voxelManager.registerVoxelData(DreamLogVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamStoneStairVoxelData);
  DVEW.voxelManager.registerVoxelData(DataHolderVoxelData);
+ DVEW.voxelManager.registerVoxelData(MarkerBoxVoxelData);
  //flora
  DVEW.voxelManager.registerVoxelData(DreamGrassVoxelData);
  DVEW.voxelManager.registerVoxelData(DreamVineVoxelData);

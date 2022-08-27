@@ -147,11 +147,11 @@ export const WorldData = {
         const voxelData = this.getData(x, y, z, secondary);
         if (voxelData < 0 || voxelData === false)
             return false;
-        if (voxelData < 0)
-            return false;
         const voxelId = this.voxelByte.getId(voxelData);
         if (voxelId == 0)
             return [-1, voxelData, 0];
+        if (voxelId == 1)
+            return [-2, voxelData, 0];
         const voxelTrueID = DVEW.worldGeneration.voxelPalette.getVoxelTrueId(voxelId);
         if (!voxelTrueID)
             return false;
@@ -348,14 +348,7 @@ export const WorldData = {
         const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
         if (!voxelData)
             return;
-        let region = this.getRegion(x, y, z);
-        if (!region) {
-            region = this.addRegion(x, y, z);
-        }
-        let chunk = this.getChunk(x, y, z);
-        if (!chunk) {
-            chunk = this.addChunk(x, y, z);
-        }
+        const chunk = this.addOrGetChunk(x, y, z);
         const data = this.getVoxelPaletteId(voxelId, voxelStateId);
         if (data < 0)
             return;

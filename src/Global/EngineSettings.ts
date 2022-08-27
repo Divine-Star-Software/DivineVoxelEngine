@@ -85,6 +85,7 @@ export const EngineSettings = {
    pickable: false,
   },
   materials: {
+   mode : "classic",
    doAO: true,
    doSunLight: true,
    doRGBLight: true,

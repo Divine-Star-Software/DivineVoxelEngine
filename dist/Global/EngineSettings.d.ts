@@ -74,6 +74,7 @@ export declare const EngineSettings: {
             pickable: boolean;
         };
         materials: {
+            mode: string;
             doAO: boolean;
             doSunLight: boolean;
             doRGBLight: boolean;

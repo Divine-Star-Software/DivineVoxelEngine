@@ -46,13 +46,15 @@ const setUpMaterial = async (
    overlayTextures
   );
 
- if (substance == "solid") {
-  DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
- }
+ if (DVER.settings.getSettings().materials.mode == "standard") {
+  if (substance == "solid") {
+   DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
+  }
 
- if (substance == "fluid") {
-  DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
- } 
+  if (substance == "fluid") {
+   DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+  }
+ }
 
  const materialCreateData: MaterialCreateData = {
   settings: DVER.settings.getSettings(),

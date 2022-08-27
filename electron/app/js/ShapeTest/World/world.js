@@ -24,6 +24,7 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 const doStairTest = (shapeState, x, y, z) => {
+    DVEW.worldData.paintVoxel("dve:markerbox", shapeState, 0, x + 2, y + 1, z);
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 1, z);
     x -= 2;
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);

@@ -57,6 +57,8 @@ export declare const DVEP: {
         _RGBlightUpdateQue: number[][];
         _RGBlightRemovalQue: number[][];
         _visitMap: Record<string, boolean>;
+        checkForSunLight(x: number, y: number, z: number): void;
+        checkForRGBLight(x: number, y: number, z: number): void;
     };
     flow: {
         currentVoxel: string;

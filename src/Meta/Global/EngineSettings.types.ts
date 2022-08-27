@@ -68,6 +68,7 @@ export type EngineSettingsData = {
   pickable: boolean;
  };
  materials: {
+  mode : "classic" | "standard",
   disableFloraShaderEffects: boolean;
   disableFluidShaderEffects: boolean;
   doAO: boolean;

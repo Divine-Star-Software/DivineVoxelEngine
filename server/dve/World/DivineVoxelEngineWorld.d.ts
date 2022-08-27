@@ -485,6 +485,7 @@ export declare const DVEW: {
                 pickable: boolean;
             };
             materials: {
+                mode: string;
                 doAO: boolean;
                 doSunLight: boolean;
                 doRGBLight: boolean;

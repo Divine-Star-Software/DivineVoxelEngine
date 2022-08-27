@@ -59,6 +59,7 @@ export const Flat3DArray = {
   array: ChunkVoxels,
   value: number
  ) {
+
   Atomics.store(
    array,
    position.x +

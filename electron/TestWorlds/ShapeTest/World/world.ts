@@ -32,6 +32,9 @@ const x = 0;
 const z = 0;
 
 const doStairTest = (shapeState : number, x : number, y : number, z : number) => {
+
+    DVEW.worldData.paintVoxel("dve:markerbox", shapeState,0, x + 2, y + 1, z);
+
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 1, z);
     x-= 2;
     
