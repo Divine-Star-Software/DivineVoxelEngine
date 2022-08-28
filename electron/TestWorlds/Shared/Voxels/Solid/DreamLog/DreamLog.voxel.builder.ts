@@ -2,7 +2,7 @@ import type { VoxelConstructorObject } from "../../../../../out/Meta/index.js";
 let uv = 0;
 export const DreamLogVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:dream-log",
- trueShapeId: 1,
+ 
  hooks: {
   texturesRegistered: (DVEB) => {
    uv = DVEB.textureManager.getTextureUV("solid", "dream-log");

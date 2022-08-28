@@ -327,17 +327,18 @@ const faceFunctions: Record<number, BoxFaceFunction> = {
 };
 
 export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
- cullFaceFunctions: {},
- aoOverRideFunctions: {},
- registerShapeForCullFaceOverRide(shapeId, func) {
-  this.cullFaceFunctions[shapeId] = func;
+ cullFaceOverrideFunctions: {},
+ aoAddOverrideFunctions: {},
+ aoFlipOverrideFunctions: {},
+ registerShapeForCullFaceOverride(shapeId, func) {
+  this.cullFaceOverrideFunctions[shapeId] = func;
  },
- registerShapeAOAddOverRide(shapeId, func) {
-  this.aoOverRideFunctions[shapeId] = func;
+ registerShapeAOAddOverride(shapeId, func) {
+  this.aoAddOverrideFunctions[shapeId] = func;
  },
- cullFace(data) {
-  if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+ cullFaceOverride(data) {
+  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
+   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
   }
 
   if (
@@ -350,11 +351,17 @@ export const FluidSourceBlockVoxelShape: VoxelShapeInterface = {
 
   return data.substanceResult;
  },
- aoOverRide(data) {
-  if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+ aoAddOverride(data) {
+  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
   }
   return data.substanceResult;
+ },
+ registerShapeAOFlipOverride(shapeId, func) {
+  this.aoAddOverrideFunctions[shapeId] = func;
+ },
+ aoFlipOverride(data) {
+  return false;
  },
  id: "FluidSourceBlock",
  addToChunkMesh(data: VoxelShapeAddData) {

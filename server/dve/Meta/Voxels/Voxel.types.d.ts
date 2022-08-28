@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
-import type { AOAddOVerRide, CullFaceOverride } from "Meta/Constructor/OverRide.types";
+import type { AOAddOverride, CullFaceOverride } from "Meta/Constructor/OverRide.types";
 import type { VoxelProcessData } from "Meta/Constructor/Voxel.types";
 /**# Voxel Substance Type
  * ---
@@ -38,13 +38,12 @@ export declare type VoxelData = {
 };
 export declare type VoxelConstructorObject = {
     id: string;
-    trueShapeId: number;
     hooks: Record<VoxelConstructorThreadHooks, (DVEB: DivineVoxelEngineBuilder) => any>;
     cullFace?: {
         (data: CullFaceOverride): boolean;
     };
     aoOverRide?: {
-        (data: AOAddOVerRide): boolean;
+        (data: AOAddOverride): boolean;
     };
     process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
 };

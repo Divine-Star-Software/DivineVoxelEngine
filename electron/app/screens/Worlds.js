@@ -10,6 +10,11 @@ export const Worlds = [
                 world: "DreamSpace",
             },
             {
+                title: "Dream Space 2",
+                description: "A dream space with light.",
+                world: "SunLightTest",
+            },
+            {
                 title: "Simple",
                 description: `A simple 9 chunk area with different voxel types.`,
                 world: "Simple",
@@ -47,7 +52,7 @@ export const Worlds = [
                 world: "RichDatatTest",
             },
             {
-                title: "Shape Test Test",
+                title: "Shape Test",
                 description: "Used to test shapes and shape states.",
                 world: "ShapeTest",
             },
@@ -70,11 +75,6 @@ export const Worlds = [
                 title: "Physics Test",
                 description: "Used to test physics.",
                 world: "PhysicsTest",
-            },
-            {
-                title: "Sun Light Test",
-                description: "Used to test sun light.",
-                world: "SunLightTest",
             },
             {
                 title: "Light Debug Test",
@@ -112,8 +112,8 @@ export const Worlds = [
                 world: "CrashTest",
             },
             {
-                title: "Shadow Test",
-                description: "Used to test dynamic lights and shadows.",
+                title: "Standard Material Test",
+                description: "Used to test standard material, dynamic lights and shadows.",
                 world: "ShadowTest",
             },
         ],

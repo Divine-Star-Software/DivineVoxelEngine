@@ -3,20 +3,22 @@ import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js", null, null, "./FX/fx.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js", null, null);
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,
-    fxWorker: workers.fxWorker,
-    fx: {
-        enabled: true,
-        autoSyncChunks: true,
-    },
     chunks: {
         chunkYPow2: 4,
     },
     world: {
-        maxY: 128
+        maxY: 128,
+    },
+    meshes: {
+        checkFloraCollisions: false,
+        checkFluidCollisions: false,
+        checkMagmaCollisions: false,
+        checkSolidCollisions: false,
+        clearChachedGeometry: false,
     },
     lighting: {
         doAO: true,
@@ -31,7 +33,9 @@ const init = async () => {
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
     const camera = SetUpDefaultCamera(scene, canvas, { x: 2, y: 45, z: 7 }, { x: 10, y: 30, z: 10 });
+    scene.collisionsEnabled = false;
     const box = SetUpDefaultSkybox(scene);
+    box.checkCollisions = false;
     const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
     if (bmat) {
         box.material = bmat;
@@ -39,24 +43,9 @@ const init = async () => {
     // CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
-    DVER.renderManager.setBaseLevel(.8);
+    DVER.renderManager.setBaseLevel(0.8);
     DVER.renderManager.setSunLevel(0.8);
-    const mat = new BABYLON.StandardMaterial("");
-    mat.diffuseColor = new BABYLON.Color3(1, 0, 1);
-    //mat.diffuseColor.b = 1;
-    /*  const chunkMarker = BABYLON.MeshBuilder.CreateBox("", {
-      width: 16,
-      depth: 16,
-      height: 128,
-     });
-     chunkMarker.material = mat;
-     chunkMarker.visibility = 0.5;
-     chunkMarker.position.x = 8;
-     chunkMarker.position.z = 8;
-     chunkMarker.position.y = 128 / 2; */
-    //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };
 window.DVER = DVER;
 RunInit(init);
-const voxelByte = DVER.UTIL.getVoxelByte();

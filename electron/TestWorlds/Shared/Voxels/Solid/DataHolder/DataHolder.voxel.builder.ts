@@ -5,7 +5,7 @@ let sideUV = 0;
 
 export const DataHolderVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:dataholder",
- trueShapeId: 1,
+ 
  hooks: {
   texturesRegistered: (DVEB) => {
    frontUV = DVEB.textureManager.getTextureUV("solid", "data-holder", "front");

@@ -6,7 +6,7 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT({});
 
 const depth = 32;
-let startX = -depth;
+let startX = -depth - 16;
 let startZ = -depth;
 let endX = depth * 4;
 let endZ = depth * 4;
@@ -68,7 +68,33 @@ const doStairTest = (shapeState : number, x : number, y : number, z : number) =>
     DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y + 1, z);
     DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y, z);
-    
+
+    x-= 4;
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z + 1);
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z + 1);
+
+    x-= 4;
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z - 1);
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z - 1);
+
+    x-= 4;
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z + 1);
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+
+    x-= 4;
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z + 1);
+
+    x-= 4;
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z - 1);
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+
+    x-= 4;
+
+    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y , z);
+    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z - 1);
 
     x-= 4;
     DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x , y, z);

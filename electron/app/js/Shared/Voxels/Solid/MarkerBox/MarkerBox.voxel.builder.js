@@ -1,7 +1,6 @@
 let lightDebugBoxTextures = {};
 export const MarkerBoxVoxelBuilderThread = {
     id: "dve:markerbox",
-    trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {
             lightDebugBoxTextures = {

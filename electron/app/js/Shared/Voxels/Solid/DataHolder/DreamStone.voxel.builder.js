@@ -1,7 +1,7 @@
 import { DreamStoneVoxelData } from "./DreamStone.voxel.data.js";
 export const DreamStoneVoxelBuilderThread = {
     data: DreamStoneVoxelData,
-    trueShapeId: 1,
+    
     hooks: {},
     process: function (data, DVEB) {
         let topUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");

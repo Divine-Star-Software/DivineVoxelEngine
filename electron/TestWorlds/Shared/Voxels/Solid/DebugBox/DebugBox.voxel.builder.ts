@@ -7,7 +7,7 @@ let eastUV = 0;
 let westUV = 0;
 export const DebugBoxVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:debugbox",
- trueShapeId: 1,
+ 
  hooks: {
   texturesRegistered: (DVEB) => {
    topUV = DVEB.textureManager.getTextureUV("solid", "debug", "top");

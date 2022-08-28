@@ -1,6 +1,10 @@
-import { VoxelData, VoxelSubstanceType } from "Meta/index";
-import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
-import { AOAddOVerRide, CullFaceOverride } from "./OverRide.types";
+import { VoxelSubstanceType } from "Meta/index";
+import type { Position3Matrix } from "Meta/Util.types";
+import {
+ AOAddOverride,
+ AOAFlipOverride,
+ CullFaceOverride,
+} from "./OverRide.types";
 
 /** # Voxel Shape Add DAta
 ---
@@ -92,19 +96,26 @@ export type VoxelShapeAddReturnData = {
  */
 export type VoxelShapeInterface = {
  id: string;
- cullFaceFunctions: Record<string, (data: CullFaceOverride) => boolean>;
- aoOverRideFunctions: Record<string, (data: AOAddOVerRide) => boolean>;
+ cullFaceOverrideFunctions: Record<string, (data: CullFaceOverride) => boolean>;
+ aoAddOverrideFunctions: Record<string, (data: AOAddOverride) => boolean>;
+ aoFlipOverrideFunctions: Record<string, (data: AOAFlipOverride) => boolean>;
 
- cullFace(data: CullFaceOverride): boolean;
- registerShapeForCullFaceOverRide(
+ cullFaceOverride(data: CullFaceOverride): boolean;
+ registerShapeForCullFaceOverride(
   shapeId: string,
   func: (data: CullFaceOverride) => boolean
  ): void;
 
- aoOverRide(data: AOAddOVerRide): boolean;
- registerShapeAOAddOverRide(
+ aoAddOverride(data: AOAddOverride): boolean;
+ registerShapeAOAddOverride(
   shapeId: string,
-  func: (data: AOAddOVerRide) => boolean
+  func: (data: AOAddOverride) => boolean
+ ): void;
+
+ aoFlipOverride(data: AOAFlipOverride): boolean;
+ registerShapeAOFlipOverride(
+  shapeId: string,
+  func: (data: AOAFlipOverride) => boolean
  ): void;
 
  /**# Add To Chunk Mesh

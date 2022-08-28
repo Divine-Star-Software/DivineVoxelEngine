@@ -1,7 +1,6 @@
 let uv = 0;
 export const DreamStoneStairVoxelBuilderThread = {
     id: "dve:dreamstone-stair",
-    trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("solid", "dreamstone");

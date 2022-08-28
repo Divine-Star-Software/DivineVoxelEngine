@@ -1,6 +1,5 @@
-import { CullFaceOverride } from "Meta/Constructor/OverRide.types";
-import { DirectionNames } from "Meta/Util.types";
-import { stairBuildData } from "./StairBuilder";
+import type { DirectionNames } from "Meta/Util.types";
+import type { stairBuildData } from "./StairBuilder";
 
 export const StairData: Record<
  number,
@@ -18,7 +17,7 @@ export const StairData: Record<
    type: "stair-top",
    StairAO: {
     1: [0, -1, -2, -3],
-    2: [0.6, 1, 1, 0.6],
+    2: [0.4, 1, 1, 0.4],
    },
    transform: {
     2: [0, -0.5, 0.5],
@@ -77,7 +76,7 @@ export const StairData: Record<
    type: "stair-side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0, 0.5, -0.5],
@@ -102,7 +101,7 @@ export const StairData: Record<
    type: "stair-top",
    StairAO: {
     1: [0, -1, -2, -3],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     2: [0.5, -0.5, 0],
@@ -122,7 +121,7 @@ export const StairData: Record<
    type: "stair-side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [-0.5, 0.5, 0],
@@ -187,7 +186,7 @@ export const StairData: Record<
   top: {
    type: "stair-top",
    StairAO: {
-    1: [1, 0.6, 0.6, 1],
+    1: [1, 0.4, 0.4, 1],
     2: [0, -1, -2, -3],
    },
    transform: {
@@ -245,7 +244,7 @@ export const StairData: Record<
    type: "stair-side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0, 0.5, 0.5],
@@ -272,7 +271,7 @@ export const StairData: Record<
   top: {
    type: "stair-top",
    StairAO: {
-    1: [1, 1, 0.6, 0.6],
+    1: [1, 1, 0.4, 0.4],
     2: [0, -1, -2, -3],
    },
    transform: {
@@ -304,7 +303,7 @@ export const StairData: Record<
    },
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    dimensions: {
     1: [0.5, 0.5, 0.25],
@@ -364,7 +363,7 @@ export const StairData: Record<
    type: "stair-top",
    StairAO: {
     1: [0, -1, -2, -3],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     2: [0, 0.5, 0.5],
@@ -420,7 +419,7 @@ export const StairData: Record<
    type: "stair-side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -449,7 +448,7 @@ export const StairData: Record<
    type: "stair-top",
    StairAO: {
     1: [0, -1, -2, -3],
-    2: [0.6, 1, 1, 0.6],
+    2: [0.4, 1, 1, 0.4],
    },
    transform: {
     2: [0.5, 0.5, 0],
@@ -466,7 +465,7 @@ export const StairData: Record<
    type: "stair-side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -535,7 +534,7 @@ export const StairData: Record<
   bottom: {
    type: "stair-top",
    StairAO: {
-    1: [1, 1, 0.6, 0.6],
+    1: [1, 1, 0.4, 0.4],
     2: [0, -1, -2, -3],
    },
    transform: {
@@ -592,7 +591,7 @@ export const StairData: Record<
   south: {
    type: "stair-side",
    StairAO: {
-    1: [0.6, 0.6, 1, 1],
+    1: [0.4, 0.4, 1, 1],
     2: [0, -1, 1, 1],
    },
    transform: {
@@ -624,7 +623,7 @@ export const StairData: Record<
   bottom: {
    type: "stair-top",
    StairAO: {
-    1: [1, 0.6, 0.6, 1],
+    1: [1, 0.4, 0.4, 1],
     2: [0, -1, -2, -3],
    },
    transform: {
@@ -653,7 +652,7 @@ export const StairData: Record<
     2: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
    },
    StairAO: {
-    1: [0.6, 0.6, 1, 1],
+    1: [0.4, 0.4, 1, 1],
     2: [0, -1, 1, 1],
    },
    dimensions: {
@@ -743,7 +742,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [-0.5, 0.5, 0],
@@ -797,7 +796,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0, 0.5, -0.5],
@@ -844,7 +843,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [-0.5, 0.5, 0.5],
@@ -880,7 +879,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0, 0.5, 0.5],
@@ -961,7 +960,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0.5, 0.5, 0],
@@ -997,7 +996,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0.5, 0.5, -0.5],
@@ -1063,7 +1062,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0.5, 0.5, 0.5],
@@ -1081,7 +1080,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [1, 1, -2, -3],
-    2: [1, 1, 0.6, 0.6],
+    2: [1, 1, 0.4, 0.4],
    },
    transform: {
     2: [0.5, 0.5, 0.5],
@@ -1147,7 +1146,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1202,7 +1201,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1245,7 +1244,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1283,7 +1282,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1364,7 +1363,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1402,7 +1401,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1467,7 +1466,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1486,7 +1485,7 @@ export const StairData: Record<
    type: "side",
    StairAO: {
     1: [0, -1, 1, 1],
-    2: [0.6, 0.6, 1, 1],
+    2: [0.4, 0.4, 1, 1],
    },
    transform: {
     1: [0, 0.5, 0],
@@ -1520,27 +1519,5 @@ export const StairData: Record<
     2: [0.25, 0.5, 0.25],
    },
   },
- },
-};
-
-export const exposedChecks: Record<
- number,
- (data: CullFaceOverride) => boolean
-> = {
- 0: (data) => {
-  if (data.face == "top" || data.face == "north") {
-   return true;
-  }
-  if (data.neighborVoxelShape.id == "Stair") {
-   if (data.face == "east" || data.face == "west") {
-    if (data.shapeState == data.neighborVoxelShapeState) return false;
-   }
-  }
-  if (data.face == "bottom" || data.face == "south") {
-   if (data.neighborVoxelShape.id == "Box") {
-    if (data.shapeState == data.neighborVoxelShapeState) return false;
-   }
-  }
-  return true;
  },
 };

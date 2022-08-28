@@ -9,7 +9,6 @@ export const MatrixMap = {
 
  setShapeMap(shapeMap: Record<string, number>) {
   this.shapeMap = shapeMap;
-  console.log(shapeMap);
   this.__shapeMapSet = true;
  },
 

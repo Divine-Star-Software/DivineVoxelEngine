@@ -1,31 +1,38 @@
 import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
 import { buildStair, stairCachedPosition } from "./StairBuilder.js";
-import { exposedChecks, StairData } from "./StairData.js";
+import { StairData } from "./StairData.js";
 import { StairAOBoxOverrides } from "./StairAO.overrides.js";
+import { StairCullFace } from "./Stair.cullface.js";
 export const StairVoxelShape = {
     id: "Stair",
-    cullFaceFunctions: {},
-    aoOverRideFunctions: {},
-    registerShapeForCullFaceOverRide(shapeId, func) {
-        this.cullFaceFunctions[shapeId] = func;
+    cullFaceOverrideFunctions: {},
+    aoAddOverrideFunctions: {},
+    aoFlipOverrideFunctions: {},
+    registerShapeForCullFaceOverride(shapeId, func) {
+        this.cullFaceOverrideFunctions[shapeId] = func;
     },
-    registerShapeAOAddOverRide(shapeId, func) {
-        this.aoOverRideFunctions[shapeId] = func;
+    registerShapeAOAddOverride(shapeId, func) {
+        this.aoAddOverrideFunctions[shapeId] = func;
     },
-    cullFace(data) {
-        if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
-            return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+    cullFaceOverride(data) {
+        if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
+            return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
         }
-        if (exposedChecks[data.shapeState]) {
-            return exposedChecks[data.shapeState](data);
-        }
-        return true;
+        return StairCullFace(data);
     },
-    aoOverRide(data) {
-        if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
-            return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+    aoAddOverride(data) {
+        if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
+            return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
         }
         return data.substanceResult;
+    },
+    registerShapeAOFlipOverride(shapeId, func) {
+        this.aoAddOverrideFunctions[shapeId] = func;
+    },
+    aoFlipOverride(data) {
+        if (data.face == "top" || data.face == "bottom")
+            return true;
+        return false;
     },
     addToChunkMesh(data) {
         stairCachedPosition.x = data.position.x;
@@ -37,7 +44,7 @@ export const StairVoxelShape = {
         return DVEB.shapeHelper.produceShapeReturnData(data);
     },
 };
-StairVoxelShape.registerShapeAOAddOverRide("Box", (data) => {
+StairVoxelShape.registerShapeAOAddOverride("Box", (data) => {
     return data.substanceResult;
     if (StairAOBoxOverrides[data.shapeState]) {
         return StairAOBoxOverrides[data.shapeState](data);

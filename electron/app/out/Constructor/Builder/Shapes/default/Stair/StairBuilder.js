@@ -130,7 +130,8 @@ const addSide = (face, stairData, data) => {
 };
 const addNomral = (face, stairData, data) => {
     setPositon(stairCachedPosition.x + boxDimensions.width, stairCachedPosition.y + boxDimensions.height, stairCachedPosition.z + boxDimensions.depth);
-    const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+    // const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+    const flip = false;
     DVEB.shapeBuilder.addFace(face, position, boxDimensions, data, flip);
     const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
     const uv = data.unTemplate[data.uvTemplateIndex];

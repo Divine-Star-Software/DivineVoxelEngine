@@ -75,7 +75,6 @@ const getFoamUV = (DVEB, data) => {
 let uv = 0;
 export const LiquidDreamEtherVoxelBuilderThread = {
     id: "dve:liquiddreamether",
-    trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");

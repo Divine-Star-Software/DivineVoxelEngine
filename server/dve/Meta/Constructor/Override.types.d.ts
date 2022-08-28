@@ -15,7 +15,7 @@ export declare type CullFaceOverride = {
     y: number;
     z: number;
 };
-export declare type AOAddOVerRide = {
+export declare type AOAddOverride = {
     face: DirectionNames;
     substanceResult: boolean;
     shapeState: number;
@@ -31,4 +31,8 @@ export declare type AOAddOVerRide = {
     nx: number;
     ny: number;
     nz: number;
+};
+export declare type AOAFlipOverride = {
+    face: DirectionNames;
+    shapeState: number;
 };

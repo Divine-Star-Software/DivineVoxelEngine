@@ -6,7 +6,7 @@ import type {
 import { Processor } from "../Processor.js";
 import { Util } from "../../../../Global/Util.helper.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
-import { AOAddOVerRide } from "Meta/Constructor/OverRide.types";
+import { AOAddOverride } from "Meta/Constructor/OverRide.types";
 import { DirectionNames } from "Meta/Util.types.js";
 import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { VoxelShapeInterface } from "Meta/index.js";
@@ -147,7 +147,18 @@ const shouldSunFlip = () => {
  return t1 || t2 || t3;
 };
 
-const shouldAOFlip = () => {
+const shouldAOFlip = (face: DirectionNames) => {
+ if (currentVoxelData.currentShape) {
+  if (
+   currentVoxelData.currentShape.aoFlipOverride({
+    face: face,
+    shapeState: currentVoxelData.shapeState,
+   })
+  ) {
+   return false;
+  }
+ } else {
+ }
  let check = false;
  if (!states.ignoreAO) {
   let t1 =
@@ -171,7 +182,7 @@ const shouldAOFlip = () => {
  return check;
 };
 
-const flipCheck = () => {
+const flipCheck = (face: DirectionNames) => {
  const rgbFlip = shouldRGBFlip();
  const sunFlip = shouldSunFlip();
 
@@ -182,7 +193,7 @@ const flipCheck = () => {
   swapRGB();
  }
 
- const aoFlip = shouldAOFlip();
+ const aoFlip = shouldAOFlip(face);
 
  if ((sunFlip || rgbFlip) && !aoFlip) {
   swapAO();
@@ -198,8 +209,12 @@ const flipCheck = () => {
  return rgbFlip || sunFlip || aoFlip;
 };
 
-const handleAdd = (data: VoxelProcessData, face: number) => {
- if (flipCheck()) {
+const handleAdd = (
+ data: VoxelProcessData,
+ face: number,
+ direction: DirectionNames
+) => {
+ if (flipCheck(direction)) {
   data.faceStates[face] = 1;
   data.lightTemplate.push(
    RGBvertexStates[2].value,
@@ -340,9 +355,8 @@ export function CalculateVoxelLight(
     ty,
     tz
    );
-   currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(
-    voxelObject.trueShapeId
-   );
+   const shapeId = this.worldMatrix.getVoxelShapeId(tx, ty, tz);
+   currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(shapeId);
   }
   currentVoxelData.shapeState = this.getVoxelShapeState(tx, ty, tz);
   currentVoxelData.x = tx;
@@ -372,7 +386,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[2], 2, LOD);
   this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[3], 3, LOD);
   this.voxellightMixCalc("top", tx, ty, tz, checkSets.top[4], 4, LOD);
-  handleAdd(data, 0);
+  handleAdd(data, 0, "top");
  }
 
  //bottom
@@ -385,7 +399,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[2], 2, LOD);
   this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[3], 3, LOD);
   this.voxellightMixCalc("bottom", tx, ty, tz, checkSets.bottom[4], 4, LOD);
-  handleAdd(data, 1);
+  handleAdd(data, 1, "bottom");
  }
 
  //east
@@ -398,7 +412,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[2], 2, LOD);
   this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[3], 3, LOD);
   this.voxellightMixCalc("east", tx, ty, tz, checkSets.east[4], 4, LOD);
-  handleAdd(data, 2);
+  handleAdd(data, 2, "east");
  }
 
  //west
@@ -411,7 +425,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[2], 2, LOD);
   this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[3], 3, LOD);
   this.voxellightMixCalc("west", tx, ty, tz, checkSets.west[4], 4, LOD);
-  handleAdd(data, 3);
+  handleAdd(data, 3, "west");
  }
 
  //south
@@ -424,7 +438,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[2], 2, LOD);
   this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[3], 3, LOD);
   this.voxellightMixCalc("south", tx, ty, tz, checkSets.south[4], 4, LOD);
-  handleAdd(data, 4);
+  handleAdd(data, 4, "south");
  }
  //north
  if (data.exposedFaces[5]) {
@@ -436,7 +450,7 @@ export function CalculateVoxelLight(
   this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[2], 2, LOD);
   this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[3], 3, LOD);
   this.voxellightMixCalc("north", tx, ty, tz, checkSets.north[4], 4, LOD);
-  handleAdd(data, 5);
+  handleAdd(data, 5, "north");
  }
 }
 
@@ -540,7 +554,6 @@ const doAO = (
  const neightLightSource = Processor.worldMatrix.isVoxelALightSource(x, y, z);
  if (currentVoxelData.isLightSource || neightLightSource) {
   substanceRuleResult = false;
-
  }
 
  const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
@@ -548,7 +561,7 @@ const doAO = (
  );
  const neighborVoxelShapeState = Processor.getVoxelShapeState(x, y, z);
 
- const aoOverRide: AOAddOVerRide = Processor.aoOverRideData;
+ const aoOverRide: AOAddOverride = Processor.aoOverRideData;
  aoOverRide.face = face;
  aoOverRide.substanceResult = substanceRuleResult;
  aoOverRide.shapeState = currentVoxelData.shapeState;
@@ -566,7 +579,7 @@ const doAO = (
  aoOverRide.nz = z;
 
  if (currentVoxelData.currentShape) {
-  finalResult = currentVoxelData.currentShape.aoOverRide(
+  finalResult = currentVoxelData.currentShape.aoAddOverride(
    Processor.aoOverRideData
   );
  }

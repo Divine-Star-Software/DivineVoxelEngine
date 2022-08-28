@@ -25,7 +25,7 @@ const HomeScreen = () => {
                     attrs: {
                         className: "dve-version",
                     },
-                    text: "Alpha 1.1 | The Light Update",
+                    text: "Alpha 1.2 | The Shape & Data Update",
                 },
                 WebSelectionSection(),
             ],

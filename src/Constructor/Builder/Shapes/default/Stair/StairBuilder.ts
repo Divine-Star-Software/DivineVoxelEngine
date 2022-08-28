@@ -218,7 +218,8 @@ const addNomral = (
   stairCachedPosition.z + boxDimensions.depth
  );
 
- const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+ // const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+ const flip = false;
  DVEB.shapeBuilder.addFace(face, position, boxDimensions, data, flip);
  const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];

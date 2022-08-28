@@ -7,7 +7,7 @@ export type CullFaceOverride = {
  substanceResult: boolean;
  shapeState: number;
  voxelSubstance: VoxelSubstanceType;
- voxelId :  string;
+ voxelId: string;
  neighborVoxelSubstance: VoxelSubstanceType;
  neighborVoxelId: string;
  neighborVoxelShape: VoxelShapeInterface;
@@ -17,12 +17,12 @@ export type CullFaceOverride = {
  z: number;
 };
 
-export type AOAddOVerRide = {
+export type AOAddOverride = {
  face: DirectionNames;
  substanceResult: boolean;
  shapeState: number;
  voxelSubstance: VoxelSubstanceType;
- voxelId :  string;
+ voxelId: string;
  neighborVoxelSubstance: VoxelSubstanceType;
  neighborVoxelId: string;
  neighborVoxelShape: VoxelShapeInterface;
@@ -33,4 +33,9 @@ export type AOAddOVerRide = {
  nx: number;
  ny: number;
  nz: number;
+};
+
+export type AOAFlipOverride = {
+ face: DirectionNames;
+ shapeState: number;
 };

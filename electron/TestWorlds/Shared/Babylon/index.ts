@@ -90,6 +90,7 @@ export const SetUpDefaultCamera = (
  camera.angularSensibility = 4000;
  camera.speed = camera.speed * 0.2;
 
+ camera.checkCollisions = false;
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;
  camera.position.z = startPosition.z;

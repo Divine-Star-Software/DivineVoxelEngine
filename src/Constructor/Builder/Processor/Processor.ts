@@ -262,11 +262,11 @@ export const Processor = {
    cullFaceOverride.y = y;
    cullFaceOverride.z = z;
 
-   let shapeResult = voxelShape.cullFace(this.cullFaceOverrideData);
-   if (!voxelShape.cullFace) {
+   let shapeResult = voxelShape.cullFaceOverride(this.cullFaceOverrideData);
+   if (!voxelShape.cullFaceOverride) {
     finalResult = shapeResult;
    } else {
-    finalResult = voxelShape.cullFace(this.cullFaceOverrideData);
+    finalResult = voxelShape.cullFaceOverride(this.cullFaceOverrideData);
    }
   } else {
    finalResult = true;

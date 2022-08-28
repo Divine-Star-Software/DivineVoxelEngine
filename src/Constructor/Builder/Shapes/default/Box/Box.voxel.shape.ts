@@ -4,6 +4,7 @@ import type {
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
+import { CullFaceOverride } from "Meta/Constructor/OverRide.types.js";
 
 const shapeDimensions = {
  width: 0.5,
@@ -63,23 +64,27 @@ const processDefaultFaceData = (
 
 export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
- cullFaceFunctions: {},
- aoOverRideFunctions: {},
- registerShapeForCullFaceOverRide(shapeId, func) {
-  this.cullFaceFunctions[shapeId] = func;
+ cullFaceOverrideFunctions: {},
+ aoAddOverrideFunctions: {},
+ aoFlipOverrideFunctions : {},
+ registerShapeForCullFaceOverride(shapeId, func) {
+  this.cullFaceOverrideFunctions[shapeId] = func;
  },
- registerShapeAOAddOverRide(shapeId, func) {
-  this.aoOverRideFunctions[shapeId] = func;
+ registerShapeAOAddOverride(shapeId, func) {
+  this.aoAddOverrideFunctions[shapeId] = func;
  },
- cullFace(data) {
-  if (this.cullFaceFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceFunctions[data.neighborVoxelShape.id](data);
+ cullFaceOverride(data) {
+  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
+   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
+  }
+  if (data.neighborVoxelShape.id == "Stair") {
+   return stairCull(data);
   }
   return data.substanceResult;
  },
- aoOverRide(data) {
-  if (this.aoOverRideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoOverRideFunctions[data.neighborVoxelShape.id](data);
+ aoAddOverride(data) {
+  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
   }
   if (data.neighborVoxelShape.id == "HalfBox") {
    if (data.neighborVoxelShapeState == 0) {
@@ -92,8 +97,14 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   if (data.neighborVoxelShape.id == "Panel") {
    return false;
   }
-
   return data.substanceResult;
+ },
+
+ registerShapeAOFlipOverride(shapeId, func) {
+     this.aoAddOverrideFunctions[shapeId] = func;
+ },
+ aoFlipOverride(data) {
+    return false;
  },
  addToChunkMesh(data) {
   data.position.x += shapeDimensions.width * data.LOD;
@@ -123,4 +134,51 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   }
   return DVEB.shapeHelper.produceShapeReturnData(data);
  },
+};
+
+const stairCullFunctions: Record<
+ DirectionNames,
+ (data: CullFaceOverride) => boolean
+> = {
+ top: (data) => {
+  if (
+   (data.neighborVoxelShapeState >= 0 && data.neighborVoxelShapeState <= 3) ||
+   (data.neighborVoxelShapeState >= 8 && data.neighborVoxelShapeState <= 11)
+  ) {
+   return false;
+  }
+  return true;
+ },
+ bottom: (data) => {
+  if (
+   (data.neighborVoxelShapeState >= 4 && data.neighborVoxelShapeState <= 7) ||
+   (data.neighborVoxelShapeState >= 12 && data.neighborVoxelShapeState <= 15)
+  ) {
+   return false;
+  }
+  return true;
+ },
+ east: (data) => {
+  if (data.neighborVoxelShapeState == 1 || data.neighborVoxelShapeState == 5)
+   return false;
+  return true;
+ },
+ west: (data) => {
+  if (data.neighborVoxelShapeState == 3 || data.neighborVoxelShapeState == 7)
+   return false;
+  return true;
+ },
+ north: (data) => {
+  if (data.neighborVoxelShapeState == 0 || data.neighborVoxelShapeState == 4)
+   return false;
+  return true;
+ },
+ south: (data) => {
+  if (data.neighborVoxelShapeState == 2 || data.neighborVoxelShapeState == 6)
+   return false;
+  return true;
+ },
+};
+const stairCull = (data: CullFaceOverride) => {
+ return stairCullFunctions[data.face](data);
 };

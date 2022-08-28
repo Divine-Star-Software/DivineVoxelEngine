@@ -1,7 +1,6 @@
 let uv = 0;
 export const DreamVineVoxelBuilderThread = {
     id: "dve:dreamvine",
-    trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");

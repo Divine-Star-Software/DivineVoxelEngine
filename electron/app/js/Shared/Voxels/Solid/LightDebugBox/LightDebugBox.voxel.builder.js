@@ -1,7 +1,6 @@
 let lightDebugBoxTextures = {};
 export const LightDebugBoxVoxelBuilderThread = {
     id: "dve:lightdebug",
-    trueShapeId: 1,
     hooks: {
         texturesRegistered: (DVEB) => {
             lightDebugBoxTextures = {

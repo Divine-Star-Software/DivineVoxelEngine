@@ -4,7 +4,7 @@ let lightDebugBoxTextures: Record<number, number> = {};
 
 export const MarkerBoxVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:markerbox",
- trueShapeId: 1,
+ 
  hooks: {
   texturesRegistered: (DVEB) => {
    lightDebugBoxTextures = {
