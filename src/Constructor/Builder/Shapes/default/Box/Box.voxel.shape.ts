@@ -4,7 +4,7 @@ import type {
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
-import { CullFaceOverride } from "Meta/Constructor/OverRide.types.js";
+import type { CullFaceOverride } from "Meta/Constructor/OverRide.types.js";
 
 const shapeDimensions = {
  width: 0.5,

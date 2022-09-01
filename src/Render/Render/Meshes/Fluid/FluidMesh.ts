@@ -10,7 +10,6 @@ export const FluidMesh: VoxelMeshInterface = {
 
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("fluid", scene);
-  mesh.alphaIndex = 0;
   mesh.isPickable = this.pickable;
   mesh.checkCollisions = this.checkCollisions;
   if(!this.checkCollisions) {

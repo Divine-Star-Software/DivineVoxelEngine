@@ -122,6 +122,36 @@ export declare const DVEW: {
         }) => Promise<boolean>;
         getWorkerPort: (environment: "node" | "browser") => Promise<any>;
         getEnviorment(): "node" | "browser";
+        getChunkReader(): {
+            indexSizes: {
+                header: number;
+                states: number;
+                heightMap: number;
+                voxelData: number;
+                voxelStateData: number;
+            };
+            indexes: {
+                header: number;
+                states: number;
+                heightMap: number;
+                voxelData: number;
+                voxelStateData: number;
+            };
+            byteLengths: {
+                heightMapData: number;
+                voxelData: number;
+                voxelStaeteData: number;
+            };
+            syncSettings(): void;
+            _getVoxelDataIndex(x: number, y: number, z: number): number;
+            _getVoxelStateDataIndex(x: number, y: number, z: number): number;
+            getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
+            getHeightMapIndex(x: number, y: number, z: number): number;
+            getDataVoxelData(chunkData: DataView, x: number, y: number, z: number, secondary?: boolean): number;
+            setVoxelData(chunkData: DataView, x: number, y: number, z: number, data: number, secondary?: boolean): void;
+            getHeightMapData(chunkData: DataView, x: number, y: number, z: number): number;
+            setHeightMapData(chunkData: DataView, x: number, y: number, z: number, data: number): void;
+        };
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         getEntityFlat3dArray(): {
             bounds: {
@@ -193,10 +223,6 @@ export declare const DVEW: {
             setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
             getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
         };
-        /**# Divine Voxel Engine World
-         * ---
-         * This handles everything in the world worker context.
-         */
         getHeightMapArray(): {
             bounds: {
                 x: number;
@@ -1378,7 +1404,7 @@ export declare const DVEW: {
         areSunLightRemovesAllDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
-        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
         runRGBRemoveQue(): void;
         awaitAllRGBLightUpdates(): Promise<boolean>;
         awaitAllRGBLightRemove(): Promise<boolean>;
@@ -1386,14 +1412,14 @@ export declare const DVEW: {
         areRGBLightRemovesAllDone(): boolean;
         addToFlowRunQue(x: number, y: number, z: number): void;
         addToFlowRemoveQue(x: number, y: number, z: number): void;
-        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
         runFlowRemoveQue(): void;
         awaitAllFlowRuns(): Promise<boolean>;
         awaitAllFlowRemoves(): Promise<boolean>;
         areFlowRunsAllDone(): boolean;
         areFlowRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
         addToRebuildQueTotal(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
         areAllChunksDoneBuilding(): boolean;

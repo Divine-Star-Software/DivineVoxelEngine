@@ -6,7 +6,6 @@ export const FluidMesh = {
     clearCachedGeometry: false,
     createTemplateMesh(scene) {
         const mesh = new BABYLON.Mesh("fluid", scene);
-        mesh.alphaIndex = 0;
         mesh.isPickable = this.pickable;
         mesh.checkCollisions = this.checkCollisions;
         if (!this.checkCollisions) {

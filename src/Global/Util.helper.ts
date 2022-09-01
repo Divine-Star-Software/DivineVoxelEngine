@@ -11,8 +11,9 @@ import { MeshFaceDataByte } from "./Util/MeshFaceDataBytes.js";
 import { DataEncoder } from "./Util/DataEncoder.js";
 import { EntityFlat3dArray } from "./Util/EntityFlat3dArray.js";
 import { Queue } from "./Util/Queue.js";
+import { ChunkReader } from "./Util/ChunkReader.js";
 
-export const Util = {
+export const Util = { 
  createPromiseCheck: CreatePromiseCheck,
  getWorkerPort: GetWorkerPort,
  getEnviorment(): "node" | "browser" {
@@ -23,9 +24,13 @@ export const Util = {
   }
   return environment;
  },
- 
+
+ getChunkReader() {
+  return ChunkReader;
+ },
+
  getAQueue<T>() {
-    return new Queue<T>();
+  return new Queue<T>();
  },
  getEntityFlat3dArray() {
   return EntityFlat3dArray;

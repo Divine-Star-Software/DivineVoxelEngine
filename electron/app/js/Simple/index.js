@@ -18,7 +18,7 @@ await DVER.$INIT({
         checkFluidCollisions: false,
         checkMagmaCollisions: false,
         checkSolidCollisions: false,
-        clearChachedGeometry: false,
+        clearChachedGeometry: true,
     },
     lighting: {
         doAO: true,

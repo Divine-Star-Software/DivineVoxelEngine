@@ -71,6 +71,7 @@ export const DVEW = {
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
+  Util.getChunkReader().syncSettings();
   this.__settingsHaveBeenSynced = true;
  },
 

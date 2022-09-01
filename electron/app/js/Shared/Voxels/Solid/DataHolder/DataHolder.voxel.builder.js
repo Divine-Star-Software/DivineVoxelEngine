@@ -12,6 +12,7 @@ export const DataHolderVoxelBuilderThread = {
         //top
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(sideUV);
+            data.overlayUVTemplate.push(0, 0, 0, 0);
         }
         //bottom
         if (data.exposedFaces[1]) {
