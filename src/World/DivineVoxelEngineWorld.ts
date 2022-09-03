@@ -34,6 +34,7 @@ export const DVEW = {
 
  _3dFlatArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
+ chunkReader: Util.getChunkReader(),
  __settingsHaveBeenSynced: false,
  __renderIsDone: false,
 
@@ -71,7 +72,9 @@ export const DVEW = {
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
-  Util.getChunkReader().syncSettings();
+  this.chunkReader.syncSettings();
+  console.log(this.chunkReader.indexes);
+  console.log(this.chunkReader.indexSizes);
   this.__settingsHaveBeenSynced = true;
  },
 
@@ -125,12 +128,8 @@ export const DVEW = {
   if (!worldColumn) return false;
   for (const chunkKey of Object.keys(worldColumn)) {
    const chunk = worldColumn[chunkKey];
-   this.buildChunk(
-    chunk.position[0],
-    chunk.position[1],
-    chunk.position[2],
-    LOD
-   );
+   const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+   this.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, LOD);
   }
  },
 

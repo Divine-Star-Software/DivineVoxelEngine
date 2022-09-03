@@ -55,6 +55,7 @@ export const DVEC = {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
   this.__settingsHaveBeenSynced = true;
+  this.worldMatrix.chunkReader.syncSettings();
   DVEB.syncSettings(data);
  },
  reStart() {},

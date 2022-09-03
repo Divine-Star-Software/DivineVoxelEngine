@@ -100,13 +100,10 @@ export const MatrixHub = {
     _syncChunk(data) {
         const voxelsSAB = data[1];
         const voxelStatesSAB = data[2];
-        const heightMapSAB = data[3];
-        const minMaxMapSAB = data[4];
-        const chunkStateSAB = data[5];
-        const chunkX = data[6];
-        const chunkY = data[7];
-        const chunkZ = data[8];
-        WorldMatrix.__setChunk(chunkX, chunkY, chunkZ, voxelsSAB, voxelStatesSAB, heightMapSAB, minMaxMapSAB, chunkStateSAB);
+        const chunkX = data[3];
+        const chunkY = data[4];
+        const chunkZ = data[5];
+        WorldMatrix.__setChunk(chunkX, chunkY, chunkZ, voxelsSAB, voxelStatesSAB);
     },
     _syncVoxelData(data) {
         VoxelMatrix.syncData(data[1], data[2]);

@@ -1,11 +1,9 @@
 //types
 import type {
- MatrixChunkData,
  MatrixLoadedChunk,
  MatrixLoadedRegion,
 } from "../Meta/Matrix/Matrix.types";
-import type { VoxelManager } from "Constructor/Voxels/VoxelManager";
-import type { WorldRegionPalette } from "Meta/World/WorldData/World.types.js";
+
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
@@ -22,6 +20,7 @@ export const WorldMatrix = {
  voxelByte: Util.getVoxelByte(),
  lightByte: Util.getLightByte(),
  heightByte: Util.getHeightByte(),
+ chunkReader: Util.getChunkReader(),
 
  voxelMatrix: VoxelMatrix,
 
@@ -172,8 +171,8 @@ export const WorldMatrix = {
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelSubstance, chunk);
   let stateData = this.voxelByte.setShapeState(0, shapeState);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxelStates, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
  },
 
  __handleHeightMapUpdateForVoxelAdd(
@@ -189,9 +188,9 @@ export const WorldMatrix = {
    voxelSubstance,
    voxelPOS.x,
    voxelPOS.z,
-   chunk.heightMap
+   chunk.data
   );
-  this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+  this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
  },
 
  getVoxelPaletteIdForWorldGen(voxelId: string, voxelStateId: number) {
@@ -242,11 +241,8 @@ export const WorldMatrix = {
   x: number,
   y: number,
   z: number,
-  voxelsSAB: SharedArrayBuffer,
-  voxelStatesSAB: SharedArrayBuffer,
-  heightMapSAB: SharedArrayBuffer,
-  minMaxMapSAB: SharedArrayBuffer,
-  chunkStateSAB: SharedArrayBuffer
+  chunkData: SharedArrayBuffer,
+  chunkStates: SharedArrayBuffer
  ) {
   const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
   let region = this.regions[regionKey];
@@ -259,12 +255,8 @@ export const WorldMatrix = {
   if (!region.chunks[worldColumnKey]) region.chunks[worldColumnKey] = {};
 
   region.chunks[worldColumnKey][chunkKey] = {
-   voxels: new Uint32Array(voxelsSAB),
-   voxelStates: new Uint32Array(voxelStatesSAB),
-   heightMap: new Uint32Array(heightMapSAB),
-   minMaxMap: new Uint32Array(minMaxMapSAB),
-   chunkStates: new Uint8Array(chunkStateSAB),
-   position: [chunkPOS.x, chunkPOS.y, chunkPOS.z],
+   data: new DataView(chunkData),
+   chunkStates: new Uint8Array(chunkStates),
   };
  },
 
@@ -360,7 +352,7 @@ export const WorldMatrix = {
   x: number,
   y: number,
   z: number,
-  run: (chunk: { voxels: Uint32Array; chunkStates: Uint8Array }) => {}
+  run: (chunk: MatrixLoadedChunk) => {}
  ): false | Promise<boolean> {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) {
@@ -387,23 +379,22 @@ export const WorldMatrix = {
  setData(x: number, y: number, z: number, data: number, state = false) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return false;
-  let array = chunk.voxels;
-  if (state) array = chunk.voxelStates;
-  this._3dArray.setValueUseObjSafe(
+  this.chunkReader.setVoxelDataUseObj(
+   chunk.data,
    this.worldBounds.getVoxelPosition(x, y, z),
-   array,
-   data
+   data,
+   state
   );
+  return true;
  },
 
  getData(x: number, y: number, z: number, state = false) {
   const chunk = this.getChunk(x, y, z);
   if (!chunk) return -1;
-  let array = chunk.voxels;
-  if (state) array = chunk.voxelStates;
-  return this._3dArray.getValueUseObjSafe(
+  return this.chunkReader.getVoxelDataUseObj(
+   chunk.data,
    this.worldBounds.getVoxelPosition(x, y, z),
-   array
+   state
   );
  },
 

@@ -29,6 +29,7 @@ export const DVEW = {
     environment: "browser",
     _3dFlatArray: Util.getFlat3DArray(),
     worldBounds: Util.getWorldBounds(),
+    chunkReader: Util.getChunkReader(),
     __settingsHaveBeenSynced: false,
     __renderIsDone: false,
     UTIL: Util,
@@ -58,7 +59,9 @@ export const DVEW = {
     syncSettings(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
-        Util.getChunkReader().syncSettings();
+        this.chunkReader.syncSettings();
+        console.log(this.chunkReader.indexes);
+        console.log(this.chunkReader.indexSizes);
         this.__settingsHaveBeenSynced = true;
     },
     /**# Remove Chunk
@@ -99,7 +102,8 @@ export const DVEW = {
             return false;
         for (const chunkKey of Object.keys(worldColumn)) {
             const chunk = worldColumn[chunkKey];
-            this.buildChunk(chunk.position[0], chunk.position[1], chunk.position[2], LOD);
+            const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+            this.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, LOD);
         }
     },
     createItem(itemId, x, y, z) {

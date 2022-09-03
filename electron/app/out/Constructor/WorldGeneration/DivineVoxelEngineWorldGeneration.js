@@ -26,8 +26,8 @@ export const DVEWG = {
         if (substance == "transparent") {
             substance = "solid";
         }
-        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
-        this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
+        this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
     },
     getVoxelPaletteId(voxelId, voxelStateId) {
         const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);

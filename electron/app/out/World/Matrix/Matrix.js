@@ -71,7 +71,7 @@ export const Matrix = {
         delete this.regions[regionKey].chunks[chunkKey];
         return true;
     },
-    createMatrixChunkData(x, y, z) {
+    createMatrixChunkSAB(x, y, z) {
         const chunk = DVEW.worldData.getChunk(x, y, z);
         if (!chunk)
             return false;
@@ -87,18 +87,17 @@ export const Matrix = {
         this.regions[regionKey].chunks[chunkKey] = {
             chunkStates: new Uint8Array(chunkStateSAB),
             chunkStatesSAB: chunkStateSAB,
-            voxelsSAB: chunk.voxelsSAB,
-            voxelsStatesSAB: chunk.voxelsStatesSAB,
-            heightMapSAB: chunk.heightMapSAB,
-            minMaxMapSAB: chunk.minMaxMapSAB
         };
-        return [
-            chunk.voxelsSAB,
-            chunk.voxelsStatesSAB,
-            chunk.heightMapSAB,
-            chunk.minMaxMapSAB,
-            chunkStateSAB,
-        ];
+        return [chunk.buffer, chunkStateSAB];
+    },
+    getMatrixChunkSAB(x, y, z) {
+        const data = this.getMatrixChunkData(x, y, z);
+        if (!data)
+            return false;
+        const chunk = DVEW.worldData.getChunk(x, y, z);
+        if (!chunk)
+            return false;
+        return [chunk.buffer, data.chunkStatesSAB];
     },
     getMatrixChunkData(x, y, z) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
@@ -106,6 +105,9 @@ export const Matrix = {
             return false;
         const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
         if (!this.regions[regionKey].chunks[chunkKey])
+            return false;
+        const chunk = DVEW.worldData.getChunk(x, y, z);
+        if (!chunk)
             return false;
         return this.regions[regionKey].chunks[chunkKey];
     },

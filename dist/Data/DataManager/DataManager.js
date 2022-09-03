@@ -76,17 +76,18 @@ export const DataManager = {
     },
     //this is just a test of converting a whole region into a typed array
     saveRegion(x, y, z) {
-        if (!this.dataHanlder) {
-            throw new Error("A data hanlder must be set.");
+        /* if (!this.dataHanlder) {
+         throw new Error("A data hanlder must be set.");
         }
         const region = DVED.worldMatrix.getRegion(x, y, z);
         if (!region) {
-            console.warn(`Region ${x}-${y}-${z} does not exists!`);
-            return;
+         console.warn(`Region ${x}-${y}-${z} does not exists!`);
+         return;
         }
+      
         let totalChunks = 0;
         for (const worldColumnKey of Object.keys(region.chunks)) {
-            totalChunks += Object.keys(region.chunks[worldColumnKey]).length;
+         totalChunks += Object.keys(region.chunks[worldColumnKey]).length;
         }
         const totalSize = this._getRegionBufferSize(totalChunks);
         const regionBuffer = new ArrayBuffer(totalSize);
@@ -101,18 +102,41 @@ export const DataManager = {
         currentIndex = this._addPositionToBuffer(x, y, z, regionArray, currentIndex);
         currentIndex++;
         for (const worldColumnKey of Object.keys(region.chunks)) {
-            const worldColumn = region.chunks[worldColumnKey];
-            for (const chunkKey of Object.keys(worldColumn)) {
-                const chunk = worldColumn[chunkKey];
-                const position = chunk.position;
-                currentIndex = this._addPositionToBuffer(position[0], position[1], position[2], regionArray, currentIndex);
-                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.voxels);
-                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.voxelStates);
-                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.heightMap);
-                currentIndex = this._addArrayToBuffer(regionArray, currentIndex, chunk.minMaxMap);
-            }
+         const worldColumn = region.chunks[worldColumnKey];
+         for (const chunkKey of Object.keys(worldColumn)) {
+          const chunk = worldColumn[chunkKey];
+          const position = chunk.position;
+          currentIndex = this._addPositionToBuffer(
+           position[0],
+           position[1],
+           position[2],
+           regionArray,
+           currentIndex
+          );
+      
+          currentIndex = this._addArrayToBuffer(
+           regionArray,
+           currentIndex,
+           chunk.voxels
+          );
+          currentIndex = this._addArrayToBuffer(
+           regionArray,
+           currentIndex,
+           chunk.voxelStates
+          );
+          currentIndex = this._addArrayToBuffer(
+           regionArray,
+           currentIndex,
+           chunk.heightMap
+          );
+          currentIndex = this._addArrayToBuffer(
+           regionArray,
+           currentIndex,
+           chunk.minMaxMap
+          );
+         }
         }
-        this.dataHanlder.saveRegion(x, y, z, regionArray);
+        this.dataHanlder.saveRegion(x, y, z, regionArray); */
     },
     _addPositionToBuffer(x, y, z, regionArray, currentIndex) {
         if (x < 0) {

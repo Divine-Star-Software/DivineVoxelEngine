@@ -11,6 +11,7 @@ export const WorldMatrix = {
     voxelByte: Util.getVoxelByte(),
     lightByte: Util.getLightByte(),
     heightByte: Util.getHeightByte(),
+    chunkReader: Util.getChunkReader(),
     voxelMatrix: VoxelMatrix,
     _air: ["dve:air", 0],
     _barrier: ["dve:barrier", 0],
@@ -131,15 +132,15 @@ export const WorldMatrix = {
         const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
         this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelSubstance, chunk);
         let stateData = this.voxelByte.setShapeState(0, shapeState);
-        this._3dArray.setValueUseObj(voxelPOS, chunk.voxelStates, stateData);
-        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+        this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data);
+        this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
     },
     __handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelSubstance, chunk) {
         if (voxelSubstance == "transparent") {
             voxelSubstance = "solid";
         }
-        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, voxelSubstance, voxelPOS.x, voxelPOS.z, chunk.heightMap);
-        this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, voxelSubstance, voxelPOS.x, voxelPOS.z, chunk.data);
+        this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
     },
     getVoxelPaletteIdForWorldGen(voxelId, voxelStateId) {
         const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
@@ -175,7 +176,7 @@ export const WorldMatrix = {
      * ---
      * To be only called by the Matrix Hub.
      */
-    __setChunk(x, y, z, voxelsSAB, voxelStatesSAB, heightMapSAB, minMaxMapSAB, chunkStateSAB) {
+    __setChunk(x, y, z, chunkData, chunkStates) {
         const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
         let region = this.regions[regionKey];
         if (!region) {
@@ -187,12 +188,8 @@ export const WorldMatrix = {
         if (!region.chunks[worldColumnKey])
             region.chunks[worldColumnKey] = {};
         region.chunks[worldColumnKey][chunkKey] = {
-            voxels: new Uint32Array(voxelsSAB),
-            voxelStates: new Uint32Array(voxelStatesSAB),
-            heightMap: new Uint32Array(heightMapSAB),
-            minMaxMap: new Uint32Array(minMaxMapSAB),
-            chunkStates: new Uint8Array(chunkStateSAB),
-            position: [chunkPOS.x, chunkPOS.y, chunkPOS.z],
+            data: new DataView(chunkData),
+            chunkStates: new Uint8Array(chunkStates),
         };
     },
     getVoxelSubstance(x, y, z, secondary = false) {
@@ -304,19 +301,14 @@ export const WorldMatrix = {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return false;
-        let array = chunk.voxels;
-        if (state)
-            array = chunk.voxelStates;
-        this._3dArray.setValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), array, data);
+        this.chunkReader.setVoxelDataUseObj(chunk.data, this.worldBounds.getVoxelPosition(x, y, z), data, state);
+        return true;
     },
     getData(x, y, z, state = false) {
         const chunk = this.getChunk(x, y, z);
         if (!chunk)
             return -1;
-        let array = chunk.voxels;
-        if (state)
-            array = chunk.voxelStates;
-        return this._3dArray.getValueUseObjSafe(this.worldBounds.getVoxelPosition(x, y, z), array);
+        return this.chunkReader.getVoxelDataUseObj(chunk.data, this.worldBounds.getVoxelPosition(x, y, z), state);
     },
     getVoxelNumberID(x, y, z, secondary = false) {
         const rawVoxelData = this.getData(x, y, z, secondary);

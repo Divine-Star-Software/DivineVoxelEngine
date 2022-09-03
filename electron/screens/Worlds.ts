@@ -53,6 +53,11 @@ export const Worlds: WorldsData = [
     description: "Used to test Divine Voxel Engine Server.",
     world: "ServerTest",
     }, */
+    {
+        title: "Debug",
+        description: "For some basic debugging.",
+        world: "Debug",
+       },
    {
     title: "Rich Data Test",
     description: "Used to test rich data",

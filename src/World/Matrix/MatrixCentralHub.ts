@@ -1,3 +1,4 @@
+import { Util } from "../../Global/Util.helper.js";
 import type { InterCommPortTypes } from "Meta/Comms/InterComm.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 
@@ -6,6 +7,7 @@ import { DVEW } from "../DivineVoxelEngineWorld.js";
  * Hanldes all syncing and releasing of data between chunk bound threads.
  */
 export const MatrixCentralHub = {
+ chunkReader: Util.getChunkReader(),
  threads: <Record<string, InterCommPortTypes>>{},
 
  _threadMessageFunctions: <
@@ -60,17 +62,12 @@ export const MatrixCentralHub = {
 
  syncChunk(x: number, y: number, z: number) {
   let chunkSABs: SharedArrayBuffer[] = [];
-  if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
-   const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
-   if (chunkData) {
-    chunkSABs[0] = chunkData.voxelsSAB;
-    chunkSABs[1] = chunkData.voxelsStatesSAB;
-    chunkSABs[2] = chunkData.heightMapSAB;
-    chunkSABs[3] = chunkData.minMaxMapSAB;
-    chunkSABs[4] = chunkData.chunkStatesSAB;
-   }
+  if (DVEW.matrix.isChunkInMatrix(x, y, z)) {
+   const data = DVEW.matrix.getMatrixChunkSAB(x, y, z);
+   if (!data) return false;
+   chunkSABs = data;
   } else {
-   const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
+   const newChunkSAB = DVEW.matrix.createMatrixChunkSAB(x, y, z);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
@@ -79,9 +76,6 @@ export const MatrixCentralHub = {
     "sync-chunk",
     chunkSABs[0],
     chunkSABs[1],
-    chunkSABs[2],
-    chunkSABs[3],
-    chunkSABs[4],
     x,
     y,
     z,
@@ -91,17 +85,12 @@ export const MatrixCentralHub = {
 
  syncChunkInThread(threadId: string, x: number, y: number, z: number) {
   let chunkSABs: SharedArrayBuffer[] = [];
-  if (DVEW.matrix.getMatrixChunkData(x, y, z)) {
-   const chunkData = DVEW.matrix.getMatrixChunkData(x, y, z);
-   if (chunkData) {
-    chunkSABs[0] = chunkData.voxelsSAB;
-    chunkSABs[1] = chunkData.voxelsStatesSAB;
-    chunkSABs[2] = chunkData.heightMapSAB;
-    chunkSABs[3] = chunkData.minMaxMapSAB;
-    chunkSABs[4] = chunkData.chunkStatesSAB;
-   }
+  if (DVEW.matrix.isChunkInMatrix(x, y, z)) {
+   const data = DVEW.matrix.getMatrixChunkSAB(x, y, z);
+   if (!data) return false;
+   chunkSABs = data;
   } else {
-   const newChunkSAB = DVEW.matrix.createMatrixChunkData(x, y, z);
+   const newChunkSAB = DVEW.matrix.createMatrixChunkSAB(x, y, z);
    if (!newChunkSAB) return false;
    chunkSABs = newChunkSAB;
   }
@@ -109,9 +98,6 @@ export const MatrixCentralHub = {
    "sync-chunk",
    chunkSABs[0],
    chunkSABs[1],
-   chunkSABs[2],
-   chunkSABs[3],
-   chunkSABs[4],
    x,
    y,
    z,
@@ -151,13 +137,9 @@ export const MatrixCentralHub = {
    const worldColumn = region.chunks[worldColumnKeys];
    for (const chunkKey of Object.keys(worldColumn)) {
     const chunk = worldColumn[chunkKey];
+    const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
     for (const threadId of Object.keys(this.threads)) {
-     this.syncChunkInThread(
-      threadId,
-      chunk.position[0],
-      chunk.position[1],
-      chunk.position[2]
-     );
+     this.syncChunkInThread(threadId, chunkPOS.x, chunkPOS.y, chunkPOS.z);
     }
    }
   }
@@ -174,12 +156,8 @@ export const MatrixCentralHub = {
    const worldColumn = region.chunks[worldColumnKeys];
    for (const chunkKey of Object.keys(worldColumn)) {
     const chunk = worldColumn[chunkKey];
-    this.syncChunkInThread(
-     threadId,
-     chunk.position[0],
-     chunk.position[1],
-     chunk.position[2]
-    );
+    const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+    this.syncChunkInThread(threadId, chunkPOS.x, chunkPOS.y, chunkPOS.z);
    }
   }
  },
@@ -195,13 +173,9 @@ export const MatrixCentralHub = {
    const worldColumn = region.chunks[worldColumnKeys];
    for (const chunkKey of Object.keys(worldColumn)) {
     const chunk = worldColumn[chunkKey];
+    const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
     for (const threadId of Object.keys(this.threads)) {
-     this.releaseChunkInThread(
-      threadId,
-      chunk.position[0],
-      chunk.position[1],
-      chunk.position[2]
-     );
+     this.releaseChunkInThread(threadId, chunkPOS.x, chunkPOS.y, chunkPOS.z);
     }
    }
   }
@@ -220,12 +194,8 @@ export const MatrixCentralHub = {
    const worldColumn = region.chunks[worldColumnKeys];
    for (const chunkKey of Object.keys(worldColumn)) {
     const chunk = worldColumn[chunkKey];
-    this.releaseChunkInThread(
-     threadId,
-     chunk.position[0],
-     chunk.position[1],
-     chunk.position[2]
-    );
+    const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+    this.releaseChunkInThread(threadId, chunkPOS.x, chunkPOS.y, chunkPOS.z);
    }
   }
  },

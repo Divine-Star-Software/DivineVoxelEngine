@@ -1,12 +1,8 @@
 import type { WorldRegionPalette } from "Meta/World/WorldData/World.types";
 
 export type MatrixLoadedChunk = {
- voxels: Uint32Array;
- voxelStates: Uint32Array;
- heightMap: Uint32Array;
- minMaxMap: Uint32Array;
- chunkStates: Uint8Array;
- position: number[];
+ chunkStates: Uint8Array;   
+ data: DataView;
 };
 export type MatrixLoadedRegion = Record<
  string,
@@ -20,6 +16,14 @@ export type MatrixRegionData = {
  threadsLoadedIn: Record<string, boolean>;
  chunks: MatrixChunkData;
 };
+
+export type WorldThreadMatrixRegionData = {
+    threadsLoadedIn: Record<string, boolean>;
+    chunks: Record<string,{
+        chunkStates:  Uint8Array,
+        chunkStatesSAB: SharedArrayBuffer  
+    }>;
+   };
 
 export type MatrixChunkData = Record<
  string,

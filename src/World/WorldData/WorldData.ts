@@ -16,6 +16,7 @@ export const WorldData = {
  regions: <Record<string, WorldRegion>>{},
 
  heightByte: Util.getHeightByte(),
+ chunkReader: Util.getChunkReader(),
  lightByte: Util.getLightByte(),
  voxelByte: Util.getVoxelByte(),
  _3dArray: Util.getFlat3DArray(),
@@ -92,20 +93,12 @@ export const WorldData = {
  },
 
  removeData(x: number, y: number, z: number) {
-  const region = this.getRegion(x, y, z);
-  if (!region) {
-   return false;
-  }
   const chunk = this.getChunk(x, y, z);
-  if (!chunk || chunk.isEmpty) {
+  if (!chunk) {
    return false;
   }
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-  if (this._3dArray.getValueUseObj(voxelPOS, chunk.voxels)) {
-   this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, 0);
-  } else {
-   return false;
-  }
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, 0);
  },
 
  getLevelState(x: number, y: number, z: number) {
@@ -125,35 +118,28 @@ export const WorldData = {
 
  getData(x: number, y: number, z: number, state = false) {
   const chunk = this.getChunk(x, y, z);
-  if (!chunk || chunk.isEmpty) {
+  if (!chunk) {
    return false;
   }
-
-  let array = chunk.voxels;
-  if (state) {
-   array = chunk.voxelsStates;
-  }
-
-  return this._3dArray.getValueUseObj(
+  return this.chunkReader.getVoxelDataUseObj(
+   chunk.data,
    this.worldBounds.getVoxelPosition(x, y, z),
-   array
+   state
   );
  },
 
  setData(x: number, y: number, z: number, data: number, state = false) {
   const chunk = this.getChunk(x, y, z);
-  if (!chunk || chunk.isEmpty) {
-   return -1;
+  if (!chunk) {
+   return false;
   }
-  let array = chunk.voxels;
-  if (state) {
-   array = chunk.voxelsStates;
-  }
-  return this._3dArray.setValueUseObj(
+  this.chunkReader.setVoxelDataUseObj(
+   chunk.data,
    this.worldBounds.getVoxelPosition(x, y, z),
-   array,
-   data
+   data,
+   state
   );
+  return true;
  },
 
  getVoxelPaletteId(voxelId: string, voxelStateId: number) {
@@ -228,8 +214,10 @@ export const WorldData = {
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
   let stateData = this.voxelByte.setShapeState(0, shapeState);
   stateData = this._getStartingLevel(voxelData, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
+
   if (DVEW.settings.doRGBPropagation()) {
    if (voxelData.lightSource && voxelData.lightValue) {
     DVEW.queues.addToRGBUpdateQue(x, y, z);
@@ -285,8 +273,8 @@ export const WorldData = {
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, secondVoxelData, chunk);
   let stateData = this.voxelByte.setShapeState(secondaryId, shapeState);
   stateData = this._getStartingLevel(voxelData, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, mainId);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, mainId);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
   if (DVEW.settings.doRGBPropagation()) {
    if (voxelData.lightSource && voxelData.lightValue) {
     DVEW.queues.addToRGBUpdateQue(x, y, z);
@@ -311,9 +299,9 @@ export const WorldData = {
    substance,
    voxelPOS.x,
    voxelPOS.z,
-   chunk.heightMap
+   chunk.data
   );
-  this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+  this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
  },
 
  __handleHeightMapUpdateForVoxelRemove(
@@ -331,7 +319,7 @@ export const WorldData = {
     substance,
     voxelPOS.x,
     voxelPOS.z,
-    chunk.heightMap
+    chunk.data
    );
   if (needToRecalculateHeightMap) {
    /**
@@ -373,9 +361,7 @@ export const WorldData = {
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
   const chunks = region.chunks;
-  chunk.position[0] = chunkPOS.x;
-  chunk.position[1] = chunkPOS.y;
-  chunk.position[2] = chunkPOS.z;
+  this.chunkReader.setChunkPosition(chunk.data, chunkPOS);
 
   if (!chunks[worldColumnKey]) {
    chunks[worldColumnKey] = {};
@@ -481,8 +467,8 @@ export const WorldData = {
   let needLightUpdate = false;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   let stateData = this.voxelByte.setShapeState(0, shapeState);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxelsStates, stateData);
-  this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
   this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
   this.runRebuildCheck(x, y, z);
 
@@ -600,8 +586,8 @@ export const WorldData = {
   for (const chunkKey of chunkKeys) {
    const chunk = worldColumn[chunkKey];
 
-   const chunkMax =
-    this.heightByte.getChunkMax(chunk.minMaxMap) + chunk.position[1];
+   const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+   const chunkMax = this.heightByte.getChunkMax(chunk.data) + chunkPOS.y;
    if (maxHeight < chunkMax) {
     maxHeight = chunkMax;
    }

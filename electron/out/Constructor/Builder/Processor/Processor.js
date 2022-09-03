@@ -352,13 +352,10 @@ export const Processor = {
         let maxZ = DVEC.worldBounds.chunkZSize;
         for (let x = 0; x < maxX; x += LOD) {
             for (let z = 0; z < maxZ; z += LOD) {
-                let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.heightMap);
-                let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.heightMap) + 1;
+                let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.data);
+                let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.data) + 1;
                 for (let y = minY; y < maxY; y += LOD) {
-                    let tx = x + chunkX;
-                    let ty = y + chunkY;
-                    let tz = z + chunkZ;
-                    this._process(template, tx, ty, tz);
+                    this._process(template, x + chunkX, y + chunkY, z + chunkZ);
                 }
             }
         }

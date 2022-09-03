@@ -46,9 +46,9 @@ export const DVEWG = {
    substance,
    voxelPOS.x,
    voxelPOS.z,
-   chunk.heightMap
+   chunk.data
   );
-  this.heightByte.updateChunkMinMax(voxelPOS, chunk.minMaxMap);
+  this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
  },
 
  getVoxelPaletteId(voxelId: string, voxelStateId: number) {

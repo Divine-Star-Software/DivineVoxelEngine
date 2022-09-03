@@ -16,7 +16,7 @@ app.commandLine.appendSwitch('enable-unsafe-webgpu');
 app.commandLine.appendSwitch("disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
 app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
-
+app.commandLine.appendSwitch ("disable-http-cache");
 const APP_INIT = async () => {
  session.defaultSession.webRequest.onHeadersReceived(
   (details: any, callback: any) => {

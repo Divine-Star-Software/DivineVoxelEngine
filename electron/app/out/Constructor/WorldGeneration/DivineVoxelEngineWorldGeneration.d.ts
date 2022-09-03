@@ -5,69 +5,27 @@ import type { Position3Matrix } from "Meta/Util.types.js";
 export declare const DVEWG: {
     worldGen: WorldGenInterface | null;
     heightByte: {
-        heightMapArray: {
-            bounds: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            _position: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array): number;
-            getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-            getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
-            setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
-            setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
-            deleteUseObj(position: Position3Matrix, array: Uint32Array): void;
-            getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): Position3Matrix;
-        };
-        positionByte: {
-            _poisiton: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            _positionMasks: {
-                x: number;
-                z: number;
-                y: number;
-            };
-            getY(byteData: number): number;
-            getPosition(byteData: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            setPosition(x: number, y: number, z: number): number;
-            setPositionUseObj(positionObj: Position3Matrix): number;
-        };
         _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
         _setHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
         _markSubstanceAsNotExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
         _markSubstanceAsExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
         _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
-        updateChunkMinMax(voxelPOS: Position3Matrix, minMax: Uint32Array): void;
-        getChunkMin(minMax: Uint32Array): number;
-        getChunkMax(minMax: Uint32Array): number;
-        calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
-        calculateHeightAddDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
-        getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
-        isSubstanceExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
-        markSubstanceAsExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        markSubstanceAsNotExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        setMinYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
-        setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-        getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+        initalizeChunk(chunkData: DataView): void;
+        updateChunkMinMax(voxelPOS: Position3Matrix, chunkData: DataView): void;
+        getChunkMin(chunkData: DataView): number;
+        getChunkMax(chunkData: DataView): number;
+        calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
+        calculateHeightAddDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+        getLowestExposedVoxel(x: number, z: number, chunk: DataView): number;
+        getHighestExposedVoxel(x: number, z: number, chunk: DataView): number;
+        isSubstanceExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): boolean;
+        markSubstanceAsExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+        markSubstanceAsNotExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+        setMinYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+        getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
+        setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+        getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
     };
     voxelByte: {
         setId(id: number, value: number): number;

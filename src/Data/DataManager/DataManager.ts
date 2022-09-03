@@ -94,7 +94,7 @@ export const DataManager = {
 
  //this is just a test of converting a whole region into a typed array
  saveRegion(x: number, y: number, z: number) {
-  if (!this.dataHanlder) {
+  /* if (!this.dataHanlder) {
    throw new Error("A data hanlder must be set.");
   }
   const region = DVED.worldMatrix.getRegion(x, y, z);
@@ -154,7 +154,7 @@ export const DataManager = {
     );
    }
   }
-  this.dataHanlder.saveRegion(x, y, z, regionArray);
+  this.dataHanlder.saveRegion(x, y, z, regionArray); */
  },
 
  _addPositionToBuffer(

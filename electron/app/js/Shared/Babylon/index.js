@@ -1,6 +1,6 @@
 import { CreateGUI } from "../GUI/index.js";
 export const SetUpEngine = (canvas) => {
-    const engine = new BABYLON.Engine(canvas, false, {});
+    const engine = new BABYLON.Engine(canvas, true, {});
     engine.doNotHandleContextLost = true;
     engine.enableOfflineSupport = false;
     engine.setSize(1920, 1080);

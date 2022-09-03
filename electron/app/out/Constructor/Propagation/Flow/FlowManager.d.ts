@@ -156,69 +156,85 @@ export declare const FlowManager: {
             removeSunLight(sl: number): number;
         };
         heightByte: {
-            heightMapArray: {
-                bounds: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                _position: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: Uint32Array): number;
-                getValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-                getValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array): number;
-                setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
-                setValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
-                setValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array, value: number): void;
-                deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
-                deleteUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array): void;
-                getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("../../../Meta/Util.types.js").Position3Matrix;
-            };
-            positionByte: {
-                _poisiton: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                _positionMasks: {
-                    x: number;
-                    z: number;
-                    y: number;
-                };
-                getY(byteData: number): number;
-                getPosition(byteData: number): {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                setPosition(x: number, y: number, z: number): number;
-                setPositionUseObj(positionObj: import("../../../Meta/Util.types.js").Position3Matrix): number;
-            };
             _getHeightMapData: Record<import("../../../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
             _setHeightMapData: Record<import("../../../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
             _markSubstanceAsNotExposed: Record<import("../../../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
             _markSubstanceAsExposed: Record<import("../../../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
             _isSubstanceExposed: Record<import("../../../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
-            updateChunkMinMax(voxelPOS: import("../../../Meta/Util.types.js").Position3Matrix, minMax: Uint32Array): void;
-            getChunkMin(minMax: Uint32Array): number;
-            getChunkMax(minMax: Uint32Array): number;
-            calculateHeightRemoveDataForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean | undefined;
-            calculateHeightAddDataForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-            getLowestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
-            getHighestExposedVoxel(x: number, z: number, heightMap: Uint32Array): number;
-            isSubstanceExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): boolean;
-            markSubstanceAsExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-            markSubstanceAsNotExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-            setMinYForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-            getMinYForSubstance(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
-            setMaxYForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): void;
-            getMaxYForSubstance(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: Uint32Array): number;
+            initalizeChunk(chunkData: DataView): void;
+            updateChunkMinMax(voxelPOS: import("../../../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void;
+            getChunkMin(chunkData: DataView): number;
+            getChunkMax(chunkData: DataView): number;
+            calculateHeightRemoveDataForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
+            calculateHeightAddDataForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+            getLowestExposedVoxel(x: number, z: number, chunk: DataView): number;
+            getHighestExposedVoxel(x: number, z: number, chunk: DataView): number;
+            isSubstanceExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): boolean;
+            markSubstanceAsExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+            markSubstanceAsNotExposed(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+            setMinYForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+            getMinYForSubstance(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
+            setMaxYForSubstance(height: number, substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
+            getMaxYForSubstance(substance: import("../../../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
+        };
+        chunkReader: {
+            chunkByteSize: number;
+            indexSizes: {
+                header: number;
+                states: number;
+                position: number;
+                minMax: number;
+                heightMap: number;
+                voxelData: number;
+                voxelStateData: number;
+            };
+            indexes: {
+                header: number;
+                states: number;
+                position: number;
+                minMax: number;
+                heightMap: number;
+                voxelData: number;
+                voxelStateData: number;
+            };
+            byteLengths: {
+                heightMapData: number;
+                voxelData: number;
+                voxelStateData: number;
+            };
+            syncSettings(): void;
+            _getVoxelDataIndex(x: number, y: number, z: number): number;
+            _getVoxelStateDataIndex(x: number, y: number, z: number): number;
+            _chunkPositon: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(chunk: DataView): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            setChunkPosition(chunk: DataView, position: import("../../../Meta/Util.types.js").Position3Matrix): void;
+            getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
+            hmBounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            _getHeightMapIndex(x: number, y: number, z: number): number;
+            getHeightMapIndex(x: number, y: number, z: number): number;
+            getVoxelData(chunkData: DataView, x: number, y: number, z: number, secondary?: boolean): number;
+            setVoxelData(chunkData: DataView, x: number, y: number, z: number, data: number, secondary?: boolean): void;
+            getVoxelDataUseObj(chunkData: DataView, position: import("../../../Meta/Util.types.js").Position3Matrix, secondary?: boolean): number;
+            setVoxelDataUseObj(chunkData: DataView, position: import("../../../Meta/Util.types.js").Position3Matrix, data: number, secondary?: boolean): void;
+            getHeightMapData(chunkData: DataView, x: number, y: number, z: number): number;
+            setHeightMapData(chunkData: DataView, x: number, y: number, z: number, data: number): void;
+            getChunkMinData(chunkData: DataView): number;
+            setChunkMinData(chunkData: DataView, data: number): void;
+            getChunkMaxData(chunkData: DataView): number;
+            setChunkMaxData(chunkData: DataView, data: number): void;
         };
         voxelMatrix: {
             byteLength: {
@@ -314,7 +330,7 @@ export declare const FlowManager: {
         _createRegion(x: number, y: number, z: number): {
             chunks: {};
         };
-        __setChunk(x: number, y: number, z: number, voxelsSAB: SharedArrayBuffer, voxelStatesSAB: SharedArrayBuffer, heightMapSAB: SharedArrayBuffer, minMaxMapSAB: SharedArrayBuffer, chunkStateSAB: SharedArrayBuffer): void;
+        __setChunk(x: number, y: number, z: number, chunkData: SharedArrayBuffer, chunkStates: SharedArrayBuffer): void;
         getVoxelSubstance(x: number, y: number, z: number, secondary?: boolean): import("../../../Meta/index.js").VoxelSubstanceType;
         getVoxelShapeId(x: number, y: number, z: number, secondary?: boolean): number;
         isVoxelALightSource(x: number, y: number, z: number, secondary?: boolean): boolean;
@@ -330,11 +346,8 @@ export declare const FlowManager: {
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;
-        updateChunkData(x: number, y: number, z: number, run: (chunk: {
-            voxels: Uint32Array;
-            chunkStates: Uint8Array;
-        }) => {}): false | Promise<boolean>;
-        setData(x: number, y: number, z: number, data: number, state?: boolean): false | undefined;
+        updateChunkData(x: number, y: number, z: number, run: (chunk: import("../../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk) => {}): false | Promise<boolean>;
+        setData(x: number, y: number, z: number, data: number, state?: boolean): boolean;
         getData(x: number, y: number, z: number, state?: boolean): number;
         getVoxelNumberID(x: number, y: number, z: number, secondary?: boolean): number | false;
         getLight(x: number, y: number, z: number): number;

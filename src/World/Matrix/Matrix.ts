@@ -1,7 +1,7 @@
 import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
-import { MatrixRegionData } from "Meta/Matrix/Matrix.types.js";
+import { WorldThreadMatrixRegionData } from "Meta/Matrix/Matrix.types.js";
 
 /**# Matrix
  * ---
@@ -11,7 +11,7 @@ export const Matrix = {
  //two minutes
  updateDieTime: 120000,
  worldBounds: Util.getWorldBounds(),
- regions: <Record<string, MatrixRegionData>>{},
+ regions: <Record<string, WorldThreadMatrixRegionData>>{},
 
  isChunkInMatrix(x: number, y: number, z: number) {
   if (!this.isRegionInMatrix(x, y, z)) return false;
@@ -85,7 +85,7 @@ export const Matrix = {
   return true;
  },
 
- createMatrixChunkData(
+ createMatrixChunkSAB(
   x: number,
   y: number,
   z: number
@@ -104,18 +104,16 @@ export const Matrix = {
   this.regions[regionKey].chunks[chunkKey] = {
    chunkStates: new Uint8Array(chunkStateSAB),
    chunkStatesSAB: chunkStateSAB,
-   voxelsSAB: chunk.voxelsSAB,
-   voxelsStatesSAB: chunk.voxelsStatesSAB,
-   heightMapSAB: chunk.heightMapSAB,
-   minMaxMapSAB : chunk.minMaxMapSAB
   };
-  return [
-   chunk.voxelsSAB,
-   chunk.voxelsStatesSAB,
-   chunk.heightMapSAB,
-   chunk.minMaxMapSAB,
-   chunkStateSAB,
-  ];
+  return [chunk.buffer, chunkStateSAB];
+ },
+
+ getMatrixChunkSAB(x: number, y: number, z: number) {
+  const data = this.getMatrixChunkData(x, y, z);
+  if (!data) return false;
+  const chunk = DVEW.worldData.getChunk(x, y, z);
+  if (!chunk) return false;
+  return [chunk.buffer, data.chunkStatesSAB];
  },
 
  getMatrixChunkData(x: number, y: number, z: number) {
@@ -123,6 +121,9 @@ export const Matrix = {
   if (!this.regions[regionKey]) return false;
   const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
   if (!this.regions[regionKey].chunks[chunkKey]) return false;
+  const chunk = DVEW.worldData.getChunk(x, y, z);
+  if (!chunk) return false;
+
   return this.regions[regionKey].chunks[chunkKey];
  },
 

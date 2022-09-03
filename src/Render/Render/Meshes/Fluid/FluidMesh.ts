@@ -1,4 +1,7 @@
-import { MeshSetData, VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
+import {
+ MeshSetData,
+ VoxelMeshInterface,
+} from "Meta/Render/Meshes/VoxelMesh.interface";
 import { FluidMaterial } from "../../Materials/Fluid/FluidMaterial.js";
 
 export const FluidMesh: VoxelMeshInterface = {
@@ -7,13 +10,12 @@ export const FluidMesh: VoxelMeshInterface = {
  seralize: false,
  clearCachedGeometry: false,
 
-
  createTemplateMesh(scene: BABYLON.Scene) {
   const mesh = new BABYLON.Mesh("fluid", scene);
   mesh.isPickable = this.pickable;
   mesh.checkCollisions = this.checkCollisions;
-  if(!this.checkCollisions) {
-    mesh.doNotSyncBoundingInfo = true;
+  if (!this.checkCollisions) {
+   mesh.doNotSyncBoundingInfo = true;
   }
   mesh.doNotSerialize = this.seralize;
   return mesh;
@@ -34,8 +36,6 @@ export const FluidMesh: VoxelMeshInterface = {
   }
  },
 
-
-
  _applyVertexData(mesh: BABYLON.Mesh, data: MeshSetData) {
   mesh.unfreezeWorldMatrix();
   const chunkVertexData = new BABYLON.VertexData();
@@ -49,20 +49,27 @@ export const FluidMesh: VoxelMeshInterface = {
   mesh.setVerticesData("rgbLightColors", data.RGBLightColorsArray, false, 4);
   mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
   mesh.setVerticesData("colors", data.colorsArray, false, 4);
-  if(this.clearCachedGeometry) {
-    mesh.geometry?.clearCachedData();
+  if (this.clearCachedGeometry) {
+   const bbInfo = mesh.getBoundingInfo();
+   if (mesh.subMeshes) {
+    for (const sm of mesh.subMeshes) {
+     sm.setBoundingInfo(bbInfo);
+    }
+   }
+
+   mesh.geometry?.clearCachedData();
   }
   mesh.freezeWorldMatrix();
  },
 
  async rebuildMeshGeometory(mesh, data) {
-  this._applyVertexData(mesh,data);
+  this._applyVertexData(mesh, data);
   return mesh;
  },
 
  async createMeshGeometory(mesh, data) {
   mesh.material = FluidMaterial.getMaterial();
-  this._applyVertexData(mesh,data);
+  this._applyVertexData(mesh, data);
   return mesh;
  },
 };

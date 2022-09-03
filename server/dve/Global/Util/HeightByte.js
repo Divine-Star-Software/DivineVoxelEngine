@@ -1,12 +1,10 @@
-import { HeightMapArray } from "./HeightMapArray.js";
 import { PositionByte } from "./PositionByte.js";
+import { ChunkReader } from "./ChunkReader.js";
 /**# Height Byte
  * ---
  * Interpets height map data.
  */
 export const HeightByte = {
-    heightMapArray: HeightMapArray,
-    positionByte: PositionByte,
     _getHeightMapData: {
         solid: (byteData) => {
             return (byteData & 0x7f) >>> 0;
@@ -85,21 +83,29 @@ export const HeightByte = {
         //this number will mark all substances as not exposed and/or non existent in the chunk.
         return 0x80808080;
     },
-    updateChunkMinMax(voxelPOS, minMax) {
-        const currentMin = this.positionByte.getY(minMax[0]);
-        const currentMax = this.positionByte.getY(minMax[1]);
+    initalizeChunk(chunkData) {
+        let value = this.getStartingHeightMapValue();
+        let start = ChunkReader.indexes.heightMap;
+        let end = start + ChunkReader.indexSizes.heightMap;
+        for (let i = start; i < end; i += 4) {
+            chunkData.setUint32(i, value);
+        }
+    },
+    updateChunkMinMax(voxelPOS, chunkData) {
+        const currentMin = PositionByte.getY(ChunkReader.getChunkMinData(chunkData));
+        const currentMax = PositionByte.getY(ChunkReader.getChunkMaxData(chunkData));
         if (voxelPOS.y < currentMin) {
-            minMax[0] = this.positionByte.setPositionUseObj(voxelPOS);
+            ChunkReader.setChunkMinData(chunkData, PositionByte.setPositionUseObj(voxelPOS));
         }
         if (voxelPOS.y > currentMax) {
-            minMax[1] = this.positionByte.setPositionUseObj(voxelPOS);
+            ChunkReader.setChunkMaxData(chunkData, PositionByte.setPositionUseObj(voxelPOS));
         }
     },
-    getChunkMin(minMax) {
-        return this.positionByte.getY(minMax[0]);
+    getChunkMin(chunkData) {
+        return PositionByte.getY(ChunkReader.getChunkMinData(chunkData));
     },
-    getChunkMax(minMax) {
-        return this.positionByte.getY(minMax[1]);
+    getChunkMax(chunkData) {
+        return PositionByte.getY(ChunkReader.getChunkMaxData(chunkData));
     },
     calculateHeightRemoveDataForSubstance(height, substance, x, z, heightMap) {
         let minY = this.getMinYForSubstance(substance, x, z, heightMap);
@@ -113,94 +119,91 @@ export const HeightByte = {
             this.markSubstanceAsNotExposed(substance, x, z, heightMap);
         }
         if (height == minY || height == maxY) {
-            /**
-             * @TODO when the bottom minY or maxY has been removed must recalucate the heightmpa for that XZ.
-             */
             return true;
         }
     },
-    calculateHeightAddDataForSubstance(height, substance, x, z, heightMap) {
-        let minY = this.getMinYForSubstance(substance, x, z, heightMap);
-        let maxY = this.getMaxYForSubstance(substance, x, z, heightMap);
-        if (!this.isSubstanceExposed(substance, x, z, heightMap)) {
-            this.markSubstanceAsExposed(substance, x, z, heightMap);
-            this.setMinYForSubstance(height, substance, x, z, heightMap);
-            this.setMaxYForSubstance(height, substance, x, z, heightMap);
+    calculateHeightAddDataForSubstance(height, substance, x, z, chunk) {
+        let minY = this.getMinYForSubstance(substance, x, z, chunk);
+        let maxY = this.getMaxYForSubstance(substance, x, z, chunk);
+        if (!this.isSubstanceExposed(substance, x, z, chunk)) {
+            this.markSubstanceAsExposed(substance, x, z, chunk);
+            this.setMinYForSubstance(height, substance, x, z, chunk);
+            this.setMaxYForSubstance(height, substance, x, z, chunk);
             return;
         }
         //nothing to do here since it won't affect anything.
         // if (height > minY && height < maxY) return;
         if (height < minY) {
-            this.setMinYForSubstance(height, substance, x, z, heightMap);
+            this.setMinYForSubstance(height, substance, x, z, chunk);
         }
         if (height > maxY) {
-            this.setMaxYForSubstance(height, substance, x, z, heightMap);
+            this.setMaxYForSubstance(height, substance, x, z, chunk);
         }
     },
-    getLowestExposedVoxel(x, z, heightMap) {
-        const value = this.heightMapArray.getValue(x, 0, z, heightMap);
-        let min = this._getHeightMapData["solid"](value);
-        let min2 = this._getHeightMapData["fluid"](value);
+    getLowestExposedVoxel(x, z, chunk) {
+        const byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
+        let min = this._getHeightMapData["solid"](byteData);
+        let min2 = this._getHeightMapData["fluid"](byteData);
         if (min2 < min) {
             min = min2;
         }
-        let min3 = this._getHeightMapData["flora"](value);
+        let min3 = this._getHeightMapData["flora"](byteData);
         if (min3 < min) {
             min = min3;
         }
-        let min4 = this._getHeightMapData["magma"](value);
+        let min4 = this._getHeightMapData["magma"](byteData);
         if (min3 < min) {
             min = min4;
         }
         return min;
     },
-    getHighestExposedVoxel(x, z, heightMap) {
-        const value = this.heightMapArray.getValue(x, 1, z, heightMap);
-        let max = this._getHeightMapData["solid"](value);
-        let max2 = this._getHeightMapData["fluid"](value);
+    getHighestExposedVoxel(x, z, chunk) {
+        const byteData = ChunkReader.getHeightMapData(chunk, x, 1, z);
+        let max = this._getHeightMapData["solid"](byteData);
+        let max2 = this._getHeightMapData["fluid"](byteData);
         if (max2 > max) {
             max = max2;
         }
-        let max3 = this._getHeightMapData["flora"](value);
+        let max3 = this._getHeightMapData["flora"](byteData);
         if (max3 > max) {
             max = max3;
         }
-        let max4 = this._getHeightMapData["magma"](value);
+        let max4 = this._getHeightMapData["magma"](byteData);
         if (max3 > max) {
             max = max4;
         }
         return max;
     },
-    isSubstanceExposed(substance, x, z, heightMap) {
-        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
-        return this._isSubstanceExposed[substance](value);
+    isSubstanceExposed(substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
+        return this._isSubstanceExposed[substance](byteData);
     },
-    markSubstanceAsExposed(substance, x, z, heightMap) {
-        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
-        value = this._markSubstanceAsExposed[substance](value);
-        this.heightMapArray.setValue(x, 0, z, heightMap, value);
+    markSubstanceAsExposed(substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
+        byteData = this._markSubstanceAsExposed[substance](byteData);
+        ChunkReader.setHeightMapData(chunk, x, 0, z, byteData);
     },
-    markSubstanceAsNotExposed(substance, x, z, heightMap) {
-        let value = this.heightMapArray.getValue(x, 0, z, heightMap);
-        value = this._markSubstanceAsNotExposed[substance](value);
-        this.heightMapArray.setValue(x, 0, z, heightMap, value);
+    markSubstanceAsNotExposed(substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
+        byteData = this._markSubstanceAsNotExposed[substance](byteData);
+        ChunkReader.setHeightMapData(chunk, x, 0, z, byteData);
     },
-    setMinYForSubstance(height, substance, x, z, heightMap) {
-        let byteData = this.heightMapArray.getValue(x, 0, z, heightMap);
+    setMinYForSubstance(height, substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
         byteData = this._setHeightMapData[substance](height, byteData);
-        this.heightMapArray.setValue(x, 0, z, heightMap, byteData);
+        ChunkReader.setHeightMapData(chunk, x, 0, z, byteData);
     },
-    getMinYForSubstance(substance, x, z, heightMap) {
-        let byteData = this.heightMapArray.getValue(x, 0, z, heightMap);
+    getMinYForSubstance(substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
         return this._getHeightMapData[substance](byteData);
     },
-    setMaxYForSubstance(height, substance, x, z, heightMap) {
-        let byteData = this.heightMapArray.getValue(x, 1, z, heightMap);
+    setMaxYForSubstance(height, substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 1, z);
         byteData = this._setHeightMapData[substance](height, byteData);
-        this.heightMapArray.setValue(x, 1, z, heightMap, byteData);
+        ChunkReader.setHeightMapData(chunk, x, 1, z, byteData);
     },
-    getMaxYForSubstance(substance, x, z, heightMap) {
-        let byteData = this.heightMapArray.getValue(x, 1, z, heightMap);
+    getMaxYForSubstance(substance, x, z, chunk) {
+        let byteData = ChunkReader.getHeightMapData(chunk, x, 1, z);
         return this._getHeightMapData[substance](byteData);
     },
 };

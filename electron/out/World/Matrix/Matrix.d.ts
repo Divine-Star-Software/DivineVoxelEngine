@@ -1,5 +1,5 @@
 import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
-import { MatrixRegionData } from "Meta/Matrix/Matrix.types.js";
+import { WorldThreadMatrixRegionData } from "Meta/Matrix/Matrix.types.js";
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -87,7 +87,7 @@ export declare const Matrix: {
             z: number;
         };
     };
-    regions: Record<string, MatrixRegionData>;
+    regions: Record<string, WorldThreadMatrixRegionData>;
     isChunkInMatrix(x: number, y: number, z: number): boolean;
     isRegionInMatrix(x: number, y: number, z: number): boolean;
     isChunkLocked(x: number, y: number, z: number): boolean;
@@ -95,17 +95,14 @@ export declare const Matrix: {
     unLockChunk(x: number, y: number, z: number): boolean;
     updateChunkData(x: number, y: number, z: number, run: (chunk: ChunkData) => {}): false | Promise<boolean>;
     releaseChunk(x: number, y: number, z: number): boolean | undefined;
-    createMatrixChunkData(x: number, y: number, z: number): SharedArrayBuffer[] | false;
+    createMatrixChunkSAB(x: number, y: number, z: number): SharedArrayBuffer[] | false;
+    getMatrixChunkSAB(x: number, y: number, z: number): false | SharedArrayBuffer[];
     getMatrixChunkData(x: number, y: number, z: number): false | {
         chunkStates: Uint8Array;
         chunkStatesSAB: SharedArrayBuffer;
-        voxelsSAB: SharedArrayBuffer;
-        voxelsStatesSAB: SharedArrayBuffer;
-        minMaxMapSAB: SharedArrayBuffer;
-        heightMapSAB: SharedArrayBuffer;
     };
-    getMatrixRegionData(x: number, y: number, z: number): false | MatrixRegionData;
-    addRegionToMatrix(x: number, y: number, z: number): MatrixRegionData;
+    getMatrixRegionData(x: number, y: number, z: number): false | WorldThreadMatrixRegionData;
+    addRegionToMatrix(x: number, y: number, z: number): WorldThreadMatrixRegionData;
     removeRegionFromMatrix(x: number, y: number, z: number): false | undefined;
     deleteThreadFromRegion(threadId: string, x: number, y: number, z: number): false | undefined;
 };
