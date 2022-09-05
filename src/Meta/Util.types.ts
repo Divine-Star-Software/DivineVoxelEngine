@@ -18,3 +18,6 @@ export type MeshData = {
  colors: number[];
  uvs: number[];
 };
+export type RecursivePartial<T> = {
+ [P in keyof T]?: RecursivePartial<T[P]>;
+};

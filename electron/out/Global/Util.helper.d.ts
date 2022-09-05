@@ -7,7 +7,7 @@ export declare const Util: {
         failTimeOut?: number | undefined;
         onFail?: (() => any) | undefined;
     }) => Promise<boolean>;
-    getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+    getWorkerPort: (environment: "browser" | "node") => Promise<any>;
     getEnviorment(): "node" | "browser";
     getChunkReader(): {
         chunkByteSize: number;

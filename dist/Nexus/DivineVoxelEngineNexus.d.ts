@@ -141,9 +141,7 @@ export declare const DVEN: {
             getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
             setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
             getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
-        }; /**# Load chunk into Nexus
-         * Load a chunk into the shared nexus thread.
-         */
+        };
         getHeightMapArray(): {
             bounds: {
                 x: number;
@@ -321,8 +319,66 @@ export declare const DVEN: {
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
+    chunkReader: {
+        chunkByteSize: number;
+        indexSizes: {
+            header: number;
+            states: number;
+            position: number;
+            minMax: number;
+            heightMap: number;
+            voxelData: number;
+            voxelStateData: number;
+        };
+        indexes: {
+            header: number;
+            states: number;
+            position: number;
+            minMax: number;
+            heightMap: number;
+            voxelData: number;
+            voxelStateData: number;
+        };
+        byteLengths: {
+            heightMapData: number;
+            voxelData: number;
+            voxelStateData: number;
+        };
+        syncSettings(): void;
+        _getVoxelDataIndex(x: number, y: number, z: number): number;
+        _getVoxelStateDataIndex(x: number, y: number, z: number): number;
+        _chunkPositon: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getChunkPosition(chunk: DataView): {
+            x: number;
+            y: number;
+            z: number;
+        };
+        setChunkPosition(chunk: DataView, position: import("Meta/index.js").Position3Matrix): void;
+        getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
+        hmBounds: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        _getHeightMapIndex(x: number, y: number, z: number): number;
+        getHeightMapIndex(x: number, y: number, z: number): number;
+        getVoxelData(chunkData: DataView, x: number, y: number, z: number, secondary?: boolean): number;
+        setVoxelData(chunkData: DataView, x: number, y: number, z: number, data: number, secondary?: boolean): void;
+        getVoxelDataUseObj(chunkData: DataView, position: import("Meta/index.js").Position3Matrix, secondary?: boolean): number;
+        setVoxelDataUseObj(chunkData: DataView, position: import("Meta/index.js").Position3Matrix, data: number, secondary?: boolean): void;
+        getHeightMapData(chunkData: DataView, x: number, y: number, z: number): number;
+        setHeightMapData(chunkData: DataView, x: number, y: number, z: number, data: number): void;
+        getChunkMinData(chunkData: DataView): number;
+        setChunkMinData(chunkData: DataView, data: number): void;
+        getChunkMaxData(chunkData: DataView): number;
+        setChunkMaxData(chunkData: DataView, data: number): void;
+    };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -398,7 +454,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -800,6 +856,9 @@ export declare const DVEN: {
             b: (value: number) => number;
             s: (value: number) => number;
         };
+        /**# Load chunk into Nexus
+         * Load a chunk into the shared nexus thread.
+         */
         threadName: string;
         setVoxelManager(voxelManager: import("../Meta/Voxels/VoxelManager.types.js").VoxelManagerInterface): void;
         syncChunkBounds(): void;
@@ -847,6 +906,7 @@ export declare const DVEN: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
+        environment: "node" | "browser";
         worldPort: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;

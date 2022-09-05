@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -489,8 +490,8 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -798,7 +799,7 @@ export declare const DVER: {
         radToDeg(radians: number): number;
     };
     _handleOptions(): void;
-    _syncSettings(data: EngineSettingsData): void;
+    syncSettingsWithWorkers(data: EngineSettingsData): void;
     reStart(data: EngineSettingsData): Promise<void>;
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {

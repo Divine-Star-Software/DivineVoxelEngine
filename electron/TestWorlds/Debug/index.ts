@@ -6,6 +6,7 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
  CreateWorldAxis,
+ GetPlayerModel,
 } from "../Shared/Babylon/index.js";
 import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
@@ -40,7 +41,7 @@ const init = async () => {
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x: 0, y: 0, z: 0 },
+  { x: 0, y: 10, z: 0 },
   { x: 10, y: 0, z: 10 }
  );
  camera.speed = 0.5;
@@ -67,6 +68,10 @@ const init = async () => {
  chunkMarkers.material = mat;
  chunkMarkers.position.x = 8;
  chunkMarkers.position.z = 8;
+
+ const playerModel = await GetPlayerModel(scene);
+
+ playerModel.position.y = 5;
 
  runRenderLoop(engine, scene, camera, DVER);
 };

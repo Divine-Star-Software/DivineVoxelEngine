@@ -5,6 +5,7 @@ import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
  * It syncs the chunk data.
  */
 export declare const MatrixHub: {
+    environment: "browser" | "node";
     worldPort: InterCommPortTypes | undefined;
     threadName: string;
     __threadNameSet: boolean;

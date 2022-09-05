@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -2347,6 +2347,7 @@ export declare const DVEC: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
+        environment: "browser" | "node";
         worldPort: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;
@@ -2426,6 +2427,10 @@ export declare const DVEC: {
         getLightValue(id: number): number;
     };
     renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
+    serverComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
         onReady: () => void;
         onRestart: () => void;
     };

@@ -2,6 +2,7 @@ import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
 import { VoxelMatrix } from "./VoxelMatrix.js";
 import { MatrixMap } from "./MatrixMap.js";
 import { WorldMatrix } from "./WorldMatrix.js";
+import { Util } from "../Global/Util.helper.js";
 
 /**# Matrix Hub
  * ---
@@ -9,6 +10,7 @@ import { WorldMatrix } from "./WorldMatrix.js";
  * It syncs the chunk data.
  */
 export const MatrixHub = {
+ environment: <"node" | "browser">"browser",
  worldPort: <InterCommPortTypes | undefined>undefined,
  threadName: "",
  __threadNameSet: false,
@@ -28,8 +30,13 @@ export const MatrixHub = {
    MatrixHub._setThreadName(data);
   },
   "set-world-port": (data, event) => {
-   const port = event.ports[0];
-   MatrixHub._setWorldPort(port);
+   if (MatrixHub.environment == "node") {
+    const port = data[1];
+    MatrixHub._setWorldPort(port);
+   } else {
+    const port = event.ports[0];
+    MatrixHub._setWorldPort(port);
+   }
   },
   "sync-voxel-data": (data) => {
    MatrixHub._syncVoxelData(data);
@@ -41,15 +48,25 @@ export const MatrixHub = {
  },
 
  onMessage(event: MessageEvent, runAfter: (event: MessageEvent) => any | void) {
-  const data = event.data;
-  if (!data || !data[0]) return;
-  const message = data[0];
+  if (this.environment == "node") {
+   const data: any = event;
+   if (!data || !data[0]) return;
+   const message = data[0];
 
-  if (this.messageFunctions[message]) {
-   this.messageFunctions[message](data, event);
-   return;
+   if (this.messageFunctions[message]) {
+    this.messageFunctions[message](data, event);
+    return;
+   }
+  } else {
+   const data = event.data;
+   if (!data || !data[0]) return;
+   const message = data[0];
+
+   if (this.messageFunctions[message]) {
+    this.messageFunctions[message](data, event);
+    return;
+   }
   }
-
   runAfter(event);
  },
 
@@ -137,3 +154,5 @@ export const MatrixHub = {
   this.__threadNameSet = true;
  },
 };
+
+MatrixHub.environment = Util.getEnviorment();

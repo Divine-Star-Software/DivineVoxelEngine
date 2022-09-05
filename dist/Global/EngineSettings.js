@@ -7,22 +7,22 @@ export const EngineSettings = {
     settings: {
         nexus: {
             enabled: false,
-            autoSyncChunks: false,
-            autoSyncVoxelPalette: false,
+            autoSyncChunks: true,
+            autoSyncVoxelPalette: true,
         },
         data: {
             enabled: false,
-            autoSyncChunks: false,
+            autoSyncChunks: true,
         },
         fx: {
             enabled: false,
-            autoSyncChunks: false,
-            autoSyncVoxelPalette: false,
+            autoSyncChunks: true,
+            autoSyncVoxelPalette: true,
         },
         richWorld: {
             enabled: false,
-            autoSyncChunks: false,
-            autoSyncVoxelPalette: false,
+            autoSyncChunks: true,
+            autoSyncVoxelPalette: true,
         },
         textureOptions: {
             animationTime: 20,

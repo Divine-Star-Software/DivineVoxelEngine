@@ -15,6 +15,7 @@ export const DVEN = {
     environment: "browser",
     __connectedToWorld: false,
     UTIL: Util,
+    chunkReader: Util.getChunkReader(),
     settings: EngineSettings,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
@@ -34,6 +35,7 @@ export const DVEN = {
     syncSettings(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
+        this.chunkReader.syncSettings();
     },
     /**# Load chunk into Nexus
      * Load a chunk into the shared nexus thread.

@@ -27,6 +27,18 @@ export const WorldGeneration = {
   };
  },
 
+ createChunkFromServer(data: ArrayBuffer): ChunkData {
+  const sab = new SharedArrayBuffer(data.byteLength);
+  const temp = new Uint8Array(data);
+  const temp2 = new Uint8Array(sab);
+  temp2.set(temp, 0);
+  const dv = new DataView(sab);
+  return {
+   buffer: sab,
+   data: dv,
+  };
+ },
+
  getBlankChunk(empty: boolean = true, proto: boolean = true): ChunkData {
   const chunkSAB = new SharedArrayBuffer(this.chunkReader.chunkByteSize);
   const data = new DataView(chunkSAB);

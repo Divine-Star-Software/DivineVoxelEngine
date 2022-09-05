@@ -1,5 +1,5 @@
 //types
-import type { DivineVoxelEngineConstructor } from "../../../out/Constructor/DivineVoxelEngineConstructor.js";
+import type { DivineVoxelEngineConstructor } from "out/Constructor/DivineVoxelEngineConstructor.js";
 //voxels
 import { DebugBoxVoxelBuilderThread } from "../Voxels/Solid/DebugBox/DebugBox.voxel.builder.js";
 import { DreamGrassBlockVoxelBuilderThread } from "../Voxels/Solid/DreamGrass/DreamGrassBlock.voxel.builder.js";

@@ -37,7 +37,7 @@ export const DVER = {
             }
         }
     },
-    _syncSettings(data) {
+    syncSettingsWithWorkers(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
         const copy = this.settings.getSettingsCopy();
@@ -58,7 +58,7 @@ export const DVER = {
         this.constructorCommManager.syncSettings(copy);
     },
     async reStart(data) {
-        this._syncSettings(data);
+        this.syncSettingsWithWorkers(data);
         this._handleOptions();
     },
     async $INIT(initData) {

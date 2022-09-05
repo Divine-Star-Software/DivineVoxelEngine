@@ -1,11 +1,13 @@
 import { VoxelMatrix } from "./VoxelMatrix.js";
 import { WorldMatrix } from "./WorldMatrix.js";
+import { Util } from "../Global/Util.helper.js";
 /**# Matrix Hub
  * ---
  * Handles messages from the WorldData thread.
  * It syncs the chunk data.
  */
 export const MatrixHub = {
+    environment: "browser",
     worldPort: undefined,
     threadName: "",
     __threadNameSet: false,
@@ -23,8 +25,14 @@ export const MatrixHub = {
             MatrixHub._setThreadName(data);
         },
         "set-world-port": (data, event) => {
-            const port = event.ports[0];
-            MatrixHub._setWorldPort(port);
+            if (MatrixHub.environment == "node") {
+                const port = data[1];
+                MatrixHub._setWorldPort(port);
+            }
+            else {
+                const port = event.ports[0];
+                MatrixHub._setWorldPort(port);
+            }
         },
         "sync-voxel-data": (data) => {
             MatrixHub._syncVoxelData(data);
@@ -34,13 +42,25 @@ export const MatrixHub = {
         return this.__threadNameSet && this.worldPort != undefined;
     },
     onMessage(event, runAfter) {
-        const data = event.data;
-        if (!data || !data[0])
-            return;
-        const message = data[0];
-        if (this.messageFunctions[message]) {
-            this.messageFunctions[message](data, event);
-            return;
+        if (this.environment == "node") {
+            const data = event;
+            if (!data || !data[0])
+                return;
+            const message = data[0];
+            if (this.messageFunctions[message]) {
+                this.messageFunctions[message](data, event);
+                return;
+            }
+        }
+        else {
+            const data = event.data;
+            if (!data || !data[0])
+                return;
+            const message = data[0];
+            if (this.messageFunctions[message]) {
+                this.messageFunctions[message](data, event);
+                return;
+            }
         }
         runAfter(event);
     },
@@ -123,3 +143,4 @@ export const MatrixHub = {
         this.__threadNameSet = true;
     },
 };
+MatrixHub.environment = Util.getEnviorment();

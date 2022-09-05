@@ -10,6 +10,7 @@ import { ItemManager } from "./Items/ItemManager.js";
 //inter comms
 import { RenderComm } from "./InterComms/Render/RenderComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
+import { ServerComm } from "./InterComms/Server/ServerComm.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
@@ -35,6 +36,7 @@ export const DVEC = {
     matrixMap: MatrixMap,
     voxelMatrix: VoxelMatrix,
     renderComm: RenderComm,
+    serverComm: ServerComm,
     worldComm: WorldComm,
     voxelManager: VoxelManager,
     itemManager: ItemManager,
@@ -47,12 +49,21 @@ export const DVEC = {
     },
     reStart() { },
     isReady() {
-        return (DVEC.__connectedToWorld &&
-            DVEC.matrixHub.worldPort !== undefined &&
-            DVEC.worldComm.port !== null &&
-            DVEC.matrixHub.isReady() &&
-            DVEC.__settingsHaveBeenSynced &&
-            DVEB.textureManager.isReady());
+        if (this.environment == "node") {
+            return (DVEC.__connectedToWorld &&
+                DVEC.matrixHub.worldPort !== undefined &&
+                DVEC.worldComm.port !== null &&
+                DVEC.matrixHub.isReady() &&
+                DVEC.__settingsHaveBeenSynced);
+        }
+        else {
+            return (DVEC.__connectedToWorld &&
+                DVEC.matrixHub.worldPort !== undefined &&
+                DVEC.worldComm.port !== null &&
+                DVEC.matrixHub.isReady() &&
+                DVEC.__settingsHaveBeenSynced &&
+                DVEB.textureManager.isReady());
+        }
     },
     async $INIT(initData) {
         this.settings.setContext("DVEC");

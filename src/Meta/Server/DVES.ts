@@ -1,11 +1,12 @@
-import type { EngineSettingsData } from "Meta/index";
-import { NodeWorker } from "Meta/Comms/NodeWorker.interface";
+import type { NodeWorker } from "Meta/Comms/NodeWorker.interface";
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { RecursivePartial } from "Meta/Util.types";
 
-
-
-export type DVESInitData = { 
+export type DVESInitData = {
  worldWorker: string | NodeWorker;
- builderWorker: string | NodeWorker[];
- fluidBuilderWorker: string | NodeWorker;
+ constructorWorker: string | NodeWorker[];
  nexusWorker?: string | NodeWorker | null;
-} & EngineSettingsData;
+ dataWorker?: string | NodeWorker | null;
+ fxWorker?: string | NodeWorker | null;
+ richWorldWorker?: string | NodeWorker | null;
+} & RecursivePartial<EngineSettingsData>;

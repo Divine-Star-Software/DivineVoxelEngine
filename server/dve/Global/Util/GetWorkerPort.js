@@ -3,15 +3,14 @@ export const GetWorkerPort = async (environment) => {
         return self;
     }
     if (environment == "node") {
-        //@ts-ignore
-        if (require) {
+        try {
             //@ts-ignore
             const { parentPort } = require("worker_threads");
             return parentPort;
         }
-        else {
+        catch (error) {
             //@ts-ignore
-            const { parentPort } = await import("worker_threads").parentPort;
+            const { parentPort } = await import("worker_threads");
             return parentPort;
         }
     }

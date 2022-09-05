@@ -100,5 +100,6 @@ export declare const WorldGeneration: {
     };
     getBlankRegion(): WorldRegion;
     createChunkFromDataThread(data: any[]): ChunkData;
+    createChunkFromServer(data: ArrayBuffer): ChunkData;
     getBlankChunk(empty?: boolean, proto?: boolean): ChunkData;
 };

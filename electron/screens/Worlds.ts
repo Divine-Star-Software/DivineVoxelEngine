@@ -48,16 +48,16 @@ export const Worlds: WorldsData = [
   sectionTitle: "Tests",
   sectionDescription: "Worlds used for testing purposes.",
   worlds: [
-   /*     {
+   {
     title: "Server Test",
     description: "Used to test Divine Voxel Engine Server.",
     world: "ServerTest",
-    }, */
-    {
-        title: "Debug",
-        description: "For some basic debugging.",
-        world: "Debug",
-       },
+   },
+   {
+    title: "Debug",
+    description: "For some basic debugging.",
+    world: "Debug",
+   },
    {
     title: "Rich Data Test",
     description: "Used to test rich data",

@@ -47,7 +47,7 @@ export const MatrixCentralHub = {
   const channel = new MessageChannel();
   const port = channel.port1;
   thread.postMessage(["set-thread-name", threadId]);
-  thread.postMessage(["set-world-port"], [port]);
+  thread.postMessage(["set-world-port", port], [port]);
   this.threads[threadId] = thread;
   channel.port2.onmessage = (event: MessageEvent) => {
    const data = event.data;

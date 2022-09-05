@@ -41,11 +41,11 @@ export const Worlds = [
         sectionTitle: "Tests",
         sectionDescription: "Worlds used for testing purposes.",
         worlds: [
-            /*     {
-             title: "Server Test",
-             description: "Used to test Divine Voxel Engine Server.",
-             world: "ServerTest",
-             }, */
+            {
+                title: "Server Test",
+                description: "Used to test Divine Voxel Engine Server.",
+                world: "ServerTest",
+            },
             {
                 title: "Debug",
                 description: "For some basic debugging.",

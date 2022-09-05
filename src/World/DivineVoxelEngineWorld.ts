@@ -10,12 +10,13 @@ import { VoxelManager } from "../Voxels/VoxelManager.js";
 import { ItemManager } from "../Items/ItemManager.js";
 import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
 //inter comms
-import { FXComm } from "./InterComms/FX/FXComm.js";
+import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ServerComm } from "./InterComms/Server/ServerComm.js";
+import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
+import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 import { DataComm } from "./InterComms/Data/DataComm.js";
-import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
-import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
+import { FXComm } from "./InterComms/FX/FXComm.js";
 //matrix
 import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
 import { Matrix } from "./Matrix/Matrix.js";
@@ -37,6 +38,7 @@ export const DVEW = {
  chunkReader: Util.getChunkReader(),
  __settingsHaveBeenSynced: false,
  __renderIsDone: false,
+ __serverIsDone: false,
 
  UTIL: Util,
  settings: EngineSettings,
@@ -50,6 +52,7 @@ export const DVEW = {
  dataComm: DataComm,
  nexusComm: NexusComm,
  renderComm: RenderComm,
+ serverComm: ServerComm,
  constructorCommManager: ConstructorCommManager,
  richWorldComm: RichWorldComm,
 
@@ -64,7 +67,7 @@ export const DVEW = {
   return (
    DVEW.constructorCommManager.isReady() &&
    DVEW.__settingsHaveBeenSynced &&
-   DVEW.__renderIsDone &&
+   (DVEW.__renderIsDone || DVEW.__serverIsDone) &&
    DVEW.matrixMap.isReady()
   );
  },
@@ -73,8 +76,6 @@ export const DVEW = {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
   this.chunkReader.syncSettings();
-  console.log(this.chunkReader.indexes);
-  console.log(this.chunkReader.indexSizes);
   this.__settingsHaveBeenSynced = true;
  },
 
@@ -140,6 +141,12 @@ export const DVEW = {
  async $INIT(data: DVEWInitData) {
   this.settings.setContext("DVEW");
   await InitWorldWorker(this, data);
+ },
+
+ addChunkFromServer(data: ArrayBuffer) {
+  const chunk = this.worldGeneration.createChunkFromServer(data);
+  const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
+  this.worldData.setChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, chunk);
  },
 };
 

@@ -1,8 +1,14 @@
+import { DVEW } from "../DivineVoxelEngineWorld.js";
 export const MatrixMap = {
     shapeMap: {},
     __shapeMapSet: false,
     isReady() {
-        return this.__shapeMapSet;
+        if (DVEW.environment == "node") {
+            return true;
+        }
+        else {
+            return this.__shapeMapSet;
+        }
     },
     setShapeMap(shapeMap) {
         this.shapeMap = shapeMap;

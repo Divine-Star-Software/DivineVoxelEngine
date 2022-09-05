@@ -50,7 +50,7 @@ export const DVER = {
   }
  },
 
- _syncSettings(data: EngineSettingsData) {
+ syncSettingsWithWorkers(data: EngineSettingsData) {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
   const copy = this.settings.getSettingsCopy();
@@ -72,7 +72,7 @@ export const DVER = {
  },
 
  async reStart(data: EngineSettingsData): Promise<void> {
-  this._syncSettings(data);
+  this.syncSettingsWithWorkers(data);
   this._handleOptions();
  },
 

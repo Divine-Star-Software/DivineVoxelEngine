@@ -73,7 +73,7 @@ export function InitWorkers(DVER, initData) {
         }
         DVER.richWorldComm.$INIT();
     }
-    DVER._syncSettings(initData);
+    DVER.syncSettingsWithWorkers(initData);
     DVER.textureManager.generateTexturesData();
     DVER.textureManager.generateTexturesData(true);
     DVER.constructorCommManager.$INIT();

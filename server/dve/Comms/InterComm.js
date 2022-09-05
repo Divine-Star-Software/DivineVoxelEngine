@@ -22,17 +22,17 @@ const commBase = {
             };
         }
         if (this.environment == "node") {
-            port.on("message", (event) => {
-                const message = event.data[0];
+            port.on("message", (data) => {
+                const message = data[0];
                 if (this.messageFunctions[message]) {
-                    this.messageFunctions[message](event.data, event);
+                    this.messageFunctions[message](data, data);
                 }
-                this.onMessage(event);
+                this.onMessage(data);
             });
         }
     },
     messageFunctions: {},
-    sendMessage: function (message, data, transfers) {
+    sendMessage: function (message, data = [], transfers) {
         if (!this.port) {
             throw new Error(`DVE InterComm : ${this.name} port is not set.`);
         }

@@ -5,8 +5,15 @@ const worldComm = CreateInterComm("constructor-world", {});
 export const WorldComm = worldComm;
 worldComm.onMessage = (event) => {
     DVEC.matrixHub.onMessage(event, (messageEvent) => { });
-    if (event.data[0] == "set-world-port") {
-        DVEC.__connectedToWorld = true;
+    if (DVEC.environment == "browser") {
+        if (event.data[0] == "set-world-port") {
+            DVEC.__connectedToWorld = true;
+        }
+    }
+    else {
+        if (event[0] == "set-world-port") {
+            DVEC.__connectedToWorld = true;
+        }
     }
 };
 worldComm.messageFunctions[WorldToConstructorMessages.setQueueStates] = (data) => {

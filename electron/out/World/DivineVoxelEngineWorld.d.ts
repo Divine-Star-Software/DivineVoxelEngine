@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -170,6 +170,7 @@ export declare const DVEW: {
     };
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
+    __serverIsDone: boolean;
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -178,8 +179,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -340,10 +341,7 @@ export declare const DVEW: {
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
             initalizeChunk(chunkData: DataView): void;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void;
             getChunkMin(chunkData: DataView): number;
             getChunkMax(chunkData: DataView): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -908,6 +906,10 @@ export declare const DVEW: {
         onReady: () => void;
         onRestart: () => void;
     };
+    serverComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+        onReady: () => void;
+        onRestart: () => void;
+    };
     constructorCommManager: {
         count: number;
         numConstructors: number;
@@ -949,10 +951,7 @@ export declare const DVEW: {
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
             initalizeChunk(chunkData: DataView): void;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void;
             getChunkMin(chunkData: DataView): number;
             getChunkMax(chunkData: DataView): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -1039,6 +1038,7 @@ export declare const DVEW: {
         };
         getBlankRegion(): import("../Meta/World/WorldData/World.types.js").WorldRegion;
         createChunkFromDataThread(data: any[]): import("../Meta/index.js").ChunkData;
+        createChunkFromServer(data: ArrayBuffer): import("../Meta/index.js").ChunkData;
         getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
     };
     worldData: {
@@ -1051,10 +1051,7 @@ export declare const DVEW: {
             _isSubstanceExposed: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
             initalizeChunk(chunkData: DataView): void;
-            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void; /**# Delete Chunk
-             * ---
-             * Deletes a chunk from world data and releases it from all threads.
-             */
+            updateChunkMinMax(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, chunkData: DataView): void;
             getChunkMin(chunkData: DataView): number;
             getChunkMax(chunkData: DataView): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("../Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -1492,5 +1489,6 @@ export declare const DVEW: {
     buildWorldColumn(x: number, z: number, LOD?: number): false | undefined;
     createItem(itemId: string, x: number, y: number, z: number): void;
     $INIT(data: DVEWInitData): Promise<void>;
+    addChunkFromServer(data: ArrayBuffer): void;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

@@ -82,12 +82,16 @@ export const SetUpDefaultCamera = (
   startTarget.y,
   startTarget.z
  );
- const camera = new BABYLON.UniversalCamera(name, BABYLON.Vector3.Zero(), scene);
+ const camera = new BABYLON.UniversalCamera(
+  name,
+  BABYLON.Vector3.Zero(),
+  scene
+ );
 
  camera.fov = 1.5;
  camera.minZ = 0.01;
  camera.maxZ = 500;
- camera.angularSensibility = 4000;
+ camera.angularSensibility = 1000;
  camera.speed = camera.speed * 0.2;
 
  camera.checkCollisions = false;
@@ -99,8 +103,8 @@ export const SetUpDefaultCamera = (
   scene.activeCamera = camera;
  }
 
- if(attachControls) {
- camera.attachControl(canvas, true);
+ if (attachControls) {
+  camera.attachControl(canvas, true);
  }
  return camera;
 };
@@ -134,5 +138,29 @@ export const runRenderLoop = (
  engine.runRenderLoop(() => {
   scene.render();
   runGui(engine, watchPositon);
+ });
+};
+
+export const GetPlayerModel = (scene: BABYLON.Scene): Promise<BABYLON.Mesh> => {
+ return new Promise((resolve, reject) => {
+  BABYLON.SceneLoader.ImportMesh(
+   null,
+   "assets/player/",
+   "chartest.babylon",
+   scene,
+   (assets) => {
+    const mesh = assets[0];
+    const texture = new BABYLON.Texture("assets/player/playertexture.png");
+    texture.onLoadObservable.add(() => {
+     texture.updateSamplingMode(1);
+    });
+
+    const mat = new BABYLON.StandardMaterial("player-mat");
+    mat.backFaceCulling = false;
+    mat.diffuseTexture = texture;
+    mesh.material = mat;
+    resolve(mesh as any);
+   }
+  );
  });
 };

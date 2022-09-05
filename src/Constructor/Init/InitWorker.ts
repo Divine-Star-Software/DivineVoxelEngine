@@ -16,23 +16,27 @@ export async function InitWorker(
   DVEC.renderComm.onRestart = initData.onRestart;
  }
 
- const renderPort = await DVEC.UTIL.getWorkerPort(DVEC.environment);
- DVEC.renderComm.setPort(renderPort);
+ const parentPort = await DVEC.UTIL.getWorkerPort(DVEC.environment);
+ if (DVEC.environment == "node") {
+  DVEC.serverComm.setPort(parentPort);
+ } else {
+  DVEC.renderComm.setPort(parentPort);
+ }
 
-// DVEC.worldMatrix.setVoxelManager(DVEC.voxelManager);
  DVEC.DVEB.$INIT();
  DVEC.DVEP.$INIT();
- //DVEC.voxelManager.setShapeMap(DVEC.DVEB.shapeManager.shapeMap);
 
  await DVEC.UTIL.createPromiseCheck({
   check: () => {
    return DVEC.isReady();
   },
   onReady() {
-   if (DVEC.worldMatrix.threadName == "constructor-1") {
-    DVEC.worldComm.sendMessage(ConstructorToWorldMessages.syncShapeMap, [
-     DVEC.DVEB.shapeManager.shapeMap,
-    ]);
+   if (DVEC.environment == "browser") {
+    if (DVEC.worldMatrix.threadName == "constructor-1") {
+     DVEC.worldComm.sendMessage(ConstructorToWorldMessages.syncShapeMap, [
+      DVEC.DVEB.shapeManager.shapeMap,
+     ]);
+    }
    }
   },
   checkInterval: 1,

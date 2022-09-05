@@ -1,7 +1,6 @@
-import { EngineSettingsData } from "Meta/Global/EngineSettings.types";
-type RecursivePartial<T> = {
- [P in keyof T]?: RecursivePartial<T[P]>;
-};
+import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { RecursivePartial } from "Meta/Util.types";
+
 export type DVERInitData = {
  worldWorker: string | Worker;
  constructorWorker: string | Worker[];

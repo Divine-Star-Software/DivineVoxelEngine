@@ -27,4 +27,8 @@ const generate = () => {
     }
 };
 generate();
+DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 5, -8);
+DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 6, -8);
+DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 7, -8);
+DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 8, -8);
 load();

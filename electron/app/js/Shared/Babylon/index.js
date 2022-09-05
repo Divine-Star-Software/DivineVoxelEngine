@@ -53,7 +53,7 @@ export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30,
     camera.fov = 1.5;
     camera.minZ = 0.01;
     camera.maxZ = 500;
-    camera.angularSensibility = 4000;
+    camera.angularSensibility = 1000;
     camera.speed = camera.speed * 0.2;
     camera.checkCollisions = false;
     camera.position.x = startPosition.x;
@@ -90,5 +90,21 @@ export const runRenderLoop = (engine, scene, watchPositon, DVER) => {
     engine.runRenderLoop(() => {
         scene.render();
         runGui(engine, watchPositon);
+    });
+};
+export const GetPlayerModel = (scene) => {
+    return new Promise((resolve, reject) => {
+        BABYLON.SceneLoader.ImportMesh(null, "assets/player/", "chartest.babylon", scene, (assets) => {
+            const mesh = assets[0];
+            const texture = new BABYLON.Texture("assets/player/playertexture.png");
+            texture.onLoadObservable.add(() => {
+                texture.updateSamplingMode(1);
+            });
+            const mat = new BABYLON.StandardMaterial("player-mat");
+            mat.backFaceCulling = false;
+            mat.diffuseTexture = texture;
+            mesh.material = mat;
+            resolve(mesh);
+        });
     });
 };

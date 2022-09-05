@@ -20,6 +20,7 @@ export const DVEN = {
  __connectedToWorld: false,
 
  UTIL: Util,
+ chunkReader: Util.getChunkReader(),
  settings: EngineSettings,
 
  worldMatrix: WorldMatrix,
@@ -37,6 +38,7 @@ export const DVEN = {
  async $INIT(data: DVENInitData) {
   this.settings.setContext("DVEN");
   WorldMatrix.setVoxelManager(this.voxelManager);
+
   await InitNexusWorker(this, data);
  },
 
@@ -47,6 +49,7 @@ export const DVEN = {
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
   this.settings.syncWithWorldBounds(this.worldBounds);
+  this.chunkReader.syncSettings();
  },
 
  /**# Load chunk into Nexus
@@ -65,6 +68,5 @@ export const DVEN = {
  },
 };
 export type DivineVoxelEngineNexus = typeof DVEN;
-
 
 DVEN.environment = Util.getEnviorment();

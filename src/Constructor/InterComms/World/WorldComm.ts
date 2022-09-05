@@ -5,9 +5,16 @@ import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 const worldComm = CreateInterComm("constructor-world", {});
 export const WorldComm = worldComm;
 worldComm.onMessage = (event) => {
+
  DVEC.matrixHub.onMessage(event, (messageEvent) => {});
- if (event.data[0] == "set-world-port") {
-  DVEC.__connectedToWorld = true;
+ if (DVEC.environment == "browser") {
+  if (event.data[0] == "set-world-port") {
+   DVEC.__connectedToWorld = true;
+  }
+ } else {
+  if (event[0] == "set-world-port") {
+   DVEC.__connectedToWorld = true;
+  }
  }
 };
 
@@ -147,5 +154,5 @@ worldComm.messageFunctions[WorldToConstructorMessages.constructItem] = (
  const x = data[2];
  const y = data[3];
  const z = data[4];
- DVEC.DVEB.itemMesher.createItem(itemId,x,y,z);
+ DVEC.DVEB.itemMesher.createItem(itemId, x, y, z);
 };

@@ -8,8 +8,13 @@ export async function InitWorldWorker(DVEW, initData) {
     if (initData.onRestart) {
         DVEW.renderComm.onRestart = initData.onRestart;
     }
-    const renderPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
-    DVEW.renderComm.setPort(renderPort);
+    const parentPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
+    if (DVEW.environment == "browser") {
+        DVEW.renderComm.setPort(parentPort);
+    }
+    if (DVEW.environment == "node") {
+        DVEW.serverComm.setPort(parentPort);
+    }
     await DVEW.UTIL.createPromiseCheck({
         check: () => {
             return DVEW.isReady();
@@ -28,6 +33,9 @@ export async function InitWorldWorker(DVEW, initData) {
             }
             DVEW.matrixCentralHub.syncVoxelData();
             DVEW.matrixMap.flush();
+            if (initData.onReady) {
+                initData.onReady();
+            }
         },
     });
 }

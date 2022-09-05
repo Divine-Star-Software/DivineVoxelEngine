@@ -31,7 +31,7 @@ const APP_INIT = async () => {
   }
  );
  const editorWindow = await CreateMainWindow();
- const worker = new Worker("./electronstart/server/index.js");
+ //const worker = new Worker("./electronstart/server/index.js");
 };
 
 
