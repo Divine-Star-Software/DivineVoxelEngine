@@ -1,6 +1,6 @@
 import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
-import type { VoxelData } from "Meta/Voxels/Voxel.types.js";
-import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
+import type { VoxelData, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
+import type { WorldDimensions, WorldRegion } from "Meta/World/WorldData/World.types.js";
 import { Position3Matrix } from "Meta/Util.types.js";
 /**# World Data
  * ---
@@ -8,7 +8,10 @@ import { Position3Matrix } from "Meta/Util.types.js";
  * Also handles getting and setting data.
  */
 export declare const WorldData: {
+    currentDimension: string;
+    dimensions: WorldDimensions;
     regions: Record<string, WorldRegion>;
+    tempVoxelData: DataView;
     heightByte: {
         _getHeightMapData: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
         _setHeightMapData: Record<import("Meta/Voxels/Voxel.types.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -40,18 +43,18 @@ export declare const WorldData: {
             position: number;
             minMax: number;
             heightMap: number;
-            voxelData: number; /**# World Data
-             * ---
-             * Handles all the game worlds data.
-             * Also handles getting and setting data.
-             */
+            voxelData: number;
             voxelStateData: number;
         };
         indexes: {
             header: number;
             states: number;
             position: number;
-            minMax: number;
+            minMax: number; /**# World Data
+             * ---
+             * Handles all the game worlds data.
+             * Also handles getting and setting data.
+             */
             heightMap: number;
             voxelData: number;
             voxelStateData: number;
@@ -128,6 +131,7 @@ export declare const WorldData: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     voxelByte: {
         setId(id: number, value: number): number;
@@ -245,6 +249,8 @@ export declare const WorldData: {
             z: number;
         };
     };
+    setCurrentDimension(dimension: string): void;
+    registerDimension(dimension: string | string[]): void;
     runRebuildCheck(x: number, y: number, z: number): void;
     __lightQueCheck(remove: boolean | undefined, x: number, y: number, z: number): void;
     runLightUpdateCheck(x: number, y: number, z: number, remove?: boolean): void;
@@ -265,13 +271,15 @@ export declare const WorldData: {
     addOrGetChunk(x: number, y: number, z: number): ChunkData;
     _getStartingLevel(voxelData: VoxelData, stateData: number): number;
     paintDualVoxel(voxelId: string, voxelStateId: number, shapeState: number, secondVoxelId: string, secondVoxelStateId: number, x: number, y: number, z: number): void;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, substance: VoxelSubstanceType, chunk: ChunkData): void;
     __handleHeightMapUpdateForVoxelRemove(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
     getChunk(x: number, y: number, z: number): ChunkData | false;
     removeChunk(x: number, y: number, z: number): false | undefined;
     setChunk(x: number, y: number, z: number, chunk: ChunkData, doNotSyncInThreads?: boolean): void;
     __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
-    requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
+    requestVoxelAddFromRaw(rawData1: number, rawData2: number, x: number, y: number, z: number): Promise<false | DataView>;
+    getRawVoxelData(voxelId: string, voxelStateId: number, shapeState: number): false | DataView;
+    requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<false | DataView>;
     requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
     getWorldColumn(x: number, z: number): false | Record<string, ChunkData> | undefined;
     getRelativeMaxWorldColumnHeight(x: number, z: number): number;

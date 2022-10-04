@@ -1,4 +1,4 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";let uv = 0;
+import type { VoxelConstructorObject } from "dve/Meta/index.js";let uv = 0;
 export const DreamStoneStairVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:dreamstone-stair",
  

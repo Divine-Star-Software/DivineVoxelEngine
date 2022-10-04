@@ -18,6 +18,9 @@ export declare const DVES: {
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
             };
+            server: {
+                enabled: boolean;
+            };
             richWorld: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
@@ -270,8 +273,8 @@ export declare const DVES: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -493,6 +496,7 @@ export declare const DVES: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         getWorldBounds(): {
             __maxChunkYSize: number;

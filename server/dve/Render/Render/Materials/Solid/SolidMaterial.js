@@ -1,8 +1,14 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const SolidMaterial = {
     material: null,
+    time: 0,
     getMaterial() {
         return this.material;
+    },
+    updateFogOptions(data) {
+        if (!this.material)
+            return;
+        this.material.setVector4("fogOptions", data);
     },
     setSunLightLevel(level) {
         if (!this.material) {
@@ -82,6 +88,7 @@ export const SolidMaterial = {
                 "doRGB",
                 "doColor",
                 "time",
+                "fogOptions",
                 ...animData.uniforms,
                 ...overlayAnimData.uniforms,
             ],
@@ -107,14 +114,17 @@ export const SolidMaterial = {
         };
         this.updateMaterialSettings(data.settings);
         DVER.renderManager.animationManager.registerMaterial("solid", this.material);
-        let time = 0;
-        data.scene.registerBeforeRender(function () {
-            time += 0.005;
-            shaderMaterial.setFloat("time", time);
-        });
         return this.material;
     },
     overrideMaterial(material) {
         this.material = material;
+    },
+    runEffects() {
+        if (DVER.renderManager.fogOptions.mode != "animated-volumetric")
+            return;
+        if (!this.material)
+            return;
+        this.time += 0.005;
+        this.material.setFloat("time", this.time);
     },
 };

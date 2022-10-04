@@ -75,12 +75,3 @@ export function CreateInterComm<T>(
  return newCom;
 }
 
-const com2 = {
- hello: () => {},
-};
-
-const com = CreateInterComm("test-com", com2);
-
-com.messageFunctions = {
- hello: (data, event) => {},
-};

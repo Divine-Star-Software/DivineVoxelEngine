@@ -55,6 +55,7 @@ export declare const ShapeHelper: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     meshFaceData: {
         setAnimationType(animationType: number, rawData: number): number;

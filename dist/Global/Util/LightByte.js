@@ -323,4 +323,23 @@ export const LightByte = {
     removeSunLight(sl) {
         return this.removeS(sl);
     },
+    minusOneForAll(sl) {
+        let s = this.getS(sl) - this.SRS;
+        let r = this.getR(sl) - 1;
+        let g = this.getG(sl) - 1;
+        let b = this.getB(sl) - 1;
+        if (s < 0)
+            s = 0;
+        if (r < 0)
+            r = 0;
+        if (g < 0)
+            g = 0;
+        if (b < 0)
+            b = 0;
+        let nl = this.setS(s, 0);
+        nl = this.setR(r, nl);
+        nl = this.setG(g, nl);
+        nl = this.setB(b, nl);
+        return nl;
+    },
 };

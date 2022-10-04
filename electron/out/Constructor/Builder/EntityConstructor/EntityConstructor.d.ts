@@ -69,6 +69,7 @@ export declare const EntityConstructor: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     pos: {
         x: number;
@@ -80,7 +81,10 @@ export declare const EntityConstructor: {
     depth: number;
     height: number;
     setEntityData(x: number, y: number, z: number, width: number, height: number, depth: number, composed: number, voxelData: Uint32Array[]): void;
-    getVoxel(x: number, y: number, z: number, composed?: number): [string, number] | false;
+    getVoxel(x: number, y: number, z: number, composed?: number): [
+        string,
+        number
+    ] | false;
     getLevel(x: number, y: number, z: number, composed?: number): number;
     getLevelState(x: number, y: number, z: number, composed?: number): number;
     getShapeState(x: number, y: number, z: number, composed?: number): number;

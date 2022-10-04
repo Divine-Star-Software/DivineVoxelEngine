@@ -6,6 +6,30 @@ import {
  PlayerStatesValues,
 } from "../Shared/Player.data.js";
 
+export const GetPlayerPickCube = () => {
+ const cubeMaterial = new BABYLON.StandardMaterial("block");
+ cubeMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+ cubeMaterial.alpha = 0.3;
+ const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
+  size: 1.1,
+ });
+ cube.isPickable = true;
+ cube.material = cubeMaterial;
+
+ cube.enableEdgesRendering();
+ cube.edgesWidth = 0.3;
+ cube.edgesColor = new BABYLON.Color4(0, 0, 0, 0.8);
+
+ cube.convertToFlatShadedMesh();
+ cube.updateFacetData();
+ const positions = cube.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+ const indicies = cube.getIndices();
+ const calculatedNormals: number[] = [];
+ BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
+ cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
+ return cube;
+};
+
 export const GetRenderPlayer = async (
  scene: BABYLON.Scene,
  canvas: HTMLCanvasElement,
@@ -112,9 +136,9 @@ export const GetRenderPlayer = async (
   playerStatesSAB,
  ]);
 
- const playerDataBuffer = new SharedArrayBuffer(4 + 4 * 3 * 2);
+ const playerDataBuffer = new SharedArrayBuffer(4 + 4 * 3 * 3);
  const playerData = new DataView(playerDataBuffer);
- DVER.worldComm.sendMessage("player-server-data",[playerDataBuffer]);
+ DVER.worldComm.sendMessage("player-server-data", [playerDataBuffer]);
 
  const direction = new BABYLON.Vector3(0, 0, 0);
  const sideDirection = new BABYLON.Vector3(0, 0, 0);
@@ -124,14 +148,14 @@ export const GetRenderPlayer = async (
   let et = performance.now();
 
   playerModel.position.x = playerPostionArray[0];
-  playerModel.position.y = playerPostionArray[1] - .5;
+  playerModel.position.y = playerPostionArray[1] - 0.5;
   playerModel.position.z = playerPostionArray[2];
 
   playerData.setFloat32(4, playerPostionArray[0]);
   playerData.setFloat32(8, playerPostionArray[1]);
   playerData.setFloat32(12, playerPostionArray[2]);
 
-  const camera = scene.activeCamera;
+  const camera = <BABYLON.UniversalCamera>scene.activeCamera;
   if (!camera) return;
   playerCamera.getDirectionToRef(BABYLON.Vector3.Forward(), direction);
   playerCamera.getDirectionToRef(BABYLON.Vector3.Left(), sideDirection);
@@ -139,9 +163,13 @@ export const GetRenderPlayer = async (
   playerDirection[1] = direction.y;
   playerDirection[2] = direction.z;
 
-  playerData.setFloat32(16, playerPostionArray[0]);
-  playerData.setFloat32(20, playerPostionArray[1]);
-  playerData.setFloat32(24, playerPostionArray[2]);
+  playerData.setFloat32(16, playerDirection[0]);
+  playerData.setFloat32(20, playerDirection[1]);
+  playerData.setFloat32(24, playerDirection[2]);
+
+  playerData.setFloat32(28, camera.rotation.x);
+  playerData.setFloat32(32, camera.rotation.y);
+  playerData.setFloat32(26, camera.rotation.z);
 
   playerDirection[3] = sideDirection.x;
   playerDirection[4] = sideDirection.y;

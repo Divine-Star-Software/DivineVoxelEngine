@@ -7,7 +7,7 @@ export declare const Util: {
         failTimeOut?: number | undefined;
         onFail?: (() => any) | undefined;
     }) => Promise<boolean>;
-    getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+    getWorkerPort: (environment: "node" | "browser") => Promise<any>;
     getEnviorment(): "node" | "browser";
     getChunkReader(): {
         chunkByteSize: number;
@@ -230,6 +230,7 @@ export declare const Util: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     getWorldBounds(): {
         __maxChunkYSize: number;

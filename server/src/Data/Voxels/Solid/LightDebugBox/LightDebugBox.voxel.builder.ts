@@ -1,4 +1,4 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructorObject } from "dve/Meta/index.js";
 let lightDebugBoxTextures: Record<number, number> = {};
 
 export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {

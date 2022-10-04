@@ -1,7 +1,7 @@
 import type { DVEDInitData } from "Meta/Data/DVED.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVED: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVED: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -340,6 +340,7 @@ export declare const DVED: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         getWorldBounds(): {
             __maxChunkYSize: number;
@@ -441,6 +442,9 @@ export declare const DVED: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
+            };
+            server: {
+                enabled: boolean;
             };
             richWorld: {
                 enabled: boolean;
@@ -747,6 +751,7 @@ export declare const DVED: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         heightByte: {
             _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -951,7 +956,7 @@ export declare const DVED: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         worldPort: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;

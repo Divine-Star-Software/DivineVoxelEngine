@@ -1,2 +1,2 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructorObject } from "dve/Meta/index.js";
 export declare const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject;

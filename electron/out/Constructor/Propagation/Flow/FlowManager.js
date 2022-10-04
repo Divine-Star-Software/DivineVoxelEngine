@@ -4,6 +4,7 @@ import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { RunFlow, RunFlowIncrease, RunFlowPropagation, } from "./Functions/RunFlow.js";
 import { DVEP } from "../DivineVoxelEnginePropagation.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+import { CardinalNeighbors } from "../../../Constants/Util/CardinalNeighbors.js";
 export const FlowManager = {
     //voxelByte : Util.
     currentVoxel: "",
@@ -29,6 +30,7 @@ export const FlowManager = {
     setVoxel(level, levelState, x, y, z) {
         WorldMatrix.setVoxel(this.currentVoxel, 0, 0, x, y, z);
         WorldMatrix.setLevel(level, x, y, z);
+        WorldMatrix.setLight(x, y, z, this.getAbsorbLight(x, y, z));
         if (levelState == 1) {
             WorldMatrix.setLevelState(levelState, x, y, z);
         }
@@ -161,5 +163,14 @@ export const FlowManager = {
     },
     wait(ms) {
         return new Promise((resolve, reject) => setTimeout(resolve, ms));
+    },
+    getAbsorbLight(x, y, z) {
+        const lightByte = DVEC.UTIL.getLightByte();
+        let brightest = 0;
+        for (const n of CardinalNeighbors) {
+            let l = WorldMatrix.getLight(x + n[0], y + n[1], z + n[2]);
+            brightest = l;
+        }
+        return lightByte.minusOneForAll(brightest);
     },
 };

@@ -22,6 +22,9 @@ export declare const EngineSettings: {
             autoSyncChunks: boolean;
             autoSyncVoxelPalette: boolean;
         };
+        server: {
+            enabled: boolean;
+        };
         richWorld: {
             enabled: boolean;
             autoSyncChunks: boolean;

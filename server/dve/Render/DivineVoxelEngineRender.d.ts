@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 export declare const DVER: {
@@ -120,6 +119,9 @@ export declare const DVER: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
+            };
+            server: {
+                enabled: boolean;
             };
             richWorld: {
                 enabled: boolean;
@@ -276,6 +278,9 @@ export declare const DVER: {
         doLight(): boolean;
     };
     renderManager: {
+        fogOptions: import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions;
+        fogData: BABYLON.Vector4;
+        effectOptions: import("../Meta/Render/Render/Render.options.types.js").RenderEffectsOptions;
         shaderBuilder: {
             buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
             buildFluidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
@@ -324,44 +329,63 @@ export declare const DVER: {
         };
         solidMaterial: {
             material: BABYLON.ShaderMaterial | null;
+            time: number;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            updateFogOptions(data: BABYLON.Vector4): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
             overrideMaterial(material: any): void;
+            runEffects(): void;
         };
         floraMaterial: {
             material: BABYLON.ShaderMaterial | null;
+            doEffects: boolean;
+            time: number;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            updateFogOptions(data: BABYLON.Vector4): void;
+            updateEffects(doEffects: boolean): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+            runEffects(): void;
         };
         fluidMaterial: {
             material: BABYLON.ShaderMaterial | null;
+            doEffects: boolean;
+            time: number;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            updateFogOptions(data: BABYLON.Vector4): void;
+            updateEffects(doEffects: boolean): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+            runEffects(): void;
         };
         magmaMaterial: {
             material: BABYLON.ShaderMaterial | null;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            time: number;
+            updateFogOptions(data: BABYLON.Vector4): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+            runEffects(): void;
         };
         itemMaterial: {
             material: BABYLON.ShaderMaterial | null;
             context: CanvasRenderingContext2D | null;
+            time: number;
+            updateFogOptions(data: BABYLON.Vector4): void;
             getMaterial(): BABYLON.ShaderMaterial | null;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
             overrideMaterial(material: any): void;
+            runEffects(): void;
         };
         solidStandardMaterial: {
             material: BABYLON.StandardMaterial | null;
@@ -380,12 +404,15 @@ export declare const DVER: {
         skyBoxMaterial: {
             material: BABYLON.ShaderMaterial | null;
             context: CanvasRenderingContext2D | null;
+            time: number;
             getMaterial(): BABYLON.ShaderMaterial | null;
+            updateFogOptions(data: BABYLON.Vector4): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial;
             overrideMaterial(material: any): void;
+            runEffects(): void;
         };
         solidMesh: import("../Meta/index.js").VoxelMeshInterface;
         floraMesh: import("../Meta/index.js").VoxelMeshInterface;
@@ -405,6 +432,10 @@ export declare const DVER: {
         scene: BABYLON.Scene | null;
         reStart(): void;
         setScene(scene: BABYLON.Scene): void;
+        updateFogOptions(options: import("../Meta/Util.types.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions>): void;
+        _setFogData(): void;
+        $INIT(): void;
+        updateShaderEffectOptions(options: import("../Meta/Util.types.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").RenderEffectsOptions>): void;
         syncSettings(settings: EngineSettingsData): void;
         getScene(): BABYLON.Scene | null;
         createSkyBoxMaterial(scene?: BABYLON.Scene | undefined): BABYLON.ShaderMaterial | null;
@@ -490,8 +521,8 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -713,6 +744,7 @@ export declare const DVER: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         getWorldBounds(): {
             __maxChunkYSize: number;

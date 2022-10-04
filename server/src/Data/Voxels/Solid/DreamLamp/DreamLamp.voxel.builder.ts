@@ -1,4 +1,4 @@
-import type { VoxelConstructorObject } from "out/Meta/index";
+import type { VoxelConstructorObject } from "dve/Meta/index";
 let uv = 0;
 export const DreamLampVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:dreamlamp",

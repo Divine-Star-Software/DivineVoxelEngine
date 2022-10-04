@@ -42,4 +42,13 @@ export async function BuildInitalMeshes(DVER, scene) {
     await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
     DVER.renderManager.animationManager.startAnimations();
     DVER.textureManager.releaseTextureData();
+    scene.registerBeforeRender(() => {
+        DVER.renderManager.solidMaterial.runEffects();
+        DVER.renderManager.floraMaterial.runEffects();
+        DVER.renderManager.fluidMaterial.runEffects();
+        DVER.renderManager.magmaMaterial.runEffects();
+        DVER.renderManager.itemMaterial.runEffects();
+        DVER.renderManager.skyBoxMaterial.runEffects();
+    });
+    DVER.renderManager.$INIT();
 }

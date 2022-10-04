@@ -1,11 +1,12 @@
 //types
 import type { ChunkData } from "Meta/World/WorldData/Chunk.types";
-import type { VoxelData } from "Meta/Voxels/Voxel.types.js";
-import type { WorldRegion } from "Meta/World/WorldData/World.types.js";
+import type { VoxelData, VoxelSubstanceType } from "Meta/Voxels/Voxel.types.js";
+import type { WorldDimensions, WorldRegion } from "Meta/World/WorldData/World.types.js";
 //obejcts
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 import { Position3Matrix } from "Meta/Util.types.js";
+import { CardinalNeighbors } from "../../Constants/Util/CardinalNeighbors.js";
 
 /**# World Data
  * ---
@@ -13,8 +14,12 @@ import { Position3Matrix } from "Meta/Util.types.js";
  * Also handles getting and setting data.
  */
 export const WorldData = {
+ currentDimension: "main",
+ dimensions: <WorldDimensions>{
+  "main" : {}
+ },
  regions: <Record<string, WorldRegion>>{},
-
+ tempVoxelData: new DataView(new ArrayBuffer(8)),
  heightByte: Util.getHeightByte(),
  chunkReader: Util.getChunkReader(),
  lightByte: Util.getLightByte(),
@@ -22,14 +27,26 @@ export const WorldData = {
  _3dArray: Util.getFlat3DArray(),
  worldBounds: Util.getWorldBounds(),
 
+ setCurrentDimension(dimension: string) {
+  this.currentDimension = dimension;
+ },
+
+ registerDimension(dimension: string | string[]) {
+  if (Array.isArray(dimension)) {
+   for (const dim of dimension) {
+    this.dimensions[dim] = {};
+   }dimension
+   return;
+  }
+  this.dimensions[dimension] = {};
+ },
+
  runRebuildCheck(x: number, y: number, z: number) {
-  DVEW.queues.addToRebuildQue(x + 1, y, z, "all");
-  DVEW.queues.addToRebuildQue(x - 1, y, z, "all");
-  DVEW.queues.addToRebuildQue(x, y + 1, z, "all");
-  DVEW.queues.addToRebuildQue(x, y - 1, z, "all");
-  DVEW.queues.addToRebuildQue(x, y, z + 1, "all");
-  DVEW.queues.addToRebuildQue(x, y, z - 1, "all");
   DVEW.queues.addToRebuildQue(x, y, z, "all");
+  for (let i = 0; i < CardinalNeighbors.length; i++) {
+   const n = CardinalNeighbors[i];
+   DVEW.queues.addToRebuildQue(n[0] + x, n[1] + y, n[2] + z, "all");
+  }
  },
 
  __lightQueCheck(remove = false, x: number, y: number, z: number) {
@@ -211,7 +228,7 @@ export const WorldData = {
   const data = this.getVoxelPaletteId(voxelId, voxelStateId);
   if (data < 0) return;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData.substance, chunk);
   let stateData = this.voxelByte.setShapeState(0, shapeState);
   stateData = this._getStartingLevel(voxelData, stateData);
 
@@ -269,8 +286,12 @@ export const WorldData = {
   const secondaryId = this.getVoxelPaletteId(secondVoxelId, secondVoxelStateId);
   if (mainId < 0 || secondaryId < 0) return;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
-  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, secondVoxelData, chunk);
+  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData.substance, chunk);
+  this.__handleHeightMapUpdateForVoxelAdd(
+   voxelPOS,
+   secondVoxelData.substance,
+   chunk
+  );
   let stateData = this.voxelByte.setShapeState(secondaryId, shapeState);
   stateData = this._getStartingLevel(voxelData, stateData);
   this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, mainId);
@@ -287,10 +308,9 @@ export const WorldData = {
 
  __handleHeightMapUpdateForVoxelAdd(
   voxelPOS: Position3Matrix,
-  voxelData: VoxelData,
+  substance: VoxelSubstanceType,
   chunk: ChunkData
  ) {
-  let substance = voxelData.substance;
   if (substance == "transparent") {
    substance = "solid";
   }
@@ -433,19 +453,19 @@ export const WorldData = {
   }
  },
 
- async requestVoxelAdd(
-  voxelId: string,
-  voxelStateId: number,
-  shapeState: number,
+ async requestVoxelAddFromRaw(
+  rawData1: number,
+  rawData2: number,
   x: number,
   y: number,
   z: number
  ) {
-  const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
-  if (!voxelData) return;
+  const voxelId = this.voxelByte.getId(rawData1);
+  const voxelData = DVEW.voxelMatrix.getVoxelData(voxelId);
+  const substance = DVEW.voxelMatrix.getTrueSubstance(voxelId);
+
+  if (!voxelData) return false;
   const chunk = this.addOrGetChunk(x, y, z);
-  const data = this.getVoxelPaletteId(voxelId, voxelStateId);
-  if (data < 0) return;
 
   const l = this.getLight(x, y, z);
   if (l > 0) {
@@ -466,10 +486,86 @@ export const WorldData = {
 
   let needLightUpdate = false;
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, rawData1);
+  this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, rawData2, true);
+  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, substance, chunk);
+  if (!DVEW.settings.settings.server.enabled) {
+   this.runRebuildCheck(x, y, z);
+  }
+
+  if (DVEW.settings.settings.lighting?.autoRGBLight) {
+   if (voxelData.lightSource && voxelData.lightValue) {
+    needLightUpdate = true;
+    DVEW.queues.addToRGBUpdateQue(x, y, z);
+   }
+  }
+  if (DVEW.settings.settings.updating?.autoRebuild) {
+   if (needLightUpdate) {
+    await this.__runLightRemoveAndUpdates(false, true);
+   }
+
+   if (!DVEW.settings.settings.server.enabled) {
+    this.runRebuildCheck(x, y, z);
+    DVEW.queues.runRebuildQue();
+    await DVEW.queues.awaitAllChunksToBeBuilt();
+   }
+  }
+
+  this.tempVoxelData.setUint32(0, rawData1);
+  this.tempVoxelData.setUint32(4, rawData2);
+  return this.tempVoxelData;
+ },
+ getRawVoxelData(voxelId: string, voxelStateId: number, shapeState: number) {
+  const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
+  if (!voxelData) return false;
+  const data = this.getVoxelPaletteId(voxelId, voxelStateId);
+  if (data < 0) return false;
   let stateData = this.voxelByte.setShapeState(0, shapeState);
+  stateData = this._getStartingLevel(voxelData, stateData);
+  this.tempVoxelData.setUint32(0, data);
+  this.tempVoxelData.setUint32(4, stateData);
+  return this.tempVoxelData;
+ },
+ async requestVoxelAdd(
+  voxelId: string,
+  voxelStateId: number,
+  shapeState: number,
+  x: number,
+  y: number,
+  z: number
+ ) {
+  const voxelData = DVEW.voxelManager.getVoxelData(voxelId);
+  if (!voxelData) return false;
+
+  const data = this.getVoxelPaletteId(voxelId, voxelStateId);
+  if (data < 0) return false;
+
+  const chunk = this.addOrGetChunk(x, y, z);
+  const l = this.getLight(x, y, z);
+  if (l > 0) {
+   if (DVEW.settings.doRGBPropagation()) {
+    if (this.lightByte.hasRGBLight(l)) {
+     DVEW.queues.addToRGBRemoveQue(x, y, z);
+    }
+   }
+   if (DVEW.settings.doSunPropagation()) {
+    if (this.lightByte.getS(l) > 0) {
+     DVEW.queues.addToSunLightRemoveQue(x, y - 1, z);
+     DVEW.queues.addToSunLightRemoveQue(x, y, z);
+    }
+   }
+
+   await this.__runLightRemoveAndUpdates(true, false);
+  }
+
+  let needLightUpdate = false;
+  const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+  let stateData = this.voxelByte.setShapeState(0, shapeState);
+  stateData = this._getStartingLevel(voxelData, stateData);
   this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data);
   this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
-  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+  this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData.substance, chunk);
   this.runRebuildCheck(x, y, z);
 
   if (DVEW.settings.settings.lighting?.autoRGBLight) {
@@ -490,6 +586,10 @@ export const WorldData = {
   if (voxelData.isRich) {
    DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
   }
+
+  this.tempVoxelData.setUint32(0, data);
+  this.tempVoxelData.setUint32(4, stateData);
+  return this.tempVoxelData;
  },
 
  async requestVoxelBeRemoved(x: number, y: number, z: number) {
@@ -500,7 +600,9 @@ export const WorldData = {
   const voxelData = <VoxelData>voxelCheck[0];
   const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
   this.__handleHeightMapUpdateForVoxelRemove(voxelPOS, voxelData, chunk);
-  this.runRebuildCheck(x, y, z);
+  if (!DVEW.settings.settings.server.enabled) {
+   this.runRebuildCheck(x, y, z);
+  }
 
   if (DVEW.settings.doLight()) {
    const l = this.getLight(x, y, z);
@@ -521,10 +623,12 @@ export const WorldData = {
    this.setAir(x, y, z, 0);
   }
 
-  if (DVEW.settings.settings.updating?.autoRebuild) {
-   await this.__runLightRemoveAndUpdates(true, true);
-   DVEW.queues.runRebuildQue();
-   await DVEW.queues.awaitAllChunksToBeBuilt();
+  if (!DVEW.settings.settings.server.enabled) {
+   if (DVEW.settings.settings.updating?.autoRebuild) {
+    await this.__runLightRemoveAndUpdates(true, true);
+    DVEW.queues.runRebuildQue();
+    await DVEW.queues.awaitAllChunksToBeBuilt();
+   }
   }
 
   if (voxelData.isRich) {

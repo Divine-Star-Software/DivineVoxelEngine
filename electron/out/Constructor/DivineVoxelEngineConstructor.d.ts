@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -340,6 +340,7 @@ export declare const DVEC: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         getWorldBounds(): {
             __maxChunkYSize: number;
@@ -441,6 +442,9 @@ export declare const DVEC: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
+            };
+            server: {
+                enabled: boolean;
             };
             richWorld: {
                 enabled: boolean;
@@ -667,6 +671,7 @@ export declare const DVEC: {
                 isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
+                minusOneForAll(sl: number): number;
             };
             meshFaceData: {
                 setAnimationType(animationType: number, rawData: number): number;
@@ -873,6 +878,7 @@ export declare const DVEC: {
                 isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
+                minusOneForAll(sl: number): number;
             };
             worldMatrix: {
                 _3dArray: {
@@ -1025,6 +1031,7 @@ export declare const DVEC: {
                     isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                     sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                     removeSunLight(sl: number): number;
+                    minusOneForAll(sl: number): number;
                 };
                 heightByte: {
                     _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -1343,6 +1350,7 @@ export declare const DVEC: {
                 isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
+                minusOneForAll(sl: number): number;
             };
             pos: {
                 x: number;
@@ -1402,6 +1410,7 @@ export declare const DVEC: {
                 isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
+                minusOneForAll(sl: number): number;
             };
             air: number[];
             runSunLightUpdateAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
@@ -1580,6 +1589,7 @@ export declare const DVEC: {
                     isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                     sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                     removeSunLight(sl: number): number;
+                    minusOneForAll(sl: number): number;
                 };
                 heightByte: {
                     _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -1811,6 +1821,7 @@ export declare const DVEC: {
             canFlowDownardTest(x: number, y: number, z: number): boolean;
             flowDownTest(x: number, y: number, z: number): boolean;
             wait(ms: number): Promise<unknown>;
+            getAbsorbLight(x: number, y: number, z: number): number;
         };
         rebuildQueMap: Record<string, boolean>;
         $INIT(): void;
@@ -2143,6 +2154,7 @@ export declare const DVEC: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         heightByte: {
             _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -2347,7 +2359,7 @@ export declare const DVEC: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         worldPort: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;

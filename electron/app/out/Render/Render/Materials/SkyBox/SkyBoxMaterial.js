@@ -2,8 +2,14 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const SkyBoxMaterial = {
     material: null,
     context: null,
+    time: 0,
     getMaterial() {
         return this.material;
+    },
+    updateFogOptions(data) {
+        if (!this.material)
+            return;
+        this.material.setVector4("fogOptions", data);
     },
     setSunLightLevel(level) {
         if (!this.material) {
@@ -65,6 +71,7 @@ export const SkyBoxMaterial = {
                 "vFogColor",
                 "projection",
                 "time",
+                "fogOptions"
             ],
             needAlphaBlending: false,
             needAlphaTesting: true,
@@ -83,21 +90,17 @@ export const SkyBoxMaterial = {
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);
             effect.setColor3("vFogColor", scene.fogColor);
         };
-        let time = 0;
-        const forward = new BABYLON.Vector3(0, 0, 1);
-        const cameraDir = new BABYLON.Vector3(0, 0, 0);
-        scene.registerBeforeRender(function () {
-            time += 0.005;
-            shaderMaterial.setFloat("time", time);
-            if (scene.activeCamera) {
-                const cam = scene.activeCamera;
-                cam.getDirectionToRef(forward, cameraDir);
-                shaderMaterial.setVector3("cameraDirection", cameraDir);
-            }
-        });
         return this.material;
     },
     overrideMaterial(material) {
         this.material = material;
+    },
+    runEffects() {
+        if (DVER.renderManager.fogOptions.mode != "animated-volumetric")
+            return;
+        if (!this.material)
+            return;
+        this.time += 0.005;
+        this.material.setFloat("time", this.time);
     },
 };

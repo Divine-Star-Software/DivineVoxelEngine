@@ -156,6 +156,7 @@ export declare const WorldMatrix: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     heightByte: {
         _getHeightMapData: Record<import("Meta/index").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -331,7 +332,10 @@ export declare const WorldMatrix: {
      */
     awaitChunkLoad(x: number, y: number, z: number, timeout?: number): Promise<boolean>;
     __setGlobalVoxelPalette(palette: Record<number, string>, map: Record<string, number>): void;
-    getVoxel(x: number, y: number, z: number, secondary?: boolean): [string, number] | false;
+    getVoxel(x: number, y: number, z: number, secondary?: boolean): [
+        string,
+        number
+    ] | false;
     getVoxelShapeState(x: number, y: number, z: number): number;
     getLevel(x: number, y: number, z: number): number;
     setLevel(level: number, x: number, y: number, z: number): void;

@@ -1,4 +1,4 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructorObject } from "dve/Meta/index.js";
 const uvs: number[] = [];
 export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:dreamstonepillar",

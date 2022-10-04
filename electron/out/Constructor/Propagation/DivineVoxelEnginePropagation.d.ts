@@ -35,6 +35,7 @@ export declare const DVEP: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         air: number[];
         runSunLightUpdateAt: typeof import("./Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
@@ -213,6 +214,7 @@ export declare const DVEP: {
                 isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
                 sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
                 removeSunLight(sl: number): number;
+                minusOneForAll(sl: number): number;
             };
             heightByte: {
                 _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -444,6 +446,7 @@ export declare const DVEP: {
         canFlowDownardTest(x: number, y: number, z: number): boolean;
         flowDownTest(x: number, y: number, z: number): boolean;
         wait(ms: number): Promise<unknown>;
+        getAbsorbLight(x: number, y: number, z: number): number;
     };
     rebuildQueMap: Record<string, boolean>;
     $INIT(): void;

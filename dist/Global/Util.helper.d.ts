@@ -230,6 +230,7 @@ export declare const Util: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     getWorldBounds(): {
         __maxChunkYSize: number;

@@ -4,8 +4,26 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const FluidMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
+
+
+ doEffects : true,
+ time : 0,
+
  getMaterial() {
   return this.material;
+ },
+
+
+ updateFogOptions(data : BABYLON.Vector4) {
+    if(!this.material) return;
+    this.material.setVector4("fogOptions",data);
+ },
+
+ updateEffects(doEffects : boolean) {
+    this.doEffects = doEffects;
+    let v = doEffects ? 1 : 0;
+    if(!this.material) return;
+    this.material.setFloat("doEffect",v);
  },
 
  setSunLightLevel(level: number) {
@@ -44,6 +62,11 @@ export const FluidMaterial = {
    this.material.setFloat("doColor", 1.0);
   } else {
    this.material.setFloat("doColor", 0.0);
+  }
+  if(DVER.renderManager.effectOptions.fluidEffects) {
+    this.material.setFloat("doEffects",1);
+  } else {
+    this.material.setFloat("doEffects",0);  
   }
  },
 
@@ -106,6 +129,8 @@ export const FluidMaterial = {
      "doRGB",
      "doColor",
      "time",
+     "doEffects",
+     "fogOptions",
      ...animData.uniforms,
      ...overlayAnimData.uniforms,
     ],
@@ -143,12 +168,15 @@ export const FluidMaterial = {
 
   this.updateMaterialSettings(data.settings);
 
-  let time = 0;
-  data.scene.registerBeforeRender(function () {
-   time += 0.005;
-   shaderMaterial.setFloat("time", time);
-  });
+
+
   DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
   return this.material;
  },
+
+ runEffects() {
+    if (!this.material) return;
+    this.time += 0.005;
+    this.material.setFloat("time", this.time);
+   },
 };

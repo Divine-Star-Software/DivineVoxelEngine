@@ -7,7 +7,7 @@ export const floraShaders = {
 
  int animationType = getAnimationType();
 
- 
+ if(doEffects == 1.){
     if(animationType == 1) {
         p.xz = animType1(posWorld, p).xz;
     }
@@ -17,6 +17,7 @@ export const floraShaders = {
     if(animationType == 3) {
         p.xz = animType3(posWorld, p).xz;
     }
+}
 
 
  vec4 worldPosition = world * vec4(p, 1.0);
@@ -41,6 +42,6 @@ if (rgb.a < 0.85 ) {
  rgb = getColor(rgb);
  rgb = getAO(rgb);
  vec4 mixLight = getLight(rgb);
- vec3 finalColor = doVFog(mixLight);
+ vec3 finalColor = doFog(mixLight);
  gl_FragColor = vec4(finalColor.rgb , rgb.w ); `,
 };

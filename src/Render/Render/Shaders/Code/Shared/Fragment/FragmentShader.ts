@@ -2,11 +2,13 @@ export const SharedFragmentShader = {
  top: `
     precision highp float;
     precision highp sampler2DArray;
+    uniform vec4 fogOptions;
     `,
  optionVariables(ao: boolean = true) {
   let options = `
     uniform float sunLightLevel;
     uniform float baseLevel;
+    uniform float time;
     varying float vDoSun;
     varying float vDoRGB;
     `;
@@ -76,8 +78,19 @@ export const SharedFragmentShader = {
     `,
  doFog: `
     vec3 doFog(vec4 base) {
-        float fog = CalcFogFactor();
-        return fog * base.rgb + (1.0 - fog) * vFogColor;
+         if(fogOptions.x == 0.) {
+            float fog = CalcFogFactor();
+            return fog * base.rgb + (1.0 - fog) * vFogColor;
+         }
+         if(fogOptions.x == 1.) {
+            float fogFactor = CalcVFogFactor();
+            return mix( base.rgb, vFogColor, fogFactor );
+         }
+         if(fogOptions.x == 2.) {
+            float fogFactor = CalcVFogFactorAnimated();
+            return mix( base.rgb, vFogColor, fogFactor );
+         }
+         return base.rgb;
     }
     `,
 

@@ -6,7 +6,11 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
+import {
+ RunInit,
+ SetUpWorkers,
+ SyncWithGraphicsSettings,
+} from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
@@ -43,6 +47,7 @@ await DVER.$INIT({
   autoSunLight: false,
  },
 });
+SyncWithGraphicsSettings(DVER);
 
 const init = async () => {
  const canvas = SetUpCanvas();

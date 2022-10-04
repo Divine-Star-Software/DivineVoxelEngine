@@ -27,8 +27,13 @@ if(animationTest == 2.) {
 
 vec4 posWorld = world * vec4(position, 1.0);
 vec3 p = position;
+
+if(doEffects == 1.){
 float height = fbm(posWorld.xz * 0.08 + time);
 p.y += height * 0.08 - .1;
+}
+
+
 vec4 worldPosition = world * vec4(p, 1.0);
 
 gl_Position = viewProjection * worldPosition; 
@@ -39,7 +44,7 @@ varying float vFlow;
 `,
 
  fragMain: `
-  float y = vUV.y - vTime * 4. * vFlow;
+  float y = vUV.y - time * 4. * vFlow;
 
   vec4 rgb =  texture(arrayTex, vec3(vUV.x,y,animIndex));
   vec4 oRGB1 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.x));
@@ -68,7 +73,7 @@ varying float vFlow;
   
    rgb = getColor(rgb);
    vec4 mixLight = getLight(rgb);
-   vec3 finalColor = doVFog(mixLight);
+   vec3 finalColor = doFog(mixLight);
   gl_FragColor = vec4(finalColor.rgb , .7 ); 
 `,
 };

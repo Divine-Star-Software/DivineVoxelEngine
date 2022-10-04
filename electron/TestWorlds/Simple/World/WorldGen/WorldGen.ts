@@ -6,9 +6,9 @@ export const WorldGen = {
  chunkWidth: 16,
  chunkHeight: 128,
 
- generateStairChunk : GenerateStairChunk,
+ generateStairChunk: GenerateStairChunk,
 
- generateTemplate : GenerateTemple,
+ generateTemplate: GenerateTemple,
 
  generateTree(x: number, y: number, z: number) {
   DVEW.worldData.paintVoxel("dve:dream-log", 0, 0, x, y + 1, z);
@@ -21,49 +21,13 @@ export const WorldGen = {
   DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x + 1, y + 4, z);
   DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x - 1, y + 4, z);
 
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x + 1,
-   y + 4,
-   z + 1
-  );
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x + 1,
-   y + 4,
-   z - 1
-  );
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x + 1, y + 4, z + 1);
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x + 1, y + 4, z - 1);
 
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x + 1,
-   y + 4,
-   z + 1
-  );
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x + 1,
-   y + 4,
-   z - 1
-  );
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x - 1,
-   y + 4,
-   z + 1
-  );
-  DVEW.worldData.paintVoxel(
-   "dve:dream-leafs",
-   0, 0,
-   x - 1,
-   y + 4,
-   z - 1
-  );
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x + 1, y + 4, z + 1);
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x + 1, y + 4, z - 1);
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x - 1, y + 4, z + 1);
+  DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x - 1, y + 4, z - 1);
 
   DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x, y + 5, z + 1);
   DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x, y + 5, z - 1);
@@ -79,8 +43,6 @@ export const WorldGen = {
   DVEW.worldData.paintVoxel("dve:dream-leafs", 0, 0, x, y + 6, z);
  },
 
-
-
  generatePondChunk(chunkX: number, chunkZ: number) {
   let baseY = 31;
   let topY = 50;
@@ -93,7 +55,7 @@ export const WorldGen = {
      if (y >= baseY - 2 && y < baseY + 1) {
       if (y == baseY - 2 && Math.random() > 0.8) {
        DVEW.worldData.paintDualVoxel(
-        "dve:liquiddreamether",
+        "dve:liquiddreadether",
         0,
         0,
         "dve:dreamgrass",
@@ -103,12 +65,12 @@ export const WorldGen = {
         z
        );
       } else {
-       DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x, y, z);
+       DVEW.worldData.paintVoxel("dve:liquiddreadether", 0, 0, x, y, z);
       }
      }
      if (y <= baseY + 2 && baseY >= baseY) {
       if (x == chunkX + 15 || z == chunkZ + 15 || x == chunkX || z == chunkZ) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
+       DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
       }
      }
      if (y <= baseY + 2) {
@@ -137,17 +99,17 @@ export const WorldGen = {
        (z == chunkZ + 2 && x == chunkX + 13) ||
        (z == chunkZ + 1 && x == chunkX + 13)
       ) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
+       DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
       }
      }
      if (y == baseY + 1 && z == chunkZ + 14 && x == chunkX + 7) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
      }
      if (y <= 46 && z == chunkZ + 7 && x == chunkX + 7) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
      }
      if (y <= 36 && z == chunkZ + 7 && x == chunkX + 6) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, x, y, z);
+      DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
      }
     }
    }
@@ -239,9 +201,6 @@ export const WorldGen = {
   if (type == "pond") {
    this.generatePondChunk(chunkX, chunkZ);
   }
-
-
-
 
   if (type == "default") {
    this.generateDefaultChunk(chunkX, chunkZ);

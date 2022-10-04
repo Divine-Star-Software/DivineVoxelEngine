@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -179,8 +179,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -402,6 +402,7 @@ export declare const DVEW: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         getWorldBounds(): {
             __maxChunkYSize: number;
@@ -503,6 +504,9 @@ export declare const DVEW: {
                 enabled: boolean;
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
+            };
+            server: {
+                enabled: boolean;
             };
             richWorld: {
                 enabled: boolean;
@@ -857,9 +861,28 @@ export declare const DVEW: {
             lightSource: number;
             lightValue: number;
         };
+        matrixMap: {
+            shapeMap: Record<string, number>;
+            substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
+            substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
+            __shapeMapSet: boolean;
+            isReady(): boolean;
+            setShapeMap(shapeMap: Record<string, number>): void;
+            flush(): void;
+        };
         substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
         voxelData: {
             substance: number;
+            shapeId: number;
+            hardness: number;
+            material: number;
+            checkCollision: number;
+            colliderId: number;
+            lightSource: number;
+            lightValue: number;
+        };
+        voxelDataMapped: {
+            substance: string;
             shapeId: number;
             hardness: number;
             material: number;
@@ -885,6 +908,7 @@ export declare const DVEW: {
             lightValue: number;
         };
         getSubstance(id: number): number;
+        getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
         getShapeId(id: number): number;
         getHardness(id: number): number;
         getCheckCollisions(id: number): number;
@@ -894,6 +918,8 @@ export declare const DVEW: {
     };
     matrixMap: {
         shapeMap: Record<string, number>;
+        substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
+        substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
         __shapeMapSet: boolean;
         isReady(): boolean;
         setShapeMap(shapeMap: Record<string, number>): void;
@@ -1042,7 +1068,10 @@ export declare const DVEW: {
         getBlankChunk(empty?: boolean, proto?: boolean): import("../Meta/index.js").ChunkData;
     };
     worldData: {
+        currentDimension: string;
+        dimensions: import("../Meta/World/WorldData/World.types.js").WorldDimensions;
         regions: Record<string, import("../Meta/World/WorldData/World.types.js").WorldRegion>;
+        tempVoxelData: DataView;
         heightByte: {
             _getHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
             _setHeightMapData: Record<import("../Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -1158,6 +1187,7 @@ export declare const DVEW: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         voxelByte: {
             setId(id: number, value: number): number;
@@ -1275,6 +1305,8 @@ export declare const DVEW: {
                 z: number;
             };
         };
+        setCurrentDimension(dimension: string): void;
+        registerDimension(dimension: string | string[]): void;
         runRebuildCheck(x: number, y: number, z: number): void;
         __lightQueCheck(remove: boolean | undefined, x: number, y: number, z: number): void;
         runLightUpdateCheck(x: number, y: number, z: number, remove?: boolean): void;
@@ -1295,13 +1327,15 @@ export declare const DVEW: {
         addOrGetChunk(x: number, y: number, z: number): import("../Meta/index.js").ChunkData;
         _getStartingLevel(voxelData: import("../Meta/index.js").VoxelData, stateData: number): number;
         paintDualVoxel(voxelId: string, voxelStateId: number, shapeState: number, secondVoxelId: string, secondVoxelStateId: number, x: number, y: number, z: number): void;
-        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
+        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, substance: import("../Meta/index.js").VoxelSubstanceType, chunk: import("../Meta/index.js").ChunkData): void;
         __handleHeightMapUpdateForVoxelRemove(voxelPOS: import("../Meta/Util.types.js").Position3Matrix, voxelData: import("../Meta/index.js").VoxelData, chunk: import("../Meta/index.js").ChunkData): void;
         getChunk(x: number, y: number, z: number): false | import("../Meta/index.js").ChunkData;
         removeChunk(x: number, y: number, z: number): false | undefined;
         setChunk(x: number, y: number, z: number, chunk: import("../Meta/index.js").ChunkData, doNotSyncInThreads?: boolean): void;
         __runLightRemoveAndUpdates(remove?: boolean, update?: boolean): Promise<void>;
-        requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
+        requestVoxelAddFromRaw(rawData1: number, rawData2: number, x: number, y: number, z: number): Promise<false | DataView>;
+        getRawVoxelData(voxelId: string, voxelStateId: number, shapeState: number): false | DataView;
+        requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<false | DataView>;
         requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
         getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/index.js").ChunkData> | undefined;
         getRelativeMaxWorldColumnHeight(x: number, z: number): number;
@@ -1380,6 +1414,7 @@ export declare const DVEW: {
             isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
             sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
             removeSunLight(sl: number): number;
+            minusOneForAll(sl: number): number;
         };
         pos: {
             x: number;

@@ -9,6 +9,8 @@ export const DVEP = {
     rebuildQueMap: {},
     $INIT() { },
     addToRebuildQue(x, y, z, substance) {
+        if (DVEC.settings.settings.server.enabled)
+            return;
         const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
         const chunkKey = DVEC.worldBounds.getChunkKey(chunkPOS);
         if (!this.rebuildQueMap[chunkKey]) {

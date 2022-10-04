@@ -1,3 +1,5 @@
+import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender";
+
 export const RunInit = (init: Function) => {
  const readyStateCheckInterval = setInterval(function () {
   if (document.readyState === "complete" && typeof BABYLON !== undefined) {
@@ -64,6 +66,48 @@ export const SetUpWorkers = (
   nexusWorker: nexusWorker,
   dataWorker: dataWorker,
   fxWorker: fxWorker,
-  richWorldWorker : richWorldWorker
+  richWorldWorker: richWorldWorker,
  };
+};
+
+export const SyncWithGraphicsSettings = (DVER: DivineVoxelEngineRender) => {
+ let grahpicsLevel = localStorage.getItem("graphics");
+ if (!grahpicsLevel) grahpicsLevel = "medium";
+
+ if (grahpicsLevel == "low") {
+  DVER.renderManager.updateFogOptions({
+   mode: "exponential",
+  });
+  DVER.renderManager.updateShaderEffectOptions({
+   floraEffects: false,
+   fluidEffects: false,
+  });
+ }
+ if (grahpicsLevel == "medium") {
+  DVER.renderManager.updateFogOptions({
+   mode: "volumetric",
+  });
+  DVER.renderManager.updateShaderEffectOptions({
+   floraEffects: false,
+   fluidEffects: false,
+  });
+ }
+ if (grahpicsLevel == "high") {
+  DVER.renderManager.updateFogOptions({
+   mode: "volumetric",
+  });
+  DVER.renderManager.updateShaderEffectOptions({
+   floraEffects: true,
+   fluidEffects: true,
+  });
+ }
+ if (grahpicsLevel == "ultra") {
+  DVER.renderManager.updateFogOptions({
+   mode: "animated-volumetric",
+  });
+  DVER.renderManager.updateShaderEffectOptions({
+   floraEffects: true,
+   fluidEffects: true,
+  });
+ }
 };

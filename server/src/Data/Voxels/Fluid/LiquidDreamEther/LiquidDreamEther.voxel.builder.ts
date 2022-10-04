@@ -1,6 +1,6 @@
-import { DivineVoxelEngineBuilder } from "../../../../../out/Constructor/Builder/DivineVoxelEngineBuilder.js";
-import { VoxelProcessData } from "../../../../../out/Meta/Constructor/Voxel.types.js";
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import { DivineVoxelEngineBuilder } from "../../../../../dve/Constructor/Builder/DivineVoxelEngineBuilder.js";
+import { VoxelProcessData } from "../../../../../dve/Meta/Constructor/Voxel.types.js";
+import type { VoxelConstructorObject } from "dve/Meta/index.js";
 const checkSets = {
  north: [
   [0, 1],

@@ -80,6 +80,7 @@ export const AnimationManager = {
    animationFunctionCode += `if(uv == ${anim[0]}.0) {
    return ${shaderId};
   }`;
+  i++;
   }
 
   animationFunctionCode += `

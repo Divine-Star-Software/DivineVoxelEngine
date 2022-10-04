@@ -138,4 +138,5 @@ export declare const LightByte: {
      * @param sl - source light value
      */
     removeSunLight(sl: number): number;
+    minusOneForAll(sl: number): number;
 };

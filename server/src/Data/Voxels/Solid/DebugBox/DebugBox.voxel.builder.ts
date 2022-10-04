@@ -1,4 +1,4 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructorObject } from "dve/Meta/index.js";
 let topUV = 0;
 let bottomUV = 0;
 let northUV = 0;

@@ -1,6 +1,13 @@
 import { CreateGUI } from "../GUI/index.js";
 export const SetUpEngine = (canvas) => {
-    const engine = new BABYLON.Engine(canvas, true, {});
+    let antialias = false;
+    const graphics = localStorage.getItem("grahpics");
+    if (graphics) {
+        if (graphics == "medium" || graphics == "high" || graphics == "uldate") {
+            antialias = true;
+        }
+    }
+    const engine = new BABYLON.Engine(canvas, antialias, {});
     engine.doNotHandleContextLost = true;
     engine.enableOfflineSupport = false;
     engine.setSize(1920, 1080);
@@ -104,6 +111,7 @@ export const GetPlayerModel = (scene) => {
             mat.backFaceCulling = false;
             mat.diffuseTexture = texture;
             mesh.material = mat;
+            mesh.isPickable = false;
             resolve(mesh);
         });
     });

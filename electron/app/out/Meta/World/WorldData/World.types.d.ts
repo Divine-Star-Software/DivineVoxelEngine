@@ -2,6 +2,7 @@ import { ChunkData, RichChunk } from "Meta/World/WorldData/Chunk.types";
 export declare type WorldRegion = {
     chunks: Record<string, Record<string, ChunkData>>;
 };
+export declare type WorldDimensions = Record<string, Record<string, WorldRegion>>;
 export declare type RichWorldRegion = {
     chunks: Record<string, Record<string, RichChunk>>;
 };

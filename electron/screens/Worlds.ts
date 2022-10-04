@@ -18,7 +18,12 @@ export const Worlds: WorldsData = [
    {
     title: "Dream Space 2",
     description: "A dream space with light.",
-    world: "SunLightTest",
+    world: "DreamSpace2",
+   },
+   {
+    title: "Dread Space",
+    description: "A world with red light.",
+    world: "DreadSpace",
    },
    {
     title: "Simple",

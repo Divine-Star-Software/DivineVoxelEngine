@@ -11,7 +11,7 @@ export type InterCommInterface = {
   string | number,
   (data: any, event?: MessageEvent) => void
  >;
- sendMessage: (message: string | number, data: any[], transfers?: any[]) => void;
+ sendMessage: (message: string | number, data?: any[], transfers?: any[]) => void;
  listenForMessage: (
   message: string | number,
   run: (data: any[], event?: MessageEvent) => void

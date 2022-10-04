@@ -14,23 +14,22 @@ import { DreamLogVoxelBuilderThread } from "../Voxels/Solid/DreamLog/DreamLog.vo
 import { DreamStoneStairVoxelBuilderThread } from "../Voxels/Solid/DreamStoneStair/DreamStoneStair.voxel.builder.js";
 import { DataHolderVoxelBuilderThread } from "../Voxels/Solid/DataHolder/DataHolder.voxel.builder.js";
 import { MarkerBoxVoxelBuilderThread } from "../Voxels/Solid/MarkerBox/MarkerBox.voxel.builder.js";
+import { DreadStoneVoxelBuilderThread } from "../Voxels/Solid/DreadStone/DreadStone.voxel.object.js";
+import { DreadGrassBlockVoxelBuilderThread } from "../Voxels/Solid/DreadGrass/DreadGrassBlock.voxel.builder.js";
+import { DreadGrassVoxelBuilderThread } from "../Voxels/Flora/DreadGrass/DreadGrass.voxel.builder.js";
+import { LiquidDreadEtherVoxelBuilderThread } from "../Voxels/Fluid/LiquidDreadEther/LiquidDreadEther.voxel.builder.js";
+import { DreadLampVoxelBuilderThread } from "../Voxels/Solid/DreadLamp/DreadLamp.voxel.builder.js";
+import { DreadStonePillarVoxelBuilderThread } from "../Voxels/Solid/DreadStonePillar/DreadStonePillar.voxel.builder.js";
 export function RegisterVoxelsForConstructor(DVEC) {
-    //solid
-    DVEC.voxelManager.registerVoxel(DebugBoxVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamGrassBlockVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamStonePillarVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamStoneVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(LightDebugBoxVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamLampVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamStoneSlabVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamLogVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamStoneStairVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DataHolderVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(MarkerBoxVoxelBuilderThread);
-    //flora
-    DVEC.voxelManager.registerVoxel(DreamGrassVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamVineVoxelBuilderThread);
-    DVEC.voxelManager.registerVoxel(DreamLeafVoxelBuilderThread);
-    //fluid
-    DVEC.voxelManager.registerVoxel(LiquidDreamEtherVoxelBuilderThread);
+    const voxels = [];
+    voxels.push(
+    //util
+    DebugBoxVoxelBuilderThread, LightDebugBoxVoxelBuilderThread, DataHolderVoxelBuilderThread, MarkerBoxVoxelBuilderThread, 
+    //dream
+    DreamGrassBlockVoxelBuilderThread, DreamStonePillarVoxelBuilderThread, DreamStoneVoxelBuilderThread, DreamLampVoxelBuilderThread, DreamStoneSlabVoxelBuilderThread, DreamLogVoxelBuilderThread, DreamStoneStairVoxelBuilderThread, DreamGrassVoxelBuilderThread, DreamVineVoxelBuilderThread, DreamLeafVoxelBuilderThread, LiquidDreamEtherVoxelBuilderThread, 
+    //dread
+    DreadStoneVoxelBuilderThread, DreadGrassBlockVoxelBuilderThread, DreadGrassVoxelBuilderThread, DreadLampVoxelBuilderThread, DreadStonePillarVoxelBuilderThread, LiquidDreadEtherVoxelBuilderThread);
+    for (const voxel of voxels) {
+        DVEC.voxelManager.registerVoxel(voxel);
+    }
 }

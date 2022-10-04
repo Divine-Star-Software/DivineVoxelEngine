@@ -14,6 +14,8 @@ export const SharedVertexShader = {
   uniform vec3 cameraPosition;         
   uniform mat4 view;                    
   uniform mat4 viewProjection;       
+  uniform float doEffects;      
+  uniform vec4 fogOptions;      
   `,
  attributes(ao: boolean = true) {
   let attributes = `

@@ -18,6 +18,7 @@ export const DVEP = {
   z: number,
   substance: VoxelSubstanceType | "all"
  ) {
+  if (DVEC.settings.settings.server.enabled) return;
   const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = DVEC.worldBounds.getChunkKey(chunkPOS);
 

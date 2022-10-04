@@ -53,8 +53,18 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  });
 
  DVER.textureManager.registerTexture("solid", {
-  name: "Dream Stone Textures",
+  name: "Dream Stone",
   id: "dreamstone",
+  frames: 0,
+  variations: {
+   "grassy-top": { frames: 0 },
+   "grassy-side": { frames: 0 },
+  },
+ });
+
+ DVER.textureManager.registerTexture("solid", {
+  name: "Dread Stone",
+  id: "dreadstone",
   frames: 0,
   variations: {
    "grassy-top": { frames: 0 },
@@ -72,7 +82,7 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  });
 
  DVER.textureManager.registerTexture("flora", {
-  name: "Dream Stone Textures",
+  name: "Dream Grass Block",
   id: "dreamgrassblock",
   frames: 0,
   variations: {
@@ -92,8 +102,25 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  });
 
  DVER.textureManager.registerTexture("solid", {
+  name: "Dread Stone Pillar",
+  id: "dreadstone-pillar",
+  frames: 0,
+  variations: {
+   "side-bottom": { frames: 0 },
+   "side-top": { frames: 0 },
+   top: { frames: 0 },
+  },
+ });
+
+ DVER.textureManager.registerTexture("solid", {
   name: "Dream Lanmp Texture",
   id: "dreamlamp",
+  frames: 0,
+ });
+
+ DVER.textureManager.registerTexture("solid", {
+  name: "Dread Lanmp Texture",
+  id: "dreadlamp",
   frames: 0,
  });
 
@@ -106,6 +133,12 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  DVER.textureManager.registerTexture("flora", {
   name: "Dream Grass Texture",
   id: "dreamgrass",
+  frames: 0,
+ });
+
+ DVER.textureManager.registerTexture("flora", {
+  name: "Dread Grass Texture",
+  id: "dreadgrass",
   frames: 0,
  });
 
@@ -124,6 +157,19 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
  DVER.textureManager.registerTexture("fluid", {
   name: "Liquid Dream Ether Texture",
   id: "liquid-dream-ether",
+  frames: 0,
+  variations: {
+   still: {
+    frames: 6,
+    animKeys: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2],
+    globalFrameTime: 2,
+   },
+  },
+ });
+
+ DVER.textureManager.registerTexture("fluid", {
+  name: "Liquid Dread Ether Texture",
+  id: "liquid-dread-ether",
   frames: 0,
   variations: {
    still: {

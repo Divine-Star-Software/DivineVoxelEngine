@@ -174,8 +174,7 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables()}
 ${SharedFragmentShader.varying()}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.defaultFogFragFunction}
-${SharedFogFunctions.volumetricFogFunction}
+${SharedFogFunctions.fogFunctions}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getAO}
 ${SharedFragmentShader.getLight}
@@ -195,8 +194,7 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables(false)}
 ${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.defaultFogFragFunction}
-${SharedFogFunctions.volumetricFogFunction}
+${SharedFogFunctions.fogFunctions}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getLight}
 ${SharedFragmentShader.doFog}
@@ -216,8 +214,7 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables(false)}
 ${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.defaultFogFragFunction}
-${SharedFogFunctions.volumetricFogFunction}
+${SharedFogFunctions.fogFunctions}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getLight}
 ${SharedFragmentShader.doFog}
@@ -237,8 +234,7 @@ ${fluidShaders.fragMain}
   ${SharedFragmentShader.optionVariables()}
   ${SharedFragmentShader.varying()}
   ${SharedFogFunctions.fogFragVars}
-  ${SharedFogFunctions.defaultFogFragFunction}
-  ${SharedFogFunctions.volumetricFogFunction}
+  ${SharedFogFunctions.fogFunctions}
   ${SharedFragmentShader.getColor}
   ${SharedFragmentShader.getAO}
   ${SharedFragmentShader.getLight}
@@ -256,7 +252,7 @@ ${SharedFogFunctions.fogFragConstants}
 ${SharedFragmentShader.optionVariables(false)}
 ${SharedFragmentShader.varying(false)}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.defaultFogFragFunction}
+${SharedFogFunctions.fogFunctions}
 ${SharedFragmentShader.getColor}
 ${SharedFragmentShader.getAO}
 ${SharedFragmentShader.getLight}
@@ -307,6 +303,7 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.standardPositionMain}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.updateVarying}
+ ${SharedFogFunctions.fogVertexMain}
 `)}
 `;
     },
@@ -318,8 +315,8 @@ ${SharedFragmentShader.useTime}
 ${ShaderNoiseFunctions.fbm3}
 ${SharedFogFunctions.fogFragConstants}
 ${SharedFogFunctions.fogFragVars}
-${SharedFogFunctions.volumetricFogFunction}
-${SharedFragmentShader.doVFog}
+${SharedFogFunctions.fogFunctions}
+${SharedFragmentShader.doFog}
 ${CommonShader.getMainFunction(`
 ${skyboxShaders.fragMain}
 `)}`;

@@ -1,6 +1,10 @@
 /// <reference types="babylonjs" />
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
+import { RenderFogOptions, RenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
 export declare const RenderManager: {
+    fogOptions: RenderFogOptions;
+    fogData: BABYLON.Vector4;
+    effectOptions: RenderEffectsOptions;
     shaderBuilder: {
         buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
         buildFluidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
@@ -49,44 +53,63 @@ export declare const RenderManager: {
     };
     solidMaterial: {
         material: BABYLON.ShaderMaterial | null;
+        time: number;
         getMaterial(): BABYLON.ShaderMaterial | null;
+        updateFogOptions(data: BABYLON.Vector4): void;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
         overrideMaterial(material: any): void;
+        runEffects(): void;
     };
     floraMaterial: {
         material: BABYLON.ShaderMaterial | null;
+        doEffects: boolean;
+        time: number;
         getMaterial(): BABYLON.ShaderMaterial | null;
+        updateFogOptions(data: BABYLON.Vector4): void;
+        updateEffects(doEffects: boolean): void;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+        runEffects(): void;
     };
     fluidMaterial: {
         material: BABYLON.ShaderMaterial | null;
+        doEffects: boolean;
+        time: number;
         getMaterial(): BABYLON.ShaderMaterial | null;
+        updateFogOptions(data: BABYLON.Vector4): void;
+        updateEffects(doEffects: boolean): void;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+        runEffects(): void;
     };
     magmaMaterial: {
         material: BABYLON.ShaderMaterial | null;
         getMaterial(): BABYLON.ShaderMaterial | null;
+        time: number;
+        updateFogOptions(data: BABYLON.Vector4): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
+        runEffects(): void;
     };
     itemMaterial: {
         material: BABYLON.ShaderMaterial | null;
         context: CanvasRenderingContext2D | null;
+        time: number;
+        updateFogOptions(data: BABYLON.Vector4): void;
         getMaterial(): BABYLON.ShaderMaterial | null;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(data: import("../../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
         overrideMaterial(material: any): void;
+        runEffects(): void;
     };
     solidStandardMaterial: {
         material: BABYLON.StandardMaterial | null;
@@ -105,12 +128,15 @@ export declare const RenderManager: {
     skyBoxMaterial: {
         material: BABYLON.ShaderMaterial | null;
         context: CanvasRenderingContext2D | null;
+        time: number;
         getMaterial(): BABYLON.ShaderMaterial | null;
+        updateFogOptions(data: BABYLON.Vector4): void;
         setSunLightLevel(level: number): void;
         setBaseLevel(level: number): void;
         updateMaterialSettings(settings: EngineSettingsData): void;
         createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial;
         overrideMaterial(material: any): void;
+        runEffects(): void;
     };
     solidMesh: import("Meta/index.js").VoxelMeshInterface;
     floraMesh: import("Meta/index.js").VoxelMeshInterface;
@@ -130,6 +156,10 @@ export declare const RenderManager: {
     scene: BABYLON.Scene | null;
     reStart(): void;
     setScene(scene: BABYLON.Scene): void;
+    updateFogOptions(options: RecursivePartial<RenderFogOptions>): void;
+    _setFogData(): void;
+    $INIT(): void;
+    updateShaderEffectOptions(options: RecursivePartial<RenderEffectsOptions>): void;
     syncSettings(settings: EngineSettingsData): void;
     getScene(): BABYLON.Scene | null;
     createSkyBoxMaterial(scene?: BABYLON.Scene): BABYLON.ShaderMaterial | null;

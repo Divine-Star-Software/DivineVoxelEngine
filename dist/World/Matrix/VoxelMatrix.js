@@ -1,11 +1,23 @@
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { VoxelDataByteLengths, VoxelDataIndexes, VoxelSubstanceMap, } from "../../Constants/Voxels/VoxelData.js";
+import { MatrixMap } from "./MatrixMap.js";
 export const VoxelMatrix = {
     byteLength: VoxelDataByteLengths,
     indexes: VoxelDataIndexes,
+    matrixMap: MatrixMap,
     substanceMap: VoxelSubstanceMap,
     voxelData: {
         substance: 0,
+        shapeId: 0,
+        hardness: 0,
+        material: 0,
+        checkCollision: 0,
+        colliderId: 0,
+        lightSource: 0,
+        lightValue: 0,
+    },
+    voxelDataMapped: {
+        substance: "solid",
         shapeId: 0,
         hardness: 0,
         material: 0,
@@ -84,6 +96,11 @@ export const VoxelMatrix = {
     getSubstance(id) {
         const index = this.voxelMap[id] * this.byteLength.totalLength;
         return this.voxelDataView.getUint8(this.indexes.substance + index);
+    },
+    getTrueSubstance(id) {
+        const index = this.voxelMap[id] * this.byteLength.totalLength;
+        const substnaceId = this.voxelDataView.getUint8(this.indexes.substance + index);
+        return this.matrixMap.substanceRecord[substnaceId];
     },
     getShapeId(id) {
         const index = this.voxelMap[id] * this.byteLength.totalLength;

@@ -6,10 +6,13 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
+import {
+ GetPlayerPickCube,
+ GetRenderPlayer,
+} from "../Shared/Player/Render/RenderPlayer.js";
 import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 
@@ -41,6 +44,8 @@ await DVER.$INIT({
  },
 });
 
+
+SyncWithGraphicsSettings(DVER);
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
@@ -59,10 +64,51 @@ const init = async () => {
 
  const model = await GetRenderPlayer(scene, canvas, DVER, DVEM);
 
+ const camera = <BABYLON.UniversalCamera>scene.activeCamera;
+
  const connectedPlayers: Record<
   number,
   { id: number; model: BABYLON.Mesh; data: DataView }
  > = {};
+
+ let pickVectorDV = new DataView(new ArrayBuffer(4 * 3 + 3));
+
+ const playerPickCube = GetPlayerPickCube();
+ DVER.worldComm.listenForMessage("connect-player-pick", (data) => {
+  console.log("got it ");
+  pickVectorDV = new DataView(data[1]);
+ });
+
+ const cameraPickPostion = new BABYLON.Vector3();
+ window.addEventListener("click", (event) => {
+  if (event.button == 2) {
+   cameraPickPostion.x = model.position.x;
+   cameraPickPostion.y = model.position.y;
+   cameraPickPostion.z = model.position.z;
+   cameraPickPostion.y += 0.75;
+   const camPick = scene.pickWithRay(
+    camera.getForwardRay(10, undefined, cameraPickPostion)
+   );
+
+   if (camPick) {
+    if (camPick.hit) {
+     if (camPick.pickedMesh && camPick.faceId !== undefined) {
+      let normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
+      console.log(normal);
+      pickVectorDV.setInt8(12, normal.x);
+      pickVectorDV.setInt8(13, normal.y);
+      pickVectorDV.setInt8(14, normal.z);
+     }
+    }
+   }
+   DVER.worldComm.sendMessage("voxel-add");
+   cameraPickPostion.setAll(0);
+  }
+
+  if (event.button == 0) {
+   DVER.worldComm.sendMessage("voxel-remove");
+  }
+ });
 
  DVER.worldComm.listenForMessage("remote-player-connect", (data) => {
   const playerId = data[1];
@@ -75,22 +121,35 @@ const init = async () => {
    model: newModel,
    data: dv,
   };
- 
  });
 
- setInterval(() => {
+ /*  setInterval(() => {
   for (const id of Object.keys(connectedPlayers)) {
    const player = connectedPlayers[Number(id)];
-   console.log(id,player.data.getFloat32(4), player.data.getFloat32(8));
+
+   //@ts-ignore
+   console.log(
+    pickVectorDV.getFloat32(0),
+    pickVectorDV.getFloat32(4),
+    pickVectorDV.getFloat32(8)
+   );
   }
  }, 2000);
+ */
+ const forward = new BABYLON.Vector3();
 
+ const offset = DVER.UTIL.degtoRad(270);
+ const forwardPoint = new BABYLON.Vector3();
  scene.registerBeforeRender(() => {
+  playerPickCube.position.x = pickVectorDV.getFloat32(0) + 0.5;
+  playerPickCube.position.y = pickVectorDV.getFloat32(4) + 0.5;
+  playerPickCube.position.z = pickVectorDV.getFloat32(8) + 0.5;
   for (const id of Object.keys(connectedPlayers)) {
    const player = connectedPlayers[Number(id)];
    player.model.position.x = player.data.getFloat32(4);
    player.model.position.y = player.data.getFloat32(8) - 1;
    player.model.position.z = player.data.getFloat32(12);
+   player.model.rotation.y = player.data.getFloat32(32) + offset;
   }
  });
 

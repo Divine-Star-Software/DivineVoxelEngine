@@ -5,8 +5,15 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const SolidMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
 
+ time: 0,
+
  getMaterial() {
   return this.material;
+ },
+
+ updateFogOptions(data: BABYLON.Vector4) {
+  if (!this.material) return;
+  this.material.setVector4("fogOptions", data);
  },
 
  setSunLightLevel(level: number) {
@@ -62,9 +69,6 @@ export const SolidMaterial = {
     true
    );
 
-
-
-   
   BABYLON.Effect.ShadersStore["solidVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "solid",
@@ -77,42 +81,48 @@ export const SolidMaterial = {
   BABYLON.Effect.ShadersStore["solidFragmentShader"] =
    DVER.renderManager.shaderBuilder.getDefaultFragmentShader("solid");
 
-  const shaderMaterial = new BABYLON.ShaderMaterial("solid", data.scene, "solid", {
-   attributes: [
-    "position",
-    "normal",
-    "faceData",
-    "ocuv3",
-    "cuv3",
-    "aoColors",
-    "colors",
-    "rgbLightColors",
-    "sunLightColors",
-   ],
-   uniforms: [
-    "world",
-    "view",
-    "cameraPosition",
-    "viewProjection",
-    "worldView",
-    "worldViewProjection",
-    "vFogInfos",
-    "vFogColor",
-    "sunLightLevel",
-    "baseLevel",
-    "projection",
-    "arrayTex",
-    "doAO",
-    "doSun",
-    "doRGB",
-    "doColor",
-    "time",
-    ...animData.uniforms,
-    ...overlayAnimData.uniforms,
-   ],
-   needAlphaBlending: false,
-   needAlphaTesting: true,
-  });
+  const shaderMaterial = new BABYLON.ShaderMaterial(
+   "solid",
+   data.scene,
+   "solid",
+   {
+    attributes: [
+     "position",
+     "normal",
+     "faceData",
+     "ocuv3",
+     "cuv3",
+     "aoColors",
+     "colors",
+     "rgbLightColors",
+     "sunLightColors",
+    ],
+    uniforms: [
+     "world",
+     "view",
+     "cameraPosition",
+     "viewProjection",
+     "worldView",
+     "worldViewProjection",
+     "vFogInfos",
+     "vFogColor",
+     "sunLightLevel",
+     "baseLevel",
+     "projection",
+     "arrayTex",
+     "doAO",
+     "doSun",
+     "doRGB",
+     "doColor",
+     "time",
+     "fogOptions",
+     ...animData.uniforms,
+     ...overlayAnimData.uniforms,
+    ],
+    needAlphaBlending: false,
+    needAlphaTesting: true,
+   }
+  );
   this.material = shaderMaterial;
   //this.material.forceDepthWrite = true;
   this.material.fogEnabled = true;
@@ -141,16 +151,16 @@ export const SolidMaterial = {
 
   DVER.renderManager.animationManager.registerMaterial("solid", this.material);
 
-
-  let time = 0;
-  data.scene.registerBeforeRender(function () {
-   time += 0.005;
-   shaderMaterial.setFloat("time", time);
-  });
-
   return this.material;
  },
  overrideMaterial(material: any) {
   this.material = material;
+ },
+
+ runEffects() {
+  if (DVER.renderManager.fogOptions.mode != "animated-volumetric") return;
+  if (!this.material) return;
+  this.time += 0.005;
+  this.material.setFloat("time", this.time);
  },
 };

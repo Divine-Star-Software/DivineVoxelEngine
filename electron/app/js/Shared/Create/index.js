@@ -47,6 +47,47 @@ export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = n
         nexusWorker: nexusWorker,
         dataWorker: dataWorker,
         fxWorker: fxWorker,
-        richWorldWorker: richWorldWorker
+        richWorldWorker: richWorldWorker,
     };
+};
+export const SyncWithGraphicsSettings = (DVER) => {
+    let grahpicsLevel = localStorage.getItem("graphics");
+    if (!grahpicsLevel)
+        grahpicsLevel = "medium";
+    if (grahpicsLevel == "low") {
+        DVER.renderManager.updateFogOptions({
+            mode: "exponential",
+        });
+        DVER.renderManager.updateShaderEffectOptions({
+            floraEffects: false,
+            fluidEffects: false,
+        });
+    }
+    if (grahpicsLevel == "medium") {
+        DVER.renderManager.updateFogOptions({
+            mode: "volumetric",
+        });
+        DVER.renderManager.updateShaderEffectOptions({
+            floraEffects: false,
+            fluidEffects: false,
+        });
+    }
+    if (grahpicsLevel == "high") {
+        DVER.renderManager.updateFogOptions({
+            mode: "volumetric",
+        });
+        DVER.renderManager.updateShaderEffectOptions({
+            floraEffects: true,
+            fluidEffects: true,
+        });
+    }
+    if (grahpicsLevel == "ultra") {
+        DVER.renderManager.updateFogOptions({
+            mode: "animated-volumetric",
+        });
+        DVER.renderManager.updateShaderEffectOptions({
+            floraEffects: true,
+            fluidEffects: true,
+        });
+    }
 };

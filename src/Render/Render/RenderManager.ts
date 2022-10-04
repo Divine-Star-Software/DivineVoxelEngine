@@ -1,5 +1,5 @@
 //types
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 //objects
 import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
@@ -21,8 +21,28 @@ import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { ItemMaterial } from "./Materials/Item/ItemMaterial.js";
 import { StandardSolidMaterial } from "./Materials/Solid/Standard/SolidMaterial.bjsmp.js";
 import { StandardFluidMaterial } from "./Materials/Fluid/Standard/FluidMaterial.bjsmp.js";
+import {
+ RenderFogOptions,
+ RenderEffectsOptions,
+} from "Meta/Render/Render/Render.options.types.js";
 
 export const RenderManager = {
+ fogOptions: <RenderFogOptions>{
+  mode: "volumetric",
+  density: 0.001,
+  color: new BABYLON.Color3(1, 1, 1),
+  volumetricOptions: {
+   heightFactor: 0.25,
+  },
+ },
+
+ fogData: new BABYLON.Vector4(1, .1, 0.5, 0),
+
+ effectOptions: <RenderEffectsOptions>{
+  floraEffects: false,
+  fluidEffects: false,
+ },
+
  shaderBuilder: ShaderBuilder,
  textureCreator: TextureCreator,
  animationManager: AnimationManager,
@@ -50,6 +70,56 @@ export const RenderManager = {
 
  setScene(scene: BABYLON.Scene) {
   this.scene = scene;
+ },
+
+ updateFogOptions(options: RecursivePartial<RenderFogOptions>) {
+  for (const key of Object.keys(options)) {
+   //@ts-ignore
+   const data = options[key];
+   if (typeof data == "object") {
+    for (const key2 of Object.keys(data)) {
+     const data2 = data[key2];
+     (this as any).fogOptions[key][key2] = data2;
+    }
+   } else {
+    (this as any).fogOptions[key] = data;
+   }
+  }
+
+  const fogData = new BABYLON.Vector4(0, 0, 0, 0);
+  if (this.fogOptions.mode == "volumetric") {
+   fogData.x = 1;
+  }
+  if (this.fogOptions.mode == "animated-volumetric") {
+   fogData.x = 2;
+  }
+  fogData.y = this.fogOptions.density;
+  fogData.z = this.fogOptions.volumetricOptions.heightFactor;
+  this.fogData = fogData;
+ },
+
+ _setFogData() {
+  const fogData = this.fogData;
+  this.solidMaterial.updateFogOptions(fogData);
+  this.fluidMaterial.updateFogOptions(fogData);
+  this.floraMaterial.updateFogOptions(fogData);
+  this.magmaMaterial.updateFogOptions(fogData);
+  this.itemMaterial.updateFogOptions(fogData);
+  this.skyBoxMaterial.updateFogOptions(fogData);
+ },
+
+ $INIT() {
+  this.updateFogOptions(this.fogOptions);
+  this._setFogData();
+ },
+
+ updateShaderEffectOptions(options: RecursivePartial<RenderEffectsOptions>) {
+  if (options.floraEffects !== undefined) {
+   this.effectOptions.floraEffects = options.floraEffects;
+  }
+  if (options.fluidEffects !== undefined) {
+   this.effectOptions.fluidEffects = options.fluidEffects;
+  }
  },
 
  syncSettings(settings: EngineSettingsData) {

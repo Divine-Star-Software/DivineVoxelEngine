@@ -1,4 +1,4 @@
-import type { VoxelData } from "out/Meta/index";
+import type { VoxelData } from "dve/Meta/index";
 
 export const DreamGrassVoxelData: VoxelData = {
  name: "Dream Grass",

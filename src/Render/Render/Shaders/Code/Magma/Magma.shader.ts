@@ -90,7 +90,7 @@ export const magmaShaders =  {
 
 
 
-        float fog = CalcFogFactor();
+        float fog = doFog();
         vec3 finalColor = fog * mixLight.rgb + (1.0 - fog) * vFogColor;
 
         gl_FragColor = vec4(finalColor.rgb , mixLight.w ); 

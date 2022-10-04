@@ -5,8 +5,22 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const FloraMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
 
+ doEffects: true,
+ time: 0,
  getMaterial() {
   return this.material;
+ },
+
+ updateFogOptions(data : BABYLON.Vector4) {
+    if(!this.material) return;
+    this.material.setVector4("fogOptions",data);
+ },
+
+ updateEffects(doEffects : boolean) {
+    this.doEffects = doEffects;
+    let v = doEffects ? 1 : 0;
+    if(!this.material) return;
+    this.material.setFloat("doEffect",v);
  },
 
  setSunLightLevel(level: number) {
@@ -46,6 +60,11 @@ export const FloraMaterial = {
   } else {
    this.material.setFloat("doColor", 0.0);
   }
+  if(DVER.renderManager.effectOptions.fluidEffects) {
+    this.material.setFloat("doEffects",1);
+  } else {
+    this.material.setFloat("doEffects",0);  
+  }
  },
 
  createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
@@ -61,7 +80,6 @@ export const FloraMaterial = {
     data.overlayAnimationTimes,
     true
    );
-
 
   BABYLON.Effect.ShadersStore["floraVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
@@ -108,6 +126,8 @@ export const FloraMaterial = {
      "doSun",
      "doRGB",
      "doColor",
+     "doEffects",
+     "fogOptions",
      ...animData.uniforms,
      ...overlayAnimData.uniforms,
     ],
@@ -122,8 +142,8 @@ export const FloraMaterial = {
 
   shaderMaterial.setTexture("arrayTex", data.texture);
   shaderMaterial.setTexture("overlayTex", data.overlayTexture);
- // shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
- // shaderMaterial.backFaceCulling = false;
+  // shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
+  // shaderMaterial.backFaceCulling = false;
   // shaderMaterial.separateCullingPass = false;
   // shaderMaterial.needDepthPrePass = true;
 
@@ -143,11 +163,7 @@ export const FloraMaterial = {
    effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
   };
 
-  let time = 0;
-  data.scene.registerBeforeRender(function () {
-   time += 0.005;
-   shaderMaterial.setFloat("time", time);
-  });
+
 
   this.material = shaderMaterial;
 
@@ -155,5 +171,16 @@ export const FloraMaterial = {
 
   this.updateMaterialSettings(data.settings);
   return this.material;
+ },
+
+ runEffects() {
+  if (
+   !this.doEffects &&
+   DVER.renderManager.fogOptions.mode != "animated-volumetric"
+  )
+   return;
+  if (!this.material) return;
+  this.time += 0.005;
+  this.material.setFloat("time", this.time);
  },
 };

@@ -23,7 +23,7 @@ const homeButton = document.createElement("button");
 homeButton.className = "gui-button";
 homeButton.innerText = "Home";
 homeButton.addEventListener("click", () => {
- localStorage.clear();
+ localStorage.removeItem("current-world")
  ipcRenderer.send("home", "go-home");
 });
 

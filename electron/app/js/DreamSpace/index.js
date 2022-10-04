@@ -1,5 +1,5 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers } from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { Player } from "./Player/Player.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
@@ -32,6 +32,7 @@ await DVER.$INIT({
         clearChachedGeometry: false,
     },
 });
+SyncWithGraphicsSettings(DVER);
 const init = async () => {
     const player = new Player(DVER);
     const canvas = SetUpCanvas();

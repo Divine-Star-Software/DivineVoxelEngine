@@ -36,6 +36,7 @@ export declare const IlluminationManager: {
         isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
         sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
         removeSunLight(sl: number): number;
+        minusOneForAll(sl: number): number;
     };
     air: number[];
     runSunLightUpdateAt: typeof runSunLightUpdateAt;

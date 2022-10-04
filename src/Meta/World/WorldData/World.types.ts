@@ -4,6 +4,8 @@ export type WorldRegion = {
  chunks: Record<string, Record<string, ChunkData>>;
 };
 
+export type WorldDimensions = Record<string,Record<string, WorldRegion>>;
+
 export type RichWorldRegion = {
  chunks: Record<string, Record<string, RichChunk>>;
 };

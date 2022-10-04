@@ -1,2 +1,2 @@
-import { VoxelData } from "out/Meta/index";
+import { VoxelData } from "dve/Meta/index";
 export declare const DataHolderVoxelData: VoxelData;

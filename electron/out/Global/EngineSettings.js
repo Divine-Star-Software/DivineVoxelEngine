@@ -19,6 +19,9 @@ export const EngineSettings = {
             autoSyncChunks: true,
             autoSyncVoxelPalette: true,
         },
+        server: {
+            enabled: false
+        },
         richWorld: {
             enabled: false,
             autoSyncChunks: true,

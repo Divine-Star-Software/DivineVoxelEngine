@@ -1,8 +1,22 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const FloraMaterial = {
     material: null,
+    doEffects: true,
+    time: 0,
     getMaterial() {
         return this.material;
+    },
+    updateFogOptions(data) {
+        if (!this.material)
+            return;
+        this.material.setVector4("fogOptions", data);
+    },
+    updateEffects(doEffects) {
+        this.doEffects = doEffects;
+        let v = doEffects ? 1 : 0;
+        if (!this.material)
+            return;
+        this.material.setFloat("doEffect", v);
     },
     setSunLightLevel(level) {
         if (!this.material) {
@@ -44,6 +58,12 @@ export const FloraMaterial = {
         else {
             this.material.setFloat("doColor", 0.0);
         }
+        if (DVER.renderManager.effectOptions.fluidEffects) {
+            this.material.setFloat("doEffects", 1);
+        }
+        else {
+            this.material.setFloat("doEffects", 0);
+        }
     },
     createMaterial(data) {
         const animData = DVER.renderManager.animationManager.registerAnimations("flora", data.animations, data.animationTimes);
@@ -82,6 +102,8 @@ export const FloraMaterial = {
                 "doSun",
                 "doRGB",
                 "doColor",
+                "doEffects",
+                "fogOptions",
                 ...animData.uniforms,
                 ...overlayAnimData.uniforms,
             ],
@@ -106,14 +128,18 @@ export const FloraMaterial = {
             effect.setColor3("vFogColor", scene.fogColor);
             effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
-        let time = 0;
-        data.scene.registerBeforeRender(function () {
-            time += 0.005;
-            shaderMaterial.setFloat("time", time);
-        });
         this.material = shaderMaterial;
         DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
         this.updateMaterialSettings(data.settings);
         return this.material;
+    },
+    runEffects() {
+        if (!this.doEffects &&
+            DVER.renderManager.fogOptions.mode != "animated-volumetric")
+            return;
+        if (!this.material)
+            return;
+        this.time += 0.005;
+        this.material.setFloat("time", this.time);
     },
 };

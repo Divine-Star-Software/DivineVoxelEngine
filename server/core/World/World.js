@@ -1,6 +1,6 @@
 import { RegisterVoxels } from "../Data/Functions/RegisterVoxelData.js";
 import { WebSocketServer } from "ws";
-import { DVEW } from "../../out/World/DivineVoxelEngineWorld.js";
+import { DVEW } from "../../dve/World/DivineVoxelEngineWorld.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT({});
@@ -92,6 +92,35 @@ wss.on("connection", function connection(ws) {
         if (message == 200) {
             connections[id].dataPackets.push(data);
         }
+        if (message == 300) {
+            //added voxel
+            dv.setUint16(0, 500);
+            const clientId = dv.getUint16(2);
+            const v1 = dv.getUint32(4);
+            const v2 = dv.getUint32(8);
+            const x = dv.getFloat32(12);
+            const y = dv.getFloat32(16);
+            const z = dv.getFloat32(20);
+            DVEW.worldData.requestVoxelAddFromRaw(v1, v2, x, y, z);
+            updateClients((con) => {
+                con.socket.send(dv.buffer);
+            }, clientId);
+            severMessage("VOXEL ADD", [clientId]);
+        }
+        if (message == 400) {
+            //added voxel
+            dv.setUint16(0, 600);
+            const clientId = dv.getUint16(2);
+            const x = dv.getFloat32(4);
+            const y = dv.getFloat32(8);
+            const z = dv.getFloat32(12);
+            DVEW.worldData.requestVoxelBeRemoved(x, y, z);
+            console.log(x, y, z);
+            updateClients((con) => {
+                con.socket.send(dv.buffer);
+            }, clientId);
+            severMessage("VOXEL REMOVE", [clientId]);
+        }
     });
 });
 const updateClients = (run, ignoreId = -1) => {
@@ -113,7 +142,6 @@ const sendAllPlayer = (clientId) => {
         clientConnection.socket.send(packet);
     }, clientId);
 };
-const sendPlayer = (playerId) => { };
 setInterval(() => {
     updateClients((connection) => {
         if (connection.dataPackets.length > 0) {

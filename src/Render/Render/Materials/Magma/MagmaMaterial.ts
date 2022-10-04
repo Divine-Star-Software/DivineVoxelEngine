@@ -8,6 +8,13 @@ export const MagmaMaterial = {
   return this.material;
  },
 
+ time: 0,
+
+ updateFogOptions(data : BABYLON.Vector4) {
+    if(!this.material) return;
+    this.material.setVector4("fogOptions",data);
+ },
+
  updateMaterialSettings(settings: EngineSettingsData) {
   if (!this.material) {
    throw new Error("Material must be created first before it can be updated.");
@@ -41,12 +48,12 @@ export const MagmaMaterial = {
    data.animationTimes
   );
   const overlayAnimData =
-  DVER.renderManager.animationManager.registerAnimations(
-   "magma",
-   data.overlayAnimations,
-   data.overlayAnimationTimes,
-   true
-  );
+   DVER.renderManager.animationManager.registerAnimations(
+    "magma",
+    data.overlayAnimations,
+    data.overlayAnimationTimes,
+    true
+   );
 
   BABYLON.Effect.ShadersStore["magmaVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
@@ -86,6 +93,7 @@ export const MagmaMaterial = {
      "projection",
      "anim1Index",
      "arrayTex",
+     "fogOptions",
      ...animData.uniforms,
      ...overlayAnimData.uniforms,
     ],
@@ -120,5 +128,11 @@ export const MagmaMaterial = {
   DVER.renderManager.animationManager.registerMaterial("magma", shaderMaterial);
 
   return this.material;
+ },
+
+ runEffects() {
+  if (!this.material) return;
+  this.time += 0.005;
+  this.material.setFloat("time", this.time);
  },
 };
