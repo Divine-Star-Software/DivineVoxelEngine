@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import { EngineSettingsData } from "Meta/index.js";
 import { ItemMeshSetData } from "Meta/Render/Meshes/ItemMesh.types.js";
 export declare const ItemMesh: {

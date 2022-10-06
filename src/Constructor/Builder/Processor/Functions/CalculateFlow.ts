@@ -91,23 +91,25 @@ const calculateFlowV = (
 
  let finalLevel = cl;
  let totalZero = true;
- for (let i = 0; i < 6; i += 2) {
-  const cx = checkSet[i] + x;
-  const cz = checkSet[i + 1] + z;
+ for (let iy = 0; iy < 2; iy++) {
+  for (let i = 0; i < 6; i += 2) {
+   const cx = checkSet[i] + x;
+   const cz = checkSet[i + 1] + z;
 
-  const level = getLevel(process, cx, y, cz);
+   const level = getLevel(process, cx, y + iy, cz);
 
-  if (level == 15) {
-   finalLevel = 15;
-   totalZero = false;
-   break;
-  }
+   if (level == 15) {
+    finalLevel = 15;
+    totalZero = false;
+    break;
+   }
 
-  if (level > 0) {
-   totalZero = false;
-  }
-  if (finalLevel < level) {
-   finalLevel += 2;
+   if (level > 0) {
+    totalZero = false;
+   }
+   if (finalLevel < level) {
+    finalLevel += level - finalLevel;
+   }
   }
  }
  if (finalLevel > 15) finalLevel = 15;

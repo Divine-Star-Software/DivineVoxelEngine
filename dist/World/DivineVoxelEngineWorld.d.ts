@@ -489,7 +489,7 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -568,7 +568,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -1483,7 +1483,7 @@ export declare const DVEW: {
         areSunLightRemovesAllDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
-        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
+        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         runRGBRemoveQue(): void;
         awaitAllRGBLightUpdates(): Promise<boolean>;
         awaitAllRGBLightRemove(): Promise<boolean>;
@@ -1491,14 +1491,14 @@ export declare const DVEW: {
         areRGBLightRemovesAllDone(): boolean;
         addToFlowRunQue(x: number, y: number, z: number): void;
         addToFlowRemoveQue(x: number, y: number, z: number): void;
-        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
+        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         runFlowRemoveQue(): void;
         awaitAllFlowRuns(): Promise<boolean>;
         awaitAllFlowRemoves(): Promise<boolean>;
         areFlowRunsAllDone(): boolean;
         areFlowRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 2 | 1) | undefined): void;
+        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
         addToRebuildQueTotal(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
         areAllChunksDoneBuilding(): boolean;
