@@ -2,7 +2,7 @@ import type { DVESInitData } from "Meta/Server/DVES";
 import { EngineSettingsData } from "Meta/index.js";
 export declare const DVES: {
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -81,7 +81,7 @@ export declare const DVES: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -175,7 +175,19 @@ export declare const DVES: {
         doRGBPropagation(): boolean;
         doLight(): boolean;
     };
-    worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
+    worldComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    };
     constructorCommManager: {
         count: number;
         constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
@@ -334,6 +346,7 @@ export declare const DVES: {
             setChunkMaxData(chunkData: DataView, data: number): void;
         };
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
+        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;

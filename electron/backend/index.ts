@@ -18,7 +18,7 @@ app.disableDomainBlockingFor3DAPIs();
 app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
 app.commandLine.appendSwitch ("disable-http-cache");
 const APP_INIT = async () => {
- session.defaultSession.webRequest.onHeadersReceived(
+/*  session.defaultSession.webRequest.onHeadersReceived(
   (details: any, callback: any) => {
    //enable headers to enable shared array buffer
    callback({
@@ -29,7 +29,7 @@ const APP_INIT = async () => {
     },
    });
   }
- );
+ ); */
  const editorWindow = await CreateMainWindow();
  //const worker = new Worker("./electronstart/server/index.js");
 };

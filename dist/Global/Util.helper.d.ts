@@ -68,6 +68,7 @@ export declare const Util: {
         setChunkMaxData(chunkData: DataView, data: number): void;
     };
     getAQueue<T>(): Queue<T>;
+    merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
     getEntityFlat3dArray(): {
         bounds: {
             x: number;

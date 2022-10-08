@@ -30,7 +30,7 @@ vec3 p = position;
 
 if(doEffects == 1.){
 float height = fbm(posWorld.xz * 0.08 + time);
-p.y += height * 0.08 - .1;
+p.y += height * 0.08 - .13;
 }
 
 

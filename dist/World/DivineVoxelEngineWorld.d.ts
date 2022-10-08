@@ -240,6 +240,7 @@ export declare const DVEW: {
             setChunkMaxData(chunkData: DataView, data: number): void;
         };
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
+        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -489,7 +490,7 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -568,7 +569,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -925,14 +926,74 @@ export declare const DVEW: {
         setShapeMap(shapeMap: Record<string, number>): void;
         flush(): void;
     };
-    fxComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
-    dataComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
-    nexusComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
-    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+    fxComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    };
+    dataComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    };
+    nexusComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    };
+    renderComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    } & {
         onReady: () => void;
         onRestart: () => void;
     };
-    serverComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+    serverComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    } & {
         onReady: () => void;
         onRestart: () => void;
     };
@@ -952,7 +1013,7 @@ export declare const DVEW: {
         __handleCount(): number;
         requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): number;
         runRGBLightUpdate(x: number, y: number, z: number): number;
-        runRGBUpdate(x: number, y: number, z: number): number;
+        runRGBLightRemove(x: number, y: number, z: number): number;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
         runSunFillAtMaxY(x: number, y: number, maxY: number): number;
         runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
@@ -964,7 +1025,19 @@ export declare const DVEW: {
         constructEntity(x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]): number;
         constructItem(itemId: string, x: number, y: number, z: number): number;
     };
-    richWorldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+    richWorldComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    } & {
         setInitalData(voxelId: string, x: number, y: number, z: number): void;
         removeRichData(x: number, y: number, z: number): void;
     };
@@ -1446,9 +1519,6 @@ export declare const DVEW: {
         onRegister(func: (data: import("../Meta/Items/Item.types.js").ItemData) => void): void;
     };
     queues: {
-        _numChunksRebuilding: number;
-        _numRGBLightUpdates: number;
-        _numRGBLightRemoves: number;
         _RGBLightRemoveQue: number[][];
         _RGBLightUpdateQue: number[][];
         _SunLightRemoveQue: number[][];
@@ -1465,6 +1535,8 @@ export declare const DVEW: {
         __statesSAB: SharedArrayBuffer;
         __states: Uint32Array;
         $INIT(): void;
+        _syncQueue(queueId: string, buffer: SharedArrayBuffer): void;
+        _unSyncQueue(queueId: string): void;
         addWorldColumnToSunLightQue(x: number, z: number): void;
         runWorldColumnSunLightAndUpateQue(): Promise<void>;
         awaitAllWorldColumnSunLightProp(): Promise<boolean>;
@@ -1483,7 +1555,7 @@ export declare const DVEW: {
         areSunLightRemovesAllDone(): boolean;
         addToRGBUpdateQue(x: number, y: number, z: number): void;
         addToRGBRemoveQue(x: number, y: number, z: number): void;
-        runRGBUpdateQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runRGBUpdateQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
         runRGBRemoveQue(): void;
         awaitAllRGBLightUpdates(): Promise<boolean>;
         awaitAllRGBLightRemove(): Promise<boolean>;
@@ -1491,20 +1563,112 @@ export declare const DVEW: {
         areRGBLightRemovesAllDone(): boolean;
         addToFlowRunQue(x: number, y: number, z: number): void;
         addToFlowRemoveQue(x: number, y: number, z: number): void;
-        runFlowRuneQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runFlowRuneQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
         runFlowRemoveQue(): void;
         awaitAllFlowRuns(): Promise<boolean>;
         awaitAllFlowRemoves(): Promise<boolean>;
         areFlowRunsAllDone(): boolean;
         areFlowRemovesAllDone(): boolean;
         addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        runRebuildQue(filter?: ((x: number, y: number, z: number) => 0 | 1 | 2) | undefined): void;
+        runRebuildQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
         addToRebuildQueTotal(): void;
         awaitAllChunksToBeBuilt(): Promise<boolean>;
         areAllChunksDoneBuilding(): boolean;
         addToGenerationTotal(): void;
         areAllGenerationsDone(): boolean;
         awaitAllGenerationsToBeDone(): Promise<boolean>;
+        rgb: {
+            update: {
+                __queueData: Record<string, {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                }>;
+                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
+                __getQueueKey(data: any): string;
+                __getQueueData(id: string): {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                };
+                addQueue(queueId: string): void;
+                removeQueue(queueId: string): void;
+                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                awaitAll(queueId?: string): Promise<boolean>;
+                isDone(queueId?: string): boolean;
+            };
+            remove: {
+                __queueData: Record<string, {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                }>;
+                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
+                __getQueueKey(data: any): string;
+                __getQueueData(id: string): {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                };
+                addQueue(queueId: string): void;
+                removeQueue(queueId: string): void;
+                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                awaitAll(queueId?: string): Promise<boolean>;
+                isDone(queueId?: string): boolean;
+            };
+        };
+        sun: {
+            update: {
+                __queueData: Record<string, {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                }>;
+                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
+                __getQueueKey(data: any): string;
+                __getQueueData(id: string): {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                };
+                addQueue(queueId: string): void;
+                removeQueue(queueId: string): void;
+                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                awaitAll(queueId?: string): Promise<boolean>;
+                isDone(queueId?: string): boolean;
+            };
+            remove: {
+                __queueData: Record<string, {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                }>;
+                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
+                __getQueueKey(data: any): string;
+                __getQueueData(id: string): {
+                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+                    map: Record<string, boolean>;
+                    stateSAB: SharedArrayBuffer;
+                    state: Uint32Array;
+                };
+                addQueue(queueId: string): void;
+                removeQueue(queueId: string): void;
+                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                awaitAll(queueId?: string): Promise<boolean>;
+                isDone(queueId?: string): boolean;
+            };
+        };
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;

@@ -1,9 +1,7 @@
 import { VoxelSubstanceType } from "Meta/index";
-declare type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
+import { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
+export declare type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
 export declare const QueuesManager: {
-    _numChunksRebuilding: number;
-    _numRGBLightUpdates: number;
-    _numRGBLightRemoves: number;
     _RGBLightRemoveQue: number[][];
     _RGBLightUpdateQue: number[][];
     _SunLightRemoveQue: number[][];
@@ -20,6 +18,8 @@ export declare const QueuesManager: {
     __statesSAB: SharedArrayBuffer;
     __states: Uint32Array;
     $INIT(): void;
+    _syncQueue(queueId: string, buffer: SharedArrayBuffer): void;
+    _unSyncQueue(queueId: string): void;
     addWorldColumnToSunLightQue(x: number, z: number): void;
     runWorldColumnSunLightAndUpateQue(): Promise<void>;
     awaitAllWorldColumnSunLightProp(): Promise<boolean>;
@@ -73,5 +73,96 @@ export declare const QueuesManager: {
     addToGenerationTotal(): void;
     areAllGenerationsDone(): boolean;
     awaitAllGenerationsToBeDone(): Promise<boolean>;
+    rgb: {
+        update: {
+            __queueData: Record<string, {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            }>;
+            onRun: (data: LightUpdateTask) => void;
+            __getQueueKey(data: any): string;
+            __getQueueData(id: string): {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            };
+            addQueue(queueId: string): void;
+            removeQueue(queueId: string): void;
+            add(data: LightUpdateTask, queueId?: string): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            awaitAll(queueId?: string): Promise<boolean>;
+            isDone(queueId?: string): boolean;
+        };
+        remove: {
+            __queueData: Record<string, {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            }>;
+            onRun: (data: LightUpdateTask) => void;
+            __getQueueKey(data: any): string;
+            __getQueueData(id: string): {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            };
+            addQueue(queueId: string): void;
+            removeQueue(queueId: string): void;
+            add(data: LightUpdateTask, queueId?: string): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            awaitAll(queueId?: string): Promise<boolean>;
+            isDone(queueId?: string): boolean;
+        };
+    };
+    sun: {
+        update: {
+            __queueData: Record<string, {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            }>;
+            onRun: (data: LightUpdateTask) => void;
+            __getQueueKey(data: any): string;
+            __getQueueData(id: string): {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            };
+            addQueue(queueId: string): void;
+            removeQueue(queueId: string): void;
+            add(data: LightUpdateTask, queueId?: string): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            awaitAll(queueId?: string): Promise<boolean>;
+            isDone(queueId?: string): boolean;
+        };
+        remove: {
+            __queueData: Record<string, {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            }>;
+            onRun: (data: LightUpdateTask) => void;
+            __getQueueKey(data: any): string;
+            __getQueueData(id: string): {
+                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
+                map: Record<string, boolean>;
+                stateSAB: SharedArrayBuffer;
+                state: Uint32Array;
+            };
+            addQueue(queueId: string): void;
+            removeQueue(queueId: string): void;
+            add(data: LightUpdateTask, queueId?: string): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            awaitAll(queueId?: string): Promise<boolean>;
+            isDone(queueId?: string): boolean;
+        };
+    };
 };
-export {};

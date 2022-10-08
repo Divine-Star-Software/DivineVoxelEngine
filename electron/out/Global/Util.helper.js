@@ -29,6 +29,9 @@ export const Util = {
     getAQueue() {
         return new Queue();
     },
+    merge(target, newObject) {
+        return Object.assign(target, newObject);
+    },
     getEntityFlat3dArray() {
         return EntityFlat3dArray;
     },

@@ -1,28 +1,32 @@
-import type { InterCommInterface } from "Meta/Comms/InterComm.types";
-import type { NodeWorker } from "Meta/Comms/NodeWorker.interface";
+import type { InterCommPortTypes, NodeWorker } from "./InterComm.types";
 
-const commBase: InterCommInterface = {
- environment: "browser",
- name: "",
- port: null,
- __onSetPortRun: () => {},
- onSetPort: function (set) {
+class InterCommBase {
+ environment: "node" | "browser" = "browser";
+ name = "";
+ port: InterCommPortTypes | null = null;
+ messageFunctions: Record<
+  string | number,
+  (data: any, event?: MessageEvent) => void
+ > = {};
+ __onSetPortRun: (port: InterCommPortTypes) => void = (port) => {};
+ onSetPort(set: (port: InterCommPortTypes) => void) {
   this.__onSetPortRun = set;
- },
- setPort: function (port) {
+ }
+ setPort(port: InterCommPortTypes) {
   if (!port) {
    throw new Error(`DVE InterComm: ${this.name} port is not set.`);
   }
   this.port = port;
   this.__onSetPortRun(port);
   if (this.environment == "browser") {
-   (port as any).onmessage = (event: MessageEvent) => {
+   (port as MessagePort).onmessage = (event: MessageEvent) => {
     const message = event.data[0];
     if (this.messageFunctions[message]) {
      this.messageFunctions[message](event.data, event);
     }
     this.onMessage(event);
    };
+   (port as MessagePort).onmessageerror = (event: MessageEvent) => {};
   }
   if (this.environment == "node") {
    (port as NodeWorker).on("message", (data: any[]) => {
@@ -33,37 +37,35 @@ const commBase: InterCommInterface = {
     this.onMessage(data);
    });
   }
- },
- messageFunctions: {},
- sendMessage: function (
-  message: string | number,
-  data: any[] = [],
-  transfers?: any[]
- ) {
+ }
+ _errorMessage(message: string) {
+  throw new Error(`[DVE InterComm : ${this.name}] ${message}`);
+ }
+ sendMessage(message: string | number, data: any[] = [], transfers?: any[]) {
   if (!this.port) {
-   throw new Error(`DVE InterComm : ${this.name} port is not set.`);
+   return this._errorMessage("Port is not set.");
   }
-  if (transfers) {
+  if (this.environment == "browser" && transfers) {
    this.port.postMessage([message, ...data], transfers);
    return;
   }
   this.port.postMessage([message, ...data]);
- },
- listenForMessage: function (
+ }
+ listenForMessage(
   message: string | number,
   run: (data: any[], event?: MessageEvent) => void
  ) {
   this.messageFunctions[message] = run;
- },
- onMessage: (event) => {},
-};
+ }
+ onMessage(event: any) {}
+}
 
 export function CreateInterComm<T>(
  name: string,
  mergeObject: T
-): InterCommInterface & T {
- const newCom = Object.assign<InterCommInterface, typeof mergeObject>(
-  Object.create(commBase),
+): InterCommBase & T {
+ const newCom = Object.assign<InterCommBase, typeof mergeObject>(
+  new InterCommBase(),
   mergeObject
  );
  newCom.name = name;
@@ -74,4 +76,3 @@ export function CreateInterComm<T>(
  }
  return newCom;
 }
-

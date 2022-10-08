@@ -3,15 +3,12 @@ import { VoxelSubstanceType } from "Meta/index";
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { QueuesIndexes } from "../../Constants/Queues.js";
+import { GetQueue } from "./GetQueue.js";
+import { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
 
-type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
+export type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
 
-export const QueuesManager = {
- _numChunksRebuilding: 0,
-
- _numRGBLightUpdates: 0,
- _numRGBLightRemoves: 0,
-
+const QMBase = {
  _RGBLightRemoveQue: <number[][]>[],
  _RGBLightUpdateQue: <number[][]>[],
 
@@ -37,6 +34,14 @@ export const QueuesManager = {
  $INIT() {
   this.__states = new Uint32Array(this.__statesSAB);
   DVEW.constructorCommManager.$INIT(this.__statesSAB);
+ },
+
+ _syncQueue(queueId: string, buffer: SharedArrayBuffer) {
+  //sync data with DVEC
+ },
+
+ _unSyncQueue(queueId: string) {
+  //un-sync data with DVEC
  },
 
  addWorldColumnToSunLightQue(x: number, z: number) {
@@ -107,7 +112,7 @@ export const QueuesManager = {
  awaitAllWorldColumnSunLightProp() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areWorldColumnSunLightUpdatsDone();
+    return QMBase.areWorldColumnSunLightUpdatsDone();
    },
    checkInterval: 1,
   });
@@ -120,7 +125,7 @@ export const QueuesManager = {
  awaitAllSunLightUpdatesAtMaxY() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areAllSunLightUpdatesAtMaxYDone();
+    return QMBase.areAllSunLightUpdatesAtMaxYDone();
    },
    checkInterval: 1,
   });
@@ -132,7 +137,7 @@ export const QueuesManager = {
  awaitAllSunLightUpdatesMaxYFlood() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areAllSunLightUpdatesMaxYFloodDone();
+    return QMBase.areAllSunLightUpdatesMaxYFloodDone();
    },
    checkInterval: 1,
   });
@@ -186,7 +191,7 @@ export const QueuesManager = {
  awaitAllSunLightUpdates() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areSunLightUpdatesAllDone();
+    return QMBase.areSunLightUpdatesAllDone();
    },
    checkInterval: 1,
   });
@@ -194,7 +199,7 @@ export const QueuesManager = {
  awaitAllSunLightRemove() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areSunLightRemovesAllDone();
+    return QMBase.areSunLightRemovesAllDone();
    },
    checkInterval: 1,
   });
@@ -256,7 +261,7 @@ export const QueuesManager = {
    const position = queue.shift();
    if (!position) break;
    Atomics.add(this.__states, QueuesIndexes.RGBLightRemove, 1);
-   DVEW.constructorCommManager.runRGBUpdate(
+   DVEW.constructorCommManager.runRGBLightRemove(
     position[0],
     position[1],
     position[2]
@@ -268,7 +273,7 @@ export const QueuesManager = {
  awaitAllRGBLightUpdates() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areRGBLightUpdatesAllDone();
+    return QMBase.areRGBLightUpdatesAllDone();
    },
    checkInterval: 1,
   });
@@ -276,7 +281,7 @@ export const QueuesManager = {
  awaitAllRGBLightRemove() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areRGBLightRemovesAllDone();
+    return QMBase.areRGBLightRemovesAllDone();
    },
    checkInterval: 1,
   });
@@ -346,7 +351,7 @@ export const QueuesManager = {
  awaitAllFlowRuns() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areFlowRunsAllDone();
+    return QMBase.areFlowRunsAllDone();
    },
    checkInterval: 1,
   });
@@ -354,7 +359,7 @@ export const QueuesManager = {
  awaitAllFlowRemoves() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areFlowRemovesAllDone();
+    return QMBase.areFlowRemovesAllDone();
    },
    checkInterval: 1,
   });
@@ -368,7 +373,7 @@ export const QueuesManager = {
  },
 
  /**
-  * 
+  *
   * Chunks
   */
 
@@ -430,7 +435,7 @@ export const QueuesManager = {
  awaitAllChunksToBeBuilt() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areAllChunksDoneBuilding();
+    return QMBase.areAllChunksDoneBuilding();
    },
    checkInterval: 1,
   });
@@ -451,9 +456,38 @@ export const QueuesManager = {
  awaitAllGenerationsToBeDone() {
   return DVEW.UTIL.createPromiseCheck({
    check: () => {
-    return QueuesManager.areAllGenerationsDone();
+    return QMBase.areAllGenerationsDone();
    },
    checkInterval: 1,
   });
  },
+
+ rgb: {
+  update: GetQueue<LightUpdateTask>((data) => {
+   DVEW.constructorCommManager.runRGBLightUpdate(data[0], data[1], data[2]);
+  }),
+  remove: GetQueue<LightUpdateTask>((data) => {
+   DVEW.constructorCommManager.runRGBLightRemove(data[0], data[1], data[2]);
+  }),
+ },
+
+ sun: {
+  update: GetQueue<LightUpdateTask>((data) => {
+   DVEW.constructorCommManager.runSunLightUpdate(data[0], data[1], data[2]);
+  }),
+  remove: GetQueue<LightUpdateTask>((data) => {
+   DVEW.constructorCommManager.runSunLightRemove(data[0], data[1], data[2]);
+  }),
+ },
 };
+
+export const QueuesManager = QMBase;
+
+/* QueuesManager.rgb.update.addQueue("specific-region");
+QueuesManager.rgb.update.add([0, 0, 0]);
+QueuesManager.rgb.update.run("specfic-region");
+await QueuesManager.rgb.update.awaitAll();
+
+QueuesManager.rgb.update.add([0, 0, 0]);
+QueuesManager.rgb.remove.add([0, 0, 0]);
+await QueuesManager.rgb.remove.awaitAll(); */

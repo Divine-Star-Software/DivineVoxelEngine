@@ -13,7 +13,7 @@ import { EntityFlat3dArray } from "./Util/EntityFlat3dArray.js";
 import { Queue } from "./Util/Queue.js";
 import { ChunkReader } from "./Util/ChunkReader.js";
 
-export const Util = { 
+export const Util = {
  createPromiseCheck: CreatePromiseCheck,
  getWorkerPort: GetWorkerPort,
  getEnviorment(): "node" | "browser" {
@@ -32,6 +32,11 @@ export const Util = {
  getAQueue<T>() {
   return new Queue<T>();
  },
+
+ merge<T, K>(target: T, newObject: K): T & K {
+  return <T & K>Object.assign(target as any, newObject);
+ },
+
  getEntityFlat3dArray() {
   return EntityFlat3dArray;
  },

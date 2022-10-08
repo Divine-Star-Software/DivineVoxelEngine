@@ -16,16 +16,18 @@ app.disableDomainBlockingFor3DAPIs();
 app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
 app.commandLine.appendSwitch("disable-http-cache");
 const APP_INIT = async () => {
-    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-        //enable headers to enable shared array buffer
-        callback({
-            responseHeaders: {
-                ...details.responseHeaders,
-                "Cross-Origin-Embedder-Policy": ["require-corp"],
-                "Cross-Origin-Opener-Policy": ["same-origin"],
-            },
-        });
-    });
+    /*  session.defaultSession.webRequest.onHeadersReceived(
+      (details: any, callback: any) => {
+       //enable headers to enable shared array buffer
+       callback({
+        responseHeaders: {
+         ...details.responseHeaders,
+         "Cross-Origin-Embedder-Policy": ["require-corp"],
+         "Cross-Origin-Opener-Policy": ["same-origin"],
+        },
+       });
+      }
+     ); */
     const editorWindow = await CreateMainWindow();
     //const worker = new Worker("./electronstart/server/index.js");
 };

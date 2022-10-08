@@ -73,7 +73,7 @@ export const ConstructorCommManager = {
         comm.sendMessage(WorldToConstructorMessages.RGBlightUpdate, [x, y, z]);
         return this.__handleCount();
     },
-    runRGBUpdate(x, y, z) {
+    runRGBLightRemove(x, y, z) {
         const comm = this.constructors[this.count];
         comm.sendMessage(WorldToConstructorMessages.RGBlightRemove, [x, y, z]);
         return this.__handleCount();

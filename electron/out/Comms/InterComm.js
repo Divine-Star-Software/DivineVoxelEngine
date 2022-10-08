@@ -1,12 +1,13 @@
-const commBase = {
-    environment: "browser",
-    name: "",
-    port: null,
-    __onSetPortRun: () => { },
-    onSetPort: function (set) {
+class InterCommBase {
+    environment = "browser";
+    name = "";
+    port = null;
+    messageFunctions = {};
+    __onSetPortRun = (port) => { };
+    onSetPort(set) {
         this.__onSetPortRun = set;
-    },
-    setPort: function (port) {
+    }
+    setPort(port) {
         if (!port) {
             throw new Error(`DVE InterComm: ${this.name} port is not set.`);
         }
@@ -20,6 +21,7 @@ const commBase = {
                 }
                 this.onMessage(event);
             };
+            port.onmessageerror = (event) => { };
         }
         if (this.environment == "node") {
             port.on("message", (data) => {
@@ -30,25 +32,27 @@ const commBase = {
                 this.onMessage(data);
             });
         }
-    },
-    messageFunctions: {},
-    sendMessage: function (message, data = [], transfers) {
+    }
+    _errorMessage(message) {
+        throw new Error(`[DVE InterComm : ${this.name}] ${message}`);
+    }
+    sendMessage(message, data = [], transfers) {
         if (!this.port) {
-            throw new Error(`DVE InterComm : ${this.name} port is not set.`);
+            return this._errorMessage("Port is not set.");
         }
-        if (transfers) {
+        if (this.environment == "browser" && transfers) {
             this.port.postMessage([message, ...data], transfers);
             return;
         }
         this.port.postMessage([message, ...data]);
-    },
-    listenForMessage: function (message, run) {
+    }
+    listenForMessage(message, run) {
         this.messageFunctions[message] = run;
-    },
-    onMessage: (event) => { },
-};
+    }
+    onMessage(event) { }
+}
 export function CreateInterComm(name, mergeObject) {
-    const newCom = Object.assign(Object.create(commBase), mergeObject);
+    const newCom = Object.assign(new InterCommBase(), mergeObject);
     newCom.name = name;
     //@ts-ignore
     if (typeof process !== "undefined" && typeof Worker === "undefined") {

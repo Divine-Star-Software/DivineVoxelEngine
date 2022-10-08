@@ -19,7 +19,7 @@ export declare const ConstructorCommManager: {
     __handleCount(): number;
     requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): number;
     runRGBLightUpdate(x: number, y: number, z: number): number;
-    runRGBUpdate(x: number, y: number, z: number): number;
+    runRGBLightRemove(x: number, y: number, z: number): number;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
     runSunFillAtMaxY(x: number, y: number, maxY: number): number;
     runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;

@@ -72,6 +72,7 @@ export declare const DVEN: {
             setChunkMaxData(chunkData: DataView, data: number): void;
         };
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
+        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         getEntityFlat3dArray(): {
             bounds: {
                 x: number;
@@ -126,6 +127,9 @@ export declare const DVEN: {
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("Meta/index.js").Position3Matrix;
         };
+        /**# Load chunk into Nexus
+         * Load a chunk into the shared nexus thread.
+         */
         getFaceByte(): {
             _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
             _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
@@ -379,7 +383,7 @@ export declare const DVEN: {
         setChunkMaxData(chunkData: DataView, data: number): void;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -458,7 +462,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -928,8 +932,32 @@ export declare const DVEN: {
         _syncGlobalVoxelPalette(data: any[]): void;
         _setThreadName(data: any[]): void;
     };
-    worldComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface;
-    renderComm: import("../Meta/Comms/InterComm.types.js").InterCommInterface & {
+    worldComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    };
+    renderComm: {
+        environment: "node" | "browser";
+        name: string;
+        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
+        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
+        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
+        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
+        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
+        _errorMessage(message: string): void;
+        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
+        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
+        onMessage(event: any): void;
+    } & {
         onReady: () => void;
         onRestart: () => void;
     };

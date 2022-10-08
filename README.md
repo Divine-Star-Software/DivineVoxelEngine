@@ -7,6 +7,7 @@
 </p>
 
 ---
+
 **WARNING:**
 This is not finalized. Things will keep changing as development goes forward.
 Check out the releases for stable working verions. The main repo may be broken at times. Breaking changes will keep happening to suppourt the evolution of the enigne.
@@ -14,11 +15,11 @@ If something is not working or broken check the [Change Log](https://github.com/
 
 # What is this?
 
-A JavaScript voxel game engine written in TypeScript that uses Babylon.Js. 
+A JavaScript voxel game engine written in TypeScript that uses Babylon.Js.
 
 Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki) to get started.
 
-Need help or want to share your creations? Join the discord: 
+Need help or want to share your creations? Join the discord:
 [Discord](https://discord.gg/98xEVU7TKn)
 
 ## Features
@@ -35,18 +36,18 @@ Need help or want to share your creations? Join the discord:
 - Pre-Baking Lighting system.
   - Flood fill lighting system for local sources.
   - Support for different colored lights.
-  - Sunlight calculation for global illumination (like Minecraft) 
+  - Sunlight calculation for global illumination (like Minecraft)
 - World Data API - Easy way to create chunks and the needed data for it.
 
 ## In Development
 
 - Easy to use light API and light options
-- Easy to use auto-update world on voxel add/remove 
-  - Will auto update light sources for you. 
+- Easy to use auto-update world on voxel add/remove
+  - Will auto update light sources for you.
 - Fluid flow and magma flow like Minecraft.
 - Same voxel different colors
-  - Set a color directly on voxel data. 
-  - Options to create shade gradient with neighbors. 
+  - Set a color directly on voxel data.
+  - Options to create shade gradient with neighbors.
 - Dynamic Lighting system.
   - Will use Babylon's built-in dyamic lights and shadow casting.
 - Well-written wiki with tutorials on how to do anything that you could possibly want.
@@ -54,13 +55,11 @@ Need help or want to share your creations? Join the discord:
 
 ## Long Term Goals
 
-- Basic physics and collision detection. 
-  - Working to develop some helper functions to determine what voxel the player is looking at or touching. 
-  - Instead of using collision detection with the actual meshes it will calculate collision in the world thread. 
+- Basic physics and collision detection.
+  - Working to develop some helper functions to determine what voxel the player is looking at or touching.
+  - Instead of using collision detection with the actual meshes it will calculate collision in the world thread.
 - More shader effects and custom voxel substances
-- Structure creator software. 
-
-
+- Structure creator software.
 
 ## See In Action
 
@@ -81,6 +80,9 @@ See videos of development here:
 
 If you would like to contribute please read [Contributions & Code Style Guide](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki/Contributions-&-Code-Style-Guide) of the wiki.
 
+### Asset License
 
+Divine Voxel Engine Assets © 2022 by Lucas Damian Johnson is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 
- 
+All assets for the engine are copyright by Divine Star.
+You can use them for your own testing but you can not use them in any commerical produc.

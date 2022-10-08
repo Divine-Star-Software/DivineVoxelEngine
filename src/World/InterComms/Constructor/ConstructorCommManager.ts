@@ -115,7 +115,7 @@ export const ConstructorCommManager = {
   comm.sendMessage(WorldToConstructorMessages.RGBlightUpdate, [x, y, z]);
   return this.__handleCount();
  },
- runRGBUpdate(x: number, y: number, z: number) {
+ runRGBLightRemove(x: number, y: number, z: number) {
   const comm = this.constructors[this.count];
   comm.sendMessage(WorldToConstructorMessages.RGBlightRemove, [x, y, z]);
   return this.__handleCount();
