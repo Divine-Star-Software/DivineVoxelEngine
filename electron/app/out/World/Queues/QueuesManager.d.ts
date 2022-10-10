@@ -92,7 +92,7 @@ export declare const QueuesManager: {
             addQueue(queueId: string): void;
             removeQueue(queueId: string): void;
             add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
             awaitAll(queueId?: string): Promise<boolean>;
             isDone(queueId?: string): boolean;
         };
@@ -114,7 +114,7 @@ export declare const QueuesManager: {
             addQueue(queueId: string): void;
             removeQueue(queueId: string): void;
             add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
             awaitAll(queueId?: string): Promise<boolean>;
             isDone(queueId?: string): boolean;
         };
@@ -138,7 +138,7 @@ export declare const QueuesManager: {
             addQueue(queueId: string): void;
             removeQueue(queueId: string): void;
             add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
             awaitAll(queueId?: string): Promise<boolean>;
             isDone(queueId?: string): boolean;
         };
@@ -160,7 +160,7 @@ export declare const QueuesManager: {
             addQueue(queueId: string): void;
             removeQueue(queueId: string): void;
             add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
             awaitAll(queueId?: string): Promise<boolean>;
             isDone(queueId?: string): boolean;
         };

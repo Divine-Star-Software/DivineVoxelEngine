@@ -1,0 +1,25 @@
+{
+ "sources": [
+  {
+   "dir": "D:/DSSoftware/DSLIBS/threadComm/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "threadcomm"
+  }
+ ],
+ "outputs": [
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/ThreadComm",
+   "sourceID": "threadcomm",
+   "codeSection": "all",
+   "keepComments": true
+  }
+ ],
+ "codeSections": {
+  "test": {
+   "start": "@ds-test-start",
+   "end": "@ds-test-end"
+  }
+ }
+}

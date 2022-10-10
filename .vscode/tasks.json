@@ -12,12 +12,14 @@
    "label": "Project Startup",
    "dependsOn": [
     "electron",
+
     "src-compile",
     "testworlds-compile",
     "server-compile",
     "dsst-main",
+    "dsst-libs",
     "screens-compile",
-    "dsst-screens"
+    "dsst-screens",
    ],
    // Mark as the default build task so cmd/ctrl+shift+b will create them
    "group": {
@@ -59,6 +61,12 @@
    "command": "dsst -a",
    "isBackground": true
   },
+  {
+    "label": "dsst-libs",
+    "type": "shell",
+    "command": "dsst -a -c .libdsconfig",
+    "isBackground": true
+   },
   {
    "label": "screens-compile",
    "type": "shell",

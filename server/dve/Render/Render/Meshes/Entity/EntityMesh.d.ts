@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import { EngineSettingsData } from "Meta/index.js";
 import type { MeshSetData } from "Meta/Render/Meshes/VoxelMesh.interface";
 export declare const EntityMesh: {

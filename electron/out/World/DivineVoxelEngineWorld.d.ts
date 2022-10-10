@@ -490,7 +490,7 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW";
+        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -569,7 +569,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -1596,7 +1596,7 @@ export declare const DVEW: {
                 addQueue(queueId: string): void;
                 removeQueue(queueId: string): void;
                 add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
                 awaitAll(queueId?: string): Promise<boolean>;
                 isDone(queueId?: string): boolean;
             };
@@ -1618,7 +1618,7 @@ export declare const DVEW: {
                 addQueue(queueId: string): void;
                 removeQueue(queueId: string): void;
                 add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
                 awaitAll(queueId?: string): Promise<boolean>;
                 isDone(queueId?: string): boolean;
             };
@@ -1642,7 +1642,7 @@ export declare const DVEW: {
                 addQueue(queueId: string): void;
                 removeQueue(queueId: string): void;
                 add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
                 awaitAll(queueId?: string): Promise<boolean>;
                 isDone(queueId?: string): boolean;
             };
@@ -1664,7 +1664,7 @@ export declare const DVEW: {
                 addQueue(queueId: string): void;
                 removeQueue(queueId: string): void;
                 add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 2 | 1) | undefined): void;
+                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
                 awaitAll(queueId?: string): Promise<boolean>;
                 isDone(queueId?: string): boolean;
             };
