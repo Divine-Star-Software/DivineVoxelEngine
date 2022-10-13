@@ -88,11 +88,9 @@ export const DVEW = {
         this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
     },
     buildChunk(chunkX, chunkY, chunkZ, LOD = 1) {
-        this.queues.addToRebuildQueTotal();
         this.ccm.tasks.build.chunk([chunkX, chunkY, chunkZ, LOD]);
     },
     generate(x, z, data = []) {
-        this.queues.addToGenerationTotal();
         this.ccm.tasks.worldGen.generate([x, z, data]);
     },
     buildWorldColumn(x, z, LOD = 1) {

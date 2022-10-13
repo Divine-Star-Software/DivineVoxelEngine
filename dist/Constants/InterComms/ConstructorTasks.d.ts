@@ -4,13 +4,13 @@ export declare const ConstructorTasks: {
     generate: number;
     RGBlightUpdate: number;
     RGBlightRemove: number;
-    fillWorldColumnWithSunLight: number;
-    runSunLightUpdateAtMaxY: number;
-    runSunLightUpdateMaxYFlood: number;
+    worldSunStep1: number;
+    worldSunStep2: number;
+    worldSunStep3: number;
     sunLightUpdate: number;
     sunLightRemove: number;
-    runFlow: number;
-    removeFlow: number;
+    flowUpdate: number;
+    flowRemove: number;
     constructEntity: number;
     constructItem: number;
 };

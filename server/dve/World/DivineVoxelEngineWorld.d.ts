@@ -935,36 +935,35 @@ export declare const DVEW: {
     nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     ccm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
-        $INIT(statesSAB: SharedArrayBuffer): void;
         syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         tasks: {
             build: {
-                chunk: (data: any) => number | undefined;
-                entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number | undefined;
-                item: (data: any) => number | undefined;
+                chunk: (data: any) => number;
+                entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number;
+                item: (data: any) => number;
             };
             rgb: {
-                update: (data: any) => number | undefined;
-                remove: (data: any) => number | undefined;
+                update: (data: any) => number;
+                remove: (data: any) => number;
             };
             worldSun: {
-                fillWorldColumn: (data: any) => number | undefined;
-                updateAtMaxY: (data: any) => number | undefined;
-                floodAtMaxY: (data: any, threadNumber: number) => number | undefined;
+                fillWorldColumn: (data: any) => number;
+                updateAtMaxY: (data: any) => number;
+                floodAtMaxY: (data: any, threadNumber: number) => number;
             };
             sun: {
-                update: (data: any) => number | undefined;
-                remove: (data: any) => number | undefined;
+                update: (data: any) => number;
+                remove: (data: any) => number;
             };
             flow: {
-                update: (data: any) => number | undefined;
-                remove: (data: any) => number | undefined;
+                update: (data: any) => number;
+                remove: (data: any) => number;
             };
             worldGen: {
-                generate: (data: any) => number | undefined;
+                generate: (data: any) => number;
             };
         };
     };
@@ -1454,73 +1453,19 @@ export declare const DVEW: {
         onRegister(func: (data: import("../Meta/Items/Item.types.js").ItemData) => void): void;
     };
     queues: {
-        _RGBLightRemoveQue: number[][];
-        _RGBLightUpdateQue: number[][];
-        _SunLightRemoveQue: number[][];
-        _SunLightUpdateQue: number[][];
-        _runFlowQue: number[][];
-        _removeFlowQue: number[][];
-        _worldColumnSunLightPropMap: Record<string, {
-            max: number;
-            thread: number;
-        }>;
-        _worldColumnSunLightPropQue: number[][];
-        _chunkRebuildQueMap: Record<string, Record<import("../Meta/index.js").VoxelSubstanceType | "all", boolean>>;
-        _chunkRebuildQue: number[][];
-        __statesSAB: SharedArrayBuffer;
-        __states: Uint32Array;
         $INIT(): void;
-        _syncQueue(queueId: string, buffer: SharedArrayBuffer): void;
-        _unSyncQueue(queueId: string): void;
-        addWorldColumnToSunLightQue(x: number, z: number): void;
-        runWorldColumnSunLightAndUpateQue(): Promise<void>;
-        awaitAllWorldColumnSunLightProp(): Promise<boolean>;
-        areWorldColumnSunLightUpdatsDone(): boolean;
-        awaitAllSunLightUpdatesAtMaxY(): Promise<boolean>;
-        areAllSunLightUpdatesAtMaxYDone(): boolean;
-        awaitAllSunLightUpdatesMaxYFlood(): Promise<boolean>;
-        areAllSunLightUpdatesMaxYFloodDone(): boolean;
-        addToSunLightUpdateQue(x: number, y: number, z: number): void;
-        addToSunLightRemoveQue(x: number, y: number, z: number): void;
-        runSunLightUpdateQue(): void;
-        runSunLightRemoveQue(): void;
-        awaitAllSunLightUpdates(): Promise<boolean>;
-        awaitAllSunLightRemove(): Promise<boolean>;
-        areSunLightUpdatesAllDone(): boolean;
-        areSunLightRemovesAllDone(): boolean;
-        addToRGBUpdateQue(x: number, y: number, z: number): void;
-        addToRGBRemoveQue(x: number, y: number, z: number): void;
-        runRGBUpdateQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
-        runRGBRemoveQue(): void;
-        awaitAllRGBLightUpdates(): Promise<boolean>;
-        awaitAllRGBLightRemove(): Promise<boolean>;
-        areRGBLightUpdatesAllDone(): boolean;
-        areRGBLightRemovesAllDone(): boolean;
-        addToFlowRunQue(x: number, y: number, z: number): void;
-        addToFlowRemoveQue(x: number, y: number, z: number): void;
-        runFlowRuneQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
-        runFlowRemoveQue(): void;
-        awaitAllFlowRuns(): Promise<boolean>;
-        awaitAllFlowRemoves(): Promise<boolean>;
-        areFlowRunsAllDone(): boolean;
-        areFlowRemovesAllDone(): boolean;
-        addToRebuildQue(x: number, y: number, z: number, substance: import("../Meta/index.js").VoxelSubstanceType | "all"): void;
-        runRebuildQue(filter?: import("./Queues/QueuesManager.js").QueueFilter | undefined): void;
-        addToRebuildQueTotal(): void;
-        awaitAllChunksToBeBuilt(): Promise<boolean>;
-        areAllChunksDoneBuilding(): boolean;
-        addToGenerationTotal(): void;
-        areAllGenerationsDone(): boolean;
-        awaitAllGenerationsToBeDone(): Promise<boolean>;
-        $CreateQueues(): void;
         rgb: {
             update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
             remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
         };
         worldSun: {
-            fill: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-            columnFill: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-            flood: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            add(x: number, z: number, queueId?: string): void;
+            run(): Promise<void>;
+            __steps: {
+                step1: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
+                step2: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
+                step3: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
+            };
         };
         sun: {
             update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;

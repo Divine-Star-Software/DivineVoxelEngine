@@ -21,8 +21,7 @@ const load = () => {
 const fill = () => {
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-   DVEW.queues.addWorldColumnToSunLightQue(x, z);
+   DVEW.queues.worldSun.add(x, z);
   }
  }
 };
@@ -64,13 +63,8 @@ WorldGen.generateChunk(0, -16);
 WorldGen.generateChunk(16, 16);
 
 WorldGen.generateChunk(-16, -16);
-
 DVEW.worldData.paintVoxel("dve:liquiddreadether", 0, 0, 7, 47, 7);
-//fill();
-let t1 = performance.now();
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
-let t2 = performance.now();
-console.log(t2 - t1);
+
 load();
 /* DVEW.worldData.paintDualVoxel(
  "dve:liquiddreamether",
@@ -83,12 +77,9 @@ load();
  0
 ); */
 
-
-
 setTimeout(() => {
- DVEW.queues.addToFlowRunQue(7, 47, 7);
- DVEW.queues.runFlowRuneQue();
+ DVEW.queues.flow.update.add([7, 47, 7]);
+ DVEW.queues.flow.update.run();
 }, 2000);
-
 
 (self as any).DVEW = DVEW;

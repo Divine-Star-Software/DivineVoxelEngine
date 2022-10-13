@@ -38,14 +38,14 @@ const runRemove = () => {
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
-        DVEW.queues.addWorldColumnToSunLightQue(x, z);
+        DVEW.queues.worldSun.add(x, z);
     }
 }
 const x = 0;
 const z = 0;
 let t1 = performance.now();
 console.log("start");
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.worldSun.run();
 let t2 = performance.now();
 console.log("end");
 console.log(t2 - t1);

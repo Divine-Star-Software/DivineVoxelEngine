@@ -198,6 +198,6 @@ export const ChunkMesher = {
     transfers
    );
   }
-  DVEC.queues.finishBuildingChunk();
+
  },
 };

@@ -27,22 +27,8 @@ const runLightRemove = () => {
 };
 const runAdd = () => {
  setTimeout(async () => {
-  await DVEW.worldData.requestVoxelAdd(
-   "dve:dreamstone",
-   0,
-   0,
-   0,
-   10,
-   0
-  );
-  await DVEW.worldData.requestVoxelAdd(
-   "dve:dreamstone",
-   0,
-   0,
-   0,
-   10,
-   -10
-  );
+  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, 0);
+  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, -10);
   runLightRemove();
  }, 2000);
 };
@@ -58,7 +44,7 @@ const runRemove = () => {
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateChunk(x, 0, z);
-  DVEW.queues.addWorldColumnToSunLightQue(x, z);
+  DVEW.queues.worldSun.add(x, z);
  }
 }
 
@@ -66,9 +52,9 @@ const x = 0;
 const z = 0;
 let t1 = performance.now();
 console.log("start");
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.worldSun.run();
 let t2 = performance.now();
-console.log("end")
+console.log("end");
 console.log(t2 - t1);
 
 //-1 10 0
@@ -77,14 +63,7 @@ buildAll();
 await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", 0, 0, 23, 6, -8);
 
 setTimeout(async () => {
- await DVEW.worldData.requestVoxelAdd(
-  "dve:debugbox",
-  0,
-  0,
-  x,
-  12,
-  z + 5
- );
+ await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, x, 12, z + 5);
  runRemove();
 }, 2000);
 (self as any).DVEW = DVEW;

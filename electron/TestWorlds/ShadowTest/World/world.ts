@@ -20,8 +20,7 @@ WorldGen.generateChunk(16, 16);
 WorldGen.generateChunk(16, -16);
 WorldGen.generateChunk(-16, -16);
 
-DVEW.queues.runRGBUpdateQue();
-await DVEW.queues.awaitAllRGBLightUpdates();
+await DVEW.queues.rgb.update.runAndAwait();
 
 let startX = -16;
 let startZ = -16;

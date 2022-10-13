@@ -5,7 +5,7 @@ import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
  * It syncs the chunk data.
  */
 export declare const MatrixHub: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     worldPort: CommPortTypes | undefined;
     threadName: string;
     __threadNameSet: boolean;

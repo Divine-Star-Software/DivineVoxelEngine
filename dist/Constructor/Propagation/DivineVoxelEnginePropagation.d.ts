@@ -437,6 +437,7 @@ export declare const DVEP: {
         setCurrentVoxel(x: number, y: number, z: number): boolean;
         runRebuildQue(): void;
         __addToRebuildQue(x: number, y: number, z: number): void;
+        resetRebuildQue(): void;
         addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
         setLevel(level: number, x: number, y: number, z: number): void;
         removeVoxel(x: number, y: number, z: number): void;
@@ -451,6 +452,7 @@ export declare const DVEP: {
     rebuildQueMap: Record<string, boolean>;
     $INIT(): void;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
+    resetRebuildQue(): void;
     runRebuildQue(): void;
     runRGBFloodFill(x: number, y: number, z: number): void;
     runRGBFloodRemove(x: number, y: number, z: number): void;
@@ -459,7 +461,7 @@ export declare const DVEP: {
     runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
     runSunLightUpdate(x: number, y: number, z: number): void;
     runSunLightRemove(x: number, y: number, z: number): void;
-    runFlowAt(x: number, y: number, z: number): Promise<void>;
+    updateFlowAt(x: number, y: number, z: number): Promise<void>;
     removeFlowAt(x: number, y: number, z: number): Promise<void>;
 };
 export declare type DivineVoxelEnginePropagation = typeof DVEP;

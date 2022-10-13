@@ -24,9 +24,9 @@ export declare class CommManager {
     listenForMessage(message: string | number, run: MessageFunction): void;
     sendMessageToAll(message: string | number, data?: any[], transfers?: any[]): void;
     runTasksForAll<T>(id: string, data: T, transfers?: any[], queue?: string): void;
-    runTask<T>(id: string | number, data: T, transfers?: any[], threadNumber?: number, queue?: string): number | undefined;
+    runTask<T>(id: string | number, data: T, transfers?: any[], threadNumber?: number, queue?: string): number;
     __handleCount(): number;
-    addQueue<T>(id: string | number, associatedTasksId: string | number): QueueManager<T>;
+    addQueue<T>(id: string | number, associatedTasksId: string | number, beforeRun?: (data: T) => T, afterRun?: (data: T, thread: number) => void, getThread?: (data: T) => number, getTransfers?: (data: T) => any[]): QueueManager<T>;
     getQueue<T>(id: string): QueueManager<T>;
     __syncQueue(id: string, sab: SharedArrayBuffer): void;
     __unSyncQueue(id: string): void;

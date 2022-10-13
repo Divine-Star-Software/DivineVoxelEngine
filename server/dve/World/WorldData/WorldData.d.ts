@@ -50,11 +50,7 @@ export declare const WorldData: {
             header: number;
             states: number;
             position: number;
-            minMax: number; /**# World Data
-             * ---
-             * Handles all the game worlds data.
-             * Also handles getting and setting data.
-             */
+            minMax: number;
             heightMap: number;
             voxelData: number;
             voxelStateData: number;

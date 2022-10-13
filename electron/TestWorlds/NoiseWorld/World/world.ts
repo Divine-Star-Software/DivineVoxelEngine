@@ -17,11 +17,11 @@ let endZ = 128;
 for (let x = startX; x <= endX; x += 16) {
  for (let z = startZ; z <= endZ; z += 16) {
   WorldGen.generateChunk(x, z);
-  DVEW.queues.addWorldColumnToSunLightQue(x, z);
+  DVEW.queues.worldSun.add(x, z);
  }
 }
 
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.worldSun.run();
 
 for (let x = startX; x <= endX; x += 16) {
  for (let z = startZ; z <= endZ; z += 16) {

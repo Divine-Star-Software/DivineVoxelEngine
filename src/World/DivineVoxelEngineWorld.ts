@@ -109,12 +109,10 @@ export const DVEW = {
  },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD = 1) {
-  this.queues.addToRebuildQueTotal();
   this.ccm.tasks.build.chunk([chunkX, chunkY, chunkZ, LOD]);
  },
 
  generate(x: number, z: number, data: any = []) {
-  this.queues.addToGenerationTotal();
   this.ccm.tasks.worldGen.generate([x, z, data]);
  },
 

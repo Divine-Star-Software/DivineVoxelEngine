@@ -1,7 +1,7 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __connectedToWorld: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -11,8 +11,8 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -383,7 +383,7 @@ export declare const DVEN: {
         setChunkMaxData(chunkData: DataView, data: number): void;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -464,7 +464,7 @@ export declare const DVEN: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -917,7 +917,7 @@ export declare const DVEN: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         worldPort: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;

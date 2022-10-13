@@ -92,6 +92,9 @@ export const FlowManager = {
             this.rebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
         }
     },
+    resetRebuildQue() {
+        DVEP.resetRebuildQue();
+    },
     addToRebuildQue(x, y, z, sync = false) {
         if (sync) {
             this.__addToRebuildQue(x, y - 1, z);

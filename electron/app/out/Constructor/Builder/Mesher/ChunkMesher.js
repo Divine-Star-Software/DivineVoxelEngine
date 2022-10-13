@@ -156,6 +156,5 @@ export const ChunkMesher = {
             ];
             DVEC.parentComm.sendMessage(ConstructorToRenderMessages.setChunk, message, transfers);
         }
-        DVEC.queues.finishBuildingChunk();
     },
 };

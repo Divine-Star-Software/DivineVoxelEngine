@@ -23,6 +23,7 @@ export declare class QueueManager<T> {
     removeQueue(queueId: string): void;
     add(data: T, queueId?: string): void;
     run(queueId?: string, filter?: (data: T) => 0 | 1 | 2): void;
+    runAndAwait(queueId?: string, filter?: (data: T) => 0 | 1 | 2): Promise<boolean>;
     awaitAll(queueId?: string): Promise<boolean>;
     isDone(queueId?: string): boolean;
 }

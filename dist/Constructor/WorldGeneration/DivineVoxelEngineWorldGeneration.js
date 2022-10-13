@@ -19,7 +19,6 @@ export const DVEWG = {
             throw new Error(`A World Generator must be set.`);
         }
         await this.worldGen.generate(this, x, z, data);
-        DVEC.queues.finishGenerating();
     },
     __handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk) {
         let substance = voxelData.substance;
@@ -38,25 +37,25 @@ export const DVEWG = {
     },
     _paintVoxel(voxelId, voxelStateId, shapeState, x, y, z) {
         /*   const chunk = WorldMatrix.getChunk(x, y, z);
-          if (!chunk) {
-           throw new Error("Chunk could not be loaded");
-          }
-          const voxelCheck = DVEC.voxelManager.getVoxel(voxelId);
-        
-          const voxelData = voxelCheck.data;
-          if (!voxelData) {
-           throw Error(`Voxel data with ID ${voxelId} does not exists`);
-          }
-          const data = this.getVoxelPaletteId(voxelId, voxelStateId);
-          if (data < 0) return;
-          const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
-          this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
-          let stateData = this.voxelByte.setShapeState(0, shapeState);
-          this._3dArray.setValueUseObj(voxelPOS, chunk.voxelStates, stateData);
-          this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
-          if (DVEC.settings.doRGBPropagation()) {
-           this._addToRGBLightUpdateQue(voxelData, x, y, z);
-          } */
+        if (!chunk) {
+         throw new Error("Chunk could not be loaded");
+        }
+        const voxelCheck = DVEC.voxelManager.getVoxel(voxelId);
+      
+        const voxelData = voxelCheck.data;
+        if (!voxelData) {
+         throw Error(`Voxel data with ID ${voxelId} does not exists`);
+        }
+        const data = this.getVoxelPaletteId(voxelId, voxelStateId);
+        if (data < 0) return;
+        const voxelPOS = this.worldBounds.getVoxelPosition(x, y, z);
+        this.__handleHeightMapUpdateForVoxelAdd(voxelPOS, voxelData, chunk);
+        let stateData = this.voxelByte.setShapeState(0, shapeState);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxelStates, stateData);
+        this._3dArray.setValueUseObj(voxelPOS, chunk.voxels, data);
+        if (DVEC.settings.doRGBPropagation()) {
+         this._addToRGBLightUpdateQue(voxelData, x, y, z);
+        } */
     },
     _addToRGBLightUpdateQue(voxelData, x, y, z) {
         if (voxelData.lightSource && voxelData.lightValue) {

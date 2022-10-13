@@ -15,9 +15,3 @@ worldComm.onMessage = (event) => {
   }
  }
 };
-
-worldComm.listenForMessage(ConstructorTasks.setQueueStates, (data) => {
- const queueStates = new Uint32Array(data[1]);
- DVEC.queues.setQueueStates(queueStates);
- DVEC.__queueStatesSet = true;
-});

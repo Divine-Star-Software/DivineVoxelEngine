@@ -1,28 +1,27 @@
-import { Task } from "Libs/ThreadComm/Tasks/Tasks.js";
 export declare const Tasks: {
     build: {
-        chunk: Task<any[]>;
-        entity: Task<any[]>;
-        item: Task<any[]>;
+        chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        entity: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        item: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     rgb: {
-        update: Task<any[]>;
-        remove: Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     worldSun: {
-        fillWorldColumn: Task<any[]>;
-        updateAtMaxY: Task<any[]>;
-        floodAtMaxY: Task<any[]>;
+        fillWorldColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        updateAtMaxY: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        floodAtMaxY: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     sun: {
-        update: Task<any[]>;
-        remove: Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     flow: {
-        update: Task<any[]>;
-        remove: Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     worldGen: {
-        generate: Task<any[]>;
+        generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
 };

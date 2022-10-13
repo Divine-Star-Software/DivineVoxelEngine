@@ -6,7 +6,6 @@ export async function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld,
  initData: DVEWInitData
 ): Promise<any> {
-
  await ThreadComm.$INIT("world");
  await DVEW.UTIL.createPromiseCheck({
   check: () => {
@@ -16,7 +15,6 @@ export async function InitWorldWorker(
   onReady: () => {
    DVEW.voxelMatrix.$INIT();
    DVEW.queues.$INIT();
-   DVEW.queues.$CreateQueues();
    const nexusSettings = DVEW.settings.settings.nexus;
    if (nexusSettings.enabled && nexusSettings.autoSyncVoxelPalette) {
     DVEW.matrixCentralHub.syncVoxelPaletteInThread("nexus");

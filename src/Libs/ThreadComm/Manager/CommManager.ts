@@ -132,6 +132,7 @@ export class CommManager {
 		} else {
 			const comm = this.__comms[threadNumber];
 			comm.runTasks(id, data, transfers, queue);
+			return threadNumber;
 		}
 	}
 
@@ -144,14 +145,26 @@ export class CommManager {
 		return countReturn;
 	}
 
-	addQueue<T>(id: string | number, associatedTasksId: string | number) {
+	addQueue<T>(
+		id: string | number,
+		associatedTasksId: string | number,
+		beforeRun: (data: T) => T = (data: T) => data,
+		afterRun: (data: T, thread: number) => void = (
+			data: T,
+			thread: number
+		) => {},
+		getThread : (data:T)=>number = (data:T)=>-1,
+		getTransfers : (data:T)=>any[] = (data)=>[]
+	) {
 		if (this.__queues[id]) {
 			this.__throwError(`Queue with ${id} already exists.`);
 		}
 		const newQueue = new QueueManager<T>(
 			id,
 			(data, queueId) => {
-				this.runTask(associatedTasksId, data, [], -1, queueId);
+				data = beforeRun(data);
+				const thread = this.runTask(associatedTasksId, data, getTransfers(data), getThread(data), queueId);
+				afterRun(data, thread);
 			},
 			this
 		);

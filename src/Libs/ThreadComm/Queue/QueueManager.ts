@@ -13,7 +13,7 @@ export class QueueManager<T> {
 	> = {};
 	constructor(
 		public id: string | number,
-		public onRun: (data: T, queueId: string) => void,
+		public onRun: (data: T, queueId: string,) => void,
 		public _manager: CommManager
 	) {}
 
@@ -87,16 +87,22 @@ export class QueueManager<T> {
 			Atomics.add(state, 0, 1);
 			this.onRun(data, syncId);
 		}
+		this.__queueData[queueId].map = {};
 		if (filter) {
 			this.__queueData[queueId].queue = queue;
 			this.__queueData[queueId].map = newMap;
 		}
 	}
 
+	runAndAwait(queueId = "main", filter?: (data: T) => 0 | 1 | 2) {
+		this.run(queueId, filter);
+		return this.awaitAll(queueId);
+	}
+
 	awaitAll(queueId: string = "main") {
 		const queueData = this.__getQueueData(queueId);
 		return new Promise<boolean>((resolve, reject) => {
-			const inte =  setInterval(() => {
+			const inte = setInterval(() => {
 				if (Atomics.load(queueData.state, 0) == 0) {
 					clearInterval(inte);
 					resolve(true);

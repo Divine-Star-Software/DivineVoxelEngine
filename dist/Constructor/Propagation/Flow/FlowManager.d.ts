@@ -377,6 +377,7 @@ export declare const FlowManager: {
     setCurrentVoxel(x: number, y: number, z: number): boolean;
     runRebuildQue(): void;
     __addToRebuildQue(x: number, y: number, z: number): void;
+    resetRebuildQue(): void;
     addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
     setLevel(level: number, x: number, y: number, z: number): void;
     removeVoxel(x: number, y: number, z: number): void;

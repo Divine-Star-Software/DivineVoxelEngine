@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
-        getEnviorment(): "browser" | "node";
+        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
+        getEnviorment(): "node" | "browser";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -1813,6 +1813,7 @@ export declare const DVEC: {
             setCurrentVoxel(x: number, y: number, z: number): boolean;
             runRebuildQue(): void;
             __addToRebuildQue(x: number, y: number, z: number): void;
+            resetRebuildQue(): void;
             addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
             setLevel(level: number, x: number, y: number, z: number): void;
             removeVoxel(x: number, y: number, z: number): void;
@@ -1827,6 +1828,7 @@ export declare const DVEC: {
         rebuildQueMap: Record<string, boolean>;
         $INIT(): void;
         addToRebuildQue(x: number, y: number, z: number, substance: import("Meta/index.js").VoxelSubstanceType | "all"): void;
+        resetRebuildQue(): void;
         runRebuildQue(): void;
         runRGBFloodFill(x: number, y: number, z: number): void;
         runRGBFloodRemove(x: number, y: number, z: number): void;
@@ -1835,7 +1837,7 @@ export declare const DVEC: {
         runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
         runSunLightUpdate(x: number, y: number, z: number): void;
         runSunLightRemove(x: number, y: number, z: number): void;
-        runFlowAt(x: number, y: number, z: number): Promise<void>;
+        updateFlowAt(x: number, y: number, z: number): Promise<void>;
         removeFlowAt(x: number, y: number, z: number): Promise<void>;
     };
     DVEWG: {
@@ -2013,23 +2015,6 @@ export declare const DVEC: {
         worldGen: {
             generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         };
-    };
-    queues: {
-        __states: Uint32Array;
-        setQueueStates(states: Uint32Array): void;
-        finishRGBLightUpdate(): void;
-        finishRGBLightRemove(): void;
-        finishWorldColumnSunLightProp(): void;
-        finishSunLightUpdateAtMaxY(): void;
-        finishSunLightUpdateMaxYFlood(): void;
-        finishSunLightUpdate(): void;
-        finishSunLightRemove(): void;
-        finishBuildingChunk(): void;
-        finishFlowRun(): void;
-        finishFlowRemove(): void;
-        finishGenerating(): void;
-        awaitAllChunksToBeBuilt(): Promise<boolean>;
-        areAllChunksDoneBuilding(): boolean;
     };
     worldMatrix: {
         _3dArray: {
@@ -2387,7 +2372,7 @@ export declare const DVEC: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         worldPort: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;
@@ -2471,7 +2456,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

@@ -15,7 +15,7 @@ const fillWorldColumns = () => {
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
    DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-   DVEW.queues.addWorldColumnToSunLightQue(x, z);
+   DVEW.queues.worldSun.add(x, z);
   }
  }
 };
@@ -33,14 +33,13 @@ for (let x = startX; x < endX; x += 16) {
 }
 fillWorldColumns();
 
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.worldSun.run();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   DVEW.buildWorldColumn(x, z);
  }
 }
-await DVEW.queues.awaitAllChunksToBeBuilt();
-DVEW.queues.runRGBUpdateQue();
-await DVEW.queues.awaitAllRGBLightUpdates();
-DVEW.queues.runRebuildQue();
+await DVEW.queues.build.chunk.awaitAll();
+await DVEW.queues.rgb.update.runAndAwait();
+await DVEW.queues.build.chunk.runAndAwait();
 (self as any).DVEW = DVEW;

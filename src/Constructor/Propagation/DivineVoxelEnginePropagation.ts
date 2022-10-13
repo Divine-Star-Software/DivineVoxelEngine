@@ -21,16 +21,20 @@ export const DVEP = {
   if (DVEC.settings.settings.server.enabled) return;
   const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = DVEC.worldBounds.getChunkKey(chunkPOS);
-
+  
   if (!this.rebuildQueMap[chunkKey]) {
    this.rebuildQueMap[chunkKey] = true;
    DVEC.worldComm.sendMessage(WorldTasks.addToRebuildQue, [
-    x,
-    y,
-    z,
+    chunkPOS.x,
+    chunkPOS.y,
+    chunkPOS.z,
     substance,
    ]);
   }
+ },
+
+ resetRebuildQue() {
+  this.rebuildQueMap = {};
  },
 
  runRebuildQue() {
@@ -40,51 +44,42 @@ export const DVEP = {
 
  runRGBFloodFill(x: number, y: number, z: number) {
   this.illumination.runRGBFloodFillAt(x, y, z);
-  DVEC.queues.finishRGBLightUpdate();
   this.rebuildQueMap = {};
  },
  runRGBFloodRemove(x: number, y: number, z: number) {
   this.illumination.runRGBFloodRemoveAt(true, x, y, z);
-  DVEC.queues.finishRGBLightRemove();
   this.rebuildQueMap = {};
  },
  runSunLightForWorldColumn(x: number, z: number, maxY: number) {
   this.illumination.populateWorldColumnWithSunLight(x, z, maxY);
-  DVEC.queues.finishWorldColumnSunLightProp();
   this.rebuildQueMap = {};
  },
 
  runSunFloodFillAtMaxY(x: number, z: number, maxY: number) {
   this.illumination.runSunLightUpdateAtMaxY(x, z, maxY);
-  DVEC.queues.finishSunLightUpdateAtMaxY();
   this.rebuildQueMap = {};
  },
  runSunFloodFillMaxYFlood(x: number, z: number, maxY: number) {
   this.illumination.runSunLightFloodOut(x, z);
-  DVEC.queues.finishSunLightUpdateMaxYFlood();
   this.rebuildQueMap = {};
  },
  runSunLightUpdate(x: number, y: number, z: number) {
   this.illumination.runSunLightUpdateAt(x, y, z);
-  DVEC.queues.finishSunLightUpdate();
   this.rebuildQueMap = {};
  },
 
  runSunLightRemove(x: number, y: number, z: number) {
   this.illumination.runSunLightRemoveAt(x, y, z);
-  DVEC.queues.finishSunLightRemove();
   this.rebuildQueMap = {};
  },
 
- async runFlowAt(x: number, y: number, z: number) {
+ async updateFlowAt(x: number, y: number, z: number) {
   await this.flow.runFlow(x, y, z);
-  DVEC.queues.finishFlowRun();
   this.rebuildQueMap = {};
  },
 
  async removeFlowAt(x: number, y: number, z: number) {
   await this.flow.runFlowRemove(x, y, z);
-  DVEC.queues.finishFlowRemove();
   this.rebuildQueMap = {};
  },
 };

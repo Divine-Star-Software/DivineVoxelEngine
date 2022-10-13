@@ -16,12 +16,11 @@ ccm.listenForMessage(WorldTasks.addToRebuildQue, (data) => {
  const y = data[2];
  const z = data[3];
  const substance = data[4];
-
- DVEW.queues.addToRebuildQue(x, y, z, substance);
+ DVEW.queues.build.chunk.add([x, y, z]);
 });
 
 ccm.listenForMessage(WorldTasks.runRebuildQue, () => {
- DVEW.queues.runRebuildQue();
+ DVEW.queues.build.chunk.run();
 });
 
 ccm.listenForMessage(WorldTasks.syncShapeMap, (data) => {
@@ -32,16 +31,10 @@ ccm.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
  const x = data[1];
  const y = data[2];
  const z = data[3];
- DVEW.queues.addToRGBUpdateQue(x, y, z);
+ DVEW.queues.rgb.update.add([x, y, z]);
 });
 
 export const CCM = Object.assign(ccm, {
- $INIT(statesSAB: SharedArrayBuffer) {
-  for (const constructor of ccm.__comms) {
-   constructor.sendMessage(ConstructorTasks.setQueueStates, [statesSAB]);
-  }
- },
-
  syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number) {
   for (const constructor of ccm.__comms) {
    DVEW.matrixCentralHub.syncChunkInThread(
@@ -128,18 +121,13 @@ export const CCM = Object.assign(ccm, {
   },
   worldSun: {
    fillWorldColumn: (data: any) => {
-    return CCM.runTask(ConstructorTasks.fillWorldColumnWithSunLight, data);
+    return CCM.runTask(ConstructorTasks.worldSunStep1, data);
    },
    updateAtMaxY: (data: any) => {
-    return CCM.runTask(ConstructorTasks.runSunLightUpdateAtMaxY, data);
+    return CCM.runTask(ConstructorTasks.worldSunStep2, data);
    },
    floodAtMaxY: (data: any, threadNumber: number) => {
-    return CCM.runTask(
-     ConstructorTasks.runSunLightUpdateMaxYFlood,
-     data,
-     [],
-     threadNumber
-    );
+    return CCM.runTask(ConstructorTasks.worldSunStep3, data, [], threadNumber);
    },
   },
   sun: {
@@ -152,10 +140,10 @@ export const CCM = Object.assign(ccm, {
   },
   flow: {
    update: (data: any) => {
-    return CCM.runTask(ConstructorTasks.runFlow, data);
+    return CCM.runTask(ConstructorTasks.flowUpdate, data);
    },
    remove: (data: any) => {
-    return CCM.runTask(ConstructorTasks.removeFlow, data);
+    return CCM.runTask(ConstructorTasks.flowRemove, data);
    },
   },
   worldGen: {

@@ -42,12 +42,12 @@ export const WorldGen = {
         //liquid
         wd.paintVoxel("dve:liquiddreadether", 0, 0, x - 1, y, z - 1);
         wd.paintVoxel("dve:liquiddreadether", 0, 0, x + 1, y, z - 1);
-        DVEW.queues.addToFlowRunQue(x - 1, y, z - 1);
-        DVEW.queues.addToFlowRunQue(x + 1, y, z - 1);
+        DVEW.queues.flow.update.add([x - 1, y, z - 1]);
+        DVEW.queues.flow.update.add([x + 1, y, z - 1]);
         wd.paintVoxel("dve:liquiddreadether", 0, 0, x - 1, y, z + 1);
         wd.paintVoxel("dve:liquiddreadether", 0, 0, x + 1, y, z + 1);
-        DVEW.queues.addToFlowRunQue(x - 1, y, z + 1);
-        DVEW.queues.addToFlowRunQue(x + 1, y, z + 1);
+        DVEW.queues.flow.update.add([x - 1, y, z + 1]);
+        DVEW.queues.flow.update.add([x + 1, y, z + 1]);
         let i = y;
         while (i--) {
             wd.paintVoxel(vox1, v1s, 0, x, i, z);

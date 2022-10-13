@@ -18,7 +18,7 @@ const buildAll = () => {
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
-        DVEW.queues.addWorldColumnToSunLightQue(x, z);
+        DVEW.queues.worldSun.add(x, z);
     }
 }
 const x = 0;
@@ -124,7 +124,7 @@ doStairTest(2, 25, 16, -4);
 doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
-await DVEW.queues.runWorldColumnSunLightAndUpateQue();
+await DVEW.queues.worldSun.run();
 buildAll();
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 107);
 await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 99);

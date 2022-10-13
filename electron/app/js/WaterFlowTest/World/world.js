@@ -31,11 +31,10 @@ DVEW.worldData.paintVoxel("dve:liquiddreadether", 0, 0, 12, 38, 9);
 generate();
 load();
 setTimeout(async () => {
-    DVEW.queues.addToFlowRunQue(-10, 38, -10);
-    DVEW.queues.addToFlowRunQue(12, 38, 9);
+    DVEW.queues.flow.update.add([-10, 38, -10]);
+    DVEW.queues.flow.update.add([12, 38, 9]);
     // DVEW.queues.addToFlowRunQue(0, 38, 7);
-    DVEW.queues.runFlowRuneQue();
-    await DVEW.queues.awaitAllFlowRuns();
+    await DVEW.queues.flow.update.runAndAwait();
     setTimeout(async () => {
         /*DVEW.queues.addToFlowRemoveQue(7, 38, 7);
         DVEW.queues.runFlowRemoveQue();

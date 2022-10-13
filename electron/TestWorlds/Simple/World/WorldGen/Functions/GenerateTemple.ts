@@ -108,7 +108,7 @@ export function GenerateTemple(
   55,
   chunkZ + 8
  );
- DVEW.queues.addToFlowRunQue(chunkX + 8, 55, chunkZ + 8);
+ DVEW.queues.flow.update.add([chunkX + 8, 55, chunkZ + 8]);
 
  if (direction == "south" || direction == "north") {
   for (let z = chunkZ; z < chunkZ + this.chunkDepth; z++) {

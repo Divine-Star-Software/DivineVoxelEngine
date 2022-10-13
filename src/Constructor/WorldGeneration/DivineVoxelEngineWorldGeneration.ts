@@ -28,8 +28,6 @@ export const DVEWG = {
   }
 
   await this.worldGen.generate(this, x, z, data);
-
-  DVEC.queues.finishGenerating();
  },
 
  __handleHeightMapUpdateForVoxelAdd(
@@ -67,7 +65,7 @@ export const DVEWG = {
   y: number,
   z: number
  ) {
-/*   const chunk = WorldMatrix.getChunk(x, y, z);
+  /*   const chunk = WorldMatrix.getChunk(x, y, z);
   if (!chunk) {
    throw new Error("Chunk could not be loaded");
   }
@@ -96,10 +94,7 @@ export const DVEWG = {
   z: number
  ) {
   if (voxelData.lightSource && voxelData.lightValue) {
-   DVEC.worldComm.sendMessage(
-    WorldTasks.addToRGBLightUpdateQue,
-    [x, y, z]
-   );
+   DVEC.worldComm.sendMessage(WorldTasks.addToRGBLightUpdateQue, [x, y, z]);
   }
  },
 

@@ -109,6 +109,10 @@ export const FlowManager = {
    this.rebuildQue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
   }
  },
+
+ resetRebuildQue() {
+    DVEP.resetRebuildQue();
+ },
  addToRebuildQue(x: number, y: number, z: number, sync = false) {
   if (sync) {
    this.__addToRebuildQue(x, y - 1, z);
@@ -188,6 +192,8 @@ export const FlowManager = {
  wait(ms: number) {
   return new Promise((resolve, reject) => setTimeout(resolve, ms));
  },
+
+
 
  getAbsorbLight(x: number, y: number, z: number) {
   const lightByte = DVEC.UTIL.getLightByte();

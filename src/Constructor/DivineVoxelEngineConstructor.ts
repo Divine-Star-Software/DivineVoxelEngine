@@ -8,7 +8,6 @@ import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
 import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
 import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { QueuesManager } from "./Queues/QueuesManager.js";
 import { ItemManager } from "./Items/ItemManager.js";
 //inter comms
 import { ParentComm } from "./InterComms/Parent/ParentComm.js";
@@ -39,7 +38,6 @@ export const DVEC = {
 
  tasks: Tasks,
 
- queues: QueuesManager,
 
  worldMatrix: WorldMatrix,
  matrixHub: MatrixHub,

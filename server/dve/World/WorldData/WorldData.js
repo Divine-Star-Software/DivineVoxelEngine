@@ -10,7 +10,7 @@ import { CardinalNeighbors } from "../../Constants/Util/CardinalNeighbors.js";
 export const WorldData = {
     currentDimension: "main",
     dimensions: {
-        "main": {}
+        main: {},
     },
     regions: {},
     tempVoxelData: new DataView(new ArrayBuffer(8)),
@@ -34,10 +34,10 @@ export const WorldData = {
         this.dimensions[dimension] = {};
     },
     runRebuildCheck(x, y, z) {
-        DVEW.queues.addToRebuildQue(x, y, z, "all");
+        DVEW.queues.build.chunk.add([x, y, z]);
         for (let i = 0; i < CardinalNeighbors.length; i++) {
             const n = CardinalNeighbors[i];
-            DVEW.queues.addToRebuildQue(n[0] + x, n[1] + y, n[2] + z, "all");
+            DVEW.queues.build.chunk.add([n[0] + x, n[1] + y, n[2] + z]);
         }
     },
     __lightQueCheck(remove = false, x, y, z) {
@@ -45,18 +45,18 @@ export const WorldData = {
         if (l > 0) {
             if (this.lightByte.getS(l) > 0) {
                 if (!remove) {
-                    DVEW.queues.addToSunLightUpdateQue(x, y, z);
+                    DVEW.queues.sun.update.add([x, y, z]);
                 }
                 else {
-                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                    DVEW.queues.sun.remove.add([x, y, z]);
                 }
             }
             if (this.lightByte.hasRGBLight(l)) {
                 if (!remove) {
-                    DVEW.queues.addToRGBUpdateQue(x, y, z);
+                    DVEW.queues.rgb.remove.add([x, y, z]);
                 }
                 else {
-                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                    DVEW.queues.rgb.update.add([x, y, z]);
                 }
             }
         }
@@ -199,7 +199,7 @@ export const WorldData = {
         this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
         if (DVEW.settings.doRGBPropagation()) {
             if (voxelData.lightSource && voxelData.lightValue) {
-                DVEW.queues.addToRGBUpdateQue(x, y, z);
+                DVEW.queues.rgb.update.add([x, y, z]);
             }
         }
         if (voxelData.isRich) {
@@ -242,11 +242,9 @@ export const WorldData = {
         this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, mainId);
         this.chunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
         if (DVEW.settings.doRGBPropagation()) {
-            if (voxelData.lightSource && voxelData.lightValue) {
-                DVEW.queues.addToRGBUpdateQue(x, y, z);
-            }
-            if (secondVoxelData.lightSource && secondVoxelData.lightValue) {
-                DVEW.queues.addToRGBUpdateQue(x, y, z);
+            if ((voxelData.lightSource && voxelData.lightValue) ||
+                (secondVoxelData.lightSource && secondVoxelData.lightValue)) {
+                DVEW.queues.rgb.update.add([x, y, z]);
             }
         }
     },
@@ -322,24 +320,24 @@ export const WorldData = {
     async __runLightRemoveAndUpdates(remove = true, update = true) {
         if (remove) {
             if (DVEW.settings.doRGBPropagation()) {
-                DVEW.queues.runRGBRemoveQue();
-                await DVEW.queues.awaitAllRGBLightRemove();
+                DVEW.queues.rgb.remove.run();
+                await DVEW.queues.rgb.remove.awaitAll();
             }
             if (DVEW.settings.doSunPropagation()) {
-                DVEW.queues.runSunLightRemoveQue();
-                await DVEW.queues.awaitAllSunLightRemove();
+                DVEW.queues.sun.remove.run();
+                await DVEW.queues.sun.remove.awaitAll();
             }
         }
         if (update) {
             if (DVEW.settings.doRGBPropagation()) {
-                DVEW.queues.runRGBUpdateQue();
+                DVEW.queues.sun.update.run();
             }
             if (DVEW.settings.doSunPropagation()) {
-                DVEW.queues.runSunLightUpdateQue();
+                DVEW.queues.rgb.update.run();
             }
             await Promise.all([
-                DVEW.queues.awaitAllRGBLightUpdates(),
-                DVEW.queues.awaitAllSunLightUpdates(),
+                DVEW.queues.rgb.update.awaitAll(),
+                DVEW.queues.sun.update.awaitAll(),
             ]);
         }
     },
@@ -354,13 +352,13 @@ export const WorldData = {
         if (l > 0) {
             if (DVEW.settings.doRGBPropagation()) {
                 if (this.lightByte.hasRGBLight(l)) {
-                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                    DVEW.queues.rgb.update.add([x, y, z]);
                 }
             }
             if (DVEW.settings.doSunPropagation()) {
                 if (this.lightByte.getS(l) > 0) {
-                    DVEW.queues.addToSunLightRemoveQue(x, y - 1, z);
-                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                    DVEW.queues.sun.remove.add([x, y - 1, z]);
+                    DVEW.queues.sun.remove.add([x, y, z]);
                 }
             }
             await this.__runLightRemoveAndUpdates(true, false);
@@ -376,7 +374,7 @@ export const WorldData = {
         if (DVEW.settings.settings.lighting?.autoRGBLight) {
             if (voxelData.lightSource && voxelData.lightValue) {
                 needLightUpdate = true;
-                DVEW.queues.addToRGBUpdateQue(x, y, z);
+                DVEW.queues.rgb.update.add([x, y, z]);
             }
         }
         if (DVEW.settings.settings.updating?.autoRebuild) {
@@ -385,8 +383,8 @@ export const WorldData = {
             }
             if (!DVEW.settings.settings.server.enabled) {
                 this.runRebuildCheck(x, y, z);
-                DVEW.queues.runRebuildQue();
-                await DVEW.queues.awaitAllChunksToBeBuilt();
+                DVEW.queues.build.chunk.run();
+                await DVEW.queues.build.chunk.awaitAll();
             }
         }
         this.tempVoxelData.setUint32(0, rawData1);
@@ -418,13 +416,13 @@ export const WorldData = {
         if (l > 0) {
             if (DVEW.settings.doRGBPropagation()) {
                 if (this.lightByte.hasRGBLight(l)) {
-                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                    DVEW.queues.rgb.remove.add([x, y, z]);
                 }
             }
             if (DVEW.settings.doSunPropagation()) {
                 if (this.lightByte.getS(l) > 0) {
-                    DVEW.queues.addToSunLightRemoveQue(x, y - 1, z);
-                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                    DVEW.queues.sun.remove.add([x, y - 1, z]);
+                    DVEW.queues.sun.remove.add([x, y, z]);
                 }
             }
             await this.__runLightRemoveAndUpdates(true, false);
@@ -440,15 +438,15 @@ export const WorldData = {
         if (DVEW.settings.settings.lighting?.autoRGBLight) {
             if (voxelData.lightSource && voxelData.lightValue) {
                 needLightUpdate = true;
-                DVEW.queues.addToRGBUpdateQue(x, y, z);
+                DVEW.queues.rgb.update.add([x, y, z]);
             }
         }
         if (DVEW.settings.settings.updating?.autoRebuild) {
             if (needLightUpdate) {
                 await this.__runLightRemoveAndUpdates(false, true);
             }
-            DVEW.queues.runRebuildQue();
-            await DVEW.queues.awaitAllChunksToBeBuilt();
+            DVEW.queues.build.chunk.run();
+            await DVEW.queues.build.chunk.awaitAll();
         }
         if (voxelData.isRich) {
             DVEW.richWorldComm.setInitalData(voxelData.id, x, y, z);
@@ -475,10 +473,10 @@ export const WorldData = {
             if (l > 0) {
                 this.setAir(x, y, z, l);
                 if (DVEW.settings.doRGBPropagation()) {
-                    DVEW.queues.addToRGBRemoveQue(x, y, z);
+                    DVEW.queues.rgb.remove.add([x, y, z]);
                 }
                 if (DVEW.settings.doSunPropagation()) {
-                    DVEW.queues.addToSunLightRemoveQue(x, y, z);
+                    DVEW.queues.sun.remove.add([x, y, z]);
                 }
             }
             if (l < 0) {
@@ -492,8 +490,8 @@ export const WorldData = {
         if (!DVEW.settings.settings.server.enabled) {
             if (DVEW.settings.settings.updating?.autoRebuild) {
                 await this.__runLightRemoveAndUpdates(true, true);
-                DVEW.queues.runRebuildQue();
-                await DVEW.queues.awaitAllChunksToBeBuilt();
+                DVEW.queues.build.chunk.run();
+                await DVEW.queues.build.chunk.awaitAll();
             }
         }
         if (voxelData.isRich) {

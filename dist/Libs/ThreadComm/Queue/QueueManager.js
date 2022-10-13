@@ -77,10 +77,15 @@ export class QueueManager {
             Atomics.add(state, 0, 1);
             this.onRun(data, syncId);
         }
+        this.__queueData[queueId].map = {};
         if (filter) {
             this.__queueData[queueId].queue = queue;
             this.__queueData[queueId].map = newMap;
         }
+    }
+    runAndAwait(queueId = "main", filter) {
+        this.run(queueId, filter);
+        return this.awaitAll(queueId);
     }
     awaitAll(queueId = "main") {
         const queueData = this.__getQueueData(queueId);

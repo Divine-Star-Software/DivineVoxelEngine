@@ -82,7 +82,7 @@ export function GenerateTemple(direction, chunkX, chunkZ) {
         }
     }
     DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, chunkX + 8, 55, chunkZ + 8);
-    DVEW.queues.addToFlowRunQue(chunkX + 8, 55, chunkZ + 8);
+    DVEW.queues.flow.update.add([chunkX + 8, 55, chunkZ + 8]);
     if (direction == "south" || direction == "north") {
         for (let z = chunkZ; z < chunkZ + this.chunkDepth; z++) {
             let voxel = "dve:dreamstone-stair";

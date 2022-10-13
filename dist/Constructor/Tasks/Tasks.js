@@ -4,7 +4,8 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 export const Tasks = {
     build: {
         chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, (data) => {
-            DVEC.DVEB.buildChunk(data[0], data[1], data[2], data[3]);
+            const chunkPOS = DVEC.worldBounds.getChunkPosition(data[0], data[1], data[2]);
+            DVEC.DVEB.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, 1);
         }),
         entity: ThreadComm.registerTasks(ConstructorTasks.constructEntity, (data) => {
             const x = data[0];
@@ -15,7 +16,7 @@ export const Tasks = {
             const height = data[5];
             const composed = data[6];
             const arrays = [];
-            for (let i = 8; i < 8 + 2 * composed; i += 2) {
+            for (let i = 7; i < 7 + 2 * composed; i += 2) {
                 arrays.push(new Uint32Array(data[i]), new Uint32Array(data[i + 1]));
             }
             DVEC.DVEB.entityConstructor.setEntityData(x, y, z, width, depth, height, composed, arrays);
@@ -44,20 +45,20 @@ export const Tasks = {
         }),
     },
     worldSun: {
-        fillWorldColumn: ThreadComm.registerTasks(ConstructorTasks.fillWorldColumnWithSunLight, (data) => {
+        fillWorldColumn: ThreadComm.registerTasks(ConstructorTasks.worldSunStep1, (data) => {
             //run sun light propagation for world column
             const x = data[0];
             const z = data[1];
             const maxY = data[2];
             DVEC.DVEP.runSunLightForWorldColumn(x, z, maxY);
         }),
-        updateAtMaxY: ThreadComm.registerTasks(ConstructorTasks.runSunLightUpdateAtMaxY, (data) => {
+        updateAtMaxY: ThreadComm.registerTasks(ConstructorTasks.worldSunStep2, (data) => {
             const x = data[0];
             const z = data[1];
             const maxY = data[2];
             DVEC.DVEP.runSunFloodFillAtMaxY(x, z, maxY);
         }),
-        floodAtMaxY: ThreadComm.registerTasks(ConstructorTasks.runSunLightUpdateMaxYFlood, (data) => {
+        floodAtMaxY: ThreadComm.registerTasks(ConstructorTasks.worldSunStep3, (data) => {
             const x = data[0];
             const z = data[1];
             const maxY = data[2];
@@ -79,13 +80,13 @@ export const Tasks = {
         }),
     },
     flow: {
-        update: ThreadComm.registerTasks(ConstructorTasks.runFlow, async (data) => {
+        update: ThreadComm.registerTasks(ConstructorTasks.flowUpdate, async (data) => {
             const x = data[0];
             const y = data[1];
             const z = data[2];
-            await DVEC.DVEP.runFlowAt(x, y, z);
+            await DVEC.DVEP.updateFlowAt(x, y, z);
         }),
-        remove: ThreadComm.registerTasks(ConstructorTasks.removeFlow, (data) => {
+        remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, (data) => {
             const x = data[0];
             const y = data[1];
             const z = data[2];

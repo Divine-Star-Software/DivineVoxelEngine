@@ -16,7 +16,7 @@ const generateAsync = async () => {
             DVEW.generate(x, z);
         }
     }
-    await DVEW.queues.awaitAllGenerationsToBeDone();
+    await DVEW.queues.generate.chunk.awaitAll();
 };
 const generateSync = () => {
     for (let x = startX; x <= endX; x += 16) {
