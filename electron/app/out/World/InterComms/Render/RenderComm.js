@@ -1,19 +1,19 @@
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-const renderCommBase = {
+const parentCommBase = {
     onReady: () => { },
     onRestart: () => { },
 };
-const renderComm = CreateInterComm("world-render", renderCommBase);
-export const RenderComm = renderComm;
+const parentComm = CreateInterComm("world-render", parentCommBase);
+export const RenderComm = parentComm;
 const ports = [];
-renderComm.messageFunctions = {
+parentComm.messageFunctions = {
     start: function (data, event) {
         DVEW.__renderIsDone = true;
-        renderComm.onReady();
+        parentComm.onReady();
     },
     "re-start": function (data, event) {
-        renderComm.onRestart();
+        parentComm.onRestart();
     },
     "sync-settings": (data, event) => {
         if (!event)
@@ -52,4 +52,4 @@ renderComm.messageFunctions = {
         DVEW.richWorldComm.setPort(port);
     },
 };
-//renderComm.onMessage = (event) => console.log(event.data,event.ports);
+//parentComm.onMessage = (event) => console.log(event.data,event.ports);

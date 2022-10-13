@@ -1,9 +1,7 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
-
-const worldComm = CreateInterComm("render-world", {});
-export const WorldComm = worldComm;
+const worldComm = ThreadComm.createComm("world");
 worldComm.listenForMessage("remove-chunk", (data) => {
  const chunkX = data[1];
  const chunkY = data[2];
@@ -15,3 +13,4 @@ worldComm.listenForMessage("remove-chunk", (data) => {
  );
  DVER.meshManager.requestChunkBeRemoved(chunkKey);
 });
+export const WorldComm = worldComm;

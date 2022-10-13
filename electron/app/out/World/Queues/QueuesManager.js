@@ -1,7 +1,8 @@
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { QueuesIndexes } from "../../Constants/Queues.js";
-import { GetQueue } from "./GetQueue.js";
+import { CCM } from "../InterComms/Constructor/ConstructorCommManager.js";
+import { ConstructorTasks } from "../../Constants/InterComms/ConstructorTasks.js";
 const QMBase = {
     _RGBLightRemoveQue: [],
     _RGBLightUpdateQue: [],
@@ -17,7 +18,7 @@ const QMBase = {
     __states: new Uint32Array(),
     $INIT() {
         this.__states = new Uint32Array(this.__statesSAB);
-        DVEW.constructorCommManager.$INIT(this.__statesSAB);
+        DVEW.ccm.$INIT(this.__statesSAB);
     },
     _syncQueue(queueId, buffer) {
         //sync data with DVEC
@@ -44,7 +45,7 @@ const QMBase = {
             const worldColumnKey = DVEW.worldBounds.getWorldColumnKey(x, z);
             const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
             Atomics.add(this.__states, QueuesIndexes.worldColumnSunLightProp, 1);
-            DVEW.constructorCommManager.runSunLightForWorldColumn(x, z, maxY);
+            DVEW.ccm.tasks.worldSun.fillWorldColumn([x, z, maxY]);
             this._worldColumnSunLightPropMap[worldColumnKey] = { max: maxY, thread: 0 };
         }
         i = queue.length;
@@ -56,7 +57,7 @@ const QMBase = {
             const data = this._worldColumnSunLightPropMap[worldColumnKey];
             const x = position[0];
             const z = position[1];
-            data.thread = DVEW.constructorCommManager.runSunFillAtMaxY(x, z, data.max);
+            data.thread = (DVEW.ccm.tasks.worldSun.updateAtMaxY([x, z, data.max]));
             Atomics.add(this.__states, QueuesIndexes.sunLgithUpdateMaxY, 1);
         }
         await this.awaitAllSunLightUpdatesAtMaxY();
@@ -69,7 +70,7 @@ const QMBase = {
             const data = this._worldColumnSunLightPropMap[worldColumnKey];
             const x = position[0];
             const z = position[1];
-            data.thread = DVEW.constructorCommManager.runSunFillMaxYFlood(x, z, data.max, data.thread);
+            data.thread = (DVEW.ccm.tasks.worldSun.floodAtMaxY([x, z, data.max], data.thread));
             Atomics.add(this.__states, QueuesIndexes.sunLightMaxYFlood, 1);
         }
         this._worldColumnSunLightPropMap = {};
@@ -125,7 +126,7 @@ const QMBase = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.sunLightUpdate, 1);
-            DVEW.constructorCommManager.runSunLightUpdate(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.sun.update([position[0], position[1], position[2]]);
         }
         this._SunLightUpdateQue = [];
     },
@@ -136,7 +137,7 @@ const QMBase = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.sunLightRemove, 1);
-            DVEW.constructorCommManager.runSunLightRemove(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.sun.remove([position[0], position[1], position[2]]);
         }
         this._SunLightRemoveQue = [];
     },
@@ -188,7 +189,7 @@ const QMBase = {
                 }
             }
             Atomics.add(this.__states, QueuesIndexes.RGBLightUpdate, 1);
-            DVEW.constructorCommManager.runRGBLightUpdate(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.rgb.update([position[0], position[1], position[2]]);
         }
         if (!filter) {
             this._RGBLightUpdateQue = [];
@@ -204,7 +205,7 @@ const QMBase = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.RGBLightRemove, 1);
-            DVEW.constructorCommManager.runRGBLightRemove(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.rgb.remove([position[0], position[1], position[2]]);
         }
         this._RGBLightRemoveQue = [];
     },
@@ -256,7 +257,7 @@ const QMBase = {
                 }
             }
             Atomics.add(this.__states, QueuesIndexes.flowsRunning, 1);
-            DVEW.constructorCommManager.runFlow(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.flow.update([position[0], position[1], position[2]]);
         }
         if (!filter) {
             this._runFlowQue = [];
@@ -272,7 +273,7 @@ const QMBase = {
             if (!position)
                 break;
             Atomics.add(this.__states, QueuesIndexes.flowsRemoving, 1);
-            DVEW.constructorCommManager.removeFlow(position[0], position[1], position[2]);
+            DVEW.ccm.tasks.flow.remove([position[0], position[1], position[2]]);
         }
         this._removeFlowQue = [];
     },
@@ -372,21 +373,41 @@ const QMBase = {
             checkInterval: 1,
         });
     },
+    $CreateQueues() {
+        this.rgb.update.addQueue("main");
+        this.rgb.remove.addQueue("main");
+        this.sun.update.addQueue("main");
+        this.sun.remove.addQueue("main");
+        this.worldSun.fill.addQueue("main");
+        this.worldSun.columnFill.addQueue("main");
+        this.worldSun.flood.addQueue("main");
+        this.flow.update.addQueue("main");
+        this.flow.remove.addQueue("main");
+        this.build.chunk.addQueue("main");
+        this.generate.chunk.addQueue("main");
+    },
     rgb: {
-        update: GetQueue((data) => {
-            DVEW.constructorCommManager.runRGBLightUpdate(data[0], data[1], data[2]);
-        }),
-        remove: GetQueue((data) => {
-            DVEW.constructorCommManager.runRGBLightRemove(data[0], data[1], data[2]);
-        }),
+        update: CCM.addQueue("rgb-update", ConstructorTasks.RGBlightUpdate),
+        remove: CCM.addQueue("rgb-remove", ConstructorTasks.RGBlightRemove),
+    },
+    worldSun: {
+        fill: CCM.addQueue("sun-fill", ConstructorTasks.fillWorldColumnWithSunLight),
+        columnFill: CCM.addQueue("sun-column-update", ConstructorTasks.runSunLightUpdateAtMaxY),
+        flood: CCM.addQueue("sun-column-flood", ConstructorTasks.runSunLightUpdateMaxYFlood),
     },
     sun: {
-        update: GetQueue((data) => {
-            DVEW.constructorCommManager.runSunLightUpdate(data[0], data[1], data[2]);
-        }),
-        remove: GetQueue((data) => {
-            DVEW.constructorCommManager.runSunLightRemove(data[0], data[1], data[2]);
-        }),
+        update: CCM.addQueue("sun-update", ConstructorTasks.sunLightUpdate),
+        remove: CCM.addQueue("sun-remove", ConstructorTasks.sunLightRemove),
+    },
+    flow: {
+        update: CCM.addQueue("flow-update", ConstructorTasks.runFlow),
+        remove: CCM.addQueue("flow-remove", ConstructorTasks.removeFlow),
+    },
+    build: {
+        chunk: CCM.addQueue("build-chunk", ConstructorTasks.buildChunk),
+    },
+    generate: {
+        chunk: CCM.addQueue("generate-chunk", ConstructorTasks.generate),
     },
 };
 export const QueuesManager = QMBase;

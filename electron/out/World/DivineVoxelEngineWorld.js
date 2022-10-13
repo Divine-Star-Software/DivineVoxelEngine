@@ -7,9 +7,8 @@ import { VoxelManager } from "../Voxels/VoxelManager.js";
 import { ItemManager } from "../Items/ItemManager.js";
 import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
 //inter comms
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
-import { ServerComm } from "./InterComms/Server/ServerComm.js";
-import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
+import { CCM } from "./InterComms/Constructor/ConstructorCommManager.js";
 import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 import { DataComm } from "./InterComms/Data/DataComm.js";
@@ -43,9 +42,8 @@ export const DVEW = {
     fxComm: FXComm,
     dataComm: DataComm,
     nexusComm: NexusComm,
-    renderComm: RenderComm,
-    serverComm: ServerComm,
-    constructorCommManager: ConstructorCommManager,
+    parentComm: ParentComm,
+    ccm: CCM,
     richWorldComm: RichWorldComm,
     worldGeneration: WorldGeneration,
     worldData: WorldData,
@@ -54,7 +52,7 @@ export const DVEW = {
     itemManager: ItemManager,
     queues: QueuesManager,
     isReady() {
-        return (DVEW.constructorCommManager.isReady() &&
+        return (DVEW.ccm.isReady() &&
             DVEW.__settingsHaveBeenSynced &&
             (DVEW.__renderIsDone || DVEW.__serverIsDone) &&
             DVEW.matrixMap.isReady());
@@ -74,7 +72,7 @@ export const DVEW = {
         const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
         if (!chunk)
             return false;
-        this.renderComm.sendMessage("remove-chunk", [chunkX, chunkY, chunkZ]);
+        this.parentComm.sendMessage("remove-chunk", [chunkX, chunkY, chunkZ]);
         if (deleteChunk) {
             this.worldData.removeChunk(chunkX, chunkY, chunkZ);
             this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
@@ -91,11 +89,11 @@ export const DVEW = {
     },
     buildChunk(chunkX, chunkY, chunkZ, LOD = 1) {
         this.queues.addToRebuildQueTotal();
-        this.constructorCommManager.requestFullChunkBeBuilt(chunkX, chunkY, chunkZ, LOD);
+        this.ccm.tasks.build.chunk([chunkX, chunkY, chunkZ, LOD]);
     },
     generate(x, z, data = []) {
         this.queues.addToGenerationTotal();
-        this.constructorCommManager.runGeneration(x, z, data);
+        this.ccm.tasks.worldGen.generate([x, z, data]);
     },
     buildWorldColumn(x, z, LOD = 1) {
         const worldColumn = this.worldData.getWorldColumn(x, z);
@@ -108,7 +106,7 @@ export const DVEW = {
         }
     },
     createItem(itemId, x, y, z) {
-        this.constructorCommManager.constructItem(itemId, x, y, z);
+        this.ccm.tasks.build.item([itemId, x, y, z]);
     },
     async $INIT(data) {
         this.settings.setContext("DVEW");

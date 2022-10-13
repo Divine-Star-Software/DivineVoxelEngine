@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __connectedToWorld: boolean;
     __queueStatesSet: boolean;
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -428,7 +428,7 @@ export declare const DVEC: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -507,7 +507,7 @@ export declare const DVEC: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -1987,6 +1987,33 @@ export declare const DVEC: {
         _addToRGBLightUpdateQue(voxelData: import("Meta/index.js").VoxelData, x: number, y: number, z: number): void;
         paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
     };
+    tasks: {
+        build: {
+            chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            entity: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            item: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+        rgb: {
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+        worldSun: {
+            fillWorldColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            updateAtMaxY: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            floodAtMaxY: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+        sun: {
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+        flow: {
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+        worldGen: {
+            generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        };
+    };
     queues: {
         __states: Uint32Array;
         setQueueStates(states: Uint32Array): void;
@@ -2360,8 +2387,8 @@ export declare const DVEC: {
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
     };
     matrixHub: {
-        environment: "node" | "browser";
-        worldPort: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes | undefined;
+        environment: "browser" | "node";
+        worldPort: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes | undefined;
         threadName: string;
         __threadNameSet: boolean;
         messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;
@@ -2439,50 +2466,38 @@ export declare const DVEC: {
         isLightSource(id: number): boolean;
         getLightValue(id: number): number;
     };
-    renderComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
-        onReady: () => void;
-        onRestart: () => void;
-    };
-    serverComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
-        onReady: () => void;
-        onRestart: () => void;
-    };
-    worldComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
+    parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    TC: {
+        threadNumber: number;
+        threadName: string;
+        environment: "browser" | "node";
+        _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
+        _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
+        _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
+        _queues: Record<string, import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>;
+        _onDataSync: Record<string, import("../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
+        parent: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        __initalized: boolean;
+        __expectedPorts: Record<string, boolean>;
+        $INIT(threadName: string): Promise<void>;
+        getSyncedQueue(queueId: string): import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue;
+        addComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
+        createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        createCommManager(data: import("../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+        getComm(id: string): import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        getCommManager(id: string): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+        __throwError(message: string): never;
+        getWorkerPort(): Promise<any>;
+        __handleInternalMessage(data: any[], event: any): void;
+        __isInternalMessage(data: any[]): boolean;
+        __handleTasksMessage(data: any[]): Promise<void>;
+        __isTasks(data: any[]): boolean;
+        registerTasks<T_3>(id: string | number, run: (data: T_3) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+        __hanldeDataSyncMessage(data: any[]): Promise<void>;
+        __isDataSync(data: any[]): boolean;
+        listenForDataSync<T_4>(dataType: string, onSync: (data: T_4) => void, onUnSync?: (data: T_4) => void): void;
     };
     voxelManager: {
         voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;

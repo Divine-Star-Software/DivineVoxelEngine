@@ -1,7 +1,8 @@
 export const TCMessageHeaders = Object.freeze({
     internal: -99,
     runTasks: -98,
-    message: -97,
+    dataSync: -97,
+    message: -96,
 });
 export const TCInternalMessages = Object.freeze({
     IsReady: -99,
@@ -9,4 +10,8 @@ export const TCInternalMessages = Object.freeze({
     connectPort: -97,
     syncQueue: -96,
     unSyncQueue: -95,
+});
+export const TCDataSyncMessages = Object.freeze({
+    SyncData: -990,
+    UnSyncData: -980,
 });

@@ -48,7 +48,7 @@ const init = async () => {
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x: 15, y: 120, z: 7 },
+  { x: 15, y: 60, z: 7 },
   { x: 7, y: 30, z: 7 }
  );
  const box = SetUpDefaultSkybox(scene);

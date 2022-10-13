@@ -10,7 +10,7 @@ import { Util } from "../Global/Util.helper.js";
 import { DataManager } from "./DataManager/DataManager.js";
 //intercomms
 import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 
@@ -31,7 +31,7 @@ export const DVED = {
  matrixHub: MatrixHub,
 
  worldComm: WorldComm,
- renderComm: RenderComm,
+ parentComm: ParentComm,
 
  dataManager : DataManager,
 

@@ -8,7 +8,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 //intercomms
 import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { DVEFXInitData } from "Meta/FX/DVEFX.js";
@@ -27,7 +27,7 @@ export const DVEFX = {
  matrixHub: MatrixHub,
 
  worldComm: WorldComm,
- renderComm: RenderComm,
+ parentComm: ParentComm,
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);

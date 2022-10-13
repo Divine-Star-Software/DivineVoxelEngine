@@ -2,7 +2,11 @@ import type { CommPortTypes, NodeWorker } from "../Meta/Comm/Comm.types";
 import type { MessageFunction, MessageRecord } from "../Meta/Util.types.js";
 import type { CommManager } from "../Manager/CommManager.js";
 import { ThreadComm } from "../ThreadComm.js";
-import { TCMessageHeaders, TCInternalMessages } from "../Constants/Messages.js";
+import {
+	TCMessageHeaders,
+	TCInternalMessages,
+	TCDataSyncMessages,
+} from "../Constants/Messages.js";
 
 export class CommBase {
 	environment: "node" | "browser" = "browser";
@@ -19,12 +23,22 @@ export class CommBase {
 		this._manager = commManager;
 	}
 
+	destroy() {
+		if (!this.port) return;
+		if ("terminate" in this.port) {
+			this.port.terminate();
+		}
+	}
+
 	isReady() {
 		return this.__ready;
 	}
 
-	sendReadySignal() {
-		this.sendMessage(TCMessageHeaders.internal, [TCInternalMessages.IsReady]);
+	__sendReadySignal() {
+		this.sendMessage(TCMessageHeaders.internal, [
+			TCInternalMessages.IsReady,
+			ThreadComm.threadName,
+		]);
 	}
 
 	__onSetPortRun: (port: CommPortTypes) => void = (port) => {};
@@ -45,6 +59,11 @@ export class CommBase {
 		}
 		if (ThreadComm.__isTasks(data)) {
 			ThreadComm.__handleTasksMessage(data);
+			this.onMessage(event);
+			return;
+		}
+		if (ThreadComm.__isDataSync(data)) {
+			ThreadComm.__hanldeDataSyncMessage(data);
 			this.onMessage(event);
 			return;
 		}
@@ -84,6 +103,7 @@ export class CommBase {
 				this.__throwError("Error occured.");
 			});
 		}
+		this.__sendReadySignal();
 	}
 
 	__throwError(message: string) {
@@ -129,8 +149,8 @@ export class CommBase {
 		);
 	}
 
-	runTasks<T>(id: string, data: T, queue?: string) {
-		this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data]);
+	runTasks<T>(id: string | number, data: T, transfers: any[] = [], queue?: string) {
+		this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data], transfers);
 	}
 
 	__syncQueue(id: string, sab: SharedArrayBuffer) {
@@ -148,14 +168,34 @@ export class CommBase {
 		]);
 	}
 
+	syncData<T>(dataType: string, data: T, transfers?: any[]) {
+		this.sendMessage(
+			TCMessageHeaders.dataSync,
+			[TCDataSyncMessages.SyncData, dataType, data],
+			transfers
+		);
+	}
+
+	unSyncData<T>(dataType: string, data: T, transfers?: any[]) {
+		this.sendMessage(
+			TCMessageHeaders.dataSync,
+			[TCDataSyncMessages.SyncData, dataType, data],
+			transfers
+		);
+	}
+
+	waitTillReady() {
+		const self = this;
+		return new Promise<boolean>((resolve, reject) => {
+			const inte = setInterval(() => {
+				if (this.isReady()) {
+					clearInterval(inte);
+					resolve(true);
+				}
+			}, 1);
+		});
+	}
+
+	//meant to be over-ridden for debugging or custom behavior
 	onMessage(event: any) {}
-}
-
-export function CreateComm<T>(name: string, mergeObject: T): CommBase & T {
-	const newCom = Object.assign<CommBase, typeof mergeObject>(
-		new CommBase(name),
-		mergeObject
-	);
-
-	return newCom;
 }

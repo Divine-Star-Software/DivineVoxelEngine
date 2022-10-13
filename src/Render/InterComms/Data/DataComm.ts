@@ -1,7 +1,7 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
-const dataCommBase = CreateInterComm("render-data", {});
+const dataCommBase = ThreadComm.createComm("render-data", {});
 
 const dataComm = Object.assign(dataCommBase, {
  $INIT() {

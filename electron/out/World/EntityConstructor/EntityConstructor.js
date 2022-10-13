@@ -87,7 +87,7 @@ export const EntityConstructor = {
         if (!this.voxelData || !this.voxelStateData) {
             throw new Error(`No entity has began construction`);
         }
-        DVEW.constructorCommManager.constructEntity(x, y, z, this.width, this.depth, this.height, this.composed, this.voxelData, this.voxelStateData);
+        DVEW.ccm.tasks.build.entity(x, y, z, this.width, this.depth, this.height, this.composed, this.voxelData, this.voxelStateData);
         this.voxelData = null;
         this.voxelStateData = null;
     },

@@ -1,5 +1,5 @@
 export declare const RenderComm: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     name: string;
     port: import("../../../Comms/InterComm.types.js").InterCommPortTypes | null;
     messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;

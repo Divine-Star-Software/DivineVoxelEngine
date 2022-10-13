@@ -96,15 +96,10 @@ export function InitWorkers(
 
  //terminate all workers
  window.addEventListener("beforeunload", () => {
-  for (const constructor of DVER.constructorCommManager.constructors) {
-   //@ts-ignore
-   constructor.port.terminate();
-  }
-  //@ts-ignore
-  DVER.worldComm.port.terminate();
-  if (DVER.nexusComm.port) {
-   //@ts-ignore
-   DVER.nexusComm.port.terminate();
-  }
+  DVER.constructorCommManager.destroyAll();
+  DVER.worldComm.destroy();
+  DVER.nexusComm.destroy();
+  DVER.fxComm.destroy();
+  DVER.dataComm.destroy();
  });
 }

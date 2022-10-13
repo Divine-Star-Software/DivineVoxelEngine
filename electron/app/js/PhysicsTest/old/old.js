@@ -27,14 +27,14 @@ const playerBoundinBox = DVEM.getSimpleBoundingBox(DVEM.getVector3(10, 7, 7), {
    playerPosition[0] = playerBoundinBox.origin.x;
    playerPosition[1] = playerBoundinBox.origin.y;
    playerPosition[2] = playerBoundinBox.origin.z;
-   DVEN.renderComm.sendMessage("connect-player-data", [playerPositionSAB]);
+   DVEN.parentComm.sendMessage("connect-player-data", [playerPositionSAB]);
    
    let playerDirection = new Float32Array();
    let playerStates = new Uint8Array();
    
    const ready = { ready: false };
    
-   DVEN.renderComm.listenForMessage("connect-player-states", (data) => {
+   DVEN.parentComm.listenForMessage("connect-player-states", (data) => {
     playerDirection = new Float32Array(data[1]);
     playerStates = new Uint8Array(data[2]);
     ready.ready = true;

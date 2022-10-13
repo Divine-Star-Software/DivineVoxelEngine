@@ -65,8 +65,10 @@ for (let x = startX; x < endX; x += 16) {
 const x = 0;
 const z = 0;
 let t1 = performance.now();
+console.log("start");
 await DVEW.queues.runWorldColumnSunLightAndUpateQue();
 let t2 = performance.now();
+console.log("end")
 console.log(t2 - t1);
 
 //-1 10 0

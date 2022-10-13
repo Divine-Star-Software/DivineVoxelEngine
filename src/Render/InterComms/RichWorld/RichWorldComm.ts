@@ -1,7 +1,9 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
-const richWorldCommBase = CreateInterComm("render-rich-world", {});
+
+ThreadComm
+const richWorldCommBase = ThreadComm.createComm("render-rich-world");
 
 const richWorldComm = Object.assign(richWorldCommBase, {
  $INIT() {

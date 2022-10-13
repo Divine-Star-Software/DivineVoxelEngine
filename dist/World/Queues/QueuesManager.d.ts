@@ -1,5 +1,5 @@
 import { VoxelSubstanceType } from "Meta/index";
-import { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
+import type { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
 export declare type QueueFilter = (x: number, y: number, z: number) => 0 | 1 | 2;
 export declare const QueuesManager: {
     _RGBLightRemoveQue: number[][];
@@ -73,96 +73,28 @@ export declare const QueuesManager: {
     addToGenerationTotal(): void;
     areAllGenerationsDone(): boolean;
     awaitAllGenerationsToBeDone(): Promise<boolean>;
+    $CreateQueues(): void;
     rgb: {
-        update: {
-            __queueData: Record<string, {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            }>;
-            onRun: (data: LightUpdateTask) => void;
-            __getQueueKey(data: any): string;
-            __getQueueData(id: string): {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            };
-            addQueue(queueId: string): void;
-            removeQueue(queueId: string): void;
-            add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-            awaitAll(queueId?: string): Promise<boolean>;
-            isDone(queueId?: string): boolean;
-        };
-        remove: {
-            __queueData: Record<string, {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            }>;
-            onRun: (data: LightUpdateTask) => void;
-            __getQueueKey(data: any): string;
-            __getQueueData(id: string): {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            };
-            addQueue(queueId: string): void;
-            removeQueue(queueId: string): void;
-            add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-            awaitAll(queueId?: string): Promise<boolean>;
-            isDone(queueId?: string): boolean;
-        };
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+    };
+    worldSun: {
+        fill: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        columnFill: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        flood: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
     };
     sun: {
-        update: {
-            __queueData: Record<string, {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            }>;
-            onRun: (data: LightUpdateTask) => void;
-            __getQueueKey(data: any): string;
-            __getQueueData(id: string): {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            };
-            addQueue(queueId: string): void;
-            removeQueue(queueId: string): void;
-            add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-            awaitAll(queueId?: string): Promise<boolean>;
-            isDone(queueId?: string): boolean;
-        };
-        remove: {
-            __queueData: Record<string, {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            }>;
-            onRun: (data: LightUpdateTask) => void;
-            __getQueueKey(data: any): string;
-            __getQueueData(id: string): {
-                queue: import("../../Global/Util/Queue.js").Queue<LightUpdateTask>;
-                map: Record<string, boolean>;
-                stateSAB: SharedArrayBuffer;
-                state: Uint32Array;
-            };
-            addQueue(queueId: string): void;
-            removeQueue(queueId: string): void;
-            add(data: LightUpdateTask, queueId?: string): void;
-            run(queueId?: string, filter?: ((data: LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-            awaitAll(queueId?: string): Promise<boolean>;
-            isDone(queueId?: string): boolean;
-        };
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+    };
+    flow: {
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+    };
+    build: {
+        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+    };
+    generate: {
+        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
     };
 };

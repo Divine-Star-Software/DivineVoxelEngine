@@ -2,21 +2,29 @@
 import type { CommManagerData } from "./Meta/Manager/Manager.types.js";
 import type { MessageFunction } from "./Meta/Util.types.js";
 //constants
-import { TCMessageHeaders, TCInternalMessages } from "./Constants/Messages.js";
+import {
+	TCMessageHeaders,
+	TCInternalMessages,
+	TCDataSyncMessages,
+} from "./Constants/Messages.js";
 //classes
 import { Task } from "./Tasks/Tasks.js";
 import { CommManager } from "./Manager/CommManager.js";
 import { CommBase } from "./Comm/Comm.js";
 import { SyncedQueue } from "./Queue/SyncedQueue.js";
+import { DataSync } from "./Data/DataSync.js";
+
 export const ThreadComm = {
 	threadNumber: 0,
 	threadName: "unamed-threadcomm-thread",
 	environment: <"node" | "browser">"browser",
-	comms: <Record<string, CommBase>>{},
-	commManageras: <Record<string, CommManager>>{},
-	tasks: <Record<string, Task<any>>>{},
-	queues: <Record<string, SyncedQueue>>{},
+	_comms: <Record<string, CommBase>>{},
+	_commManageras: <Record<string, CommManager>>{},
+	_tasks: <Record<string, Task<any>>>{},
+	_queues: <Record<string, SyncedQueue>>{},
+	_onDataSync: <Record<string, DataSync<any, any>>>{},
 	parent: new CommBase(""),
+
 	__internal: <
 		Record<number, Record<number, (data: any, event: any) => void>>
 	>{},
@@ -33,7 +41,11 @@ export const ThreadComm = {
 	},
 
 	getSyncedQueue(queueId: string) {
-		return this.queues[queueId];
+		return this._queues[queueId];
+	},
+
+	addComm(comm: CommBase) {
+		this._comms[comm.name] = comm;
 	},
 
 	createComm<T>(name: string, mergeObject: T = <T>{}): T & CommBase {
@@ -41,37 +53,26 @@ export const ThreadComm = {
 			new CommBase(name),
 			mergeObject
 		);
-		this.comms[name] = newCom;
+		this._comms[name] = newCom;
 		return newCom;
 	},
 
 	createCommManager(data: CommManagerData) {
 		const newCommManager = new CommManager(data);
-		this.commManageras[data.name] = newCommManager;
+		this._commManageras[data.name] = newCommManager;
 		return newCommManager;
 	},
 
 	getComm(id: string) {
-		return this.comms[id];
+		return this._comms[id];
 	},
 
 	getCommManager(id: string) {
-		return this.commManageras[id];
+		return this._commManageras[id];
 	},
 
 	__throwError(message: string) {
 		throw new Error(`[ThreadComm] ${message}`);
-	},
-
-	expectPorts(portIds: string[]) {
-		if (this.__initalized) {
-			return this.__throwError(
-				"expectPorts must be called before initalization."
-			);
-		}
-		for (const id of portIds) {
-			this.__expectedPorts[id] = true;
-		}
 	},
 
 	async getWorkerPort() {
@@ -108,7 +109,7 @@ export const ThreadComm = {
 		const tasksId = data.shift();
 		//remove queue id
 		const queueId = data.shift();
-		await this.tasks[tasksId].run(data);
+		await this._tasks[tasksId].run(data[0]);
 		//complete queue
 		if (queueId) {
 			this.getSyncedQueue(queueId).subtractFromCount();
@@ -116,11 +117,42 @@ export const ThreadComm = {
 	},
 	__isTasks(data: any[]) {
 		return (
-			data[0] == TCMessageHeaders.runTasks && this.tasks[data[1]] !== undefined
+			data[0] == TCMessageHeaders.runTasks && this._tasks[data[1]] !== undefined
 		);
 	},
-	registerTasks<T>(id: string, run: (data: T) => void) {
-		this.tasks[id] = new Task<T>(id, run);
+
+	registerTasks<T>(id: string | number, run: (data: T) => void) {
+		const tasks = new Task<T>(id, run);
+		this._tasks[id] = tasks;
+		return tasks;
+	},
+
+	async __hanldeDataSyncMessage(data: any[]) {
+		//remove header
+		data.shift();
+
+		//remove queue id
+		const action = data.shift();
+		//remove tasks id
+		const dataTypeId = data.shift();
+		const dataSync = this._onDataSync[dataTypeId];
+		if (action == TCDataSyncMessages.SyncData) {
+			dataSync.onSync(data);
+		}
+		if (action == TCDataSyncMessages.UnSyncData) {
+			dataSync.onUnSync(data);
+		}
+	},
+	__isDataSync(data: any[]) {
+		return data[0] == TCMessageHeaders.dataSync;
+	},
+
+	listenForDataSync<T>(
+		dataType: string,
+		onSync: (data: T) => void,
+		onUnSync: (data: T) => void = (data) => {}
+	) {
+		this._onDataSync[dataType] = new DataSync(onSync, onUnSync);
 	},
 };
 //@ts-ignore
@@ -148,7 +180,12 @@ internal[TCInternalMessages.connectPort] = (data, event) => {
 		comm.addPort(port);
 	}
 };
-internal[TCInternalMessages.IsReady] = (data, event) => {};
+internal[TCInternalMessages.IsReady] = (data, event) => {
+	const name = data[0];
+	const comm = ThreadComm.getComm(name);
+	if (!comm) return;
+	comm.__ready = true;
+};
 internal[TCInternalMessages.nameThread] = (data, event) => {
 	const name = data[0];
 	const number = data[1];
@@ -158,9 +195,9 @@ internal[TCInternalMessages.nameThread] = (data, event) => {
 internal[TCInternalMessages.syncQueue] = (data, event) => {
 	const queueId = data[0];
 	const queueSAB = data[1];
-	ThreadComm.queues[queueId] = new SyncedQueue(queueId, queueSAB);
+	ThreadComm._queues[queueId] = new SyncedQueue(queueId, queueSAB);
 };
 internal[TCInternalMessages.unSyncQueue] = (data, event) => {
 	const queueId = data[0];
-	delete ThreadComm.queues[queueId];
+	delete ThreadComm._queues[queueId];
 };

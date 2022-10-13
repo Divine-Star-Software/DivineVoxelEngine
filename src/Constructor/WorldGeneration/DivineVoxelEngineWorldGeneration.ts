@@ -6,7 +6,7 @@ import type { Position3Matrix } from "Meta/Util.types.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { Util } from "../../Global/Util.helper.js";
-import { ConstructorToWorldMessages } from "../../Constants/InterComms/ConstructorToWorld.js";
+import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
 //matrix
 import { WorldMatrix } from "../../Matrix/WorldMatrix.js";
 import { MatrixHub } from "../../Matrix/MatrixHub.js";
@@ -97,7 +97,7 @@ export const DVEWG = {
  ) {
   if (voxelData.lightSource && voxelData.lightValue) {
    DVEC.worldComm.sendMessage(
-    ConstructorToWorldMessages.addToRGBLightUpdateQue,
+    WorldTasks.addToRGBLightUpdateQue,
     [x, y, z]
    );
   }

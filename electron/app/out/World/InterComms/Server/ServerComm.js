@@ -76,4 +76,4 @@ serverComm.messageFunctions = {
         }
     },
 };
-//renderComm.onMessage = (event) => console.log(event.data,event.ports);
+//parentComm.onMessage = (event) => console.log(event.data,event.ports);

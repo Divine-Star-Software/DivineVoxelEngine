@@ -85,8 +85,9 @@ export class QueueManager {
     awaitAll(queueId = "main") {
         const queueData = this.__getQueueData(queueId);
         return new Promise((resolve, reject) => {
-            setInterval(() => {
+            const inte = setInterval(() => {
                 if (Atomics.load(queueData.state, 0) == 0) {
+                    clearInterval(inte);
                     resolve(true);
                 }
             }, 1);

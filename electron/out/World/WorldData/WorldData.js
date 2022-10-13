@@ -305,7 +305,7 @@ export const WorldData = {
         chunks[worldColumnKey][chunkKey] = chunk;
         if (doNotSyncInThreads)
             return;
-        DVEW.constructorCommManager.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+        DVEW.ccm.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
         if (DVEW.settings.syncChunksInNexusThread()) {
             DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkPOS.x, chunkPOS.y, chunkPOS.z);
         }

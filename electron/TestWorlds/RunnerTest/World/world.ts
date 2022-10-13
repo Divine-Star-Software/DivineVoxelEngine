@@ -8,7 +8,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 const playerWatcher = new PlayerWatcher(DVEW);
 
 RegisterVoxels(DVEW);
-DVEW.renderComm.listenForMessage("connect-player", (data, event) => {
+DVEW.parentComm.listenForMessage("connect-player", (data, event) => {
  playerWatcher.setPlayerSharedArrays(data);
  playerWatcher.startWatchingPlayer();
 });

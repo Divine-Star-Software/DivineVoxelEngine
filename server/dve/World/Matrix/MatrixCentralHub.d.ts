@@ -1,4 +1,4 @@
-import type { InterCommPortTypes } from "Meta/Comms/InterComm.types";
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 /**# Matrix Thread Central Hub
  *---
  * Hanldes all syncing and releasing of data between chunk bound threads.
@@ -62,9 +62,9 @@ export declare const MatrixCentralHub: {
         getChunkMaxData(chunkData: DataView): number;
         setChunkMaxData(chunkData: DataView, data: number): void;
     };
-    threads: Record<string, InterCommPortTypes>;
+    threads: Record<string, CommPortTypes>;
     _threadMessageFunctions: Record<string, (data: any, event: MessageEvent) => void>;
-    registerThread(threadId: string, thread: InterCommPortTypes): void;
+    registerThread(threadId: string, thread: CommPortTypes): void;
     syncChunk(x: number, y: number, z: number): false | undefined;
     syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
     releaseChunk(x: number, y: number, z: number): void;

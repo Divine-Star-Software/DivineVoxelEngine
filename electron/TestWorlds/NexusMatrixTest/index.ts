@@ -6,7 +6,11 @@ import {
  runRenderLoop,
  SetUpDarkScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import {
+ RunInit,
+ SetUpWorkers,
+ SyncWithGraphicsSettings,
+} from "../Shared/Create/index.js";
 
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterEntitiesInCore } from "../Shared/Functions/RegisterEntitesInCore.js";
@@ -14,6 +18,8 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 
 RegisterTexutres(DVER);
 RegisterEntitiesInCore(DVER);
+
+(window as any).DVER = DVER;
 
 const workers = SetUpWorkers(
  import.meta.url,
@@ -24,20 +30,20 @@ const workers = SetUpWorkers(
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
- constructorWorker : workers.constructorWorkers,
+ constructorWorker: workers.constructorWorkers,
  nexusWorker: workers.nexusWorker,
  nexus: {
   enabled: true,
-  autoSyncChunks : true,
-  autoSyncVoxelPalette : true
+  autoSyncChunks: true,
+  autoSyncVoxelPalette: true,
  },
  lighting: {
-    doAO: true,
-    doRGBLight: true,
-    doSunLight: false,
-    autoRGBLight: true,
-    autoSunLight: false,
-   },
+  doAO: true,
+  doRGBLight: true,
+  doSunLight: false,
+  autoRGBLight: true,
+  autoSunLight: false,
+ },
 });
 SyncWithGraphicsSettings(DVER);
 const init = async () => {
@@ -52,9 +58,12 @@ const init = async () => {
  );
  SetUpDefaultSkybox(scene);
 
-
  //need this for meshes that are not part of the engnie
- const light = new BABYLON.HemisphericLight("",new BABYLON.Vector3(0,1,0),scene)
+ const light = new BABYLON.HemisphericLight(
+  "",
+  new BABYLON.Vector3(0, 1, 0),
+  scene
+ );
 
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0);

@@ -1,5 +1,5 @@
 export declare class Task<T> {
-    name: string;
+    name: string | number;
     run: (data: T) => void;
-    constructor(name: string, run: (data: T) => void);
+    constructor(name: string | number, run: (data: T) => void);
 }

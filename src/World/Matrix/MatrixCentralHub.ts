@@ -1,5 +1,5 @@
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 import { Util } from "../../Global/Util.helper.js";
-import type { InterCommPortTypes } from "Meta/Comms/InterComm.types";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 
 /**# Matrix Thread Central Hub
@@ -8,7 +8,7 @@ import { DVEW } from "../DivineVoxelEngineWorld.js";
  */
 export const MatrixCentralHub = {
  chunkReader: Util.getChunkReader(),
- threads: <Record<string, InterCommPortTypes>>{},
+ threads: <Record<string, CommPortTypes>>{},
 
  _threadMessageFunctions: <
   Record<string, (data: any, event: MessageEvent) => void>
@@ -43,7 +43,7 @@ export const MatrixCentralHub = {
   },
  },
 
- registerThread(threadId: string, thread: InterCommPortTypes) {
+ registerThread(threadId: string, thread: CommPortTypes) {
   const channel = new MessageChannel();
   const port = channel.port1;
   thread.postMessage(["set-thread-name", threadId]);

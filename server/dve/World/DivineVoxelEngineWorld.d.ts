@@ -5,7 +5,7 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     _3dFlatArray: {
         bounds: {
             x: number;
@@ -179,8 +179,8 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -490,7 +490,7 @@ export declare const DVEW: {
         radToDeg(radians: number): number;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -569,7 +569,7 @@ export declare const DVEW: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "MatrixLoadedThread" | "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {
@@ -824,11 +824,15 @@ export declare const DVEW: {
             getChunkMaxData(chunkData: DataView): number;
             setChunkMaxData(chunkData: DataView, data: number): void;
         };
-        threads: Record<string, import("../Meta/Comms/InterComm.types.js").InterCommPortTypes>;
+        threads: Record<string, import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes>;
         _threadMessageFunctions: Record<string, (data: any, event: MessageEvent<any>) => void>;
-        registerThread(threadId: string, thread: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
+        registerThread(threadId: string, thread: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes): void;
         syncChunk(x: number, y: number, z: number): false | undefined;
         syncChunkInThread(threadId: string, x: number, y: number, z: number): false | undefined;
+        /**# Delete Chunk
+         * ---
+         * Deletes a chunk from world data and releases it from all threads.
+         */
         releaseChunk(x: number, y: number, z: number): void;
         releaseChunkInThread(threadId: string, x: number, y: number, z: number): void;
         syncRegion(x: number, y: number, z: number): false | undefined;
@@ -926,118 +930,45 @@ export declare const DVEW: {
         setShapeMap(shapeMap: Record<string, number>): void;
         flush(): void;
     };
-    fxComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    };
-    dataComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    };
-    nexusComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    };
-    renderComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
-        onReady: () => void;
-        onRestart: () => void;
-    };
-    serverComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
-        onReady: () => void;
-        onRestart: () => void;
-    };
-    constructorCommManager: {
-        count: number;
-        numConstructors: number;
-        __numLightUpdates: number;
-        constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
-        constructorsConnected: number;
+    fxComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    dataComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    ccm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
         $INIT(statesSAB: SharedArrayBuffer): void;
-        addThread(port: import("../Meta/Comms/InterComm.types.js").InterCommPortTypes): void;
         syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
         syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
         releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
-        isReady(): boolean;
-        __handleCount(): number;
-        requestFullChunkBeBuilt(chunkX: number, chunkY: number, chunkZ: number, LOD?: number): number;
-        runRGBLightUpdate(x: number, y: number, z: number): number;
-        runRGBLightRemove(x: number, y: number, z: number): number;
-        runSunLightForWorldColumn(x: number, z: number, maxY: number): number;
-        runSunFillAtMaxY(x: number, y: number, maxY: number): number;
-        runSunFillMaxYFlood(x: number, y: number, maxY: number, thread: number): number;
-        runSunLightUpdate(x: number, y: number, z: number): number;
-        runSunLightRemove(x: number, y: number, z: number): number;
-        runFlow(x: number, y: number, z: number): number;
-        removeFlow(x: number, y: number, z: number): number;
-        runGeneration(x: number, z: number, data: any): number;
-        constructEntity(x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]): number;
-        constructItem(itemId: string, x: number, y: number, z: number): number;
+        tasks: {
+            build: {
+                chunk: (data: any) => number | undefined;
+                entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number | undefined;
+                item: (data: any) => number | undefined;
+            };
+            rgb: {
+                update: (data: any) => number | undefined;
+                remove: (data: any) => number | undefined;
+            };
+            worldSun: {
+                fillWorldColumn: (data: any) => number | undefined;
+                updateAtMaxY: (data: any) => number | undefined;
+                floodAtMaxY: (data: any, threadNumber: number) => number | undefined;
+            };
+            sun: {
+                update: (data: any) => number | undefined;
+                remove: (data: any) => number | undefined;
+            };
+            flow: {
+                update: (data: any) => number | undefined;
+                remove: (data: any) => number | undefined;
+            };
+            worldGen: {
+                generate: (data: any) => number | undefined;
+            };
+        };
     };
-    richWorldComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
+    richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         setInitalData(voxelId: string, x: number, y: number, z: number): void;
         removeRichData(x: number, y: number, z: number): void;
     };
@@ -1131,6 +1062,10 @@ export declare const DVEW: {
             getVoxelTrueId(voxelId: number): string;
             registerVoxel(voxel: import("../Meta/index.js").VoxelData): void;
             getVoxelPartentId(id: number): number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             getVoxelState(voxelId: number): number;
             getVoxelPalette(): Record<number, string>;
             getVoxelPaletteMap(): Record<string, number>;
@@ -1577,97 +1512,29 @@ export declare const DVEW: {
         addToGenerationTotal(): void;
         areAllGenerationsDone(): boolean;
         awaitAllGenerationsToBeDone(): Promise<boolean>;
+        $CreateQueues(): void;
         rgb: {
-            update: {
-                __queueData: Record<string, {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                }>;
-                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
-                __getQueueKey(data: any): string;
-                __getQueueData(id: string): {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                };
-                addQueue(queueId: string): void;
-                removeQueue(queueId: string): void;
-                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-                awaitAll(queueId?: string): Promise<boolean>;
-                isDone(queueId?: string): boolean;
-            };
-            remove: {
-                __queueData: Record<string, {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                }>;
-                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
-                __getQueueKey(data: any): string;
-                __getQueueData(id: string): {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                };
-                addQueue(queueId: string): void;
-                removeQueue(queueId: string): void;
-                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-                awaitAll(queueId?: string): Promise<boolean>;
-                isDone(queueId?: string): boolean;
-            };
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+        };
+        worldSun: {
+            fill: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            columnFill: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            flood: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
         };
         sun: {
-            update: {
-                __queueData: Record<string, {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                }>;
-                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
-                __getQueueKey(data: any): string;
-                __getQueueData(id: string): {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                };
-                addQueue(queueId: string): void;
-                removeQueue(queueId: string): void;
-                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-                awaitAll(queueId?: string): Promise<boolean>;
-                isDone(queueId?: string): boolean;
-            };
-            remove: {
-                __queueData: Record<string, {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                }>;
-                onRun: (data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => void;
-                __getQueueKey(data: any): string;
-                __getQueueData(id: string): {
-                    queue: import("../Global/Util/Queue.js").Queue<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-                    map: Record<string, boolean>;
-                    stateSAB: SharedArrayBuffer;
-                    state: Uint32Array;
-                };
-                addQueue(queueId: string): void;
-                removeQueue(queueId: string): void;
-                add(data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask, queueId?: string): void;
-                run(queueId?: string, filter?: ((data: import("../Meta/Tasks/Tasks.types.js").LightUpdateTask) => 0 | 1 | 2) | undefined): void;
-                awaitAll(queueId?: string): Promise<boolean>;
-                isDone(queueId?: string): boolean;
-            };
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+        };
+        flow: {
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+        };
+        build: {
+            chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+        };
+        generate: {
+            chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
         };
     };
     isReady(): boolean;

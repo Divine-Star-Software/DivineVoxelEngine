@@ -1,23 +1,12 @@
 import type { DVERWInitData } from "Meta/RichWorld/DVERW";
 import type { DivineVoxelEngineRichWorld } from "RichWorld/DivineStarVoxelEngineRichWorld";
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 
 export async function InitWorker(
  DVERW: DivineVoxelEngineRichWorld,
  initData: DVERWInitData
 ) {
- if (initData.onReady) {
-  DVERW.renderComm.onReady = initData.onReady;
- }
- if (initData.onMessage) {
-  DVERW.renderComm.onMessage = initData.onMessage;
- }
- if (initData.onRestart) {
-  DVERW.renderComm.onRestart = initData.onRestart;
- }
-
- const renderPort = await DVERW.UTIL.getWorkerPort(DVERW.environment);
- DVERW.renderComm.setPort(renderPort);
-
+ ThreadComm.$INIT("rich-world");
  await DVERW.UTIL.createPromiseCheck({
   check: () => {
    return DVERW.isReady();

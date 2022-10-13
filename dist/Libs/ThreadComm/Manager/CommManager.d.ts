@@ -13,7 +13,9 @@ export declare class CommManager {
     constructor(data: CommManagerData);
     __throwError(message: string): void;
     connectToCom(commToConnectTo: CommBase): void;
+    destroyAll(): void;
     isReady(): boolean;
+    waitTillAllAreReady(): Promise<boolean>;
     addPort(port: CommPortTypes): void;
     addPorts(ports: CommPortTypes[]): void;
     addComms(comms: CommBase[]): void;
@@ -21,11 +23,13 @@ export declare class CommManager {
     __handleManagerMessage(data: any, event: any): void;
     listenForMessage(message: string | number, run: MessageFunction): void;
     sendMessageToAll(message: string | number, data?: any[], transfers?: any[]): void;
-    runTasksForAll<T>(id: string, data: T, queue?: string): void;
-    runTask<T>(id: string, data: T, queue?: string): number;
+    runTasksForAll<T>(id: string, data: T, transfers?: any[], queue?: string): void;
+    runTask<T>(id: string | number, data: T, transfers?: any[], threadNumber?: number, queue?: string): number | undefined;
     __handleCount(): number;
-    addQueue<T>(id: string, associatedTasksId: string): QueueManager<T>;
+    addQueue<T>(id: string | number, associatedTasksId: string | number): QueueManager<T>;
     getQueue<T>(id: string): QueueManager<T>;
     __syncQueue(id: string, sab: SharedArrayBuffer): void;
     __unSyncQueue(id: string): void;
+    syncData<T>(dataType: string, data: T): void;
+    unSyncData<T>(dataType: string, data: T): void;
 }

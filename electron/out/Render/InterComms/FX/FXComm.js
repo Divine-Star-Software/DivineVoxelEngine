@@ -1,6 +1,6 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
-const fxCommBase = CreateInterComm("render-fx", {});
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+const fxCommBase = ThreadComm.createComm("render-fx", {});
 const fxComm = Object.assign(fxCommBase, {
     $INIT() {
         const channel = new MessageChannel();

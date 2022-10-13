@@ -146,7 +146,7 @@ export const EntityMesher = {
    overlayUVArray.buffer,
   ];
 
-  DVEC.renderComm.sendMessage(
+  DVEC.parentComm.sendMessage(
    ConstructorToRenderMessages.constructEntity,
    message,
    transfers

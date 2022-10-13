@@ -1,6 +1,6 @@
-import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-const nexusComm = CreateInterComm("world-nexus", {});
+const nexusComm = ThreadComm.createComm("nexus");
 nexusComm.onSetPort((port) => {
     DVEW.matrixCentralHub.registerThread("nexus", port);
 });

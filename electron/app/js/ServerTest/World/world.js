@@ -21,7 +21,7 @@ let pickDV = new DataView(pickSAB);
 let playerDataBuffer = new SharedArrayBuffer(1);
 let playerData = new DataView(playerDataBuffer);
 let ready = false;
-DVEW.renderComm.listenForMessage("player-server-data", (data) => {
+DVEW.parentComm.listenForMessage("player-server-data", (data) => {
     playerDataBuffer = data[1];
     playerData = new DataView(playerDataBuffer);
     ready = true;
@@ -74,7 +74,7 @@ socket.addEventListener("message", (event) => {
         const playerId = dv.getUint16(2);
         playerSABS[playerId] = new SharedArrayBuffer(40);
         console.log("[REMOTE PLYAER ID SET]", playerId);
-        DVEW.renderComm.sendMessage("remote-player-connect", [
+        DVEW.parentComm.sendMessage("remote-player-connect", [
             playerId,
             playerSABS[playerId],
         ]);
@@ -136,7 +136,7 @@ self.addVoxel = (voxelId, voxelState, shapeState, x, y, z) => {
     mdv.setFloat32(20, z);
     socket.send(message);
 };
-DVEW.renderComm.listenForMessage("voxel-add", async (data) => {
+DVEW.parentComm.listenForMessage("voxel-add", async (data) => {
     let x = pickDV.getFloat32(0) + pickDV.getInt8(12);
     let y = pickDV.getFloat32(4) + pickDV.getInt8(13);
     let z = pickDV.getFloat32(8) + pickDV.getInt8(14);
@@ -160,7 +160,7 @@ DVEW.renderComm.listenForMessage("voxel-add", async (data) => {
         }
     }
 });
-DVEW.renderComm.listenForMessage("voxel-remove", async (data) => {
+DVEW.parentComm.listenForMessage("voxel-remove", async (data) => {
     let x = pickDV.getFloat32(0);
     let y = pickDV.getFloat32(4);
     let z = pickDV.getFloat32(8);
@@ -175,7 +175,7 @@ DVEW.renderComm.listenForMessage("voxel-remove", async (data) => {
     console.log(x, y, z);
     socket.send(message);
 });
-DVEW.renderComm.listenForMessage("player-server-data", (data) => {
+DVEW.parentComm.listenForMessage("player-server-data", (data) => {
     playerDataBuffer = data[1];
     playerData = new DataView(playerDataBuffer);
     ready = true;
@@ -221,4 +221,4 @@ setInterval(() => {
         }
     }
 }, 20);
-DVEW.renderComm.sendMessage("connect-player-pick", [pickSAB]);
+DVEW.parentComm.sendMessage("connect-player-pick", [pickSAB]);

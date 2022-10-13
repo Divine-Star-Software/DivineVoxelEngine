@@ -6,7 +6,7 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 //intercomms
 import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { RichData } from "./RichData/RichData.js";
@@ -23,7 +23,7 @@ export const DVERW = {
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
     worldComm: WorldComm,
-    renderComm: RenderComm,
+    parentComm: ParentComm,
     richData: RichData,
     voxelManager: VoxelManager,
     syncSettings(data) {

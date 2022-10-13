@@ -9,7 +9,6 @@ RegisterVoxels(DVEW);
 
 await DVEW.$INIT({});
 
-
 let startX = -128;
 let startZ = -128;
 let endX = 128;
@@ -29,5 +28,5 @@ for (let x = startX; x <= endX; x += 16) {
   DVEW.buildChunk(x, 0, z);
  }
 }
-
+console.log("done");
 (self as any).DVEW = DVEW;

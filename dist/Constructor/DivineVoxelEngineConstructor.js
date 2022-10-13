@@ -8,9 +8,8 @@ import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
 import { ItemManager } from "./Items/ItemManager.js";
 //inter comms
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { ServerComm } from "./InterComms/Server/ServerComm.js";
 //matrix
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
@@ -18,6 +17,8 @@ import { MatrixMap } from "../Matrix/MatrixMap.js";
 import { VoxelMatrix } from "../Matrix/VoxelMatrix.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
+import { Tasks } from "./Tasks/Tasks.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
@@ -30,14 +31,15 @@ export const DVEC = {
     DVEB: DVEB,
     DVEP: DVEP,
     DVEWG: DVEWG,
+    tasks: Tasks,
     queues: QueuesManager,
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
     matrixMap: MatrixMap,
     voxelMatrix: VoxelMatrix,
-    renderComm: RenderComm,
-    serverComm: ServerComm,
+    parentComm: ParentComm,
     worldComm: WorldComm,
+    TC: ThreadComm,
     voxelManager: VoxelManager,
     itemManager: ItemManager,
     syncSettings(data) {
@@ -66,9 +68,7 @@ export const DVEC = {
         }
     },
     async $INIT(initData) {
-        this.settings.setContext("DVEC");
         await InitWorker(this, initData);
-        this.worldComm.sendMessage("ready", []);
     },
 };
 DVEC.environment = Util.getEnviorment();

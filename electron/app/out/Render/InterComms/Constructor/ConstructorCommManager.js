@@ -1,15 +1,61 @@
+//types
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
 //functions
-import { GetNewConstructorComm } from "./ConstructorComm.js";
-export const ConstructorCommManager = {
-    count: 0,
-    constructors: [],
+import { ConstructorToRenderMessages } from "../../../Constants/InterComms/ConstructorToRender.js";
+const CCMBase = ThreadComm.createCommManager({
+    name: "constructor",
+    onPortSet(port, commName) { },
+});
+const handleUpdate = (substance, data) => {
+    const chunkX = data[2];
+    const chunkY = data[3];
+    const chunkZ = data[4];
+    const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(chunkX, chunkY, chunkZ);
+    DVER.meshManager.handleChunkUpdate(substance, chunkKey, data);
+};
+const substanceFunctionMap = {
+    0: (data) => {
+        handleUpdate("solid", data);
+    },
+    1: (data) => {
+        handleUpdate("flora", data);
+    },
+    2: (data) => {
+        handleUpdate("fluid", data);
+    },
+    3: (data) => {
+        handleUpdate("magma", data);
+    },
+};
+CCMBase.listenForMessage(ConstructorToRenderMessages.setChunk, (data) => {
+    const substance = data[1];
+    substanceFunctionMap[substance](data);
+});
+CCMBase.listenForMessage(ConstructorToRenderMessages.removeChunk, (data) => {
+    const substance = data[1];
+    const chunkKey = DVER.worldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
+    DVER.meshManager.removeChunkMesh(substance, chunkKey);
+});
+CCMBase.listenForMessage(ConstructorToRenderMessages.constructEntity, (data) => {
+    DVER.meshManager.handleEntityUpdate(data[1], data[2], data[3], data);
+});
+CCMBase.listenForMessage(ConstructorToRenderMessages.constructItem, (data) => {
+    DVER.meshManager.handleItemUpdate(data[1], data[2], data[3], data);
+});
+const CCM = Object.assign(CCMBase, {
     $INIT() {
-        for (const constructor of this.constructors) {
-            const channel = new MessageChannel();
-            DVER.worldComm.sendMessage("connect-constructor", [constructor.name], [channel.port1]);
-            constructor.sendMessage("connect-world", [], [channel.port2]);
+        const worldComm = ThreadComm.getComm("world");
+        for (const constructor of CCM.__comms) {
+            /*    const channel = new MessageChannel();
+            DVER.worldComm.sendMessage(
+             "connect-constructor",
+             [constructor.name],
+             [channel.port1]
+            );
+            constructor.sendMessage("connect-world", [], [channel.port2]); */
+            worldComm.connectToComm(constructor);
             constructor.sendMessage("sync-uv-texuture-data", [
                 DVER.textureManager.uvTextureMap,
                 DVER.textureManager.overlayUVTextureMap,
@@ -21,21 +67,14 @@ export const ConstructorCommManager = {
             const newWorker = new Worker(new URL(path, import.meta.url), {
                 type: "module",
             });
-            this.count++;
-            const newComm = GetNewConstructorComm(this.count, newWorker);
-            this.constructors.push(newComm);
+            CCM.addPort(newWorker);
         }
     },
     setConstructors(constructors) {
-        for (const constructor of constructors) {
-            this.count++;
-            const newComm = GetNewConstructorComm(this.count, constructor);
-            this.constructors.push(newComm);
-        }
+        CCM.addPorts(constructors);
     },
     syncSettings(data) {
-        for (const constructor of this.constructors) {
-            constructor.sendMessage("sync-settings", [data]);
-        }
+        CCM.sendMessageToAll("sync-settings", [data]);
     },
-};
+});
+export const ConstructorCommManager = CCM;

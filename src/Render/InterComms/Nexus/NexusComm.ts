@@ -1,14 +1,13 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
-const nexusCommBase = CreateInterComm("render-nexus", {});
+const nexusCommBase = ThreadComm.createComm("nexus");
 
 nexusCommBase.listenForMessage("spawn-entity", (data) => {
  const entityId = data[1];
  const identiferId = data[2];
  const position = data[3];
  const states = data[4];
-
  DVER.renderedEntites.spawnEntity(entityId, identiferId, position, states);
 });
 nexusCommBase.listenForMessage("de-spawn-entity", (data) => {
@@ -19,9 +18,7 @@ nexusCommBase.listenForMessage("de-spawn-entity", (data) => {
 
 const nexusComm = Object.assign(nexusCommBase, {
  $INIT() {
-  const channel = new MessageChannel();
-  DVER.worldComm.sendMessage("connect-nexus", [], [channel.port1]);
-  nexusComm.sendMessage("connect-world", [], [channel.port2]);
+  nexusComm.connectToComm(DVER.worldComm);
  },
 });
 

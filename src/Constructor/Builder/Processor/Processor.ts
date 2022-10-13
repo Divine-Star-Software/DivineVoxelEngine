@@ -312,6 +312,7 @@ export const Processor = {
  ) {
   const LOD = this.LOD;
   const voxelCheck = this.getVoxel(x, y, z, !doSecondCheck);
+
   if (doSecondCheck) {
    const secondVoxel = this.getVoxel(x, y, z, true);
    if (secondVoxel) {
@@ -319,13 +320,13 @@ export const Processor = {
    }
   }
 
+  
   if (
    !voxelCheck ||
    voxelCheck[0] == "dve:air" ||
    voxelCheck[0] == "dve:barrier"
   )
    return;
-
   const voxelObject = DVEC.voxelManager.getVoxel(voxelCheck[0]);
   if (!voxelObject) return;
   const voxelState = voxelCheck[1];

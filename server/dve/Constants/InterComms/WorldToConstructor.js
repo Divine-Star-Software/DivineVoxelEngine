@@ -1,4 +1,4 @@
-export const WorldToConstructorMessages = {
+export const ConstructorTasks = {
     setQueueStates: -1,
     buildChunk: 0,
     generate: 1,

@@ -1,12 +1,12 @@
 import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEN } from "../../DivineVoxelEngineNexus.js";
-const renderCommBase = {
+const parentCommBase = {
     onReady: () => { },
     onRestart: () => { },
 };
-const renderComm = CreateInterComm("nexus-render", renderCommBase);
-export const RenderComm = renderComm;
-renderComm.messageFunctions = {
+const parentComm = CreateInterComm("nexus-render", parentCommBase);
+export const RenderComm = parentComm;
+parentComm.messageFunctions = {
     "connect-world": (data, event) => {
         if (!event)
             return;

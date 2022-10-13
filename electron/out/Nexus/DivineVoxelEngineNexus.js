@@ -2,7 +2,7 @@
 import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 //comms
-import { RenderComm } from "./InterComms/Render/RenderComm.js";
+import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
@@ -20,7 +20,7 @@ export const DVEN = {
     worldMatrix: WorldMatrix,
     matrixHub: MatrixHub,
     worldComm: WorldComm,
-    renderComm: RenderComm,
+    parentComm: ParentComm,
     nexusEntites: NexusEntites,
     voxelManager: VoxelManager,
     worldBounds: Util.getWorldBounds(),

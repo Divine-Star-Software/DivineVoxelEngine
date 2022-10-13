@@ -1,7 +1,7 @@
 import { WorldToRichWorldMessages } from "../../../Constants/InterComms/WorldToRichWorld.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-const richWorldCommBase = CreateInterComm("world-rich-world", {});
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+const richWorldCommBase = ThreadComm.createComm("world-rich-world");
 const richWorldComm = Object.assign(richWorldCommBase, {
     setInitalData(voxelId, x, y, z) {
         richWorldComm.sendMessage(WorldToRichWorldMessages.setInitalData, [

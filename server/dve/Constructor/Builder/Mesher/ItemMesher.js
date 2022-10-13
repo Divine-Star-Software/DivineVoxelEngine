@@ -75,6 +75,6 @@ export const ItemMesher = {
             sunLightColorsArray.buffer,
             uvArray.buffer,
         ];
-        DVEC.renderComm.sendMessage(ConstructorToRenderMessages.constructItem, message, transfers);
+        DVEC.parentComm.sendMessage(ConstructorToRenderMessages.constructItem, message, transfers);
     },
 };

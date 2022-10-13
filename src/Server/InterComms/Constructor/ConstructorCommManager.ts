@@ -1,24 +1,23 @@
 //types
-import type { InterCommInterface } from "Meta/Comms/InterComm.types";
-import { NodeWorker } from "Meta/Comms/NodeWorker.interface.js";
 import { DVES } from "../../DivineVoxelEngineServer.js";
-//objects
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 
-//functions
-import { GetNewConstructorComm } from "./ConstructorComm.js";
+const CCMBase = ThreadComm.createCommManager({
+ name: "render-constructor",
+ onPortSet(port, commName) {},
+});
 
-export const ConstructorCommManager = {
- count: 0,
- constructors: <InterCommInterface[]>[],
+const CCM = Object.assign(CCMBase, {
  $INIT() {
-  for (const constructor of this.constructors) {
+  for (const constructor of CCM.__comms) {
    const channel = new MessageChannel();
    DVES.worldComm.sendMessage(
     "connect-constructor",
-    [channel.port1],
+    [constructor.name],
     [channel.port1]
    );
-   constructor.sendMessage("connect-world", [channel.port2], [channel.port2]);
+   constructor.sendMessage("connect-world", [], [channel.port2]);
   }
  },
  createConstructors(path: string, numBuilders = 4) {
@@ -26,21 +25,15 @@ export const ConstructorCommManager = {
    const newWorker = new Worker(new URL(path, import.meta.url), {
     type: "module",
    });
-   this.count++;
-   const newComm = GetNewConstructorComm(this.count, newWorker);
-   this.constructors.push(newComm);
+   CCM.addPort(newWorker);
   }
  },
- setConstructors(constructors: Worker[] | NodeWorker[]) {
-  for (const constructor of constructors) {
-   this.count++;
-   const newComm = GetNewConstructorComm(this.count, constructor);
-   this.constructors.push(newComm);
-  }
+ setConstructors(constructors: CommPortTypes[]) {
+  CCM.addPorts(constructors);
  },
  syncSettings(data: any) {
-  for (const constructor of this.constructors) {
-   constructor.sendMessage("sync-settings", [data]);
-  }
+  CCM.sendMessageToAll("sync-settings", [data]);
  },
-};
+});
+
+export const ConstructorCommManager = CCM;

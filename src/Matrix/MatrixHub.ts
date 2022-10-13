@@ -1,8 +1,9 @@
-import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
+
 import { VoxelMatrix } from "./VoxelMatrix.js";
 import { MatrixMap } from "./MatrixMap.js";
 import { WorldMatrix } from "./WorldMatrix.js";
 import { Util } from "../Global/Util.helper.js";
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 
 /**# Matrix Hub
  * ---
@@ -11,7 +12,7 @@ import { Util } from "../Global/Util.helper.js";
  */
 export const MatrixHub = {
  environment: <"node" | "browser">"browser",
- worldPort: <InterCommPortTypes | undefined>undefined,
+ worldPort: <CommPortTypes | undefined>undefined,
  threadName: "",
  __threadNameSet: false,
  messageFunctions: <

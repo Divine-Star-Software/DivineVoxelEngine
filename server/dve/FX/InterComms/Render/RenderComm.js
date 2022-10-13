@@ -1,12 +1,12 @@
 import { DVEFX } from "../../DivineStarVoxelEngineFX.js";
 import { CreateInterComm } from "../../../Comms/InterComm.js";
-const renderCommBase = {
+const parentCommBase = {
     onReady: () => { },
     onRestart: () => { },
 };
-const renderComm = CreateInterComm("data-render", renderCommBase);
-export const RenderComm = renderComm;
-renderComm.messageFunctions = {
+const parentComm = CreateInterComm("data-render", parentCommBase);
+export const RenderComm = parentComm;
+parentComm.messageFunctions = {
     "connect-world": (data, event) => {
         if (!event)
             return;
@@ -19,6 +19,6 @@ renderComm.messageFunctions = {
     },
     "re-start": (data, event) => {
         DVEFX.reStart();
-        renderComm.onRestart();
+        parentComm.onRestart();
     },
 };

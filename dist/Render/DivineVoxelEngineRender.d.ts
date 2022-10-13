@@ -83,89 +83,27 @@ export declare const DVER: {
             z: number;
         };
     };
-    worldComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    };
-    nexusComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
+    worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         $INIT(): void;
     };
-    dataComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
+    dataComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         $INIT(): void;
     };
-    fxComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
+    fxComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         $INIT(): void;
     };
-    richWorldComm: {
-        environment: "node" | "browser";
-        name: string;
-        port: import("../Comms/InterComm.types.js").InterCommPortTypes | null;
-        messageFunctions: Record<string | number, (data: any, event?: MessageEvent<any> | undefined) => void>;
-        __onSetPortRun: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void;
-        onSetPort(set: (port: import("../Comms/InterComm.types.js").InterCommPortTypes) => void): void;
-        setPort(port: import("../Comms/InterComm.types.js").InterCommPortTypes): void;
-        _errorMessage(message: string): void;
-        sendMessage(message: string | number, data?: any[], transfers?: any[] | undefined): void;
-        listenForMessage(message: string | number, run: (data: any[], event?: MessageEvent<any> | undefined) => void): void;
-        onMessage(event: any): void;
-    } & {
+    richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         $INIT(): void;
     };
-    constructorCommManager: {
-        count: number;
-        constructors: import("../Meta/Comms/InterComm.types.js").InterCommInterface[];
+    constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
         $INIT(): void;
         createConstructors(path: string, numBuilders?: number): void;
         setConstructors(constructors: Worker[]): void;
         syncSettings(data: any): void;
     };
     settings: {
-        context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
+        context: "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW" | "MatrixLoadedThread";
         settings: {
             nexus: {
                 enabled: boolean;
@@ -244,7 +182,7 @@ export declare const DVER: {
                 disableFluidShaderEffects: boolean;
             };
         };
-        setContext(context: "DVEW" | "DVER" | "DVEP" | "DVEB" | "DVEC" | "DVEN" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
+        setContext(context: "DVEW" | "DVER" | "DVEC" | "DVEN" | "DVED" | "DVEFX" | "DVERW" | "MatrixLoadedThread"): void;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
         syncWithWorldBounds(worldBounds: {

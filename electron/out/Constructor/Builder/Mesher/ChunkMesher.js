@@ -21,7 +21,7 @@ export const ChunkMesher = {
             const type = this.voxelBuildOrder[i];
             const baseTemplate = template[type];
             if (baseTemplate.positionTemplate.length == 0) {
-                DVEC.renderComm.sendMessage(ConstructorToRenderMessages.removeChunk, [
+                DVEC.parentComm.sendMessage(ConstructorToRenderMessages.removeChunk, [
                     type,
                     chunkX,
                     chunkY,
@@ -154,7 +154,7 @@ export const ChunkMesher = {
                 uvArray.buffer,
                 overlayUVArray.buffer,
             ];
-            DVEC.renderComm.sendMessage(ConstructorToRenderMessages.setChunk, message, transfers);
+            DVEC.parentComm.sendMessage(ConstructorToRenderMessages.setChunk, message, transfers);
         }
         DVEC.queues.finishBuildingChunk();
     },

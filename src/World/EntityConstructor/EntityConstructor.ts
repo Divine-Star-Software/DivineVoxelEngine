@@ -115,7 +115,7 @@ export const EntityConstructor = {
    throw new Error(`No entity has began construction`);
   }
 
-  DVEW.constructorCommManager.constructEntity(
+  DVEW.ccm.tasks.build.entity(
    x,
    y,
    z,

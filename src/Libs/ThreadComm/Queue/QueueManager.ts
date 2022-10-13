@@ -3,7 +3,7 @@ import { Queue } from "../tools/Queue.js";
 
 export class QueueManager<T> {
 	__queueData: Record<
-		string,
+		string | number,
 		{
 			queue: Queue<T>;
 			map: Record<string, boolean>;
@@ -12,7 +12,7 @@ export class QueueManager<T> {
 		}
 	> = {};
 	constructor(
-		public id: string,
+		public id: string | number,
 		public onRun: (data: T, queueId: string) => void,
 		public _manager: CommManager
 	) {}
@@ -35,7 +35,7 @@ export class QueueManager<T> {
 		return this.__queueData[id];
 	}
 
-	addQueue(queueId: string) {
+	addQueue(queueId: string | number) {
 		const sab = new SharedArrayBuffer(4);
 		this.__queueData[queueId] = {
 			queue: new Queue<T>(),
@@ -47,7 +47,7 @@ export class QueueManager<T> {
 		this._manager.__syncQueue(syncId, sab);
 	}
 
-	_getSyncId(queueId: string) {
+	_getSyncId(queueId: string | number) {
 		return `${this._manager.__data.name}-${this.id}-${queueId}`;
 	}
 
@@ -96,8 +96,9 @@ export class QueueManager<T> {
 	awaitAll(queueId: string = "main") {
 		const queueData = this.__getQueueData(queueId);
 		return new Promise<boolean>((resolve, reject) => {
-			setInterval(() => {
+			const inte =  setInterval(() => {
 				if (Atomics.load(queueData.state, 0) == 0) {
+					clearInterval(inte);
 					resolve(true);
 				}
 			}, 1);

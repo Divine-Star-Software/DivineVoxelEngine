@@ -1,7 +1,4 @@
-import type { InterCommInterface } from "Meta/Comms/InterComm.types";
-export declare const ConstructorCommManager: {
-    count: number;
-    constructors: InterCommInterface[];
+export declare const ConstructorCommManager: import("../../../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
     $INIT(): void;
     createConstructors(path: string, numBuilders?: number): void;
     setConstructors(constructors: Worker[]): void;

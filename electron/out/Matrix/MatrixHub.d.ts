@@ -1,4 +1,4 @@
-import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 /**# Matrix Hub
  * ---
  * Handles messages from the WorldData thread.
@@ -6,7 +6,7 @@ import { InterCommPortTypes } from "Meta/Comms/InterComm.types.js";
  */
 export declare const MatrixHub: {
     environment: "node" | "browser";
-    worldPort: InterCommPortTypes | undefined;
+    worldPort: CommPortTypes | undefined;
     threadName: string;
     __threadNameSet: boolean;
     messageFunctions: Record<string, (data: any, event: MessageEvent) => any | void>;

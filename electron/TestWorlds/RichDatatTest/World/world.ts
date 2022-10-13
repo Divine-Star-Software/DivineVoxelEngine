@@ -37,7 +37,7 @@ let ready = false;
 let cameraDirection = new Float32Array();
 let cameraPosition = new Float32Array();
 let pickerCubePosition = new Float32Array();
-DVEW.renderComm.listenForMessage("connect-camera", (data) => {
+DVEW.parentComm.listenForMessage("connect-camera", (data) => {
  cameraDirection = new Float32Array(data[1]);
  cameraPosition = new Float32Array(data[2]);
  pickerCubePosition = new Float32Array(data[3]);
@@ -65,7 +65,7 @@ const positionVector = DVEM.getVector3(0, 0, 0);
 
 const pickedVector = DVEM.getVector3(0, 0, 0);
 
-DVEW.renderComm.listenForMessage("pick-voxel", (data) => {
+DVEW.parentComm.listenForMessage("pick-voxel", (data) => {
  const voxel = DVEW.worldData.getVoxel(
   pickedVector.x,
   pickedVector.y,

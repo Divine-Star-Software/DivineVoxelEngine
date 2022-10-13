@@ -1,5 +1,5 @@
 import { ThreadComm } from "../ThreadComm.js";
-import { TCMessageHeaders, TCInternalMessages } from "../Constants/Messages.js";
+import { TCMessageHeaders, TCInternalMessages, TCDataSyncMessages, } from "../Constants/Messages.js";
 export class CommBase {
     name;
     managerName;
@@ -13,11 +13,21 @@ export class CommBase {
         this.managerName = managerName;
         this._manager = commManager;
     }
+    destroy() {
+        if (!this.port)
+            return;
+        if ("terminate" in this.port) {
+            this.port.terminate();
+        }
+    }
     isReady() {
         return this.__ready;
     }
-    sendReadySignal() {
-        this.sendMessage(TCMessageHeaders.internal, [TCInternalMessages.IsReady]);
+    __sendReadySignal() {
+        this.sendMessage(TCMessageHeaders.internal, [
+            TCInternalMessages.IsReady,
+            ThreadComm.threadName,
+        ]);
     }
     __onSetPortRun = (port) => { };
     isPortSet() {
@@ -34,6 +44,11 @@ export class CommBase {
         }
         if (ThreadComm.__isTasks(data)) {
             ThreadComm.__handleTasksMessage(data);
+            this.onMessage(event);
+            return;
+        }
+        if (ThreadComm.__isDataSync(data)) {
+            ThreadComm.__hanldeDataSyncMessage(data);
             this.onMessage(event);
             return;
         }
@@ -72,6 +87,7 @@ export class CommBase {
                 this.__throwError("Error occured.");
             });
         }
+        this.__sendReadySignal();
     }
     __throwError(message) {
         throw new Error(`[ThreadComm: ${this.name}] ${message}`);
@@ -104,8 +120,8 @@ export class CommBase {
             channel.port2,
         ], [channel.port2]);
     }
-    runTasks(id, data, queue) {
-        this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data]);
+    runTasks(id, data, transfers = [], queue) {
+        this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data], transfers);
     }
     __syncQueue(id, sab) {
         this.sendMessage(TCMessageHeaders.internal, [
@@ -120,9 +136,23 @@ export class CommBase {
             id,
         ]);
     }
+    syncData(dataType, data, transfers) {
+        this.sendMessage(TCMessageHeaders.dataSync, [TCDataSyncMessages.SyncData, dataType, data], transfers);
+    }
+    unSyncData(dataType, data, transfers) {
+        this.sendMessage(TCMessageHeaders.dataSync, [TCDataSyncMessages.SyncData, dataType, data], transfers);
+    }
+    waitTillReady() {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const inte = setInterval(() => {
+                if (this.isReady()) {
+                    clearInterval(inte);
+                    resolve(true);
+                }
+            }, 1);
+        });
+    }
+    //meant to be over-ridden for debugging or custom behavior
     onMessage(event) { }
-}
-export function CreateComm(name, mergeObject) {
-    const newCom = Object.assign(new CommBase(name), mergeObject);
-    return newCom;
 }

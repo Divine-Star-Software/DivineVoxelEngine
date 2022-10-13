@@ -1,8 +1,8 @@
+import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { WorldToRichWorldMessages } from "../../../Constants/InterComms/WorldToRichWorld.js";
-import { CreateInterComm } from "../../../Comms/InterComm.js";
 import { DVERW } from "../../DivineStarVoxelEngineRichWorld.js";
 
-const worldComm = CreateInterComm("data-world", {});
+const worldComm = ThreadComm.createComm("data-world");
 export const WorldComm = worldComm;
 worldComm.onMessage = (event) => {
  DVERW.matrixHub.onMessage(event, (messageEvent) => {});
@@ -11,7 +11,7 @@ worldComm.onMessage = (event) => {
  }
 };
 
-worldComm.messageFunctions[WorldToRichWorldMessages.setInitalData] = (data) => {
+worldComm.listenForMessage(WorldToRichWorldMessages.setInitalData, (data) => {
  const voxelId = data[1];
  const x = data[2];
  const y = data[3];
@@ -19,14 +19,12 @@ worldComm.messageFunctions[WorldToRichWorldMessages.setInitalData] = (data) => {
  if (DVERW.richData.hasInitalData(voxelId)) {
   DVERW.richData.setInitalData(voxelId, x, y, z);
  }
-};
+});
 
-worldComm.messageFunctions[WorldToRichWorldMessages.removeRichData] = (
- data
-) => {
+worldComm.listenForMessage(WorldToRichWorldMessages.removeRichData, (data) => {
  const x = data[1];
  const y = data[2];
  const z = data[3];
 
  DVERW.richData.removeData(x, y, z);
-};
+});

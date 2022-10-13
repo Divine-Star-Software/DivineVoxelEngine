@@ -1,20 +1,6 @@
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 export async function InitWorldWorker(DVEW, initData) {
-    if (initData.onReady) {
-        DVEW.renderComm.onReady = initData.onReady;
-    }
-    if (initData.onMessage) {
-        DVEW.renderComm.onMessage = initData.onMessage;
-    }
-    if (initData.onRestart) {
-        DVEW.renderComm.onRestart = initData.onRestart;
-    }
-    const parentPort = await DVEW.UTIL.getWorkerPort(DVEW.environment);
-    if (DVEW.environment == "browser") {
-        DVEW.renderComm.setPort(parentPort);
-    }
-    if (DVEW.environment == "node") {
-        DVEW.serverComm.setPort(parentPort);
-    }
+    await ThreadComm.$INIT("world");
     await DVEW.UTIL.createPromiseCheck({
         check: () => {
             return DVEW.isReady();
@@ -23,6 +9,7 @@ export async function InitWorldWorker(DVEW, initData) {
         onReady: () => {
             DVEW.voxelMatrix.$INIT();
             DVEW.queues.$INIT();
+            DVEW.queues.$CreateQueues();
             const nexusSettings = DVEW.settings.settings.nexus;
             if (nexusSettings.enabled && nexusSettings.autoSyncVoxelPalette) {
                 DVEW.matrixCentralHub.syncVoxelPaletteInThread("nexus");

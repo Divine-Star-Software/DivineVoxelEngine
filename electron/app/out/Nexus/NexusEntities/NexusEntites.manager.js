@@ -46,7 +46,7 @@ export const NexusEntites = {
         }
         this.loaedEntities[entity.data.type][uuid] = newEntity;
         newEntity.onSpawn();
-        DVEN.renderComm.sendMessage("spawn-entity", [
+        DVEN.parentComm.sendMessage("spawn-entity", [
             entityId,
             identiferId,
             positionSAB,
@@ -58,6 +58,6 @@ export const NexusEntites = {
         const despawningEntity = this.loaedEntities[entity.data.type][identiferId];
         despawningEntity.onDeSpawn();
         delete this.loaedEntities[entity.data.type][identiferId];
-        DVEN.renderComm.sendMessage("de-spawn-entity", [entityId, identiferId]);
+        DVEN.parentComm.sendMessage("de-spawn-entity", [entityId, identiferId]);
     },
 };

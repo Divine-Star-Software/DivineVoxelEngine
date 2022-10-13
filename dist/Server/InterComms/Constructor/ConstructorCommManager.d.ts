@@ -1,10 +1,7 @@
-import type { InterCommInterface } from "Meta/Comms/InterComm.types";
-import { NodeWorker } from "Meta/Comms/NodeWorker.interface.js";
-export declare const ConstructorCommManager: {
-    count: number;
-    constructors: InterCommInterface[];
+import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
+export declare const ConstructorCommManager: import("../../../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
     $INIT(): void;
     createConstructors(path: string, numBuilders?: number): void;
-    setConstructors(constructors: Worker[] | NodeWorker[]): void;
+    setConstructors(constructors: CommPortTypes[]): void;
     syncSettings(data: any): void;
 };

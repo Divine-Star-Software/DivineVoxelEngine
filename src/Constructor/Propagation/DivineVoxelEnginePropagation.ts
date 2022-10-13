@@ -3,7 +3,7 @@ import type { VoxelSubstanceType } from "Meta/index.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { ConstructorToWorldMessages } from "../../Constants/InterComms/ConstructorToWorld.js";
+import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
 import { FlowManager } from "./Flow/FlowManager.js";
 export const DVEP = {
  illumination: IlluminationManager,
@@ -24,7 +24,7 @@ export const DVEP = {
 
   if (!this.rebuildQueMap[chunkKey]) {
    this.rebuildQueMap[chunkKey] = true;
-   DVEC.worldComm.sendMessage(ConstructorToWorldMessages.addToRebuildQue, [
+   DVEC.worldComm.sendMessage(WorldTasks.addToRebuildQue, [
     x,
     y,
     z,
@@ -34,7 +34,7 @@ export const DVEP = {
  },
 
  runRebuildQue() {
-  DVEC.worldComm.sendMessage(ConstructorToWorldMessages.runRebuildQue, []);
+  DVEC.worldComm.sendMessage(WorldTasks.runRebuildQue, []);
   this.rebuildQueMap = {};
  },
 
