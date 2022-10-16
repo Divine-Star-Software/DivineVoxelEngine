@@ -14,7 +14,6 @@ export class CommBase {
 	port: CommPortTypes | null = null;
 	messageFunctions: MessageRecord = {};
 	_manager: CommManager | null = null;
-
 	constructor(
 		public name: string,
 		public managerName = "worker",
@@ -149,7 +148,12 @@ export class CommBase {
 		);
 	}
 
-	runTasks<T>(id: string | number, data: T, transfers: any[] = [], queue?: string) {
+	runTasks<T>(
+		id: string | number,
+		data: T,
+		transfers: any[] = [],
+		queue?: string
+	) {
 		this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data], transfers);
 	}
 
@@ -168,7 +172,7 @@ export class CommBase {
 		]);
 	}
 
-	syncData<T>(dataType: string, data: T, transfers?: any[]) {
+	syncData<T>(dataType: string | number, data: T, transfers?: any[]) {
 		this.sendMessage(
 			TCMessageHeaders.dataSync,
 			[TCDataSyncMessages.SyncData, dataType, data],
@@ -176,7 +180,7 @@ export class CommBase {
 		);
 	}
 
-	unSyncData<T>(dataType: string, data: T, transfers?: any[]) {
+	unSyncData<T>(dataType: string | number, data: T, transfers?: any[]) {
 		this.sendMessage(
 			TCMessageHeaders.dataSync,
 			[TCDataSyncMessages.SyncData, dataType, data],

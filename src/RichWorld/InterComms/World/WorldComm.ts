@@ -2,14 +2,8 @@ import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { WorldToRichWorldMessages } from "../../../Constants/InterComms/WorldToRichWorld.js";
 import { DVERW } from "../../DivineStarVoxelEngineRichWorld.js";
 
-const worldComm = ThreadComm.createComm("data-world");
+const worldComm = ThreadComm.createComm("world");
 export const WorldComm = worldComm;
-worldComm.onMessage = (event) => {
- DVERW.matrixHub.onMessage(event, (messageEvent) => {});
- if (event.data[0] == "set-world-port") {
-  DVERW.__connectedToWorld = true;
- }
-};
 
 worldComm.listenForMessage(WorldToRichWorldMessages.setInitalData, (data) => {
  const voxelId = data[1];
@@ -25,6 +19,5 @@ worldComm.listenForMessage(WorldToRichWorldMessages.removeRichData, (data) => {
  const x = data[1];
  const y = data[2];
  const z = data[3];
-
  DVERW.richData.removeData(x, y, z);
 });

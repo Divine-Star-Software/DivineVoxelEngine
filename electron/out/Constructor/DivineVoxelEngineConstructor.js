@@ -6,11 +6,11 @@ import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
 import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
 import { VoxelManager } from "./Voxels/VoxelManager.js";
 import { ItemManager } from "./Items/ItemManager.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 //inter comms
 import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //matrix
-import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 import { MatrixMap } from "../Matrix/MatrixMap.js";
 import { VoxelMatrix } from "../Matrix/VoxelMatrix.js";
@@ -18,21 +18,23 @@ import { VoxelMatrix } from "../Matrix/VoxelMatrix.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { Tasks } from "./Tasks/Tasks.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { DataSyncNode } from "../Data/DataSyncNode.js";
+import { DataManager } from "../Data/DataManager.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
-    __connectedToWorld: false,
     __queueStatesSet: false,
     _3dFlatArray: Util.getFlat3DArray(),
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     UTIL: Util,
     settings: EngineSettings,
+    dataSyncNode: DataSyncNode,
+    data: DataManager,
     DVEB: DVEB,
     DVEP: DVEP,
     DVEWG: DVEWG,
     tasks: Tasks,
     worldMatrix: WorldMatrix,
-    matrixHub: MatrixHub,
     matrixMap: MatrixMap,
     voxelMatrix: VoxelMatrix,
     parentComm: ParentComm,
@@ -50,17 +52,11 @@ export const DVEC = {
     reStart() { },
     isReady() {
         if (this.environment == "node") {
-            return (DVEC.__connectedToWorld &&
-                DVEC.matrixHub.worldPort !== undefined &&
-                DVEC.worldComm.port !== null &&
-                DVEC.matrixHub.isReady() &&
+            return (DVEC.worldComm.isPortSet() &&
                 DVEC.__settingsHaveBeenSynced);
         }
         else {
-            return (DVEC.__connectedToWorld &&
-                DVEC.matrixHub.worldPort !== undefined &&
-                DVEC.worldComm.port !== null &&
-                DVEC.matrixHub.isReady() &&
+            return (DVEC.worldComm.isPortSet() &&
                 DVEC.__settingsHaveBeenSynced &&
                 DVEB.textureManager.isReady());
         }

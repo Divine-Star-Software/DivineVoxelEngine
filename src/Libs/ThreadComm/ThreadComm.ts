@@ -136,23 +136,33 @@ export const ThreadComm = {
 		//remove tasks id
 		const dataTypeId = data.shift();
 		const dataSync = this._onDataSync[dataTypeId];
+		//get the sync data
+		const syncData = data.shift();
 		if (action == TCDataSyncMessages.SyncData) {
-			dataSync.onSync(data);
+			dataSync.sync(syncData);
 		}
 		if (action == TCDataSyncMessages.UnSyncData) {
-			dataSync.onUnSync(data);
+			dataSync.unSync(syncData);
 		}
 	},
 	__isDataSync(data: any[]) {
 		return data[0] == TCMessageHeaders.dataSync;
 	},
 
-	listenForDataSync<T>(
-		dataType: string,
-		onSync: (data: T) => void,
-		onUnSync: (data: T) => void = (data) => {}
+	onDataSync<T, K>(
+		dataType: string | number,
+		onSync?: (data: T) => void,
+		onUnSync?: (data: K) => void
 	) {
-		this._onDataSync[dataType] = new DataSync(onSync, onUnSync);
+		const sync = new DataSync<T, K>();
+		if (onSync) {
+			sync.addOnSync(onSync);
+		}
+		if (onUnSync) {
+			sync.addOnUnSync(onUnSync);
+		}
+		this._onDataSync[dataType] = sync;
+		return sync;
 	},
 };
 //@ts-ignore

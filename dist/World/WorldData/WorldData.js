@@ -2,6 +2,7 @@
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
 import { CardinalNeighbors } from "../../Constants/Util/CardinalNeighbors.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 /**# World Data
  * ---
  * Handles all the game worlds data.
@@ -19,7 +20,7 @@ export const WorldData = {
     lightByte: Util.getLightByte(),
     voxelByte: Util.getVoxelByte(),
     _3dArray: Util.getFlat3DArray(),
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     setCurrentDimension(dimension) {
         this.currentDimension = dimension;
     },
@@ -37,27 +38,28 @@ export const WorldData = {
         DVEW.queues.build.chunk.add([x, y, z]);
         for (let i = 0; i < CardinalNeighbors.length; i++) {
             const n = CardinalNeighbors[i];
-            DVEW.queues.build.chunk.add([n[0] + x, n[1] + y, n[2] + z]);
+            const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
+            DVEW.queues.build.chunk.add([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
         }
     },
     __lightQueCheck(remove = false, x, y, z) {
         const l = this.getLight(x, y, z);
-        if (l > 0) {
-            if (this.lightByte.getS(l) > 0) {
-                if (!remove) {
-                    DVEW.queues.sun.update.add([x, y, z]);
-                }
-                else {
-                    DVEW.queues.sun.remove.add([x, y, z]);
-                }
+        if (l < 0)
+            return;
+        if (this.lightByte.getS(l) > 0) {
+            if (!remove) {
+                DVEW.queues.sun.update.add([x, y, z]);
             }
-            if (this.lightByte.hasRGBLight(l)) {
-                if (!remove) {
-                    DVEW.queues.rgb.remove.add([x, y, z]);
-                }
-                else {
-                    DVEW.queues.rgb.update.add([x, y, z]);
-                }
+            else {
+                DVEW.queues.sun.remove.add([x, y, z]);
+            }
+        }
+        if (this.lightByte.hasRGBLight(l)) {
+            if (!remove) {
+                DVEW.queues.rgb.update.add([x, y, z]);
+            }
+            else {
+                DVEW.queues.rgb.remove.add([x, y, z]);
             }
         }
     },
@@ -120,7 +122,6 @@ export const WorldData = {
         if (!data)
             data = 0;
         data = this.voxelByte.encodeLevelStateIntoVoxelData(data, state);
-        console.log(data, state);
         this.setData(x, y, z, data, true);
     },
     getData(x, y, z, state = false) {
@@ -273,7 +274,7 @@ export const WorldData = {
             return false;
         const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
         const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         if (!region.chunks[worldColumnKey])
             return false;
         if (!region.chunks[worldColumnKey][chunkKey])
@@ -294,7 +295,7 @@ export const WorldData = {
         }
         const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
         const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
-        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         const chunks = region.chunks;
         this.chunkReader.setChunkPosition(chunk.data, chunkPOS);
         if (!chunks[worldColumnKey]) {
@@ -303,37 +304,23 @@ export const WorldData = {
         chunks[worldColumnKey][chunkKey] = chunk;
         if (doNotSyncInThreads)
             return;
-        DVEW.ccm.syncChunkInAllThreads(chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        if (DVEW.settings.syncChunksInNexusThread()) {
-            DVEW.matrixCentralHub.syncChunkInThread("nexus", chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        }
-        if (DVEW.settings.syncChunkInDataThread()) {
-            DVEW.matrixCentralHub.syncChunkInThread("data", chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        }
-        if (DVEW.settings.syncChunkInFXThread()) {
-            DVEW.matrixCentralHub.syncChunkInThread("fx", chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        }
-        if (DVEW.settings.syncChunkInRichWorldThread()) {
-            DVEW.matrixCentralHub.syncChunkInThread("rich-world", chunkPOS.x, chunkPOS.y, chunkPOS.z);
-        }
+        DVEW.dataSync.chunk.sync(0, chunkPOS.x, chunkPOS.y, chunkPOS.z);
     },
     async __runLightRemoveAndUpdates(remove = true, update = true) {
         if (remove) {
             if (DVEW.settings.doRGBPropagation()) {
-                DVEW.queues.rgb.remove.run();
-                await DVEW.queues.rgb.remove.awaitAll();
+                await DVEW.queues.rgb.remove.runAndAwait();
             }
             if (DVEW.settings.doSunPropagation()) {
-                DVEW.queues.sun.remove.run();
-                await DVEW.queues.sun.remove.awaitAll();
+                await DVEW.queues.sun.remove.runAndAwait();
             }
         }
         if (update) {
             if (DVEW.settings.doRGBPropagation()) {
-                DVEW.queues.sun.update.run();
+                DVEW.queues.rgb.update.run();
             }
             if (DVEW.settings.doSunPropagation()) {
-                DVEW.queues.rgb.update.run();
+                DVEW.queues.sun.update.run();
             }
             await Promise.all([
                 DVEW.queues.rgb.update.awaitAll(),
@@ -343,8 +330,8 @@ export const WorldData = {
     },
     async requestVoxelAddFromRaw(rawData1, rawData2, x, y, z) {
         const voxelId = this.voxelByte.getId(rawData1);
-        const voxelData = DVEW.voxelMatrix.getVoxelData(voxelId);
-        const substance = DVEW.voxelMatrix.getTrueSubstance(voxelId);
+        const voxelData = DVEW.data.voxel.getVoxelData(voxelId);
+        const substance = DVEW.data.voxel.getTrueSubstance(voxelId);
         if (!voxelData)
             return false;
         const chunk = this.addOrGetChunk(x, y, z);
@@ -421,8 +408,11 @@ export const WorldData = {
             }
             if (DVEW.settings.doSunPropagation()) {
                 if (this.lightByte.getS(l) > 0) {
-                    DVEW.queues.sun.remove.add([x, y - 1, z]);
+                    const l2 = this.getLight(x, y - 1, z);
                     DVEW.queues.sun.remove.add([x, y, z]);
+                    if (this.lightByte.getS(l2) > 0 && l2 > 0) {
+                        DVEW.queues.sun.remove.add([x, y - 1, z]);
+                    }
                 }
             }
             await this.__runLightRemoveAndUpdates(true, false);
@@ -490,20 +480,19 @@ export const WorldData = {
         if (!DVEW.settings.settings.server.enabled) {
             if (DVEW.settings.settings.updating?.autoRebuild) {
                 await this.__runLightRemoveAndUpdates(true, true);
-                DVEW.queues.build.chunk.run();
-                await DVEW.queues.build.chunk.awaitAll();
+                await DVEW.queues.build.chunk.runAndAwait();
             }
         }
         if (voxelData.isRich) {
             DVEW.richWorldComm.removeRichData(x, y, z);
         }
     },
-    getWorldColumn(x, z) {
+    getWorldColumn(x, z, y = 0) {
         const region = this.getRegion(x, this.worldBounds.bounds.MinY, z);
         if (!region) {
             return false;
         }
-        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         const worldWolumn = region.chunks[worldColumnKey];
         if (!worldWolumn)
             return;
@@ -542,8 +531,8 @@ export const WorldData = {
             maxHeight = southWest;
         return maxHeight;
     },
-    getAbsoluteHeightOfWorldColumn(x, z) {
-        const worldColumn = this.getWorldColumn(x, z);
+    getAbsoluteHeightOfWorldColumn(x, z, y = 0) {
+        const worldColumn = this.getWorldColumn(x, z, y);
         if (!worldColumn)
             return -Infinity;
         const chunkKeys = Object.keys(worldColumn);
@@ -563,7 +552,8 @@ export const WorldData = {
     fillWorldCollumnWithChunks(x, z) {
         for (let y = this.worldBounds.bounds.MinY; y < this.worldBounds.bounds.MaxY; y += this.worldBounds.chunkYSize) {
             if (!this.getChunk(x, y, z)) {
-                this.addChunk(x, y, z);
+                const chunk = this.addChunk(x, y, z);
+                this.setChunk(x, y, z, chunk);
             }
         }
     },

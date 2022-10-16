@@ -1,13 +1,14 @@
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { VoxelMatrix } from "./VoxelMatrix.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 /**# World Matrix
  * ---
  * Hanldes the getting and setting of data that are loaded in the matrix.
  */
 export const WorldMatrix = {
     _3dArray: Util.getFlat3DArray(),
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     voxelByte: Util.getVoxelByte(),
     lightByte: Util.getLightByte(),
     heightByte: Util.getHeightByte(),
@@ -183,7 +184,7 @@ export const WorldMatrix = {
             region = this._createRegion(x, y, z);
         }
         const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
         if (!region.chunks[worldColumnKey])
             region.chunks[worldColumnKey] = {};
@@ -240,7 +241,7 @@ export const WorldMatrix = {
         if (!region)
             return false;
         const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-        const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         if (!region.chunks[worldColumnKey])
             return false;
         const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
@@ -248,11 +249,11 @@ export const WorldMatrix = {
             return false;
         return region.chunks[worldColumnKey][chunkKey];
     },
-    getWorldColumn(x, z) {
+    getWorldColumn(x, z, y = 0) {
         const region = this.getRegion(x, 0, z);
         if (!region)
             return false;
-        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z);
+        const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
         if (!region.chunks[worldColumnKey])
             return false;
         return region.chunks[worldColumnKey];

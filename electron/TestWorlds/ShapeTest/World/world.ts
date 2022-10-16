@@ -14,7 +14,7 @@ let endZ = depth * 4;
 const buildAll = () => {
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0, z);
+   DVEW.buildWorldColumn(x, z, 0);
   }
  }
 };

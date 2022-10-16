@@ -1,8 +1,4 @@
 export declare const CCM: import("../../../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
-    syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
-    releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number): void;
-    syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
-    releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number): void;
     tasks: {
         build: {
             chunk: (data: any) => number;

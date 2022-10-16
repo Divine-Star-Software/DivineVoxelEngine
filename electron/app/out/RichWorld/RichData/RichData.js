@@ -1,6 +1,6 @@
-import { Util } from "../../Global/Util.helper.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const RichData = {
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     richRegions: {},
     initalData: {},
     getRegion(x, y, z) {
@@ -77,5 +77,5 @@ export const RichData = {
     setInitalData(voxelId, x, y, z) {
         const data = this.initalData[voxelId];
         this.setData(x, y, z, data);
-    }
+    },
 };

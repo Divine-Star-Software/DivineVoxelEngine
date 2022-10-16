@@ -16,14 +16,12 @@ import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
 import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 import { DataComm } from "./InterComms/Data/DataComm.js";
 import { FXComm } from "./InterComms/FX/FXComm.js";
-//matrix
-import { MatrixCentralHub } from "./Matrix/MatrixCentralHub.js";
-import { Matrix } from "./Matrix/Matrix.js";
-import { VoxelMatrix } from "./Matrix/VoxelMatrix.js";
-import { MatrixMap } from "./Matrix/MatrixMap.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
+import { DataSync } from "./Data/DataSync.js";
+import { DataManager } from "../Data/DataManager.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -33,7 +31,7 @@ export const DVEW = {
  environment: <"node" | "browser">"browser",
 
  _3dFlatArray: Util.getFlat3DArray(),
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
  chunkReader: Util.getChunkReader(),
  __settingsHaveBeenSynced: false,
  __renderIsDone: false,
@@ -42,10 +40,8 @@ export const DVEW = {
  UTIL: Util,
  settings: EngineSettings,
 
- matrix: Matrix,
- matrixCentralHub: MatrixCentralHub,
- voxelMatrix: VoxelMatrix,
- matrixMap: MatrixMap,
+ data : DataManager,
+ dataSync : DataSync,
 
  fxComm: FXComm,
  dataComm: DataComm,
@@ -66,8 +62,7 @@ export const DVEW = {
   return (
    DVEW.ccm.isReady() &&
    DVEW.__settingsHaveBeenSynced &&
-   (DVEW.__renderIsDone || DVEW.__serverIsDone) &&
-   DVEW.matrixMap.isReady()
+   (DVEW.__renderIsDone || DVEW.__serverIsDone) 
   );
  },
 
@@ -94,7 +89,7 @@ export const DVEW = {
   this.parentComm.sendMessage("remove-chunk", [chunkX, chunkY, chunkZ]);
   if (deleteChunk) {
    this.worldData.removeChunk(chunkX, chunkY, chunkZ);
-   this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
+   this.dataSync.chunk.unSync(0,chunkX,chunkY,chunkZ);
   }
   return true;
  },
@@ -105,7 +100,7 @@ export const DVEW = {
   */
  deleteChunk(chunkX: number, chunkY: number, chunkZ: number) {
   this.worldData.removeChunk(chunkX, chunkY, chunkZ);
-  this.matrixCentralHub.releaseChunk(chunkX, chunkY, chunkZ);
+  this.dataSync.chunk.unSync(0,chunkX,chunkY,chunkZ);
  },
 
  buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD = 1) {

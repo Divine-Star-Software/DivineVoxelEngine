@@ -1,8 +1,9 @@
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import type { RichChunk } from "Meta/index";
 import type { RichWorldRegion } from "Meta/World/WorldData/World.types";
 import { Util } from "../../Global/Util.helper.js";
 export const RichData = {
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
  richRegions: <Record<string, RichWorldRegion>>{},
 
  initalData: <Record<string, any>>{},
@@ -73,10 +74,10 @@ export const RichData = {
   this.initalData[voxelId] = data;
  },
  hasInitalData(voxelId: string) {
-   return this.initalData[voxelId] !== undefined;
+  return this.initalData[voxelId] !== undefined;
  },
- setInitalData(voxelId: string,x: number, y: number, z: number) {
-     const data = this.initalData[voxelId];
-     this.setData(x,y,z,data);
- }
+ setInitalData(voxelId: string, x: number, y: number, z: number) {
+  const data = this.initalData[voxelId];
+  this.setData(x, y, z, data);
+ },
 };

@@ -9,13 +9,14 @@ import { EngineSettings } from "../Global/EngineSettings.js";
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { EngineSettingsData } from "Meta/index.js";
 import { Util } from "../Global/Util.helper.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 export const DVES = {
  settings: EngineSettings,
  worldComm: WorldComm,
  constructorCommManager: ConstructorCommManager,
 
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
  UTIL: Util,
 
  async $INIT(data: DVESInitData) {

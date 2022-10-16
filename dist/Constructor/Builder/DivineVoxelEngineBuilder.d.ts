@@ -335,6 +335,7 @@ export declare const DVEB: {
                 __worldColumnPosition: {
                     x: number;
                     z: number;
+                    y: number;
                 };
                 __chunkPosition: {
                     x: number;
@@ -377,11 +378,11 @@ export declare const DVEB: {
                     y: number;
                     z: number;
                 };
-                getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-                getWorldColumnKey(x: number, z: number): string;
-                getWorldColumnPosition(x: number, z: number): {
+                getWorldColumnKey(x: number, z: number, y?: number): string;
+                getWorldColumnPosition(x: number, z: number, y?: number): {
                     x: number;
                     z: number;
+                    y: number;
                 };
             };
             voxelByte: {
@@ -619,7 +620,7 @@ export declare const DVEB: {
             };
             __removeChunk(x: number, y: number, z: number): false | undefined;
             getChunk(x: number, y: number, z: number): false | import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
-            getWorldColumn(x: number, z: number): false | Record<string, import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
+            getWorldColumn(x: number, z: number, y?: number): false | Record<string, import("../../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
             isChunkLocked(x: number, y: number, z: number): boolean;
             lockChunk(x: number, y: number, z: number): boolean;
             unLockChunk(x: number, y: number, z: number): boolean;

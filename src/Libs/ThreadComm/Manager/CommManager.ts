@@ -12,6 +12,7 @@ import { ThreadComm } from "../ThreadComm.js";
 export class CommManager {
 	_totalComms = 0;
 	_currentCom = 0;
+	name = "";
 	__comms: CommBase[] = [];
 	__data: CommManagerData = {
 		name: "",
@@ -22,6 +23,7 @@ export class CommManager {
 
 	constructor(data: CommManagerData) {
 		this.__data = data;
+		this.name = data.name;
 	}
 
 	__throwError(message: string) {
@@ -148,13 +150,14 @@ export class CommManager {
 	addQueue<T>(
 		id: string | number,
 		associatedTasksId: string | number,
+		getQueueKey : ((data:T) => string ) | null = null,
 		beforeRun: (data: T) => T = (data: T) => data,
 		afterRun: (data: T, thread: number) => void = (
 			data: T,
 			thread: number
 		) => {},
-		getThread : (data:T)=>number = (data:T)=>-1,
-		getTransfers : (data:T)=>any[] = (data)=>[]
+		getThread: (data: T) => number = (data: T) => -1,
+		getTransfers: (data: T) => any[] = (data) => []
 	) {
 		if (this.__queues[id]) {
 			this.__throwError(`Queue with ${id} already exists.`);
@@ -163,10 +166,17 @@ export class CommManager {
 			id,
 			(data, queueId) => {
 				data = beforeRun(data);
-				const thread = this.runTask(associatedTasksId, data, getTransfers(data), getThread(data), queueId);
+				const thread = this.runTask(
+					associatedTasksId,
+					data,
+					getTransfers(data),
+					getThread(data),
+					queueId
+				);
 				afterRun(data, thread);
 			},
-			this
+			this,
+			getQueueKey
 		);
 		this.__queues[id] = newQueue;
 		return newQueue;
@@ -192,14 +202,13 @@ export class CommManager {
 		}
 	}
 
-	syncData<T>(dataType: string, data: T) {
-		console.log("SYNC DATA");
+	syncData<T>(dataType: string | number, data: T) {
 		for (const comm of this.__comms) {
 			comm.syncData(dataType, data);
 		}
 	}
 
-	unSyncData<T>(dataType: string, data: T) {
+	unSyncData<T>(dataType: string | number, data: T) {
 		for (const comm of this.__comms) {
 			comm.unSyncData(dataType, data);
 		}

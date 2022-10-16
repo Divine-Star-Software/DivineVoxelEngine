@@ -2,13 +2,11 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 import { ConstructorTasks } from "../../../Constants/InterComms/ConstructorTasks.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { WorldTasks } from "../../../Constants/InterComms/WorldTasks.js";
+import { DataSync } from "../../Data/DataSync.js";
 
 const ccm = ThreadComm.createCommManager({
  name: "constructor",
- onPortSet(port, commName) {
-  DVEW.matrixCentralHub.registerThread(commName, port);
-  DVEW.matrixCentralHub.syncVoxelPaletteInThread(commName);
- },
+ onPortSet(port, commName) {},
 });
 
 ccm.listenForMessage(WorldTasks.addToRebuildQue, (data) => {
@@ -24,7 +22,7 @@ ccm.listenForMessage(WorldTasks.runRebuildQue, () => {
 });
 
 ccm.listenForMessage(WorldTasks.syncShapeMap, (data) => {
- DVEW.matrixMap.setShapeMap(data[1]);
+ DVEW.dataSync.voxelDataCreator.setShapeMap(data[1]);
 });
 
 ccm.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
@@ -35,50 +33,6 @@ ccm.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
 });
 
 export const CCM = Object.assign(ccm, {
- syncChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number) {
-  for (const constructor of ccm.__comms) {
-   DVEW.matrixCentralHub.syncChunkInThread(
-    constructor.name,
-    chunkX,
-    chunkY,
-    chunkZ
-   );
-  }
- },
-
- releaseChunkInAllThreads(chunkX: number, chunkY: number, chunkZ: number) {
-  for (const constructor of ccm.__comms) {
-   DVEW.matrixCentralHub.releaseChunkInThread(
-    constructor.name,
-    chunkX,
-    chunkY,
-    chunkZ
-   );
-  }
- },
-
- syncRegionInAllThreads(regionX: number, regionY: number, regionZ: number) {
-  for (const constructor of ccm.__comms) {
-   DVEW.matrixCentralHub.syncRegionInThread(
-    constructor.name,
-    regionX,
-    regionY,
-    regionZ
-   );
-  }
- },
-
- releaseRegionInAllThreads(regionX: number, regionY: number, regionZ: number) {
-  for (const constructor of ccm.__comms) {
-   DVEW.matrixCentralHub.releaseRegionInThread(
-    constructor.name,
-    regionX,
-    regionY,
-    regionZ
-   );
-  }
- },
-
  tasks: {
   build: {
    chunk: (data: any) => {
@@ -153,3 +107,5 @@ export const CCM = Object.assign(ccm, {
   },
  },
 });
+
+DataSync.registerComm(CCM);

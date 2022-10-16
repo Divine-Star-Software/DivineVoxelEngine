@@ -4,13 +4,13 @@ import { Util } from "../../Global/Util.helper.js";
 import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
 //matrix
 import { WorldMatrix } from "../../Matrix/WorldMatrix.js";
-import { MatrixHub } from "../../Matrix/MatrixHub.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const DVEWG = {
     worldGen: null,
     heightByte: Util.getHeightByte(),
     voxelByte: Util.getVoxelByte(),
     _3dArray: Util.getFlat3DArray(),
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     setWorldGen(worldGen) {
         this.worldGen = worldGen;
     },
@@ -63,12 +63,11 @@ export const DVEWG = {
         }
     },
     async paintVoxel(voxelId, voxelState, shapeState, x, y, z) {
-        if (!WorldMatrix.getChunk(x, y, z)) {
-            await MatrixHub.requestChunkLoad(x, y, z);
-            DVEWG._paintVoxel(voxelId, voxelState, shapeState, x, y, z);
-        }
-        else {
-            DVEWG._paintVoxel(voxelId, voxelState, shapeState, x, y, z);
-        }
+        /*   if (!WorldMatrix.getChunk(x, y, z)) {
+           await MatrixHub.requestChunkLoad(x, y, z);
+           DVEWG._paintVoxel(voxelId, voxelState, shapeState, x, y, z);
+          } else {
+           DVEWG._paintVoxel(voxelId, voxelState, shapeState, x, y, z);
+          } */
     },
 };

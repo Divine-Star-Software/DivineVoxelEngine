@@ -196,6 +196,7 @@ export declare const WorldData: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -238,11 +239,11 @@ export declare const WorldData: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     setCurrentDimension(dimension: string): void;
@@ -277,8 +278,8 @@ export declare const WorldData: {
     getRawVoxelData(voxelId: string, voxelStateId: number, shapeState: number): false | DataView;
     requestVoxelAdd(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): Promise<false | DataView>;
     requestVoxelBeRemoved(x: number, y: number, z: number): Promise<void>;
-    getWorldColumn(x: number, z: number): false | Record<string, ChunkData> | undefined;
+    getWorldColumn(x: number, z: number, y?: number): false | Record<string, ChunkData> | undefined;
     getRelativeMaxWorldColumnHeight(x: number, z: number): number;
-    getAbsoluteHeightOfWorldColumn(x: number, z: number): number;
+    getAbsoluteHeightOfWorldColumn(x: number, z: number, y?: number): number;
     fillWorldCollumnWithChunks(x: number, z: number): void;
 };

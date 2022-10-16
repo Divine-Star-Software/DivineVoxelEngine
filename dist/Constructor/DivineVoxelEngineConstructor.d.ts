@@ -1,9 +1,8 @@
 import type { EngineSettingsData } from "Meta/index.js";
 import type { DVECInitData } from "Meta/Constructor/DVEC.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
-    __connectedToWorld: boolean;
     __queueStatesSet: boolean;
     _3dFlatArray: {
         bounds: {
@@ -60,6 +59,7 @@ export declare const DVEC: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -102,11 +102,11 @@ export declare const DVEC: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     UTIL: {
@@ -117,8 +117,8 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getWorkerPort: (environment: "node" | "browser") => Promise<any>;
-        getEnviorment(): "node" | "browser";
+        getWorkerPort: (environment: "browser" | "node") => Promise<any>;
+        getEnviorment(): "browser" | "node";
         getChunkReader(): {
             chunkByteSize: number;
             indexSizes: {
@@ -343,87 +343,6 @@ export declare const DVEC: {
             removeSunLight(sl: number): number;
             minusOneForAll(sl: number): number;
         };
-        getWorldBounds(): {
-            __maxChunkYSize: number;
-            bounds: {
-                MinZ: number;
-                MaxZ: number;
-                MinX: number;
-                MaxX: number;
-                MinY: number;
-                MaxY: number;
-            };
-            chunkXPow2: number;
-            chunkYPow2: number;
-            chunkZPow2: number;
-            chunkXSize: number;
-            chunkYSize: number;
-            chunkZSize: number;
-            chunkTotalVoxels: number;
-            chunkArea: number;
-            regionXPow2: number;
-            regionYPow2: number;
-            regionZPow2: number;
-            regionXSize: number;
-            regionYSize: number;
-            regionZSize: number;
-            __regionPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __worldColumnPosition: {
-                x: number;
-                z: number;
-            };
-            __chunkPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __voxelPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            syncBoundsWithArrays(): void;
-            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
-            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
-            isPositonInBounds(x: number, y: number, z: number): boolean;
-            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            getRegionPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
-            getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getRichPositionKey(x: number, y: number, z: number): string;
-            getVoxelPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
-                x: number;
-                z: number;
-            };
-        };
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
@@ -542,6 +461,7 @@ export declare const DVEC: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -584,11 +504,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         }): void;
         getSettingsCopy(): any;
@@ -600,6 +520,319 @@ export declare const DVEC: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+    };
+    dataSyncNode: {
+        chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
+        voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+        voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+    };
+    data: {
+        dimensions: {
+            dimensionRecord: Record<string, number>;
+            dimensionMap: Record<number, string>;
+            __defaultDimensionOptions: import("../Meta/Data/DimensionData.types.js").DimensionOptions;
+            _dimensions: Record<string, import("../Meta/Data/DimensionData.types.js").DimensionData>;
+            addDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
+            getDimension(id: string): import("../Meta/Data/DimensionData.types.js").DimensionData;
+            getDimensionStringId(id: string | number): string;
+            getDimensionNumericId(id: string | number): number;
+        };
+        voxel: {
+            byteLength: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+                totalLength: number;
+            };
+            indexes: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
+            voxelData: {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            voxelDataView: DataView;
+            voxelMap: Uint16Array;
+            syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+            getVoxelData(id: number): {
+                substance: number;
+                shapeId: number;
+                hardness: number;
+                material: number;
+                checkCollision: number;
+                colliderId: number;
+                lightSource: number;
+                lightValue: number;
+            };
+            getSubstance(id: number): number;
+            getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
+            getShapeId(id: number): number;
+            getHardness(id: number): number;
+            getCheckCollisions(id: number): number;
+            getColliderId(id: number): number;
+            isLightSource(id: number): boolean;
+            getLightValue(id: number): number;
+        };
+        world: {
+            _currentionDimension: string;
+            voxelPalette: import("../Meta/Data/WorldData.types.js").VoxelPalette;
+            voxelPaletteMap: import("../Meta/Data/WorldData.types.js").VoxelPaletteMap;
+            setCurrentDimension(id: string | number): void;
+            setVoxelPalette(voxelPalette: import("../Meta/Data/WorldData.types.js").VoxelPalette, voxelPaletteMap: import("../Meta/Data/WorldData.types.js").VoxelPaletteMap): void;
+            rawData: {
+                get(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
+                set(dimensionId: string | number, x: number, y: number, z: number, data: number, secondary?: boolean): void | -1;
+            };
+            voxel: {
+                _air: [string, number];
+                _barrier: [string, number];
+                air: {
+                    isAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): true | undefined;
+                    set(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): void;
+                };
+                barrier: {
+                    isAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): true | undefined;
+                    set(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): void;
+                };
+                get(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): false | (string | number)[];
+                getData(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): false | {
+                    substance: number;
+                    shapeId: number;
+                    hardness: number;
+                    material: number;
+                    checkCollision: number;
+                    colliderId: number;
+                    lightSource: number;
+                    lightValue: number;
+                };
+                id: {
+                    string(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): string | number;
+                    numeric(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
+                };
+                data: {
+                    shapeId: {
+                        getAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
+                        get(id: number): number;
+                    };
+                    substance: {
+                        getAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): import("Meta/index.js").VoxelSubstanceType;
+                        get(id: number): import("Meta/index.js").VoxelSubstanceType;
+                    };
+                    shapeState: {
+                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
+                        get(data: number): number;
+                        set(data: number, state: number): number;
+                        setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
+                    };
+                    state: {
+                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
+                        get(data: number): number;
+                        set(data: number, state: number): number;
+                        setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
+                    };
+                    lightSource: {
+                        trueAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): boolean;
+                        true(voxelId: number): boolean;
+                    };
+                    level: {
+                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
+                        get(data: number): number;
+                        set(data: number, level: number): number;
+                        setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
+                        state: {
+                            getAt(dimensionId: string | number, x: number, y: number, z: number): number;
+                            get(data: number): number;
+                            set(data: number, level: number): number;
+                            setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
+                        };
+                    };
+                };
+            };
+            heightMap: {
+                update: {
+                    add(dimensionId: string | number, substance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number): void;
+                    remove(dimensionId: string | number, substance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number): void;
+                };
+            };
+            paint: {
+                voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): false | undefined;
+                erease(dimensionId: string | number, x: number, y: number, z: number): void;
+                _worldGen: {
+                    getChunkId(voxelId: number): number;
+                    getPaletteId(voxelId: string, voxelState: number): number;
+                };
+            };
+            light: {
+                get(dimesnionId: string | number, x: number, y: number, z: number, log?: boolean): number;
+                set(dimesnionId: string | number, x: number, y: number, z: number, lightValue: number): -1 | undefined;
+                red: {
+                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
+                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
+                };
+                green: {
+                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
+                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
+                };
+                blue: {
+                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
+                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
+                };
+                sun: {
+                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
+                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
+                };
+            };
+        };
+        worldRegister: {
+            dimensionRecord: Record<string, number>;
+            dimensionMap: Record<number, string>;
+            _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
+            dimensions: {
+                add(id: string | number): {};
+                get(id: string | number): Record<string, import("../Meta/Data/WorldData.types.js").WorldRegion>;
+            };
+            region: {
+                add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").WorldRegion;
+                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").WorldRegion;
+            };
+            worldColumn: {
+                add(dimensionId: string | number, x: number, z: number, y?: number): import("../Meta/Data/WorldData.types.js").WorldColumn;
+                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").WorldColumn;
+            };
+            chunk: {
+                add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): void;
+                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData;
+            };
+        };
+        worldColumn: {};
+        worldBounds: {
+            __maxChunkYSize: number;
+            bounds: {
+                MinZ: number;
+                MaxZ: number;
+                MinX: number;
+                MaxX: number;
+                MinY: number;
+                MaxY: number;
+            };
+            chunkXPow2: number;
+            chunkYPow2: number;
+            chunkZPow2: number;
+            chunkXSize: number;
+            chunkYSize: number;
+            chunkZSize: number;
+            chunkTotalVoxels: number;
+            chunkArea: number;
+            regionXPow2: number;
+            regionYPow2: number;
+            regionZPow2: number;
+            regionXSize: number;
+            regionYSize: number;
+            regionZSize: number;
+            __regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __worldColumnPosition: {
+                x: number;
+                z: number;
+                y: number;
+            };
+            __chunkPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            __voxelPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            syncBoundsWithArrays(): void;
+            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
+            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
+            isPositonInBounds(x: number, y: number, z: number): boolean;
+            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
+            getRegionPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
+            getChunkKeyFromPosition(x: number, y: number, z: number): string;
+            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
+            getRegionKeyFromPosition(x: number, y: number, z: number): string;
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getRichPositionKey(x: number, y: number, z: number): string;
+            getVoxelPosition(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
+                x: number;
+                z: number;
+                y: number;
+            };
+        };
+        maps: {
+            voxels: {
+                substanceMap: Record<import("Meta/index.js").VoxelSubstanceType, number>;
+                substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
+                byteLengths: {
+                    substance: number;
+                    shapeId: number;
+                    hardness: number;
+                    material: number;
+                    checkCollision: number;
+                    colliderId: number;
+                    lightSource: number;
+                    lightValue: number;
+                    totalLength: number;
+                };
+                dataIndexes: {
+                    substance: number;
+                    shapeId: number;
+                    hardness: number;
+                    material: number;
+                    checkCollision: number;
+                    colliderId: number;
+                    lightSource: number;
+                    lightValue: number;
+                };
+            };
+        };
     };
     DVEB: {
         textureManager: {
@@ -937,6 +1170,7 @@ export declare const DVEC: {
                     __worldColumnPosition: {
                         x: number;
                         z: number;
+                        y: number;
                     };
                     __chunkPosition: {
                         x: number;
@@ -979,11 +1213,11 @@ export declare const DVEC: {
                         y: number;
                         z: number;
                     };
-                    getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-                    getWorldColumnKey(x: number, z: number): string;
-                    getWorldColumnPosition(x: number, z: number): {
+                    getWorldColumnKey(x: number, z: number, y?: number): string;
+                    getWorldColumnPosition(x: number, z: number, y?: number): {
                         x: number;
                         z: number;
+                        y: number;
                     };
                 };
                 voxelByte: {
@@ -1221,7 +1455,7 @@ export declare const DVEC: {
                 };
                 __removeChunk(x: number, y: number, z: number): false | undefined;
                 getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
-                getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
+                getWorldColumn(x: number, z: number, y?: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
                 isChunkLocked(x: number, y: number, z: number): boolean;
                 lockChunk(x: number, y: number, z: number): boolean;
                 unLockChunk(x: number, y: number, z: number): boolean;
@@ -1414,6 +1648,7 @@ export declare const DVEC: {
                 minusOneForAll(sl: number): number;
             };
             air: number[];
+            dimension: number;
             runSunLightUpdateAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
             runSunLightUpdate: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdate;
             runSunLightRemove: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemove;
@@ -1495,6 +1730,7 @@ export declare const DVEC: {
                     __worldColumnPosition: {
                         x: number;
                         z: number;
+                        y: number;
                     };
                     __chunkPosition: {
                         x: number;
@@ -1537,11 +1773,11 @@ export declare const DVEC: {
                         y: number;
                         z: number;
                     };
-                    getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-                    getWorldColumnKey(x: number, z: number): string;
-                    getWorldColumnPosition(x: number, z: number): {
+                    getWorldColumnKey(x: number, z: number, y?: number): string;
+                    getWorldColumnPosition(x: number, z: number, y?: number): {
                         x: number;
                         z: number;
+                        y: number;
                     };
                 };
                 voxelByte: {
@@ -1779,7 +2015,7 @@ export declare const DVEC: {
                 };
                 __removeChunk(x: number, y: number, z: number): false | undefined;
                 getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
-                getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
+                getWorldColumn(x: number, z: number, y?: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
                 isChunkLocked(x: number, y: number, z: number): boolean;
                 lockChunk(x: number, y: number, z: number): boolean;
                 unLockChunk(x: number, y: number, z: number): boolean;
@@ -1932,6 +2168,7 @@ export declare const DVEC: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -1974,11 +2211,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         };
         setWorldGen(worldGen: import("../Meta/WorldGen/WorldGen.types.js").WorldGenInterface): void;
@@ -2072,6 +2309,7 @@ export declare const DVEC: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -2114,11 +2352,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         };
         voxelByte: {
@@ -2356,7 +2594,7 @@ export declare const DVEC: {
         };
         __removeChunk(x: number, y: number, z: number): false | undefined;
         getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
-        getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
+        getWorldColumn(x: number, z: number, y?: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;
@@ -2370,24 +2608,6 @@ export declare const DVEC: {
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
-    };
-    matrixHub: {
-        environment: "node" | "browser";
-        worldPort: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes | undefined;
-        threadName: string;
-        __threadNameSet: boolean;
-        messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;
-        isReady(): boolean;
-        onMessage(event: MessageEvent<any>, runAfter: (event: MessageEvent<any>) => any): void;
-        requestChunkSync(x: number, y: number, z: number): Promise<boolean | undefined>;
-        requestChunkLoad(x: number, y: number, z: number): Promise<boolean | undefined>;
-        requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
-        _setWorldPort(port: MessagePort): void;
-        _syncChunk(data: any[]): void;
-        _syncVoxelData(data: any[]): void;
-        _releaseChunk(data: any[]): void;
-        _syncGlobalVoxelPalette(data: any[]): void;
-        _setThreadName(data: any[]): void;
     };
     matrixMap: {
         substanceMap: Record<import("Meta/index.js").VoxelSubstanceType, number>;
@@ -2456,7 +2676,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -2482,7 +2702,7 @@ export declare const DVEC: {
         registerTasks<T_3>(id: string | number, run: (data: T_3) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
         __hanldeDataSyncMessage(data: any[]): Promise<void>;
         __isDataSync(data: any[]): boolean;
-        listenForDataSync<T_4>(dataType: string, onSync: (data: T_4) => void, onUnSync?: (data: T_4) => void): void;
+        onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
     };
     voxelManager: {
         voxelObjects: Record<string, import("Meta/index.js").VoxelConstructorObject>;

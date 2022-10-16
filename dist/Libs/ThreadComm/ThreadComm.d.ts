@@ -7,7 +7,7 @@ import { DataSync } from "./Data/DataSync.js";
 export declare const ThreadComm: {
     threadNumber: number;
     threadName: string;
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _comms: Record<string, CommBase>;
     _commManageras: Record<string, CommManager>;
     _tasks: Record<string, Task<any>>;
@@ -33,5 +33,5 @@ export declare const ThreadComm: {
     registerTasks<T_1>(id: string | number, run: (data: T_1) => void): Task<T_1>;
     __hanldeDataSyncMessage(data: any[]): Promise<void>;
     __isDataSync(data: any[]): boolean;
-    listenForDataSync<T_2>(dataType: string, onSync: (data: T_2) => void, onUnSync?: (data: T_2) => void): void;
+    onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): DataSync<T_2, K>;
 };

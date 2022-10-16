@@ -17,11 +17,6 @@ DVEN.worldComm.listenForMessage("done", async (data, event) => {
  DVEN.nexusEntites.spawnEntity("entity-1", { x: -8, y: 15, z: 5 });
 
  DVEN.nexusEntites.spawnEntity("entity-1", { x: 8, y: 25, z: 5 });
- await DVEN.loadChunkIntoNexus(0, 0, 0);
- await DVEN.loadChunkIntoNexus(-16, 0, 0);
- await DVEN.loadChunkIntoNexus(0, 0, -16);
- await DVEN.loadChunkIntoNexus(-16, 0, -16);
- await DVEN.loadChunkIntoNexus(0, 0, 0);
  const voxel = DVEN.worldMatrix.getData(0, 0, 0);
  console.log(voxel);
 });

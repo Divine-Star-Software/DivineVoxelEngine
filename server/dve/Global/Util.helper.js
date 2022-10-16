@@ -1,17 +1,16 @@
-import { LightByte } from "./Util/LightByte.js";
-import { VoxelByte } from "./Util/VoxelByte.js";
+import { LightData } from "../Data/Light/LightByte.js";
+import { VoxelReader } from "../Data/Voxel/VoxelByte.js";
 import { Flat3DArray } from "./Util/Flat3DArray.js";
-import { WorldBounds } from "./Util/WorldBounds.js";
 import { GetWorkerPort } from "./Util/GetWorkerPort.js";
 import { CreatePromiseCheck } from "./Util/CreatePromiseCheck.js";
 import { FaceByte } from "./Util/FaceByte.js";
-import { HeightByte } from "./Util/HeightByte.js";
-import { HeightMapArray } from "./Util/HeightMapArray.js";
+import { HeightMapData } from "../Data/Chunk/HeightByte.js";
+import { HeightMapArray } from "../Data/Chunk/HeightMapArray.js";
 import { MeshFaceDataByte } from "./Util/MeshFaceDataBytes.js";
 import { DataEncoder } from "./Util/DataEncoder.js";
 import { EntityFlat3dArray } from "./Util/EntityFlat3dArray.js";
 import { Queue } from "./Util/Queue.js";
-import { ChunkReader } from "./Util/ChunkReader.js";
+import { ChunkReader } from "../Data/Chunk/ChunkReader.js";
 export const Util = {
     createPromiseCheck: CreatePromiseCheck,
     getWorkerPort: GetWorkerPort,
@@ -51,16 +50,13 @@ export const Util = {
         return HeightMapArray;
     },
     getHeightByte() {
-        return HeightByte;
+        return HeightMapData;
     },
     getVoxelByte() {
-        return VoxelByte;
+        return VoxelReader;
     },
     getLightByte() {
-        return LightByte;
-    },
-    getWorldBounds() {
-        return WorldBounds;
+        return LightData;
     },
     degtoRad(degrees) {
         return degrees * (Math.PI / 180);

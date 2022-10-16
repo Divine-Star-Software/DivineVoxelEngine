@@ -22,7 +22,8 @@ const QMBase = {
  rgb: {
   update: CCM.addQueue<LightUpdateTask>(
    "rgb-update",
-   ConstructorTasks.RGBlightUpdate
+   ConstructorTasks.RGBlightUpdate,
+   null
   ),
   remove: CCM.addQueue<LightUpdateTask>(
    "rgb-remove",
@@ -33,7 +34,7 @@ const QMBase = {
   add(x: number, z: number, queueId: string = "main") {
    QMBase.worldSun.__steps.step1.add([x, z, 0], queueId);
   },
- async run() {
+  async run() {
    await QMBase.worldSun.__steps.step1.runAndAwait();
    await QMBase.worldSun.__steps.step2.runAndAwait();
    await QMBase.worldSun.__steps.step3.runAndAwait();
@@ -42,6 +43,7 @@ const QMBase = {
    step1: CCM.addQueue<[number, number, number]>(
     "sun-fill",
     ConstructorTasks.worldSunStep1,
+    null,
     (data) => {
      const x = data[0];
      const z = data[1];
@@ -55,6 +57,7 @@ const QMBase = {
    step2: CCM.addQueue<[number, number, number, number]>(
     "sun-column-update",
     ConstructorTasks.worldSunStep2,
+    null,
     (data) => {
      QMBase.worldSun.__steps.step3.add(data);
      return data;
@@ -66,6 +69,7 @@ const QMBase = {
    step3: CCM.addQueue<[number, number, number, number]>(
     "sun-column-flood",
     ConstructorTasks.worldSunStep3,
+    null,
     (d) => d,
     (d, t) => {},
     (data) => {

@@ -30,6 +30,10 @@ export declare const WorldGeneration: {
     };
     chunkReader: {
         chunkByteSize: number;
+        /**# World Generation
+         * ---
+         * Helps with creating the needed data for chunks and world generation things.
+         */
         indexSizes: {
             header: number;
             states: number;

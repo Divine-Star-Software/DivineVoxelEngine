@@ -7,6 +7,7 @@ import { CardinalNeighbors } from "../../../Constants/Util/CardinalNeighbors.js"
 export const IlluminationManager = {
     lightByte: Util.getLightByte(),
     air: [-1, 0],
+    dimension: 0,
     //sun
     runSunLightUpdateAt: runSunLightUpdateAt,
     runSunLightUpdate: runSunLightUpdate,

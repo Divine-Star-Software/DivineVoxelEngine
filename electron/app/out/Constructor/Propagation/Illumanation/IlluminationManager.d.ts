@@ -39,6 +39,7 @@ export declare const IlluminationManager: {
         minusOneForAll(sl: number): number;
     };
     air: number[];
+    dimension: number;
     runSunLightUpdateAt: typeof runSunLightUpdateAt;
     runSunLightUpdate: typeof runSunLightUpdate;
     runSunLightRemove: typeof runSunLightRemove;

@@ -1,7 +1,6 @@
 //types
 import type { EngineSettingsData } from "Meta/index.js";
 //matrix
-import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 //types
 import { DVERWInitData } from "Meta/RichWorld/DVERW.js";
@@ -15,19 +14,18 @@ import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { RichData } from "./RichData/RichData.js";
 import { VoxelManager } from "../Voxels/VoxelManager.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 export const DVERW = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
- __connectedToWorld: false,
  __queueStatesSet: false,
  _3dFlatArray: Util.getFlat3DArray(),
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
  UTIL: Util,
  settings: EngineSettings,
 
  worldMatrix: WorldMatrix,
- matrixHub: MatrixHub,
 
  worldComm: WorldComm,
  parentComm: ParentComm,
@@ -45,9 +43,7 @@ export const DVERW = {
 
  isReady() {
   return (
-   DVERW.__connectedToWorld &&
-   DVERW.matrixHub.worldPort !== undefined &&
-   DVERW.worldComm.port !== null &&
+   DVERW.worldComm.isReady() && 
    DVERW.__settingsHaveBeenSynced
   );
  },

@@ -17,7 +17,7 @@ const QMBase = {
         this.generate.chunk.addQueue("main");
     },
     rgb: {
-        update: CCM.addQueue("rgb-update", ConstructorTasks.RGBlightUpdate),
+        update: CCM.addQueue("rgb-update", ConstructorTasks.RGBlightUpdate, null),
         remove: CCM.addQueue("rgb-remove", ConstructorTasks.RGBlightRemove),
     },
     worldSun: {
@@ -30,7 +30,7 @@ const QMBase = {
             await QMBase.worldSun.__steps.step3.runAndAwait();
         },
         __steps: {
-            step1: CCM.addQueue("sun-fill", ConstructorTasks.worldSunStep1, (data) => {
+            step1: CCM.addQueue("sun-fill", ConstructorTasks.worldSunStep1, null, (data) => {
                 const x = data[0];
                 const z = data[1];
                 DVEW.worldData.fillWorldCollumnWithChunks(x, z);
@@ -39,13 +39,13 @@ const QMBase = {
                 QMBase.worldSun.__steps.step2.add([x, z, maxY, -1]);
                 return data;
             }),
-            step2: CCM.addQueue("sun-column-update", ConstructorTasks.worldSunStep2, (data) => {
+            step2: CCM.addQueue("sun-column-update", ConstructorTasks.worldSunStep2, null, (data) => {
                 QMBase.worldSun.__steps.step3.add(data);
                 return data;
             }, (data, thread) => {
                 data[3] = thread;
             }),
-            step3: CCM.addQueue("sun-column-flood", ConstructorTasks.worldSunStep3, (d) => d, (d, t) => { }, (data) => {
+            step3: CCM.addQueue("sun-column-flood", ConstructorTasks.worldSunStep3, null, (d) => d, (d, t) => { }, (data) => {
                 return data[3];
             }),
         },

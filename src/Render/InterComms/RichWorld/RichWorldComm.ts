@@ -3,13 +3,11 @@ import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
 
 ThreadComm
-const richWorldCommBase = ThreadComm.createComm("render-rich-world");
+const richWorldCommBase = ThreadComm.createComm("rich-world");
 
 const richWorldComm = Object.assign(richWorldCommBase, {
  $INIT() {
-  const channel = new MessageChannel();
-  DVER.worldComm.sendMessage("connect-rich-world", [], [channel.port1]);
-  richWorldComm.sendMessage("connect-world", [], [channel.port2]);
+    richWorldComm.connectToComm(DVER.worldComm);
  },
 });
 

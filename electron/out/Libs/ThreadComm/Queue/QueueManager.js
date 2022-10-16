@@ -3,13 +3,18 @@ export class QueueManager {
     id;
     onRun;
     _manager;
+    getQueueKey;
     __queueData = {};
-    constructor(id, onRun, _manager) {
+    constructor(id, onRun, _manager, getQueueKey = null) {
         this.id = id;
         this.onRun = onRun;
         this._manager = _manager;
+        this.getQueueKey = getQueueKey;
     }
     __getQueueKey(data) {
+        if (this.getQueueKey !== null) {
+            return this.getQueueKey(data);
+        }
         if (Array.isArray(data)) {
             return data.toString();
         }
@@ -60,7 +65,7 @@ export class QueueManager {
         const queue = queueData.queue;
         const state = queueData.state;
         const syncId = this._getSyncId(queueId);
-        while (queue.first) {
+        while (true) {
             const data = queue.dequeue();
             if (!data)
                 break;

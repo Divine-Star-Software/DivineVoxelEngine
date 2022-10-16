@@ -6,6 +6,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 
 await DVEW.$INIT({});
+(self as any).DVEW = DVEW;
 
 let startX = -64;
 let startZ = -64;

@@ -3,7 +3,6 @@ import { DVERWInitData } from "Meta/RichWorld/DVERW.js";
 export declare const DVERW: {
     environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
-    __connectedToWorld: boolean;
     __queueStatesSet: boolean;
     _3dFlatArray: {
         bounds: {
@@ -60,6 +59,7 @@ export declare const DVERW: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -102,11 +102,11 @@ export declare const DVERW: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     UTIL: {
@@ -343,87 +343,6 @@ export declare const DVERW: {
             removeSunLight(sl: number): number;
             minusOneForAll(sl: number): number;
         };
-        getWorldBounds(): {
-            __maxChunkYSize: number;
-            bounds: {
-                MinZ: number;
-                MaxZ: number;
-                MinX: number;
-                MaxX: number;
-                MinY: number;
-                MaxY: number;
-            };
-            chunkXPow2: number;
-            chunkYPow2: number;
-            chunkZPow2: number;
-            chunkXSize: number;
-            chunkYSize: number;
-            chunkZSize: number;
-            chunkTotalVoxels: number;
-            chunkArea: number;
-            regionXPow2: number;
-            regionYPow2: number;
-            regionZPow2: number;
-            regionXSize: number;
-            regionYSize: number;
-            regionZSize: number;
-            __regionPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __worldColumnPosition: {
-                x: number;
-                z: number;
-            };
-            __chunkPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            __voxelPosition: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            syncBoundsWithArrays(): void;
-            setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
-            isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
-            isPositonInBounds(x: number, y: number, z: number): boolean;
-            setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-            getRegionPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
-            getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
-            getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getRichPositionKey(x: number, y: number, z: number): string;
-            getVoxelPosition(x: number, y: number, z: number): {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
-                x: number;
-                z: number;
-            };
-        };
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
@@ -542,6 +461,7 @@ export declare const DVERW: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -584,11 +504,11 @@ export declare const DVERW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         }): void;
         getSettingsCopy(): any;
@@ -657,6 +577,7 @@ export declare const DVERW: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -699,11 +620,11 @@ export declare const DVERW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         };
         voxelByte: {
@@ -941,7 +862,7 @@ export declare const DVERW: {
         };
         __removeChunk(x: number, y: number, z: number): false | undefined;
         getChunk(x: number, y: number, z: number): false | import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk;
-        getWorldColumn(x: number, z: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
+        getWorldColumn(x: number, z: number, y?: number): false | Record<string, import("../Meta/Matrix/Matrix.types.js").MatrixLoadedChunk>;
         isChunkLocked(x: number, y: number, z: number): boolean;
         lockChunk(x: number, y: number, z: number): boolean;
         unLockChunk(x: number, y: number, z: number): boolean;
@@ -955,24 +876,6 @@ export declare const DVERW: {
         setLight(x: number, y: number, z: number, lightValue: number): void;
         getLightValue(x: number, y: number, z: number, type: "r" | "g" | "b" | "s"): number;
         sameVoxel(x: number, y: number, z: number, cx: number, cy: number, cz: number): boolean;
-    };
-    matrixHub: {
-        environment: "browser" | "node";
-        worldPort: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes | undefined;
-        threadName: string;
-        __threadNameSet: boolean;
-        messageFunctions: Record<string, (data: any, event: MessageEvent<any>) => any>;
-        isReady(): boolean;
-        onMessage(event: MessageEvent<any>, runAfter: (event: MessageEvent<any>) => any): void;
-        requestChunkSync(x: number, y: number, z: number): Promise<boolean | undefined>;
-        requestChunkLoad(x: number, y: number, z: number): Promise<boolean | undefined>;
-        requestChunkRelease(chunkX: number, chunkY: number, chunkZ: number): void;
-        _setWorldPort(port: MessagePort): void;
-        _syncChunk(data: any[]): void;
-        _syncVoxelData(data: any[]): void;
-        _releaseChunk(data: any[]): void;
-        _syncGlobalVoxelPalette(data: any[]): void;
-        _setThreadName(data: any[]): void;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -1009,6 +912,7 @@ export declare const DVERW: {
             __worldColumnPosition: {
                 x: number;
                 z: number;
+                y: number;
             };
             __chunkPosition: {
                 x: number;
@@ -1051,11 +955,11 @@ export declare const DVERW: {
                 y: number;
                 z: number;
             };
-            getWorldColumnKeyFromObj(position: import("Meta/index.js").Position3Matrix): string;
-            getWorldColumnKey(x: number, z: number): string;
-            getWorldColumnPosition(x: number, z: number): {
+            getWorldColumnKey(x: number, z: number, y?: number): string;
+            getWorldColumnPosition(x: number, z: number, y?: number): {
                 x: number;
                 z: number;
+                y: number;
             };
         };
         richRegions: Record<string, import("../Meta/World/WorldData/World.types.js").RichWorldRegion>;

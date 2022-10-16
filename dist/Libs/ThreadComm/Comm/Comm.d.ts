@@ -25,8 +25,8 @@ export declare class CommBase {
     runTasks<T>(id: string | number, data: T, transfers?: any[], queue?: string): void;
     __syncQueue(id: string, sab: SharedArrayBuffer): void;
     __unSyqncQueue(id: string): void;
-    syncData<T>(dataType: string, data: T, transfers?: any[]): void;
-    unSyncData<T>(dataType: string, data: T, transfers?: any[]): void;
+    syncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
+    unSyncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
     waitTillReady(): Promise<boolean>;
     onMessage(event: any): void;
 }

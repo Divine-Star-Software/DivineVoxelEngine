@@ -106,7 +106,6 @@ export async function RunFlowIncrease(this: typeof FlowManager) {
   const levelState = node[4];
   if (this.inMap(x, y, z)) continue;
   this.addToMap(x, y, z);
-
   if (level > -1) {
    this.setVoxel(level, levelState, x, y, z);
    reque.push([x, y, z, -1]);

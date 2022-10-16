@@ -21,15 +21,7 @@ export declare const VoxelMatrix: {
         lightSource: number;
         lightValue: number;
     };
-    matrixMap: {
-        shapeMap: Record<string, number>;
-        substanceMap: Record<VoxelSubstanceType, number>;
-        substanceRecord: Record<number, VoxelSubstanceType>;
-        __shapeMapSet: boolean;
-        isReady(): boolean;
-        setShapeMap(shapeMap: Record<string, number>): void;
-        flush(): void;
-    };
+    matrixMap: any;
     substanceMap: Record<VoxelSubstanceType, number>;
     voxelData: {
         substance: number;
@@ -68,7 +60,7 @@ export declare const VoxelMatrix: {
         lightValue: number;
     };
     getSubstance(id: number): number;
-    getTrueSubstance(id: number): VoxelSubstanceType;
+    getTrueSubstance(id: number): any;
     getShapeId(id: number): number;
     getHardness(id: number): number;
     getCheckCollisions(id: number): number;

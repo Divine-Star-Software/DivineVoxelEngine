@@ -63,7 +63,7 @@ buildAll();
 await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", 0, 0, 23, 6, -8);
 
 setTimeout(async () => {
- await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, x, 12, z + 5);
- runRemove();
+ await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 0, 12, 5);
+  runRemove();
 }, 2000);
 (self as any).DVEW = DVEW;

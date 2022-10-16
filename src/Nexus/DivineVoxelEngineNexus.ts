@@ -2,29 +2,34 @@
 import type { DVENInitData } from "Meta/Nexus/DVEN.js";
 import type { EngineSettingsData } from "Meta/index.js";
 //matrix
-import { MatrixHub } from "../Matrix/MatrixHub.js";
 import { WorldMatrix } from "../Matrix/WorldMatrix.js";
 //comms
 import { ParentComm } from "./InterComms/Parent/ParentComm.js";
 import { WorldComm } from "./InterComms/World/WorldComm.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { EngineSettings } from "../Global/EngineSettings.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 import { VoxelManager } from "../Voxels/VoxelManager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
+import { DataSyncNode } from "../Data/DataSyncNode.js";
+import { DataManager } from "../Data/DataManager.js";
 
 export const DVEN = {
  environment: <"node" | "browser">"browser",
- __connectedToWorld: false,
+
 
  UTIL: Util,
  chunkReader: Util.getChunkReader(),
  settings: EngineSettings,
 
+ dataSyncNode : DataSyncNode,
+ data : DataManager,
+
  worldMatrix: WorldMatrix,
- matrixHub: MatrixHub,
+
 
  worldComm: WorldComm,
  parentComm: ParentComm,
@@ -33,7 +38,7 @@ export const DVEN = {
 
  voxelManager: VoxelManager,
 
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
 
  async $INIT(data: DVENInitData) {
   this.settings.setContext("DVEN");
@@ -43,7 +48,7 @@ export const DVEN = {
  },
 
  isReady() {
-  return DVEN.matrixHub.worldPort !== undefined && DVEN.__connectedToWorld;
+  return DVEN.worldComm.isPortSet();
  },
 
  syncSettings(data: EngineSettingsData) {
@@ -52,20 +57,7 @@ export const DVEN = {
   this.chunkReader.syncSettings();
  },
 
- /**# Load chunk into Nexus
-  * Load a chunk into the shared nexus thread.
-  */
- async loadChunkIntoNexus(chunkX: number, chunkY: number, chunkZ: number) {
-  this.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
-  return await this.worldMatrix.awaitChunkLoad(chunkX, chunkY, chunkZ);
- },
 
- /**# Release Chunk From Nexus
-  * Remve a chunk in the shared nexus thread.
-  */
- releaseChunkFromNexus(chunkX: number, chunkY: number, chunkZ: number) {
-  this.matrixHub.requestChunkRelease(chunkX, chunkY, chunkZ);
- },
 };
 export type DivineVoxelEngineNexus = typeof DVEN;
 

@@ -94,6 +94,7 @@ export declare const DVEWG: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -136,11 +137,11 @@ export declare const DVEWG: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     setWorldGen(worldGen: WorldGenInterface): void;

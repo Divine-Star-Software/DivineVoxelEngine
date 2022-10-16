@@ -1,8 +1,8 @@
 import { WorldToRichWorldMessages } from "../../../Constants/InterComms/WorldToRichWorld.js";
-import { DVEW } from "../../DivineVoxelEngineWorld.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { DataSync } from "../../Data/DataSync.js";
 
-const richWorldCommBase = ThreadComm.createComm("world-rich-world");
+const richWorldCommBase = ThreadComm.createComm("rich-world");
 const richWorldComm = Object.assign(richWorldCommBase, {
  setInitalData(voxelId: string, x: number, y: number, z: number) {
   richWorldComm.sendMessage(WorldToRichWorldMessages.setInitalData, [
@@ -17,8 +17,6 @@ const richWorldComm = Object.assign(richWorldCommBase, {
  },
 });
 
-richWorldComm.onSetPort((port) => {
- DVEW.matrixCentralHub.registerThread("rich-world", port);
-});
-
 export const RichWorldComm = richWorldComm;
+
+DataSync.registerComm(RichWorldComm);

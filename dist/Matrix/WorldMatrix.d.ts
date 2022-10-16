@@ -18,6 +18,10 @@ export declare const WorldMatrix: {
             z: number;
         };
         setBounds(x: number, y: number, z: number): void;
+        /**# World Matrix
+         * ---
+         * Hanldes the getting and setting of data that are loaded in the matrix.
+         */
         getValue(x: number, y: number, z: number, array: Uint32Array): number;
         getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
         getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
@@ -61,6 +65,7 @@ export declare const WorldMatrix: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -103,11 +108,11 @@ export declare const WorldMatrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     voxelByte: {
@@ -190,7 +195,10 @@ export declare const WorldMatrix: {
             minMax: number;
             heightMap: number;
             voxelData: number;
-            voxelStateData: number;
+            voxelStateData: number; /**# World Matrix
+             * ---
+             * Hanldes the getting and setting of data that are loaded in the matrix.
+             */
         };
         indexes: {
             header: number;
@@ -212,12 +220,18 @@ export declare const WorldMatrix: {
         _chunkPositon: {
             x: number;
             y: number;
-            z: number;
+            z: number; /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
         };
         getChunkPosition(chunk: DataView): {
             x: number;
             y: number;
-            z: number;
+            z: number; /**# Await Chunk Load
+             * ---
+             * Wait for a chunk to loaded into the matrix  for use.
+             */
         };
         setChunkPosition(chunk: DataView, position: Position3Matrix): void;
         getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
@@ -271,10 +285,6 @@ export declare const WorldMatrix: {
             hardness: number;
             material: number;
             checkCollision: number;
-            /**# World Matrix
-             * ---
-             * Hanldes the getting and setting of data that are loaded in the matrix.
-             */
             colliderId: number;
             lightSource: number;
             lightValue: number;
@@ -288,10 +298,6 @@ export declare const WorldMatrix: {
             hardness: number;
             material: number;
             checkCollision: number;
-            /**# World Matrix
-             * ---
-             * Hanldes the getting and setting of data that are loaded in the matrix.
-             */
             colliderId: number;
             lightSource: number;
             lightValue: number;
@@ -365,7 +371,7 @@ export declare const WorldMatrix: {
      */
     __removeChunk(x: number, y: number, z: number): false | undefined;
     getChunk(x: number, y: number, z: number): false | MatrixLoadedChunk;
-    getWorldColumn(x: number, z: number): false | Record<string, MatrixLoadedChunk>;
+    getWorldColumn(x: number, z: number, y?: number): false | Record<string, MatrixLoadedChunk>;
     isChunkLocked(x: number, y: number, z: number): boolean;
     lockChunk(x: number, y: number, z: number): boolean;
     unLockChunk(x: number, y: number, z: number): boolean;

@@ -13,11 +13,17 @@ export class QueueManager<T> {
 	> = {};
 	constructor(
 		public id: string | number,
-		public onRun: (data: T, queueId: string,) => void,
-		public _manager: CommManager
-	) {}
+		public onRun: (data: T, queueId: string) => void,
+		public _manager: CommManager,
+		public getQueueKey: ((data: T) => string) | null = null
+	) {
+
+	}
 
 	__getQueueKey(data: any) {
+		if(this.getQueueKey !== null) {
+			return this.getQueueKey(data);
+		}
 		if (Array.isArray(data)) {
 			return data.toString();
 		}
@@ -72,7 +78,7 @@ export class QueueManager<T> {
 		const queue = queueData.queue;
 		const state = queueData.state;
 		const syncId = this._getSyncId(queueId);
-		while (queue.first) {
+		while (true) {
 			const data = queue.dequeue();
 			if (!data) break;
 			if (filter) {

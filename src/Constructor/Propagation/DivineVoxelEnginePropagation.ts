@@ -21,7 +21,7 @@ export const DVEP = {
   if (DVEC.settings.settings.server.enabled) return;
   const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
   const chunkKey = DVEC.worldBounds.getChunkKey(chunkPOS);
-  
+
   if (!this.rebuildQueMap[chunkKey]) {
    this.rebuildQueMap[chunkKey] = true;
    DVEC.worldComm.sendMessage(WorldTasks.addToRebuildQue, [
@@ -63,6 +63,7 @@ export const DVEP = {
   this.illumination.runSunLightFloodOut(x, z);
   this.rebuildQueMap = {};
  },
+
  runSunLightUpdate(x: number, y: number, z: number) {
   this.illumination.runSunLightUpdateAt(x, y, z);
   this.rebuildQueMap = {};

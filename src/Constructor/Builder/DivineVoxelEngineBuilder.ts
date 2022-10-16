@@ -39,12 +39,10 @@ export const DVEB = {
  async buildChunk(chunkX: number, chunkY: number, chunkZ: number, LOD = 1) {
   let chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
   if (!chunk) {
-   await DVEC.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
-   chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
-   if (!chunk) {
-    console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
-    return;
-   }
+   // await DVEC.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
+   //   chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
+   console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
+   return;
   }
   const template = this.processor.makeAllChunkTemplates(
    chunk,

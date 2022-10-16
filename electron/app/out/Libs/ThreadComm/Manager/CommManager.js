@@ -7,6 +7,7 @@ import { ThreadComm } from "../ThreadComm.js";
 export class CommManager {
     _totalComms = 0;
     _currentCom = 0;
+    name = "";
     __comms = [];
     __data = {
         name: "",
@@ -16,6 +17,7 @@ export class CommManager {
     messageFunctions = {};
     constructor(data) {
         this.__data = data;
+        this.name = data.name;
     }
     __throwError(message) {
         throw new Error(`[ThreadCommManager : ${this.__data.name}] ${message}`);
@@ -111,7 +113,7 @@ export class CommManager {
         }
         return countReturn;
     }
-    addQueue(id, associatedTasksId, beforeRun = (data) => data, afterRun = (data, thread) => { }, getThread = (data) => -1, getTransfers = (data) => []) {
+    addQueue(id, associatedTasksId, getQueueKey = null, beforeRun = (data) => data, afterRun = (data, thread) => { }, getThread = (data) => -1, getTransfers = (data) => []) {
         if (this.__queues[id]) {
             this.__throwError(`Queue with ${id} already exists.`);
         }
@@ -119,7 +121,7 @@ export class CommManager {
             data = beforeRun(data);
             const thread = this.runTask(associatedTasksId, data, getTransfers(data), getThread(data), queueId);
             afterRun(data, thread);
-        }, this);
+        }, this, getQueueKey);
         this.__queues[id] = newQueue;
         return newQueue;
     }
@@ -141,7 +143,6 @@ export class CommManager {
         }
     }
     syncData(dataType, data) {
-        console.log("SYNC DATA");
         for (const comm of this.__comms) {
             comm.syncData(dataType, data);
         }

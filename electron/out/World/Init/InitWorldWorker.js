@@ -7,18 +7,8 @@ export async function InitWorldWorker(DVEW, initData) {
         },
         checkInterval: 1,
         onReady: () => {
-            DVEW.voxelMatrix.$INIT();
             DVEW.queues.$INIT();
-            const nexusSettings = DVEW.settings.settings.nexus;
-            if (nexusSettings.enabled && nexusSettings.autoSyncVoxelPalette) {
-                DVEW.matrixCentralHub.syncVoxelPaletteInThread("nexus");
-            }
-            const fxSettigns = DVEW.settings.settings.fx;
-            if (fxSettigns.enabled && fxSettigns.autoSyncVoxelPalette) {
-                DVEW.matrixCentralHub.syncVoxelPaletteInThread("fx");
-            }
-            DVEW.matrixCentralHub.syncVoxelData();
-            DVEW.matrixMap.flush();
+            DVEW.dataSync.$INIT();
             if (initData.onReady) {
                 initData.onReady();
             }

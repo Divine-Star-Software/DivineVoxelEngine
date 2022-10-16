@@ -15,8 +15,9 @@ import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
 import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 export const DVER = {
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     worldComm: WorldComm,
     nexusComm: NexusComm,
     dataComm: DataComm,

@@ -1,5 +1,5 @@
 import { Flat3DArray } from "./Flat3DArray.js";
-import { WorldBounds } from "./WorldBounds.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const ChunkReader = {
     chunkByteSize: 0,
     //size in bytes

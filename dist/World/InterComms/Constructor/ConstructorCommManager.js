@@ -2,12 +2,10 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 import { ConstructorTasks } from "../../../Constants/InterComms/ConstructorTasks.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { WorldTasks } from "../../../Constants/InterComms/WorldTasks.js";
+import { DataSync } from "../../Data/DataSync.js";
 const ccm = ThreadComm.createCommManager({
     name: "constructor",
-    onPortSet(port, commName) {
-        DVEW.matrixCentralHub.registerThread(commName, port);
-        DVEW.matrixCentralHub.syncVoxelPaletteInThread(commName);
-    },
+    onPortSet(port, commName) { },
 });
 ccm.listenForMessage(WorldTasks.addToRebuildQue, (data) => {
     const x = data[1];
@@ -20,7 +18,7 @@ ccm.listenForMessage(WorldTasks.runRebuildQue, () => {
     DVEW.queues.build.chunk.run();
 });
 ccm.listenForMessage(WorldTasks.syncShapeMap, (data) => {
-    DVEW.matrixMap.setShapeMap(data[1]);
+    DVEW.dataSync.voxelDataCreator.setShapeMap(data[1]);
 });
 ccm.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
     const x = data[1];
@@ -29,26 +27,6 @@ ccm.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
     DVEW.queues.rgb.update.add([x, y, z]);
 });
 export const CCM = Object.assign(ccm, {
-    syncChunkInAllThreads(chunkX, chunkY, chunkZ) {
-        for (const constructor of ccm.__comms) {
-            DVEW.matrixCentralHub.syncChunkInThread(constructor.name, chunkX, chunkY, chunkZ);
-        }
-    },
-    releaseChunkInAllThreads(chunkX, chunkY, chunkZ) {
-        for (const constructor of ccm.__comms) {
-            DVEW.matrixCentralHub.releaseChunkInThread(constructor.name, chunkX, chunkY, chunkZ);
-        }
-    },
-    syncRegionInAllThreads(regionX, regionY, regionZ) {
-        for (const constructor of ccm.__comms) {
-            DVEW.matrixCentralHub.syncRegionInThread(constructor.name, regionX, regionY, regionZ);
-        }
-    },
-    releaseRegionInAllThreads(regionX, regionY, regionZ) {
-        for (const constructor of ccm.__comms) {
-            DVEW.matrixCentralHub.releaseRegionInThread(constructor.name, regionX, regionY, regionZ);
-        }
-    },
     tasks: {
         build: {
             chunk: (data) => {
@@ -109,3 +87,4 @@ export const CCM = Object.assign(ccm, {
         },
     },
 });
+DataSync.registerComm(CCM);

@@ -33,6 +33,7 @@ export declare const RichData: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -75,11 +76,11 @@ export declare const RichData: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("Meta/index").Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     richRegions: Record<string, RichWorldRegion>;

@@ -1,5 +1,6 @@
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { Util } from "../../Global/Util.helper.js";
+import { WorldBounds } from "../../Data/WorldBounds.js";
 /**# Matrix
  * ---
  * Holds all shared array buffer.
@@ -7,7 +8,7 @@ import { Util } from "../../Global/Util.helper.js";
 export const Matrix = {
     //two minutes
     updateDieTime: 120000,
-    worldBounds: Util.getWorldBounds(),
+    worldBounds: WorldBounds,
     regions: {},
     isChunkInMatrix(x, y, z) {
         if (!this.isRegionInMatrix(x, y, z))

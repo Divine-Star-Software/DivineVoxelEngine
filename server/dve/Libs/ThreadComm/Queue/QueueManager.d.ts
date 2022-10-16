@@ -4,13 +4,14 @@ export declare class QueueManager<T> {
     id: string | number;
     onRun: (data: T, queueId: string) => void;
     _manager: CommManager;
+    getQueueKey: ((data: T) => string) | null;
     __queueData: Record<string | number, {
         queue: Queue<T>;
         map: Record<string, boolean>;
         stateSAB: SharedArrayBuffer;
         state: Uint32Array;
     }>;
-    constructor(id: string | number, onRun: (data: T, queueId: string) => void, _manager: CommManager);
+    constructor(id: string | number, onRun: (data: T, queueId: string) => void, _manager: CommManager, getQueueKey?: ((data: T) => string) | null);
     __getQueueKey(data: any): string;
     __getQueueData(id: string): {
         queue: Queue<T>;

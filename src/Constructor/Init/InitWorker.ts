@@ -18,7 +18,7 @@ export async function InitWorker(
   },
   onReady() {
    if (DVEC.environment == "browser") {
-    if (DVEC.worldMatrix.threadName == "constructor-1") {
+    if (DVEC.TC.threadNumber == 1) {
      DVEC.worldComm.sendMessage(WorldTasks.syncShapeMap, [
       DVEC.DVEB.shapeManager.shapeMap,
      ]);

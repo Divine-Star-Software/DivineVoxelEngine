@@ -1,11 +1,9 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-const dataCommBase = ThreadComm.createComm("render-data", {});
+const dataCommBase = ThreadComm.createComm("data-loader", {});
 const dataComm = Object.assign(dataCommBase, {
     $INIT() {
-        const channel = new MessageChannel();
-        DVER.worldComm.sendMessage("connect-data", [], [channel.port1]);
-        dataComm.sendMessage("connect-world", [], [channel.port2]);
+        dataComm.connectToComm(DVER.worldComm);
     },
 });
 export const DataComm = dataComm;

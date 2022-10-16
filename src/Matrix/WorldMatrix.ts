@@ -9,6 +9,7 @@ import { Util } from "../Global/Util.helper.js";
 import { VoxelManagerInterface } from "Meta/Voxels/VoxelManager.types";
 import { Position3Matrix, VoxelData, VoxelSubstanceType } from "Meta/index";
 import { VoxelMatrix } from "./VoxelMatrix.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 /**# World Matrix
  * ---
@@ -16,7 +17,7 @@ import { VoxelMatrix } from "./VoxelMatrix.js";
  */
 export const WorldMatrix = {
  _3dArray: Util.getFlat3DArray(),
- worldBounds: Util.getWorldBounds(),
+ worldBounds: WorldBounds,
  voxelByte: Util.getVoxelByte(),
  lightByte: Util.getLightByte(),
  heightByte: Util.getHeightByte(),
@@ -250,7 +251,7 @@ export const WorldMatrix = {
    region = this._createRegion(x, y, z);
   }
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+  const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
   if (!region.chunks[worldColumnKey]) region.chunks[worldColumnKey] = {};
 
@@ -312,7 +313,7 @@ export const WorldMatrix = {
   const region = this.getRegion(x, y, z);
   if (!region) return false;
   const chunkPOS = this.worldBounds.getChunkPosition(x, y, z);
-  const worldColumnKey = this.worldBounds.getWorldColumnKeyFromObj(chunkPOS);
+  const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
 
   if (!region.chunks[worldColumnKey]) return false;
   const chunkKey = this.worldBounds.getChunkKey(chunkPOS);
@@ -320,10 +321,10 @@ export const WorldMatrix = {
   return region.chunks[worldColumnKey][chunkKey];
  },
 
- getWorldColumn(x: number, z: number) {
+ getWorldColumn(x: number, z: number, y = 0) {
   const region = this.getRegion(x, 0, z);
   if (!region) return false;
-  const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z);
+  const worldColumnKey = this.worldBounds.getWorldColumnKey(x, z, y);
   if (!region.chunks[worldColumnKey]) return false;
   return region.chunks[worldColumnKey];
  },

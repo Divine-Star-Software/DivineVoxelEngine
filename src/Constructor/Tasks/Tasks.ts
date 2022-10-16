@@ -60,6 +60,7 @@ export const Tasks = {
     const y = data[1];
     const z = data[2];
     DVEC.DVEP.runRGBFloodFill(x, y, z);
+
    }
   ),
   remove: ThreadComm.registerTasks<any[]>(
@@ -69,6 +70,7 @@ export const Tasks = {
     const y = data[1];
     const z = data[2];
     DVEC.DVEP.runRGBFloodRemove(x, y, z);
+
    }
   ),
  },

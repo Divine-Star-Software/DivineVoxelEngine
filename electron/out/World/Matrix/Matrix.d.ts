@@ -38,6 +38,7 @@ export declare const Matrix: {
         __worldColumnPosition: {
             x: number;
             z: number;
+            y: number;
         };
         __chunkPosition: {
             x: number;
@@ -80,11 +81,11 @@ export declare const Matrix: {
             y: number;
             z: number;
         };
-        getWorldColumnKeyFromObj(position: import("../../Meta/Util.types.js").Position3Matrix): string;
-        getWorldColumnKey(x: number, z: number): string;
-        getWorldColumnPosition(x: number, z: number): {
+        getWorldColumnKey(x: number, z: number, y?: number): string;
+        getWorldColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
+            y: number;
         };
     };
     regions: Record<string, WorldThreadMatrixRegionData>;

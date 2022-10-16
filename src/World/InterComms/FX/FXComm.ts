@@ -1,8 +1,6 @@
+import { DataSync } from "../../Data/DataSync.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-import { DVEW } from "../../DivineVoxelEngineWorld.js";
 
-const fxComm = ThreadComm.createComm("world-fx");
-fxComm.onSetPort((port) => {
- DVEW.matrixCentralHub.registerThread("fx", port);
-});
+const fxComm = ThreadComm.createComm("fx");
 export const FXComm = fxComm;
+DataSync.registerComm(FXComm);
