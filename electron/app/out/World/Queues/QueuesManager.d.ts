@@ -1,4 +1,4 @@
-import type { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
 export declare const QueuesManager: {
     $INIT(): void;
     rgb: {
@@ -23,7 +23,7 @@ export declare const QueuesManager: {
         remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
     };
     build: {
-        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<BuildTasks>;
     };
     generate: {
         chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;

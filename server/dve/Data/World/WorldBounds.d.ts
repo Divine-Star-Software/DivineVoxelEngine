@@ -85,8 +85,8 @@ export declare const WorldBounds: {
         y: number;
         z: number;
     };
-    getWorldColumnKey(x: number, z: number, y?: number): string;
-    getWorldColumnPosition(x: number, z: number, y?: number): {
+    getColumnKey(x: number, z: number, y?: number): string;
+    getColumnPosition(x: number, z: number, y?: number): {
         x: number;
         z: number;
         y: number;

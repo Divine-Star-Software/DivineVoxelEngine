@@ -1,26 +1,17 @@
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+const brush = DVEW.getBrush();
 export const WorldGen = {
- _3dArray: DVEW.UTIL.getFlat3DArray(),
- chunkDepth: 16,
- chunkWidth: 16,
- chunkHeight: 256,
  generateChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  let baseY = 0;
-  for (let x = 0; x < +this.chunkWidth; x++) {
-   for (let z = 0; z < this.chunkDepth; z++) {
-    for (let y = 0; y < this.chunkHeight; y++) {
-     if (y <= baseY + 15) {
-      DVEW.worldData.paintVoxel(
-       "dve:dreamstonepillar",
-       0,
-       0,
-       x + chunkX,
-       y + chunkY,
-       z + chunkZ
-      );
+  brush.setId("dve:dreamstonepillar").start();
+  for (let x = chunkX; x < 16 + chunkX; x++) {
+   for (let z = chunkZ; z < 16 + chunkZ; z++) {
+    for (let y = chunkY; y < 20; y++) {
+     if (y <= 15) {
+      brush.setXYZ(x, y, z).paint();
      }
     }
    }
   }
+  brush.stop();
  },
 };

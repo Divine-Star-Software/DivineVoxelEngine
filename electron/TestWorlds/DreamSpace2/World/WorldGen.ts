@@ -1,4 +1,5 @@
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
+const brush = DVEW.getBrush();
 export const WorldGen = {
  chunkDepth: 16,
  chunkWidth: 16,
@@ -41,23 +42,23 @@ export const WorldGen = {
      let tx = x + chunkX;
      let ty = y + chunkY;
      let tz = z + chunkZ;
-
+     brush.setXYZ(tx, ty, tz);
      if (pillarFluid && y < spikeHeight + maxY + add * spaceHeight) {
-      DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
+      brush.setId("dve:liquiddreadether").paint();
       continue;
      }
      if (pondPilar && y <= pondY + pondPillarSpikeHeight) {
       if (y == pondY + pondPillarSpikeHeight) {
-       DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadlamp").paint();
       } else {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstonepillar").paint();
       }
      } else {
       if (y <= 20 + pondSpikeHeight) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstonepillar").paint();
       }
       if (y >= 20 + pondSpikeHeight && y <= pondY) {
-       DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
+       brush.setId("dve:liquiddreadether").paint();
       }
      }
 
@@ -72,30 +73,24 @@ export const WorldGen = {
       }
       if (y < maxY + spaceHeight) {
        if (!pillar) {
-        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, tx, ty, tz);
+        brush.setId("dve:dreadstone").paint();
        } else {
         if (y == maxY + add * spaceHeight - spikeHeight + 5) {
-         DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
+         brush.setId("dve:dreadlamp").paint();
         } else {
-         DVEW.worldData.paintVoxel(
-          "dve:dreamstonepillar",
-          0, 0,
-          tx,
-          ty,
-          tz
-         );
+         brush.setId("dve:dreadstonepillar").paint();
         }
        }
       } else {
-       DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstone").paint();
       }
      }
      if (y == maxY + add * spaceHeight + spikeHeight + 1) {
       if (Math.random() > 0.9) {
-       DVEW.worldData.paintVoxel("dve:dreamgrass", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadgrass").paint();
       } else {
        if (Math.random() > 0.98) {
-        DVEW.worldData.paintVoxel("dve:dreamstoneslab", 0, 0, tx, ty, tz);
+     //   brush.setId("dve:dreadstoneslab").paint();
        }
       }
      }
@@ -119,22 +114,23 @@ export const WorldGen = {
      let tx = x + chunkX;
      let ty = y + chunkY;
      let tz = z + chunkZ;
+     brush.setXYZ(tx, ty, tz);
      if (!pillar) {
       if (y <= maxY - spaceHeight + 1) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstonepillar").paint();
       }
       if (y > maxY - spaceHeight && y <= maxY - spaceHeight + spikeHeight) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstonepillar").paint();
       }
       if (y <= maxY && y >= maxY - spaceHeight + spikeHeight) {
-       DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, tx, ty, tz);
+       brush.setId("dve:liquiddreadether").paint();
       }
      } else {
       if (y < maxY + spaceHeight + pillarHeight) {
-       DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadstonepillar").paint();
       }
       if (y == maxY + spaceHeight + pillarHeight) {
-       DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
+       brush.setId("dve:dreadlamp").paint();
       }
      }
     }
@@ -143,11 +139,13 @@ export const WorldGen = {
  },
 
  generateChunk(chunkX: number, chunkY: number, chunkZ: number) {
+    brush.start();
   let test = Math.random();
   if (test <= 0.8) {
    this.generateNormalChunk(chunkX, chunkY, chunkZ);
   } else {
    this.generatePondChunk(chunkX, chunkY, chunkZ);
   }
+  brush.stop();
  },
 };

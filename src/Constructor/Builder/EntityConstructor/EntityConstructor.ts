@@ -1,10 +1,13 @@
-import { Util } from "../../../Global/Util.helper.js";
-import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
+import { VoxelReader } from "../../../Data/Voxel/VoxelByte.js";
+import { EntityFlat3dArray } from "../../../Data/Entity/EntityFlat3dArray.js";
+import { WorldData } from "../../../Data/World/WorldData.js";
+import { LightData } from "../../../Data/Light/LightByte.js";
+
 export const EntityConstructor = {
  voxelData: <Uint32Array[]>[],
- _3dArray: Util.getEntityFlat3dArray(),
- voxelByte: Util.getVoxelByte(),
- lightByte: Util.getLightByte(),
+ _3dArray: EntityFlat3dArray,
+ voxelReader: VoxelReader,
+ lightByte: LightData,
  pos: { x: 0, y: 0, z: 0 },
 
  totalComposed: 1,
@@ -36,32 +39,32 @@ export const EntityConstructor = {
  getVoxel(x: number, y: number, z: number, composed: number = 1) : [string,number] | false{
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  const numericVoxelId = this.voxelByte.getId(voxelData);
-  if (numericVoxelId == 0) return WorldMatrix._air;
-  if (numericVoxelId == 1) return WorldMatrix._barrier;
-  const paletteId =  WorldMatrix.voxelPalette[numericVoxelId];
-  const mapId = WorldMatrix.voxelPaletteMap[paletteId];
+  const numericVoxelId = this.voxelReader.getId(voxelData);
+  if (numericVoxelId == 0) return WorldData.voxel._air;
+  if (numericVoxelId == 1) return WorldData.voxel._barrier;
+  const paletteId =  WorldData.voxelPalette[numericVoxelId];
+  const mapId = WorldData.voxelPaletteMap[paletteId];
   return [paletteId, numericVoxelId - mapId];
  },
  getLevel(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed];
   const stateData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  return this.voxelByte.decodeLevelFromVoxelData(stateData);
+  return this.voxelReader.getLevel(stateData);
  },
  getLevelState(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed];
   const stateData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  return this.voxelByte.decodeLevelStateFromVoxelData(stateData);
+  return this.voxelReader.getLevelState(stateData);
  },
  getShapeState(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed];
   const stateData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  return this.voxelByte.getShapeState(stateData);
+  return this.voxelReader.getShapeState(stateData);
  },
  getLight(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  return this.voxelByte.decodeLightFromVoxelData(voxelData);
+  return this.voxelReader.getLight(voxelData);
  },
  clearEntityData() {
   this.pos.x = 0;

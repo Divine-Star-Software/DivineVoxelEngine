@@ -1,7 +1,7 @@
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
-import { CCM } from "../InterComms/Constructor/ConstructorCommManager.js";
-import { ConstructorTasks } from "../../Constants/InterComms/ConstructorTasks.js";
+import { CCM } from "../Threads/Constructor/ConstructorCommManager.js";
+import { ConstructorTasks } from "../../Data/Constants/InterComms/ConstructorTasks.js";
 const QMBase = {
     $INIT() {
         this.rgb.update.addQueue("main");
@@ -33,8 +33,8 @@ const QMBase = {
             step1: CCM.addQueue("sun-fill", ConstructorTasks.worldSunStep1, null, (data) => {
                 const x = data[0];
                 const z = data[1];
-                DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-                const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
+                DVEW.data.worldRegister.column.fill(0, x, z);
+                const maxY = DVEW.data.worldRegister.column.height.getRelative(0, x, z);
                 data[2] = maxY;
                 QMBase.worldSun.__steps.step2.add([x, z, maxY, -1]);
                 return data;

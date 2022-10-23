@@ -1,7 +1,7 @@
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 
-import { WorldGen } from "./WorldGen/WorldGen.js";
+
 
 let depth = 32 * 2;
 let startX = -depth;
@@ -18,22 +18,18 @@ const generateAsync = async () => {
    DVEW.generate(x, z);
   }
  }
- await DVEW.queues.generate.chunk.awaitAll();
+
 };
 
-const generateSync = () => {
- for (let x = startX; x <= endX; x += 16) {
-  for (let z = startZ; z <= endZ; z += 16) {
-   WorldGen.generateChunk(x, z, "default");
-  }
- }
-};
+
 
 const distance = (x1: number, x2: number, y1: number, y2: number) => {
  var dx = x2 - x1;
  var dy = y2 - y1;
  return Math.sqrt(dx * dx + dy * dy);
 };
+
+const builder = DVEW.getBuilder();
 const load = () => {
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
@@ -48,15 +44,14 @@ const load = () => {
    if (d > 450) {
     LOD = 8;
    }
-
-   DVEW.buildWorldColumn(x, z, LOD);
+   builder.setLOD(LOD).setXZ(x,z).buildColumn();
   }
  }
 };
 
 RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 
 console.log("start");
 let t1 = performance.now();

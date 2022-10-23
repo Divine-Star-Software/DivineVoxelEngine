@@ -2,7 +2,7 @@ class QueueNode<T> {
 	next: QueueNode<T> | null;
 	constructor(public data: T) {}
 }
-
+//test
 export class Queue<T> {
 	size = 0;
 

@@ -1,13 +1,11 @@
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+const brush = DVEW.getBrush();
 export const WorldGen = {
-    _3dArray: DVEW.UTIL.getFlat3DArray(),
-    chunkDepth: 16,
-    chunkWidth: 16,
-    chunkHeight: 256,
-    generateChunk(chunkX, chunkY, chunkZ) {
+    generateChunk(chunkX, chunkZ) {
         let baseY = 0;
-        for (let x = 0; x < +this.chunkWidth; x++) {
-            for (let z = 0; z < this.chunkDepth; z++) {
+        brush.start();
+        for (let x = chunkX; x < chunkX + 16; x++) {
+            for (let z = 0; z < chunkZ + 16; z++) {
                 let add = (Math.random() * 4) >> 0;
                 let middlePillar = Math.random() > 0.8;
                 let airPillar = Math.random() > 0.9;
@@ -16,34 +14,36 @@ export const WorldGen = {
                 if (voxelFlip) {
                     voxel = "dve:dreamstonepillar";
                 }
-                for (let y = 0; y < this.chunkHeight; y++) {
+                for (let y = 0; y < 50; y++) {
+                    brush.setXYZ(x, y, z);
                     if (y <= baseY + 5) {
-                        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
+                        brush.setId("dve:dreamstone").paint();
                     }
                     if (airPillar && y > baseY + 10 && y <= baseY + 10 + add) {
-                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
+                        brush.setId(voxel).paint();
                     }
                     if (y > baseY + 5 &&
                         y <= baseY + 6 + add &&
                         (z == 0 || x == 0 || z == 15 || x == 15)) {
-                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
+                        brush.setId(voxel).paint();
                         continue;
                     }
                     if (middlePillar &&
                         y > baseY + 5 &&
                         y <= baseY + 6 + add * 1.5 &&
                         !(z == 0 || x == 0 || z == 15 || x == 15)) {
-                        DVEW.worldData.paintVoxel(voxel, 0, 0, x + chunkX, y + chunkY, z + chunkZ);
+                        brush.setId(voxel).paint();
                         continue;
                     }
                     if (y == baseY + 6) {
                         let flip = Math.random() > 0.7;
                         if (flip) {
-                            DVEW.worldData.paintVoxel("dve:dreamgrass", 0, 0, x + chunkX, y + chunkY, z + chunkZ);
+                            brush.setId("dve:dreamgrass").paint();
                         }
                     }
                 }
             }
         }
+        brush.stop();
     },
 };

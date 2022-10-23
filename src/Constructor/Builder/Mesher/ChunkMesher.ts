@@ -9,7 +9,7 @@ import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import {
  ConstructorToRenderMessages,
  SetChunkDataIndexes,
-} from "../../../Constants/InterComms/ConstructorToRender.js";
+} from "../../../Data/Constants/InterComms/ConstructorToRender.js";
 import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 
 export const ChunkMesher = {
@@ -188,6 +188,7 @@ export const ChunkMesher = {
     uvArray.buffer,
     overlayUVArray.buffer,
    ];
+
 
    DVEC.parentComm.sendMessage(
     ConstructorToRenderMessages.setChunk,

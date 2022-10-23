@@ -59,7 +59,7 @@ const init = async () => {
  if(bmat) {
   box.material = bmat;
  }
-
+(window as any).DVER = DVER;
 
  scene.fogDensity = .005;
  await DVER.$SCENEINIT({ scene: scene });

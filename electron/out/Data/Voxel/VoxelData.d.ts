@@ -1,3 +1,4 @@
+import { VoxelSubstanceType } from "Meta/index.js";
 export declare const VoxelData: {
     byteLength: {
         substance: number;
@@ -20,9 +21,9 @@ export declare const VoxelData: {
         lightSource: number;
         lightValue: number;
     };
-    substanceRecord: Record<number, import("../../Meta/index.js").VoxelSubstanceType>;
+    substanceRecord: Record<number, VoxelSubstanceType>;
     voxelData: {
-        substance: number;
+        substance: VoxelSubstanceType;
         shapeId: number;
         hardness: number;
         material: number;
@@ -35,7 +36,7 @@ export declare const VoxelData: {
     voxelMap: Uint16Array;
     syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
     getVoxelData(id: number): {
-        substance: number;
+        substance: VoxelSubstanceType;
         shapeId: number;
         hardness: number;
         material: number;
@@ -45,7 +46,7 @@ export declare const VoxelData: {
         lightValue: number;
     };
     getSubstance(id: number): number;
-    getTrueSubstance(id: number): import("../../Meta/index.js").VoxelSubstanceType;
+    getTrueSubstance(id: number): VoxelSubstanceType;
     getShapeId(id: number): number;
     getHardness(id: number): number;
     getCheckCollisions(id: number): number;

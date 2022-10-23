@@ -4,6 +4,7 @@ import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
+window.DVER = DVER;
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,

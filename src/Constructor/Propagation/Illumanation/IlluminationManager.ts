@@ -1,7 +1,5 @@
 //objects
 import type { Queue } from "Global/Util/Queue.js";
-import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
-import { Util } from "../../../Global/Util.helper.js";
 //functions
 import {
  runRGBFloodFillAt,
@@ -20,12 +18,14 @@ import {
  RunSunLightUpdateAtMaxY,
  SunLightAboveCheck,
 } from "./Functions/SunLight.js";
-import { CardinalNeighbors } from "../../../Constants/Util/CardinalNeighbors.js";
+import { DataTool } from "../../../Tools/Data/DataTool.js";
+import { LightData } from "../../../Data/Light/LightByte.js";
+import { Util } from "../../../Global/Util.helper.js";
 export const IlluminationManager = {
- lightByte: Util.getLightByte(),
+ lightData: LightData,
  air: [-1, 0],
 
- dimension : 0,
+ dimension: 0,
  //sun
  runSunLightUpdateAt: runSunLightUpdateAt,
  runSunLightUpdate: runSunLightUpdate,
@@ -50,36 +50,6 @@ export const IlluminationManager = {
  _RGBlightRemovalQue: <number[][]>[],
  _visitMap: <Record<string, boolean>>{},
 
- checkForSunLight(x: number, y: number, z: number) {
-  const sl = WorldMatrix.getLight(x, y, z);
-  const tn = WorldMatrix.getLight(x, y + 1, z);
-
-  if (tn > 0) {
-   if (this.lightByte.getS(tn) == 0xf) {
-    WorldMatrix.setLight(x, y + 1, z, this.lightByte.setS(0xf, tn));
-    return;
-   }
-  }
-  let bn = 0;
-  for (let i = 0; i < CardinalNeighbors.length; i++) {
-   const n = CardinalNeighbors[i];
-   const l = WorldMatrix.getLight(x + n[0], y + n[1], z + n[2]);
-   if (l > 0) {
-    const nl = this.lightByte.getS(l);
-    if (nl > bn) {
-     bn = nl;
-    }
-   }
-  }
-  WorldMatrix.setLight(x, y, z, this.lightByte.getMinusOneForSun(sl, bn));
- },
- checkForRGBLight(x: number, y: number, z: number) {
-  for (let i = 0; i < CardinalNeighbors.length; i++) {
-   const n = CardinalNeighbors[i];
-   const l = WorldMatrix.getLight(x + n[0], y + n[1], z + n[2]);
-   if (this.lightByte.getRGB(l) > 0) {
-    this._RGBlightUpdateQue.push([x + n[0], y + n[1], z + n[2]]);
-   }
-  }
- },
+ _sDataTool: new DataTool(),
+ _nDataTool: new DataTool(),
 };

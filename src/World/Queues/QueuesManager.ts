@@ -1,9 +1,9 @@
 //types
-import type { LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
 //objects
 import { DVEW } from "../DivineVoxelEngineWorld.js";
-import { CCM } from "../InterComms/Constructor/ConstructorCommManager.js";
-import { ConstructorTasks } from "../../Constants/InterComms/ConstructorTasks.js";
+import { CCM } from "../Threads/Constructor/ConstructorCommManager.js";
+import { ConstructorTasks } from "../../Data/Constants/InterComms/ConstructorTasks.js";
 
 const QMBase = {
  $INIT() {
@@ -47,8 +47,12 @@ const QMBase = {
     (data) => {
      const x = data[0];
      const z = data[1];
-     DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-     const maxY = DVEW.worldData.getRelativeMaxWorldColumnHeight(x, z);
+     DVEW.data.worldRegister.column.fill(0, x, z);
+     const maxY = DVEW.data.worldRegister.column.height.getRelative(
+      0,
+      x,
+      z
+     );
      data[2] = maxY;
      QMBase.worldSun.__steps.step2.add([x, z, maxY, -1]);
      return data;
@@ -99,7 +103,7 @@ const QMBase = {
   ),
  },
  build: {
-  chunk: CCM.addQueue<LightUpdateTask>(
+  chunk: CCM.addQueue<BuildTasks>(
    "build-chunk",
    ConstructorTasks.buildChunk
   ),

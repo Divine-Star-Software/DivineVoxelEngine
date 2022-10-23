@@ -1,9 +1,13 @@
 //types
-import { DataSyncTypes } from "../../Constants/Data/DataSync.js";
+import { DataSyncTypes } from "../../Data/Constants/Data/DataSync.js";
+import { DataHooks } from "../../Data/DataHooks.js";
 //objects
-import { WorldGeneration } from "../WorldGenration/WorldGeneration.js";
-import { WorldData } from "../WorldData/WorldData.js";
 import { VoxelDataCreator } from "./VoxelDataCreator.js";
+import { DataCreator } from "./Creator.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { WorldData } from "../../Data/World/WorldData.js";
+import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
+import { DVEW } from "../DivineVoxelEngineWorld.js";
 const loopThroughComms = (func) => {
     for (const commKey of Object.keys(DataSync.comms)) {
         const comm = DataSync.comms[commKey];
@@ -17,9 +21,10 @@ export const DataSync = {
     comms: {},
     commOptions: {},
     $INIT() {
-        this.voxelDataCreator.$INIT();
+        this.voxelDataCreator.$createVoxelData();
         this.voxelData.sync();
         this.voxelPalette.sync();
+        WorldData.setVoxelPalette(this.voxelDataCreator.palette._palette, this.voxelDataCreator.palette._map);
     },
     isReady() {
         return this.voxelDataCreator.isReady();
@@ -43,39 +48,39 @@ export const DataSync = {
                 ]);
             });
         },
-        unSyncInThread(commName, dimesnion, chunkX, chunkY, chunkZ) {
+        unSyncInThread(commName, dimension, chunkX, chunkY, chunkZ) {
             const comm = DataSync.comms[commName];
             comm.unSyncData(DataSyncTypes.chunk, [
-                dimesnion,
+                dimension,
                 chunkX,
                 chunkY,
                 chunkZ,
             ]);
         },
-        sync(dimesnion, chunkX, chunkY, chunkZ) {
-            const chunk = WorldData.getChunk(chunkX, chunkY, chunkZ);
+        sync(dimension, x, y, z) {
+            const chunk = WorldRegister.chunk.get(dimension, x, y, z);
             if (!chunk)
                 return;
             loopThroughComms((comm) => {
                 comm.syncData(DataSyncTypes.chunk, [
-                    dimesnion,
-                    chunkX,
-                    chunkY,
-                    chunkZ,
+                    dimension,
+                    x,
+                    y,
+                    z,
                     chunk.buffer,
                 ]);
             });
         },
-        syncInThread(commName, dimesnion, chunkX, chunkY, chunkZ) {
-            const chunk = WorldData.getChunk(chunkX, chunkY, chunkZ);
+        syncInThread(commName, dimesnion, x, y, z) {
+            const chunk = WorldRegister.chunk.get(dimesnion, x, y, z);
             if (!chunk)
                 return;
             const comm = DataSync.comms[commName];
             comm.syncData(DataSyncTypes.chunk, [
                 dimesnion,
-                chunkX,
-                chunkY,
-                chunkZ,
+                x,
+                y,
+                z,
                 chunk.buffer,
             ]);
         },
@@ -83,40 +88,60 @@ export const DataSync = {
     voxelData: {
         sync() {
             loopThroughComms((comm) => {
-                const voxelData = VoxelDataCreator.voxelBuffer;
-                const voxelMap = VoxelDataCreator.voxelMapBuffer;
                 comm.syncData(DataSyncTypes.voxelData, [
-                    voxelData,
-                    voxelMap,
+                    VoxelDataCreator.voxelBuffer,
+                    VoxelDataCreator.voxelMapBuffer,
                 ]);
             });
         },
         syncInThread(commName) {
             const comm = DataSync.comms[commName];
-            const voxelData = VoxelDataCreator.voxelBuffer;
-            const voxelMap = VoxelDataCreator.voxelMapBuffer;
-            comm.syncData(DataSyncTypes.voxelData, [voxelData, voxelMap]);
+            comm.syncData(DataSyncTypes.voxelData, [
+                VoxelDataCreator.voxelBuffer,
+                VoxelDataCreator.voxelMapBuffer,
+            ]);
         },
     },
     voxelPalette: {
         sync() {
-            const voxelPalette = WorldGeneration.voxelPalette.voxelPalette;
-            const voxelPaletteMap = WorldGeneration.voxelPalette.voxelPaletteMap;
             loopThroughComms((comm) => {
                 comm.syncData(DataSyncTypes.voxelPalette, [
-                    voxelPalette,
-                    voxelPaletteMap,
+                    DataSync.voxelDataCreator.palette._palette,
+                    DataSync.voxelDataCreator.palette._map,
                 ]);
             });
         },
         syncInThread(commName) {
             const comm = DataSync.comms[commName];
-            const voxelPalette = WorldGeneration.voxelPalette.voxelPalette;
-            const voxelPaletteMap = WorldGeneration.voxelPalette.voxelPaletteMap;
             comm.syncData(DataSyncTypes.voxelPalette, [
-                voxelPalette,
-                voxelPaletteMap,
+                DataSync.voxelDataCreator.palette._palette,
+                DataSync.voxelDataCreator.palette._map,
             ]);
         },
     },
 };
+DataHooks.chunk.onGetAsync.addToRun(async (data) => {
+    const chunkData = DataCreator.chunk.getBuffer();
+    ChunkReader.setChunkPosition(new DataView(chunkData), {
+        x: data[1],
+        y: data[2],
+        z: data[3],
+    });
+    return chunkData;
+});
+DataHooks.chunk.onGetSync.addToRun((data) => {
+    const chunkData = DataCreator.chunk.getBuffer();
+    ChunkReader.setChunkPosition(new DataView(chunkData), {
+        x: data[1],
+        y: data[2],
+        z: data[3],
+    });
+    return chunkData;
+});
+DataHooks.chunk.onNew.addToRun(async (data) => {
+    DataSync.chunk.sync(data[0], data[1], data[2], data[3]);
+    return;
+});
+DataHooks.paint.addToRGBUpdate.addToRun((data) => {
+    DVEW.queues.rgb.update.add([data[1], data[2], data[3]]);
+});

@@ -8,13 +8,12 @@ let startX = -ddepth;
 let startZ = -ddepth;
 let endX = ddepth;
 let endZ = ddepth;
+const builder = DVEW.getBuilder();
 const load = () => {
  console.log("load");
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   if (DVEW.worldData.getWorldColumn(x, z)) {
-    DVEW.buildWorldColumn(x, z);
-   }
+   builder.setXZ(x, z).buildColumn();
   }
  }
 };
@@ -28,7 +27,7 @@ const fill = () => {
 
 RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 
 //DVEW.matrixCentralHub.syncGlobalVoxelPalette();
 /* DVEW.dataComm.sendMessage("load", []); */
@@ -63,23 +62,14 @@ WorldGen.generateChunk(0, -16);
 WorldGen.generateChunk(16, 16);
 
 WorldGen.generateChunk(-16, -16);
-DVEW.worldData.paintVoxel("dve:liquiddreadether", 0, 0, 7, 47, 7);
-
+const brush = DVEW.getBrush();
+brush.setId("dve:liquiddreadether").setXYZ(7, 47, 7).paint();
 load();
-/* DVEW.worldData.paintDualVoxel(
- "dve:liquiddreamether",
- 0,
- 0,
- "dve:dreamgrass",
- 0,
- 0,
- 40,
- 0
-); */
 
+const tasks = DVEW.getTasksManager();
 setTimeout(() => {
- DVEW.queues.flow.update.add([7, 47, 7]);
- DVEW.queues.flow.update.run();
+ tasks.flow.update.add(7, 47, 7);
+ tasks.flow.update.runAndAwait();
 }, 2000);
 
 (self as any).DVEW = DVEW;

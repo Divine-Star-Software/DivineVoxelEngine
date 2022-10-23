@@ -7,4 +7,4 @@ RegisterVoxelsForConstructor(DVEC);
 RegisterItemForConstructor(DVEC);
 RegisterItemShapes(DVEC);
 (self as any).DVEC = DVEC;
-DVEC.$INIT({});
+DVEC.$INIT();

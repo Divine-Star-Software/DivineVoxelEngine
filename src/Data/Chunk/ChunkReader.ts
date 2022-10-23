@@ -1,7 +1,8 @@
 import { Position3Matrix } from "Meta/Util.types.js";
-import { Flat3DArray } from "../../Global/Util/Flat3DArray.js";
+import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "./HeightMapArray.js";
 import { WorldBounds } from "../World/WorldBounds.js";
+import { ChunkData } from "Meta/Data/WorldData.types.js";
 
 export const ChunkReader = {
  chunkByteSize: 0,
@@ -123,43 +124,71 @@ export const ChunkReader = {
  },
 
  getVoxelData(
-  chunkData: DataView,
+  chunkData: ChunkData,
   x: number,
   y: number,
   z: number,
   secondary = false
  ) {
-  return chunkData.getUint32(this.getVoxelChunkDataIndex(x, y, z, secondary));
+  if (secondary) {
+   return Atomics.load(
+    chunkData.segement2,
+    Flat3DArray.getIndex(x, y, z)
+   );
+  }
+  return Atomics.load(
+   chunkData.segement1,
+   Flat3DArray.getIndex(x, y, z)
+  );
  },
  setVoxelData(
-  chunkData: DataView,
+  chunkData: ChunkData,
   x: number,
   y: number,
   z: number,
   data: number,
   secondary = false
  ) {
-  chunkData.setUint32(this.getVoxelChunkDataIndex(x, y, z, secondary), data);
+  if (secondary) {
+   return Atomics.store(
+    chunkData.segement2,
+    Flat3DArray.getIndex(x, y, z),
+    data
+   );
+  }
+  return Atomics.store(
+   chunkData.segement1,
+   Flat3DArray.getIndex(x, y, z),
+   data
+  );
  },
 
  getVoxelDataUseObj(
-  chunkData: DataView,
+  chunkData: ChunkData,
   position: Position3Matrix,
   secondary = false
  ) {
-  return chunkData.getUint32(
-   this.getVoxelChunkDataIndex(position.x, position.y, position.z, secondary)
+  return this.getVoxelData(
+   chunkData,
+   position.x,
+   position.y,
+   position.z,
+   secondary
   );
  },
  setVoxelDataUseObj(
-  chunkData: DataView,
+  chunkData: ChunkData,
   position: Position3Matrix,
   data: number,
   secondary = false
  ) {
-  chunkData.setUint32(
-   this.getVoxelChunkDataIndex(position.x, position.y, position.z, secondary),
-   data
+  return this.setVoxelData(
+   chunkData,
+   position.x,
+   position.y,
+   position.z,
+   data,
+   secondary
   );
  },
 

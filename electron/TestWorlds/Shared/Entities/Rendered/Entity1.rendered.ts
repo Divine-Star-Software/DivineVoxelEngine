@@ -12,9 +12,7 @@ export class Entity1Rendered implements RenderedEntityInterface {
  position: Float32Array;
  states: Float32Array;
  $INIT(data: RenderedEntityData) {
-  console.log(data);
 
-  console.log(this.position[0], this.position[1], this.position[2]);
  }
  onSpawn(scene: BABYLON.Scene) {
   const cube = BABYLON.MeshBuilder.CreateBox("entity", { size: 0.5 }, scene);

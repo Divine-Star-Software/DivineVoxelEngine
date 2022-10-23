@@ -1,17 +1,25 @@
-import { ConstructorTasks } from "../../Constants/InterComms/ConstructorTasks.js";
+import { ConstructorTasks } from "../../Data/Constants/InterComms/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const Tasks = {
  build: {
-  chunk: ThreadComm.registerTasks<any[]>(
+  chunk: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildChunk,
-   (data) => {
-    const chunkPOS = DVEC.worldBounds.getChunkPosition(
-     data[0],
+   async (data) => {
+    const chunkPOS = WorldBounds.getChunkPosition(
      data[1],
-     data[2]
+     data[2],
+     data[3]
     );
-    DVEC.DVEB.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, 1);
+    await DVEC.DVEB.buildChunk(
+     data[0],
+     chunkPOS.x,
+     chunkPOS.y,
+     chunkPOS.z,
+     data[4]
+    );
    }
   ),
   entity: ThreadComm.registerTasks<any[]>(
@@ -60,7 +68,6 @@ export const Tasks = {
     const y = data[1];
     const z = data[2];
     DVEC.DVEP.runRGBFloodFill(x, y, z);
-
    }
   ),
   remove: ThreadComm.registerTasks<any[]>(
@@ -70,7 +77,6 @@ export const Tasks = {
     const y = data[1];
     const z = data[2];
     DVEC.DVEP.runRGBFloodRemove(x, y, z);
-
    }
   ),
  },

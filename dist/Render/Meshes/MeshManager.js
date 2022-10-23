@@ -1,4 +1,4 @@
-import { ConstructEntityIndexes, ConstructItemIndexes, SetChunkDataIndexes, } from "../../Constants/InterComms/ConstructorToRender.js";
+import { ConstructEntityIndexes, ConstructItemIndexes, SetChunkDataIndexes, } from "../../Data/Constants/InterComms/ConstructorToRender.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
 import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";

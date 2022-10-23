@@ -5,63 +5,64 @@ perlin.noiseSeed(666);
 const waveLength = 100;
 const xOffSet = 1_000;
 const zOffSet = 1_000;
-const wd = DVEW.worldData;
+const brush = DVEW.getBrush();
+const tasks = DVEW.getTasksManager();
 export const WorldGen = {
-    chunkDepth: 16,
-    chunkWidth: 16,
-    chunkHeight: 128,
     genChunks: {},
     generateFountian(x, y, z) {
-        let vox1 = "dve:dreadstone";
-        let v1s = 1;
+        brush.setId("dve:dreadstone").setState(1);
         //eyes
-        wd.paintVoxel(vox1, v1s, 0, x, y, z);
-        wd.paintVoxel(vox1, v1s, 0, x, y, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y, z);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y + 1, z);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y + 1, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y - 1, z);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y - 1, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 2, y, z);
-        wd.paintVoxel(vox1, v1s, 0, x - 2, y, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y, z);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y + 1, z);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y + 1, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y - 1, z);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y - 1, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 2, y, z);
-        wd.paintVoxel(vox1, v1s, 0, x + 2, y, z - 1);
-        wd.paintVoxel(vox1, v1s, 0, x, y, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y + 1, z);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y + 1, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 1, y - 1, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x - 2, y, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y + 1, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 1, y - 1, z + 1);
-        wd.paintVoxel(vox1, v1s, 0, x + 2, y, z + 1);
+        brush.setXYZ(x, y, z).paint();
+        brush.setXYZ(x, y, z - 1).paint();
+        brush.setXYZ(x - 1, y, z).paint();
+        brush.setXYZ(x - 1, y + 1, z).paint();
+        brush.setXYZ(x - 1, y, z).paint();
+        brush.setXYZ(x - 1, y + 1, z - 1).paint();
+        brush.setXYZ(x - 1, y - 1, z).paint();
+        brush.setXYZ(x - 1, y - 1, z - 1).paint();
+        brush.setXYZ(x - 2, y, z).paint();
+        brush.setXYZ(x - 2, y, z - 2).paint();
+        brush.setXYZ(x + 1, y, z).paint();
+        brush.setXYZ(x + 1, y + 1, z).paint();
+        brush.setXYZ(x + 1, y + 1, z - 1).paint();
+        brush.setXYZ(x + 1, y - 1, z).paint();
+        brush.setXYZ(x + 1, y - 1, z - 1).paint();
+        brush.setXYZ(x + 2, y, z).paint();
+        brush.setXYZ(x + 2, y, z - 1).paint();
+        brush.setXYZ(x, y, z + 1).paint();
+        brush.setXYZ(x - 1, y + 1, z).paint();
+        brush.setXYZ(x - 1, y + 1, z + 1).paint();
+        brush.setXYZ(x - 1, y - 1, z + 1).paint();
+        brush.setXYZ(x - 2, y, z + 1).paint();
+        brush.setXYZ(x + 1, y + 1, z + 1).paint();
+        brush.setXYZ(x + 1, y - 1, z + 1).paint();
+        brush.setXYZ(x + 2, y, z + 1).paint();
         //liquid
-        wd.paintVoxel("dve:liquiddreadether", 0, 0, x - 1, y, z - 1);
-        wd.paintVoxel("dve:liquiddreadether", 0, 0, x + 1, y, z - 1);
-        DVEW.queues.flow.update.add([x - 1, y, z - 1]);
-        DVEW.queues.flow.update.add([x + 1, y, z - 1]);
-        wd.paintVoxel("dve:liquiddreadether", 0, 0, x - 1, y, z + 1);
-        wd.paintVoxel("dve:liquiddreadether", 0, 0, x + 1, y, z + 1);
-        DVEW.queues.flow.update.add([x - 1, y, z + 1]);
-        DVEW.queues.flow.update.add([x + 1, y, z + 1]);
+        brush.setId("dve:liquiddreadether");
+        brush.setXYZ(x - 1, y, z - 1).paint();
+        brush.setXYZ(x + 1, y, z - 1).paint();
+        tasks.flow.update.add(x - 1, y, z - 1);
+        tasks.flow.update.add(x + 1, y, z - 1);
+        brush.setXYZ(x - 1, y, z + 1).paint();
+        brush.setXYZ(x + 1, y, z + 1).paint();
+        tasks.flow.update.add(x - 1, y, z + 1);
+        tasks.flow.update.add(x + 1, y, z + 1);
+        brush.setId("dve:dreadstone").setState(1);
         let i = y;
         while (i--) {
-            wd.paintVoxel(vox1, v1s, 0, x, i, z);
+            brush.setXYZ(x, i, z).paint();
         }
     },
     generateChunk(chunkX, chunkY, chunkZ) {
         let waterLevel = 30;
         // let noHole = true;
-        for (let x = chunkX; x < chunkX + this.chunkWidth; x++) {
-            for (let z = chunkZ; z < chunkZ + this.chunkDepth; z++) {
+        for (let x = chunkX; x < chunkX + 16; x++) {
+            for (let z = chunkZ; z < chunkZ + 16; z++) {
                 let pillar = Math.random() > 0.992;
                 let pillarHeight = (5 + Math.random() * 5) >> 0;
                 let fountian = Math.random() > 0.997;
-                for (let y = chunkY; y <= chunkY + this.chunkHeight; y++) {
+                for (let y = chunkY; y <= chunkY + 100; y++) {
+                    brush.setXYZ(x, y, z);
                     if (fountian) {
                         if (y < waterLevel + pillarHeight * 2)
                             continue;
@@ -73,10 +74,10 @@ export const WorldGen = {
                         0;
                     if (pillar) {
                         if (y < waterLevel + pillarHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreadstonepillar", 0, 0, x, y, z);
+                            brush.setId("dve:dreadstonepillar").paint();
                         }
                         if (y == waterLevel + pillarHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreadlamp", 0, 0, x, y, z);
+                            brush.setId("dve:dreadlamp").paint();
                         }
                         continue;
                     }
@@ -86,13 +87,13 @@ export const WorldGen = {
                             dreadStoneState = 0;
                         }
                         if (y <= spikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:dreadstone", dreadStoneState, 0, x, y, z);
+                            brush.setId("dve:dreadstone").setState(dreadStoneState).paint();
                         }
                         if (y > waterLevel && y == spikeHeight + 1 && Math.random() > 0.9) {
-                            DVEW.worldData.paintVoxel("dve:dreadgrass", dreadStoneState, 0, x, y, z);
+                            brush.setId("dve:dreadstone").setState(dreadStoneState).paint();
                         }
                         if (y <= waterLevel && y > spikeHeight) {
-                            DVEW.worldData.paintVoxel("dve:liquiddreadether", 0, 0, x, y, z);
+                            brush.setId("dve:liquiddreadether").paint();
                         }
                         continue;
                     }
@@ -101,6 +102,8 @@ export const WorldGen = {
         }
     },
     generate(chunkX, chunkY, chunkZ) {
+        brush.start();
         this.generateChunk(chunkX, chunkY, chunkZ);
+        brush.stop();
     },
 };

@@ -44,6 +44,7 @@ const init = async () => {
     if (bmat) {
         box.material = bmat;
     }
+    window.DVER = DVER;
     scene.fogDensity = .005;
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(0.8);

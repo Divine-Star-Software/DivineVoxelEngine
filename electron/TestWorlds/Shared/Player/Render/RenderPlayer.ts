@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineRender } from "out/Render/DivineVoxelEngineRender.js";
-import type { DivineVoxelEngineMath } from "../../../../out/Math/DivineVoxelEngineMath.js";
+import type { DivineVoxelEngineMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { GetPlayerModel, SetUpDefaultCamera } from "../../Babylon/index.js";
 import {
  PlayerStatesIndexes,

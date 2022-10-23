@@ -5,19 +5,19 @@ import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
 import { Util } from "../Global/Util.helper.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
-import { EngineSettings } from "../Global/EngineSettings.js";
+import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { MeshManager } from "./Meshes/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
-import { DataComm } from "./InterComms/Data/DataComm.js";
-import { FXComm } from "./InterComms/FX/FXComm.js";
-import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
+import { DataComm } from "./Threads/Data/DataComm.js";
+import { FXComm } from "./Threads/FX/FXComm.js";
+import { NexusComm } from "./Threads/Nexus/NexusComm.js";
+import { WorldComm } from "./Threads/World/WorldComm.js";
+import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommManager.js";
+import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
-import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
-import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 export const DVER = {
@@ -78,7 +78,6 @@ export const DVER = {
  },
 
  async $INIT(initData: DVERInitData) {
-  this.settings.setContext("DVER");
   InitWorkers(this, initData);
  },
 

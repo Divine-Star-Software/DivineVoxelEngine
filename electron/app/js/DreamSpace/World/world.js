@@ -4,33 +4,39 @@ import { PlayerWatcher } from "./PlayerWatcher/PlayerWatcher.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 const playerWatcher = new PlayerWatcher(DVEW);
-DVEW.parentComm.listenForMessage("voxel-add", async (data, event) => {
-    await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, data[1], data[2], data[3]);
-    //DVEW.runChunkRebuildQue();
+const brush = DVEW.getBrush();
+DVEW.parentComm.listenForMessage("voxel-add", (data, event) => {
+    brush
+        .setId("dve:dreamstone")
+        .setXYZ(data[1], data[2], data[3])
+        .paintAndUpdate();
 });
-DVEW.parentComm.listenForMessage("voxel-remove", async (data, event) => {
-    await DVEW.worldData.requestVoxelBeRemoved(data[1], data[2], data[3]);
+DVEW.parentComm.listenForMessage("voxel-remove", (data, event) => {
+    brush.setXYZ(data[1], data[2], data[3]).ereaseAndUpdate();
 });
 DVEW.parentComm.listenForMessage("connect-player", (data, event) => {
     playerWatcher.setPlayerSharedArrays(data);
     playerWatcher.startWatchingPlayer();
 });
-await DVEW.$INIT({});
+await DVEW.$INIT();
+console.log("start");
 const numChunks = 5;
 let startX = -16 * numChunks;
 let startZ = -16 * numChunks;
 let endX = 16 * numChunks;
 let endZ = 16 * numChunks;
-const t1 = performance.now();
+const builder = DVEW.getBuilder();
+let t1 = performance.now();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateWorldColumn(x, z);
     }
 }
-const t2 = performance.now();
+let t2 = performance.now();
 console.log(t2 - t1);
+console.log("done");
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        DVEW.buildWorldColumn(x, z);
+        builder.setXZ(x, z).buildColumn();
     }
 }

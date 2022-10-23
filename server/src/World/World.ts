@@ -5,7 +5,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({});
+await DVEW.$INIT();
 
 const d = {
  star: `         [1m[35m.[0m

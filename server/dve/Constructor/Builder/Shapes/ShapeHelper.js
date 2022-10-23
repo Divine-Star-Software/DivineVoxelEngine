@@ -1,13 +1,15 @@
 //objects
-import { Util } from "../../../Global/Util.helper.js";
+import { LightData } from "../../../Data/Light/LightByte.js";
+import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
+import { MeshFaceDataByte } from "../../../Data/Meshing/MeshFaceDataBytes.js";
 /**# Shape Helper
  * ---
  * A class that holds needed function shared betweeen different voxel shapes.
  */
 export const ShapeHelper = {
-    faceByte: Util.getFaceByte(),
-    lightByte: Util.getLightByte(),
-    meshFaceData: Util.getMeshFaceDataByte(),
+    faceByte: FaceByte,
+    lightByte: LightData,
+    meshFaceData: MeshFaceDataByte,
     //Use for producing the light gradient
     lightMap: [
         0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,

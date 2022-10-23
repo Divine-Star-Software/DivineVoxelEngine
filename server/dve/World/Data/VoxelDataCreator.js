@@ -7,7 +7,7 @@ export const VoxelDataCreator = {
     isReady() {
         return this.__shapeMapSet;
     },
-    $INIT() {
+    $createVoxelData() {
         const byteLength = DVEW.data.maps.voxels.byteLengths;
         const indexes = DVEW.data.maps.voxels.dataIndexes;
         const substanceMap = DVEW.data.maps.voxels.substanceMap;
@@ -15,14 +15,14 @@ export const VoxelDataCreator = {
         const totalVoxels = Object.keys(DVEW.voxelManager.voxelData).length;
         const buffer = new SharedArrayBuffer(totalVoxels * byteLength.totalLength);
         const dv = new DataView(buffer);
-        const totalRegisteredVoxels = DVEW.worldGeneration.voxelPalette.voxelPaletteCount;
+        const totalRegisteredVoxels = this.palette._count;
         const voxelMapBuffer = new SharedArrayBuffer(totalRegisteredVoxels * 2);
         const voxelMap = new Uint16Array(voxelMapBuffer);
-        const vp = DVEW.worldGeneration.voxelPalette;
+        const vp = this.palette;
         let currentCount = 0;
         let currentParent = 2;
         for (let i = 2; i < voxelMap.length; i++) {
-            let newParent = vp.getVoxelPartentId(i);
+            let newParent = vp.getVoxelBaseId(i);
             if (newParent != currentParent) {
                 currentCount++;
                 currentParent = newParent;
@@ -35,7 +35,7 @@ export const VoxelDataCreator = {
             if (done[indexId])
                 continue;
             done[indexId] = true;
-            const tvid = vp.getVoxelTrueId(paletteId);
+            const tvid = vp.getVoxelStringId(paletteId);
             const vdata = DVEW.voxelManager.getVoxelData(tvid);
             let index = indexId * byteLength.totalLength;
             //substance
@@ -58,12 +58,54 @@ export const VoxelDataCreator = {
         this.voxelMapBuffer = voxelMapBuffer;
         this.voxelBuffer = buffer;
         DVEW.data.voxel.syncData(this.voxelBuffer, this.voxelMapBuffer);
+        //@ts-ignore
+        delete this["shapeMap"];
     },
     setShapeMap(shapeMap) {
         this.shapeMap = shapeMap;
         this.__shapeMapSet = true;
     },
-    flush() {
-        this.shapeMap = null;
+    palette: {
+        _count: 2,
+        _palette: {
+            0: "dve:air",
+            1: "dve:barrier",
+        },
+        _map: {
+            "dve:air": 0,
+            "dve:barrier": 1,
+        },
+        registerVoxel(voxel) {
+            this._palette[this._count] = voxel.id;
+            this._map[voxel.id] = this._count;
+            if (voxel.states) {
+                for (let i = this._count; i <= this._count + voxel.states; i++) {
+                    this._palette[i] = voxel.id;
+                }
+                this._count += voxel.states;
+            }
+            this._count++;
+        },
+        getVoxelBaseId(id) {
+            const mainData = this.getVoxelStringId(id);
+            return this.getVoxelStateId(mainData, 0);
+        },
+        getVoxelStateId(voxelId, voxelState) {
+            return this._map[voxelId] + voxelState;
+        },
+        getVoxelStringId(voxelId) {
+            return this._palette[voxelId];
+        },
+        getVoxelState(voxelId) {
+            const trueId = this._palette[voxelId];
+            const mapId = this._map[trueId];
+            return voxelId - mapId;
+        },
+        get() {
+            return this._palette;
+        },
+        getMap() {
+            return this._map;
+        },
     },
 };

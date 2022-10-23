@@ -1,10 +1,10 @@
 import type { DVESInitData } from "Meta/Server/DVES";
 
 //inter comms
-import { ConstructorCommManager } from "./InterComms/Constructor/ConstructorCommManager.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
+import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommManager.js";
+import { WorldComm } from "./Threads/World/WorldComm.js";
 //objects
-import { EngineSettings } from "../Global/EngineSettings.js";
+import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { EngineSettingsData } from "Meta/index.js";

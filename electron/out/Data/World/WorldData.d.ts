@@ -1,4 +1,4 @@
-import type { AddVoxelData, VoxelPalette, VoxelPaletteMap } from "../../Meta/Data/WorldData.types";
+import type { AddVoxelData, VoxelPalette, VoxelPaletteMap, ChunkData } from "../../Meta/Data/WorldData.types";
 import type { VoxelSubstanceType } from "Meta/index.js";
 declare type ID = string | number;
 export declare const WorldData: {
@@ -9,22 +9,25 @@ export declare const WorldData: {
     setVoxelPalette(voxelPalette: VoxelPalette, voxelPaletteMap: VoxelPaletteMap): void;
     rawData: {
         get(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): number;
-        set(dimensionId: ID, x: number, y: number, z: number, data: number, secondary?: boolean): void | -1;
+        set(dimensionId: ID, x: number, y: number, z: number, data: number, secondary?: boolean): number;
+    };
+    util: {
+        isSameVoxel(dimensionId: ID, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
     };
     voxel: {
         _air: [string, number];
         _barrier: [string, number];
         air: {
             isAt(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): true | undefined;
-            set(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): void;
+            set(dimensionId: ID, x: number, y: number, z: number, light?: number, secondary?: boolean): void;
         };
         barrier: {
             isAt(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): true | undefined;
             set(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): void;
         };
-        get(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): false | (string | number)[];
+        get(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): false | [string, number];
         getData(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): false | {
-            substance: number;
+            substance: VoxelSubstanceType;
             shapeId: number;
             hardness: number;
             material: number;
@@ -34,8 +37,13 @@ export declare const WorldData: {
             lightValue: number;
         };
         id: {
-            string(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): string | number;
-            numeric(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): number;
+            string(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): string | -1;
+            stateNumeric(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): number;
+            baseNumeric(id: number): number;
+            baseNumericAt(dimensionId: ID, x: number, y: number, z: number, secondary?: boolean): number;
+            stringFromNumber(id: number): string;
+            numberFromString(id: string): number;
+            getPaletteId(voxelId: string, voxelState: number): number;
         };
         data: {
             shapeId: {
@@ -66,7 +74,7 @@ export declare const WorldData: {
                 getAt(dimensionId: ID, x: number, y: number, z: number): number;
                 get(data: number): number;
                 set(data: number, level: number): number;
-                setAt(dimensionId: ID, x: number, y: number, z: number, state: number): void;
+                setAt(dimensionId: ID, x: number, y: number, z: number, level: number): void;
                 state: {
                     getAt(dimensionId: ID, x: number, y: number, z: number): number;
                     get(data: number): number;
@@ -83,15 +91,17 @@ export declare const WorldData: {
         };
     };
     paint: {
-        voxel(data: AddVoxelData): false | undefined;
+        getVoxelBrush(): void;
+        voxel(data: AddVoxelData, update?: boolean): void;
+        voxelAsync(data: AddVoxelData): Promise<void>;
+        __paint(dimension: ID, data: AddVoxelData, chunk: ChunkData, update?: boolean): false | undefined;
         erease(dimensionId: ID, x: number, y: number, z: number): void;
         _worldGen: {
-            getChunkId(voxelId: number): number;
             getPaletteId(voxelId: string, voxelState: number): number;
         };
     };
     light: {
-        get(dimesnionId: ID, x: number, y: number, z: number, log?: boolean): number;
+        get(dimesnionId: ID, x: number, y: number, z: number): number;
         set(dimesnionId: ID, x: number, y: number, z: number, lightValue: number): -1 | undefined;
         red: {
             get(dimesnionId: ID, x: number, y: number, z: number): number;

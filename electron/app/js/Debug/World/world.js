@@ -4,31 +4,27 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
 RegisterVoxels(DVEW);
 RegisterItemData(DVEW);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 self.DVEW = DVEW;
 let startX = -16;
 let startZ = -16;
 let endX = 16;
 let endZ = 16;
-const load = () => {
-    console.log("load");
-    for (let x = startX; x <= endX; x += 16) {
-        for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.buildWorldColumn(x, z);
-        }
+for (let x = startX; x <= endX; x += 16) {
+    for (let z = startZ; z <= endZ; z += 16) {
+        WorldGen.generateChunk(x, z);
     }
-};
-const generate = () => {
-    for (let x = startX; x <= endX; x += 16) {
-        for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-            WorldGen.generateChunk(x, z);
-        }
+}
+const brush = DVEW.getBrush();
+brush.setId("dve:liquiddreamether").setXYZ(5, 10, 5).paint();
+brush.setId("dve:dreamstone").setXYZ(6, 10, 5).paint();
+const builder = DVEW.getBuilder();
+for (let x = startX; x <= endX; x += 16) {
+    for (let z = startZ; z <= endZ; z += 16) {
+        builder.setXZ(x, z).buildColumn();
     }
-};
-generate();
-DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 5, -8);
-DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 6, -8);
-DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 7, -8);
-DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, 3, 8, -8);
-load();
+}
+const dataTool = DVEW.getDataTool();
+dataTool.loadIn(5, 10, 5);
+console.log(dataTool);
+self.dataTool = dataTool;

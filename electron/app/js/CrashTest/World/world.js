@@ -7,10 +7,11 @@ let startX = -depth;
 let startZ = -depth;
 let endX = depth;
 let endZ = depth;
+const builder = DVEW.getBuilder();
 const load = () => {
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.buildChunk(x, 0, z);
+            builder.setXZ(x, z).buildColumn();
         }
     }
 };
@@ -21,7 +22,7 @@ const generate = () => {
         }
     }
 };
-await DVEW.$INIT({});
+await DVEW.$INIT();
 generate();
 load();
 self.DVEW = DVEW;

@@ -4,7 +4,7 @@ DVERW.richData.registerInitalDataForVoxel("dve:dataholder", {
  data: "THIS A PLACE HOLDER DATA",
 });
 
-await DVERW.$INIT({});
+await DVERW.$INIT();
 
 const currentPickedVector = { x: 0, y: 0, z: 0 };
 DVERW.parentComm.listenForMessage("save-richdata", (data) => {

@@ -1,11 +1,10 @@
 import { EntityTypes } from "./Entity.types";
-
-import { BoundingBox } from "../Nexus/Physics/Physics.types";
 import type { DivineVoxelEngineNexus } from "../../Nexus/DivineVoxelEngineNexus.js";
+
 
 export type NexusEntityData = {
  type: EntityTypes;
- boundingBox: BoundingBox;
+ boundingBox: { width: number, height: number, depth: number };
  numStates: number;
 };
 

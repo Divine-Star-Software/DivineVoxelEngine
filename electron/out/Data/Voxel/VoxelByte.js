@@ -15,22 +15,22 @@ export const VoxelReader = {
     getId(value) {
         return (value & (0xffff << 16)) >> 16;
     },
-    decodeLightFromVoxelData(voxelData) {
+    getLight(voxelData) {
         return voxelData & 0xffff;
     },
-    encodeLightIntoVoxelData(voxelData, encodedLight) {
+    setLight(voxelData, encodedLight) {
         return (voxelData & ~0xffff) | encodedLight;
     },
-    decodeLevelFromVoxelData(stateData) {
+    getLevel(stateData) {
         return stateData & voxelStateMasks.level;
     },
-    encodeLevelIntoVoxelData(stateData, level) {
+    setLevel(stateData, level) {
         return (stateData & ~voxelStateMasks.level) | level;
     },
-    decodeLevelStateFromVoxelData(stateData) {
+    getLevelState(stateData) {
         return (stateData & voxelStateMasks.levelState) >> 4;
     },
-    encodeLevelStateIntoVoxelData(stateData, levelState) {
+    setLevelState(stateData, levelState) {
         return (stateData & ~voxelStateMasks.levelState) | (levelState << 4);
     },
     getShapeState(voxelData) {

@@ -16,12 +16,10 @@ export class QueueManager<T> {
 		public onRun: (data: T, queueId: string) => void,
 		public _manager: CommManager,
 		public getQueueKey: ((data: T) => string) | null = null
-	) {
-
-	}
+	) {}
 
 	__getQueueKey(data: any) {
-		if(this.getQueueKey !== null) {
+		if (this.getQueueKey !== null) {
 			return this.getQueueKey(data);
 		}
 		if (Array.isArray(data)) {
@@ -68,6 +66,7 @@ export class QueueManager<T> {
 		const queueKey = this.__getQueueKey(data);
 		if (queueData.map[queueKey]) return;
 		queueData.map[queueKey] = true;
+	//	queueData.state[0] += 1;
 		queueData.queue.enqueue(data);
 	}
 
@@ -115,6 +114,16 @@ export class QueueManager<T> {
 				}
 			}, 1);
 		});
+	}
+
+	onDone(queueId: string = "main", run: Function) {
+		const queueData = this.__getQueueData(queueId);
+		const inte = setInterval(() => {
+			if (Atomics.load(queueData.state, 0) == 0) {
+				clearInterval(inte);
+				run();
+			}
+		}, 1);
 	}
 
 	isDone(queueId: string = "main") {

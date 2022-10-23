@@ -20,7 +20,6 @@ export async function RunFlow(
   this.runRebuildQue();
   await this.wait(100);
  }
-
 }
 
 export async function RunFlowPropagation(this: typeof FlowManager) {
@@ -31,7 +30,7 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
   const y = node[1];
   const z = node[2];
   const l = this.getLevel(x, y, z);
-  
+
   if (l <= 1) {
    continue;
   }
@@ -40,10 +39,6 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
    if (n1 + 2 < l && n1 >= 0) {
     let state = 0;
     let n1l = l - 2;
-    if (this.flowDownTest(x + 1, y, z)) {
-     state = 1;
-     n1l = 15;
-    }
     que.push([x + 1, y, z, n1l, state]);
    }
 
@@ -52,10 +47,6 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
    if (n2 + 2 < l && n2 >= 0) {
     let state = 0;
     let n2l = l - 2;
-    if (this.flowDownTest(x - 1, y, z)) {
-     state = 1;
-     n2l = 15;
-    }
     que.push([x - 1, y, z, n2l, state]);
    }
 
@@ -63,10 +54,6 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
    if (n3 + 2 < l && n3 >= 0) {
     let state = 0;
     let n3l = l - 2;
-    if (this.flowDownTest(x, y, z + 1)) {
-     state = 1;
-     n3l = 15;
-    }
     que.push([x, y, z + 1, n3l, state]);
    }
 
@@ -74,19 +61,20 @@ export async function RunFlowPropagation(this: typeof FlowManager) {
    if (n4 + 2 < l && n4 >= 0) {
     let state = 0;
     let n4l = l - 2;
-    if (this.flowDownTest(x, y, z - 1)) {
-     state = 1;
-     n4l = 15;
-    }
+
     que.push([x, y, z - 1, n4l, state]);
    }
   }
 
-  if (this.canFlowDownardTest(x, y, z)) {
-   const n5 = this.getLevel(x, y - 1, z);
-   if (n5 <= l && n5 >= 0) {
-    que.push([x, y - 1, z, 15, 1]);
+  const n5 = this.getLevel(x, y - 1, z);
+  if (n5 <= l && n5 >= 0) {
+   let state = 1;
+   let level = 15;
+   if (l <= 0) {
+    state = 0;
+    level = l - 2;
    }
+   que.push([x, y - 1, z, level, state]);
   }
  }
 }

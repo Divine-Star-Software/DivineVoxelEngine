@@ -5,23 +5,10 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen.js";
 
 RegisterVoxels(DVEW);
+await DVEW.$INIT();
+const tasks = DVEW.getTasksManager();
+const builder = DVEW.getBuilder();
 const depth = 128;
-const fillWorldColumns = () => {
- let startX = -depth - 16;
- let startZ = -depth - 16;
- let endX = depth + 16;
- let endZ = depth + 16;
-
- for (let x = startX; x < endX; x += 16) {
-  for (let z = startZ; z < endZ; z += 16) {
-   DVEW.worldData.fillWorldCollumnWithChunks(x, z);
-   DVEW.queues.worldSun.add(x, z);
-  }
- }
-};
-
-await DVEW.$INIT({});
-
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;
@@ -29,17 +16,18 @@ let endZ = depth;
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateChunk(x, 0, z);
+  tasks.light.worldSun.add(x, z);
  }
 }
-fillWorldColumns();
 
-await DVEW.queues.worldSun.run();
+await tasks.light.worldSun.runAndAwait();
+
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
-  DVEW.buildWorldColumn(x, z);
+  builder.setXZ(x, z).buildColumn();
  }
 }
-await DVEW.queues.build.chunk.awaitAll();
-await DVEW.queues.rgb.update.runAndAwait();
-await DVEW.queues.build.chunk.runAndAwait();
+
+await tasks.light.rgb.update.runAndAwait();
+await tasks.build.chunk.runAndAwait();
 (self as any).DVEW = DVEW;

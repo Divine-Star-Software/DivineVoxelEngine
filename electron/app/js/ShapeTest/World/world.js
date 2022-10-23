@@ -2,107 +2,242 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 const depth = 32;
 let startX = -depth - 16;
 let startZ = -depth;
 let endX = depth * 4;
 let endZ = depth * 4;
+const builder = DVEW.getBuilder();
+const tasks = DVEW.getTasksManager();
 const buildAll = () => {
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            DVEW.buildWorldColumn(x, z, 0);
+            builder.setXZ(x, z).buildColumn();
         }
     }
 };
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateChunk(x, 0, z);
-        DVEW.queues.worldSun.add(x, z);
+        tasks.light.worldSun.add(x, z);
     }
 }
 const x = 0;
 const z = 0;
+const brush = DVEW.getBrush();
 const doStairTest = (shapeState, x, y, z) => {
-    DVEW.worldData.paintVoxel("dve:markerbox", shapeState, 0, x + 2, y + 1, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 1, z);
+    brush
+        .setId("dve:markerbox")
+        .setState(shapeState)
+        .setXYZ(x + 2, y + 1, z)
+        .paint();
+    brush
+        .setState(0)
+        .setShapeState(shapeState)
+        .setId("dve:dreamstone-stair")
+        .setXYZ(x, y + 1, z)
+        .paint();
     x -= 2;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
+    brush.setXYZ(x, y, z).paint();
     x -= 2;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y, z - 1)
+        .paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x, y, z)
+        .paint();
     x -= 2;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z - 1)
+        .paint();
+    brush.setXYZ(x, y, z - 1).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x, y, z)
+        .paint();
     x -= 2;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z + 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y, z - 1)
+        .paint();
+    brush.setXYZ(x, y, z).paint();
+    brush.setXYZ(x, y, z + 1).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x, y, z)
+        .paint();
     x -= 2;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y, z);
+    brush.setId("dve:dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
+    brush.setXYZ(x - 2, y, z).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z)
+        .paint();
+    brush.setXYZ(x - 2, y + 1, z).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y + 1, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y, z);
+    brush.setId("dve:dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
+    brush.setXYZ(x - 2, y + 1, z).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y + 1, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z + 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z + 1);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z + 1)
+        .paint();
+    brush.setXYZ(x - 2, y + 1, z + 1).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z - 1);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z - 1)
+        .paint();
+    brush.setXYZ(x - 2, y + 1, z - 1).paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z + 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z + 1)
+        .paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z + 1);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x - 2, y + 1, z + 1)
+        .paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y + 1, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x, y + 1, z - 1)
+        .paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x - 2, y + 1, z - 1);
+    brush
+        .setId("dve:dreamstone")
+        .setShapeState(0)
+        .setXYZ(x - 2, y + 1, z - 1)
+        .paint();
+    brush
+        .setId("dve:dreamstone-stair")
+        .setShapeState(shapeState)
+        .setXYZ(x - 1, y, z)
+        .paint();
+    brush.setId("dve:dreamstone-stair").setShapeState(shapeState);
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 2, y, z);
+    brush
+        .setXYZ(x, y, z)
+        .paint()
+        .setXYZ(x - 1, y, z)
+        .paint()
+        .setXYZ(x - 2, y, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z - 2);
+    brush
+        .setXYZ(x, y, z)
+        .paint()
+        .setXYZ(x, y, z - 1)
+        .paint()
+        .setXYZ(x - 2, y, z - 2)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 1, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 2, z - 2);
+    brush
+        .setXYZ(x, y, z)
+        .paint()
+        .setXYZ(x, y + 1, z - 1)
+        .paint()
+        .setXYZ(x - 2, y + 2, z - 2)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 2, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 1, z - 1);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z - 2);
+    brush
+        .setXYZ(x, y + 2, z)
+        .paint()
+        .setXYZ(x, y + 1, z - 1)
+        .paint()
+        .setXYZ(x - 2, y, z - 2)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y + 1, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 2, y + 2, z);
+    brush
+        .setXYZ(x, y, z)
+        .paint()
+        .setXYZ(x - 1, y + 1, z)
+        .paint()
+        .setXYZ(x - 2, y + 2, z)
+        .paint();
     x -= 4;
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x, y + 2, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 1, y + 1, z);
-    DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, shapeState, x - 2, y, z);
+    brush
+        .setXYZ(x, y + 2, z)
+        .paint()
+        .setXYZ(x - 1, y + 1, z)
+        .paint()
+        .setXYZ(x - 2, y, z)
+        .paint();
 };
 const doVineTest = (x, y, z) => {
+    brush.setId("dve:dreamvine");
     for (let vy = y; vy < 60; vy++) {
-        DVEW.worldData.paintVoxel("dve:dreamvine", 0, 0, x, vy, z);
-        DVEW.worldData.paintVoxel("dve:dreamvine", 0, 1, x - 2, vy, z);
-        DVEW.worldData.paintVoxel("dve:dreamvine", 0, 2, x - 4, vy, z);
-        DVEW.worldData.paintVoxel("dve:dreamvine", 0, 3, x - 6, vy, z);
+        brush
+            .setShapeState(0)
+            .setXYZ(x, vy, z)
+            .paint()
+            .setShapeState(1)
+            .setXYZ(x - 2, vy, z)
+            .paint()
+            .setShapeState(2)
+            .setXYZ(x - 4, vy, z)
+            .paint()
+            .setShapeState(3)
+            .setXYZ(x - 6, vy, z)
+            .paint();
     }
 };
 doVineTest(44, 22, 60);
@@ -124,22 +259,23 @@ doStairTest(2, 25, 16, -4);
 doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
-await DVEW.queues.worldSun.run();
+await tasks.light.worldSun.runAndAwait();
 buildAll();
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 107);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 99);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 91);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 83);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 75);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 68);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 60);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 52);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 44);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 36);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 28);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 26, 20);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 12);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, 4);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, -4);
-await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 30, 20, -12);
+brush.setId("dve:debugbox");
+brush.setXYZ(30, 26, 107).paintAndUpdate();
+brush.setXYZ(30, 26, 99).paintAndUpdate();
+brush.setXYZ(30, 26, 91).paintAndUpdate();
+brush.setXYZ(30, 26, 83).paintAndUpdate();
+brush.setXYZ(30, 26, 75).paintAndUpdate();
+brush.setXYZ(30, 20, 68).paintAndUpdate();
+brush.setXYZ(30, 20, 69).paintAndUpdate();
+brush.setXYZ(30, 20, 52).paintAndUpdate();
+brush.setXYZ(30, 20, 44).paintAndUpdate();
+brush.setXYZ(30, 20, 36).paintAndUpdate();
+brush.setXYZ(30, 20, 28).paintAndUpdate();
+brush.setXYZ(30, 20, 20).paintAndUpdate();
+brush.setXYZ(30, 20, 12).paintAndUpdate();
+brush.setXYZ(30, 20, 4).paintAndUpdate();
+brush.setXYZ(30, 20, -4).paintAndUpdate();
+brush.setXYZ(30, 20, -12).paintAndUpdate();
 self.DVEW = DVEW;

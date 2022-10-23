@@ -1,4 +1,4 @@
-import type { DataHandler } from "../../../out/Meta/Data/DataHandler.type";
+import type { DataHandler } from "../../../out/Meta/DataLoader/DataHandler.type";
 
 import { DataServer } from "./DataServer.js";
 

@@ -180,9 +180,9 @@ export class PlayerWatcher {
     const x = data[i];
     const y = data[i + 1];
     const z = data[i + 2];
-    const voxelData = this.DVEW.worldData.getVoxel(x, y, z);
+    const voxelData = this.DVEW.data.world.voxel.get(0, x, y, z);
 
-    if (voxelData && voxelData[0] != -1) {
+    if (voxelData && voxelData[0] != "dve:air") {
      break;
     }
    }
@@ -192,17 +192,27 @@ export class PlayerWatcher {
 
    //below player
 
-   const belowVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY - 2, pAbsZ);
-   if (belowVoxel && belowVoxel[0] != -1) {
+   const belowVoxel = this.DVEW.data.world.voxel.get(
+    0,
+    pAbsX,
+    pAbsY - 2,
+    pAbsZ
+   );
+   if (belowVoxel && belowVoxel[0] != "dve:air") {
     this.playerStatesArray[0] = 1;
    } else {
     this.playerStatesArray[0] = 0;
    }
 
-   const headVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY, pAbsZ);
-   if (headVoxel && headVoxel[0] != -1) {
-    //@ts-ignore
-    if (headVoxel[0].substance == "fluid") {
+   const headVoxel = this.DVEW.data.world.voxel.get(0, pAbsX, pAbsY, pAbsZ);
+   if (headVoxel && headVoxel[0] != "dve:air") {
+    const substance = this.DVEW.data.world.voxel.data.substance.getAt(
+     0,
+     pAbsX,
+     pAbsY,
+     pAbsZ
+    );
+    if (substance == "fluid") {
      this.playerStatesArray[1] = 1;
     } else {
      this.playerStatesArray[1] = 0;

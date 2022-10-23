@@ -17,7 +17,8 @@ export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
   let sideUV = uvs[1];
   let sideTopUV = uvs[2];
   if (
-   !DVEB.processor.worldMatrix.sameVoxel(
+   !DVEB.processor.worldData.util.isSameVoxel(
+    data.dimension,
     data.x,
     data.y,
     data.z,

@@ -5,25 +5,23 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const FluidMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
 
-
- doEffects : true,
- time : 0,
+ doEffects: true,
+ time: 0,
 
  getMaterial() {
   return this.material;
  },
 
-
- updateFogOptions(data : BABYLON.Vector4) {
-    if(!this.material) return;
-    this.material.setVector4("fogOptions",data);
+ updateFogOptions(data: BABYLON.Vector4) {
+  if (!this.material) return;
+  this.material.setVector4("fogOptions", data);
  },
 
- updateEffects(doEffects : boolean) {
-    this.doEffects = doEffects;
-    let v = doEffects ? 1 : 0;
-    if(!this.material) return;
-    this.material.setFloat("doEffect",v);
+ updateEffects(doEffects: boolean) {
+  this.doEffects = doEffects;
+  let v = doEffects ? 1 : 0;
+  if (!this.material) return;
+  this.material.setFloat("doEffect", v);
  },
 
  setSunLightLevel(level: number) {
@@ -63,10 +61,10 @@ export const FluidMaterial = {
   } else {
    this.material.setFloat("doColor", 0.0);
   }
-  if(DVER.renderManager.effectOptions.fluidEffects) {
-    this.material.setFloat("doEffects",1);
+  if (DVER.renderManager.effectOptions.fluidEffects) {
+   this.material.setFloat("doEffects", 1);
   } else {
-    this.material.setFloat("doEffects",0);  
+   this.material.setFloat("doEffects", 0);
   }
  },
 
@@ -84,7 +82,6 @@ export const FluidMaterial = {
     true
    );
 
- 
   BABYLON.Effect.ShadersStore["fluidVertexShader"] =
    DVER.renderManager.shaderBuilder.getDefaultVertexShader(
     "fluid",
@@ -140,7 +137,7 @@ export const FluidMaterial = {
   );
   data.texture.hasAlpha = true;
   this.material = shaderMaterial;
-  // shaderMaterial.needDepthPrePass = true;
+
   shaderMaterial.separateCullingPass = true;
   shaderMaterial.backFaceCulling = false;
   shaderMaterial.forceDepthWrite = true;
@@ -168,15 +165,13 @@ export const FluidMaterial = {
 
   this.updateMaterialSettings(data.settings);
 
-
-
   DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
   return this.material;
  },
 
  runEffects() {
-    if (!this.material) return;
-    this.time += 0.005;
-    this.material.setFloat("time", this.time);
-   },
+  if (!this.material) return;
+  this.time += 0.005;
+  this.material.setFloat("time", this.time);
+ },
 };

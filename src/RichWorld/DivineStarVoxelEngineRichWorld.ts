@@ -1,31 +1,25 @@
 //types
 import type { EngineSettingsData } from "Meta/index.js";
-//matrix
-import { WorldMatrix } from "../Matrix/WorldMatrix.js";
-//types
-import { DVERWInitData } from "Meta/RichWorld/DVERW.js";
 //objects
-import { EngineSettings } from "../Global/EngineSettings.js";
+import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 //intercomms
-import { WorldComm } from "./InterComms/World/WorldComm.js";
-import { ParentComm } from "./InterComms/Parent/ParentComm.js";
+import { WorldComm } from "./Threads/World/WorldComm.js";
+import { ParentComm } from "./Threads/Parent/ParentComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { RichData } from "./RichData/RichData.js";
-import { VoxelManager } from "../Voxels/VoxelManager.js";
+import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 export const DVERW = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
  __queueStatesSet: false,
- _3dFlatArray: Util.getFlat3DArray(),
+
  worldBounds: WorldBounds,
  UTIL: Util,
  settings: EngineSettings,
-
- worldMatrix: WorldMatrix,
 
  worldComm: WorldComm,
  parentComm: ParentComm,
@@ -48,8 +42,8 @@ export const DVERW = {
   );
  },
 
- async $INIT(data: DVERWInitData) {
-  await InitWorker(this, data);
+ async $INIT() {
+  await InitWorker(this);
  },
 };
 

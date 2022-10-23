@@ -3,7 +3,7 @@ let lightDebugBoxTextures: Record<number, number> = {};
 
 export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:lightdebug",
- 
+
  hooks: {
   texturesRegistered: (DVEB) => {
    lightDebugBoxTextures = {
@@ -92,7 +92,12 @@ export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
  },
 
  process: function (data, DVEB) {
-  const light = DVEB.processor.worldMatrix.getLevel(data.x, data.y + 1, data.z);
+  const light = DVEB.processor.worldData.voxel.data.level.getAt(
+   data.dimension,
+   data.x,
+   data.y + 1,
+   data.z
+  );
   let uv = lightDebugBoxTextures[light];
 
   if (data.exposedFaces[0]) {

@@ -29,7 +29,7 @@ import {
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{
   mode: "volumetric",
-  density: 0.001,
+  density: 0.0002,
   color: new BABYLON.Color3(1, 1, 1),
   volumetricOptions: {
    heightFactor: 0.25,
@@ -86,6 +86,10 @@ export const RenderManager = {
    }
   }
 
+  if(options.color && this.scene) {
+    //@ts-ignore
+    this.scene.fogColor = options.color;
+  }
   const fogData = new BABYLON.Vector4(0, 0, 0, 0);
   if (this.fogOptions.mode == "volumetric") {
    fogData.x = 1;

@@ -112,7 +112,6 @@ export const FluidMaterial = {
         });
         data.texture.hasAlpha = true;
         this.material = shaderMaterial;
-        // shaderMaterial.needDepthPrePass = true;
         shaderMaterial.separateCullingPass = true;
         shaderMaterial.backFaceCulling = false;
         shaderMaterial.forceDepthWrite = true;

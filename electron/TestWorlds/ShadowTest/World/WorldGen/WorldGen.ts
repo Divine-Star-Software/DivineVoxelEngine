@@ -1,33 +1,37 @@
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
+
+const brush = DVEW.getBrush();
 export const WorldGen = {
  chunkDepth: 16,
  chunkWidth: 16,
  chunkHeight: 128,
 
  generateChunk(chunkX: number, chunkZ: number) {
-  let topY = 31;
+  brush.start();
   let groundY = 31;
   let maxY = 64;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.chunkHeight; y++) {
+     brush.setXYZ(x, y, z);
      if (y < groundY - 1 || (y == 60 && Math.random() > 0.5)) {
-      DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
+      brush.setId("dve:dreamstone").paint();
      }
      if (y == groundY - 1) {
-      DVEW.worldData.paintVoxel("dve:liquiddreamether", 0, 0, x, y, z);
+      brush.setId("dve:liquiddreamether").paint();
      }
-     if (y >= groundY  && y <= maxY) {
+     if (y >= groundY && y <= maxY) {
       if (x % 7 == 0 && z % 7 == 0) {
        if (y == groundY) {
-        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
+        brush.setId("dve:dreamstone").paint();
        } else {
-        DVEW.worldData.paintVoxel("dve:dreamstone", 0, 0, x, y, z);
+        brush.setId("dve:dreamstone").paint();
        }
       }
      }
     }
    }
   }
+  brush.stop();
  },
 };

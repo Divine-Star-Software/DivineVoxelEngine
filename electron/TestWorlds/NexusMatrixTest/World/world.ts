@@ -8,22 +8,29 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 const playerWatcher = new PlayerWatcher(DVEW);
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({});
+await DVEW.$INIT();
 let startX = -32;
 let startZ = -32;
 let endX = 32;
 let endZ = 32;
 
+const builder = DVEW.getBuilder();
+const tasks = DVEW.getTasksManager();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateChunk(x, 0, z);
-  DVEW.queues.build.chunk.add([x,0,z]);
  }
 }
 
-
-await DVEW.queues.rgb.update.runAndAwait();
-await DVEW.queues.build.chunk.runAndAwait();
+await tasks.light.rgb.update.runAndAwait();
+await tasks.build.chunk.runAndAwait();
 DVEW.nexusComm.sendMessage("done", []);
+
+/* for (let x = startX; x < endX; x += 16) {
+    for (let z = startZ; z < endZ; z += 16) {
+     builder.setXZ(x, z).buildColumn();
+    }
+   }
+    */
 
 (self as any).DVEW = DVEW;

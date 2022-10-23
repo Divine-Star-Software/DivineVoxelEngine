@@ -6,8 +6,6 @@ export class Entity1Rendered {
     position;
     states;
     $INIT(data) {
-        console.log(data);
-        console.log(this.position[0], this.position[1], this.position[2]);
     }
     onSpawn(scene) {
         const cube = BABYLON.MeshBuilder.CreateBox("entity", { size: 0.5 }, scene);

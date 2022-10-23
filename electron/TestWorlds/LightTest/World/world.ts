@@ -5,7 +5,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({});
+await DVEW.$INIT();
 (self as any).DVEW = DVEW;
 
 let startX = -64;
@@ -19,31 +19,41 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-await DVEW.queues.rgb.update.runAndAwait();
+const tasks = DVEW.getTasksManager();
+await tasks.light.rgb.update.runAndAwait();
 
-for (let x = startX; x < endX; x += 16) {
- for (let z = startZ; z < endZ; z += 16) {
-  DVEW.buildChunk(x, 0, z);
- }
-}
-const y = 60;
-const run = async () => {
+const builder = DVEW.getBuilder();
+const buildAll = () => {
+ console.log("build all");
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   if (x == startX) {
-    await DVEW.worldData.requestVoxelBeRemoved(endX + 7 - 16, y + 7, z + 7);
-   }
-   await DVEW.worldData.requestVoxelBeRemoved(x + 7 - 16, y + 7, z + 7);
-   await DVEW.worldData.requestVoxelAdd(
-    "dve:debugbox",
-    0, 0,
-    x + 7,
-    y + 7,
-    z + 7
-   );
+   builder.setXZ(x, z).buildColumn();
   }
  }
- run();
 };
+buildAll();
+const brush = DVEW.getBrush();
+brush.setId("dve:dreadlamp");
 
-run();
+const y = 60;
+
+let remove = false;
+
+const run = async () => {
+ for (let x = startX; x < endX + 16; x += 16) {
+  for (let z = startZ; z < endZ; z += 16) {
+   await brush.setXYZ(x + 7, y + 7, z + 7).paintAndAwaitUpdate();
+   await brush.setXYZ(x + 7 - 16, y + 7, z + 7).ereaseAndAwaitUpdate();
+  }
+ }
+
+ for (let z = startZ; z < endZ; z += 16) {
+  await brush.setXYZ(endX + 16 + 7 - 16, y + 7, z + 7).ereaseAndAwaitUpdate();
+ }
+
+ await run();
+};
+setTimeout(() => {
+ console.log("go");
+ run();
+}, 1000);

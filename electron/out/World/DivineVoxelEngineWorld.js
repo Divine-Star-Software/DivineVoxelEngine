@@ -1,38 +1,41 @@
+//threads
+import { ParentComm } from "./Threads/Parent/ParentComm.js";
+import { CCM } from "./Threads/Constructor/ConstructorCommManager.js";
+import { NexusComm } from "./Threads/Nexus/NexusComm.js";
+import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
+import { DataComm } from "./Threads/Data/DataComm.js";
+import { FXComm } from "./Threads/FX/FXComm.js";
 //objects
-import { EngineSettings } from "../Global/EngineSettings.js";
+import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { WorldData } from "./WorldData/WorldData.js";
-import { WorldGeneration } from "./WorldGenration/WorldGeneration.js";
-import { VoxelManager } from "../Voxels/VoxelManager.js";
-import { ItemManager } from "../Items/ItemManager.js";
-import { EntityConstructor } from "./EntityConstructor/EntityConstructor.js";
-//inter comms
-import { ParentComm } from "./InterComms/Parent/ParentComm.js";
-import { CCM } from "./InterComms/Constructor/ConstructorCommManager.js";
-import { NexusComm } from "./InterComms/Nexus/NexusComm.js";
-import { RichWorldComm } from "./InterComms/RichWorld/RichWorldComm.js";
-import { DataComm } from "./InterComms/Data/DataComm.js";
-import { FXComm } from "./InterComms/FX/FXComm.js";
-//functions
-import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { QueuesManager } from "./Queues/QueuesManager.js";
-import { WorldBounds } from "../Data/World/WorldBounds.js";
+//data
 import { DataSync } from "./Data/DataSync.js";
 import { DataManager } from "../Data/DataManager.js";
+import { VoxelDataCreator } from "./Data/VoxelDataCreator.js";
+import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
+import { ItemManager } from "../Data/Items/ItemManager.js";
+import { DataCreator } from "./Data/Creator.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
+import { TasksTool } from "../Tools/Tasks/TasksTool.js";
+//tools
+import { BuilderTool } from "../Tools/Build/Builder.js";
+import { GetBrush } from "./Tools/Brush/BrushTool.js";
+import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
+//functions
+import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
 export const DVEW = {
     environment: "browser",
-    _3dFlatArray: Util.getFlat3DArray(),
-    worldBounds: WorldBounds,
-    chunkReader: Util.getChunkReader(),
     __settingsHaveBeenSynced: false,
     __renderIsDone: false,
     __serverIsDone: false,
     UTIL: Util,
     settings: EngineSettings,
+    dataCreator: DataCreator,
     data: DataManager,
     dataSync: DataSync,
     fxComm: FXComm,
@@ -41,8 +44,6 @@ export const DVEW = {
     parentComm: ParentComm,
     ccm: CCM,
     richWorldComm: RichWorldComm,
-    worldGeneration: WorldGeneration,
-    worldData: WorldData,
     entityConstructor: EntityConstructor,
     voxelManager: VoxelManager,
     itemManager: ItemManager,
@@ -54,64 +55,32 @@ export const DVEW = {
     },
     syncSettings(data) {
         this.settings.syncSettings(data);
-        this.settings.syncWithWorldBounds(this.worldBounds);
-        this.chunkReader.syncSettings();
         this.__settingsHaveBeenSynced = true;
-    },
-    /**# Remove Chunk
-     * ---
-     * Removes a chunk from the render thread.
-     * Can also delete the chunk from world ata.
-     */
-    removeChunk(chunkX, chunkY, chunkZ, deleteChunk = false) {
-        const chunk = this.worldData.getChunk(chunkX, chunkY, chunkZ);
-        if (!chunk)
-            return false;
-        this.parentComm.sendMessage("remove-chunk", [chunkX, chunkY, chunkZ]);
-        if (deleteChunk) {
-            this.worldData.removeChunk(chunkX, chunkY, chunkZ);
-            this.dataSync.chunk.unSync(0, chunkX, chunkY, chunkZ);
-        }
-        return true;
-    },
-    /**# Delete Chunk
-     * ---
-     * Deletes a chunk from world data and releases it from all threads.
-     */
-    deleteChunk(chunkX, chunkY, chunkZ) {
-        this.worldData.removeChunk(chunkX, chunkY, chunkZ);
-        this.dataSync.chunk.unSync(0, chunkX, chunkY, chunkZ);
-    },
-    buildChunk(chunkX, chunkY, chunkZ, LOD = 1) {
-        this.ccm.tasks.build.chunk([chunkX, chunkY, chunkZ, LOD]);
     },
     generate(x, z, data = []) {
         this.ccm.tasks.worldGen.generate([x, z, data]);
     },
-    buildWorldColumn(x, z, LOD = 1) {
-        const worldColumn = this.worldData.getWorldColumn(x, z);
-        if (!worldColumn)
-            return false;
-        for (const chunkKey of Object.keys(worldColumn)) {
-            const chunk = worldColumn[chunkKey];
-            const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
-            this.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, LOD);
-        }
-    },
     createItem(itemId, x, y, z) {
         this.ccm.tasks.build.item([itemId, x, y, z]);
     },
-    async $INIT(data) {
-        this.settings.setContext("DVEW");
-        await InitWorldWorker(this, data);
+    async $INIT() {
+        await InitWorldWorker(this);
     },
-    addChunkFromServer(data) {
-        const chunk = this.worldGeneration.createChunkFromServer(data);
-        const chunkPOS = this.chunkReader.getChunkPosition(chunk.data);
-        this.worldData.setChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, chunk);
+    getBrush() {
+        return GetBrush();
     },
+    getBuilder() {
+        return new BuilderTool();
+    },
+    getDataTool() {
+        return new DataTool();
+    },
+    getTasksManager() {
+        return TasksTool();
+    }
 };
 DVEW.environment = Util.getEnviorment();
 DVEW.voxelManager.onRegister((voxel) => {
-    DVEW.worldGeneration.voxelPalette.registerVoxel(voxel);
+    VoxelDataCreator.palette.registerVoxel(voxel);
+    // DVEW.worldGeneration.voxelPalette.registerVoxel(voxel);
 });

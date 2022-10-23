@@ -56,6 +56,7 @@ export class QueueManager {
         if (queueData.map[queueKey])
             return;
         queueData.map[queueKey] = true;
+        //	queueData.state[0] += 1;
         queueData.queue.enqueue(data);
     }
     run(queueId = "main", filter) {
@@ -102,6 +103,15 @@ export class QueueManager {
                 }
             }, 1);
         });
+    }
+    onDone(queueId = "main", run) {
+        const queueData = this.__getQueueData(queueId);
+        const inte = setInterval(() => {
+            if (Atomics.load(queueData.state, 0) == 0) {
+                clearInterval(inte);
+                run();
+            }
+        }, 1);
     }
     isDone(queueId = "main") {
         const queueData = this.__getQueueData(queueId);

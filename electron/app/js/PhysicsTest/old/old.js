@@ -3,7 +3,7 @@
 import { DVEM } from "../../../out/Math/DivineVoxelEngineMath.js";
 import { DVEN } from "../../../out/Nexus/DivineVoxelEngineNexus.js";
 
-await DVEN.$INIT({});
+await DVEN.$INIT();
 console.log("nexus is ready to go!");
 
 

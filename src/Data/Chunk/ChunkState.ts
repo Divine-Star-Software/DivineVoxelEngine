@@ -1,4 +1,4 @@
-import { PositionByte } from "../../Global/Util/PositionByte.js";
+import { PositionByte } from "../Util/PositionByte.js";
 import { VoxelSubstanceType } from "Meta/index.js";
 import { Position3Matrix } from "Meta/Util.types.js";
 

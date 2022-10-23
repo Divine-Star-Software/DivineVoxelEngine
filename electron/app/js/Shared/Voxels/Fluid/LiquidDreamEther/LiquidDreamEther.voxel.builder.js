@@ -41,8 +41,8 @@ const uvsSets = {
         "0|": 9,
     },
 };
-const getUV = (direction, x, y, z, DVEB) => {
-    const world = DVEB.processor.worldMatrix;
+const getUV = (direction, x, y, z, DVEB, dimension) => {
+    const world = DVEB.processor.worldData;
     let key = "";
     const sets = checkSets[direction];
     for (let i = 0; i < sets.length; i++) {
@@ -51,7 +51,7 @@ const getUV = (direction, x, y, z, DVEB) => {
         const set = sets[i];
         const cx = x + set[0];
         const cz = z + set[1];
-        const check = world.sameVoxel(x, y, z, cx, y, cz);
+        const check = world.util.isSameVoxel(dimension, x, y, z, cx, y, cz);
         if (check) {
             key += "1|";
         }
@@ -70,7 +70,7 @@ const getFoamUV = (DVEB, data) => {
     const tx = data.x;
     const ty = data.y;
     const tz = data.z;
-    data.overlayUVTemplate.push(getUV("north", tx, ty, tz, DVEB), getUV("south", tx, ty, tz, DVEB), getUV("east", tx, ty, tz, DVEB), getUV("west", tx, ty, tz, DVEB));
+    data.overlayUVTemplate.push(getUV("north", tx, ty, tz, DVEB, data.dimension), getUV("south", tx, ty, tz, DVEB, data.dimension), getUV("east", tx, ty, tz, DVEB, data.dimension), getUV("west", tx, ty, tz, DVEB, data.dimension));
 };
 let uv = 0;
 export const LiquidDreamEtherVoxelBuilderThread = {

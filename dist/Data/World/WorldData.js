@@ -4,7 +4,9 @@ import { VoxelReader } from "../Voxel/VoxelByte.js";
 import { VoxelData } from "../Voxel/VoxelData.js";
 import { ChunkReader } from "../Chunk/ChunkReader.js";
 import { WorldBounds } from "./WorldBounds.js";
-import { HeightMapData } from "../Chunk/HeightByte.js";
+import { HeightMapData } from "../Chunk/HeightMapData.js";
+import { DataHooks } from "../DataHooks.js";
+import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
 const WD = {
     _currentionDimension: "main",
     voxelPalette: {},
@@ -19,15 +21,21 @@ const WD = {
             const chunk = WorldRegister.chunk.get(dimensionId, x, y, z);
             if (!chunk)
                 return -1;
-            const dv = chunk.data;
-            return ChunkReader.getVoxelData(dv, x, y, z, secondary);
+            const voxPOS = WorldBounds.getVoxelPosition(x, y, z);
+            return ChunkReader.getVoxelDataUseObj(chunk, voxPOS, secondary);
         },
         set(dimensionId, x, y, z, data, secondary = false) {
             const chunk = WorldRegister.chunk.get(dimensionId, x, y, z);
             if (!chunk)
                 return -1;
-            const dv = chunk.data;
-            return ChunkReader.setVoxelData(dv, x, y, z, data, secondary);
+            const voxPOS = WorldBounds.getVoxelPosition(x, y, z);
+            return ChunkReader.setVoxelDataUseObj(chunk, voxPOS, data, secondary);
+        },
+    },
+    util: {
+        isSameVoxel(dimensionId, x, y, z, x2, y2, z2, secondary = false) {
+            return (WD.voxel.id.baseNumericAt(dimensionId, x, y, z, secondary) ==
+                WD.voxel.id.baseNumericAt(dimensionId, x2, y2, z2, secondary));
         },
     },
     voxel: {
@@ -35,36 +43,28 @@ const WD = {
         _barrier: ["dve:barrier", 0],
         air: {
             isAt(dimensionId, x, y, z, secondary = false) {
-                const id = WD.voxel.id.numeric(dimensionId, x, y, z, secondary);
+                const id = WD.voxel.id.stateNumeric(dimensionId, x, y, z, secondary);
                 if (id == 0)
                     return true;
             },
-            set(dimensionId, x, y, z, secondary = false) {
-                WD.rawData.set(dimensionId, x, y, z, VoxelReader.setId(0, 0));
-                if (secondary) {
-                    const data = WD.rawData.get(dimensionId, x, y, z, true);
-                    WD.rawData.set(dimensionId, x, y, z, VoxelReader.setId(0, data), secondary);
-                }
+            set(dimensionId, x, y, z, light = 0, secondary = false) {
+                let data = VoxelReader.setId(0, 0);
+                data = VoxelReader.setLight(data, light);
+                WD.rawData.set(dimensionId, x, y, z, data, secondary);
             },
         },
         barrier: {
             isAt(dimensionId, x, y, z, secondary = false) {
-                const id = WD.voxel.id.numeric(dimensionId, x, y, z, secondary);
+                const id = WD.voxel.id.stateNumeric(dimensionId, x, y, z, secondary);
                 if (id == 1)
                     return true;
             },
             set(dimensionId, x, y, z, secondary = false) {
-                if (!secondary) {
-                    WD.rawData.set(dimensionId, x, y, z, VoxelReader.setId(1, 0));
-                }
-                else {
-                    const data = WD.rawData.get(dimensionId, x, y, z, true);
-                    WD.rawData.set(dimensionId, x, y, z, VoxelReader.setId(1, data), secondary);
-                }
+                WD.rawData.set(dimensionId, x, y, z, VoxelReader.setId(1, 0), secondary);
             },
         },
         get(dimensionId, x, y, z, secondary = false) {
-            const vId = WD.voxel.id.numeric(dimensionId, x, y, z, secondary);
+            const vId = WD.voxel.id.stateNumeric(dimensionId, x, y, z, secondary);
             if (vId < 0)
                 return false;
             if (vId == 0)
@@ -76,7 +76,7 @@ const WD = {
             return [paletteId, vId - mapId];
         },
         getData(dimensionId, x, y, z, secondary = false) {
-            const id = this.id.numeric(dimensionId, x, y, z, secondary);
+            const id = this.id.stateNumeric(dimensionId, x, y, z, secondary);
             if (id < 0)
                 return false;
             return VoxelData.getVoxelData(id);
@@ -88,11 +88,44 @@ const WD = {
                     return -1;
                 return voxel[0];
             },
-            numeric(dimensionId, x, y, z, secondary = false) {
+            stateNumeric(dimensionId, x, y, z, secondary = false) {
                 const rawVoxelData = WD.rawData.get(dimensionId, x, y, z, secondary);
                 if (rawVoxelData < 0)
                     return -1;
                 return VoxelReader.getId(rawVoxelData);
+            },
+            baseNumeric(id) {
+                if (id < 2)
+                    return id;
+                const paletteId = WD.voxelPalette[id];
+                return WD.voxelPaletteMap[paletteId];
+            },
+            baseNumericAt(dimensionId, x, y, z, secondary = false) {
+                const rawVoxelData = WD.rawData.get(dimensionId, x, y, z, secondary);
+                if (rawVoxelData < 0)
+                    return -1;
+                const vid = VoxelReader.getId(rawVoxelData);
+                if (vid < 2)
+                    return vid;
+                const paletteId = WD.voxelPalette[vid];
+                return WD.voxelPaletteMap[paletteId];
+            },
+            stringFromNumber(id) {
+                return WD.voxelPalette[id];
+            },
+            numberFromString(id) {
+                return WD.voxelPaletteMap[id];
+            },
+            getPaletteId(voxelId, voxelState) {
+                const numericID = WD.voxelPaletteMap[voxelId];
+                const stateId = voxelState + numericID;
+                if (WD.voxelPalette[stateId] != voxelId) {
+                    throw new Error(`${voxelState} is not a valid state for voxel with id : ${voxelId}`);
+                }
+                if (stateId) {
+                    return stateId;
+                }
+                return -1;
             },
         },
         data: {
@@ -118,7 +151,7 @@ const WD = {
             },
             shapeState: {
                 getAt(dimensionId, x, y, z) {
-                    let data = WD.rawData.get(dimensionId, x, y, z);
+                    let data = WD.rawData.get(dimensionId, x, y, z, true);
                     if (data < 0)
                         data = 0;
                     return VoxelReader.getShapeState(data);
@@ -130,9 +163,9 @@ const WD = {
                     return VoxelReader.setShapeState(data, state);
                 },
                 setAt(dimensionId, x, y, z, state) {
-                    let data = WD.rawData.get(dimensionId, x, y, z);
+                    let data = WD.rawData.get(dimensionId, x, y, z, true);
                     data = VoxelReader.setShapeState(data, state);
-                    WD.rawData.set(dimensionId, x, y, z, data);
+                    WD.rawData.set(dimensionId, x, y, z, data, true);
                 },
             },
             state: {
@@ -171,39 +204,39 @@ const WD = {
             },
             level: {
                 getAt(dimensionId, x, y, z) {
-                    let data = WD.rawData.get(dimensionId, x, y, z);
+                    let data = WD.rawData.get(dimensionId, x, y, z, true);
                     if (data < 0)
                         data = 0;
                     return this.get(data);
                 },
                 get(data) {
-                    return VoxelReader.decodeLevelFromVoxelData(data);
+                    return VoxelReader.getLevel(data);
                 },
                 set(data, level) {
-                    return VoxelReader.encodeLevelIntoVoxelData(data, level);
+                    return VoxelReader.setLevel(data, level);
                 },
-                setAt(dimensionId, x, y, z, state) {
-                    let data = WD.rawData.get(dimensionId, x, y, z);
-                    data = this.set(data, state);
-                    WD.rawData.set(dimensionId, x, y, z, data);
+                setAt(dimensionId, x, y, z, level) {
+                    let data = WD.rawData.get(dimensionId, x, y, z, true);
+                    data = this.set(data, level);
+                    WD.rawData.set(dimensionId, x, y, z, data, true);
                 },
                 state: {
                     getAt(dimensionId, x, y, z) {
-                        let data = WD.rawData.get(dimensionId, x, y, z);
+                        let data = WD.rawData.get(dimensionId, x, y, z, true);
                         if (data < 0)
                             data = 0;
                         return this.get(data);
                     },
                     get(data) {
-                        return VoxelReader.decodeLevelStateFromVoxelData(data);
+                        return VoxelReader.getLevelState(data);
                     },
                     set(data, level) {
-                        return VoxelReader.encodeLevelStateIntoVoxelData(data, level);
+                        return VoxelReader.setLevelState(data, level);
                     },
                     setAt(dimensionId, x, y, z, state) {
-                        let data = WD.rawData.get(dimensionId, x, y, z);
+                        let data = WD.rawData.get(dimensionId, x, y, z, true);
                         data = this.set(data, state);
-                        WD.rawData.set(dimensionId, x, y, z, data);
+                        WD.rawData.set(dimensionId, x, y, z, data, true);
                     },
                 },
             },
@@ -236,34 +269,88 @@ const WD = {
         },
     },
     paint: {
-        voxel(data) {
+        getVoxelBrush() {
+            return;
+        },
+        voxel(data, update = true) {
             if (!data.dimension) {
                 data.dimension = WD._currentionDimension;
             }
-            const dimension = data.dimension;
+            const dimension = DimensionsData.getDimensionNumericId(data.dimension);
             const pos = data.position;
-            const chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
-            if (!chunk)
-                return false;
-            const voxelPaletteId = this._worldGen.getPaletteId(data.id, data.state ? data.state : 0);
-            const substance = VoxelData.getTrueSubstance(voxelPaletteId);
-            const voxelData = this._worldGen.getChunkId(voxelPaletteId);
-            if (voxelData < 0)
-                return false;
-            WD.heightMap.update.add(dimension, substance, pos[0], pos[1], pos[2]);
-            let stateData = VoxelReader.setShapeState(0, data.shapeState ? data.shapeState : 0);
-            const voxelPOS = WorldBounds.getVoxelPosition(pos[0], pos[1], pos[2]);
-            ChunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, data.shapeState ? data.shapeState : 0);
-            ChunkReader.setVoxelDataUseObj(chunk.data, voxelPOS, stateData, true);
+            let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
+            if (!chunk) {
+                let buffer = DataHooks.chunk.onGetSync.run([
+                    dimension,
+                    pos[0],
+                    pos[1],
+                    pos[2],
+                ]);
+                if (!buffer)
+                    return;
+                chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
+            }
+            this.__paint(dimension, data, chunk, update);
         },
-        erease(dimensionId, x, y, z) { },
-        _worldGen: {
-            getChunkId(voxelId) {
-                if (voxelId) {
-                    return VoxelReader.setId(voxelId, 0);
+        async voxelAsync(data) {
+            if (!data.dimension) {
+                data.dimension = WD._currentionDimension;
+            }
+            const dimension = DimensionsData.getDimensionNumericId(data.dimension);
+            const pos = data.position;
+            let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
+            if (!chunk) {
+                let buffer = await DataHooks.chunk.onGetAsync.run([
+                    dimension,
+                    pos[0],
+                    pos[1],
+                    pos[2],
+                ]);
+                if (!buffer)
+                    return;
+                chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
+            }
+            this.__paint(dimension, data, chunk);
+        },
+        __paint(dimension, data, chunk, update = true) {
+            const x = data.position[0];
+            const y = data.position[1];
+            const z = data.position[2];
+            const id = WD.voxel.id.getPaletteId(data.id, data.state ? data.state : 0);
+            const voxleData = VoxelData.getVoxelData(id);
+            if (id < 0)
+                return false;
+            WD.heightMap.update.add(dimension, voxleData.substance, x, y, z);
+            let stateData = VoxelReader.setShapeState(0, data.shapeState ? data.shapeState : 0);
+            if (voxleData.substance == "fluid" || voxleData.substance == "magma") {
+                stateData = VoxelReader.setLevel(stateData, 15);
+            }
+            if (data.secondaryVoxelId && data.secondaryVoxelId != "dve:air") {
+                const vid = WD.voxel.id.getPaletteId(data.secondaryVoxelId, data.secondaryState ? data.secondaryState : 0);
+                if (vid > 0) {
+                    stateData = VoxelReader.setId(vid, stateData);
                 }
-                return -1;
-            },
+            }
+            const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
+            ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, VoxelReader.setId(id, 0));
+            ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, stateData, true);
+            if (data.secondaryVoxelId && data.secondaryVoxelId != "dve:air") {
+            }
+            if (update) {
+                if (voxleData.lightSource && voxleData.lightValue) {
+                    DataHooks.paint.addToRGBUpdate.run([dimension, x, y, z]);
+                }
+            }
+        },
+        erease(dimensionId, x, y, z) {
+            const voxelCheck = WD.voxel.id.baseNumericAt(dimensionId, x, y, z);
+            if (voxelCheck < 2)
+                return;
+            const substance = WD.voxel.data.substance.get(voxelCheck);
+            WD.heightMap.update.remove(dimensionId, substance, x, y, z);
+            WD.voxel.air.set(dimensionId, x, y, z);
+        },
+        _worldGen: {
             getPaletteId(voxelId, voxelState) {
                 const numericID = WD.voxelPaletteMap[voxelId];
                 const stateId = voxelState + numericID;
@@ -278,19 +365,13 @@ const WD = {
         },
     },
     light: {
-        get(dimesnionId, x, y, z, log = false) {
+        get(dimesnionId, x, y, z) {
             const rawVoxelData = WD.rawData.get(dimesnionId, x, y, z);
-            if (log) {
-                console.log(rawVoxelData);
-            }
             if (rawVoxelData < 0)
                 return -1;
             const voxelId = VoxelReader.getId(rawVoxelData);
-            if (log) {
-                console.log(voxelId);
-            }
             if (voxelId == 0)
-                return VoxelReader.decodeLightFromVoxelData(rawVoxelData);
+                return VoxelReader.getLight(rawVoxelData);
             if (voxelId < 2)
                 return -1;
             const isLightSource = VoxelData.isLightSource(voxelId);
@@ -298,16 +379,10 @@ const WD = {
             if (isLightSource && lightValue) {
                 return lightValue;
             }
-            if (log) {
-                console.log(VoxelData.getTrueSubstance(voxelId));
-            }
             if (VoxelData.getTrueSubstance(voxelId) == "solid") {
                 return -1;
             }
-            if (log) {
-                console.log(VoxelReader.decodeLightFromVoxelData(rawVoxelData));
-            }
-            return VoxelReader.decodeLightFromVoxelData(rawVoxelData);
+            return VoxelReader.getLight(rawVoxelData);
         },
         set(dimesnionId, x, y, z, lightValue) {
             let data = WD.rawData.get(dimesnionId, x, y, z);
@@ -375,5 +450,4 @@ const WD = {
     },
 };
 export const WorldData = WD;
-WorldData.light.get("main", 0, 0, 0);
-WorldData.light.set("main", 0, 0, 0, 0xf);
+const brush = WD.paint.getVoxelBrush();

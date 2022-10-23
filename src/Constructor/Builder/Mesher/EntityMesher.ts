@@ -3,7 +3,7 @@ import type { VoxelShapeAddData } from "Meta/index";
 import {
  ConstructEntityIndexes,
  ConstructorToRenderMessages,
-} from "../../../Constants/InterComms/ConstructorToRender.js";
+} from "../../../Data/Constants/InterComms/ConstructorToRender.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 

@@ -1,5 +1,6 @@
 import { DVEW } from "../../../../../out/World/DivineVoxelEngineWorld.js";
 
+const brush = DVEW.getBrush();
 export type Directions = "north" | "south" | "east" | "west";
 const diagonalLineGenerators: Record<
  Directions,
@@ -15,10 +16,14 @@ const diagonalLineGenerators: Record<
  north: (voxel, shapeState, yStart, xzStart, start, end) => {
   let y = yStart;
   for (let z = start; z < end; z++) {
-   DVEW.worldData.paintVoxel(voxel, 0, shapeState, xzStart, y, z);
-   for(let zy = y - 1; zy >= yStart ; zy--) {
-    DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, xzStart, zy, z);
-   } 
+   brush.setXYZ(xzStart, y, z).setId(voxel).setShapeState(shapeState).paint();
+   for (let zy = y - 1; zy >= yStart; zy--) {
+    brush
+     .setXYZ(xzStart, zy, z)
+     .setId("dve:dreamstonepillar")
+     .setShapeState(shapeState)
+     .paint();
+   }
    y++;
   }
  },
@@ -26,34 +31,45 @@ const diagonalLineGenerators: Record<
   let y = yStart;
 
   for (let z = start; z > end; z--) {
-   DVEW.worldData.paintVoxel(voxel, 0, shapeState, xzStart, y, z);
-   for(let zy = y - 1; zy >= yStart ; zy--) {
-    DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, xzStart, zy, z);
-   } 
+   brush.setXYZ(xzStart, y, z).setId(voxel).setShapeState(shapeState).paint();
+   for (let zy = y - 1; zy >= yStart; zy--) {
+    brush
+     .setXYZ(xzStart, zy, z)
+     .setId("dve:dreamstonepillar")
+     .setShapeState(shapeState)
+     .paint();
+   }
    y++;
   }
  },
  east: (voxel, shapeState, yStart, xzStart, start, end) => {
   let y = yStart;
   for (let x = start; x < end; x++) {
-   DVEW.worldData.paintVoxel(voxel, 0, shapeState, x, y, xzStart);
-   for(let zy = y - 1; zy >= yStart ; zy--) {
-    DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, x, zy, xzStart);
-   } 
+   brush.setXYZ(x, y, xzStart).setId(voxel).setShapeState(shapeState).paint();
+   for (let zy = y - 1; zy >= yStart; zy--) {
+    brush
+     .setXYZ(x, zy, xzStart)
+     .setId("dve:dreamstonepillar")
+     .setShapeState(shapeState)
+     .paint();
+   }
    y++;
   }
  },
  west: (voxel, shapeState, yStart, xzStart, start, end) => {
   let y = yStart;
   for (let x = start; x > end; x--) {
-   DVEW.worldData.paintVoxel(voxel, 0, shapeState, x, y, xzStart);
+   brush.setXYZ(x, y, xzStart).setId(voxel).setShapeState(shapeState).paint();
 
-   for(let zy = y - 1; zy >= yStart ; zy--) {
-    DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, shapeState, x, zy, xzStart);
-   } 
+   for (let zy = y - 1; zy >= yStart; zy--) {
+    brush
+     .setXYZ(x, zy, xzStart)
+     .setId("dve:dreamstonepillar")
+     .setShapeState(shapeState)
+     .paint();
+   }
    y++;
   }
-
  },
 };
 

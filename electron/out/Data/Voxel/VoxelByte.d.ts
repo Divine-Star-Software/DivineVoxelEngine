@@ -5,12 +5,12 @@
 export declare const VoxelReader: {
     setId(id: number, value: number): number;
     getId(value: number): number;
-    decodeLightFromVoxelData(voxelData: number): number;
-    encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-    decodeLevelFromVoxelData(stateData: number): number;
-    encodeLevelIntoVoxelData(stateData: number, level: number): number;
-    decodeLevelStateFromVoxelData(stateData: number): number;
-    encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
+    getLight(voxelData: number): number;
+    setLight(voxelData: number, encodedLight: number): number;
+    getLevel(stateData: number): number;
+    setLevel(stateData: number, level: number): number;
+    getLevelState(stateData: number): number;
+    setLevelState(stateData: number, levelState: number): number;
     getShapeState(voxelData: number): number;
     setShapeState(voxelData: number, shapeState: number): number;
 };

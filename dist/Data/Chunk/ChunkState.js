@@ -1,4 +1,4 @@
-import { PositionByte } from "../../Global/Util/PositionByte.js";
+import { PositionByte } from "../Util/PositionByte.js";
 export const ChunkState = {
     positionByte: PositionByte,
     indexes: {

@@ -1,3 +1,5 @@
+//types
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 //objects
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 export const DataManager = {
@@ -168,11 +170,11 @@ export const DataManager = {
         //chunks positions
         returnValue += 6 * totalChunks;
         //voxels
-        returnValue += totalChunks * DVEDL.worldBounds.chunkTotalVoxels;
+        returnValue += totalChunks * WorldBounds.chunkTotalVoxels;
         //voxel states
-        returnValue += totalChunks * DVEDL.worldBounds.chunkTotalVoxels;
+        returnValue += totalChunks * WorldBounds.chunkTotalVoxels;
         //height map
-        returnValue += totalChunks * DVEDL.worldBounds.chunkArea * 2;
+        returnValue += totalChunks * WorldBounds.chunkArea * 2;
         //min max map
         returnValue += totalChunks * 2;
         return returnValue * 4;

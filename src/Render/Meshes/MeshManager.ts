@@ -2,7 +2,7 @@ import {
  ConstructEntityIndexes,
  ConstructItemIndexes,
  SetChunkDataIndexes,
-} from "../../Constants/InterComms/ConstructorToRender.js";
+} from "../../Data/Constants/InterComms/ConstructorToRender.js";
 import type {
  MeshSetData,
  VoxelMeshInterface,

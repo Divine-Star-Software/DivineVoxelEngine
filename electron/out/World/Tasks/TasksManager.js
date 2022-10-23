@@ -1,5 +1,5 @@
 import { QueuesManager } from "../Queues/QueuesManager.js";
-import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 export const TasksManager = {
     runQueue: {

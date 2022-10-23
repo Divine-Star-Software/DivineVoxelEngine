@@ -6,8 +6,8 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 
 RegisterVoxels((DVEN as any));
-DVEPH.$INIT();
-await DVEN.$INIT({});
+DVEPH.$INIT(DVEN.voxelManager);
+await DVEN.$INIT();
 
 GetNexusPlayer(DVEN,DVEPH);;
 

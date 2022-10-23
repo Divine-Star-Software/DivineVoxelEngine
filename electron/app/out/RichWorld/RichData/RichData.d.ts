@@ -1,5 +1,4 @@
-import type { RichChunk } from "Meta/index";
-import type { RichWorldRegion } from "Meta/World/WorldData/World.types";
+import { RichChunk, RichRegion, RichWorldDimensions } from "Meta/Data/RichWorldData.types.js";
 export declare const RichData: {
     worldBounds: {
         __maxChunkYSize: number;
@@ -61,11 +60,11 @@ export declare const RichData: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: import("Meta/index").Position3Matrix): string;
+        getChunkKey(chunkPOS: import("../../Meta/Util.types.js").Position3Matrix): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("Meta/index").Position3Matrix): string;
+        getRegionKey(regionPOS: import("../../Meta/Util.types.js").Position3Matrix): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index").Position3Matrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../../Meta/Util.types.js").Position3Matrix): {
             x: number;
             y: number;
             z: number;
@@ -76,18 +75,19 @@ export declare const RichData: {
             y: number;
             z: number;
         };
-        getWorldColumnKey(x: number, z: number, y?: number): string;
-        getWorldColumnPosition(x: number, z: number, y?: number): {
+        getColumnKey(x: number, z: number, y?: number): string;
+        getColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
             y: number;
         };
     };
-    richRegions: Record<string, RichWorldRegion>;
+    _dimensions: RichWorldDimensions;
     initalData: Record<string, any>;
-    getRegion(x: number, y: number, z: number): false | RichWorldRegion;
+    getRegion(x: number, y: number, z: number): false | RichRegion;
+    getDimension(dimension: string): Record<string, RichRegion>;
     getChunk(x: number, y: number, z: number): false | RichChunk;
-    addRegion(x: number, y: number, z: number): false | RichWorldRegion;
+    addRegion(x: number, y: number, z: number): false | RichRegion;
     addChunk(x: number, y: number, z: number): RichChunk;
     setData(x: number, y: number, z: number, data: any): void;
     getData<T>(x: number, y: number, z: number): false | T;

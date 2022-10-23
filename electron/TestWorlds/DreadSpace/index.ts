@@ -23,6 +23,7 @@ const workers = SetUpWorkers(
  "../Shared/Constructor/constructor.js"
 );
 
+(window as any).DVER = DVER;
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,

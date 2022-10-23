@@ -2,8 +2,10 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-
-await DVEW.$INIT({});
+const brush = DVEW.getBrush();
+const builder = DVEW.getBuilder();
+const tasks = DVEW.getTasksManager();
+await DVEW.$INIT();
 
 const depth = 32;
 let startX = -depth;
@@ -14,29 +16,28 @@ let endZ = depth;
 const buildAll = () => {
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.buildChunk(x, 0, z);
+   builder.setXZ(x, z).buildColumn();
   }
  }
 };
 
 const runLightRemove = () => {
  setTimeout(async () => {
-  await DVEW.worldData.requestVoxelBeRemoved(x, 12, z + 5);
+  await brush.setXYZ(x, 12, z + 5).ereaseAndAwaitUpdate();
   buildAll();
  }, 2000);
 };
 const runAdd = () => {
  setTimeout(async () => {
-  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, 0);
-  await DVEW.worldData.requestVoxelAdd("dve:dreamstone", 0, 0, 0, 10, -10);
+  await brush.setId("dve:dreamstone").setXYZ(0, 10, 0).paintAndAwaitUpdate();
+  await brush.setId("dve:dreamstone").setXYZ(0, 10, -10).paintAndAwaitUpdate();
   runLightRemove();
  }, 2000);
 };
 const runRemove = () => {
  setTimeout(async () => {
-  await DVEW.worldData.requestVoxelBeRemoved(x, 10, -10);
-  await DVEW.worldData.requestVoxelBeRemoved(x, 10, z);
-
+  await brush.setXYZ(x, 10, -10).ereaseAndAwaitUpdate();
+  await brush.setXYZ(x, 10, z).ereaseAndAwaitUpdate();
   runAdd();
  }, 2000);
 };
@@ -44,7 +45,7 @@ const runRemove = () => {
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateChunk(x, 0, z);
-  DVEW.queues.worldSun.add(x, z);
+  tasks.light.worldSun.add(x, z);
  }
 }
 
@@ -52,7 +53,7 @@ const x = 0;
 const z = 0;
 let t1 = performance.now();
 console.log("start");
-await DVEW.queues.worldSun.run();
+await tasks.light.worldSun.runAndAwait();
 let t2 = performance.now();
 console.log("end");
 console.log(t2 - t1);
@@ -60,10 +61,10 @@ console.log(t2 - t1);
 //-1 10 0
 //0 10 -1
 buildAll();
-await DVEW.worldData.requestVoxelAdd("dve:dreamlamp", 0, 0, 23, 6, -8);
+await brush.setId("dve:dreamlamp").setXYZ(23, 6, -6).paintAndAwaitUpdate();
 
 setTimeout(async () => {
- await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 0, 12, 5);
-  runRemove();
+ await brush.setId("dve:dreamlamp").setXYZ(0, 12, 5).paintAndAwaitUpdate();
+ runRemove();
 }, 2000);
 (self as any).DVEW = DVEW;

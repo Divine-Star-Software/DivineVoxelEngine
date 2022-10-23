@@ -28,7 +28,9 @@ vec3 p = position;
 
 if(doEffects == 1.){
 float height = fbm(posWorld.xz * 0.08 + time);
-p.y += height * 0.08 - .13;
+
+  p.y += (height * 0.03) - .05;
+
 }
 
 
@@ -70,6 +72,6 @@ varying float vFlow;
    rgb = getColor(rgb);
    vec4 mixLight = getLight(rgb);
    vec3 finalColor = doFog(mixLight);
-  gl_FragColor = vec4(finalColor.rgb , .7 ); 
+  gl_FragColor = vec4(finalColor.rgb , .75 ); 
 `,
 };

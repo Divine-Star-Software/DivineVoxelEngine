@@ -1,19 +1,14 @@
 //objects
-import { EngineSettings } from "../Global/EngineSettings.js";
+import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
 import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
 import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
-import { VoxelManager } from "./Voxels/VoxelManager.js";
-import { ItemManager } from "./Items/ItemManager.js";
-import { WorldBounds } from "../Data/World/WorldBounds.js";
+import { VoxelManager } from "./Managers/Voxels/VoxelManager.js";
+import { ItemManager } from "./Managers/Items/ItemManager.js";
 //inter comms
-import { ParentComm } from "./InterComms/Parent/ParentComm.js";
-import { WorldComm } from "./InterComms/World/WorldComm.js";
-//matrix
-import { WorldMatrix } from "../Matrix/WorldMatrix.js";
-import { MatrixMap } from "../Matrix/MatrixMap.js";
-import { VoxelMatrix } from "../Matrix/VoxelMatrix.js";
+import { ParentComm } from "./Threads/Parent/ParentComm.js";
+import { WorldComm } from "./Threads/World/WorldComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { Tasks } from "./Tasks/Tasks.js";
@@ -23,9 +18,6 @@ import { DataManager } from "../Data/DataManager.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
-    __queueStatesSet: false,
-    _3dFlatArray: Util.getFlat3DArray(),
-    worldBounds: WorldBounds,
     UTIL: Util,
     settings: EngineSettings,
     dataSyncNode: DataSyncNode,
@@ -34,9 +26,6 @@ export const DVEC = {
     DVEP: DVEP,
     DVEWG: DVEWG,
     tasks: Tasks,
-    worldMatrix: WorldMatrix,
-    matrixMap: MatrixMap,
-    voxelMatrix: VoxelMatrix,
     parentComm: ParentComm,
     worldComm: WorldComm,
     TC: ThreadComm,
@@ -44,16 +33,13 @@ export const DVEC = {
     itemManager: ItemManager,
     syncSettings(data) {
         this.settings.syncSettings(data);
-        this.settings.syncWithWorldBounds(this.worldBounds);
-        this.__settingsHaveBeenSynced = true;
-        this.worldMatrix.chunkReader.syncSettings();
         DVEB.syncSettings(data);
+        this.__settingsHaveBeenSynced = true;
     },
     reStart() { },
     isReady() {
         if (this.environment == "node") {
-            return (DVEC.worldComm.isPortSet() &&
-                DVEC.__settingsHaveBeenSynced);
+            return DVEC.worldComm.isPortSet() && DVEC.__settingsHaveBeenSynced;
         }
         else {
             return (DVEC.worldComm.isPortSet() &&
@@ -61,8 +47,8 @@ export const DVEC = {
                 DVEB.textureManager.isReady());
         }
     },
-    async $INIT(initData) {
-        await InitWorker(this, initData);
+    async $INIT() {
+        await InitWorker(this);
     },
 };
 DVEC.environment = Util.getEnviorment();

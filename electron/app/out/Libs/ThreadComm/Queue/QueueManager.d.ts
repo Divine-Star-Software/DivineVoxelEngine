@@ -26,5 +26,6 @@ export declare class QueueManager<T> {
     run(queueId?: string, filter?: (data: T) => 0 | 1 | 2): void;
     runAndAwait(queueId?: string, filter?: (data: T) => 0 | 1 | 2): Promise<boolean>;
     awaitAll(queueId?: string): Promise<boolean>;
+    onDone(queueId: string | undefined, run: Function): void;
     isDone(queueId?: string): boolean;
 }

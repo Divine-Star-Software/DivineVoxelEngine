@@ -1,20 +1,20 @@
-import { DVED } from "../../../out/Data/DivineVoxelEngineData.js";
+import { DVEDL } from "../../../out/DataLoader/DivineVoxelEngineDataLoader.js";
 import { DataHanlder } from "./DataHandler.js";
 import { DataServer } from "./DataServer.js";
-await DVED.$INIT({});
-DVED.dataManager.setDataHandler(DataHanlder);
+await DVEDL.$INIT();
+DVEDL.dataManager.setDataHandler(DataHanlder);
 /* DVED.worldComm.listenForMessage("load", () => {
  runTest();
 }); */
 await DataServer.$INIT();
 
 console.log("load");
-await DVED.dataManager.loadRegion(0, 0, 0);
+await DVEDL.dataManager.loadRegion(0, 0, 0);
 console.log("done loading");
-DVED.worldComm.sendMessage("load", []);
+DVEDL.worldComm.sendMessage("load", []);
 
 const runTest = async () => {
  console.log("start");
- await DVED.dataManager.saveRegion(0, 0, 0);
+ await DVEDL.dataManager.saveRegion(0, 0, 0);
  console.log("end");
 };

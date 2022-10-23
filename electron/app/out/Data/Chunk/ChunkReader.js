@@ -1,4 +1,4 @@
-import { Flat3DArray } from "../../Global/Util/Flat3DArray.js";
+import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { WorldBounds } from "../World/WorldBounds.js";
 export const ChunkReader = {
     chunkByteSize: 0,
@@ -98,16 +98,22 @@ export const ChunkReader = {
             this.indexes.heightMap);
     },
     getVoxelData(chunkData, x, y, z, secondary = false) {
-        return chunkData.getUint32(this.getVoxelChunkDataIndex(x, y, z, secondary));
+        if (secondary) {
+            return Atomics.load(chunkData.segement2, Flat3DArray.getIndex(x, y, z));
+        }
+        return Atomics.load(chunkData.segement1, Flat3DArray.getIndex(x, y, z));
     },
     setVoxelData(chunkData, x, y, z, data, secondary = false) {
-        chunkData.setUint32(this.getVoxelChunkDataIndex(x, y, z, secondary), data);
+        if (secondary) {
+            return Atomics.store(chunkData.segement2, Flat3DArray.getIndex(x, y, z), data);
+        }
+        return Atomics.store(chunkData.segement1, Flat3DArray.getIndex(x, y, z), data);
     },
     getVoxelDataUseObj(chunkData, position, secondary = false) {
-        return chunkData.getUint32(this.getVoxelChunkDataIndex(position.x, position.y, position.z, secondary));
+        return this.getVoxelData(chunkData, position.x, position.y, position.z, secondary);
     },
     setVoxelDataUseObj(chunkData, position, data, secondary = false) {
-        chunkData.setUint32(this.getVoxelChunkDataIndex(position.x, position.y, position.z, secondary), data);
+        return this.setVoxelData(chunkData, position.x, position.y, position.z, data, secondary);
     },
     getHeightMapData(chunkData, x, y, z) {
         return chunkData.getUint32(this.getHeightMapIndex(x, y, z));

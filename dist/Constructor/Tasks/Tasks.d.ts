@@ -1,6 +1,7 @@
+import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     build: {
-        chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
         entity: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         item: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };

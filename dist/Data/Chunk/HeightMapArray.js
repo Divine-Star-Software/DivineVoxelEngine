@@ -1,4 +1,4 @@
-import { Flat3DArray } from "../../Global/Util/Flat3DArray.js";
+import { Flat3DArray } from "../Util/Flat3DArray.js";
 /**# HeightMapArray
  * ---
  * Used to read height map data.

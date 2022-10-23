@@ -1,8 +1,9 @@
 import type { Queue } from "Global/Util/Queue.js";
 import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
 import { PopulateWorldColumnWithSunLight, RunSunLightFloodDown, RunSunLightFloodOut, runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/SunLight.js";
+import { DataTool } from "../../../Tools/Data/DataTool.js";
 export declare const IlluminationManager: {
-    lightByte: {
+    lightData: {
         SRS: number;
         _lightValues: number[];
         getS(value: number): number;
@@ -60,6 +61,6 @@ export declare const IlluminationManager: {
     _RGBlightUpdateQue: number[][];
     _RGBlightRemovalQue: number[][];
     _visitMap: Record<string, boolean>;
-    checkForSunLight(x: number, y: number, z: number): void;
-    checkForRGBLight(x: number, y: number, z: number): void;
+    _sDataTool: DataTool;
+    _nDataTool: DataTool;
 };

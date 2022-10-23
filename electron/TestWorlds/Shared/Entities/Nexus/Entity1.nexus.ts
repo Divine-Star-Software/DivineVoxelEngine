@@ -15,16 +15,16 @@ export class Entity1Nexus implements NexusEntityInterface {
  states: Float32Array;
  active: boolean;
  $INIT(DVEN: DivineVoxelEngineNexus, data: NexusEntityData, otherData?: any) {
-  console.log(data);
+ 
 
   setTimeout(() => {
    setInterval(() => {
-    const voxel = DVEN.worldMatrix.getVoxel(
+    const voxel = DVEN.worldData.voxel.get(
+     0,
      this.position[0] >> 0,
      (this.position[1] - 1) >> 0,
      this.position[2] >> 0
     );
-
 
     if (voxel && voxel[0] == "dve:air") {
      this.position[1] -= 0.1;

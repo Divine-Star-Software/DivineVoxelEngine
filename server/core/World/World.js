@@ -3,7 +3,7 @@ import { WebSocketServer } from "ws";
 import { DVEW } from "../../dve/World/DivineVoxelEngineWorld.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 const d = {
     star: `         [1m[35m.[0m
         [1m[35m,[0m[1m[35mX[0m[1m[35m,[0m

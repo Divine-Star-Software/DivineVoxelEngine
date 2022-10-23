@@ -1,4 +1,3 @@
-import { ChunkVoxels } from "Meta/World/WorldData/Chunk.types";
 import { Position3Matrix } from "Meta/Util.types";
 /**# Flat 3D Array
  * ---
@@ -16,14 +15,14 @@ export declare const Flat3DArray: {
         z: number;
     };
     setBounds(x: number, y: number, z: number): void;
-    getValue(x: number, y: number, z: number, array: ChunkVoxels): number;
-    getValueUseObj(position: Position3Matrix, array: ChunkVoxels): number;
-    getValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels): number;
-    setValue(x: number, y: number, z: number, array: ChunkVoxels, value: number): void;
-    setValueUseObj(position: Position3Matrix, array: ChunkVoxels, value: number): void;
-    setValueUseObjSafe(position: Position3Matrix, array: ChunkVoxels, value: number): void;
-    deleteValue(x: number, y: number, z: number, array: ChunkVoxels): void;
-    deleteUseObj(position: Position3Matrix, array: ChunkVoxels): void;
+    getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+    getValueUseObj(position: Position3Matrix, array: Uint32Array | number[]): number;
+    getValueUseObjSafe(position: Position3Matrix, array: Uint32Array | number[]): number;
+    setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+    setValueUseObj(position: Position3Matrix, array: Uint32Array | number[], value: number): void;
+    setValueUseObjSafe(position: Position3Matrix, array: Uint32Array | number[], value: number): void;
+    deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+    deleteUseObj(position: Position3Matrix, array: Uint32Array | number[]): void;
     getIndex(x: number, y: number, z: number): number;
     getXYZ(index: number): Position3Matrix;
 };

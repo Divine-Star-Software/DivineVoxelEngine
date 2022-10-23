@@ -5,7 +5,10 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 RegisterVoxels(DVEW);
 
-await DVEW.$INIT({});
+await DVEW.$INIT();
+
+const brush = DVEW.getBrush();
+const builder = DVEW.getBuilder();
 
 const fillWithChunks = () => {
  let startX = -64;
@@ -15,7 +18,7 @@ const fillWithChunks = () => {
 
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
-   DVEW.worldData.fillWorldCollumnWithChunks(x, z);
+   DVEW.data.worldRegister.column.fill(0, x, z);
   }
  }
 };
@@ -31,7 +34,6 @@ const topBottomTest = async () => {
    WorldGen.generateChunk(x, 0, z, 0);
   }
  }
- await DVEW.worldData.requestVoxelAdd("dve:debugbox", 0, 0, 0, 16, 0);
 };
 
 const northSouthTest = async () => {
@@ -45,14 +47,6 @@ const northSouthTest = async () => {
    WorldGen.generateChunk(x, 0, z, 1);
   }
  }
- await DVEW.worldData.requestVoxelAdd(
-  "dve:debugbox",
-  0,
-  0,
-  startX + 16,
-  16,
-  1
- );
 };
 
 const eastWestTest = async () => {
@@ -66,36 +60,29 @@ const eastWestTest = async () => {
    WorldGen.generateChunk(x, 0, z, 2);
   }
  }
- await DVEW.worldData.requestVoxelAdd(
-  "dve:debugbox",
-  0,
-  0,
-  startX + 14,
-  16,
-  0
- );
 };
 
 fillWithChunks();
+
+brush
+ .setId("dve:dreamstone")
+ .setXYZ(-15, 17, 15)
+ .paint()
+ .setXYZ(-15, 17, 14)
+ .paint();
+
 topBottomTest();
 northSouthTest();
 eastWestTest();
 
-await DVEW.worldData.requestVoxelAdd(
- "dve:dreamstone",
- 0,
- 0,
- -15,
- 17,
- 15
-);
-await DVEW.worldData.requestVoxelAdd(
- "dve:dreamstone",
- 0,
- 0,
- -15,
- 17,
- 14
-);
+brush.setId("dve:debugbox").setXYZ(0, 16, 0).paintAndAwaitUpdate();
+brush
+ .setId("dve:debugbox")
+ .setXYZ(-48 + 16, 16, 1)
+ .paintAndAwaitUpdate();
+brush
+ .setId("dve:debugbox")
+ .setXYZ(16 + 14, 16, 1)
+ .paintAndAwaitUpdate();
 
 (self as any).DVEW = DVEW;

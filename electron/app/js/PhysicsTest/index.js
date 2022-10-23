@@ -2,7 +2,7 @@ import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRe
 import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
+import { DVEM } from "../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { PlayerStatesIndexes, PlayerStatesValues, } from "./Shared/Player.data.js";
 RegisterTexutres(DVER);
 let ready = false;

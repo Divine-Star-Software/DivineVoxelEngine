@@ -1,21 +1,19 @@
 //types
 import type { WorldGenInterface } from "Meta/WorldGen/WorldGen.types";
 import type { VoxelData } from "Meta/index.js";
-import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 import type { Position3Matrix } from "Meta/Util.types.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { Util } from "../../Global/Util.helper.js";
-import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 //matrix
-import { WorldMatrix } from "../../Matrix/WorldMatrix.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { ChunkData } from "Meta/Data/WorldData.types.js";
+import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 export const DVEWG = {
  worldGen: <WorldGenInterface | null>null,
 
- heightByte: Util.getHeightByte(),
- voxelByte: Util.getVoxelByte(),
- _3dArray: Util.getFlat3DArray(),
+ heightByte: HeightMapData,
+
  worldBounds: WorldBounds,
 
  setWorldGen(worldGen: WorldGenInterface) {
@@ -33,7 +31,7 @@ export const DVEWG = {
  __handleHeightMapUpdateForVoxelAdd(
   voxelPOS: Position3Matrix,
   voxelData: VoxelData,
-  chunk: MatrixLoadedChunk
+  chunk: ChunkData
  ) {
   let substance = voxelData.substance;
   if (substance == "transparent") {
@@ -50,11 +48,11 @@ export const DVEWG = {
  },
 
  getVoxelPaletteId(voxelId: string, voxelStateId: number) {
-  const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
+ /*  const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
   if (paletteId) {
    return this.voxelByte.setId(paletteId, 0);
   }
-  return -1;
+  return -1; */
  },
 
  _paintVoxel(

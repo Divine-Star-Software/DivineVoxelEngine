@@ -2,7 +2,7 @@
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ShapeHelper } from "./Shapes/ShapeHelper.js";
 import { UVHelper } from "./Shapes/UVHelper.js";
-import { ShapeManager } from "./Shapes/ShapeManager.js";
+import { ShapeManager } from "../Managers/Shapes/ShapeManager.js";
 import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
@@ -25,17 +25,16 @@ export const DVEB = {
     processor: Processor,
     voxelHelper: VoxelHelper,
     entityConstructor: EntityConstructor,
+    dimension: 0,
     async $INIT() {
         InitBuilder(this);
     },
     syncSettings(settings) {
         this.processor.syncSettings(settings);
     },
-    async buildChunk(chunkX, chunkY, chunkZ, LOD = 1) {
-        let chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
+    async buildChunk(dimension, chunkX, chunkY, chunkZ, LOD = 1) {
+        let chunk = DVEC.data.worldRegister.chunk.get(this.dimension, chunkX, chunkY, chunkZ);
         if (!chunk) {
-            // await DVEC.matrixHub.requestChunkSync(chunkX, chunkY, chunkZ);
-            //   chunk = DVEC.worldMatrix.getChunk(chunkX, chunkY, chunkZ);
             console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
             return;
         }

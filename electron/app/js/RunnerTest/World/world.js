@@ -8,7 +8,9 @@ DVEW.parentComm.listenForMessage("connect-player", (data, event) => {
     playerWatcher.setPlayerSharedArrays(data);
     playerWatcher.startWatchingPlayer();
 });
-await DVEW.$INIT({});
+await DVEW.$INIT();
+const builder = DVEW.getBuilder();
+const tasks = DVEW.getTasksManager();
 let startX = -32;
 let startZ = -128;
 let endX = 48;
@@ -25,9 +27,9 @@ for (let x = startX; x < endX; x += 16) {
         WorldGen.generateChunk(x, 0, z, type);
     }
 }
-await DVEW.queues.rgb.update.runAndAwait();
+await tasks.light.rgb.update.runAndAwait();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        DVEW.buildChunk(x, 0, z);
+        builder.setXZ(x, z).buildColumn();
     }
 }

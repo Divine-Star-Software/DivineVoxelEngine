@@ -1,13 +1,8 @@
-import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
-import type { DVECInitData } from "Meta/Constructor/DVEC";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 
-export async function InitWorker(
- DVEC: DivineVoxelEngineConstructor,
- initData: DVECInitData
-) {
- DVEC.settings.setContext("DVEC");
+export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
  await ThreadComm.$INIT("constructor");
 
  DVEC.DVEB.$INIT();

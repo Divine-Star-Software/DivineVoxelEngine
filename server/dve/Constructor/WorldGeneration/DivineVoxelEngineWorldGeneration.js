@@ -1,15 +1,12 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { Util } from "../../Global/Util.helper.js";
-import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 //matrix
-import { WorldMatrix } from "../../Matrix/WorldMatrix.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 export const DVEWG = {
     worldGen: null,
-    heightByte: Util.getHeightByte(),
-    voxelByte: Util.getVoxelByte(),
-    _3dArray: Util.getFlat3DArray(),
+    heightByte: HeightMapData,
     worldBounds: WorldBounds,
     setWorldGen(worldGen) {
         this.worldGen = worldGen;
@@ -29,11 +26,11 @@ export const DVEWG = {
         this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
     },
     getVoxelPaletteId(voxelId, voxelStateId) {
-        const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
-        if (paletteId) {
-            return this.voxelByte.setId(paletteId, 0);
-        }
-        return -1;
+        /*  const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);
+         if (paletteId) {
+          return this.voxelByte.setId(paletteId, 0);
+         }
+         return -1; */
     },
     _paintVoxel(voxelId, voxelStateId, shapeState, x, y, z) {
         /*   const chunk = WorldMatrix.getChunk(x, y, z);

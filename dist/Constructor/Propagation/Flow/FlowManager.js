@@ -1,17 +1,25 @@
 import { RunFlowNoChunkBuild } from "./Functions/RunFlowNoChunkBuild.js";
 import { RunFlowReduce, RunFlowRemove, RunRemovePropagation, } from "./Functions/RunFlowRemove.js";
-import { WorldMatrix } from "../../../Matrix/WorldMatrix.js";
 import { RunFlow, RunFlowIncrease, RunFlowPropagation, } from "./Functions/RunFlow.js";
 import { DVEP } from "../DivineVoxelEnginePropagation.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import { CardinalNeighbors } from "../../../Constants/Util/CardinalNeighbors.js";
+import { $3dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { WorldRegister } from "../../../Data/World/WorldRegister.js";
+import { LightData } from "../../../Data/Light/LightByte.js";
+import { WorldBounds } from "../../../Data/World/WorldBounds.js";
+import { DataTool } from "../../../Tools/Data/DataTool.js";
+import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
 export const FlowManager = {
     //voxelByte : Util.
-    currentVoxel: "",
-    worldMatrx: WorldMatrix,
+    lightData: LightData,
+    dimension: 0,
+    currentVoxel: 0,
     _visitedMap: {},
     _flowQue: [],
     _flowRemoveQue: [],
+    _brush: new VoxelBrush(),
+    _sDataTool: new DataTool(),
+    _nDataTool: new DataTool(),
     runRemovePropagation: RunRemovePropagation,
     runFlowReduce: RunFlowReduce,
     runFlowRemove: RunFlowRemove,
@@ -28,12 +36,13 @@ export const FlowManager = {
         return this._visitedMap[`${x}-${y}-${z}`] == true;
     },
     setVoxel(level, levelState, x, y, z) {
-        WorldMatrix.setVoxel(this.currentVoxel, 0, 0, x, y, z);
-        WorldMatrix.setLevel(level, x, y, z);
-        WorldMatrix.setLight(x, y, z, this.getAbsorbLight(x, y, z));
-        if (levelState == 1) {
-            WorldMatrix.setLevelState(levelState, x, y, z);
-        }
+        this._brush.setXYZ(x, y, z).paint();
+        this._sDataTool.loadIn(x, y, z);
+        this._sDataTool
+            .setLevel(level)
+            .setLevelState(levelState)
+            .setLight(this.getAbsorbLight(x, y, z))
+            .commit();
     },
     runRemoveCheck(x, y, z) {
         const cl = this.getLevel(x, y, z);
@@ -59,14 +68,16 @@ export const FlowManager = {
         }
     },
     setCurrentVoxel(x, y, z) {
-        const voxelCheck = this.worldMatrx.getVoxel(x, y, z);
-        if (!voxelCheck || voxelCheck[0] == "dve:air") {
+        if (!this._sDataTool.loadIn(x, y, z))
+            return false;
+        if (!this._sDataTool.isRenderable()) {
             return false;
         }
-        const substance = this.worldMatrx.getVoxelSubstance(x, y, z);
+        const substance = this._sDataTool.getSubstance();
         if (substance != "fluid" && substance != "magma")
             return false;
-        this.currentVoxel = voxelCheck[0];
+        this.currentVoxel = this._sDataTool.getId();
+        this._brush.setId(this._sDataTool.getStringId());
         return true;
     },
     runRebuildQue() {
@@ -77,15 +88,15 @@ export const FlowManager = {
             const x = node[0];
             const y = node[1];
             const z = node[2];
-            DVEC.DVEB.buildChunk(x, y, z);
+            DVEC.DVEB.buildChunk(this.dimension, x, y, z);
         }
         DVEP.runRebuildQue();
         this.rebuildMap = {};
     },
     __addToRebuildQue(x, y, z) {
-        const key = DVEC.worldBounds.getChunkKeyFromPosition(x, y, z);
-        const chunkPOS = DVEC.worldBounds.getChunkPosition(x, y, z);
-        if (!this.worldMatrx.getChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z))
+        const key = WorldBounds.getChunkKeyFromPosition(x, y, z);
+        const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+        if (!WorldRegister.chunk.get(this.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z))
             return;
         if (!this.rebuildMap[key]) {
             this.rebuildMap[key] = true;
@@ -114,31 +125,33 @@ export const FlowManager = {
         }
     },
     setLevel(level, x, y, z) {
-        WorldMatrix.setLevel(level, x, y, z);
+        this._nDataTool.loadIn(x, y, z);
+        this._nDataTool.setLevel(level).commit();
     },
     removeVoxel(x, y, z) {
-        WorldMatrix.setAir(x, y, z, 0);
+        this._nDataTool.loadIn(x, y, z);
+        this._nDataTool.setAir().commit();
     },
     getLevel(x, y, z) {
-        const voxel = WorldMatrix.getVoxel(x, y, z);
-        if (!voxel)
+        if (!this._nDataTool.loadIn(x, y, z))
             return -2;
-        if (voxel[0] == this.currentVoxel) {
-            return WorldMatrix.getLevel(x, y, z);
-        }
-        if (voxel[0] == "dve:air") {
+        const voxel = this._nDataTool.data.baseId;
+        if (this._nDataTool.isAir()) {
             return 0;
+        }
+        if (voxel == this.currentVoxel) {
+            return this._nDataTool.getLevel();
         }
         return -1;
     },
     getLevelState(x, y, z) {
-        const voxel = WorldMatrix.getVoxel(x, y, z);
-        if (!voxel)
+        if (!this._nDataTool.loadIn(x, y, z))
             return -2;
-        if (voxel[0] == this.currentVoxel) {
-            return WorldMatrix.getLevelState(x, y, z);
+        const voxel = this._nDataTool.data.baseId;
+        if (voxel == this.currentVoxel) {
+            return this._nDataTool.getLevelState();
         }
-        if (voxel[0] == "dve:air") {
+        if (this._nDataTool.isAir()) {
             return -1;
         }
         return -1;
@@ -168,12 +181,15 @@ export const FlowManager = {
         return new Promise((resolve, reject) => setTimeout(resolve, ms));
     },
     getAbsorbLight(x, y, z) {
-        const lightByte = DVEC.UTIL.getLightByte();
         let brightest = 0;
-        for (const n of CardinalNeighbors) {
-            let l = WorldMatrix.getLight(x + n[0], y + n[1], z + n[2]);
-            brightest = l;
+        for (const n of $3dMooreNeighborhood) {
+            if (!this._nDataTool.loadIn(x + n[0], y + n[1], z + n[2]))
+                continue;
+            let l = this._nDataTool.getLight();
+            if (brightest < l) {
+                brightest = l;
+            }
         }
-        return lightByte.minusOneForAll(brightest);
+        return this.lightData.minusOneForAll(brightest);
     },
 };

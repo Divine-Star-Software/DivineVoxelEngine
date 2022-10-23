@@ -149,9 +149,13 @@ export class PlayerWatcher {
  */
    //below player
 
-   const belowVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY - 3, pAbsZ);
-
-   if (belowVoxel && belowVoxel[0] != -1) {
+   const belowVoxel = this.DVEW.data.world.voxel.get(
+    0,
+    pAbsX,
+    pAbsY - 3,
+    pAbsZ
+   ); 
+   if (belowVoxel && belowVoxel[0] != "dve:air") {
     if ((belowVoxel as any)[0].substance != "fluid") {
      this.playerStatesArray[0] = 1;
     }
@@ -159,8 +163,8 @@ export class PlayerWatcher {
     this.playerStatesArray[0] = 0;
    }
 
-   const headVoxel = this.DVEW.worldData.getVoxel(pAbsX, pAbsY, pAbsZ);
-   if (headVoxel && headVoxel[0] != -1) {
+   const headVoxel = this.DVEW.data.world.voxel.get(0, pAbsX, pAbsY, pAbsZ);
+   if (headVoxel && headVoxel[0] != "dve:air") {
     //@ts-ignore
     if (headVoxel[0].substance == "fluid") {
      this.playerStatesArray[1] = 1;

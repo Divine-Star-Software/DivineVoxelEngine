@@ -1,24 +1,18 @@
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 
+const brush = DVEW.getBrush();
 export const WorldGen = {
- chunkDepth: 16,
- chunkWidth: 16,
- chunkHeight: 256,
  generateChunk(chunkX: number, chunkY: number, chunkZ: number) {
-  let baseY = 10;
   let maxY = 30;
-
-  for (let x = 0; x < +this.chunkWidth; x++) {
-   for (let z = 0; z < this.chunkDepth; z++) {
+  for (let x = chunkX; x < chunkX + 16; x++) {
+   for (let z = chunkZ; z < chunkZ + 16; z++) {
     for (let y = 0; y < maxY; y++) {
-     const tx = chunkX + x;
-     const ty = chunkY + y;
-     const tz = chunkZ + z;
+     brush.setXYZ(x, y, z);
      if (y < maxY - 2) {
-      DVEW.worldData.paintVoxel("dve:dreamstonepillar", 0, 0, tx, ty, tz);
+      brush.setId("dve:dreamstonepillar").paint();
      }
      if (y == maxY - 2) {
-      DVEW.worldData.paintVoxel("dve:dreamlamp", 0, 0, tx, ty, tz);
+      brush.setId("dve:dreamlamp").paint();
      }
     }
    }

@@ -5,8 +5,8 @@ import { DVEPH } from "../../../out/Physics/DivineVoxelEnginePhysics.js";
 
 RegisterVoxels(DVEN as any);
 
-await DVEN.$INIT({});
-DVEPH.$INIT();
+await DVEN.$INIT();
+DVEPH.$INIT(DVEN.voxelManager);
 
 const playerPositionSAB = new SharedArrayBuffer(4 * 3);
 const playerPosition = new Float32Array(playerPositionSAB);

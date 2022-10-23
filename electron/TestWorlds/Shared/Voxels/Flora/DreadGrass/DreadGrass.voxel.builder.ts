@@ -11,7 +11,8 @@ export const DreadGrassVoxelBuilderThread: VoxelConstructorObject = {
  process: function (data, DVEB) {
   data.uvTemplate.push(uv, uv);
   data.overlayUVTemplate.push(0, 0, 0, 0);
-  const lightValue = DVEB.processor.worldMatrix.getLight(
+  const lightValue = DVEB.processor.worldData.light.get(
+   data.dimension,
    data.x,
    data.y,
    data.z

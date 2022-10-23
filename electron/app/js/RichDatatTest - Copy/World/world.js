@@ -36,7 +36,7 @@ DVEW.parentComm.listenForMessage("connect-camera", (data) => {
     pickerCubePosition = new Float32Array(data[3]);
     ready = true;
 });
-await DVEW.$INIT({});
+await DVEW.$INIT();
 generate();
 DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 11, 31, 31);
 DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 9, 31, 31);

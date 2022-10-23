@@ -1,27 +1,31 @@
 export type ChunkData = {
  buffer: SharedArrayBuffer;
  data: DataView;
+ segement1 :  Uint32Array;
+ segement2 :  Uint32Array;
 };
 
-export type WorldColumn = {
+export type Column = {
  data: DataView;
  buffer: SharedArrayBuffer;
  chunks: Record<string, ChunkData>;
 };
 
-export type WorldRegion = {
- columns: Record<string, WorldColumn>;
+export type Region = {
+ columns: Record<string, Column>;
 };
-export type WorldDimensions = Record<string, Record<string, WorldRegion>>;
+export type WorldDimensions = Record<string, Record<string, Region>>;
 
 export type AddVoxelData = {
  id: string;
+ dimension: string | number;
  position: [number, number, number];
  state?: number;
  shapeState?: number;
- dimension?: string | number;
- secondaryVoxelId?: number;
+ secondaryVoxelId?: string;
  secondaryState?: number;
+ update?: boolean;
+ build?: boolean;
 };
 
 export type VoxelPalette = Record<number, string>;

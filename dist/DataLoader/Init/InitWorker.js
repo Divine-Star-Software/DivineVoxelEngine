@@ -1,5 +1,5 @@
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-export async function InitWorker(DVED, initData) {
+export async function InitWorker(DVED) {
     ThreadComm.$INIT("data-loader");
     await DVED.UTIL.createPromiseCheck({
         check: () => {

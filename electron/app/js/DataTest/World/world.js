@@ -2,6 +2,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 RegisterVoxels(DVEW);
+const builder = DVEW.getBuilder();
 const load = () => {
     console.log("load");
     let startX = 0;
@@ -10,7 +11,7 @@ const load = () => {
     let endZ = 512;
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.buildChunk(x, 0, z);
+            builder.setXZ(x, z).buildColumn();
         }
     }
 };
@@ -27,21 +28,5 @@ const generate = () => {
     }
 };
 DVEW.dataComm.listenForMessage("load", load);
-await DVEW.$INIT({});
-/* DVEW.dataComm.sendMessage("load", []); */
-/*
- WorldGen.generateChunk(0, 0);
-WorldGen.generateChunk(-16, 0);
-WorldGen.generateChunk(16, 0);
-WorldGen.generateChunk(0, 16);
-WorldGen.generateChunk(0, -16);
-
-WorldGen.generateChunk(-16, 16, "pillar");
-WorldGen.generateChunk(16, 16);
-WorldGen.generateChunk(16, -16, "pillar");
-WorldGen.generateChunk(-16, -16);
-*/
-/*  generate();
-load();
-DVEW.dataComm.sendMessage("load", []);   */
+await DVEW.$INIT();
 self.DVEW = DVEW;

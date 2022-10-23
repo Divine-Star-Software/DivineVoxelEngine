@@ -1,7 +1,6 @@
-import { WorldTasks } from "../../Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-export async function InitWorker(DVEC, initData) {
-    DVEC.settings.setContext("DVEC");
+export async function InitWorker(DVEC) {
     await ThreadComm.$INIT("constructor");
     DVEC.DVEB.$INIT();
     DVEC.DVEP.$INIT();

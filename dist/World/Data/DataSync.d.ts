@@ -1,5 +1,6 @@
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
+declare type DID = string | number;
 declare type CommSyncOptions = {
     chunks: boolean;
     voxelPalette: boolean;
@@ -12,9 +13,20 @@ export declare const DataSync: {
         shapeMap: Record<string, number>;
         __shapeMapSet: boolean;
         isReady(): boolean;
-        $INIT(): void;
+        $createVoxelData(): void;
         setShapeMap(shapeMap: Record<string, number>): void;
-        flush(): void;
+        palette: {
+            _count: number;
+            _palette: Record<number, string>;
+            _map: Record<string, number>;
+            registerVoxel(voxel: import("../../Meta/index.js").VoxelData): void;
+            getVoxelBaseId(id: number): number;
+            getVoxelStateId(voxelId: string, voxelState: number): number;
+            getVoxelStringId(voxelId: number): string;
+            getVoxelState(voxelId: number): number;
+            get(): Record<number, string>;
+            getMap(): Record<string, number>;
+        };
     };
     comms: Record<string, CommBase | CommManager>;
     commOptions: Record<string, CommSyncOptions>;
@@ -22,10 +34,10 @@ export declare const DataSync: {
     isReady(): boolean;
     registerComm(comm: CommBase | CommManager): void;
     chunk: {
-        unSync(dimesnion: number, chunkX: number, chunkY: number, chunkZ: number): void;
-        unSyncInThread(commName: string, dimesnion: number, chunkX: number, chunkY: number, chunkZ: number): void;
-        sync(dimesnion: number, chunkX: number, chunkY: number, chunkZ: number): void;
-        syncInThread(commName: string, dimesnion: number, chunkX: number, chunkY: number, chunkZ: number): void;
+        unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number): void;
+        unSyncInThread(commName: string, dimension: DID, chunkX: number, chunkY: number, chunkZ: number): void;
+        sync(dimension: DID, x: number, y: number, z: number): void;
+        syncInThread(commName: string, dimesnion: DID, x: number, y: number, z: number): void;
     };
     voxelData: {
         sync(): void;

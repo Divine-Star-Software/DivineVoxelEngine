@@ -2,7 +2,7 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
-await DVEW.$INIT({});
+await DVEW.$INIT();
 const depth = 64;
 let startX = -depth;
 let startZ = -depth;
@@ -10,22 +10,23 @@ let endX = depth;
 let endZ = depth;
 for (let x = startX - 16; x < endX + 16; x += 16) {
     for (let z = startZ - 16; z < endZ + 16; z += 16) {
-        DVEW.worldData.fillWorldCollumnWithChunks(x, z);
+        DVEW.data.worldRegister.column.fill(0, x, z);
     }
 }
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        WorldGen.generateChunk(x, 0, z);
+        WorldGen.generateChunk(x, z);
     }
 }
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 6, 5);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 7, 4);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 8, 3);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 9, 2);
-DVEW.worldData.paintVoxel("dve:dreamstone-stair", 0, 0, 7, 10, 1);
+const brush = DVEW.getBrush();
+brush.setId("dve:dreamstone-stair");
+for (let i = 0; i < 6; i++) {
+    brush.setXYZ(7, 6 + i, 5 - i);
+}
+const builder = DVEW.getBuilder();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
-        DVEW.buildChunk(x, 0, z);
+        builder.setXZ(x, z).buildColumn();
     }
 }
 self.DVEW = DVEW;

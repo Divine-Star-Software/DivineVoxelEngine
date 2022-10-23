@@ -1,4 +1,4 @@
-import { Flat3DArray } from "../../Global/Util/Flat3DArray.js";
+import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "../Chunk/HeightMapArray.js";
 /**# World Bounds
  * ---
@@ -150,12 +150,11 @@ export const WorldBounds = {
     getVoxelPosition(x, y, z) {
         return this.getVoxelPositionFromChunkPosition(x, y, z, this.getChunkPosition(x, y, z));
     },
-    getWorldColumnKey(x, z, y = 0) {
-        const chunkPOS = this.getChunkPosition(x, y, z);
-        const regionPOS = this.getRegionPosition(x, y, z);
-        return `${chunkPOS.x}-${chunkPOS.z}-${regionPOS.y}`;
+    getColumnKey(x, z, y = 0) {
+        const chunkPOS = this.getColumnPosition(x, z, y);
+        return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
     },
-    getWorldColumnPosition(x, z, y = 0) {
+    getColumnPosition(x, z, y = 0) {
         const chunkPOS = this.getChunkPosition(x, y, z);
         const regionPOS = this.getRegionPosition(x, y, z);
         this.__worldColumnPosition.x = chunkPOS.x;

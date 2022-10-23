@@ -1,11 +1,12 @@
-import { ConstructorTasks } from "../../Constants/InterComms/ConstructorTasks.js";
+import { ConstructorTasks } from "../../Data/Constants/InterComms/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const Tasks = {
     build: {
-        chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, (data) => {
-            const chunkPOS = DVEC.worldBounds.getChunkPosition(data[0], data[1], data[2]);
-            DVEC.DVEB.buildChunk(chunkPOS.x, chunkPOS.y, chunkPOS.z, 1);
+        chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (data) => {
+            const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
+            await DVEC.DVEB.buildChunk(data[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[4]);
         }),
         entity: ThreadComm.registerTasks(ConstructorTasks.constructEntity, (data) => {
             const x = data[0];

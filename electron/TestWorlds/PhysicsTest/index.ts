@@ -10,7 +10,7 @@ import {
 import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
-import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
+import { DVEM } from "../../out/Libs/Math/DivineVoxelEngineMath.js";
 import {
  PlayerStatesIndexes,
  PlayerStatesValues,

@@ -1,17 +1,17 @@
 export declare const EntityBase: {
     active: boolean;
-    position: import("../../Math/Classes/Vector3.js").Vector3;
-    direction: import("../../Math/Classes/Vector3.js").Vector3;
-    previousPosiiton: import("../../Math/Classes/Vector3.js").Vector3;
+    position: import("../../Libs/Math/Classes/Vector3.js").Vector3;
+    direction: import("../../Libs/Math/Classes/Vector3.js").Vector3;
+    previousPosiiton: import("../../Libs/Math/Classes/Vector3.js").Vector3;
     hitBox: {
         w: number;
         h: number;
         d: number;
     };
     speed: number;
-    velocity: import("../../Math/Classes/Vector3.js").Vector3;
+    velocity: import("../../Libs/Math/Classes/Vector3.js").Vector3;
     onGround: boolean;
-    veloctiy: import("../../Math/Classes/Vector3.js").Vector3;
+    veloctiy: import("../../Libs/Math/Classes/Vector3.js").Vector3;
     boundingBox: {
         w: number;
         h: number;

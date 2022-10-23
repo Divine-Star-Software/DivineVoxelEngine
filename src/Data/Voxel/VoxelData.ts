@@ -1,12 +1,13 @@
-import { Maps } from "../Maps/Maps.js";
+import { VoxelSubstanceType } from "Meta/index.js";
+import { Register } from "../Register/Register.js";
 
 export const VoxelData = {
- byteLength: Maps.voxels.byteLengths,
- indexes: Maps.voxels.dataIndexes,
- substanceRecord : Maps.voxels.substanceRecord,
+ byteLength: Register.voxels.byteLengths,
+ indexes: Register.voxels.dataIndexes,
+ substanceRecord : Register.voxels.substanceRecord,
 
  voxelData: {
-  substance: 0,
+  substance: <VoxelSubstanceType>"solid",
   shapeId: 0,
   hardness: 0,
   material: 0,
@@ -26,9 +27,7 @@ export const VoxelData = {
 
  getVoxelData(id: number) {
   const index = this.voxelMap[id] * this.byteLength.totalLength;
-  this.voxelData.substance = this.voxelDataView.getUint8(
-   this.indexes.substance + index
-  );
+  this.voxelData.substance = this.getTrueSubstance(id);
   this.voxelData.shapeId = this.voxelDataView.getUint16(
    this.indexes.shapeId + index
   );

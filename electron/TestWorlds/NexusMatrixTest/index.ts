@@ -46,6 +46,8 @@ await DVER.$INIT({
  },
 });
 SyncWithGraphicsSettings(DVER);
+
+DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);

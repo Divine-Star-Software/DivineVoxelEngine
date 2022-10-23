@@ -1,4 +1,4 @@
-import { DVEM } from "../../Math/DivineVoxelEngineMath.js";
+import { DVEM } from "../../Libs/Math/DivineVoxelEngineMath.js";
 import { DVEPH } from "../DivineVoxelEnginePhysics.js";
 const ep = 0.001;
 export const EntityBase = {

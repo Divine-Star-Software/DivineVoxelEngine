@@ -52,9 +52,10 @@ const getUV = (
  x: number,
  y: number,
  z: number,
- DVEB: DivineVoxelEngineBuilder
+ DVEB: DivineVoxelEngineBuilder,
+ dimension :  number
 ) => {
- const world = DVEB.processor.worldMatrix;
+ const world = DVEB.processor.worldData;
  let key = "";
  const sets = checkSets[direction];
  for (let i = 0; i < sets.length; i++) {
@@ -62,7 +63,7 @@ const getUV = (
   const set = sets[i];
   const cx = x + set[0];
   const cz = z + set[1];
-  const check = world.sameVoxel(x, y, z, cx, y, cz);
+  const check = world.util.isSameVoxel(dimension,x, y, z, cx, y, cz);
   if (check) {
    key += "1|";
   } else {
@@ -81,10 +82,10 @@ const getFoamUV = (DVEB: DivineVoxelEngineBuilder, data: VoxelProcessData) => {
  const ty = data.y;
  const tz = data.z;
  data.overlayUVTemplate.push(
-  getUV("north", tx, ty, tz, DVEB),
-  getUV("south", tx, ty, tz, DVEB),
-  getUV("east", tx, ty, tz, DVEB),
-  getUV("west", tx, ty, tz, DVEB)
+  getUV("north", tx, ty, tz, DVEB,data.dimension,),
+  getUV("south", tx, ty, tz, DVEB,data.dimension),
+  getUV("east", tx, ty, tz, DVEB,data.dimension),
+  getUV("west", tx, ty, tz, DVEB,data.dimension)
  );
 };
 

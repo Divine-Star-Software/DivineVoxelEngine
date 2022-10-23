@@ -1,5 +1,5 @@
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-export async function InitWorldWorker(DVEW, initData) {
+export async function InitWorldWorker(DVEW) {
     await ThreadComm.$INIT("world");
     await DVEW.UTIL.createPromiseCheck({
         check: () => {
@@ -9,9 +9,6 @@ export async function InitWorldWorker(DVEW, initData) {
         onReady: () => {
             DVEW.queues.$INIT();
             DVEW.dataSync.$INIT();
-            if (initData.onReady) {
-                initData.onReady();
-            }
         },
     });
 }

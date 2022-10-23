@@ -8,10 +8,9 @@ export class Entity1Nexus {
     states;
     active;
     $INIT(DVEN, data, otherData) {
-        console.log(data);
         setTimeout(() => {
             setInterval(() => {
-                const voxel = DVEN.worldMatrix.getVoxel(this.position[0] >> 0, (this.position[1] - 1) >> 0, this.position[2] >> 0);
+                const voxel = DVEN.worldData.voxel.get(0, this.position[0] >> 0, (this.position[1] - 1) >> 0, this.position[2] >> 0);
                 if (voxel && voxel[0] == "dve:air") {
                     this.position[1] -= 0.1;
                 }

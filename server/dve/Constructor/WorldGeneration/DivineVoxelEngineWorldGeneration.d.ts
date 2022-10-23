@@ -1,7 +1,7 @@
 import type { WorldGenInterface } from "Meta/WorldGen/WorldGen.types";
 import type { VoxelData } from "Meta/index.js";
-import type { MatrixLoadedChunk } from "Meta/Matrix/Matrix.types.js";
 import type { Position3Matrix } from "Meta/Util.types.js";
+import { ChunkData } from "Meta/Data/WorldData.types.js";
 export declare const DVEWG: {
     worldGen: WorldGenInterface | null;
     heightByte: {
@@ -26,41 +26,6 @@ export declare const DVEWG: {
         getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
         setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
         getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
-    };
-    voxelByte: {
-        setId(id: number, value: number): number;
-        getId(value: number): number;
-        decodeLightFromVoxelData(voxelData: number): number;
-        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-        decodeLevelFromVoxelData(stateData: number): number;
-        encodeLevelIntoVoxelData(stateData: number, level: number): number;
-        decodeLevelStateFromVoxelData(stateData: number): number;
-        encodeLevelStateIntoVoxelData(stateData: number, levelState: number): number;
-        getShapeState(voxelData: number): number;
-        setShapeState(voxelData: number, shapeState: number): number;
-    };
-    _3dArray: {
-        bounds: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        _position: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        setBounds(x: number, y: number, z: number): void;
-        getValue(x: number, y: number, z: number, array: Uint32Array): number;
-        getValueUseObj(position: Position3Matrix, array: Uint32Array): number;
-        getValueUseObjSafe(position: Position3Matrix, array: Uint32Array): number;
-        setValue(x: number, y: number, z: number, array: Uint32Array, value: number): void;
-        setValueUseObj(position: Position3Matrix, array: Uint32Array, value: number): void;
-        setValueUseObjSafe(position: Position3Matrix, array: Uint32Array, value: number): void;
-        deleteValue(x: number, y: number, z: number, array: Uint32Array): void;
-        deleteUseObj(position: Position3Matrix, array: Uint32Array): void;
-        getIndex(x: number, y: number, z: number): number;
-        getXYZ(index: number): Position3Matrix;
     };
     worldBounds: {
         __maxChunkYSize: number;
@@ -137,8 +102,8 @@ export declare const DVEWG: {
             y: number;
             z: number;
         };
-        getWorldColumnKey(x: number, z: number, y?: number): string;
-        getWorldColumnPosition(x: number, z: number, y?: number): {
+        getColumnKey(x: number, z: number, y?: number): string;
+        getColumnPosition(x: number, z: number, y?: number): {
             x: number;
             z: number;
             y: number;
@@ -146,8 +111,8 @@ export declare const DVEWG: {
     };
     setWorldGen(worldGen: WorldGenInterface): void;
     generate(x: number, z: number, data: any): Promise<void>;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: MatrixLoadedChunk): void;
-    getVoxelPaletteId(voxelId: string, voxelStateId: number): number;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
+    getVoxelPaletteId(voxelId: string, voxelStateId: number): void;
     _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
     _addToRGBLightUpdateQue(voxelData: VoxelData, x: number, y: number, z: number): void;
     paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;

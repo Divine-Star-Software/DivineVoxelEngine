@@ -12,7 +12,7 @@ ccm.listenForMessage(WorldTasks.addToRebuildQue, (data) => {
     const y = data[2];
     const z = data[3];
     const substance = data[4];
-    DVEW.queues.build.chunk.add([x, y, z]);
+    DVEW.queues.build.chunk.add([0, x, y, z, 1]);
 });
 ccm.listenForMessage(WorldTasks.runRebuildQue, () => {
     DVEW.queues.build.chunk.run();

@@ -3,7 +3,7 @@ import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Creat
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetPlayerPickCube, GetRenderPlayer, } from "../Shared/Player/Render/RenderPlayer.js";
-import { DVEM } from "../../out/Math/DivineVoxelEngineMath.js";
+import { DVEM } from "../../out/Libs/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js", "./Nexus/nexus.js");
 await DVER.$INIT({

@@ -1,7 +1,7 @@
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
-import { DVEM } from "../../../out/Math/DivineVoxelEngineMath.js";
+import { DVEM } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
 RegisterVoxels(DVEW);
 RegisterItemData(DVEW);
@@ -10,18 +10,17 @@ let startX = -16;
 let startZ = -16;
 let endX = 16;
 let endZ = 16;
+const builder = DVEW.getBuilder();
 const load = () => {
-    console.log("load");
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.buildWorldColumn(x, z);
+            builder.setXZ(x, z).buildColumn();
         }
     }
 };
 const generate = () => {
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.worldData.fillWorldCollumnWithChunks(x, z);
             WorldGen.generateChunk(x, z);
         }
     }
@@ -36,14 +35,12 @@ DVEW.parentComm.listenForMessage("connect-camera", (data) => {
     pickerCubePosition = new Float32Array(data[3]);
     ready = true;
 });
-await DVEW.$INIT({});
+await DVEW.$INIT();
 generate();
-DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 11, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 9, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 7, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 5, 31, 31);
-DVEW.worldData.paintVoxel("dve:dataholder", 0, 0, 3, 31, 31);
-DVEW.buildWorldColumn(0, 0);
+const brush = DVEW.getBrush();
+for (let i = 13; i > -2; i -= 2) {
+    brush.setId("dve:dataholder").setXYZ(i, 31, 31).paint();
+}
 load();
 await DVEW.UTIL.createPromiseCheck({
     check: () => ready,
@@ -52,9 +49,12 @@ await DVEW.UTIL.createPromiseCheck({
 const positionVector = DVEM.getVector3(0, 0, 0);
 const pickedVector = DVEM.getVector3(0, 0, 0);
 DVEW.parentComm.listenForMessage("pick-voxel", (data) => {
-    const voxel = DVEW.worldData.getVoxel(pickedVector.x, pickedVector.y, pickedVector.z);
-    if (voxel && voxel[0] != -1) {
-        const voxelData = voxel[0];
+    const voxel = DVEW.data.world.voxel.get(0, pickedVector.x, pickedVector.y, pickedVector.z);
+    if (voxel && voxel[0] != "dve:air") {
+        const data = DVEW.voxelManager.getVoxelData(voxel[0]);
+        if (!data)
+            return;
+        const voxelData = data;
         if (voxelData.isRich) {
             DVEW.richWorldComm.sendMessage("pick-voxel", [
                 pickedVector.x,
@@ -76,8 +76,8 @@ setInterval(() => {
         const x = voxels[i];
         const y = voxels[i + 1];
         const z = voxels[i + 2];
-        const voxel = DVEW.worldData.getVoxel(x, y, z);
-        if (voxel && voxel[0] != -1) {
+        const voxel = DVEW.data.world.voxel.get(0, x, y, z);
+        if (voxel && voxel[0] != "dve:air") {
             pickedVector.updateVector(x, y, z);
             pickerCubePosition[0] = x;
             pickerCubePosition[1] = y;
