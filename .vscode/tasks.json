@@ -12,7 +12,6 @@
    "label": "Project Startup",
    "dependsOn": [
     "electron",
-
     "src-compile",
     "testworlds-compile",
     "server-compile",
@@ -34,7 +33,7 @@
   {
    "label": "electron",
    "type": "shell",
-   "command": "cd electron; npm run start",
+   "command": "cd tests/electron; npm run start",
    "isBackground": true
   },
   {
@@ -46,13 +45,13 @@
   {
    "label": "testworlds-compile",
    "type": "shell",
-   "command": "cd electron/TestWorlds; tsc --watch",
+   "command": "cd tests/electron/TestWorlds; tsc --watch",
    "isBackground": true
   },
   {
    "label": "server-compile",
    "type": "shell",
-   "command": "cd server/src; tsc --watch",
+   "command": "cd tests/server/src; tsc --watch",
    "isBackground": true
   },
   {
@@ -70,13 +69,13 @@
   {
    "label": "screens-compile",
    "type": "shell",
-   "command": "cd electron/screens; tsc --watch",
+   "command": "cd tests/electron/screens; tsc --watch",
    "isBackground": true
   },
   {
    "label": "dsst-screens",
    "type": "shell",
-   "command": "cd electron/screens; dsst -a",
+   "command": "cd tests/electron/screens; dsst -a",
    "isBackground": true
   }
  ]

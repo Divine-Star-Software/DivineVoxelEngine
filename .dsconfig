@@ -11,19 +11,19 @@
  ],
  "outputs": [
   {
-   "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/app/out",
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/app/out",
    "sourceID": "main",
    "codeSection": "all",
    "keepComments": true
   },
   {
-   "dir": "D:/DSSoftware/APPS/divinevoxelengine/electron/out",
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/out",
    "sourceID": "main",
    "codeSection": "all",
    "keepComments": true
   },
   {
-   "dir": "D:/DSSoftware/APPS/divinevoxelengine/server/dve",
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/server/dve",
    "sourceID": "main",
    "codeSection": "all",
    "keepComments": true

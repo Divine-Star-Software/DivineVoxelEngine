@@ -8,6 +8,7 @@ import { ColliderManager } from "./Colliders/ColliderManager.js";
 import { RegisterDefaultColliders } from "./Colliders/Functions/RegisterDefaultColliders.js";
 import type { VoxelManager } from "Data/Voxel/VoxelManager.js";
 import { WorldData } from "../Data/World/WorldData.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 
 export const DVEPH = {
  math: DVEM,
@@ -15,30 +16,36 @@ export const DVEPH = {
  colliders: ColliderManager,
  wroldData: WorldData,
 
- voxelManager : <typeof VoxelManager| null> null,
+ _dataTool: new DataTool(),
 
+ voxelManager: <typeof VoxelManager | null>null,
 
-
- $INIT(manager : typeof VoxelManager ) {
+ $INIT(manager: typeof VoxelManager) {
   RegisterDefaultColliders(this.colliders);
-    this.voxelManager = manager;
+  this.voxelManager = manager;
  },
 
- getCollider(x: number, y: number, z: number,dimension : number = 0): false | ColliderObject {
- if(!this.voxelManager){
-    throw new Error("Voxel manager must be set for DVEP.");
- }
-  const voxelId = WorldData.voxel.get(dimension,x, y, z);
+ getCollider(
+  x: number,
+  y: number,
+  z: number,
+  dimension: number = 0
+ ): false | ColliderObject {
+  if (!this.voxelManager) {
+   throw new Error("Voxel manager must be set for DVEP.");
+  }
 
-  if (!voxelId) return false;
-  const id = voxelId[0];
-  if(id == "dve:air" || id == "dve:barrier") return false;
-  const voxelData = this.voxelManager.getVoxelData(id);
-  if(!voxelData)return false;
+  if (!this._dataTool.loadIn(x, y, z)) return false;
+  if (!this._dataTool.isRenderable()) return false;
+  if (this._dataTool.getSubstance() == "fluid") return false;
+  const voxelData = this.voxelManager.getVoxelData(
+   this._dataTool.getStringId()
+  );
+  if (!voxelData) return false;
   if (!voxelData.physics) {
    return this.colliders.getCollider("Box");
   }
-  if(!voxelData.physics.checkCollisions) return false;
+  if (!voxelData.physics.checkCollisions) return false;
 
   return this.colliders.getCollider(voxelData.physics.collider);
  },
@@ -49,6 +56,5 @@ export const DVEPH = {
   return assignedBase;
  },
 };
-
 
 export type DivineVoxelEnginePhysics = typeof DVEPH;
