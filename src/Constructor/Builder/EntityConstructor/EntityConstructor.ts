@@ -1,7 +1,7 @@
 import { VoxelReader } from "../../../Data/Voxel/VoxelByte.js";
 import { EntityFlat3dArray } from "../../../Data/Entity/EntityFlat3dArray.js";
-import { WorldData } from "../../../Data/World/WorldData.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
+import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
 
 export const EntityConstructor = {
  voxelData: <Uint32Array[]>[],
@@ -40,10 +40,10 @@ export const EntityConstructor = {
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
   const numericVoxelId = this.voxelReader.getId(voxelData);
-  if (numericVoxelId == 0) return WorldData.voxel._air;
-  if (numericVoxelId == 1) return WorldData.voxel._barrier;
-  const paletteId =  WorldData.voxelPalette[numericVoxelId];
-  const mapId = WorldData.voxelPaletteMap[paletteId];
+  if (numericVoxelId == 0) return ["dve:air",0];
+  if (numericVoxelId == 1) return ["dve:barrier",0];
+  const paletteId =  VoxelPaletteReader._palette[numericVoxelId];
+  const mapId = VoxelPaletteReader._map[paletteId];
   return [paletteId, numericVoxelId - mapId];
  },
  getLevel(x: number, y: number, z: number, composed: number = 1) {

@@ -6,3 +6,10 @@ export declare type RichRegion = {
     columns: Record<string, RichColumn>;
 };
 export declare type RichWorldDimensions = Record<string, Record<string, RichRegion>>;
+export declare type SetRichVoxel = [
+    id: string,
+    dimesnion: number,
+    x: number,
+    y: number,
+    z: number
+];

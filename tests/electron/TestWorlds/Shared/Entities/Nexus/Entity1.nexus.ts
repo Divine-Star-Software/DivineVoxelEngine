@@ -3,7 +3,9 @@ import {
  NexusEntityData,
  NexusEntityInterface,
 } from "../../../../out/Meta/index";
+import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
 
+const dataTool = new DataTool();
 export const Entity1NexusData: NexusEntityData = {
  type: "item",
  boundingBox: { width: 1, height: 1, depth: 1 },
@@ -15,18 +17,18 @@ export class Entity1Nexus implements NexusEntityInterface {
  states: Float32Array;
  active: boolean;
  $INIT(DVEN: DivineVoxelEngineNexus, data: NexusEntityData, otherData?: any) {
- 
-
   setTimeout(() => {
    setInterval(() => {
-    const voxel = DVEN.worldData.voxel.get(
-     0,
-     this.position[0] >> 0,
-     (this.position[1] - 1) >> 0,
-     this.position[2] >> 0
-    );
+    if (
+     !dataTool.loadIn(
+      this.position[0] >> 0,
+      (this.position[1] - 1) >> 0,
+      this.position[2] >> 0
+     )
+    )
+     return;
 
-    if (voxel && voxel[0] == "dve:air") {
+    if (dataTool.isAir()) {
      this.position[1] -= 0.1;
     }
    }, 20);

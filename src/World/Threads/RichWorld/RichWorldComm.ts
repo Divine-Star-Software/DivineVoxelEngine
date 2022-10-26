@@ -1,18 +1,14 @@
-import { WorldToRichWorldMessages } from "../../../Data/Constants/InterComms/WorldToRichWorld.js";
+import { LocationData } from "Meta/Data/CommonTypes.js";
+import { SetRichVoxel } from "Meta/Data/RichWorldData.types.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 
 const richWorldCommBase = ThreadComm.createComm("rich-world");
 const richWorldComm = Object.assign(richWorldCommBase, {
- setInitalData(voxelId: string, x: number, y: number, z: number) {
-  richWorldComm.sendMessage(WorldToRichWorldMessages.setInitalData, [
-   voxelId,
-   x,
-   y,
-   z,
-  ]);
+ setInitalData(data: SetRichVoxel) {
+  richWorldComm.runTasks<SetRichVoxel>("set-voxel", data);
  },
- removeRichData(x: number, y: number, z: number) {
-  richWorldComm.sendMessage(WorldToRichWorldMessages.removeRichData, [x, y, z]);
+ removeRichData(data: LocationData) {
+  richWorldComm.runTasks<LocationData>("remove-voxel", data);
  },
 });
 

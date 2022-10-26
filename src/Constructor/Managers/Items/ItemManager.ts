@@ -5,7 +5,7 @@ import type {
  ItemConstructorObject,
  ItemConstructorThreadHooks,
  ItemData,
-} from "Meta/Items/Item.types.js";
+} from "Meta/Data/Items/Item.types.js";
 
 export const ItemManager = {
  itemObjects: <Record<string, ItemConstructorObject>>{},

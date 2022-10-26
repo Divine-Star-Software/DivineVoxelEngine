@@ -13,7 +13,7 @@ import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
-import { WorldData } from "../Data/World/WorldData.js";
+import { WorldPainter } from "../Data/World/WorldPainter.js";
 import { ChunkReader } from "../Data/Chunk/ChunkReader.js";
 
 export const DVEN = {
@@ -26,7 +26,7 @@ export const DVEN = {
  dataSyncNode : DataSyncNode,
  data : DataManager,
 
- worldData: WorldData,
+ worldData: WorldPainter,
 
 
  worldComm: WorldComm,

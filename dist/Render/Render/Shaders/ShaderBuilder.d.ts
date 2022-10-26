@@ -1,4 +1,4 @@
-import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 /**# ShaderBuilder
  *---
  * Helps construct raw text shaders.

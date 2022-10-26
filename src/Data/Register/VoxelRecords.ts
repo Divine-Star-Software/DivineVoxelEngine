@@ -9,6 +9,7 @@ export const VoxelDataByteLengths = {
  colliderId: 2,
  lightSource: 1,
  lightValue: 2,
+ isRich: 1,
  totalLength: 0,
 };
 
@@ -21,6 +22,7 @@ export const VoxelDataIndexes = {
  colliderId: 0,
  lightSource: 0,
  lightValue: 0,
+ isRich: 0,
 };
 
 export const VoxelSubstanceMap: Record<VoxelSubstanceType, number> = {

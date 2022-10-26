@@ -1,4 +1,4 @@
-import type { VoxelSubstanceType } from "Meta/index.js";
+import type { VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
 export declare class DataTool {
     _mode: "World" | "Entity";
     data: {
@@ -23,8 +23,9 @@ export declare class DataTool {
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;
     loadInRaw(rawData: number[]): void;
+    __process(): void;
     loadIn(x: number, y: number, z: number): boolean | undefined;
-    commit(): false | this;
+    commit(heightMapUpdate?: number): false | this;
     getLight(): number;
     setLight(light: number): this;
     getLevel(): number;
@@ -38,7 +39,9 @@ export declare class DataTool {
     isLightSource(): boolean;
     getLightValue(): number;
     getSubstance(): VoxelSubstanceType;
+    getTemplateSubstance(): VoxelTemplateSubstanceType;
     getState(): number;
+    isRich(): boolean;
     setAir(): this;
     isAir(): boolean;
     setBarrier(): this;

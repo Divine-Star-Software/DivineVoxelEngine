@@ -1,2 +1,2 @@
-import type { ColliderObject } from "Meta/Physics/Collider.type.js";
+import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type.js";
 export declare const BoxCollider: ColliderObject;

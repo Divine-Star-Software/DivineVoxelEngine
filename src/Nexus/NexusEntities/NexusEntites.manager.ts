@@ -1,9 +1,9 @@
-import type { EntityTypes } from "Meta/Entity/Entity.types";
+import type { EntityTypes } from "Meta/Data/Entity/Entity.types";
 import type {
  NexusEntity,
  NexusEntityData,
  NexusEntityInterface,
-} from "Meta/Entity/NexusEntity.types";
+} from "Meta/Interfaces/Entity/NexusEntity.types";
 import { Position3Matrix } from "Meta/Util.types";
 
 import { DVEN } from "../DivineVoxelEngineNexus.js";

@@ -1,6 +1,6 @@
 //types
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
-import type { DataHandler } from "Meta/DataLoader/DataHandler.type";
+import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type";
 //objects
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 

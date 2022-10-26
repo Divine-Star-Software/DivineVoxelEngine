@@ -12,3 +12,4 @@ export const Register = {
   dataIndexes: VoxelDataIndexes,
  },
 };
+

@@ -1,5 +1,5 @@
 import { TextureTypes } from "Meta/index";
-import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 
 export const TextureManager = {
  textureDataHasBeenSet: false,

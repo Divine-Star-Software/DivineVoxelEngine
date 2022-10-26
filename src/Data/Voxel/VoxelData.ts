@@ -4,7 +4,7 @@ import { Register } from "../Register/Register.js";
 export const VoxelData = {
  byteLength: Register.voxels.byteLengths,
  indexes: Register.voxels.dataIndexes,
- substanceRecord : Register.voxels.substanceRecord,
+ substanceRecord: Register.voxels.substanceRecord,
 
  voxelData: {
   substance: <VoxelSubstanceType>"solid",
@@ -15,6 +15,7 @@ export const VoxelData = {
   colliderId: 0,
   lightSource: 0,
   lightValue: 0,
+  isRich: 0,
  },
 
  voxelDataView: new DataView(new ArrayBuffer(0)),
@@ -87,5 +88,9 @@ export const VoxelData = {
  getLightValue(id: number) {
   const index = this.voxelMap[id] * this.byteLength.totalLength;
   return this.voxelDataView.getUint16(this.indexes.lightValue + index);
+ },
+ isRich(id: number) {
+  const index = this.voxelMap[id] * this.byteLength.totalLength;
+  return this.voxelDataView.getUint8(this.indexes.isRich + index) == 1;
  },
 };

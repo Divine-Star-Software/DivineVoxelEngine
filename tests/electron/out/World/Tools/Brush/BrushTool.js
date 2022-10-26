@@ -1,4 +1,4 @@
-import { WorldData as WD } from "../../../Data/World/WorldData.js";
+import { WorldPainter as WD } from "../../../Data/World/WorldPainter.js";
 import { Util } from "../../../Global/Util.helper.js";
 import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
 import { LightData as LD } from "../../../Data/Light/LightByte.js";
@@ -7,6 +7,8 @@ import { $3dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeigh
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { QueuesManager as QM } from "../../Queues/QueuesManager.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
+import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
+import { DataTool } from "../../../Tools/Data/DataTool.js";
 const getUpdateState = () => {
     return {
         phase: "pre",
@@ -36,6 +38,7 @@ const getRemoveState = () => {
         },
     };
 };
+const dataTool = new DataTool();
 const preRemove = (l, data, onDone) => {
     const dimension = data.dimension;
     const x = data.position[0];
@@ -49,8 +52,9 @@ const preRemove = (l, data, onDone) => {
         rgb: 0,
         sun: 0,
     };
+    dataTool.loadIn(x, y, z);
     if (l > 0) {
-        WD.light.set(dimension, x, y, z, l);
+        dataTool.setLight(l).commit();
         if (ES.doRGBPropagation()) {
             QM.rgb.remove.add([x, y, z]);
         }
@@ -65,7 +69,9 @@ const preRemove = (l, data, onDone) => {
             let nx = x + n[0];
             let ny = y + n[1];
             let nz = z + n[2];
-            const l = WD.light.get(dimension, nx, ny, nz);
+            if (!dataTool.loadIn(nx, ny, nz))
+                continue;
+            const l = dataTool.getLight();
             if (l < 0)
                 continue;
             if (LD.getS(l) > 0) {
@@ -212,7 +218,7 @@ export const GetBrush = () => {
         paintAndUpdate(onDone = () => { }) {
             const state = getUpdateState();
             const data = JSON.parse(JSON.stringify(brush.data));
-            const id = WD.voxel.id.numberFromString(data.id);
+            const id = VoxelPaletteReader.id.numberFromString(data.id);
             const voxleData = VoxelData.getVoxelData(id);
             const inte = setInterval(() => {
                 if (state.phase == "pre") {
@@ -274,7 +280,8 @@ export const GetBrush = () => {
         ereaseAndUpdate(onDone) {
             const state = getRemoveState();
             const data = JSON.parse(JSON.stringify(brush.data));
-            const l = WD.light.get(data.dimension, data.position[0], data.position[1], data.position[2]);
+            dataTool.loadIn(data.position[0], data.position[1], data.position[2]);
+            const l = dataTool.getLight();
             WD.paint.erease(data.dimension, data.position[0], data.position[1], data.position[2]);
             const inte = setInterval(() => {
                 if (state.phase == "pre") {

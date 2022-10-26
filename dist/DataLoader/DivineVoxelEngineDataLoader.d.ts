@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEDL: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEDL: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -244,8 +244,8 @@ export declare const DVEDL: {
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     dataManager: {
-        dataHanlder: import("../Meta/DataLoader/DataHandler.type.js").DataHandler | null;
-        setDataHandler(handler: import("../Meta/DataLoader/DataHandler.type.js").DataHandler): void;
+        dataHanlder: import("../Meta/Interfaces/DataLoader/DataHandler.type.js").DataHandler | null;
+        setDataHandler(handler: import("../Meta/Interfaces/DataLoader/DataHandler.type.js").DataHandler): void;
         saveChunk(x: number, y: number, z: number): void;
         loadChunk(x: number, y: number, z: number): void;
         _pos: {

@@ -4,7 +4,8 @@ import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelByte.js";
 import { VoxelData } from "../../Data/Voxel/VoxelData.js";
-import { WorldData } from "../../Data/World/WorldData.js";
+import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
+import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 export class DataTool {
     _mode = "World";
     data = {
@@ -33,10 +34,28 @@ export class DataTool {
         return this;
     }
     _getBaseId(id) {
-        return WorldData.voxel.id.baseNumeric(id);
+        return VoxelPaletteReader.id.baseNumeric(id);
     }
     loadInRaw(rawData) {
         this.data.raw = rawData;
+        this.__process();
+    }
+    __process() {
+        this.data.id = VoxelReader.getId(this.data.raw[0]);
+        this._cached.id = this.data.id;
+        this.data.secondaryId = VoxelReader.getId(this.data.raw[1]);
+        this._cached.secondaryId = this.data.secondaryId;
+        this.data.baseId = this._getBaseId(this.data.id);
+        if (this.data.secondaryId > 1) {
+            this.data.secondaryBaseId = this._getBaseId(this.data.secondaryId);
+        }
+        else {
+            this.data.secondaryBaseId = 0;
+        }
+        this._cached.substance = this.getSubstance();
+        this.setSecondary(true);
+        this._cached.secondarySubstance = this.getSubstance();
+        this.setSecondary(false);
     }
     loadIn(x, y, z) {
         this.data.x = x;
@@ -49,28 +68,14 @@ export class DataTool {
             const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
             this.data.raw[0] = ChunkReader.getVoxelDataUseObj(chunk, voxelPOS);
             this.data.raw[1] = ChunkReader.getVoxelDataUseObj(chunk, voxelPOS, true);
-            this.data.id = VoxelReader.getId(this.data.raw[0]);
-            this._cached.id = this.data.id;
-            this.data.secondaryId = VoxelReader.getId(this.data.raw[1]);
-            this._cached.secondaryId = this.data.secondaryId;
-            this.data.baseId = this._getBaseId(this.data.id);
-            if (this.data.secondaryId > 1) {
-                this.data.secondaryBaseId = this._getBaseId(this.data.secondaryId);
-            }
-            else {
-                this.data.secondaryBaseId = 0;
-            }
-            this._cached.substance = this.getSubstance();
-            this.setSecondary(true);
-            this._cached.secondarySubstance = this.getSubstance();
-            this.setSecondary(false);
+            this.__process();
             return true;
         }
         if (this._mode == "Entity") {
             return false;
         }
     }
-    commit() {
+    commit(heightMapUpdate = 0) {
         if (this._mode == "World") {
             const chunk = WorldRegister.chunk.get(this.data.dimension, this.data.x, this.data.y, this.data.z);
             if (!chunk)
@@ -78,6 +83,17 @@ export class DataTool {
             const voxelPOS = WorldBounds.getVoxelPosition(this.data.x, this.data.y, this.data.z);
             ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, this.data.raw[0]);
             ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, this.data.raw[1], true);
+            if (heightMapUpdate) {
+                const substance = this.getTemplateSubstance();
+                if (heightMapUpdate == 1) {
+                    HeightMapData.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
+                    HeightMapData.updateChunkMinMax(voxelPOS, chunk.data);
+                }
+                if (heightMapUpdate == 2) {
+                    HeightMapData.calculateHeightRemoveDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
+                    HeightMapData.updateChunkMinMax(voxelPOS, chunk.data);
+                }
+            }
         }
         if (this._mode == "Entity") {
         }
@@ -171,12 +187,40 @@ export class DataTool {
             return "solid";
         return VoxelData.getTrueSubstance(this.data.baseId);
     }
+    getTemplateSubstance() {
+        let substance;
+        if (this.__secondary) {
+            if (this.data.secondaryBaseId < 2)
+                return "solid";
+            substance = VoxelData.getTrueSubstance(this.data.secondaryBaseId);
+        }
+        else {
+            if (this.data.id < 2)
+                return "solid";
+            substance = VoxelData.getTrueSubstance(this.data.baseId);
+        }
+        if (substance == "transparent") {
+            substance = "solid";
+        }
+        return substance;
+    }
     getState() {
         if (this.__secondary) {
             return this.data.secondaryId - this.data.secondaryBaseId;
         }
         return this.data.id - this.data.baseId;
     }
+    isRich() {
+        if (this.__secondary) {
+            if (this.data.secondaryBaseId < 2)
+                return false;
+            return VoxelData.isRich(this.data.secondaryBaseId);
+        }
+        if (this.data.id < 2)
+            return false;
+        return VoxelData.isRich(this.data.baseId);
+    }
+    //util
     setAir() {
         this.data.raw[0] = VoxelReader.setId(0, this.data.raw[0]);
         return this;
@@ -218,9 +262,9 @@ export class DataTool {
     }
     getStringId() {
         if (this.__secondary) {
-            return WorldData.voxel.id.stringFromNumber(this.data.secondaryBaseId);
+            return VoxelPaletteReader.id.stringFromNumber(this.data.secondaryBaseId);
         }
-        return WorldData.voxel.id.stringFromNumber(this.data.baseId);
+        return VoxelPaletteReader.id.stringFromNumber(this.data.baseId);
     }
     //util
     isRenderable() {

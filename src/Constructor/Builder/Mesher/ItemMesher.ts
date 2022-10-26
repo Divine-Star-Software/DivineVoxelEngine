@@ -3,7 +3,7 @@ import {
  ConstructorToRenderMessages,
 } from "../../../Data/Constants/InterComms/ConstructorToRender.js";
 import type { CreateItemData } from "Meta/Constructor/ItemShape.type.js";
-import type { ItemProcessData } from "Meta/Items/Item.types.js";
+import type { ItemProcessData } from "Meta/Data/Items/Item.types.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
 

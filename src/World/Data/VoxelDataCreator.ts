@@ -14,9 +14,9 @@ export const VoxelDataCreator = {
  },
 
  $createVoxelData() {
-  const byteLength = DVEW.data.maps.voxels.byteLengths;
-  const indexes = DVEW.data.maps.voxels.dataIndexes;
-  const substanceMap = DVEW.data.maps.voxels.substanceMap;
+  const byteLength = DVEW.data.register.voxels.byteLengths;
+  const indexes = DVEW.data.register.voxels.dataIndexes;
+  const substanceMap = DVEW.data.register.voxels.substanceMap;
   const shapeMap = this.shapeMap;
   const totalVoxels = Object.keys(DVEW.voxelManager.voxelData).length;
   const buffer = new SharedArrayBuffer(totalVoxels * byteLength.totalLength);
@@ -70,6 +70,8 @@ export const VoxelDataCreator = {
     index + indexes.lightValue,
     vdata.lightValue ? vdata.lightValue : 0
    );
+   //is rich
+   dv.setUint8(index + indexes.isRich, vdata.isRich ? 1 : 0);
   }
   this.voxelMapBuffer = voxelMapBuffer;
   this.voxelBuffer = buffer;

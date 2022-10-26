@@ -9,6 +9,7 @@ export declare const VoxelData: {
         colliderId: number;
         lightSource: number;
         lightValue: number;
+        isRich: number;
         totalLength: number;
     };
     indexes: {
@@ -20,6 +21,7 @@ export declare const VoxelData: {
         colliderId: number;
         lightSource: number;
         lightValue: number;
+        isRich: number;
     };
     substanceRecord: Record<number, VoxelSubstanceType>;
     voxelData: {
@@ -31,6 +33,7 @@ export declare const VoxelData: {
         colliderId: number;
         lightSource: number;
         lightValue: number;
+        isRich: number;
     };
     voxelDataView: DataView;
     voxelMap: Uint16Array;
@@ -44,6 +47,7 @@ export declare const VoxelData: {
         colliderId: number;
         lightSource: number;
         lightValue: number;
+        isRich: number;
     };
     getSubstance(id: number): number;
     getTrueSubstance(id: number): VoxelSubstanceType;
@@ -53,4 +57,5 @@ export declare const VoxelData: {
     getColliderId(id: number): number;
     isLightSource(id: number): boolean;
     getLightValue(id: number): number;
+    isRich(id: number): boolean;
 };

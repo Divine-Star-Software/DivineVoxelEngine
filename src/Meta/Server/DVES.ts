@@ -1,5 +1,5 @@
 import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types";
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import type { RecursivePartial } from "Meta/Util.types";
 
 export type DVESInitData = {

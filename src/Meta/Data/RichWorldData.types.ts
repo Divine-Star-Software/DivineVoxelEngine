@@ -8,3 +8,11 @@ export type RichRegion = {
  columns: Record<string, RichColumn>;
 };
 export type RichWorldDimensions = Record<string, Record<string, RichRegion>>;
+
+export type SetRichVoxel = [
+ id: string,
+ dimesnion: number,
+ x: number,
+ y: number,
+ z: number
+];

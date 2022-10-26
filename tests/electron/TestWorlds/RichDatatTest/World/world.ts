@@ -50,7 +50,6 @@ for (let i = 13; i > -2; i -= 2) {
  brush.setId("dve:dataholder").setXYZ(i, 31, 31).paint();
 }
 
-
 load();
 
 await DVEW.UTIL.createPromiseCheck({
@@ -62,24 +61,19 @@ const positionVector = DVEM.getVector3(0, 0, 0);
 
 const pickedVector = DVEM.getVector3(0, 0, 0);
 
+const dataTool = DVEW.getDataTool();
 DVEW.parentComm.listenForMessage("pick-voxel", (data) => {
- const voxel = DVEW.data.world.voxel.get(
-  0,
-  pickedVector.x,
-  pickedVector.y,
-  pickedVector.z
- );
- if (voxel && voxel[0] != "dve:air") {
-  const data = DVEW.voxelManager.getVoxelData(voxel[0]);
-  if (!data) return;
-  const voxelData = data;
-  if (voxelData.isRich) {
-   DVEW.richWorldComm.sendMessage("pick-voxel", [
-    pickedVector.x,
-    pickedVector.y,
-    pickedVector.z,
-   ]);
-  }
+ if (!dataTool.loadIn(pickedVector.x, pickedVector.y, pickedVector.z)) return;
+ if (!dataTool.isRenderable()) return;
+ const voxel = dataTool.getStringId();
+ const voxelData = DVEW.voxelManager.getVoxelData(voxel);
+ if (!voxelData) return;
+ if (voxelData.isRich) {
+  DVEW.richWorldComm.sendMessage("pick-voxel", [
+   pickedVector.x,
+   pickedVector.y,
+   pickedVector.z,
+  ]);
  }
 });
 
@@ -98,14 +92,14 @@ setInterval(() => {
   const y = voxels[i + 1];
   const z = voxels[i + 2];
 
-  const voxel = DVEW.data.world.voxel.get(0, x, y, z);
-  if (voxel && voxel[0] != "dve:air") {
-   pickedVector.updateVector(x, y, z);
-   pickerCubePosition[0] = x;
-   pickerCubePosition[1] = y;
-   pickerCubePosition[2] = z;
-   break;
-  }
+  if (!dataTool.loadIn(x, y, z)) continue;
+  if (!dataTool.isRenderable()) continue;
+
+  pickedVector.updateVector(x, y, z);
+  pickerCubePosition[0] = x;
+  pickerCubePosition[1] = y;
+  pickerCubePosition[2] = z;
+  break;
  }
 }, 20);
 

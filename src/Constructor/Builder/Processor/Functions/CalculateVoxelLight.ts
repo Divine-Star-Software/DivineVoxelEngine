@@ -1,7 +1,7 @@
 import type {
  VoxelConstructorObject,
  VoxelSubstanceType,
-} from "Meta/Voxels/Voxel.types";
+} from "Meta/Data/Voxels/Voxel.types";
 import { Processor } from "../Processor.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { AOAddOverride } from "Meta/Constructor/OverRide.types";

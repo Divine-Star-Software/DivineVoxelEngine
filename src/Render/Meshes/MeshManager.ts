@@ -7,7 +7,7 @@ import type {
  MeshSetData,
  VoxelMeshInterface,
 } from "Meta/Render/Meshes/VoxelMesh.interface";
-import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
 import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";

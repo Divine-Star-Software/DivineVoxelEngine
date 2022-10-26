@@ -6,10 +6,10 @@ import type {
 } from "Meta/Data/DataSync.types.js";
 //objects
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
-import { WorldData } from "./World/WorldData.js";
 import { WorldRegister } from "./World/WorldRegister.js";
 import { DataSyncTypes } from "../Data/Constants/Data/DataSync.js";
 import { VoxelData } from "./Voxel/VoxelData.js";
+import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
 
 export const DataSyncNode = {
  chunk: ThreadComm.onDataSync<ChunkSyncData, ChunkUnSyncData>(
@@ -25,7 +25,7 @@ DataSyncNode.chunk.addOnSync((data) => {
 });
 
 DataSyncNode.voxelPalette.addOnSync((data) => {
- WorldData.setVoxelPalette(data[0], data[1]);
+ VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
 });
 
 DataSyncNode.voxelData.addOnSync((data) => {

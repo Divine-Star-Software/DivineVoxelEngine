@@ -7,6 +7,6 @@ export const DataHooks = {
     },
     paint: {
         addToRGBUpdate: Hooks.getSyncHook(),
-        onNuild: Hooks.getSyncHook(),
+        onRichVoxelPaint: Hooks.getSyncHook(),
     },
 };

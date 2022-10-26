@@ -1,6 +1,6 @@
 //types
 import type { DVERInitData } from "Meta/Render/DVER";
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";

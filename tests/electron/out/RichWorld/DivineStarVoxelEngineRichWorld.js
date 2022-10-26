@@ -1,7 +1,8 @@
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-//intercomms
+import { RichWorldTasks } from "./Tasks/Tasks.js";
+//threads
 import { WorldComm } from "./Threads/World/WorldComm.js";
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
 //functions
@@ -12,7 +13,6 @@ import { WorldBounds } from "../Data/World/WorldBounds.js";
 export const DVERW = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
-    __queueStatesSet: false,
     worldBounds: WorldBounds,
     UTIL: Util,
     settings: EngineSettings,
@@ -20,6 +20,7 @@ export const DVERW = {
     parentComm: ParentComm,
     richData: RichData,
     voxelManager: VoxelManager,
+    takss: RichWorldTasks,
     syncSettings(data) {
         this.settings.syncSettings(data);
         this.settings.syncWithWorldBounds(this.worldBounds);
@@ -27,8 +28,7 @@ export const DVERW = {
     },
     reStart() { },
     isReady() {
-        return (DVERW.worldComm.isReady() &&
-            DVERW.__settingsHaveBeenSynced);
+        return DVERW.worldComm.isReady() && DVERW.__settingsHaveBeenSynced;
     },
     async $INIT() {
         await InitWorker(this);

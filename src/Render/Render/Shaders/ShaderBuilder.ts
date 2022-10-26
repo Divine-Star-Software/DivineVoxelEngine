@@ -2,7 +2,7 @@
 //https://forum.babylonjs.com/t/mesh-with-custom-shader-material-does-not-cast-shadow/7761/2
 //https://playground.babylonjs.com/#ENPTI9#8
 
-import type { VoxelSubstanceType } from "Meta/Voxels/Voxel.types";
+import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 
 //shaders
 import { floraShaders } from "./Code/Flora/Flora.shader.js";

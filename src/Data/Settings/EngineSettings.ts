@@ -1,5 +1,5 @@
 import { ChunkReader } from "../Chunk/ChunkReader.js";
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { WorldBounds } from "../World/WorldBounds.js";
 
 /**# Engine Settings

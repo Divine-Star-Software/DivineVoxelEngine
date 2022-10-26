@@ -1,5 +1,5 @@
 //type
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //threads
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
 import { CCM } from "./Threads/Constructor/ConstructorCommManager.js";

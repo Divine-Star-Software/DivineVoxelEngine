@@ -5,17 +5,17 @@ import { DimensionsData } from "./Dimensions/DimensionsData.js";
 import { Register } from "./Register/Register.js";
 import { VoxelData } from "./Voxel/VoxelData.js";
 import { WorldBounds } from "./World/WorldBounds.js";
-import { WorldData } from "./World/WorldData.js";
+import { WorldPainter } from "./World/WorldPainter.js";
 import { WorldRegister } from "./World/WorldRegister.js";
 import { ColumnData } from "./Column/Column.js";
 export const DataManager = {
     dimensions: DimensionsData,
     voxel: VoxelData,
-    world: WorldData,
+    world: WorldPainter,
     worldRegister: WorldRegister,
     worldColumn: ColumnData,
     worldBounds: WorldBounds,
-    maps: Register,
+    register: Register,
     chunks: {
         reader: ChunkReader,
         heightMap: HeightMapData,

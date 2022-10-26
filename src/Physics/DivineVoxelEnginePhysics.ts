@@ -1,5 +1,5 @@
-import type { EntityObject } from "Meta/Physics/Entity.type.js";
-import type { ColliderObject } from "Meta/Physics/Collider.type.js";
+import type { EntityObject } from "Meta/Interfaces/Physics/Entity.type.js";
+import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type.js";
 //objects
 import { DVEM } from "../Libs/Math/DivineVoxelEngineMath.js";
 import { CollisionsHanlder } from "./Collisions/CollisionsHandler.js";
@@ -7,14 +7,14 @@ import { EntityBase } from "./Entities/Entity.base.js";
 import { ColliderManager } from "./Colliders/ColliderManager.js";
 import { RegisterDefaultColliders } from "./Colliders/Functions/RegisterDefaultColliders.js";
 import type { VoxelManager } from "Data/Voxel/VoxelManager.js";
-import { WorldData } from "../Data/World/WorldData.js";
+import { WorldPainter } from "../Data/World/WorldPainter.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 
 export const DVEPH = {
  math: DVEM,
  collisions: CollisionsHanlder,
  colliders: ColliderManager,
- wroldData: WorldData,
+ wroldData: WorldPainter,
 
  _dataTool: new DataTool(),
 

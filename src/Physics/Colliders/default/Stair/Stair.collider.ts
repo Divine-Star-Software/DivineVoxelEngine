@@ -1,7 +1,7 @@
 import type {
  ColliderObject,
  ColliderReturnData,
-} from "Meta/Physics/Collider.type.js";
+} from "Meta/Interfaces/Physics/Collider.type.js";
 
 const collisionReturn: ColliderReturnData = [
  {

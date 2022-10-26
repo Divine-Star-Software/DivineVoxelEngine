@@ -24,7 +24,10 @@ export const LightDebugBoxVoxelBuilderThread = {
         },
     },
     process: function (data, DVEB) {
-        const light = DVEB.processor.worldData.voxel.data.level.getAt(data.dimension, data.x, data.y + 1, data.z);
+        let light = 0;
+        if (DVEB.processor.nDataTool.loadIn(data.x, data.y + 1, data.z)) {
+            light = DVEB.processor.nDataTool.getLevel();
+        }
         let uv = lightDebugBoxTextures[light];
         if (data.exposedFaces[0]) {
             data.uvTemplate.push(uv);

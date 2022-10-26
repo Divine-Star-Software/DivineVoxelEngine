@@ -4,13 +4,13 @@ import { CollisionsHanlder } from "./Collisions/CollisionsHandler.js";
 import { EntityBase } from "./Entities/Entity.base.js";
 import { ColliderManager } from "./Colliders/ColliderManager.js";
 import { RegisterDefaultColliders } from "./Colliders/Functions/RegisterDefaultColliders.js";
-import { WorldData } from "../Data/World/WorldData.js";
+import { WorldPainter } from "../Data/World/WorldPainter.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 export const DVEPH = {
     math: DVEM,
     collisions: CollisionsHanlder,
     colliders: ColliderManager,
-    wroldData: WorldData,
+    wroldData: WorldPainter,
     _dataTool: new DataTool(),
     voxelManager: null,
     $INIT(manager) {

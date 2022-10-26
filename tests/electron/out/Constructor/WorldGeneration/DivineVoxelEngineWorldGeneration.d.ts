@@ -1,4 +1,4 @@
-import type { WorldGenInterface } from "Meta/WorldGen/WorldGen.types";
+import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types";
 import type { VoxelData } from "Meta/index.js";
 import type { Position3Matrix } from "Meta/Util.types.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";

@@ -21,7 +21,7 @@ import { Rotations } from "Meta/Constructor/Mesher.types.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 import { CullFaceOverride } from "Meta/Constructor/OverRide.types";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
-import { WorldData } from "../../../Data/World/WorldData.js";
+import { WorldPainter } from "../../../Data/World/WorldPainter.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
@@ -43,7 +43,7 @@ export const Processor = {
  heightByte: HeightMapData,
  faceByte: FaceByte,
  lightByte: LightData,
- worldData: WorldData,
+ worldData: WorldPainter,
  calculatFlow: CalculateFlow,
  voxellightMixCalc: VoxelLightMixCalc,
  doVoxelLight: CalculateVoxelLight,

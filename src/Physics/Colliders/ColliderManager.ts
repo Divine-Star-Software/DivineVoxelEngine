@@ -1,4 +1,4 @@
-import type { ColliderObject } from "Meta/Physics/Collider.type";
+import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type";
 
 export const ColliderManager = {
  colliders: <Record<string, ColliderObject>>{},

@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import type { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 

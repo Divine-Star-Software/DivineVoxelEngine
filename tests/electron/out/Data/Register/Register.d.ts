@@ -11,6 +11,7 @@ export declare const Register: {
             colliderId: number;
             lightSource: number;
             lightValue: number;
+            isRich: number;
             totalLength: number;
         };
         dataIndexes: {
@@ -22,6 +23,7 @@ export declare const Register: {
             colliderId: number;
             lightSource: number;
             lightValue: number;
+            isRich: number;
         };
     };
 };

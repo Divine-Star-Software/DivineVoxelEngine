@@ -1,13 +1,9 @@
 //types
 import { DataSyncTypes } from "../../Data/Constants/Data/DataSync.js";
-import { DataHooks } from "../../Data/DataHooks.js";
 //objects
 import { VoxelDataCreator } from "./VoxelDataCreator.js";
-import { DataCreator } from "./Creator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { WorldData } from "../../Data/World/WorldData.js";
-import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
-import { DVEW } from "../DivineVoxelEngineWorld.js";
+import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 const loopThroughComms = (func) => {
     for (const commKey of Object.keys(DataSync.comms)) {
         const comm = DataSync.comms[commKey];
@@ -24,7 +20,7 @@ export const DataSync = {
         this.voxelDataCreator.$createVoxelData();
         this.voxelData.sync();
         this.voxelPalette.sync();
-        WorldData.setVoxelPalette(this.voxelDataCreator.palette._palette, this.voxelDataCreator.palette._map);
+        VoxelPaletteReader.setVoxelPalette(this.voxelDataCreator.palette._palette, this.voxelDataCreator.palette._map);
     },
     isReady() {
         return this.voxelDataCreator.isReady();
@@ -120,28 +116,3 @@ export const DataSync = {
         },
     },
 };
-DataHooks.chunk.onGetAsync.addToRun(async (data) => {
-    const chunkData = DataCreator.chunk.getBuffer();
-    ChunkReader.setChunkPosition(new DataView(chunkData), {
-        x: data[1],
-        y: data[2],
-        z: data[3],
-    });
-    return chunkData;
-});
-DataHooks.chunk.onGetSync.addToRun((data) => {
-    const chunkData = DataCreator.chunk.getBuffer();
-    ChunkReader.setChunkPosition(new DataView(chunkData), {
-        x: data[1],
-        y: data[2],
-        z: data[3],
-    });
-    return chunkData;
-});
-DataHooks.chunk.onNew.addToRun(async (data) => {
-    DataSync.chunk.sync(data[0], data[1], data[2], data[3]);
-    return;
-});
-DataHooks.paint.addToRGBUpdate.addToRun((data) => {
-    DVEW.queues.rgb.update.add([data[1], data[2], data[3]]);
-});

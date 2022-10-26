@@ -1,4 +1,4 @@
-import { ItemData } from "Meta/Items/Item.types";
+import { ItemData } from "Meta/Data/Items/Item.types";
 
 export const ItemManager = {
  itemData: <Record<string, ItemData>>{},

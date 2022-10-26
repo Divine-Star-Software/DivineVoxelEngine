@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/Global/EngineSettings.types.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 import { BuilderTool } from "../Tools/Build/Builder.js";
 /**# Divine Voxel Engine World
@@ -6,7 +6,7 @@ import { BuilderTool } from "../Tools/Build/Builder.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
@@ -18,7 +18,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -224,6 +224,7 @@ export declare const DVEW: {
                 colliderId: number;
                 lightSource: number;
                 lightValue: number;
+                isRich: number;
                 totalLength: number;
             };
             indexes: {
@@ -235,6 +236,7 @@ export declare const DVEW: {
                 colliderId: number;
                 lightSource: number;
                 lightValue: number;
+                isRich: number;
             };
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
             voxelData: {
@@ -246,6 +248,7 @@ export declare const DVEW: {
                 colliderId: number;
                 lightSource: number;
                 lightValue: number;
+                isRich: number;
             };
             voxelDataView: DataView;
             voxelMap: Uint16Array;
@@ -259,6 +262,7 @@ export declare const DVEW: {
                 colliderId: number;
                 lightSource: number;
                 lightValue: number;
+                isRich: number;
             };
             getSubstance(id: number): number;
             getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
@@ -268,125 +272,19 @@ export declare const DVEW: {
             getColliderId(id: number): number;
             isLightSource(id: number): boolean;
             getLightValue(id: number): number;
+            isRich(id: number): boolean;
         };
         world: {
             _currentionDimension: string;
-            voxelPalette: import("../Meta/Data/WorldData.types.js").VoxelPalette;
-            voxelPaletteMap: import("../Meta/Data/WorldData.types.js").VoxelPaletteMap;
-            setCurrentDimension(id: string | number): void;
-            setVoxelPalette(voxelPalette: import("../Meta/Data/WorldData.types.js").VoxelPalette, voxelPaletteMap: import("../Meta/Data/WorldData.types.js").VoxelPaletteMap): void;
-            rawData: {
-                get(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
-                set(dimensionId: string | number, x: number, y: number, z: number, data: number, secondary?: boolean): number;
-            };
             util: {
                 isSameVoxel(dimensionId: string | number, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
             };
-            voxel: {
-                _air: [string, number];
-                _barrier: [string, number];
-                air: {
-                    isAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): true | undefined;
-                    set(dimensionId: string | number, x: number, y: number, z: number, light?: number, secondary?: boolean): void;
-                };
-                barrier: {
-                    isAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): true | undefined;
-                    set(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): void;
-                };
-                get(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): false | [string, number];
-                getData(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): false | {
-                    substance: import("../Meta/index.js").VoxelSubstanceType;
-                    shapeId: number;
-                    hardness: number;
-                    material: number;
-                    checkCollision: number;
-                    colliderId: number;
-                    lightSource: number;
-                    lightValue: number;
-                };
-                id: {
-                    string(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): string | -1;
-                    stateNumeric(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
-                    baseNumeric(id: number): number;
-                    baseNumericAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
-                    stringFromNumber(id: number): string;
-                    numberFromString(id: string): number;
-                    getPaletteId(voxelId: string, voxelState: number): number;
-                };
-                data: {
-                    shapeId: {
-                        getAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): number;
-                        get(id: number): number;
-                    };
-                    substance: {
-                        getAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): import("../Meta/index.js").VoxelSubstanceType;
-                        get(id: number): import("../Meta/index.js").VoxelSubstanceType;
-                    };
-                    shapeState: {
-                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
-                        get(data: number): number;
-                        set(data: number, state: number): number;
-                        setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
-                    };
-                    state: {
-                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
-                        get(data: number): number;
-                        set(data: number, state: number): number;
-                        setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
-                    };
-                    lightSource: {
-                        trueAt(dimensionId: string | number, x: number, y: number, z: number, secondary?: boolean): boolean;
-                        true(voxelId: number): boolean;
-                    };
-                    level: {
-                        getAt(dimensionId: string | number, x: number, y: number, z: number): number;
-                        get(data: number): number;
-                        set(data: number, level: number): number;
-                        setAt(dimensionId: string | number, x: number, y: number, z: number, level: number): void;
-                        state: {
-                            getAt(dimensionId: string | number, x: number, y: number, z: number): number;
-                            get(data: number): number;
-                            set(data: number, level: number): number;
-                            setAt(dimensionId: string | number, x: number, y: number, z: number, state: number): void;
-                        };
-                    };
-                };
-            };
-            heightMap: {
-                update: {
-                    add(dimensionId: string | number, substance: import("../Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number): void;
-                    remove(dimensionId: string | number, substance: import("../Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number): void;
-                };
-            };
             paint: {
-                getVoxelBrush(): void;
+                _dt: DataTool;
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: string | number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
                 erease(dimensionId: string | number, x: number, y: number, z: number): void;
-                _worldGen: {
-                    getPaletteId(voxelId: string, voxelState: number): number;
-                };
-            };
-            light: {
-                get(dimesnionId: string | number, x: number, y: number, z: number): number;
-                set(dimesnionId: string | number, x: number, y: number, z: number, lightValue: number): -1 | undefined;
-                red: {
-                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
-                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
-                };
-                green: {
-                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
-                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
-                };
-                blue: {
-                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
-                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
-                };
-                sun: {
-                    get(dimesnionId: string | number, x: number, y: number, z: number): number;
-                    set(dimesnionId: string | number, x: number, y: number, z: number, value: number): 0 | undefined;
-                };
             };
         };
         worldRegister: {
@@ -506,7 +404,7 @@ export declare const DVEW: {
                 y: number;
             };
         };
-        maps: {
+        register: {
             voxels: {
                 substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
                 substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
@@ -519,6 +417,7 @@ export declare const DVEW: {
                     colliderId: number;
                     lightSource: number;
                     lightValue: number;
+                    isRich: number;
                     totalLength: number;
                 };
                 dataIndexes: {
@@ -530,6 +429,7 @@ export declare const DVEW: {
                     colliderId: number;
                     lightSource: number;
                     lightValue: number;
+                    isRich: number;
                 };
             };
         };
@@ -770,8 +670,8 @@ export declare const DVEW: {
         };
     };
     richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
-        setInitalData(voxelId: string, x: number, y: number, z: number): void;
-        removeRichData(x: number, y: number, z: number): void;
+        setInitalData(data: import("../Meta/Data/RichWorldData.types.js").SetRichVoxel): void;
+        removeRichData(data: import("../Meta/Data/CommonTypes.js").LocationData): void;
     };
     entityConstructor: {
         voxelData: Uint32Array[] | null;
@@ -788,18 +688,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            /**# Divine Voxel Engine World
-             * ---
-             * This handles everything in the world worker context.
-             */
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -874,11 +770,11 @@ export declare const DVEW: {
         onRegister(func: (data: import("../Meta/index.js").VoxelData) => void): void;
     };
     itemManager: {
-        itemData: Record<string, import("../Meta/Items/Item.types.js").ItemData>;
-        _onRegister: (data: import("../Meta/Items/Item.types.js").ItemData) => void;
-        getItemData(id: string): import("../Meta/Items/Item.types.js").ItemData;
-        registerItemData(data: import("../Meta/Items/Item.types.js").ItemData): void;
-        onRegister(func: (data: import("../Meta/Items/Item.types.js").ItemData) => void): void;
+        itemData: Record<string, import("../Meta/Data/Items/Item.types.js").ItemData>;
+        _onRegister: (data: import("../Meta/Data/Items/Item.types.js").ItemData) => void;
+        getItemData(id: string): import("../Meta/Data/Items/Item.types.js").ItemData;
+        registerItemData(data: import("../Meta/Data/Items/Item.types.js").ItemData): void;
+        onRegister(func: (data: import("../Meta/Data/Items/Item.types.js").ItemData) => void): void;
     };
     queues: {
         $INIT(): void;

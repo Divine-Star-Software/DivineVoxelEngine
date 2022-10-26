@@ -12,6 +12,7 @@ export const VoxelData = {
         colliderId: 0,
         lightSource: 0,
         lightValue: 0,
+        isRich: 0,
     },
     voxelDataView: new DataView(new ArrayBuffer(0)),
     voxelMap: new Uint16Array(0),
@@ -63,5 +64,9 @@ export const VoxelData = {
     getLightValue(id) {
         const index = this.voxelMap[id] * this.byteLength.totalLength;
         return this.voxelDataView.getUint16(this.indexes.lightValue + index);
+    },
+    isRich(id) {
+        const index = this.voxelMap[id] * this.byteLength.totalLength;
+        return this.voxelDataView.getUint8(this.indexes.isRich + index) == 1;
     },
 };

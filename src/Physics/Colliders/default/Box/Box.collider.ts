@@ -1,4 +1,4 @@
-import type { ColliderObject, ColliderReturnData } from "Meta/Physics/Collider.type.js";
+import type { ColliderObject, ColliderReturnData } from "Meta/Interfaces/Physics/Collider.type.js";
 
 const collisionReturn : ColliderReturnData = [
  {

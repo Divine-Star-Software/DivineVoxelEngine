@@ -1,5 +1,5 @@
 import { ItemShapeData } from "Meta/Constructor/ItemShape.type";
-import type { ItemConstructorObject, ItemConstructorThreadHooks } from "Meta/Items/Item.types.js";
+import type { ItemConstructorObject, ItemConstructorThreadHooks } from "Meta/Data/Items/Item.types.js";
 export declare const ItemManager: {
     itemObjects: Record<string, ItemConstructorObject>;
     itemShapes: Record<string, ItemShapeData>;

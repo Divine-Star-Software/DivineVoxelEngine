@@ -1,6 +1,6 @@
 /// <reference types="babylonjs" />
-import type { EntityTypes } from "Meta/Entity/Entity.types";
-import type { RenderedEntity, RenderedEntityData, RenderedEntityInterface } from "Meta/Entity/RenderedEntity.types";
+import type { EntityTypes } from "Meta/Data/Entity/Entity.types";
+import type { RenderedEntity, RenderedEntityData, RenderedEntityInterface } from "Meta/Interfaces/Entity/RenderedEntity.types";
 export declare const RenderedEntitesManager: {
     scene: BABYLON.Scene | null;
     entityTemplate: Record<string, {

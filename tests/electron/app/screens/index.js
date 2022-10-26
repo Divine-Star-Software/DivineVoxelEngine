@@ -32,7 +32,7 @@ const HomeScreen = () => {
                         attrs: {
                             className: "dve-version",
                         },
-                        text: "Alpha 1.2.1 | The Potato Update",
+                        text: "Alpha 1.2.2 | The API Update",
                     },
                     {
                         type: "h6",

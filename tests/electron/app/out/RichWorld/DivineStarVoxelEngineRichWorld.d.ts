@@ -1,8 +1,7 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVERW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
-    __queueStatesSet: boolean;
     worldBounds: {
         __maxChunkYSize: number;
         bounds: {
@@ -93,7 +92,7 @@ export declare const DVERW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -378,6 +377,10 @@ export declare const DVERW: {
         getVoxelData(id: string): import("Meta/index.js").VoxelData;
         registerVoxelData(data: import("Meta/index.js").VoxelData): void;
         onRegister(func: (data: import("Meta/index.js").VoxelData) => void): void;
+    };
+    takss: {
+        setVoxel: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/RichWorldData.types.js").SetRichVoxel>;
+        removeVoxel: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

@@ -1,9 +1,9 @@
-import type { EntityTypes } from "Meta/Entity/Entity.types";
+import type { EntityTypes } from "Meta/Data/Entity/Entity.types";
 import type {
  RenderedEntity,
  RenderedEntityData,
  RenderedEntityInterface,
-} from "Meta/Entity/RenderedEntity.types";
+} from "Meta/Interfaces/Entity/RenderedEntity.types";
 
 export const RenderedEntitesManager = {
  scene: <BABYLON.Scene | null>null,

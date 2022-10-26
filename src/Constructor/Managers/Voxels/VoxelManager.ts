@@ -3,7 +3,7 @@ import type {
  VoxelHooks,
  VoxelConstructorObject,
  VoxelData,
-} from "Meta/Voxels/Voxel.types";
+} from "Meta/Data/Voxels/Voxel.types";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 

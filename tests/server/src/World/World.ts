@@ -26,6 +26,9 @@ const severMessage = (message: string, data: any[] = []) => {
 };
 severMessage("DIVINE VOXEL ENGINE SERVER");
 
+const builder = DVEW.getBuilder();
+const brush = DVEW.getBrush();
+
 const depth = 32;
 const startX = -depth;
 const endX = depth;
@@ -34,7 +37,7 @@ const endZ = depth;
 const generate = () => {
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   DVEW.worldData.fillWorldCollumnWithChunks(x, z);
+   builder.setXZ(x, z).fillColumn();
    WorldGen.generateChunk(x, z);
   }
  }
@@ -89,10 +92,10 @@ wss.on("connection", function connection(ws) {
   if (message == 0) {
    for (let x = startX; x <= endX; x += 16) {
     for (let z = startZ; z <= endZ; z += 16) {
-     const wc = DVEW.worldData.getWorldColumn(x, z);
+     const wc = DVEW.data.worldRegister.column.get(0, x, z);
      if (!wc) continue;
-     for (const key of Object.keys(wc)) {
-      const chunk = wc[key];
+     for (const key of Object.keys(wc.chunks)) {
+      const chunk = wc.chunks[key];
       ws.send(chunk.buffer);
      }
     }
@@ -121,26 +124,27 @@ wss.on("connection", function connection(ws) {
    const x = dv.getFloat32(12);
    const y = dv.getFloat32(16);
    const z = dv.getFloat32(20);
-   DVEW.worldData.requestVoxelAddFromRaw(v1, v2, x, y, z);
+   brush.setXYZ(x, y, z).setRaw([v1, v2]).paintAndUpdate();
+
    updateClients((con) => {
     con.socket.send(dv.buffer);
    }, clientId);
    severMessage("VOXEL ADD", [clientId]);
   }
   if (message == 400) {
-    //added voxel
-    dv.setUint16(0, 600);
-    const clientId = dv.getUint16(2);
-    const x = dv.getFloat32(4);
-    const y = dv.getFloat32(8);
-    const z = dv.getFloat32(12);
-    DVEW.worldData.requestVoxelBeRemoved(x,y,z);
-    console.log(x,y,z);
-    updateClients((con) => {
-     con.socket.send(dv.buffer);
-    }, clientId);
-    severMessage("VOXEL REMOVE", [clientId]);
-   }
+   //added voxel
+   dv.setUint16(0, 600);
+   const clientId = dv.getUint16(2);
+   const x = dv.getFloat32(4);
+   const y = dv.getFloat32(8);
+   const z = dv.getFloat32(12);
+   brush.setXYZ(x, y, z).ereaseAndUpdate();
+   console.log(x, y, z);
+   updateClients((con) => {
+    con.socket.send(dv.buffer);
+   }, clientId);
+   severMessage("VOXEL REMOVE", [clientId]);
+  }
  });
 });
 
