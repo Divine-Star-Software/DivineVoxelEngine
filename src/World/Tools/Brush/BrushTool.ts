@@ -81,10 +81,10 @@ const preRemove = (l: number, data: AddVoxelData, onDone: Function) => {
    const l = dataTool.getLight();
    if (l < 0) continue;
    if (LD.getS(l) > 0) {
-    tasks.light.sun.remove.add(nx, ny, nz);
+    tasks.light.sun.update.add(nx, ny, nz);
    }
    if (LD.hasRGBLight(l)) {
-    tasks.light.rgb.remove.add(nx, ny, nz);
+    tasks.light.rgb.update.add(nx, ny, nz);
    }
   }
  }
