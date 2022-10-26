@@ -1,3 +1,4 @@
+import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 declare type DID = string | number;
@@ -33,6 +34,12 @@ export declare const DataSync: {
     $INIT(): void;
     isReady(): boolean;
     registerComm(comm: CommBase | CommManager): void;
+    dimesnion: {
+        unSync(id: string | number): void;
+        unSyncInThread(commName: string, id: string | number): void;
+        sync(data: DimensionData): void;
+        syncInThread(commName: string, data: DimensionData): void;
+    };
     chunk: {
         unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number): void;
         unSyncInThread(commName: string, dimension: DID, chunkX: number, chunkY: number, chunkZ: number): void;

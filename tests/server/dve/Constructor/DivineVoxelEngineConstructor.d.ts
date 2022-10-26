@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -194,15 +194,17 @@ export declare const DVEC: {
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
     };
     data: {
         dimensions: {
+            _count: number;
             dimensionRecord: Record<string, number>;
             dimensionMap: Record<number, string>;
             __defaultDimensionOptions: import("../Meta/Data/DimensionData.types.js").DimensionOptions;
             _dimensions: Record<string, import("../Meta/Data/DimensionData.types.js").DimensionData>;
-            addDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
-            getDimension(id: string): import("../Meta/Data/DimensionData.types.js").DimensionData;
+            registerDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
+            getDimension(id: string | number): import("../Meta/Data/DimensionData.types.js").DimensionData;
             getDimensionStringId(id: string | number): string;
             getDimensionNumericId(id: string | number): number;
         };
@@ -275,13 +277,11 @@ export declare const DVEC: {
                 _dt: import("../Tools/Data/DataTool.js").DataTool;
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erease(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
         worldRegister: {
-            dimensionRecord: Record<string, number>;
-            dimensionMap: Record<number, string>;
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
             _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
@@ -736,13 +736,7 @@ export declare const DVEC: {
         };
         chunkMesher: {
             voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
-            voxelTypeMap: {
-                solid: number;
-                flora: number;
-                fluid: number;
-                magma: number;
-            };
-            buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
+            buildChunkMesh(dimension: number, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
         };
         entityMesher: {
             buildEntityMesh(x: number, y: number, z: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
@@ -829,19 +823,6 @@ export declare const DVEC: {
                 removeSunLight(sl: number): number;
                 minusOneForAll(sl: number): number;
             };
-            worldData: {
-                _currentionDimension: string;
-                util: {
-                    isSameVoxel(dimensionId: string | number, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
-                };
-                paint: {
-                    _dt: import("../Tools/Data/DataTool.js").DataTool;
-                    voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
-                    voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                    __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
-                    erease(dimensionId: string | number, x: number, y: number, z: number): void;
-                };
-            };
             calculatFlow: typeof import("./Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
             voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
             doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
@@ -868,7 +849,7 @@ export declare const DVEC: {
             faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
             _process(template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
             constructEntity(composed?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-            makeAllChunkTemplates(chunk: import("../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+            makeAllChunkTemplates(dimension: number, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
             processVoxelLight(data: import("../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
             syncSettings(settings: EngineSettingsData): void;
             flush(): void;
@@ -894,14 +875,14 @@ export declare const DVEC: {
                     z: number;
                 };
                 setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-                getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-                setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-                setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-                setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-                deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-                deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): void;
+                getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+                getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): number;
+                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): number;
+                setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+                setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+                setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+                deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("Meta/index.js").Position3Matrix;
             };
@@ -1117,15 +1098,15 @@ export declare const DVEC: {
         addToRebuildQue(x: number, y: number, z: number, substance: import("Meta/index.js").VoxelSubstanceType | "all"): void;
         resetRebuildQue(): void;
         runRebuildQue(): void;
-        runRGBFloodFill(x: number, y: number, z: number): void;
-        runRGBFloodRemove(x: number, y: number, z: number): void;
+        runRGBFloodFill(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
+        runRGBFloodRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
         runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
         runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
         runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
-        runSunLightUpdate(x: number, y: number, z: number): void;
-        runSunLightRemove(x: number, y: number, z: number): void;
-        updateFlowAt(x: number, y: number, z: number): Promise<void>;
-        removeFlowAt(x: number, y: number, z: number): Promise<void>;
+        runSunLightUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
+        runSunLightRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
+        updateFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): Promise<void>;
+        removeFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): Promise<void>;
     };
     DVEWG: {
         worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
@@ -1249,8 +1230,8 @@ export declare const DVEC: {
             item: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         };
         rgb: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         worldSun: {
             fillWorldColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
@@ -1258,12 +1239,12 @@ export declare const DVEC: {
             floodAtMaxY: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         };
         sun: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         flow: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         worldGen: {
             generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
@@ -1274,7 +1255,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

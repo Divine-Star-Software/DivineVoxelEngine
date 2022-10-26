@@ -13,6 +13,7 @@ import { EntityMesher } from "./Mesher/EntityMesher.js";
 import { ItemMesher } from "./Mesher/ItemMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
+import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 export const DVEB = {
     textureManager: TextureManager,
     shapeManager: ShapeManager,
@@ -33,13 +34,14 @@ export const DVEB = {
         this.processor.syncSettings(settings);
     },
     async buildChunk(dimension, chunkX, chunkY, chunkZ, LOD = 1) {
-        let chunk = DVEC.data.worldRegister.chunk.get(this.dimension, chunkX, chunkY, chunkZ);
+        dimension = DimensionsRegister.getDimensionNumericId(dimension);
+        let chunk = DVEC.data.worldRegister.chunk.get(dimension, chunkX, chunkY, chunkZ);
         if (!chunk) {
             console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
             return;
         }
-        const template = this.processor.makeAllChunkTemplates(chunk, chunkX, chunkY, chunkZ, LOD);
-        this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD);
+        const template = this.processor.makeAllChunkTemplates(dimension, chunk, chunkX, chunkY, chunkZ, LOD);
+        this.chunkMesher.buildChunkMesh(dimension, chunkX, chunkY, chunkZ, template, LOD);
         this.processor.flush();
         return true;
     },

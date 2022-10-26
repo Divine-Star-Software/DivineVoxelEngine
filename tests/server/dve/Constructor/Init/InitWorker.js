@@ -1,4 +1,3 @@
-import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 export async function InitWorker(DVEC) {
     await ThreadComm.$INIT("constructor");
@@ -11,9 +10,7 @@ export async function InitWorker(DVEC) {
         onReady() {
             if (DVEC.environment == "browser") {
                 if (DVEC.TC.threadNumber == 1) {
-                    DVEC.worldComm.sendMessage(WorldTasks.syncShapeMap, [
-                        DVEC.DVEB.shapeManager.shapeMap,
-                    ]);
+                    DVEC.worldComm.syncData("shape-map", DVEC.DVEB.shapeManager.shapeMap);
                 }
             }
         },

@@ -1,4 +1,4 @@
-import { ConstructEntityIndexes, ConstructorToRenderMessages, } from "../../../Data/Constants/InterComms/ConstructorToRender.js";
+import { ConstructEntityIndexes, ConstructorToRenderMessages, } from "../../../Data/Constants/Contracts/ConstructorToRender.js";
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 export const EntityMesher = {

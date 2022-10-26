@@ -1,6 +1,6 @@
 import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
-import { DimensionsData } from "../Dimensions/DimensionsData.js";
+import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
 const WP = {
@@ -16,7 +16,7 @@ const WP = {
             if (!data.dimension) {
                 data.dimension = WP._currentionDimension;
             }
-            const dimension = DimensionsData.getDimensionNumericId(data.dimension);
+            const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
             const pos = data.position;
             let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
             if (!chunk) {
@@ -30,13 +30,13 @@ const WP = {
                     return;
                 chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
             }
-            this.__paint(dimension, data, chunk, update);
+            this.__paint(dimension, data, update);
         },
         async voxelAsync(data) {
             if (!data.dimension) {
                 data.dimension = WP._currentionDimension;
             }
-            const dimension = DimensionsData.getDimensionNumericId(data.dimension);
+            const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
             const pos = data.position;
             let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
             if (!chunk) {
@@ -50,9 +50,10 @@ const WP = {
                     return;
                 chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
             }
-            this.__paint(dimension, data, chunk);
+            this.__paint(dimension, data);
         },
-        __paint(dimension, data, chunk, update = true) {
+        __paint(dimension, data, update = true) {
+            this._dt.setDimension(dimension);
             const x = data.position[0];
             const y = data.position[1];
             const z = data.position[2];
@@ -78,7 +79,7 @@ const WP = {
             this._dt.commit(1);
             if (update) {
                 if (this._dt.isLightSource() && this._dt.getLightValue()) {
-                    DataHooks.paint.addToRGBUpdate.run([dimension, x, y, z]);
+                    DataHooks.paint.onAddToRGBUpdate.run([dimension, x, y, z]);
                 }
             }
             if (this._dt.isRich()) {

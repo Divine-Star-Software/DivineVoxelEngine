@@ -2,15 +2,18 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //threads
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
-import { CCM } from "./Threads/Constructor/ConstructorCommManager.js";
 import { NexusComm } from "./Threads/Nexus/NexusComm.js";
 import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 import { DataComm } from "./Threads/Data/DataComm.js";
 import { FXComm } from "./Threads/FX/FXComm.js";
+import { CCM } from "../Common/Threads/Constructor/ConstructorComm.js";
+//queues
+import { ConstructorQueues } from "../Common/Queues/ConstructorQueues.js";
+//tasks
+import { ConstructorTasks } from "../Common/Tasks/ConstructorTasks.js";
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { QueuesManager } from "./Queues/QueuesManager.js";
 //data
 import { DataSync } from "./Data/DataSync.js";
 import { DataManager } from "../Data/DataManager.js";
@@ -55,7 +58,8 @@ export const DVEW = {
  entityConstructor: EntityConstructor,
  voxelManager: VoxelManager,
  itemManager: ItemManager,
- queues: QueuesManager,
+ cQueues: ConstructorQueues,
+ cTasks : ConstructorTasks,
 
  isReady() {
   return (

@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -9,7 +9,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -193,15 +193,17 @@ export declare const DVEN: {
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
     };
     data: {
         dimensions: {
+            _count: number;
             dimensionRecord: Record<string, number>;
             dimensionMap: Record<number, string>;
             __defaultDimensionOptions: import("../Meta/Data/DimensionData.types.js").DimensionOptions;
             _dimensions: Record<string, import("../Meta/Data/DimensionData.types.js").DimensionData>;
-            addDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
-            getDimension(id: string): import("../Meta/Data/DimensionData.types.js").DimensionData;
+            registerDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
+            getDimension(id: string | number): import("../Meta/Data/DimensionData.types.js").DimensionData;
             getDimensionStringId(id: string | number): string;
             getDimensionNumericId(id: string | number): number;
         };
@@ -274,13 +276,11 @@ export declare const DVEN: {
                 _dt: import("../Tools/Data/DataTool.js").DataTool;
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erease(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
         worldRegister: {
-            dimensionRecord: Record<string, number>;
-            dimensionMap: Record<number, string>;
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
             _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
@@ -590,7 +590,7 @@ export declare const DVEN: {
             _dt: import("../Tools/Data/DataTool.js").DataTool;
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
             erease(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };

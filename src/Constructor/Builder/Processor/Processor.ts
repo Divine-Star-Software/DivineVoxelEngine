@@ -2,35 +2,34 @@
 import type {
  DirectionNames,
  EngineSettingsData,
- VoxelConstructorObject,
- VoxelData,
  VoxelSubstanceType,
 } from "Meta/index.js";
-//objects
-import { Util } from "../../../Global/Util.helper.js";
-import { DVEB } from "../DivineVoxelEngineBuilder.js";
-import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+import type { ChunkData } from "Meta/Data/WorldData.types.js";
+import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import type { Rotations } from "Meta/Constructor/Mesher.types.js";
+import type { CullFaceOverride } from "Meta/Constructor/OverRide.types";
 //functions
 import {
  CalculateVoxelLight,
  VoxelLightMixCalc,
 } from "./Functions/CalculateVoxelLight.js";
-import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
-import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
-import { Rotations } from "Meta/Constructor/Mesher.types.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
-import { CullFaceOverride } from "Meta/Constructor/OverRide.types";
-import { ChunkData } from "Meta/Data/WorldData.types.js";
-import { WorldPainter } from "../../../Data/World/WorldPainter.js";
+//objects
+import { DVEB } from "../DivineVoxelEngineBuilder.js";
+import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+//data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
-import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
 import { HeightMapData } from "../../../Data/Chunk/HeightMapData.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
+//maps
+import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 
+import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
+//tools
+import { DataTool } from "../../../Tools/Data/DataTool.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -43,7 +42,6 @@ export const Processor = {
  heightByte: HeightMapData,
  faceByte: FaceByte,
  lightByte: LightData,
- worldData: WorldPainter,
  calculatFlow: CalculateFlow,
  voxellightMixCalc: VoxelLightMixCalc,
  doVoxelLight: CalculateVoxelLight,
@@ -376,6 +374,7 @@ export const Processor = {
  },
 
  makeAllChunkTemplates(
+  dimension: number,
   chunk: ChunkData,
   chunkX: number,
   chunkY: number,
@@ -383,6 +382,8 @@ export const Processor = {
   LOD = 1
  ): FullChunkTemplate {
   WorldRegister.cache.enable();
+  this.nDataTool.setDimension(dimension);
+  this.mDataTool.setDimension(dimension);
   this.voxelProcesseData.dimension = this.dimension;
   this.settings.entity = false;
   this.LOD = LOD;

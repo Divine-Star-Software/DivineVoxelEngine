@@ -1,4 +1,4 @@
-import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
+import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { DVEW } from "../../World/DivineVoxelEngineWorld.js";
@@ -11,7 +11,7 @@ export class BuilderTool {
         LOD: 1,
     };
     setDimension(dimensionId) {
-        this.data.dimesnion = DimensionsData.getDimensionNumericId(dimensionId);
+        this.data.dimesnion = DimensionsRegister.getDimensionNumericId(dimensionId);
         return this;
     }
     setLOD(lod) {

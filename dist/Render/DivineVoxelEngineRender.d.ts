@@ -2,87 +2,19 @@
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const DVER: {
-    worldBounds: {
-        __maxChunkYSize: number;
-        bounds: {
-            MinZ: number;
-            MaxZ: number;
-            MinX: number;
-            MaxX: number;
-            MinY: number;
-            MaxY: number;
-        };
-        chunkXPow2: number;
-        chunkYPow2: number;
-        chunkZPow2: number;
-        chunkXSize: number;
-        chunkYSize: number;
-        chunkZSize: number;
-        chunkTotalVoxels: number;
-        chunkArea: number;
-        regionXPow2: number;
-        regionYPow2: number;
-        regionZPow2: number;
-        regionXSize: number;
-        regionYSize: number;
-        regionZSize: number;
-        __regionPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        __worldColumnPosition: {
-            x: number;
-            z: number;
-            y: number;
-        };
-        __chunkPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        __voxelPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        syncBoundsWithArrays(): void;
-        setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
-        isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
-        isPositonInBounds(x: number, y: number, z: number): boolean;
-        setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-        setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-        getRegionPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getChunkPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
-        getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
-        getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getRichPositionKey(x: number, y: number, z: number): string;
-        getVoxelPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getColumnKey(x: number, z: number, y?: number): string;
-        getColumnPosition(x: number, z: number, y?: number): {
-            x: number;
-            z: number;
-            y: number;
-        };
+    UTIL: {
+        createPromiseCheck: (data: {
+            check: () => boolean;
+            onReady?: (() => any) | undefined;
+            checkInterval: number;
+            failTimeOut?: number | undefined;
+            onFail?: (() => any) | undefined;
+        }) => Promise<boolean>;
+        getEnviorment(): "node" | "browser";
+        getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
+        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
+        degtoRad(degrees: number): number;
+        radToDeg(radians: number): number;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
@@ -445,7 +377,7 @@ export declare const DVER: {
     meshManager: {
         scene: BABYLON.Scene | null;
         runningUpdate: boolean;
-        meshes: Record<import("../Meta/index.js").VoxelSubstanceType, Record<string, BABYLON.Mesh>>;
+        meshes: Record<import("../Meta/index.js").VoxelSubstanceType, Record<number, Record<string, BABYLON.Mesh>>>;
         entityMesh: {
             pickable: boolean;
             checkCollisions: boolean;
@@ -472,13 +404,13 @@ export declare const DVER: {
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
-        removeChunkMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string): void;
+        removeChunkMesh(type: import("../Meta/index.js").VoxelSubstanceType, dimesnion: number, chunkKey: string): void;
         handleItemUpdate(x: number, y: number, z: number, data: any): void;
         handleEntityUpdate(x: number, y: number, z: number, data: any): void;
-        handleChunkUpdate(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): void;
-        requestChunkBeRemoved(chunkKey: string): void;
-        _updateMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _buildNewMesh(type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        handleChunkUpdate(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
+        requestChunkBeRemoved(dimesnion: number, chunkKey: string): void;
+        _updateMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _buildNewMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
     };
     textureManager: {
         defaultTexturePath: string;
@@ -513,19 +445,9 @@ export declare const DVER: {
         spawnEntity(entityId: string, identiferId: string, positionSBA: SharedArrayBuffer, statesSBA: SharedArrayBuffer): void;
         deSpawnEntity(entityId: string, identiferId: string): false | undefined;
     };
-    UTIL: {
-        createPromiseCheck: (data: {
-            check: () => boolean;
-            onReady?: (() => any) | undefined;
-            checkInterval: number;
-            failTimeOut?: number | undefined;
-            onFail?: (() => any) | undefined;
-        }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
-        getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
-        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
-        degtoRad(degrees: number): number;
-        radToDeg(radians: number): number;
+    tasks: {
+        setChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
+        removeChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
     _handleOptions(): void;
     syncSettingsWithWorkers(data: EngineSettingsData): void;

@@ -1,7 +1,5 @@
 import type { ChunkData, Column, WorldDimensions, Region } from "Meta/Data/WorldData.types";
 export declare const WorldRegister: {
-    dimensionRecord: Record<string, number>;
-    dimensionMap: Record<number, string>;
     _dimensions: WorldDimensions;
     _cacheOn: boolean;
     _cache: Record<string, ChunkData>;

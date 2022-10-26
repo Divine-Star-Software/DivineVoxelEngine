@@ -1,6 +1,5 @@
 //types
-import { DataSyncTypes } from "../../Data/Constants/Data/DataSync.js";
-import { DataHooks } from "../../Data/DataHooks.js";
+import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type {
@@ -11,11 +10,10 @@ import type {
 } from "Meta/Data/DataSync.types.js";
 //objects
 import { VoxelDataCreator } from "./VoxelDataCreator.js";
-import { DataCreator } from "./Creator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
-import { DVEW } from "../DivineVoxelEngineWorld.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { DataSyncTypes } from "../../Data/Constants/Contracts/DataSync.js";
 const loopThroughComms = (func: (comm: CommBase | CommManager) => void) => {
  for (const commKey of Object.keys(DataSync.comms)) {
   const comm = DataSync.comms[commKey];
@@ -55,7 +53,26 @@ export const DataSync = {
    voxelData: true,
   };
  },
-
+ dimesnion: {
+  unSync(id: string | number) {
+   loopThroughComms((comm) => {
+    comm.unSyncData<typeof id>(DataSyncTypes.dimesnion, id);
+   });
+  },
+  unSyncInThread(commName: string, id: string | number) {
+   const comm = DataSync.comms[commName];
+   comm.unSyncData<typeof id>(DataSyncTypes.dimesnion, id);
+  },
+  sync(data: DimensionData) {
+   loopThroughComms((comm) => {
+    comm.syncData<DimensionData>(DataSyncTypes.dimesnion, data);
+   });
+  },
+  syncInThread(commName: string, data: DimensionData) {
+   const comm = DataSync.comms[commName];
+   comm.syncData<DimensionData>(DataSyncTypes.dimesnion, data);
+  },
+ },
  chunk: {
   unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number) {
    loopThroughComms((comm) => {
@@ -152,4 +169,6 @@ export const DataSync = {
  },
 };
 
-
+ThreadComm.onDataSync("shape-map", (data: any) => {
+ VoxelDataCreator.setShapeMap(data);
+});

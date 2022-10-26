@@ -15,9 +15,9 @@ import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
-import { WorldBounds } from "../Data/World/WorldBounds.js";
+import { RenderTasks } from "./Tasks/Tasks.js";
 export const DVER = {
-    worldBounds: WorldBounds,
+    UTIL: Util,
     worldComm: WorldComm,
     nexusComm: NexusComm,
     dataComm: DataComm,
@@ -29,7 +29,7 @@ export const DVER = {
     meshManager: MeshManager,
     textureManager: TextureManager,
     renderedEntites: RenderedEntitesManager,
-    UTIL: Util,
+    tasks: RenderTasks,
     _handleOptions() {
         const data = this.settings.settings;
         if (data.textureOptions) {
@@ -40,7 +40,6 @@ export const DVER = {
     },
     syncSettingsWithWorkers(data) {
         this.settings.syncSettings(data);
-        this.settings.syncWithWorldBounds(this.worldBounds);
         const copy = this.settings.getSettingsCopy();
         this.renderManager.syncSettings(copy);
         this.worldComm.sendMessage("sync-settings", [copy]);

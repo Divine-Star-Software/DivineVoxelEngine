@@ -1,6 +1,6 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/Contracts/WorldTasks.js";
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";

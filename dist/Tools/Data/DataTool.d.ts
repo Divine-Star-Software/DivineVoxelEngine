@@ -1,5 +1,6 @@
 import type { VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
 export declare class DataTool {
+    static _dtutil: DataTool;
     _mode: "World" | "Entity";
     data: {
         dimension: number;
@@ -50,4 +51,5 @@ export declare class DataTool {
     setId(id: number): this;
     getStringId(): string;
     isRenderable(): boolean;
+    isSameVoxel(cx: number, cy: number, cz: number): boolean;
 }

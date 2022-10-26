@@ -5,10 +5,12 @@ import { LightData as LD } from "../../../Data/Light/LightByte.js";
 import { VoxelData } from "../../../Data/Voxel/VoxelData.js";
 import { $3dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
-import { QueuesManager as QM } from "../../Queues/QueuesManager.js";
+import { ConstructorQueues as QM } from "../../../Common/Queues/ConstructorQueues.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
+import { TasksTool } from "../../../Tools/Tasks/TasksTool.js";
+const tasks = TasksTool();
 const getUpdateState = () => {
     return {
         phase: "pre",
@@ -56,10 +58,10 @@ const preRemove = (l, data, onDone) => {
     if (l > 0) {
         dataTool.setLight(l).commit();
         if (ES.doRGBPropagation()) {
-            QM.rgb.remove.add([x, y, z]);
+            tasks.light.rgb.remove.add(x, y, z);
         }
         if (ES.doSunPropagation()) {
-            QM.sun.remove.add([x, y, z]);
+            tasks.light.sun.remove.add(x, y, z);
         }
     }
     if (l < 0) {
@@ -75,25 +77,21 @@ const preRemove = (l, data, onDone) => {
             if (l < 0)
                 continue;
             if (LD.getS(l) > 0) {
-                QM.sun.update.add([nx, ny, nz]);
+                tasks.light.sun.remove.add(nx, ny, nz);
             }
             if (LD.hasRGBLight(l)) {
-                QM.rgb.update.add([nx, ny, nz]);
+                tasks.light.rgb.remove.add(nx, ny, nz);
             }
         }
     }
     if (ES.doSunPropagation() && ES.doRGBPropagation()) {
-        QM.sun.remove.run();
-        QM.sun.remove.onDone("main", () => {
+        tasks.light.sun.remove.run(() => {
             updates.sun = 1;
-            QM.sun.update.run();
-            QM.sun.update.onDone("main", () => {
+            tasks.light.sun.update.run(() => {
                 updates.sun = 2;
-                QM.rgb.remove.run();
-                QM.rgb.remove.onDone("main", () => {
+                tasks.light.rgb.remove.run(() => {
                     updates.rgb = 1;
-                    QM.rgb.update.run();
-                    QM.rgb.update.onDone("main", () => {
+                    tasks.light.rgb.update.run(() => {
                         updates.rgb = 2;
                     });
                 });
@@ -101,11 +99,9 @@ const preRemove = (l, data, onDone) => {
         });
     }
     if (ES.doRGBPropagation() && !ES.doSunPropagation()) {
-        QM.rgb.remove.run();
-        QM.rgb.remove.onDone("main", () => {
+        tasks.light.rgb.remove.run(() => {
             updates.rgb = 1;
-            QM.rgb.update.run();
-            QM.rgb.update.onDone("main", () => {
+            tasks.light.rgb.update.run(() => {
                 updates.rgb = 2;
             });
         });
@@ -131,11 +127,11 @@ const prePaint = (data, onDone) => {
     let needLightUpdate = false;
     if (ES.doRGBPropagation()) {
         needLightUpdate = true;
-        QM.rgb.remove.add([x, y, z]);
+        tasks.light.rgb.remove.add(x, y, z);
     }
     if (ES.doSunPropagation()) {
         needLightUpdate = true;
-        QM.sun.remove.add([x, y, z]);
+        tasks.light.sun.remove.add(x, y, z);
     }
     if (!needLightUpdate) {
         onDone();
@@ -145,11 +141,9 @@ const prePaint = (data, onDone) => {
         rgb: 0,
         sun: 0,
     };
-    QM.sun.remove.run();
-    QM.sun.remove.onDone("main", () => {
+    tasks.light.sun.remove.run(() => {
         updates.sun = 1;
-        QM.rgb.remove.run();
-        QM.rgb.remove.onDone("main", () => {
+        tasks.light.rgb.remove.run(() => {
             updates.rgb = 1;
         });
     });
@@ -175,12 +169,11 @@ const postUpdate = (data, lightSource, lightValue, onDone) => {
     if (ES.settings.lighting?.autoRGBLight) {
         if (lightSource && lightValue) {
             needLightUpdate = true;
-            QM.rgb.update.add([x, y, z]);
+            tasks.light.rgb.update.add(x, y, z);
         }
     }
     if (needLightUpdate) {
-        QM.rgb.update.run();
-        QM.rgb.update.onDone("main", onDone);
+        tasks.light.rgb.update.run(onDone);
         return;
     }
     onDone();

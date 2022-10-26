@@ -1,5 +1,5 @@
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
+import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 import { WorldPainter } from "../../Data/World/WorldPainter.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 export class VoxelBrush {
@@ -21,7 +21,7 @@ export class VoxelBrush {
         return this;
     }
     setDimension(dimensionId) {
-        this.data.dimension = DimensionsData.getDimensionNumericId(dimensionId);
+        this.data.dimension = DimensionsRegister.getDimensionNumericId(dimensionId);
         this._dt.setDimension(dimensionId);
         return this;
     }

@@ -153,13 +153,7 @@ export declare const DVEB: {
     };
     chunkMesher: {
         voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
-        voxelTypeMap: {
-            solid: number;
-            flora: number;
-            fluid: number;
-            magma: number;
-        };
-        buildChunkMesh(chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
+        buildChunkMesh(dimension: number, chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
     };
     entityMesher: {
         buildEntityMesh(x: number, y: number, z: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
@@ -246,19 +240,6 @@ export declare const DVEB: {
             removeSunLight(sl: number): number;
             minusOneForAll(sl: number): number;
         };
-        worldData: {
-            _currentionDimension: string;
-            util: {
-                isSameVoxel(dimensionId: string | number, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
-            };
-            paint: {
-                _dt: import("../../Tools/Data/DataTool.js").DataTool;
-                voxel(data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
-                voxelAsync(data: import("../../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: number, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
-                erease(dimensionId: string | number, x: number, y: number, z: number): void;
-            };
-        };
         calculatFlow: typeof import("./Processor/Functions/CalculateFlow.js").CalculateFlow;
         voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
         doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
@@ -285,7 +266,7 @@ export declare const DVEB: {
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
         _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
         constructEntity(composed?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-        makeAllChunkTemplates(chunk: import("../../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        makeAllChunkTemplates(dimension: number, chunk: import("../../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
         flush(): void;
@@ -311,14 +292,14 @@ export declare const DVEB: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("Meta/index.js").Position3Matrix;
         };

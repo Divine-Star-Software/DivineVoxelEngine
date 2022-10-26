@@ -90,6 +90,10 @@ export declare const DVEW: {
                 checkMagmaCollisions: boolean;
                 checkFluidCollisions: boolean;
                 checkFloraCollisions: boolean;
+                /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 checkSolidCollisions: boolean;
                 seralize: boolean;
                 pickable: boolean;
@@ -205,12 +209,13 @@ export declare const DVEW: {
     };
     data: {
         dimensions: {
+            _count: number;
             dimensionRecord: Record<string, number>;
             dimensionMap: Record<number, string>;
             __defaultDimensionOptions: import("../Meta/Data/DimensionData.types.js").DimensionOptions;
             _dimensions: Record<string, import("../Meta/Data/DimensionData.types.js").DimensionData>;
-            addDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
-            getDimension(id: string): import("../Meta/Data/DimensionData.types.js").DimensionData;
+            registerDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
+            getDimension(id: string | number): import("../Meta/Data/DimensionData.types.js").DimensionData;
             getDimensionStringId(id: string | number): string;
             getDimensionNumericId(id: string | number): number;
         };
@@ -283,13 +288,11 @@ export declare const DVEW: {
                 _dt: DataTool;
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erease(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
         worldRegister: {
-            dimensionRecord: Record<string, number>;
-            dimensionMap: Record<number, string>;
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
             _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
@@ -621,6 +624,12 @@ export declare const DVEW: {
         $INIT(): void;
         isReady(): boolean;
         registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager): void;
+        dimesnion: {
+            unSync(id: string | number): void;
+            unSyncInThread(commName: string, id: string | number): void;
+            sync(data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
+            syncInThread(commName: string, data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
+        };
         chunk: {
             unSync(dimesnion: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
             unSyncInThread(commName: string, dimension: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
@@ -776,34 +785,91 @@ export declare const DVEW: {
         registerItemData(data: import("../Meta/Data/Items/Item.types.js").ItemData): void;
         onRegister(func: (data: import("../Meta/Data/Items/Item.types.js").ItemData) => void): void;
     };
-    queues: {
+    cQueues: {
         $INIT(): void;
+        addQueuesForDimension(dimensionId: string): void;
         rgb: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         worldSun: {
             add(x: number, z: number, queueId?: string): void;
             run(): Promise<void>;
             __steps: {
+                /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 step1: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
                 step2: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
                 step3: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
             };
         };
         sun: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         flow: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         build: {
             chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").BuildTasks>;
         };
         generate: {
             chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
+        };
+    };
+    cTasks: {
+        runQueue: {
+            rgb: {
+                update: null;
+                remove: null;
+            };
+            worldSun: {
+                fill: null;
+                columnFill: null;
+                flood: null;
+            };
+            sun: {
+                update: null;
+                remove: null;
+            };
+            flow: {
+                update: null;
+                remove: null;
+            };
+            build: {
+                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<string>;
+            };
+            generate: {
+                chunk: null;
+            };
+        };
+        addToQueue: {
+            rgb: {
+                update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+                remove: null;
+            };
+            worldSun: {
+                fill: null;
+                columnFill: null;
+                flood: null;
+            };
+            sun: {
+                update: null;
+                remove: null;
+            };
+            flow: {
+                update: null;
+                remove: null;
+            };
+            build: {
+                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<string>;
+            };
+            generate: {
+                chunk: null;
+            };
         };
     };
     isReady(): boolean;
@@ -821,11 +887,13 @@ export declare const DVEW: {
     getDataTool(): DataTool;
     getTasksManager(): {
         _data: {
-            dimension: number;
+            dimension: string;
         };
-        setDimension(dimensionId: string | number): any;
+        _thread: string;
+        setDimension(dimensionId: string): any;
         build: {
             chunk: {
+                __this: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -834,12 +902,14 @@ export declare const DVEW: {
         };
         flow: {
             update: {
+                __this: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
             remove: {
+                __this: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -849,12 +919,14 @@ export declare const DVEW: {
         light: {
             rgb: {
                 update: {
+                    __this: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
+                    __this: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
@@ -863,12 +935,14 @@ export declare const DVEW: {
             };
             sun: {
                 update: {
+                    __this: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
+                    __this: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
@@ -876,6 +950,7 @@ export declare const DVEW: {
                 };
             };
             worldSun: {
+                __this: any;
                 __queueId: string;
                 add(x: number, z: number, y?: number): void;
                 runAndAwait(): Promise<void>;

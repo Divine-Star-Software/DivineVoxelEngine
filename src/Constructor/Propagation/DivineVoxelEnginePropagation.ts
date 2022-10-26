@@ -3,10 +3,11 @@ import type { VoxelSubstanceType } from "Meta/index.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { WorldTasks } from "../../Data/Constants/InterComms/WorldTasks.js";
+import { WorldTasks } from "../../Data/Constants/Contracts/WorldTasks.js";
 import { FlowManager } from "./Flow/FlowManager.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 export const DVEP = {
  illumination: IlluminationManager,
  flow: FlowManager,
@@ -44,15 +45,15 @@ export const DVEP = {
   this.rebuildQueMap = {};
  },
 
- runRGBFloodFill(x: number, y: number, z: number) {
+ runRGBFloodFill(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  this.illumination.runRGBFloodFillAt(x, y, z);
+  this.illumination.runRGBFloodFillAt(data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },
- runRGBFloodRemove(x: number, y: number, z: number) {
+ runRGBFloodRemove(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  this.illumination.runRGBFloodRemoveAt(true, x, y, z);
+  this.illumination.runRGBFloodRemoveAt(true,data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },
@@ -76,30 +77,30 @@ export const DVEP = {
   this.rebuildQueMap = {};
  },
 
- runSunLightUpdate(x: number, y: number, z: number) {
+ runSunLightUpdate(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  this.illumination.runSunLightUpdateAt(x, y, z);
+  this.illumination.runSunLightUpdateAt(data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },
 
- runSunLightRemove(x: number, y: number, z: number) {
+ runSunLightRemove(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  this.illumination.runSunLightRemoveAt(x, y, z);
+  this.illumination.runSunLightRemoveAt(data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },
 
- async updateFlowAt(x: number, y: number, z: number) {
+ async updateFlowAt(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  await this.flow.runFlow(x, y, z);
+  await this.flow.runFlow(data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },
 
- async removeFlowAt(x: number, y: number, z: number) {
+ async removeFlowAt(data : UpdateTasks) {
   WorldRegister.cache.enable();
-  await this.flow.runFlowRemove(x, y, z);
+  await this.flow.runFlowRemove(data[1], data[2], data[3]);
   WorldRegister.cache.disable();
   this.rebuildQueMap = {};
  },

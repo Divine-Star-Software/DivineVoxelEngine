@@ -69,18 +69,18 @@ const setUpLightAndShadows = (scene) => {
     shadowGenerator.autoCalcDepthBounds = false;
     setTimeout(() => {
         for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
-            const mesh = DVER.meshManager.meshes.solid[meshKey];
+            const mesh = DVER.meshManager.meshes.solid[0][meshKey];
             mesh.receiveShadows = true;
             mesh.material = DVER.renderManager.solidStandardMaterial.getMaterial();
             DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
             shadowGenerator.addShadowCaster(mesh);
         }
         for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
-            const mesh = DVER.meshManager.meshes.solid[meshKey];
+            const mesh = DVER.meshManager.meshes.solid[0][meshKey];
             DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
         }
         for (const meshKey of Object.keys(DVER.meshManager.meshes.fluid)) {
-            const mesh = DVER.meshManager.meshes.fluid[meshKey];
+            const mesh = DVER.meshManager.meshes.fluid[0][meshKey];
             mesh.receiveShadows = true;
             mesh.material = DVER.renderManager.fluidStandardMaterial.getMaterial();
         }

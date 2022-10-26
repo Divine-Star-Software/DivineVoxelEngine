@@ -16,19 +16,9 @@ export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
   let topBottomUV = uvs[0];
   let sideUV = uvs[1];
   let sideTopUV = uvs[2];
-  if (
-   !DVEB.processor.worldData.util.isSameVoxel(
-    data.dimension,
-    data.x,
-    data.y,
-    data.z,
-    data.x,
-    data.y + 1,
-    data.z
-   )
-  ) {
-   sideUV = sideTopUV;
-  }
+  if (!DVEB.processor.mDataTool.isSameVoxel(data.x, data.y + 1, data.z)) {
+    sideUV = sideTopUV;
+   }
   if (data.exposedFaces[0]) {
    data.uvTemplate.push(topBottomUV);
    sideUV = sideTopUV;

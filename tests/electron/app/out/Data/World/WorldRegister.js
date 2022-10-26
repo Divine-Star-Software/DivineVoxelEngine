@@ -3,13 +3,8 @@ import { WorldBounds } from "./WorldBounds.js";
 import { ChunkReader } from "../Chunk/ChunkReader.js";
 import { HeightMapData } from "../Chunk/HeightMapData.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
+import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
 export const WorldRegister = {
-    dimensionRecord: {
-        main: 0,
-    },
-    dimensionMap: {
-        0: "main",
-    },
     _dimensions: {
         main: {},
     },
@@ -40,7 +35,7 @@ export const WorldRegister = {
         get(id) {
             let dim;
             if (typeof id == "number") {
-                return WorldRegister._dimensions[WorldRegister.dimensionMap[id]];
+                return WorldRegister._dimensions[DimensionsRegister.getDimensionStringId(id)];
             }
             return WorldRegister._dimensions[id];
         },

@@ -1,4 +1,4 @@
-import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
+import { BuildTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     build: {
         chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
@@ -6,8 +6,8 @@ export declare const Tasks: {
         item: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     rgb: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
     };
     worldSun: {
         fillWorldColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
@@ -15,12 +15,12 @@ export declare const Tasks: {
         floodAtMaxY: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     sun: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
     };
     flow: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
     };
     worldGen: {
         generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;

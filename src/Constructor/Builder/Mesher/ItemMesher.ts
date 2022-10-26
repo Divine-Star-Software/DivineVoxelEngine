@@ -1,7 +1,7 @@
 import {
  ConstructItemIndexes,
  ConstructorToRenderMessages,
-} from "../../../Data/Constants/InterComms/ConstructorToRender.js";
+} from "../../../Data/Constants/Contracts/ConstructorToRender.js";
 import type { CreateItemData } from "Meta/Constructor/ItemShape.type.js";
 import type { ItemProcessData } from "Meta/Data/Items/Item.types.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";

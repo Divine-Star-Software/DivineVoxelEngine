@@ -1,120 +1,181 @@
-import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DVEW } from "../../World/DivineVoxelEngineWorld.js";
 class TasksBase {
     _data = {
-        dimension: 0,
+        dimension: "main",
     };
+    _thread = "";
+    constructor() {
+        this._thread = ThreadComm.threadName;
+        this.build.chunk.__this = this;
+        this.light.rgb.update.__this = this;
+        this.light.rgb.remove.__this = this;
+        this.light.sun.update.__this = this;
+        this.light.sun.remove.__this = this;
+        this.flow.update.__this = this;
+        this.flow.remove.__this = this;
+    }
     setDimension(dimensionId) {
-        this._data.dimension = DimensionsData.getDimensionNumericId(dimensionId);
+        this._data.dimension = dimensionId;
         return this;
     }
     build = {
         chunk: {
+            __this: {},
             __queueId: "main",
             add(x, y, z) {
-                DVEW.queues.build.chunk.add([0, x, y, z, 1]);
+                DVEW.cQueues.build.chunk.add([0, x, y, z, 1]);
             },
             run(onDone) {
-                DVEW.queues.build.chunk.run();
-                DVEW.queues.build.chunk.onDone(this.__queueId, onDone);
+                DVEW.cQueues.build.chunk.run();
+                DVEW.cQueues.build.chunk.onDone(this.__queueId, onDone);
             },
             async runAndAwait() {
-                await DVEW.queues.build.chunk.runAndAwait();
+                await DVEW.cQueues.build.chunk.runAndAwait();
             },
         },
     };
     flow = {
         update: {
+            __this: {},
             __queueId: "main",
             add(x, y, z) {
-                DVEW.queues.flow.update.add([x, y, z]);
+                DVEW.cQueues.flow.update.add([
+                    this.__this._data.dimension,
+                    x,
+                    y,
+                    z,
+                    this.__this._thread,
+                    this.__this._data.dimension,
+                ]);
             },
             run(onDone) {
-                DVEW.queues.flow.update.run();
-                DVEW.queues.flow.update.onDone(this.__queueId, onDone);
+                DVEW.cQueues.flow.update.run();
+                DVEW.cQueues.flow.update.onDone(this.__queueId, onDone);
             },
             async runAndAwait() {
-                await DVEW.queues.flow.update.runAndAwait();
+                await DVEW.cQueues.flow.update.runAndAwait();
             },
         },
         remove: {
+            __this: {},
             __queueId: "main",
             add(x, y, z) {
-                DVEW.queues.flow.remove.add([x, y, z]);
+                DVEW.cQueues.flow.remove.add([
+                    this.__this._data.dimension,
+                    x,
+                    y,
+                    z,
+                    this.__this._thread,
+                    this.__this._data.dimension,
+                ]);
             },
             run(onDone) {
-                DVEW.queues.flow.remove.run();
-                DVEW.queues.flow.remove.onDone(this.__queueId, onDone);
+                DVEW.cQueues.flow.remove.run();
+                DVEW.cQueues.flow.remove.onDone(this.__queueId, onDone);
             },
             async runAndAwait() {
-                await DVEW.queues.flow.remove.runAndAwait();
+                await DVEW.cQueues.flow.remove.runAndAwait();
             },
         },
     };
     light = {
         rgb: {
             update: {
+                __this: {},
                 __queueId: "main",
                 add(x, y, z) {
-                    DVEW.queues.rgb.update.add([x, y, z]);
+                    DVEW.cQueues.rgb.update.add([
+                        this.__this._data.dimension,
+                        x,
+                        y,
+                        z,
+                        this.__this._thread,
+                        this.__this._data.dimension,
+                    ]);
                 },
                 run(onDone) {
-                    DVEW.queues.rgb.update.run();
-                    DVEW.queues.rgb.update.onDone(this.__queueId, onDone);
+                    DVEW.cQueues.rgb.update.run();
+                    DVEW.cQueues.rgb.update.onDone(this.__queueId, onDone);
                 },
                 async runAndAwait() {
-                    await DVEW.queues.rgb.update.runAndAwait();
+                    await DVEW.cQueues.rgb.update.runAndAwait();
                 },
             },
             remove: {
+                __this: {},
                 __queueId: "main",
                 add(x, y, z) {
-                    DVEW.queues.rgb.remove.add([x, y, z]);
+                    DVEW.cQueues.rgb.remove.add([
+                        this.__this._data.dimension,
+                        x,
+                        y,
+                        z,
+                        this.__this._thread,
+                        this.__this._data.dimension,
+                    ]);
                 },
                 run(onDone) {
-                    DVEW.queues.rgb.remove.run();
-                    DVEW.queues.rgb.remove.onDone(this.__queueId, onDone);
+                    DVEW.cQueues.rgb.remove.run();
+                    DVEW.cQueues.rgb.remove.onDone(this.__queueId, onDone);
                 },
                 async runAndAwait() {
-                    await DVEW.queues.rgb.remove.runAndAwait();
+                    await DVEW.cQueues.rgb.remove.runAndAwait();
                 },
             },
         },
         sun: {
             update: {
+                __this: {},
                 __queueId: "main",
                 add(x, y, z) {
-                    DVEW.queues.sun.update.add([x, y, z]);
+                    DVEW.cQueues.sun.update.add([
+                        this.__this._data.dimension,
+                        x,
+                        y,
+                        z,
+                        this.__this._thread,
+                        this.__this._data.dimension,
+                    ]);
                 },
                 run(onDone) {
-                    DVEW.queues.sun.update.run();
-                    DVEW.queues.sun.update.onDone(this.__queueId, onDone);
+                    DVEW.cQueues.sun.update.run();
+                    DVEW.cQueues.sun.update.onDone(this.__queueId, onDone);
                 },
                 async runAndAwait() {
-                    await DVEW.queues.sun.update.runAndAwait();
+                    await DVEW.cQueues.sun.update.runAndAwait();
                 },
             },
             remove: {
+                __this: {},
                 __queueId: "main",
                 add(x, y, z) {
-                    DVEW.queues.sun.remove.add([x, y, z]);
+                    DVEW.cQueues.sun.remove.add([
+                        this.__this._data.dimension,
+                        x,
+                        y,
+                        z,
+                        this.__this._thread,
+                        this.__this._data.dimension,
+                    ]);
                 },
                 run(onDone) {
-                    DVEW.queues.sun.remove.run();
-                    DVEW.queues.sun.remove.onDone(this.__queueId, onDone);
+                    DVEW.cQueues.sun.remove.run();
+                    DVEW.cQueues.sun.remove.onDone(this.__queueId, onDone);
                 },
                 async runAndAwait() {
-                    await DVEW.queues.sun.remove.runAndAwait();
+                    await DVEW.cQueues.sun.remove.runAndAwait();
                 },
             },
         },
         worldSun: {
+            __this: {},
             __queueId: "main",
             add(x, z, y = 0) {
-                DVEW.queues.worldSun.add(x, z);
+                DVEW.cQueues.worldSun.add(x, z);
             },
             async runAndAwait() {
-                await DVEW.queues.worldSun.run();
+                await DVEW.cQueues.worldSun.run();
             },
         },
     };

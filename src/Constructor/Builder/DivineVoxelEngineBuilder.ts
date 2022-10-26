@@ -14,6 +14,7 @@ import { EntityMesher } from "./Mesher/EntityMesher.js";
 import { ItemMesher } from "./Mesher/ItemMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
+import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 
 export const DVEB = {
  textureManager: TextureManager,
@@ -45,8 +46,9 @@ export const DVEB = {
   chunkZ: number,
   LOD = 1
  ) {
+  dimension = DimensionsRegister.getDimensionNumericId(dimension);
   let chunk = DVEC.data.worldRegister.chunk.get(
-   this.dimension,
+   dimension,
    chunkX,
    chunkY,
    chunkZ
@@ -56,13 +58,21 @@ export const DVEB = {
    return;
   }
   const template = this.processor.makeAllChunkTemplates(
+   dimension,
    chunk,
    chunkX,
    chunkY,
    chunkZ,
    LOD
   );
-  this.chunkMesher.buildChunkMesh(chunkX, chunkY, chunkZ, template, LOD);
+  this.chunkMesher.buildChunkMesh(
+   dimension,
+   chunkX,
+   chunkY,
+   chunkZ,
+   template,
+   LOD
+  );
   this.processor.flush();
   return true;
  },

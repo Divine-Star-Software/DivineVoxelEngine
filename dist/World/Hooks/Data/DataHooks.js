@@ -4,6 +4,7 @@ import { DataCreator } from "../../Data/Creator.js";
 import { DataSync } from "../../Data/DataSync.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const RegisterDataHooks = () => {
+    const tasks = DVEW.getTasksManager();
     DataHooks.chunk.onGetAsync.addToRun(async (data) => {
         const chunkData = DataCreator.chunk.getBuffer();
         ChunkReader.setChunkPosition(new DataView(chunkData), {
@@ -26,10 +27,15 @@ export const RegisterDataHooks = () => {
         DataSync.chunk.sync(data[0], data[1], data[2], data[3]);
         return;
     });
-    DataHooks.paint.addToRGBUpdate.addToRun((data) => {
-        DVEW.queues.rgb.update.add([data[1], data[2], data[3]]);
+    DataHooks.paint.onAddToRGBUpdate.addToRun((data) => {
+        tasks.setDimension(data[0]);
+        tasks.light.rgb.update.add(data[1], data[2], data[3]);
     });
     DataHooks.paint.onRichVoxelPaint.addToRun((data) => {
         DVEW.richWorldComm.setInitalData(data);
+    });
+    DataHooks.dimension.onRegisterDimension.addToRun((data) => {
+        DVEW.cQueues.addQueuesForDimension(data.id);
+        DataSync.dimesnion.sync(data);
     });
 };

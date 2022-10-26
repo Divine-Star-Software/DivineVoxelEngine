@@ -1,10 +1,10 @@
 import type { DirectionNames, EngineSettingsData, VoxelSubstanceType } from "Meta/index.js";
+import type { ChunkData } from "Meta/Data/WorldData.types.js";
+import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import type { Rotations } from "Meta/Constructor/Mesher.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
-import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
-import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
-import { Rotations } from "Meta/Constructor/Mesher.types.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
-import { ChunkData } from "Meta/Data/WorldData.types.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 /**# Chunk Processor
  * ---
@@ -90,19 +90,6 @@ export declare const Processor: {
         removeSunLight(sl: number): number;
         minusOneForAll(sl: number): number;
     };
-    worldData: {
-        _currentionDimension: string;
-        util: {
-            isSameVoxel(dimensionId: string | number, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
-        };
-        paint: {
-            _dt: DataTool;
-            voxel(data: import("Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
-            voxelAsync(data: import("Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-            __paint(dimension: number, data: import("Meta/Data/WorldData.types.js").AddVoxelData, chunk: ChunkData, update?: boolean): false | undefined;
-            erease(dimensionId: string | number, x: number, y: number, z: number): void;
-        };
-    };
     calculatFlow: typeof CalculateFlow;
     voxellightMixCalc: typeof VoxelLightMixCalc;
     doVoxelLight: typeof CalculateVoxelLight;
@@ -129,7 +116,7 @@ export declare const Processor: {
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;
-    makeAllChunkTemplates(chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
+    makeAllChunkTemplates(dimension: number, chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;

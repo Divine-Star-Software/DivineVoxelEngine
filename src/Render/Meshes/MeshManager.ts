@@ -1,8 +1,7 @@
 import {
  ConstructEntityIndexes,
  ConstructItemIndexes,
- SetChunkDataIndexes,
-} from "../../Data/Constants/InterComms/ConstructorToRender.js";
+} from "../../Data/Constants/Contracts/ConstructorToRender.js";
 import type {
  MeshSetData,
  VoxelMeshInterface,
@@ -12,12 +11,15 @@ import { DVER } from "../DivineVoxelEngineRender.js";
 import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
 import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";
 import { ItemMeshSetData } from "Meta/Render/Meshes/ItemMesh.types.js";
+import { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 
 export const MeshManager = {
  scene: <BABYLON.Scene | null>null,
  runningUpdate: false,
 
- meshes: <Record<VoxelSubstanceType, Record<string, BABYLON.Mesh>>>{
+ meshes: <
+  Record<VoxelSubstanceType, Record<number, Record<string, BABYLON.Mesh>>>
+ >{
   solid: {},
   transparent: {},
   flora: {},
@@ -46,13 +48,18 @@ export const MeshManager = {
 
  reStart() {},
 
- removeChunkMesh(type: VoxelSubstanceType, chunkKey: string) {
-  const mesh = this.meshes[type][chunkKey];
+ removeChunkMesh(
+  type: VoxelSubstanceType,
+  dimesnion: number,
+  chunkKey: string
+ ) {
+  if (!this.meshes[type][dimesnion]) return;
+  const mesh = this.meshes[type][dimesnion][chunkKey];
   if (!mesh) {
    return;
   }
   mesh.dispose();
-  delete this.meshes[type][chunkKey];
+  delete this.meshes[type][dimesnion][chunkKey];
  },
 
  handleItemUpdate(x: number, y: number, z: number, data: any) {
@@ -96,55 +103,69 @@ export const MeshManager = {
   this.entityMesh.createMesh(x, y, z, meshData);
  },
 
- handleChunkUpdate(type: VoxelSubstanceType, chunkKey: string, data: any) {
+ handleChunkUpdate(
+  dimesnion: number,
+  type: VoxelSubstanceType,
+  chunkKey: string,
+  data: SetChunkMeshTask
+ ) {
   const meshData: MeshSetData = {
-   positionArray: new Float32Array(data[SetChunkDataIndexes.positionArray]),
-   normalsArray: new Float32Array(data[SetChunkDataIndexes.normalsArray]),
-   indiciesArray: new Int32Array(data[SetChunkDataIndexes.indiciesArray]),
-   faceDataArray: new Float32Array(data[SetChunkDataIndexes.faceDataArray]),
-   AOColorsArray: new Float32Array(data[SetChunkDataIndexes.AOColorsArray]),
-   RGBLightColorsArray: new Float32Array(
-    data[SetChunkDataIndexes.RGBLightColorsArray]
-   ),
-   sunLightColorsArray: new Float32Array(
-    data[SetChunkDataIndexes.sunLightColorsArray]
-   ),
-   colorsArray: new Float32Array(data[SetChunkDataIndexes.colorsArray]),
-   uvArray: new Float32Array(data[SetChunkDataIndexes.uvArray]),
-   overlayUVArray: new Float32Array(data[SetChunkDataIndexes.overlayUVArray]),
+   positionArray: data[5],
+   normalsArray: data[6],
+   indiciesArray: data[7],
+   faceDataArray: data[8],
+   AOColorsArray: data[9],
+   RGBLightColorsArray: data[10],
+   sunLightColorsArray: data[11],
+   colorsArray: data[12],
+   uvArray: data[13],
+   overlayUVArray: data[14],
    extra: [],
   };
-  if (!this.meshes[type][chunkKey]) {
-   this._buildNewMesh(type, chunkKey, meshData);
+  if (!this.meshes[type][dimesnion]) {
+   this.meshes[type][dimesnion] = {};
+  }
+  if (!this.meshes[type][dimesnion][chunkKey]) {
+   this._buildNewMesh(dimesnion, type, chunkKey, meshData);
   } else {
-   this._updateMesh(type, chunkKey, meshData);
+   this._updateMesh(dimesnion, type, chunkKey, meshData);
   }
  },
 
- requestChunkBeRemoved(chunkKey: string) {
+ requestChunkBeRemoved(dimesnion: number, chunkKey: string) {
   for (const substance of Object.keys(this.meshes)) {
-   if (this.meshes[substance as VoxelSubstanceType][chunkKey]) {
-    this.meshes[substance as VoxelSubstanceType][chunkKey].dispose();
-    delete this.meshes[substance as VoxelSubstanceType][chunkKey];
+   if (this.meshes[substance as VoxelSubstanceType][dimesnion][chunkKey]) {
+    this.meshes[substance as VoxelSubstanceType][dimesnion][chunkKey].dispose();
+    delete this.meshes[substance as VoxelSubstanceType][dimesnion][chunkKey];
    }
   }
  },
 
- async _updateMesh(type: VoxelSubstanceType, chunkKey: string, data: any) {
+ async _updateMesh(
+  dimesnion: number,
+  type: VoxelSubstanceType,
+  chunkKey: string,
+  data: any
+ ) {
   if (!this.scene) return;
-  const mesh = this.meshes[type][chunkKey];
+  const mesh = this.meshes[type][dimesnion][chunkKey];
   this.scene.unfreezeActiveMeshes();
   this.meshMakers[type].createMeshGeometory(mesh, data);
   this.scene.freeActiveMeshes();
  },
 
- async _buildNewMesh(type: VoxelSubstanceType, chunkKey: string, data: any) {
+ async _buildNewMesh(
+  dimesnion: number,
+  type: VoxelSubstanceType,
+  chunkKey: string,
+  data: any
+ ) {
   if (!this.scene) return;
   this.scene.unfreezeActiveMeshes();
   const mesh = this.meshMakers[type].createTemplateMesh(this.scene);
   mesh.setEnabled(true);
   this.meshMakers[type].createMeshGeometory(mesh, data);
-  this.meshes[type][chunkKey] = mesh;
+  this.meshes[type][dimesnion][chunkKey] = mesh;
   this.scene.freeActiveMeshes();
  },
 };

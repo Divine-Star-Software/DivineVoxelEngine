@@ -1,9 +1,9 @@
-//types
-import { DataSyncTypes } from "../../Data/Constants/Data/DataSync.js";
 //objects
 import { VoxelDataCreator } from "./VoxelDataCreator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { DataSyncTypes } from "../../Data/Constants/Contracts/DataSync.js";
 const loopThroughComms = (func) => {
     for (const commKey of Object.keys(DataSync.comms)) {
         const comm = DataSync.comms[commKey];
@@ -32,6 +32,26 @@ export const DataSync = {
             voxelPalette: true,
             voxelData: true,
         };
+    },
+    dimesnion: {
+        unSync(id) {
+            loopThroughComms((comm) => {
+                comm.unSyncData(DataSyncTypes.dimesnion, id);
+            });
+        },
+        unSyncInThread(commName, id) {
+            const comm = DataSync.comms[commName];
+            comm.unSyncData(DataSyncTypes.dimesnion, id);
+        },
+        sync(data) {
+            loopThroughComms((comm) => {
+                comm.syncData(DataSyncTypes.dimesnion, data);
+            });
+        },
+        syncInThread(commName, data) {
+            const comm = DataSync.comms[commName];
+            comm.syncData(DataSyncTypes.dimesnion, data);
+        },
     },
     chunk: {
         unSync(dimesnion, chunkX, chunkY, chunkZ) {
@@ -116,3 +136,6 @@ export const DataSync = {
         },
     },
 };
+ThreadComm.onDataSync("shape-map", (data) => {
+    VoxelDataCreator.setShapeMap(data);
+});

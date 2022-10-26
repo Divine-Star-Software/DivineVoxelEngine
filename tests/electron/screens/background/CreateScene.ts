@@ -10,16 +10,17 @@ export const CreateScene = () => {
   //engine.setSize(1920, 1080);
   const scene = new BABYLON.Scene(engine);
 
-  const light = new BABYLON.HemisphericLight(
+/*   const light = new BABYLON.HemisphericLight(
     "",
     new BABYLON.Vector3(0, -1, 0),
     scene
   );
+ */
 
   const camera = new BABYLON.FreeCamera("main", BABYLON.Vector3.Zero(), scene);
   camera.position.x = 0;
-  camera.position.z = -2;
-  camera.position.y = 30;
+  camera.position.z = 0;
+  camera.position.y = 5;
   camera.setTarget(BABYLON.Vector3.Zero());
   scene.activeCamera = camera;
 
@@ -32,7 +33,7 @@ export const CreateScene = () => {
   );
   particleSystem.isLocal = true;
 
-  particleSystem.emitter = new BABYLON.Vector3(0, -100, 0);
+  particleSystem.emitter = new BABYLON.Vector3(0, -50, 30);
 
   engine.runRenderLoop(() => {
     scene.render();

@@ -1,10 +1,13 @@
 declare class TasksBase {
     _data: {
-        dimension: number;
+        dimension: string;
     };
-    setDimension(dimensionId: number | string): this;
+    _thread: string;
+    constructor();
+    setDimension(dimensionId: string): this;
     build: {
         chunk: {
+            __this: TasksBase;
             __queueId: string;
             add(x: number, y: number, z: number): void;
             run(onDone: Function): void;
@@ -13,12 +16,14 @@ declare class TasksBase {
     };
     flow: {
         update: {
+            __this: TasksBase;
             __queueId: string;
             add(x: number, y: number, z: number): void;
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;
         };
         remove: {
+            __this: TasksBase;
             __queueId: string;
             add(x: number, y: number, z: number): void;
             run(onDone: Function): void;
@@ -28,12 +33,14 @@ declare class TasksBase {
     light: {
         rgb: {
             update: {
+                __this: TasksBase;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
             remove: {
+                __this: TasksBase;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -42,12 +49,14 @@ declare class TasksBase {
         };
         sun: {
             update: {
+                __this: TasksBase;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
             remove: {
+                __this: TasksBase;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -55,6 +64,7 @@ declare class TasksBase {
             };
         };
         worldSun: {
+            __this: TasksBase;
             __queueId: string;
             add(x: number, z: number, y?: number): void;
             runAndAwait(): Promise<void>;

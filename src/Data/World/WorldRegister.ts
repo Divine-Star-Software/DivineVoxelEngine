@@ -9,14 +9,9 @@ import { WorldBounds } from "./WorldBounds.js";
 import { ChunkReader } from "../Chunk/ChunkReader.js";
 import { HeightMapData } from "../Chunk/HeightMapData.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
+import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
 
 export const WorldRegister = {
- dimensionRecord: <Record<string, number>>{
-  main: 0,
- },
- dimensionMap: <Record<number, string>>{
-  0: "main",
- },
  _dimensions: <WorldDimensions>{
   main: {},
  },
@@ -49,7 +44,9 @@ export const WorldRegister = {
   get(id: number | string) {
    let dim;
    if (typeof id == "number") {
-    return WorldRegister._dimensions[WorldRegister.dimensionMap[id]];
+    return WorldRegister._dimensions[
+     DimensionsRegister.getDimensionStringId(id)
+    ];
    }
    return WorldRegister._dimensions[id];
   },

@@ -1,4 +1,5 @@
 import type { VoxelSubstanceType } from "Meta/index.js";
+import { UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const DVEP: {
     illumination: {
         lightData: {
@@ -140,14 +141,14 @@ export declare const DVEP: {
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     resetRebuildQue(): void;
     runRebuildQue(): void;
-    runRGBFloodFill(x: number, y: number, z: number): void;
-    runRGBFloodRemove(x: number, y: number, z: number): void;
+    runRGBFloodFill(data: UpdateTasks): void;
+    runRGBFloodRemove(data: UpdateTasks): void;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
     runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
     runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
-    runSunLightUpdate(x: number, y: number, z: number): void;
-    runSunLightRemove(x: number, y: number, z: number): void;
-    updateFlowAt(x: number, y: number, z: number): Promise<void>;
-    removeFlowAt(x: number, y: number, z: number): Promise<void>;
+    runSunLightUpdate(data: UpdateTasks): void;
+    runSunLightRemove(data: UpdateTasks): void;
+    updateFlowAt(data: UpdateTasks): Promise<void>;
+    removeFlowAt(data: UpdateTasks): Promise<void>;
 };
 export declare type DivineVoxelEnginePropagation = typeof DVEP;

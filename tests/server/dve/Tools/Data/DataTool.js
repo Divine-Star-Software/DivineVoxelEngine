@@ -1,12 +1,13 @@
 import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { DimensionsData } from "../../Data/Dimensions/DimensionsData.js";
+import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelByte.js";
 import { VoxelData } from "../../Data/Voxel/VoxelData.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 export class DataTool {
+    static _dtutil = new DataTool();
     _mode = "World";
     data = {
         dimension: 0,
@@ -27,7 +28,7 @@ export class DataTool {
     };
     __secondary = false;
     setDimension(dimensionId) {
-        this.data.dimension = DimensionsData.getDimensionNumericId(dimensionId);
+        this.data.dimension = DimensionsRegister.getDimensionNumericId(dimensionId);
     }
     setSecondary(enable) {
         this.__secondary = enable;
@@ -271,5 +272,12 @@ export class DataTool {
         if (this.data.id < 2 && this.data.secondaryId < 2)
             return false;
         return true;
+    }
+    isSameVoxel(cx, cy, cz) {
+        DataTool._dtutil.loadIn(cx, cy, cz);
+        if (this.__secondary) {
+            return this.data.secondaryBaseId == DataTool._dtutil.data.secondaryBaseId;
+        }
+        return this.data.baseId == DataTool._dtutil.data.baseId;
     }
 }

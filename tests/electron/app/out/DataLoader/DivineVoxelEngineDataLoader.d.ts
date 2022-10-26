@@ -194,6 +194,7 @@ export declare const DVEDL: {
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
     };
     data: {
         voxelDataCreator: {
@@ -226,6 +227,12 @@ export declare const DVEDL: {
         $INIT(): void;
         isReady(): boolean;
         registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager): void;
+        dimesnion: {
+            unSync(id: string | number): void;
+            unSyncInThread(commName: string, id: string | number): void;
+            sync(data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
+            syncInThread(commName: string, data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
+        };
         chunk: {
             unSync(dimesnion: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
             unSyncInThread(commName: string, dimension: string | number, chunkX: number, chunkY: number, chunkZ: number): void;

@@ -1,4 +1,4 @@
-import { ConstructorTasks } from "../../Data/Constants/InterComms/ConstructorTasks.js";
+import { ConstructorTasks } from "../../Data/Constants/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
@@ -33,16 +33,10 @@ export const Tasks = {
     },
     rgb: {
         update: ThreadComm.registerTasks(ConstructorTasks.RGBlightUpdate, (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            DVEC.DVEP.runRGBFloodFill(x, y, z);
+            DVEC.DVEP.runRGBFloodFill(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.RGBlightRemove, (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            DVEC.DVEP.runRGBFloodRemove(x, y, z);
+            DVEC.DVEP.runRGBFloodRemove(data);
         }),
     },
     worldSun: {
@@ -68,30 +62,18 @@ export const Tasks = {
     },
     sun: {
         update: ThreadComm.registerTasks(ConstructorTasks.sunLightUpdate, (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            DVEC.DVEP.runSunLightUpdate(x, y, z);
+            DVEC.DVEP.runSunLightUpdate(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.sunLightRemove, (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            DVEC.DVEP.runSunLightRemove(x, y, z);
+            DVEC.DVEP.runSunLightRemove(data);
         }),
     },
     flow: {
         update: ThreadComm.registerTasks(ConstructorTasks.flowUpdate, async (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            await DVEC.DVEP.updateFlowAt(x, y, z);
+            await DVEC.DVEP.updateFlowAt(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, (data) => {
-            const x = data[0];
-            const y = data[1];
-            const z = data[2];
-            DVEC.DVEP.removeFlowAt(x, y, z);
+            DVEC.DVEP.removeFlowAt(data);
         }),
     },
     worldGen: {

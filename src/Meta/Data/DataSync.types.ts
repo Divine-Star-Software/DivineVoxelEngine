@@ -1,3 +1,4 @@
+import { DimensionData } from "./DimensionData.types";
 import { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
@@ -28,3 +29,4 @@ export type VoxelDataSync = [
  voxelData: SharedArrayBuffer,
  voxelMapData: SharedArrayBuffer
 ];
+

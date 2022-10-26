@@ -36,7 +36,7 @@ export declare const DVEPH: {
             _dt: DataTool;
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
             erease(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };

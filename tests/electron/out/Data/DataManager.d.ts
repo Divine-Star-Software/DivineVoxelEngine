@@ -1,11 +1,12 @@
 export declare const DataManager: {
     dimensions: {
+        _count: number;
         dimensionRecord: Record<string, number>;
         dimensionMap: Record<number, string>;
         __defaultDimensionOptions: import("../Meta/Data/DimensionData.types.js").DimensionOptions;
         _dimensions: Record<string, import("../Meta/Data/DimensionData.types.js").DimensionData>;
-        addDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
-        getDimension(id: string): import("../Meta/Data/DimensionData.types.js").DimensionData;
+        registerDimension(id: string, option: import("../Meta/Data/DimensionData.types.js").DimensionOptions): void;
+        getDimension(id: string | number): import("../Meta/Data/DimensionData.types.js").DimensionData;
         getDimensionStringId(id: string | number): string;
         getDimensionNumericId(id: string | number): number;
     };
@@ -78,13 +79,11 @@ export declare const DataManager: {
             _dt: import("../Tools/Data/DataTool.js").DataTool;
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, update?: boolean): false | undefined;
+            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
             erease(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };
     worldRegister: {
-        dimensionRecord: Record<string, number>;
-        dimensionMap: Record<number, string>;
         _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
         _cacheOn: boolean;
         _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;

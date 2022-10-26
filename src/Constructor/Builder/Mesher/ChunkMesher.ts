@@ -1,16 +1,14 @@
 //types
+import type { VoxelTemplateSubstanceType } from "Meta/index";
+import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import type {
- VoxelSubstanceType,
- VoxelTemplateSubstanceType,
-} from "Meta/index";
+ RemoveChunkMeshTasks,
+ SetChunkMeshTask,
+} from "Meta/Tasks/RenderTasks.types.js";
 //objects
 import { DVEB } from "../DivineVoxelEngineBuilder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import {
- ConstructorToRenderMessages,
- SetChunkDataIndexes,
-} from "../../../Data/Constants/InterComms/ConstructorToRender.js";
-import { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+import { VoxelSubstanceMap } from "../../../Data/Register/VoxelRecords.js";
 
 export const ChunkMesher = {
  voxelBuildOrder: <VoxelTemplateSubstanceType[]>[
@@ -20,14 +18,8 @@ export const ChunkMesher = {
   "magma",
  ],
 
- voxelTypeMap: {
-  solid: 0,
-  flora: 1,
-  fluid: 2,
-  magma: 3,
- },
-
  buildChunkMesh(
+  dimension: number,
   chunkX: number,
   chunkY: number,
   chunkZ: number,
@@ -41,8 +33,9 @@ export const ChunkMesher = {
    const baseTemplate = template[type];
 
    if (baseTemplate.positionTemplate.length == 0) {
-    DVEC.parentComm.sendMessage(ConstructorToRenderMessages.removeChunk, [
-     type,
+    DVEC.parentComm.runTasks<RemoveChunkMeshTasks>("remove-chunk", [
+     dimension,
+     VoxelSubstanceMap[type],
      chunkX,
      chunkY,
      chunkZ,
@@ -157,43 +150,37 @@ export const ChunkMesher = {
    const uvArray = new Float32Array(uvs);
    const overlayUVArray = new Float32Array(overlayUVS);
 
-   const message: any[] = [];
-   message[SetChunkDataIndexes.voxelSubstanceType - 1] =
-    this.voxelTypeMap[type];
-   message[SetChunkDataIndexes.chunkX - 1] = chunkX;
-   message[SetChunkDataIndexes.chunkY - 1] = chunkY;
-   message[SetChunkDataIndexes.chunkZ - 1] = chunkZ;
-   message[SetChunkDataIndexes.positionArray - 1] = positionArray.buffer;
-   message[SetChunkDataIndexes.normalsArray - 1] = normalsArray.buffer;
-   message[SetChunkDataIndexes.indiciesArray - 1] = indiciesArray.buffer;
-   message[SetChunkDataIndexes.faceDataArray - 1] = faceDataArray.buffer;
-   message[SetChunkDataIndexes.AOColorsArray - 1] = AOColorsArray.buffer;
-   message[SetChunkDataIndexes.RGBLightColorsArray - 1] =
-    RGBLightColorsArray.buffer;
-   message[SetChunkDataIndexes.sunLightColorsArray - 1] =
-    sunLightColorsArray.buffer;
-   message[SetChunkDataIndexes.colorsArray - 1] = colorsArray.buffer;
-   message[SetChunkDataIndexes.uvArray - 1] = uvArray.buffer;
-   message[SetChunkDataIndexes.overlayUVArray - 1] = overlayUVArray.buffer;
-
-   const transfers = [
-    positionArray.buffer,
-    normalsArray.buffer,
-    indiciesArray.buffer,
-    faceDataArray.buffer,
-    AOColorsArray.buffer,
-    RGBLightColorsArray.buffer,
-    sunLightColorsArray.buffer,
-    colorsArray.buffer,
-    uvArray.buffer,
-    overlayUVArray.buffer,
-   ];
-
-
-   DVEC.parentComm.sendMessage(
-    ConstructorToRenderMessages.setChunk,
-    message,
-    transfers
+   DVEC.parentComm.runTasks<SetChunkMeshTask>(
+    "set-chunk",
+    [
+     dimension,
+     VoxelSubstanceMap[type],
+     chunkX,
+     chunkY,
+     chunkZ,
+     positionArray,
+     normalsArray,
+     indiciesArray,
+     faceDataArray,
+     AOColorsArray,
+     RGBLightColorsArray,
+     sunLightColorsArray,
+     colorsArray,
+     uvArray,
+     overlayUVArray,
+    ],
+    [
+     positionArray.buffer,
+     normalsArray.buffer,
+     indiciesArray.buffer,
+     faceDataArray.buffer,
+     AOColorsArray.buffer,
+     RGBLightColorsArray.buffer,
+     sunLightColorsArray.buffer,
+     colorsArray.buffer,
+     uvArray.buffer,
+     overlayUVArray.buffer,
+    ]
    );
   }
  },

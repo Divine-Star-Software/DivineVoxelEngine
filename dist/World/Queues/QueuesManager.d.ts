@@ -1,31 +1,30 @@
-import type { BuildTasks, LightUpdateTask } from "Meta/Tasks/Tasks.types.js";
 export declare const QueuesManager: {
     $INIT(): void;
     rgb: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        update: any;
+        remove: any;
     };
     worldSun: {
         add(x: number, z: number, queueId?: string): void;
         run(): Promise<void>;
         __steps: {
-            step1: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
-            step2: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
-            step3: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
+            step1: any;
+            step2: any;
+            step3: any;
         };
     };
     sun: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        update: any;
+        remove: any;
     };
     flow: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        update: any;
+        remove: any;
     };
     build: {
-        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<BuildTasks>;
+        chunk: any;
     };
     generate: {
-        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
+        chunk: any;
     };
 };

@@ -42,7 +42,6 @@ const uvsSets = {
     },
 };
 const getUV = (direction, x, y, z, DVEB, dimension) => {
-    const world = DVEB.processor.worldData;
     let key = "";
     const sets = checkSets[direction];
     for (let i = 0; i < sets.length; i++) {
@@ -51,7 +50,7 @@ const getUV = (direction, x, y, z, DVEB, dimension) => {
         const set = sets[i];
         const cx = x + set[0];
         const cz = z + set[1];
-        const check = world.util.isSameVoxel(dimension, x, y, z, cx, y, cz);
+        const check = DVEB.processor.mDataTool.isSameVoxel(cx, y, cz);
         if (check) {
             key += "1|";
         }

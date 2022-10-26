@@ -1,4 +1,5 @@
-export const DimensionsData = {
+import { DataHooks } from "Data/DataHooks";
+export const DimensionsRegister = {
     dimensionRecord: {
         main: 0,
     },
@@ -11,17 +12,20 @@ export const DimensionsData = {
         sunLight: true,
     },
     _dimensions: {},
-    addDimension(id, option) {
+    registerDimension(id, option) {
         if (!option) {
             option = this.__defaultDimensionOptions;
         }
-        const dimension = {
+        const dimensionData = {
             id: id,
             options: option,
         };
-        this._dimensions[id] = dimension;
+        this._dimensions[id] = dimensionData;
+        dimensionData;
+        DataHooks.dimension.onRegisterDimension.run(dimensionData);
     },
     getDimension(id) {
+        id = this.getDimensionStringId(id);
         return this._dimensions[id];
     },
     getDimensionStringId(id) {
