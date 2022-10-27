@@ -295,16 +295,17 @@ export declare const DVEW: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
                 _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData;
+                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
-                add(id: string | number): {};
-                get(id: string | number): Record<string, import("../Meta/Data/WorldData.types.js").Region>;
+                add(id: string | number): Map<any, any>;
+                get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
             };
             region: {
                 add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").Region;
@@ -312,7 +313,7 @@ export declare const DVEW: {
             };
             column: {
                 add(dimensionId: string | number, x: number, z: number, y?: number): import("../Meta/Data/WorldData.types.js").Column;
-                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column;
+                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
                 fill(dimensionId: string | number, x: number, z: number, y?: number): void;
                 height: {
                     getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
@@ -321,7 +322,7 @@ export declare const DVEW: {
             };
             chunk: {
                 add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
-                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData;
+                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
         };
         worldColumn: {};
@@ -697,14 +698,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -722,7 +723,7 @@ export declare const DVEW: {
         };
         lightByte: {
             SRS: number;
-            _lightValues: number[];
+            _lightValues: [s: number, r: number, g: number, b: number];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -738,7 +739,7 @@ export declare const DVEW: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
-            getLightValues(value: number): number[];
+            getLightValues(value: number): [s: number, r: number, g: number, b: number];
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -796,10 +797,6 @@ export declare const DVEW: {
             add(x: number, z: number, queueId?: string): void;
             run(): Promise<void>;
             __steps: {
-                /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
                 step1: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
                 step2: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
                 step3: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;

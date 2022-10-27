@@ -38,7 +38,7 @@ export declare const DVEB: {
         };
         lightByte: {
             SRS: number;
-            _lightValues: number[];
+            _lightValues: [s: number, r: number, g: number, b: number];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -54,7 +54,7 @@ export declare const DVEB: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
-            getLightValues(value: number): number[];
+            getLightValues(value: number): [s: number, r: number, g: number, b: number];
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -204,9 +204,9 @@ export declare const DVEB: {
             setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
             getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Mesher.types.js").Rotations;
         };
-        lightByte: {
+        lightData: {
             SRS: number;
-            _lightValues: number[];
+            _lightValues: [s: number, r: number, g: number, b: number];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -222,7 +222,7 @@ export declare const DVEB: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
-            getLightValues(value: number): number[];
+            getLightValues(value: number): [s: number, r: number, g: number, b: number];
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -243,7 +243,6 @@ export declare const DVEB: {
         calculatFlow: typeof import("./Processor/Functions/CalculateFlow.js").CalculateFlow;
         voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
         doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
-        chunkTemplates: Record<number, Record<number, number[][]>>;
         exposedFaces: number[];
         faceStates: number[];
         textureRotation: import("../../Meta/Constructor/Mesher.types.js").Rotations[];
@@ -317,7 +316,7 @@ export declare const DVEB: {
         };
         lightByte: {
             SRS: number;
-            _lightValues: number[];
+            _lightValues: [s: number, r: number, g: number, b: number];
             getS(value: number): number;
             getR(value: number): number;
             getG(value: number): number;
@@ -333,7 +332,7 @@ export declare const DVEB: {
             decodeLightFromVoxelData(voxelData: number): number;
             encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
             setLightValues(values: number[]): number;
-            getLightValues(value: number): number[];
+            getLightValues(value: number): [s: number, r: number, g: number, b: number];
             isLessThanForRGBRemove(n1: number, n2: number): boolean;
             isLessThanForRGBAdd(n1: number, n2: number): boolean;
             isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;

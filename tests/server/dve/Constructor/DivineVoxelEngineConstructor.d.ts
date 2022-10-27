@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -284,16 +284,17 @@ export declare const DVEC: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
                 _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData;
+                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
-                add(id: string | number): {};
-                get(id: string | number): Record<string, import("../Meta/Data/WorldData.types.js").Region>;
+                add(id: string | number): Map<any, any>;
+                get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
             };
             region: {
                 add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").Region;
@@ -301,7 +302,7 @@ export declare const DVEC: {
             };
             column: {
                 add(dimensionId: string | number, x: number, z: number, y?: number): import("../Meta/Data/WorldData.types.js").Column;
-                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column;
+                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
                 fill(dimensionId: string | number, x: number, z: number, y?: number): void;
                 height: {
                     getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
@@ -310,7 +311,7 @@ export declare const DVEC: {
             };
             chunk: {
                 add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
-                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData;
+                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
         };
         worldColumn: {};
@@ -621,7 +622,7 @@ export declare const DVEC: {
             };
             lightByte: {
                 SRS: number;
-                _lightValues: number[];
+                _lightValues: [s: number, r: number, g: number, b: number];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -637,7 +638,7 @@ export declare const DVEC: {
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
+                getLightValues(value: number): [s: number, r: number, g: number, b: number];
                 isLessThanForRGBRemove(n1: number, n2: number): boolean;
                 isLessThanForRGBAdd(n1: number, n2: number): boolean;
                 isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -787,9 +788,9 @@ export declare const DVEC: {
                 setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
                 getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
             };
-            lightByte: {
+            lightData: {
                 SRS: number;
-                _lightValues: number[];
+                _lightValues: [s: number, r: number, g: number, b: number];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -805,7 +806,7 @@ export declare const DVEC: {
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
+                getLightValues(value: number): [s: number, r: number, g: number, b: number];
                 isLessThanForRGBRemove(n1: number, n2: number): boolean;
                 isLessThanForRGBAdd(n1: number, n2: number): boolean;
                 isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -826,7 +827,6 @@ export declare const DVEC: {
             calculatFlow: typeof import("./Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
             voxellightMixCalc: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
             doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
-            chunkTemplates: Record<number, Record<number, number[][]>>;
             exposedFaces: number[];
             faceStates: number[];
             textureRotation: import("../Meta/Constructor/Mesher.types.js").Rotations[];
@@ -900,7 +900,7 @@ export declare const DVEC: {
             };
             lightByte: {
                 SRS: number;
-                _lightValues: number[];
+                _lightValues: [s: number, r: number, g: number, b: number];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -916,7 +916,7 @@ export declare const DVEC: {
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
+                getLightValues(value: number): [s: number, r: number, g: number, b: number];
                 isLessThanForRGBRemove(n1: number, n2: number): boolean;
                 isLessThanForRGBAdd(n1: number, n2: number): boolean;
                 isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -961,7 +961,7 @@ export declare const DVEC: {
         illumination: {
             lightData: {
                 SRS: number;
-                _lightValues: number[];
+                _lightValues: [s: number, r: number, g: number, b: number];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -977,7 +977,7 @@ export declare const DVEC: {
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
+                getLightValues(value: number): [s: number, r: number, g: number, b: number];
                 isLessThanForRGBRemove(n1: number, n2: number): boolean;
                 isLessThanForRGBAdd(n1: number, n2: number): boolean;
                 isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -1023,7 +1023,7 @@ export declare const DVEC: {
         flow: {
             lightData: {
                 SRS: number;
-                _lightValues: number[];
+                _lightValues: [s: number, r: number, g: number, b: number];
                 getS(value: number): number;
                 getR(value: number): number;
                 getG(value: number): number;
@@ -1039,7 +1039,7 @@ export declare const DVEC: {
                 decodeLightFromVoxelData(voxelData: number): number;
                 encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
                 setLightValues(values: number[]): number;
-                getLightValues(value: number): number[];
+                getLightValues(value: number): [s: number, r: number, g: number, b: number];
                 isLessThanForRGBRemove(n1: number, n2: number): boolean;
                 isLessThanForRGBAdd(n1: number, n2: number): boolean;
                 isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -1091,6 +1091,7 @@ export declare const DVEC: {
             canFlowDownardTest(x: number, y: number, z: number): boolean;
             flowDownTest(x: number, y: number, z: number): boolean;
             wait(ms: number): Promise<unknown>;
+            _lightValues: [s: number, r: number, g: number, b: number];
             getAbsorbLight(x: number, y: number, z: number): number;
         };
         rebuildQueMap: Record<string, boolean>;
@@ -1255,7 +1256,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

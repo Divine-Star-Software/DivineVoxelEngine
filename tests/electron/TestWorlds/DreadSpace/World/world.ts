@@ -19,7 +19,7 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-await DVEW.queues.worldSun.run();
+await tasks.light.worldSun.runAndAwait();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   builder.setXZ(x, z).buildColumn();

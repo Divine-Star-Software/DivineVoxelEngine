@@ -54,9 +54,9 @@ export declare const Processor: {
         setFaceTextureState(direction: DirectionNames, rotation: Rotations, rawData: number): number;
         getFaceTextureState(direction: DirectionNames, rawData: number): Rotations;
     };
-    lightByte: {
+    lightData: {
         SRS: number;
-        _lightValues: number[];
+        _lightValues: [s: number, r: number, g: number, b: number];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
@@ -72,7 +72,7 @@ export declare const Processor: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): [s: number, r: number, g: number, b: number];
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -93,7 +93,6 @@ export declare const Processor: {
     calculatFlow: typeof CalculateFlow;
     voxellightMixCalc: typeof VoxelLightMixCalc;
     doVoxelLight: typeof CalculateVoxelLight;
-    chunkTemplates: Record<number, Record<number, number[][]>>;
     exposedFaces: number[];
     faceStates: number[];
     textureRotation: Rotations[];

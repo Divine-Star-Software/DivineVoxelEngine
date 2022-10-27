@@ -15,13 +15,6 @@ const load = () => {
         }
     }
 };
-const fill = () => {
-    for (let x = startX; x <= endX; x += 16) {
-        for (let z = startZ; z <= endZ; z += 16) {
-            DVEW.queues.worldSun.add(x, z);
-        }
-    }
-};
 RegisterVoxels(DVEW);
 DVEW.dataComm.listenForMessage("load", load);
 await DVEW.$INIT();

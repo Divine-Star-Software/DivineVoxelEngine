@@ -13,14 +13,14 @@ export declare const EntityConstructor: {
             z: number;
         };
         setBounds(x: number, y: number, z: number): void;
-        getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-        getValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-        getValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-        setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-        setValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-        setValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-        deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-        deleteUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
+        getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+        getValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+        getValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+        setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+        setValueUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+        setValueUseObjSafe(position: import("../../../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+        deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+        deleteUseObj(position: import("../../../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
         getIndex(x: number, y: number, z: number): number;
         getXYZ(index: number): import("../../../Meta/Util.types.js").Position3Matrix;
     };
@@ -38,7 +38,7 @@ export declare const EntityConstructor: {
     };
     lightByte: {
         SRS: number;
-        _lightValues: number[];
+        _lightValues: [s: number, r: number, g: number, b: number];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
@@ -54,7 +54,7 @@ export declare const EntityConstructor: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): [s: number, r: number, g: number, b: number];
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;

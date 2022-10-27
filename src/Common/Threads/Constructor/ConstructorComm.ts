@@ -1,6 +1,6 @@
-import { ConstructorTasks } from "../../../Data/Constants/Contracts/ConstructorTasks.js";
+import { ConstructorTasks } from "../Contracts/ConstructorTasks.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-import { WorldTasks } from "../../../Data/Constants/Contracts/WorldTasks.js";
+import { WorldTasks } from "../Contracts/WorldTasks.js";
 import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
 import { ConstructorQueues } from "../../Queues/ConstructorQueues.js";
 

@@ -23,10 +23,14 @@ export declare const ShapeHelper: {
     };
     lightByte: {
         SRS: number;
-        _lightValues: number[];
+        _lightValues: [s: number, r: number, g: number, b: number];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
+        /**# Shape Helper
+         * ---
+         * A class that holds needed function shared betweeen different voxel shapes.
+         */
         getB(value: number): number;
         setS(value: number, sl: number): number;
         setR(value: number, sl: number): number;
@@ -39,7 +43,7 @@ export declare const ShapeHelper: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): [s: number, r: number, g: number, b: number];
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;

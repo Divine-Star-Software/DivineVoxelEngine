@@ -11,6 +11,8 @@ export class VoxelBrush {
         dimension: 0,
         secondaryState: 0,
         secondaryVoxelId: "",
+        level: 0,
+        levelState: 0,
     };
     _dt = new DataTool();
     _raw = [];

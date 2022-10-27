@@ -136,9 +136,8 @@ export class DataTool {
   const voxelId = VoxelReader.getId(rawVoxelData);
   if (voxelId == 0) return VoxelReader.getLight(rawVoxelData);
   if (voxelId < 2) return -1;
-  const isLightSource = VoxelData.isLightSource(voxelId);
   const lightValue = VoxelData.getLightValue(voxelId);
-  if (isLightSource && lightValue) {
+  if ( VoxelData.isLightSource(voxelId) && lightValue) {
    return lightValue;
   }
   if (VoxelData.getTrueSubstance(voxelId) == "solid") {

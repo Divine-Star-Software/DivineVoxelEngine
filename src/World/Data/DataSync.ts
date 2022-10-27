@@ -13,7 +13,7 @@ import { VoxelDataCreator } from "./VoxelDataCreator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { DataSyncTypes } from "../../Data/Constants/Contracts/DataSync.js";
+import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 const loopThroughComms = (func: (comm: CommBase | CommManager) => void) => {
  for (const commKey of Object.keys(DataSync.comms)) {
   const comm = DataSync.comms[commKey];

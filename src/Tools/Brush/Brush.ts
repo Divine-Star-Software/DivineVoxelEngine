@@ -12,10 +12,12 @@ export class VoxelBrush {
   dimension: 0,
   secondaryState: 0,
   secondaryVoxelId: "",
+  level: 0,
+  levelState: 0,
  };
 
  _dt = new DataTool();
- _raw : number[] = [];
+ _raw: number[] = [];
  setId(id: string, state = 0, shapeState = 0) {
   this.data.id = id;
   this.data.state = state;
@@ -45,18 +47,18 @@ export class VoxelBrush {
   return this;
  }
 
- setRaw(data : number[]) {
-    this._dt.loadInRaw(data);
-    this.data.id = this._dt.getStringId();
-    this.data.shapeState = this._dt.getShapeState();
-    this.data.state = this._dt.getState();
-    this._dt.setSecondary(true);
-    if(this._dt.data.secondaryId >= 2) {
-        this.data.secondaryVoxelId = this._dt.getStringId();
-        this.data.secondaryState = this._dt.getState();
-    }
-    this._dt.setSecondary(false);
-    return this;
+ setRaw(data: number[]) {
+  this._dt.loadInRaw(data);
+  this.data.id = this._dt.getStringId();
+  this.data.shapeState = this._dt.getShapeState();
+  this.data.state = this._dt.getState();
+  this._dt.setSecondary(true);
+  if (this._dt.data.secondaryId >= 2) {
+   this.data.secondaryVoxelId = this._dt.getStringId();
+   this.data.secondaryState = this._dt.getState();
+  }
+  this._dt.setSecondary(false);
+  return this;
  }
 
  setXYZ(x: number, y: number, z: number) {
@@ -74,7 +76,7 @@ export class VoxelBrush {
   WorldPainter.paint.voxel(this.data);
   return this;
  }
- 
+
  start() {
   WorldRegister.cache.enable();
   return this;
@@ -84,5 +86,4 @@ export class VoxelBrush {
   WorldRegister.cache.disable();
   return this;
  }
-
 }

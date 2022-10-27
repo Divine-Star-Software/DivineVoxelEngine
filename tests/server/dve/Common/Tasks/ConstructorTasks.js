@@ -1,5 +1,5 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
-import { WorldTasks } from "../../Data/Constants/Contracts/WorldTasks.js";
+import { WorldTasks } from "../Threads/Contracts/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
 export const ConstructorTasks = {

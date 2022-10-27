@@ -1,7 +1,7 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { WorldTasks } from "../../Data/Constants/Contracts/WorldTasks.js";
+import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { FlowManager } from "./Flow/FlowManager.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";

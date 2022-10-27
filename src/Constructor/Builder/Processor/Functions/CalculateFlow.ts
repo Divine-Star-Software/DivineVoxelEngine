@@ -103,7 +103,6 @@ const calculateFlowV = (
    const loadedIn = process.nDataTool.loadIn(cx, y + iy, cz);
    if (!loadedIn) continue;
    const level = getLevel(process);
-   const state = getState(process);
    const hasVoxel = process.nDataTool.isRenderable();
    if(hasVoxel && process.nDataTool.getSubstance() == "solid") {
     voxelCount++;

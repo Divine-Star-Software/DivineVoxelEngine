@@ -41,15 +41,15 @@ export class BuilderTool {
   return this;
  }
  buildColumn() {
-  const worldColumn = DVEW.data.worldRegister.column.get(
+  const column = DVEW.data.worldRegister.column.get(
    this.data.dimesnion,
    this.data.x,
    this.data.z,
    this.data.y
   );
-  if (!worldColumn) return false;
-  for (const chunkKey of Object.keys(worldColumn.chunks)) {
-   const chunk = worldColumn.chunks[chunkKey];
+  if (!column) return false;
+  if (column.chunks.size == 0) return false;
+  for (const [key, chunk] of column.chunks) {
    const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
    DVEW.ccm.tasks.build.chunk([
     this.data.dimesnion,

@@ -5,7 +5,7 @@ import { DataTool } from "../../../Tools/Data/DataTool.js";
 export declare const IlluminationManager: {
     lightData: {
         SRS: number;
-        _lightValues: number[];
+        _lightValues: [s: number, r: number, g: number, b: number];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
@@ -21,7 +21,7 @@ export declare const IlluminationManager: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): [s: number, r: number, g: number, b: number];
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;

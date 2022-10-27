@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -9,7 +9,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -283,16 +283,17 @@ export declare const DVEN: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Record<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
                 _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData;
+                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
-                add(id: string | number): {};
-                get(id: string | number): Record<string, import("../Meta/Data/WorldData.types.js").Region>;
+                add(id: string | number): Map<any, any>;
+                get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
             };
             region: {
                 add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").Region;
@@ -300,7 +301,7 @@ export declare const DVEN: {
             };
             column: {
                 add(dimensionId: string | number, x: number, z: number, y?: number): import("../Meta/Data/WorldData.types.js").Column;
-                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column;
+                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
                 fill(dimensionId: string | number, x: number, z: number, y?: number): void;
                 height: {
                     getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
@@ -309,7 +310,7 @@ export declare const DVEN: {
             };
             chunk: {
                 add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
-                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData;
+                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
         };
         worldColumn: {};

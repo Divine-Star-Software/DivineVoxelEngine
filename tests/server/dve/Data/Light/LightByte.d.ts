@@ -4,7 +4,7 @@
  */
 export declare const LightData: {
     SRS: number;
-    _lightValues: number[];
+    _lightValues: [s: number, r: number, g: number, b: number];
     getS(value: number): number;
     getR(value: number): number;
     getG(value: number): number;
@@ -34,7 +34,7 @@ export declare const LightData: {
      * - 3: Blue Light
      * @param value
      */
-    getLightValues(value: number): number[];
+    getLightValues(value: number): [s: number, r: number, g: number, b: number];
     /**# Is Less Than For RGB Remove
      * ---
      * Compares values for the RGB encoded light values.

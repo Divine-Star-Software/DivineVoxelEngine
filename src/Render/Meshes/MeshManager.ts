@@ -1,7 +1,7 @@
 import {
  ConstructEntityIndexes,
  ConstructItemIndexes,
-} from "../../Data/Constants/Contracts/ConstructorToRender.js";
+} from "../../Common/Threads/Contracts/ConstructorToRender.js";
 import type {
  MeshSetData,
  VoxelMeshInterface,

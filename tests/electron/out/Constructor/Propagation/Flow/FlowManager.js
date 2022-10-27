@@ -180,15 +180,24 @@ export const FlowManager = {
     wait(ms) {
         return new Promise((resolve, reject) => setTimeout(resolve, ms));
     },
+    _lightValues: [0, 0, 0, 0],
     getAbsorbLight(x, y, z) {
-        let brightest = 0;
         for (const n of $3dMooreNeighborhood) {
             if (!this._nDataTool.loadIn(x + n[0], y + n[1], z + n[2]))
                 continue;
             let l = this._nDataTool.getLight();
-            if (brightest < l) {
-                brightest = l;
+            if (l < 0)
+                continue;
+            const v = this.lightData.getLightValues(l);
+            for (let i = 0; i < 4; i++) {
+                if (this._lightValues[i] < v[i]) {
+                    this._lightValues[i] = v[i];
+                }
             }
+        }
+        let brightest = this.lightData.setLightValues(this._lightValues);
+        for (let i = 0; i < 4; i++) {
+            this._lightValues[i] = 0;
         }
         return this.lightData.minusOneForAll(brightest);
     },

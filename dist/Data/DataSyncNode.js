@@ -1,7 +1,7 @@
 //objects
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { WorldRegister } from "./World/WorldRegister.js";
-import { DataSyncTypes } from "./Constants/Contracts/DataSync.js";
+import { DataSyncTypes } from "../Common/Threads/Contracts/DataSync.js";
 import { VoxelData } from "./Voxel/VoxelData.js";
 import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";

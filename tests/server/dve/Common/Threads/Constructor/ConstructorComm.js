@@ -1,4 +1,4 @@
-import { ConstructorTasks } from "../../../Data/Constants/Contracts/ConstructorTasks.js";
+import { ConstructorTasks } from "../Contracts/ConstructorTasks.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 const ccm = ThreadComm.createCommManager({
     name: "constructor",

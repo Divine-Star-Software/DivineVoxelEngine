@@ -41,11 +41,12 @@ export const Processor = {
  nDataTool: new DataTool(),
  heightByte: HeightMapData,
  faceByte: FaceByte,
- lightByte: LightData,
+ lightData: LightData,
  calculatFlow: CalculateFlow,
  voxellightMixCalc: VoxelLightMixCalc,
  doVoxelLight: CalculateVoxelLight,
- chunkTemplates: <Record<number, Record<number, number[][]>>>{},
+
+ 
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
  textureRotation: <Rotations[]>[],

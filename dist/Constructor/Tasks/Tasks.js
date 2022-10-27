@@ -1,4 +1,4 @@
-import { ConstructorTasks } from "../../Data/Constants/Contracts/ConstructorTasks.js";
+import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";

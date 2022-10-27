@@ -9,6 +9,7 @@ export const WorldGen = {
   if (dimesnion == "other") {
    brush.setId("dve:dreadstone");
   }
+
   brush.start();
   for (let x = chunkX; x < 16 + chunkX; x++) {
    for (let z = chunkZ; z < 16 + chunkZ; z++) {

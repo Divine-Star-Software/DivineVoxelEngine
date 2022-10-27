@@ -74,7 +74,6 @@ const calculateFlowV = (process, cs, cl, vertex, x, y, z) => {
             if (!loadedIn)
                 continue;
             const level = getLevel(process);
-            const state = getState(process);
             const hasVoxel = process.nDataTool.isRenderable();
             if (hasVoxel && process.nDataTool.getSubstance() == "solid") {
                 voxelCount++;

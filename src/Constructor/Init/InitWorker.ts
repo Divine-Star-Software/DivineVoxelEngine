@@ -1,4 +1,4 @@
-import { WorldTasks } from "../../Data/Constants/Contracts/WorldTasks.js";
+import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 

@@ -4,7 +4,7 @@
  */
 export const LightData = {
  SRS: 2,
- _lightValues: <number[]>[],
+ _lightValues: <[s: number, r: number, g: number, b: number]>[0, 0, 0, 0],
  getS(value: number) {
   return value & 0xf;
  },

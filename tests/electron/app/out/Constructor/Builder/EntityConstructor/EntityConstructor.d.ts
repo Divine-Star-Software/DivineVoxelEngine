@@ -37,7 +37,7 @@ export declare const EntityConstructor: {
     };
     lightByte: {
         SRS: number;
-        _lightValues: number[];
+        _lightValues: [s: number, r: number, g: number, b: number];
         getS(value: number): number;
         getR(value: number): number;
         getG(value: number): number;
@@ -53,7 +53,7 @@ export declare const EntityConstructor: {
         decodeLightFromVoxelData(voxelData: number): number;
         encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
         setLightValues(values: number[]): number;
-        getLightValues(value: number): number[];
+        getLightValues(value: number): [s: number, r: number, g: number, b: number];
         isLessThanForRGBRemove(n1: number, n2: number): boolean;
         isLessThanForRGBAdd(n1: number, n2: number): boolean;
         isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
@@ -81,7 +81,10 @@ export declare const EntityConstructor: {
     depth: number;
     height: number;
     setEntityData(x: number, y: number, z: number, width: number, height: number, depth: number, composed: number, voxelData: Uint32Array[]): void;
-    getVoxel(x: number, y: number, z: number, composed?: number): [string, number] | false;
+    getVoxel(x: number, y: number, z: number, composed?: number): [
+        string,
+        number
+    ] | false;
     getLevel(x: number, y: number, z: number, composed?: number): number;
     getLevelState(x: number, y: number, z: number, composed?: number): number;
     getShapeState(x: number, y: number, z: number, composed?: number): number;

@@ -3,7 +3,7 @@ import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
 //functions
-import { ConstructorToRenderMessages } from "../../../Data/Constants/Contracts/ConstructorToRender.js";
+import { ConstructorToRenderMessages } from "../../../Common/Threads/Contracts/ConstructorToRender.js";
 
 const CCMBase = ThreadComm.createCommManager({
  name: "constructor",

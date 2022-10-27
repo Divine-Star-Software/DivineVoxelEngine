@@ -28,6 +28,9 @@ for (let x = -16; x <= 16; x += 16) {
         builder.setXZ(x, z).buildColumn();
     }
 }
+dataTool.setDimension("main");
+dataTool.loadIn(0, 0, 0);
+dataTool.commit();
 builder.setDimension("other");
 for (let x = -64; x <= -32; x += 16) {
     for (let z = -64; z <= -32; z += 16) {

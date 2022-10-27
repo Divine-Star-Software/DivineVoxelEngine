@@ -319,20 +319,6 @@ const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
 
-const fallBackLight = (
- processor: typeof Processor,
- x: number,
- y: number,
- z: number
-) => {
- const light = processor.mDataTool.getLight();
- if (light >= 0) {
-  currentVoxelData.light = light;
- } else {
-  currentVoxelData.light = 0;
- }
-};
-
 export function CalculateVoxelLight(
  this: typeof Processor,
  data: VoxelProcessData,
@@ -372,13 +358,18 @@ export function CalculateVoxelLight(
   states.ignoreAO = false;
  }
 
+ const currentLight = this.mDataTool.getLight();
  let faceIndex = 0;
  for (const point of $3dCardinalNeighbors) {
   if (data.exposedFaces[faceIndex]) {
    this.nDataTool.loadIn(point[0] + tx, point[1] + ty, point[2] + tz);
    currentVoxelData.light = this.nDataTool.getLight();
    if (currentVoxelData.light < 0) {
-    fallBackLight(this, tx, ty, tz);
+    if (currentLight >= 0) {
+     currentVoxelData.light = currentLight;
+    } else {
+     currentVoxelData.light = 0;
+    }
    }
    const face = FaceMap[faceIndex];
    this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][1], 1, LOD);
@@ -491,10 +482,6 @@ const doAO = (
   substanceRuleResult = false;
  }
 
- const neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
-  Processor.nDataTool.getShapeId()
- );
-
  const aoOverRide: AOAddOverride = Processor.aoOverRideData;
  aoOverRide.face = face;
  aoOverRide.substanceResult = substanceRuleResult;
@@ -503,7 +490,9 @@ const doAO = (
  aoOverRide.voxelSubstance = currentVoxelData.voxelSubstance;
  aoOverRide.neighborVoxelId = Processor.nDataTool.getStringId();
  aoOverRide.neighborVoxelSubstance = neighborVoxelSubstance;
- aoOverRide.neighborVoxelShape = neighborVoxelShape;
+ aoOverRide.neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
+  Processor.nDataTool.getShapeId()
+ );
  aoOverRide.neighborVoxelShapeState = Processor.nDataTool.getShapeState();
  aoOverRide.x = currentVoxelData.x;
  aoOverRide.y = currentVoxelData.y;
@@ -544,7 +533,7 @@ export function VoxelLightMixCalc(
  LOD = 1
 ) {
  if (this.settings.doRGB || this.settings.doSun) {
-  const values = this.lightByte.getLightValues(currentVoxelData.light);
+  const values = this.lightData.getLightValues(currentVoxelData.light);
   if (this.settings.doSun) {
    sunValues.s = values[0];
    if (sunValues.s == 0) zeroCheck.s++;

@@ -1,6 +1,6 @@
 //objects
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
-import { ConstructorTasks } from "../../Data/Constants/Contracts/ConstructorTasks.js";
+import { ConstructorTasks } from "../Threads/Contracts/ConstructorTasks.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 const QMBase = {
     $INIT() {
