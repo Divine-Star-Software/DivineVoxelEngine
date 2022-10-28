@@ -60,7 +60,6 @@ export declare const IlluminationManager: {
     runRGBFloodRemove: typeof runRGBFloodRemove;
     _RGBlightUpdateQue: number[][];
     _RGBlightRemovalQue: number[][];
-    _visitMap: Record<string, boolean>;
     _sDataTool: DataTool;
     _nDataTool: DataTool;
 };

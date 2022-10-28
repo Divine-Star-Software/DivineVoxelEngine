@@ -25,6 +25,31 @@ export const WorldBounds = {
   MaxY: 258,
  },
 
+ _hashMask(n: number) {
+  if (n >= 0) {
+   return 2 * n;
+  } else {
+   return -2 * n - 1;
+  }
+ },
+ hash(x: number, y: number, z: number) {
+  x = this._hashMask(x);
+  y = this._hashMask(y);
+  z = this._hashMask(z);
+  const max = Math.max(x, y, z);
+  let hash = max ** 3 + 2 * max * z + z;
+  if (max == z) {
+   hash += Math.max(x, y) ** 2;
+  }
+  if (y >= x) {
+   hash += x + y;
+  } else {
+   hash += y;
+  }
+
+  return hash;
+ },
+
  chunkXPow2: 4,
  chunkYPow2: 7,
  chunkZPow2: 4,
@@ -35,6 +60,8 @@ export const WorldBounds = {
 
  chunkTotalVoxels: 16 * 128 * 16,
  chunkArea: 16 * 16,
+
+ regionColumnWidth: 32,
 
  regionXPow2: 9,
  regionYPow2: 9,
@@ -48,7 +75,7 @@ export const WorldBounds = {
  __worldColumnPosition: { x: 0, z: 0, y: 0 },
  __chunkPosition: { x: 0, y: 0, z: 0 },
  __voxelPosition: { x: 0, y: 0, z: 0 },
-
+ __columnPosition: { x: 0, z: 0, y: 0 },
  syncBoundsWithArrays() {
   Flat3DArray.setBounds(this.chunkXSize, this.chunkYSize, this.chunkZSize);
   HeightMapArray.setBounds(this.chunkXSize, 2, this.chunkZSize);
@@ -98,6 +125,8 @@ export const WorldBounds = {
 
   this.chunkTotalVoxels = this.chunkXSize * this.chunkYSize * this.chunkZSize;
   this.chunkArea = this.chunkXSize * this.chunkZSize;
+
+  this.regionColumnWidth = this.regionXSize / this.chunkXSize;
  },
  setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number) {
   this.regionXPow2 = pow2X;
@@ -108,6 +137,8 @@ export const WorldBounds = {
 
   this.regionZPow2 = pow2Z;
   this.regionZSize = 2 ** pow2Z;
+
+  this.regionColumnWidth = this.regionXSize / this.chunkXSize;
  },
  getRegionPosition(x: number, y: number, z: number) {
   this.__regionPosition.x = (x >> this.regionXPow2) << this.regionXPow2;
@@ -178,9 +209,44 @@ export const WorldBounds = {
    this.getChunkPosition(x, y, z)
   );
  },
+ /*
+ getIndex(x: number, y: number, z: number) {
+    return x + y * this.bounds.x + z * this.bounds.z * this.bounds.y;
+   },
+*/
+ _columnIndexPosition: { x: 0, y: 0, z: 0 },
+ getColumnIndex(x: number, z: number, y: number) {
+  const regionPOS = this.getRegionPosition(x, y, z);
+  const columnPostion = this.getColumnPosition(x, z, y);
+  this._columnIndexPosition.x = Math.abs(columnPostion.x - regionPOS.x);
+  if (columnPostion.x < 0) {
+   if (columnPostion.x == regionPOS.x + ((1 << this.chunkXPow2) - 1)) {
+    this._columnIndexPosition.x = (1 << this.chunkXPow2) - 1;
+   }
+  }
+  this._columnIndexPosition.x /= this.chunkXSize;
+
+  this._columnIndexPosition.z = Math.abs(columnPostion.z - regionPOS.z);
+
+  if (columnPostion.z < 0) {
+   if (columnPostion.z == regionPOS.z + ((1 << this.chunkZPow2) - 1)) {
+    this._columnIndexPosition.z = (1 << this.chunkZPow2) - 1;
+   }
+  }
+  this._columnIndexPosition.z /= this.chunkZSize;
+  return (
+   this.regionColumnWidth * this._columnIndexPosition.x +
+   this._columnIndexPosition.z
+  );
+ },
+ getChunkColumnIndex(y : number) {
+  const ry = (y >> this.regionYPow2) << this.regionYPow2;
+  const cy =  (y >> this.chunkYPow2) << this.chunkYPow2;
+  return (cy - ry) / this.chunkYSize;
+ },
  getColumnKey(x: number, z: number, y = 0) {
-  const chunkPOS = this.getColumnPosition(x, z, y);
-  return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
+  const column = this.getColumnPosition(x, z, y);
+  return `${column.x}-${column.z}-${column.y}`;
  },
  getColumnPosition(x: number, z: number, y = 0) {
   const chunkPOS = this.getChunkPosition(x, y, z);

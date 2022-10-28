@@ -120,12 +120,13 @@ export class CommBase {
             channel.port2,
         ], [channel.port2]);
     }
-    runTasks(id, data, transfers = [], queue) {
-        this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data], transfers);
+    runTasks(id, data, transfers = [], queueId) {
+        this.sendMessage(TCMessageHeaders.runTasks, [id, ThreadComm.threadName, queueId, data], transfers);
     }
     __syncQueue(id, sab) {
         this.sendMessage(TCMessageHeaders.internal, [
             TCInternalMessages.syncQueue,
+            ThreadComm.threadName,
             id,
             sab,
         ]);
@@ -133,6 +134,7 @@ export class CommBase {
     __unSyqncQueue(id) {
         this.sendMessage(TCMessageHeaders.internal, [
             TCInternalMessages.unSyncQueue,
+            ThreadComm.threadName,
             id,
         ]);
     }

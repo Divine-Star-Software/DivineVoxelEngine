@@ -120,6 +120,8 @@ export declare const DVEW: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -128,6 +130,7 @@ export declare const DVEW: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -153,6 +156,11 @@ export declare const DVEW: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -185,6 +193,13 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -295,13 +310,13 @@ export declare const DVEW: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<number, import("../Meta/Data/WorldData.types.js").ChunkData>;
             $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
-                _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                _add(x: number, y: number, z: number, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+                _get(x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
                 add(id: string | number): Map<any, any>;
@@ -336,6 +351,8 @@ export declare const DVEW: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -344,6 +361,7 @@ export declare const DVEW: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -369,6 +387,11 @@ export declare const DVEW: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -401,6 +424,13 @@ export declare const DVEW: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -698,14 +728,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };

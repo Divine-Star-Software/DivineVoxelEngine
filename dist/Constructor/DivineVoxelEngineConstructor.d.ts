@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -108,6 +108,8 @@ export declare const DVEC: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -116,6 +118,7 @@ export declare const DVEC: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -141,6 +144,11 @@ export declare const DVEC: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -173,6 +181,13 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -284,13 +299,13 @@ export declare const DVEC: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<number, import("../Meta/Data/WorldData.types.js").ChunkData>;
             $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
-                _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                _add(x: number, y: number, z: number, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+                _get(x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
                 add(id: string | number): Map<any, any>;
@@ -325,6 +340,8 @@ export declare const DVEC: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -333,6 +350,7 @@ export declare const DVEC: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -358,6 +376,11 @@ export declare const DVEC: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -390,6 +413,13 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -1016,7 +1046,6 @@ export declare const DVEC: {
             runRGBFloodRemove: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
             _RGBlightUpdateQue: number[][];
             _RGBlightRemovalQue: number[][];
-            _visitMap: Record<string, boolean>;
             _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
             _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
         };
@@ -1144,6 +1173,8 @@ export declare const DVEC: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -1152,6 +1183,7 @@ export declare const DVEC: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -1177,6 +1209,11 @@ export declare const DVEC: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -1209,6 +1246,13 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -1256,18 +1300,18 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
-        _queues: Record<string, import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>;
+        _queues: Map<string, Map<string, import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>>;
         _onDataSync: Record<string, import("../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
         parent: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
         __internal: Record<number, Record<number, (data: any, event: any) => void>>;
         __initalized: boolean;
         __expectedPorts: Record<string, boolean>;
         $INIT(threadName: string): Promise<void>;
-        getSyncedQueue(queueId: string): import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue;
+        getSyncedQueue(threadId: string, queueId: string): import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
         addComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
         createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
         createCommManager(data: import("../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;

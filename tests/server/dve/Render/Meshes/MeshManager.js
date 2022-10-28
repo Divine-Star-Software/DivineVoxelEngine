@@ -29,7 +29,7 @@ export const MeshManager = {
         this.scene = scene;
     },
     reStart() { },
-    removeChunkMesh(type, dimesnion, chunkKey) {
+    removeChunkMesh(dimesnion, type, chunkKey) {
         if (!this.meshes[type][dimesnion])
             return;
         const mesh = this.meshes[type][dimesnion][chunkKey];

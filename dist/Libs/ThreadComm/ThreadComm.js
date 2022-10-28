@@ -13,7 +13,7 @@ export const ThreadComm = {
     _comms: {},
     _commManageras: {},
     _tasks: {},
-    _queues: {},
+    _queues: new Map(),
     _onDataSync: {},
     parent: new CommBase(""),
     __internal: {},
@@ -26,8 +26,10 @@ export const ThreadComm = {
         this.parent.setPort(port);
         this.__initalized = true;
     },
-    getSyncedQueue(queueId) {
-        return this._queues[queueId];
+    getSyncedQueue(threadId, queueId) {
+        if (!this._queues.has(threadId))
+            return;
+        return this._queues.get(threadId)?.get(queueId);
     },
     addComm(comm) {
         this._comms[comm.name] = comm;
@@ -84,11 +86,16 @@ export const ThreadComm = {
         //remove tasks id
         const tasksId = data.shift();
         //remove queue id
+        const threadId = data.shift();
+        //remove queue id
         const queueId = data.shift();
         await this._tasks[tasksId].run(data[0]);
         //complete queue
-        if (queueId) {
-            this.getSyncedQueue(queueId).subtractFromCount();
+        if (queueId && threadId) {
+            const queue = this.getSyncedQueue(threadId, queueId);
+            if (queue) {
+                queue.subtractFromCount();
+            }
         }
     },
     __isTasks(data) {
@@ -156,25 +163,37 @@ internal[TCInternalMessages.connectPort] = (data, event) => {
         comm.addPort(port);
     }
 };
-internal[TCInternalMessages.IsReady] = (data, event) => {
+internal[TCInternalMessages.IsReady] = (data) => {
     const name = data[0];
     const comm = ThreadComm.getComm(name);
     if (!comm)
         return;
     comm.__ready = true;
 };
-internal[TCInternalMessages.nameThread] = (data, event) => {
+internal[TCInternalMessages.nameThread] = (data) => {
     const name = data[0];
     const number = data[1];
     ThreadComm.threadName = name;
     ThreadComm.threadNumber = number;
 };
-internal[TCInternalMessages.syncQueue] = (data, event) => {
-    const queueId = data[0];
-    const queueSAB = data[1];
-    ThreadComm._queues[queueId] = new SyncedQueue(queueId, queueSAB);
+internal[TCInternalMessages.syncQueue] = (data) => {
+    const threadName = data[0];
+    const queueId = data[1];
+    const queueSAB = data[2];
+    if (!ThreadComm._queues.has(threadName)) {
+        ThreadComm._queues.set(threadName, new Map());
+    }
+    //@ts-ignore
+    ThreadComm._queues
+        .get(threadName)
+        .set(queueId, new SyncedQueue(queueId, queueSAB));
 };
-internal[TCInternalMessages.unSyncQueue] = (data, event) => {
-    const queueId = data[0];
-    delete ThreadComm._queues[queueId];
+internal[TCInternalMessages.unSyncQueue] = (data) => {
+    const threadName = data[0];
+    const queueId = data[1];
+    if (!ThreadComm._queues.has(threadName)) {
+        return;
+    }
+    //@ts-ignore
+    ThreadComm._queues.get(threadName).delete(queueId);
 };

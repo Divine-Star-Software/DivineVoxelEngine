@@ -9,5 +9,10 @@ export const RenderTasks = {
         const chunkKey = WorldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
         DVER.meshManager.handleChunkUpdate(dimension, VoxelSubstanceRecord[substance], chunkKey, data);
     }),
-    removeChunk: ThreadComm.registerTasks("remove-chunk", (data) => { }),
+    removeChunk: ThreadComm.registerTasks("remove-chunk", (data) => {
+        const dimension = data[0];
+        const substance = data[1];
+        const chunkKey = WorldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
+        DVER.meshManager.removeChunkMesh(dimension, VoxelSubstanceRecord[substance], chunkKey);
+    }),
 };

@@ -10,6 +10,8 @@ export declare const RichData: {
             MinY: number;
             MaxY: number;
         };
+        _hashMask(n: number): number;
+        hash(x: number, y: number, z: number): number;
         chunkXPow2: number;
         chunkYPow2: number;
         chunkZPow2: number;
@@ -18,6 +20,7 @@ export declare const RichData: {
         chunkZSize: number;
         chunkTotalVoxels: number;
         chunkArea: number;
+        regionColumnWidth: number;
         regionXPow2: number;
         regionYPow2: number;
         regionZPow2: number;
@@ -43,6 +46,11 @@ export declare const RichData: {
             x: number;
             y: number;
             z: number;
+        };
+        __columnPosition: {
+            x: number;
+            z: number;
+            y: number;
         };
         syncBoundsWithArrays(): void;
         setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -75,6 +83,13 @@ export declare const RichData: {
             y: number;
             z: number;
         };
+        _columnIndexPosition: {
+            x: number;
+            y: number;
+            z: number;
+        };
+        getColumnIndex(x: number, z: number, y: number): number;
+        getChunkColumnIndex(y: number): number;
         getColumnKey(x: number, z: number, y?: number): string;
         getColumnPosition(x: number, z: number, y?: number): {
             x: number;

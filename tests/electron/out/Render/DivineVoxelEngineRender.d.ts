@@ -127,6 +127,8 @@ export declare const DVER: {
                 MinY: number;
                 MaxY: number;
             };
+            _hashMask(n: number): number;
+            hash(x: number, y: number, z: number): number;
             chunkXPow2: number;
             chunkYPow2: number;
             chunkZPow2: number;
@@ -135,6 +137,7 @@ export declare const DVER: {
             chunkZSize: number;
             chunkTotalVoxels: number;
             chunkArea: number;
+            regionColumnWidth: number;
             regionXPow2: number;
             regionYPow2: number;
             regionZPow2: number;
@@ -160,6 +163,11 @@ export declare const DVER: {
                 x: number;
                 y: number;
                 z: number;
+            };
+            __columnPosition: {
+                x: number;
+                z: number;
+                y: number;
             };
             syncBoundsWithArrays(): void;
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
@@ -192,6 +200,13 @@ export declare const DVER: {
                 y: number;
                 z: number;
             };
+            _columnIndexPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getColumnIndex(x: number, z: number, y: number): number;
+            getChunkColumnIndex(y: number): number;
             getColumnKey(x: number, z: number, y?: number): string;
             getColumnPosition(x: number, z: number, y?: number): {
                 x: number;
@@ -404,7 +419,7 @@ export declare const DVER: {
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
-        removeChunkMesh(type: import("../Meta/index.js").VoxelSubstanceType, dimesnion: number, chunkKey: string): void;
+        removeChunkMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string): void;
         handleItemUpdate(x: number, y: number, z: number, data: any): void;
         handleEntityUpdate(x: number, y: number, z: number, data: any): void;
         handleChunkUpdate(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
@@ -447,7 +462,7 @@ export declare const DVER: {
     };
     tasks: {
         setChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
-        removeChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
+        removeChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks>;
     };
     _handleOptions(): void;
     syncSettingsWithWorkers(data: EngineSettingsData): void;

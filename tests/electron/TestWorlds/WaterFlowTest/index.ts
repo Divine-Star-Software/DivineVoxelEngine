@@ -7,7 +7,11 @@ import {
  SetUpDefaultScene,
  CreateWorldAxis,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import {
+ RunInit,
+ SetUpWorkers,
+ SyncWithGraphicsSettings,
+} from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
@@ -39,6 +43,15 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
+ meshes: {
+  clearChachedGeometry: true,
+  checkMagmaCollisions: false,
+  checkFluidCollisions: false,
+  checkFloraCollisions: false,
+  checkSolidCollisions: false,
+  seralize: false,
+  pickable: false,
+ },
 });
 SyncWithGraphicsSettings(DVER);
 const init = async () => {
@@ -65,7 +78,7 @@ const init = async () => {
  const mat = new BABYLON.StandardMaterial("");
  mat.diffuseColor = new BABYLON.Color3(1, 0, 1);
  //mat.diffuseColor.b = 1;
-/*  const chunkMarker = BABYLON.MeshBuilder.CreateBox("", {
+ /*  const chunkMarker = BABYLON.MeshBuilder.CreateBox("", {
   width: 16,
   depth: 16,
   height: 128,

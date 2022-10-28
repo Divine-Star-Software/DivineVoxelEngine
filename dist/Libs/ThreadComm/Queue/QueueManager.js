@@ -42,7 +42,7 @@ export class QueueManager {
         this._manager.__syncQueue(syncId, sab);
     }
     _getSyncId(queueId) {
-        return `${this._manager.__data.name}-${this.id}-${queueId}`;
+        return `${this.id}-${queueId}`;
     }
     removeQueue(queueId) {
         if (!this.__queueData[queueId])
@@ -56,7 +56,6 @@ export class QueueManager {
         if (queueData.map[queueKey])
             return;
         queueData.map[queueKey] = true;
-        //	queueData.state[0] += 1;
         queueData.queue.enqueue(data);
     }
     run(queueId = "main", filter) {

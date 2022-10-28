@@ -1,5 +1,5 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers, SyncWithGraphicsSettings, } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 RegisterTexutres(DVER);
@@ -22,6 +22,15 @@ await DVER.$INIT({
         autoRGBLight: false,
         autoSunLight: false,
     },
+    meshes: {
+        clearChachedGeometry: true,
+        checkMagmaCollisions: false,
+        checkFluidCollisions: false,
+        checkFloraCollisions: false,
+        checkSolidCollisions: false,
+        seralize: false,
+        pickable: false,
+    },
 });
 SyncWithGraphicsSettings(DVER);
 const init = async () => {
@@ -38,15 +47,15 @@ const init = async () => {
     mat.diffuseColor = new BABYLON.Color3(1, 0, 1);
     //mat.diffuseColor.b = 1;
     /*  const chunkMarker = BABYLON.MeshBuilder.CreateBox("", {
-      width: 16,
-      depth: 16,
-      height: 128,
-     });
-     chunkMarker.material = mat;
-     chunkMarker.visibility = 0.5;
-     chunkMarker.position.x = 8;
-     chunkMarker.position.z = 8;
-     chunkMarker.position.y = 128 / 2; */
+     width: 16,
+     depth: 16,
+     height: 128,
+    });
+    chunkMarker.material = mat;
+    chunkMarker.visibility = 0.5;
+    chunkMarker.position.x = 8;
+    chunkMarker.position.z = 8;
+    chunkMarker.position.y = 128 / 2; */
     //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };

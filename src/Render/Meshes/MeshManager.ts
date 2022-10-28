@@ -49,8 +49,8 @@ export const MeshManager = {
  reStart() {},
 
  removeChunkMesh(
-  type: VoxelSubstanceType,
   dimesnion: number,
+  type: VoxelSubstanceType,
   chunkKey: string
  ) {
   if (!this.meshes[type][dimesnion]) return;

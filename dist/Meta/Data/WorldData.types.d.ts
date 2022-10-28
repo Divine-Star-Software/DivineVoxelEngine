@@ -7,10 +7,10 @@ export declare type ChunkData = {
 export declare type Column = {
     data: DataView;
     buffer: SharedArrayBuffer;
-    chunks: Map<string, ChunkData>;
+    chunks: Map<number, ChunkData>;
 };
 export declare type Region = {
-    columns: Map<string, Column>;
+    columns: Map<number, Column>;
 };
 export declare type WorldDimensions = Map<string, Map<string, Region>>;
 export declare type AddVoxelData = {

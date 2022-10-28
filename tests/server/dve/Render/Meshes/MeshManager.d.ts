@@ -33,7 +33,7 @@ export declare const MeshManager: {
     $INIT(): void;
     setScene(scene: BABYLON.Scene): void;
     reStart(): void;
-    removeChunkMesh(type: VoxelSubstanceType, dimesnion: number, chunkKey: string): void;
+    removeChunkMesh(dimesnion: number, type: VoxelSubstanceType, chunkKey: string): void;
     handleItemUpdate(x: number, y: number, z: number, data: any): void;
     handleEntityUpdate(x: number, y: number, z: number, data: any): void;
     handleChunkUpdate(dimesnion: number, type: VoxelSubstanceType, chunkKey: string, data: SetChunkMeshTask): void;

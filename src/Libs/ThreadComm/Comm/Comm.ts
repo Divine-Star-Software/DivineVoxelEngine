@@ -152,14 +152,19 @@ export class CommBase {
 		id: string | number,
 		data: T,
 		transfers: any[] = [],
-		queue?: string
+		queueId?: string
 	) {
-		this.sendMessage(TCMessageHeaders.runTasks, [id, queue, data], transfers);
+		this.sendMessage(
+			TCMessageHeaders.runTasks,
+			[id, ThreadComm.threadName, queueId, data],
+			transfers
+		);
 	}
 
 	__syncQueue(id: string, sab: SharedArrayBuffer) {
 		this.sendMessage(TCMessageHeaders.internal, [
 			TCInternalMessages.syncQueue,
+			ThreadComm.threadName,
 			id,
 			sab,
 		]);
@@ -168,6 +173,7 @@ export class CommBase {
 	__unSyqncQueue(id: string) {
 		this.sendMessage(TCMessageHeaders.internal, [
 			TCInternalMessages.unSyncQueue,
+			ThreadComm.threadName,
 			id,
 		]);
 	}

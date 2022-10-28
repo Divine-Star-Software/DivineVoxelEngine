@@ -20,11 +20,11 @@ export const WorldRegister = {
             WorldRegister._cacheOn = false;
             WorldRegister._cache.clear();
         },
-        _add(key, data) {
-            WorldRegister._cache.set(key, data);
+        _add(x, y, z, data) {
+            WorldRegister._cache.set(WorldBounds.hash(x, y, z), data);
         },
-        _get(key) {
-            return WorldRegister._cache.get(key);
+        _get(x, y, z) {
+            return WorldRegister._cache.get(WorldBounds.hash(x, y, z));
         },
     },
     dimensions: {
@@ -76,14 +76,14 @@ export const WorldRegister = {
                 buffer: sab,
                 data: new DataView(sab),
             };
-            region.columns.set(WorldBounds.getColumnKey(x, z, y), column);
+            region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
             return column;
         },
         get(dimensionId, x, z, y = 0) {
             const region = WorldRegister.region.get(dimensionId, x, y, z);
             if (!region)
                 return false;
-            return region.columns.get(WorldBounds.getColumnKey(x, z, y));
+            return region.columns.get(WorldBounds.getColumnIndex(x, z, y));
         },
         fill(dimensionId, x, z, y = 0) {
             for (let cy = WorldBounds.bounds.MinY; cy < WorldBounds.bounds.MaxY; cy += WorldBounds.chunkYSize) {
@@ -142,15 +142,15 @@ export const WorldRegister = {
                 segement1: new Uint32Array(sab, ChunkReader.indexes.voxelData, ChunkReader.indexSizes.voxelData / 4),
                 segement2: new Uint32Array(sab, ChunkReader.indexes.voxelStateData, ChunkReader.indexSizes.voxelStateData / 4),
             };
-            column.chunks.set(WorldBounds.getChunkKeyFromPosition(x, y, z), chunk);
+            column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
             DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
             return chunk;
         },
         get(dimensionId, x, y, z) {
-            const chunkKey = WorldBounds.getChunkKeyFromPosition(x, y, z);
+            const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
             let addChunk = false;
             if (WorldRegister._cacheOn) {
-                const chunk = WorldRegister.cache._get(chunkKey);
+                const chunk = WorldRegister.cache._get(chunkPOS.x, chunkPOS.y, chunkPOS.z);
                 if (chunk)
                     return chunk;
                 addChunk = true;
@@ -158,11 +158,11 @@ export const WorldRegister = {
             const column = WorldRegister.column.get(dimensionId, x, z, y);
             if (!column)
                 return false;
-            const chunk = column.chunks.get(chunkKey);
+            const chunk = column.chunks.get(WorldBounds.getChunkColumnIndex(y));
             if (!chunk)
                 return;
             if (addChunk) {
-                WorldRegister.cache._add(chunkKey, chunk);
+                WorldRegister.cache._add(chunkPOS.x, chunkPOS.y, chunkPOS.z, chunk);
             }
             return chunk;
         },

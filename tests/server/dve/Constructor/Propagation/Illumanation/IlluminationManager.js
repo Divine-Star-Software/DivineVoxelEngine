@@ -29,7 +29,6 @@ export const IlluminationManager = {
     runRGBFloodRemove: runRGBFloodRemove,
     _RGBlightUpdateQue: [],
     _RGBlightRemovalQue: [],
-    _visitMap: {},
     _sDataTool: new DataTool(),
     _nDataTool: new DataTool(),
 };

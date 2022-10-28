@@ -52,7 +52,7 @@ export class QueueManager<T> {
 	}
 
 	_getSyncId(queueId: string | number) {
-		return `${this._manager.__data.name}-${this.id}-${queueId}`;
+		return `${this.id}-${queueId}`;
 	}
 
 	removeQueue(queueId: string) {
@@ -66,7 +66,6 @@ export class QueueManager<T> {
 		const queueKey = this.__getQueueKey(data);
 		if (queueData.map[queueKey]) return;
 		queueData.map[queueKey] = true;
-	//	queueData.state[0] += 1;
 		queueData.queue.enqueue(data);
 	}
 

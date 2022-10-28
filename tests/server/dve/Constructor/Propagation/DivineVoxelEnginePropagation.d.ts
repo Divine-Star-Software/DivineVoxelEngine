@@ -59,7 +59,6 @@ export declare const DVEP: {
         runRGBFloodRemove: typeof import("./Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
         _RGBlightUpdateQue: number[][];
         _RGBlightRemovalQue: number[][];
-        _visitMap: Record<string, boolean>;
         _sDataTool: import("../../Tools/Data/DataTool.js").DataTool;
         _nDataTool: import("../../Tools/Data/DataTool.js").DataTool;
     };

@@ -1,4 +1,7 @@
-import type { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types";
+import type {
+ RemoveChunkMeshTasks,
+ SetChunkMeshTask,
+} from "Meta/Tasks/RenderTasks.types";
 import type { LocationData } from "Meta/Data/CommonTypes.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
@@ -21,8 +24,21 @@ export const RenderTasks = {
    data
   );
  }),
- removeChunk: ThreadComm.registerTasks<LocationData>(
+ removeChunk: ThreadComm.registerTasks<RemoveChunkMeshTasks>(
   "remove-chunk",
-  (data) => {}
+  (data) => {
+   const dimension = data[0];
+   const substance = data[1];
+   const chunkKey = WorldBounds.getChunkKeyFromPosition(
+    data[2],
+    data[3],
+    data[4]
+   );
+   DVER.meshManager.removeChunkMesh(
+    dimension,
+    VoxelSubstanceRecord[substance],
+    chunkKey
+   );
+  }
  ),
 };
