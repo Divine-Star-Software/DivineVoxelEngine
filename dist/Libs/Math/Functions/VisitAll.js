@@ -1,3 +1,11 @@
+/** # Visit All
+ * ---
+ * Given a starting point and an end point it will visit all voxels that are between them.
+ * @param startPoint
+ * @param endPoint
+ * @param visitor
+ * @returns an array of numbers with a stride of 3 for positions
+ */
 export const VisitAll = (startPoint, endPoint, visitor = (x, y, z) => {
     return true;
 }) => {

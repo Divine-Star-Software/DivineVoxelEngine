@@ -1,5 +1,5 @@
 //objects
-import { DVEM } from "../Libs/Math/DivineVoxelEngineMath.js";
+import { VoxelMath } from "../Libs/Math/VoxelMath.js";
 import { CollisionsHanlder } from "./Collisions/CollisionsHandler.js";
 import { EntityBase } from "./Entities/Entity.base.js";
 import { ColliderManager } from "./Colliders/ColliderManager.js";
@@ -7,7 +7,7 @@ import { RegisterDefaultColliders } from "./Colliders/Functions/RegisterDefaultC
 import { WorldPainter } from "../Data/World/WorldPainter.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 export const DVEPH = {
-    math: DVEM,
+    math: VoxelMath,
     collisions: CollisionsHanlder,
     colliders: ColliderManager,
     wroldData: WorldPainter,

@@ -8,7 +8,7 @@ import { DimensionsVector3 } from "./Types/Math.types.js";
  * Can be used in any thread that needs it.
  * Has functions for collision detection, finding voxels in a direction, and path finding.
  */
-export declare const DVEM: {
+export declare const VoxelMath: {
     /** # Visit All
      * ---
      * Given a starting point and an end point it will visit all voxels that are between them.
@@ -24,4 +24,4 @@ export declare const DVEM: {
     getBoundingBox(data: BoundingBoxData): BoundingBox;
     convertToOriginGridSpace(position: number[]): number[];
 };
-export declare type DivineVoxelEngineMath = typeof DVEM;
+export declare type VoxelMath = typeof VoxelMath;

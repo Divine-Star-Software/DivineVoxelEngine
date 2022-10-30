@@ -55,6 +55,9 @@ export declare type EngineSettingsData = {
         autoRGBLight: boolean;
         autoSunLight: boolean;
     };
+    flow: {
+        enable: boolean;
+    };
     voxels: {
         doColors: boolean;
     };

@@ -2,6 +2,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
+import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
 RegisterVoxels(DVEW);
 RegisterItemData(DVEW);
 await DVEW.$INIT();
@@ -37,5 +38,6 @@ for (let x = -64; x <= -32; x += 16) {
         builder.setXZ(x, z).buildColumn();
     }
 }
+GetAnalyzerCubeWorld(DVEW);
 self.DVEW = DVEW;
 self.dataTool = dataTool;

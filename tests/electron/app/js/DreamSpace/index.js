@@ -1,5 +1,5 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers, SyncWithGraphicsSettings, } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
@@ -12,21 +12,19 @@ await DVER.$INIT({
     nexus: {
         enabled: true,
         autoSyncVoxelPalette: true,
-        autoSyncChunks: true
+        autoSyncChunks: true,
     },
     lighting: {
         doAO: true,
-        doRGBLight: false,
-        doSunLight: false,
-        autoRGBLight: false,
-        autoSunLight: false,
+        doRGBLight: true,
+        doSunLight: true,
+        autoRGBLight: true,
+        autoSunLight: true,
     },
     materials: {
-        doAO: false,
-        doRGBLight: false,
-        doSunLight: false,
-        disableFloraShaderEffects: false,
-        disableFluidShaderEffects: false,
+        doAO: true,
+        doRGBLight: true,
+        doSunLight: true,
     },
     chunks: {
         chunkXPow2: 4,
@@ -50,9 +48,10 @@ const init = async () => {
         box.material = bmat;
     }
     window.DVER = DVER;
-    scene.fogDensity = .005;
+    scene.fogDensity = 0.005;
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(0.8);
+    DVER.renderManager.setBaseLevel(0);
+    DVER.renderManager.setSunLevel(0.8);
     GetRenderPlayer(true, scene, canvas, DVER);
     runRenderLoop(engine, scene, camera);
 };

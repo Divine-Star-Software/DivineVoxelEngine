@@ -55,6 +55,9 @@ export declare const DVES: {
             voxels: {
                 doColors: boolean;
             };
+            flow: {
+                enable: boolean;
+            };
             lighting: {
                 doAO: boolean;
                 doSunLight: boolean;
@@ -189,6 +192,7 @@ export declare const DVES: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+        doFlow(): boolean;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {

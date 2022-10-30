@@ -27,7 +27,7 @@ export const WorldGen = {
         for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
             let rz = 0;
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
-                for (let y = 0; y < this.worldHeight; y++) {
+                for (let y = 0; y < 200; y++) {
                     brush.setXYZ(x, y, z);
                     if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
                         if (y == this.minY ||
@@ -156,7 +156,10 @@ export const WorldGen = {
                         if (y == this.minY) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -164,7 +167,10 @@ export const WorldGen = {
                         if (y == this.minY - 1) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -172,7 +178,10 @@ export const WorldGen = {
                         if (y == this.minY - 2) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -180,7 +189,10 @@ export const WorldGen = {
                         if (y == this.minY - 3) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -188,7 +200,10 @@ export const WorldGen = {
                         if (y == this.minY - 4) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -196,7 +211,10 @@ export const WorldGen = {
                         if (y == this.minY - 5) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
@@ -204,14 +222,20 @@ export const WorldGen = {
                         if (y == this.minY - 6) {
                             brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                             if (Math.random() > 0.8) {
-                                brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                                brush
+                                    .setId("dve:dreadgrass")
+                                    .setXYZ(x, y + 1, z)
+                                    .paint();
                             }
                         }
                     }
                     if (y < this.minY - 7) {
                         brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
                         if (Math.random() > 0.8) {
-                            brush.setId("dve:dreadgrass").setXYZ(x, y + 1, z).paint();
+                            brush
+                                .setId("dve:dreadgrass")
+                                .setXYZ(x, y + 1, z)
+                                .paint();
                         }
                     }
                 }

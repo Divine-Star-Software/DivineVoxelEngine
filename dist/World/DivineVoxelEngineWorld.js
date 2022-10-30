@@ -23,7 +23,7 @@ import { DataTool } from "../Tools/Data/DataTool.js";
 import { TasksTool } from "../Tools/Tasks/TasksTool.js";
 //tools
 import { BuilderTool } from "../Tools/Build/Builder.js";
-import { GetBrush } from "./Tools/Brush/BrushTool.js";
+import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
@@ -71,7 +71,7 @@ export const DVEW = {
         await InitWorldWorker(this);
     },
     getBrush() {
-        return GetBrush();
+        return GetAdvancedBrushTool();
     },
     getBuilder() {
         return new BuilderTool();

@@ -6,7 +6,11 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import {
+ RunInit,
+ SetUpWorkers,
+ SyncWithGraphicsSettings,
+} from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
@@ -23,25 +27,23 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
- nexusWorker : workers.nexusWorker,
- nexus : {
-    enabled : true,
-    autoSyncVoxelPalette : true,
-    autoSyncChunks : true
+ nexusWorker: workers.nexusWorker,
+ nexus: {
+  enabled: true,
+  autoSyncVoxelPalette: true,
+  autoSyncChunks: true,
  },
  lighting: {
   doAO: true,
-  doRGBLight: false,
-  doSunLight: false,
-  autoRGBLight: false,
-  autoSunLight: false,
+  doRGBLight: true,
+  doSunLight: true,
+  autoRGBLight: true,
+  autoSunLight: true,
  },
  materials: {
-  doAO: false,
-  doRGBLight: false,
-  doSunLight: false,
-  disableFloraShaderEffects: false,
-  disableFluidShaderEffects: false,
+  doAO: true,
+  doRGBLight: true,
+  doSunLight: true,
  },
  chunks: {
   chunkXPow2: 4,
@@ -61,19 +63,18 @@ const init = async () => {
  const scene = SetUpDefaultScene(engine);
  const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
  const box = SetUpDefaultSkybox(scene);
- const bmat =  DVER.renderManager.createSkyBoxMaterial(scene);
- if(bmat) {
+ const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ if (bmat) {
   box.material = bmat;
  }
-(window as any).DVER = DVER;
+ (window as any).DVER = DVER;
 
- scene.fogDensity = .005;
+ scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.8);
+ DVER.renderManager.setBaseLevel(0);
+ DVER.renderManager.setSunLevel(0.8);
 
- GetRenderPlayer(true,scene,canvas,DVER);
-  
-
+ GetRenderPlayer(true, scene, canvas, DVER);
 
  runRenderLoop(engine, scene, camera);
 };

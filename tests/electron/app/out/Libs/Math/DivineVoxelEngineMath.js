@@ -8,7 +8,7 @@ import { VisitAll } from "./Functions/VisitAll.js";
  * Can be used in any thread that needs it.
  * Has functions for collision detection, finding voxels in a direction, and path finding.
  */
-export const DVEM = {
+export const VoxelMath = {
     /** # Visit All
      * ---
      * Given a starting point and an end point it will visit all voxels that are between them.
@@ -42,4 +42,4 @@ export const DVEM = {
         return position;
     },
 };
-DVEM.visitAll;
+VoxelMath.visitAll;

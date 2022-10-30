@@ -1,0 +1,47 @@
+.screen {
+ position: absolute;
+ z-index: 1000000000000;
+ background-color: rgba(0, 0, 0, 0.7);
+ width: 100%;
+ height: 100%;
+ padding: 0;
+ margin: 0;
+ color: purple;
+}
+
+.screen.active {
+ display: block;
+}
+.screen.inactive {
+ display: none;
+}
+
+.voxel-list {
+ overflow-y: scroll;
+ overflow-x: hidden;
+ height: 90%;
+}
+.voxel-node {
+ display: grid;
+ grid-template-columns: auto auto;
+ transition: 0.5s;
+ width: 100%;
+}
+.voxel-node:hover {
+ background: purple;
+ color: black;
+ transition: 0.5s;
+}
+.voxel-node.active {
+ background: purple;
+ color: black;
+}
+.voxel-node-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+.voxel-node img {
+ height: 150px;
+ width: 150px;
+ image-rendering: pixelated;
+}

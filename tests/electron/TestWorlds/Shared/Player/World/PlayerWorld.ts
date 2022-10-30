@@ -1,4 +1,4 @@
-import { DVEM } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
+import { VoxelMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 
 export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
@@ -9,6 +9,7 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
  let playerDataBuffer = new SharedArrayBuffer(1);
  let playerData = new DataView(playerDataBuffer);
  let ready = false;
+ DVEW.parentComm.sendMessage("send-player-server-data");
  DVEW.parentComm.listenForMessage("player-server-data", (data) => {
   playerDataBuffer = data[1];
   playerData = new DataView(playerDataBuffer);
@@ -50,11 +51,13 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
  DVEW.parentComm.sendMessage("connect-player-pick", [pickSAB]);
 
  const brush = DVEW.getBrush();
- DVEW.parentComm.listenForMessage("voxel-add", () => {
+ DVEW.parentComm.listenForMessage("voxel-add", (data) => {
   let x = pickDV.getFloat32(0) + pickDV.getInt8(12);
   let y = pickDV.getFloat32(4) + pickDV.getInt8(13);
   let z = pickDV.getFloat32(8) + pickDV.getInt8(14);
-  brush.setId("dve:dreamstone").setXYZ(x, y, z).paintAndUpdate();
+  if (!dataTool.loadIn(x, y, z)) return;
+  if(dataTool.isRenderable()) return;
+  brush.setId(data[1]).setXYZ(x, y, z).paintAndUpdate();
  });
 
  DVEW.parentComm.listenForMessage("voxel-remove", () => {
@@ -68,10 +71,10 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
  });
 
  setInterval(() => {
-  const voxels = DVEM.visitAll(positionVector, endVector);
+  const voxels = VoxelMath.visitAll(positionVector, endVector);
 
   positionVector.x = playerData.getFloat32(4);
-  positionVector.y = playerData.getFloat32(8);
+  positionVector.y = playerData.getFloat32(8) + .2;
   positionVector.z = playerData.getFloat32(12);
 
   directionVector.x = playerData.getFloat32(16);

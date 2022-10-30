@@ -52,6 +52,11 @@ export const Worlds = [
                 world: "ServerTest",
             },
             {
+                title: "Break/Add Testing",
+                description: "Used to debug breaking/adding voxels.",
+                world: "BreakAddTest",
+            },
+            {
                 title: "Debug",
                 description: "For some basic debugging.",
                 world: "Debug",

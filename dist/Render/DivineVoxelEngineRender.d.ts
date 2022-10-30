@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const DVER: {
@@ -88,6 +87,9 @@ export declare const DVER: {
             };
             voxels: {
                 doColors: boolean;
+            };
+            flow: {
+                enable: boolean;
             };
             lighting: {
                 doAO: boolean;
@@ -223,6 +225,7 @@ export declare const DVER: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+        doFlow(): boolean;
     };
     renderManager: {
         fogOptions: import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions;

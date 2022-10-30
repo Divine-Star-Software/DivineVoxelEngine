@@ -2,8 +2,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
-import { DVEM } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
-import { VoxelData } from "../../../out/Meta/index.js";
+import { VoxelMath } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
 
 RegisterVoxels(DVEW);
@@ -57,9 +56,9 @@ await DVEW.UTIL.createPromiseCheck({
  checkInterval: 1,
 });
 
-const positionVector = DVEM.getVector3(0, 0, 0);
+const positionVector = VoxelMath.getVector3(0, 0, 0);
 
-const pickedVector = DVEM.getVector3(0, 0, 0);
+const pickedVector = VoxelMath.getVector3(0, 0, 0);
 
 const dataTool = DVEW.getDataTool();
 DVEW.parentComm.listenForMessage("pick-voxel", (data) => {
@@ -85,7 +84,7 @@ setInterval(() => {
   y: cameraDirection[1] * 8 + cameraPosition[1],
   z: cameraDirection[2] * 8 + cameraPosition[2],
  };
- const voxels = DVEM.visitAll(positionVector, pickVector);
+ const voxels = VoxelMath.visitAll(positionVector, pickVector);
 
  for (let i = 0; i < voxels.length; i += 3) {
   const x = voxels[i];

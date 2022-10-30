@@ -8,16 +8,18 @@ import {
  runRGBFloodFill,
 } from "./Functions/RGBFloodLight.js";
 import {
- PopulateWorldColumnWithSunLight,
- RunSunLightFloodDown,
- RunSunLightFloodOut,
  runSunLightRemove,
  runSunLightRemoveAt,
  runSunLightUpdate,
  runSunLightUpdateAt,
+} from "./Functions/SunLight.js";
+import {
+ PopulateWorldColumnWithSunLight,
+ RunSunLightFloodDown,
+ RunSunLightFloodOut,
  RunSunLightUpdateAtMaxY,
  SunLightAboveCheck,
-} from "./Functions/SunLight.js";
+} from "./Functions/WorldSun.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { Util } from "../../../Global/Util.helper.js";
@@ -48,7 +50,6 @@ export const IlluminationManager = {
  runRGBFloodRemove: runRGBFloodRemove,
  _RGBlightUpdateQue: <number[][]>[],
  _RGBlightRemovalQue: <number[][]>[],
-
 
  _sDataTool: new DataTool(),
  _nDataTool: new DataTool(),

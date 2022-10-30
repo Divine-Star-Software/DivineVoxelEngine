@@ -63,11 +63,7 @@ const WP = {
    }
    this.__paint(dimension, data);
   },
-  __paint(
-   dimension: number,
-   data: AddVoxelData,
-   update = true
-  ) {
+  __paint(dimension: number, data: AddVoxelData, update = true) {
    this._dt.setDimension(dimension);
    const x = data.position[0];
    const y = data.position[1];
@@ -104,7 +100,7 @@ const WP = {
    this._dt.commit(1);
 
    if (update) {
-    if (this._dt.isLightSource() && this._dt.getLightValue()) {
+    if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
      DataHooks.paint.onAddToRGBUpdate.run([dimension, x, y, z]);
     }
    }
@@ -124,7 +120,13 @@ const WP = {
    this._dt.setDimension(dimensionId);
    if (!this._dt.loadIn(x, y, z)) return;
    if (!this._dt.isRenderable()) return;
-   this._dt.setAir().commit(2);
+   this._dt
+    .setLight(0)
+    .setLevel(0)
+    .setLevelState(0)
+    .setShapeState(0)
+    .setAir()
+    .commit(2);
   },
  },
 };

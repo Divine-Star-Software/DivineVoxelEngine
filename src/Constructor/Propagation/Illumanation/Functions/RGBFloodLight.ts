@@ -186,6 +186,7 @@ export function runRGBFloodRemove(
   this._sDataTool.loadIn(lightSource.x, lightSource.y, lightSource.z);
   this._sDataTool.setBarrier().commit();
   this.runRGBFloodFill();
+  this._sDataTool.loadIn(lightSource.x, lightSource.y, lightSource.z);
   this._sDataTool.setAir().commit();
  } else {
   this.runRGBFloodFill();

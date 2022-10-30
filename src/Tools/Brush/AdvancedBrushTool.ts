@@ -1,18 +1,20 @@
-import { WorldPainter as WD } from "../../../Data/World/WorldPainter.js";
-import { Util } from "../../../Global/Util.helper.js";
-import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
+import { WorldPainter as WD } from "../../Data/World/WorldPainter.js";
+import { Util } from "../../Global/Util.helper.js";
+import { VoxelBrush } from "./Brush.js";
 import type { AddVoxelData } from "Meta/Data/WorldData.types";
-import { LightData as LD } from "../../../Data/Light/LightByte.js";
-import { VoxelData } from "../../../Data/Voxel/VoxelData.js";
-import { $3dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
-import { ConstructorQueues as QM } from "../../../Common/Queues/ConstructorQueues.js";
-import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
-import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
-import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { TasksTool } from "../../../Tools/Tasks/TasksTool.js";
+import { LightData as LD } from "../../Data/Light/LightByte.js";
+import { VoxelData } from "../../Data/Voxel/VoxelData.js";
+import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { ConstructorQueues as QM } from "../../Common/Queues/ConstructorQueues.js";
+import { EngineSettings as ES } from "../../Data/Settings/EngineSettings.js";
+import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
+import { DataTool } from "../Data/DataTool.js";
+import { TasksTool } from "../Tasks/TasksTool.js";
+import { VoxelSubstanceType } from "Meta/index.js";
 
 const tasks = TasksTool();
+const dataTool = new DataTool();
 
 const getUpdateState = () => {
  return {
@@ -45,9 +47,25 @@ const getRemoveState = () => {
  };
 };
 
-const dataTool = new DataTool();
+const lightUpdateFromNeighbors = (x: number, y: number, z: number) => {
+ for (const n of $3dMooreNeighborhood) {
+  //if (n[0] == 0 && n[1] == 0 && n[2] == 0) continue;
+  const nx = x + n[0];
+  const ny = y + n[1];
+  const nz = z + n[2];
+  if (!dataTool.loadIn(nx, ny, nz)) continue;
+  const l = dataTool.getLight();
+  if (l <= 0) continue;
+  if (LD.getS(l) > 0) {
+   tasks.light.sun.update.add(nx, ny, nz);
+  }
+  if (LD.hasRGBLight(l)) {
+   tasks.light.rgb.update.add(nx, ny, nz);
+  }
+ }
+};
 
-const preRemove = (l: number, data: AddVoxelData, onDone: Function) => {
+const preErease = (l: number, data: AddVoxelData, onDone: Function) => {
  const dimension = data.dimension;
  const x = data.position[0];
  const y = data.position[1];
@@ -71,23 +89,9 @@ const preRemove = (l: number, data: AddVoxelData, onDone: Function) => {
    tasks.light.sun.remove.add(x, y, z);
   }
  }
- if (l < 0) {
-  for (const n of $3dMooreNeighborhood) {
-   if (n[0] == 0 && n[1] == 0 && n[2] == 0) continue;
-   let nx = x + n[0];
-   let ny = y + n[1];
-   let nz = z + n[2];
-   if (!dataTool.loadIn(nx, ny, nz)) continue;
-   const l = dataTool.getLight();
-   if (l < 0) continue;
-   if (LD.getS(l) > 0) {
-    tasks.light.sun.update.add(nx, ny, nz);
-   }
-   if (LD.hasRGBLight(l)) {
-    tasks.light.rgb.update.add(nx, ny, nz);
-   }
-  }
- }
+
+ lightUpdateFromNeighbors(x, y, z);
+
  if (ES.doSunPropagation() && ES.doRGBPropagation()) {
   tasks.light.sun.remove.run(() => {
    updates.sun = 1;
@@ -125,19 +129,26 @@ const preRemove = (l: number, data: AddVoxelData, onDone: Function) => {
  }, 1);
 };
 
-const prePaint = (data: AddVoxelData, onDone: Function) => {
+const prePaint = (
+ data: AddVoxelData,
+ substance: VoxelSubstanceType,
+ onDone: Function
+) => {
  const x = data.position[0];
  const y = data.position[1];
  const z = data.position[2];
 
  let needLightUpdate = false;
- if (ES.doRGBPropagation()) {
-  needLightUpdate = true;
-  tasks.light.rgb.remove.add(x, y, z);
- }
- if (ES.doSunPropagation()) {
-  needLightUpdate = true;
-  tasks.light.sun.remove.add(x, y, z);
+ let needFlowUpdate = false;
+ if (substance == "solid" || substance == "magma") {
+  if (ES.doRGBPropagation()) {
+   needLightUpdate = true;
+   tasks.light.rgb.remove.add(x, y, z);
+  }
+  if (ES.doSunPropagation()) {
+   needLightUpdate = true;
+   tasks.light.sun.remove.add(x, y, z);
+  }
  }
 
  if (!needLightUpdate) {
@@ -148,6 +159,7 @@ const prePaint = (data: AddVoxelData, onDone: Function) => {
  const updates = {
   rgb: 0,
   sun: 0,
+  flow: 0,
  };
 
  tasks.light.sun.remove.run(() => {
@@ -174,6 +186,7 @@ const prePaint = (data: AddVoxelData, onDone: Function) => {
 
 const postUpdate = (
  data: AddVoxelData,
+ substance: VoxelSubstanceType,
  lightSource: number,
  lightValue: number,
  onDone: Function
@@ -182,15 +195,34 @@ const postUpdate = (
  const y = data.position[1];
  const z = data.position[2];
  let needLightUpdate = false;
- if (ES.settings.lighting?.autoRGBLight) {
-  if (lightSource && lightValue) {
+ if (ES.doRGBPropagation()) {
+  if (ES.settings.lighting?.autoRGBLight) {
+   if (lightSource && lightValue) {
+    needLightUpdate = true;
+    tasks.light.rgb.update.add(x, y, z);
+   }
+  }
+ }
+ if (ES.doRGBPropagation() || ES.doSunPropagation()) {
+  if (substance != "solid" && substance != "magma") {
    needLightUpdate = true;
-   tasks.light.rgb.update.add(x, y, z);
+   lightUpdateFromNeighbors(x, y, z);
+  }
+ }
+
+ if (ES.doFlow()) {
+  if (substance == "fluid" || substance == "magma") {
+   tasks.flow.update.add(x, y, z);
+   tasks.flow.update.run(() => {});
   }
  }
 
  if (needLightUpdate) {
-  tasks.light.rgb.update.run(onDone);
+  tasks.light.sun.update.run(() => {
+   tasks.light.rgb.update.run(() => {
+    onDone();
+   });
+  });
 
   return;
  }
@@ -211,7 +243,7 @@ const rebuild = (data: AddVoxelData, onDone: Function) => {
  QM.build.chunk.onDone("main", onDone);
 };
 
-export const GetBrush = () => {
+export const GetAdvancedBrushTool = () => {
  let brush = Util.merge(new VoxelBrush(), {
   paintAndAwaitUpdate() {
    const self = this;
@@ -231,8 +263,9 @@ export const GetBrush = () => {
   },
   paintAndUpdate(onDone: Function = () => {}) {
    const state = getUpdateState();
-   const data = JSON.parse(JSON.stringify(brush.data));
+   const data: AddVoxelData = structuredClone(brush.data);
    const id = VoxelPaletteReader.id.numberFromString(data.id);
+   const substance = dataTool.setId(id).getSubstance();
    const voxleData = VoxelData.getVoxelData(id);
    const inte = setInterval(() => {
     if (state.phase == "pre") {
@@ -241,9 +274,10 @@ export const GetBrush = () => {
      }
      if (state.status == "idle") {
       state.status = "waiting";
-      prePaint(data, () => {
+      prePaint(data, substance, () => {
        state.pre.sun = true;
        state.pre.rgb = true;
+
        state.status = "idle";
        state.phase = "paint";
       });
@@ -274,10 +308,16 @@ export const GetBrush = () => {
       }
       if (!state.post.rgb) {
        state.status = "waiting";
-       postUpdate(data, voxleData.lightSource, voxleData.lightValue, () => {
-        state.post.rgb = true;
-        state.status = "idle";
-       });
+       postUpdate(
+        data,
+        substance,
+        voxleData.lightSource,
+        voxleData.lightValue,
+        () => {
+         state.post.rgb = true;
+         state.status = "idle";
+        }
+       );
 
        return;
       }
@@ -314,7 +354,7 @@ export const GetBrush = () => {
      }
      if (state.status == "idle") {
       state.status = "waiting";
-      preRemove(l, data, () => {
+      preErease(l, data, () => {
        state.status = "idle";
        state.phase = "post";
       });

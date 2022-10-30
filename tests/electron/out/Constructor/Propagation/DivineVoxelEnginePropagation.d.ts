@@ -44,11 +44,11 @@ export declare const DVEP: {
         runSunLightUpdate: typeof import("./Illumanation/Functions/SunLight.js").runSunLightUpdate;
         runSunLightRemove: typeof import("./Illumanation/Functions/SunLight.js").runSunLightRemove;
         runSunLightRemoveAt: typeof import("./Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
-        populateWorldColumnWithSunLight: typeof import("./Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
-        runSunLightUpdateAtMaxY: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
-        runSunLightFloodDown: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightFloodDown;
-        runSunLightFloodOut: typeof import("./Illumanation/Functions/SunLight.js").RunSunLightFloodOut;
-        sunLightAboveCheck: typeof import("./Illumanation/Functions/SunLight.js").SunLightAboveCheck;
+        populateWorldColumnWithSunLight: typeof import("./Illumanation/Functions/WorldSun.js").PopulateWorldColumnWithSunLight;
+        runSunLightUpdateAtMaxY: typeof import("./Illumanation/Functions/WorldSun.js").RunSunLightUpdateAtMaxY;
+        runSunLightFloodDown: typeof import("./Illumanation/Functions/WorldSun.js").RunSunLightFloodDown;
+        runSunLightFloodOut: typeof import("./Illumanation/Functions/WorldSun.js").RunSunLightFloodOut;
+        sunLightAboveCheck: typeof import("./Illumanation/Functions/WorldSun.js").SunLightAboveCheck;
         _sunLightUpdateQue: import("../../Global/Util/Queue.js").Queue<number[]>;
         _sunLightFloodDownQue: import("../../Global/Util/Queue.js").Queue<number[]>;
         _sunLightFloodOutQue: Record<string, import("../../Global/Util/Queue.js").Queue<number[]>>;

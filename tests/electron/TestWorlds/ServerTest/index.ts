@@ -17,7 +17,6 @@ import {
  GetPlayerPickCube,
  GetRenderPlayer,
 } from "../Shared/Player/Render/RenderPlayer.js";
-import { DVEM } from "../../out/Libs/Math/DivineVoxelEngineMath.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(

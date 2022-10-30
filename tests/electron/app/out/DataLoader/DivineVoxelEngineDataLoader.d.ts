@@ -70,6 +70,9 @@ export declare const DVEDL: {
             voxels: {
                 doColors: boolean;
             };
+            flow: {
+                enable: boolean;
+            };
             lighting: {
                 doAO: boolean;
                 doSunLight: boolean;
@@ -204,6 +207,7 @@ export declare const DVEDL: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+        doFlow(): boolean;
     };
     dataSyncNode: {
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;

@@ -2,7 +2,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
-import { DVEM } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
+import { VoxelMath } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
 
 const syncSABWtihBuffer = (sab: SharedArrayBuffer, buffer: ArrayBuffer) => {
  const temp1 = new Uint8Array(sab);
@@ -220,7 +220,7 @@ setInterval(() => {
  endVector.y = directionVector.y * 8 + positionVector.y;
  endVector.z = directionVector.z * 8 + positionVector.z;
 
- const voxels = DVEM.visitAll(positionVector, endVector);
+ const voxels = VoxelMath.visitAll(positionVector, endVector);
 
  for (let i = 0; i < voxels.length; i += 3) {
   const x = voxels[i];

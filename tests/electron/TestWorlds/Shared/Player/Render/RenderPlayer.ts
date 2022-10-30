@@ -1,5 +1,4 @@
 import type { DivineVoxelEngineRender } from "out/Render/DivineVoxelEngineRender.js";
-import type { DivineVoxelEngineMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { GetPlayerModel, SetUpDefaultCamera } from "../../Babylon/index.js";
 import {
  PlayerStatesIndexes,
@@ -60,7 +59,9 @@ export const GetPlayerPickCube = (
      }
     }
    }
-   DVER.worldComm.sendMessage("voxel-add");
+   let voxel = localStorage.getItem("voxel");
+   voxel = voxel ? voxel : "dve:dreamstone";
+   DVER.worldComm.sendMessage("voxel-add", [voxel]);
    cameraPickPostion.setAll(0);
   }
 
@@ -79,12 +80,11 @@ export const GetPlayerPickCube = (
 };
 
 export const GetRenderPlayer = async (
- enablePicking : boolean,
+ enablePicking: boolean,
  scene: BABYLON.Scene,
  canvas: HTMLCanvasElement,
- DVER: DivineVoxelEngineRender,
+ DVER: DivineVoxelEngineRender
 ) => {
-
  let ready = false;
  let playerPostionArray = new Float32Array();
  DVER.nexusComm.listenForMessage("connect-player-data", (data) => {
@@ -118,8 +118,8 @@ export const GetRenderPlayer = async (
   checkInterval: 1,
  });
 
- if(enablePicking) {
-  GetPlayerPickCube(DVER,playerCamera,scene,playerModel);
+ if (enablePicking) {
+  GetPlayerPickCube(DVER, playerCamera, scene, playerModel);
  }
 
  const playerDirectionSAB = new SharedArrayBuffer(4 * 6);
@@ -132,6 +132,26 @@ export const GetRenderPlayer = async (
   PlayerStatesValues.secondaryStill;
 
  window.addEventListener("keydown", (event) => {
+  if (event.key == "Home") {
+   DVER.renderManager.setSunLevel(1);
+   DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(1, 1, 1) });
+  }
+  if (event.key == "PageUp") {
+   DVER.renderManager.setSunLevel(0.8);
+   DVER.renderManager.updateFogOptions({
+    color: new BABYLON.Color3(0.8, 0.8, 0.8),
+   });
+  }
+  if (event.key == "PageDown") {
+   DVER.renderManager.setSunLevel(0.2);
+   DVER.renderManager.updateFogOptions({
+    color: new BABYLON.Color3(0.2, 0.2, 0.2),
+   });
+  }
+  if (event.key == "End") {
+   DVER.renderManager.setSunLevel(0);
+   DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
+  }
   if (event.key == "w" || event.key == "W") {
    playerStates[PlayerStatesIndexes.movement] =
     PlayerStatesValues.walkingForward;
@@ -191,7 +211,9 @@ export const GetRenderPlayer = async (
 
  const playerDataBuffer = new SharedArrayBuffer(4 + 4 * 3 * 3);
  const playerData = new DataView(playerDataBuffer);
- DVER.worldComm.sendMessage("player-server-data", [playerDataBuffer]);
+ DVER.worldComm.listenForMessage("send-player-server-data", () => {
+  DVER.worldComm.sendMessage("player-server-data", [playerDataBuffer]);
+ });
 
  const direction = new BABYLON.Vector3(0, 0, 0);
  const sideDirection = new BABYLON.Vector3(0, 0, 0);

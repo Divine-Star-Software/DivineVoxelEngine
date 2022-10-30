@@ -167,6 +167,9 @@ export declare const DVERW: {
             voxels: {
                 doColors: boolean;
             };
+            flow: {
+                enable: boolean;
+            };
             lighting: {
                 doAO: boolean;
                 doSunLight: boolean;
@@ -301,6 +304,7 @@ export declare const DVERW: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+        doFlow(): boolean;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;

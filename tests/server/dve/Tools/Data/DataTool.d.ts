@@ -38,7 +38,7 @@ export declare class DataTool {
     hasSecondaryVoxel(): boolean;
     getShapeId(): number;
     isLightSource(): boolean;
-    getLightValue(): number;
+    getLightSourceValue(): number;
     getSubstance(): VoxelSubstanceType;
     getTemplateSubstance(): VoxelTemplateSubstanceType;
     getState(): number;

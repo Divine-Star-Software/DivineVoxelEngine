@@ -78,7 +78,7 @@ const WP = {
             }
             this._dt.commit(1);
             if (update) {
-                if (this._dt.isLightSource() && this._dt.getLightValue()) {
+                if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
                     DataHooks.paint.onAddToRGBUpdate.run([dimension, x, y, z]);
                 }
             }
@@ -98,7 +98,13 @@ const WP = {
                 return;
             if (!this._dt.isRenderable())
                 return;
-            this._dt.setAir().commit(2);
+            this._dt
+                .setLight(0)
+                .setLevel(0)
+                .setLevelState(0)
+                .setShapeState(0)
+                .setAir()
+                .commit(2);
         },
     },
 };

@@ -58,6 +58,9 @@ export declare const EngineSettings: {
         voxels: {
             doColors: boolean;
         };
+        flow: {
+            enable: boolean;
+        };
         lighting: {
             doAO: boolean;
             doSunLight: boolean;
@@ -96,4 +99,5 @@ export declare const EngineSettings: {
     doSunPropagation(): boolean;
     doRGBPropagation(): boolean;
     doLight(): boolean;
+    doFlow(): boolean;
 };

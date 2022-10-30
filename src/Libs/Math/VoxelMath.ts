@@ -4,20 +4,13 @@ import { SimpleBoundingBox } from "./Classes/SimpleBoundingBox.js";
 import { Vector3 } from "./Classes/Vector3.js";
 import { VisitAll } from "./Functions/VisitAll.js";
 import { DimensionsVector3 } from "./Types/Math.types.js";
-/**# Divine Voxel Engine Math
+/**# Voxel Math
  * ---
  * Can be used in any thread that needs it.
  * Has functions for collision detection, finding voxels in a direction, and path finding.
  */
-export const DVEM = {
- /** # Visit All
-  * ---
-  * Given a starting point and an end point it will visit all voxels that are between them.
-  * @param startPoint
-  * @param endPoint
-  * @param visitor
-  * @returns an array of numbers with a stride of 3 for positions
-  */
+export const VoxelMath = {
+
  visitAll: VisitAll,
 
  getVector3(x: number, y: number, z: number) {
@@ -49,6 +42,5 @@ export const DVEM = {
  },
 };
 
-export type DivineVoxelEngineMath = typeof DVEM;
 
-DVEM.visitAll;
+export type VoxelMath = typeof VoxelMath;

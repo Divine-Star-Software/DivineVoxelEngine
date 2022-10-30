@@ -5,7 +5,6 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 const brush = DVEW.getBrush();
 DVEW.parentComm.listenForMessage("voxel-add", (data, event) => {
-    console.log(data);
     brush
         .setId("dve:dreamstone")
         .setXYZ(data[1], data[2], data[3])
@@ -22,15 +21,14 @@ let startZ = -16 * numChunks;
 let endX = 16 * numChunks;
 let endZ = 16 * numChunks;
 const builder = DVEW.getBuilder();
-let t1 = performance.now();
+const tasks = DVEW.getTasksManager();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generateWorldColumn(x, z);
+        tasks.light.worldSun.add(x, z);
     }
 }
-let t2 = performance.now();
-console.log(t2 - t1);
-console.log("done");
+await tasks.light.worldSun.runAndAwait();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         builder.setXZ(x, z).buildColumn();

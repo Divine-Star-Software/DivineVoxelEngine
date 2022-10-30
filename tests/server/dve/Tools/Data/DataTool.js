@@ -167,7 +167,7 @@ export class DataTool {
             return false;
         return VoxelData.isLightSource(this.data.baseId);
     }
-    getLightValue() {
+    getLightSourceValue() {
         if (this.__secondary) {
             if (this.data.secondaryBaseId < 2)
                 return -1;

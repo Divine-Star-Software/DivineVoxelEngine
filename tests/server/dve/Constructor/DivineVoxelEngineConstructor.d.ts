@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -69,6 +69,9 @@ export declare const DVEC: {
             };
             voxels: {
                 doColors: boolean;
+            };
+            flow: {
+                enable: boolean;
             };
             lighting: {
                 doAO: boolean;
@@ -204,6 +207,7 @@ export declare const DVEC: {
         doSunPropagation(): boolean;
         doRGBPropagation(): boolean;
         doLight(): boolean;
+        doFlow(): boolean;
     };
     dataSyncNode: {
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
@@ -1031,11 +1035,11 @@ export declare const DVEC: {
             runSunLightUpdate: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdate;
             runSunLightRemove: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemove;
             runSunLightRemoveAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
-            populateWorldColumnWithSunLight: typeof import("./Propagation/Illumanation/Functions/SunLight.js").PopulateWorldColumnWithSunLight;
-            runSunLightUpdateAtMaxY: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightUpdateAtMaxY;
-            runSunLightFloodDown: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightFloodDown;
-            runSunLightFloodOut: typeof import("./Propagation/Illumanation/Functions/SunLight.js").RunSunLightFloodOut;
-            sunLightAboveCheck: typeof import("./Propagation/Illumanation/Functions/SunLight.js").SunLightAboveCheck;
+            populateWorldColumnWithSunLight: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").PopulateWorldColumnWithSunLight;
+            runSunLightUpdateAtMaxY: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightUpdateAtMaxY;
+            runSunLightFloodDown: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightFloodDown;
+            runSunLightFloodOut: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightFloodOut;
+            sunLightAboveCheck: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").SunLightAboveCheck;
             _sunLightUpdateQue: import("../Global/Util/Queue.js").Queue<number[]>;
             _sunLightFloodDownQue: import("../Global/Util/Queue.js").Queue<number[]>;
             _sunLightFloodOutQue: Record<string, import("../Global/Util/Queue.js").Queue<number[]>>;
@@ -1300,7 +1304,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

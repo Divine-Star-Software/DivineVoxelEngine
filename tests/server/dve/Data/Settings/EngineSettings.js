@@ -59,6 +59,9 @@ export const EngineSettings = {
         voxels: {
             doColors: true,
         },
+        flow: {
+            enable: true
+        },
         lighting: {
             doAO: true,
             doSunLight: true,
@@ -149,4 +152,7 @@ export const EngineSettings = {
     doLight() {
         return this.doRGBPropagation() || this.doSunPropagation();
     },
+    doFlow() {
+        return this.settings.flow.enable;
+    }
 };

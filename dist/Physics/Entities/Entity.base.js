@@ -1,19 +1,19 @@
-import { DVEM } from "../../Libs/Math/DivineVoxelEngineMath.js";
+import { VoxelMath } from "../../Libs/Math/VoxelMath.js";
 import { DVEPH } from "../DivineVoxelEnginePhysics.js";
 const ep = 0.001;
 export const EntityBase = {
     active: true,
     //current position
-    position: DVEM.getVector3(0, 0, 0),
-    direction: DVEM.getVector3(0, 0, 0),
+    position: VoxelMath.getVector3(0, 0, 0),
+    direction: VoxelMath.getVector3(0, 0, 0),
     //previous position
-    previousPosiiton: DVEM.getVector3(0, 0, 0),
+    previousPosiiton: VoxelMath.getVector3(0, 0, 0),
     //dimensions
     hitBox: { w: 0.8, h: 1.8, d: 0.8 },
     speed: 0.01,
-    velocity: DVEM.getVector3(0, 0, 0),
+    velocity: VoxelMath.getVector3(0, 0, 0),
     onGround: false,
-    veloctiy: DVEM.getVector3(0, 0, 0),
+    veloctiy: VoxelMath.getVector3(0, 0, 0),
     boundingBox: { w: 0, h: 0, d: 0 },
     doCollision(x, y, z, colliderName, collisionData) { },
     setPosition(x, y, z) {

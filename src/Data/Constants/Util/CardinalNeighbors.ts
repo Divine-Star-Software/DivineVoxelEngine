@@ -25,3 +25,5 @@ for (let y = -1; y < 2; y++) {
   $3dMooreNeighborhood.push([n[0], y, n[1]]);
  }
 }
+
+

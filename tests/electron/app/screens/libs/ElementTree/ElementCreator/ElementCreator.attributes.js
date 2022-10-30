@@ -50,7 +50,7 @@ export const attributeSetFunction = {
         elm.spellcheck = data.spellcheck;
     },
     tabindex: (elm, data) => {
-        if (!data.tabindex)
+        if (data.tabindex == undefined)
             return;
         elm.tabIndex = data.tabindex;
     },
@@ -63,7 +63,7 @@ export const attributeSetFunction = {
         if (!data.th)
             return;
         for (const key of Object.keys(data.th)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.th[key];
             }
         }
@@ -72,7 +72,7 @@ export const attributeSetFunction = {
         if (!data.td)
             return;
         for (const key of Object.keys(data.td)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.td[key];
             }
         }
@@ -81,7 +81,7 @@ export const attributeSetFunction = {
         if (!data.img)
             return;
         for (const key of Object.keys(data.img)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.img[key];
             }
         }
@@ -90,7 +90,7 @@ export const attributeSetFunction = {
         if (!data.label)
             return;
         for (const key of Object.keys(data.label)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.label[key];
             }
         }
@@ -98,8 +98,11 @@ export const attributeSetFunction = {
     input: (elm, data) => {
         if (!data.input)
             return;
+        if (data.input.type == "number" && data.input.step == undefined) {
+            data.input.step = "any";
+        }
         for (const key of Object.keys(data.input)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.input[key];
             }
         }
@@ -108,7 +111,7 @@ export const attributeSetFunction = {
         if (!data.textarea)
             return;
         for (const key of Object.keys(data.textarea)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.textarea[key];
             }
         }
@@ -117,7 +120,7 @@ export const attributeSetFunction = {
         if (!data.audio)
             return;
         for (const key of Object.keys(data.audio)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.audio[key];
             }
         }
@@ -126,7 +129,7 @@ export const attributeSetFunction = {
         if (!data.video)
             return;
         for (const key of Object.keys(data.video)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.video[key];
             }
         }
@@ -135,7 +138,7 @@ export const attributeSetFunction = {
         if (!data.track)
             return;
         for (const key of Object.keys(data.track)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.track[key];
             }
         }
@@ -144,7 +147,7 @@ export const attributeSetFunction = {
         if (!data.anchor)
             return;
         for (const key of Object.keys(data.anchor)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.anchor[key];
             }
         }
@@ -153,7 +156,7 @@ export const attributeSetFunction = {
         if (!data.form)
             return;
         for (const key of Object.keys(data.form)) {
-            if (elm[key]) {
+            if (key in elm) {
                 elm[key] = data.form[key];
             }
         }
