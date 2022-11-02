@@ -47,7 +47,7 @@ const voxelNode = (data: VoxelListData): ElementTreeData => {
     onClick: (event: MouseEvent) => {
      event.preventDefault();
      event.stopPropagation();
-    
+
      localStorage.setItem("voxel", data.id);
      voxelCascade.id = data.id;
      cascade();
@@ -70,20 +70,11 @@ const voxelNode = (data: VoxelListData): ElementTreeData => {
 export const VoxelSelectScreen = (): ElementTreeData => {
  return [
   {
-   type: "h1",
-   text: "Select Voxel",
-  },
-  {
    type: "div",
    attrs: {
     className: "voxel-list",
    },
-
-   children: [
-    VoxelList.map((data) => {
-     return voxelNode(data);
-    }),
-   ],
+   children: VoxelList.map((data) => voxelNode(data)),
   },
  ];
 };

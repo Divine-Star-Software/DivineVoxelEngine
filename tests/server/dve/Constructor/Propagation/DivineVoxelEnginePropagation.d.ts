@@ -135,10 +135,14 @@ export declare const DVEP: {
         wait(ms: number): Promise<unknown>;
         _lightValues: [s: number, r: number, g: number, b: number];
         getAbsorbLight(x: number, y: number, z: number): number;
+        sunCheck(x: number, y: number, z: number): void;
     };
     rebuildQueMap: Record<string, boolean>;
     $INIT(): void;
+    _dimension: string;
+    _buildQueue: string;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
+    _process(data: UpdateTasks): void;
     resetRebuildQue(): void;
     runRebuildQue(): void;
     runRGBFloodFill(data: UpdateTasks): void;

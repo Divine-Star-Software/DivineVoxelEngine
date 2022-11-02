@@ -1,5 +1,15 @@
 import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "../Chunk/HeightMapArray.js";
+const __maxChunkYSize = 128;
+const maxBounds = Object.freeze({
+    minZ: -32_000_000,
+    maxZ: 32_000_000,
+    minX: -32_000_000,
+    maxX: 32_000_000,
+    minY: -32_000_000,
+    maxY: 32_000_000,
+});
+const maxWorldXZSize = 32_000_000;
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.
@@ -7,13 +17,6 @@ import { HeightMapArray } from "../Chunk/HeightMapArray.js";
  * A refernce is held to all classes that need it.
  */
 export const WorldBounds = {
-    //this is done to ensure that the voxel engine does not break.
-    get __maxChunkYSize() {
-        return 128;
-    },
-    set __maxChunkYSize(data) {
-        throw new Error("Max Chunk Y Size can not be overridden.");
-    },
     bounds: {
         MinZ: -Infinity,
         MaxZ: Infinity,
@@ -102,8 +105,8 @@ export const WorldBounds = {
         this.chunkXSize = 2 ** pow2X;
         this.chunkYPow2 = pow2Y;
         this.chunkYSize = 2 ** pow2Y;
-        if (this.chunkYSize > this.__maxChunkYSize) {
-            throw new Error(`Chunk Y size is bigger then the limit. Should be equal to or less than ${this.__maxChunkYSize}.`);
+        if (this.chunkYSize > __maxChunkYSize) {
+            throw new Error(`Chunk Y size is bigger then the limit. Should be equal to or less than ${__maxChunkYSize}.`);
         }
         this.chunkZPow2 = pow2Z;
         this.chunkZSize = 2 ** pow2Z;

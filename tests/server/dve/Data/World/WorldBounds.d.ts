@@ -6,7 +6,6 @@ import type { Position3Matrix } from "Meta/Util.types";
  * A refernce is held to all classes that need it.
  */
 export declare const WorldBounds: {
-    __maxChunkYSize: number;
     bounds: {
         MinZ: number;
         MaxZ: number;

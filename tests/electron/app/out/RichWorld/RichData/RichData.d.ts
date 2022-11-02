@@ -1,7 +1,6 @@
 import { RichChunk, RichRegion, RichWorldDimensions } from "Meta/Data/RichWorldData.types.js";
 export declare const RichData: {
     worldBounds: {
-        __maxChunkYSize: number;
         bounds: {
             MinZ: number;
             MaxZ: number;

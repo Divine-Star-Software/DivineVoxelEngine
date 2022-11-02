@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -9,7 +9,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -101,7 +101,6 @@ export declare const DVEN: {
         syncSettings(data: EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
@@ -302,13 +301,13 @@ export declare const DVEN: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Map<number, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
-                _add(x: number, y: number, z: number, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
                 add(id: string | number): Map<any, any>;
@@ -334,7 +333,6 @@ export declare const DVEN: {
         };
         worldColumn: {};
         worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;

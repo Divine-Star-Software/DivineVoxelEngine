@@ -12,12 +12,13 @@ import {
 } from "./Functions/RunFlow.js";
 import { DVEP } from "../DivineVoxelEnginePropagation.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import { $3dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
+import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 
 export const FlowManager = {
  //voxelByte : Util.
@@ -51,6 +52,7 @@ export const FlowManager = {
   return this._visitedMap[`${x}-${y}-${z}`] == true;
  },
  setVoxel(level: number, levelState: number, x: number, y: number, z: number) {
+  this.sunCheck(x, y, z);
   this._brush.setXYZ(x, y, z).paint();
   this._sDataTool.loadIn(x, y, z);
   this._sDataTool
@@ -207,10 +209,10 @@ export const FlowManager = {
 
  _lightValues: <[s: number, r: number, g: number, b: number]>[0, 0, 0, 0],
  getAbsorbLight(x: number, y: number, z: number) {
-  for (const n of $3dMooreNeighborhood) {
+  for (const n of $3dCardinalNeighbors) {
    if (!this._nDataTool.loadIn(x + n[0], y + n[1], z + n[2])) continue;
    let l = this._nDataTool.getLight();
-   if (l < 0) continue;
+   if (l <= 0) continue;
    const v = this.lightData.getLightValues(l);
    for (let i = 0; i < 4; i++) {
     if (this._lightValues[i] < v[i]) {
@@ -223,5 +225,14 @@ export const FlowManager = {
    this._lightValues[i] = 0;
   }
   return this.lightData.minusOneForAll(brightest);
+ },
+
+ sunCheck(x: number, y: number, z: number) {
+  if (!this._nDataTool.loadIn(x, y - 1, z)) return;
+  if (!this._nDataTool.isAir()) return;
+  const l = this._nDataTool.getLight();
+  if (this.lightData.getS(l) == 0xf) {
+   IlluminationManager.runSunLightRemoveAt(x, y - 1, z);
+  }
  },
 };

@@ -23,8 +23,8 @@ export declare class CommBase {
     listenForMessage(message: string | number, run: MessageFunction): void;
     connectToComm(commToConnectTo: CommBase): void;
     runTasks<T>(id: string | number, data: T, transfers?: any[], queueId?: string): void;
-    __syncQueue(id: string, sab: SharedArrayBuffer): void;
-    __unSyqncQueue(id: string): void;
+    __syncQueue(id: string | number, sab: SharedArrayBuffer): void;
+    __unSyqncQueue(id: string | number): void;
     syncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
     unSyncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
     waitTillReady(): Promise<boolean>;

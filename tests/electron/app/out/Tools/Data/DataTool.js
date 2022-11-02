@@ -10,7 +10,7 @@ export class DataTool {
     static _dtutil = new DataTool();
     _mode = "World";
     data = {
-        dimension: 0,
+        dimension: "main",
         raw: [0, 0],
         x: 0,
         y: 9,
@@ -28,7 +28,7 @@ export class DataTool {
     };
     __secondary = false;
     setDimension(dimensionId) {
-        this.data.dimension = DimensionsRegister.getDimensionNumericId(dimensionId);
+        this.data.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
     }
     setSecondary(enable) {
         this.__secondary = enable;

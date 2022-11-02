@@ -28,7 +28,6 @@ export declare const DVEWG: {
         getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
     };
     worldBounds: {
-        __maxChunkYSize: number;
         bounds: {
             MinZ: number;
             MaxZ: number;

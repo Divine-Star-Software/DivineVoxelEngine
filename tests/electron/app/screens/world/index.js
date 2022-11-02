@@ -9,6 +9,13 @@ window.addEventListener("keydown", (event) => {
         cascade();
     }
 });
+let canvas;
+const inte = setInterval(() => {
+    canvas = document.getElementById("renderCanvas");
+    if (canvas) {
+        clearInterval(inte);
+    }
+}, 1);
 const WorldScreen = () => {
     return [
         {
@@ -26,6 +33,7 @@ const WorldScreen = () => {
                         elm.classList.add("active");
                     }
                     else {
+                        canvas.requestPointerLock();
                         elm.classList.add("inactive");
                         elm.classList.remove("active");
                     }

@@ -70,8 +70,7 @@ export const LightData = {
   * @param values
   */
  setLightValues(values: number[]) {
-  let value = 0;
-  value = this.setS(values[0], value);
+  let value = this.setS(values[0], 0);
   value = this.setR(values[1], value);
   value = this.setG(values[2], value);
   return this.setB(values[3], value);

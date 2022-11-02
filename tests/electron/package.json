@@ -12,11 +12,11 @@
   "devDependencies": {
     "@types/node": "^17.0.23",
     "@types/ws": "^8.5.3",
-    "babylonjs": "^5.8.2",
-    "electron": "^19.0.8"
+    "babylonjs": "^5.8.2"
   },
   "dependencies": {
     "ds-element-tree": "0.0.7",
+    "electron": "^21.2.1",
     "ws": "^8.8.0"
   }
 }

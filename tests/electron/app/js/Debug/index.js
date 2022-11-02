@@ -45,7 +45,7 @@ const init = async () => {
     chunkMarkers.position.z = 8;
     const playerModel = await GetPlayerModel(scene);
     playerModel.position.y = 5;
-    const debugCube = GetAnalyzerCubeRender(DVER);
+    const debugCube = GetAnalyzerCubeRender(DVER, camera);
     window.debugCube = debugCube;
     runRenderLoop(engine, scene, camera, DVER);
 };

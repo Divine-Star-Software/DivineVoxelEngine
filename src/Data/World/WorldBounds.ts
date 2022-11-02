@@ -2,6 +2,16 @@ import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "../Chunk/HeightMapArray.js";
 import type { Position3Matrix } from "Meta/Util.types";
 
+const __maxChunkYSize = 128;
+const maxBounds = Object.freeze({
+ minZ: -32_000_000,
+ maxZ: 32_000_000,
+ minX: -32_000_000,
+ maxX: 32_000_000,
+ minY: -32_000_000,
+ maxY: 32_000_000,
+});
+const maxWorldXZSize = 32_000_000;
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.
@@ -9,13 +19,6 @@ import type { Position3Matrix } from "Meta/Util.types";
  * A refernce is held to all classes that need it.
  */
 export const WorldBounds = {
- //this is done to ensure that the voxel engine does not break.
- get __maxChunkYSize() {
-  return 128;
- },
- set __maxChunkYSize(data: number) {
-  throw new Error("Max Chunk Y Size can not be overridden.");
- },
  bounds: {
   MinZ: -Infinity,
   MaxZ: Infinity,
@@ -114,9 +117,9 @@ export const WorldBounds = {
   this.chunkYPow2 = pow2Y;
   this.chunkYSize = 2 ** pow2Y;
 
-  if (this.chunkYSize > this.__maxChunkYSize) {
+  if (this.chunkYSize > __maxChunkYSize) {
    throw new Error(
-    `Chunk Y size is bigger then the limit. Should be equal to or less than ${this.__maxChunkYSize}.`
+    `Chunk Y size is bigger then the limit. Should be equal to or less than ${__maxChunkYSize}.`
    );
   }
 
@@ -197,6 +200,8 @@ export const WorldBounds = {
   }
   return this.__voxelPosition;
  },
+
+
  getRichPositionKey(x: number, y: number, z: number) {
   const POS = this.getVoxelPosition(x, y, z);
   return `${POS.y}-${POS.x}-${POS.z}`;
@@ -239,9 +244,9 @@ export const WorldBounds = {
    this._columnIndexPosition.z
   );
  },
- getChunkColumnIndex(y : number) {
+ getChunkColumnIndex(y: number) {
   const ry = (y >> this.regionYPow2) << this.regionYPow2;
-  const cy =  (y >> this.chunkYPow2) << this.chunkYPow2;
+  const cy = (y >> this.chunkYPow2) << this.chunkYPow2;
   return (cy - ry) / this.chunkYSize;
  },
  getColumnKey(x: number, z: number, y = 0) {

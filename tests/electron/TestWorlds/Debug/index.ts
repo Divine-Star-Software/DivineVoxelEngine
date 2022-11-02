@@ -77,7 +77,7 @@ const init = async () => {
  playerModel.position.y = 5;
 
 
- const debugCube = GetAnalyzerCubeRender(DVER);
+ const debugCube = GetAnalyzerCubeRender(DVER,camera);
  (window as any).debugCube = debugCube;
 
  runRenderLoop(engine, scene, camera, DVER);

@@ -1,8 +1,10 @@
+import { VoxelMath } from "../../../../out/Libs/Math/VoxelMath.js";
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 import { GenerateTemple } from "./Functions/GenerateTemple.js";
 import { GenerateStairChunk } from "./Functions/StairChunks.js";
 
 const brush = DVEW.getBrush();
+const dataTool = DVEW.getDataTool();
 
 export const WorldGen = {
  chunkDepth: 16,
@@ -39,12 +41,44 @@ export const WorldGen = {
  generateTree(x: number, y: number, z: number) {
   brush.setId("dve:dream-log");
   let height = (30 * Math.random()) >> 0;
+  height < 5 ? (height += 5) : true;
   for (let i = 0; i < height; i++) {
    brush.setXYZ(x, y + i, z).paint();
   }
-  brush.setId("dve:dream-leafs");
-  for (const pos of this._treeLeafs) {
+  let k = 5;
+  for (let iy = height - 4; iy <= height + 1; iy++) {
+   this.generateCircle("dve:dream-leafs", x, iy + y, z, k, true);
+   k--;
+  }
+  brush
+   .setId("dve:dream-leafs")
+   .setXYZ(x, y + height, z)
+   .paint();
+  /*   for (const pos of this._treeLeafs) {
    brush.setXYZ(x + pos[0], height - 4 + y + pos[1], z + pos[2]).paint();
+  } */
+ },
+
+ generateCircle(
+  vox: string,
+  x: number,
+  y: number,
+  z: number,
+  radius: number,
+  skipCenter = false
+ ) {
+  let rx = x - radius;
+  let rz = z - radius;
+  brush.setId(vox);
+  for (let ix = rx; ix <= x + radius; ix++) {
+   for (let iz = rz; iz <= z + radius; iz++) {
+    if (skipCenter) {
+     if (ix == x && iz == z) continue;
+    }
+    if (VoxelMath.distance2D(ix, x, iz, z) < radius) {
+     brush.setXYZ(ix, y, iz).paint();
+    }
+   }
   }
  },
 
@@ -119,6 +153,7 @@ export const WorldGen = {
  generatePillarChunk(chunkX: number, chunkZ: number) {
   let baseY = 31;
   let topY = 80;
+  let k = 12;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     let addVine = false;
@@ -158,17 +193,22 @@ export const WorldGen = {
       if (addVine && z == chunkZ) {
        brush
         .setId("dve:dreamvine")
-        .setXYZ(x + 1, y, z - 1)
+        .setXYZ(x, y, z - 1)
         .setShapeState(1)
         .paint();
       }
       if (addVine && z == chunkZ + 15) {
        brush
         .setId("dve:dreamvine")
-        .setXYZ(x, y, z - 1)
+        .setXYZ(x, y, z + 1)
         .setShapeState(0)
         .paint();
       }
+     }
+
+     if (y >= topY + 1 && x == chunkX && z == chunkZ) {
+      this.generateCircle("dve:dreamstonepillar", chunkX + 8, y, chunkZ + 8, k);
+      k--;
      }
     }
    }
@@ -185,7 +225,7 @@ export const WorldGen = {
      }
 
      let flip = Math.random();
-     if (flip >= 0.95) {
+     if (flip >= 0.98) {
       this.generateTree(x, y, z);
       continue;
      }

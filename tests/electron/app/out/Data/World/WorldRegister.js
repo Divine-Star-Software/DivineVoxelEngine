@@ -20,11 +20,11 @@ export const WorldRegister = {
             WorldRegister._cacheOn = false;
             WorldRegister._cache.clear();
         },
-        _add(x, y, z, data) {
-            WorldRegister._cache.set(WorldBounds.hash(x, y, z), data);
+        _add(key, data) {
+            WorldRegister._cache.set(key, data);
         },
-        _get(x, y, z) {
-            return WorldRegister._cache.get(WorldBounds.hash(x, y, z));
+        _get(key) {
+            return WorldRegister._cache.get(key);
         },
     },
     dimensions: {
@@ -147,10 +147,10 @@ export const WorldRegister = {
             return chunk;
         },
         get(dimensionId, x, y, z) {
-            const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+            const chunkKey = WorldBounds.getChunkKeyFromPosition(x, y, z);
             let addChunk = false;
             if (WorldRegister._cacheOn) {
-                const chunk = WorldRegister.cache._get(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+                const chunk = WorldRegister.cache._get(chunkKey);
                 if (chunk)
                     return chunk;
                 addChunk = true;
@@ -162,7 +162,7 @@ export const WorldRegister = {
             if (!chunk)
                 return;
             if (addChunk) {
-                WorldRegister.cache._add(chunkPOS.x, chunkPOS.y, chunkPOS.z, chunk);
+                WorldRegister.cache._add(chunkKey, chunk);
             }
             return chunk;
         },

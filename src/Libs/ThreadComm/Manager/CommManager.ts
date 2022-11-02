@@ -182,7 +182,7 @@ export class CommManager {
 		return newQueue;
 	}
 
-	getQueue<T>(id: string) {
+	getQueue<T>(id: string | number) {
 		const queue = this.__queues[id];
 		if (!queue) {
 			this.__throwError(`Queue with ${id} does not exists.`);
@@ -190,13 +190,13 @@ export class CommManager {
 		return <QueueManager<T>>queue;
 	}
 
-	__syncQueue(id: string, sab: SharedArrayBuffer) {
+	__syncQueue(id: string | number, sab: SharedArrayBuffer) {
 		for (const comm of this.__comms) {
 			comm.__syncQueue(id, sab);
 		}
 	}
 
-	__unSyncQueue(id: string) {
+	__unSyncQueue(id: string | number) {
 		for (const comm of this.__comms) {
 			comm.__unSyqncQueue(id);
 		}

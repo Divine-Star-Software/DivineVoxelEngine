@@ -23,9 +23,7 @@ export const ConstructorTasks = {
         },
         build: {
             chunk: ThreadComm.registerTasks(WorldTasks.runRebuildQue, (data) => {
-                if (!data) {
-                    data = "main";
-                }
+                ConstructorQueues.build.chunk.run(data[0]);
             }),
         },
         generate: {
@@ -53,10 +51,8 @@ export const ConstructorTasks = {
             remove: null,
         },
         build: {
-            chunk: ThreadComm.registerTasks(WorldTasks.runRebuildQue, (data) => {
-                if (!data) {
-                    data = "main";
-                }
+            chunk: ThreadComm.registerTasks(WorldTasks.addToRebuildQue, (data) => {
+                ConstructorQueues.build.chunk.add([data[0], data[1], data[2], data[3], 1], data[4]);
             }),
         },
         generate: {
@@ -81,4 +77,4 @@ CCM.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
  const z = data[3];
  ConstructorQueues.rgb.update.add([x, y, z]);
 });
- */ 
+ */

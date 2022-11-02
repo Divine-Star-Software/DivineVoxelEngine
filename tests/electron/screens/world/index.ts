@@ -14,6 +14,14 @@ window.addEventListener("keydown", (event) => {
  }
 });
 
+let canvas: HTMLCanvasElement;
+const inte = setInterval(() => {
+ canvas = <HTMLCanvasElement>document.getElementById("renderCanvas");
+ if (canvas) {
+  clearInterval(inte);
+ }
+}, 1);
+
 const WorldScreen = (): ElementTreeData => {
  return [
   {
@@ -30,6 +38,7 @@ const WorldScreen = (): ElementTreeData => {
       elm.classList.remove("inactive");
       elm.classList.add("active");
      } else {
+      canvas.requestPointerLock();
       elm.classList.add("inactive");
       elm.classList.remove("active");
      }

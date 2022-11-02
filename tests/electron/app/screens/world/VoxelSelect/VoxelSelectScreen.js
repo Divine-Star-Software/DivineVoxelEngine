@@ -63,19 +63,11 @@ const voxelNode = (data) => {
 export const VoxelSelectScreen = () => {
     return [
         {
-            type: "h1",
-            text: "Select Voxel",
-        },
-        {
             type: "div",
             attrs: {
                 className: "voxel-list",
             },
-            children: [
-                VoxelList.map((data) => {
-                    return voxelNode(data);
-                }),
-            ],
+            children: VoxelList.map((data) => voxelNode(data)),
         },
     ];
 };

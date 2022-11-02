@@ -32,6 +32,8 @@ export class QueueManager {
     }
     addQueue(queueId) {
         const sab = new SharedArrayBuffer(4);
+        if (this.__queueData[queueId])
+            return false;
         this.__queueData[queueId] = {
             queue: new Queue(),
             map: {},
@@ -40,15 +42,17 @@ export class QueueManager {
         };
         const syncId = this._getSyncId(queueId);
         this._manager.__syncQueue(syncId, sab);
+        return true;
     }
     _getSyncId(queueId) {
         return `${this.id}-${queueId}`;
     }
     removeQueue(queueId) {
         if (!this.__queueData[queueId])
-            return;
+            return false;
         delete this.__queueData[queueId];
         this._manager.__unSyncQueue(queueId);
+        return true;
     }
     add(data, queueId = "main") {
         const queueData = this.__getQueueData(queueId);

@@ -1,5 +1,9 @@
 //types
-import type { BuildTasks, LightUpdateTask, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
+import type {
+ BuildTasks,
+ LightUpdateTask,
+ UpdateTasks,
+} from "Meta/Tasks/Tasks.types.js";
 //objects
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
 import { ConstructorTasks } from "../Threads/Contracts/ConstructorTasks.js";
@@ -7,20 +11,52 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 const QMBase = {
  $INIT() {
-  this.addQueuesForDimension("main");
+  this.addQueue("main");
  },
- addQueuesForDimension(dimensionId: string) {
-  this.rgb.update.addQueue(dimensionId);
-  this.rgb.remove.addQueue(dimensionId);
-  this.sun.update.addQueue(dimensionId);
-  this.sun.remove.addQueue(dimensionId);
-  this.worldSun.__steps.step1.addQueue(dimensionId);
-  this.worldSun.__steps.step2.addQueue(dimensionId);
-  this.worldSun.__steps.step3.addQueue(dimensionId);
-  this.flow.update.addQueue(dimensionId);
-  this.flow.remove.addQueue(dimensionId);
-  this.build.chunk.addQueue(dimensionId);
-  this.generate.chunk.addQueue(dimensionId);
+ _queueMap: <Map<string | number, boolean>>new Map(),
+ addQueue(queueKey: string | number) {
+  if (this._queueMap.has(queueKey)) return false;
+  this.rgb.update.addQueue(queueKey);
+  this.rgb.remove.addQueue(queueKey);
+  this.sun.update.addQueue(queueKey);
+  this.sun.remove.addQueue(queueKey);
+  this.worldSun.__steps.step1.addQueue(queueKey);
+  this.worldSun.__steps.step2.addQueue(queueKey);
+  this.worldSun.__steps.step3.addQueue(queueKey);
+  this.flow.update.addQueue(queueKey);
+  this.flow.remove.addQueue(queueKey);
+  this.build.chunk.addQueue(queueKey);
+  this.generate.chunk.addQueue(queueKey);
+  this._queueMap.set(queueKey, true);
+  return true;
+ },
+ removeQueue(queueKey: string | number) {
+  if (!this._queueMap.has(queueKey)) return false;
+  this.rgb.update.removeQueue(queueKey);
+  this.rgb.remove.removeQueue(queueKey);
+  this.sun.update.removeQueue(queueKey);
+  this.sun.remove.removeQueue(queueKey);
+  this.worldSun.__steps.step1.removeQueue(queueKey);
+  this.worldSun.__steps.step2.removeQueue(queueKey);
+  this.worldSun.__steps.step3.removeQueue(queueKey);
+  this.flow.update.removeQueue(queueKey);
+  this.flow.remove.removeQueue(queueKey);
+  this.build.chunk.addQueue(queueKey);
+  this.generate.chunk.removeQueue(queueKey);
+  this._queueMap.delete(queueKey);
+  return true;
+ },
+ /**# Filter Queues
+  * ---
+  * Go through each current queue. IF the passed fucntion returns false it will remove that queue.
+  * @param filter
+  */
+ filterQueues(filter: (queueKey: string | number) => boolean) {
+  this._queueMap.forEach((v, key) => {
+   if (!filter(key)) {
+    this.removeQueue(key);
+   }
+  });
  },
  rgb: {
   update: CCM.addQueue<UpdateTasks>(
@@ -51,7 +87,7 @@ const QMBase = {
      const x = data[0];
      const z = data[1];
      WorldRegister.column.fill(0, x, z);
-     const maxY = WorldRegister.column.height.getRelative(0, x, z);
+     const maxY = WorldRegister.column.height.getRelative("main", x, z);
      data[2] = maxY;
      QMBase.worldSun.__steps.step2.add([x, z, maxY, -1]);
      return data;
@@ -92,14 +128,8 @@ const QMBase = {
   ),
  },
  flow: {
-  update: CCM.addQueue<UpdateTasks>(
-   "flow-update",
-   ConstructorTasks.flowUpdate
-  ),
-  remove: CCM.addQueue<UpdateTasks>(
-   "flow-remove",
-   ConstructorTasks.flowRemove
-  ),
+  update: CCM.addQueue<UpdateTasks>("flow-update", ConstructorTasks.flowUpdate),
+  remove: CCM.addQueue<UpdateTasks>("flow-remove", ConstructorTasks.flowRemove),
  },
  build: {
   chunk: CCM.addQueue<BuildTasks>("build-chunk", ConstructorTasks.buildChunk),

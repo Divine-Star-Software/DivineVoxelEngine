@@ -9,7 +9,7 @@ export class VoxelBrush {
   position: [0, 0, 0],
   state: 0,
   shapeState: 0,
-  dimension: 0,
+  dimension: "main",
   secondaryState: 0,
   secondaryVoxelId: "",
   level: 0,
@@ -26,7 +26,7 @@ export class VoxelBrush {
  }
 
  setDimension(dimensionId: string | number) {
-  this.data.dimension = DimensionsRegister.getDimensionNumericId(dimensionId);
+  this.data.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
   this._dt.setDimension(dimensionId);
   return this;
  }

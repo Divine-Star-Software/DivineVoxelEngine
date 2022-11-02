@@ -76,4 +76,5 @@ export declare const FlowManager: {
     wait(ms: number): Promise<unknown>;
     _lightValues: [s: number, r: number, g: number, b: number];
     getAbsorbLight(x: number, y: number, z: number): number;
+    sunCheck(x: number, y: number, z: number): void;
 };

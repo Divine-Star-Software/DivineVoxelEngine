@@ -28,9 +28,9 @@ export declare class CommManager {
     runTask<T>(id: string | number, data: T, transfers?: any[], threadNumber?: number, queue?: string): number;
     __handleCount(): number;
     addQueue<T>(id: string | number, associatedTasksId: string | number, getQueueKey?: ((data: T) => string) | null, beforeRun?: (data: T) => T, afterRun?: (data: T, thread: number) => void, getThread?: (data: T) => number, getTransfers?: (data: T) => any[]): QueueManager<T>;
-    getQueue<T>(id: string): QueueManager<T>;
-    __syncQueue(id: string, sab: SharedArrayBuffer): void;
-    __unSyncQueue(id: string): void;
+    getQueue<T>(id: string | number): QueueManager<T>;
+    __syncQueue(id: string | number, sab: SharedArrayBuffer): void;
+    __unSyncQueue(id: string | number): void;
     syncData<T>(dataType: string | number, data: T): void;
     unSyncData<T>(dataType: string | number, data: T): void;
 }

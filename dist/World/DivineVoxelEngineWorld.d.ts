@@ -6,7 +6,7 @@ import { BuilderTool } from "../Tools/Build/Builder.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
@@ -18,7 +18,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -110,7 +110,6 @@ export declare const DVEW: {
         syncSettings(data: EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
@@ -135,6 +134,10 @@ export declare const DVEW: {
             regionZPow2: number;
             regionXSize: number;
             regionYSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionZSize: number;
             __regionPosition: {
                 x: number;
@@ -310,13 +313,13 @@ export declare const DVEW: {
         worldRegister: {
             _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
             _cacheOn: boolean;
-            _cache: Map<number, import("../Meta/Data/WorldData.types.js").ChunkData>;
+            _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             $INIT(): void;
             cache: {
                 enable(): void;
                 disable(): void;
-                _add(x: number, y: number, z: number, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-                _get(x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+                _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
             dimensions: {
                 add(id: string | number): Map<any, any>;
@@ -342,7 +345,6 @@ export declare const DVEW: {
         };
         worldColumn: {};
         worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
@@ -367,6 +369,10 @@ export declare const DVEW: {
             regionZPow2: number;
             regionXSize: number;
             regionYSize: number;
+            /**# Divine Voxel Engine World
+             * ---
+             * This handles everything in the world worker context.
+             */
             regionZSize: number;
             __regionPosition: {
                 x: number;
@@ -732,14 +738,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -822,7 +828,10 @@ export declare const DVEW: {
     };
     cQueues: {
         $INIT(): void;
-        addQueuesForDimension(dimensionId: string): void;
+        _queueMap: Map<string | number, boolean>;
+        addQueue(queueKey: string | number): boolean;
+        removeQueue(queueKey: string | number): boolean;
+        filterQueues(filter: (queueKey: string | number) => boolean): void;
         rgb: {
             update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
             remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
@@ -871,7 +880,7 @@ export declare const DVEW: {
                 remove: null;
             };
             build: {
-                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<string>;
+                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").RunRebuildTasks>;
             };
             generate: {
                 chunk: null;
@@ -896,7 +905,7 @@ export declare const DVEW: {
                 remove: null;
             };
             build: {
-                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<string>;
+                chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").ReBuildTasks>;
             };
             generate: {
                 chunk: null;
@@ -919,12 +928,13 @@ export declare const DVEW: {
     getTasksManager(): {
         _data: {
             dimension: string;
+            queue: string;
         };
         _thread: string;
-        setDimension(dimensionId: string): any;
+        setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
         build: {
             chunk: {
-                __this: any;
+                _s: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -933,14 +943,14 @@ export declare const DVEW: {
         };
         flow: {
             update: {
-                __this: any;
+                _s: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
             remove: {
-                __this: any;
+                _s: any;
                 __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
@@ -950,30 +960,30 @@ export declare const DVEW: {
         light: {
             rgb: {
                 update: {
-                    __this: any;
+                    _s: any;
                     __queueId: string;
-                    add(x: number, y: number, z: number): void;
+                    add(x: number, y: number, z: number, queue?: string | null): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
-                    __this: any;
+                    _s: any;
                     __queueId: string;
-                    add(x: number, y: number, z: number): void;
+                    add(x: number, y: number, z: number, queue?: string | null): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
             };
             sun: {
                 update: {
-                    __this: any;
+                    _s: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
-                    __this: any;
+                    _s: any;
                     __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
@@ -981,7 +991,7 @@ export declare const DVEW: {
                 };
             };
             worldSun: {
-                __this: any;
+                _s: any;
                 __queueId: string;
                 add(x: number, z: number, y?: number): void;
                 runAndAwait(): Promise<void>;

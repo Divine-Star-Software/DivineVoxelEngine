@@ -102,7 +102,6 @@ export declare const DVEDL: {
         syncSettings(data: EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;

@@ -161,7 +161,7 @@ export class CommBase {
 		);
 	}
 
-	__syncQueue(id: string, sab: SharedArrayBuffer) {
+	__syncQueue(id: string | number, sab: SharedArrayBuffer) {
 		this.sendMessage(TCMessageHeaders.internal, [
 			TCInternalMessages.syncQueue,
 			ThreadComm.threadName,
@@ -170,7 +170,7 @@ export class CommBase {
 		]);
 	}
 
-	__unSyqncQueue(id: string) {
+	__unSyqncQueue(id: string | number) {
 		this.sendMessage(TCMessageHeaders.internal, [
 			TCInternalMessages.unSyncQueue,
 			ThreadComm.threadName,

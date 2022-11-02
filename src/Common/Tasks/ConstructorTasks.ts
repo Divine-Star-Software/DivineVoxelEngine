@@ -2,6 +2,7 @@ import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
 import { WorldTasks } from "../Threads/Contracts/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
+import { ReBuildTasks, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
 
 export const ConstructorTasks = {
  runQueue: {
@@ -23,12 +24,10 @@ export const ConstructorTasks = {
    remove: null,
   },
   build: {
-   chunk: ThreadComm.registerTasks<string>(
+   chunk: ThreadComm.registerTasks<RunRebuildTasks>(
     WorldTasks.runRebuildQue,
-    (data: string) => {
-     if (!data) {
-      data = "main";
-     }
+    (data) => {
+     ConstructorQueues.build.chunk.run(data[0]);
     }
    ),
   },
@@ -60,12 +59,14 @@ export const ConstructorTasks = {
    remove: null,
   },
   build: {
-   chunk: ThreadComm.registerTasks<string>(
-    WorldTasks.runRebuildQue,
-    (data: string) => {
-     if (!data) {
-      data = "main";
-     }
+   chunk: ThreadComm.registerTasks<ReBuildTasks>(
+    WorldTasks.addToRebuildQue,
+    (data) => {
+
+     ConstructorQueues.build.chunk.add(
+      [data[0], data[1], data[2], data[3], 1],
+      data[4]
+     );
     }
    ),
   },

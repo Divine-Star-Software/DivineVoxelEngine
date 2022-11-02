@@ -6,7 +6,6 @@ import { LightData as LD } from "../../Data/Light/LightByte.js";
 import { VoxelData } from "../../Data/Voxel/VoxelData.js";
 import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
-import { ConstructorQueues as QM } from "../../Common/Queues/ConstructorQueues.js";
 import { EngineSettings as ES } from "../../Data/Settings/EngineSettings.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { DataTool } from "../Data/DataTool.js";
@@ -65,11 +64,32 @@ const lightUpdateFromNeighbors = (x: number, y: number, z: number) => {
  }
 };
 
-const preErease = (l: number, data: AddVoxelData, onDone: Function) => {
- const dimension = data.dimension;
- const x = data.position[0];
- const y = data.position[1];
- const z = data.position[2];
+const flowUpdateFromNeighbors = (x: number, y: number, z: number) => {
+ for (const n of $3dMooreNeighborhood) {
+  //if (n[0] == 0 && n[1] == 0 && n[2] == 0) continue;
+  const nx = x + n[0];
+  const ny = y + n[1];
+  const nz = z + n[2];
+  if (!dataTool.loadIn(nx, ny, nz)) continue;
+  const substance = dataTool.getSubstance();
+  if (substance == "fluid" || substance == "magma") {
+   tasks.flow.update.add(nx, ny, nz);
+  }
+ }
+};
+
+const setFocus = (dim: string, x: number, y: number, z: number) => {
+ tasks.setFocalPoint(x, y, z, dim as string);
+};
+
+const preErease = (
+ l: number,
+ dim: string,
+ x: number,
+ y: number,
+ z: number,
+ onDone: Function
+) => {
  if (!ES.doLight()) {
   onDone();
   return;
@@ -78,7 +98,7 @@ const preErease = (l: number, data: AddVoxelData, onDone: Function) => {
   rgb: 0,
   sun: 0,
  };
-
+ setFocus(dim, x, y, z);
  dataTool.loadIn(x, y, z);
  if (l > 0) {
   dataTool.setLight(l).commit();
@@ -95,10 +115,13 @@ const preErease = (l: number, data: AddVoxelData, onDone: Function) => {
  if (ES.doSunPropagation() && ES.doRGBPropagation()) {
   tasks.light.sun.remove.run(() => {
    updates.sun = 1;
+   setFocus(dim, x, y, z);
    tasks.light.sun.update.run(() => {
     updates.sun = 2;
+    setFocus(dim, x, y, z);
     tasks.light.rgb.remove.run(() => {
      updates.rgb = 1;
+     setFocus(dim, x, y, z);
      tasks.light.rgb.update.run(() => {
       updates.rgb = 2;
      });
@@ -109,6 +132,7 @@ const preErease = (l: number, data: AddVoxelData, onDone: Function) => {
  if (ES.doRGBPropagation() && !ES.doSunPropagation()) {
   tasks.light.rgb.remove.run(() => {
    updates.rgb = 1;
+   setFocus(dim, x, y, z);
    tasks.light.rgb.update.run(() => {
     updates.rgb = 2;
    });
@@ -137,10 +161,9 @@ const prePaint = (
  const x = data.position[0];
  const y = data.position[1];
  const z = data.position[2];
-
+ setFocus(data.dimension, x, y, z);
  let needLightUpdate = false;
- let needFlowUpdate = false;
- if (substance == "solid" || substance == "magma") {
+
   if (ES.doRGBPropagation()) {
    needLightUpdate = true;
    tasks.light.rgb.remove.add(x, y, z);
@@ -149,7 +172,7 @@ const prePaint = (
    needLightUpdate = true;
    tasks.light.sun.remove.add(x, y, z);
   }
- }
+ 
 
  if (!needLightUpdate) {
   onDone();
@@ -164,6 +187,7 @@ const prePaint = (
 
  tasks.light.sun.remove.run(() => {
   updates.sun = 1;
+  setFocus(data.dimension, x, y, z);
   tasks.light.rgb.remove.run(() => {
    updates.rgb = 1;
   });
@@ -194,6 +218,7 @@ const postUpdate = (
  const x = data.position[0];
  const y = data.position[1];
  const z = data.position[2];
+ setFocus(data.dimension, x, y, z);
  let needLightUpdate = false;
  if (ES.doRGBPropagation()) {
   if (ES.settings.lighting?.autoRGBLight) {
@@ -219,6 +244,7 @@ const postUpdate = (
 
  if (needLightUpdate) {
   tasks.light.sun.update.run(() => {
+   setFocus(data.dimension, x, y, z);
    tasks.light.rgb.update.run(() => {
     onDone();
    });
@@ -229,18 +255,21 @@ const postUpdate = (
  onDone();
 };
 
-const rebuild = (data: AddVoxelData, onDone: Function) => {
- const x = data.position[0];
- const y = data.position[1];
- const z = data.position[2];
+const rebuild = (
+ dim: string,
+ x: number,
+ y: number,
+ z: number,
+ onDone: Function
+) => {
+ setFocus(dim, x, y, z);
  for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
   const n = $3dMooreNeighborhood[i];
   const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
-  QM.build.chunk.add([data.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z, 1]);
+  tasks.build.chunk.add(chunkPOS.x, chunkPOS.y, chunkPOS.z);
  }
 
- QM.build.chunk.run();
- QM.build.chunk.onDone("main", onDone);
+ tasks.build.chunk.run(onDone);
 };
 
 export const GetAdvancedBrushTool = () => {
@@ -263,6 +292,10 @@ export const GetAdvancedBrushTool = () => {
   },
   paintAndUpdate(onDone: Function = () => {}) {
    const state = getUpdateState();
+   const dimesnion = brush.data.dimension;
+   const x = brush.data.position[0];
+   const y = brush.data.position[1];
+   const z = brush.data.position[2];
    const data: AddVoxelData = structuredClone(brush.data);
    const id = VoxelPaletteReader.id.numberFromString(data.id);
    const substance = dataTool.setId(id).getSubstance();
@@ -323,7 +356,7 @@ export const GetAdvancedBrushTool = () => {
       }
       if (!state.post.build) {
        state.status = "waiting";
-       rebuild(data, () => {
+       rebuild(dimesnion, x, y, z, () => {
         state.post.build = true;
         state.status = "idle";
        });
@@ -337,15 +370,19 @@ export const GetAdvancedBrushTool = () => {
   },
   ereaseAndUpdate(onDone?: Function) {
    const state = getRemoveState();
-   const data: AddVoxelData = JSON.parse(JSON.stringify(brush.data));
-   dataTool.loadIn(data.position[0], data.position[1], data.position[2]);
-   const l = dataTool.getLight();
-   WD.paint.erease(
-    data.dimension,
-    data.position[0],
-    data.position[1],
-    data.position[2]
+   dataTool.loadIn(
+    brush.data.position[0],
+    brush.data.position[1],
+    brush.data.position[2]
    );
+
+   const l = dataTool.getLight();
+
+   const dimesnion = brush.data.dimension;
+   const x = brush.data.position[0];
+   const y = brush.data.position[1];
+   const z = brush.data.position[2];
+   WD.paint.erease(dimesnion, x, y, z);
 
    const inte = setInterval(() => {
     if (state.phase == "pre") {
@@ -354,7 +391,7 @@ export const GetAdvancedBrushTool = () => {
      }
      if (state.status == "idle") {
       state.status = "waiting";
-      preErease(l, data, () => {
+      preErease(l, dimesnion, x, y, z, () => {
        state.status = "idle";
        state.phase = "post";
       });
@@ -376,7 +413,7 @@ export const GetAdvancedBrushTool = () => {
       }
       if (!state.post.build) {
        state.status = "waiting";
-       rebuild(data, () => {
+       rebuild(dimesnion, x, y, z, () => {
         state.post.build = true;
         state.status = "idle";
        });

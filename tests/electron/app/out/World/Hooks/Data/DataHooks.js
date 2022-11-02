@@ -28,14 +28,13 @@ export const RegisterDataHooks = () => {
         return;
     });
     DataHooks.paint.onAddToRGBUpdate.addToRun((data) => {
-        tasks.setDimension(data[0]);
-        tasks.light.rgb.update.add(data[1], data[2], data[3]);
+        tasks.light.rgb.update.add(data[1], data[2], data[3], "main");
     });
     DataHooks.paint.onRichVoxelPaint.addToRun((data) => {
         DVEW.richWorldComm.setInitalData(data);
     });
     DataHooks.dimension.onRegisterDimension.addToRun((data) => {
-        DVEW.cQueues.addQueuesForDimension(data.id);
+        DVEW.cQueues.addQueue(data.id);
         DataSync.dimesnion.sync(data);
     });
 };

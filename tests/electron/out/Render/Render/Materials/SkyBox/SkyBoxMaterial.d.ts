@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const SkyBoxMaterial: {
     material: BABYLON.ShaderMaterial | null;

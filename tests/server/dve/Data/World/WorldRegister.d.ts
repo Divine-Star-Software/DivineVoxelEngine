@@ -2,13 +2,13 @@ import type { ChunkData, Column, WorldDimensions, Region } from "Meta/Data/World
 export declare const WorldRegister: {
     _dimensions: WorldDimensions;
     _cacheOn: boolean;
-    _cache: Map<number, ChunkData>;
+    _cache: Map<string, ChunkData>;
     $INIT(): void;
     cache: {
         enable(): void;
         disable(): void;
-        _add(x: number, y: number, z: number, data: ChunkData): void;
-        _get(x: number, y: number, z: number): ChunkData | undefined;
+        _add(key: string, data: ChunkData): void;
+        _get(key: string): ChunkData | undefined;
     };
     dimensions: {
         add(id: number | string): Map<any, any>;

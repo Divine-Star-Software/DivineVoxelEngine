@@ -16,7 +16,7 @@ export class DataTool {
 
  _mode: "World" | "Entity" = "World";
  data = {
-  dimension: 0,
+  dimension: "main",
   raw: [0, 0],
   x: 0,
   y: 9,
@@ -35,7 +35,7 @@ export class DataTool {
  __secondary = false;
 
  setDimension(dimensionId: string | number) {
-  this.data.dimension = DimensionsRegister.getDimensionNumericId(dimensionId);
+  this.data.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
  }
 
  setSecondary(enable: boolean) {

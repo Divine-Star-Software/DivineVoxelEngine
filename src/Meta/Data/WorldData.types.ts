@@ -18,7 +18,7 @@ export type WorldDimensions = Map<string, Map<string, Region>>;
 
 export type AddVoxelData = {
  id: string;
- dimension: string | number;
+ dimension: string;
  position: [number, number, number];
  state: number;
  shapeState: number;

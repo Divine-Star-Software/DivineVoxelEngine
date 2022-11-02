@@ -11,6 +11,7 @@ export declare const DVEPH: {
         getSimpleBoundingBox(origin: import("../Libs/Math/Classes/Vector3.js").Vector3, dimensions: import("../Libs/Math/Types/Math.types.js").DimensionsVector3): import("../Libs/Math/Classes/SimpleBoundingBox.js").SimpleBoundingBox;
         getBoundingBox(data: import("../Libs/Math/Classes/BoundingBox.js").BoundingBoxData): import("../Libs/Math/Classes/BoundingBox.js").BoundingBox;
         convertToOriginGridSpace(position: number[]): number[];
+        distance2D(x1: number, x2: number, y1: number, y2: number): number;
     };
     collisions: {
         sweepAABB(ax: number, ay: number, az: number, ahx: number, ahy: number, ahz: number, bx: number, by: number, bz: number, bhx: number, bhy: number, bhz: number, dx: number, dy: number, dz: number): {

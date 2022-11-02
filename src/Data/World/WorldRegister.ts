@@ -15,7 +15,7 @@ export const WorldRegister = {
  _dimensions: <WorldDimensions>new Map(),
 
  _cacheOn: false,
- _cache: <Map<number, ChunkData>>{},
+ _cache: <Map<string, ChunkData>>{},
 
  $INIT() {
   this._dimensions.set("main", new Map());
@@ -30,11 +30,11 @@ export const WorldRegister = {
    WorldRegister._cacheOn = false;
    WorldRegister._cache.clear();
   },
-  _add(x: number, y: number, z: number, data: ChunkData) {
-   WorldRegister._cache.set(WorldBounds.hash(x, y, z), data);
+  _add(key: string, data: ChunkData) {
+   WorldRegister._cache.set(key, data);
   },
-  _get(x: number, y: number, z: number) {
-   return WorldRegister._cache.get(WorldBounds.hash(x, y, z));
+  _get(key: string) {
+   return WorldRegister._cache.get(key);
   },
  },
  dimensions: {
@@ -170,10 +170,10 @@ export const WorldRegister = {
    return chunk;
   },
   get(dimensionId: string | number, x: number, y: number, z: number) {
-   const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+   const chunkKey = WorldBounds.getChunkKeyFromPosition(x, y, z);
    let addChunk = false;
    if (WorldRegister._cacheOn) {
-    const chunk = WorldRegister.cache._get(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+    const chunk = WorldRegister.cache._get(chunkKey);
     if (chunk) return chunk;
     addChunk = true;
    }
@@ -183,7 +183,7 @@ export const WorldRegister = {
    const chunk = column.chunks.get(WorldBounds.getChunkColumnIndex(y));
    if (!chunk) return;
    if (addChunk) {
-    WorldRegister.cache._add(chunkPOS.x, chunkPOS.y, chunkPOS.z, chunk);
+    WorldRegister.cache._add(chunkKey, chunk);
    }
    return chunk;
   },

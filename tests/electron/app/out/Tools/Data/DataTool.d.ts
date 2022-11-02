@@ -3,7 +3,7 @@ export declare class DataTool {
     static _dtutil: DataTool;
     _mode: "World" | "Entity";
     data: {
-        dimension: number;
+        dimension: string;
         raw: number[];
         x: number;
         y: number;

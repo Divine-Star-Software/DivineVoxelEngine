@@ -10,7 +10,6 @@ import { DimensionsVector3 } from "./Types/Math.types.js";
  * Has functions for collision detection, finding voxels in a direction, and path finding.
  */
 export const VoxelMath = {
-
  visitAll: VisitAll,
 
  getVector3(x: number, y: number, z: number) {
@@ -40,7 +39,12 @@ export const VoxelMath = {
   position[2] = Math.round(position[2]) + 0.5;
   return position;
  },
-};
 
+ distance2D(x1: number, x2: number, y1: number, y2: number) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  return Math.sqrt(dx * dx + dy * dy);
+ },
+};
 
 export type VoxelMath = typeof VoxelMath;

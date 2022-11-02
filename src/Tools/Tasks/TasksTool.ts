@@ -1,185 +1,179 @@
+import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { ConstructorQueues as CQ } from "../../Common/Queues/ConstructorQueues.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { DVEW } from "../../World/DivineVoxelEngineWorld.js";
 class TasksBase {
  _data = {
   dimension: "main",
+  queue: "main",
  };
 
  _thread = "";
 
  constructor() {
   this._thread = ThreadComm.threadName;
-  this.build.chunk.__this = this;
-  this.light.rgb.update.__this = this;
-  this.light.rgb.remove.__this = this;
-  this.light.sun.update.__this = this;
-  this.light.sun.remove.__this = this;
-  this.flow.update.__this = this;
-  this.flow.remove.__this = this;
+  this.build.chunk._s = this;
+  this.light.rgb.update._s = this;
+  this.light.rgb.remove._s = this;
+  this.light.sun.update._s = this;
+  this.light.sun.remove._s = this;
+  this.flow.update._s = this;
+  this.flow.remove._s = this;
+  this.light.worldSun._s = this;
  }
 
- setDimension(dimensionId: string) {
-  this._data.dimension = dimensionId;
-  return this;
+ setFocalPoint(
+  x: number,
+  y: number,
+  z: number,
+  dimension = this._data.dimension
+ ) {
+  const queueKey = `${dimension}-${WorldBounds.getRegionKeyFromPosition(
+   x,
+   y,
+   z
+  )}`;
+  CQ.addQueue(queueKey);
+  this._data.queue = queueKey;
  }
 
  build = {
   chunk: {
-   __this: <TasksBase>{},
+   _s: <TasksBase>{},
    __queueId: "main",
    add(x: number, y: number, z: number) {
-    DVEW.cQueues.build.chunk.add([0, x, y, z, 1]);
+    CQ.build.chunk.add(
+     [this._s._data.dimension, x, y, z, 1],
+     this._s._data.queue
+    );
    },
    run(onDone: Function) {
-    DVEW.cQueues.build.chunk.run();
-    DVEW.cQueues.build.chunk.onDone(this.__queueId, onDone);
+    CQ.build.chunk.run(this._s._data.queue);
+    CQ.build.chunk.onDone(this._s._data.queue, onDone);
    },
    async runAndAwait() {
-    await DVEW.cQueues.build.chunk.runAndAwait();
+    await CQ.build.chunk.runAndAwait(this._s._data.queue);
    },
   },
  };
  flow = {
   update: {
-   __this: <TasksBase>{},
+   _s: <TasksBase>{},
    __queueId: "main",
    add(x: number, y: number, z: number) {
-    DVEW.cQueues.flow.update.add([
-     this.__this._data.dimension,
-     x,
-     y,
-     z,
-     this.__this._thread,
-     this.__this._data.dimension,
-    ]);
+    CQ.flow.update.add(
+     [this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread],
+     this._s._data.queue
+    );
    },
    run(onDone: Function) {
-    DVEW.cQueues.flow.update.run();
-    DVEW.cQueues.flow.update.onDone(this.__queueId, onDone);
+    CQ.flow.update.run(this._s._data.queue);
+    CQ.flow.update.onDone(this._s._data.queue, onDone);
    },
    async runAndAwait() {
-    await DVEW.cQueues.flow.update.runAndAwait();
+    await CQ.flow.update.runAndAwait(this._s._data.queue);
    },
   },
   remove: {
-   __this: <TasksBase>{},
+   _s: <TasksBase>{},
    __queueId: "main",
    add(x: number, y: number, z: number) {
-    DVEW.cQueues.flow.remove.add([
-     this.__this._data.dimension,
-     x,
-     y,
-     z,
-     this.__this._thread,
-     this.__this._data.dimension,
-    ]);
+    CQ.flow.remove.add(
+     [this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread],
+     this._s._data.queue
+    );
    },
    run(onDone: Function) {
-    DVEW.cQueues.flow.remove.run();
-    DVEW.cQueues.flow.remove.onDone(this.__queueId, onDone);
+    CQ.flow.remove.run(this._s._data.queue);
+    CQ.flow.remove.onDone(this._s._data.queue, onDone);
    },
    async runAndAwait() {
-    await DVEW.cQueues.flow.remove.runAndAwait();
+    await CQ.flow.remove.runAndAwait(this._s._data.queue);
    },
   },
  };
  light = {
   rgb: {
    update: {
-    __this: <TasksBase>{},
+    _s: <TasksBase>{},
     __queueId: "main",
-    add(x: number, y: number, z: number) {
-     DVEW.cQueues.rgb.update.add([
-      this.__this._data.dimension,
-      x,
-      y,
-      z,
-      this.__this._thread,
-      this.__this._data.dimension,
-     ]);
+    add(x: number, y: number, z: number, queue: string | null = null) {
+     queue = queue ? queue : this._s._data.queue;
+     CQ.rgb.update.add(
+      [this._s._data.dimension, x, y, z, queue, this._s._thread],
+      queue
+     );
     },
     run(onDone: Function) {
-     DVEW.cQueues.rgb.update.run();
-     DVEW.cQueues.rgb.update.onDone(this.__queueId, onDone);
+     CQ.rgb.update.run(this._s._data.queue);
+     CQ.rgb.update.onDone(this._s._data.queue, onDone);
     },
     async runAndAwait() {
-     await DVEW.cQueues.rgb.update.runAndAwait();
+     await CQ.rgb.update.runAndAwait(this._s._data.queue);
     },
    },
    remove: {
-    __this: <TasksBase>{},
+    _s: <TasksBase>{},
     __queueId: "main",
-    add(x: number, y: number, z: number) {
-     DVEW.cQueues.rgb.remove.add([
-      this.__this._data.dimension,
-      x,
-      y,
-      z,
-      this.__this._thread,
-      this.__this._data.dimension,
-     ]);
+    add(x: number, y: number, z: number, queue: string | null = null) {
+     queue = queue ? queue : this._s._data.queue;
+     CQ.rgb.remove.add(
+      [this._s._data.dimension, x, y, z, queue, this._s._thread],
+      queue
+     );
     },
     run(onDone: Function) {
-     DVEW.cQueues.rgb.remove.run();
-     DVEW.cQueues.rgb.remove.onDone(this.__queueId, onDone);
+     CQ.rgb.remove.run(this._s._data.queue);
+     CQ.rgb.remove.onDone(this._s._data.queue, onDone);
     },
     async runAndAwait() {
-     await DVEW.cQueues.rgb.remove.runAndAwait();
+     await CQ.rgb.remove.runAndAwait(this._s._data.queue);
     },
    },
   },
   sun: {
    update: {
-    __this: <TasksBase>{},
+    _s: <TasksBase>{},
     __queueId: "main",
     add(x: number, y: number, z: number) {
-     DVEW.cQueues.sun.update.add([
-      this.__this._data.dimension,
-      x,
-      y,
-      z,
-      this.__this._thread,
-      this.__this._data.dimension,
-     ]);
+     CQ.sun.update.add(
+      [this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread],
+      this._s._data.queue
+     );
     },
     run(onDone: Function) {
-     DVEW.cQueues.sun.update.run();
-     DVEW.cQueues.sun.update.onDone(this.__queueId, onDone);
+     CQ.sun.update.run(this._s._data.queue);
+     CQ.sun.update.onDone(this._s._data.queue, onDone);
     },
     async runAndAwait() {
-     await DVEW.cQueues.sun.update.runAndAwait();
+     await CQ.sun.update.runAndAwait(this._s._data.queue);
     },
    },
    remove: {
-    __this: <TasksBase>{},
+    _s: <TasksBase>{},
     __queueId: "main",
     add(x: number, y: number, z: number) {
-     DVEW.cQueues.sun.remove.add([
-      this.__this._data.dimension,
-      x,
-      y,
-      z,
-      this.__this._thread,
-      this.__this._data.dimension,
-     ]);
+     CQ.sun.remove.add(
+      [this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread],
+      this._s._data.queue
+     );
     },
     run(onDone: Function) {
-     DVEW.cQueues.sun.remove.run();
-     DVEW.cQueues.sun.remove.onDone(this.__queueId, onDone);
+     CQ.sun.remove.run(this._s._data.queue);
+     CQ.sun.remove.onDone(this._s._data.queue, onDone);
     },
     async runAndAwait() {
-     await DVEW.cQueues.sun.remove.runAndAwait();
+     await CQ.sun.remove.runAndAwait(this._s._data.queue);
     },
    },
   },
   worldSun: {
-   __this: <TasksBase>{},
+   _s: <TasksBase>{},
    __queueId: "main",
    add(x: number, z: number, y: number = 0) {
-    DVEW.cQueues.worldSun.add(x, z);
+    CQ.worldSun.add(x, z, this._s._data.queue);
    },
    async runAndAwait() {
-    await DVEW.cQueues.worldSun.run();
+    await CQ.worldSun.run();
    },
   },
  };

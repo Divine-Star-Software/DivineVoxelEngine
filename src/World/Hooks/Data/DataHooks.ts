@@ -32,8 +32,7 @@ export const RegisterDataHooks = () => {
  });
 
  DataHooks.paint.onAddToRGBUpdate.addToRun((data) => {
-  tasks.setDimension(data[0] as string);
-  tasks.light.rgb.update.add(data[1], data[2], data[3]);
+  tasks.light.rgb.update.add(data[1], data[2], data[3], "main");
  });
 
  DataHooks.paint.onRichVoxelPaint.addToRun((data) => {
@@ -41,7 +40,7 @@ export const RegisterDataHooks = () => {
  });
 
  DataHooks.dimension.onRegisterDimension.addToRun((data) => {
-  DVEW.cQueues.addQueuesForDimension(data.id);
+  DVEW.cQueues.addQueue(data.id);
   DataSync.dimesnion.sync(data);
  });
 };

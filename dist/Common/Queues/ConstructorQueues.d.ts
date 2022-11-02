@@ -1,7 +1,15 @@
 import type { BuildTasks, LightUpdateTask, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
-    addQueuesForDimension(dimensionId: string): void;
+    _queueMap: Map<string | number, boolean>;
+    addQueue(queueKey: string | number): boolean;
+    removeQueue(queueKey: string | number): boolean;
+    /**# Filter Queues
+     * ---
+     * Go through each current queue. IF the passed fucntion returns false it will remove that queue.
+     * @param filter
+     */
+    filterQueues(filter: (queueKey: string | number) => boolean): void;
     rgb: {
         update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
         remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;

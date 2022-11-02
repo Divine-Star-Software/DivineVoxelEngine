@@ -19,9 +19,9 @@ export declare class QueueManager<T> {
         stateSAB: SharedArrayBuffer;
         state: Uint32Array;
     };
-    addQueue(queueId: string | number): void;
+    addQueue(queueId: string | number): boolean;
     _getSyncId(queueId: string | number): string;
-    removeQueue(queueId: string): void;
+    removeQueue(queueId: string | number): boolean;
     add(data: T, queueId?: string): void;
     run(queueId?: string, filter?: (data: T) => 0 | 1 | 2): void;
     runAndAwait(queueId?: string, filter?: (data: T) => 0 | 1 | 2): Promise<boolean>;

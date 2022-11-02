@@ -87,7 +87,6 @@ export declare const DVES: {
         syncSettings(data: EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
@@ -202,7 +201,6 @@ export declare const DVES: {
         syncSettings(data: any): void;
     };
     worldBounds: {
-        __maxChunkYSize: number;
         bounds: {
             MinZ: number;
             MaxZ: number;

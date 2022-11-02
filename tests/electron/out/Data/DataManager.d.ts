@@ -86,13 +86,13 @@ export declare const DataManager: {
     worldRegister: {
         _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
         _cacheOn: boolean;
-        _cache: Map<number, import("../Meta/Data/WorldData.types.js").ChunkData>;
+        _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
         $INIT(): void;
         cache: {
             enable(): void;
             disable(): void;
-            _add(x: number, y: number, z: number, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-            _get(x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+            _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+            _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
         };
         dimensions: {
             add(id: string | number): Map<any, any>;
@@ -118,7 +118,6 @@ export declare const DataManager: {
     };
     worldColumn: {};
     worldBounds: {
-        __maxChunkYSize: number;
         bounds: {
             MinZ: number;
             MaxZ: number;

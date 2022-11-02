@@ -2,6 +2,7 @@ import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRe
 import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
 await DVER.$INIT({
@@ -71,6 +72,7 @@ const init = async () => {
             }
         }
     }, 15);
+    GetAnalyzerCubeRender(DVER, camera);
     runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);

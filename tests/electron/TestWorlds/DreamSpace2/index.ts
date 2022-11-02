@@ -10,6 +10,7 @@ import {
 import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 
 RegisterTexutres(DVER);
 
@@ -88,6 +89,8 @@ const init = async () => {
    }
   }
  }, 15);
+
+ GetAnalyzerCubeRender(DVER,camera);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

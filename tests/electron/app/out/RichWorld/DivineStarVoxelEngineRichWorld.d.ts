@@ -3,7 +3,6 @@ export declare const DVERW: {
     environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     worldBounds: {
-        __maxChunkYSize: number;
         bounds: {
             MinZ: number;
             MaxZ: number;
@@ -199,7 +198,6 @@ export declare const DVERW: {
         syncSettings(data: EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
@@ -310,7 +308,6 @@ export declare const DVERW: {
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     richData: {
         worldBounds: {
-            __maxChunkYSize: number;
             bounds: {
                 MinZ: number;
                 MaxZ: number;
