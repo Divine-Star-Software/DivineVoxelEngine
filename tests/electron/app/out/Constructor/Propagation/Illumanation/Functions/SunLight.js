@@ -1,5 +1,3 @@
-import { DVEP } from "../../DivineVoxelEnginePropagation.js";
-import { WorldBounds } from "../../../../Data/World/WorldBounds.js";
 export function runSunLightRemoveAt(x, y, z) {
     this._sDataTool.loadIn(x, y, z);
     const l = this.lightData.getS(this._sDataTool.getLight());
@@ -110,8 +108,8 @@ export function runSunLightRemove(x, y, z) {
                 }
             }
         }
+        this.addToRebuildQue(x, y, z);
         this._sDataTool.setLight(this.lightData.removeSunLight(sl)).commit();
-        DVEP.addToRebuildQue(x, y, z, "all");
     }
     this._sDataTool.loadIn(x, y, z);
     this._sDataTool.setBarrier().commit();
@@ -191,23 +189,10 @@ export function runSunLightUpdate() {
                 this._nDataTool.setLight(this.lightData.getMinusOneForSun(sl, nl)).commit();
             }
         }
-        DVEP.addToRebuildQue(x, y, z, "all");
+        this.addToRebuildQue(x, y, z);
     }
 }
 export function runSunLightUpdateAt(x, y, z) {
     this._sunLightUpdateQue.enqueue([x, y, z]);
     this.runSunLightUpdate();
-}
-export function PopulateWorldColumnWithSunLight(x, z, maxY) {
-    for (let ix = x; ix < x + WorldBounds.chunkXSize; ix++) {
-        for (let iz = z; iz < z + WorldBounds.chunkZSize; iz++) {
-            let iy = maxY;
-            let worldY = WorldBounds.bounds.MaxY;
-            while (iy <= worldY) {
-                this._sDataTool.loadIn(ix, iy, iz);
-                this._sDataTool.setLight(0xf).commit();
-                iy++;
-            }
-        }
-    }
 }

@@ -36,6 +36,8 @@ class TasksBase {
   this._data.queue = queueKey;
  }
 
+ 
+
  build = {
   chunk: {
    _s: <TasksBase>{},

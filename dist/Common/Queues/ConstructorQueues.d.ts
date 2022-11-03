@@ -1,7 +1,7 @@
 import type { BuildTasks, LightUpdateTask, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
-    _queueMap: Map<string | number, boolean>;
+    _queueMap: Map<string | number, number>;
     addQueue(queueKey: string | number): boolean;
     removeQueue(queueKey: string | number): boolean;
     /**# Filter Queues
@@ -10,6 +10,12 @@ export declare const ConstructorQueues: {
      * @param filter
      */
     filterQueues(filter: (queueKey: string | number) => boolean): void;
+    /**# Filter Old Queues
+     * ---
+     * Will remove queues older then 10 minutes.
+     * @param maxTime Max time in miliseconds.
+     */
+    filterOldQueues(maxTime?: number): void;
     rgb: {
         update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
         remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;

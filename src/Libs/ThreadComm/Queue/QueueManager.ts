@@ -60,7 +60,8 @@ export class QueueManager<T> {
 	removeQueue(queueId: string | number) {
 		if (!this.__queueData[queueId]) return false;
 		delete this.__queueData[queueId];
-		this._manager.__unSyncQueue(queueId);
+		const syncId = this._getSyncId(queueId);
+		this._manager.__unSyncQueue(syncId);
 		return true;
 	}
 

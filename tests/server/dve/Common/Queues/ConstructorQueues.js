@@ -21,7 +21,7 @@ const QMBase = {
         this.flow.remove.addQueue(queueKey);
         this.build.chunk.addQueue(queueKey);
         this.generate.chunk.addQueue(queueKey);
-        this._queueMap.set(queueKey, true);
+        this._queueMap.set(queueKey, Date.now());
         return true;
     },
     removeQueue(queueKey) {
@@ -49,6 +49,22 @@ const QMBase = {
     filterQueues(filter) {
         this._queueMap.forEach((v, key) => {
             if (!filter(key)) {
+                this.removeQueue(key);
+            }
+        });
+    },
+    /**# Filter Old Queues
+     * ---
+     * Will remove queues older then 10 minutes.
+     * @param maxTime Max time in miliseconds.
+     */
+    filterOldQueues(maxTime = 600000) {
+        const t = Date.now();
+        this._queueMap.forEach((v, key) => {
+            console.log(t - v);
+            console.log(key);
+            if (t - v > maxTime) {
+                console.log(key);
                 this.removeQueue(key);
             }
         });

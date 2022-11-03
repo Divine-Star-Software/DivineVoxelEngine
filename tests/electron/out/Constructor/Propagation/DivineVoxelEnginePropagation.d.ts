@@ -61,6 +61,7 @@ export declare const DVEP: {
         _RGBlightRemovalQue: number[][];
         _sDataTool: import("../../Tools/Data/DataTool.js").DataTool;
         _nDataTool: import("../../Tools/Data/DataTool.js").DataTool;
+        addToRebuildQue(x: number, y: number, z: number): void;
     };
     flow: {
         lightData: {
@@ -137,7 +138,7 @@ export declare const DVEP: {
         getAbsorbLight(x: number, y: number, z: number): number;
         sunCheck(x: number, y: number, z: number): void;
     };
-    rebuildQueMap: Record<string, boolean>;
+    rebuildQueMap: Map<string, Map<string, boolean>>;
     $INIT(): void;
     _dimension: string;
     _buildQueue: string;

@@ -6,7 +6,7 @@ import { BuilderTool } from "../Tools/Build/Builder.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
@@ -18,7 +18,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -828,10 +828,11 @@ export declare const DVEW: {
     };
     cQueues: {
         $INIT(): void;
-        _queueMap: Map<string | number, boolean>;
+        _queueMap: Map<string | number, number>;
         addQueue(queueKey: string | number): boolean;
         removeQueue(queueKey: string | number): boolean;
         filterQueues(filter: (queueKey: string | number) => boolean): void;
+        filterOldQueues(maxTime?: number): void;
         rgb: {
             update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
             remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;

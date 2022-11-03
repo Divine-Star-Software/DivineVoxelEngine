@@ -63,4 +63,5 @@ export declare const IlluminationManager: {
     _RGBlightRemovalQue: number[][];
     _sDataTool: DataTool;
     _nDataTool: DataTool;
+    addToRebuildQue(x: number, y: number, z: number): void;
 };

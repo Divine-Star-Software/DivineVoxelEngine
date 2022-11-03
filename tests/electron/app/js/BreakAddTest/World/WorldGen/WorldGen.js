@@ -127,12 +127,12 @@ export const WorldGen = {
     generateRoofChunk(chunkX, chunkZ) {
         for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
             for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
-                for (let y = 0; y < this.minY + 1; y++) {
+                for (let y = 0; y < this.minY + 10; y++) {
                     brush.setXYZ(x, y, z);
                     if (y < this.minY - 3) {
                         brush.setId("dve:dreadstone").paint();
                     }
-                    if (y == this.minY - 3 && Math.random() > .8) {
+                    if (y == this.minY - 3 && Math.random() > 0.8) {
                         brush.setId("dve:dreadgrass").paint();
                     }
                     if (y == this.minY) {
@@ -142,11 +142,44 @@ export const WorldGen = {
             }
         }
     },
+    generateBoxChunk(chunkX, chunkZ) {
+        for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
+            for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
+                for (let y = 0; y < this.minY + 10; y++) {
+                    brush.setXYZ(x, y, z);
+                    if (y < this.minY - 3) {
+                        brush.setId("dve:dreadstone").paint();
+                    }
+                    if (y == this.minY - 3 && Math.random() > 0.8) {
+                        brush.setId("dve:dreadgrass").paint();
+                    }
+                    if (y == this.minY) {
+                        brush.setId("dve:dreadstonepillar").paint();
+                    }
+                    if (y == this.minY + 5) {
+                        brush.setId("dve:dreadstonepillar").paint();
+                    }
+                    if (y >= this.minY &&
+                        y <= this.minY + 5 &&
+                        (x == chunkX || x == chunkX + 15 || z == chunkZ || z == chunkZ + 15)) {
+                        brush.setId("dve:dreadstonepillar").paint();
+                    }
+                }
+            }
+        }
+    },
     generateWorldColumn(chunkX, chunkZ) {
         brush.start();
         let toss = Math.random();
-        if (toss > 0.3 && toss < 0.6) {
+        if ((chunkX == 0 && chunkZ == 0) ||
+            (chunkX == 0 && chunkZ == -16) ||
+            (chunkX == -16 && chunkZ == -0) ||
+            (chunkX == -16 && chunkZ == -16)) {
             this.generateRoofChunk(chunkX, chunkZ);
+            return;
+        }
+        if (toss < 0.3) {
+            this.generateBoxChunk(chunkX, chunkZ);
             return;
         }
         if (toss > 0.6) {

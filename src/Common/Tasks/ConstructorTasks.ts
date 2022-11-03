@@ -62,7 +62,6 @@ export const ConstructorTasks = {
    chunk: ThreadComm.registerTasks<ReBuildTasks>(
     WorldTasks.addToRebuildQue,
     (data) => {
-
      ConstructorQueues.build.chunk.add(
       [data[0], data[1], data[2], data[3], 1],
       data[4]

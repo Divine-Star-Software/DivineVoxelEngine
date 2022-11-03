@@ -1,5 +1,3 @@
-//objects
-import { DVEP } from "../../DivineVoxelEnginePropagation.js";
 export function runRGBFloodFill() {
     const IM = this;
     while (this._RGBlightUpdateQue.length != 0) {
@@ -27,7 +25,6 @@ export function runRGBFloodFill() {
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQue.push([x + 1, y, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
-                DVEP.addToRebuildQue(x + 1, y, z, "all");
             }
         }
         if (this._nDataTool.loadIn(x, y, z - 1)) {
@@ -35,7 +32,6 @@ export function runRGBFloodFill() {
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQue.push([x, y, z - 1]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
-                DVEP.addToRebuildQue(x, y, z - 1, "all");
             }
         }
         if (this._nDataTool.loadIn(x, y, z + 1)) {
@@ -43,7 +39,6 @@ export function runRGBFloodFill() {
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQue.push([x, y, z + 1]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
-                DVEP.addToRebuildQue(x, y, z + 1, "all");
             }
         }
         if (this._nDataTool.loadIn(x, y - 1, z)) {
@@ -51,7 +46,6 @@ export function runRGBFloodFill() {
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQue.push([x, y - 1, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
-                DVEP.addToRebuildQue(x, y - 1, z, "all");
             }
         }
         if (this._nDataTool.loadIn(x, y + 1, z)) {
@@ -59,9 +53,9 @@ export function runRGBFloodFill() {
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQue.push([x, y + 1, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
-                DVEP.addToRebuildQue(x, y + 1, z, "all");
             }
         }
+        this.addToRebuildQue(x, y, z);
     }
 }
 export function runRGBFloodFillAt(x, y, z) {
@@ -161,8 +155,8 @@ export function runRGBFloodRemove(lightSource) {
                 }
             }
         }
+        this.addToRebuildQue(x, y, z);
         this._sDataTool.setLight(this.lightData.removeRGBLight(sl)).commit();
-        DVEP.addToRebuildQue(x, y, z, "all");
     }
     if (lightSource) {
         this._sDataTool.loadIn(lightSource.x, lightSource.y, lightSource.z);

@@ -12,7 +12,6 @@ export function runSunLightRemoveAt(
  this._sDataTool.loadIn(x, y, z);
  const l = this.lightData.getS(this._sDataTool.getLight());
 
-
  if (l >= 0) {
   this._sunLightRemoveQue.push([x, y, z]);
   this.runSunLightRemove(x, y, z);
@@ -44,7 +43,7 @@ export function runSunLightRemove(
   const z = node[2];
   if (!this._sDataTool.loadIn(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
-  if(sl < 0) continue;
+  if (sl < 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
   if (this._nDataTool.loadIn(x - 1, y, z)) {
@@ -123,9 +122,8 @@ export function runSunLightRemove(
     }
    }
   }
-
+  this.addToRebuildQue(x, y, z);
   this._sDataTool.setLight(this.lightData.removeSunLight(sl)).commit();
-  DVEP.addToRebuildQue(x, y, z, "all");
  }
 
  this._sDataTool.loadIn(x, y, z);
@@ -147,7 +145,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const z = node[2];
   if (!this._sDataTool.loadIn(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
-  if(sl < 0) continue;
+  if (sl < 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
   if (this._nDataTool.loadIn(x - 1, y, z)) {
@@ -210,7 +208,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  DVEP.addToRebuildQue(x, y, z, "all");
+  this.addToRebuildQue(x, y, z);
  }
 }
 
@@ -223,23 +221,3 @@ export function runSunLightUpdateAt(
  this._sunLightUpdateQue.enqueue([x, y, z]);
  this.runSunLightUpdate();
 }
-
-export function PopulateWorldColumnWithSunLight(
- this: typeof IlluminationManager,
- x: number,
- z: number,
- maxY: number
-) {
- for (let ix = x; ix < x + WorldBounds.chunkXSize; ix++) {
-  for (let iz = z; iz < z + WorldBounds.chunkZSize; iz++) {
-   let iy = maxY;
-   let worldY = WorldBounds.bounds.MaxY;
-   while (iy <= worldY) {
-    this._sDataTool.loadIn(ix, iy, iz);
-    this._sDataTool.setLight(0xf).commit();
-    iy++;
-   }
-  }
- }
-}
-

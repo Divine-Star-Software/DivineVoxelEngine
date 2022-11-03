@@ -23,6 +23,8 @@ import {
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { Util } from "../../../Global/Util.helper.js";
+import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { DVEP } from "../DivineVoxelEnginePropagation.js";
 export const IlluminationManager = {
  lightData: LightData,
  air: [-1, 0],
@@ -53,4 +55,10 @@ export const IlluminationManager = {
 
  _sDataTool: new DataTool(),
  _nDataTool: new DataTool(),
+
+ addToRebuildQue(x: number, y: number, z: number) {
+  for (const n of $3dCardinalNeighbors) {
+   DVEP.addToRebuildQue(n[0] + x, n[1] + y, n[2] + z, "all");
+  }
+ },
 };

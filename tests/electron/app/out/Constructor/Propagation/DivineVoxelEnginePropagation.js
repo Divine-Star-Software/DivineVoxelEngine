@@ -8,7 +8,7 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export const DVEP = {
     illumination: IlluminationManager,
     flow: FlowManager,
-    rebuildQueMap: {},
+    rebuildQueMap: new Map(),
     $INIT() { },
     _dimension: "main",
     _buildQueue: "main",
@@ -17,8 +17,14 @@ export const DVEP = {
             return;
         const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
         const chunkKey = WorldBounds.getChunkKey(chunkPOS);
-        if (!this.rebuildQueMap[chunkKey]) {
-            this.rebuildQueMap[chunkKey] = true;
+        if (!this.rebuildQueMap.has(this._buildQueue)) {
+            this.rebuildQueMap.set(this._buildQueue, new Map());
+        }
+        const map = this.rebuildQueMap.get(this._buildQueue);
+        if (!map)
+            return;
+        if (!map.has(chunkKey)) {
+            map.set(chunkKey, true);
             DVEC.worldComm.runTasks(WorldTasks.addToRebuildQue, [
                 this._dimension,
                 chunkPOS.x,
@@ -33,72 +39,72 @@ export const DVEP = {
         this._buildQueue = data[4];
     },
     resetRebuildQue() {
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runRebuildQue() {
         DVEC.worldComm.runTasks(WorldTasks.runRebuildQue, [
             this._buildQueue,
         ]);
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runRGBFloodFill(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runRGBFloodFillAt(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runRGBFloodRemove(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runRGBFloodRemoveAt(true, data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runSunLightForWorldColumn(x, z, maxY) {
         WorldRegister.cache.enable();
         this.illumination.populateWorldColumnWithSunLight(x, z, maxY);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runSunFloodFillAtMaxY(x, z, maxY) {
         WorldRegister.cache.enable();
         this.illumination.runSunLightUpdateAtMaxY(x, z, maxY);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runSunFloodFillMaxYFlood(x, z, maxY) {
         WorldRegister.cache.enable();
         this.illumination.runSunLightFloodOut(x, z);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runSunLightUpdate(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runSunLightUpdateAt(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     runSunLightRemove(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runSunLightRemoveAt(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     async updateFlowAt(data) {
         this._process(data);
         WorldRegister.cache.enable();
         await this.flow.runFlow(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
     async removeFlowAt(data) {
         this._process(data);
         WorldRegister.cache.enable();
         await this.flow.runFlowRemove(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
-        this.rebuildQueMap = {};
+        this.rebuildQueMap.clear();
     },
 };

@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -1050,6 +1050,7 @@ export declare const DVEC: {
             _RGBlightRemovalQue: number[][];
             _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
             _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
+            addToRebuildQue(x: number, y: number, z: number): void;
         };
         flow: {
             lightData: {
@@ -1126,7 +1127,7 @@ export declare const DVEC: {
             getAbsorbLight(x: number, y: number, z: number): number;
             sunCheck(x: number, y: number, z: number): void;
         };
-        rebuildQueMap: Record<string, boolean>;
+        rebuildQueMap: Map<string, Map<string, boolean>>;
         $INIT(): void;
         _dimension: string;
         _buildQueue: string;
@@ -1305,7 +1306,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

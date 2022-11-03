@@ -13,7 +13,7 @@ const QMBase = {
  $INIT() {
   this.addQueue("main");
  },
- _queueMap: <Map<string | number, boolean>>new Map(),
+ _queueMap: <Map<string | number, number>>new Map(),
  addQueue(queueKey: string | number) {
   if (this._queueMap.has(queueKey)) return false;
   this.rgb.update.addQueue(queueKey);
@@ -27,7 +27,7 @@ const QMBase = {
   this.flow.remove.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
   this.generate.chunk.addQueue(queueKey);
-  this._queueMap.set(queueKey, true);
+  this._queueMap.set(queueKey, Date.now());
   return true;
  },
  removeQueue(queueKey: string | number) {
@@ -54,6 +54,22 @@ const QMBase = {
  filterQueues(filter: (queueKey: string | number) => boolean) {
   this._queueMap.forEach((v, key) => {
    if (!filter(key)) {
+    this.removeQueue(key);
+   }
+  });
+ },
+ /**# Filter Old Queues
+  * ---
+  * Will remove queues older then 10 minutes.
+  * @param maxTime Max time in miliseconds.
+  */
+ filterOldQueues(maxTime = 600000) {
+  const t = Date.now();
+  this._queueMap.forEach((v, key) => {
+    console.log(t - v);
+    console.log(key);
+   if (t - v > maxTime) {
+    console.log(key);
     this.removeQueue(key);
    }
   });
