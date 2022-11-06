@@ -23,45 +23,5 @@ export const CCM = Object.assign(ccm, {
                 return CCM.runTask(ConstructorTasks.constructItem, data);
             },
         },
-        rgb: {
-            update: (data) => {
-                return CCM.runTask(ConstructorTasks.RGBlightUpdate, data);
-            },
-            remove: (data) => {
-                return CCM.runTask(ConstructorTasks.RGBlightRemove, data);
-            },
-        },
-        worldSun: {
-            fillWorldColumn: (data) => {
-                return CCM.runTask(ConstructorTasks.worldSunStep1, data);
-            },
-            updateAtMaxY: (data) => {
-                return CCM.runTask(ConstructorTasks.worldSunStep2, data);
-            },
-            floodAtMaxY: (data, threadNumber) => {
-                return CCM.runTask(ConstructorTasks.worldSunStep3, data, [], threadNumber);
-            },
-        },
-        sun: {
-            update: (data) => {
-                return CCM.runTask(ConstructorTasks.sunLightUpdate, data);
-            },
-            remove: (data) => {
-                return CCM.runTask(ConstructorTasks.sunLightRemove, data);
-            },
-        },
-        flow: {
-            update: (data) => {
-                return CCM.runTask(ConstructorTasks.flowUpdate, data);
-            },
-            remove: (data) => {
-                return CCM.runTask(ConstructorTasks.flowRemove, data);
-            },
-        },
-        worldGen: {
-            generate: (data) => {
-                return CCM.runTask(ConstructorTasks.generate, data);
-            },
-        },
     },
 });

@@ -1,6 +1,7 @@
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { ConstructorQueues as CQ } from "../../Common/Queues/ConstructorQueues.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
 class TasksBase {
     _data = {
         dimension: "main",
@@ -8,7 +9,6 @@ class TasksBase {
     };
     _thread = "";
     constructor() {
-        this._thread = ThreadComm.threadName;
         this.build.chunk._s = this;
         this.light.rgb.update._s = this;
         this.light.rgb.remove._s = this;
@@ -17,16 +17,55 @@ class TasksBase {
         this.flow.update._s = this;
         this.flow.remove._s = this;
         this.light.worldSun._s = this;
+        this.explosion.run._s = this;
+        this.voxelUpdate.erease._s = this;
+        this.voxelUpdate.paint._s = this;
     }
     setFocalPoint(x, y, z, dimension = this._data.dimension) {
         const queueKey = `${dimension}-${WorldBounds.getRegionKeyFromPosition(x, y, z)}`;
         CQ.addQueue(queueKey);
         this._data.queue = queueKey;
+        this._thread = ThreadComm.threadName;
     }
+    voxelUpdate = {
+        erease: {
+            _s: {},
+            add(x, y, z) {
+                CQ.voxelUpdate.erease.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+            },
+            run(onDone) {
+                CQ.voxelUpdate.erease.run(this._s._data.queue);
+                CQ.voxelUpdate.erease.onDone(this._s._data.queue, onDone);
+            },
+            async runAndAwait() {
+                await CQ.voxelUpdate.erease.runAndAwait(this._s._data.queue);
+            },
+        },
+        paint: {
+            _s: {},
+            add(x, y, z, raw) {
+                CQ.voxelUpdate.paint.add([
+                    this._s._data.dimension,
+                    x,
+                    y,
+                    z,
+                    raw,
+                    this._s._data.queue,
+                    this._s._thread,
+                ], this._s._data.queue);
+            },
+            run(onDone) {
+                CQ.voxelUpdate.paint.run(this._s._data.queue);
+                CQ.voxelUpdate.paint.onDone(this._s._data.queue, onDone);
+            },
+            async runAndAwait() {
+                await CQ.voxelUpdate.paint.runAndAwait(this._s._data.queue);
+            },
+        },
+    };
     build = {
         chunk: {
             _s: {},
-            __queueId: "main",
             add(x, y, z) {
                 CQ.build.chunk.add([this._s._data.dimension, x, y, z, 1], this._s._data.queue);
             },
@@ -39,10 +78,32 @@ class TasksBase {
             },
         },
     };
+    explosion = {
+        run: {
+            _s: {},
+            add(x, y, z, radius) {
+                CQ.explosion.run.add([
+                    this._s._data.dimension,
+                    x,
+                    y,
+                    z,
+                    radius,
+                    this._s._data.queue,
+                    this._s._thread,
+                ], this._s._data.queue);
+            },
+            run(onDone) {
+                CQ.explosion.run.run(this._s._data.queue);
+                CQ.explosion.run.onDone(this._s._data.queue, onDone);
+            },
+            async runAndAwait() {
+                await CQ.explosion.run.runAndAwait(this._s._data.queue);
+            },
+        },
+    };
     flow = {
         update: {
             _s: {},
-            __queueId: "main",
             add(x, y, z) {
                 CQ.flow.update.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
             },
@@ -56,7 +117,6 @@ class TasksBase {
         },
         remove: {
             _s: {},
-            __queueId: "main",
             add(x, y, z) {
                 CQ.flow.remove.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
             },
@@ -73,7 +133,6 @@ class TasksBase {
         rgb: {
             update: {
                 _s: {},
-                __queueId: "main",
                 add(x, y, z, queue = null) {
                     queue = queue ? queue : this._s._data.queue;
                     CQ.rgb.update.add([this._s._data.dimension, x, y, z, queue, this._s._thread], queue);
@@ -88,7 +147,6 @@ class TasksBase {
             },
             remove: {
                 _s: {},
-                __queueId: "main",
                 add(x, y, z, queue = null) {
                     queue = queue ? queue : this._s._data.queue;
                     CQ.rgb.remove.add([this._s._data.dimension, x, y, z, queue, this._s._thread], queue);
@@ -105,7 +163,6 @@ class TasksBase {
         sun: {
             update: {
                 _s: {},
-                __queueId: "main",
                 add(x, y, z) {
                     CQ.sun.update.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
                 },
@@ -119,7 +176,6 @@ class TasksBase {
             },
             remove: {
                 _s: {},
-                __queueId: "main",
                 add(x, y, z) {
                     CQ.sun.remove.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
                 },
@@ -134,12 +190,23 @@ class TasksBase {
         },
         worldSun: {
             _s: {},
-            __queueId: "main",
             add(x, z, y = 0) {
-                CQ.worldSun.add(x, z, this._s._data.queue);
+                CQ.worldSun.add([
+                    this._s._data.dimension,
+                    x,
+                    z,
+                    y,
+                    this._s._data.queue,
+                    this._s._thread,
+                ]);
+                WorldRegister.column.fill(this._s._data.dimension, x, z, y);
+            },
+            run(onDone) {
+                CQ.worldSun.run(this._s._data.queue);
+                CQ.worldSun.onDone(this._s._data.queue, onDone);
             },
             async runAndAwait() {
-                await CQ.worldSun.run();
+                await CQ.worldSun.runAndAwait();
             },
         },
     };

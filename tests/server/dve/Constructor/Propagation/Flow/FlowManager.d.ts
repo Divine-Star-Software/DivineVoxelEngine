@@ -2,7 +2,7 @@ import { RunFlowNoChunkBuild } from "./Functions/RunFlowNoChunkBuild.js";
 import { RunFlowReduce, RunFlowRemove, RunRemovePropagation } from "./Functions/RunFlowRemove.js";
 import { RunFlow, RunFlowIncrease, RunFlowPropagation } from "./Functions/RunFlow.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
+import { BrushTool } from "../../../Tools/Brush/Brush.js";
 export declare const FlowManager: {
     lightData: {
         SRS: number;
@@ -42,10 +42,11 @@ export declare const FlowManager: {
     };
     dimension: number;
     currentVoxel: number;
-    _visitedMap: Record<string, boolean>;
+    _visitedMap: Map<string, boolean>;
+    _removeMap: Map<string, boolean>;
     _flowQue: number[][];
     _flowRemoveQue: number[][];
-    _brush: VoxelBrush;
+    _brush: BrushTool;
     _sDataTool: DataTool;
     _nDataTool: DataTool;
     runRemovePropagation: typeof RunRemovePropagation;
@@ -59,7 +60,12 @@ export declare const FlowManager: {
     rebuildMap: Record<string, boolean>;
     addToMap(x: number, y: number, z: number): void;
     inMap(x: number, y: number, z: number): boolean;
+    addToRemoveMap(x: number, y: number, z: number): void;
+    inRemoveMap(x: number, y: number, z: number): boolean;
+    removeFromRemoveMap(x: number, y: number, z: number): boolean;
     setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
+    removeVoxel(x: number, y: number, z: number): void;
+    flowOutCheck(l: number, nl: number, ns: number, x: number, y: number, z: number): void;
     runRemoveCheck(x: number, y: number, z: number): void;
     setCurrentVoxel(x: number, y: number, z: number): boolean;
     runRebuildQue(): void;
@@ -67,7 +73,6 @@ export declare const FlowManager: {
     resetRebuildQue(): void;
     addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
     setLevel(level: number, x: number, y: number, z: number): void;
-    removeVoxel(x: number, y: number, z: number): void;
     getLevel(x: number, y: number, z: number): number;
     getLevelState(x: number, y: number, z: number): number;
     canFlowOutwardTest(x: number, y: number, z: number): boolean;

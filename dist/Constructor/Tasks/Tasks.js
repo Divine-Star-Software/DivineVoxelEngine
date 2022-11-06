@@ -2,6 +2,7 @@ import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTask
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 export const Tasks = {
     build: {
         chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (data) => {
@@ -31,49 +32,46 @@ export const Tasks = {
             DVEC.DVEB.itemMesher.createItem(itemId, x, y, z);
         }),
     },
+    voxelUpdate: {
+        erease: ThreadComm.registerTasks(ConstructorTasks.voxelErease, async (data) => {
+            await EreaseAndUpdate(data);
+        }),
+        paint: ThreadComm.registerTasks(ConstructorTasks.voxelPaint, async (data) => {
+            await PaintAndUpdate(data);
+        }),
+    },
     rgb: {
         update: ThreadComm.registerTasks(ConstructorTasks.RGBlightUpdate, (data) => {
-            DVEC.DVEP.runRGBFloodFill(data);
+            DVEC.propagation.runRGBUpdate(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.RGBlightRemove, (data) => {
-            DVEC.DVEP.runRGBFloodRemove(data);
+            DVEC.propagation.runRGBRemove(data);
         }),
     },
     worldSun: {
-        fillWorldColumn: ThreadComm.registerTasks(ConstructorTasks.worldSunStep1, (data) => {
-            //run sun light propagation for world column
-            const x = data[0];
-            const z = data[1];
-            const maxY = data[2];
-            DVEC.DVEP.runSunLightForWorldColumn(x, z, maxY);
-        }),
-        updateAtMaxY: ThreadComm.registerTasks(ConstructorTasks.worldSunStep2, (data) => {
-            const x = data[0];
-            const z = data[1];
-            const maxY = data[2];
-            DVEC.DVEP.runSunFloodFillAtMaxY(x, z, maxY);
-        }),
-        floodAtMaxY: ThreadComm.registerTasks(ConstructorTasks.worldSunStep3, (data) => {
-            const x = data[0];
-            const z = data[1];
-            const maxY = data[2];
-            DVEC.DVEP.runSunFloodFillMaxYFlood(x, z, maxY);
+        run: ThreadComm.registerTasks(ConstructorTasks.worldSun, (data) => {
+            DVEC.propagation.runWorldSun(data);
         }),
     },
     sun: {
         update: ThreadComm.registerTasks(ConstructorTasks.sunLightUpdate, (data) => {
-            DVEC.DVEP.runSunLightUpdate(data);
+            DVEC.propagation.runSunLightUpdate(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.sunLightRemove, (data) => {
-            DVEC.DVEP.runSunLightRemove(data);
+            DVEC.propagation.runSunLightRemove(data);
+        }),
+    },
+    explosion: {
+        run: ThreadComm.registerTasks(ConstructorTasks.explosion, (data) => {
+            DVEC.propagation.runExplosion(data);
         }),
     },
     flow: {
         update: ThreadComm.registerTasks(ConstructorTasks.flowUpdate, async (data) => {
-            await DVEC.DVEP.updateFlowAt(data);
+            await DVEC.propagation.updateFlowAt(data);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, (data) => {
-            DVEC.DVEP.removeFlowAt(data);
+            DVEC.propagation.removeFlowAt(data);
         }),
     },
     worldGen: {

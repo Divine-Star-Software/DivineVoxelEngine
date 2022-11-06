@@ -56,7 +56,7 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
   let y = pickDV.getFloat32(4) + pickDV.getInt8(13);
   let z = pickDV.getFloat32(8) + pickDV.getInt8(14);
   if (!dataTool.loadIn(x, y, z)) return;
-  if(dataTool.isRenderable()) return;
+  if (dataTool.isRenderable()) return;
   brush.setId(data[1]).setXYZ(x, y, z).paintAndUpdate();
  });
 
@@ -70,11 +70,18 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
   }
  });
 
+ DVEW.parentComm.listenForMessage("explode", () => {
+  let x = pickDV.getFloat32(0);
+  let y = pickDV.getFloat32(4);
+  let z = pickDV.getFloat32(8);
+  brush.setXYZ(x, y, z).explode();
+ });
+
  setInterval(() => {
   const voxels = VoxelMath.visitAll(positionVector, endVector);
 
   positionVector.x = playerData.getFloat32(4);
-  positionVector.y = playerData.getFloat32(8) + .2;
+  positionVector.y = playerData.getFloat32(8) + 0.2;
   positionVector.z = playerData.getFloat32(12);
 
   directionVector.x = playerData.getFloat32(16);
@@ -99,5 +106,5 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
     break;
    }
   }
- }, 20);
+ }, 12);
 };

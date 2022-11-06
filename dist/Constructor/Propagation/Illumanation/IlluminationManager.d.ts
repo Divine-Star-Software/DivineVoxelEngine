@@ -1,8 +1,8 @@
 import type { Queue } from "Global/Util/Queue.js";
-import { runRGBFloodFillAt, runRGBFloodRemove, runRGBFloodRemoveAt, runRGBFloodFill } from "./Functions/RGBFloodLight.js";
+import { runRGBUpdateAt, runRGBRemove, runRGBRemoveAt, runRGBUpdate } from "./Functions/RGBLight.js";
 import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt } from "./Functions/SunLight.js";
-import { PopulateWorldColumnWithSunLight, RunSunLightFloodDown, RunSunLightFloodOut, RunSunLightUpdateAtMaxY, SunLightAboveCheck } from "./Functions/WorldSun.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
+import { RunWorldSun } from "./Functions/WorldSun.js";
 export declare const IlluminationManager: {
     lightData: {
         SRS: number;
@@ -40,27 +40,20 @@ export declare const IlluminationManager: {
         removeSunLight(sl: number): number;
         minusOneForAll(sl: number): number;
     };
-    air: number[];
-    dimension: number;
     runSunLightUpdateAt: typeof runSunLightUpdateAt;
     runSunLightUpdate: typeof runSunLightUpdate;
     runSunLightRemove: typeof runSunLightRemove;
     runSunLightRemoveAt: typeof runSunLightRemoveAt;
-    populateWorldColumnWithSunLight: typeof PopulateWorldColumnWithSunLight;
-    runSunLightUpdateAtMaxY: typeof RunSunLightUpdateAtMaxY;
-    runSunLightFloodDown: typeof RunSunLightFloodDown;
-    runSunLightFloodOut: typeof RunSunLightFloodOut;
-    sunLightAboveCheck: typeof SunLightAboveCheck;
-    _sunLightUpdateQue: Queue<number[]>;
-    _sunLightFloodDownQue: Queue<number[]>;
-    _sunLightFloodOutQue: Record<string, Queue<number[]>>;
-    _sunLightRemoveQue: number[][];
-    runRGBFloodFillAt: typeof runRGBFloodFillAt;
-    runRGBFloodFill: typeof runRGBFloodFill;
-    runRGBFloodRemoveAt: typeof runRGBFloodRemoveAt;
-    runRGBFloodRemove: typeof runRGBFloodRemove;
-    _RGBlightUpdateQue: number[][];
-    _RGBlightRemovalQue: number[][];
+    _sunLightUpdate: Queue<number[]>;
+    _sunLightRemove: number[][];
+    runWorldSun: typeof RunWorldSun;
+    _worldSunQueue: number[][];
+    runRGBUpdateAt: typeof runRGBUpdateAt;
+    runRGBUpdate: typeof runRGBUpdate;
+    runRGBRemoveAt: typeof runRGBRemoveAt;
+    runRGBRemove: typeof runRGBRemove;
+    _RGBlightUpdateQ: number[][];
+    _RGBlightRemovalQ: number[][];
     _sDataTool: DataTool;
     _nDataTool: DataTool;
     addToRebuildQue(x: number, y: number, z: number): void;

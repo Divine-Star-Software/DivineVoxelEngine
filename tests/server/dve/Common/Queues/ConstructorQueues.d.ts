@@ -1,4 +1,4 @@
-import type { BuildTasks, LightUpdateTask, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, ExplosionTasks, LightUpdateTask, PaintTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
     _queueMap: Map<string | number, number>;
@@ -17,25 +17,24 @@ export declare const ConstructorQueues: {
      */
     filterOldQueues(maxTime?: number): void;
     rgb: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
     };
-    worldSun: {
-        add(x: number, z: number, queueId?: string): void;
-        run(): Promise<void>;
-        __steps: {
-            step1: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
-            step2: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
-            step3: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
-        };
+    worldSun: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+    voxelUpdate: {
+        erease: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+        paint: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<PaintTasks>;
     };
     sun: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+    };
+    explosion: {
+        run: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<ExplosionTasks>;
     };
     flow: {
-        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<UpdateTasksO>;
     };
     build: {
         chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<BuildTasks>;

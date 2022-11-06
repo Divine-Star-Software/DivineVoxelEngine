@@ -1,5 +1,5 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
-import { WorldTasks } from "../Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
 import { ReBuildTasks, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
@@ -25,7 +25,7 @@ export const ConstructorTasks = {
   },
   build: {
    chunk: ThreadComm.registerTasks<RunRebuildTasks>(
-    WorldTasks.runRebuildQue,
+    ConstructorRemoteThreadTasks.runRebuildQue,
     (data) => {
      ConstructorQueues.build.chunk.run(data[0]);
     }
@@ -38,7 +38,7 @@ export const ConstructorTasks = {
  addToQueue: {
   rgb: {
    update: ThreadComm.registerTasks(
-    WorldTasks.addToRGBLightUpdateQue,
+    ConstructorRemoteThreadTasks.addToRGBLightUpdateQue,
     (data: any) => {
      ConstructorQueues.rgb.update.add(data);
     }
@@ -60,7 +60,7 @@ export const ConstructorTasks = {
   },
   build: {
    chunk: ThreadComm.registerTasks<ReBuildTasks>(
-    WorldTasks.addToRebuildQue,
+    ConstructorRemoteThreadTasks.addToRebuildQue,
     (data) => {
      ConstructorQueues.build.chunk.add(
       [data[0], data[1], data[2], data[3], 1],
@@ -74,23 +74,3 @@ export const ConstructorTasks = {
   },
  },
 };
-
-CCM.listenForMessage(WorldTasks.addToRebuildQue, (data) => {
- const x = data[1];
- const y = data[2];
- const z = data[3];
- const substance = data[4];
- ConstructorQueues.build.chunk.add([0, x, y, z, 1]);
-});
-
-CCM.listenForMessage(WorldTasks.runRebuildQue, () => {
- ConstructorQueues.build.chunk.run();
-});
-/* 
-CCM.listenForMessage(WorldTasks.addToRGBLightUpdateQue, (data) => {
- const x = data[1];
- const y = data[2];
- const z = data[3];
- ConstructorQueues.rgb.update.add([x, y, z]);
-});
- */

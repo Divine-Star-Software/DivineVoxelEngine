@@ -62,7 +62,7 @@ export const DVEW = {
         this.__settingsHaveBeenSynced = true;
     },
     generate(x, z, data = []) {
-        this.ccm.tasks.worldGen.generate([x, z, data]);
+        //this.ccm.tasks.worldGen.generate([x, z, data]);
     },
     createItem(itemId, x, y, z) {
         this.ccm.tasks.build.item([itemId, x, y, z]);

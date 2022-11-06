@@ -62,10 +62,16 @@ export const PlayerWorld = async (DVEW) => {
             brush.setXYZ(x, y, z).ereaseAndUpdate();
         }
     });
+    DVEW.parentComm.listenForMessage("explode", () => {
+        let x = pickDV.getFloat32(0);
+        let y = pickDV.getFloat32(4);
+        let z = pickDV.getFloat32(8);
+        brush.setXYZ(x, y, z).explode();
+    });
     setInterval(() => {
         const voxels = VoxelMath.visitAll(positionVector, endVector);
         positionVector.x = playerData.getFloat32(4);
-        positionVector.y = playerData.getFloat32(8) + .2;
+        positionVector.y = playerData.getFloat32(8) + 0.2;
         positionVector.z = playerData.getFloat32(12);
         directionVector.x = playerData.getFloat32(16);
         directionVector.y = playerData.getFloat32(20);
@@ -86,5 +92,5 @@ export const PlayerWorld = async (DVEW) => {
                 break;
             }
         }
-    }, 20);
+    }, 12);
 };

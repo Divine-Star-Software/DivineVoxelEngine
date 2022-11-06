@@ -1,6 +1,6 @@
 import type { VoxelSubstanceType } from "Meta/index.js";
-import { UpdateTasks } from "Meta/Tasks/Tasks.types.js";
-export declare const DVEP: {
+import { ExplosionTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
+export declare const Propagation: {
     illumination: {
         lightData: {
             SRS: number;
@@ -105,7 +105,7 @@ export declare const DVEP: {
         _visitedMap: Record<string, boolean>;
         _flowQue: number[][];
         _flowRemoveQue: number[][];
-        _brush: import("../../Tools/Brush/Brush.js").VoxelBrush;
+        _brush: import("../../Tools/Brush/Brush.js").BrushTool;
         _sDataTool: import("../../Tools/Data/DataTool.js").DataTool;
         _nDataTool: import("../../Tools/Data/DataTool.js").DataTool;
         runRemovePropagation: typeof import("./Flow/Functions/RunFlowRemove.js").RunRemovePropagation;
@@ -120,6 +120,7 @@ export declare const DVEP: {
         addToMap(x: number, y: number, z: number): void;
         inMap(x: number, y: number, z: number): boolean;
         setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
+        flowOutCheck(l: number, nl: number, ns: number, x: number, y: number, z: number): void;
         runRemoveCheck(x: number, y: number, z: number): void;
         setCurrentVoxel(x: number, y: number, z: number): boolean;
         runRebuildQue(): void;
@@ -138,22 +139,29 @@ export declare const DVEP: {
         getAbsorbLight(x: number, y: number, z: number): number;
         sunCheck(x: number, y: number, z: number): void;
     };
+    explosion: {
+        _queue: number[][];
+        _visitedMap: Map<string, boolean>;
+        addToMap(x: number, y: number, z: number): void;
+        inMap(x: number, y: number, z: number): boolean;
+        runExplosion(dimension: string, sx: number, sy: number, sz: number, radius: number): void;
+    };
     rebuildQueMap: Map<string, Map<string, boolean>>;
     $INIT(): void;
     _dimension: string;
     _buildQueue: string;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
-    _process(data: UpdateTasks): void;
+    _process(data: UpdateTasksO): void;
     resetRebuildQue(): void;
     runRebuildQue(): void;
-    runRGBFloodFill(data: UpdateTasks): void;
-    runRGBFloodRemove(data: UpdateTasks): void;
+    runRGBUpdate(data: UpdateTasksO): void;
+    runRGBRemove(data: UpdateTasksO): void;
     runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
     runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
     runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
-    runSunLightUpdate(data: UpdateTasks): void;
-    runSunLightRemove(data: UpdateTasks): void;
-    updateFlowAt(data: UpdateTasks): Promise<void>;
-    removeFlowAt(data: UpdateTasks): Promise<void>;
+    runSunLightUpdate(data: UpdateTasksO): void;
+    runSunLightRemove(data: UpdateTasksO): void;
+    updateFlowAt(data: UpdateTasksO): Promise<void>;
+    removeFlowAt(data: UpdateTasksO): Promise<void>;
+    runExplosion(data: ExplosionTasks): void;
 };
-export declare type DivineVoxelEnginePropagation = typeof DVEP;

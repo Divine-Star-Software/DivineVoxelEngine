@@ -2,21 +2,21 @@ export function runSunLightRemoveAt(x, y, z) {
     this._sDataTool.loadIn(x, y, z);
     const l = this.lightData.getS(this._sDataTool.getLight());
     if (l >= 0) {
-        this._sunLightRemoveQue.push([x, y, z]);
+        this._sunLightRemove.push([x, y, z]);
         this.runSunLightRemove(x, y, z);
         return;
     }
     this._nDataTool.loadIn(x, y - 1, z);
     const l2 = this.lightData.getS(this._nDataTool.getLight());
     if (l2 >= 0) {
-        this._sunLightRemoveQue.push([x, y, z]);
-        this._sunLightRemoveQue.push([x, y - 1, z]);
+        this._sunLightRemove.push([x, y, z]);
+        this._sunLightRemove.push([x, y - 1, z]);
         this.runSunLightRemove(x, y, z);
     }
 }
 export function runSunLightRemove(x, y, z) {
-    while (this._sunLightRemoveQue.length != 0) {
-        const node = this._sunLightRemoveQue.shift();
+    while (this._sunLightRemove.length != 0) {
+        const node = this._sunLightRemove.shift();
         if (!node) {
             break;
         }
@@ -34,11 +34,11 @@ export function runSunLightRemove(x, y, z) {
             const nl = this._nDataTool.getLight();
             if (nl > 0) {
                 if (this.lightData.isLessThanForSunRemove(nl, sl)) {
-                    this._sunLightRemoveQue.push([x - 1, y, z]);
+                    this._sunLightRemove.push([x - 1, y, z]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
-                        this._sunLightUpdateQue.enqueue([x - 1, y, z]);
+                        this._sunLightUpdate.enqueue([x - 1, y, z]);
                     }
                 }
             }
@@ -47,11 +47,11 @@ export function runSunLightRemove(x, y, z) {
             const nl = this._nDataTool.getLight();
             if (nl > 0) {
                 if (this.lightData.isLessThanForSunRemove(nl, sl)) {
-                    this._sunLightRemoveQue.push([x + 1, y, z]);
+                    this._sunLightRemove.push([x + 1, y, z]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
-                        this._sunLightUpdateQue.enqueue([x + 1, y, z]);
+                        this._sunLightUpdate.enqueue([x + 1, y, z]);
                     }
                 }
             }
@@ -60,11 +60,11 @@ export function runSunLightRemove(x, y, z) {
             const nl = this._nDataTool.getLight();
             if (nl > 0) {
                 if (this.lightData.isLessThanForSunRemove(nl, sl)) {
-                    this._sunLightRemoveQue.push([x, y, z - 1]);
+                    this._sunLightRemove.push([x, y, z - 1]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
-                        this._sunLightUpdateQue.enqueue([x, y, z - 1]);
+                        this._sunLightUpdate.enqueue([x, y, z - 1]);
                     }
                 }
             }
@@ -73,11 +73,11 @@ export function runSunLightRemove(x, y, z) {
             const nl = this._nDataTool.getLight();
             if (nl > 0) {
                 if (this.lightData.isLessThanForSunRemove(nl, sl)) {
-                    this._sunLightRemoveQue.push([x, y, z + 1]);
+                    this._sunLightRemove.push([x, y, z + 1]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
-                        this._sunLightUpdateQue.enqueue([x, y, z + 1]);
+                        this._sunLightUpdate.enqueue([x, y, z + 1]);
                     }
                 }
             }
@@ -86,11 +86,11 @@ export function runSunLightRemove(x, y, z) {
             const nl = this._nDataTool.getLight();
             if (nl > 0) {
                 if (this.lightData.sunLightCompareForDownSunRemove(nl, sl)) {
-                    this._sunLightRemoveQue.push([x, y - 1, z]);
+                    this._sunLightRemove.push([x, y - 1, z]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
-                        this._sunLightUpdateQue.enqueue([x, y - 1, z]);
+                        this._sunLightUpdate.enqueue([x, y - 1, z]);
                     }
                 }
             }
@@ -99,11 +99,11 @@ export function runSunLightRemove(x, y, z) {
             const n6 = this._nDataTool.getLight();
             if (n6 > 0) {
                 if (this.lightData.isLessThanForSunRemove(n6, sl)) {
-                    this._sunLightRemoveQue.push([x, y + 1, z]);
+                    this._sunLightRemove.push([x, y + 1, z]);
                 }
                 else {
                     if (this.lightData.isGreaterOrEqualThanForSunRemove(n6, sl)) {
-                        this._sunLightUpdateQue.enqueue([x, y + 1, z]);
+                        this._sunLightUpdate.enqueue([x, y + 1, z]);
                     }
                 }
             }
@@ -118,9 +118,9 @@ export function runSunLightRemove(x, y, z) {
     this._sDataTool.setAir().commit();
 }
 export function runSunLightUpdate() {
-    const queue = this._sunLightUpdateQue;
-    while (this._sunLightUpdateQue.size > 0) {
-        const node = this._sunLightUpdateQue.dequeue();
+    const queue = this._sunLightUpdate;
+    while (this._sunLightUpdate.size > 0) {
+        const node = this._sunLightUpdate.dequeue();
         if (!node) {
             break;
         }
@@ -193,6 +193,6 @@ export function runSunLightUpdate() {
     }
 }
 export function runSunLightUpdateAt(x, y, z) {
-    this._sunLightUpdateQue.enqueue([x, y, z]);
+    this._sunLightUpdate.enqueue([x, y, z]);
     this.runSunLightUpdate();
 }

@@ -1,5 +1,6 @@
-export async function RunFlowNoChunkBuild() {
+export async function RunFlowNoChunkBuild(requeue = false) {
     const que = this._flowQue;
+    const reQueue = [];
     while (que.length != 0) {
         const node = que.shift();
         if (!node) {
@@ -9,7 +10,8 @@ export async function RunFlowNoChunkBuild() {
         const y = node[1];
         const z = node[2];
         const l = this.getLevel(x, y, z);
-        this.addToRebuildQue(x, y, z);
+        if (this.inRemoveMap(x, y, z))
+            continue;
         if (l == 1) {
             continue;
         }
@@ -58,5 +60,8 @@ export async function RunFlowNoChunkBuild() {
                 que.push([x, y - 1, z]);
             }
         }
+        this.addToRebuildQue(x, y, z);
     }
+    this._visitedMap.clear();
+    this._flowQue = reQueue;
 }

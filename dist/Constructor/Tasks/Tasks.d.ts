@@ -1,26 +1,31 @@
-import { BuildTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, ExplosionTasks, PaintTasks, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     build: {
         chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
         entity: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         item: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
+    voxelUpdate: {
+        erease: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        paint: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<PaintTasks>;
+    };
     rgb: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
     };
     worldSun: {
-        fillWorldColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-        updateAtMaxY: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-        floodAtMaxY: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        run: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<WorldSunTask>;
     };
     sun: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+    };
+    explosion: {
+        run: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<ExplosionTasks>;
     };
     flow: {
-        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
-        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasks>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
     };
     worldGen: {
         generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;

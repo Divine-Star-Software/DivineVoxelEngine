@@ -1,16 +1,21 @@
 export const ConstructorTasks = {
-    setQueueStates: -1,
     buildChunk: 0,
-    generate: 1,
-    RGBlightUpdate: 2,
-    RGBlightRemove: 3,
-    worldSunStep1: 4,
-    worldSunStep2: 5,
-    worldSunStep3: 6,
-    sunLightUpdate: 7,
-    sunLightRemove: 8,
-    flowUpdate: 9,
-    flowRemove: 10,
-    constructEntity: 11,
-    constructItem: 12
+    generate: 0,
+    RGBlightUpdate: 0,
+    RGBlightRemove: 0,
+    worldSun: 0,
+    sunLightUpdate: 0,
+    sunLightRemove: 0,
+    flowUpdate: 0,
+    flowRemove: 0,
+    constructEntity: 0,
+    constructItem: 0,
+    explosion: 0,
+    voxelErease: 0,
+    voxelPaint: 0,
 };
+let index = 0;
+for (const key of Object.keys(ConstructorTasks)) {
+    ConstructorTasks[key] = index;
+    index++;
+}

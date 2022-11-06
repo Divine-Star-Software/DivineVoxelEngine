@@ -103,5 +103,5 @@ export async function RunFlowIncrease(this: typeof FlowManager) {
  }
 
  this._flowQue = reque;
- this._visitedMap = {};
+ this._visitedMap.clear();
 }

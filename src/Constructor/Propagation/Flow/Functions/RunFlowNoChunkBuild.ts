@@ -1,7 +1,8 @@
 import type { FlowManager } from "../FlowManager";
 
-export async function RunFlowNoChunkBuild(this: typeof FlowManager) {
+export async function RunFlowNoChunkBuild(this: typeof FlowManager,requeue = false) {
  const que = this._flowQue;
+ const reQueue : number[][] = [];
  while (que.length != 0) {
   const node = que.shift();
   if (!node) {
@@ -10,8 +11,9 @@ export async function RunFlowNoChunkBuild(this: typeof FlowManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
+
   const l = this.getLevel(x, y, z);
-  this.addToRebuildQue(x, y, z);
+  if(this.inRemoveMap(x,y,z)) continue;
   if (l == 1) {
    continue;
   }
@@ -61,5 +63,9 @@ export async function RunFlowNoChunkBuild(this: typeof FlowManager) {
     que.push([x, y - 1, z]);
    }
   }
+
+  this.addToRebuildQue(x, y, z);
  }
+ this._visitedMap.clear();
+ this._flowQue = reQueue;
 }

@@ -75,7 +75,7 @@ export const DVEW = {
  },
 
  generate(x: number, z: number, data: any = []) {
-  this.ccm.tasks.worldGen.generate([x, z, data]);
+  //this.ccm.tasks.worldGen.generate([x, z, data]);
  },
 
  createItem(itemId: string, x: number, y: number, z: number) {

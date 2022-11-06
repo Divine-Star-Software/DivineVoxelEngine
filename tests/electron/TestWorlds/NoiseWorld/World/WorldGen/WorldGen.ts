@@ -41,7 +41,7 @@ export const WorldGen = {
       brush.setXYZ(x, y, z).paint();
       let flip = Math.random();
       if (flip > 0.92) {
-       brush.setId("dve:dreamstone");
+       brush.setId("dve:dreamgrass");
        brush.setXYZ(x, y + 1, z).paint();
       }
      } else {

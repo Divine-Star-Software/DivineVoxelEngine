@@ -102,7 +102,7 @@ export const WorldRegister = {
                 let maxHeight = -Infinity;
                 for (const check of $2dMooreNeighborhood) {
                     const cx = check[0] * chunkWidth + x;
-                    const cz = check[0] * chunkDepth + z;
+                    const cz = check[1] * chunkDepth + z;
                     const height = this.getAbsolute(dimensionId, cx, cz, y);
                     if (height > maxHeight) {
                         maxHeight = height;
@@ -113,15 +113,18 @@ export const WorldRegister = {
             getAbsolute(dimensionId, x, z, y = 0) {
                 const column = WorldRegister.column.get(dimensionId, x, z, y);
                 if (!column)
-                    return -Infinity;
+                    return WorldBounds.bounds.MinY;
                 if (column.chunks.size == 0)
-                    return -Infinity;
-                let maxHeight = -Infinity;
+                    return WorldBounds.bounds.MinY;
+                let maxHeight = WorldBounds.bounds.MinY;
                 for (const [key, chunk] of column.chunks) {
                     if (!chunk)
                         continue;
                     const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
-                    const chunkMax = HeightMapData.getChunkMax(chunk.data) + chunkPOS.y;
+                    let chunkMax = HeightMapData.getChunkMax(chunk.data);
+                    if (chunkMax == 0)
+                        continue;
+                    chunkMax += chunkPOS.y;
                     if (maxHeight < chunkMax) {
                         maxHeight = chunkMax;
                     }

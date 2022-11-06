@@ -90,4 +90,3 @@ export const DVEB = {
  },
 };
 
-export type DivineVoxelEngineBuilder = typeof DVEB;

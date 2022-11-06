@@ -1,6 +1,6 @@
 import type { AddVoxelData } from "Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-export declare class VoxelBrush {
+export declare class BrushTool {
     data: AddVoxelData;
     _dt: DataTool;
     _raw: number[];
@@ -10,9 +10,11 @@ export declare class VoxelBrush {
     setState(state: number): this;
     setShapeState(state: number): this;
     setRaw(data: number[]): this;
+    getRaw(): number[];
     setXYZ(x: number, y: number, z: number): this;
     getData(): AddVoxelData;
     paint(): this;
+    erease(): this;
     start(): this;
     stop(): this;
 }

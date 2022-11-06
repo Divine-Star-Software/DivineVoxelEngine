@@ -86,5 +86,5 @@ export async function RunFlowIncrease() {
         this.addToRebuildQue(x, y, z);
     }
     this._flowQue = reque;
-    this._visitedMap = {};
+    this._visitedMap.clear();
 }

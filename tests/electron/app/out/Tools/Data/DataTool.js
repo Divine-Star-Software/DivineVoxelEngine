@@ -29,6 +29,7 @@ export class DataTool {
     __secondary = false;
     setDimension(dimensionId) {
         this.data.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
+        return this;
     }
     setSecondary(enable) {
         this.__secondary = enable;

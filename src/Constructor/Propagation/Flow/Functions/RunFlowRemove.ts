@@ -1,4 +1,3 @@
-import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import type { FlowManager } from "../FlowManager";
 
 export async function RunFlowRemove(
@@ -8,93 +7,107 @@ export async function RunFlowRemove(
  z: number
 ) {
  const check = this.setCurrentVoxel(x, y, z);
+
+ this._visitedMap.clear();
  if (!check) return;
 
  this.runRemoveCheck(x, y, z);
 
- this.removeVoxel(x, y, z);
+ //this.removeVoxel(x, y, z);
  while (this._flowRemoveQue.length != 0) {
   this.runRemovePropagation();
   this.runFlowReduce();
-  this.runFlowNoChunkRebuild();
   this.runRebuildQue();
+  this.runFlowNoChunkRebuild();
   await this.wait(100);
  }
+ this._flowQue = [];
+
+ this._removeMap.clear();
 }
 
 export async function RunRemovePropagation(this: typeof FlowManager) {
  const que = this._flowRemoveQue;
+
  for (let i = 0; i < que.length; i++) {
   const node = que[i];
   const x = node[0];
   const y = node[1];
   const z = node[2];
+
   const l = this.getLevel(x, y, z);
+  const s = this.getLevelState(x, y, z);
+  if (this.inMap(x, y, z)) continue;
   this.addToMap(x, y, z);
 
-  if (!this.inMap(x + 1, y, z)) {
-   const n1 = this.getLevel(x + 1, y, z);
+  const n5 = this.getLevel(x, y - 1, z);
+  if (n5 > 0) {
+   let add = false;
+   if (s == 1) {
+    if (l < 2) {
+     add = true;
+    }
+   }
+   if (s == 0 && l < 2) {
+    add = true;
+   }
+   if (add) {
+    this.addToRemoveMap(x, y - 1, z);
+    this._flowRemoveQue.push([x, y - 1, z]);
+   }
+  }
+
+  const n1 = this.getLevel(x + 1, y, z);
+  if (n1 > 0) {
    const n1s = this.getLevelState(x + 1, y, z);
-   if (((n1 == l || n1 < 2) && n1 > 0) || n1s == 1) {
+   if (n1 <= l && l > 0 && n1 > 0) {
     this._flowRemoveQue.push([x + 1, y, z]);
    }
-   if (n1 >= l) {
+   if (n1 > l && !this.inRemoveMap(x + 1, y, z)) {
     this._flowQue.push([x + 1, y, z]);
    }
   }
-  if (!this.inMap(x - 1, y, z)) {
-   const n2 = this.getLevel(x - 1, y, z);
+
+  const n2 = this.getLevel(x - 1, y, z);
+  if (n2 > 0) {
    const n2s = this.getLevelState(x - 1, y, z);
-   if (((n2 == l || n2 < 2) && n2 > 0) || n2s == 1) {
+   if (n2 <= l && l > 0 && n2 > 0) {
     this._flowRemoveQue.push([x - 1, y, z]);
    }
-   if (n2 >= l) {
+   if (n2 > l && !this.inRemoveMap(x - 1, y, z)) {
     this._flowQue.push([x - 1, y, z]);
    }
   }
 
-  if (!this.inMap(x, y, z + 1)) {
-   const n3 = this.getLevel(x, y, z + 1);
+  const n3 = this.getLevel(x, y, z + 1);
+  if (n3 > 0) {
    const n3s = this.getLevelState(x, y, z + 1);
-   if (((n3 == l || n3 < 2) && n3 > 0) || n3s == 1) {
+   if (n3 <= l && l > 0 && n3 > 0) {
     this._flowRemoveQue.push([x, y, z + 1]);
    }
-   if (n3 >= l) {
+   if (n3 > l && !this.inRemoveMap(x, y, z + 1)) {
     this._flowQue.push([x, y, z + 1]);
    }
   }
 
-  if (!this.inMap(x, y, z - 1)) {
-   const n4 = this.getLevel(x, y, z - 1);
+  const n4 = this.getLevel(x, y, z - 1);
+  if (n4 > 0) {
    const n4s = this.getLevelState(x, y, z - 1);
-   if (((n4 == l || n4 < 2) && n4 > 0) || n4s == 1) {
+   if (n4 <= l && l > 0 && n4 > 0) {
     this._flowRemoveQue.push([x, y, z - 1]);
    }
-
-   if (n4 >= l) {
+   if (n4 > l && !this.inRemoveMap(x, y, z - 1)) {
     this._flowQue.push([x, y, z - 1]);
    }
   }
-
-  if (!this.inMap(x, y - 1, z)) {
-   const n5 = this.getLevel(x, y - 1, z);
-   const n5s = this.getLevelState(x, y - 1, z);
-   // if (((n5 == l || n5 < 2) && n5 > 0) || n5s == 1) {
-   if (n5s == 1 && l > -1 && l == 1) {
-    this._flowRemoveQue.push([x, y - 1, z]);
-   }
-
-   if (n5 >= l) {
-    //   this._flowQue.push([x, y - 1, z]);
-   }
-  }
  }
- this._visitedMap = {};
+ this._visitedMap.clear();
 }
 
 export async function RunFlowReduce(this: typeof FlowManager) {
  const que = this._flowRemoveQue;
  const reque: number[][] = [];
+
  while (que.length != 0) {
   const node = que.shift();
   if (!node) {
@@ -103,10 +116,13 @@ export async function RunFlowReduce(this: typeof FlowManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
+
   if (this.inMap(x, y, z)) continue;
-  this.addToMap(x, y, z);
+  this.inMap(x, y, z);
 
   const l = this.getLevel(x, y, z);
+  if (l <= 0) continue;
+
   const state = this.getLevelState(x, y, z);
   let syncRebuild = false;
 
@@ -125,6 +141,6 @@ export async function RunFlowReduce(this: typeof FlowManager) {
   this.addToRebuildQue(x, y, z, syncRebuild);
  }
 
+
  this._flowRemoveQue = reque;
- this._visitedMap = {};
 }

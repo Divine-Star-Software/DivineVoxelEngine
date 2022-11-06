@@ -1,6 +1,6 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
@@ -56,7 +56,7 @@ export const DVEWG = {
     },
     _addToRGBLightUpdateQue(voxelData, x, y, z) {
         if (voxelData.lightSource && voxelData.lightValue) {
-            DVEC.worldComm.sendMessage(WorldTasks.addToRGBLightUpdateQue, [x, y, z]);
+            DVEC.worldComm.sendMessage(ConstructorRemoteThreadTasks.addToRGBLightUpdateQue, [x, y, z]);
         }
     },
     async paintVoxel(voxelId, voxelState, shapeState, x, y, z) {

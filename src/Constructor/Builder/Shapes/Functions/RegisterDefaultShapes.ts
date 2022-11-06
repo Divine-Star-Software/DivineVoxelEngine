@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineBuilder } from "../../DivineVoxelEngineBuilder.js";
+import type { DVEB as DVEBuilder } from "../../DivineVoxelEngineBuilder.js";
 //shapes
 import { FullBoxDiagonalIntersection } from "../default/DiagonalIntersection/FullBoxDiagonalIntersection.voxe.shape.js";
 import { BoxVoxelShape } from "../default/Box/Box.voxel.shape.js";
@@ -7,11 +7,11 @@ import { HalfBoxVoxelShape } from "../default/Box/HalfBox.voxel.shape.js";
 import { PanelVoxelShape } from "../default/Panel/Panel.voxel.shape.js";
 import { StairVoxelShape } from "../default/Stair/Stair.voxel.shape.js";
 
-export function RegisterDefaultShapes(DVEB: DivineVoxelEngineBuilder) {
- DVEB.shapeManager.registerShape(BoxVoxelShape);
- DVEB.shapeManager.registerShape(HalfBoxVoxelShape);
- DVEB.shapeManager.registerShape(StairVoxelShape);
- DVEB.shapeManager.registerShape(PanelVoxelShape);
- DVEB.shapeManager.registerShape(FluidSourceBlockVoxelShape);
- DVEB.shapeManager.registerShape(FullBoxDiagonalIntersection);
+export function RegisterDefaultShapes(builder: typeof DVEBuilder) {
+ builder.shapeManager.registerShape(BoxVoxelShape);
+ builder.shapeManager.registerShape(HalfBoxVoxelShape);
+ builder.shapeManager.registerShape(StairVoxelShape);
+ builder.shapeManager.registerShape(PanelVoxelShape);
+ builder.shapeManager.registerShape(FluidSourceBlockVoxelShape);
+ builder.shapeManager.registerShape(FullBoxDiagonalIntersection);
 }

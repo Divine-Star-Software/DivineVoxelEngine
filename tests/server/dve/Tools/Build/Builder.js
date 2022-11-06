@@ -1,7 +1,7 @@
 import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { DVEW } from "../../World/DivineVoxelEngineWorld.js";
+import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 export class BuilderTool {
     data = {
         dimesnion: 0,
@@ -30,7 +30,7 @@ export class BuilderTool {
         return this;
     }
     buildChunk() {
-        DVEW.ccm.tasks.build.chunk([
+        CCM.tasks.build.chunk([
             this.data.dimesnion,
             this.data.x,
             this.data.y,
@@ -40,14 +40,14 @@ export class BuilderTool {
         return this;
     }
     buildColumn() {
-        const column = DVEW.data.worldRegister.column.get(this.data.dimesnion, this.data.x, this.data.z, this.data.y);
+        const column = WorldRegister.column.get(this.data.dimesnion, this.data.x, this.data.z, this.data.y);
         if (!column)
             return false;
         if (column.chunks.size == 0)
             return false;
         for (const [key, chunk] of column.chunks) {
             const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
-            DVEW.ccm.tasks.build.chunk([
+            CCM.tasks.build.chunk([
                 this.data.dimesnion,
                 chunkPOS.x,
                 chunkPOS.y,

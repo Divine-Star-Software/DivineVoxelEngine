@@ -1,2 +1,2 @@
-import type { DivineVoxelEngineBuilder } from "../DivineVoxelEngineBuilder";
-export declare function InitBuilder(DVEB: DivineVoxelEngineBuilder): void;
+import type { DVEB as DVEBuilder } from "../DivineVoxelEngineBuilder";
+export declare function InitBuilder(DVEB: typeof DVEBuilder): void;

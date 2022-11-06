@@ -1,4 +1,4 @@
-export declare const WorldTasks: {
+export declare const ConstructorRemoteThreadTasks: {
     syncShapeMap: number;
     addToRebuildQue: number;
     runRebuildQue: number;

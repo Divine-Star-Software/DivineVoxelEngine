@@ -16,5 +16,6 @@ export declare const VoxelMath: {
     getBoundingBox(data: BoundingBoxData): BoundingBox;
     convertToOriginGridSpace(position: number[]): number[];
     distance2D(x1: number, x2: number, y1: number, y2: number): number;
+    distance3D(x1: number, y1: number, z1: number, x2: number, y2: number, z2: number): number;
 };
 export declare type VoxelMath = typeof VoxelMath;

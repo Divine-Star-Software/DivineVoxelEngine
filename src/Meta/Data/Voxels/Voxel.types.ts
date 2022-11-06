@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import type { DVEB as DVEBuilswe } from "Constructor/Builder/DivineVoxelEngineBuilder";
 import type {
  AOAddOverride,
  CullFaceOverride,
@@ -51,7 +51,7 @@ export type VoxelData = {
  substance: VoxelSubstanceType;
  material: string;
  hardnress: number;
- isRich ?: boolean;
+ isRich?: boolean;
  physics?: {
   collider: string;
   checkCollisions: boolean;
@@ -63,15 +63,12 @@ export type VoxelData = {
 
 export type VoxelConstructorObject = {
  id: string;
- hooks: Record<
-  VoxelConstructorThreadHooks,
-  (DVEB: DivineVoxelEngineBuilder) => any
- >;
+ hooks: Record<VoxelConstructorThreadHooks, (DVEB: typeof DVEBuilswe) => any>;
 
  cullFace?: {
   (data: CullFaceOverride): boolean;
  };
 
  aoOverRide?: { (data: AOAddOverride): boolean };
- process(data: VoxelProcessData, DVEB: DivineVoxelEngineBuilder): void;
+ process(data: VoxelProcessData, DVEB: typeof DVEBuilswe): void;
 };

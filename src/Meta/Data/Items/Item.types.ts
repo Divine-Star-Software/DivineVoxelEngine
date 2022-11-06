@@ -1,4 +1,4 @@
-import type { DivineVoxelEngineBuilder } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import type { DVEB as DVEBuilswe } from "Constructor/Builder/DivineVoxelEngineBuilder";
 
 export type ItemData = {
  id: string;
@@ -14,7 +14,7 @@ export type ItemConstructorObject = {
  shapeId: string;
  hooks: Record<
   ItemConstructorThreadHooks,
-  (DVEB: DivineVoxelEngineBuilder) => any
+  (DVEB: typeof DVEBuilswe) => any
  >;
- process(data: ItemProcessData, DVEB: DivineVoxelEngineBuilder): void;
+ process(data: ItemProcessData, DVEB: typeof DVEBuilswe): void;
 };

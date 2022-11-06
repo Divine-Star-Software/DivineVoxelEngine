@@ -6,7 +6,7 @@ import { BuilderTool } from "../Tools/Build/Builder.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
@@ -18,7 +18,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -697,26 +697,6 @@ export declare const DVEW: {
                 entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number;
                 item: (data: any) => number;
             };
-            rgb: {
-                update: (data: any) => number;
-                remove: (data: any) => number;
-            };
-            worldSun: {
-                fillWorldColumn: (data: any) => number;
-                updateAtMaxY: (data: any) => number;
-                floodAtMaxY: (data: any, threadNumber: number) => number;
-            };
-            sun: {
-                update: (data: any) => number;
-                remove: (data: any) => number;
-            };
-            flow: {
-                update: (data: any) => number;
-                remove: (data: any) => number;
-            };
-            worldGen: {
-                generate: (data: any) => number;
-            };
         };
     };
     richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
@@ -738,14 +718,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Position3Matrix, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Position3Matrix;
         };
@@ -834,25 +814,24 @@ export declare const DVEW: {
         filterQueues(filter: (queueKey: string | number) => boolean): void;
         filterOldQueues(maxTime?: number): void;
         rgb: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         };
-        worldSun: {
-            add(x: number, z: number, queueId?: string): void;
-            run(): Promise<void>;
-            __steps: {
-                step1: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number]>;
-                step2: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
-                step3: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<[number, number, number, number]>;
-            };
+        worldSun: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        voxelUpdate: {
+            erease: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            paint: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").PaintTasks>;
         };
         sun: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        };
+        explosion: {
+            run: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").ExplosionTasks>;
         };
         flow: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         };
         build: {
             chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").BuildTasks>;
@@ -918,11 +897,12 @@ export declare const DVEW: {
     generate(x: number, z: number, data?: any): void;
     createItem(itemId: string, x: number, y: number, z: number): void;
     $INIT(): Promise<void>;
-    getBrush(): import("../Tools/Brush/Brush.js").VoxelBrush & {
+    getBrush(): import("../Tools/Brush/Brush.js").BrushTool & {
         paintAndAwaitUpdate(): Promise<unknown>;
         ereaseAndAwaitUpdate(): Promise<unknown>;
-        paintAndUpdate(onDone?: Function): void;
+        paintAndUpdate(onDone?: Function | undefined): void;
         ereaseAndUpdate(onDone?: Function | undefined): void;
+        explode(radius?: number, onDone?: Function | undefined): void;
     };
     getBuilder(): BuilderTool;
     getDataTool(): DataTool;
@@ -933,11 +913,32 @@ export declare const DVEW: {
         };
         _thread: string;
         setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+        voxelUpdate: {
+            erease: {
+                _s: any;
+                add(x: number, y: number, z: number): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
+            paint: {
+                _s: any;
+                add(x: number, y: number, z: number, raw: number[]): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
+        };
         build: {
             chunk: {
                 _s: any;
-                __queueId: string;
                 add(x: number, y: number, z: number): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
+        };
+        explosion: {
+            run: {
+                _s: any;
+                add(x: number, y: number, z: number, radius: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
@@ -945,14 +946,12 @@ export declare const DVEW: {
         flow: {
             update: {
                 _s: any;
-                __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
             remove: {
                 _s: any;
-                __queueId: string;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
@@ -962,14 +961,12 @@ export declare const DVEW: {
             rgb: {
                 update: {
                     _s: any;
-                    __queueId: string;
                     add(x: number, y: number, z: number, queue?: string | null): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
                     _s: any;
-                    __queueId: string;
                     add(x: number, y: number, z: number, queue?: string | null): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
@@ -978,14 +975,12 @@ export declare const DVEW: {
             sun: {
                 update: {
                     _s: any;
-                    __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
                 remove: {
                     _s: any;
-                    __queueId: string;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
@@ -993,8 +988,8 @@ export declare const DVEW: {
             };
             worldSun: {
                 _s: any;
-                __queueId: string;
                 add(x: number, z: number, y?: number): void;
+                run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
         };

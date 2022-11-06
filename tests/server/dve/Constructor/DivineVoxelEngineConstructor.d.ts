@@ -989,7 +989,7 @@ export declare const DVEC: {
         buildChunk(dimension: string | number, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
         constructEntity(): void;
     };
-    DVEP: {
+    propagation: {
         illumination: {
             lightData: {
                 SRS: number;
@@ -1027,27 +1027,20 @@ export declare const DVEC: {
                 removeSunLight(sl: number): number;
                 minusOneForAll(sl: number): number;
             };
-            air: number[];
-            dimension: number;
             runSunLightUpdateAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
             runSunLightUpdate: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdate;
             runSunLightRemove: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemove;
             runSunLightRemoveAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
-            populateWorldColumnWithSunLight: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").PopulateWorldColumnWithSunLight;
-            runSunLightUpdateAtMaxY: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightUpdateAtMaxY;
-            runSunLightFloodDown: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightFloodDown;
-            runSunLightFloodOut: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunSunLightFloodOut;
-            sunLightAboveCheck: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").SunLightAboveCheck;
-            _sunLightUpdateQue: import("../Global/Util/Queue.js").Queue<number[]>;
-            _sunLightFloodDownQue: import("../Global/Util/Queue.js").Queue<number[]>;
-            _sunLightFloodOutQue: Record<string, import("../Global/Util/Queue.js").Queue<number[]>>;
-            _sunLightRemoveQue: number[][];
-            runRGBFloodFillAt: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFillAt;
-            runRGBFloodFill: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodFill;
-            runRGBFloodRemoveAt: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemoveAt;
-            runRGBFloodRemove: typeof import("./Propagation/Illumanation/Functions/RGBFloodLight.js").runRGBFloodRemove;
-            _RGBlightUpdateQue: number[][];
-            _RGBlightRemovalQue: number[][];
+            _sunLightUpdate: import("../Global/Util/Queue.js").Queue<number[]>;
+            _sunLightRemove: number[][];
+            runWorldSun: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunWorldSun;
+            _worldSunQueue: number[][];
+            runRGBUpdateAt: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBUpdateAt;
+            runRGBUpdate: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBUpdate;
+            runRGBRemoveAt: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBRemoveAt;
+            runRGBRemove: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBRemove;
+            _RGBlightUpdateQ: number[][];
+            _RGBlightRemovalQ: number[][];
             _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
             _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
             addToRebuildQue(x: number, y: number, z: number): void;
@@ -1091,10 +1084,11 @@ export declare const DVEC: {
             };
             dimension: number;
             currentVoxel: number;
-            _visitedMap: Record<string, boolean>;
+            _visitedMap: Map<string, boolean>;
+            _removeMap: Map<string, boolean>;
             _flowQue: number[][];
             _flowRemoveQue: number[][];
-            _brush: import("../Tools/Brush/Brush.js").VoxelBrush;
+            _brush: import("../Tools/Brush/Brush.js").BrushTool;
             _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
             _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
             runRemovePropagation: typeof import("./Propagation/Flow/Functions/RunFlowRemove.js").RunRemovePropagation;
@@ -1108,7 +1102,12 @@ export declare const DVEC: {
             rebuildMap: Record<string, boolean>;
             addToMap(x: number, y: number, z: number): void;
             inMap(x: number, y: number, z: number): boolean;
+            addToRemoveMap(x: number, y: number, z: number): void;
+            inRemoveMap(x: number, y: number, z: number): boolean;
+            removeFromRemoveMap(x: number, y: number, z: number): boolean;
             setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
+            removeVoxel(x: number, y: number, z: number): void;
+            flowOutCheck(l: number, nl: number, ns: number, x: number, y: number, z: number): void;
             runRemoveCheck(x: number, y: number, z: number): void;
             setCurrentVoxel(x: number, y: number, z: number): boolean;
             runRebuildQue(): void;
@@ -1116,7 +1115,6 @@ export declare const DVEC: {
             resetRebuildQue(): void;
             addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
             setLevel(level: number, x: number, y: number, z: number): void;
-            removeVoxel(x: number, y: number, z: number): void;
             getLevel(x: number, y: number, z: number): number;
             getLevelState(x: number, y: number, z: number): number;
             canFlowOutwardTest(x: number, y: number, z: number): boolean;
@@ -1127,23 +1125,29 @@ export declare const DVEC: {
             getAbsorbLight(x: number, y: number, z: number): number;
             sunCheck(x: number, y: number, z: number): void;
         };
+        explosion: {
+            _queue: number[][];
+            _visitedMap: Map<string, boolean>;
+            addToMap(x: number, y: number, z: number): void;
+            inMap(x: number, y: number, z: number): boolean;
+            runExplosion(dimension: string, sx: number, sy: number, sz: number, radius: number): void;
+        };
         rebuildQueMap: Map<string, Map<string, boolean>>;
         $INIT(): void;
         _dimension: string;
         _buildQueue: string;
         addToRebuildQue(x: number, y: number, z: number, substance: import("Meta/index.js").VoxelSubstanceType | "all"): void;
-        _process(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
+        _process(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
         resetRebuildQue(): void;
         runRebuildQue(): void;
-        runRGBFloodFill(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
-        runRGBFloodRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
-        runSunLightForWorldColumn(x: number, z: number, maxY: number): void;
-        runSunFloodFillAtMaxY(x: number, z: number, maxY: number): void;
-        runSunFloodFillMaxYFlood(x: number, z: number, maxY: number): void;
-        runSunLightUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
-        runSunLightRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): void;
-        updateFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): Promise<void>;
-        removeFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasks): Promise<void>;
+        runRGBUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
+        runRGBRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
+        runSunLightUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
+        runSunLightRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
+        updateFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
+        removeFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
+        runExplosion(data: import("../Meta/Tasks/Tasks.types.js").ExplosionTasks): void;
+        runWorldSun(data: import("../Meta/Tasks/Tasks.types.js").WorldSunTask): void;
     };
     DVEWG: {
         worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
@@ -1280,22 +1284,27 @@ export declare const DVEC: {
             entity: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
             item: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         };
+        voxelUpdate: {
+            erease: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            paint: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").PaintTasks>;
+        };
         rgb: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         };
         worldSun: {
-            fillWorldColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-            updateAtMaxY: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
-            floodAtMaxY: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            run: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").WorldSunTask>;
         };
         sun: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        };
+        explosion: {
+            run: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").ExplosionTasks>;
         };
         flow: {
-            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
-            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         };
         worldGen: {
             generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;

@@ -1,4 +1,4 @@
-import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 
@@ -6,7 +6,7 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
  await ThreadComm.$INIT("constructor");
 
  DVEC.DVEB.$INIT();
- DVEC.DVEP.$INIT();
+ DVEC.propagation.$INIT();
  await DVEC.UTIL.createPromiseCheck({
   check: () => {
    return DVEC.isReady();

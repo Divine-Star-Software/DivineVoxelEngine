@@ -1,2 +1,2 @@
-import type { DivineVoxelEngineBuilder } from "../../DivineVoxelEngineBuilder.js";
-export declare function RegisterDefaultShapes(DVEB: DivineVoxelEngineBuilder): void;
+import type { DVEB as DVEBuilder } from "../../DivineVoxelEngineBuilder.js";
+export declare function RegisterDefaultShapes(builder: typeof DVEBuilder): void;

@@ -1,18 +1,21 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { BuildTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
+import type {
+ BuildTasks,
+ ExplosionTasks,
+ PaintTasks,
+ UpdateTasksO,
+ WorldSunTask,
+} from "Meta/Tasks/Tasks.types.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 export const Tasks = {
  build: {
   chunk: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildChunk,
    async (data) => {
-    const chunkPOS = WorldBounds.getChunkPosition(
-     data[1],
-     data[2],
-     data[3]
-    );
+    const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
     await DVEC.DVEB.buildChunk(
      data[0],
      chunkPOS.x,
@@ -60,75 +63,75 @@ export const Tasks = {
    }
   ),
  },
- rgb: {
-  update: ThreadComm.registerTasks<UpdateTasks>(
-   ConstructorTasks.RGBlightUpdate,
-   (data) => {
-    DVEC.DVEP.runRGBFloodFill(data);
+ voxelUpdate: {
+  erease: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.voxelErease,
+   async (data) => {
+    await EreaseAndUpdate(data);
    }
   ),
-  remove: ThreadComm.registerTasks<UpdateTasks>(
+  paint: ThreadComm.registerTasks<PaintTasks>(
+   ConstructorTasks.voxelPaint,
+   async (data) => {
+    await PaintAndUpdate(data);
+   }
+  ),
+ },
+ rgb: {
+  update: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.RGBlightUpdate,
+   (data) => {
+    DVEC.propagation.runRGBUpdate(data);
+   }
+  ),
+  remove: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.RGBlightRemove,
    (data) => {
-    DVEC.DVEP.runRGBFloodRemove(data);
+    DVEC.propagation.runRGBRemove(data);
    }
   ),
  },
  worldSun: {
-  fillWorldColumn: ThreadComm.registerTasks<any[]>(
-   ConstructorTasks.worldSunStep1,
+  run: ThreadComm.registerTasks<WorldSunTask>(
+   ConstructorTasks.worldSun,
    (data) => {
-    //run sun light propagation for world column
-    const x = data[0];
-    const z = data[1];
-    const maxY = data[2];
-    DVEC.DVEP.runSunLightForWorldColumn(x, z, maxY);
-   }
-  ),
-  updateAtMaxY: ThreadComm.registerTasks<any[]>(
-   ConstructorTasks.worldSunStep2,
-   (data) => {
-    const x = data[0];
-    const z = data[1];
-    const maxY = data[2];
-    DVEC.DVEP.runSunFloodFillAtMaxY(x, z, maxY);
-   }
-  ),
-  floodAtMaxY: ThreadComm.registerTasks<any[]>(
-   ConstructorTasks.worldSunStep3,
-   (data) => {
-    const x = data[0];
-    const z = data[1];
-    const maxY = data[2];
-    DVEC.DVEP.runSunFloodFillMaxYFlood(x, z, maxY);
+    DVEC.propagation.runWorldSun(data);
    }
   ),
  },
  sun: {
-  update: ThreadComm.registerTasks<UpdateTasks>(
+  update: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.sunLightUpdate,
    (data) => {
-    DVEC.DVEP.runSunLightUpdate(data);
+    DVEC.propagation.runSunLightUpdate(data);
    }
   ),
-  remove: ThreadComm.registerTasks<UpdateTasks>(
+  remove: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.sunLightRemove,
    (data) => {
-    DVEC.DVEP.runSunLightRemove(data);
+    DVEC.propagation.runSunLightRemove(data);
+   }
+  ),
+ },
+ explosion: {
+  run: ThreadComm.registerTasks<ExplosionTasks>(
+   ConstructorTasks.explosion,
+   (data) => {
+    DVEC.propagation.runExplosion(data);
    }
   ),
  },
  flow: {
-  update: ThreadComm.registerTasks<UpdateTasks>(
+  update: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.flowUpdate,
    async (data) => {
-    await DVEC.DVEP.updateFlowAt(data);
+    await DVEC.propagation.updateFlowAt(data);
    }
   ),
-  remove: ThreadComm.registerTasks<UpdateTasks>(
+  remove: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.flowRemove,
    (data) => {
-    DVEC.DVEP.removeFlowAt(data);
+    DVEC.propagation.removeFlowAt(data);
    }
   ),
  },

@@ -1,4 +1,4 @@
-import { DivineVoxelEngineBuilder } from "../../../../../out/Constructor/Builder/DivineVoxelEngineBuilder.js";
+import { DVEB as DVEBuilder } from "../../../../../out/Constructor/Builder/DivineVoxelEngineBuilder.js";
 import { VoxelProcessData } from "../../../../../out/Meta/Constructor/Voxel.types.js";
 import type { VoxelConstructorObject } from "out/Meta/index.js";
 const checkSets = {
@@ -52,7 +52,7 @@ const getUV = (
  x: number,
  y: number,
  z: number,
- DVEB: DivineVoxelEngineBuilder,
+ builder: typeof DVEBuilder,
  dimension: number
 ) => {
  let key = "";
@@ -62,7 +62,7 @@ const getUV = (
   const set = sets[i];
   const cx = x + set[0];
   const cz = z + set[1];
-  const check = DVEB.processor.mDataTool.isSameVoxel(cx, y, cz);
+  const check = builder.processor.mDataTool.isSameVoxel(cx, y, cz);
   if (check) {
    key += "1|";
   } else {
@@ -76,15 +76,15 @@ const getUV = (
  return overlayTextures[index];
 };
 
-const getFoamUV = (DVEB: DivineVoxelEngineBuilder, data: VoxelProcessData) => {
+const getFoamUV = (builder: typeof DVEBuilder, data: VoxelProcessData) => {
  const tx = data.x;
  const ty = data.y;
  const tz = data.z;
  data.overlayUVTemplate.push(
-  getUV("north", tx, ty, tz, DVEB, data.dimension),
-  getUV("south", tx, ty, tz, DVEB, data.dimension),
-  getUV("east", tx, ty, tz, DVEB, data.dimension),
-  getUV("west", tx, ty, tz, DVEB, data.dimension)
+  getUV("north", tx, ty, tz, builder, data.dimension),
+  getUV("south", tx, ty, tz, builder, data.dimension),
+  getUV("east", tx, ty, tz, builder, data.dimension),
+  getUV("west", tx, ty, tz, builder, data.dimension)
  );
 };
 
@@ -93,23 +93,23 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
  id: "dve:liquiddreamether",
 
  hooks: {
-  texturesRegistered: (DVEB) => {
-   uv = DVEB.textureManager.getTextureUV(
+  texturesRegistered: (builder) => {
+   uv = builder.textureManager.getTextureUV(
     "fluid",
     "liquid-dream-ether",
     "still-1"
    );
    overlayTextures.push(
-    DVEB.textureManager.getTextureUV("fluid", "foam", "top", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "ctr", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "ctl", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "ctltr", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "bottom", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "cbr", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "cbl", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "cblbr", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "right", true),
-    DVEB.textureManager.getTextureUV("fluid", "foam", "left", true)
+    builder.textureManager.getTextureUV("fluid", "foam", "top", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "ctr", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "ctl", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "ctltr", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "bottom", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "cbr", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "cbl", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "cblbr", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "right", true),
+    builder.textureManager.getTextureUV("fluid", "foam", "left", true)
    );
   },
  },

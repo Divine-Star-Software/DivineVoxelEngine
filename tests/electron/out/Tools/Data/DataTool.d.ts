@@ -20,7 +20,7 @@ export declare class DataTool {
         secondarySubstance: VoxelSubstanceType;
     };
     __secondary: boolean;
-    setDimension(dimensionId: string | number): void;
+    setDimension(dimensionId: string | number): this;
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;
     loadInRaw(rawData: number[]): void;

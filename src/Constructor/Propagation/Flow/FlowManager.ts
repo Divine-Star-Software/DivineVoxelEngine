@@ -10,14 +10,14 @@ import {
  RunFlowIncrease,
  RunFlowPropagation,
 } from "./Functions/RunFlow.js";
-import { DVEP } from "../DivineVoxelEnginePropagation.js";
+import { Propagation } from "../Propagation.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { VoxelBrush } from "../../../Tools/Brush/Brush.js";
+import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 
 export const FlowManager = {
@@ -26,11 +26,12 @@ export const FlowManager = {
  lightData: LightData,
  dimension: 0,
  currentVoxel: 0,
- _visitedMap: <Record<string, boolean>>{},
+ _visitedMap: <Map<string, boolean>>new Map(),
+ _removeMap: <Map<string, boolean>>new Map(),
  _flowQue: <number[][]>[],
  _flowRemoveQue: <number[][]>[],
 
- _brush: new VoxelBrush(),
+ _brush: new BrushTool(),
  _sDataTool: new DataTool(),
  _nDataTool: new DataTool(),
 
@@ -46,10 +47,19 @@ export const FlowManager = {
  rebuildMap: <Record<string, boolean>>{},
 
  addToMap(x: number, y: number, z: number) {
-  this._visitedMap[`${x}-${y}-${z}`] = true;
+  this._visitedMap.set(`${x}-${y}-${z}`, true);
  },
  inMap(x: number, y: number, z: number) {
-  return this._visitedMap[`${x}-${y}-${z}`] == true;
+  return this._visitedMap.has(`${x}-${y}-${z}`);
+ },
+ addToRemoveMap(x: number, y: number, z: number) {
+  this._removeMap.set(`${x}-${y}-${z}`, true);
+ },
+ inRemoveMap(x: number, y: number, z: number) {
+  return this._removeMap.has(`${x}-${y}-${z}`);
+ },
+ removeFromRemoveMap(x: number, y: number, z: number) {
+  return this._removeMap.delete(`${x}-${y}-${z}`);
  },
  setVoxel(level: number, levelState: number, x: number, y: number, z: number) {
   this.sunCheck(x, y, z);
@@ -62,26 +72,78 @@ export const FlowManager = {
    .commit();
  },
 
+ removeVoxel(x: number, y: number, z: number) {
+  for (const n of $3dCardinalNeighbors) {
+   const nx = x + n[0];
+   const ny = y + n[1];
+   const nz = z + n[2];
+   if (!this._nDataTool.loadIn(nx, ny, nz)) continue;
+
+   const l = this._nDataTool.getLight();
+
+   if (l <= 0) continue;
+
+   if (this.lightData.getS(l) > 0) {
+    IlluminationManager._sunLightUpdate.enqueue([nx, ny, nz]);
+   }
+
+   if (this.lightData.hasRGBLight(l)) {
+    IlluminationManager._RGBlightUpdateQ.push([nx, ny, nz]);
+   }
+  }
+
+  this._brush.setXYZ(x, y, z).erease();
+
+  IlluminationManager.runSunLightUpdate();
+  IlluminationManager.runRGBUpdate();
+ },
+
+ flowOutCheck(
+  l: number,
+  nl: number,
+  ns: number,
+  x: number,
+  y: number,
+  z: number
+ ) {
+  if (nl >= l || ns == 1) {
+   this._flowQue.push([x, y, z]);
+  }
+
+  /*   if (ns == 1) {
+   const cl = this.getLevel(x, y - 1, z);
+   if (cl == -1 || cl == 0) {
+    this._flowQue.push([x, y, z]);
+   }
+  } */
+ },
+
  runRemoveCheck(x: number, y: number, z: number) {
   const cl = this.getLevel(x, y, z);
+
+  this._flowRemoveQue.push([x, y, z]);
+
   const n1 = this.getLevel(x + 1, y, z);
   const n1s = this.getLevelState(x + 1, y, z);
+
+
+
   if ((n1 > -1 && n1 < cl) || n1s == 1) {
    this._flowRemoveQue.push([x + 1, y, z]);
   }
   const n2 = this.getLevel(x - 1, y, z);
   const n2s = this.getLevelState(x - 1, y, z);
-  if ((n2 > -1 && n2 < cl) || n2s == 1) {
+  if ((n2 > 0 && n2 < cl) || n2s == 1) {
    this._flowRemoveQue.push([x - 1, y, z]);
   }
   const n3 = this.getLevel(x, y, z + 1);
   const n3s = this.getLevelState(x, y, z + 1);
-  if ((n3 > -1 && n3 < cl) || n3s == 1) {
+  if ((n3 > 0 && n3 < cl) || n3s == 1) {
    this._flowRemoveQue.push([x, y, z + 1]);
   }
   const n4 = this.getLevel(x, y, z - 1);
   const n4s = this.getLevelState(x, y, z - 1);
-  if ((n4 > -1 && n4 < cl) || n4s == 1) {
+  if ((n4 > 0 && n4 < cl) || n4s == 1) {
    this._flowRemoveQue.push([x, y, z - 1]);
   }
  },
@@ -107,7 +169,7 @@ export const FlowManager = {
    const z = node[2];
    DVEC.DVEB.buildChunk(this.dimension, x, y, z);
   }
-  DVEP.runRebuildQue();
+  Propagation.runRebuildQue();
   this.rebuildMap = {};
  },
 
@@ -126,7 +188,7 @@ export const FlowManager = {
  },
 
  resetRebuildQue() {
-  DVEP.resetRebuildQue();
+  Propagation.resetRebuildQue();
  },
  addToRebuildQue(x: number, y: number, z: number, sync = false) {
   if (sync) {
@@ -137,22 +199,17 @@ export const FlowManager = {
    this.__addToRebuildQue(x, y, z + 1);
    this.__addToRebuildQue(x + 1, y, z);
   } else {
-   DVEP.addToRebuildQue(x, y - 1, z, "all");
-   DVEP.addToRebuildQue(x, y + 1, z, "all");
-   DVEP.addToRebuildQue(x, y, z - 1, "all");
-   DVEP.addToRebuildQue(x - 1, y, z, "all");
-   DVEP.addToRebuildQue(x, y, z + 1, "all");
-   DVEP.addToRebuildQue(x + 1, y, z, "all");
+   Propagation.addToRebuildQue(x, y - 1, z, "all");
+   Propagation.addToRebuildQue(x, y + 1, z, "all");
+   Propagation.addToRebuildQue(x, y, z - 1, "all");
+   Propagation.addToRebuildQue(x - 1, y, z, "all");
+   Propagation.addToRebuildQue(x, y, z + 1, "all");
+   Propagation.addToRebuildQue(x + 1, y, z, "all");
   }
  },
  setLevel(level: number, x: number, y: number, z: number) {
   this._nDataTool.loadIn(x, y, z);
   this._nDataTool.setLevel(level).commit();
- },
-
- removeVoxel(x: number, y: number, z: number) {
-  this._nDataTool.loadIn(x, y, z);
-  this._nDataTool.setAir().commit();
  },
 
  getLevel(x: number, y: number, z: number) {
@@ -176,7 +233,7 @@ export const FlowManager = {
   if (this._nDataTool.isAir()) {
    return -1;
   }
-  return -1;
+  return -3;
  },
 
  canFlowOutwardTest(x: number, y: number, z: number) {

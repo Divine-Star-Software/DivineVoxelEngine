@@ -4,7 +4,7 @@ import type { VoxelData } from "Meta/index.js";
 import type { Position3Matrix } from "Meta/Util.types.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
@@ -92,7 +92,7 @@ export const DVEWG = {
   z: number
  ) {
   if (voxelData.lightSource && voxelData.lightValue) {
-   DVEC.worldComm.sendMessage(WorldTasks.addToRGBLightUpdateQue, [x, y, z]);
+   DVEC.worldComm.sendMessage(ConstructorRemoteThreadTasks.addToRGBLightUpdateQue, [x, y, z]);
   }
  },
 

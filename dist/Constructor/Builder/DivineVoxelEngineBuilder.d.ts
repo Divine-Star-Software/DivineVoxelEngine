@@ -373,4 +373,3 @@ export declare const DVEB: {
     buildChunk(dimension: string | number, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
     constructEntity(): void;
 };
-export declare type DivineVoxelEngineBuilder = typeof DVEB;

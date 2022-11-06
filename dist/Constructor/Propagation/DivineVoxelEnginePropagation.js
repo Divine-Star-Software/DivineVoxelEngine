@@ -1,13 +1,15 @@
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
-import { WorldTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { FlowManager } from "./Flow/FlowManager.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
-export const DVEP = {
+import { ExplosionManager } from "./Explosion/ExplosionManager.js";
+export const Propagation = {
     illumination: IlluminationManager,
     flow: FlowManager,
+    explosion: ExplosionManager,
     rebuildQueMap: new Map(),
     $INIT() { },
     _dimension: "main",
@@ -25,7 +27,7 @@ export const DVEP = {
             return;
         if (!map.has(chunkKey)) {
             map.set(chunkKey, true);
-            DVEC.worldComm.runTasks(WorldTasks.addToRebuildQue, [
+            DVEC.worldComm.runTasks(ConstructorRemoteThreadTasks.addToRebuildQue, [
                 this._dimension,
                 chunkPOS.x,
                 chunkPOS.y,
@@ -42,19 +44,19 @@ export const DVEP = {
         this.rebuildQueMap.clear();
     },
     runRebuildQue() {
-        DVEC.worldComm.runTasks(WorldTasks.runRebuildQue, [
+        DVEC.worldComm.runTasks(ConstructorRemoteThreadTasks.runRebuildQue, [
             this._buildQueue,
         ]);
         this.rebuildQueMap.clear();
     },
-    runRGBFloodFill(data) {
+    runRGBUpdate(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runRGBFloodFillAt(data[1], data[2], data[3]);
         WorldRegister.cache.disable();
         this.rebuildQueMap.clear();
     },
-    runRGBFloodRemove(data) {
+    runRGBRemove(data) {
         this._process(data);
         WorldRegister.cache.enable();
         this.illumination.runRGBFloodRemoveAt(true, data[1], data[2], data[3]);
@@ -104,6 +106,14 @@ export const DVEP = {
         this._process(data);
         WorldRegister.cache.enable();
         await this.flow.runFlowRemove(data[1], data[2], data[3]);
+        WorldRegister.cache.disable();
+        this.rebuildQueMap.clear();
+    },
+    runExplosion(data) {
+        this._dimension = data[0];
+        this._buildQueue = data[5];
+        WorldRegister.cache.enable();
+        this.explosion.runExplosion(data[0], data[1], data[2], data[3], data[4]);
         WorldRegister.cache.disable();
         this.rebuildQueMap.clear();
     },

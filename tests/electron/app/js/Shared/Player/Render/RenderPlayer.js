@@ -26,6 +26,10 @@ export const GetPlayerPickCube = (DVER, camera, scene, model) => {
     cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
     const cameraPickPostion = new BABYLON.Vector3();
     window.addEventListener("click", (event) => {
+        if (event.button == 2 && event.shiftKey) {
+            DVER.worldComm.sendMessage("explode");
+            return;
+        }
         if (event.button == 2) {
             cameraPickPostion.x = model.position.x;
             cameraPickPostion.y = model.position.y;

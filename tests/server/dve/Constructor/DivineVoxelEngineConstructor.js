@@ -2,7 +2,7 @@
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
 import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
-import { DVEP } from "./Propagation/DivineVoxelEnginePropagation.js";
+import { Propagation } from "./Propagation/Propagation.js";
 import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
 import { VoxelManager } from "./Managers/Voxels/VoxelManager.js";
 import { ItemManager } from "./Managers/Items/ItemManager.js";
@@ -23,7 +23,7 @@ export const DVEC = {
     dataSyncNode: DataSyncNode,
     data: DataManager,
     DVEB: DVEB,
-    DVEP: DVEP,
+    propagation: Propagation,
     DVEWG: DVEWG,
     tasks: Tasks,
     parentComm: ParentComm,
