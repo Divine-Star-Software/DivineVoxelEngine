@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 
 const loadWorld = (world) => {
+
  const script = document.createElement("script");
  script.type = "module";
  script.src = `./js/${world}/index.js`;
@@ -18,7 +19,6 @@ if (world) {
 }
 
 const guiButtons = document.getElementById("gui-buttons");
-
 const homeButton = document.createElement("button");
 homeButton.className = "gui-button";
 homeButton.innerText = "Home";

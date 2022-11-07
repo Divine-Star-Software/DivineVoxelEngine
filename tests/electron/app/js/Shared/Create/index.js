@@ -12,7 +12,7 @@ export const SetUpWorkers = (basePath, worldPath, constructorPath, nexusPath = n
     });
     const constructorWorkers = [];
     const cPath = new URL(constructorPath, basePath);
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < navigator.hardwareConcurrency; i++) {
         constructorWorkers.push(new Worker(cPath, {
             type: "module",
         }));

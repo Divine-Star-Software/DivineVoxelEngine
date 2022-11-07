@@ -16,6 +16,7 @@ import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { RenderTasks } from "./Tasks/Tasks.js";
+import { WorldBounds } from "../Data/World/WorldBounds.js";
 export const DVER = {
     UTIL: Util,
     worldComm: WorldComm,
@@ -27,6 +28,9 @@ export const DVER = {
     settings: EngineSettings,
     renderManager: RenderManager,
     meshManager: MeshManager,
+    data: {
+        worldBounds: WorldBounds
+    },
     textureManager: TextureManager,
     renderedEntites: RenderedEntitesManager,
     tasks: RenderTasks,

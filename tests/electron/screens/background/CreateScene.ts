@@ -24,7 +24,7 @@ export const CreateScene = () => {
   camera.setTarget(BABYLON.Vector3.Zero());
   scene.activeCamera = camera;
 
-  scene.clearColor = new BABYLON.Color4(0, 0, 0, 0.5);
+  scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
   const particleSystem = BABYLON.ParticleSystem.Parse(
     ParticleSystemData,

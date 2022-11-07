@@ -1,6 +1,4 @@
 import { Worlds } from "../Worlds.js";
-//@ts-ignore
-const { ipcRenderer } = require("electron");
 const WorldSelection = (title, description, world) => {
     return [
         {
@@ -10,7 +8,7 @@ const WorldSelection = (title, description, world) => {
             },
             events: {
                 onClick: () => {
-                    ipcRenderer.send("world", world);
+                    window.goToWolrd(world);
                 },
             },
             children: [

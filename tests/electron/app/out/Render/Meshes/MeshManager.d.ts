@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { MeshSetData, VoxelMeshInterface } from "Meta/Render/Meshes/VoxelMesh.interface";
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { ItemMeshSetData } from "Meta/Render/Meshes/ItemMesh.types.js";

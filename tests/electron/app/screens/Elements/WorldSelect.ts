@@ -1,7 +1,6 @@
 import { Worlds } from "../Worlds.js";
 import { ElementTreeData } from "../libs/ElementTree/index";
-//@ts-ignore
-const { ipcRenderer } = require("electron");
+
 
 const WorldSelection = (
  title: string,
@@ -16,7 +15,7 @@ const WorldSelection = (
    },
    events: {
     onClick: () => {
-     ipcRenderer.send("world", world);
+        (window as any).goToWolrd(world);
     },
    },
    children: [

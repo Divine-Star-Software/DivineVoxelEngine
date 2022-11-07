@@ -1,5 +1,4 @@
 import type { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
-import {WorldBounds} from "../../../out/data/world/WorldBounds.js";
 export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
  let divFps = document.getElementById("fps");
  let position = document.getElementById("position");
@@ -73,7 +72,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
 
 
   if (DVER) {
-   const pos = WorldBounds.getChunkPosition(
+   const pos = DVER.data.worldBounds.getChunkPosition(
     positionWatch.position.x,
     positionWatch.position.y,
     positionWatch.position.z
