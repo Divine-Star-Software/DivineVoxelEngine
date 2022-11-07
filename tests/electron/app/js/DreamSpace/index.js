@@ -26,6 +26,9 @@ await DVER.$INIT({
         doRGBLight: true,
         doSunLight: true,
     },
+    flow: {
+        enable: false,
+    },
     chunks: {
         chunkXPow2: 4,
         chunkZPow2: 4,
