@@ -35,7 +35,7 @@ export function runSunLightRemove() {
         if (!this._sDataTool.loadIn(x, y, z))
             continue;
         const sl = this._sDataTool.getLight();
-        if (sl < 0)
+        if (sl <= 0)
             continue;
         if (!this.lightData.getS(sl))
             continue;
@@ -134,7 +134,7 @@ export function runSunLightUpdate() {
         if (!this._sDataTool.loadIn(x, y, z))
             continue;
         const sl = this._sDataTool.getLight();
-        if (sl < 0)
+        if (sl <= 0)
             continue;
         if (!this.lightData.getS(sl))
             continue;

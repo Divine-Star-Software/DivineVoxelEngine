@@ -71,14 +71,13 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
    }
   }
   updateLight(x, y, z);
-
-  if (doRGB) {
-   if (sl >= 0) {
+  if (sl >= 0) {
+   if (doRGB) {
     Propagation.runRGBUpdate(data);
    }
-  }
-  if (doSun) {
-   Propagation.runSunLightUpdate(data);
+   if (doSun) {
+    Propagation.runSunLightUpdate(data);
+   }
   }
  }
 
@@ -122,17 +121,14 @@ export async function PaintAndUpdate(data: PaintTasks) {
  brushTool.paint();
 
  if (ES.doLight()) {
+    updateLight(x,y,z)
   if (doRGB) {
    if (brushTool._dt.isLightSource()) {
     Propagation.runRGBUpdate(tasks);
    }
   }
-  updateLight(x, y, z);
   if (doSun) {
    Propagation.runSunLightUpdate(tasks);
-  }
-  if (doRGB) {
-   Propagation.runRGBUpdate(tasks);
   }
  }
  const thread = ThreadComm.getComm(threadId);

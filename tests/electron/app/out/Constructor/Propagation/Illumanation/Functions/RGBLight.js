@@ -12,6 +12,8 @@ export function runRGBUpdate() {
         if (this._sDataTool.isBarrier())
             continue;
         const sl = this._sDataTool.getLight();
+        if (sl <= 0)
+            continue;
         if (this._nDataTool.loadIn(x - 1, y, z)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
@@ -82,6 +84,8 @@ export function runRGBRemove(lightSource) {
         if (!this._sDataTool.loadIn(x, y, z))
             continue;
         const sl = this._sDataTool.getLight();
+        if (sl <= 0)
+            continue;
         if (this._nDataTool.loadIn(x - 1, y, z)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);

@@ -50,7 +50,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
   const z = node[2];
   if (!this._sDataTool.loadIn(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
-  if (sl < 0) continue;
+  if (sl <= 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
   if (this._nDataTool.loadIn(x - 1, y, z)) {
@@ -146,7 +146,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const z = node[2];
   if (!this._sDataTool.loadIn(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
-  if (sl < 0) continue;
+  if (sl <= 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
   if (this._nDataTool.loadIn(x - 1, y, z)) {
