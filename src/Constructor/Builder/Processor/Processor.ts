@@ -2,13 +2,15 @@
 import type {
  DirectionNames,
  EngineSettingsData,
+ VoxelConstructorObject,
+ VoxelShapeInterface,
  VoxelSubstanceType,
 } from "Meta/index.js";
 import type { ChunkData } from "Meta/Data/WorldData.types.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import type { Rotations } from "Meta/Constructor/Mesher.types.js";
-import type { CullFaceOverride } from "Meta/Constructor/OverRide.types";
+import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 //functions
 import {
  CalculateVoxelLight,
@@ -16,8 +18,7 @@ import {
 } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 //objects
-import { DVEB } from "../DivineVoxelEngineBuilder.js";
-import { DVEC } from "../../DivineVoxelEngineConstructor.js";
+import { Builder } from "../Builder.js";
 //data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { HeightMapData } from "../../../Data/Chunk/HeightMapData.js";
@@ -29,7 +30,11 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 
 import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
 //tools
-import { DataTool } from "../../../Tools/Data/DataTool.js";
+import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
+
+const mDT = GetConstructorDataTool();
+const nDT = GetConstructorDataTool();
+
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -37,8 +42,8 @@ import { DataTool } from "../../../Tools/Data/DataTool.js";
  */
 export const Processor = {
  LOD: 1,
- mDataTool: new DataTool(),
- nDataTool: new DataTool(),
+ mDataTool: mDT,
+ nDataTool: nDT,
  heightByte: HeightMapData,
  faceByte: FaceByte,
  lightData: LightData,
@@ -46,7 +51,6 @@ export const Processor = {
  voxellightMixCalc: VoxelLightMixCalc,
  doVoxelLight: CalculateVoxelLight,
 
- 
  exposedFaces: <number[]>[],
  faceStates: <number[]>[],
  textureRotation: <Rotations[]>[],
@@ -76,17 +80,11 @@ export const Processor = {
   y: 0,
   z: 0,
  },
- cullFaceOverrideData: <any>{
+ faceDataOverride: <FaceDataOverride>{
   face: "south",
-  substanceResult: true,
-  shapeState: 0,
-  voxel: {},
-  neighborVoxel: 0,
-  neighborVoxelShape: {},
-  neighborVoxelShapeState: 0,
-  x: 0,
-  y: 0,
-  z: 0,
+  default: false,
+  currentVoxel: mDT,
+  neighborVoxel: nDT,
  },
  aoOverRideData: <any>{
   face: "",
@@ -115,17 +113,6 @@ export const Processor = {
    lightTemplate: [],
    aoTemplate: [],
   },
-  transparent: {
-   positionTemplate: [],
-   faceTemplate: [],
-   uvTemplate: [],
-   overlayUVTemplate: [],
-   shapeTemplate: [],
-   shapeStateTemplate: [],
-   colorTemplate: [],
-   lightTemplate: [],
-   aoTemplate: [],
-  },
   flora: {
    positionTemplate: [],
    faceTemplate: [],
@@ -137,7 +124,7 @@ export const Processor = {
    lightTemplate: [],
    aoTemplate: [],
   },
-  fluid: {
+  liquid: {
    positionTemplate: [],
    faceTemplate: [],
    uvTemplate: [],
@@ -182,48 +169,29 @@ export const Processor = {
 
  cullCheck(
   face: DirectionNames,
-  voxelId: string,
-  voxelShapeId: number,
+  voxelObject: VoxelConstructorObject,
+  voxelShape: VoxelShapeInterface,
   voxelSubstance: VoxelSubstanceType,
-  shapeState: number,
   x: number,
   y: number,
   z: number,
   faceBit: number
  ) {
   const voxelExists = this.nDataTool.loadIn(x, y, z);
-
   let finalResult = false;
   if (voxelExists && this.nDataTool.isRenderable()) {
-   let neighorSustance = this.nDataTool.getSubstance();
-   let substanceRuleResult = DVEB.voxelHelper.substanceRuleCheck(
+   let substanceRuleResult = Builder.voxelHelper.substanceRuleCheck(
     voxelSubstance,
-    neighorSustance as VoxelSubstanceType
+    this.nDataTool.getSubstance()
    );
-
-   const voxelShape = DVEC.DVEB.shapeManager.getShape(voxelShapeId);
-   const cullFaceOverride: CullFaceOverride = this.cullFaceOverrideData;
-   cullFaceOverride.face = face;
-   cullFaceOverride.substanceResult = substanceRuleResult;
-   cullFaceOverride.shapeState = shapeState;
-   cullFaceOverride.voxelId = voxelId;
-   cullFaceOverride.voxelSubstance = voxelSubstance;
-   cullFaceOverride.neighborVoxelId = this.nDataTool.getStringId();
-   cullFaceOverride.neighborVoxelSubstance =
-    neighorSustance as VoxelSubstanceType;
-   cullFaceOverride.neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(
-    this.nDataTool.getShapeId()
-   );
-   cullFaceOverride.neighborVoxelShapeState = this.nDataTool.getShapeState();
-   cullFaceOverride.x = x;
-   cullFaceOverride.y = y;
-   cullFaceOverride.z = z;
-
-   let shapeResult = voxelShape.cullFaceOverride(this.cullFaceOverrideData);
-   if (!voxelShape.cullFaceOverride) {
-    finalResult = shapeResult;
-   } else {
-    finalResult = voxelShape.cullFaceOverride(this.cullFaceOverrideData);
+   this.faceDataOverride.face = face;
+   this.faceDataOverride.default = substanceRuleResult;
+   finalResult = substanceRuleResult;
+   if (voxelShape.cullFaceOverride) {
+    finalResult = voxelShape.cullFaceOverride(this.faceDataOverride);
+   }
+   if (voxelObject.cullFace) {
+    finalResult = voxelObject.cullFace(this.faceDataOverride);
    }
   } else {
    finalResult = true;
@@ -280,11 +248,11 @@ export const Processor = {
   this.mDataTool.setSecondary(doSecondCheck);
 
   const voxelId = this.mDataTool.getStringId();
-  const voxelObject = DVEC.voxelManager.getVoxel(voxelId);
+  const voxelObject = this.mDataTool.getVoxelObj();
   if (!voxelObject) return;
 
   const voxelState = this.mDataTool.getState();
-  const voxelShapeId = this.mDataTool.getShapeId();
+  const voxelShape = this.mDataTool.getVoxelShapeObj();
   const voxelShapeState = this.mDataTool.getShapeState();
   const voxelSubstance = this.mDataTool.getSubstance();
 
@@ -294,10 +262,9 @@ export const Processor = {
   for (const point of $3dCardinalNeighbors) {
    faceBit = this.cullCheck(
     FaceMap[faceIndex],
-    voxelId,
-    voxelShapeId,
+    voxelObject,
+    voxelShape,
     voxelSubstance,
-    voxelShapeState,
     x + point[0] * LOD,
     y + point[1] * LOD,
     z + point[2] * LOD,
@@ -331,9 +298,9 @@ export const Processor = {
   this.voxelProcesseData.aoTemplate = baseTemplate.aoTemplate;
   this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
 
-  voxelObject.process(this.voxelProcesseData, DVEB);
+  voxelObject.process(this.voxelProcesseData, Builder);
 
-  baseTemplate.shapeTemplate.push(voxelShapeId);
+  baseTemplate.shapeTemplate.push(this.mDataTool.getShapeId());
   baseTemplate.positionTemplate.push(x, y, z);
 
   for (const face of FaceMap) {
@@ -344,10 +311,9 @@ export const Processor = {
 
   if (
    this.exposedFaces[0] &&
-   (voxelSubstance == "fluid" || voxelSubstance == "magma")
+   (voxelSubstance == "liquid" || voxelSubstance == "magma")
   ) {
    this.calculatFlow(
-    voxelId,
     this.faceStates[0] == 1,
     x,
     y,
@@ -361,9 +327,9 @@ export const Processor = {
   this.settings.entity = true;
   this.settings.composedEntity = composed;
 
-  const maxX = DVEB.entityConstructor.width;
-  const maxY = DVEB.entityConstructor.height;
-  const maxZ = DVEB.entityConstructor.depth;
+  const maxX = Builder.entityConstructor.width;
+  const maxY = Builder.entityConstructor.height;
+  const maxZ = Builder.entityConstructor.depth;
   for (let x = 0; x < maxX; x++) {
    for (let z = 0; z < maxZ; z++) {
     for (let y = 0; y < maxY; y++) {
@@ -423,19 +389,11 @@ export const Processor = {
  },
 
  flush() {
-  this.voxelProcesseData.voxelState = 0;
-  this.voxelProcesseData.voxelShapeState = 0;
-  this.voxelProcesseData.level = 0;
-  this.voxelProcesseData.levelState = 0;
-  this.voxelProcesseData.x = 0;
-  this.voxelProcesseData.y = 0;
-  this.voxelProcesseData.z = 0;
-  this.voxelProcesseData.overlayUVTemplate = [];
-  this.voxelProcesseData.uvTemplate = [];
-  this.voxelProcesseData.colorTemplate = [];
-  this.voxelProcesseData.aoTemplate = [];
-  this.voxelProcesseData.lightTemplate = [];
-
+  (this as any).voxelProcesseData.overlayUVTemplate = null;
+  (this as any).voxelProcesseData.uvTemplate = null;
+  (this as any).voxelProcesseData.colorTemplate = null;
+  (this as any).voxelProcesseData.aoTemplate = null;
+  (this as any).voxelProcesseData.lightTemplate = null;
   for (const substance of Object.keys(this.template)) {
    //@ts-ignore
    for (const templateKey of Object.keys(this.template[substance])) {

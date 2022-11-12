@@ -1,6 +1,6 @@
 import { RegisterVoxels } from "../Data/Functions/RegisterVoxelData.js";
 import { WebSocketServer } from "ws";
-import { DVEW } from "../../dve/World/DivineVoxelEngineWorld.js";
+import { DVEW } from "../../out/World/DivineVoxelEngineWorld.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 
 RegisterVoxels(DVEW);
@@ -94,10 +94,9 @@ wss.on("connection", function connection(ws) {
     for (let z = startZ; z <= endZ; z += 16) {
      const wc = DVEW.data.worldRegister.column.get(0, x, z);
      if (!wc) continue;
-     for (const key of Object.keys(wc.chunks)) {
-      const chunk = wc.chunks[key];
+     wc.chunks.forEach((chunk) => {
       ws.send(chunk.buffer);
-     }
+     });
     }
    }
 
@@ -132,7 +131,7 @@ wss.on("connection", function connection(ws) {
    severMessage("VOXEL ADD", [clientId]);
   }
   if (message == 400) {
-   //added voxel
+   //remove voxel
    dv.setUint16(0, 600);
    const clientId = dv.getUint16(2);
    const x = dv.getFloat32(4);

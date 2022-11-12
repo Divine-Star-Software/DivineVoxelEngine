@@ -1,5 +1,5 @@
 import { type EngineSettingsData } from "Meta/index.js";
-export declare const DVEB: {
+export declare const Builder: {
     textureManager: {
         textureDataHasBeenSet: boolean;
         uvTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;

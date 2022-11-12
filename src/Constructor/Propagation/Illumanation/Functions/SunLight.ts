@@ -1,5 +1,17 @@
 import type { IlluminationManager } from "../IlluminationManager";
 
+const removeEnd = (
+ IM: typeof IlluminationManager,
+ x: number,
+ y: number,
+ z: number
+) => {
+ IM._sDataTool.loadIn(x, y, z);
+ IM._sDataTool.setBarrier().commit();
+ IM.runSunLightUpdate();
+ IM._sDataTool.loadIn(x, y, z);
+ IM._sDataTool.setAir().commit();
+};
 
 export function runSunLightRemoveAt(
  this: typeof IlluminationManager,
@@ -12,7 +24,8 @@ export function runSunLightRemoveAt(
 
  if (l >= 0) {
   this._sunLightRemove.push([x, y, z]);
-  this.runSunLightRemove(x, y, z);
+  this.runSunLightRemove();
+  removeEnd(this, x, y, z);
   return;
  }
 
@@ -21,15 +34,11 @@ export function runSunLightRemoveAt(
  if (l2 >= 0) {
   this._sunLightRemove.push([x, y, z]);
   this._sunLightRemove.push([x, y - 1, z]);
-  this.runSunLightRemove(x, y, z);
+  this.runSunLightRemove();
+  removeEnd(this, x, y, z);
  }
 }
-export function runSunLightRemove(
- this: typeof IlluminationManager,
- x: number,
- y: number,
- z: number
-) {
+export function runSunLightRemove(this: typeof IlluminationManager) {
  while (this._sunLightRemove.length != 0) {
   const node = this._sunLightRemove.shift();
   if (!node) {
@@ -123,12 +132,6 @@ export function runSunLightRemove(
   this.addToRebuildQue(x, y, z);
   this._sDataTool.setLight(this.lightData.removeSunLight(sl)).commit();
  }
-
- this._sDataTool.loadIn(x, y, z);
- this._sDataTool.setBarrier().commit();
- this.runSunLightUpdate();
- this._sDataTool.loadIn(x, y, z);
- this._sDataTool.setAir().commit();
 }
 
 export function runSunLightUpdate(this: typeof IlluminationManager) {

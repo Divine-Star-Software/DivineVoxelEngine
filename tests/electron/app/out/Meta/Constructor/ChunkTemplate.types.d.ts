@@ -1,4 +1,4 @@
-import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 export declare type ChunkTemplate = {
     positionTemplate: number[];
     faceTemplate: number[];
@@ -11,4 +11,4 @@ export declare type ChunkTemplate = {
     colorTemplate: number[];
     flowTemplate?: number[];
 };
-export declare type FullChunkTemplate = Record<VoxelSubstanceType, ChunkTemplate>;
+export declare type FullChunkTemplate = Record<VoxelTemplateSubstanceType, ChunkTemplate>;

@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const DVER: {
@@ -9,7 +10,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -101,7 +102,7 @@ export declare const DVER: {
             meshes: {
                 clearChachedGeometry: boolean;
                 checkMagmaCollisions: boolean;
-                checkFluidCollisions: boolean;
+                checkLiquidCollisions: boolean;
                 checkFloraCollisions: boolean;
                 checkSolidCollisions: boolean;
                 seralize: boolean;
@@ -113,7 +114,7 @@ export declare const DVER: {
                 doSunLight: boolean;
                 doRGBLight: boolean;
                 disableFloraShaderEffects: boolean;
-                disableFluidShaderEffects: boolean;
+                disableLiquidShaderEffects: boolean;
             };
         };
         getSettings(): EngineSettingsData;
@@ -232,13 +233,13 @@ export declare const DVER: {
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").RenderEffectsOptions;
         shaderBuilder: {
             buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildFluidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
+            buildLiquidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
             buildSolidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
             buildItemVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
             buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
             buildSolidFragmentShader(): string;
             buildItemFragmentShader(): string;
-            buildFluidFragmentShader(): string;
+            buildLiquidFragmentShader(): string;
             buildFloraFragmentShader(): string;
             buildMagmaFragmentShader(): string;
             getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
@@ -301,7 +302,7 @@ export declare const DVER: {
             createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
             runEffects(): void;
         };
-        fluidMaterial: {
+        liquidMaterial: {
             material: BABYLON.ShaderMaterial | null;
             doEffects: boolean;
             time: number;
@@ -342,10 +343,10 @@ export declare const DVER: {
             $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene): void;
             getMaterial(): BABYLON.StandardMaterial;
         };
-        fluidStandardMaterial: {
+        liquidStandardMaterial: {
             material: BABYLON.StandardMaterial | null;
             reflectionprobe: BABYLON.RenderTargetTexture | null;
-            plugin: import("./Render/Materials/Fluid/Standard/FluidMaterial.bjsmp.js").FluidMaterialPlugin | null;
+            plugin: import("./Render/Materials/Liquid/Standard/LiquidMaterial.bjsmp.js").LiquidMaterialPlugin | null;
             $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
             getMaterial(): BABYLON.StandardMaterial;
             addToRenderList(mesh: BABYLON.Mesh): void;
@@ -365,7 +366,7 @@ export declare const DVER: {
         };
         solidMesh: import("../Meta/index.js").VoxelMeshInterface;
         floraMesh: import("../Meta/index.js").VoxelMeshInterface;
-        fluidMesh: import("../Meta/index.js").VoxelMeshInterface;
+        liquidMesh: import("../Meta/index.js").VoxelMeshInterface;
         magmaMesh: import("../Meta/index.js").VoxelMeshInterface;
         itemMesh: {
             pickable: boolean;

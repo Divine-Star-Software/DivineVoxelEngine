@@ -97,9 +97,9 @@ export const Worlds = [
                 world: "LightDebugTest",
             },
             {
-                title: "Lit Fluid Test",
-                description: "Used to test the lighting of fluid voxels.",
-                world: "LitFluidTest",
+                title: "Lit Liquid Test",
+                description: "Used to test the lighting of liquid voxels.",
+                world: "LitLiquidTest",
             },
             {
                 title: "Huge Light Test",
@@ -118,7 +118,7 @@ export const Worlds = [
             },
             {
                 title: "Ocean Test",
-                description: "Used to test out fluid voxels.",
+                description: "Used to test out liquid voxels.",
                 world: "OceanTest",
             },
             {

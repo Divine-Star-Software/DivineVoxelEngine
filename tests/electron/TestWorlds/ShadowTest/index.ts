@@ -95,18 +95,18 @@ const setUpLightAndShadows = (scene: BABYLON.Scene) => {
    const mesh = DVER.meshManager.meshes.solid[0][meshKey];
    mesh.receiveShadows = true;
    mesh.material = DVER.renderManager.solidStandardMaterial.getMaterial();
-   DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
+   DVER.renderManager.liquidStandardMaterial.addToRenderList(mesh);
    shadowGenerator.addShadowCaster(mesh);
   }
 
   for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
    const mesh = DVER.meshManager.meshes.solid[0][meshKey];
-   DVER.renderManager.fluidStandardMaterial.addToRenderList(mesh);
+   DVER.renderManager.liquidStandardMaterial.addToRenderList(mesh);
   }
-  for (const meshKey of Object.keys(DVER.meshManager.meshes.fluid)) {
-   const mesh = DVER.meshManager.meshes.fluid[0][meshKey];
+  for (const meshKey of Object.keys(DVER.meshManager.meshes.liquid)) {
+   const mesh = DVER.meshManager.meshes.liquid[0][meshKey];
    mesh.receiveShadows = true;
-   mesh.material = DVER.renderManager.fluidStandardMaterial.getMaterial();
+   mesh.material = DVER.renderManager.liquidStandardMaterial.getMaterial();
   }
  }, 5000);
 };

@@ -1,4 +1,4 @@
-import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+import { Builder } from "../../../Builder.js";
 import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
@@ -17,9 +17,9 @@ const processDefaultFaceData = (
  flip: boolean
 ) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
- const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
+ const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
  for (let i = 0; i < 2; i++) {
-  DVEB.uvHelper.addUVs(face, {
+  Builder.uvHelper.addUVs(face, {
    uvs: data.uvs,
    uv: uv,
    width: { start: 0, end: 1 },
@@ -27,14 +27,14 @@ const processDefaultFaceData = (
    flipped: flip,
    rotoate: rotation,
   });
-  DVEB.uvHelper.processOverlayUVs(data);
+  Builder.uvHelper.processOverlayUVs(data);
 
-  DVEB.shapeHelper.calculateAOColorFromValue(
+  Builder.shapeHelper.calculateAOColorFromValue(
    data.AOColors,
    data.aoTemplate[data.aoIndex]
   );
 
-  DVEB.shapeHelper.calculateLightColorFromValue(
+  Builder.shapeHelper.calculateLightColorFromValue(
    data.RGBLightColors,
    data.sunLightColors,
    data.lightTemplate[data.lightIndex]
@@ -42,12 +42,12 @@ const processDefaultFaceData = (
  }
 
  if (data.substance == "flora") {
-  let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(2, 0);
-  DVEB.shapeHelper.addFaceData(animData, data.faceData);
-  DVEB.shapeHelper.addFaceData(animData, data.faceData);
+  let animData = Builder.shapeHelper.meshFaceData.setAnimationType(2, 0);
+  Builder.shapeHelper.addFaceData(animData, data.faceData);
+  Builder.shapeHelper.addFaceData(animData, data.faceData);
  } else {
-  DVEB.shapeHelper.addFaceData(0, data.faceData);
-  DVEB.shapeHelper.addFaceData(0, data.faceData);
+  Builder.shapeHelper.addFaceData(0, data.faceData);
+  Builder.shapeHelper.addFaceData(0, data.faceData);
  }
 
  data.uvTemplateIndex += 2;
@@ -59,9 +59,9 @@ const processDefaultFaceData = (
 
 const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
  0: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "north");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "north");
   data.position.z += 0.05;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "south",
    data.position,
    shapeDimensions,
@@ -69,7 +69,7 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
    flip
   );
   data.position.z -= 1;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "north",
    data.position,
    shapeDimensions,
@@ -79,9 +79,9 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   processDefaultFaceData("north", data, flip);
  },
  1: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "north");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "north");
   data.position.z -= 0.05;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "north",
    data.position,
    shapeDimensions,
@@ -89,7 +89,7 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
    flip
   );
   data.position.z += 1;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "south",
    data.position,
    shapeDimensions,
@@ -99,27 +99,57 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   processDefaultFaceData("north", data, flip);
  },
  2: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "west");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "west");
   data.position.x -= 0.05;
-  DVEB.shapeBuilder.addFace("east", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "east",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   data.position.x += 1;
-  DVEB.shapeBuilder.addFace("west", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "west",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   processDefaultFaceData("west", data, flip);
  },
  3: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "west");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "west");
   data.position.x += 0.05;
-  DVEB.shapeBuilder.addFace("west", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "west",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   data.position.x -= 1;
-  DVEB.shapeBuilder.addFace("east", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "east",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   processDefaultFaceData("west", data, flip);
  },
  4: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "top");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "top");
   data.position.y -= 0.05;
-  DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "top",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   data.position.y += 1;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "bottom",
    data.position,
    shapeDimensions,
@@ -129,9 +159,9 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
   processDefaultFaceData("bottom", data, flip);
  },
  5: (data) => {
-  const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, "bottom");
+  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "bottom");
   data.position.y += 0.05;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "bottom",
    data.position,
    shapeDimensions,
@@ -139,7 +169,13 @@ const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
    flip
   );
   data.position.y -= 1;
-  DVEB.shapeBuilder.addFace("top", data.position, shapeDimensions, data, flip);
+  Builder.shapeBuilder.addFace(
+   "top",
+   data.position,
+   shapeDimensions,
+   data,
+   flip
+  );
   processDefaultFaceData("bottom", data, flip);
  },
 };
@@ -156,19 +192,25 @@ export const PanelVoxelShape: VoxelShapeInterface = {
   this.aoAddOverrideFunctions[shapeId] = func;
  },
  cullFaceOverride(data) {
-  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (
+   this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]
+  ) {
+   return this.cullFaceOverrideFunctions[
+    data.neighborVoxel.getVoxelShapeObj().id
+   ](data);
   }
-  if (data.voxelSubstance == "flora") {
+  if (data.currentVoxel.getSubstance() == "flora") {
    return false;
   }
-  return data.substanceResult;
+  return data.default;
  },
  aoAddOverride(data) {
-  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](
+    data
+   );
   }
-  return data.substanceResult;
+  return data.default;
  },
  registerShapeAOFlipOverride(shapeId, func) {
   this.aoAddOverrideFunctions[shapeId] = func;
@@ -182,6 +224,6 @@ export const PanelVoxelShape: VoxelShapeInterface = {
   data.position.y += shapeDimensions.height;
   const shapeState = data.shapeState;
   shapeStates[shapeState](data);
-  return DVEB.shapeHelper.produceShapeReturnData(data);
+  return Builder.shapeHelper.produceShapeReturnData(data);
  },
 };

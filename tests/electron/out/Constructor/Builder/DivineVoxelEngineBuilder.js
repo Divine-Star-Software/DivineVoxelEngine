@@ -14,7 +14,7 @@ import { ItemMesher } from "./Mesher/ItemMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
 import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
-export const DVEB = {
+export const Builder = {
     textureManager: TextureManager,
     shapeManager: ShapeManager,
     shapeHelper: ShapeHelper,

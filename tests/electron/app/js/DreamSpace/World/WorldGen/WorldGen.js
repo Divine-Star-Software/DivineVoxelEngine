@@ -35,9 +35,10 @@ export const WorldGen = {
                             y == this.minY + 54 ||
                             y == this.minY + 56 ||
                             y == this.minY + 86) {
-                            brush.paint();
+                            brush.setId("dve:dreadstonepillar").paint();
                         }
                     }
+                    brush.setId("dve:dreadstonepillar");
                     if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
                         if (y == this.minY + 1 ||
                             y == this.minY + 26 ||

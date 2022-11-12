@@ -1,5 +1,5 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
-export const FluidMaterial = {
+export const LiquidMaterial = {
     material: null,
     doEffects: true,
     time: 0,
@@ -58,7 +58,7 @@ export const FluidMaterial = {
         else {
             this.material.setFloat("doColor", 0.0);
         }
-        if (DVER.renderManager.effectOptions.fluidEffects) {
+        if (DVER.renderManager.effectOptions.liquidEffects) {
             this.material.setFloat("doEffects", 1);
         }
         else {
@@ -66,13 +66,13 @@ export const FluidMaterial = {
         }
     },
     createMaterial(data) {
-        const animData = DVER.renderManager.animationManager.registerAnimations("fluid", data.animations, data.animationTimes);
-        const overlayAnimData = DVER.renderManager.animationManager.registerAnimations("fluid", data.overlayAnimations, data.overlayAnimationTimes, true);
-        BABYLON.Effect.ShadersStore["fluidVertexShader"] =
-            DVER.renderManager.shaderBuilder.getDefaultVertexShader("fluid", animData.uniformRegisterCode, animData.animationFunctionCode, overlayAnimData.uniformRegisterCode, overlayAnimData.animationFunctionCode);
-        BABYLON.Effect.ShadersStore["fluidFragmentShader"] =
-            DVER.renderManager.shaderBuilder.getDefaultFragmentShader("fluid");
-        const shaderMaterial = new BABYLON.ShaderMaterial("fluid", data.scene, "fluid", {
+        const animData = DVER.renderManager.animationManager.registerAnimations("liquid", data.animations, data.animationTimes);
+        const overlayAnimData = DVER.renderManager.animationManager.registerAnimations("liquid", data.overlayAnimations, data.overlayAnimationTimes, true);
+        BABYLON.Effect.ShadersStore["liquidVertexShader"] =
+            DVER.renderManager.shaderBuilder.getDefaultVertexShader("liquid", animData.uniformRegisterCode, animData.animationFunctionCode, overlayAnimData.uniformRegisterCode, overlayAnimData.animationFunctionCode);
+        BABYLON.Effect.ShadersStore["liquidFragmentShader"] =
+            DVER.renderManager.shaderBuilder.getDefaultFragmentShader("liquid");
+        const shaderMaterial = new BABYLON.ShaderMaterial("liquid", data.scene, "liquid", {
             attributes: [
                 "position",
                 "normal",
@@ -129,7 +129,7 @@ export const FluidMaterial = {
             //  effect.setColor4("baseLightColor", new BABYLON.Color3(0.5, 0.5, 0.5), 1);
         };
         this.updateMaterialSettings(data.settings);
-        DVER.renderManager.animationManager.registerMaterial("fluid", shaderMaterial);
+        DVER.renderManager.animationManager.registerMaterial("liquid", shaderMaterial);
         return this.material;
     },
     runEffects() {

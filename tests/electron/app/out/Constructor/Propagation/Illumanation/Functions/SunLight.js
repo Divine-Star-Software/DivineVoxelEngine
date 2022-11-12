@@ -1,9 +1,17 @@
+const removeEnd = (IM, x, y, z) => {
+    IM._sDataTool.loadIn(x, y, z);
+    IM._sDataTool.setBarrier().commit();
+    IM.runSunLightUpdate();
+    IM._sDataTool.loadIn(x, y, z);
+    IM._sDataTool.setAir().commit();
+};
 export function runSunLightRemoveAt(x, y, z) {
     this._sDataTool.loadIn(x, y, z);
     const l = this.lightData.getS(this._sDataTool.getLight());
     if (l >= 0) {
         this._sunLightRemove.push([x, y, z]);
-        this.runSunLightRemove(x, y, z);
+        this.runSunLightRemove();
+        removeEnd(this, x, y, z);
         return;
     }
     this._nDataTool.loadIn(x, y - 1, z);
@@ -11,10 +19,11 @@ export function runSunLightRemoveAt(x, y, z) {
     if (l2 >= 0) {
         this._sunLightRemove.push([x, y, z]);
         this._sunLightRemove.push([x, y - 1, z]);
-        this.runSunLightRemove(x, y, z);
+        this.runSunLightRemove();
+        removeEnd(this, x, y, z);
     }
 }
-export function runSunLightRemove(x, y, z) {
+export function runSunLightRemove() {
     while (this._sunLightRemove.length != 0) {
         const node = this._sunLightRemove.shift();
         if (!node) {
@@ -111,11 +120,6 @@ export function runSunLightRemove(x, y, z) {
         this.addToRebuildQue(x, y, z);
         this._sDataTool.setLight(this.lightData.removeSunLight(sl)).commit();
     }
-    this._sDataTool.loadIn(x, y, z);
-    this._sDataTool.setBarrier().commit();
-    this.runSunLightUpdate();
-    this._sDataTool.loadIn(x, y, z);
-    this._sDataTool.setAir().commit();
 }
 export function runSunLightUpdate() {
     const queue = this._sunLightUpdate;

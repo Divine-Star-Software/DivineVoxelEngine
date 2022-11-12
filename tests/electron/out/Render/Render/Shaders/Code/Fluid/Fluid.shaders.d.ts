@@ -1,4 +1,4 @@
-export declare const fluidShaders: {
+export declare const liquidShaders: {
     vertexVars: string;
     vertexWave: string;
     fragVars: string;

@@ -93,10 +93,10 @@ export const ExplosionManager = {
                             const l = nDataTool.getLight();
                             if (l > 0) {
                                 if (LightData.getS(l) > 0) {
-                                    IlluminationManager._sunLightUpdate.enqueue([nx, ny, nz]);
+                                    IlluminationManager._sunLightRemove.push([nx, ny, nz]);
                                 }
                                 if (LightData.hasRGBLight(l)) {
-                                    IlluminationManager._RGBlightUpdateQ.push([nx, ny, nz]);
+                                    IlluminationManager._RGBlightRemovalQ.push([nx, ny, nz]);
                                 }
                             }
                         }
@@ -109,6 +109,8 @@ export const ExplosionManager = {
                 }
             }
         }
+        IlluminationManager.runSunLightRemove();
+        IlluminationManager.runRGBRemove();
         IlluminationManager.runSunLightUpdate();
         IlluminationManager.runRGBUpdate();
         this._visitedMap.clear();

@@ -58,7 +58,7 @@ export const FloraMaterial = {
         else {
             this.material.setFloat("doColor", 0.0);
         }
-        if (DVER.renderManager.effectOptions.fluidEffects) {
+        if (DVER.renderManager.effectOptions.liquidEffects) {
             this.material.setFloat("doEffects", 1);
         }
         else {

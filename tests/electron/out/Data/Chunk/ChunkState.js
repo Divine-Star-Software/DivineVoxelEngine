@@ -14,7 +14,7 @@ export const ChunkState = {
         worldGenDone: false,
         sunLightDone: false,
         RGBLightDone: false,
-        fluidDone: false,
+        liquidDone: false,
         magmaDone: false,
     },
     _chunkStateMask: {
@@ -26,8 +26,8 @@ export const ChunkState = {
         sunLightIndex: 2,
         RGBLightDone: 0b1000,
         RGBLightIndex: 3,
-        fluidDone: 0b1000,
-        fluidIndex: 4,
+        liquidDone: 0b1000,
+        liquidIndex: 4,
         magmaDone: 0b10000,
         magmaIndex: 5,
     },
@@ -71,9 +71,9 @@ export const ChunkState = {
             this._chunkStateMask.RGBLightIndex ==
             1);
     },
-    isFluidFlowDone(chunkStatesData) {
+    isLiquidFlowDone(chunkStatesData) {
         const bv = chunkStatesData[this.indexes.states];
-        return ((bv & this._chunkStateMask.fluidDone) >> this._chunkStateMask.fluidIndex == 1);
+        return ((bv & this._chunkStateMask.liquidDone) >> this._chunkStateMask.liquidIndex == 1);
     },
     isMagmaFlowDone(chunkStatesData) {
         const bv = chunkStatesData[this.indexes.states];
@@ -84,7 +84,7 @@ export const ChunkState = {
         this._chunkStates.worldGenDone = this.isWorldGenDone(chunkStatesData);
         this._chunkStates.sunLightDone = this.isSunLightUpdatesDone(chunkStatesData);
         this._chunkStates.RGBLightDone = this.isRGBLightUpdatesDone(chunkStatesData);
-        this._chunkStates.fluidDone = this.isFluidFlowDone(chunkStatesData);
+        this._chunkStates.liquidDone = this.isLiquidFlowDone(chunkStatesData);
         this._chunkStates.magmaDone = this.isMagmaFlowDone(chunkStatesData);
         return this._chunkStates;
     },

@@ -6,7 +6,7 @@ import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 
 //shaders
 import { floraShaders } from "./Code/Flora/Flora.shader.js";
-import { fluidShaders } from "./Code/Fluid/Fluid.shaders.js";
+import { liquidShaders } from "./Code/Liquid/Liquid.shaders.js";
 import { magmaShaders } from "./Code/Magma/Magma.shader.js";
 import { solidShaders } from "./Code/Solid/Solid.shader.js";
 import { itemShaders } from "./Code/Item/Item.shader.js";
@@ -60,7 +60,7 @@ ${CommonShader.getMainFunction(`
 `;
  },
 
- buildFluidVertexShader(
+ buildLiquidVertexShader(
   uniformRegister: string = "",
   animationFunction: string = "",
   overlayUniformRegister: string = "",
@@ -68,7 +68,7 @@ ${CommonShader.getMainFunction(`
  ) {
   return `
 ${SharedVertexShader.top}
-${fluidShaders.vertexVars}
+${liquidShaders.vertexVars}
 ${SharedVertexShader.attributes(false)}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
@@ -82,7 +82,7 @@ ${animationFunction}
 ${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
- ${fluidShaders.vertexWave}
+ ${liquidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
@@ -173,7 +173,7 @@ ${CommonShader.getMainFunction(`
  ) {
   return `
 ${SharedVertexShader.top}
-${fluidShaders.vertexVars}
+${liquidShaders.vertexVars}
 ${SharedVertexShader.attributes(false)}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
@@ -187,7 +187,7 @@ ${animationFunction}
 ${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
- ${fluidShaders.vertexWave}
+ ${liquidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
@@ -241,10 +241,10 @@ ${itemShaders.fragMain}
 `)}`;
  },
 
- buildFluidFragmentShader() {
+ buildLiquidFragmentShader() {
   return `
 ${SharedFragmentShader.top}
-${fluidShaders.fragVars}
+${liquidShaders.fragVars}
 ${SharedFragmentShader.useTime}
 ${ShaderNoiseFunctions.fbm3}
 ${SharedFogFunctions.fogFragConstants}
@@ -258,7 +258,7 @@ ${SharedFragmentShader.doFog}
 ${SharedFragmentShader.doVFog}
 
 ${CommonShader.getMainFunction(`
-${fluidShaders.fragMain}
+${liquidShaders.fragMain}
 `)}`;
  },
 
@@ -324,8 +324,8 @@ ${solidShaders.fragMain}
     ovlerayAnimationFunction
    );
   }
-  if (voxelSubstance == "fluid") {
-   return this.buildFluidVertexShader(
+  if (voxelSubstance == "liquid") {
+   return this.buildLiquidVertexShader(
     uniformRegister,
     animationFunction,
     overlayUniformRegister,
@@ -350,8 +350,8 @@ ${solidShaders.fragMain}
   if (voxelSubstance == "magma") {
    return this.buildMagmaFragmentShader();
   }
-  if (voxelSubstance == "fluid") {
-   return this.buildFluidFragmentShader();
+  if (voxelSubstance == "liquid") {
+   return this.buildLiquidFragmentShader();
   }
   if (voxelSubstance == "flora") {
    return this.buildFloraFragmentShader();

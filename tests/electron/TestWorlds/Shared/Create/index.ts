@@ -80,7 +80,7 @@ export const SyncWithGraphicsSettings = (DVER: DivineVoxelEngineRender) => {
   });
   DVER.renderManager.updateShaderEffectOptions({
    floraEffects: false,
-   fluidEffects: false,
+   liquidEffects: false,
   });
  }
  if (grahpicsLevel == "medium") {
@@ -89,7 +89,7 @@ export const SyncWithGraphicsSettings = (DVER: DivineVoxelEngineRender) => {
   });
   DVER.renderManager.updateShaderEffectOptions({
    floraEffects: false,
-   fluidEffects: false,
+   liquidEffects: false,
   });
  }
  if (grahpicsLevel == "high") {
@@ -98,7 +98,7 @@ export const SyncWithGraphicsSettings = (DVER: DivineVoxelEngineRender) => {
   });
   DVER.renderManager.updateShaderEffectOptions({
    floraEffects: true,
-   fluidEffects: true,
+   liquidEffects: true,
   });
  }
  if (grahpicsLevel == "ultra") {
@@ -107,7 +107,7 @@ export const SyncWithGraphicsSettings = (DVER: DivineVoxelEngineRender) => {
   });
   DVER.renderManager.updateShaderEffectOptions({
    floraEffects: true,
-   fluidEffects: true,
+   liquidEffects: true,
   });
  }
 };

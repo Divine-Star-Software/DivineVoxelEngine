@@ -34,7 +34,7 @@ export declare const ChunkState: {
         worldGenDone: boolean;
         sunLightDone: boolean;
         RGBLightDone: boolean;
-        fluidDone: boolean;
+        liquidDone: boolean;
         magmaDone: boolean;
     };
     _chunkStateMask: {
@@ -46,8 +46,8 @@ export declare const ChunkState: {
         sunLightIndex: number;
         RGBLightDone: number;
         RGBLightIndex: number;
-        fluidDone: number;
-        fluidIndex: number;
+        liquidDone: number;
+        liquidIndex: number;
         magmaDone: number;
         magmaIndex: number;
     };
@@ -58,14 +58,14 @@ export declare const ChunkState: {
     isWorldGenDone(chunkStatesData: Uint32Array): boolean;
     isSunLightUpdatesDone(chunkStatesData: Uint32Array): boolean;
     isRGBLightUpdatesDone(chunkStatesData: Uint32Array): boolean;
-    isFluidFlowDone(chunkStatesData: Uint32Array): boolean;
+    isLiquidFlowDone(chunkStatesData: Uint32Array): boolean;
     isMagmaFlowDone(chunkStatesData: Uint32Array): boolean;
     getFullChunkStates(chunkStatesData: Uint32Array): {
         empty: boolean;
         worldGenDone: boolean;
         sunLightDone: boolean;
         RGBLightDone: boolean;
-        fluidDone: boolean;
+        liquidDone: boolean;
         magmaDone: boolean;
     };
     addToVoxelCount(voxelSubstance: VoxelSubstanceType, chunkStatesData: Uint32Array): void;

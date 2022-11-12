@@ -37,7 +37,7 @@ export const DVEPH = {
 
   if (!this._dataTool.loadIn(x, y, z)) return false;
   if (!this._dataTool.isRenderable()) return false;
-  if (this._dataTool.getSubstance() == "fluid") return false;
+  if (this._dataTool.getSubstance() == "liquid") return false;
   const voxelData = this.voxelManager.getVoxelData(
    this._dataTool.getStringId()
   );

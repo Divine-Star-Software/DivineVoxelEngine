@@ -18,14 +18,16 @@ export class DataTool {
  data = {
   dimension: "main",
   raw: [0, 0],
-  x: 0,
-  y: 9,
-  z: 9,
   id: 0,
   baseId: 0,
   secondaryId: 0,
   secondaryBaseId: 0,
  };
+ position  = {
+    x : 0,
+    y : 0,
+    z : 0
+ }
  _cached = {
   id: 0,
   secondaryId: 0,
@@ -70,9 +72,9 @@ export class DataTool {
  }
 
  loadIn(x: number, y: number, z: number) {
-  this.data.x = x;
-  this.data.y = y;
-  this.data.z = z;
+  this.position.x = x;
+  this.position.y = y;
+  this.position.z = z;
   if (this._mode == "World") {
    const chunk = WorldRegister.chunk.get(this.data.dimension, x, y, z);
    if (!chunk) return false;
@@ -90,15 +92,15 @@ export class DataTool {
   if (this._mode == "World") {
    const chunk = WorldRegister.chunk.get(
     this.data.dimension,
-    this.data.x,
-    this.data.y,
-    this.data.z
+    this.position.x,
+    this.position.y,
+    this.position.z
    );
    if (!chunk) return false;
    const voxelPOS = WorldBounds.getVoxelPosition(
-    this.data.x,
-    this.data.y,
-    this.data.z
+    this.position.x,
+    this.position.y,
+    this.position.z
    );
 
    ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, this.data.raw[0]);

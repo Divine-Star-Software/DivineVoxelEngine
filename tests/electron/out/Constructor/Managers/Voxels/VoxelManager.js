@@ -22,7 +22,7 @@ export const VoxelManager = {
             const voxel = this.voxelObjects[voxelID];
             if (!voxel.hooks[hook])
                 continue;
-            voxel.hooks[hook](DVEC.DVEB);
+            voxel.hooks[hook](DVEC.builder);
         }
     },
     removeVoxelHookForAll(hook) {

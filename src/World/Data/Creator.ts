@@ -1,6 +1,4 @@
-import { ChunkData } from "Meta/Data/WorldData.types.js";
 import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
-import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 
 export const DataCreator = {
  chunk: {
@@ -13,9 +11,6 @@ export const DataCreator = {
     return sab;
    }
    const chunkSAB = new SharedArrayBuffer(ChunkReader.chunkByteSize);
-   const data = new DataView(chunkSAB);
-  // HeightMapData.initalizeChunk(data);
-
    return chunkSAB;
   },
  },

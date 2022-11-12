@@ -31,7 +31,7 @@ export const WorldGen = {
     }
     let pillar = Math.random() > 0.98;
     let pondPilar = Math.random() > 0.98;
-    let pillarFluid = Math.random() > 0.98;
+    let pillarLiquid = Math.random() > 0.98;
     let pondPillarSpikeHeight = (2 + Math.random() * 20) >> 0;
     let pondSpikeHeight = (2 + Math.random() * 4) >> 0;
     let spikeHeight = (4 + Math.random() * 6) >> 0;
@@ -43,7 +43,7 @@ export const WorldGen = {
      let ty = y + chunkY;
      let tz = z + chunkZ;
      brush.setXYZ(tx, ty, tz);
-     if (pillarFluid && y < spikeHeight + maxY + add * spaceHeight) {
+     if (pillarLiquid && y < spikeHeight + maxY + add * spaceHeight) {
       brush.setId("dve:liquiddreadether").paint();
       continue;
      }

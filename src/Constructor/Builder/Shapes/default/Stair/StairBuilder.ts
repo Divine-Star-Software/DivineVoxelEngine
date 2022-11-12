@@ -1,4 +1,4 @@
-import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+import { Builder } from "../../../Builder.js";
 import type { VoxelShapeAddData } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
 import { Rotations } from "Meta/Constructor/Mesher.types.js";
@@ -64,7 +64,7 @@ const getAO = (aoValue: number, data: VoxelShapeAddData) => {
  return aoValue;
 };
 const processAO = (stairAO: StairAO, data: VoxelShapeAddData) => {
- DVEB.shapeHelper.calculateAOColor(
+ Builder.shapeHelper.calculateAOColor(
   data.AOColors,
   [
    getAO(stairAO[0], data),
@@ -92,7 +92,7 @@ const getBrighttestLight = (data: VoxelShapeAddData) => {
 
 const processLight = (data: VoxelShapeAddData) => {
  const light = getBrighttestLight(data);
- DVEB.shapeHelper.calculateLightColorFromValue(
+ Builder.shapeHelper.calculateLightColorFromValue(
   data.RGBLightColors,
   data.sunLightColors,
   light
@@ -120,7 +120,7 @@ const addUVs = (
  uv: number,
  uvData: StairUVData
 ) => {
- DVEB.uvHelper.addUVs(face, {
+ Builder.uvHelper.addUVs(face, {
   uvs: data.uvs,
   uv: uv,
   width: { start: uvData.ws, end: uvData.we },
@@ -128,7 +128,7 @@ const addUVs = (
   flipped: flip,
   rotoate: uvData.r,
  });
- DVEB.uvHelper.processOverlayUVs(data);
+ Builder.uvHelper.processOverlayUVs(data);
 };
 
 const addSide = (
@@ -160,7 +160,7 @@ const addSide = (
  }
 
  //lower
- DVEB.shapeBuilder.addFace(face, position, dimensions, data, flip);
+ Builder.shapeBuilder.addFace(face, position, dimensions, data, flip);
  if (stairData.uvs && stairData.uvs[1]) {
   addUVs(face, data, flip, uv, stairData.uvs[1]);
  }
@@ -194,7 +194,7 @@ const addSide = (
   position.z = position.z + stairData.transform[2][2];
  }
 
- DVEB.shapeBuilder.addFace(face, position, dimensions, data, flip);
+ Builder.shapeBuilder.addFace(face, position, dimensions, data, flip);
  if (stairData.uvs && stairData.uvs[2]) {
   addUVs(face, data, flip, uv, stairData.uvs[2]);
  }
@@ -220,11 +220,11 @@ const addNomral = (
 
  // const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
  const flip = false;
- DVEB.shapeBuilder.addFace(face, position, boxDimensions, data, flip);
- const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
+ Builder.shapeBuilder.addFace(face, position, boxDimensions, data, flip);
+ const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];
 
- DVEB.uvHelper.addUVs(face, {
+ Builder.uvHelper.addUVs(face, {
   uvs: data.uvs,
   uv: uv,
   width: { start: 0, end: 1 * data.LOD },
@@ -232,20 +232,20 @@ const addNomral = (
   flipped: flip,
   rotoate: rotation,
  });
- DVEB.uvHelper.processOverlayUVs(data);
- DVEB.shapeHelper.calculateLightColor(
+ Builder.uvHelper.processOverlayUVs(data);
+ Builder.shapeHelper.calculateLightColor(
   data.RGBLightColors,
   data.sunLightColors,
   data.lightTemplate,
   data.lightIndex
  );
- DVEB.shapeHelper.calculateAOColor(
+ Builder.shapeHelper.calculateAOColor(
   data.AOColors,
   data.aoTemplate,
   data.aoIndex
  );
 
- DVEB.shapeHelper.addFaceData(0, data.faceData);
+ Builder.shapeHelper.addFaceData(0, data.faceData);
  incrementIndexes(data);
 };
 
@@ -267,22 +267,22 @@ export const buildStair = (
  data: VoxelShapeAddData,
  stairData: Record<DirectionNames, stairBuildData>
 ) => {
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "top")) {
   stairFunctions[stairData.top.type]("top", stairData.top, data);
  }
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "bottom")) {
   stairFunctions[stairData.bottom.type]("bottom", stairData.bottom, data);
  }
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "east")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "east")) {
   stairFunctions[stairData.east.type]("east", stairData.east, data);
  }
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "west")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "west")) {
   stairFunctions[stairData.west.type]("west", stairData.west, data);
  }
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "south")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "south")) {
   stairFunctions[stairData.south.type]("south", stairData.south, data);
  }
- if (DVEB.shapeHelper.isFaceExposexd(data.face, "north")) {
+ if (Builder.shapeHelper.isFaceExposexd(data.face, "north")) {
   stairFunctions[stairData.north.type]("north", stairData.north, data);
  }
 };

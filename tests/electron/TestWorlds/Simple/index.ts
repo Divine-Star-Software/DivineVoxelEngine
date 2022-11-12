@@ -34,7 +34,7 @@ await DVER.$INIT({
  },
  meshes: {
   checkFloraCollisions: false,
-  checkFluidCollisions: false,
+  checkLiquidCollisions: false,
   checkMagmaCollisions: false,
   checkSolidCollisions: false,
   clearChachedGeometry: true,

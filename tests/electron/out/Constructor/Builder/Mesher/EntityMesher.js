@@ -1,5 +1,5 @@
 import { ConstructEntityIndexes, ConstructorToRenderMessages, } from "../../../Common/Threads/Contracts/ConstructorToRender.js";
-import { DVEB } from "../DivineVoxelEngineBuilder.js";
+import { Builder } from "../Builder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 export const EntityMesher = {
     buildEntityMesh(x, y, z, template) {
@@ -73,7 +73,7 @@ export const EntityMesher = {
             shapeAddData.position.y = y;
             shapeAddData.position.z = z;
             const shapeId = template.shapeTemplate[shapeIndex];
-            const shape = DVEB.shapeManager.getShape(shapeId);
+            const shape = Builder.shapeManager.getShape(shapeId);
             const newIndexes = shape.addToChunkMesh(shapeAddData);
             indicieIndex = newIndexes.newIndicieIndex;
             aoIndex = newIndexes.newAOIndex;

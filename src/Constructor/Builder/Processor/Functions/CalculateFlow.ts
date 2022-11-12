@@ -39,14 +39,13 @@ const flowStates: Record<Vertexes, number> = {
 
 export function CalculateFlow(
  this: typeof Processor,
- voxelId: string,
  faceFlipped: boolean,
  x: number,
  y: number,
  z: number,
  flowTemplate: number[]
 ) {
- currentId = voxelId;
+ currentId = this.mDataTool.getStringId();
  const currentLevel = this.mDataTool.getLevel();
  const state = this.mDataTool.getLevelState();
 
@@ -104,7 +103,7 @@ const calculateFlowV = (
    if (!loadedIn) continue;
    const level = getLevel(process);
    const hasVoxel = process.nDataTool.isRenderable();
-   if(hasVoxel && process.nDataTool.getSubstance() == "solid") {
+   if (hasVoxel && process.nDataTool.getSubstance() == "solid") {
     voxelCount++;
    }
    if (iy == 1) {

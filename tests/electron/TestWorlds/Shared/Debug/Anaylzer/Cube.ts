@@ -133,7 +133,7 @@ export const GetAnalyzerCubeWorld = (DVEW: DivineVoxelEngineWorld) => {
 > string id: ${dataTool.getStringId()}
 > state: ${dataTool.getState()}
 > shape state: ${dataTool.getShapeState()}
-> level: ${dataTool.getState()}
+> level: ${dataTool.getLevel()}
 > level state: ${dataTool.getLevelState()}
 > light value: ${l}
 > s: ${LightData.getS(l)}

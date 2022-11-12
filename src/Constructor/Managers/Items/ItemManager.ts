@@ -35,7 +35,7 @@ export const ItemManager = {
   for (const itemId of Object.keys(this.itemObjects)) {
    const item = this.itemObjects[itemId];
    if (!item.hooks[hook]) continue;
-   item.hooks[hook](DVEC.DVEB as any);
+   item.hooks[hook](DVEC.builder as any);
   }
  },
  removeItemHookForAll(hook: ItemConstructorThreadHooks) {

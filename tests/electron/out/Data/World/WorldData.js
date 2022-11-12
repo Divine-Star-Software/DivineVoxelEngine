@@ -93,7 +93,7 @@ const WP = {
                 return false;
             WP.heightMap.update.add(dimension, voxleData.substance, x, y, z);
             let stateData = VoxelReader.setShapeState(0, data.shapeState ? data.shapeState : 0);
-            if (voxleData.substance == "fluid" || voxleData.substance == "magma") {
+            if (voxleData.substance == "liquid" || voxleData.substance == "magma") {
                 stateData = VoxelReader.setLevel(stateData, 15);
             }
             if (data.secondaryVoxelId && data.secondaryVoxelId != "dve:air") {

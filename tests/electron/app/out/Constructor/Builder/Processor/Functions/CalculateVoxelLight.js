@@ -121,11 +121,9 @@ const shouldSunFlip = () => {
     return t1 || t2 || t3;
 };
 const shouldAOFlip = (face) => {
+    Processor.faceDataOverride.face = face;
     if (currentVoxelData.currentShape) {
-        if (currentVoxelData.currentShape.aoFlipOverride({
-            face: face,
-            shapeState: currentVoxelData.shapeState,
-        })) {
+        if (currentVoxelData.currentShape.aoFlipOverride(Processor.faceDataOverride)) {
             return false;
         }
     }
@@ -252,7 +250,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
             currentVoxelData.voxelSubstance = this.mDataTool.getSubstance();
             currentVoxelData.isLightSource = this.mDataTool.isLightSource();
             const shapeId = this.mDataTool.getShapeId();
-            currentVoxelData.currentShape = DVEC.DVEB.shapeManager.getShape(shapeId);
+            currentVoxelData.currentShape = DVEC.builder.shapeManager.getShape(shapeId);
         }
         currentVoxelData.shapeState = this.mDataTool.getShapeState();
         currentVoxelData.x = tx;
@@ -390,27 +388,13 @@ const doAO = (face, vertex, x, y, z) => {
     if (currentVoxelData.isLightSource || neightLightSource) {
         substanceRuleResult = false;
     }
-    const aoOverRide = Processor.aoOverRideData;
-    aoOverRide.face = face;
-    aoOverRide.substanceResult = substanceRuleResult;
-    aoOverRide.shapeState = currentVoxelData.shapeState;
-    aoOverRide.voxelId = currentVoxelData.voxelId;
-    aoOverRide.voxelSubstance = currentVoxelData.voxelSubstance;
-    aoOverRide.neighborVoxelId = Processor.nDataTool.getStringId();
-    aoOverRide.neighborVoxelSubstance = neighborVoxelSubstance;
-    aoOverRide.neighborVoxelShape = DVEC.DVEB.shapeManager.getShape(Processor.nDataTool.getShapeId());
-    aoOverRide.neighborVoxelShapeState = Processor.nDataTool.getShapeState();
-    aoOverRide.x = currentVoxelData.x;
-    aoOverRide.y = currentVoxelData.y;
-    aoOverRide.z = currentVoxelData.z;
-    aoOverRide.nx = x;
-    aoOverRide.ny = y;
-    aoOverRide.nz = z;
+    Processor.faceDataOverride.face = face;
+    Processor.faceDataOverride.default = substanceRuleResult;
     if (currentVoxelData.currentShape) {
-        finalResult = currentVoxelData.currentShape.aoAddOverride(Processor.aoOverRideData);
+        finalResult = currentVoxelData.currentShape.aoAddOverride(Processor.faceDataOverride);
     }
     if (currentVoxelData.voxelObject && currentVoxelData.voxelObject.aoOverRide) {
-        finalResult = currentVoxelData.voxelObject.aoOverRide(Processor.aoOverRideData);
+        finalResult = currentVoxelData.voxelObject.aoOverRide(Processor.faceDataOverride);
     }
     if (finalResult) {
         AOVerotexStates[vertex].totalLight = false;

@@ -1,4 +1,4 @@
-import type { CullFaceOverride } from "Meta/Constructor/OverRide.types";
+import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 type SideReocrd = Record<number, boolean>;
 
 const eastWestSides: SideReocrd = {
@@ -63,36 +63,33 @@ const sameCullNorthSouth: SideReocrd = {
  5: true,
 };
 
-const halfBoxCull = (Data: CullFaceOverride) => {
+const halfBoxCull = (Data: FaceDataOverride) => {
  return true;
 };
-const stairCull = (data: CullFaceOverride) => {
- if (data.shapeState >= 0 && data.shapeState <= 7) {
+const stairCull = (data: FaceDataOverride) => {
+ const shapeState = data.currentVoxel.getShapeState();
+ const neighborShapeState = data.neighborVoxel.getShapeState();
+ if (shapeState >= 0 && shapeState <= 7) {
   if (data.face == "east" || data.face == "west") {
-   if (data.shapeState == data.neighborVoxelShapeState) {
-    return sameCullNorthSouth[data.shapeState];
+   if (shapeState == neighborShapeState) {
+    return sameCullNorthSouth[shapeState];
    }
    if (data.face == "east") {
-
-    if (eastBoxes[data.shapeState] && westBoxes[data.neighborVoxelShapeState])
-     return false;
+    if (eastBoxes[shapeState] && westBoxes[neighborShapeState]) return false;
    }
    if (data.face == "west") {
-    if (westBoxes[data.shapeState] && eastBoxes[data.neighborVoxelShapeState])
-     return false;
+    if (westBoxes[shapeState] && eastBoxes[neighborShapeState]) return false;
    }
   }
   if (data.face == "north" || data.face == "south") {
-   if (data.shapeState == data.neighborVoxelShapeState) {
-    return sameCullEastWast[data.shapeState];
+   if (shapeState == neighborShapeState) {
+    return sameCullEastWast[shapeState];
    }
    if (data.face == "north") {
-    if (northBoxes[data.shapeState] && southBoxes[data.neighborVoxelShapeState])
-     return false;
+    if (northBoxes[shapeState] && southBoxes[neighborShapeState]) return false;
    }
    if (data.face == "south") {
-    if (southBoxes[data.shapeState] && northBoxes[data.neighborVoxelShapeState])
-     return false;
+    if (southBoxes[shapeState] && northBoxes[neighborShapeState]) return false;
    }
   }
  }
@@ -100,52 +97,54 @@ const stairCull = (data: CullFaceOverride) => {
  return true;
 };
 
-const boxCull = (data: CullFaceOverride) => {
+const boxCull = (data: FaceDataOverride) => {
+ const shapeState = data.currentVoxel.getShapeState();
  if (data.face == "bottom") {
   if (
-   (data.shapeState >= 0 && data.shapeState <= 3) ||
-   (data.shapeState >= 8 && data.shapeState <= 11)
+   (shapeState >= 0 && shapeState <= 3) ||
+   (shapeState >= 8 && shapeState <= 11)
   ) {
    return false;
   }
  }
  if (data.face == "top") {
   if (
-   (data.shapeState >= 4 && data.shapeState <= 7) ||
-   (data.shapeState >= 12 && data.shapeState <= 15)
+   (shapeState >= 4 && shapeState <= 7) ||
+   (shapeState >= 12 && shapeState <= 15)
   ) {
    return false;
   }
  }
  if (data.face == "east") {
-  if (eastWestSides[data.shapeState]) return false;
-  if (eastBoxes[data.shapeState]) return false;
+  if (eastWestSides[shapeState]) return false;
+  if (eastBoxes[shapeState]) return false;
  }
  if (data.face == "west") {
-  if (eastWestSides[data.shapeState]) return false;
-  if (westBoxes[data.shapeState]) return false;
+  if (eastWestSides[shapeState]) return false;
+  if (westBoxes[shapeState]) return false;
  }
 
  if (data.face == "north") {
-  if (northSouthSides[data.shapeState]) return false;
-  if (northBoxes[data.shapeState]) return false;
+  if (northSouthSides[shapeState]) return false;
+  if (northBoxes[shapeState]) return false;
  }
  if (data.face == "south") {
-  if (northSouthSides[data.shapeState]) return false;
-  if (southBoxes[data.shapeState]) return false;
+  if (northSouthSides[shapeState]) return false;
+  if (southBoxes[shapeState]) return false;
  }
 
  return true;
 };
 
-export const StairCullFace = (data: CullFaceOverride) => {
- if (data.neighborVoxelShape.id == "Box") {
+export const StairCullFace = (data: FaceDataOverride) => {
+ const id = data.neighborVoxel.getVoxelShapeObj().id;
+ if (id == "Box") {
   return boxCull(data);
  }
- if (data.neighborVoxelShape.id == "HalfBox") {
+ if (id == "HalfBox") {
   return halfBoxCull(data);
  }
- if (data.neighborVoxelShape.id == "Stair") {
+ if (id == "Stair") {
   return stairCull(data);
  }
  return true;

@@ -154,7 +154,17 @@ export const WorldRegister = {
    if (!column) {
     column = WorldRegister.column.add(dimensionId, x, z, y);
    }
-   const chunk: ChunkData = {
+   const chunk = this._getChunkData(sab);
+   ChunkReader.setChunkPosition(
+    chunk.data,
+    WorldBounds.getChunkPosition(x, y, z)
+   );
+   column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
+   DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
+   return chunk;
+  },
+  _getChunkData(sab: SharedArrayBuffer): ChunkData {
+   return {
     buffer: sab,
     data: new DataView(sab),
     segement1: new Uint32Array(
@@ -168,8 +178,32 @@ export const WorldRegister = {
      ChunkReader.indexSizes.voxelStateData / 4
     ),
    };
-   column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
-   DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
+  },
+  addFromServer(chunkBuffer: ArrayBuffer) {
+   const sab = new SharedArrayBuffer(chunkBuffer.byteLength);
+   const temp = new Uint8Array(chunkBuffer);
+   const temp2 = new Uint8Array(sab);
+   temp2.set(temp, 0);
+   const chunk = this._getChunkData(sab);
+
+   const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
+   let column = WorldRegister.column.get(
+    "main",
+    chunkPOS.x,
+    chunkPOS.z,
+    chunkPOS.y
+   );
+   if (!column) {
+    column = WorldRegister.column.add(
+     "main",
+     chunkPOS.x,
+     chunkPOS.z,
+     chunkPOS.y
+    );
+   }
+
+   column.chunks.set(WorldBounds.getChunkColumnIndex(chunkPOS.y), chunk);
+   DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);
    return chunk;
   },
   get(dimensionId: string | number, x: number, y: number, z: number) {

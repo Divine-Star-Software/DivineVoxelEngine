@@ -23,7 +23,7 @@
    "keepComments": true
   },
   {
-   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/server/dve",
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/server/out",
    "sourceID": "main",
    "codeSection": "all",
    "keepComments": true

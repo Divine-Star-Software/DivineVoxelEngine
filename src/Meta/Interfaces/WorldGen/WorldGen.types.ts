@@ -1,4 +1,4 @@
-import { DivineVoxelEngineWorldGeneration } from "Constructor/WorldGeneration/DivineVoxelEngineWorldGeneration";
+import { DivineVoxelEngineWorldGeneration } from "Constructor/WorldGeneration/WorldGeneration";
 
 export type WorldGenInterface = {
   generate(

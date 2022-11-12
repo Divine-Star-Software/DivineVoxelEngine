@@ -2,7 +2,7 @@ import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
-import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+import { Builder } from "../../../Builder.js";
 
 const shapeDimensions = {
  width: 0.5,
@@ -12,10 +12,10 @@ const shapeDimensions = {
 
 const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
  const uv = data.unTemplate[data.uvTemplateIndex];
- const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
- const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
+ const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
+ const flip = Builder.shapeHelper.shouldFaceFlip(data.face, face);
  for (let i = 0; i < 2; i++) {
-  DVEB.uvHelper.addUVs(face, {
+  Builder.uvHelper.addUVs(face, {
    uvs: data.uvs,
    uv: uv,
    width: { start: 0, end: 1 },
@@ -23,14 +23,14 @@ const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
    flipped: flip,
    rotoate: rotation,
   });
-  DVEB.uvHelper.processOverlayUVs(data);
+  Builder.uvHelper.processOverlayUVs(data);
 
-  DVEB.shapeHelper.calculateAOColorFromValue(
+  Builder.shapeHelper.calculateAOColorFromValue(
    data.AOColors,
    data.aoTemplate[data.aoIndex]
   );
 
-  DVEB.shapeHelper.calculateLightColorFromValue(
+  Builder.shapeHelper.calculateLightColorFromValue(
    data.RGBLightColors,
    data.sunLightColors,
    data.lightTemplate[data.lightIndex]
@@ -38,12 +38,12 @@ const processFace = (face: "north" | "south", data: VoxelShapeAddData) => {
  }
 
  if (data.substance == "flora") {
-  let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(1, 0);
-  DVEB.shapeHelper.addFaceData(animData, data.faceData);
-  DVEB.shapeHelper.addFaceData(animData, data.faceData);
+  let animData = Builder.shapeHelper.meshFaceData.setAnimationType(1, 0);
+  Builder.shapeHelper.addFaceData(animData, data.faceData);
+  Builder.shapeHelper.addFaceData(animData, data.faceData);
  } else {
-  DVEB.shapeHelper.addFaceData(0, data.faceData);
-  DVEB.shapeHelper.addFaceData(0, data.faceData);
+  Builder.shapeHelper.addFaceData(0, data.faceData);
+  Builder.shapeHelper.addFaceData(0, data.faceData);
  }
 
  data.uvTemplateIndex += 1;
@@ -67,7 +67,7 @@ const transform2 = {
 };
 const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
  0: (data: VoxelShapeAddData) => {
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "north",
    data.position,
    shapeDimensions,
@@ -75,7 +75,7 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
    false,
    transform1
   );
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "south",
    data.position,
    shapeDimensions,
@@ -88,7 +88,7 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
 
  1: (data: VoxelShapeAddData) => {
   data.position.z -= 1;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "north",
    data.position,
    shapeDimensions,
@@ -97,7 +97,7 @@ const faceFunctions: Record<number, (data: VoxelShapeAddData) => void> = {
    transform2
   );
   data.position.z += 2;
-  DVEB.shapeBuilder.addFace(
+  Builder.shapeBuilder.addFace(
    "south",
    data.position,
    shapeDimensions,
@@ -121,16 +121,16 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
   this.aoAddOverrideFunctions[shapeId] = func;
  },
  cullFaceOverride(data) {
-  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
+   return this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
   }
-  return data.substanceResult;
+  return data.default;
  },
  aoAddOverride(data) {
-  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
   }
-  return data.substanceResult;
+  return data.default;
  },
  registerShapeAOFlipOverride(shapeId, func) {
   this.aoAddOverrideFunctions[shapeId] = func;
@@ -144,6 +144,6 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
   data.position.y += shapeDimensions.height;
   faceFunctions[0](data);
   faceFunctions[1](data);
-  return DVEB.shapeHelper.produceShapeReturnData(data);
+  return Builder.shapeHelper.produceShapeReturnData(data);
  },
 };

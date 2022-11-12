@@ -111,7 +111,7 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
             !this.jumpStates.jumping &&
             this.onGround) {
             this.jumpStates.jumping = true;
-            this.velocity.y = 0.2;
+            this.velocity.y = .3;
             this.playerStates[PlayerStatesIndexes.jumping] = 0;
         }
         if (this.jumpStates.jumping) {

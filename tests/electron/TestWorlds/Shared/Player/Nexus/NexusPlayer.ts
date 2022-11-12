@@ -172,7 +172,7 @@ export const GetNexusPlayer = async (
    this.onGround
   ) {
    this.jumpStates.jumping = true;
-   this.velocity.y = 0.2;
+   this.velocity.y = .3;
    this.playerStates[PlayerStatesIndexes.jumping] = 0;
   }
 

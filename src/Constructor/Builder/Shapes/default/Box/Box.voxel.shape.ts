@@ -1,10 +1,10 @@
-import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+import { Builder } from "../../../Builder.js";
 import type {
  VoxelShapeAddData,
  VoxelShapeInterface,
 } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
-import type { CullFaceOverride } from "Meta/Constructor/OverRide.types.js";
+import type { FaceDataOverride } from "Meta/Constructor/OverRide.types.js";
 
 const shapeDimensions = {
  width: 0.5,
@@ -22,12 +22,12 @@ const processDefaultFaceData = (
  face: DirectionNames,
  data: VoxelShapeAddData
 ) => {
- const flip = DVEB.shapeHelper.shouldFaceFlip(data.face, face);
- DVEB.shapeBuilder.addFace(face, data.position, tempDimensions, data, flip);
- const rotation = DVEB.shapeHelper.getTextureRotation(data.face, face);
+ const flip = Builder.shapeHelper.shouldFaceFlip(data.face, face);
+ Builder.shapeBuilder.addFace(face, data.position, tempDimensions, data, flip);
+ const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
  const uv = data.unTemplate[data.uvTemplateIndex];
 
- DVEB.uvHelper.addUVs(face, {
+ Builder.uvHelper.addUVs(face, {
   uvs: data.uvs,
   uv: uv,
   width: { start: 0, end: 1 * data.LOD },
@@ -35,24 +35,24 @@ const processDefaultFaceData = (
   flipped: flip,
   rotoate: rotation,
  });
- DVEB.uvHelper.processOverlayUVs(data);
- DVEB.shapeHelper.calculateLightColor(
+ Builder.uvHelper.processOverlayUVs(data);
+ Builder.shapeHelper.calculateLightColor(
   data.RGBLightColors,
   data.sunLightColors,
   data.lightTemplate,
   data.lightIndex
  );
- DVEB.shapeHelper.calculateAOColor(
+ Builder.shapeHelper.calculateAOColor(
   data.AOColors,
   data.aoTemplate,
   data.aoIndex
  );
 
  if (data.substance == "flora") {
-  let animData = DVEB.shapeHelper.meshFaceData.setAnimationType(3, 0);
-  DVEB.shapeHelper.addFaceData(animData, data.faceData);
+  let animData = Builder.shapeHelper.meshFaceData.setAnimationType(3, 0);
+  Builder.shapeHelper.addFaceData(animData, data.faceData);
  } else {
-  DVEB.shapeHelper.addFaceData(0, data.faceData);
+  Builder.shapeHelper.addFaceData(0, data.faceData);
  }
 
  data.uvTemplateIndex += 1;
@@ -66,7 +66,7 @@ export const BoxVoxelShape: VoxelShapeInterface = {
  id: "Box",
  cullFaceOverrideFunctions: {},
  aoAddOverrideFunctions: {},
- aoFlipOverrideFunctions : {},
+ aoFlipOverrideFunctions: {},
  registerShapeForCullFaceOverride(shapeId, func) {
   this.cullFaceOverrideFunctions[shapeId] = func;
  },
@@ -74,37 +74,44 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   this.aoAddOverrideFunctions[shapeId] = func;
  },
  cullFaceOverride(data) {
-  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (
+   this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]
+  ) {
+   return this.cullFaceOverrideFunctions[
+    data.neighborVoxel.getVoxelShapeObj().id
+   ](data);
   }
-  if (data.neighborVoxelShape.id == "Stair") {
+  if (data.neighborVoxel.getVoxelShapeObj().id == "Stair") {
    return stairCull(data);
   }
-  return data.substanceResult;
+  return data.default;
  },
  aoAddOverride(data) {
-  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](
+    data
+   );
   }
-  if (data.neighborVoxelShape.id == "HalfBox") {
-   if (data.neighborVoxelShapeState == 0) {
+  const neighborShape = data.neighborVoxel.getVoxelShapeObj();
+  if (neighborShape.id == "HalfBox") {
+   if (data.neighborVoxel.getShapeState() == 0) {
     return false;
    }
   }
-  if (data.neighborVoxelShape.id == "Box") {
+  if (neighborShape.id == "Box") {
    return true;
   }
-  if (data.neighborVoxelShape.id == "Panel") {
+  if (neighborShape.id == "Panel") {
    return false;
   }
-  return data.substanceResult;
+  return data.default;
  },
 
  registerShapeAOFlipOverride(shapeId, func) {
-     this.aoAddOverrideFunctions[shapeId] = func;
+  this.aoAddOverrideFunctions[shapeId] = func;
  },
  aoFlipOverride(data) {
-    return false;
+  return false;
  },
  addToChunkMesh(data) {
   data.position.x += shapeDimensions.width * data.LOD;
@@ -114,71 +121,77 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   tempDimensions.height = shapeDimensions.height * data.LOD;
   tempDimensions.depth = shapeDimensions.depth * data.LOD;
 
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "top")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "top")) {
    processDefaultFaceData("top", data);
   }
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "bottom")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "bottom")) {
    processDefaultFaceData("bottom", data);
   }
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "east")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "east")) {
    processDefaultFaceData("east", data);
   }
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "west")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "west")) {
    processDefaultFaceData("west", data);
   }
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "south")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "south")) {
    processDefaultFaceData("south", data);
   }
-  if (DVEB.shapeHelper.isFaceExposexd(data.face, "north")) {
+  if (Builder.shapeHelper.isFaceExposexd(data.face, "north")) {
    processDefaultFaceData("north", data);
   }
-  return DVEB.shapeHelper.produceShapeReturnData(data);
+  return Builder.shapeHelper.produceShapeReturnData(data);
  },
 };
 
 const stairCullFunctions: Record<
  DirectionNames,
- (data: CullFaceOverride) => boolean
+ (data: FaceDataOverride) => boolean
 > = {
  top: (data) => {
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
   if (
-   (data.neighborVoxelShapeState >= 0 && data.neighborVoxelShapeState <= 3) ||
-   (data.neighborVoxelShapeState >= 8 && data.neighborVoxelShapeState <= 11)
+   (neighborVoxelShapeState >= 0 && neighborVoxelShapeState <= 3) ||
+   (neighborVoxelShapeState >= 8 && neighborVoxelShapeState <= 11)
   ) {
    return false;
   }
   return true;
  },
  bottom: (data) => {
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
   if (
-   (data.neighborVoxelShapeState >= 4 && data.neighborVoxelShapeState <= 7) ||
-   (data.neighborVoxelShapeState >= 12 && data.neighborVoxelShapeState <= 15)
+   (neighborVoxelShapeState >= 4 && neighborVoxelShapeState <= 7) ||
+   (neighborVoxelShapeState >= 12 && neighborVoxelShapeState <= 15)
   ) {
    return false;
   }
   return true;
  },
  east: (data) => {
-  if (data.neighborVoxelShapeState == 1 || data.neighborVoxelShapeState == 5)
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
+  if (neighborVoxelShapeState == 1 || neighborVoxelShapeState == 5)
    return false;
   return true;
  },
  west: (data) => {
-  if (data.neighborVoxelShapeState == 3 || data.neighborVoxelShapeState == 7)
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
+  if (neighborVoxelShapeState == 3 || neighborVoxelShapeState == 7)
    return false;
   return true;
  },
  north: (data) => {
-  if (data.neighborVoxelShapeState == 0 || data.neighborVoxelShapeState == 4)
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
+  if (neighborVoxelShapeState == 0 || neighborVoxelShapeState == 4)
    return false;
   return true;
  },
  south: (data) => {
-  if (data.neighborVoxelShapeState == 2 || data.neighborVoxelShapeState == 6)
+  const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
+  if (neighborVoxelShapeState == 2 || neighborVoxelShapeState == 6)
    return false;
   return true;
  },
 };
-const stairCull = (data: CullFaceOverride) => {
+const stairCull = (data: FaceDataOverride) => {
  return stairCullFunctions[data.face](data);
 };

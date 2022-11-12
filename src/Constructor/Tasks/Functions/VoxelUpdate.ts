@@ -27,7 +27,7 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
 
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
-  if (substance == "fluid" || substance == "magma") {
+  if (substance == "liquid" || substance == "magma") {
    console.log("");
    await Propagation.removeFlowAt(data);
    return true;
@@ -132,7 +132,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
 
  if (ES.doFlow()) {
   const substance = brushTool._dt.getSubstance();
-  if (substance == "fluid" || substance == "magma") {
+  if (substance == "liquid" || substance == "magma") {
    Propagation.updateFlowAt(tasks);
   }
  }

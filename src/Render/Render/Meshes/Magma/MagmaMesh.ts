@@ -11,7 +11,7 @@ export const MagmaMesh: VoxelMeshInterface = {
  clearCachedGeometry: false,
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  const mesh = new BABYLON.Mesh("fluid", scene);
+  const mesh = new BABYLON.Mesh("liquid", scene);
   mesh.alphaIndex = 0;
   mesh.isPickable = this.pickable;
   mesh.checkCollisions = this.checkCollisions;

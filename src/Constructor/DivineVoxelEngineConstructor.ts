@@ -3,20 +3,23 @@ import type { EngineSettingsData } from "Meta/index.js";
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
-import { DVEB } from "./Builder/DivineVoxelEngineBuilder.js";
+import { Builder } from "./Builder/Builder.js";
 import { Propagation } from "./Propagation/Propagation.js";
-import { DVEWG } from "./WorldGeneration/DivineVoxelEngineWorldGeneration.js";
-import { VoxelManager } from "./Managers/Voxels/VoxelManager.js";
+import { WorldGeneration } from "./WorldGeneration/WorldGeneration.js";
+//data
+import { DataManager } from "../Data/DataManager.js";
+import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { ItemManager } from "./Managers/Items/ItemManager.js";
-//inter comms
+import { VoxelManager } from "./Managers/Voxels/VoxelManager.js";
+//threadcomm
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
 import { WorldComm } from "./Threads/World/WorldComm.js";
+import { Tasks } from "./Tasks/Tasks.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
-import { Tasks } from "./Tasks/Tasks.js";
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
-import { DataSyncNode } from "../Data/DataSyncNode.js";
-import { DataManager } from "../Data/DataManager.js";
+
+import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
@@ -25,24 +28,23 @@ export const DVEC = {
  UTIL: Util,
  settings: EngineSettings,
 
+ propagation: Propagation,
+ worldGen: WorldGeneration,
+ builder: Builder,
+
  dataSyncNode: DataSyncNode,
  data: DataManager,
+ itemManager: ItemManager,
+ voxelManager: VoxelManager,
 
- DVEB: DVEB,
- propagation: Propagation,
- DVEWG: DVEWG,
-
- tasks: Tasks,
+ TC: ThreadComm,
  parentComm: ParentComm,
  worldComm: WorldComm,
- TC: ThreadComm,
-
- voxelManager: VoxelManager,
- itemManager: ItemManager,
+ tasks: Tasks,
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
-  DVEB.syncSettings(data);
+  Builder.syncSettings(data);
   this.__settingsHaveBeenSynced = true;
  },
  reStart() {},
@@ -54,13 +56,17 @@ export const DVEC = {
    return (
     DVEC.worldComm.isPortSet() &&
     DVEC.__settingsHaveBeenSynced &&
-    DVEB.textureManager.isReady()
+    Builder.textureManager.isReady()
    );
   }
  },
 
  async $INIT() {
   await InitWorker(this);
+ },
+
+ getDataTool() {
+  return GetConstructorDataTool();
  },
 };
 export type DivineVoxelEngineConstructor = typeof DVEC;

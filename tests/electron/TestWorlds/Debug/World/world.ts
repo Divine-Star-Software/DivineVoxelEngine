@@ -11,7 +11,7 @@ await DVEW.$INIT();
 const builder = DVEW.getBuilder();
 const dataTool = DVEW.getDataTool();
 DVEW.data.dimensions.registerDimension("other", {
- fluidFlowSpeed: 1,
+ liquidFlowSpeed: 1,
  magmaFlowSpeed: 1,
  sunLight: true,
 });

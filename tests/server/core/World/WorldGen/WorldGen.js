@@ -1,4 +1,4 @@
-import { DVEW } from "../../../dve/World/DivineVoxelEngineWorld.js";
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 const brush = DVEW.getBrush();
 export const WorldGen = {
     generateChunk(chunkX, chunkZ) {

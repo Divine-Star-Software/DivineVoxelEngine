@@ -1,11 +1,11 @@
-import type { DirectionNames, EngineSettingsData, VoxelSubstanceType } from "Meta/index.js";
+import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelShapeInterface, VoxelSubstanceType } from "Meta/index.js";
 import type { ChunkData } from "Meta/Data/WorldData.types.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import type { Rotations } from "Meta/Constructor/Mesher.types.js";
+import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
-import { DataTool } from "../../../Tools/Data/DataTool.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -13,8 +13,8 @@ import { DataTool } from "../../../Tools/Data/DataTool.js";
  */
 export declare const Processor: {
     LOD: number;
-    mDataTool: DataTool;
-    nDataTool: DataTool;
+    mDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+    nDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
     heightByte: {
         _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
         _setHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
@@ -105,13 +105,13 @@ export declare const Processor: {
         composedEntity: number;
     };
     voxelProcesseData: VoxelProcessData;
-    cullFaceOverrideData: any;
+    faceDataOverride: FaceDataOverride;
     aoOverRideData: any;
     template: FullChunkTemplate;
     faceIndexMap: Record<DirectionNames, number>;
     dimension: number;
     $INIT(): void;
-    cullCheck(face: DirectionNames, voxelId: string, voxelShapeId: number, voxelSubstance: VoxelSubstanceType, shapeState: number, x: number, y: number, z: number, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelObject: VoxelConstructorObject, voxelShape: VoxelShapeInterface, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;

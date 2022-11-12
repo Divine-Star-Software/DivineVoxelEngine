@@ -16,7 +16,7 @@ export const Tasks = {
    ConstructorTasks.buildChunk,
    async (data) => {
     const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
-    await DVEC.DVEB.buildChunk(
+    await DVEC.builder.buildChunk(
      data[0],
      chunkPOS.x,
      chunkPOS.y,
@@ -39,7 +39,7 @@ export const Tasks = {
     for (let i = 7; i < 7 + 2 * composed; i += 2) {
      arrays.push(new Uint32Array(data[i]), new Uint32Array(data[i + 1]));
     }
-    DVEC.DVEB.entityConstructor.setEntityData(
+    DVEC.builder.entityConstructor.setEntityData(
      x,
      y,
      z,
@@ -49,7 +49,7 @@ export const Tasks = {
      composed,
      arrays
     );
-    DVEC.DVEB.constructEntity();
+    DVEC.builder.constructEntity();
    }
   ),
   item: ThreadComm.registerTasks<any[]>(
@@ -59,7 +59,7 @@ export const Tasks = {
     const x = data[1];
     const y = data[2];
     const z = data[3];
-    DVEC.DVEB.itemMesher.createItem(itemId, x, y, z);
+    DVEC.builder.itemMesher.createItem(itemId, x, y, z);
    }
   ),
  },
@@ -142,7 +142,7 @@ export const Tasks = {
     const x = data[0];
     const z = data[1];
     const genData = data[2];
-    await DVEC.DVEWG.generate(x, z, genData);
+    await DVEC.worldGen.generate(x, z, genData);
    }
   ),
  },

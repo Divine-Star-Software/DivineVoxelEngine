@@ -234,7 +234,7 @@ const faceFunctions = {
         resetTransform();
     },
 };
-export const FluidSourceBlockVoxelShape = {
+export const LiquidSourceBlockVoxelShape = {
     cullFaceOverrideFunctions: {},
     aoAddOverrideFunctions: {},
     aoFlipOverrideFunctions: {},
@@ -249,7 +249,7 @@ export const FluidSourceBlockVoxelShape = {
             return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
         }
         if (data.face == "top" &&
-            data.neighborVoxelSubstance != "fluid" &&
+            data.neighborVoxelSubstance != "liquid" &&
             data.voxelId != data.neighborVoxelId) {
             return true;
         }
@@ -267,7 +267,7 @@ export const FluidSourceBlockVoxelShape = {
     aoFlipOverride(data) {
         return false;
     },
-    id: "FluidSourceBlock",
+    id: "LiquidSourceBlock",
     addToChunkMesh(data) {
         if (sourceBlockTest(data)) {
         }

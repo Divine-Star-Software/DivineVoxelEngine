@@ -2,7 +2,7 @@ import type { VoxelSubstanceType } from "Meta/index";
 import type { MaterialCreateData } from "Meta/Render/Materials/Material.types";
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 import type { FloraMaterial } from "Render/Render/Materials/Flora/FloraMaterial";
-import type { FluidMaterial } from "Render/Render/Materials/Fluid/FluidMaterial";
+import type { LiquidMaterial } from "Render/Render/Materials/Liquid/LiquidMaterial";
 import type { ItemMaterial } from "Render/Render/Materials/Item/ItemMaterial";
 import type { MagmaMaterial } from "Render/Render/Materials/Magma/MagmaMaterial";
 import type { SolidMaterial } from "Render/Render/Materials/Solid/SolidMaterial";
@@ -15,7 +15,7 @@ const setUpMaterial = async (
   | typeof SolidMaterial
   | typeof FloraMaterial
   | typeof MagmaMaterial
-  | typeof FluidMaterial
+  | typeof LiquidMaterial
   | typeof ItemMaterial
 ) => {
  const textures =
@@ -51,8 +51,8 @@ const setUpMaterial = async (
    DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
   }
 
-  if (substance == "fluid") {
-   DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+  if (substance == "liquid") {
+   DVER.renderManager.liquidStandardMaterial.$INIT(_2dTextureArray, scene);
   }
  }
 
@@ -85,7 +85,7 @@ export async function BuildInitalMeshes(
 
  await setUpMaterial(DVER, scene, "solid", DVER.renderManager.solidMaterial);
  await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
- await setUpMaterial(DVER, scene, "fluid", DVER.renderManager.fluidMaterial);
+ await setUpMaterial(DVER, scene, "liquid", DVER.renderManager.liquidMaterial);
  await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
  await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
 
@@ -96,7 +96,7 @@ export async function BuildInitalMeshes(
  scene.registerBeforeRender(() => {
   DVER.renderManager.solidMaterial.runEffects();
   DVER.renderManager.floraMaterial.runEffects();
-  DVER.renderManager.fluidMaterial.runEffects();
+  DVER.renderManager.liquidMaterial.runEffects();
   DVER.renderManager.magmaMaterial.runEffects();
   DVER.renderManager.itemMaterial.runEffects();
   DVER.renderManager.skyBoxMaterial.runEffects();

@@ -3,6 +3,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
 import { VoxelMath } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
+import { PlayerWorld } from "../../Shared/Player/World/PlayerWorld.js";
 
 const syncSABWtihBuffer = (sab: SharedArrayBuffer, buffer: ArrayBuffer) => {
  const temp1 = new Uint8Array(sab);
@@ -24,17 +25,16 @@ await DVEW.$INIT();
 const pickSAB = new SharedArrayBuffer(4 * 3 + 3);
 let pickDV = new DataView(pickSAB);
 
-let playerDataBuffer = new SharedArrayBuffer(1);
+let playerDataBuffer = new SharedArrayBuffer(100);
 let playerData = new DataView(playerDataBuffer);
 let ready = false;
-DVEW.parentComm.listenForMessage("player-server-data", (data) => {
+/* DVEW.parentComm.listenForMessage("player-server-data", (data) => {
  playerDataBuffer = data[1];
  playerData = new DataView(playerDataBuffer);
  ready = true;
 });
-
+ */
 (self as any).DVEW = DVEW;
-
 
 const builder = DVEW.getBuilder();
 const depth = 32;
@@ -45,7 +45,7 @@ const endZ = depth;
 const load = () => {
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   builder.setXZ(x,z).buildColumn();
+   builder.setXZ(x, z).buildColumn();
   }
  }
 };
@@ -74,7 +74,7 @@ socket.addEventListener("message", (event) => {
  const message = dv.getUint16(0);
  if (dv.byteLength <= 0) return;
  if (message == 0) {
- // DVEW.addChunkFromServer(data);
+  DVEW.data.worldRegister.chunk.addFromServer(data);
  }
  if (message == 100) {
   load();
@@ -113,30 +113,14 @@ socket.addEventListener("message", (event) => {
  }
 });
 await DVEW.UTIL.createPromiseCheck({
- check: () => ready && opened,
+ check: () => opened,
  checkInterval: 1,
 });
-/*
-let depth = 16;
-for (let x = -depth; x <= depth; x++) {
- for (let z = -depth; z <= depth; z++) {
-    for (let y = -depth; y <= depth; y++) {
-  addVoxel("dve:dreamstone", 0, 0, x, y, z);
-    }
- }
-}
+await PlayerWorld(DVEW);
 
-let depth = 16;
-for (let x = -depth; x <= depth; x++) {
- for (let z = -depth; z <= depth; z++) {
-  addVoxel("dve:dreamstone", 0, 0, x, 14, z);
- }
-}
-*/
-
-
+/* 
 DVEW.parentComm.listenForMessage("voxel-add", async (data) => {
-/*  let x = pickDV.getFloat32(0) + pickDV.getInt8(12);
+  let x = pickDV.getFloat32(0) + pickDV.getInt8(12);
  let y = pickDV.getFloat32(4) + pickDV.getInt8(13);
  let z = pickDV.getFloat32(8) + pickDV.getInt8(14);
  const voxel = DVEW.worldData.getVoxel(x, y, z);
@@ -164,13 +148,13 @@ DVEW.parentComm.listenForMessage("voxel-add", async (data) => {
    mdv.setFloat32(20, z);
    socket.send(message);
   } 
- }*/
+ }
 });
 DVEW.parentComm.listenForMessage("voxel-remove", async (data) => {
  let x = pickDV.getFloat32(0);
  let y = pickDV.getFloat32(4);
  let z = pickDV.getFloat32(8);
-/*  await DVEW.worldData.requestVoxelBeRemoved(x, y, z); */
+
  const message = new ArrayBuffer(4 + 4 * 3);
  const mdv = new DataView(message);
  mdv.setUint16(0, 400);
@@ -181,7 +165,7 @@ DVEW.parentComm.listenForMessage("voxel-remove", async (data) => {
  console.log(x, y, z);
  socket.send(message);
 });
-
+ */
 DVEW.parentComm.listenForMessage("player-server-data", (data) => {
  playerDataBuffer = data[1];
  playerData = new DataView(playerDataBuffer);
@@ -227,7 +211,7 @@ setInterval(() => {
   const y = voxels[i + 1];
   const z = voxels[i + 2];
 
-/*   const voxel = DVEW.worldData.getVoxel(x, y, z);
+  /*   const voxel = DVEW.worldData.getVoxel(x, y, z);
   if (voxel && voxel[0] != -1) {
    pickDV.setFloat32(0, x);
    pickDV.setFloat32(4, y);
@@ -236,5 +220,3 @@ setInterval(() => {
   } */
  }
 }, 20);
-
-DVEW.parentComm.sendMessage("connect-player-pick", [pickSAB]);

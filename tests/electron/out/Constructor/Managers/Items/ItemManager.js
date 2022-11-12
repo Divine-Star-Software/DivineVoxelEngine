@@ -24,7 +24,7 @@ export const ItemManager = {
             const item = this.itemObjects[itemId];
             if (!item.hooks[hook])
                 continue;
-            item.hooks[hook](DVEC.DVEB);
+            item.hooks[hook](DVEC.builder);
         }
     },
     removeItemHookForAll(hook) {

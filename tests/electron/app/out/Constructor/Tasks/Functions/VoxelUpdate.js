@@ -19,7 +19,7 @@ export async function EreaseAndUpdate(data) {
     dataTool.setDimension(dimenson).loadIn(x, y, z);
     if (ES.doFlow()) {
         const substance = dataTool.getSubstance();
-        if (substance == "fluid" || substance == "magma") {
+        if (substance == "liquid" || substance == "magma") {
             console.log("");
             await Propagation.removeFlowAt(data);
             return true;
@@ -116,7 +116,7 @@ export async function PaintAndUpdate(data) {
     ]);
     if (ES.doFlow()) {
         const substance = brushTool._dt.getSubstance();
-        if (substance == "fluid" || substance == "magma") {
+        if (substance == "liquid" || substance == "magma") {
             Propagation.updateFlowAt(tasks);
         }
     }

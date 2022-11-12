@@ -11,8 +11,8 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
         if (substance == "solid") {
             DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
         }
-        if (substance == "fluid") {
-            DVER.renderManager.fluidStandardMaterial.$INIT(_2dTextureArray, scene);
+        if (substance == "liquid") {
+            DVER.renderManager.liquidStandardMaterial.$INIT(_2dTextureArray, scene);
         }
     }
     const materialCreateData = {
@@ -37,7 +37,7 @@ export async function BuildInitalMeshes(DVER, scene) {
     DVER.meshManager.setScene(scene);
     await setUpMaterial(DVER, scene, "solid", DVER.renderManager.solidMaterial);
     await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
-    await setUpMaterial(DVER, scene, "fluid", DVER.renderManager.fluidMaterial);
+    await setUpMaterial(DVER, scene, "liquid", DVER.renderManager.liquidMaterial);
     await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
     await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
     DVER.renderManager.animationManager.startAnimations();
@@ -45,7 +45,7 @@ export async function BuildInitalMeshes(DVER, scene) {
     scene.registerBeforeRender(() => {
         DVER.renderManager.solidMaterial.runEffects();
         DVER.renderManager.floraMaterial.runEffects();
-        DVER.renderManager.fluidMaterial.runEffects();
+        DVER.renderManager.liquidMaterial.runEffects();
         DVER.renderManager.magmaMaterial.runEffects();
         DVER.renderManager.itemMaterial.runEffects();
         DVER.renderManager.skyBoxMaterial.runEffects();

@@ -1,5 +1,5 @@
 /// <reference types="babylonjs" />
-export declare class FluidMaterialPlugin extends BABYLON.MaterialPluginBase {
+export declare class LiquidMaterialPlugin extends BABYLON.MaterialPluginBase {
     onUBSet: (uniformBuffer: BABYLON.UniformBuffer) => void;
     _texArray: BABYLON.RawTexture2DArray;
     _textureSet: boolean;
@@ -42,10 +42,10 @@ export declare class FluidMaterialPlugin extends BABYLON.MaterialPluginBase {
         CUSTOM_VERTEX_DEFINITIONS?: undefined;
     } | null;
 }
-export declare const StandardFluidMaterial: {
+export declare const StandardLiquidMaterial: {
     material: BABYLON.StandardMaterial | null;
     reflectionprobe: BABYLON.RenderTargetTexture | null;
-    plugin: FluidMaterialPlugin | null;
+    plugin: LiquidMaterialPlugin | null;
     $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
     getMaterial(): BABYLON.StandardMaterial;
     addToRenderList(mesh: BABYLON.Mesh): void;

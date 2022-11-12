@@ -1,5 +1,5 @@
 import { Worker } from "worker_threads";
-import { DVES } from "../dve/Server/DivineVoxelEngineServer.js";
+import { DVES } from "../out/Server/DivineVoxelEngineServer.js";
 const world = new Worker(new URL("./World/World.js", import.meta.url));
 //const nexus = new Worker(new URL("Nexus/Nexus.js", import.meta.url));
 const NUM_CONSTRUCTORS = 6;

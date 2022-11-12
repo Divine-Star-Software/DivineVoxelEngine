@@ -6,7 +6,7 @@ export const TextureManager = {
     textureExtension: {
         solid: "png",
         transparent: "png",
-        fluid: "png",
+        liquid: "png",
         magma: "png",
         flora: "png",
         Item: "png",
@@ -14,7 +14,7 @@ export const TextureManager = {
     textures: {
         solid: [],
         transparent: [],
-        fluid: [],
+        liquid: [],
         magma: [],
         flora: [],
         Item: [],
@@ -22,7 +22,7 @@ export const TextureManager = {
     uvTextureMap: {
         solid: {},
         transparent: {},
-        fluid: {},
+        liquid: {},
         magma: {},
         flora: {},
         Item: {},
@@ -30,7 +30,7 @@ export const TextureManager = {
     overylayTextures: {
         solid: [],
         transparent: [],
-        fluid: [],
+        liquid: [],
         magma: [],
         flora: [],
         Item: [],
@@ -38,7 +38,7 @@ export const TextureManager = {
     overlayUVTextureMap: {
         solid: {},
         transparent: {},
-        fluid: {},
+        liquid: {},
         magma: {},
         flora: {},
         Item: {},
@@ -46,7 +46,7 @@ export const TextureManager = {
     normalMapTextures: {
         solid: [],
         transparent: [],
-        fluid: [],
+        liquid: [],
         magma: [],
         flora: [],
         Item: [],
@@ -54,14 +54,14 @@ export const TextureManager = {
     noramlMapUVTexturesMap: {
         solid: {},
         transparent: {},
-        fluid: {},
+        liquid: {},
         magma: {},
         flora: {},
         Item: {},
     },
     textureTypes: [
         "transparent",
-        "fluid",
+        "liquid",
         "solid",
         "magma",
         "flora",
@@ -112,7 +112,7 @@ export const TextureManager = {
             solid: [],
             transparent: [],
             magma: [],
-            fluid: [],
+            liquid: [],
             flora: [],
             Item: [],
         };
@@ -120,7 +120,7 @@ export const TextureManager = {
             solid: [],
             transparent: [],
             magma: [],
-            fluid: [],
+            liquid: [],
             flora: [],
             Item: [],
         };
@@ -128,7 +128,7 @@ export const TextureManager = {
             solid: [],
             transparent: [],
             magma: [],
-            fluid: [],
+            liquid: [],
             flora: [],
             Item: [],
         };

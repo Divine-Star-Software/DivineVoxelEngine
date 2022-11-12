@@ -14,7 +14,7 @@ export const DimensionsRegister = {
   0: "main",
  },
  __defaultDimensionOptions: <DimensionOptions>{
-  fluidFlowSpeed: 0.1,
+  liquidFlowSpeed: 0.1,
   magmaFlowSpeed: 0.1,
   sunLight: true,
  },

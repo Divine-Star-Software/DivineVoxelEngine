@@ -1,8 +1,8 @@
 export const LiquidDreamEtherVoxelData = {
     name: "Liquid Dream Ether",
-    shapeId: "FluidSourceBlock",
+    shapeId: "LiquidSourceBlock",
     id: "dve:liquiddreamether",
-    substance: "fluid",
+    substance: "liquid",
     material: "water",
     hardnress: 1000,
     physics: {

@@ -1,11 +1,11 @@
-import { FluidMaterial } from "../../Materials/Fluid/FluidMaterial.js";
-export const FluidMesh = {
+import { LiquidMaterial } from "../../Materials/Liquid/LiquidMaterial.js";
+export const LiquidMesh = {
     pickable: false,
     checkCollisions: false,
     seralize: false,
     clearCachedGeometry: false,
     createTemplateMesh(scene) {
-        const mesh = new BABYLON.Mesh("fluid", scene);
+        const mesh = new BABYLON.Mesh("liquid", scene);
         mesh.isPickable = this.pickable;
         mesh.checkCollisions = this.checkCollisions;
         if (!this.checkCollisions) {
@@ -21,7 +21,7 @@ export const FluidMesh = {
         if (settings.meshes.clearChachedGeometry) {
             this.clearCachedGeometry = true;
         }
-        if (settings.meshes.checkFluidCollisions) {
+        if (settings.meshes.checkLiquidCollisions) {
             this.checkCollisions = true;
         }
         if (settings.meshes.seralize) {
@@ -57,7 +57,7 @@ export const FluidMesh = {
         return mesh;
     },
     async createMeshGeometory(mesh, data) {
-        mesh.material = FluidMaterial.getMaterial();
+        mesh.material = LiquidMaterial.getMaterial();
         this._applyVertexData(mesh, data);
         return mesh;
     },

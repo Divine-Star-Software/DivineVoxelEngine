@@ -14,7 +14,7 @@ export const TextureManager = {
  textureExtension: <Record<TextureTypes, string>>{
   solid: "png",
   transparent: "png",
-  fluid: "png",
+  liquid: "png",
   magma: "png",
   flora: "png",
   Item: "png",
@@ -23,7 +23,7 @@ export const TextureManager = {
  textures: <Record<TextureTypes, TextureData[]>>{
   solid: [],
   transparent: [],
-  fluid: [],
+  liquid: [],
   magma: [],
   flora: [],
   Item: [],
@@ -32,7 +32,7 @@ export const TextureManager = {
  uvTextureMap: <Record<TextureTypes, Record<string, number>>>{
   solid: {},
   transparent: {},
-  fluid: {},
+  liquid: {},
   magma: {},
   flora: {},
   Item: {},
@@ -41,7 +41,7 @@ export const TextureManager = {
  overylayTextures: <Record<TextureTypes, TextureData[]>>{
   solid: [],
   transparent: [],
-  fluid: [],
+  liquid: [],
   magma: [],
   flora: [],
   Item: [],
@@ -50,7 +50,7 @@ export const TextureManager = {
  overlayUVTextureMap: <Record<TextureTypes, Record<string, number>>>{
   solid: {},
   transparent: {},
-  fluid: {},
+  liquid: {},
   magma: {},
   flora: {},
   Item: {},
@@ -59,7 +59,7 @@ export const TextureManager = {
  normalMapTextures: <Record<TextureTypes, TextureData[]>>{
   solid: [],
   transparent: [],
-  fluid: [],
+  liquid: [],
   magma: [],
   flora: [],
   Item: [],
@@ -68,7 +68,7 @@ export const TextureManager = {
  noramlMapUVTexturesMap: <Record<TextureTypes, Record<string, number>>>{
   solid: {},
   transparent: {},
-  fluid: {},
+  liquid: {},
   magma: {},
   flora: {},
   Item: {},
@@ -76,7 +76,7 @@ export const TextureManager = {
 
  textureTypes: <TextureTypes[]>[
   "transparent",
-  "fluid",
+  "liquid",
   "solid",
   "magma",
   "flora",
@@ -144,7 +144,7 @@ export const TextureManager = {
    solid: [],
    transparent: [],
    magma: [],
-   fluid: [],
+   liquid: [],
    flora: [],
    Item: [],
   };
@@ -152,7 +152,7 @@ export const TextureManager = {
    solid: [],
    transparent: [],
    magma: [],
-   fluid: [],
+   liquid: [],
    flora: [],
    Item: [],
   };
@@ -160,7 +160,7 @@ export const TextureManager = {
    solid: [],
    transparent: [],
    magma: [],
-   fluid: [],
+   liquid: [],
    flora: [],
    Item: [],
   };

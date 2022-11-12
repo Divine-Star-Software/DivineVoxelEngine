@@ -3,7 +3,7 @@
 //https://playground.babylonjs.com/#ENPTI9#8
 //shaders
 import { floraShaders } from "./Code/Flora/Flora.shader.js";
-import { fluidShaders } from "./Code/Fluid/Fluid.shaders.js";
+import { liquidShaders } from "./Code/Liquid/Liquid.shaders.js";
 import { solidShaders } from "./Code/Solid/Solid.shader.js";
 import { itemShaders } from "./Code/Item/Item.shader.js";
 //shared functions
@@ -49,10 +49,10 @@ ${CommonShader.getMainFunction(`
 `)}
 `;
     },
-    buildFluidVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
+    buildLiquidVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
-${fluidShaders.vertexVars}
+${liquidShaders.vertexVars}
 ${SharedVertexShader.attributes(false)}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
@@ -66,7 +66,7 @@ ${animationFunction}
 ${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
- ${fluidShaders.vertexWave}
+ ${liquidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
@@ -139,7 +139,7 @@ ${CommonShader.getMainFunction(`
     buildMagmaVertexShader(uniformRegister = "", animationFunction = "", overlayUniformRegister = "", overlayAnimationFunction = "") {
         return `
 ${SharedVertexShader.top}
-${fluidShaders.vertexVars}
+${liquidShaders.vertexVars}
 ${SharedVertexShader.attributes(false)}
 ${SharedVertexShader.uniforams}
 ${SharedVertexShader.varying(false)}
@@ -153,7 +153,7 @@ ${animationFunction}
 ${SharedVertexShader.getAnimationType}
 ${overlayAnimationFunction}
 ${CommonShader.getMainFunction(`
- ${fluidShaders.vertexWave}
+ ${liquidShaders.vertexWave}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.passTime}
  ${SharedVertexShader.setUVInMain}
@@ -204,10 +204,10 @@ ${CommonShader.getMainFunction(`
 ${itemShaders.fragMain}
 `)}`;
     },
-    buildFluidFragmentShader() {
+    buildLiquidFragmentShader() {
         return `
 ${SharedFragmentShader.top}
-${fluidShaders.fragVars}
+${liquidShaders.fragVars}
 ${SharedFragmentShader.useTime}
 ${ShaderNoiseFunctions.fbm3}
 ${SharedFogFunctions.fogFragConstants}
@@ -221,7 +221,7 @@ ${SharedFragmentShader.doFog}
 ${SharedFragmentShader.doVFog}
 
 ${CommonShader.getMainFunction(`
-${fluidShaders.fragMain}
+${liquidShaders.fragMain}
 `)}`;
     },
     buildFloraFragmentShader() {
@@ -268,8 +268,8 @@ ${solidShaders.fragMain}
         if (voxelSubstance == "flora") {
             return this.buildFloraVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
-        if (voxelSubstance == "fluid") {
-            return this.buildFluidVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
+        if (voxelSubstance == "liquid") {
+            return this.buildLiquidVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
         }
         if (voxelSubstance == "solid") {
             return this.buildSolidVertexShader(uniformRegister, animationFunction, overlayUniformRegister, ovlerayAnimationFunction);
@@ -283,8 +283,8 @@ ${solidShaders.fragMain}
         if (voxelSubstance == "magma") {
             return this.buildMagmaFragmentShader();
         }
-        if (voxelSubstance == "fluid") {
-            return this.buildFluidFragmentShader();
+        if (voxelSubstance == "liquid") {
+            return this.buildLiquidFragmentShader();
         }
         if (voxelSubstance == "flora") {
             return this.buildFloraFragmentShader();

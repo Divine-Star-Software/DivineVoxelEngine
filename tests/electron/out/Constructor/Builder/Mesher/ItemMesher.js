@@ -6,7 +6,7 @@ export const ItemMesher = {
         const itemProcessData = {
             uvs: [],
         };
-        item.process(itemProcessData, DVEC.DVEB);
+        item.process(itemProcessData, DVEC.builder);
         const itemShapeData = DVEC.itemManager.getItemShapeData(item.shapeId);
         const faces = itemShapeData.faces;
         const position = { x: 0, y: 0, z: 0 };
@@ -34,12 +34,12 @@ export const ItemMesher = {
             dimensions.width = face.dimensions[0];
             dimensions.depth = face.dimensions[1];
             dimensions.height = face.dimensions[2];
-            DVEC.DVEB.shapeBuilder.addFace(face.direction, position, dimensions, createData);
+            DVEC.builder.shapeBuilder.addFace(face.direction, position, dimensions, createData);
             let rotation = 0;
             if (face.direction == "north") {
                 rotation = 360;
             }
-            DVEC.DVEB.uvHelper.addUVs(face.direction, {
+            DVEC.builder.uvHelper.addUVs(face.direction, {
                 uvs: createData.uvs,
                 uv: uv,
                 width: { start: face.uvs[0], end: face.uvs[1] },
@@ -48,7 +48,7 @@ export const ItemMesher = {
                 rotoate: rotation,
             });
         }
-        DVEC.DVEB.shapeHelper.calculateLightColorFromValue(createData.RGBLightColors, createData.sunLightColors, 0xffff);
+        DVEC.builder.shapeHelper.calculateLightColorFromValue(createData.RGBLightColors, createData.sunLightColors, 0xffff);
         const positionArray = new Float32Array(createData.positions);
         const normalsArray = new Float32Array(createData.normals);
         const indiciesArray = new Int32Array(createData.indices);

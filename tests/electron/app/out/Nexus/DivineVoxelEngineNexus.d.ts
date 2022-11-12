@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -9,7 +9,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -82,7 +82,7 @@ export declare const DVEN: {
             meshes: {
                 clearChachedGeometry: boolean;
                 checkMagmaCollisions: boolean;
-                checkFluidCollisions: boolean;
+                checkLiquidCollisions: boolean;
                 checkFloraCollisions: boolean;
                 checkSolidCollisions: boolean;
                 seralize: boolean;
@@ -94,7 +94,7 @@ export declare const DVEN: {
                 doSunLight: boolean;
                 doRGBLight: boolean;
                 disableFloraShaderEffects: boolean;
-                disableFluidShaderEffects: boolean;
+                disableLiquidShaderEffects: boolean;
             };
         };
         getSettings(): EngineSettingsData;
@@ -328,6 +328,8 @@ export declare const DVEN: {
             };
             chunk: {
                 add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
+                _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
+                addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
                 get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
         };
@@ -573,7 +575,7 @@ export declare const DVEN: {
                     worldGenDone: boolean;
                     sunLightDone: boolean;
                     RGBLightDone: boolean;
-                    fluidDone: boolean;
+                    liquidDone: boolean;
                     magmaDone: boolean;
                 };
                 _chunkStateMask: {
@@ -585,8 +587,8 @@ export declare const DVEN: {
                     sunLightIndex: number;
                     RGBLightDone: number;
                     RGBLightIndex: number;
-                    fluidDone: number;
-                    fluidIndex: number;
+                    liquidDone: number;
+                    liquidIndex: number;
                     magmaDone: number;
                     magmaIndex: number;
                 };
@@ -597,14 +599,14 @@ export declare const DVEN: {
                 isWorldGenDone(chunkStatesData: Uint32Array): boolean;
                 isSunLightUpdatesDone(chunkStatesData: Uint32Array): boolean;
                 isRGBLightUpdatesDone(chunkStatesData: Uint32Array): boolean;
-                isFluidFlowDone(chunkStatesData: Uint32Array): boolean;
+                isLiquidFlowDone(chunkStatesData: Uint32Array): boolean;
                 isMagmaFlowDone(chunkStatesData: Uint32Array): boolean;
                 getFullChunkStates(chunkStatesData: Uint32Array): {
                     empty: boolean;
                     worldGenDone: boolean;
                     sunLightDone: boolean;
                     RGBLightDone: boolean;
-                    fluidDone: boolean;
+                    liquidDone: boolean;
                     magmaDone: boolean;
                 };
                 addToVoxelCount(voxelSubstance: import("Meta/index.js").VoxelSubstanceType, chunkStatesData: Uint32Array): void;

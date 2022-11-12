@@ -1,4 +1,4 @@
-export class FluidMaterialPlugin extends BABYLON.MaterialPluginBase {
+export class LiquidMaterialPlugin extends BABYLON.MaterialPluginBase {
     onUBSet;
     _texArray;
     _textureSet = false;
@@ -15,7 +15,7 @@ export class FluidMaterialPlugin extends BABYLON.MaterialPluginBase {
         defines["TWOD_ARRAY_TEXTURE"] = true;
     }
     getClassName() {
-        return "FluidMaterialPlugin";
+        return "LiquidMaterialPlugin";
     }
     getSamplers(samplers) {
         samplers.push("arrayTex");
@@ -123,12 +123,12 @@ clipSpace = reflectionMatrix * worldPos;
    //vec3 rgbDirection = normalize(vPositionW - cameraPOS);
    //info2=computeLighting(viewDirectionW,normalW,rgbDirection,rgbLColor,rgbLColor,1.,glossiness);
    */
-export const StandardFluidMaterial = {
+export const StandardLiquidMaterial = {
     material: null,
     reflectionprobe: null,
     plugin: null,
     $INIT(texture, scene) {
-        this.material = new BABYLON.StandardMaterial("fluid", scene);
+        this.material = new BABYLON.StandardMaterial("liquid", scene);
         this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
         /*   this.material.diffuseTexture = new BABYLON.Texture(
          "assets/textures/debug/default.png",
@@ -138,7 +138,7 @@ export const StandardFluidMaterial = {
       
         this.material.backFaceCulling = false;
         this.material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        this.plugin = new FluidMaterialPlugin(this.material, texture, (ubo) => {
+        this.plugin = new LiquidMaterialPlugin(this.material, texture, (ubo) => {
          ubo.updateColor3("myColor", new BABYLON.Color3(1, 1, 1));
         });  */
         this.material.alpha = 0.7;

@@ -3,46 +3,11 @@ import type { Position3Matrix } from "Meta/Util.types";
 import {
  AOAddOverride,
  AOAFlipOverride,
- CullFaceOverride,
+ FaceDataOverride,
 } from "./OverRide.types";
 
 /** # Voxel Shape Add DAta
 ---
-* The chunk meshes positions
-* @var positions
-* The chunk mesh indices
-* @var indices
-* The chunk mesh full colors
-* @var fullColors
-* The chunk mesh linear space colors
-* @var linearColors
-* The chunk mesh uvs
-* @var uvs
-* ## Face
-* The current face that is being added to the mesh.
-* 0 -> top
-* 1 -> bottom
-* 2 -> west
-* 3 -> east
-* 4 -> north
-* 5 -> south
-* @var face
-* The current indicie index of the mesh.
-* @var indicieIndex: number;
-* The calculated uv template.
-* @var unTemplate: number[];
-* The current index of the uv template
-* @var uvTemplateIndex: number;
-* The calcuated light values
-* @var lightTemplate: number[];
-* The current light template index.
-* @var lightIndex: number[];
-* The calculated AO values.
-* @var  aoTemplate: number[];
-* The current AO index.
-* @var aoIndex: number[];
-* The relative chunk position that the voxel is being added.
-* @var position: Position3Matrix;
 */
 export type VoxelShapeAddData = {
  LOD: number;
@@ -58,10 +23,10 @@ export type VoxelShapeAddData = {
  colors: number[];
  uvs: number[];
  overlayUVs: number[];
- face: number;
  indicieIndex: number;
 
  //chunk template data
+ face: number;
  shapeState: number;
  flowTemplateIndex?: number;
  flowTemplate?: number[];
@@ -96,26 +61,26 @@ export type VoxelShapeAddReturnData = {
  */
 export type VoxelShapeInterface = {
  id: string;
- cullFaceOverrideFunctions: Record<string, (data: CullFaceOverride) => boolean>;
- aoAddOverrideFunctions: Record<string, (data: AOAddOverride) => boolean>;
- aoFlipOverrideFunctions: Record<string, (data: AOAFlipOverride) => boolean>;
+ cullFaceOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
+ aoAddOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
+ aoFlipOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
 
- cullFaceOverride(data: CullFaceOverride): boolean;
+ cullFaceOverride(data: FaceDataOverride): boolean;
  registerShapeForCullFaceOverride(
   shapeId: string,
-  func: (data: CullFaceOverride) => boolean
+  func: (data: FaceDataOverride) => boolean
  ): void;
 
- aoAddOverride(data: AOAddOverride): boolean;
+ aoAddOverride(data: FaceDataOverride): boolean;
  registerShapeAOAddOverride(
   shapeId: string,
-  func: (data: AOAddOverride) => boolean
+  func: (data: FaceDataOverride) => boolean
  ): void;
 
- aoFlipOverride(data: AOAFlipOverride): boolean;
+ aoFlipOverride(data: FaceDataOverride): boolean;
  registerShapeAOFlipOverride(
   shapeId: string,
-  func: (data: AOAFlipOverride) => boolean
+  func: (data: FaceDataOverride) => boolean
  ): void;
 
  /**# Add To Chunk Mesh

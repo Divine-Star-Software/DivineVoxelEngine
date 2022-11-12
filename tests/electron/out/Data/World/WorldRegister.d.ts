@@ -29,6 +29,8 @@ export declare const WorldRegister: {
     };
     chunk: {
         add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): ChunkData;
+        _getChunkData(sab: SharedArrayBuffer): ChunkData;
+        addFromServer(chunkBuffer: ArrayBuffer): ChunkData;
         get(dimensionId: string | number, x: number, y: number, z: number): false | ChunkData | undefined;
     };
 };

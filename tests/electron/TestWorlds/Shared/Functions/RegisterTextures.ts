@@ -154,7 +154,7 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   frames: 0,
  });
 
- DVER.textureManager.registerTexture("fluid", {
+ DVER.textureManager.registerTexture("liquid", {
   name: "Liquid Dream Ether Texture",
   id: "liquid-dream-ether",
   frames: 0,
@@ -167,7 +167,7 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   },
  });
 
- DVER.textureManager.registerTexture("fluid", {
+ DVER.textureManager.registerTexture("liquid", {
   name: "Liquid Dread Ether Texture",
   id: "liquid-dread-ether",
   frames: 0,
@@ -180,7 +180,7 @@ export function RegisterTexutres(DVER: DivineVoxelEngineRender) {
   },
  });
 
- DVER.textureManager.registerTexture("fluid", {
+ DVER.textureManager.registerTexture("liquid", {
   name: "Foam",
   id: "foam",
   frames: 0,

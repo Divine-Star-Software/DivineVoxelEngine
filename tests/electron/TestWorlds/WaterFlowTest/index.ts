@@ -46,7 +46,7 @@ await DVER.$INIT({
  meshes: {
   clearChachedGeometry: true,
   checkMagmaCollisions: false,
-  checkFluidCollisions: false,
+  checkLiquidCollisions: false,
   checkFloraCollisions: false,
   checkSolidCollisions: false,
   seralize: false,
@@ -89,7 +89,7 @@ const init = async () => {
  chunkMarker.position.z = 8;
  chunkMarker.position.y = 128 / 2; */
 
- //(DVER as any).renderManager.fluidMaterial.material.wireframe = true;
+ //(DVER as any).renderManager.liquidMaterial.material.wireframe = true;
 
  runRenderLoop(engine, scene, camera, DVER);
 };

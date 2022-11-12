@@ -9,7 +9,7 @@ export const MeshManager = {
         solid: {},
         transparent: {},
         flora: {},
-        fluid: {},
+        liquid: {},
         magma: {},
     },
     entityMesh: EntityMesh,
@@ -20,7 +20,7 @@ export const MeshManager = {
         this.meshMakers = {
             solid: DVER.renderManager.solidMesh,
             transparent: DVER.renderManager.solidMesh,
-            fluid: DVER.renderManager.fluidMesh,
+            liquid: DVER.renderManager.liquidMesh,
             flora: DVER.renderManager.floraMesh,
             magma: DVER.renderManager.magmaMesh,
         };

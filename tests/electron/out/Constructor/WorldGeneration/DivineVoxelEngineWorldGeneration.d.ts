@@ -2,7 +2,7 @@ import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types"
 import type { VoxelData } from "Meta/index.js";
 import type { Position3Matrix } from "Meta/Util.types.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
-export declare const DVEWG: {
+export declare const WorldGeneration: {
     worldGen: WorldGenInterface | null;
     heightByte: {
         _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
@@ -131,4 +131,4 @@ export declare const DVEWG: {
     _addToRGBLightUpdateQue(voxelData: VoxelData, x: number, y: number, z: number): void;
     paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
 };
-export declare type DivineVoxelEngineWorldGeneration = typeof DVEWG;
+export declare type DivineVoxelEngineWorldGeneration = typeof WorldGeneration;

@@ -5,7 +5,7 @@ export const MagmaMesh = {
     seralize: false,
     clearCachedGeometry: false,
     createTemplateMesh(scene) {
-        const mesh = new BABYLON.Mesh("fluid", scene);
+        const mesh = new BABYLON.Mesh("liquid", scene);
         mesh.alphaIndex = 0;
         mesh.isPickable = this.pickable;
         mesh.checkCollisions = this.checkCollisions;

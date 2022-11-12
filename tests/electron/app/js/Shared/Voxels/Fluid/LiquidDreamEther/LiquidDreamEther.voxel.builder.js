@@ -76,8 +76,8 @@ export const LiquidDreamEtherVoxelBuilderThread = {
     id: "dve:liquiddreamether",
     hooks: {
         texturesRegistered: (builder) => {
-            uv = builder.textureManager.getTextureUV("fluid", "liquid-dream-ether", "still-1");
-            overlayTextures.push(builder.textureManager.getTextureUV("fluid", "foam", "top", true), builder.textureManager.getTextureUV("fluid", "foam", "ctr", true), builder.textureManager.getTextureUV("fluid", "foam", "ctl", true), builder.textureManager.getTextureUV("fluid", "foam", "ctltr", true), builder.textureManager.getTextureUV("fluid", "foam", "bottom", true), builder.textureManager.getTextureUV("fluid", "foam", "cbr", true), builder.textureManager.getTextureUV("fluid", "foam", "cbl", true), builder.textureManager.getTextureUV("fluid", "foam", "cblbr", true), builder.textureManager.getTextureUV("fluid", "foam", "right", true), builder.textureManager.getTextureUV("fluid", "foam", "left", true));
+            uv = builder.textureManager.getTextureUV("liquid", "liquid-dream-ether", "still-1");
+            overlayTextures.push(builder.textureManager.getTextureUV("liquid", "foam", "top", true), builder.textureManager.getTextureUV("liquid", "foam", "ctr", true), builder.textureManager.getTextureUV("liquid", "foam", "ctl", true), builder.textureManager.getTextureUV("liquid", "foam", "ctltr", true), builder.textureManager.getTextureUV("liquid", "foam", "bottom", true), builder.textureManager.getTextureUV("liquid", "foam", "cbr", true), builder.textureManager.getTextureUV("liquid", "foam", "cbl", true), builder.textureManager.getTextureUV("liquid", "foam", "cblbr", true), builder.textureManager.getTextureUV("liquid", "foam", "right", true), builder.textureManager.getTextureUV("liquid", "foam", "left", true));
         },
     },
     process: function (data, DVEB) {

@@ -9,5 +9,5 @@ export type RenderFogOptions = {
 
 export type RenderEffectsOptions = {
  floraEffects: boolean;
- fluidEffects: boolean;
+ liquidEffects: boolean;
 };

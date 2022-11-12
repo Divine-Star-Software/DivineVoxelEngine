@@ -1,5 +1,5 @@
 //https://docs.godotengine.org/en/3.0/tutorials/3d/vertex_displacement_with_shaders.html
-export const fluidShaders = {
+export const liquidShaders = {
     vertexVars: `
   varying float vFlow;
   `,

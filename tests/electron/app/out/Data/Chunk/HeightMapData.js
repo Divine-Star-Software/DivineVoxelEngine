@@ -9,7 +9,7 @@ export const HeightMapData = {
         solid: (byteData) => {
             return (byteData & 0x7f) >>> 0;
         },
-        fluid: (byteData) => {
+        liquid: (byteData) => {
             return (byteData & 0x7f00) >>> 8;
         },
         flora: (byteData) => {
@@ -24,7 +24,7 @@ export const HeightMapData = {
             byteData = byteData & ~(0x7f << 0);
             return byteData | (height << 0);
         },
-        fluid: (height, byteData) => {
+        liquid: (height, byteData) => {
             byteData = byteData & ~0x7f00;
             return byteData | (height << 8);
         },
@@ -41,7 +41,7 @@ export const HeightMapData = {
         solid: (data) => {
             return data | (1 << 7);
         },
-        fluid: (data) => {
+        liquid: (data) => {
             return data | (1 << 15);
         },
         flora: (data) => {
@@ -55,7 +55,7 @@ export const HeightMapData = {
         solid: (data) => {
             return data & ~(1 << 7);
         },
-        fluid: (data) => {
+        liquid: (data) => {
             return data & ~(1 << 15);
         },
         flora: (data) => {
@@ -69,7 +69,7 @@ export const HeightMapData = {
         solid: (data) => {
             return (data & 0x80) >>> 7 != 1;
         },
-        fluid: (data) => {
+        liquid: (data) => {
             return (data & 0x8000) >>> 15 != 1;
         },
         flora: (data) => {
@@ -143,7 +143,7 @@ export const HeightMapData = {
     getLowestExposedVoxel(x, z, chunk) {
         const byteData = ChunkReader.getHeightMapData(chunk, x, 0, z);
         let min = this._getHeightMapData["solid"](byteData);
-        let min2 = this._getHeightMapData["fluid"](byteData);
+        let min2 = this._getHeightMapData["liquid"](byteData);
         if (min2 < min) {
             min = min2;
         }
@@ -160,7 +160,7 @@ export const HeightMapData = {
     getHighestExposedVoxel(x, z, chunk) {
         const byteData = ChunkReader.getHeightMapData(chunk, x, 1, z);
         let max = this._getHeightMapData["solid"](byteData);
-        let max2 = this._getHeightMapData["fluid"](byteData);
+        let max2 = this._getHeightMapData["liquid"](byteData);
         if (max2 > max) {
             max = max2;
         }

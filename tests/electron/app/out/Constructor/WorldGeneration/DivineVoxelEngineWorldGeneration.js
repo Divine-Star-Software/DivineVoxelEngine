@@ -4,7 +4,7 @@ import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/Wor
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
-export const DVEWG = {
+export const WorldGeneration = {
     worldGen: null,
     heightByte: HeightMapData,
     worldBounds: WorldBounds,

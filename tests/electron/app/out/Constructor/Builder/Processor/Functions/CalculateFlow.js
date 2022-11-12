@@ -27,8 +27,8 @@ const flowStates = {
     3: 0,
     4: 0,
 };
-export function CalculateFlow(voxelId, faceFlipped, x, y, z, flowTemplate) {
-    currentId = voxelId;
+export function CalculateFlow(faceFlipped, x, y, z, flowTemplate) {
+    currentId = this.mDataTool.getStringId();
     const currentLevel = this.mDataTool.getLevel();
     const state = this.mDataTool.getLevelState();
     flowTemplate.push(state);

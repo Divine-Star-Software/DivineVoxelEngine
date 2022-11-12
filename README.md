@@ -48,7 +48,7 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 - Physics and collision detection.
   - Working to develop some helper functions to determine what voxel the player is looking at or touching.
   - Instead of using collision detection with the actual meshes it will calculate collision in the world thread.
-- Fluid flow and magma flow like Minecraft.
+- Liquid flow and magma flow like Minecraft.
 - Same voxel different colors
   - Set a color directly on voxel data.
   - Options to create shade gradient with neighbors.

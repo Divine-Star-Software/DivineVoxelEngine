@@ -71,7 +71,7 @@ export declare const EngineSettings: {
         meshes: {
             clearChachedGeometry: boolean;
             checkMagmaCollisions: boolean;
-            checkFluidCollisions: boolean;
+            checkLiquidCollisions: boolean;
             checkFloraCollisions: boolean;
             checkSolidCollisions: boolean;
             seralize: boolean;
@@ -83,7 +83,7 @@ export declare const EngineSettings: {
             doSunLight: boolean;
             doRGBLight: boolean;
             disableFloraShaderEffects: boolean;
-            disableFluidShaderEffects: boolean;
+            disableLiquidShaderEffects: boolean;
         };
     };
     getSettings(): EngineSettingsData;

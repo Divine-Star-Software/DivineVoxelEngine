@@ -1,2 +1,2 @@
-import { DVEC } from "../../dve/Constructor/DivineVoxelEngineConstructor.js";
+import { DVEC } from "../../out/Constructor/DivineVoxelEngineConstructor.js";
 await DVEC.$INIT();

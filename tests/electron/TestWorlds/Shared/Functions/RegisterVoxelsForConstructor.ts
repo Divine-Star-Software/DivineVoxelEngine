@@ -7,7 +7,7 @@ import { DreamStoneVoxelBuilderThread } from "../Voxels/Solid/DreamStone/DreamSt
 import { DreamStonePillarVoxelBuilderThread } from "../Voxels/Solid/DreamStonePillar/DreamStonePillar.voxel.builder.js";
 import { DreamLampVoxelBuilderThread } from "../Voxels/Solid/DreamLamp/DreamLamp.voxel.builder.js";
 import { LightDebugBoxVoxelBuilderThread } from "../Voxels/Solid/LightDebugBox/LightDebugBox.voxel.builder.js";
-import { LiquidDreamEtherVoxelBuilderThread } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.builder.js";
+import { LiquidDreamEtherVoxelBuilderThread } from "../Voxels/Liquid/LiquidDreamEther/LiquidDreamEther.voxel.builder.js";
 import { DreamGrassVoxelBuilderThread } from "../Voxels/Flora/DreamGrass/DreamGrass.voxel.builder.js";
 import { DreamStoneSlabVoxelBuilderThread } from "../Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.builder.js";
 import { DreamVineVoxelBuilderThread } from "../Voxels/Flora/DreamVine/DreamVine.voxel.builder.js";
@@ -19,7 +19,7 @@ import { MarkerBoxVoxelBuilderThread } from "../Voxels/Solid/MarkerBox/MarkerBox
 import { DreadStoneVoxelBuilderThread } from "../Voxels/Solid/DreadStone/DreadStone.voxel.object.js";
 import { DreadGrassBlockVoxelBuilderThread } from "../Voxels/Solid/DreadGrass/DreadGrassBlock.voxel.builder.js";
 import { DreadGrassVoxelBuilderThread } from "../Voxels/Flora/DreadGrass/DreadGrass.voxel.builder.js";
-import { LiquidDreadEtherVoxelBuilderThread } from "../Voxels/Fluid/LiquidDreadEther/LiquidDreadEther.voxel.builder.js";
+import { LiquidDreadEtherVoxelBuilderThread } from "../Voxels/Liquid/LiquidDreadEther/LiquidDreadEther.voxel.builder.js";
 import { DreadLampVoxelBuilderThread } from "../Voxels/Solid/DreadLamp/DreadLamp.voxel.builder.js";
 import { DreadStonePillarVoxelBuilderThread } from "../Voxels/Solid/DreadStonePillar/DreadStonePillar.voxel.builder.js";
 

@@ -8,7 +8,7 @@ import { DreamStonePillarVoxelData } from "../Voxels/Solid/DreamStonePillar/Drea
 import { DreamGrassBlockVoxelData } from "../Voxels/Solid/DreamGrass/DreamGrassBlock.voxel.data.js";
 import { DreamLampVoxelData } from "../Voxels/Solid/DreamLamp/DreamLamp.voxel.data.js";
 import { DreamGrassVoxelData } from "../Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
-import { LiquidDreamEtherVoxelData } from "../Voxels/Fluid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
+import { LiquidDreamEtherVoxelData } from "../Voxels/Liquid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
 import { DreamStoneSlabVoxelData } from "../Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
 import { DreamVineVoxelData } from "../Voxels/Flora/DreamVine/DreamVine.voxel.data.js";
 import { DreamLeafsVoxelData } from "../Voxels/Flora/DreamLeafs/DreamLeafs.voxel.data.js";
@@ -19,7 +19,7 @@ import { MarkerBoxVoxelData } from "../Voxels/Solid/MarkerBox/MarkerBox.voxel.da
 import { DreadStoneVoxelData } from "../Voxels/Solid/DreadStone/DreadStone.voxel.data.js";
 import { DreadGrassBlockVoxelData } from "../Voxels/Solid/DreadGrass/DreadGrassBlock.voxel.data.js";
 import { DreadGrassVoxelData } from "../Voxels/Flora/DreadGrass/DreadGrass.voxel.data.js";
-import { LiquidDreadEtherVoxelData } from "../Voxels/Fluid/LiquidDreadEther/LiquidDreadEther.voxel.data.js";
+import { LiquidDreadEtherVoxelData } from "../Voxels/Liquid/LiquidDreadEther/LiquidDreadEther.voxel.data.js";
 import { DreadLampVoxelData } from "../Voxels/Solid/DreadLamp/DreadLamp.voxel.data.js";
 import { DreadStonePillarVoxelData } from "../Voxels/Solid/DreadStonePillar/DreadStonePillar.voxel.data.js";
 

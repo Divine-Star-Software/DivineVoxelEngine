@@ -1,5 +1,5 @@
 export type DimensionOptions = {
- fluidFlowSpeed: number;
+ liquidFlowSpeed: number;
  magmaFlowSpeed: number;
  sunLight: boolean;
 };

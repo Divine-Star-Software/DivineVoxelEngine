@@ -154,7 +154,7 @@ export const FlowManager = {
    return false;
   }
   const substance = this._sDataTool.getSubstance();
-  if (substance != "fluid" && substance != "magma") return false;
+  if (substance != "liquid" && substance != "magma") return false;
   this.currentVoxel = this._sDataTool.getId();
   this._brush.setId(this._sDataTool.getStringId());
   return true;
@@ -167,7 +167,7 @@ export const FlowManager = {
    const x = node[0];
    const y = node[1];
    const z = node[2];
-   DVEC.DVEB.buildChunk(this.dimension, x, y, z);
+   DVEC.builder.buildChunk(this.dimension, x, y, z);
   }
   Propagation.runRebuildQue();
   this.rebuildMap = {};
@@ -244,13 +244,6 @@ export const FlowManager = {
   return false;
  },
 
- canFlowDownardTest(x: number, y: number, z: number) {
-  const level = this.getLevel(x, y - 1, z);
-  if (level >= 0) {
-   return true;
-  }
-  return false;
- },
 
  flowDownTest(x: number, y: number, z: number) {
   const level = this.getLevel(x, y - 1, z);

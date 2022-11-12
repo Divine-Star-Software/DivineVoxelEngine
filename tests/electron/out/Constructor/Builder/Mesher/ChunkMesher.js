@@ -1,12 +1,12 @@
 //objects
-import { DVEB } from "../DivineVoxelEngineBuilder.js";
+import { Builder } from "../Builder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { VoxelSubstanceMap } from "../../../Data/Register/VoxelRecords.js";
 export const ChunkMesher = {
     voxelBuildOrder: [
         "solid",
         "flora",
-        "fluid",
+        "liquid",
         "magma",
     ],
     buildChunkMesh(dimension, chunkX, chunkY, chunkZ, template, LOD = 1) {
@@ -94,7 +94,7 @@ export const ChunkMesher = {
                 shapeAddData.position.y = y;
                 shapeAddData.position.z = z;
                 const shapeId = baseTemplate.shapeTemplate[shapeIndex];
-                const shape = DVEB.shapeManager.getShape(shapeId);
+                const shape = Builder.shapeManager.getShape(shapeId);
                 const newIndexes = shape.addToChunkMesh(shapeAddData);
                 indicieIndex = newIndexes.newIndicieIndex;
                 aoIndex = newIndexes.newAOIndex;

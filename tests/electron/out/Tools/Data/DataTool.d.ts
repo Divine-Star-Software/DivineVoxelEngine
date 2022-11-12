@@ -5,13 +5,15 @@ export declare class DataTool {
     data: {
         dimension: string;
         raw: number[];
-        x: number;
-        y: number;
-        z: number;
         id: number;
         baseId: number;
         secondaryId: number;
         secondaryBaseId: number;
+    };
+    position: {
+        x: number;
+        y: number;
+        z: number;
     };
     _cached: {
         id: number;

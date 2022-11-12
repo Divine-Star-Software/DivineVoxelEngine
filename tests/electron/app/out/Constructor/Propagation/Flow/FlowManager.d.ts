@@ -76,7 +76,6 @@ export declare const FlowManager: {
     getLevel(x: number, y: number, z: number): number;
     getLevelState(x: number, y: number, z: number): number;
     canFlowOutwardTest(x: number, y: number, z: number): boolean;
-    canFlowDownardTest(x: number, y: number, z: number): boolean;
     flowDownTest(x: number, y: number, z: number): boolean;
     wait(ms: number): Promise<unknown>;
     _lightValues: [s: number, r: number, g: number, b: number];

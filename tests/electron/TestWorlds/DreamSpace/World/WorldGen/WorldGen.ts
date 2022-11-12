@@ -34,6 +34,7 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < 200; y++) {
      brush.setXYZ(x, y, z);
+
      if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
       if (
        y == this.minY ||
@@ -42,9 +43,10 @@ export const WorldGen = {
        y == this.minY + 56 ||
        y == this.minY + 86
       ) {
-       brush.paint();
+       brush.setId("dve:dreadstonepillar").paint();
       }
      }
+     brush.setId("dve:dreadstonepillar");
      if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
       if (
        y == this.minY + 1 ||

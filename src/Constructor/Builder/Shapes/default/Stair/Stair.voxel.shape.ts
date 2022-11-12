@@ -1,4 +1,4 @@
-import { DVEB } from "../../../DivineVoxelEngineBuilder.js";
+import { Builder } from "../../../Builder.js";
 import type { VoxelShapeInterface } from "Meta/Constructor/VoxelShape.types";
 import { buildStair, stairCachedPosition } from "./StairBuilder.js";
 import { StairData } from "./StairData.js";
@@ -17,16 +17,22 @@ export const StairVoxelShape: VoxelShapeInterface = {
   this.aoAddOverrideFunctions[shapeId] = func;
  },
  cullFaceOverride(data) {
-  if (this.cullFaceOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.cullFaceOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (
+   this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]
+  ) {
+   return this.cullFaceOverrideFunctions[
+    data.neighborVoxel.getVoxelShapeObj().id
+   ](data);
   }
   return StairCullFace(data);
  },
  aoAddOverride(data) {
-  if (this.aoAddOverrideFunctions[data.neighborVoxelShape.id]) {
-   return this.aoAddOverrideFunctions[data.neighborVoxelShape.id](data);
+  if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
+   return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](
+    data
+   );
   }
-  return data.substanceResult;
+  return data.default;
  },
  registerShapeAOFlipOverride(shapeId, func) {
   this.aoAddOverrideFunctions[shapeId] = func;
@@ -42,13 +48,9 @@ export const StairVoxelShape: VoxelShapeInterface = {
   if (StairData[data.shapeState] !== undefined) {
    buildStair(data, StairData[data.shapeState]);
   }
-  return DVEB.shapeHelper.produceShapeReturnData(data);
+  return Builder.shapeHelper.produceShapeReturnData(data);
  },
 };
 StairVoxelShape.registerShapeAOAddOverride("Box", (data) => {
- return data.substanceResult;
- if (StairAOBoxOverrides[data.shapeState]) {
-  return StairAOBoxOverrides[data.shapeState](data);
- }
- return false;
+ return data.default;
 });

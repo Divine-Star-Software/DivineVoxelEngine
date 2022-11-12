@@ -1,4 +1,4 @@
-import type { DVEB as DVEBuilswe } from "Constructor/Builder/DivineVoxelEngineBuilder";
+import type { Builder as DVEBuilswe } from "Constructor/Builder/Builder";
 
 export type ItemData = {
  id: string;

@@ -10,8 +10,6 @@ export const DataCreator = {
                 return sab;
             }
             const chunkSAB = new SharedArrayBuffer(ChunkReader.chunkByteSize);
-            const data = new DataView(chunkSAB);
-            // HeightMapData.initalizeChunk(data);
             return chunkSAB;
         },
     },

@@ -5,18 +5,18 @@ import { TextureCreator } from "./Textures/TextureCreator.js";
 //meshes
 import { SolidMesh } from "./Meshes/Solid/SolidMesh.js";
 import { FloraMesh } from "./Meshes/Flora/FloraMesh.js";
-import { FluidMesh } from "./Meshes/Fluid/FluidMesh.js";
+import { LiquidMesh } from "./Meshes/Liquid/LiquidMesh.js";
 import { MagmaMesh } from "./Meshes/Magma/MagmaMesh.js";
 import { ItemMesh } from "./Meshes/Item/ItemMesh.js";
 //materials
 import { SolidMaterial } from "./Materials/Solid/SolidMaterial.js";
 import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
-import { FluidMaterial } from "./Materials/Fluid/FluidMaterial.js";
+import { LiquidMaterial } from "./Materials/Liquid/LiquidMaterial.js";
 import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { ItemMaterial } from "./Materials/Item/ItemMaterial.js";
 import { StandardSolidMaterial } from "./Materials/Solid/Standard/SolidMaterial.bjsmp.js";
-import { StandardFluidMaterial } from "./Materials/Fluid/Standard/FluidMaterial.bjsmp.js";
+import { StandardLiquidMaterial } from "./Materials/Liquid/Standard/LiquidMaterial.bjsmp.js";
 export const RenderManager = {
     fogOptions: {
         mode: "volumetric",
@@ -29,22 +29,22 @@ export const RenderManager = {
     fogData: new BABYLON.Vector4(1, .1, 0.5, 0),
     effectOptions: {
         floraEffects: false,
-        fluidEffects: false,
+        liquidEffects: false,
     },
     shaderBuilder: ShaderBuilder,
     textureCreator: TextureCreator,
     animationManager: AnimationManager,
     solidMaterial: SolidMaterial,
     floraMaterial: FloraMaterial,
-    fluidMaterial: FluidMaterial,
+    liquidMaterial: LiquidMaterial,
     magmaMaterial: MagmaMaterial,
     itemMaterial: ItemMaterial,
     solidStandardMaterial: StandardSolidMaterial,
-    fluidStandardMaterial: StandardFluidMaterial,
+    liquidStandardMaterial: StandardLiquidMaterial,
     skyBoxMaterial: SkyBoxMaterial,
     solidMesh: SolidMesh,
     floraMesh: FloraMesh,
-    fluidMesh: FluidMesh,
+    liquidMesh: LiquidMesh,
     magmaMesh: MagmaMesh,
     itemMesh: ItemMesh,
     scene: null,
@@ -84,7 +84,7 @@ export const RenderManager = {
     _setFogData() {
         const fogData = this.fogData;
         this.solidMaterial.updateFogOptions(fogData);
-        this.fluidMaterial.updateFogOptions(fogData);
+        this.liquidMaterial.updateFogOptions(fogData);
         this.floraMaterial.updateFogOptions(fogData);
         this.magmaMaterial.updateFogOptions(fogData);
         this.itemMaterial.updateFogOptions(fogData);
@@ -98,14 +98,14 @@ export const RenderManager = {
         if (options.floraEffects !== undefined) {
             this.effectOptions.floraEffects = options.floraEffects;
         }
-        if (options.fluidEffects !== undefined) {
-            this.effectOptions.fluidEffects = options.fluidEffects;
+        if (options.liquidEffects !== undefined) {
+            this.effectOptions.liquidEffects = options.liquidEffects;
         }
     },
     syncSettings(settings) {
         this.solidMesh.syncSettings(settings);
         this.floraMesh.syncSettings(settings);
-        this.fluidMesh.syncSettings(settings);
+        this.liquidMesh.syncSettings(settings);
         this.magmaMesh.syncSettings(settings);
         this.itemMesh.syncSettings(settings);
     },
@@ -126,13 +126,13 @@ export const RenderManager = {
     },
     setSunLevel(level) {
         this.solidMaterial.setSunLightLevel(level);
-        this.fluidMaterial.setSunLightLevel(level);
+        this.liquidMaterial.setSunLightLevel(level);
         this.floraMaterial.setSunLightLevel(level);
         this.itemMaterial.setSunLightLevel(level);
     },
     setBaseLevel(level) {
         this.solidMaterial.setBaseLevel(level);
-        this.fluidMaterial.setBaseLevel(level);
+        this.liquidMaterial.setBaseLevel(level);
         this.floraMaterial.setBaseLevel(level);
         this.itemMaterial.setBaseLevel(level);
     },

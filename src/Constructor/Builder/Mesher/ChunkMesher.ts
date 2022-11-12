@@ -6,7 +6,7 @@ import type {
  SetChunkMeshTask,
 } from "Meta/Tasks/RenderTasks.types.js";
 //objects
-import { DVEB } from "../DivineVoxelEngineBuilder.js";
+import { Builder } from "../Builder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { VoxelSubstanceMap } from "../../../Data/Register/VoxelRecords.js";
 
@@ -14,7 +14,7 @@ export const ChunkMesher = {
  voxelBuildOrder: <VoxelTemplateSubstanceType[]>[
   "solid",
   "flora",
-  "fluid",
+  "liquid",
   "magma",
  ],
 
@@ -123,7 +123,7 @@ export const ChunkMesher = {
     shapeAddData.position.z = z;
 
     const shapeId = baseTemplate.shapeTemplate[shapeIndex];
-    const shape = DVEB.shapeManager.getShape(shapeId);
+    const shape = Builder.shapeManager.getShape(shapeId);
     const newIndexes = shape.addToChunkMesh(shapeAddData);
     indicieIndex = newIndexes.newIndicieIndex;
     aoIndex = newIndexes.newAOIndex;

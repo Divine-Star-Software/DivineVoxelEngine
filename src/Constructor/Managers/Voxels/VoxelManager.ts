@@ -33,7 +33,7 @@ export const VoxelManager = {
   for (const voxelID of Object.keys(this.voxelObjects)) {
    const voxel = this.voxelObjects[voxelID];
    if (!voxel.hooks[hook]) continue;
-   voxel.hooks[hook](DVEC.DVEB as any);
+   voxel.hooks[hook](DVEC.builder as any);
   }
  },
  removeVoxelHookForAll(hook: VoxelHooks) {

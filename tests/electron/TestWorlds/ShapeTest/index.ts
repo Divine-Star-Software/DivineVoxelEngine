@@ -35,7 +35,7 @@ await DVER.$INIT({
   doRGBLight: true,
   doSunLight: false,
   disableFloraShaderEffects: false,
-  disableFluidShaderEffects: false,
+  disableLiquidShaderEffects: false,
  }, */
  world: {
   minX: -Infinity,
