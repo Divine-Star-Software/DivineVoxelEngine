@@ -16,6 +16,28 @@ const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
 
+const updateLight = (x: number, y: number, z: number) => {
+ let doRGB = ES.doRGBPropagation();
+ let doSun = ES.doSunPropagation();
+ for (const n of $3dCardinalNeighbors) {
+  const nx = n[0] + x;
+  const ny = n[1] + y;
+  const nz = n[2] + z;
+  if (!nDataTool.loadIn(nx, ny, nz)) continue;
+  const l = nDataTool.getLight();
+  if (l <= 0) continue;
+  if (doRGB) {
+   if (LightData.hasRGBLight(l)) {
+    Propagation.illumination._RGBlightUpdateQ.push([nx, ny, nz]);
+   }
+  }
+  if (doSun) {
+   if (LightData.getS(l) > 0) {
+    Propagation.illumination._sunLightUpdate.enqueue([nx, ny, nz]);
+   }
+  }
+ }
+};
 export async function EreaseAndUpdate(data: UpdateTasksO) {
  const dimenson = data[0];
  const x = data[1];
@@ -28,7 +50,6 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
   if (substance == "liquid" || substance == "magma") {
-   console.log("");
    await Propagation.removeFlowAt(data);
    return true;
   }
@@ -49,31 +70,13 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
     Propagation.runRGBRemove(data);
    }
   }
-  for (const n of $3dCardinalNeighbors) {
-   const nx = n[0] + x;
-   const ny = n[1] + y;
-   const nz = n[2] + z;
-   if (!nDataTool.loadIn(nx, ny, nz)) continue;
-   const l = nDataTool.getLight();
-   if (l <= 0) continue;
-   if (doRGB) {
-    if (LightData.hasRGBLight(l)) {
-     Propagation.illumination._RGBlightUpdateQ.push([nx, ny, nz]);
-    }
-   }
-   if (doSun) {
-    if (LightData.getS(l) > 0) {
-     Propagation.illumination._sunLightUpdate.enqueue([nx, ny, nz]);
-    }
-   }
-  }
+  updateLight(x, y, z);
 
   if (doRGB) {
    if (sl >= 0) {
     Propagation.runRGBUpdate(data);
    }
   }
-
   if (doSun) {
    Propagation.runSunLightUpdate(data);
   }
@@ -123,6 +126,13 @@ export async function PaintAndUpdate(data: PaintTasks) {
    if (brushTool._dt.isLightSource()) {
     Propagation.runRGBUpdate(tasks);
    }
+  }
+  updateLight(x, y, z);
+  if (doSun) {
+   Propagation.runSunLightUpdate(tasks);
+  }
+  if (doRGB) {
+   Propagation.runRGBUpdate(tasks);
   }
  }
  const thread = ThreadComm.getComm(threadId);
