@@ -78,6 +78,8 @@ export const MagmaMaterial = {
         });
         shaderMaterial.fogEnabled = true;
         shaderMaterial.setTexture("arrayTex", data.texture);
+        shaderMaterial.setFloat("sunLightLevel", 1);
+        shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.needDepthPrePass = true;
         shaderMaterial.onBind = (mesh) => {
             const effect = shaderMaterial.getEffect();

@@ -1,24 +1,15 @@
 //types
-import { DVES } from "../../DivineVoxelEngineServer.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
 
 const CCMBase = ThreadComm.createCommManager({
- name: "render-constructor",
+ name: "constructor",
  onPortSet(port, commName) {},
 });
 
 const CCM = Object.assign(CCMBase, {
  $INIT() {
-  for (const constructor of CCM.__comms) {
-   const channel = new MessageChannel();
-   DVES.worldComm.sendMessage(
-    "connect-constructor",
-    [constructor.name],
-    [channel.port1]
-   );
-   constructor.sendMessage("connect-world", [], [channel.port2]);
-  }
+    CCMBase.connectToCom(ThreadComm.getComm("world"));
  },
  createConstructors(path: string, numBuilders = 4) {
   for (let i = 0; i <= numBuilders; i++) {

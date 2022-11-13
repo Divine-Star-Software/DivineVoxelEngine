@@ -1,4 +1,4 @@
-import { PlayerWorld } from "../../Shared/Player/World/PlayerWorld.js";
+import { WorldPlayer } from "../../Shared/Player/World/WorldPlayer.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
@@ -41,4 +41,4 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-await PlayerWorld(DVEW);
+await WorldPlayer(DVEW);

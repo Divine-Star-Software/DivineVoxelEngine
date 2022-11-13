@@ -92,11 +92,13 @@ export class CommManager {
 	}
 
 	__handleManagerMessage(data: any, event: any) {
-		this.messageFunctions[data[0]](data, event);
+		if (!this.messageFunctions[data[0]]) return;
+		this.messageFunctions[data[0]].forEach((_) => _(data, event));
 	}
 
 	listenForMessage(message: string | number, run: MessageFunction) {
-		this.messageFunctions[message] = run;
+		this.messageFunctions[message] ??= [];
+		this.messageFunctions[message].push(run);
 	}
 
 	sendMessageToAll(
@@ -150,7 +152,7 @@ export class CommManager {
 	addQueue<T>(
 		id: string | number,
 		associatedTasksId: string | number,
-		getQueueKey : ((data:T) => string ) | null = null,
+		getQueueKey: ((data: T) => string) | null = null,
 		beforeRun: (data: T) => T = (data: T) => data,
 		afterRun: (data: T, thread: number) => void = (
 			data: T,

@@ -35,6 +35,7 @@ export const DVES = {
   const copy = this.settings.getSettingsCopy();
 
   this.worldComm.sendMessage("sync-settings", [copy]);
+  this.constructorCommManager.syncSettings(copy);
   /*   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
   }

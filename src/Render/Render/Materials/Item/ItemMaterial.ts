@@ -124,6 +124,7 @@ export const ItemMaterial = {
    }
   );
   this.material = shaderMaterial;
+  
   //this.material.forceDepthWrite = true;
   this.material.fogEnabled = true;
   data.texture.hasAlpha = true;

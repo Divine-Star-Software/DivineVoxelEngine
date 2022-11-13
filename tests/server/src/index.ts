@@ -17,7 +17,5 @@ DVES.$INIT({
  server : {
     enabled : true
  },
- chunks: {
-  chunkYPow2: 4,
- },
 });
+

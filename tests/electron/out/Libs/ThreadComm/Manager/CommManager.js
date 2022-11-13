@@ -78,10 +78,13 @@ export class CommManager {
         return this.messageFunctions[data[0]] !== undefined;
     }
     __handleManagerMessage(data, event) {
-        this.messageFunctions[data[0]](data, event);
+        if (!this.messageFunctions[data[0]])
+            return;
+        this.messageFunctions[data[0]].forEach((_) => _(data, event));
     }
     listenForMessage(message, run) {
-        this.messageFunctions[message] = run;
+        this.messageFunctions[message] ??= [];
+        this.messageFunctions[message].push(run);
     }
     sendMessageToAll(message, data = [], transfers) {
         for (const comm of this.__comms) {

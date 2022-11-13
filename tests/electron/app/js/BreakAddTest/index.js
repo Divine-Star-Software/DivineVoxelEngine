@@ -15,26 +15,8 @@ await DVER.$INIT({
         autoSyncVoxelPalette: true,
         autoSyncChunks: true,
     },
-    lighting: {
-        doAO: true,
-        doRGBLight: true,
-        doSunLight: true,
-        autoRGBLight: true,
-        autoSunLight: true,
-    },
-    materials: {
-        doAO: true,
-        doRGBLight: true,
-        doSunLight: true,
-    },
-    chunks: {
-        chunkXPow2: 4,
-        chunkZPow2: 4,
-        chunkYPow2: 4,
-        autoHeightMap: true,
-    },
     meshes: {
-        clearChachedGeometry: false,
+        clearChachedGeometry: true,
     },
 });
 SyncWithGraphicsSettings(DVER);

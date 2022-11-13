@@ -29,18 +29,11 @@ await DVER.$INIT({
  nexusWorker: workers.nexusWorker,
  nexus: {
   enabled: true,
-  autoSyncChunks: true,
   autoSyncVoxelPalette: true,
+  autoSyncChunks: true,
  },
- chunks: {
-  chunkYPow2: 4,
- },
- lighting: {
-  doAO: true,
-  doRGBLight: false,
-  doSunLight: false,
-  autoRGBLight: false,
-  autoSunLight: false,
+ meshes: {
+  clearChachedGeometry: true,
  },
 });
 
@@ -59,14 +52,14 @@ const init = async () => {
  );
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+
 
  const model = await GetRenderPlayer(true, scene, canvas, DVER);
 
- const connectedPlayers: Record<
+ const connectedPlayers: Map<
   number,
   { id: number; model: BABYLON.Mesh; data: DataView }
- > = {};
+ > = new Map();
 
  DVER.worldComm.listenForMessage("remote-player-connect", (data) => {
   const playerId = data[1];
@@ -74,25 +67,31 @@ const init = async () => {
   const dv = new DataView(playerSAB);
   const newModel = model.clone();
   newModel.isVisible = true;
-  connectedPlayers[playerId] = {
+  console.log("Connected in render thread: ", playerId);
+  connectedPlayers.set(playerId, {
    id: playerId,
    model: newModel,
    data: dv,
-  };
+  });
  });
 
- const forward = new BABYLON.Vector3();
+ DVER.worldComm.listenForMessage("remove-remote-player", (data) => {
+  const playerId = data[1];
+  const player = connectedPlayers.get(playerId);
+  console.log(playerId, player);
+  if (!player) return;
+  player.model.dispose();
+  connectedPlayers.delete(playerId);
+ });
 
  const offset = DVER.UTIL.degtoRad(270);
- const forwardPoint = new BABYLON.Vector3();
  scene.registerBeforeRender(() => {
-  for (const id of Object.keys(connectedPlayers)) {
-   const player = connectedPlayers[Number(id)];
+  connectedPlayers.forEach((player) => {
    player.model.position.x = player.data.getFloat32(4);
    player.model.position.y = player.data.getFloat32(8) - 1;
    player.model.position.z = player.data.getFloat32(12);
    player.model.rotation.y = player.data.getFloat32(32) + offset;
-  }
+  });
  });
 
  runRenderLoop(engine, scene, model, DVER);

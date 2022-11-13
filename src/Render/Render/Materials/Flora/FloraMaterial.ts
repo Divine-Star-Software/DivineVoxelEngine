@@ -142,6 +142,8 @@ export const FloraMaterial = {
 
   shaderMaterial.setTexture("arrayTex", data.texture);
   shaderMaterial.setTexture("overlayTex", data.overlayTexture);
+  shaderMaterial.setFloat("sunLightLevel", 1);
+  shaderMaterial.setFloat("baseLevel", 0.1);
   // shaderMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
   // shaderMaterial.backFaceCulling = false;
   // shaderMaterial.separateCullingPass = false;

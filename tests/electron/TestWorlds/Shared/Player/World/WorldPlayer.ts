@@ -1,9 +1,18 @@
 import { VoxelMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 
-export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
+export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
  const pickSAB = new SharedArrayBuffer(4 * 3 + 3);
  let pickDV = new DataView(pickSAB);
+
+ const worldPlayerObject = {
+  playerDataBuffer: new SharedArrayBuffer(1),
+  playerData: new DataView(new ArrayBuffer(1)),
+  onAdd: <((raw: number[],x: number, y: number, z: number) => void)[]>[],
+  onRemove: <((x: number, y: number, z: number) => void)[]>[],
+  onExplode: <((x: number, y: number, z: number, radius: number) => void)[]>[],
+  onUpdate: <(() => void)[]>[],
+ };
 
  const dataTool = DVEW.getDataTool();
  let playerDataBuffer = new SharedArrayBuffer(1);
@@ -12,7 +21,9 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
  DVEW.parentComm.sendMessage("send-player-server-data");
  DVEW.parentComm.listenForMessage("player-server-data", (data) => {
   playerDataBuffer = data[1];
+  worldPlayerObject.playerDataBuffer = playerDataBuffer;
   playerData = new DataView(playerDataBuffer);
+  worldPlayerObject.playerData = playerData;
   ready = true;
  });
 
@@ -58,6 +69,8 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
   if (!dataTool.loadIn(x, y, z)) return;
   if (dataTool.isRenderable()) return;
   brush.setId(data[1]).setXYZ(x, y, z).paintAndUpdate();
+  const raw = brush.getRaw();
+  worldPlayerObject.onAdd.forEach((_) => _(raw,x,y,z));
  });
 
  DVEW.parentComm.listenForMessage("voxel-remove", () => {
@@ -68,6 +81,7 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
   if (dataTool.isRenderable()) {
    brush.setXYZ(x, y, z).ereaseAndUpdate();
   }
+  worldPlayerObject.onRemove.forEach((_) => _(x, y, z));
  });
 
  DVEW.parentComm.listenForMessage("explode", () => {
@@ -75,9 +89,11 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
   let y = pickDV.getFloat32(4);
   let z = pickDV.getFloat32(8);
   brush.setXYZ(x, y, z).explode();
+  worldPlayerObject.onExplode.forEach((_) => _(x, y, z, 6));
  });
 
  setInterval(() => {
+  worldPlayerObject.onUpdate.forEach((_) => _());
   const voxels = VoxelMath.visitAll(positionVector, endVector);
 
   positionVector.x = playerData.getFloat32(4);
@@ -107,4 +123,6 @@ export const PlayerWorld = async (DVEW: DivineVoxelEngineWorld) => {
    }
   }
  }, 12);
+
+ return worldPlayerObject;
 };

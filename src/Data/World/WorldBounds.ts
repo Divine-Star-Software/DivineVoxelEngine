@@ -54,14 +54,14 @@ export const WorldBounds = {
  },
 
  chunkXPow2: 4,
- chunkYPow2: 7,
+ chunkYPow2: 4,
  chunkZPow2: 4,
 
  chunkXSize: 16,
- chunkYSize: 128,
+ chunkYSize: 16,
  chunkZSize: 16,
 
- chunkTotalVoxels: 16 * 128 * 16,
+ chunkTotalVoxels: 16 * 16 * 16,
  chunkArea: 16 * 16,
 
  regionColumnWidth: 32,

@@ -4,5 +4,5 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 
 
 RegisterVoxelsForConstructor(DVEC);
-DVEC.DVEWG.setWorldGen(WorldGen);
+DVEC.worldGen.setWorldGen(WorldGen);
 await DVEC.$INIT();

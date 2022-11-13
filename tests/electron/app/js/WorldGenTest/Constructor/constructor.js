@@ -2,5 +2,5 @@ import { RegisterVoxelsForConstructor } from "../../Shared/Functions/RegisterVox
 import { DVEC } from "../../../out/Constructor/DivineVoxelEngineConstructor.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxelsForConstructor(DVEC);
-DVEC.DVEWG.setWorldGen(WorldGen);
+DVEC.worldGen.setWorldGen(WorldGen);
 await DVEC.$INIT();

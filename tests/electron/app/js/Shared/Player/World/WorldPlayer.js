@@ -2,6 +2,14 @@ import { VoxelMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 export const WorldPlayer = async (DVEW) => {
     const pickSAB = new SharedArrayBuffer(4 * 3 + 3);
     let pickDV = new DataView(pickSAB);
+    const worldPlayerObject = {
+        playerDataBuffer: new SharedArrayBuffer(1),
+        playerData: new DataView(new ArrayBuffer(1)),
+        onAdd: [],
+        onRemove: [],
+        onExplode: [],
+        onUpdate: [],
+    };
     const dataTool = DVEW.getDataTool();
     let playerDataBuffer = new SharedArrayBuffer(1);
     let playerData = new DataView(playerDataBuffer);
@@ -9,7 +17,9 @@ export const WorldPlayer = async (DVEW) => {
     DVEW.parentComm.sendMessage("send-player-server-data");
     DVEW.parentComm.listenForMessage("player-server-data", (data) => {
         playerDataBuffer = data[1];
+        worldPlayerObject.playerDataBuffer = playerDataBuffer;
         playerData = new DataView(playerDataBuffer);
+        worldPlayerObject.playerData = playerData;
         ready = true;
     });
     await DVEW.UTIL.createPromiseCheck({
@@ -51,6 +61,8 @@ export const WorldPlayer = async (DVEW) => {
         if (dataTool.isRenderable())
             return;
         brush.setId(data[1]).setXYZ(x, y, z).paintAndUpdate();
+        const raw = brush.getRaw();
+        worldPlayerObject.onAdd.forEach((_) => _(raw, x, y, z));
     });
     DVEW.parentComm.listenForMessage("voxel-remove", () => {
         let x = pickDV.getFloat32(0);
@@ -61,14 +73,17 @@ export const WorldPlayer = async (DVEW) => {
         if (dataTool.isRenderable()) {
             brush.setXYZ(x, y, z).ereaseAndUpdate();
         }
+        worldPlayerObject.onRemove.forEach((_) => _(x, y, z));
     });
     DVEW.parentComm.listenForMessage("explode", () => {
         let x = pickDV.getFloat32(0);
         let y = pickDV.getFloat32(4);
         let z = pickDV.getFloat32(8);
         brush.setXYZ(x, y, z).explode();
+        worldPlayerObject.onExplode.forEach((_) => _(x, y, z, 6));
     });
     setInterval(() => {
+        worldPlayerObject.onUpdate.forEach((_) => _());
         const voxels = VoxelMath.visitAll(positionVector, endVector);
         positionVector.x = playerData.getFloat32(4);
         positionVector.y = playerData.getFloat32(8) + 0.2;
@@ -93,4 +108,5 @@ export const WorldPlayer = async (DVEW) => {
             }
         }
     }, 12);
+    return worldPlayerObject;
 };

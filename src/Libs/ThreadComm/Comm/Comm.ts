@@ -73,7 +73,7 @@ export class CommBase {
 		}
 		const message = data[0];
 		if (this.messageFunctions[message]) {
-			this.messageFunctions[message](data, event);
+			this.messageFunctions[message].forEach((_) => _(data, event));
 		}
 		this.onMessage(event);
 	}
@@ -121,7 +121,8 @@ export class CommBase {
 	}
 
 	listenForMessage(message: string | number, run: MessageFunction) {
-		this.messageFunctions[message] = run;
+		this.messageFunctions[message] ??= [];
+		this.messageFunctions[message].push(run);
 	}
 
 	connectToComm(commToConnectTo: CommBase) {

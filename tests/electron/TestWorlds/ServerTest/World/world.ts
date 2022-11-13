@@ -3,7 +3,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
 import { VoxelMath } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
-import { PlayerWorld } from "../../Shared/Player/World/PlayerWorld.js";
+import { WorldPlayer } from "../../Shared/Player/World/WorldPlayer.js";
 
 const syncSABWtihBuffer = (sab: SharedArrayBuffer, buffer: ArrayBuffer) => {
  const temp1 = new Uint8Array(sab);
@@ -22,18 +22,6 @@ RegisterVoxels(DVEW);
 RegisterItemData(DVEW);
 await DVEW.$INIT();
 
-const pickSAB = new SharedArrayBuffer(4 * 3 + 3);
-let pickDV = new DataView(pickSAB);
-
-let playerDataBuffer = new SharedArrayBuffer(100);
-let playerData = new DataView(playerDataBuffer);
-let ready = false;
-/* DVEW.parentComm.listenForMessage("player-server-data", (data) => {
- playerDataBuffer = data[1];
- playerData = new DataView(playerDataBuffer);
- ready = true;
-});
- */
 (self as any).DVEW = DVEW;
 
 const builder = DVEW.getBuilder();
@@ -58,6 +46,8 @@ const playerSABS: Record<number, SharedArrayBuffer> = {};
 const socket = new WebSocket("ws://127.0.0.1:7777");
 socket.binaryType = "arraybuffer";
 let opened = false;
+let ready = false;
+let connectionId = 0;
 socket.addEventListener("open", (event) => {
  const buffer = new ArrayBuffer(4);
  const dv = new DataView(buffer);
@@ -67,6 +57,7 @@ socket.addEventListener("open", (event) => {
  opened = true;
 });
 
+const brush = DVEW.getBrush();
 // Listen for messages
 socket.addEventListener("message", (event) => {
  const data: ArrayBuffer = event.data;
@@ -80,11 +71,13 @@ socket.addEventListener("message", (event) => {
   load();
   connectionData.id = dv.getUint16(2);
   console.log("[CONECTION ID SET]", connectionData.id);
-  playerData.setUint16(2, connectionData.id);
+  connectionId = connectionData.id;
+  ready = true;
  }
  if (message == 400) {
   const playerId = dv.getUint16(2);
-  playerSABS[playerId] = new SharedArrayBuffer(40);
+  playerSABS[playerId] = new SharedArrayBuffer(4 + 4 * 3 * 3);
+  console.log(playerSABS);
   console.log("[REMOTE PLYAER ID SET]", playerId);
   DVEW.parentComm.sendMessage("remote-player-connect", [
    playerId,
@@ -97,64 +90,42 @@ socket.addEventListener("message", (event) => {
   syncSABWtihBuffer(sab, data);
  }
  if (message == 500) {
-  const v1 = dv.getUint32(4);
-  const v2 = dv.getUint32(8);
-  const x = dv.getFloat32(12);
-  const y = dv.getFloat32(16);
-  const z = dv.getFloat32(20);
-  //DVEW.worldData.requestVoxelAddFromRaw(v1, v2, x, y, z);
+  brush
+   .setXYZ(dv.getFloat32(12), dv.getFloat32(16), dv.getFloat32(20))
+   .setRaw([dv.getUint32(4), dv.getUint32(8)])
+   .paintAndUpdate();
  }
  if (message == 600) {
-  const x = dv.getFloat32(4);
-  const y = dv.getFloat32(8);
-  const z = dv.getFloat32(12);
-  console.log(x, y, z);
-  //DVEW.worldData.requestVoxelBeRemoved(x, y, z);
+  brush
+   .setXYZ(dv.getFloat32(4), dv.getFloat32(8), dv.getFloat32(12))
+   .ereaseAndUpdate();
+ }
+ if (message == 700) {
+  console.log("remove");
+  DVEW.parentComm.sendMessage("remove-remote-player", [dv.getUint16(2)]);
  }
 });
 await DVEW.UTIL.createPromiseCheck({
- check: () => opened,
+ check: () => opened && ready,
  checkInterval: 1,
 });
-await PlayerWorld(DVEW);
+const player = await WorldPlayer(DVEW);
+player.playerData.setUint16(2, connectionId);
 
-/* 
-DVEW.parentComm.listenForMessage("voxel-add", async (data) => {
-  let x = pickDV.getFloat32(0) + pickDV.getInt8(12);
- let y = pickDV.getFloat32(4) + pickDV.getInt8(13);
- let z = pickDV.getFloat32(8) + pickDV.getInt8(14);
- const voxel = DVEW.worldData.getVoxel(x, y, z);
- if (!voxel || voxel[0] < 0) {
-   const rawVoxelData = await DVEW.worldData.requestVoxelAdd(
-   "dve:dreamstone",
-   0,
-   0,
-   x,
-   y,
-   z
-  ); 
-  //@ts-ignore
-  if (rawVoxelData) {
-   const message = new ArrayBuffer(4 + 8 + 4 * 3);
-   const mdv = new DataView(message);
-   mdv.setUint16(0, 300);
-   mdv.setUint16(2, connectionData.id);
-   //@ts-ignore
-   mdv.setUint32(4, rawVoxelData.getUint32(0));
-   //@ts-ignore
-   mdv.setUint32(8, rawVoxelData.getUint32(4));
-   mdv.setFloat32(12, x);
-   mdv.setFloat32(16, y);
-   mdv.setFloat32(20, z);
-   socket.send(message);
-  } 
- }
+player.onAdd.push((raw, x, y, z) => {
+ const message = new ArrayBuffer(4 + 8 + 4 * 3);
+ const mdv = new DataView(message);
+ mdv.setUint16(0, 300);
+ mdv.setUint16(2, connectionData.id);
+ mdv.setUint32(4, raw[0]);
+ mdv.setUint32(8, raw[1]);
+ mdv.setFloat32(12, x);
+ mdv.setFloat32(16, y);
+ mdv.setFloat32(20, z);
+ socket.send(message);
 });
-DVEW.parentComm.listenForMessage("voxel-remove", async (data) => {
- let x = pickDV.getFloat32(0);
- let y = pickDV.getFloat32(4);
- let z = pickDV.getFloat32(8);
 
+player.onRemove.push((x, y, z) => {
  const message = new ArrayBuffer(4 + 4 * 3);
  const mdv = new DataView(message);
  mdv.setUint16(0, 400);
@@ -162,61 +133,10 @@ DVEW.parentComm.listenForMessage("voxel-remove", async (data) => {
  mdv.setFloat32(4, x);
  mdv.setFloat32(8, y);
  mdv.setFloat32(12, z);
- console.log(x, y, z);
  socket.send(message);
 });
- */
-DVEW.parentComm.listenForMessage("player-server-data", (data) => {
- playerDataBuffer = data[1];
- playerData = new DataView(playerDataBuffer);
- ready = true;
+
+player.onUpdate.push(() => {
+ player.playerData.setUint16(0, 200);
+ socket.send(sharedBufferToBuffer(player.playerDataBuffer));
 });
-
-const positionVector = {
- x: 0,
- y: 0,
- z: 0,
-};
-const directionVector = {
- x: 0,
- y: 0,
- z: 0,
-};
-const endVector = {
- x: 0,
- y: 0,
- z: 0,
-};
-
-setInterval(() => {
- playerData.setUint16(0, 200);
- socket.send(sharedBufferToBuffer(playerDataBuffer));
-
- positionVector.x = playerData.getFloat32(4);
- positionVector.y = playerData.getFloat32(8);
- positionVector.z = playerData.getFloat32(12);
-
- directionVector.x = playerData.getFloat32(16);
- directionVector.y = playerData.getFloat32(20);
- directionVector.z = playerData.getFloat32(24);
-
- endVector.x = directionVector.x * 8 + positionVector.x;
- endVector.y = directionVector.y * 8 + positionVector.y;
- endVector.z = directionVector.z * 8 + positionVector.z;
-
- const voxels = VoxelMath.visitAll(positionVector, endVector);
-
- for (let i = 0; i < voxels.length; i += 3) {
-  const x = voxels[i];
-  const y = voxels[i + 1];
-  const z = voxels[i + 2];
-
-  /*   const voxel = DVEW.worldData.getVoxel(x, y, z);
-  if (voxel && voxel[0] != -1) {
-   pickDV.setFloat32(0, x);
-   pickDV.setFloat32(4, y);
-   pickDV.setFloat32(8, z);
-   break;
-  } */
- }
-}, 20);

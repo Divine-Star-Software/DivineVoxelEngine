@@ -22,20 +22,20 @@ const severMessage = (message, data = []) => {
 severMessage("DIVINE VOXEL ENGINE SERVER");
 const builder = DVEW.getBuilder();
 const brush = DVEW.getBrush();
+const tasks = DVEW.getTasksManager();
 const depth = 32;
 const startX = -depth;
 const endX = depth;
 const startZ = -depth;
 const endZ = depth;
-const generate = () => {
-    for (let x = startX; x <= endX; x += 16) {
-        for (let z = startZ; z <= endZ; z += 16) {
-            builder.setXZ(x, z).fillColumn();
-            WorldGen.generateChunk(x, z);
-        }
+for (let x = startX; x <= endX; x += 16) {
+    for (let z = startZ; z <= endZ; z += 16) {
+        builder.setXZ(x, z).fillColumn();
+        WorldGen.generateWorldColumn(x, z);
+        tasks.light.worldSun.add(x, z);
     }
-};
-generate();
+}
+await tasks.light.worldSun.runAndAwait();
 const connectionIds = {};
 const getPlayerConnectionId = () => {
     let id = 0;
@@ -66,6 +66,14 @@ wss.on("connection", function connection(ws) {
     severMessage("NEW CONNECTION", [id]);
     ws.on("close", function message(data) {
         delete connections[id];
+        severMessage("PLAYER DISCONNECTED", [id]);
+        const buffer = new ArrayBuffer(4);
+        const dv = new DataView(buffer);
+        dv.setUint16(0, 700);
+        dv.setUint16(2, id);
+        updateClients((data) => {
+            data.socket.send(buffer);
+        });
     });
     ws.on("message", function message(data) {
         const dv = new DataView(data);
@@ -95,7 +103,6 @@ wss.on("connection", function connection(ws) {
         }
         if (message == 300) {
             //added voxel
-            dv.setUint16(0, 500);
             const clientId = dv.getUint16(2);
             const v1 = dv.getUint32(4);
             const v2 = dv.getUint32(8);
@@ -103,6 +110,7 @@ wss.on("connection", function connection(ws) {
             const y = dv.getFloat32(16);
             const z = dv.getFloat32(20);
             brush.setXYZ(x, y, z).setRaw([v1, v2]).paintAndUpdate();
+            dv.setUint16(0, 500);
             updateClients((con) => {
                 con.socket.send(dv.buffer);
             }, clientId);
@@ -110,13 +118,13 @@ wss.on("connection", function connection(ws) {
         }
         if (message == 400) {
             //remove voxel
-            dv.setUint16(0, 600);
             const clientId = dv.getUint16(2);
             const x = dv.getFloat32(4);
             const y = dv.getFloat32(8);
             const z = dv.getFloat32(12);
             brush.setXYZ(x, y, z).ereaseAndUpdate();
             console.log(x, y, z);
+            dv.setUint16(0, 600);
             updateClients((con) => {
                 con.socket.send(dv.buffer);
             }, clientId);
