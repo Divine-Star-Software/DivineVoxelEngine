@@ -23,7 +23,11 @@ const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
-    SetUpDefaultSkybox(scene);
+    const box = SetUpDefaultSkybox(scene);
+    const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+    if (bmat) {
+        box.material = bmat;
+    }
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });

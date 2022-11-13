@@ -25,7 +25,7 @@ await DVEW.$INIT();
 (self as any).DVEW = DVEW;
 
 const builder = DVEW.getBuilder();
-const depth = 32;
+const depth = 128;
 const startX = -depth;
 const endX = depth;
 const startZ = -depth;
@@ -104,13 +104,31 @@ socket.addEventListener("message", (event) => {
   console.log("remove");
   DVEW.parentComm.sendMessage("remove-remote-player", [dv.getUint16(2)]);
  }
+ if (message == 800) {
+  console.log("explode");
+  brush
+  .setXYZ(dv.getFloat32(4), dv.getFloat32(8), dv.getFloat32(12))
+  .explode();
+ }
 });
 await DVEW.UTIL.createPromiseCheck({
  check: () => opened && ready,
- checkInterval: 1,
+ checkInterval: 2000,
 });
 const player = await WorldPlayer(DVEW);
 player.playerData.setUint16(2, connectionId);
+
+player.onExplode.push((x,y,z,radius)=>{
+  const message = new ArrayBuffer(4 + 4 * 3);
+  const mdv = new DataView(message);
+  mdv.setUint16(0, 500);
+  mdv.setUint16(2, connectionData.id);
+  mdv.setFloat32(4, x);
+  mdv.setFloat32(8, y);
+  mdv.setFloat32(12, z);
+  socket.send(message);
+});
+
 
 player.onAdd.push((raw, x, y, z) => {
  const message = new ArrayBuffer(4 + 8 + 4 * 3);
@@ -124,6 +142,7 @@ player.onAdd.push((raw, x, y, z) => {
  mdv.setFloat32(20, z);
  socket.send(message);
 });
+
 
 player.onRemove.push((x, y, z) => {
  const message = new ArrayBuffer(4 + 4 * 3);

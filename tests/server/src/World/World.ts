@@ -30,7 +30,7 @@ const builder = DVEW.getBuilder();
 const brush = DVEW.getBrush();
 const tasks = DVEW.getTasksManager();
 
-const depth = 32;
+const depth = 128;
 const startX = -depth;
 const endX = depth;
 const startZ = -depth;
@@ -39,7 +39,7 @@ const endZ = depth;
 for (let x = startX; x <= endX; x += 16) {
  for (let z = startZ; z <= endZ; z += 16) {
   builder.setXZ(x, z).fillColumn();
-  WorldGen.generateWorldColumn(x, z);
+  WorldGen.generate(x, z);
   tasks.light.worldSun.add(x, z);
  }
 }
@@ -140,8 +140,6 @@ wss.on("connection", function connection(ws) {
    severMessage("VOXEL ADD", [clientId]);
   }
   if (message == 400) {
-   //remove voxel
-
    const clientId = dv.getUint16(2);
    const x = dv.getFloat32(4);
    const y = dv.getFloat32(8);
@@ -154,6 +152,18 @@ wss.on("connection", function connection(ws) {
    }, clientId);
    severMessage("VOXEL REMOVE", [clientId]);
   }
+  if (message == 500) {
+    const clientId = dv.getUint16(2);
+    const x = dv.getFloat32(4);
+    const y = dv.getFloat32(8);
+    const z = dv.getFloat32(12);
+    brush.setXYZ(x, y, z).explode();
+    dv.setUint16(0, 800);
+    updateClients((con) => {
+     con.socket.send(dv.buffer);
+    }, clientId);
+    severMessage("EXPLOSION", [clientId]);
+   }
  });
 });
 

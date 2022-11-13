@@ -1,4 +1,5 @@
 import { PlayerStatesIndexes, PlayerStatesValues, } from "../Shared/Player.data.js";
+import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
 export const GetNexusPlayer = async (DVEN, DVEPH) => {
     const gravity = 0.1;
     const playerPositionSAB = new SharedArrayBuffer(4 * 3);
@@ -14,6 +15,7 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
         playerStates = new Uint8Array(data[2]);
         ready = true;
     });
+    const dataTool = new DataTool();
     await DVEN.UTIL.createPromiseCheck({
         checkInterval: 1,
         check: () => ready,
@@ -21,6 +23,7 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
     const player = DVEPH.createEntityObject({
         states: {
             cilmbingStair: false,
+            inWater: false,
             onLadder: false,
         },
         finalDirection: DVEPH.math.getVector3(0, 0, 0),
@@ -104,14 +107,19 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
             this.playerStates[PlayerStatesIndexes.secondaryMovment])
             this.velocity.x = this.finalDirection.x;
         this.velocity.z = this.finalDirection.z;
-        if (this.onGround) {
+        if (this.onGround || this.states.inWater) {
             this.gravityAcceleration = 0;
         }
         if (this.playerStates[PlayerStatesIndexes.jumping] &&
             !this.jumpStates.jumping &&
-            this.onGround) {
+            (this.onGround || this.states.inWater)) {
             this.jumpStates.jumping = true;
-            this.velocity.y = .3;
+            if (this.states.inWater) {
+                this.velocity.y = 0.2;
+            }
+            else {
+                this.velocity.y = 0.3;
+            }
             this.playerStates[PlayerStatesIndexes.jumping] = 0;
         }
         if (this.jumpStates.jumping) {
@@ -120,17 +128,40 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
                 this.jumpStates.jumping = false;
             }
             else {
-                this.velocity.y -= 0.01;
+                if (this.states.inWater) {
+                    this.velocity.y -= 0.01;
+                }
+                else {
+                    this.velocity.y -= 0.01;
+                }
                 this.jumpStates.count++;
             }
         }
         if (!this.onGround && !this.jumpStates.jumping) {
-            this.gravityAcceleration += 0.02;
-            this.velocity.y = -gravity;
-            this.velocity.y -= this.gravityAcceleration;
+            this.gravityAcceleration += 0.01;
+            if (this.states.inWater) {
+                this.velocity.y = -0.03;
+            }
+            else {
+                this.velocity.y = -gravity;
+                this.velocity.y -= this.gravityAcceleration;
+            }
         }
     };
     player.beforeUpdate = function () {
+        this.states.inWater = false;
+        for (let y = this.position.y; y <= this.position.y + 1; y++) {
+            for (let x = this.position.x - 1; x <= this.position.x + 1; x++) {
+                for (let z = this.position.z - 1; z <= this.position.z + 1; z++) {
+                    if (dataTool.loadIn(x >> 0, y >> 0, z >> 0)) {
+                        if (dataTool.getSubstance() == "liquid") {
+                            this.states.inWater = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         this.controlsUpdate();
         if (this.states.cilmbingStair) {
             this.setVelocity(0, 1, -1.5);

@@ -48,9 +48,6 @@ export const WorldGen = {
             .setId("dve:dream-leafs")
             .setXYZ(x, y + height, z)
             .paint();
-        /*   for (const pos of this._treeLeafs) {
-         brush.setXYZ(x + pos[0], height - 4 + y + pos[1], z + pos[2]).paint();
-        } */
     },
     generateCircle(vox, x, y, z, radius, skipCenter = false) {
         let rx = x - radius;

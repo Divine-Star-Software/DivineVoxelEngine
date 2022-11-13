@@ -1,11 +1,9 @@
 export declare const WorldGen: {
     chunkDepth: number;
     chunkWidth: number;
-    worldHeight: number;
-    minY: number;
-    generateHoleChunk(chunkX: number, chunkZ: number): void;
-    generateNormalChunk(chunkX: number, chunkZ: number): void;
-    generateRoofChunk(chunkX: number, chunkZ: number): void;
-    generateBoxChunk(chunkX: number, chunkZ: number): void;
-    generateWorldColumn(chunkX: number, chunkZ: number): void;
+    chunkHeight: number;
+    _treeLeafs: number[][];
+    generateTree(x: number, y: number, z: number): void;
+    generateCircle(vox: string, x: number, y: number, z: number, radius: number, skipCenter?: boolean, noDestory?: boolean): void;
+    generate(chunkX: number, chunkZ: number): void;
 };
