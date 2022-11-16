@@ -168,11 +168,11 @@ export declare const DVEDL: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("Meta/index.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("Meta/index.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;

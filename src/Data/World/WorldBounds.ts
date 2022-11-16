@@ -1,6 +1,6 @@
 import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "../Chunk/HeightMapArray.js";
-import type { Position3Matrix } from "Meta/Util.types";
+import type { Vector3 } from "Meta/Util.types";
 
 const __maxChunkYSize = 128;
 const maxBounds = Object.freeze({
@@ -155,14 +155,14 @@ export const WorldBounds = {
   this.__chunkPosition.z = (z >> this.chunkZPow2) << this.chunkZPow2;
   return this.__chunkPosition;
  },
- getChunkKey(chunkPOS: Position3Matrix) {
+ getChunkKey(chunkPOS: Vector3) {
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
  getChunkKeyFromPosition(x: number, y: number, z: number) {
   const chunkPOS = this.getChunkPosition(x, y, z);
   return `${chunkPOS.x}-${chunkPOS.z}-${chunkPOS.y}`;
  },
- getRegionKey(regionPOS: Position3Matrix) {
+ getRegionKey(regionPOS: Vector3) {
   return `${regionPOS.x}-${regionPOS.z}-${regionPOS.y}`;
  },
  getRegionKeyFromPosition(x: number, y: number, z: number) {
@@ -178,7 +178,7 @@ export const WorldBounds = {
   x: number,
   y: number,
   z: number,
-  chunkPOS: Position3Matrix
+  chunkPOS: Vector3
  ) {
   this.__voxelPosition.x = Math.abs(x - chunkPOS.x);
   if (x < 0) {

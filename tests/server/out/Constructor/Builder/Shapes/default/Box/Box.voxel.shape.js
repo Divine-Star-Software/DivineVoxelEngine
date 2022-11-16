@@ -1,43 +1,4 @@
-import { Builder } from "../../../Builder.js";
-const shapeDimensions = {
-    width: 0.5,
-    depth: 0.5,
-    height: 0.5,
-};
-const tempDimensions = {
-    width: 0.5,
-    depth: 0.5,
-    height: 0.5,
-};
-const processDefaultFaceData = (face, data) => {
-    const flip = Builder.shapeHelper.shouldFaceFlip(data.face, face);
-    Builder.shapeBuilder.addFace(face, data.position, tempDimensions, data, flip);
-    const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
-    const uv = data.unTemplate[data.uvTemplateIndex];
-    Builder.uvHelper.addUVs(face, {
-        uvs: data.uvs,
-        uv: uv,
-        width: { start: 0, end: 1 * data.LOD },
-        height: { start: 0, end: 1 * data.LOD },
-        flipped: flip,
-        rotoate: rotation,
-    });
-    Builder.uvHelper.processOverlayUVs(data);
-    Builder.shapeHelper.calculateLightColor(data.RGBLightColors, data.sunLightColors, data.lightTemplate, data.lightIndex);
-    Builder.shapeHelper.calculateAOColor(data.AOColors, data.aoTemplate, data.aoIndex);
-    if (data.substance == "flora") {
-        let animData = Builder.shapeHelper.meshFaceData.setAnimationType(3, 0);
-        Builder.shapeHelper.addFaceData(animData, data.faceData);
-    }
-    else {
-        Builder.shapeHelper.addFaceData(0, data.faceData);
-    }
-    data.uvTemplateIndex += 1;
-    data.overylayUVTemplateIndex += 4;
-    data.lightIndex += 4;
-    data.colorIndex += 4;
-    data.aoIndex += 4;
-};
+import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
 export const BoxVoxelShape = {
     id: "Box",
     cullFaceOverrideFunctions: {},
@@ -53,7 +14,13 @@ export const BoxVoxelShape = {
         if (this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
             return this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
         }
-        if (data.neighborVoxel.getVoxelShapeObj().id == "Stair") {
+        const neighborShape = data.neighborVoxel.getVoxelShapeObj();
+        if (neighborShape.id == "HalfBox") {
+            if (data.neighborVoxel.getShapeState() == 0 && data.face == "top") {
+                return false;
+            }
+        }
+        if (neighborShape.id == "Stair") {
             return stairCull(data);
         }
         return data.default;
@@ -64,7 +31,10 @@ export const BoxVoxelShape = {
         }
         const neighborShape = data.neighborVoxel.getVoxelShapeObj();
         if (neighborShape.id == "HalfBox") {
-            if (data.neighborVoxel.getShapeState() == 0) {
+            if (data.face == "top") {
+                if (data.neighborVoxel.getShapeState() == 0) {
+                    return true;
+                }
                 return false;
             }
         }
@@ -82,32 +52,54 @@ export const BoxVoxelShape = {
     aoFlipOverride(data) {
         return false;
     },
-    addToChunkMesh(data) {
-        data.position.x += shapeDimensions.width * data.LOD;
-        data.position.z += shapeDimensions.depth * data.LOD;
-        data.position.y += shapeDimensions.height * data.LOD;
-        tempDimensions.width = shapeDimensions.width * data.LOD;
-        tempDimensions.height = shapeDimensions.height * data.LOD;
-        tempDimensions.depth = shapeDimensions.depth * data.LOD;
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "top")) {
-            processDefaultFaceData("top", data);
+    addToChunkMesh() {
+        VoxelMesher.quad.setDimensions(1, 1);
+        let animationState = 0;
+        if (VoxelMesher.data.getSubstance() == "flora") {
+            animationState = 3;
         }
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "bottom")) {
-            processDefaultFaceData("bottom", data);
+        if (VoxelMesher.face.loadIn("top").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("top")
+                .updatePosition(0.5, 1, 0.5)
+                .addData(4, animationState)
+                .create();
         }
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "east")) {
-            processDefaultFaceData("east", data);
+        if (VoxelMesher.face.loadIn("bottom").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("bottom")
+                .updatePosition(0.5, 0, 0.5)
+                .addData(4, animationState)
+                .create();
         }
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "west")) {
-            processDefaultFaceData("west", data);
+        if (VoxelMesher.face.loadIn("east").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("east")
+                .updatePosition(1, 0.5, 0.5)
+                .addData(4, animationState)
+                .create();
         }
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "south")) {
-            processDefaultFaceData("south", data);
+        if (VoxelMesher.face.loadIn("west").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("west")
+                .updatePosition(0, 0.5, 0.5)
+                .addData(4, animationState)
+                .create();
         }
-        if (Builder.shapeHelper.isFaceExposexd(data.face, "north")) {
-            processDefaultFaceData("north", data);
+        if (VoxelMesher.face.loadIn("south").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("south")
+                .updatePosition(0.5, 0.5, 0)
+                .addData(4, animationState)
+                .create();
         }
-        return Builder.shapeHelper.produceShapeReturnData(data);
+        if (VoxelMesher.face.loadIn("north").isExposed()) {
+            VoxelMesher.quad
+                .setDirection("north")
+                .updatePosition(0.5, 0.5, 1)
+                .addData(4, animationState)
+                .create();
+        }
     },
 };
 const stairCullFunctions = {

@@ -7,7 +7,7 @@ import { DataSync } from "./Data/DataSync.js";
 export declare const ThreadComm: {
     threadNumber: number;
     threadName: string;
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     _comms: Record<string, CommBase>;
     _commManageras: Record<string, CommManager>;
     _tasks: Record<string, Task<any>>;

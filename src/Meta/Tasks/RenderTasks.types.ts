@@ -1,5 +1,5 @@
 export type SetChunkMeshTask = [
- dimension: number,
+ dimension: string,
  substanceType: number,
  chunkX: number,
  chunkY: number,
@@ -17,7 +17,7 @@ export type SetChunkMeshTask = [
 ];
 
 export type RemoveChunkMeshTasks = [
- dimension: number,
+ dimension: string,
  substanceType: number,
  chunkX: number,
  chunkY: number,

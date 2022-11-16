@@ -9,9 +9,9 @@ export const DreamVineVoxelBuilderThread = {
     process: function (data, DVEB) {
         data.uvTemplate.push(uv, uv);
         data.overlayUVTemplate.push(0, 0, 0, 0);
-        DVEB.processor.nDataTool.loadIn(data.x, data.y, data.z);
+        data.overlayUVTemplate.push(0, 0, 0, 0);
+        data.aoTemplate.push(1, 1);
         const lightValue = DVEB.processor.nDataTool.getLight();
-        data.aoTemplate.push(1);
-        data.lightTemplate.push(lightValue);
+        data.lightTemplate.push(lightValue, lightValue);
     },
 };

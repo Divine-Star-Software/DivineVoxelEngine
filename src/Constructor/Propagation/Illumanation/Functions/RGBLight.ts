@@ -1,6 +1,6 @@
 //types
 import type { IlluminationManager } from "../IlluminationManager.js";
-import type { Position3Matrix } from "Meta/Util.types";
+import type { Vector3 } from "Meta/Util.types";
 
 export function runRGBUpdate(this: typeof IlluminationManager) {
  while (this._RGBlightUpdateQ.length != 0) {
@@ -88,7 +88,7 @@ export function runRGBRemoveAt(
 }
 export function runRGBRemove(
  this: typeof IlluminationManager,
- lightSource?: Position3Matrix
+ lightSource?: Vector3
 ) {
  while (this._RGBlightRemovalQ.length != 0) {
   const node = this._RGBlightRemovalQ.shift();

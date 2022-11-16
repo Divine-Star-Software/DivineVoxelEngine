@@ -1,5 +1,5 @@
 import type { VoxelTemplateSubstanceType } from "Meta/index";
-import type { Position3Matrix } from "Meta/Util.types.js";
+import type { Vector3 } from "Meta/Util.types.js";
 /**# Height Byte
  * ---
  * Interpets height map data.
@@ -12,7 +12,7 @@ export declare const HeightMapData: {
     _isSubstanceExposed: Record<VoxelTemplateSubstanceType, (data: number) => boolean>;
     getStartingHeightMapValue(): number;
     initalizeChunk(chunkData: DataView): void;
-    updateChunkMinMax(voxelPOS: Position3Matrix, chunkData: DataView): void;
+    updateChunkMinMax(voxelPOS: Vector3, chunkData: DataView): void;
     getChunkMin(chunkData: DataView): number;
     getChunkMax(chunkData: DataView): number;
     calculateHeightRemoveDataForSubstance(height: number, substance: VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;

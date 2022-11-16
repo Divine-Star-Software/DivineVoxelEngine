@@ -1,5 +1,5 @@
 import type { VoxelTemplateSubstanceType } from "Meta/index";
-import type { Position3Matrix } from "Meta/Util.types.js";
+import type { Vector3 } from "Meta/Util.types.js";
 import { PositionByte } from "../Util/PositionByte.js";
 import { ChunkReader } from "./ChunkReader.js";
 /**# Height Byte
@@ -113,7 +113,7 @@ export const HeightMapData = {
   }
  },
 
- updateChunkMinMax(voxelPOS: Position3Matrix, chunkData: DataView) {
+ updateChunkMinMax(voxelPOS: Vector3, chunkData: DataView) {
   const currentMin = PositionByte.getY(ChunkReader.getChunkMinData(chunkData));
   const currentMax = PositionByte.getY(ChunkReader.getChunkMaxData(chunkData));
   if (voxelPOS.y < currentMin) {

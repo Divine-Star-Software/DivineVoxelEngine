@@ -1,5 +1,5 @@
 export declare type SetChunkMeshTask = [
-    dimension: number,
+    dimension: string,
     substanceType: number,
     chunkX: number,
     chunkY: number,
@@ -16,7 +16,7 @@ export declare type SetChunkMeshTask = [
     overlayUVs: Float32Array
 ];
 export declare type RemoveChunkMeshTasks = [
-    dimension: number,
+    dimension: string,
     substanceType: number,
     chunkX: number,
     chunkY: number,

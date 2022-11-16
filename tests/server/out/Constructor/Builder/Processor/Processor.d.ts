@@ -1,5 +1,4 @@
 import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelShapeInterface, VoxelSubstanceType } from "Meta/index.js";
-import type { ChunkData } from "Meta/Data/WorldData.types.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import type { Rotations } from "Meta/Constructor/Mesher.types.js";
@@ -23,7 +22,7 @@ export declare const Processor: {
         _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
         initalizeChunk(chunkData: DataView): void;
-        updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkData: DataView): void;
+        updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
         getChunkMin(chunkData: DataView): number;
         getChunkMax(chunkData: DataView): number;
         calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -115,7 +114,7 @@ export declare const Processor: {
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;
-    makeAllChunkTemplates(dimension: number, chunk: ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
+    makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
     processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;

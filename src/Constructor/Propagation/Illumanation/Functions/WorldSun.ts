@@ -37,18 +37,16 @@ export function RunWorldSun(
     const l = this._sDataTool.getLight();
     if (l < 0) continue;
     this._sDataTool.setLight(this.lightData.setS(0xf, l)).commit();
-   /*  if (iy <= RmaxY) {
+    /*  if (iy <= RmaxY) {
       this._worldSunQueue.push([ix, iy, iz]);
      } */
    }
   }
  }
 
-
  for (let ix = cx; ix < cx + WorldBounds.chunkXSize; ix++) {
   for (let iz = cz; iz < cz + WorldBounds.chunkZSize; iz++) {
    for (let iy = AmaxY; iy <= RmaxY; iy++) {
-
     if (!this._sDataTool.loadIn(ix, iy, iz)) continue;
     const l = this._sDataTool.getLight();
     if (l < 0 && this.lightData.getS(l) != 0xf) continue;
@@ -71,6 +69,7 @@ export function RunWorldSun(
    }
   }
  }
+
  const queue = this._worldSunQueue;
  while (queue.length) {
   const node = queue.shift();
@@ -80,6 +79,7 @@ export function RunWorldSun(
   const x = node[0];
   const y = node[1];
   const z = node[2];
+
   if (!this._sDataTool.loadIn(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
   if (sl <= 0) continue;
@@ -120,6 +120,7 @@ export function RunWorldSun(
 
   if (this._nDataTool.loadIn(x, y - 1, z)) {
    const nl = this._nDataTool.getLight();
+
    if (nl > -1 && this.lightData.isLessThanForSunAddDown(nl, sl)) {
     if (this._nDataTool.isAir()) {
      queue.push([x, y - 1, z]);

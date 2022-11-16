@@ -13,7 +13,7 @@ import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 export const FlowManager = {
     //voxelByte : Util.
     lightData: LightData,
-    dimension: 0,
+    dimension: "main",
     currentVoxel: 0,
     _visitedMap: new Map(),
     _removeMap: new Map(),

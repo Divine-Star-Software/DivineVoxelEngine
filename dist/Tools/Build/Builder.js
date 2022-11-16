@@ -1,17 +1,16 @@
-import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 export class BuilderTool {
     data = {
-        dimesnion: 0,
+        dimesnion: "main",
         x: 0,
         y: 0,
         z: 0,
         LOD: 1,
     };
     setDimension(dimensionId) {
-        this.data.dimesnion = DimensionsRegister.getDimensionNumericId(dimensionId);
+        this.data.dimesnion = dimensionId;
         return this;
     }
     setLOD(lod) {

@@ -18,7 +18,7 @@ export const MeshManager = {
  runningUpdate: false,
 
  meshes: <
-  Record<VoxelSubstanceType, Record<number, Record<string, BABYLON.Mesh>>>
+  Record<VoxelSubstanceType, Record<string, Record<string, BABYLON.Mesh>>>
  >{
   solid: {},
   transparent: {},
@@ -49,7 +49,7 @@ export const MeshManager = {
  reStart() {},
 
  removeChunkMesh(
-  dimesnion: number,
+  dimesnion: string,
   type: VoxelSubstanceType,
   chunkKey: string
  ) {
@@ -104,7 +104,7 @@ export const MeshManager = {
  },
 
  handleChunkUpdate(
-  dimesnion: number,
+  dimesnion: string,
   type: VoxelSubstanceType,
   chunkKey: string,
   data: SetChunkMeshTask
@@ -132,7 +132,7 @@ export const MeshManager = {
   }
  },
 
- requestChunkBeRemoved(dimesnion: number, chunkKey: string) {
+ requestChunkBeRemoved(dimesnion: string, chunkKey: string) {
   for (const substance of Object.keys(this.meshes)) {
    if (this.meshes[substance as VoxelSubstanceType][dimesnion][chunkKey]) {
     this.meshes[substance as VoxelSubstanceType][dimesnion][chunkKey].dispose();
@@ -142,7 +142,7 @@ export const MeshManager = {
  },
 
  async _updateMesh(
-  dimesnion: number,
+  dimesnion: string,
   type: VoxelSubstanceType,
   chunkKey: string,
   data: any
@@ -155,7 +155,7 @@ export const MeshManager = {
  },
 
  async _buildNewMesh(
-  dimesnion: number,
+  dimesnion: string,
   type: VoxelSubstanceType,
   chunkKey: string,
   data: any

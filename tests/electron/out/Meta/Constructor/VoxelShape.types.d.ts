@@ -1,5 +1,5 @@
 import { VoxelSubstanceType } from "Meta/index";
-import type { Position3Matrix } from "Meta/Util.types";
+import { GeometryBuildData } from "./Geometry/Geometry.types";
 import { FaceDataOverride } from "./OverRide.types";
 /** # Voxel Shape Add DAta
 ---
@@ -7,17 +7,6 @@ import { FaceDataOverride } from "./OverRide.types";
 export declare type VoxelShapeAddData = {
     LOD: number;
     substance: VoxelSubstanceType;
-    positions: number[];
-    normals: number[];
-    indices: number[];
-    faceData: number[];
-    RGBLightColors: number[];
-    sunLightColors: number[];
-    AOColors: number[];
-    colors: number[];
-    uvs: number[];
-    overlayUVs: number[];
-    indicieIndex: number;
     face: number;
     shapeState: number;
     flowTemplateIndex?: number;
@@ -32,8 +21,7 @@ export declare type VoxelShapeAddData = {
     lightIndex: number;
     aoTemplate: number[];
     aoIndex: number;
-    position: Position3Matrix;
-};
+} & GeometryBuildData;
 export declare type VoxelShapeAddReturnData = {
     newIndicieIndex: number;
     newUVTemplateIndex: number;
@@ -63,5 +51,5 @@ export declare type VoxelShapeInterface = {
     /**# Add To Chunk Mesh
      * ---
      */
-    addToChunkMesh(data: VoxelShapeAddData): VoxelShapeAddReturnData;
+    addToChunkMesh(data: VoxelShapeAddData): void;
 };

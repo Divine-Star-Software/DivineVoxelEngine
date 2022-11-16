@@ -13,8 +13,18 @@ export const WorldGen = {
         for (let x = chunkX; x < 16 + chunkX; x++) {
             for (let z = chunkZ; z < 16 + chunkZ; z++) {
                 for (let y = 0; y < 18; y++) {
+                    brush.setXYZ(x, y, z);
+                    if (y == 5 && Math.random() > 0.98) {
+                        brush.setId("dve:dreamstoneslab").setShapeState(0).paint();
+                    }
                     if (y < 5) {
-                        brush.setXYZ(x, y, z).paint();
+                        if (dimesnion == "main") {
+                            brush.setId("dve:dreamstone");
+                        }
+                        if (dimesnion == "other") {
+                            brush.setId("dve:dreadstone");
+                        }
+                        brush.paint();
                     }
                 }
             }

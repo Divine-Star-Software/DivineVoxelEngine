@@ -1,6 +1,5 @@
 //types
 import type { DirectionNames } from "Meta/Util.types.js";
-import type { VoxelShapeAddData, VoxelShapeAddReturnData } from "Meta/index";
 //objects
 
 import { LightData } from "../../../Data/Light/LightByte.js";
@@ -32,17 +31,6 @@ export const ShapeHelper = {
   return this.faceByte.isFaceExposed(faceDirection, faceBit);
  },
 
- produceShapeReturnData(shapeData: VoxelShapeAddData): VoxelShapeAddReturnData {
-  return {
-   newIndicieIndex: shapeData.indicieIndex,
-   newUVTemplateIndex: shapeData.uvTemplateIndex,
-   newOverlayUVTemplateIndex: shapeData.overylayUVTemplateIndex,
-   newColorIndex: shapeData.colorIndex,
-   newlightIndex: shapeData.lightIndex,
-   newAOIndex: shapeData.aoIndex,
-   newFlowTemplateIndex: shapeData.flowTemplateIndex,
-  };
- },
 
  toLinearSpace(r: number, g: number, b: number, a: number) {
   r = r ** 2.2;
@@ -89,19 +77,7 @@ export const ShapeHelper = {
   }
  },
 
- calculateSunightColor(
-  sunLight: number[],
-  sunLightTemplate: number[],
-  sunLightIndex: number
- ) {
-  for (let v = 0; v < 4; v++) {
-   const values = this.lightByte.getLightValues(
-    sunLightTemplate[sunLightIndex + v]
-   );
-   const w = this.lightMap[values[0]];
-   sunLight.push(w, w, w, 1);
-  }
- },
+
 
  calculateAOColor(
   aoColors: number[],

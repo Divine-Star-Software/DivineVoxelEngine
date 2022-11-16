@@ -24,7 +24,7 @@ export type PaintTasks = [
  originThread: string
 ];
 export type ReBuildTasks = [
- dimension: string | number,
+ dimension: string,
  x: number,
  y: number,
  z: number,
@@ -33,7 +33,7 @@ export type ReBuildTasks = [
 export type RunRebuildTasks = [buildQueue: string];
 
 export type BuildTasks = [
- dimension: string | number,
+ dimension: string,
  x: number,
  y: number,
  z: number,

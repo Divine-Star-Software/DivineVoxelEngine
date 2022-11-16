@@ -1,67 +1,4 @@
-import { Builder } from "../../../Builder.js";
-const shapeDimensions = {
-    width: 0.5,
-    depth: 0.5,
-    height: 0.5,
-};
-const processFace = (face, data) => {
-    const uv = data.unTemplate[data.uvTemplateIndex];
-    const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
-    const flip = Builder.shapeHelper.shouldFaceFlip(data.face, face);
-    for (let i = 0; i < 2; i++) {
-        Builder.uvHelper.addUVs(face, {
-            uvs: data.uvs,
-            uv: uv,
-            width: { start: 0, end: 1 },
-            height: { start: 0, end: 1 },
-            flipped: flip,
-            rotoate: rotation,
-        });
-        Builder.uvHelper.processOverlayUVs(data);
-        Builder.shapeHelper.calculateAOColorFromValue(data.AOColors, data.aoTemplate[data.aoIndex]);
-        Builder.shapeHelper.calculateLightColorFromValue(data.RGBLightColors, data.sunLightColors, data.lightTemplate[data.lightIndex]);
-    }
-    if (data.substance == "flora") {
-        let animData = Builder.shapeHelper.meshFaceData.setAnimationType(1, 0);
-        Builder.shapeHelper.addFaceData(animData, data.faceData);
-        Builder.shapeHelper.addFaceData(animData, data.faceData);
-    }
-    else {
-        Builder.shapeHelper.addFaceData(0, data.faceData);
-        Builder.shapeHelper.addFaceData(0, data.faceData);
-    }
-    data.uvTemplateIndex += 1;
-    data.overylayUVTemplateIndex += 4;
-    data.lightIndex += 1;
-    data.colorIndex += 1;
-    data.aoIndex += 1;
-};
-const transform1 = {
-    v1: { x: 0, y: 0, z: -1 },
-    v2: { x: 0, y: 0, z: 0 },
-    v3: { x: 0, y: 0, z: 0 },
-    v4: { x: 0, y: 0, z: -1 },
-};
-const transform2 = {
-    v1: { x: 0, y: 0, z: 1 },
-    v2: { x: 0, y: 0, z: 0 },
-    v3: { x: 0, y: 0, z: 0 },
-    v4: { x: 0, y: 0, z: 1 },
-};
-const faceFunctions = {
-    0: (data) => {
-        Builder.shapeBuilder.addFace("north", data.position, shapeDimensions, data, false, transform1);
-        Builder.shapeBuilder.addFace("south", data.position, shapeDimensions, data, false, transform2);
-        processFace("north", data);
-    },
-    1: (data) => {
-        data.position.z -= 1;
-        Builder.shapeBuilder.addFace("north", data.position, shapeDimensions, data, false, transform2);
-        data.position.z += 2;
-        Builder.shapeBuilder.addFace("south", data.position, shapeDimensions, data, false, transform1);
-        processFace("north", data);
-    },
-};
+import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
 export const FullBoxDiagonalIntersection = {
     id: "FullBoxDiagonalIntersection",
     cullFaceOverrideFunctions: {},
@@ -91,12 +28,47 @@ export const FullBoxDiagonalIntersection = {
     aoFlipOverride(data) {
         return false;
     },
-    addToChunkMesh(data) {
-        data.position.x += shapeDimensions.width;
-        data.position.z += shapeDimensions.depth;
-        data.position.y += shapeDimensions.height;
-        faceFunctions[0](data);
-        faceFunctions[1](data);
-        return Builder.shapeHelper.produceShapeReturnData(data);
+    addToChunkMesh() {
+        let animationState = 0;
+        if (VoxelMesher.data.getSubstance() == "flora") {
+            animationState = 1;
+        }
+        VoxelMesher.quad.setDimensions(1, 1);
+        VoxelMesher.setTemplateIncrement(false).face.loadIn("top");
+        VoxelMesher.quad
+            .setDirection("north")
+            .addData(1, animationState)
+            .updatePosition(0.5, 0.5, 1)
+            .setTransform(1, 0, 0, -1)
+            .setTransform(4, 0, 0, -1)
+            .create()
+            .clearTransform();
+        VoxelMesher.setTemplateIncrement(true).face.loadIn("top");
+        VoxelMesher.quad
+            .setDirection("north")
+            .addData(1, animationState)
+            .updatePosition(0.5, 0.5, 0)
+            .setTransform(1, 0, 0, 1)
+            .setTransform(4, 0, 0, 1)
+            .create()
+            .clearTransform();
+        VoxelMesher.setTemplateIncrement(false).face.loadIn("bottom");
+        VoxelMesher.quad
+            .setDirection("south")
+            .addData(1, animationState)
+            .updatePosition(0.5, 0.5, 0)
+            .setTransform(1, 0, 0, 1)
+            .setTransform(4, 0, 0, 1)
+            .create()
+            .clearTransform();
+        VoxelMesher.setTemplateIncrement(true).face.loadIn("bottom");
+        VoxelMesher.quad
+            .setDirection("south")
+            .addData(1, animationState)
+            .updatePosition(0.5, 0.5, 1)
+            .setTransform(1, 0, 0, -1)
+            .setTransform(4, 0, 0, -1)
+            .create()
+            .clearTransform();
     },
 };

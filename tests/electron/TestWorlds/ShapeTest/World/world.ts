@@ -1,3 +1,4 @@
+import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
@@ -30,6 +31,8 @@ for (let x = startX; x < endX; x += 16) {
 
 const x = 0;
 const z = 0;
+
+GetAnalyzerCubeWorld(DVEW);
 
 const brush = DVEW.getBrush();
 
@@ -249,9 +252,9 @@ const doStairTest = (shapeState: number, x: number, y: number, z: number) => {
 };
 
 const doVineTest = (x: number, y: number, z: number) => {
- brush.setId("dve:dreamvine");
  for (let vy = y; vy < 60; vy++) {
   brush
+   .setId("dve:dreamvine")
    .setShapeState(0)
    .setXYZ(x, vy, z)
    .paint()
@@ -264,6 +267,18 @@ const doVineTest = (x: number, y: number, z: number) => {
    .setShapeState(3)
    .setXYZ(x - 6, vy, z)
    .paint();
+
+  /*    brush
+   .setId("dve:dreamstone")
+   .setShapeState(0)
+   .setXYZ(x, vy, z - 1)
+   .paint()
+   .setXYZ(x - 2, vy, z + 1)
+   .paint()
+   .setXYZ(x - 4, vy, z - 1)
+   .paint()
+   .setXYZ(x - 6, vy, z - 1)
+   .paint(); */
  }
 };
 
@@ -288,25 +303,27 @@ doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
 
-await tasks.light.worldSun.runAndAwait();
-buildAll();
-
 brush.setId("dve:debugbox");
-brush.setXYZ(30, 26, 107).paintAndUpdate();
-brush.setXYZ(30, 26, 99).paintAndUpdate();
-brush.setXYZ(30, 26, 91).paintAndUpdate();
-brush.setXYZ(30, 26, 83).paintAndUpdate();
-brush.setXYZ(30, 26, 75).paintAndUpdate();
-brush.setXYZ(30, 20, 68).paintAndUpdate();
-brush.setXYZ(30, 20, 69).paintAndUpdate();
-brush.setXYZ(30, 20, 52).paintAndUpdate();
-brush.setXYZ(30, 20, 44).paintAndUpdate();
-brush.setXYZ(30, 20, 36).paintAndUpdate();
-brush.setXYZ(30, 20, 28).paintAndUpdate();
-brush.setXYZ(30, 20, 20).paintAndUpdate();
-brush.setXYZ(30, 20, 12).paintAndUpdate();
-brush.setXYZ(30, 20, 4).paintAndUpdate();
-brush.setXYZ(30, 20, -4).paintAndUpdate();
-brush.setXYZ(30, 20, -12).paintAndUpdate();
+brush.setXYZ(30, 26, 107).paint();
+brush.setXYZ(30, 26, 99).paint();
+brush.setXYZ(30, 26, 91).paint();
+brush.setXYZ(30, 26, 83).paint();
+brush.setXYZ(30, 26, 75).paint();
+brush.setXYZ(30, 20, 68).paint();
+brush.setXYZ(30, 20, 69).paint();
+brush.setXYZ(30, 20, 52).paint();
+brush.setXYZ(30, 20, 44).paint();
+brush.setXYZ(30, 20, 36).paint();
+brush.setXYZ(30, 20, 28).paint();
+brush.setXYZ(30, 20, 20).paint();
+brush.setXYZ(30, 20, 12).paint();
+brush.setXYZ(30, 20, 4).paint();
+brush.setXYZ(30, 20, -4).paint();
+brush.setXYZ(30, 20, -12).paint();
+
+await tasks.light.worldSun.runAndAwait();
+await tasks.light.rgb.update.runAndAwait();
+
+buildAll();
 
 (self as any).DVEW = DVEW;

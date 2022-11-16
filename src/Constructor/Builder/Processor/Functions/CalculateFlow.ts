@@ -49,7 +49,7 @@ export function CalculateFlow(
  const currentLevel = this.mDataTool.getLevel();
  const state = this.mDataTool.getLevelState();
 
- flowTemplate.push(state);
+ //flowTemplate.push(state);
  calculateFlowV(this, state, currentLevel, 1, x, y, z);
  calculateFlowV(this, state, currentLevel, 2, x, y, z);
  calculateFlowV(this, state, currentLevel, 3, x, y, z);

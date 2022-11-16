@@ -8,9 +8,14 @@ import {
  runRenderLoop,
  SetUpDefaultScene,
 } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, SyncWithGraphicsSettings } from "../Shared/Create/index.js";
+import {
+ RunInit,
+ SetUpWorkers,
+ SyncWithGraphicsSettings,
+} from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 
 RegisterTexutres(DVER);
 
@@ -23,7 +28,7 @@ const workers = SetUpWorkers(
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
-/*  lighting: {
+ /*  lighting: {
   doAO: true,
   doRGBLight: true,
   doSunLight: false,
@@ -60,6 +65,7 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
  CreateWorldAxis(scene, 20);
 
+ GetAnalyzerCubeRender(DVER,camera);
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0.1);
  DVER.renderManager.setSunLevel(1);

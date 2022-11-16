@@ -24,7 +24,7 @@ export const FlowManager = {
  //voxelByte : Util.
 
  lightData: LightData,
- dimension: 0,
+ dimension: "main",
  currentVoxel: 0,
  _visitedMap: <Map<string, boolean>>new Map(),
  _removeMap: <Map<string, boolean>>new Map(),

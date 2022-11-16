@@ -1,6 +1,6 @@
 import { CreateItemData } from "Meta/Constructor/ItemShape.type";
 import type { VoxelShapeAddData } from "Meta/index";
-import type { DirectionNames, Position3Matrix } from "Meta/Util.types";
+import type { DirectionNames, Vector3 } from "Meta/Util.types";
 declare type DimenionsMatrix = {
     width: number;
     height: number;
@@ -29,8 +29,8 @@ declare const defaultTransform: {
     };
 };
 export declare const ShapeBuilder: {
-    faceFunctions: Record<DirectionNames, (origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData | CreateItemData, transform: typeof defaultTransform, flip?: boolean) => void>;
-    addFace(direction: DirectionNames, origin: Position3Matrix, dimensions: DimenionsMatrix, data: VoxelShapeAddData | CreateItemData, flip?: boolean, transform?: {
+    faceFunctions: Record<DirectionNames, (origin: Vector3, dimensions: DimenionsMatrix, data: VoxelShapeAddData | CreateItemData, transform: typeof defaultTransform, flip?: boolean) => void>;
+    addFace(direction: DirectionNames, origin: Vector3, dimensions: DimenionsMatrix, data: VoxelShapeAddData | CreateItemData, flip?: boolean, transform?: {
         v1: {
             x: number;
             y: number;

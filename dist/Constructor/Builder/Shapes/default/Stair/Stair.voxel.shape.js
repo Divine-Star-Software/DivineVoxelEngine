@@ -1,4 +1,3 @@
-import { Builder } from "../../../Builder.js";
 import { buildStair, stairCachedPosition } from "./StairBuilder.js";
 import { StairData } from "./StairData.js";
 import { StairCullFace } from "./Stair.cullface.js";
@@ -40,7 +39,6 @@ export const StairVoxelShape = {
         if (StairData[data.shapeState] !== undefined) {
             buildStair(data, StairData[data.shapeState]);
         }
-        return Builder.shapeHelper.produceShapeReturnData(data);
     },
 };
 StairVoxelShape.registerShapeAOAddOverride("Box", (data) => {

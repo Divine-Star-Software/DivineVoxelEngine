@@ -1,4 +1,4 @@
-import { Position3Matrix } from "Meta/Util.types.js";
+import { Vector3 } from "Meta/Util.types.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
 export declare const ChunkReader: {
     chunkByteSize: number;
@@ -38,7 +38,7 @@ export declare const ChunkReader: {
         y: number;
         z: number;
     };
-    setChunkPosition(chunk: DataView, position: Position3Matrix): void;
+    setChunkPosition(chunk: DataView, position: Vector3): void;
     getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
     hmBounds: {
         x: number;
@@ -49,8 +49,8 @@ export declare const ChunkReader: {
     getHeightMapIndex(x: number, y: number, z: number): number;
     getVoxelData(chunkData: ChunkData, x: number, y: number, z: number, secondary?: boolean): number;
     setVoxelData(chunkData: ChunkData, x: number, y: number, z: number, data: number, secondary?: boolean): number;
-    getVoxelDataUseObj(chunkData: ChunkData, position: Position3Matrix, secondary?: boolean): number;
-    setVoxelDataUseObj(chunkData: ChunkData, position: Position3Matrix, data: number, secondary?: boolean): number;
+    getVoxelDataUseObj(chunkData: ChunkData, position: Vector3, secondary?: boolean): number;
+    setVoxelDataUseObj(chunkData: ChunkData, position: Vector3, data: number, secondary?: boolean): number;
     getHeightMapData(chunkData: DataView, x: number, y: number, z: number): number;
     setHeightMapData(chunkData: DataView, x: number, y: number, z: number, data: number): void;
     getChunkMinData(chunkData: DataView): number;

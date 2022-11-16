@@ -1,12 +1,12 @@
 export declare class BuilderTool {
     data: {
-        dimesnion: number;
+        dimesnion: string;
         x: number;
         y: number;
         z: number;
         LOD: number;
     };
-    setDimension(dimensionId: string | number): this;
+    setDimension(dimensionId: string): this;
     setLOD(lod: number): this;
     setXZ(x: number, z: number): this;
     setXYZ(x: number, y: number, z: number): this;

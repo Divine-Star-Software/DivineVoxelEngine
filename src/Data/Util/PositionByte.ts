@@ -1,4 +1,4 @@
-import { Position3Matrix } from "Meta/Util.types";
+import { Vector3 } from "Meta/Util.types";
 
 /**# PositionByte
  * ---
@@ -32,7 +32,7 @@ export const PositionByte = {
   return ez | (y << 16);
  },
 
- setPositionUseObj(positionObj: Position3Matrix) {
+ setPositionUseObj(positionObj: Vector3) {
   let ez =
    (positionObj.x & this._positionMasks.x) |
    ((positionObj.z << 8) & this._positionMasks.z);

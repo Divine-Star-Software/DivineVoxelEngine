@@ -1,182 +1,92 @@
-import { Builder } from "../../../Builder.js";
-import type {
- VoxelShapeAddData,
- VoxelShapeInterface,
-} from "Meta/Constructor/VoxelShape.types";
-import type { DirectionNames } from "Meta/Util.types.js";
+import type { VoxelShapeInterface } from "Meta/Constructor/VoxelShape.types";
+import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
 
-const shapeDimensions = {
- width: 0.5,
- depth: 0.5,
- height: 0.5,
-};
+let animationState = 0;
 
-const processDefaultFaceData = (
- face: DirectionNames,
- data: VoxelShapeAddData,
- flip: boolean
-) => {
- const uv = data.unTemplate[data.uvTemplateIndex];
- const rotation = Builder.shapeHelper.getTextureRotation(data.face, face);
- for (let i = 0; i < 2; i++) {
-  Builder.uvHelper.addUVs(face, {
-   uvs: data.uvs,
-   uv: uv,
-   width: { start: 0, end: 1 },
-   height: { start: 0, end: 1 },
-   flipped: flip,
-   rotoate: rotation,
-  });
-  Builder.uvHelper.processOverlayUVs(data);
-
-  Builder.shapeHelper.calculateAOColorFromValue(
-   data.AOColors,
-   data.aoTemplate[data.aoIndex]
-  );
-
-  Builder.shapeHelper.calculateLightColorFromValue(
-   data.RGBLightColors,
-   data.sunLightColors,
-   data.lightTemplate[data.lightIndex]
-  );
- }
-
- if (data.substance == "flora") {
-  let animData = Builder.shapeHelper.meshFaceData.setAnimationType(2, 0);
-  Builder.shapeHelper.addFaceData(animData, data.faceData);
-  Builder.shapeHelper.addFaceData(animData, data.faceData);
- } else {
-  Builder.shapeHelper.addFaceData(0, data.faceData);
-  Builder.shapeHelper.addFaceData(0, data.faceData);
- }
-
- data.uvTemplateIndex += 2;
- data.overylayUVTemplateIndex += 4;
- data.lightIndex += 1;
- data.colorIndex += 1;
- data.aoIndex += 1;
-};
-
-const shapeStates: Record<number, (data: VoxelShapeAddData) => void> = {
- 0: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "north");
-  data.position.z += 0.05;
-  Builder.shapeBuilder.addFace(
-   "south",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.z -= 1;
-  Builder.shapeBuilder.addFace(
-   "north",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("north", data, flip);
+const shapeStates: Record<number, () => void> = {
+ 0: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("south")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.5, 0.05)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("north")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.5, 0.05)
+   .create();
  },
- 1: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "north");
-  data.position.z -= 0.05;
-  Builder.shapeBuilder.addFace(
-   "north",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.z += 1;
-  Builder.shapeBuilder.addFace(
-   "south",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("north", data, flip);
+ 1: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("north")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.5, 0.95)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("south")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.5, 0.95)
+   .create();
  },
- 2: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "west");
-  data.position.x -= 0.05;
-  Builder.shapeBuilder.addFace(
-   "east",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.x += 1;
-  Builder.shapeBuilder.addFace(
-   "west",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("west", data, flip);
+ 2: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("east")
+   .addData(1, animationState)
+   .updatePosition(0.95, 0.5, 0.5)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("west")
+   .addData(1, animationState)
+   .updatePosition(0.95, 0.5, 0.5)
+   .create();
  },
- 3: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "west");
-  data.position.x += 0.05;
-  Builder.shapeBuilder.addFace(
-   "west",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.x -= 1;
-  Builder.shapeBuilder.addFace(
-   "east",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("west", data, flip);
+ 3: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("west")
+   .addData(1, animationState)
+   .updatePosition(0.05, 0.5, 0.5)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("east")
+   .addData(1, animationState)
+   .updatePosition(0.05, 0.5, 0.5)
+   .create();
  },
- 4: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "top");
-  data.position.y -= 0.05;
-  Builder.shapeBuilder.addFace(
-   "top",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.y += 1;
-  Builder.shapeBuilder.addFace(
-   "bottom",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("bottom", data, flip);
+ 4: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("top")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.05, 0.5)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("bottom")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.05, 0.5)
+   .create();
  },
- 5: (data) => {
-  const flip = Builder.shapeHelper.shouldFaceFlip(data.face, "bottom");
-  data.position.y += 0.05;
-  Builder.shapeBuilder.addFace(
-   "bottom",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  data.position.y -= 1;
-  Builder.shapeBuilder.addFace(
-   "top",
-   data.position,
-   shapeDimensions,
-   data,
-   flip
-  );
-  processDefaultFaceData("bottom", data, flip);
+ 5: () => {
+  VoxelMesher.face.loadIn("top");
+  VoxelMesher.quad
+   .setDirection("bottom")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.95, 0.5)
+   .create();
+  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.quad
+   .setDirection("top")
+   .addData(1, animationState)
+   .updatePosition(0.5, 0.95, 0.5)
+   .create();
  },
 };
 
@@ -218,12 +128,13 @@ export const PanelVoxelShape: VoxelShapeInterface = {
  aoFlipOverride(data) {
   return false;
  },
- addToChunkMesh(data: VoxelShapeAddData) {
-  data.position.x += shapeDimensions.width;
-  data.position.z += shapeDimensions.depth;
-  data.position.y += shapeDimensions.height;
-  const shapeState = data.shapeState;
-  shapeStates[shapeState](data);
-  return Builder.shapeHelper.produceShapeReturnData(data);
+ addToChunkMesh() {
+  animationState = 0;
+  if (VoxelMesher.data.getSubstance() == "flora") {
+   animationState = 2;
+  }
+  VoxelMesher.quad.setDimensions(1, 1);
+  const shapeState = VoxelMesher.data.getShapeState();
+  shapeStates[shapeState]();
  },
 };

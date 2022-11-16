@@ -1,7 +1,7 @@
 //types
 import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types";
 import type { VoxelData } from "Meta/index.js";
-import type { Position3Matrix } from "Meta/Util.types.js";
+import type { Vector3 } from "Meta/Util.types.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
@@ -29,7 +29,7 @@ export const WorldGeneration = {
  },
 
  __handleHeightMapUpdateForVoxelAdd(
-  voxelPOS: Position3Matrix,
+  voxelPOS: Vector3,
   voxelData: VoxelData,
   chunk: ChunkData
  ) {

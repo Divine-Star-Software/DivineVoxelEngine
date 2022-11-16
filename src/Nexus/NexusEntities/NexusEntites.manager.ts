@@ -4,7 +4,7 @@ import type {
  NexusEntityData,
  NexusEntityInterface,
 } from "Meta/Interfaces/Entity/NexusEntity.types";
-import { Position3Matrix } from "Meta/Util.types";
+import { Vector3 } from "Meta/Util.types";
 
 import { DVEN } from "../DivineVoxelEngineNexus.js";
 
@@ -46,7 +46,7 @@ export const NexusEntites = {
 
  spawnEntity(
   entityId: string,
-  position: Position3Matrix,
+  position: Vector3,
   otherData?: any,
   identiferId?: string
  ) {

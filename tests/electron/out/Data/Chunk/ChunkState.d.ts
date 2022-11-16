@@ -1,5 +1,5 @@
 import { VoxelSubstanceType } from "Meta/index.js";
-import { Position3Matrix } from "Meta/Util.types.js";
+import { Vector3 } from "Meta/Util.types.js";
 export declare const ChunkState: {
     positionByte: {
         _poisiton: {
@@ -19,7 +19,7 @@ export declare const ChunkState: {
             z: number;
         };
         setPosition(x: number, y: number, z: number): number;
-        setPositionUseObj(positionObj: Position3Matrix): number;
+        setPositionUseObj(positionObj: Vector3): number;
     };
     indexes: {
         states: number;
@@ -51,7 +51,7 @@ export declare const ChunkState: {
         magmaDone: number;
         magmaIndex: number;
     };
-    updateChunkMinMax(voxelPOS: Position3Matrix, chunkStatesData: Uint32Array): void;
+    updateChunkMinMax(voxelPOS: Vector3, chunkStatesData: Uint32Array): void;
     getChunkMin(chunkStatesData: Uint32Array): number;
     getChunkMax(chunkStatesData: Uint32Array): number;
     isEmpty(chunkStatesData: Uint32Array): boolean;

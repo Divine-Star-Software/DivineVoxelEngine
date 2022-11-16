@@ -48,7 +48,6 @@ export const StairVoxelShape: VoxelShapeInterface = {
   if (StairData[data.shapeState] !== undefined) {
    buildStair(data, StairData[data.shapeState]);
   }
-  return Builder.shapeHelper.produceShapeReturnData(data);
  },
 };
 StairVoxelShape.registerShapeAOAddOverride("Box", (data) => {

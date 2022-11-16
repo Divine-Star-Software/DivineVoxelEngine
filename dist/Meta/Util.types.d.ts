@@ -1,9 +1,9 @@
-export declare type Position3Matrix = {
+export declare type Vector3 = {
     x: number;
     y: number;
     z: number;
 };
-export declare type Position2Matrix = {
+export declare type Vector2 = {
     x: number;
     z: number;
 };

@@ -5,14 +5,14 @@ import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 
 export class BuilderTool {
  data = {
-  dimesnion: 0,
+  dimesnion: "main",
   x: 0,
   y: 0,
   z: 0,
   LOD: 1,
  };
- setDimension(dimensionId: string | number) {
-  this.data.dimesnion = DimensionsRegister.getDimensionNumericId(dimensionId);
+ setDimension(dimensionId: string ) {
+  this.data.dimesnion =  dimensionId;
   return this;
  }
  setLOD(lod: number) {

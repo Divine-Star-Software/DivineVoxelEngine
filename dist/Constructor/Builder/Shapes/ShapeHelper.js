@@ -24,17 +24,6 @@ export const ShapeHelper = {
     isFaceExposexd(faceBit, faceDirection) {
         return this.faceByte.isFaceExposed(faceDirection, faceBit);
     },
-    produceShapeReturnData(shapeData) {
-        return {
-            newIndicieIndex: shapeData.indicieIndex,
-            newUVTemplateIndex: shapeData.uvTemplateIndex,
-            newOverlayUVTemplateIndex: shapeData.overylayUVTemplateIndex,
-            newColorIndex: shapeData.colorIndex,
-            newlightIndex: shapeData.lightIndex,
-            newAOIndex: shapeData.aoIndex,
-            newFlowTemplateIndex: shapeData.flowTemplateIndex,
-        };
-    },
     toLinearSpace(r, g, b, a) {
         r = r ** 2.2;
         g = g ** 2.2;
@@ -65,13 +54,6 @@ export const ShapeHelper = {
         for (let v = 0; v < 4; v++) {
             sunlightColors.push(w, w, w, 1);
             RGBlightColors.push(r, g, b, 1);
-        }
-    },
-    calculateSunightColor(sunLight, sunLightTemplate, sunLightIndex) {
-        for (let v = 0; v < 4; v++) {
-            const values = this.lightByte.getLightValues(sunLightTemplate[sunLightIndex + v]);
-            const w = this.lightMap[values[0]];
-            sunLight.push(w, w, w, 1);
         }
     },
     calculateAOColor(aoColors, aoTemplate, aoTemplateIndex) {

@@ -42,8 +42,6 @@ export const FloraMesh: VoxelMeshInterface = {
   chunkVertexData.positions = data.positionArray;
   chunkVertexData.indices = data.indiciesArray;
   chunkVertexData.normals = data.normalsArray;
-
-
   chunkVertexData.applyToMesh(mesh, false);
   mesh.setVerticesData("cuv3", data.uvArray, false, 3);
   mesh.setVerticesData("ocuv3", data.overlayUVArray, false, 4);

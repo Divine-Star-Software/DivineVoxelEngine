@@ -40,13 +40,12 @@ export const Builder = {
  },
 
  async buildChunk(
-  dimension: string | number,
+  dimension: string,
   chunkX: number,
   chunkY: number,
   chunkZ: number,
   LOD = 1
  ) {
-  dimension = DimensionsRegister.getDimensionNumericId(dimension);
   let chunk = DVEC.data.worldRegister.chunk.get(
    dimension,
    chunkX,
@@ -57,9 +56,9 @@ export const Builder = {
    console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
    return;
   }
+  DVEC.data.worldRegister.cache.enable();
   const template = this.processor.makeAllChunkTemplates(
    dimension,
-   chunk,
    chunkX,
    chunkY,
    chunkZ,
@@ -74,6 +73,7 @@ export const Builder = {
    LOD
   );
   this.processor.flush();
+  DVEC.data.worldRegister.cache.disable();
   return true;
  },
 

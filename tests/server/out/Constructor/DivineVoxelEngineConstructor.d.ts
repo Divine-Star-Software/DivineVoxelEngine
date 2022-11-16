@@ -168,11 +168,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("Meta/index.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("Meta/index.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;
@@ -301,7 +301,7 @@ export declare const DVEC: {
                 removeSunLight(sl: number): number;
                 minusOneForAll(sl: number): number;
             };
-            dimension: number;
+            dimension: string;
             currentVoxel: number;
             _visitedMap: Map<string, boolean>;
             _removeMap: Map<string, boolean>;
@@ -377,7 +377,7 @@ export declare const DVEC: {
             _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
             initalizeChunk(chunkData: DataView): void;
-            updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkData: DataView): void;
+            updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
             getChunkMin(chunkData: DataView): number;
             getChunkMax(chunkData: DataView): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -459,11 +459,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("Meta/index.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("Meta/index.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;
@@ -490,7 +490,7 @@ export declare const DVEC: {
         };
         setWorldGen(worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface): void;
         generate(x: number, z: number, data: any): Promise<void>;
-        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Position3Matrix, voxelData: import("Meta/index.js").VoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Vector3, voxelData: import("Meta/index.js").VoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData): void;
         getVoxelPaletteId(voxelId: string, voxelStateId: number): void;
         _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
         _addToRGBLightUpdateQue(voxelData: import("Meta/index.js").VoxelData, x: number, y: number, z: number): void;
@@ -577,17 +577,15 @@ export declare const DVEC: {
             shouldFaceFlip(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
             getTextureRotation(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): import("../Meta/Constructor/Mesher.types.js").Rotations;
             isFaceExposexd(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
-            produceShapeReturnData(shapeData: import("Meta/index.js").VoxelShapeAddData): import("Meta/index.js").VoxelShapeAddReturnData;
             toLinearSpace(r: number, g: number, b: number, a: number): number[];
             addFaceData(faceData: number, faceDataArray: number[]): void;
             calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
             calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
-            calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
             calculateAOColor(aoColors: number[], aoTemplate: number[], aoTemplateIndex: number): void;
             calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
         };
         shapeBuilder: {
-            faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Position3Matrix, dimensions: {
+            faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Vector3, dimensions: {
                 width: number;
                 height: number;
                 depth: number;
@@ -613,7 +611,7 @@ export declare const DVEC: {
                     z: number;
                 };
             }, flip?: boolean | undefined) => void>;
-            addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Position3Matrix, dimensions: {
+            addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Vector3, dimensions: {
                 width: number;
                 height: number;
                 depth: number;
@@ -650,7 +648,7 @@ export declare const DVEC: {
         };
         chunkMesher: {
             voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
-            buildChunkMesh(dimension: number, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
+            buildChunkMesh(dimension: string, chunkX: number, chunkY: number, chunkZ: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
         };
         entityMesher: {
             buildEntityMesh(x: number, y: number, z: number, template: import("../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
@@ -670,7 +668,7 @@ export declare const DVEC: {
                 _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
                 getStartingHeightMapValue(): number;
                 initalizeChunk(chunkData: DataView): void;
-                updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkData: DataView): void;
+                updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
                 getChunkMin(chunkData: DataView): number;
                 getChunkMax(chunkData: DataView): number;
                 calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -762,7 +760,7 @@ export declare const DVEC: {
             faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
             _process(template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
             constructEntity(composed?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-            makeAllChunkTemplates(dimension: number, chunk: import("../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+            makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
             processVoxelLight(data: import("../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
             syncSettings(settings: EngineSettingsData): void;
             flush(): void;
@@ -788,16 +786,16 @@ export declare const DVEC: {
                     z: number;
                 };
                 setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-                getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-                setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-                setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-                setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-                deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-                deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): void;
+                getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+                getValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+                getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+                setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+                setValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+                setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+                deleteUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): void;
                 getIndex(x: number, y: number, z: number): number;
-                getXYZ(index: number): import("Meta/index.js").Position3Matrix;
+                getXYZ(index: number): import("Meta/index.js").Vector3;
             };
             voxelReader: {
                 setId(id: number, value: number): number;
@@ -867,7 +865,7 @@ export declare const DVEC: {
         dimension: number;
         $INIT(): Promise<void>;
         syncSettings(settings: EngineSettingsData): void;
-        buildChunk(dimension: string | number, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
+        buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
         constructEntity(): void;
     };
     dataSyncNode: {
@@ -1064,11 +1062,11 @@ export declare const DVEC: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("Meta/index.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("Meta/index.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("Meta/index.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("Meta/index.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("Meta/index.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;
@@ -1161,7 +1159,7 @@ export declare const DVEC: {
                     y: number;
                     z: number;
                 };
-                setChunkPosition(chunk: DataView, position: import("Meta/index.js").Position3Matrix): void;
+                setChunkPosition(chunk: DataView, position: import("Meta/index.js").Vector3): void;
                 getVoxelChunkDataIndex(x: number, y: number, z: number, secondary?: boolean): number;
                 hmBounds: {
                     x: number;
@@ -1172,8 +1170,8 @@ export declare const DVEC: {
                 getHeightMapIndex(x: number, y: number, z: number): number;
                 getVoxelData(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, x: number, y: number, z: number, secondary?: boolean): number;
                 setVoxelData(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, x: number, y: number, z: number, data: number, secondary?: boolean): number;
-                getVoxelDataUseObj(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, position: import("Meta/index.js").Position3Matrix, secondary?: boolean): number;
-                setVoxelDataUseObj(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, position: import("Meta/index.js").Position3Matrix, data: number, secondary?: boolean): number;
+                getVoxelDataUseObj(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, position: import("Meta/index.js").Vector3, secondary?: boolean): number;
+                setVoxelDataUseObj(chunkData: import("../Meta/Data/WorldData.types.js").ChunkData, position: import("Meta/index.js").Vector3, data: number, secondary?: boolean): number;
                 getHeightMapData(chunkData: DataView, x: number, y: number, z: number): number;
                 setHeightMapData(chunkData: DataView, x: number, y: number, z: number, data: number): void;
                 getChunkMinData(chunkData: DataView): number;
@@ -1189,7 +1187,7 @@ export declare const DVEC: {
                 _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
                 getStartingHeightMapValue(): number;
                 initalizeChunk(chunkData: DataView): void;
-                updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkData: DataView): void;
+                updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
                 getChunkMin(chunkData: DataView): number;
                 getChunkMax(chunkData: DataView): number;
                 calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -1223,7 +1221,7 @@ export declare const DVEC: {
                         z: number;
                     };
                     setPosition(x: number, y: number, z: number): number;
-                    setPositionUseObj(positionObj: import("Meta/index.js").Position3Matrix): number;
+                    setPositionUseObj(positionObj: import("Meta/index.js").Vector3): number;
                 };
                 indexes: {
                     states: number;
@@ -1255,7 +1253,7 @@ export declare const DVEC: {
                     magmaDone: number;
                     magmaIndex: number;
                 };
-                updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkStatesData: Uint32Array): void;
+                updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkStatesData: Uint32Array): void;
                 getChunkMin(chunkStatesData: Uint32Array): number;
                 getChunkMax(chunkStatesData: Uint32Array): number;
                 isEmpty(chunkStatesData: Uint32Array): boolean;

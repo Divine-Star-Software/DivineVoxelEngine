@@ -5,7 +5,7 @@ import type { VoxelManager } from "Data/Voxel/VoxelManager.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 export declare const DVEPH: {
     math: {
-        visitAll: (startPoint: import("../Meta/Util.types.js").Position3Matrix, endPoint: import("../Meta/Util.types.js").Position3Matrix, visitor?: (x: number, y: number, z: number) => boolean) => number[];
+        visitAll: (startPoint: import("../Meta/Util.types.js").Vector3, endPoint: import("../Meta/Util.types.js").Vector3, visitor?: (x: number, y: number, z: number) => boolean) => number[];
         getVector3(x: number, y: number, z: number): import("../Libs/Math/Classes/Vector3.js").Vector3;
         getPlane(pv1: import("../Libs/Math/Classes/Vector3.js").Vector3, pv2: import("../Libs/Math/Classes/Vector3.js").Vector3, pv3: import("../Libs/Math/Classes/Vector3.js").Vector3, pv4: import("../Libs/Math/Classes/Vector3.js").Vector3): import("../Libs/Math/Classes/Plane.js").Plane;
         getSimpleBoundingBox(origin: import("../Libs/Math/Classes/Vector3.js").Vector3, dimensions: import("../Libs/Math/Types/Math.types.js").DimensionsVector3): import("../Libs/Math/Classes/SimpleBoundingBox.js").SimpleBoundingBox;

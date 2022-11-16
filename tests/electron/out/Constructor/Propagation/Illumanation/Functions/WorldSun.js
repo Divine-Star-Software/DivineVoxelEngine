@@ -29,8 +29,8 @@ export function RunWorldSun(data) {
                     continue;
                 this._sDataTool.setLight(this.lightData.setS(0xf, l)).commit();
                 /*  if (iy <= RmaxY) {
-                   this._worldSunQueue.push([ix, iy, iz]);
-                  } */
+                  this._worldSunQueue.push([ix, iy, iz]);
+                 } */
             }
         }
     }

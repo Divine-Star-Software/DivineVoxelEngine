@@ -1,6 +1,6 @@
 import { PositionByte } from "../Util/PositionByte.js";
 import { VoxelSubstanceType } from "Meta/index.js";
-import { Position3Matrix } from "Meta/Util.types.js";
+import { Vector3 } from "Meta/Util.types.js";
 
 
 export const ChunkState = {
@@ -36,7 +36,7 @@ export const ChunkState = {
   magmaIndex: 5,
  },
 
- updateChunkMinMax(voxelPOS: Position3Matrix, chunkStatesData: Uint32Array) {
+ updateChunkMinMax(voxelPOS: Vector3, chunkStatesData: Uint32Array) {
   const currentMin = this.positionByte.getY(
    chunkStatesData[this.indexes.minHeight]
   );

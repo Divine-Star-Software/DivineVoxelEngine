@@ -9,7 +9,7 @@ import { DimensionsVector3 } from "./Types/Math.types.js";
  * Has functions for collision detection, finding voxels in a direction, and path finding.
  */
 export declare const VoxelMath: {
-    visitAll: (startPoint: import("../../Meta/Util.types.js").Position3Matrix, endPoint: import("../../Meta/Util.types.js").Position3Matrix, visitor?: (x: number, y: number, z: number) => boolean) => number[];
+    visitAll: (startPoint: import("../../Meta/Util.types.js").Vector3, endPoint: import("../../Meta/Util.types.js").Vector3, visitor?: (x: number, y: number, z: number) => boolean) => number[];
     getVector3(x: number, y: number, z: number): Vector3;
     getPlane(pv1: Vector3, pv2: Vector3, pv3: Vector3, pv4: Vector3): Plane;
     getSimpleBoundingBox(origin: Vector3, dimensions: DimensionsVector3): SimpleBoundingBox;

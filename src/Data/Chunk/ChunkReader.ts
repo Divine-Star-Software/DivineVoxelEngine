@@ -1,4 +1,4 @@
-import { Position3Matrix } from "Meta/Util.types.js";
+import { Vector3 } from "Meta/Util.types.js";
 import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "./HeightMapArray.js";
 import { WorldBounds } from "../World/WorldBounds.js";
@@ -89,7 +89,7 @@ export const ChunkReader = {
   return this._chunkPositon;
  },
 
- setChunkPosition(chunk: DataView, position: Position3Matrix) {
+ setChunkPosition(chunk: DataView, position: Vector3) {
   chunk.setFloat32(this.indexes.position, position.x);
   chunk.setFloat32(this.indexes.position + 4, position.y);
   chunk.setFloat32(this.indexes.position + 8, position.z);
@@ -165,7 +165,7 @@ export const ChunkReader = {
 
  getVoxelDataUseObj(
   chunkData: ChunkData,
-  position: Position3Matrix,
+  position: Vector3,
   secondary = false
  ) {
   return this.getVoxelData(
@@ -178,7 +178,7 @@ export const ChunkReader = {
  },
  setVoxelDataUseObj(
   chunkData: ChunkData,
-  position: Position3Matrix,
+  position: Vector3,
   data: number,
   secondary = false
  ) {

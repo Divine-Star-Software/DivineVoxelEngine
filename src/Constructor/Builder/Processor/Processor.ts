@@ -31,9 +31,11 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
+import { HeightMapTool } from "../../../Tools/HeightMap/HeightMapTool.js";
 
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
+const heightMapTool = new HeightMapTool();
 
 /**# Chunk Processor
  * ---
@@ -247,7 +249,6 @@ export const Processor = {
 
   this.mDataTool.setSecondary(doSecondCheck);
 
-  const voxelId = this.mDataTool.getStringId();
   const voxelObject = this.mDataTool.getVoxelObj();
   if (!voxelObject) return;
 
@@ -341,14 +342,15 @@ export const Processor = {
  },
 
  makeAllChunkTemplates(
-  dimension: number,
-  chunk: ChunkData,
+  dimension: string,
   chunkX: number,
   chunkY: number,
   chunkZ: number,
   LOD = 1
  ): FullChunkTemplate {
-  WorldRegister.cache.enable();
+  heightMapTool.setDimension(dimension);
+  heightMapTool.chunk.loadIn(chunkX, chunkY, chunkZ);
+
   this.nDataTool.setDimension(dimension);
   this.mDataTool.setDimension(dimension);
   this.voxelProcesseData.dimension = this.dimension;
@@ -357,17 +359,16 @@ export const Processor = {
   const template: FullChunkTemplate = this.template;
   let maxX = WorldBounds.chunkXSize;
   let maxZ = WorldBounds.chunkZSize;
-
   for (let x = 0; x < maxX; x += LOD) {
    for (let z = 0; z < maxZ; z += LOD) {
-    let minY = this.heightByte.getLowestExposedVoxel(x, z, chunk.data);
-    let maxY = this.heightByte.getHighestExposedVoxel(x, z, chunk.data) + 1;
+    let minY = heightMapTool.chunk.setXZ(x, z).getMin();
+    let maxY = heightMapTool.chunk.setXZ(x, z).getMax() + 1;
     for (let y = minY; y < maxY; y += LOD) {
      this._process(template, x + chunkX, y + chunkY, z + chunkZ);
     }
    }
   }
-  WorldRegister.cache.disable();
+
   return this.template;
  },
 

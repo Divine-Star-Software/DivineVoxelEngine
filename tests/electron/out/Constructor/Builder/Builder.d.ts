@@ -80,17 +80,15 @@ export declare const Builder: {
         shouldFaceFlip(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
         getTextureRotation(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): import("../../Meta/Constructor/Mesher.types.js").Rotations;
         isFaceExposexd(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
-        produceShapeReturnData(shapeData: import("Meta/index.js").VoxelShapeAddData): import("Meta/index.js").VoxelShapeAddReturnData;
         toLinearSpace(r: number, g: number, b: number, a: number): number[];
         addFaceData(faceData: number, faceDataArray: number[]): void;
         calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
         calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
-        calculateSunightColor(sunLight: number[], sunLightTemplate: number[], sunLightIndex: number): void;
         calculateAOColor(aoColors: number[], aoTemplate: number[], aoTemplateIndex: number): void;
         calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
     };
     shapeBuilder: {
-        faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Position3Matrix, dimensions: {
+        faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Vector3, dimensions: {
             width: number;
             height: number;
             depth: number;
@@ -116,7 +114,7 @@ export declare const Builder: {
                 z: number;
             };
         }, flip?: boolean | undefined) => void>;
-        addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Position3Matrix, dimensions: {
+        addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Vector3, dimensions: {
             width: number;
             height: number;
             depth: number;
@@ -153,7 +151,7 @@ export declare const Builder: {
     };
     chunkMesher: {
         voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
-        buildChunkMesh(dimension: number, chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
+        buildChunkMesh(dimension: string, chunkX: number, chunkY: number, chunkZ: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
     };
     entityMesher: {
         buildEntityMesh(x: number, y: number, z: number, template: import("../../Meta/Constructor/ChunkTemplate.types.js").ChunkTemplate): void;
@@ -173,7 +171,7 @@ export declare const Builder: {
             _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
             getStartingHeightMapValue(): number;
             initalizeChunk(chunkData: DataView): void;
-            updateChunkMinMax(voxelPOS: import("Meta/index.js").Position3Matrix, chunkData: DataView): void;
+            updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
             getChunkMin(chunkData: DataView): number;
             getChunkMax(chunkData: DataView): number;
             calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -265,7 +263,7 @@ export declare const Builder: {
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
         _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
         constructEntity(composed?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-        makeAllChunkTemplates(dimension: number, chunk: import("../../Meta/Data/WorldData.types.js").ChunkData, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
         flush(): void;
@@ -291,16 +289,16 @@ export declare const Builder: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("Meta/index.js").Position3Matrix, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("Meta/index.js").Position3Matrix;
+            getXYZ(index: number): import("Meta/index.js").Vector3;
         };
         voxelReader: {
             setId(id: number, value: number): number;
@@ -370,6 +368,6 @@ export declare const Builder: {
     dimension: number;
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;
-    buildChunk(dimension: string | number, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
+    buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
     constructEntity(): void;
 };

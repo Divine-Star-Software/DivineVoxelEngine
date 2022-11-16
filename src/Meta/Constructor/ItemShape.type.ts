@@ -1,4 +1,4 @@
-import { DirectionNames, Position3Matrix } from "Meta/Util.types";
+import { DirectionNames, Vector3 } from "Meta/Util.types";
 export type ItemShapeData = {
  id: string;
  faces: {

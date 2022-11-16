@@ -43,7 +43,6 @@ export const SolidMesh: VoxelMeshInterface = {
   chunkVertexData.indices = data.indiciesArray;
   chunkVertexData.normals = data.normalsArray;
   chunkVertexData.applyToMesh(mesh, false);
-
   mesh.setVerticesData("cuv3", data.uvArray, false, 3);
   mesh.setVerticesData("ocuv3", data.overlayUVArray, false, 4);
   mesh.setVerticesData("faceData", data.faceDataArray, false, 1);

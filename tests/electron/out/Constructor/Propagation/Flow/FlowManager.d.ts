@@ -40,7 +40,7 @@ export declare const FlowManager: {
         removeSunLight(sl: number): number;
         minusOneForAll(sl: number): number;
     };
-    dimension: number;
+    dimension: string;
     currentVoxel: number;
     _visitedMap: Map<string, boolean>;
     _removeMap: Map<string, boolean>;

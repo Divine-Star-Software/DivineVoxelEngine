@@ -1,6 +1,6 @@
 import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types";
 import type { VoxelData } from "Meta/index.js";
-import type { Position3Matrix } from "Meta/Util.types.js";
+import type { Vector3 } from "Meta/Util.types.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
 export declare const WorldGeneration: {
     worldGen: WorldGenInterface | null;
@@ -12,7 +12,7 @@ export declare const WorldGeneration: {
         _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
         getStartingHeightMapValue(): number;
         initalizeChunk(chunkData: DataView): void;
-        updateChunkMinMax(voxelPOS: Position3Matrix, chunkData: DataView): void;
+        updateChunkMinMax(voxelPOS: Vector3, chunkData: DataView): void;
         getChunkMin(chunkData: DataView): number;
         getChunkMax(chunkData: DataView): number;
         calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
@@ -94,11 +94,11 @@ export declare const WorldGeneration: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: Position3Matrix): string;
+        getChunkKey(chunkPOS: Vector3): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: Position3Matrix): string;
+        getRegionKey(regionPOS: Vector3): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Position3Matrix): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Vector3): {
             x: number;
             y: number;
             z: number;
@@ -125,7 +125,7 @@ export declare const WorldGeneration: {
     };
     setWorldGen(worldGen: WorldGenInterface): void;
     generate(x: number, z: number, data: any): Promise<void>;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Position3Matrix, voxelData: VoxelData, chunk: ChunkData): void;
+    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Vector3, voxelData: VoxelData, chunk: ChunkData): void;
     getVoxelPaletteId(voxelId: string, voxelStateId: number): void;
     _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
     _addToRGBLightUpdateQue(voxelData: VoxelData, x: number, y: number, z: number): void;

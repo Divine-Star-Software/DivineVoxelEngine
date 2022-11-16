@@ -121,11 +121,9 @@ export async function PaintAndUpdate(data: PaintTasks) {
  brushTool.paint();
 
  if (ES.doLight()) {
-    updateLight(x,y,z)
+  updateLight(x, y, z);
   if (doRGB) {
-   if (brushTool._dt.isLightSource()) {
-    Propagation.runRGBUpdate(tasks);
-   }
+   Propagation.runRGBUpdate(tasks);
   }
   if (doSun) {
    Propagation.runSunLightUpdate(tasks);

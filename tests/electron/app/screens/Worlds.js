@@ -99,7 +99,7 @@ export const Worlds = [
             {
                 title: "Lit Liquid Test",
                 description: "Used to test the lighting of liquid voxels.",
-                world: "LitLiquidTest",
+                world: "LitFluidTest",
             },
             {
                 title: "Huge Light Test",

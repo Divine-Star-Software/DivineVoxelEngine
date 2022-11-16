@@ -187,11 +187,11 @@ export declare const DVER: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;
@@ -395,7 +395,7 @@ export declare const DVER: {
     meshManager: {
         scene: BABYLON.Scene | null;
         runningUpdate: boolean;
-        meshes: Record<import("../Meta/index.js").VoxelSubstanceType, Record<number, Record<string, BABYLON.Mesh>>>;
+        meshes: Record<import("../Meta/index.js").VoxelSubstanceType, Record<string, Record<string, BABYLON.Mesh>>>;
         entityMesh: {
             pickable: boolean;
             checkCollisions: boolean;
@@ -422,13 +422,13 @@ export declare const DVER: {
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;
         reStart(): void;
-        removeChunkMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string): void;
+        removeChunkMesh(dimesnion: string, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string): void;
         handleItemUpdate(x: number, y: number, z: number, data: any): void;
         handleEntityUpdate(x: number, y: number, z: number, data: any): void;
-        handleChunkUpdate(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
-        requestChunkBeRemoved(dimesnion: number, chunkKey: string): void;
-        _updateMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
-        _buildNewMesh(dimesnion: number, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        handleChunkUpdate(dimesnion: string, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
+        requestChunkBeRemoved(dimesnion: string, chunkKey: string): void;
+        _updateMesh(dimesnion: string, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
+        _buildNewMesh(dimesnion: string, type: import("../Meta/index.js").VoxelSubstanceType, chunkKey: string, data: any): Promise<void>;
     };
     data: {
         worldBounds: {
@@ -498,11 +498,11 @@ export declare const DVER: {
                 y: number;
                 z: number;
             };
-            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Position3Matrix): string;
+            getChunkKey(chunkPOS: import("../Meta/Util.types.js").Vector3): string;
             getChunkKeyFromPosition(x: number, y: number, z: number): string;
-            getRegionKey(regionPOS: import("../Meta/Util.types.js").Position3Matrix): string;
+            getRegionKey(regionPOS: import("../Meta/Util.types.js").Vector3): string;
             getRegionKeyFromPosition(x: number, y: number, z: number): string;
-            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Position3Matrix): {
+            getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Vector3): {
                 x: number;
                 y: number;
                 z: number;
