@@ -29,16 +29,14 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 - In parallel mesh building, light updates, and other world updats.
 - Multi-threaded data access.
 - Ambient occlusion and smooth lighting.
-- Animated textures.
-- Connected Textures.
+- Animated and connected textures.
 - Custom shaders and shader effects.
 - Vertical and horizontal chunks.
-- Pre-Baking Lighting system.
-  - Flood fill lighting system for local sources.
+- Voxel Lighting system.
+  - Easy to update and remove. 
   - Support for different colored lights.
-  - Sunlight calculation for global illumination (like Minecraft)
+  - Sunlight global illumination/
 - World Data API - Easy tools to build worlds.
-- Easy to use light API and light options.
 - Easy to use auto-update world on voxel add/remove
   - Will auto update light sources for you.
 
