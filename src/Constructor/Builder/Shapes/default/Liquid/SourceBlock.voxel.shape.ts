@@ -196,6 +196,10 @@ export const LiquidVoxelShape: VoxelShapeInterface = {
     .addData(4, flowState.state, false)
     .create();
   }
+
+  if(topFaceExposed) {
+ //   VoxelMesher.quad.setDimensions(1, .8);
+  }
   flowState.state = 1;
   VoxelMesher.quad.uvs.setRoation(0);
   if (VoxelMesher.face.loadIn("east").isExposed()) {

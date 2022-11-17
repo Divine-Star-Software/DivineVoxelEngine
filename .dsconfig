@@ -6,25 +6,25 @@
     "js",
     "d.ts"
    ],
-   "id": "main"
+   "id": "dist"
   }
  ],
  "outputs": [
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/app/out",
-   "sourceID": "main",
+   "sourceID": "dist",
    "codeSection": "all",
    "keepComments": true
   },
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/out",
-   "sourceID": "main",
+   "sourceID": "dist",
    "codeSection": "all",
    "keepComments": true
   },
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/server/out",
-   "sourceID": "main",
+   "sourceID": "dist",
    "codeSection": "all",
    "keepComments": true
   }

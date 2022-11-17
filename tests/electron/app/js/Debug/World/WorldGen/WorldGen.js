@@ -15,7 +15,7 @@ export const WorldGen = {
                 for (let y = 0; y < 18; y++) {
                     brush.setXYZ(x, y, z);
                     if (y == 5 && Math.random() > 0.98) {
-                        brush.setId("dve:dreamstoneslab").setShapeState(0).paint();
+                        brush.setId("dve:dreamgrass").setShapeState(0).paint();
                     }
                     if (y < 5) {
                         if (dimesnion == "main") {
