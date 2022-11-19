@@ -6,6 +6,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 RegisterVoxels((DVEN as any));
 DVEPH.$INIT(DVEN.voxelManager);
 await DVEN.$INIT();
-
-GetNexusPlayer(DVEN,DVEPH);;
-
+console.log("go")
+const player = await GetNexusPlayer(DVEN,DVEPH, true);;
+player.playerPosition[1] = 120;
+console.log("go")

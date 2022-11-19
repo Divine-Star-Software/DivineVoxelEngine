@@ -5,29 +5,33 @@ export const Worlds = [
         worlds: [
             {
                 title: "Dream Space",
-                description: `A dream like location filled with liquid dream ether. 
-    You can break and place voxels.`,
+                description: `Explore a world and break/add voxels.`,
                 world: "DreamSpace",
             },
             {
-                title: "Dream Space 2",
-                description: "A dream space with light.",
+                title: "Dream Fountian",
+                description: "A dream space with purple light.",
                 world: "DreamSpace2",
             },
             {
-                title: "Dread Space",
-                description: "A world with red light.",
+                title: "Dread Fountian",
+                description: "A a dream space red light.",
                 world: "DreadSpace",
             },
             {
-                title: "Simple",
-                description: `A simple 9 chunk area with different voxel types.`,
+                title: "Temple",
+                description: `A simple temple like structure.`,
                 world: "Simple",
             },
             {
                 title: "Noise World",
                 description: `A world generated using perlin noise.`,
                 world: "NoiseWorld",
+            },
+            {
+                title: "Dream Space Classic",
+                description: `The origional DVE example world.`,
+                world: "DreamSpaceClassic",
             },
         ],
     },

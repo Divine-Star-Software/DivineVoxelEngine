@@ -6,10 +6,11 @@ import { Processor } from "../Processor.js";
 import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import { DirectionNames } from "Meta/Util.types.js";
 import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
-import { VoxelShapeInterface } from "Meta/index.js";
+import { VoxelShape } from "Meta/index.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Meshing/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
+import { OverrideManager } from "../../Overrides/OverridesManager.js";
 type Nullable<T> = T | false | null;
 const LD = LightData;
 type Vertexes = 1 | 2 | 3 | 4;
@@ -148,14 +149,18 @@ const shouldSunFlip = () => {
 };
 
 const shouldAOFlip = (face: DirectionNames) => {
-    Processor.faceDataOverride.face = face;
+ Processor.faceDataOverride.face = face;
  if (currentVoxelData.currentShape) {
   if (
-   currentVoxelData.currentShape.aoFlipOverride(Processor.faceDataOverride)
+   OverrideManager.runOverride(
+    "AOFlip",
+    currentVoxelData.currentShape.id,
+    "Any",
+    Processor.faceDataOverride
+   )
   ) {
    return false;
   }
- } else {
  }
  let check = false;
  if (!states.ignoreAO) {
@@ -294,7 +299,7 @@ const currentVoxelData: {
  voxelSubstance: VoxelSubstanceType;
  voxelId: string;
  shapeState: number;
- currentShape: Nullable<VoxelShapeInterface>;
+ currentShape: Nullable<VoxelShape>;
  voxelObject: Nullable<VoxelConstructorObject>;
  x: number;
  y: number;
@@ -453,6 +458,7 @@ const doAO = (
  y: number,
  z: number
 ) => {
+ if (!currentVoxelData.currentShape) return false;
  if (!Processor.nDataTool.isRenderable()) return;
  const neighborVoxelSubstance = Processor.nDataTool.getSubstance();
  if (!currentVoxelData.voxelSubstance) {
@@ -479,23 +485,16 @@ const doAO = (
   substanceRuleResult = false;
  }
 
-
  Processor.faceDataOverride.face = face;
-
  Processor.faceDataOverride.default = substanceRuleResult;
 
+ finalResult = OverrideManager.runOverride(
+  "AO",
+  currentVoxelData.currentShape.id,
+  Processor.nDataTool.getVoxelShapeObj().id,
+  Processor.faceDataOverride
+ );
 
- if (currentVoxelData.currentShape) {
-  finalResult = currentVoxelData.currentShape.aoAddOverride(
-   Processor.faceDataOverride
-  );
- }
-
- if (currentVoxelData.voxelObject && currentVoxelData.voxelObject.aoOverRide) {
-  finalResult = currentVoxelData.voxelObject.aoOverRide(
-   Processor.faceDataOverride
-  );
- }
  if (finalResult) {
   AOVerotexStates[vertex].totalLight = false;
   AOValues.a *= 0.65;

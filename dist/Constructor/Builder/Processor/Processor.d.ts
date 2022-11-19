@@ -1,8 +1,8 @@
-import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelShapeInterface, VoxelSubstanceType } from "Meta/index.js";
+import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
-import type { Rotations } from "Meta/Constructor/Mesher.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
+import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 /**# Chunk Processor
@@ -38,8 +38,8 @@ export declare const Processor: {
         getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
     };
     faceByte: {
-        _rotationMap: Record<Rotations, number>;
-        _rotationReverseMap: Record<number, Rotations>;
+        _rotationMap: Record<TextureRotations, number>;
+        _rotationReverseMap: Record<number, TextureRotations>;
         _setFaceTextureState: Record<DirectionNames, (state: number, faceBit: number) => number>;
         _getFaceTextureState: Record<DirectionNames, (faceBit: number) => number>;
         _setFaceRotateState: Record<DirectionNames, (state: number, faceBit: number) => number>;
@@ -50,8 +50,8 @@ export declare const Processor: {
         isFaceExposed(direction: DirectionNames, rawData: number): boolean;
         setFaceRotateState(direction: DirectionNames, state: number, rawData: number): number;
         getFaceRotateState(direction: DirectionNames, rawData: number): number;
-        setFaceTextureState(direction: DirectionNames, rotation: Rotations, rawData: number): number;
-        getFaceTextureState(direction: DirectionNames, rawData: number): Rotations;
+        setFaceTextureState(direction: DirectionNames, rotation: TextureRotations, rawData: number): number;
+        getFaceTextureState(direction: DirectionNames, rawData: number): TextureRotations;
     };
     lightData: {
         SRS: number;
@@ -94,7 +94,7 @@ export declare const Processor: {
     doVoxelLight: typeof CalculateVoxelLight;
     exposedFaces: number[];
     faceStates: number[];
-    textureRotation: Rotations[];
+    textureRotation: TextureRotations[];
     settings: {
         doAO: boolean;
         doSun: boolean;
@@ -110,7 +110,7 @@ export declare const Processor: {
     faceIndexMap: Record<DirectionNames, number>;
     dimension: number;
     $INIT(): void;
-    cullCheck(face: DirectionNames, voxelObject: VoxelConstructorObject, voxelShape: VoxelShapeInterface, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelObject: VoxelConstructorObject, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;

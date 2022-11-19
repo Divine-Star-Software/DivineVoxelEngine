@@ -1,7 +1,7 @@
 import type { VoxelConstructorObject } from "Meta/index";
 import type { DataTool } from "Tools/Data/DataTool";
-import type { VoxelShapeInterface } from "./VoxelShape.types";
+import type { VoxelShape } from "./VoxelShape.types";
 export declare type ConstructorDataTool = DataTool & {
-    getVoxelShapeObj(): VoxelShapeInterface;
+    getVoxelShapeObj(): VoxelShape;
     getVoxelObj(): VoxelConstructorObject;
 };

@@ -1,44 +1,41 @@
-import { WorldPlayer } from "../../Shared/Player/World/WorldPlayer.js";
-import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
-import { WorldGen } from "./WorldGen/WorldGen.js";
+
+import { WorldGen } from "./WorldGen.js";
+
+import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
+import { WorldPlayer } from "../../Shared/Player/World/WorldPlayer.js";
 
 RegisterVoxels(DVEW);
 
-const brush = DVEW.getBrush();
-DVEW.parentComm.listenForMessage("voxel-add", (data, event) => {
- brush
-  .setId("dve:dreamstone")
-  .setXYZ(data[1], data[2], data[3])
-  .paintAndUpdate();
-});
-DVEW.parentComm.listenForMessage("voxel-remove", (data, event) => {
- brush.setXYZ(data[1], data[2], data[3]).ereaseAndUpdate();
-});
-
 await DVEW.$INIT();
-
-console.log("start");
-const numChunks = 5;
-let startX = -16 * numChunks;
-let startZ = -16 * numChunks;
-let endX = 16 * numChunks;
-let endZ = 16 * numChunks;
-
 const builder = DVEW.getBuilder();
-
 const tasks = DVEW.getTasksManager();
-for (let x = startX; x < endX; x += 16) {
- for (let z = startZ; z < endZ; z += 16) {
-  WorldGen.generateWorldColumn(x, z);
+let startX = -128;
+let startZ = -128;
+let endX = 128;
+let endZ = 128;
+
+let t1 = performance.now();
+console.log("start");
+for (let x = startX; x <= endX; x += 16) {
+ for (let z = startZ; z <= endZ; z += 16) {
+  WorldGen.generate(x, z);
   tasks.light.worldSun.add(x, z);
  }
 }
+console.log("done");
+let t2 = performance.now();
+console.log(t2 - t1);
 await tasks.light.worldSun.runAndAwait();
-for (let x = startX; x < endX; x += 16) {
- for (let z = startZ; z < endZ; z += 16) {
+
+for (let x = startX; x <= endX; x += 16) {
+ for (let z = startZ; z <= endZ; z += 16) {
   builder.setXZ(x, z).buildColumn();
  }
 }
+console.log("done");
+(self as any).DVEW = DVEW;
 
+
+DVEW.nexusComm.sendMessage("ready",[0,120,0]);
 await WorldPlayer(DVEW);

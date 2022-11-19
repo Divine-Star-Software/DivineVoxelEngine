@@ -5,11 +5,11 @@ import {
 import type { DivineVoxelEnginePhysics } from "../../../../out/Physics/DivineVoxelEnginePhysics.js";
 import { DivineVoxelEngineNexus } from "../../../../out/Nexus/DivineVoxelEngineNexus.js";
 import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
-import { VoxelMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
 
 export const GetNexusPlayer = async (
  DVEN: DivineVoxelEngineNexus,
- DVEPH: DivineVoxelEnginePhysics
+ DVEPH: DivineVoxelEnginePhysics,
+ waitForMessageFromWorld = false
 ) => {
  const gravity = 0.1;
 
@@ -19,6 +19,8 @@ export const GetNexusPlayer = async (
  DVEN.parentComm.listenForMessage("request-player-states", (data) => {
   DVEN.parentComm.sendMessage("connect-player-data", [playerPositionSAB]);
  });
+
+ let worldReady = false;
 
  let playerDirection = new Float32Array();
  let playerStates = new Uint8Array();
@@ -238,9 +240,23 @@ export const GetNexusPlayer = async (
 
  player.$INIT(playerStates, playerDirection, playerPosition);
 
- setTimeout(() => {
-  setInterval(() => {
-   player.update();
-  }, 17);
- }, 2000);
+ const runUpdate = () => {
+  setTimeout(() => {
+   setInterval(() => {
+    player.update();
+   }, 17);
+  }, 2000);
+ };
+
+ if (!waitForMessageFromWorld) {
+  runUpdate();
+  return player;
+ }
+
+ DVEN.worldComm.listenForMessage("ready", (data) => {
+  runUpdate();
+  console.log("go")
+ });
+
+ return player;
 };

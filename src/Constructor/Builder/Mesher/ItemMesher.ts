@@ -5,7 +5,7 @@ import {
 import type { CreateItemData } from "Meta/Constructor/ItemShape.type.js";
 import type { ItemProcessData } from "Meta/Data/Items/Item.types.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import { Rotations } from "Meta/Constructor/Mesher.types.js";
+
 
 export const ItemMesher = {
  createItem(itemId: string, x: number, y: number, z: number) {

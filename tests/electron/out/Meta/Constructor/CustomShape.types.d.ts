@@ -1,5 +1,5 @@
 import { DirectionNames } from "Meta/Util.types";
-import { Rotations } from "./Mesher.types";
+import { TextureRotations } from "./Geometry/Geometry.types";
 export declare type CustomShapeType = {
     id: string;
     causeAO: boolean;
@@ -13,7 +13,7 @@ export declare type CustomShapeType = {
             light?: [number, number, number, number];
             transform?: [number, number, number, number];
             uvs: {
-                r: Rotations;
+                r: TextureRotations;
                 ws: number;
                 we: number;
                 hs: number;

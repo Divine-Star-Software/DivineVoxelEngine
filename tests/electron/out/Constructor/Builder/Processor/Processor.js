@@ -3,6 +3,7 @@ import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVo
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 //objects
 import { Builder } from "../Builder.js";
+//data
 import { HeightMapData } from "../../../Data/Chunk/HeightMapData.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
@@ -13,6 +14,7 @@ import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
 import { HeightMapTool } from "../../../Tools/HeightMap/HeightMapTool.js";
+import { OverrideManager } from "../Overrides/OverridesManager.js";
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
 const heightMapTool = new HeightMapTool();
@@ -151,12 +153,8 @@ export const Processor = {
             this.faceDataOverride.face = face;
             this.faceDataOverride.default = substanceRuleResult;
             finalResult = substanceRuleResult;
-            if (voxelShape.cullFaceOverride) {
-                finalResult = voxelShape.cullFaceOverride(this.faceDataOverride);
-            }
-            if (voxelObject.cullFace) {
-                finalResult = voxelObject.cullFace(this.faceDataOverride);
-            }
+            finalResult = OverrideManager.runOverride("CullFace", voxelShape.id, "Any", this.faceDataOverride);
+            finalResult = OverrideManager.runOverride("CullFace", voxelShape.id, this.nDataTool.getVoxelShapeObj().id, this.faceDataOverride);
         }
         else {
             finalResult = true;

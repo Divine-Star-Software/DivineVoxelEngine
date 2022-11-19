@@ -508,11 +508,11 @@ export declare const DVEC: {
             isReady(): boolean;
         };
         shapeManager: {
-            shapes: Record<number, import("Meta/index.js").VoxelShapeInterface>;
+            shapes: Record<number, import("Meta/index.js").VoxelShape>;
             shapeMap: Record<string, number>;
             shapeCount: number;
-            registerShape(shapeObject: import("Meta/index.js").VoxelShapeInterface): void;
-            getShape(shapeId: number): import("Meta/index.js").VoxelShapeInterface;
+            registerShape(shapeObject: import("Meta/index.js").VoxelShape): void;
+            getShape(shapeId: number): import("Meta/index.js").VoxelShape;
             getShapeId(shapeId: string): number;
             getShapeMap(): Record<string, number>;
         };
@@ -554,8 +554,8 @@ export declare const DVEC: {
                 getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
             };
             faceByte: {
-                _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
-                _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
+                _rotationMap: Record<import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
+                _rotationReverseMap: Record<number, import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
                 _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
                 _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
                 _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
@@ -566,8 +566,8 @@ export declare const DVEC: {
                 isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
                 setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
                 getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
-                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
+                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
+                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
             };
             lightData: {
                 SRS: number;
@@ -610,7 +610,7 @@ export declare const DVEC: {
             doVoxelLight: typeof import("./Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
             exposedFaces: number[];
             faceStates: number[];
-            textureRotation: import("../Meta/Constructor/Mesher.types.js").Rotations[];
+            textureRotation: import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations[];
             settings: {
                 doAO: boolean;
                 doSun: boolean;
@@ -626,7 +626,7 @@ export declare const DVEC: {
             faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
             dimension: number;
             $INIT(): void;
-            cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("Meta/index.js").VoxelConstructorObject, voxelShape: import("Meta/index.js").VoxelShapeInterface, voxelSubstance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
+            cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("Meta/index.js").VoxelConstructorObject, voxelShape: import("Meta/index.js").VoxelShape, voxelSubstance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
             faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
             _process(template: import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
             constructEntity(composed?: number): import("../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;

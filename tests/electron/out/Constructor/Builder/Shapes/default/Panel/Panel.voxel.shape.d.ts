@@ -1,2 +1,2 @@
-import type { VoxelShapeInterface } from "Meta/Constructor/VoxelShape.types";
-export declare const PanelVoxelShape: VoxelShapeInterface;
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
+export declare const PanelVoxelShape: VoxelShape;

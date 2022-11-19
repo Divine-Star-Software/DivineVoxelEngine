@@ -1,11 +1,6 @@
-import { VoxelSubstanceType } from "Meta/index";
-import type { Vector3 } from "Meta/Util.types";
-import { GeometryBuildData } from "./Geometry/Geometry.types";
-import {
- AOAddOverride,
- AOAFlipOverride,
- FaceDataOverride,
-} from "./OverRide.types";
+import type { VoxelMesher } from "Constructor/Builder/Tools/VoxelMesher";
+import type { VoxelSubstanceType } from "Meta/index";
+import type { GeometryBuildData } from "./Geometry/Geometry.types";
 
 /** # Voxel Shape Add DAta
 ---
@@ -28,18 +23,7 @@ export type VoxelShapeAddData = {
  lightIndex: number;
  aoTemplate: number[];
  aoIndex: number;
-
 } & GeometryBuildData;
-
-export type VoxelShapeAddReturnData = {
- newIndicieIndex: number;
- newUVTemplateIndex: number;
- newOverlayUVTemplateIndex: number;
- newColorIndex: number;
- newlightIndex: number;
- newAOIndex: number;
- newFlowTemplateIndex?: number;
-};
 
 /**# Voxel Shape
  * ---
@@ -47,32 +31,7 @@ export type VoxelShapeAddReturnData = {
  * Voxel shapes are used by the mesh bulder to generate the mush.
  * It checks with the voxel shape to build the proper mesh.
  */
-export type VoxelShapeInterface = {
+export type VoxelShape = {
  id: string;
- cullFaceOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
- aoAddOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
- aoFlipOverrideFunctions: Record<string, (data: FaceDataOverride) => boolean>;
-
- cullFaceOverride(data: FaceDataOverride): boolean;
- registerShapeForCullFaceOverride(
-  shapeId: string,
-  func: (data: FaceDataOverride) => boolean
- ): void;
-
- aoAddOverride(data: FaceDataOverride): boolean;
- registerShapeAOAddOverride(
-  shapeId: string,
-  func: (data: FaceDataOverride) => boolean
- ): void;
-
- aoFlipOverride(data: FaceDataOverride): boolean;
- registerShapeAOFlipOverride(
-  shapeId: string,
-  func: (data: FaceDataOverride) => boolean
- ): void;
-
- /**# Add To Chunk Mesh
-  * ---
-  */
- addToChunkMesh(data: VoxelShapeAddData): void;
+ build(mesher: typeof VoxelMesher): void;
 };

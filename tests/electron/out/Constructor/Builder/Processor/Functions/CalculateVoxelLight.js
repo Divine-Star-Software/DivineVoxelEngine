@@ -3,6 +3,7 @@ import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Meshing/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
+import { OverrideManager } from "../../Overrides/OverridesManager.js";
 const LD = LightData;
 const RGBvertexStates = {
     1: {
@@ -123,11 +124,9 @@ const shouldSunFlip = () => {
 const shouldAOFlip = (face) => {
     Processor.faceDataOverride.face = face;
     if (currentVoxelData.currentShape) {
-        if (currentVoxelData.currentShape.aoFlipOverride(Processor.faceDataOverride)) {
+        if (OverrideManager.runOverride("AOFlip", currentVoxelData.currentShape.id, "Any", Processor.faceDataOverride)) {
             return false;
         }
-    }
-    else {
     }
     let check = false;
     if (!states.ignoreAO) {
@@ -364,6 +363,8 @@ const lightEnd = (vertex) => {
     zeroCheck.g = 0;
 };
 const doAO = (face, vertex, x, y, z) => {
+    if (!currentVoxelData.currentShape)
+        return false;
     if (!Processor.nDataTool.isRenderable())
         return;
     const neighborVoxelSubstance = Processor.nDataTool.getSubstance();
@@ -390,12 +391,7 @@ const doAO = (face, vertex, x, y, z) => {
     }
     Processor.faceDataOverride.face = face;
     Processor.faceDataOverride.default = substanceRuleResult;
-    if (currentVoxelData.currentShape) {
-        finalResult = currentVoxelData.currentShape.aoAddOverride(Processor.faceDataOverride);
-    }
-    if (currentVoxelData.voxelObject && currentVoxelData.voxelObject.aoOverRide) {
-        finalResult = currentVoxelData.voxelObject.aoOverRide(Processor.faceDataOverride);
-    }
+    finalResult = OverrideManager.runOverride("AO", currentVoxelData.currentShape.id, Processor.nDataTool.getVoxelShapeObj().id, Processor.faceDataOverride);
     if (finalResult) {
         AOVerotexStates[vertex].totalLight = false;
         AOValues.a *= 0.65;

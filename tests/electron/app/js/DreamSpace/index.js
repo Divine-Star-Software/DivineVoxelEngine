@@ -11,32 +11,20 @@ await DVER.$INIT({
     nexusWorker: workers.nexusWorker,
     nexus: {
         enabled: true,
-        autoSyncVoxelPalette: true,
         autoSyncChunks: true,
+        autoSyncVoxelPalette: true,
     },
-    lighting: {
-        doAO: true,
-        doRGBLight: true,
-        doSunLight: true,
-        autoRGBLight: true,
-        autoSunLight: true,
-    },
-    materials: {
-        doAO: true,
-        doRGBLight: true,
-        doSunLight: true,
-    },
-    flow: {
-        enable: false,
-    },
-    chunks: {
-        chunkXPow2: 4,
-        chunkZPow2: 4,
-        chunkYPow2: 4,
-        autoHeightMap: true,
+    world: {
+        minZ: -Infinity,
+        maxZ: Infinity,
+        minX: -Infinity,
+        maxX: Infinity,
+        minY: 0,
+        maxY: 256,
     },
     meshes: {
-        clearChachedGeometry: false,
+        checkSolidCollisions: false,
+        clearChachedGeometry: true,
     },
 });
 SyncWithGraphicsSettings(DVER);
@@ -44,18 +32,20 @@ const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
-    const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
+    const camera = SetUpDefaultCamera(scene, canvas, { x: 15, y: 120, z: 7 }, { x: 7, y: 30, z: 7 });
     const box = SetUpDefaultSkybox(scene);
     const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
     if (bmat) {
         box.material = bmat;
     }
-    window.DVER = DVER;
+    DVER.renderManager.updateFogOptions({
+        color: new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255),
+    });
     scene.fogDensity = 0.005;
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(0);
     DVER.renderManager.setSunLevel(0.8);
+    DVER.renderManager.setBaseLevel(0.0);
     GetRenderPlayer(true, scene, canvas, DVER);
-    runRenderLoop(engine, scene, camera);
+    runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);

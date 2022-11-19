@@ -86,7 +86,7 @@ export const VoxelMesher = {
    this.quad.setPosition(data.position.x, data.position.y, data.position.z);
    data.face = template.faceTemplate[i];
    data.shapeState = template.shapeStateTemplate[i];
-   ShapeManager.getShape(template.shapeTemplate[i]).addToChunkMesh(data);
+   ShapeManager.getShape(template.shapeTemplate[i]).build(this);
 
    if (data.flowTemplate) {
     if (this.templateData.loadIn("top").isExposed()) {

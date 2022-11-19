@@ -1,2 +1,2 @@
-import type { VoxelShapeInterface } from "Meta/Constructor/VoxelShape.types";
-export declare const BoxVoxelShape: VoxelShapeInterface;
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
+export declare const BoxVoxelShape: VoxelShape;

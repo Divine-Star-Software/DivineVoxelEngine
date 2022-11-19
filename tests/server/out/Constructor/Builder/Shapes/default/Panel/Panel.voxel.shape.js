@@ -1,85 +1,85 @@
-import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
+import { OverrideManager } from "../../../Overrides/OverridesManager.js";
 let animationState = 0;
 const shapeStates = {
-    0: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    0: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("south")
             .addData(1, animationState)
             .updatePosition(0.5, 0.5, 0.05)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("north")
             .addData(1, animationState)
             .updatePosition(0.5, 0.5, 0.05)
             .create();
     },
-    1: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    1: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("north")
             .addData(1, animationState)
             .updatePosition(0.5, 0.5, 0.95)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("south")
             .addData(1, animationState)
             .updatePosition(0.5, 0.5, 0.95)
             .create();
     },
-    2: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    2: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("east")
             .addData(1, animationState)
             .updatePosition(0.95, 0.5, 0.5)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("west")
             .addData(1, animationState)
             .updatePosition(0.95, 0.5, 0.5)
             .create();
     },
-    3: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    3: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("west")
             .addData(1, animationState)
             .updatePosition(0.05, 0.5, 0.5)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("east")
             .addData(1, animationState)
             .updatePosition(0.05, 0.5, 0.5)
             .create();
     },
-    4: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    4: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("top")
             .addData(1, animationState)
             .updatePosition(0.5, 0.05, 0.5)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("bottom")
             .addData(1, animationState)
             .updatePosition(0.5, 0.05, 0.5)
             .create();
     },
-    5: () => {
-        VoxelMesher.templateData.loadIn("top");
-        VoxelMesher.quad
+    5: (mesher) => {
+        mesher.templateData.loadIn("top");
+        mesher.quad
             .setDirection("bottom")
             .addData(1, animationState)
             .updatePosition(0.5, 0.95, 0.5)
             .create();
-        VoxelMesher.templateData.loadIn("bottom");
-        VoxelMesher.quad
+        mesher.templateData.loadIn("bottom");
+        mesher.quad
             .setDirection("top")
             .addData(1, animationState)
             .updatePosition(0.5, 0.95, 0.5)
@@ -88,43 +88,19 @@ const shapeStates = {
 };
 export const PanelVoxelShape = {
     id: "Panel",
-    cullFaceOverrideFunctions: {},
-    aoAddOverrideFunctions: {},
-    aoFlipOverrideFunctions: {},
-    registerShapeForCullFaceOverride(shapeId, func) {
-        this.cullFaceOverrideFunctions[shapeId] = func;
-    },
-    registerShapeAOAddOverride(shapeId, func) {
-        this.aoAddOverrideFunctions[shapeId] = func;
-    },
-    cullFaceOverride(data) {
-        if (this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
-            return this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
-        }
-        if (data.currentVoxel.getSubstance() == "flora") {
-            return false;
-        }
-        return data.default;
-    },
-    aoAddOverride(data) {
-        if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
-            return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
-        }
-        return data.default;
-    },
-    registerShapeAOFlipOverride(shapeId, func) {
-        this.aoAddOverrideFunctions[shapeId] = func;
-    },
-    aoFlipOverride(data) {
-        return false;
-    },
-    addToChunkMesh() {
+    build(mesher) {
         animationState = 0;
-        if (VoxelMesher.data.getSubstance() == "flora") {
+        if (mesher.data.getSubstance() == "flora") {
             animationState = 2;
         }
-        VoxelMesher.quad.setDimensions(1, 1);
-        const shapeState = VoxelMesher.data.getShapeState();
-        shapeStates[shapeState]();
+        mesher.quad.setDimensions(1, 1);
+        const shapeState = mesher.data.getShapeState();
+        shapeStates[shapeState](mesher);
     },
 };
+OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
+    if (data.currentVoxel.getSubstance() == "flora") {
+        return false;
+    }
+    return data.default;
+});

@@ -1,4 +1,4 @@
-import { VoxelMath } from "../../../../out/Libs/Math/DivineVoxelEngineMath.js";
+import { VoxelMath } from "../../../../out/Libs/Math/VoxelMath.js";
 import { DivineVoxelEngineWorld } from "../../../../out/World/DivineVoxelEngineWorld";
 
 export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {

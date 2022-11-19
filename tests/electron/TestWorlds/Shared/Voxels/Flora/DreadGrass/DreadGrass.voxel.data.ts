@@ -2,7 +2,7 @@ import type { VoxelData } from "out/Meta/index";
 
 export const DreadGrassVoxelData: VoxelData = {
  name: "Dread Grass",
- shapeId: "FullBoxDiagonalIntersection",
+ shapeId: "CrossedPanels",
  id: "dve:dreadgrass",
  substance: "flora",
  material : "grass",

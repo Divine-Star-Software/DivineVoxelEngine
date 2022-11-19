@@ -10,7 +10,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -234,8 +234,8 @@ export declare const DVER: {
         shaderBuilder: {
             buildVertexShader(data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
             buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-            getDefaultVertexShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType, data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-            getDefaultFragmentShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType): string;
+            getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
+            getDefaultFragmentShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
             getSkyBoxVertexShader(): string;
             getSkyBoxFragmentShader(): string;
         };

@@ -1,7 +1,6 @@
 import { StairStates } from "./StairStates.js";
 import type { DirectionNames } from "Meta/Util.types";
 import type {
- QuadVertexes,
  TextureRotations,
 } from "Meta/Constructor/Geometry/Geometry.types";
 
@@ -14,15 +13,15 @@ type UVData = [
  hs: number,
  he: number
 ];
-export type QuadData = {
- direction: DirectionNames;
- dimensions: [width: number, height: number];
- position: [x: number, y: number, z: number];
- AO: VertexData;
- light: VertexData;
- uvs: UVData;
- flip: number;
-};
+export type QuadData = [
+ direction: DirectionNames,
+ dimensions: [width: number, height: number],
+ position: [x: number, y: number, z: number],
+ AO: VertexData,
+ light: VertexData,
+ uvs: UVData,
+ flip: number
+];
 
 export type BuilderData = QuadData[][];
 
@@ -33,10 +32,10 @@ const getHalfHeight = (
  uvs: [number, number]
 ): QuadData => {
  const quad = getQuad(direction, position);
- quad.dimensions[1] = 0.5;
- quad.AO = AO;
- quad.light = [-5];
- quad.uvs = [0, 0, 1, uvs[0], uvs[1]];
+ quad[1][1] = 0.5;
+ quad[3] = AO;
+ quad[4] = [-5];
+ quad[5] = [0, 0, 1, uvs[0], uvs[1]];
  return quad;
 };
 const getHalfWidth = (
@@ -46,9 +45,9 @@ const getHalfWidth = (
  uvs: [number, number]
 ): QuadData => {
  const quad = getHalfHeight(direction, position, AO, uvs);
- quad.dimensions[0] = 0.5;
- quad.dimensions[1] = 1;
- quad.uvs = [0, uvs[0], uvs[1], 0, 1];
+ quad[1][0] = 0.5;
+ quad[1][1] = 1;
+ quad[5] = [0, uvs[0], uvs[1], 0, 1];
  return quad;
 };
 const getQuater = (
@@ -58,10 +57,10 @@ const getQuater = (
  uvs: UVData
 ): QuadData => {
  const quad = getQuad(direction, position);
- quad.dimensions[0] = 0.5;
- quad.dimensions[1] = 0.5;
- quad.AO = AO;
- quad.uvs = uvs;
+ quad[1][0] = 0.5;
+ quad[1][1] = 0.5;
+ quad[3] = AO;
+ quad[5] = uvs;
  return quad;
 };
 const getQuad = (
@@ -70,15 +69,15 @@ const getQuad = (
  AO: VertexData = [-1, -2, -3, -4],
  flip = -1 | 0 | 1
 ): QuadData => {
- return {
-  direction: direction,
-  dimensions: [1, 1],
-  position: position,
-  AO: AO,
-  light: [-1, -2, -3, -4],
-  uvs: [0, 0, 1, 0, 1],
-  flip: flip,
- };
+ return [
+  direction,
+  [1, 1],
+  position,
+  AO,
+  [-1, -2, -3, -4],
+  [0, 0, 1, 0, 1],
+  flip,
+ ];
 };
 
 const fullQuads: Record<DirectionNames, QuadData> = {
@@ -177,7 +176,7 @@ StairBuilderData[StairStates.normal.bottom.west] = [
 StairBuilderData[StairStates.normal.top.north] = [
  [fullQuads.top],
  [
-  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -1, -2], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -3, -4], [0, 0.5]),
   getHalfHeight("bottom", [0.5, 0.5, 0.25], [1, 1, a, a], [0.5, 1]),
  ],
  [
@@ -352,7 +351,7 @@ StairBuilderData[StairStates.connected.bottom.southWest] = [
 StairBuilderData[StairStates.connected.top.northEast] = [
  [fullQuads.top],
  [
-  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -1, -2], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -3, -4], [0, 0.5]),
   getHalfHeight("bottom", [0.5, 0.5, 0.25], [1, 1, a, a], [0.5, 1]),
  ],
  [
@@ -429,3 +428,5 @@ StairBuilderData[StairStates.connected.top.southWest] = [
   getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
  ],
 ];
+
+

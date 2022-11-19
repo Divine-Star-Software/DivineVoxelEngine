@@ -1,12 +1,13 @@
 import { PlayerStatesIndexes, PlayerStatesValues, } from "../Shared/Player.data.js";
 import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
-export const GetNexusPlayer = async (DVEN, DVEPH) => {
+export const GetNexusPlayer = async (DVEN, DVEPH, waitForMessageFromWorld = false) => {
     const gravity = 0.1;
     const playerPositionSAB = new SharedArrayBuffer(4 * 3);
     const playerPosition = new Float32Array(playerPositionSAB);
     DVEN.parentComm.listenForMessage("request-player-states", (data) => {
         DVEN.parentComm.sendMessage("connect-player-data", [playerPositionSAB]);
     });
+    let worldReady = false;
     let playerDirection = new Float32Array();
     let playerStates = new Uint8Array();
     let ready = false;
@@ -173,9 +174,20 @@ export const GetNexusPlayer = async (DVEN, DVEPH) => {
         this.syncPosition(this.playerPosition);
     };
     player.$INIT(playerStates, playerDirection, playerPosition);
-    setTimeout(() => {
-        setInterval(() => {
-            player.update();
-        }, 17);
-    }, 2000);
+    const runUpdate = () => {
+        setTimeout(() => {
+            setInterval(() => {
+                player.update();
+            }, 17);
+        }, 2000);
+    };
+    if (!waitForMessageFromWorld) {
+        runUpdate();
+        return player;
+    }
+    DVEN.worldComm.listenForMessage("ready", (data) => {
+        runUpdate();
+        console.log("go");
+    });
+    return player;
 };

@@ -1,100 +1,49 @@
-import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
+import { OverrideManager } from "../../../Overrides/OverridesManager.js";
 export const BoxVoxelShape = {
     id: "Box",
-    cullFaceOverrideFunctions: {},
-    aoAddOverrideFunctions: {},
-    aoFlipOverrideFunctions: {},
-    registerShapeForCullFaceOverride(shapeId, func) {
-        this.cullFaceOverrideFunctions[shapeId] = func;
-    },
-    registerShapeAOAddOverride(shapeId, func) {
-        this.aoAddOverrideFunctions[shapeId] = func;
-    },
-    cullFaceOverride(data) {
-        if (this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
-            return this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
-        }
-        const neighborShape = data.neighborVoxel.getVoxelShapeObj();
-        if (neighborShape.id == "HalfBox") {
-            if (data.neighborVoxel.getShapeState() == 0 && data.face == "top") {
-                return false;
-            }
-        }
-        if (neighborShape.id == "Stair") {
-            return stairCull(data);
-        }
-        return data.default;
-    },
-    aoAddOverride(data) {
-        if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
-            return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](data);
-        }
-        const neighborShape = data.neighborVoxel.getVoxelShapeObj();
-        if (neighborShape.id == "HalfBox") {
-            if (data.face == "top") {
-                if (data.neighborVoxel.getShapeState() == 0) {
-                    return true;
-                }
-                return false;
-            }
-        }
-        if (neighborShape.id == "Box") {
-            return true;
-        }
-        if (neighborShape.id == "Panel") {
-            return false;
-        }
-        return data.default;
-    },
-    registerShapeAOFlipOverride(shapeId, func) {
-        this.aoAddOverrideFunctions[shapeId] = func;
-    },
-    aoFlipOverride(data) {
-        return false;
-    },
-    addToChunkMesh() {
-        VoxelMesher.quad.setDimensions(1, 1);
+    build(mesher) {
+        mesher.quad.setDimensions(1, 1);
         let animationState = 0;
-        if (VoxelMesher.data.getSubstance() == "flora") {
+        if (mesher.data.getSubstance() == "flora") {
             animationState = 3;
         }
-        if (VoxelMesher.templateData.loadIn("top").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("top").isExposed()) {
+            mesher.quad
                 .setDirection("top")
                 .updatePosition(0.5, 1, 0.5)
                 .addData(4, animationState)
                 .create();
         }
-        if (VoxelMesher.templateData.loadIn("bottom").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("bottom").isExposed()) {
+            mesher.quad
                 .setDirection("bottom")
                 .updatePosition(0.5, 0, 0.5)
                 .addData(4, animationState)
                 .create();
         }
-        if (VoxelMesher.templateData.loadIn("east").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("east").isExposed()) {
+            mesher.quad
                 .setDirection("east")
                 .updatePosition(1, 0.5, 0.5)
                 .addData(4, animationState)
                 .create();
         }
-        if (VoxelMesher.templateData.loadIn("west").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("west").isExposed()) {
+            mesher.quad
                 .setDirection("west")
                 .updatePosition(0, 0.5, 0.5)
                 .addData(4, animationState)
                 .create();
         }
-        if (VoxelMesher.templateData.loadIn("south").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("south").isExposed()) {
+            mesher.quad
                 .setDirection("south")
                 .updatePosition(0.5, 0.5, 0)
                 .addData(4, animationState)
                 .create();
         }
-        if (VoxelMesher.templateData.loadIn("north").isExposed()) {
-            VoxelMesher.quad
+        if (mesher.templateData.loadIn("north").isExposed()) {
+            mesher.quad
                 .setDirection("north")
                 .updatePosition(0.5, 0.5, 1)
                 .addData(4, animationState)
@@ -102,6 +51,36 @@ export const BoxVoxelShape = {
         }
     },
 };
+//cullface
+OverrideManager.registerOverride("CullFace", "Box", "Panel", (data) => {
+    return false;
+});
+OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
+    if (data.face == "top") {
+        if (data.neighborVoxel.getShapeState() == 0) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+});
+OverrideManager.registerOverride("CullFace", "Box", "Stair", (data) => {
+    stairCullFunctions[data.face](data);
+    return true;
+});
+//ao
+OverrideManager.registerOverride("AO", "Box", "Panel", (data) => {
+    return false;
+});
+OverrideManager.registerOverride("AO", "Box", "HalfBox", (data) => {
+    if (data.face == "top") {
+        if (data.neighborVoxel.getShapeState() == 0) {
+            return true;
+        }
+        return false;
+    }
+    return true;
+});
 const stairCullFunctions = {
     top: (data) => {
         const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
@@ -143,7 +122,4 @@ const stairCullFunctions = {
             return false;
         return true;
     },
-};
-const stairCull = (data) => {
-    return stairCullFunctions[data.face](data);
 };

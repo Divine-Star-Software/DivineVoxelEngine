@@ -2,7 +2,7 @@ import type { VoxelData } from "out/Meta/index";
 
 export const LiquidDreamEtherVoxelData: VoxelData = {
     name: "Liquid Dream Ether",
-    shapeId: "LiquidSourceBlock",
+    shapeId: "Liquid",
     id: "dve:liquiddreamether",
     substance: "liquid",
     material : "water",

@@ -1,80 +1,45 @@
-import type { VoxelShapeInterface } from "Meta/Constructor/VoxelShape.types";
-import { StairCullFace } from "./Stair.cullface.js";
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
+//functions
+import { SetUpStairOverrides } from "./Stair.overrides.js";
+//data
 import { StairBuilderData } from "./StairData.js";
-import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
 import { FaceMap } from "../../../../../Data/Constants/Meshing/Faces.js";
 
-export const StairVoxelShape: VoxelShapeInterface = {
+export const StairVoxelShape: VoxelShape = {
  id: "Stair",
- cullFaceOverrideFunctions: {},
- aoAddOverrideFunctions: {},
- aoFlipOverrideFunctions: {},
- registerShapeForCullFaceOverride(shapeId, func) {
-  this.cullFaceOverrideFunctions[shapeId] = func;
- },
- registerShapeAOAddOverride(shapeId, func) {
-  this.aoAddOverrideFunctions[shapeId] = func;
- },
- cullFaceOverride(data) {
-  if (
-   this.cullFaceOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]
-  ) {
-   return this.cullFaceOverrideFunctions[
-    data.neighborVoxel.getVoxelShapeObj().id
-   ](data);
-  }
-  return StairCullFace(data);
- },
- aoAddOverride(data) {
-  if (this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id]) {
-   return this.aoAddOverrideFunctions[data.neighborVoxel.getVoxelShapeObj().id](
-    data
-   );
-  }
-  return data.default;
- },
- registerShapeAOFlipOverride(shapeId, func) {
-  this.aoAddOverrideFunctions[shapeId] = func;
- },
- aoFlipOverride(data) {
-  if (data.face == "top" || data.face == "bottom") return true;
-  return false;
- },
- addToChunkMesh() {
-  const data = StairBuilderData[VoxelMesher.data.getShapeState()];
+ build(mesher) {
+  const data = StairBuilderData[mesher.data.getShapeState()];
   if (!data) return;
-
   let i = 0;
   for (const face of FaceMap) {
    const node = data[i];
-   if (VoxelMesher.templateData.loadIn(face).isExposed()) {
+   if (mesher.templateData.loadIn(face).isExposed()) {
     let k = node.length;
     for (const quad of node) {
      k--;
-     VoxelMesher.setTemplateIncrement(k == 0);
-     if (quad.flip >= 0) {
-      VoxelMesher.quad.setFlipped(quad.flip == 1);
+     mesher.setTemplateIncrement(k == 0);
+     if (quad[6] >= 0) {
+      mesher.quad.setFlipped(quad[6] == 1);
      }
-     VoxelMesher.quad
-      .setDimensions(quad.dimensions[0], quad.dimensions[1])
-      .setDirection(quad.direction)
-      .updatePosition(quad.position[0], quad.position[1], quad.position[2])
-      .light.addCustom(quad.light)
-      .AO.addCustom(quad.AO)
+     mesher.quad
+      .setDimensions(quad[1][0], quad[1][1])
+      .setDirection(quad[0])
+      .updatePosition(quad[2][0], quad[2][1], quad[2][2])
+      .AO.addCustom(quad[3])
+      .light.addCustom(quad[4])
       .oUVS.add()
-      .uvs.setRoation(quad.uvs[0])
-      .setWidth(quad.uvs[1], quad.uvs[2])
-      .setHeight(quad.uvs[3], quad.uvs[4])
+      .uvs.setRoation(quad[5][0])
+      .setWidth(quad[5][1], quad[5][2])
+      .setHeight(quad[5][3], quad[5][4])
       .add()
       .create()
       .clearTransform();
     }
    }
-   VoxelMesher.setTemplateIncrement(true);
+   mesher.setTemplateIncrement(true);
    i++;
   }
  },
 };
-StairVoxelShape.registerShapeAOAddOverride("Box", (data) => {
- return data.default;
-});
+
+SetUpStairOverrides();
