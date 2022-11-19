@@ -66,12 +66,17 @@ export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30,
     camera.position.x = startPosition.x;
     camera.position.y = startPosition.y;
     camera.position.z = startPosition.z;
+    camera.keysUp.push(87);
+    camera.keysDown.push(83);
+    camera.keysLeft.push(65);
+    camera.keysRight.push(68);
     camera.setTarget(target);
     if (makeActiveCamera) {
         scene.activeCamera = camera;
     }
     if (attachControls) {
         camera.attachControl(canvas, true);
+        camera.inputs.addKeyboard();
     }
     return camera;
 };

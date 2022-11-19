@@ -1,21 +1,14 @@
-import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import { VertexShaderCreateData } from "Meta/Render/Shaders/Shader.types.js";
 /**# ShaderBuilder
  *---
  * Helps construct raw text shaders.
  */
 export declare const ShaderBuilder: {
-    buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-    buildLiquidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-    buildSolidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-    buildItemVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-    buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-    buildSolidFragmentShader(): string;
-    buildItemFragmentShader(): string;
-    buildLiquidFragmentShader(): string;
-    buildFloraFragmentShader(): string;
-    buildMagmaFragmentShader(): string;
-    getDefaultVertexShader(voxelSubstance: VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
-    getDefaultFragmentShader(voxelSubstance: VoxelSubstanceType): string;
+    buildVertexShader(data: VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
+    buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
+    getDefaultVertexShader(voxelSubstance: VoxelTemplateSubstanceType | "Item", data: VertexShaderCreateData): string;
+    getDefaultFragmentShader(voxelSubstance: VoxelTemplateSubstanceType | "Item"): string;
     getSkyBoxVertexShader(): string;
     getSkyBoxFragmentShader(): string;
 };

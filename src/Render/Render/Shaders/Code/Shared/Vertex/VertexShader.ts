@@ -23,13 +23,12 @@ export const SharedVertexShader = {
   attribute vec3 cuv3;
   attribute vec4 ocuv3;
   attribute float faceData;
-  attribute vec4 rgbLightColors;
-  attribute vec4 sunLightColors;
+  attribute vec4 lightColors;
   attribute vec4 colors;
   `;
   if (ao) {
    attributes += `
-   attribute vec4 aoColors;
+   attribute float aoColors;
    `;
   }
   return attributes;
@@ -112,7 +111,7 @@ export const SharedVertexShader = {
 
  doAO: `
     if(doAO == 1.0){
-        aoColor = aoColors;
+        aoColor = vec4(aoColors,aoColors,aoColors,1.);
      } else {
         aoColor = vec4(1.0,1.0,1.0,1.0); 
      }
@@ -121,7 +120,7 @@ export const SharedVertexShader = {
  doRGB: `
     if(doRGB == 1.0){
         vDoRGB = 1.0;
-        rgbLColor = rgbLightColors;
+        rgbLColor = vec4(lightColors.rgb,1.);
      } else {
         vDoRGB = 0.0;
      }
@@ -129,7 +128,8 @@ export const SharedVertexShader = {
  doSun: `
     if(doSun == 1.0){
         vDoSun = 1.0;
-        sunLColor = sunLightColors;
+        float s = lightColors.a;
+        sunLColor = vec4(s,s,s,1.);
      } else {
         vDoSun = 0.0;
      }

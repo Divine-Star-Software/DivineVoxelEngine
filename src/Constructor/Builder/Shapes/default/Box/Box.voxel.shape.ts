@@ -70,42 +70,42 @@ export const BoxVoxelShape: VoxelShapeInterface = {
   if (VoxelMesher.data.getSubstance() == "flora") {
    animationState = 3;
   }
-  if (VoxelMesher.face.loadIn("top").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("top").isExposed()) {
    VoxelMesher.quad
     .setDirection("top")
     .updatePosition(0.5, 1, 0.5)
     .addData(4, animationState)
     .create();
   }
-  if (VoxelMesher.face.loadIn("bottom").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("bottom").isExposed()) {
    VoxelMesher.quad
     .setDirection("bottom")
     .updatePosition(0.5, 0, 0.5)
     .addData(4, animationState)
     .create();
   }
-  if (VoxelMesher.face.loadIn("east").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("east").isExposed()) {
    VoxelMesher.quad
     .setDirection("east")
     .updatePosition(1, 0.5, 0.5)
     .addData(4, animationState)
     .create();
   }
-  if (VoxelMesher.face.loadIn("west").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("west").isExposed()) {
    VoxelMesher.quad
     .setDirection("west")
     .updatePosition(0, 0.5, 0.5)
     .addData(4, animationState)
     .create();
   }
-  if (VoxelMesher.face.loadIn("south").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("south").isExposed()) {
    VoxelMesher.quad
     .setDirection("south")
     .updatePosition(0.5, 0.5, 0)
     .addData(4, animationState)
     .create();
   }
-  if (VoxelMesher.face.loadIn("north").isExposed()) {
+  if (VoxelMesher.templateData.loadIn("north").isExposed()) {
    VoxelMesher.quad
     .setDirection("north")
     .updatePosition(0.5, 0.5, 1)

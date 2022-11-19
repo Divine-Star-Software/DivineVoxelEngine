@@ -1,30 +1,47 @@
 //types
 import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
+//built in
+import { DVEMesh } from "./Meshes/DVEMesh.js";
+import { DVEMaterial } from "./Materials/DVEMaterial.js";
 //objects
 import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 
-//meshes
-import { SolidMesh } from "./Meshes/Solid/SolidMesh.js";
-import { FloraMesh } from "./Meshes/Flora/FloraMesh.js";
-import { LiquidMesh } from "./Meshes/Liquid/LiquidMesh.js";
-import { MagmaMesh } from "./Meshes/Magma/MagmaMesh.js";
-import { ItemMesh } from "./Meshes/Item/ItemMesh.js";
-
 //materials
-import { SolidMaterial } from "./Materials/Solid/SolidMaterial.js";
-import { FloraMaterial } from "./Materials/Flora/FloraMaterial.js";
-import { LiquidMaterial } from "./Materials/Liquid/LiquidMaterial.js";
-import { MagmaMaterial } from "./Materials/Magma/MagmaMaterial.js";
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
-import { ItemMaterial } from "./Materials/Item/ItemMaterial.js";
-import { StandardSolidMaterial } from "./Materials/Solid/Standard/SolidMaterial.bjsmp.js";
-import { StandardLiquidMaterial } from "./Materials/Liquid/Standard/LiquidMaterial.bjsmp.js";
+import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.js";
+import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsmp.js";
 import {
  RenderFogOptions,
  RenderEffectsOptions,
 } from "Meta/Render/Render/Render.options.types.js";
+
+const solidMaterial = new DVEMaterial("solid", {
+ alphaBlending: false,
+ alphaTesting: true,
+});
+const solidMesh = new DVEMesh("solid", solidMaterial);
+const floraMat = new DVEMaterial("flora", {
+ alphaBlending: false,
+ alphaTesting: true,
+});
+const floraMesh = new DVEMesh("flora", floraMat);
+const magmaMat = new DVEMaterial("magma", {
+ alphaBlending: false,
+ alphaTesting: true,
+});
+const magmaMesh = new DVEMesh("magma", magmaMat);
+const liquidMat = new DVEMaterial("liquid", {
+ alphaBlending: true,
+ alphaTesting: false,
+});
+const liquidMesh = new DVEMesh("liquid", liquidMat);
+const itemMat = new DVEMaterial("Item", {
+ alphaBlending: false,
+ alphaTesting: true,
+});
+const itemMesh = new DVEMesh("Item", itemMat);
 
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{
@@ -36,7 +53,7 @@ export const RenderManager = {
   },
  },
 
- fogData: new BABYLON.Vector4(1, .1, 0.5, 0),
+ fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
 
  effectOptions: <RenderEffectsOptions>{
   floraEffects: false,
@@ -47,22 +64,22 @@ export const RenderManager = {
  textureCreator: TextureCreator,
  animationManager: AnimationManager,
 
- solidMaterial: SolidMaterial,
- floraMaterial: FloraMaterial,
- liquidMaterial: LiquidMaterial,
- magmaMaterial: MagmaMaterial,
- itemMaterial: ItemMaterial,
+ solidMaterial: solidMaterial,
+ floraMaterial: floraMat,
+ liquidMaterial: liquidMat,
+ magmaMaterial: magmaMat,
+ itemMaterial: itemMat,
+
+ solidMesh: solidMesh,
+ floraMesh: floraMesh,
+ liquidMesh: liquidMesh,
+ magmaMesh: magmaMesh,
+ itemMesh: itemMesh,
 
  solidStandardMaterial: StandardSolidMaterial,
  liquidStandardMaterial: StandardLiquidMaterial,
 
  skyBoxMaterial: SkyBoxMaterial,
-
- solidMesh: SolidMesh,
- floraMesh: FloraMesh,
- liquidMesh: LiquidMesh,
- magmaMesh: MagmaMesh,
- itemMesh: ItemMesh,
 
  scene: <BABYLON.Scene | null>null,
 
@@ -86,9 +103,9 @@ export const RenderManager = {
    }
   }
 
-  if(options.color && this.scene) {
-    //@ts-ignore
-    this.scene.fogColor = options.color;
+  if (options.color && this.scene) {
+   //@ts-ignore
+   this.scene.fogColor = options.color;
   }
   const fogData = new BABYLON.Vector4(0, 0, 0, 0);
   if (this.fogOptions.mode == "volumetric") {

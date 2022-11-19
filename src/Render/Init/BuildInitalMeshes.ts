@@ -1,22 +1,13 @@
 import type { VoxelSubstanceType } from "Meta/index";
 import type { MaterialCreateData } from "Meta/Render/Materials/Material.types";
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
-import type { FloraMaterial } from "Render/Render/Materials/Flora/FloraMaterial";
-import type { LiquidMaterial } from "Render/Render/Materials/Liquid/LiquidMaterial";
-import type { ItemMaterial } from "Render/Render/Materials/Item/ItemMaterial";
-import type { MagmaMaterial } from "Render/Render/Materials/Magma/MagmaMaterial";
-import type { SolidMaterial } from "Render/Render/Materials/Solid/SolidMaterial";
+import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 
 const setUpMaterial = async (
  DVER: DivineVoxelEngineRender,
  scene: BABYLON.Scene,
  substance: VoxelSubstanceType | "Item",
- material:
-  | typeof SolidMaterial
-  | typeof FloraMaterial
-  | typeof MagmaMaterial
-  | typeof LiquidMaterial
-  | typeof ItemMaterial
+ material: DVEMaterial
 ) => {
  const textures =
   DVER.textureManager.processedTextureData.texturePaths[substance];

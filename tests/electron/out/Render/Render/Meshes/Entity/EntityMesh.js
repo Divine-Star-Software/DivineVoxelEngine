@@ -1,5 +1,4 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
-import { SolidMaterial } from "../../Materials/Solid/SolidMaterial.js";
 export const EntityMesh = {
     pickable: false,
     checkCollisions: false,
@@ -58,7 +57,7 @@ export const EntityMesh = {
         }
         const mesh = this.createTemplateMesh(DVER.renderManager.scene);
         mesh.unfreezeWorldMatrix();
-        mesh.material = SolidMaterial.getMaterial();
+        //  mesh.material = SolidMaterial.getMaterial();
         mesh.position.x = x;
         mesh.position.y = y;
         mesh.position.z = z;

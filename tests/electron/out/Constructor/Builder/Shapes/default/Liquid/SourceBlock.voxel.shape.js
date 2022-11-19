@@ -1,4 +1,5 @@
 import { VoxelMesher } from "../../../Tools/VoxelMesher.js";
+let flowAnimationState = 0;
 const vertexLevels = {
     v1l: 0,
     v2l: 0,
@@ -20,10 +21,9 @@ const sourceBlockTest = (data) => {
     }
     return false;
 };
-const flowState = { state: 0 };
 const getAngle = (data) => {
     if (sourceBlockTest(data)) {
-        flowState.state = 0;
+        flowAnimationState = 0;
         return 0;
     }
     const v1 = vertexLevels.v1l;
@@ -31,47 +31,47 @@ const getAngle = (data) => {
     const v3 = vertexLevels.v3l;
     const v4 = vertexLevels.v4l;
     if (v1 == v2 && v3 == v4 && v1 == v4 && v2 == v3) {
-        flowState.state = 0;
+        flowAnimationState = 0;
         return 0;
     }
     if (v2 == v3 && v1 == v4 && v2 > v1) {
         //flowing south
-        flowState.state = 1;
+        flowAnimationState = 1;
         return 0;
     }
     if (v2 == v3 && v1 == v4 && v2 < v1) {
         //flowing north
-        flowState.state = 2;
+        flowAnimationState = 2;
         return 0;
     }
     if (v2 == v1 && v3 == v4 && v1 > v4) {
         //flowing east
-        flowState.state = 2;
+        flowAnimationState = 2;
         return 90;
     }
     if (v3 == v4 && v2 == v1 && v4 > v1) {
         //flowing west
-        flowState.state = 1;
+        flowAnimationState = 1;
         return 90;
     }
     if (v2 < v4) {
         //flowing north west
-        flowState.state = 2;
+        flowAnimationState = 2;
         return 315;
     }
     if (v2 > v4) {
         //flowing south east
-        flowState.state = 1;
+        flowAnimationState = 1;
         return 315;
     }
     if (v1 > v3) {
         //flowing north east
-        flowState.state = 2;
+        flowAnimationState = 2;
         return 45;
     }
     if (v1 < v3) {
         //flowing south west
-        flowState.state = 1;
+        flowAnimationState = 1;
         return 45;
     }
     return 0;
@@ -137,9 +137,9 @@ export const LiquidVoxelShape = {
     addToChunkMesh() {
         const data = VoxelMesher._data;
         VoxelMesher.quad.setDimensions(1, 1);
-        flowState.state = 0;
+        flowAnimationState = 0;
         let topFaceExposed = false;
-        if (VoxelMesher.face.loadIn("top").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("top").isExposed()) {
             calculateVertexLevels(data);
             topFaceExposed = true;
             const angle = getAngle(data);
@@ -152,33 +152,29 @@ export const LiquidVoxelShape = {
             VoxelMesher.quad
                 .setDirection("top")
                 .updatePosition(0.5, 1, 0.5)
-                .addData(4, flowState.state, false)
+                .addData(4, flowAnimationState, false)
                 .create()
                 .clearTransform()
                 .uvs.setRoation(0);
         }
-        if (VoxelMesher.face.loadIn("bottom").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("bottom").isExposed()) {
             VoxelMesher.quad
                 .setDirection("bottom")
                 .updatePosition(0.5, 0, 0.5)
-                .addData(4, flowState.state, false)
+                .addData(4, flowAnimationState, false)
                 .create();
         }
-        if (topFaceExposed) {
-            //   VoxelMesher.quad.setDimensions(1, .8);
-        }
-        flowState.state = 1;
+        flowAnimationState = 1;
         VoxelMesher.quad.uvs.setRoation(0);
-        if (VoxelMesher.face.loadIn("east").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("east").isExposed()) {
             VoxelMesher.quad
                 .setDirection("east")
-                .setFlipped(false)
                 .updatePosition(1, 0.5, 0.5)
                 .setTransform(1, 0, vertexLevels.v4v, 0)
                 .setTransform(2, 0, vertexLevels.v3v, 0)
                 .light.add()
                 .oUVS.add()
-                .setAnimationState(flowState.state)
+                .setAnimationState(flowAnimationState)
                 .create()
                 .clearTransform();
             if (topFaceExposed) {
@@ -187,10 +183,10 @@ export const LiquidVoxelShape = {
                 VoxelMesher.quad.uvs.addAdvancedUVs().resetAdvancedUVs();
             }
             else {
-                VoxelMesher.quad.uvs.setRoation(0).add();
+                VoxelMesher.quad.uvs.add();
             }
         }
-        if (VoxelMesher.face.loadIn("west").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("west").isExposed()) {
             VoxelMesher.quad
                 .setDirection("west")
                 .updatePosition(0, 0.5, 0.5)
@@ -198,7 +194,7 @@ export const LiquidVoxelShape = {
                 .setTransform(2, 0, vertexLevels.v1v, 0)
                 .light.add()
                 .oUVS.add()
-                .setAnimationState(flowState.state)
+                .setAnimationState(flowAnimationState)
                 .create()
                 .clearTransform();
             if (topFaceExposed) {
@@ -210,7 +206,7 @@ export const LiquidVoxelShape = {
                 VoxelMesher.quad.uvs.add();
             }
         }
-        if (VoxelMesher.face.loadIn("south").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("south").isExposed()) {
             VoxelMesher.quad
                 .setDirection("south")
                 .updatePosition(0.5, 0.5, 0)
@@ -218,7 +214,7 @@ export const LiquidVoxelShape = {
                 .setTransform(2, 0, vertexLevels.v4v, 0)
                 .light.add()
                 .oUVS.add()
-                .setAnimationState(flowState.state)
+                .setAnimationState(flowAnimationState)
                 .create()
                 .clearTransform();
             if (topFaceExposed) {
@@ -230,7 +226,7 @@ export const LiquidVoxelShape = {
                 VoxelMesher.quad.uvs.add();
             }
         }
-        if (VoxelMesher.face.loadIn("north").isExposed()) {
+        if (VoxelMesher.templateData.loadIn("north").isExposed()) {
             VoxelMesher.quad
                 .setDirection("north")
                 .updatePosition(0.5, 0.5, 1)
@@ -238,7 +234,7 @@ export const LiquidVoxelShape = {
                 .setTransform(2, 0, vertexLevels.v2v, 0)
                 .light.add()
                 .oUVS.add()
-                .setAnimationState(flowState.state)
+                .setAnimationState(flowAnimationState)
                 .create()
                 .clearTransform();
             if (topFaceExposed) {

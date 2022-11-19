@@ -1,4 +1,4 @@
-import { RegisterDefaultShapes } from "../Shapes/Functions/RegisterDefaultShapes.js";
+import { RegisterDefaultShapes } from "../Shapes/RegisterDefaultShapes.js";
 export function InitBuilder(DVEB) {
     DVEB.processor.$INIT();
     DVEB.voxelHelper.$INIT();

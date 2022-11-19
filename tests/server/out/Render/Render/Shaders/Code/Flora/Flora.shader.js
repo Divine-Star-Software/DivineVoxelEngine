@@ -19,6 +19,7 @@ export const floraShaders = {
 }
 
 
+
  vec4 worldPosition = world * vec4(p, 1.0);
  gl_Position = viewProjection * worldPosition; 
         `,

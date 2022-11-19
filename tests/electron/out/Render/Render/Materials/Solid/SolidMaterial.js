@@ -95,10 +95,9 @@ export const SolidMaterial = {
             needAlphaBlending: false,
             needAlphaTesting: true,
         });
-        this.material = shaderMaterial;
-        //this.material.forceDepthWrite = true;
-        this.material.fogEnabled = true;
         data.texture.hasAlpha = true;
+        this.material = shaderMaterial;
+        this.material.fogEnabled = true;
         this.material.setTexture("arrayTex", data.texture);
         this.material.setFloat("sunLightLevel", 1);
         this.material.setFloat("baseLevel", 0.1);

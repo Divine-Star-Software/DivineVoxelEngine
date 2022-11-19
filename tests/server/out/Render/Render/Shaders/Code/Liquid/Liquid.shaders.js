@@ -4,16 +4,6 @@ export const liquidShaders = {
   varying float vFlow;
   `,
     vertexWave: `
-
- /*
-if(normal.y == 0.) {
-  vFlow = 1.;
-} else {
-  vFlow = 0.;
-}
-*/
-
-
 float animationTest = float(getAnimationType());
 vFlow = 0.;
 if(animationTest == 1.) {

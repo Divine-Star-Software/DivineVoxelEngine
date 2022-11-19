@@ -9,6 +9,7 @@ export declare class BrushTool {
     setSecondaryId(id: string, state?: number): this;
     setState(state: number): this;
     setShapeState(state: number): this;
+    clear(): void;
     setRaw(data: number[]): this;
     getRaw(): number[];
     setXYZ(x: number, y: number, z: number): this;

@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -515,136 +515,6 @@ export declare const DVEC: {
             getShape(shapeId: number): import("Meta/index.js").VoxelShapeInterface;
             getShapeId(shapeId: string): number;
             getShapeMap(): Record<string, number>;
-        };
-        shapeHelper: {
-            faceByte: {
-                _rotationMap: Record<import("../Meta/Constructor/Mesher.types.js").Rotations, number>;
-                _rotationReverseMap: Record<number, import("../Meta/Constructor/Mesher.types.js").Rotations>;
-                _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                _getFaceRotateState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _markExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _checkExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => boolean>;
-                markFaceAsExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
-                setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-                getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Mesher.types.js").Rotations, rawData: number): number;
-                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Mesher.types.js").Rotations;
-            };
-            lightByte: {
-                SRS: number;
-                _lightValues: [s: number, r: number, g: number, b: number];
-                getS(value: number): number;
-                getR(value: number): number;
-                getG(value: number): number;
-                getB(value: number): number;
-                setS(value: number, sl: number): number;
-                setR(value: number, sl: number): number;
-                setG(value: number, sl: number): number;
-                setB(value: number, sl: number): number;
-                removeS(sl: number): number;
-                hasRGBLight(sl: number): boolean;
-                getRGB(sl: number): number;
-                setRGB(value: number, sl: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                setLightValues(values: number[]): number;
-                getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                getMinusOneForRGB(sl: number, nl: number): number;
-                removeRGBLight(sl: number): number;
-                getFullSunLight(sl: number): number;
-                isLessThanForSunAdd(n1: number, n2: number): boolean;
-                isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                getSunLightForUnderVoxel(sl: number, nl: number): number;
-                getMinusOneForSun(sl: number, nl: number): number;
-                isLessThanForSunRemove(n1: number, sl: number): boolean;
-                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                removeSunLight(sl: number): number;
-                minusOneForAll(sl: number): number;
-            };
-            meshFaceData: {
-                setAnimationType(animationType: number, rawData: number): number;
-                getAnimationType(rawData: number): number;
-            };
-            lightMap: number[];
-            shouldFaceFlip(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
-            getTextureRotation(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): import("../Meta/Constructor/Mesher.types.js").Rotations;
-            isFaceExposexd(faceBit: number, faceDirection: import("Meta/index.js").DirectionNames): boolean;
-            toLinearSpace(r: number, g: number, b: number, a: number): number[];
-            addFaceData(faceData: number, faceDataArray: number[]): void;
-            calculateLightColor(RGBlightColors: number[], sunlightColors: number[], lightTemplate: number[], startIndex: number): void;
-            calculateLightColorFromValue(RGBlightColors: number[], sunlightColors: number[], lightValue: number): void;
-            calculateAOColor(aoColors: number[], aoTemplate: number[], aoTemplateIndex: number): void;
-            calculateAOColorFromValue(aoColors: number[], aoValue: number): void;
-        };
-        shapeBuilder: {
-            faceFunctions: Record<import("Meta/index.js").DirectionNames, (origin: import("Meta/index.js").Vector3, dimensions: {
-                width: number;
-                height: number;
-                depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData | import("../Meta/Constructor/ItemShape.type.js").CreateItemData, transform: {
-                v1: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v2: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v3: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v4: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-            }, flip?: boolean | undefined) => void>;
-            addFace(direction: import("Meta/index.js").DirectionNames, origin: import("Meta/index.js").Vector3, dimensions: {
-                width: number;
-                height: number;
-                depth: number;
-            }, data: import("Meta/index.js").VoxelShapeAddData | import("../Meta/Constructor/ItemShape.type.js").CreateItemData, flip?: boolean, transform?: {
-                v1: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v2: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v3: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-                v4: {
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-            }): void;
-        };
-        uvHelper: {
-            uvRotations: Record<"top" | "bottom" | "side", Record<import("../Meta/Constructor/Mesher.types.js").Rotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
-            advancedUVs: Record<"top" | "bottom" | "side", (uv: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number, uvs: number[]) => void>;
-            uvFunctions: Record<import("Meta/index.js").DirectionNames, (data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData) => void>;
-            addUVs(face: import("Meta/index.js").DirectionNames, data: import("../Meta/Constructor/Mesher.types.js").UVFunctionData): void;
-            addAdvancedUVs(uv: number, uvs: number, ws1: number, ws2: number, we1: number, we2: number, hs1: number, hs2: number, he1: number, he2: number): void;
-            processOverlayUVs(data: import("Meta/index.js").VoxelShapeAddData): void;
         };
         chunkMesher: {
             voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
@@ -1298,7 +1168,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

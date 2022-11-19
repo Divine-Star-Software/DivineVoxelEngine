@@ -7,11 +7,12 @@ export const TextureCreator = {
         this.imgHeight = height;
     },
     setUpImageCreation() {
-        const TwoDcanvas = document.createElement("canvas");
-        const context = TwoDcanvas.getContext("2d");
+        const _2dCanvas = document.createElement("canvas");
+        const context = _2dCanvas.getContext("2d");
         if (!context) {
             throw new Error("Context did not load for texture creation.");
         }
+        context.imageSmoothingEnabled = false;
         this.context = context;
     },
     async createMaterialTexture(name, scene, images, width = -1, height = -1) {
@@ -47,22 +48,20 @@ export const TextureCreator = {
         return _2DTextureArray;
     },
     _loadImages(imgPath, width, height) {
-        const self = this;
-        if (!self.context) {
+        if (!this.context) {
             throw new Error("Context is not set for texture creation.");
         }
         const prom = new Promise((resolve) => {
             const loadedImage = new Image();
             loadedImage.src = imgPath;
-            loadedImage.onload = function () {
-                //@ts-ignore
-                self.context.drawImage(loadedImage, 0, 0, width, height);
-                //@ts-ignore
-                const imgData = self.context.getImageData(0, 0, width, height);
+            loadedImage.onload = () => {
+                if (!TextureCreator.context)
+                    return;
+                TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
+                const imgData = TextureCreator.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
                 //import to clear the canvas before re-rendering another image
-                //@ts-ignore
-                self.context.clearRect(0, 0, width, height);
+                TextureCreator.context.clearRect(0, 0, width, height);
             };
         });
         return prom;
@@ -78,27 +77,25 @@ export const TextureCreator = {
         return combinedImagedata;
     },
     getTextureBuffer(imgPath, width = -1, height = -1) {
-        const self = this;
         if (width == -1)
             width = this.imgWidth;
         if (height == -1)
             height = this.imgHeight;
-        if (!self.context) {
+        if (!this.context) {
             throw new Error("Context is not set for texture creation.");
         }
         const prom = new Promise((resolve) => {
             const loadedImage = new Image();
             loadedImage.src = imgPath;
-            loadedImage.onload = function () {
-                //@ts-ignore
-                self.context.drawImage(loadedImage, 0, 0, width, height);
-                //@ts-ignore
-                const imgData = self.context.getImageData(0, 0, width, height);
+            loadedImage.onload = () => {
+                if (!TextureCreator.context)
+                    return;
+                TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
+                const imgData = TextureCreator.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
-                //@ts-ignore
-                self.context.clearRect(0, 0, width, height);
+                TextureCreator.context.clearRect(0, 0, width, height);
             };
         });
         return prom;
-    }
+    },
 };

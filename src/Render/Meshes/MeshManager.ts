@@ -1,16 +1,9 @@
-import {
- ConstructEntityIndexes,
- ConstructItemIndexes,
-} from "../../Common/Threads/Contracts/ConstructorToRender.js";
 import type {
  MeshSetData,
  VoxelMeshInterface,
 } from "Meta/Render/Meshes/VoxelMesh.interface";
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { DVER } from "../DivineVoxelEngineRender.js";
-import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
-import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";
-import { ItemMeshSetData } from "Meta/Render/Meshes/ItemMesh.types.js";
 import { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 
 export const MeshManager = {
@@ -27,8 +20,7 @@ export const MeshManager = {
   magma: {},
  },
 
- entityMesh: EntityMesh,
- itemMesh: ItemMesh,
+
  meshMakers: <Record<VoxelSubstanceType, VoxelMeshInterface>>{},
 
  $INIT() {
@@ -63,7 +55,7 @@ export const MeshManager = {
  },
 
  handleItemUpdate(x: number, y: number, z: number, data: any) {
-  const meshData: ItemMeshSetData = {
+/*   const meshData: ItemMeshSetData = {
    positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
    normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),
    indiciesArray: new Int32Array(data[ConstructItemIndexes.indiciesArray]),
@@ -77,11 +69,11 @@ export const MeshManager = {
    extra: [],
   };
 
-  this.itemMesh.createMesh(x, y, z, meshData);
+  RenderManager.itemMesh.createTemplateMesh(x, y, z, meshData); */
  },
 
  handleEntityUpdate(x: number, y: number, z: number, data: any) {
-  const meshData: MeshSetData = {
+/*   const meshData: MeshSetData = {
    positionArray: new Float32Array(data[ConstructEntityIndexes.positionArray]),
    normalsArray: new Float32Array(data[ConstructEntityIndexes.normalsArray]),
    indiciesArray: new Int32Array(data[ConstructEntityIndexes.indiciesArray]),
@@ -100,7 +92,7 @@ export const MeshManager = {
    ),
    extra: [],
   };
-  this.entityMesh.createMesh(x, y, z, meshData);
+  this.entityMesh.createMesh(x, y, z, meshData); */
  },
 
  handleChunkUpdate(
@@ -115,11 +107,10 @@ export const MeshManager = {
    indiciesArray: data[7],
    faceDataArray: data[8],
    AOColorsArray: data[9],
-   RGBLightColorsArray: data[10],
-   sunLightColorsArray: data[11],
-   colorsArray: data[12],
-   uvArray: data[13],
-   overlayUVArray: data[14],
+   lightColorsArray: data[10],
+   colorsArray: data[11],
+   uvArray: data[12],
+   overlayUVArray: data[13],
    extra: [],
   };
   if (!this.meshes[type][dimesnion]) {

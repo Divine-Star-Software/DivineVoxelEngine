@@ -1,7 +1,4 @@
-import { ConstructEntityIndexes, ConstructItemIndexes, } from "../../Common/Threads/Contracts/ConstructorToRender.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
-import { EntityMesh } from "../Render/Meshes/Entity/EntityMesh.js";
-import { ItemMesh } from "../Render/Meshes/Item/ItemMesh.js";
 export const MeshManager = {
     scene: null,
     runningUpdate: false,
@@ -12,8 +9,6 @@ export const MeshManager = {
         liquid: {},
         magma: {},
     },
-    entityMesh: EntityMesh,
-    itemMesh: ItemMesh,
     meshMakers: {},
     $INIT() {
         //@ts-ignore
@@ -40,32 +35,43 @@ export const MeshManager = {
         delete this.meshes[type][dimesnion][chunkKey];
     },
     handleItemUpdate(x, y, z, data) {
-        const meshData = {
-            positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
-            normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),
-            indiciesArray: new Int32Array(data[ConstructItemIndexes.indiciesArray]),
-            RGBLightColorsArray: new Float32Array(data[ConstructItemIndexes.RGBLightColorsArray]),
-            sunLightColorsArray: new Float32Array(data[ConstructItemIndexes.sunLightColorsArray]),
-            uvArray: new Float32Array(data[ConstructItemIndexes.uvArray]),
-            extra: [],
-        };
-        this.itemMesh.createMesh(x, y, z, meshData);
+        /*   const meshData: ItemMeshSetData = {
+           positionArray: new Float32Array(data[ConstructItemIndexes.positionArray]),
+           normalsArray: new Float32Array(data[ConstructItemIndexes.normalsArray]),
+           indiciesArray: new Int32Array(data[ConstructItemIndexes.indiciesArray]),
+           RGBLightColorsArray: new Float32Array(
+            data[ConstructItemIndexes.RGBLightColorsArray]
+           ),
+           sunLightColorsArray: new Float32Array(
+            data[ConstructItemIndexes.sunLightColorsArray]
+           ),
+           uvArray: new Float32Array(data[ConstructItemIndexes.uvArray]),
+           extra: [],
+          };
+        
+          RenderManager.itemMesh.createTemplateMesh(x, y, z, meshData); */
     },
     handleEntityUpdate(x, y, z, data) {
-        const meshData = {
-            positionArray: new Float32Array(data[ConstructEntityIndexes.positionArray]),
-            normalsArray: new Float32Array(data[ConstructEntityIndexes.normalsArray]),
-            indiciesArray: new Int32Array(data[ConstructEntityIndexes.indiciesArray]),
-            faceDataArray: new Float32Array(data[ConstructEntityIndexes.faceDataArray]),
-            AOColorsArray: new Float32Array(data[ConstructEntityIndexes.AOColorsArray]),
-            RGBLightColorsArray: new Float32Array(data[ConstructEntityIndexes.RGBLightColorsArray]),
-            sunLightColorsArray: new Float32Array(data[ConstructEntityIndexes.sunLightColorsArray]),
-            colorsArray: new Float32Array(data[ConstructEntityIndexes.colorsArray]),
-            uvArray: new Float32Array(data[ConstructEntityIndexes.uvArray]),
-            overlayUVArray: new Float32Array(data[ConstructEntityIndexes.overlayUVArray]),
-            extra: [],
-        };
-        this.entityMesh.createMesh(x, y, z, meshData);
+        /*   const meshData: MeshSetData = {
+           positionArray: new Float32Array(data[ConstructEntityIndexes.positionArray]),
+           normalsArray: new Float32Array(data[ConstructEntityIndexes.normalsArray]),
+           indiciesArray: new Int32Array(data[ConstructEntityIndexes.indiciesArray]),
+           faceDataArray: new Float32Array(data[ConstructEntityIndexes.faceDataArray]),
+           AOColorsArray: new Float32Array(data[ConstructEntityIndexes.AOColorsArray]),
+           RGBLightColorsArray: new Float32Array(
+            data[ConstructEntityIndexes.RGBLightColorsArray]
+           ),
+           sunLightColorsArray: new Float32Array(
+            data[ConstructEntityIndexes.sunLightColorsArray]
+           ),
+           colorsArray: new Float32Array(data[ConstructEntityIndexes.colorsArray]),
+           uvArray: new Float32Array(data[ConstructEntityIndexes.uvArray]),
+           overlayUVArray: new Float32Array(
+            data[ConstructEntityIndexes.overlayUVArray]
+           ),
+           extra: [],
+          };
+          this.entityMesh.createMesh(x, y, z, meshData); */
     },
     handleChunkUpdate(dimesnion, type, chunkKey, data) {
         const meshData = {
@@ -74,11 +80,10 @@ export const MeshManager = {
             indiciesArray: data[7],
             faceDataArray: data[8],
             AOColorsArray: data[9],
-            RGBLightColorsArray: data[10],
-            sunLightColorsArray: data[11],
-            colorsArray: data[12],
-            uvArray: data[13],
-            overlayUVArray: data[14],
+            lightColorsArray: data[10],
+            colorsArray: data[11],
+            uvArray: data[12],
+            overlayUVArray: data[13],
             extra: [],
         };
         if (!this.meshes[type][dimesnion]) {

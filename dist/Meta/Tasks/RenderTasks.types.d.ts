@@ -9,8 +9,7 @@ export declare type SetChunkMeshTask = [
     indicies: Int32Array,
     faceData: Float32Array,
     AOColors: Float32Array,
-    RGBLightColors: Float32Array,
-    sunLightColors: Float32Array,
+    lightColors: Float32Array,
     colors: Float32Array,
     uvs: Float32Array,
     overlayUVs: Float32Array

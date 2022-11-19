@@ -3,13 +3,12 @@ import { Vector3 } from "../../../out/Meta/Util.types";
 import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRender.js";
 
 export const SetUpEngine = (canvas: HTMLCanvasElement) => {
-
  let antialias = false;
  const graphics = localStorage.getItem("grahpics");
- if(graphics) {
-    if(graphics == "medium" || graphics == "high" || graphics == "uldate") {
-        antialias = true;
-    }
+ if (graphics) {
+  if (graphics == "medium" || graphics == "high" || graphics == "uldate") {
+   antialias = true;
+  }
  }
 
  const engine = new BABYLON.Engine(canvas, antialias, {});
@@ -107,6 +106,10 @@ export const SetUpDefaultCamera = (
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;
  camera.position.z = startPosition.z;
+ camera.keysUp.push(87);
+ camera.keysDown.push(83);
+ camera.keysLeft.push(65);
+ camera.keysRight.push(68);
  camera.setTarget(target);
  if (makeActiveCamera) {
   scene.activeCamera = camera;
@@ -114,6 +117,7 @@ export const SetUpDefaultCamera = (
 
  if (attachControls) {
   camera.attachControl(canvas, true);
+  camera.inputs.addKeyboard();
  }
  return camera;
 };

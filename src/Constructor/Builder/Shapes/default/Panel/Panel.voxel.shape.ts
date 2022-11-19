@@ -5,13 +5,13 @@ let animationState = 0;
 
 const shapeStates: Record<number, () => void> = {
  0: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("south")
    .addData(1, animationState)
    .updatePosition(0.5, 0.5, 0.05)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("north")
    .addData(1, animationState)
@@ -19,13 +19,13 @@ const shapeStates: Record<number, () => void> = {
    .create();
  },
  1: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("north")
    .addData(1, animationState)
    .updatePosition(0.5, 0.5, 0.95)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("south")
    .addData(1, animationState)
@@ -33,13 +33,13 @@ const shapeStates: Record<number, () => void> = {
    .create();
  },
  2: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("east")
    .addData(1, animationState)
    .updatePosition(0.95, 0.5, 0.5)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("west")
    .addData(1, animationState)
@@ -47,13 +47,13 @@ const shapeStates: Record<number, () => void> = {
    .create();
  },
  3: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("west")
    .addData(1, animationState)
    .updatePosition(0.05, 0.5, 0.5)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("east")
    .addData(1, animationState)
@@ -61,13 +61,13 @@ const shapeStates: Record<number, () => void> = {
    .create();
  },
  4: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("top")
    .addData(1, animationState)
    .updatePosition(0.5, 0.05, 0.5)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("bottom")
    .addData(1, animationState)
@@ -75,13 +75,13 @@ const shapeStates: Record<number, () => void> = {
    .create();
  },
  5: () => {
-  VoxelMesher.face.loadIn("top");
+  VoxelMesher.templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("bottom")
    .addData(1, animationState)
    .updatePosition(0.5, 0.95, 0.5)
    .create();
-  VoxelMesher.face.loadIn("bottom");
+  VoxelMesher.templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("top")
    .addData(1, animationState)

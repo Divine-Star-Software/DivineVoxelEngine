@@ -232,18 +232,10 @@ export declare const DVER: {
         fogData: BABYLON.Vector4;
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").RenderEffectsOptions;
         shaderBuilder: {
-            buildFloraVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildLiquidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildSolidVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildItemVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildMagmaVertexShader(uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, overlayAnimationFunction?: string): string;
-            buildSolidFragmentShader(): string;
-            buildItemFragmentShader(): string;
-            buildLiquidFragmentShader(): string;
-            buildFloraFragmentShader(): string;
-            buildMagmaFragmentShader(): string;
-            getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelSubstanceType, uniformRegister?: string, animationFunction?: string, overlayUniformRegister?: string, ovlerayAnimationFunction?: string): string;
-            getDefaultFragmentShader(voxelSubstance: import("../Meta/index.js").VoxelSubstanceType): string;
+            buildVertexShader(data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
+            buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
+            getDefaultVertexShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType, data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
+            getDefaultFragmentShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType): string;
             getSkyBoxVertexShader(): string;
             getSkyBoxFragmentShader(): string;
         };
@@ -269,91 +261,36 @@ export declare const DVER: {
                 keyCounts: number[];
                 substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
             }[];
-            registerAnimations(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): {
-                uniforms: string[];
-                uniformRegisterCode: string;
-                animationFunctionCode: string;
-            };
+            registerAnimations(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
             registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
-        solidMaterial: {
-            material: BABYLON.ShaderMaterial | null;
-            time: number;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            updateFogOptions(data: BABYLON.Vector4): void;
-            setSunLightLevel(level: number): void;
-            setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
-            overrideMaterial(material: any): void;
-            runEffects(): void;
-        };
-        floraMaterial: {
-            material: BABYLON.ShaderMaterial | null;
-            doEffects: boolean;
-            time: number;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            updateFogOptions(data: BABYLON.Vector4): void;
-            updateEffects(doEffects: boolean): void;
-            setSunLightLevel(level: number): void;
-            setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
-            runEffects(): void;
-        };
-        liquidMaterial: {
-            material: BABYLON.ShaderMaterial | null;
-            doEffects: boolean;
-            time: number;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            updateFogOptions(data: BABYLON.Vector4): void;
-            updateEffects(doEffects: boolean): void;
-            setSunLightLevel(level: number): void;
-            setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
-            runEffects(): void;
-        };
-        magmaMaterial: {
-            material: BABYLON.ShaderMaterial | null;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            time: number;
-            updateFogOptions(data: BABYLON.Vector4): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
-            runEffects(): void;
-        };
-        itemMaterial: {
-            material: BABYLON.ShaderMaterial | null;
-            context: CanvasRenderingContext2D | null;
-            time: number;
-            updateFogOptions(data: BABYLON.Vector4): void;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            setSunLightLevel(level: number): void;
-            setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(data: import("../Meta/Render/Materials/Material.types.js").MaterialCreateData): BABYLON.ShaderMaterial;
-            overrideMaterial(material: any): void;
-            runEffects(): void;
-        };
+        solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
+        floraMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
+        liquidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
+        magmaMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
+        itemMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
+        solidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
+        floraMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
+        liquidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
+        magmaMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
+        itemMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         solidStandardMaterial: {
             material: BABYLON.StandardMaterial | null;
-            plugin: import("./Render/Materials/Solid/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;
+            plugin: import("./Render/Materials/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;
             $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene): void;
             getMaterial(): BABYLON.StandardMaterial;
         };
         liquidStandardMaterial: {
             material: BABYLON.StandardMaterial | null;
             reflectionprobe: BABYLON.RenderTargetTexture | null;
-            plugin: import("./Render/Materials/Liquid/Standard/LiquidMaterial.bjsmp.js").LiquidMaterialPlugin | null;
+            plugin: import("./Render/Materials/Standard/LiquidMaterial.bjsmp.js").LiquidMaterialPlugin | null;
             $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
             getMaterial(): BABYLON.StandardMaterial;
             addToRenderList(mesh: BABYLON.Mesh): void;
         };
         skyBoxMaterial: {
             material: BABYLON.ShaderMaterial | null;
-            context: CanvasRenderingContext2D | null;
             time: number;
             getMaterial(): BABYLON.ShaderMaterial | null;
             updateFogOptions(data: BABYLON.Vector4): void;
@@ -363,21 +300,6 @@ export declare const DVER: {
             createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial;
             overrideMaterial(material: any): void;
             runEffects(): void;
-        };
-        solidMesh: import("../Meta/index.js").VoxelMeshInterface;
-        floraMesh: import("../Meta/index.js").VoxelMeshInterface;
-        liquidMesh: import("../Meta/index.js").VoxelMeshInterface;
-        magmaMesh: import("../Meta/index.js").VoxelMeshInterface;
-        itemMesh: {
-            pickable: boolean;
-            checkCollisions: boolean;
-            seralize: boolean;
-            clearCachedGeometry: boolean;
-            createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
-            syncSettings(settings: EngineSettingsData): void;
-            _applyVertexData(mesh: BABYLON.Mesh, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): void;
-            rebuildMeshGeometory(mesh: BABYLON.Mesh, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
-            createMesh(x: number, y: number, z: number, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
         };
         scene: BABYLON.Scene | null;
         reStart(): void;
@@ -396,28 +318,6 @@ export declare const DVER: {
         scene: BABYLON.Scene | null;
         runningUpdate: boolean;
         meshes: Record<import("../Meta/index.js").VoxelSubstanceType, Record<string, Record<string, BABYLON.Mesh>>>;
-        entityMesh: {
-            pickable: boolean;
-            checkCollisions: boolean;
-            seralize: boolean;
-            clearCachedGeometry: boolean;
-            createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
-            syncSettings(settings: EngineSettingsData): void;
-            _applyVertexData(mesh: BABYLON.Mesh, data: import("../Meta/index.js").MeshSetData): void;
-            rebuildMeshGeometory(mesh: BABYLON.Mesh, data: import("../Meta/index.js").MeshSetData): Promise<BABYLON.Mesh>;
-            createMesh(x: number, y: number, z: number, data: import("../Meta/index.js").MeshSetData): Promise<BABYLON.Mesh>;
-        };
-        itemMesh: {
-            pickable: boolean;
-            checkCollisions: boolean;
-            seralize: boolean;
-            clearCachedGeometry: boolean;
-            createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
-            syncSettings(settings: EngineSettingsData): void;
-            _applyVertexData(mesh: BABYLON.Mesh, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): void;
-            rebuildMeshGeometory(mesh: BABYLON.Mesh, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
-            createMesh(x: number, y: number, z: number, data: import("../Meta/Render/Meshes/ItemMesh.types.js").ItemMeshSetData): Promise<BABYLON.Mesh>;
-        };
         meshMakers: Record<import("../Meta/index.js").VoxelSubstanceType, import("../Meta/index.js").VoxelMeshInterface>;
         $INIT(): void;
         setScene(scene: BABYLON.Scene): void;

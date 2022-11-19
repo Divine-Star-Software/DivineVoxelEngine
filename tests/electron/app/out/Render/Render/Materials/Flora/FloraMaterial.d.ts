@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import type { MaterialCreateData } from "Meta/Render/Materials/Material.types.js";
 export declare const FloraMaterial: {

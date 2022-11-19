@@ -2,11 +2,6 @@
 
 export const skyboxShaders = {
     fragMain: `
-
-
-
-
-    
           vec3 c = vFogColor.rgb;
           c.r -= .2;
           c.g -= .2;

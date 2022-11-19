@@ -1,4 +1,5 @@
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import { ShaderAnimationData } from "Meta/Render/Animations/Animation.types";
 
 export const AnimationManager = {
  //@ts-ignore
@@ -34,11 +35,7 @@ export const AnimationManager = {
   animations: number[][],
   animationTimes: number[][],
   overlay = false
- ): {
-  uniforms: string[];
-  uniformRegisterCode: string;
-  animationFunctionCode: string;
- } {
+ ): ShaderAnimationData {
   const returnUniforms: string[] = [];
   let uniformRegisterCode = `//animations\n`;
 

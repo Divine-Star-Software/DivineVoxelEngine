@@ -21,8 +21,7 @@ export type MeshSetData = {
  indiciesArray: Int32Array;
  faceDataArray: Float32Array;
  AOColorsArray: Float32Array;
- RGBLightColorsArray: Float32Array;
- sunLightColorsArray: Float32Array;
+ lightColorsArray: Float32Array;
  colorsArray: Float32Array;
  uvArray: Float32Array;
  overlayUVArray: Float32Array;

@@ -1,7 +1,6 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const SkyBoxMaterial = {
     material: null,
-    context: null,
     time: 0,
     getMaterial() {
         return this.material;

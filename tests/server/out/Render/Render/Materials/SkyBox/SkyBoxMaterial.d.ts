@@ -2,7 +2,6 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const SkyBoxMaterial: {
     material: BABYLON.ShaderMaterial | null;
-    context: CanvasRenderingContext2D | null;
     time: number;
     getMaterial(): BABYLON.ShaderMaterial | null;
     updateFogOptions(data: BABYLON.Vector4): void;

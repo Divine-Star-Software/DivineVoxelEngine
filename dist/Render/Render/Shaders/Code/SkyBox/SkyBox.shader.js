@@ -1,11 +1,6 @@
 //https://docs.godotengine.org/en/3.0/tutorials/3d/vertex_displacement_with_shaders.html
 export const skyboxShaders = {
     fragMain: `
-
-
-
-
-    
           vec3 c = vFogColor.rgb;
           c.r -= .2;
           c.g -= .2;

@@ -4,8 +4,7 @@ export declare type GeometryBuildData = {
     normals: number[];
     indices: number[];
     faceData: number[];
-    RGBLightColors: number[];
-    sunLightColors: number[];
+    lightColors: number[];
     AOColors: number[];
     colors: number[];
     uvs: number[];

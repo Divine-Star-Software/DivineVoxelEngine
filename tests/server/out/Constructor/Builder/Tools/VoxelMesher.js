@@ -1,11 +1,10 @@
-//data
-import { MeshFaceDataByte } from "../../../Data/Meshing/MeshFaceDataBytes.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 //managers
 import { ShapeManager } from "../../Managers/Shapes/ShapeManager.js";
 import { GetConstructorDataTool } from "../../Tools/Data/ConstructorDataTool.js";
 import { GeometryBuilder } from "../Geometry/GeometryBuilder.js";
+const dataTool = GetConstructorDataTool();
 /**# Voxel Mesher Tool
  * ---
  * Tool desinged to help make it easy to build voxel meshes.
@@ -27,8 +26,7 @@ export const VoxelMesher = {
             normals: [],
             indices: [],
             faceData: [],
-            RGBLightColors: [],
-            sunLightColors: [],
+            lightColors: [],
             colors: [],
             AOColors: [],
             uvs: [],
@@ -66,7 +64,7 @@ export const VoxelMesher = {
             data.shapeState = template.shapeStateTemplate[i];
             ShapeManager.getShape(template.shapeTemplate[i]).addToChunkMesh(data);
             if (data.flowTemplate) {
-                if (this.face.loadIn("top").isExposed()) {
+                if (this.templateData.loadIn("top").isExposed()) {
                     data.flowTemplateIndex += 4;
                 }
             }
@@ -79,8 +77,7 @@ export const VoxelMesher = {
         const indiciesArray = new Int32Array(data.indices);
         const faceDataArray = new Float32Array(data.faceData);
         const AOColorsArray = new Float32Array(data.AOColors);
-        const RGBLightColorsArray = new Float32Array(data.RGBLightColors);
-        const sunLightColorsArray = new Float32Array(data.sunLightColors);
+        const lightColors = new Float32Array(data.lightColors);
         const colorsArray = new Float32Array(data.colors);
         const uvArray = new Float32Array(data.uvs);
         const overlayUVArray = new Float32Array(data.overlayUVs);
@@ -93,8 +90,7 @@ export const VoxelMesher = {
                 indiciesArray,
                 faceDataArray,
                 AOColorsArray,
-                RGBLightColorsArray,
-                sunLightColorsArray,
+                lightColors,
                 colorsArray,
                 uvArray,
                 overlayUVArray,
@@ -105,15 +101,14 @@ export const VoxelMesher = {
                 indiciesArray.buffer,
                 faceDataArray.buffer,
                 AOColorsArray.buffer,
-                RGBLightColorsArray.buffer,
-                sunLightColorsArray.buffer,
+                lightColors.buffer,
                 colorsArray.buffer,
                 uvArray.buffer,
                 overlayUVArray.buffer,
             ],
         ];
     },
-    data: GetConstructorDataTool(),
+    data: dataTool,
     quad: {
         _direction: "top",
         _faceData: 0,
@@ -127,7 +122,8 @@ export const VoxelMesher = {
             4: { x: 0, y: 0, z: 0 },
         },
         setAnimationState(type) {
-            this._faceData = MeshFaceDataByte.setAnimationType(type, this._faceData);
+            this._faceData = type;
+            // this._faceData = MeshFaceDataByte.setAnimationType(type, this._faceData);
             return this;
         },
         setDimensions(width = 0, height = 0) {
@@ -345,18 +341,12 @@ export const VoxelMesher = {
             },
         },
         AO: {
-            toLinearSpace(r, g, b) {
-                r = r ** 2.2;
-                g = g ** 2.2;
-                b = b ** 2.2;
-                return [r, g, b];
-            },
             add(stride = 4) {
                 if (stride == 4) {
                     for (let v = 0; v < 4; v++) {
                         const aColor = VoxelMesher._data.aoTemplate[VoxelMesher._data.aoIndex + v];
-                        const newColor = this.toLinearSpace(aColor, aColor, aColor);
-                        VoxelMesher._data.AOColors.push(newColor[0], newColor[1], newColor[2], 1);
+                        const newColor = aColor ** 2.2;
+                        VoxelMesher._data.AOColors.push(newColor);
                     }
                     if (VoxelMesher.templateIncrement) {
                         VoxelMesher._data.aoIndex += 4;
@@ -364,9 +354,9 @@ export const VoxelMesher = {
                 }
                 if (stride == 1) {
                     const aoValue = VoxelMesher._data.aoTemplate[VoxelMesher._data.aoIndex];
+                    const newColor = aoValue ** 2.2;
                     for (let v = 0; v < 4; v++) {
-                        const newColor = this.toLinearSpace(aoValue, aoValue, aoValue);
-                        VoxelMesher._data.AOColors.push(newColor[0], newColor[1], newColor[2], 1);
+                        VoxelMesher._data.AOColors.push(newColor);
                     }
                     if (VoxelMesher.templateIncrement) {
                         VoxelMesher._data.aoIndex += 1;
@@ -374,7 +364,37 @@ export const VoxelMesher = {
                 }
                 return VoxelMesher.quad;
             },
-            addCustom(data) { },
+            addCustom(data) {
+                if (data.length == 4) {
+                    for (let v = 0; v < 4; v++) {
+                        let aColor = data[v];
+                        if (aColor < 0) {
+                            aColor =
+                                VoxelMesher._data.aoTemplate[VoxelMesher._data.aoIndex + Math.abs(aColor) - 1];
+                        }
+                        const newColor = aColor ** 2.2;
+                        VoxelMesher._data.AOColors.push(newColor);
+                    }
+                    if (VoxelMesher.templateIncrement) {
+                        VoxelMesher._data.aoIndex += 4;
+                    }
+                }
+                if (data.length == 1) {
+                    let aoValue = data[0];
+                    if (aoValue < 0) {
+                        aoValue =
+                            VoxelMesher._data.aoTemplate[VoxelMesher._data.aoIndex + Math.abs(aoValue) - 1];
+                    }
+                    const newColor = aoValue ** 2.2;
+                    for (let v = 0; v < 4; v++) {
+                        VoxelMesher._data.AOColors.push(newColor);
+                    }
+                    if (VoxelMesher.templateIncrement) {
+                        VoxelMesher._data.aoIndex += 1;
+                    }
+                }
+                return VoxelMesher.quad;
+            },
         },
         light: {
             lightMap: [
@@ -389,8 +409,7 @@ export const VoxelMesher = {
                         const r = this.lightMap[values[1]];
                         const g = this.lightMap[values[2]];
                         const b = this.lightMap[values[3]];
-                        VoxelMesher._data.sunLightColors.push(s, s, s, 1);
-                        VoxelMesher._data.RGBLightColors.push(r, g, b, 1);
+                        VoxelMesher._data.lightColors.push(r, g, b, s);
                     }
                     if (VoxelMesher.templateIncrement) {
                         VoxelMesher._data.lightIndex += 4;
@@ -404,8 +423,7 @@ export const VoxelMesher = {
                     const g = this.lightMap[values[2]];
                     const b = this.lightMap[values[3]];
                     for (let v = 0; v < 4; v++) {
-                        VoxelMesher._data.sunLightColors.push(s, s, s, 1);
-                        VoxelMesher._data.RGBLightColors.push(r, g, b, 1);
+                        VoxelMesher._data.lightColors.push(r, g, b, s);
                     }
                     if (VoxelMesher.templateIncrement) {
                         VoxelMesher._data.lightIndex += 1;
@@ -413,10 +431,100 @@ export const VoxelMesher = {
                 }
                 return VoxelMesher.quad;
             },
-            addCustom(data) { },
+            addCustom(data) {
+                if (data.length == 4) {
+                    for (let v = 0; v < 4; v++) {
+                        let value = data[v];
+                        if (value < 0 && value > -5) {
+                            value =
+                                VoxelMesher._data.lightTemplate[VoxelMesher._data.lightIndex + Math.abs(value) - 1];
+                        }
+                        if (value == -5) {
+                            value = this._getBrightestLight();
+                        }
+                        const values = LightData.getLightValues(value);
+                        const s = this.lightMap[values[0]];
+                        const r = this.lightMap[values[1]];
+                        const g = this.lightMap[values[2]];
+                        const b = this.lightMap[values[3]];
+                        VoxelMesher._data.lightColors.push(r, g, b, s);
+                    }
+                    if (VoxelMesher.templateIncrement) {
+                        VoxelMesher._data.lightIndex += 4;
+                    }
+                }
+                if (data.length == 1) {
+                    let lightValue = data[0];
+                    if (lightValue < 0 && lightValue > -5) {
+                        lightValue =
+                            VoxelMesher._data.lightTemplate[VoxelMesher._data.lightIndex + Math.abs(lightValue) - 1];
+                    }
+                    if (lightValue == -5) {
+                        lightValue = this._getBrightestLight();
+                    }
+                    const values = LightData.getLightValues(lightValue);
+                    const s = this.lightMap[values[0]];
+                    const r = this.lightMap[values[1]];
+                    const g = this.lightMap[values[2]];
+                    const b = this.lightMap[values[3]];
+                    for (let v = 0; v < 4; v++) {
+                        VoxelMesher._data.lightColors.push(r, g, b, s);
+                    }
+                    if (VoxelMesher.templateIncrement) {
+                        VoxelMesher._data.lightIndex += 1;
+                    }
+                }
+                return VoxelMesher.quad;
+            },
+            _getBrightestLight() {
+                const direction = VoxelMesher.quad._direction;
+                const x = dataTool.position.x;
+                const y = dataTool.position.y;
+                const z = dataTool.position.z;
+                let l = this._getLight[direction](x, y, z);
+                dataTool.loadIn(x, y, z);
+                if (l < 0) {
+                    l = dataTool.getLight();
+                }
+                if (l < 0)
+                    l = 0;
+                return l;
+            },
+            _getLight: {
+                top: (x, y, z) => {
+                    if (!dataTool.loadIn(x, y + 1, z))
+                        return -1;
+                    return dataTool.getLight();
+                },
+                bottom: (x, y, z) => {
+                    if (!dataTool.loadIn(x, y - 1, z))
+                        return -1;
+                    return dataTool.getLight();
+                },
+                east: (x, y, z) => {
+                    if (!dataTool.loadIn(x + 1, y, z))
+                        return -1;
+                    return dataTool.getLight();
+                },
+                west: (x, y, z) => {
+                    if (!dataTool.loadIn(x - 1, y, z))
+                        return -1;
+                    return dataTool.getLight();
+                },
+                south: (x, y, z) => {
+                    if (!dataTool.loadIn(x, y, z - 1))
+                        return -1;
+                    return dataTool.getLight();
+                },
+                north: (x, y, z) => {
+                    if (!dataTool.loadIn(x, y, z + 1))
+                        return -1;
+                    return dataTool.getLight();
+                },
+            },
         },
     },
-    face: {
+    templateData: {
         _face: "top",
         _exposed: false,
         loadIn(face) {

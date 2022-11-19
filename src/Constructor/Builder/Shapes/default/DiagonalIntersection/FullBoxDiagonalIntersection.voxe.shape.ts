@@ -42,7 +42,7 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
    animationState = 1;
   }
   VoxelMesher.quad.setDimensions(1, 1);
-  VoxelMesher.setTemplateIncrement(false).face.loadIn("top");
+  VoxelMesher.setTemplateIncrement(false).templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("north")
    .addData(1, animationState)
@@ -51,7 +51,7 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
    .setTransform(4, 0, 0, -1)
    .create()
    .clearTransform();
-  VoxelMesher.setTemplateIncrement(true).face.loadIn("top");
+  VoxelMesher.setTemplateIncrement(true).templateData.loadIn("top");
   VoxelMesher.quad
    .setDirection("north")
    .addData(1, animationState)
@@ -61,7 +61,7 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
    .create()
    .clearTransform();
 
-  VoxelMesher.setTemplateIncrement(false).face.loadIn("bottom");
+  VoxelMesher.setTemplateIncrement(false).templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("south")
    .addData(1, animationState)
@@ -71,7 +71,7 @@ export const FullBoxDiagonalIntersection: VoxelShapeInterface = {
    .create()
    .clearTransform();
 
-  VoxelMesher.setTemplateIncrement(true).face.loadIn("bottom");
+  VoxelMesher.setTemplateIncrement(true).templateData.loadIn("bottom");
   VoxelMesher.quad
    .setDirection("south")
    .addData(1, animationState)

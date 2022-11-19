@@ -15,5 +15,4 @@ export const GeometryBuilder = {
     createQuad(directon, dimensions, origion, flip = false, transforms) {
         QuadBuilder.create(directon, origion, dimensions, this.data, flip, transforms);
     },
-    createTriangle() { },
 };

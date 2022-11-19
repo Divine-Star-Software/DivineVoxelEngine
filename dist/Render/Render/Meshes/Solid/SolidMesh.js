@@ -43,6 +43,12 @@ export const SolidMesh = {
         mesh.setVerticesData("sunLightColors", data.sunLightColorsArray, false, 4);
         mesh.setVerticesData("colors", data.colorsArray, false, 4);
         if (this.clearCachedGeometry) {
+            const bbInfo = mesh.getBoundingInfo();
+            if (mesh.subMeshes) {
+                for (const sm of mesh.subMeshes) {
+                    sm.setBoundingInfo(bbInfo);
+                }
+            }
             mesh.geometry?.clearCachedData();
         }
         mesh.freezeWorldMatrix();

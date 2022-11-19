@@ -1,10 +1,7 @@
 import { type EngineSettingsData } from "Meta/index.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { ShapeHelper } from "./Shapes/ShapeHelper.js";
-import { UVHelper } from "./Shapes/UVHelper.js";
 import { ShapeManager } from "../Managers/Shapes/ShapeManager.js";
-import { ShapeBuilder } from "./Shapes/ShapeBuilder.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
 import { ChunkMesher } from "./Mesher/ChunkMesher.js";
@@ -14,14 +11,10 @@ import { EntityMesher } from "./Mesher/EntityMesher.js";
 import { ItemMesher } from "./Mesher/ItemMesher.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
-import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
 
 export const Builder = {
  textureManager: TextureManager,
  shapeManager: ShapeManager,
- shapeHelper: ShapeHelper,
- shapeBuilder: ShapeBuilder,
- uvHelper: UVHelper,
  chunkMesher: ChunkMesher,
  entityMesher: EntityMesher,
  itemMesher: ItemMesher,

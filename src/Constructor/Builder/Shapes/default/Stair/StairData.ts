@@ -1,1523 +1,431 @@
+import { StairStates } from "./StairStates.js";
 import type { DirectionNames } from "Meta/Util.types";
-import type { stairBuildData } from "./StairBuilder";
+import type {
+ QuadVertexes,
+ TextureRotations,
+} from "Meta/Constructor/Geometry/Geometry.types";
 
-export const StairData: Record<
- number,
- Record<DirectionNames, stairBuildData>
-> = {
- /**
-  *    Bottom
-  *      N
-  *      |
-  *     \ /
-  *      S
-  */
- 0: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [0, -1, -2, -3],
-    2: [0.4, 1, 1, 0.4],
-   },
-   transform: {
-    2: [0, -0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   dimensions: {
-    1: [0.5, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "normal",
-  },
-  north: {
-   type: "stair-side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0, 0.5, -0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *    Bottom
-  *
-  *  E ==> W
-  *
-  */
- 1: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [0, -1, -2, -3],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    2: [0.5, -0.5, 0],
-   },
-   uvs: {
-    1: { r: 270, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 270, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   dimensions: {
-    1: [0.25, 0.5, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "stair-side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [-0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-  west: {
-   type: "normal",
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
+type VertexData = [number, number, number, number] | [number];
 
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *    Bottom
-  *      N
-  *     / \
-  *      |
-  *      S
-  */
- 2: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 0.4, 0.4, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "stair-side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "normal",
-  },
- },
- /**
-  *    Bottom
-  *
-  *  E <=== W
-  *
-  */
- 3: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 1, 0.4, 0.4],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 90, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 90, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.25, 0.5, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "normal",
-  },
-  west: {
-   type: "stair-side",
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *    Top
-  *      N
-  *      |
-  *     \ /
-  *      S
-  */
- 4: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [0, -1, -2, -3],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   dimensions: {
-    1: [0.5, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "normal",
-  },
-  north: {
-   type: "stair-side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, -0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *    Top
-  *
-  *  E ==> W
-  *
-  */
- 5: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [0, -1, -2, -3],
-    2: [0.4, 1, 1, 0.4],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 270, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 270, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   dimensions: {
-    1: [0.25, 0.5, 0.5],
-   },
-  },
-  east: {
-   type: "stair-side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [-0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-  west: {
-   type: "normal",
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-
-  north: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *    Top
-  *      N
-  *     / \
-  *      |
-  *      S
-  */
- 6: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 1, 0.4, 0.4],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "stair-side",
-   StairAO: {
-    1: [0.4, 0.4, 1, 1],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    1: [0, 0, 0.5],
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "normal",
-  },
- },
- /**
-  *    Top
-  *
-  *  E <=== W
-  *
-  */
- 7: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 0.4, 0.4, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 90, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 90, ws: 0, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.25, 0.5, 0.5],
-   },
-  },
-  east: {
-   type: "normal",
-  },
-  west: {
-   type: "stair-side",
-   transform: {
-    1: [0.5, 0, 0],
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 0.5 },
-    2: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-   },
-   StairAO: {
-    1: [0.4, 0.4, 1, 1],
-    2: [0, -1, 1, 1],
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-   },
-  },
-
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
-
- /**********
-  *
-  * Connected States
-  *
-  * ********
-  */
-
- /**
-  *  Bottom
-  *  South To North
-  */
- 8: {
-  top: {
-   type: "stair-top",
-   flip: {
-    1: true,
-   },
-   StairAO: {
-    1: [1, 0.1, 1, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [-0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0, 0.5, -0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *  Bottom
-  *  North To South
-  *
-  */
- 9: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 0.1, 1, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [-0.5, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *
-  */
- 10: {
-  top: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 1, 1, 0.1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0.5, 0.5, -0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  *
-  */
- 11: {
-  top: {
-   type: "stair-top",
-   flip: {
-    1: true,
-   },
-   StairAO: {
-    1: [1, 1, 1, 0.1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, -0.5, 0],
-    2: [0.5, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  bottom: {
-   type: "normal",
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0.5, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [1, 1, 0.4, 0.4],
-   },
-   transform: {
-    2: [0.5, 0.5, 0.5],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [1, 1, -2, -3],
-    2: [0, -1, 1, 1],
-   },
-   transform: {
-    2: [0.5, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- /**
-  * Connected Top States
-  */
- 12: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   flip: {
-    1: true,
-   },
-   StairAO: {
-    1: [1, 0.1, 1, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 0, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [-0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, -0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- 13: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 1, 1, 0.1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [-0.5, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
-
- 14: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   StairAO: {
-    1: [1, 0.1, 1, 1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 0, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 0, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, -0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
- 15: {
-  top: {
-   type: "normal",
-  },
-  bottom: {
-   type: "stair-top",
-   flip: {
-    1: true,
-   },
-   StairAO: {
-    1: [1, 1, 1, 0.1],
-    2: [0, -1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.5],
-    2: [0.25, 0.25, 0.5],
-   },
-  },
-  east: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0, we: 0.5, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  west: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.5, 0.25, 0.25],
-   },
-  },
-  south: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [0.4, 0.4, 1, 1],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0.5],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
-  north: {
-   type: "side",
-   StairAO: {
-    1: [0, -1, 1, 1],
-    2: [1, 1, -2, -3],
-   },
-   transform: {
-    1: [0, 0.5, 0],
-    2: [0.5, 0, 0],
-   },
-   uvs: {
-    1: { r: 180, ws: 0, we: 1, hs: 0.5, he: 1 },
-    2: { r: 180, ws: 0.5, we: 1, hs: 0, he: 0.5 },
-   },
-   dimensions: {
-    1: [0.5, 0.5, 0.25],
-    2: [0.25, 0.5, 0.25],
-   },
-  },
- },
+type UVData = [
+ rotation: TextureRotations,
+ ws: number,
+ we: number,
+ hs: number,
+ he: number
+];
+export type QuadData = {
+ direction: DirectionNames;
+ dimensions: [width: number, height: number];
+ position: [x: number, y: number, z: number];
+ AO: VertexData;
+ light: VertexData;
+ uvs: UVData;
+ flip: number;
 };
+
+export type BuilderData = QuadData[][];
+
+const getHalfHeight = (
+ direction: DirectionNames,
+ position: [x: number, y: number, z: number],
+ AO: VertexData,
+ uvs: [number, number]
+): QuadData => {
+ const quad = getQuad(direction, position);
+ quad.dimensions[1] = 0.5;
+ quad.AO = AO;
+ quad.light = [-5];
+ quad.uvs = [0, 0, 1, uvs[0], uvs[1]];
+ return quad;
+};
+const getHalfWidth = (
+ direction: DirectionNames,
+ position: [x: number, y: number, z: number],
+ AO: VertexData,
+ uvs: [number, number]
+): QuadData => {
+ const quad = getHalfHeight(direction, position, AO, uvs);
+ quad.dimensions[0] = 0.5;
+ quad.dimensions[1] = 1;
+ quad.uvs = [0, uvs[0], uvs[1], 0, 1];
+ return quad;
+};
+const getQuater = (
+ direction: DirectionNames,
+ position: [x: number, y: number, z: number],
+ AO: VertexData,
+ uvs: UVData
+): QuadData => {
+ const quad = getQuad(direction, position);
+ quad.dimensions[0] = 0.5;
+ quad.dimensions[1] = 0.5;
+ quad.AO = AO;
+ quad.uvs = uvs;
+ return quad;
+};
+const getQuad = (
+ direction: DirectionNames,
+ position: [x: number, y: number, z: number],
+ AO: VertexData = [-1, -2, -3, -4],
+ flip = -1 | 0 | 1
+): QuadData => {
+ return {
+  direction: direction,
+  dimensions: [1, 1],
+  position: position,
+  AO: AO,
+  light: [-1, -2, -3, -4],
+  uvs: [0, 0, 1, 0, 1],
+  flip: flip,
+ };
+};
+
+const fullQuads: Record<DirectionNames, QuadData> = {
+ top: getQuad("top", [0.5, 1, 0.5]),
+ bottom: getQuad("bottom", [0.5, 0, 0.5]),
+ east: getQuad("east", [1, 0.5, 0.5]),
+ west: getQuad("west", [0, 0.5, 0.5]),
+ south: getQuad("south", [0.5, 0.5, 0]),
+ north: getQuad("north", [0.5, 0.5, 1]),
+};
+
+const a = 0.4;
+export const StairBuilderData: Record<number, BuilderData> = {};
+//bottom
+StairBuilderData[StairStates.normal.bottom.north] = [
+ [
+  getHalfHeight("top", [0.5, 1, 0.75], [1, -2, -3, 1], [0, 0.5]),
+  getHalfHeight("top", [0.5, 0.5, 0.25], [1, a, a, 1], [0.5, 1]),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [1, 0.75, 0.75], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0, 0.75, 0.75], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0.5], [-1, -2, a, a], [0, 0.5]),
+ ],
+ [fullQuads.north],
+];
+StairBuilderData[StairStates.normal.bottom.south] = [
+ [
+  getHalfHeight("top", [0.5, 0.5, 0.75], [a, 1, 1, a], [0, 0.5]),
+  getHalfHeight("top", [0.5, 1, 0.25], [-1, 1, 1, -4], [0.5, 1]),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [1, 0.75, 0.25], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0, 0.75, 0.25], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [fullQuads.south],
+ [
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 0.5], [-1, -2, a, a], [0, 0.5]),
+ ],
+];
+StairBuilderData[StairStates.normal.bottom.east] = [
+ [
+  getHalfWidth("top", [0.75, 1, 0.5], [1, 1, -3, -5], [0.5, 1]),
+  getHalfWidth("top", [0.25, 0.5, 0.5], [1, 1, a, a], [0, 0.5]),
+ ],
+ [fullQuads.bottom],
+ [fullQuads.east],
+ [
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+  getHalfHeight("west", [0.5, 0.75, 0.5], [-1, -2, a, a], [0, 0.5]),
+ ],
+ [
+  getQuater("south", [0.75, 0.75, 0], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.75, 0.75, 1], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.normal.bottom.west] = [
+ [
+  getHalfWidth("top", [0.75, 0.5, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfWidth("top", [0.25, 1, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [fullQuads.bottom],
+ [
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+  getHalfHeight("east", [0.5, 0.75, 0.5], [-1, -2, a, a], [0, 0.5]),
+ ],
+ [fullQuads.west],
+ [
+  getQuater("south", [0.25, 0.75, 0], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.25, 0.75, 1], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+//top
+StairBuilderData[StairStates.normal.top.north] = [
+ [fullQuads.top],
+ [
+  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -1, -2], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0.5, 0.25], [1, 1, a, a], [0.5, 1]),
+ ],
+ [
+  getQuater("east", [1, 0.25, 0.75], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("west", [0, 0.25, 0.75], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getHalfHeight("south", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [fullQuads.north],
+];
+StairBuilderData[StairStates.normal.top.south] = [
+ [fullQuads.top],
+ [
+  getHalfHeight("bottom", [0.5, 0, 0.25], [-1, -2, 1, 1], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0.5, 0.75], [a, a, 1, 1], [0.5, 1]),
+ ],
+ [
+  getQuater("east", [1, 0.25, 0.25], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("west", [0, 0.25, 0.25], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [fullQuads.south],
+ [
+  getHalfHeight("north", [0.5, 0.25, 0.5], [a, a, 1, 1], [0, 0.5]),
+  getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.normal.top.east] = [
+ [fullQuads.top],
+ [
+  getHalfWidth("bottom", [0.75, 0, 0.5], [1, -2, -3, 1], [0.5, 1]),
+  getHalfWidth("bottom", [0.25, 0.5, 0.5], [1, a, a, 1], [0, 0.5]),
+ ],
+ [fullQuads.east],
+ [
+  getHalfHeight("west", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [
+  getQuater("south", [0.75, 0.25, 0], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("north", [0.75, 0.25, 1], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+ ],
+];
+StairBuilderData[StairStates.normal.top.west] = [
+ [fullQuads.top],
+ [
+  getHalfWidth("bottom", [0.75, 0.5, 0.5], [a, 1, 1, a], [0.5, 1]),
+  getHalfWidth("bottom", [0.25, 0, 0.5], [-1, 1, 1, -4], [0, 0.5]),
+ ],
+ [
+  getHalfHeight("east", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [fullQuads.west],
+ [
+  getQuater("south", [0.25, 0.25, 0], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("north", [0.25, 0.25, 1], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+ ],
+];
+//connected states
+//bottom
+StairBuilderData[StairStates.connected.bottom.northEast] = [
+ [
+  getQuater("top", [0.75, 1, 0.75], [1, -2, -3, 1], [0, 0, 0.5, 0.5, 1]),
+  getQuad("top", [0.5, 0.5, 0.5], [1, 1, a, 1]),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [1, 0.75, 0.75], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0.5, 0.75, 0.75], [-1, -2, a, a], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("south", [0.75, 0.75, 0.5], [-1, -2, a, a], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.75, 0.75, 1], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.connected.bottom.northWest] = [
+ [
+  getQuater("top", [0.25, 1, 0.75], [1, -2, -3, 1], [0, 0, 0.5, 0.5, 1]),
+  getQuad("top", [0.5, 0.5, 0.5], [1, 1, a, 1], 1),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [0.5, 0.75, 0.75], [-1, -2, a, a], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0, 0.75, 0.75], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("south", [0.25, 0.75, 0.5], [-1, -2, a, a], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.25, 0.75, 1], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.connected.bottom.southEast] = [
+ [
+  getQuater("top", [0.75, 1, 0.25], [1, -2, -3, 1], [0, 0, 0.5, 0.5, 1]),
+  getQuad("top", [0.5, 0.5, 0.5], [a, 1, 1, 1], 1),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [1, 0.75, 0.25], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0.5, 0.75, 0.25], [-1, -2, a, a], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("south", [0.75, 0.75, 0], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.75, 0.75, 0.5], [-1, -2, a, a], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.connected.bottom.southWest] = [
+ [
+  getQuater("top", [0.25, 1, 0.25], [1, -2, -3, 1], [0, 0, 0.5, 0.5, 1]),
+  getQuad("top", [0.5, 0.5, 0.5], [a, 1, 1, 1]),
+ ],
+ [fullQuads.bottom],
+ [
+  getQuater("east", [0.5, 0.75, 0.25], [-1, -2, a, a], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("east", [1, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("west", [0, 0.75, 0.25], [-1, -2, 1, 1], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("west", [0, 0.25, 0.5], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("south", [0.25, 0.75, 0], [-1, -2, 1, 1], [0, 0, 0.5, 0, 0.5]),
+  getHalfHeight("south", [0.5, 0.25, 0], [1, 1, -3, -4], [0.5, 1]),
+ ],
+ [
+  getQuater("north", [0.25, 0.75, 0.5], [-1, -2, a, a], [0, 0.5, 1, 0, 0.5]),
+  getHalfHeight("north", [0.5, 0.25, 1], [1, 1, -3, -4], [0.5, 1]),
+ ],
+];
+//top
+StairBuilderData[StairStates.connected.top.northEast] = [
+ [fullQuads.top],
+ [
+  getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -1, -2], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0.5, 0.25], [1, 1, a, a], [0.5, 1]),
+ ],
+ [
+  getQuater("east", [1, 0.25, 0.75], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("west", [0, 0.25, 0.75], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getHalfHeight("south", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [fullQuads.north],
+];
+StairBuilderData[StairStates.connected.top.northWest] = [
+ [fullQuads.top],
+ [
+  getHalfHeight("bottom", [0.5, 0, 0.25], [-1, -2, 1, 1], [0, 0.5]),
+  getHalfHeight("bottom", [0.5, 0.5, 0.75], [a, a, 1, 1], [0.5, 1]),
+ ],
+ [
+  getQuater("east", [1, 0.25, 0.25], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("west", [0, 0.25, 0.25], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [fullQuads.south],
+ [
+  getHalfHeight("north", [0.5, 0.25, 0.5], [a, a, 1, 1], [0, 0.5]),
+  getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0.5, 1]),
+ ],
+];
+StairBuilderData[StairStates.connected.top.southEast] = [
+ [fullQuads.top],
+ [
+  getHalfWidth("bottom", [0.75, 0, 0.5], [1, -2, -3, 1], [0.5, 1]),
+  getHalfWidth("bottom", [0.25, 0.5, 0.5], [1, a, a, 1], [0, 0.5]),
+ ],
+ [fullQuads.east],
+ [
+  getHalfHeight("west", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [
+  getQuater("south", [0.75, 0.25, 0], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("north", [0.75, 0.25, 1], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+ ],
+];
+StairBuilderData[StairStates.connected.top.southWest] = [
+ [fullQuads.top],
+ [
+  getHalfWidth("bottom", [0.75, 0.5, 0.5], [a, 1, 1, a], [0.5, 1]),
+  getHalfWidth("bottom", [0.25, 0, 0.5], [-1, 1, 1, -4], [0, 0.5]),
+ ],
+ [
+  getHalfHeight("east", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+ ],
+ [fullQuads.west],
+ [
+  getQuater("south", [0.25, 0.25, 0], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
+  getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+ ],
+ [
+  getQuater("north", [0.25, 0.25, 1], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+ ],
+];

@@ -1,4 +1,5 @@
 import { Builder } from "../../../Builder.js";
+import { BuildStair } from "./StairBuilderN.js";
 export const stairCachedPosition = {
     x: 0,
     y: 0,
@@ -156,22 +157,5 @@ const stairFunctions = {
     "stair-side": addSide,
 };
 export const buildStair = (data, stairData) => {
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "top")) {
-        stairFunctions[stairData.top.type]("top", stairData.top, data);
-    }
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "bottom")) {
-        stairFunctions[stairData.bottom.type]("bottom", stairData.bottom, data);
-    }
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "east")) {
-        stairFunctions[stairData.east.type]("east", stairData.east, data);
-    }
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "west")) {
-        stairFunctions[stairData.west.type]("west", stairData.west, data);
-    }
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "south")) {
-        stairFunctions[stairData.south.type]("south", stairData.south, data);
-    }
-    if (Builder.shapeHelper.isFaceExposexd(data.face, "north")) {
-        stairFunctions[stairData.north.type]("north", stairData.north, data);
-    }
+    BuildStair();
 };

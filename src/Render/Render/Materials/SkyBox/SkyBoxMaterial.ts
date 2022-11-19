@@ -4,7 +4,6 @@ import { DVER } from "../../../DivineVoxelEngineRender.js";
 
 export const SkyBoxMaterial = {
  material: <BABYLON.ShaderMaterial | null>null,
- context: <CanvasRenderingContext2D | null>null,
  time : 0,
 
  getMaterial() {

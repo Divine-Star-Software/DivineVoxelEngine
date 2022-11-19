@@ -34,9 +34,9 @@ export const GeometryBuilder = {
    origion,
    dimensions,
    this.data,
-flip,
+   flip,
    transforms
   );
  },
- createTriangle() {},
+
 };

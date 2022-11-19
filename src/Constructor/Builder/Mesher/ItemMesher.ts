@@ -9,7 +9,7 @@ import { Rotations } from "Meta/Constructor/Mesher.types.js";
 
 export const ItemMesher = {
  createItem(itemId: string, x: number, y: number, z: number) {
-  const item = DVEC.itemManager.getItem(itemId);
+ /*  const item = DVEC.itemManager.getItem(itemId);
   const itemProcessData: ItemProcessData = {
    uvs: [],
   };
@@ -101,6 +101,6 @@ export const ItemMesher = {
    ConstructorToRenderMessages.constructItem,
    message,
    transfers
-  );
+  ); */
  },
 };

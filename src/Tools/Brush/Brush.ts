@@ -48,6 +48,18 @@ export class BrushTool {
   return this;
  }
 
+ clear() {
+  this.data.id = "dve:air";
+  this.data.secondaryVoxelId = "dve:air";
+  this.data.level = 0;
+  this.data.levelState = 0;
+  this.data.state = 0;
+  this.data.secondaryState = 0;
+  this.data.position[0] = 0;
+  this.data.position[1] = 0;
+  this.data.position[2] = 0;
+ }
+
  setRaw(data: number[]) {
   this._dt.loadInRaw(data);
   this.data.id = this._dt.getStringId();

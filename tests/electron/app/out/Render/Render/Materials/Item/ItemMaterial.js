@@ -1,7 +1,6 @@
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const ItemMaterial = {
     material: null,
-    context: null,
     time: 0,
     updateFogOptions(data) {
         if (!this.material)
