@@ -1,5 +1,5 @@
-//import type { ItemData } from "../../../../out/Meta/Items/Item.types";
-export const DreamvineItemData: any = {
+import type { ItemData } from "../../../../out/Meta/Data/Items/Item.types";
+export const DreamvineItemData: ItemData = {
  id: "dve:dreamvine-item",
  data: {},
 };

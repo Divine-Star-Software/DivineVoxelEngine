@@ -284,7 +284,7 @@ export const WorldGen = {
       }
       if (flip > 0.99 && y > 50) {
        let flip2 = Math.random();
-       if (flip2 > 0.5) {
+       if (flip2 > 0.9) {
         if (biome == "dread" && !madeSpke) {
          madeSpke = true;
          this.generateSpike(x, y, z);

@@ -29,7 +29,7 @@ import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
-
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -41,6 +41,7 @@ export const DVEW = {
  __renderIsDone: false,
  __serverIsDone: false,
 
+ TC: ThreadComm,
  UTIL: Util,
  settings: EngineSettings,
 
@@ -59,7 +60,7 @@ export const DVEW = {
  voxelManager: VoxelManager,
  itemManager: ItemManager,
  cQueues: ConstructorQueues,
- cTasks : ConstructorTasks,
+ cTasks: ConstructorTasks,
 
  isReady() {
   return (
@@ -96,8 +97,8 @@ export const DVEW = {
   return new DataTool();
  },
  getTasksManager() {
-    return TasksTool();
- }
+  return TasksTool();
+ },
 };
 
 export type DivineVoxelEngineWorld = typeof DVEW;

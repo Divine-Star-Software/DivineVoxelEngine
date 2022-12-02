@@ -102,7 +102,7 @@ export const VoxelMesher = {
 
   const positionArray = new Float32Array(data.positions);
   const normalsArray = new Float32Array(data.normals);
-  const indiciesArray = new Int32Array(data.indices);
+  const indiciesArray = new Uint16Array(data.indices);
   const faceDataArray = new Float32Array(data.faceData);
   const AOColorsArray = new Float32Array(data.AOColors);
   const lightColors = new Float32Array(data.lightColors);

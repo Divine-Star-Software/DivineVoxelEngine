@@ -71,6 +71,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   brush.setId(data[1]).setXYZ(x, y, z).paintAndUpdate();
   const raw = brush.getRaw();
   worldPlayerObject.onAdd.forEach((_) => _(raw,x,y,z));
+  DVEW.parentComm.runTasks("play-sound",["place",x,y,z]);
  });
 
  DVEW.parentComm.listenForMessage("voxel-remove", () => {
@@ -82,6 +83,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
    brush.setXYZ(x, y, z).ereaseAndUpdate();
   }
   worldPlayerObject.onRemove.forEach((_) => _(x, y, z));
+  DVEW.parentComm.runTasks("play-sound",["place",x,y,z]);
  });
 
  DVEW.parentComm.listenForMessage("explode", () => {
@@ -90,6 +92,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   let z = pickDV.getFloat32(8);
   brush.setXYZ(x, y, z).explode();
   worldPlayerObject.onExplode.forEach((_) => _(x, y, z, 6));
+  DVEW.parentComm.runTasks("play-sound",["explode",x,y,z]);
  });
 
  setInterval(() => {

@@ -3,6 +3,7 @@ import { RunInit, SetUpWorkers, SyncWithGraphicsSettings, } from "../Shared/Crea
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
+import { InitalizeAudio } from "../Shared/Audio/init.js";
 RegisterTexutres(DVER);
 const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js");
 await DVER.$INIT({
@@ -28,6 +29,7 @@ const init = async () => {
     if (bmat) {
         box.material = bmat;
     }
+    await InitalizeAudio();
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     DVER.renderManager.setBaseLevel(1);

@@ -2,6 +2,9 @@ export const VoxelShaders = {
     solid: {
         fragMain: `
         vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
+        if(vDistance > 100.) {
+       //   rgb = vec4(1.,1.,1.,1.);
+        }
         if (rgb.a < 0.5) { 
             discard;
         }
@@ -114,7 +117,7 @@ export const VoxelShaders = {
          rgb = getColor(rgb);
          vec4 mixLight = getLight(rgb);
          vec3 finalColor = doFog(mixLight);
-        gl_FragColor = vec4(finalColor.rgb , .75 ); 
+        gl_FragColor = vec4(finalColor.rgb , .6 ); 
       `,
     },
     item: {

@@ -150,6 +150,7 @@ const shouldSunFlip = () => {
 
 const shouldAOFlip = (face: DirectionNames) => {
  Processor.faceDataOverride.face = face;
+ Processor.faceDataOverride.default = false;
  if (currentVoxelData.currentShape) {
   if (
    OverrideManager.runOverride(

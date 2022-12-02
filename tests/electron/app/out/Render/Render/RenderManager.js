@@ -125,6 +125,7 @@ export const RenderManager = {
         this.liquidMesh.syncSettings(settings);
         this.magmaMesh.syncSettings(settings);
         this.itemMesh.syncSettings(settings);
+        this.textureCreator.defineTextureDimensions(settings.textureOptions.width, settings.textureOptions.height);
     },
     getScene() {
         return this.scene;

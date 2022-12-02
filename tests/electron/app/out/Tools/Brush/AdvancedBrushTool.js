@@ -7,11 +7,8 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { BrushTool } from "./Brush.js";
 import { TasksTool } from "../Tasks/TasksTool.js";
 const tasks = TasksTool();
-const setFocus = (dim, x, y, z) => {
-    tasks.setFocalPoint(x, y, z, dim);
-};
 const rebuild = (dim, x, y, z, onDone) => {
-    setFocus(dim, x, y, z);
+    tasks.setFocalPoint(x, y, z, dim);
     for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
         const n = $3dMooreNeighborhood[i];
         const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
@@ -42,10 +39,10 @@ export const GetAdvancedBrushTool = () => {
             const x = brush.data.position[0];
             const y = brush.data.position[1];
             const z = brush.data.position[2];
-            setFocus(dimesnion, x, y, z);
+            tasks.setFocalPoint(x, y, z, dimesnion);
             tasks.voxelUpdate.paint.add(x, y, z, brush.getRaw());
             tasks.voxelUpdate.paint.run(() => {
-                setFocus(dimesnion, x, y, z);
+                tasks.setFocalPoint(x, y, z, dimesnion);
                 rebuild(dimesnion, x, y, z, () => (onDone ? onDone() : 0));
             });
         },
@@ -54,10 +51,10 @@ export const GetAdvancedBrushTool = () => {
             const x = brush.data.position[0];
             const y = brush.data.position[1];
             const z = brush.data.position[2];
-            setFocus(dimesnion, x, y, z);
+            tasks.setFocalPoint(x, y, z, dimesnion);
             tasks.voxelUpdate.erease.add(x, y, z);
             tasks.voxelUpdate.erease.run(() => {
-                setFocus(dimesnion, x, y, z);
+                tasks.setFocalPoint(x, y, z, dimesnion);
                 rebuild(dimesnion, x, y, z, () => (onDone ? onDone() : 0));
             });
         },
@@ -66,10 +63,10 @@ export const GetAdvancedBrushTool = () => {
             const x = brush.data.position[0];
             const y = brush.data.position[1];
             const z = brush.data.position[2];
-            setFocus(dimesnion, x, y, z);
+            tasks.setFocalPoint(x, y, z, dimesnion);
             tasks.explosion.run.add(x, y, z, radius);
             tasks.explosion.run.run(() => {
-                setFocus(dimesnion, x, y, z);
+                tasks.setFocalPoint(x, y, z, dimesnion);
                 tasks.build.chunk.run(() => (onDone ? onDone() : 0));
             });
         },

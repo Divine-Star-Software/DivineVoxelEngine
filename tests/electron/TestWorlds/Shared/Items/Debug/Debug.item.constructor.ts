@@ -1,4 +1,5 @@
-import { ItemConstructorObject } from "../../../../out/Meta/Items/Item.types";
+import { ItemConstructorObject } from "../../../../out/Meta/Data/Items/Item.types";
+
 let uv = 0;
 export const DebugItemConstructorObject: ItemConstructorObject = {
  id: "dve:debug-item",

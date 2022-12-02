@@ -53,7 +53,7 @@ export const BoxVoxelShape = {
 };
 //cullface
 OverrideManager.registerOverride("CullFace", "Box", "Panel", (data) => {
-    return false;
+    return true;
 });
 OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
     if (data.face == "top") {

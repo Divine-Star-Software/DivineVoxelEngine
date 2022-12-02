@@ -1,7 +1,7 @@
-import { ItemConstructorObject } from "../../../../out/Meta/Items/Item.types";
+import { ItemConstructorObject } from "../../../../out/Meta/Data/Items/Item.types";
 
 let uv = 0;
-export const DreamVineItemConstructorObject: ItemConstructorObject = {
+export const DreamVineItemConstructorObject: ItemConstructorObject  = {
  id: "dve:dreamvine-item",
  shapeId: "vine",
  hooks: {

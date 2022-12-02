@@ -1,0 +1,25 @@
+{
+ "sources": [
+  {
+   "dir": "D:/DSSoftware/APPS/divineaudioengine/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "main"
+  }
+ ],
+ "outputs": [
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/DAE",
+   "sourceID": "main",
+   "codeSection": "all",
+   "keepComments": true
+  }
+ ],
+ "codeSections": {
+  "main": {
+   "start": "@ds",
+   "end": "@ds"
+  }
+ }
+}

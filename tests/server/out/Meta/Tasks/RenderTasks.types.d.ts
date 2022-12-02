@@ -6,7 +6,7 @@ export declare type SetChunkMeshTask = [
     chunkZ: number,
     positions: Float32Array,
     normals: Float32Array,
-    indicies: Int32Array,
+    indicies: Uint16Array,
     faceData: Float32Array,
     AOColors: Float32Array,
     lightColors: Float32Array,

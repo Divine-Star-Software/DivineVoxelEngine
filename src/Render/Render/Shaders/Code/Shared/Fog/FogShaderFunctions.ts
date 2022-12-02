@@ -47,7 +47,7 @@ export const SharedFogFunctions = {
   float fogDensity = fogOptions.y;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
-   float fogDepth = distance(worldPOS, fogOrigin);
+   float fogDepth = vDistance;
    fogDepth *= mix(1.0, 1.0, clamp((fogDepth - 5000.0) / 5000.0,0.,1.));
    fogDepth *= fogDepth;
    float heightFactor = fogOptions.z;
@@ -64,7 +64,7 @@ export const SharedFogFunctions = {
    float fogTime = vTime * .5;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
-   float fogDepth = distance(worldPOS, fogOrigin);
+   float fogDepth = vDistance;
    vec3 noiseSampleCoord = worldPOS * 0.00025 + vec3(
        0.0, 0.0, fogTime * 0.025);
    float noiseSample = fbm3(noiseSampleCoord + fbm3(noiseSampleCoord)) * 0.5 + 0.5;

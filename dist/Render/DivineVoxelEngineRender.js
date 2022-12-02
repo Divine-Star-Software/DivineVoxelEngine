@@ -17,8 +17,11 @@ import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { RenderTasks } from "./Tasks/Tasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 export const DVER = {
     UTIL: Util,
+    TC: ThreadComm,
+    currentCom: ThreadComm.parent,
     worldComm: WorldComm,
     nexusComm: NexusComm,
     dataComm: DataComm,
@@ -29,7 +32,7 @@ export const DVER = {
     renderManager: RenderManager,
     meshManager: MeshManager,
     data: {
-        worldBounds: WorldBounds
+        worldBounds: WorldBounds,
     },
     textureManager: TextureManager,
     renderedEntites: RenderedEntitesManager,

@@ -41,6 +41,7 @@ export const SharedVertexShader = {
  //for fog 
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
+ varying float vDistance;
  `,
  varying(ao: boolean = true) {
   let varying = `
@@ -48,6 +49,7 @@ export const SharedVertexShader = {
   varying vec4 vOVUV;
   varying float vFaceData;
   varying vec3 vNormal;
+
   //vectory nomral sun light color scale
   varying float vNColor;
   varying vec4 rgbLColor;
@@ -106,6 +108,7 @@ export const SharedVertexShader = {
     `,
 
  passTime: `
+
   vTime = time;
   `,
 
@@ -160,6 +163,7 @@ export const SharedVertexShader = {
  updateVarying: `
  cameraPOS = cameraPosition;
  worldPOS = worldPosition.xyz;
+ vDistance = distance(worldPOS, cameraPOS);
  `,
 
  getAnimationType: `

@@ -57,11 +57,13 @@ export const TextureCreator = {
             loadedImage.onload = () => {
                 if (!TextureCreator.context)
                     return;
+                //clear the canvas before re-rendering another image
+                TextureCreator.context.clearRect(0, 0, width, height);
                 TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
+                //  TextureCreator.context.fillStyle = "green";
+                //  TextureCreator.context.fillRect(0,0,width,height);
                 const imgData = TextureCreator.context.getImageData(0, 0, width, height);
                 resolve(imgData.data);
-                //import to clear the canvas before re-rendering another image
-                TextureCreator.context.clearRect(0, 0, width, height);
             };
         });
         return prom;
@@ -75,27 +77,5 @@ export const TextureCreator = {
             combinedImagedata.set(array, previousArrayIndex);
         }
         return combinedImagedata;
-    },
-    getTextureBuffer(imgPath, width = -1, height = -1) {
-        if (width == -1)
-            width = this.imgWidth;
-        if (height == -1)
-            height = this.imgHeight;
-        if (!this.context) {
-            throw new Error("Context is not set for texture creation.");
-        }
-        const prom = new Promise((resolve) => {
-            const loadedImage = new Image();
-            loadedImage.src = imgPath;
-            loadedImage.onload = () => {
-                if (!TextureCreator.context)
-                    return;
-                TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
-                const imgData = TextureCreator.context.getImageData(0, 0, width, height);
-                resolve(imgData.data);
-                TextureCreator.context.clearRect(0, 0, width, height);
-            };
-        });
-        return prom;
     },
 };

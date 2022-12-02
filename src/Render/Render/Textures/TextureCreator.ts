@@ -15,6 +15,7 @@ export const TextureCreator = {
   if (!context) {
    throw new Error("Context did not load for texture creation.");
   }
+ 
   context.imageSmoothingEnabled = false;
   this.context = context;
  },
@@ -63,6 +64,7 @@ export const TextureCreator = {
    false,
    BABYLON.Texture.NEAREST_SAMPLINGMODE
   );
+
   _2DTextureArray.name = name;
 
   return _2DTextureArray;
@@ -73,6 +75,7 @@ export const TextureCreator = {
   width: number,
   height: number
  ): Promise<Uint8ClampedArray> {
+    
   if (!this.context) {
    throw new Error("Context is not set for texture creation.");
   }
@@ -81,12 +84,15 @@ export const TextureCreator = {
    loadedImage.src = imgPath;
    loadedImage.onload = () => {
     if (!TextureCreator.context) return;
+    //clear the canvas before re-rendering another image
+    TextureCreator.context.clearRect(0, 0, width, height);
     TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
+  //  TextureCreator.context.fillStyle = "green";
+  //  TextureCreator.context.fillRect(0,0,width,height);
     const imgData = TextureCreator.context.getImageData(0, 0, width, height);
     resolve(imgData.data);
-    //import to clear the canvas before re-rendering another image
-    TextureCreator.context.clearRect(0, 0, width, height);
    };
+   
   });
 
   return prom;
@@ -103,24 +109,5 @@ export const TextureCreator = {
   return combinedImagedata;
  },
 
- getTextureBuffer(imgPath: string, width: number = -1, height: number = -1) {
-  if (width == -1) width = this.imgWidth;
-  if (height == -1) height = this.imgHeight;
-  if (!this.context) {
-   throw new Error("Context is not set for texture creation.");
-  }
-  const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
-   const loadedImage = new Image();
-   loadedImage.src = imgPath;
-   loadedImage.onload = () => {
-    if (!TextureCreator.context) return;
-    TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
-    const imgData = TextureCreator.context.getImageData(0, 0, width, height);
-    resolve(imgData.data);
-    TextureCreator.context.clearRect(0, 0, width, height);
-   };
-  });
 
-  return prom;
- },
 };

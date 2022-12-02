@@ -1,5 +1,5 @@
-import { DivineVoxelEngineWorldGeneration } from "../../../../out/Constructor/WorldGeneration/DivineVoxelEngineWorldGeneration";
 
+import { DivineVoxelEngineWorldGeneration } from "../../../../out/Constructor/WorldGeneration/WorldGeneration.js";
 import { PerlinNoise3d } from "../../../Shared/Noise/Perlin.js";
 const perlin = new PerlinNoise3d();
 const perlin2 = new PerlinNoise3d();

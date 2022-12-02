@@ -1,4 +1,3 @@
-import type { EntityObject } from "Meta/Interfaces/Physics/Entity.type.js";
 import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type.js";
 import { EntityBase } from "./Entities/Entity.base.js";
 import type { VoxelManager } from "Data/Voxel/VoxelManager.js";
@@ -52,39 +51,6 @@ export declare const DVEPH: {
     } | null;
     $INIT(manager: typeof VoxelManager): void;
     getCollider(x: number, y: number, z: number, dimension?: number): false | ColliderObject;
-    createEntityObject<T>(base: T): T & {
-        active: boolean;
-        position: import("../Libs/Math/Classes/Vector3.js").Vector3;
-        direction: import("../Libs/Math/Classes/Vector3.js").Vector3;
-        previousPosiiton: import("../Libs/Math/Classes/Vector3.js").Vector3;
-        hitBox: {
-            w: number;
-            h: number;
-            d: number;
-        };
-        speed: number;
-        velocity: import("../Libs/Math/Classes/Vector3.js").Vector3;
-        onGround: boolean;
-        veloctiy: import("../Libs/Math/Classes/Vector3.js").Vector3;
-        boundingBox: {
-            w: number;
-            h: number;
-            d: number;
-        };
-        doCollision(x: number, y: number, z: number, colliderName: string, collisionData: {
-            h: number;
-            nx: number;
-            ny: number;
-            nz: number;
-        }): void;
-        setPosition(x: number, y: number, z: number): void;
-        syncPosition(position: Float32Array): void;
-        cachePosition(): void;
-        setVelocity(x: number, y: number, z: number): void;
-        applyVelocity(): void;
-        beforeUpdate(): void;
-        afterUpdate(): void;
-        update(): void;
-    } & EntityObject;
+    createEntityObject(): EntityBase;
 };
 export declare type DivineVoxelEnginePhysics = typeof DVEPH;

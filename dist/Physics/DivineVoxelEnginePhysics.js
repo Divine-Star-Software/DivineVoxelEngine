@@ -37,9 +37,7 @@ export const DVEPH = {
             return false;
         return this.colliders.getCollider(voxelData.physics.collider);
     },
-    createEntityObject(base) {
-        const newBase = Object.create(EntityBase);
-        const assignedBase = Object.assign(newBase, base);
-        return assignedBase;
+    createEntityObject() {
+        return new EntityBase();
     },
 };

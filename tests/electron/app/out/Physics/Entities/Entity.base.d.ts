@@ -1,4 +1,6 @@
-export declare const EntityBase: {
+import { DataTool } from "../../Tools/Data/DataTool.js";
+export declare class EntityBase {
+    dataTool: DataTool;
     active: boolean;
     position: import("../../Libs/Math/Classes/Vector3.js").Vector3;
     direction: import("../../Libs/Math/Classes/Vector3.js").Vector3;
@@ -17,7 +19,7 @@ export declare const EntityBase: {
         h: number;
         d: number;
     };
-    doCollision(x: number, y: number, z: number, colliderName: string, collisionData: {
+    doCollision(colliderName: string, collisionData: {
         h: number;
         nx: number;
         ny: number;
@@ -31,4 +33,4 @@ export declare const EntityBase: {
     beforeUpdate(): void;
     afterUpdate(): void;
     update(): void;
-};
+}

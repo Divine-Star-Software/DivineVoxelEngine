@@ -1,57 +1,59 @@
+import { DataTool } from "../../Tools/Data/DataTool.js";
 import { VoxelMath } from "../../Libs/Math/VoxelMath.js";
 import { DVEPH } from "../DivineVoxelEnginePhysics.js";
 const ep = 0.001;
-export const EntityBase = {
- active: true,
+const dt = new DataTool();
+export class EntityBase {
+ dataTool = dt;
+
+ active = true;
  //current position
- position: VoxelMath.getVector3(0, 0, 0),
- direction: VoxelMath.getVector3(0, 0, 0),
+ position = VoxelMath.getVector3(0, 0, 0);
+ direction = VoxelMath.getVector3(0, 0, 0);
  //previous position
- previousPosiiton: VoxelMath.getVector3(0, 0, 0),
+ previousPosiiton = VoxelMath.getVector3(0, 0, 0);
  //dimensions
- hitBox: { w: 0.8, h: 1.8, d: 0.8 },
+ hitBox = { w: 0.8, h: 1.8, d: 0.8 };
 
- speed : 0.01,
- velocity: VoxelMath.getVector3(0, 0, 0),
+ speed = 0.01;
+ velocity = VoxelMath.getVector3(0, 0, 0);
 
- onGround: false,
+ onGround = false;
 
- veloctiy: VoxelMath.getVector3(0, 0, 0),
- boundingBox: { w: 0, h: 0, d: 0 },
+ veloctiy = VoxelMath.getVector3(0, 0, 0);
+ boundingBox = { w: 0, h: 0, d: 0 };
  doCollision(
-  x: number,
-  y: number,
-  z: number,
   colliderName: string,
   collisionData: { h: number; nx: number; ny: number; nz: number }
- ) {},
+ ) {}
 
  setPosition(x: number, y: number, z: number) {
   this.position.updateVector(x, y, z);
- },
+ }
  syncPosition(position: Float32Array) {
   position[0] = this.position.x;
   position[1] = this.position.y;
   position[2] = this.position.z;
- },
+ }
  cachePosition() {
   this.previousPosiiton.updateFromVec3(this.position);
- },
+ }
  setVelocity(x: number, y: number, z: number) {
   this.velocity.updateVector(x, y, z);
- },
+ }
  applyVelocity() {
   this.position.addFromVec3(this.velocity);
- },
+ }
 
- beforeUpdate() {},
- afterUpdate() {},
+ beforeUpdate() {}
+ afterUpdate() {}
 
  update() {
+  if (!this.active) return;
+
   this.beforeUpdate();
   this.cachePosition();
   this.applyVelocity();
-  if (!this.active) return;
   this.onGround = false;
   //Notice there is a cycle. We may have to run the algorithm several times until the collision is resolved
   while (true) {
@@ -88,6 +90,7 @@ export const EntityBase = {
    for (let y = minY; y <= maxY; y++) {
     for (let z = minZ; z <= maxZ; z++) {
      for (let x = minX; x <= maxX; x++) {
+      if(!this.dataTool.loadIn(x,y,z)) continue;
       const colliderObject = DVEPH.getCollider(x, y, z);
       if (!colliderObject) continue;
 
@@ -113,12 +116,12 @@ export const EntityBase = {
         dy,
         dz
        );
-       if (c.ny == 1 && c.h < .3) {
+       if (c.ny == 1 && c.h < 0.3) {
         this.onGround = true;
        }
 
        if (c.h < 1) {
-        this.doCollision(x, y, z, collider.name, c);
+        this.doCollision(collider.name, c);
        }
        //Check if this collision is closer than the closest so far.
        if (c.h < r.h) {
@@ -139,24 +142,23 @@ export const EntityBase = {
    // If there was no collision, end the algorithm.
    if (r.h == 1) break;
 
+   // Wall Sliding
+   // c = a - (a.b)/(b.b) b
+   // c - slide vector (rejection of a over b)
+   // b - normal to the block
+   // a - remaining speed (= (1-h)*speed)
+   const BdotB = r.nx * r.nx + r.ny * r.ny + r.nz * r.nz;
+   if (BdotB != 0) {
+    // Store the current position for the next iteration
+    this.cachePosition();
 
-    // Wall Sliding
-    // c = a - (a.b)/(b.b) b
-    // c - slide vector (rejection of a over b)
-    // b - normal to the block
-    // a - remaining speed (= (1-h)*speed)
-    const BdotB = r.nx * r.nx + r.ny * r.ny + r.nz * r.nz;
-    if (BdotB != 0) {
-     // Store the current position for the next iteration
-     this.cachePosition();
-
-     // Apply Slide
-     const AdotB = (1 - r.h) * (dx * r.nx + dy * r.ny + dz * r.nz);
-     this.position.x += (1 - r.h) * dx - (AdotB / BdotB) * r.nx;
-     this.position.y += (1 - r.h) * dy - (AdotB / BdotB) * r.ny;
-     this.position.z += (1 - r.h) * dz - (AdotB / BdotB) * r.nz;
-    }
+    // Apply Slide
+    const AdotB = (1 - r.h) * (dx * r.nx + dy * r.ny + dz * r.nz);
+    this.position.x += (1 - r.h) * dx - (AdotB / BdotB) * r.nx;
+    this.position.y += (1 - r.h) * dy - (AdotB / BdotB) * r.ny;
+    this.position.z += (1 - r.h) * dz - (AdotB / BdotB) * r.nz;
+   }
   }
   this.afterUpdate();
- },
-};
+ }
+}

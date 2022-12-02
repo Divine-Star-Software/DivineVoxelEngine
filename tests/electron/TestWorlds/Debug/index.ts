@@ -16,6 +16,7 @@ import {
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
+import { InitalizeAudio } from "../Shared/Audio/init.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
@@ -40,11 +41,12 @@ SyncWithGraphicsSettings(DVER);
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
+
  const scene = SetUpDefaultScene(engine);
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x:6 , y: 6, z: 2 },
+  { x: 6, y: 6, z: 2 },
   { x: 2, y: 7, z: 2 }
  );
  camera.speed = 0.5;
@@ -53,7 +55,7 @@ const init = async () => {
  if (bmat) {
   box.material = bmat;
  }
-
+ await InitalizeAudio();
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(1);

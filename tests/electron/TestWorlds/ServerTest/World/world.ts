@@ -2,7 +2,6 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
-import { VoxelMath } from "../../../out/Libs/Math/DivineVoxelEngineMath.js";
 import { WorldPlayer } from "../../Shared/Player/World/WorldPlayer.js";
 
 const syncSABWtihBuffer = (sab: SharedArrayBuffer, buffer: ArrayBuffer) => {

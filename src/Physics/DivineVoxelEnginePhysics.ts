@@ -50,10 +50,8 @@ export const DVEPH = {
   return this.colliders.getCollider(voxelData.physics.collider);
  },
 
- createEntityObject<T>(base: T): T & typeof EntityBase & EntityObject {
-  const newBase = Object.create(EntityBase);
-  const assignedBase = Object.assign(newBase, base);
-  return assignedBase;
+ createEntityObject(): EntityBase  {
+  return new EntityBase();
  },
 };
 

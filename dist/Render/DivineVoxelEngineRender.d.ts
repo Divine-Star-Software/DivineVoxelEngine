@@ -16,6 +16,38 @@ export declare const DVER: {
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
     };
+    TC: {
+        threadNumber: number;
+        threadName: string;
+        environment: "node" | "browser";
+        _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
+        _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
+        _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
+        _queues: Map<string, Map<string, import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>>;
+        _onDataSync: Record<string, import("../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
+        parent: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        __initalized: boolean;
+        __expectedPorts: Record<string, boolean>;
+        $INIT(threadName: string): Promise<void>;
+        getSyncedQueue(threadId: string, queueId: string): import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+        addComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
+        createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        createCommManager(data: import("../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+        getComm(id: string): import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        getCommManager(id: string): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+        __throwError(message: string): never;
+        getWorkerPort(): Promise<any>;
+        __handleInternalMessage(data: any[], event: any): void;
+        __isInternalMessage(data: any[]): boolean;
+        __handleTasksMessage(data: any[]): Promise<void>;
+        __isTasks(data: any[]): boolean;
+        registerTasks<T_3>(id: string | number, run: (data: T_3) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+        __hanldeDataSyncMessage(data: any[]): Promise<void>;
+        __isDataSync(data: any[]): boolean;
+        onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
+    };
+    currentCom: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
         $INIT(): void;
@@ -248,7 +280,6 @@ export declare const DVER: {
             createMaterialTexture(name: string, scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray>;
             _loadImages(imgPath: string, width: number, height: number): Promise<Uint8ClampedArray>;
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
-            getTextureBuffer(imgPath: string, width?: number, height?: number): Promise<Uint8ClampedArray>;
         };
         animationManager: {
             animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;

@@ -27,6 +27,7 @@ import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -36,6 +37,7 @@ export const DVEW = {
     __settingsHaveBeenSynced: false,
     __renderIsDone: false,
     __serverIsDone: false,
+    TC: ThreadComm,
     UTIL: Util,
     settings: EngineSettings,
     dataCreator: DataCreator,
@@ -81,7 +83,7 @@ export const DVEW = {
     },
     getTasksManager() {
         return TasksTool();
-    }
+    },
 };
 DVEW.environment = Util.getEnviorment();
 DVEW.voxelManager.onRegister((voxel) => {

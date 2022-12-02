@@ -1,5 +1,5 @@
-import type { DataHandler } from "../../../out/Meta/DataLoader/DataHandler.type";
 
+import { DataHandler } from "../../../out/Meta/Interfaces/DataLoader/DataHandler.type.js";
 import { DataServer } from "./DataServer.js";
 
 export const DataHanlder: DataHandler = {

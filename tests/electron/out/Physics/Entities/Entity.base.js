@@ -1,46 +1,49 @@
+import { DataTool } from "../../Tools/Data/DataTool.js";
 import { VoxelMath } from "../../Libs/Math/VoxelMath.js";
 import { DVEPH } from "../DivineVoxelEnginePhysics.js";
 const ep = 0.001;
-export const EntityBase = {
-    active: true,
+const dt = new DataTool();
+export class EntityBase {
+    dataTool = dt;
+    active = true;
     //current position
-    position: VoxelMath.getVector3(0, 0, 0),
-    direction: VoxelMath.getVector3(0, 0, 0),
+    position = VoxelMath.getVector3(0, 0, 0);
+    direction = VoxelMath.getVector3(0, 0, 0);
     //previous position
-    previousPosiiton: VoxelMath.getVector3(0, 0, 0),
+    previousPosiiton = VoxelMath.getVector3(0, 0, 0);
     //dimensions
-    hitBox: { w: 0.8, h: 1.8, d: 0.8 },
-    speed: 0.01,
-    velocity: VoxelMath.getVector3(0, 0, 0),
-    onGround: false,
-    veloctiy: VoxelMath.getVector3(0, 0, 0),
-    boundingBox: { w: 0, h: 0, d: 0 },
-    doCollision(x, y, z, colliderName, collisionData) { },
+    hitBox = { w: 0.8, h: 1.8, d: 0.8 };
+    speed = 0.01;
+    velocity = VoxelMath.getVector3(0, 0, 0);
+    onGround = false;
+    veloctiy = VoxelMath.getVector3(0, 0, 0);
+    boundingBox = { w: 0, h: 0, d: 0 };
+    doCollision(colliderName, collisionData) { }
     setPosition(x, y, z) {
         this.position.updateVector(x, y, z);
-    },
+    }
     syncPosition(position) {
         position[0] = this.position.x;
         position[1] = this.position.y;
         position[2] = this.position.z;
-    },
+    }
     cachePosition() {
         this.previousPosiiton.updateFromVec3(this.position);
-    },
+    }
     setVelocity(x, y, z) {
         this.velocity.updateVector(x, y, z);
-    },
+    }
     applyVelocity() {
         this.position.addFromVec3(this.velocity);
-    },
-    beforeUpdate() { },
-    afterUpdate() { },
+    }
+    beforeUpdate() { }
+    afterUpdate() { }
     update() {
+        if (!this.active)
+            return;
         this.beforeUpdate();
         this.cachePosition();
         this.applyVelocity();
-        if (!this.active)
-            return;
         this.onGround = false;
         //Notice there is a cycle. We may have to run the algorithm several times until the collision is resolved
         while (true) {
@@ -62,6 +65,8 @@ export const EntityBase = {
             for (let y = minY; y <= maxY; y++) {
                 for (let z = minZ; z <= maxZ; z++) {
                     for (let x = minX; x <= maxX; x++) {
+                        if (!this.dataTool.loadIn(x, y, z))
+                            continue;
                         const colliderObject = DVEPH.getCollider(x, y, z);
                         if (!colliderObject)
                             continue;
@@ -71,11 +76,11 @@ export const EntityBase = {
                             const collider = colliders[i];
                             // Check swept collision
                             const c = DVEPH.collisions.sweepAABB(this.previousPosiiton.x - this.hitBox.w / 2, this.previousPosiiton.y - this.hitBox.h / 2, this.previousPosiiton.z - this.hitBox.d / 2, this.hitBox.w, this.hitBox.h, this.hitBox.d, collider.position[0], collider.position[1], collider.position[2], collider.boundingBox.w, collider.boundingBox.h, collider.boundingBox.d, dx, dy, dz);
-                            if (c.ny == 1 && c.h < .3) {
+                            if (c.ny == 1 && c.h < 0.3) {
                                 this.onGround = true;
                             }
                             if (c.h < 1) {
-                                this.doCollision(x, y, z, collider.name, c);
+                                this.doCollision(collider.name, c);
                             }
                             //Check if this collision is closer than the closest so far.
                             if (c.h < r.h) {
@@ -110,5 +115,5 @@ export const EntityBase = {
             }
         }
         this.afterUpdate();
-    },
-};
+    }
+}

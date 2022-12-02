@@ -1,4 +1,5 @@
 import type { DivineVoxelEngineRender } from "out/Render/DivineVoxelEngineRender.js";
+import { InitalizeAudio } from "../../../Shared/Audio/init.js";
 import { GetPlayerModel, SetUpDefaultCamera } from "../../Babylon/index.js";
 import {
  PlayerStatesIndexes,
@@ -14,7 +15,6 @@ export const GetPlayerPickCube = (
  let pickVectorDV = new DataView(new ArrayBuffer(4 * 3 + 3));
 
  DVER.worldComm.listenForMessage("connect-player-pick", (data) => {
-  console.log("got it ");
   pickVectorDV = new DataView(data[1]);
  });
  const cubeMaterial = new BABYLON.StandardMaterial("block");
@@ -89,6 +89,8 @@ export const GetRenderPlayer = async (
  canvas: HTMLCanvasElement,
  DVER: DivineVoxelEngineRender
 ) => {
+ const DAE = await InitalizeAudio();
+// DAE.music.play("main");
  let ready = false;
  let playerPostionArray = new Float32Array();
  DVER.nexusComm.listenForMessage("connect-player-data", (data) => {
@@ -226,9 +228,10 @@ export const GetRenderPlayer = async (
  scene.registerBeforeRender(() => {
   let et = performance.now();
 
-  playerModel.position.x = playerPostionArray[0];
-  playerModel.position.y = playerPostionArray[1] - 0.5;
-  playerModel.position.z = playerPostionArray[2];
+  const position = playerModel.position;
+  position.x = playerPostionArray[0];
+  position.y = playerPostionArray[1] - 0.5;
+  position.z = playerPostionArray[2];
 
   playerData.setFloat32(4, playerPostionArray[0]);
   playerData.setFloat32(8, playerPostionArray[1]);
@@ -249,6 +252,9 @@ export const GetRenderPlayer = async (
   playerData.setFloat32(28, camera.rotation.x);
   playerData.setFloat32(32, camera.rotation.y);
   playerData.setFloat32(26, camera.rotation.z);
+
+  DAE.space.setListenerPosition(position.x, position.y, position.z);
+  DAE.space.setListenerDirection(direction.x, direction.y, direction.z);
 
   playerDirection[3] = sideDirection.x;
   playerDirection[4] = sideDirection.y;

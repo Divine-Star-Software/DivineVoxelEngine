@@ -53,6 +53,7 @@ export const SharedFragmentShader = {
  //for fog
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
+ varying float vDistance;
  `,
     useTime: `
     varying float vTime;

@@ -15,7 +15,7 @@ export declare type VoxelMeshInterface = {
 export declare type MeshSetData = {
     positionArray: Float32Array;
     normalsArray: Float32Array;
-    indiciesArray: Int32Array;
+    indiciesArray: Uint16Array;
     faceDataArray: Float32Array;
     AOColorsArray: Float32Array;
     lightColorsArray: Float32Array;

@@ -1,13 +1,11 @@
 import { PlayerStatesIndexes, PlayerStatesValues, } from "../Shared/Player.data.js";
-import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
 export const GetNexusPlayer = async (DVEN, DVEPH, waitForMessageFromWorld = false) => {
-    const gravity = 0.1;
+    const gravity = -0.1;
     const playerPositionSAB = new SharedArrayBuffer(4 * 3);
     const playerPosition = new Float32Array(playerPositionSAB);
     DVEN.parentComm.listenForMessage("request-player-states", (data) => {
         DVEN.parentComm.sendMessage("connect-player-data", [playerPositionSAB]);
     });
-    let worldReady = false;
     let playerDirection = new Float32Array();
     let playerStates = new Uint8Array();
     let ready = false;
@@ -16,12 +14,11 @@ export const GetNexusPlayer = async (DVEN, DVEPH, waitForMessageFromWorld = fals
         playerStates = new Uint8Array(data[2]);
         ready = true;
     });
-    const dataTool = new DataTool();
     await DVEN.UTIL.createPromiseCheck({
         checkInterval: 1,
         check: () => ready,
     });
-    const player = DVEPH.createEntityObject({
+    const player = DVEN.UTIL.merge(DVEPH.createEntityObject(), {
         states: {
             cilmbingStair: false,
             inWater: false,
@@ -34,144 +31,145 @@ export const GetNexusPlayer = async (DVEN, DVEPH, waitForMessageFromWorld = fals
         hitBox: { w: 0.8, h: 1.8, d: 0.8 },
         jumpStates: {
             count: 0,
-            max: 20,
+            max: 10,
             jumping: false,
             canJump: true,
         },
+        movementFunctions: {},
         gravityAcceleration: 0,
         playerStates: new Uint8Array(),
         playerDirection: new Float32Array(),
         playerPosition: new Float32Array(),
-        $INIT(playerStates, playerDirection, playerPosition) { },
-        controlsUpdate() { },
-        getSpeed() {
-            return (this.playerStates[PlayerStatesIndexes.running] * this.runSpeed + this.speed);
+        $INIT(playerStates, playerDirection, playerPosition) {
+            player.playerStates = playerStates;
+            player.playerDirection = playerDirection;
+            player.playerPosition = playerPosition;
+            player.setPosition(10, 80, 7);
+            player.cachePosition();
+            player.syncPosition(playerPosition);
+            player.velocity.y = gravity;
         },
-        movementFunctions: {},
-    });
-    player.movementFunctions[PlayerStatesValues.still] = function () {
-        this.direction.scaleXYZ(0);
-    };
-    player.movementFunctions[PlayerStatesValues.secondaryStill] = function () {
-        this.sideDirecton.scaleXYZ(0);
-    };
-    player.movementFunctions[PlayerStatesValues.walkingForward] = function () { };
-    player.movementFunctions[PlayerStatesValues.walkingBackward] = function () {
-        this.direction.scaleXYZ(-1);
-    };
-    player.movementFunctions[PlayerStatesValues.walkingLeft] = function () { };
-    player.movementFunctions[PlayerStatesValues.walkingRight] = function () {
-        this.sideDirecton.scaleXYZ(-1);
-    };
-    player.doCollision = function (x, y, z, colliderName, colliderData) {
-        if ((colliderName == "stair-bottom" || colliderName == "stair-top") &&
-            colliderData.h < 0.3) {
-            if (colliderData.nz == 1) {
-                this.states.cilmbingStair = true;
-                return;
+        controlsUpdate() {
+            //reset direction
+            player.finalDirection.scaleXYZ(0);
+            //get forward direction from where the player is looking
+            player.direction.updateVector(player.playerDirection[0], 0, player.playerDirection[2]);
+            player.direction.normalize();
+            //get side direction from where the player is looking
+            player.sideDirecton.updateVector(player.playerDirection[3], 0, player.playerDirection[5]);
+            player.sideDirecton.normalize();
+            //apply any changes on the direction vector based on player's state
+            player.movementFunctions[player.playerStates[PlayerStatesIndexes.movement]]();
+            player.movementFunctions[player.playerStates[PlayerStatesIndexes.secondaryMovment]]();
+            //finally add, nomalize, then scale
+            player.finalDirection.addFromVec3(player.direction);
+            player.finalDirection.addFromVec3(player.sideDirecton);
+            if (!player.finalDirection.isZero()) {
+                player.finalDirection.normalize();
             }
-            if (colliderData.ny == 1) {
-                this.states.cilmbingStair = false;
-                return;
+            player.finalDirection.scaleXYZ(player.getSpeed());
+            //set the player's velcoity based on their state
+            if (player.playerStates[PlayerStatesIndexes.movement] ||
+                player.playerStates[PlayerStatesIndexes.secondaryMovment]) {
+                player.velocity.x = player.finalDirection.x;
+                player.velocity.z = player.finalDirection.z;
             }
-        }
-        this.states.cilmbingStair = false;
-    };
-    player.$INIT = function (playerStates, playerDirection, playerPosition) {
-        this.playerStates = playerStates;
-        this.playerDirection = playerDirection;
-        this.playerPosition = playerPosition;
-        this.setPosition(10, 80, 7);
-        this.cachePosition();
-        this.syncPosition(playerPosition);
-        this.velocity.y = -gravity;
-        for (const key of Object.keys(this.movementFunctions)) {
-            const func = this.movementFunctions[Number(key)];
-            this.movementFunctions[Number(key)] = func.bind(this);
-        }
-    };
-    player.controlsUpdate = function () {
-        this.finalDirection.scaleXYZ(0);
-        this.direction.updateVector(this.playerDirection[0], 0, this.playerDirection[2]);
-        this.direction.normalize();
-        this.sideDirecton.updateVector(this.playerDirection[3], 0, this.playerDirection[5]);
-        this.sideDirecton.normalize();
-        this.movementFunctions[this.playerStates[PlayerStatesIndexes.movement]]();
-        this.movementFunctions[this.playerStates[PlayerStatesIndexes.secondaryMovment]]();
-        this.finalDirection.addFromVec3(this.direction);
-        this.finalDirection.addFromVec3(this.sideDirecton);
-        if (!this.finalDirection.isZero()) {
-            this.finalDirection.normalize();
-        }
-        this.finalDirection.scaleXYZ(this.getSpeed());
-        if (this.playerStates[PlayerStatesIndexes.movement] ||
-            this.playerStates[PlayerStatesIndexes.secondaryMovment])
-            this.velocity.x = this.finalDirection.x;
-        this.velocity.z = this.finalDirection.z;
-        if (this.onGround || this.states.inWater) {
-            this.gravityAcceleration = 0;
-        }
-        if (this.playerStates[PlayerStatesIndexes.jumping] &&
-            !this.jumpStates.jumping &&
-            (this.onGround || this.states.inWater)) {
-            this.jumpStates.jumping = true;
-            if (this.states.inWater) {
-                this.velocity.y = 0.2;
+            if (player.onGround || player.states.inWater) {
+                player.gravityAcceleration = 0;
             }
-            else {
-                this.velocity.y = 0.3;
+            if (player.onGround) {
+                player.velocity.y = gravity;
             }
-            this.playerStates[PlayerStatesIndexes.jumping] = 0;
-        }
-        if (this.jumpStates.jumping) {
-            if (this.jumpStates.count >= this.jumpStates.max) {
-                this.jumpStates.count = 0;
-                this.jumpStates.jumping = false;
+            //player jump
+            if (player.playerStates[PlayerStatesIndexes.jumping] &&
+                !player.jumpStates.jumping &&
+                (player.onGround || player.states.inWater)) {
+                player.jumpStates.jumping = true;
+                player.velocity.y = 0.1;
+                player.playerStates[PlayerStatesIndexes.jumping] = 0;
             }
-            else {
-                if (this.states.inWater) {
-                    this.velocity.y -= 0.01;
+            if (player.jumpStates.jumping) {
+                if (player.jumpStates.count >= player.jumpStates.max) {
+                    player.jumpStates.count = 0;
+                    player.jumpStates.jumping = false;
                 }
                 else {
-                    this.velocity.y -= 0.01;
+                    player.jumpStates.count++;
                 }
-                this.jumpStates.count++;
             }
-        }
-        if (!this.onGround && !this.jumpStates.jumping) {
-            this.gravityAcceleration += 0.01;
-            if (this.states.inWater) {
-                this.velocity.y = -0.03;
+            //player in air or water
+            if (!player.onGround && !player.jumpStates.jumping) {
+                player.gravityAcceleration += 0.0025;
+                if (player.states.inWater) {
+                    player.velocity.y -= 0.0025;
+                    if (player.velocity.y < -0.01) {
+                        player.velocity.y = -0.01;
+                    }
+                }
+                else {
+                    if (player.velocity.y <= gravity) {
+                        player.velocity.y = gravity;
+                    }
+                    player.velocity.y -= player.gravityAcceleration;
+                }
             }
-            else {
-                this.velocity.y = -gravity;
-                this.velocity.y -= this.gravityAcceleration;
-            }
-        }
-    };
-    player.beforeUpdate = function () {
-        this.states.inWater = false;
-        for (let y = this.position.y; y <= this.position.y + 1; y++) {
-            for (let x = this.position.x - 1; x <= this.position.x + 1; x++) {
-                for (let z = this.position.z - 1; z <= this.position.z + 1; z++) {
-                    if (dataTool.loadIn(x >> 0, y >> 0, z >> 0)) {
-                        if (dataTool.getSubstance() == "liquid") {
-                            this.states.inWater = true;
-                            break;
+        },
+        getSpeed() {
+            return (player.playerStates[PlayerStatesIndexes.running] * player.runSpeed +
+                player.speed);
+        },
+        beforeUpdate() {
+            player.states.inWater = false;
+            for (let y = player.position.y; y <= player.position.y + 1; y++) {
+                for (let x = player.position.x - 1; x <= player.position.x + 1; x++) {
+                    for (let z = player.position.z - 1; z <= player.position.z + 1; z++) {
+                        if (player.dataTool.loadIn(x >> 0, y >> 0, z >> 0)) {
+                            if (player.dataTool.getSubstance() == "liquid") {
+                                player.states.inWater = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
-        this.controlsUpdate();
-        if (this.states.cilmbingStair) {
-            this.setVelocity(0, 1, -1.5);
-            this.velocity.scaleXYZ(this.getSpeed());
-        }
-        this.states.cilmbingStair = false;
+            player.controlsUpdate();
+            if (player.states.cilmbingStair) {
+                player.setVelocity(0, 1, -1.5);
+                player.velocity.scaleXYZ(player.getSpeed());
+            }
+            player.states.cilmbingStair = false;
+        },
+        afterUpdate() {
+            player.syncPosition(player.playerPosition);
+        },
+    });
+    player.movementFunctions[PlayerStatesValues.still] = () => {
+        player.direction.scaleXYZ(0);
     };
-    player.afterUpdate = function () {
-        this.syncPosition(this.playerPosition);
+    player.movementFunctions[PlayerStatesValues.secondaryStill] = () => {
+        player.sideDirecton.scaleXYZ(0);
+    };
+    player.movementFunctions[PlayerStatesValues.walkingForward] = () => { };
+    player.movementFunctions[PlayerStatesValues.walkingBackward] = () => {
+        player.direction.scaleXYZ(-1);
+    };
+    player.movementFunctions[PlayerStatesValues.walkingLeft] = () => { };
+    player.movementFunctions[PlayerStatesValues.walkingRight] = () => {
+        player.sideDirecton.scaleXYZ(-1);
+    };
+    player.doCollision = (colliderName, colliderData) => {
+        if ((colliderName == "stair-bottom" || colliderName == "stair-top") &&
+            colliderData.h < 0.3) {
+            if (colliderData.nz == 1) {
+                player.states.cilmbingStair = true;
+                return;
+            }
+            if (colliderData.ny == 1) {
+                player.states.cilmbingStair = false;
+                return;
+            }
+        }
+        player.states.cilmbingStair = false;
     };
     player.$INIT(playerStates, playerDirection, playerPosition);
     const runUpdate = () => {
@@ -187,7 +185,6 @@ export const GetNexusPlayer = async (DVEN, DVEPH, waitForMessageFromWorld = fals
     }
     DVEN.worldComm.listenForMessage("ready", (data) => {
         runUpdate();
-        console.log("go");
     });
     return player;
 };
