@@ -48,11 +48,11 @@ export const DVER = {
 
  _handleOptions() {
   const data = this.settings.settings;
-  if (data.textureOptions) {
-   if (data.textureOptions.width && data.textureOptions.height) {
+  if (data.textures) {
+   if (data.textures.width && data.textures.height) {
     this.renderManager.textureCreator.defineTextureDimensions(
-     data.textureOptions.width,
-     data.textureOptions.height
+     data.textures.width,
+     data.textures.height
     );
    }
   }

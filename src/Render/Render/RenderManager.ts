@@ -150,8 +150,8 @@ export const RenderManager = {
   this.magmaMesh.syncSettings(settings);
   this.itemMesh.syncSettings(settings);
   this.textureCreator.defineTextureDimensions(
-   settings.textureOptions.width,
-   settings.textureOptions.height
+   settings.textures.width,
+   settings.textures.height
   );
  },
 

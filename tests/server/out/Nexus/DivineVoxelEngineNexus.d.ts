@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEN: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -9,7 +9,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -39,7 +39,7 @@ export declare const DVEN: {
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
             };
-            textureOptions: {
+            textures: {
                 animationTime: number;
                 width: number;
                 height: number;

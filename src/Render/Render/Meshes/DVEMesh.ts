@@ -11,13 +11,15 @@ export class DVEMesh {
  constructor(public name: string, public dveMat: DVEMaterial) {}
 
  createTemplateMesh(scene: BABYLON.Scene) {
-  const mesh = new BABYLON.Mesh("flora", scene);
+  const mesh = new BABYLON.Mesh(this.name, scene);
   mesh.isPickable = this.pickable;
   mesh.checkCollisions = this.checkCollisions;
   if (!this.checkCollisions) {
    mesh.doNotSyncBoundingInfo = true;
   }
   mesh.doNotSerialize = this.seralize;
+  mesh.cullingStrategy =
+   BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
   return mesh;
  }
 

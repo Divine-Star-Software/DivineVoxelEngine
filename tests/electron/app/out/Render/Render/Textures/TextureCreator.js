@@ -8,6 +8,8 @@ export const TextureCreator = {
     },
     setUpImageCreation() {
         const _2dCanvas = document.createElement("canvas");
+        _2dCanvas.width = this.imgWidth;
+        _2dCanvas.height = this.imgHeight;
         const context = _2dCanvas.getContext("2d");
         if (!context) {
             throw new Error("Context did not load for texture creation.");
@@ -52,17 +54,16 @@ export const TextureCreator = {
             throw new Error("Context is not set for texture creation.");
         }
         const prom = new Promise((resolve) => {
-            const loadedImage = new Image();
-            loadedImage.src = imgPath;
-            loadedImage.onload = () => {
-                if (!TextureCreator.context)
+            const image = new Image();
+            image.src = imgPath;
+            image.onload = () => {
+                const ctx = TextureCreator.context;
+                if (!ctx)
                     return;
                 //clear the canvas before re-rendering another image
-                TextureCreator.context.clearRect(0, 0, width, height);
-                TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
-                //  TextureCreator.context.fillStyle = "green";
-                //  TextureCreator.context.fillRect(0,0,width,height);
-                const imgData = TextureCreator.context.getImageData(0, 0, width, height);
+                ctx.clearRect(0, 0, width, height);
+                ctx.drawImage(image, 0, 0, width, height);
+                const imgData = ctx.getImageData(0, 0, width, height);
                 resolve(imgData.data);
             };
         });

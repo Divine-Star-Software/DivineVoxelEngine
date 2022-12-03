@@ -35,6 +35,7 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
+
 });
 
 SyncWithGraphicsSettings(DVER);
@@ -46,8 +47,8 @@ const init = async () => {
  const camera = SetUpDefaultCamera(
   scene,
   canvas,
-  { x: 6, y: 6, z: 2 },
-  { x: 2, y: 7, z: 2 }
+  { x: 17, y: 8, z: 3 },
+  { x: 20, y: 7, z: 0 }
  );
  camera.speed = 0.5;
  const box = SetUpDefaultSkybox(scene);

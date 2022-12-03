@@ -1,4 +1,4 @@
-import { StairStates } from "./StairStates.js";
+import { StairStates } from "../../../../../Data/Shapes/StairStates.js";
 const getHalfHeight = (direction, position, AO, uvs) => {
     const quad = getQuad(direction, position);
     quad[1][1] = 0.5;
@@ -11,6 +11,7 @@ const getHalfWidth = (direction, position, AO, uvs) => {
     const quad = getHalfHeight(direction, position, AO, uvs);
     quad[1][0] = 0.5;
     quad[1][1] = 1;
+    quad[4] = [-5];
     quad[5] = [0, uvs[0], uvs[1], 0, 1];
     return quad;
 };
@@ -19,6 +20,7 @@ const getQuater = (direction, position, AO, uvs) => {
     quad[1][0] = 0.5;
     quad[1][1] = 0.5;
     quad[3] = AO;
+    quad[4] = [-5];
     quad[5] = uvs;
     return quad;
 };
@@ -41,7 +43,7 @@ const fullQuads = {
     south: getQuad("south", [0.5, 0.5, 0]),
     north: getQuad("north", [0.5, 0.5, 1]),
 };
-const a = 0.4;
+const a = 0.65;
 export const StairBuilderData = {};
 //bottom
 StairBuilderData[StairStates.normal.bottom.north] = [
@@ -303,80 +305,92 @@ StairBuilderData[StairStates.connected.bottom.southWest] = [
 StairBuilderData[StairStates.connected.top.northEast] = [
     [fullQuads.top],
     [
-        getHalfHeight("bottom", [0.5, 0, 0.75], [1, 1, -3, -4], [0, 0.5]),
-        getHalfHeight("bottom", [0.5, 0.5, 0.25], [1, 1, a, a], [0.5, 1]),
+        getQuater("bottom", [0.75, 0, 0.75], [1, -2, -3, 1], [0, 0.5, 1, 0.5, 1]),
+        getQuad("bottom", [0.5, 0.5, 0.5], [1, 1, a, 1]),
     ],
     [
-        getQuater("east", [1, 0.25, 0.75], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
-        getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("east", [1, 0.25, 0.75], [1, 1, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
     [
-        getQuater("west", [0, 0.25, 0.75], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
-        getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("west", [0.5, 0.25, 0.75], [a, a, -3, -4], [0, 0, 0.5, 0.5, 1]),
     ],
     [
-        getHalfHeight("south", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
         getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("south", [0.75, 0.25, 0.5], [a, a, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
-    [fullQuads.north],
+    [
+        getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("north", [0.75, 0.25, 1], [1, 1, -3, -4], [0, 0, 0.5, 0.5, 1]),
+    ],
 ];
 StairBuilderData[StairStates.connected.top.northWest] = [
     [fullQuads.top],
     [
-        getHalfHeight("bottom", [0.5, 0, 0.25], [-1, -2, 1, 1], [0, 0.5]),
-        getHalfHeight("bottom", [0.5, 0.5, 0.75], [a, a, 1, 1], [0.5, 1]),
+        getQuater("bottom", [0.25, 0, 0.75], [1, -2, -3, 1], [0, 0, 0.5, 0.5, 1]),
+        getQuad("bottom", [0.5, 0.5, 0.5], [a, 1, 1, 1], 1),
     ],
     [
-        getQuater("east", [1, 0.25, 0.25], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
-        getHalfHeight("east", [1, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("east", [0.5, 0.25, 0.75], [a, a, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
     [
-        getQuater("west", [0, 0.25, 0.25], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
-        getHalfHeight("west", [0, 0.75, 0.5], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("west", [0, 0.25, 0.75], [1, 1, -3, -4], [0, 0, 0.5, 0.5, 1]),
     ],
-    [fullQuads.south],
     [
-        getHalfHeight("north", [0.5, 0.25, 0.5], [a, a, 1, 1], [0, 0.5]),
-        getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0.5, 1]),
+        getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("south", [0.25, 0.25, 0.5], [a, a, -3, -4], [0, 0, 0.5, 0.5, 1]),
+    ],
+    [
+        getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("north", [0.25, 0.25, 1], [1, 1, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
 ];
 StairBuilderData[StairStates.connected.top.southEast] = [
     [fullQuads.top],
     [
-        getHalfWidth("bottom", [0.75, 0, 0.5], [1, -2, -3, 1], [0.5, 1]),
-        getHalfWidth("bottom", [0.25, 0.5, 0.5], [1, a, a, 1], [0, 0.5]),
+        getQuater("bottom", [0.75, 0, 0.25], [1, -2, -3, 1], [0, 0.5, 1, 0, 0.5]),
+        getQuad("bottom", [0.5, 0.5, 0.5], [1, 1, a, 1], 1),
     ],
-    [fullQuads.east],
     [
-        getHalfHeight("west", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+        getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("east", [1, 0.25, 0.25], [1, 1, -3, -4], [0, 0, 0.5, 0.5, 1]),
+    ],
+    [
         getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("west", [0.5, 0.25, 0.25], [a, a, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
     [
-        getQuater("south", [0.75, 0.25, 0], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
-        getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("south", [0.75, 0.25, 0], [1, 1, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
     [
-        getQuater("north", [0.75, 0.25, 1], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
-        getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("north", [0.75, 0.25, 0.5], [a, a, -3, -4], [0, 0, 0.5, 0.5, 1]),
     ],
 ];
 StairBuilderData[StairStates.connected.top.southWest] = [
     [fullQuads.top],
     [
-        getHalfWidth("bottom", [0.75, 0.5, 0.5], [a, 1, 1, a], [0.5, 1]),
-        getHalfWidth("bottom", [0.25, 0, 0.5], [-1, 1, 1, -4], [0, 0.5]),
+        getQuater("bottom", [0.25, 0, 0.25], [1, -2, -3, 1], [0, 0, 0.5, 0, 0.5]),
+        getQuad("bottom", [0.5, 0.5, 0.5], [a, 1, 1, 1]),
     ],
     [
-        getHalfHeight("east", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
         getHalfHeight("east", [1, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
-    ],
-    [fullQuads.west],
-    [
-        getQuater("south", [0.25, 0.25, 0], [-1, -2, 1, 1], [0, 0, 0.5, 0.5, 1]),
-        getHalfHeight("south", [0.5, 0.75, 0], [1, 1, -3, -4], [0, 0.5]),
+        getQuater("east", [0.5, 0.25, 0.25], [a, a, -3, -4], [0, 0, 0.5, 0.5, 1]),
     ],
     [
-        getQuater("north", [0.25, 0.25, 1], [-1, -2, 1, 1], [0, 0.5, 1, 0.5, 1]),
-        getHalfHeight("north", [0.5, 0.75, 1], [1, 1, -3, -4], [0, 0.5]),
+        getHalfHeight("west", [0, 0.75, 0.5], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("west", [0, 0.25, 0.25], [1, 1, -3, -4], [0, 0.5, 1, 0.5, 1]),
+    ],
+    [
+        getHalfHeight("south", [0.5, 0.75, 0], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("south", [0.25, 0.25, 0], [1, 1, -3, -4], [0, 0, 0.5, 0.5, 1]),
+    ],
+    [
+        getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0, 0.5]),
+        getQuater("north", [0.25, 0.25, 0.5], [a, a, -3, -4], [0, 0.5, 1, 0.5, 1]),
     ],
 ];

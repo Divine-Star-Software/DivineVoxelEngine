@@ -6,14 +6,14 @@ import { BuilderTool } from "../Tools/Build/Builder.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -49,7 +49,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -79,7 +79,7 @@ export declare const DVEW: {
                 autoSyncChunks: boolean;
                 autoSyncVoxelPalette: boolean;
             };
-            textureOptions: {
+            textures: {
                 animationTime: number;
                 width: number;
                 height: number;
@@ -126,6 +126,10 @@ export declare const DVEW: {
                 checkFloraCollisions: boolean;
                 checkSolidCollisions: boolean;
                 seralize: boolean;
+                /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 pickable: boolean;
             };
             materials: {

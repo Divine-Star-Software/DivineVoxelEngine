@@ -1,135 +1,53 @@
 import { OverrideManager } from "../../../Overrides/OverridesManager.js";
-const eastWestSides = {
-    0: true,
-    2: true,
-    4: true,
-    6: true,
-};
-const eastBoxes = {
-    3: true,
-    7: true,
-    10: true,
-    11: true,
-    14: true,
-    15: true,
-};
-const westBoxes = {
-    1: true,
-    5: true,
-    8: true,
-    9: true,
-    12: true,
-    13: true,
-};
-const northSouthSides = {
-    1: true,
-    3: true,
-    5: true,
-    7: true,
-};
-const northBoxes = {
-    2: true,
-    6: true,
-    9: true,
-    11: true,
-    13: true,
-    15: true,
-};
-const southBoxes = {
-    0: true,
-    4: true,
-    8: true,
-    10: true,
-    12: true,
-    14: true,
-};
-const sameCullEastWast = {
-    0: true,
-    2: true,
-    4: true,
-    6: true,
-};
-const sameCullNorthSouth = {
-    1: true,
-    4: true,
-    7: true,
-    5: true,
+import { StairStates } from "../../../../../Data/Shapes/StairStates.js";
+import { FaceRecord } from "../../../../../Data/Constants/Util/Faces.js";
+/*
+ "top",
+ "bottom",
+ "east",
+ "west",
+ "south",
+ "north",
+*/
+const stairCulls = {};
+stairCulls[StairStates.normal.bottom.north] = {
+    faces: [0, 1, 3, 0, 3, 1, 0, 1],
+    stateCulls: [
+        [StairStates.normal.bottom.north],
+        [StairStates.normal.bottom.north],
+    ],
 };
 const halfBoxCull = (Data) => {
     return true;
 };
 const stairCull = (data) => {
     const shapeState = data.currentVoxel.getShapeState();
+    const stairData = stairCulls[shapeState];
+    if (!stairData)
+        return false;
     const neighborShapeState = data.neighborVoxel.getShapeState();
-    if (shapeState >= 0 && shapeState <= 7) {
-        if (data.face == "east" || data.face == "west") {
-            if (shapeState == neighborShapeState) {
-                return sameCullNorthSouth[shapeState];
-            }
-            if (data.face == "east") {
-                if (eastBoxes[shapeState] && westBoxes[neighborShapeState])
-                    return false;
-            }
-            if (data.face == "west") {
-                if (westBoxes[shapeState] && eastBoxes[neighborShapeState])
-                    return false;
-            }
-        }
-        if (data.face == "north" || data.face == "south") {
-            if (shapeState == neighborShapeState) {
-                return sameCullEastWast[shapeState];
-            }
-            if (data.face == "north") {
-                if (northBoxes[shapeState] && southBoxes[neighborShapeState])
-                    return false;
-            }
-            if (data.face == "south") {
-                if (southBoxes[shapeState] && northBoxes[neighborShapeState])
-                    return false;
-            }
-        }
+    let finalResult = false;
+    const faces = stairData.faces;
+    const type = faces[FaceRecord[data.face]];
+    if (type == 2 || type == 3) {
+        const i = faces[FaceRecord[data.face] + 1];
+        const override = stairData.stateCulls[i];
+        finalResult = !override.includes(neighborShapeState);
     }
-    return true;
+    return finalResult;
 };
 const boxCull = (data) => {
     const shapeState = data.currentVoxel.getShapeState();
-    if (data.face == "bottom") {
-        if ((shapeState >= 0 && shapeState <= 3) ||
-            (shapeState >= 8 && shapeState <= 11)) {
-            return false;
-        }
+    const stairData = stairCulls[shapeState];
+    if (!stairData)
+        return false;
+    let finalResult = false;
+    const faces = stairData.faces;
+    const type = faces[FaceRecord[data.face]];
+    if (type == 1 || type == 3) {
+        finalResult = false;
     }
-    if (data.face == "top") {
-        if ((shapeState >= 4 && shapeState <= 7) ||
-            (shapeState >= 12 && shapeState <= 15)) {
-            return false;
-        }
-    }
-    if (data.face == "east") {
-        if (eastWestSides[shapeState])
-            return false;
-        if (eastBoxes[shapeState])
-            return false;
-    }
-    if (data.face == "west") {
-        if (eastWestSides[shapeState])
-            return false;
-        if (westBoxes[shapeState])
-            return false;
-    }
-    if (data.face == "north") {
-        if (northSouthSides[shapeState])
-            return false;
-        if (northBoxes[shapeState])
-            return false;
-    }
-    if (data.face == "south") {
-        if (northSouthSides[shapeState])
-            return false;
-        if (southBoxes[shapeState])
-            return false;
-    }
-    return true;
+    return finalResult;
 };
 export const StairCullFace = (data) => {
     const id = data.neighborVoxel.getVoxelShapeObj().id;
@@ -146,8 +64,7 @@ export const StairCullFace = (data) => {
 };
 export function SetUpStairOverrides() {
     OverrideManager.registerOverride("CullFace", "Stair", "Any", (data) => {
-        StairCullFace(data);
-        return data.default;
+        return StairCullFace(data);
     });
     OverrideManager.registerOverride("AOFlip", "Stair", "Any", (data) => {
         if (data.face == "top" || data.face == "bottom")

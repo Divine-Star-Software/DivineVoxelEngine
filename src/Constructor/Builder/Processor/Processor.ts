@@ -27,7 +27,7 @@ import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 //maps
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 
-import { FaceMap } from "../../../Data/Constants/Meshing/Faces.js";
+import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
 import { HeightMapTool } from "../../../Tools/HeightMap/HeightMapTool.js";
@@ -189,15 +189,24 @@ export const Processor = {
    this.faceDataOverride.face = face;
    this.faceDataOverride.default = substanceRuleResult;
    finalResult = substanceRuleResult;
+   this.faceDataOverride.default = finalResult;
    finalResult = OverrideManager.runOverride(
     "CullFace",
     voxelShape.id,
     "Any",
     this.faceDataOverride
    );
+   this.faceDataOverride.default = finalResult;
    finalResult = OverrideManager.runOverride(
     "CullFace",
     voxelShape.id,
+    this.nDataTool.getVoxelShapeObj().id,
+    this.faceDataOverride
+   );
+   this.faceDataOverride.default = finalResult;
+   finalResult = OverrideManager.runOverride(
+    "CullFace",
+    voxelObject.id,
     this.nDataTool.getVoxelShapeObj().id,
     this.faceDataOverride
    );

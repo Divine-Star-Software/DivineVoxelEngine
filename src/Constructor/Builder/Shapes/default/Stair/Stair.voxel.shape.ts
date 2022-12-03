@@ -3,7 +3,7 @@ import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
 import { SetUpStairOverrides } from "./Stair.overrides.js";
 //data
 import { StairBuilderData } from "./StairData.js";
-import { FaceMap } from "../../../../../Data/Constants/Meshing/Faces.js";
+import { FaceMap } from "../../../../../Data/Constants/Util/Faces.js";
 
 export const StairVoxelShape: VoxelShape = {
  id: "Stair",

@@ -8,7 +8,7 @@ import { DirectionNames } from "Meta/Util.types.js";
 import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { VoxelShape } from "Meta/index.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
-import { FaceMap } from "../../../../Data/Constants/Meshing/Faces.js";
+import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
 import { OverrideManager } from "../../Overrides/OverridesManager.js";
 type Nullable<T> = T | false | null;

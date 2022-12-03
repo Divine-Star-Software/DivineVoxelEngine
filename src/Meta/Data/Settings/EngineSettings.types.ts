@@ -21,7 +21,7 @@ export type EngineSettingsData = {
  server: {
   enabled: boolean;
  };
- textureOptions: {
+ textures: {
   width: number;
   height: number;
   animationTime: number;

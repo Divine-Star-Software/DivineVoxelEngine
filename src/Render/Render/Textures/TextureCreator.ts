@@ -11,11 +11,13 @@ export const TextureCreator = {
 
  setUpImageCreation() {
   const _2dCanvas = document.createElement("canvas");
+  _2dCanvas.width = this.imgWidth;
+  _2dCanvas.height = this.imgHeight;
   const context = _2dCanvas.getContext("2d");
   if (!context) {
    throw new Error("Context did not load for texture creation.");
   }
- 
+
   context.imageSmoothingEnabled = false;
   this.context = context;
  },
@@ -29,6 +31,7 @@ export const TextureCreator = {
  ): Promise<BABYLON.RawTexture2DArray> {
   if (width == -1) width = this.imgWidth;
   if (height == -1) height = this.imgHeight;
+
   const resolvedImages: Uint8ClampedArray[] = [];
   //create blank fill to pad image array buffer
   let index = 0;
@@ -75,24 +78,21 @@ export const TextureCreator = {
   width: number,
   height: number
  ): Promise<Uint8ClampedArray> {
-    
   if (!this.context) {
    throw new Error("Context is not set for texture creation.");
   }
   const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
-   const loadedImage = new Image();
-   loadedImage.src = imgPath;
-   loadedImage.onload = () => {
-    if (!TextureCreator.context) return;
+   const image = new Image();
+   image.src = imgPath;
+   image.onload = () => {
+    const ctx = TextureCreator.context;
+    if (!ctx) return;
     //clear the canvas before re-rendering another image
-    TextureCreator.context.clearRect(0, 0, width, height);
-    TextureCreator.context.drawImage(loadedImage, 0, 0, width, height);
-  //  TextureCreator.context.fillStyle = "green";
-  //  TextureCreator.context.fillRect(0,0,width,height);
-    const imgData = TextureCreator.context.getImageData(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(image, 0, 0, width, height);
+    const imgData = ctx.getImageData(0, 0, width, height);
     resolve(imgData.data);
    };
-   
   });
 
   return prom;
@@ -108,6 +108,4 @@ export const TextureCreator = {
   }
   return combinedImagedata;
  },
-
-
 };

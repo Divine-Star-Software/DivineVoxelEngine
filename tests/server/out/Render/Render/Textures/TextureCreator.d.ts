@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 export declare const TextureCreator: {
     context: CanvasRenderingContext2D | null;
     imgWidth: number;

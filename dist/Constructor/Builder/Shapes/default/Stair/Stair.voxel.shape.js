@@ -2,7 +2,7 @@
 import { SetUpStairOverrides } from "./Stair.overrides.js";
 //data
 import { StairBuilderData } from "./StairData.js";
-import { FaceMap } from "../../../../../Data/Constants/Meshing/Faces.js";
+import { FaceMap } from "../../../../../Data/Constants/Util/Faces.js";
 export const StairVoxelShape = {
     id: "Stair",
     build(mesher) {

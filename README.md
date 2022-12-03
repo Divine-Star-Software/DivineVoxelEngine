@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-<img src="https://divinestarapparel.com/wp-content/uploads/2021/02/logo-small.png"/>
+<img src="https://divine-star-software.github.io/DigitalAssets/images/logo-small.png">
 </p>
 
 ---
@@ -33,7 +33,7 @@ Need help or want to share your creations? Join the [discord](https://discord.gg
 - Custom shaders and shader effects.
 - Vertical and horizontal chunks.
 - Voxel Lighting system.
-  - Easy to update and remove. 
+  - Easy to update and remove.
   - Support for different colored lights.
   - Sunlight global illumination/
 - World Data API - Easy tools to build worlds.

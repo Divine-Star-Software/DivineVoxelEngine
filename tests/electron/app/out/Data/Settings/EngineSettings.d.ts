@@ -28,7 +28,7 @@ export declare const EngineSettings: {
             autoSyncChunks: boolean;
             autoSyncVoxelPalette: boolean;
         };
-        textureOptions: {
+        textures: {
             animationTime: number;
             width: number;
             height: number;
