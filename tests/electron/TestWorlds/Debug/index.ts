@@ -35,8 +35,8 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
-
 });
+
 
 SyncWithGraphicsSettings(DVER);
 const init = async () => {

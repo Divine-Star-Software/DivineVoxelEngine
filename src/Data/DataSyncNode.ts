@@ -14,6 +14,18 @@ import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 
 export const DataSyncNode = {
+ _states: <Record<string, boolean>>{
+  voxelData: false,
+ },
+ isReady() {
+  let done = true;
+  for (const state of Object.keys(this._states)) {
+   if (!this._states[state]) {
+    done = false;
+   }
+  }
+  return true;
+ },
  chunk: ThreadComm.onDataSync<ChunkSyncData, ChunkUnSyncData>(
   DataSyncTypes.chunk
  ),
@@ -32,10 +44,12 @@ DataSyncNode.voxelPalette.addOnSync((data) => {
 });
 
 DataSyncNode.voxelData.addOnSync((data) => {
- VoxelData.syncData(data[0], data[1]);
+  
+ VoxelData.$INIT(data[0]);
+ VoxelData.sync(new Uint16Array(data[1]));
+ DataSyncNode._states.voxelData = true;
 });
 
 DataSyncNode.dimension.addOnSync((data) => {
-
  DimensionsRegister.registerDimension(data.id, data.options);
 });

@@ -1,28 +1,8 @@
+import { RemoteTagManager } from "../../Libs/DivineBinaryTags/RemoteTagManager.js";
 import { VoxelSubstanceType } from "Meta/index.js";
-export declare const VoxelData: {
-    byteLength: {
-        substance: number;
-        shapeId: number;
-        hardness: number;
-        material: number;
-        checkCollision: number;
-        colliderId: number;
-        lightSource: number;
-        lightValue: number;
-        isRich: number;
-        totalLength: number;
-    };
-    indexes: {
-        substance: number;
-        shapeId: number;
-        hardness: number;
-        material: number;
-        checkCollision: number;
-        colliderId: number;
-        lightSource: number;
-        lightValue: number;
-        isRich: number;
-    };
+declare class VDTags extends RemoteTagManager {
+    id: string;
+    voxelMap: Uint16Array;
     substanceRecord: Record<number, VoxelSubstanceType>;
     voxelData: {
         substance: VoxelSubstanceType;
@@ -35,9 +15,9 @@ export declare const VoxelData: {
         lightValue: number;
         isRich: number;
     };
-    voxelDataView: DataView;
-    voxelMap: Uint16Array;
-    syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+    constructor(id: string);
+    sync(voxelMap: Uint16Array): void;
+    setVoxel(id: number): void;
     getVoxelData(id: number): {
         substance: VoxelSubstanceType;
         shapeId: number;
@@ -49,13 +29,7 @@ export declare const VoxelData: {
         lightValue: number;
         isRich: number;
     };
-    getSubstance(id: number): number;
     getTrueSubstance(id: number): VoxelSubstanceType;
-    getShapeId(id: number): number;
-    getHardness(id: number): number;
-    getCheckCollisions(id: number): number;
-    getColliderId(id: number): number;
-    isLightSource(id: number): boolean;
-    getLightValue(id: number): number;
-    isRich(id: number): boolean;
-};
+}
+export declare const VoxelData: VDTags;
+export {};

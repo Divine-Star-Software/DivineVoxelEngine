@@ -17,10 +17,18 @@ export const DataSync = {
     comms: {},
     commOptions: {},
     $INIT() {
-        this.voxelDataCreator.$createVoxelData();
-        this.voxelData.sync();
-        this.voxelPalette.sync();
-        VoxelPaletteReader.setVoxelPalette(this.voxelDataCreator.palette._palette, this.voxelDataCreator.palette._map);
+        return new Promise((resolve) => {
+            const inte = setInterval(() => {
+                if (VoxelDataCreator.isReady()) {
+                    this.voxelDataCreator.$createVoxelData();
+                    this.voxelData.sync();
+                    this.voxelPalette.sync();
+                    VoxelPaletteReader.setVoxelPalette(this.voxelDataCreator.palette._palette, this.voxelDataCreator.palette._map);
+                    clearInterval(inte);
+                    resolve(true);
+                }
+            }, 1);
+        });
     },
     isReady() {
         return this.voxelDataCreator.isReady();
@@ -105,7 +113,7 @@ export const DataSync = {
         sync() {
             loopThroughComms((comm) => {
                 comm.syncData(DataSyncTypes.voxelData, [
-                    VoxelDataCreator.voxelBuffer,
+                    VoxelDataCreator.initData,
                     VoxelDataCreator.voxelMapBuffer,
                 ]);
             });
@@ -113,7 +121,7 @@ export const DataSync = {
         syncInThread(commName) {
             const comm = DataSync.comms[commName];
             comm.syncData(DataSyncTypes.voxelData, [
-                VoxelDataCreator.voxelBuffer,
+                VoxelDataCreator.initData,
                 VoxelDataCreator.voxelMapBuffer,
             ]);
         },

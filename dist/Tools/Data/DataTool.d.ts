@@ -29,6 +29,7 @@ export declare class DataTool {
     __process(): void;
     loadIn(x: number, y: number, z: number): boolean | undefined;
     commit(heightMapUpdate?: number): false | this;
+    getTagValue(id: string): number;
     getLight(): number;
     setLight(light: number): this;
     getLevel(): number;
@@ -44,7 +45,7 @@ export declare class DataTool {
     getSubstance(): VoxelSubstanceType;
     getTemplateSubstance(): VoxelTemplateSubstanceType;
     getState(): number;
-    isRich(): boolean;
+    isRich(): number;
     setAir(): this;
     isAir(): boolean;
     setBarrier(): this;

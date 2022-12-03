@@ -11,29 +11,7 @@ export declare const DataManager: {
         getDimensionNumericId(id: string | number): number;
     };
     voxel: {
-        byteLength: {
-            substance: number;
-            shapeId: number;
-            hardness: number;
-            material: number;
-            checkCollision: number;
-            colliderId: number;
-            lightSource: number;
-            lightValue: number;
-            isRich: number;
-            totalLength: number;
-        };
-        indexes: {
-            substance: number;
-            shapeId: number;
-            hardness: number;
-            material: number;
-            checkCollision: number;
-            colliderId: number;
-            lightSource: number;
-            lightValue: number;
-            isRich: number;
-        };
+        voxelMap: Uint16Array;
         substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
         voxelData: {
             substance: import("../Meta/index.js").VoxelSubstanceType;
@@ -46,9 +24,9 @@ export declare const DataManager: {
             lightValue: number;
             isRich: number;
         };
-        voxelDataView: DataView;
-        voxelMap: Uint16Array;
-        syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+        id: string;
+        sync(voxelMap: Uint16Array): void;
+        setVoxel(id: number): void;
         getVoxelData(id: number): {
             substance: import("../Meta/index.js").VoxelSubstanceType;
             shapeId: number;
@@ -60,15 +38,20 @@ export declare const DataManager: {
             lightValue: number;
             isRich: number;
         };
-        getSubstance(id: number): number;
         getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
-        getShapeId(id: number): number;
-        getHardness(id: number): number;
-        getCheckCollisions(id: number): number;
-        getColliderId(id: number): number;
-        isLightSource(id: number): boolean;
-        getLightValue(id: number): number;
-        isRich(id: number): boolean;
+        $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
+        byteOffSet: number;
+        tagSize: number;
+        tagIndexes: number;
+        data: DataView;
+        indexMap: Map<string, number>;
+        index: DataView;
+        setBuffer(buffer: import("../Libs/DivineBinaryTags/Meta/Util.types.js").BufferTypes): void;
+        setTagIndex(index: number): void;
+        getTag(id: string): number;
+        setTag(id: string, value: number): void;
+        loopThroughTags(run: (id: string, value: number) => void): void;
+        loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
     };
     world: {
         _currentionDimension: string;
@@ -219,29 +202,6 @@ export declare const DataManager: {
         voxels: {
             substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
-            byteLengths: {
-                substance: number;
-                shapeId: number;
-                hardness: number;
-                material: number;
-                checkCollision: number;
-                colliderId: number;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-                totalLength: number;
-            };
-            dataIndexes: {
-                substance: number;
-                shapeId: number;
-                hardness: number;
-                material: number;
-                checkCollision: number;
-                colliderId: number;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
         };
     };
     chunks: {

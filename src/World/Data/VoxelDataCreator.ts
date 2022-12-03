@@ -1,11 +1,14 @@
 import { VoxelData } from "Meta/index.js";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
+import { VoxelDataTags } from "./Tags/VoxelTags.js";
 
+let shapeMap: Record<string, number> | null = null;
 export const VoxelDataCreator = {
  voxelBuffer: new SharedArrayBuffer(0),
  voxelMapBuffer: new SharedArrayBuffer(0),
 
- shapeMap: <Record<string, number>>{},
+ initData: <RemoteTagManagerInitData>{},
 
  __shapeMapSet: false,
 
@@ -14,74 +17,75 @@ export const VoxelDataCreator = {
  },
 
  $createVoxelData() {
-  const byteLength = DVEW.data.register.voxels.byteLengths;
-  const indexes = DVEW.data.register.voxels.dataIndexes;
+  if (!shapeMap) return;
   const substanceMap = DVEW.data.register.voxels.substanceMap;
-  const shapeMap = this.shapeMap;
+
   const totalVoxels = Object.keys(DVEW.voxelManager.voxelData).length;
-  const buffer = new SharedArrayBuffer(totalVoxels * byteLength.totalLength);
-  const dv = new DataView(buffer);
 
-  const totalRegisteredVoxels = this.palette._count;
-  const voxelMapBuffer = new SharedArrayBuffer(totalRegisteredVoxels * 2);
-  const voxelMap = new Uint16Array(voxelMapBuffer);
+  const initData = VoxelDataTags.$INIT({
+   indexBufferMode: "shared",
+   numberOfIndexes: totalVoxels,
+  });
 
+  const buffer = new SharedArrayBuffer(initData.bufferSize);
+  initData.buffer = buffer;
   const vp = this.palette;
+  this.voxelMapBuffer = new SharedArrayBuffer(vp._count * 2);
+  const voxelMap = new Uint16Array(this.voxelMapBuffer);
+  VoxelDataTags.setBuffer(buffer);
 
   let currentCount = 0;
-  let currentParent = 2;
+  let currentParent = 0;
 
   for (let i = 2; i < voxelMap.length; i++) {
    let newParent = vp.getVoxelBaseId(i);
    if (newParent != currentParent) {
-    currentCount++;
     currentParent = newParent;
+    voxelMap[i] = currentCount;
+    const voxel = DVEW.voxelManager.getVoxelData(
+     vp.getVoxelStringId(newParent)
+    );
+
+    VoxelDataTags.setTagIndex(currentCount);
+    VoxelDataTags.setTag("#dve:substance", substanceMap[voxel.substance]);
+
+    VoxelDataTags.setTag("#dve:shape_id", shapeMap[voxel.shapeId]);
+    VoxelDataTags.setTag("#dve:material", 0);
+    VoxelDataTags.setTag("#dve:hardness", voxel.hardnress);
+
+    VoxelDataTags.setTag("#dve:is_light_source", voxel.lightSource ? 1 : 0);
+    VoxelDataTags.setTag(
+     "#dve:light_value",
+     voxel.lightValue ? voxel.lightValue : 0
+    );
+    VoxelDataTags.setTag("#dve:is_rich", voxel.isRich ? 1 : 0);
+    if (voxel.physics) {
+     VoxelDataTags.setTag(
+      "#dve:check_collisions",
+      voxel.physics.checkCollisions ? 1 : 0
+     );
+     VoxelDataTags.setTag(
+      "#dve:check_collisions",
+      voxel.physics.collider ? 1 : 0
+     );
+    }
+
+    currentCount++;
    }
-   voxelMap[i] = currentCount;
   }
 
-  const done: Record<number, boolean> = {};
-  for (let paletteId = 2; paletteId < voxelMap.length; paletteId++) {
-   const indexId = voxelMap[paletteId];
-   if (done[indexId]) continue;
-   done[indexId] = true;
-   const tvid = vp.getVoxelStringId(paletteId);
-   const vdata = DVEW.voxelManager.getVoxelData(tvid);
-   let index = indexId * byteLength.totalLength;
-   //substance
-   dv.setUint8(index + indexes.substance, substanceMap[vdata.substance]);
-   //shapeId
-   dv.setUint16(index + indexes.shapeId, shapeMap[vdata.shapeId]);
-   //hardness
-   dv.setUint16(index + indexes.hardness, vdata.hardnress);
-   //material
-   dv.setUint16(index + indexes.material, 0);
-   //check collisions
-   dv.setUint8(
-    index + indexes.checkCollision,
-    vdata.physics?.checkCollisions ? 1 : 0
-   );
-   //collider id
-   dv.setUint16(index + indexes.colliderId, vdata.physics?.collider ? 1 : 0);
-   //light source
-   dv.setUint8(index + indexes.lightSource, vdata.lightSource ? 1 : 0);
-   //light value
-   dv.setUint16(
-    index + indexes.lightValue,
-    vdata.lightValue ? vdata.lightValue : 0
-   );
-   //is rich
-   dv.setUint8(index + indexes.isRich, vdata.isRich ? 1 : 0);
-  }
-  this.voxelMapBuffer = voxelMapBuffer;
-  this.voxelBuffer = buffer;
-  DVEW.data.voxel.syncData(this.voxelBuffer, this.voxelMapBuffer);
+
+
+  this.initData = initData;
+  DVEW.data.voxel.sync(voxelMap);
+  DVEW.data.voxel.$INIT(initData);
+
   //@ts-ignore
   delete this["shapeMap"];
  },
 
- setShapeMap(shapeMap: Record<string, number>) {
-  this.shapeMap = shapeMap;
+ setShapeMap(newShapeMap: Record<string, number>) {
+  shapeMap = newShapeMap;
   this.__shapeMapSet = true;
  },
 

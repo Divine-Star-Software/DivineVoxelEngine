@@ -30,6 +30,7 @@ import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.j
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { VoxelDataTags } from "./Data/Tags/VoxelTags.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -62,9 +63,14 @@ export const DVEW = {
  cQueues: ConstructorQueues,
  cTasks: ConstructorTasks,
 
+ tags : {
+    voxels : VoxelDataTags
+ },
+
  isReady() {
   return (
    DVEW.ccm.isReady() &&
+   DVEW.dataSync.isReady() && 
    DVEW.__settingsHaveBeenSynced &&
    (DVEW.__renderIsDone || DVEW.__serverIsDone)
   );

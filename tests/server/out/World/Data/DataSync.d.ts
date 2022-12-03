@@ -11,11 +11,11 @@ export declare const DataSync: {
     voxelDataCreator: {
         voxelBuffer: SharedArrayBuffer;
         voxelMapBuffer: SharedArrayBuffer;
-        shapeMap: Record<string, number>;
+        initData: import("../../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData;
         __shapeMapSet: boolean;
         isReady(): boolean;
         $createVoxelData(): void;
-        setShapeMap(shapeMap: Record<string, number>): void;
+        setShapeMap(newShapeMap: Record<string, number>): void;
         palette: {
             _count: number;
             _palette: Record<number, string>;
@@ -31,7 +31,7 @@ export declare const DataSync: {
     };
     comms: Record<string, CommBase | CommManager>;
     commOptions: Record<string, CommSyncOptions>;
-    $INIT(): void;
+    $INIT(): Promise<unknown>;
     isReady(): boolean;
     registerComm(comm: CommBase | CommManager): void;
     dimesnion: {

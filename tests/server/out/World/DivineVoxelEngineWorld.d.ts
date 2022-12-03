@@ -126,10 +126,6 @@ export declare const DVEW: {
                 checkFloraCollisions: boolean;
                 checkSolidCollisions: boolean;
                 seralize: boolean;
-                /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
                 pickable: boolean;
             };
             materials: {
@@ -181,7 +177,10 @@ export declare const DVEW: {
                 y: number;
             };
             __chunkPosition: {
-                x: number;
+                x: number; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 y: number;
                 z: number;
             };
@@ -207,7 +206,10 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkPosition(x: number, y: number, z: number): {
-                x: number;
+                x: number; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 y: number;
                 z: number;
             };
@@ -269,29 +271,7 @@ export declare const DVEW: {
             getDimensionNumericId(id: string | number): number;
         };
         voxel: {
-            byteLength: {
-                substance: number;
-                shapeId: number;
-                hardness: number;
-                material: number;
-                checkCollision: number;
-                colliderId: number;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-                totalLength: number;
-            };
-            indexes: {
-                substance: number;
-                shapeId: number;
-                hardness: number;
-                material: number;
-                checkCollision: number;
-                colliderId: number;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
+            voxelMap: Uint16Array;
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
             voxelData: {
                 substance: import("../Meta/index.js").VoxelSubstanceType;
@@ -304,9 +284,9 @@ export declare const DVEW: {
                 lightValue: number;
                 isRich: number;
             };
-            voxelDataView: DataView;
-            voxelMap: Uint16Array;
-            syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer): void;
+            id: string;
+            sync(voxelMap: Uint16Array): void;
+            setVoxel(id: number): void;
             getVoxelData(id: number): {
                 substance: import("../Meta/index.js").VoxelSubstanceType;
                 shapeId: number;
@@ -318,15 +298,20 @@ export declare const DVEW: {
                 lightValue: number;
                 isRich: number;
             };
-            getSubstance(id: number): number;
             getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
-            getShapeId(id: number): number;
-            getHardness(id: number): number;
-            getCheckCollisions(id: number): number;
-            getColliderId(id: number): number;
-            isLightSource(id: number): boolean;
-            getLightValue(id: number): number;
-            isRich(id: number): boolean;
+            $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
+            byteOffSet: number;
+            tagSize: number;
+            tagIndexes: number;
+            data: DataView;
+            indexMap: Map<string, number>;
+            index: DataView;
+            setBuffer(buffer: import("../Libs/DivineBinaryTags/Meta/Util.types.js").BufferTypes): void;
+            setTagIndex(index: number): void;
+            getTag(id: string): number;
+            setTag(id: string, value: number): void;
+            loopThroughTags(run: (id: string, value: number) => void): void;
+            loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
         };
         world: {
             _currentionDimension: string;
@@ -414,7 +399,10 @@ export declare const DVEW: {
                 y: number;
             };
             __chunkPosition: {
-                x: number;
+                x: number; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 y: number;
                 z: number;
             };
@@ -440,7 +428,10 @@ export declare const DVEW: {
                 z: number;
             };
             getChunkPosition(x: number, y: number, z: number): {
-                x: number;
+                x: number; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 y: number;
                 z: number;
             };
@@ -477,29 +468,6 @@ export declare const DVEW: {
             voxels: {
                 substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
                 substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
-                byteLengths: {
-                    substance: number;
-                    shapeId: number;
-                    hardness: number;
-                    material: number;
-                    checkCollision: number;
-                    colliderId: number;
-                    lightSource: number;
-                    lightValue: number;
-                    isRich: number;
-                    totalLength: number;
-                };
-                dataIndexes: {
-                    substance: number;
-                    shapeId: number;
-                    hardness: number;
-                    material: number;
-                    checkCollision: number;
-                    colliderId: number;
-                    lightSource: number;
-                    lightValue: number;
-                    isRich: number;
-                };
             };
         };
         chunks: {
@@ -663,11 +631,11 @@ export declare const DVEW: {
         voxelDataCreator: {
             voxelBuffer: SharedArrayBuffer;
             voxelMapBuffer: SharedArrayBuffer;
-            shapeMap: Record<string, number>;
+            initData: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData;
             __shapeMapSet: boolean;
             isReady(): boolean;
             $createVoxelData(): void;
-            setShapeMap(shapeMap: Record<string, number>): void;
+            setShapeMap(newShapeMap: Record<string, number>): void;
             palette: {
                 _count: number;
                 _palette: Record<number, string>;
@@ -687,7 +655,7 @@ export declare const DVEW: {
             voxelPalette: boolean;
             voxelData: boolean;
         }>;
-        $INIT(): void;
+        $INIT(): Promise<unknown>;
         isReady(): boolean;
         registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager): void;
         dimesnion: {
@@ -916,6 +884,9 @@ export declare const DVEW: {
                 chunk: null;
             };
         };
+    };
+    tags: {
+        voxels: import("../Libs/DivineBinaryTags/TagManager.js").TagManager;
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;

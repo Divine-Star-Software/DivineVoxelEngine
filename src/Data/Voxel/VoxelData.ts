@@ -1,12 +1,10 @@
+import { RemoteTagManager } from "../../Libs/DivineBinaryTags/RemoteTagManager.js";
 import { VoxelSubstanceType } from "Meta/index.js";
 import { Register } from "../Register/Register.js";
-
-export const VoxelData = {
- byteLength: Register.voxels.byteLengths,
- indexes: Register.voxels.dataIndexes,
- substanceRecord: Register.voxels.substanceRecord,
-
- voxelData: {
+class VDTags extends RemoteTagManager {
+ voxelMap = new Uint16Array();
+ substanceRecord = Register.voxels.substanceRecord;
+ voxelData = {
   substance: <VoxelSubstanceType>"solid",
   shapeId: 0,
   hardness: 0,
@@ -16,81 +14,38 @@ export const VoxelData = {
   lightSource: 0,
   lightValue: 0,
   isRich: 0,
- },
+ };
+ constructor(public id: string) {
+  super(id);
+ }
 
- voxelDataView: new DataView(new ArrayBuffer(0)),
- voxelMap: new Uint16Array(0),
+ sync(voxelMap: Uint16Array) {
+  this.voxelMap = voxelMap;
+ }
 
- syncData(voxelBuffer: SharedArrayBuffer, voxelMapBuffer: SharedArrayBuffer) {
-  this.voxelDataView = new DataView(voxelBuffer);
-  this.voxelMap = new Uint16Array(voxelMapBuffer);
- },
+ setVoxel(id: number) {
+  const index = this.voxelMap[id];
+  this.setTagIndex(index);
+ }
 
  getVoxelData(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
+  this.setVoxel(id);
   this.voxelData.substance = this.getTrueSubstance(id);
-  this.voxelData.shapeId = this.voxelDataView.getUint16(
-   this.indexes.shapeId + index
-  );
-  this.voxelData.hardness = this.voxelDataView.getUint16(
-   this.indexes.hardness + index
-  );
-  this.voxelData.material = this.voxelDataView.getUint16(
-   this.indexes.material + index
-  );
-  this.voxelData.checkCollision = this.voxelDataView.getUint8(
-   this.indexes.checkCollision + index
-  );
-  this.voxelData.colliderId = this.voxelDataView.getUint16(
-   this.indexes.colliderId + index
-  );
-  this.voxelData.lightSource = this.voxelDataView.getUint8(
-   this.indexes.lightSource + index
-  );
-  this.voxelData.lightValue = this.voxelDataView.getUint16(
-   this.indexes.lightValue + index
-  );
+  this.voxelData.shapeId = this.getTag("#dve:shape_id");
+  this.voxelData.hardness = this.getTag("#dve:hardness");
+  this.voxelData.material = this.getTag("#dve:material");
+  this.voxelData.checkCollision = this.getTag("#dve:check_collisions");
+  this.voxelData.colliderId = this.getTag("#dve:collider_id");
+  this.voxelData.lightSource = this.getTag("#dve:is_light_source");
+  this.voxelData.lightValue = this.getTag("#dve:light_value");
   return this.voxelData;
- },
-
- getSubstance(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint8(this.indexes.substance + index);
- },
+ }
 
  getTrueSubstance(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  const substnaceId = this.voxelDataView.getUint8(
-   this.indexes.substance + index
-  );
-  return this.substanceRecord[substnaceId];
- },
- getShapeId(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint16(this.indexes.shapeId + index);
- },
- getHardness(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint16(this.indexes.hardness + index);
- },
- getCheckCollisions(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint8(this.indexes.checkCollision + index);
- },
- getColliderId(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint16(this.indexes.colliderId + index);
- },
- isLightSource(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint8(this.indexes.lightSource + index) == 1;
- },
- getLightValue(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint16(this.indexes.lightValue + index);
- },
- isRich(id: number) {
-  const index = this.voxelMap[id] * this.byteLength.totalLength;
-  return this.voxelDataView.getUint8(this.indexes.isRich + index) == 1;
- },
-};
+  this.setVoxel(id);
+
+  return this.substanceRecord[this.getTag("#dve:substance")];
+ }
+}
+
+export const VoxelData = new VDTags("voxel-data");

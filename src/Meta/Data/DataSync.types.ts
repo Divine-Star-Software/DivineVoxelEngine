@@ -1,3 +1,4 @@
+import { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types";
 import { DimensionData } from "./DimensionData.types";
 import { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
 
@@ -26,7 +27,7 @@ export type VoxelPaletteSyncData = [
 
 
 export type VoxelDataSync = [
- voxelData: SharedArrayBuffer,
+ initData: RemoteTagManagerInitData,
  voxelMapData: SharedArrayBuffer
 ];
 

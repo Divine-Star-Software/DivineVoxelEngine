@@ -12,7 +12,7 @@ export async function InitWorldWorker(DVEW) {
         checkInterval: 1,
         onReady: () => {
             DVEW.cQueues.$INIT();
-            DVEW.dataSync.$INIT();
         },
     });
+    await DVEW.dataSync.$INIT();
 }

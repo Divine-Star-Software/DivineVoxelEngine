@@ -41,12 +41,15 @@ export const DVEC = {
     reStart() { },
     isReady() {
         if (this.environment == "node") {
-            return DVEC.worldComm.isPortSet() && DVEC.__settingsHaveBeenSynced;
+            return (DVEC.worldComm.isPortSet() &&
+                DVEC.__settingsHaveBeenSynced &&
+                DataSyncNode.isReady());
         }
         else {
             return (DVEC.worldComm.isPortSet() &&
                 DVEC.__settingsHaveBeenSynced &&
-                Builder.textureManager.isReady());
+                Builder.textureManager.isReady() &&
+                DataSyncNode.isReady());
         }
     },
     async $INIT() {

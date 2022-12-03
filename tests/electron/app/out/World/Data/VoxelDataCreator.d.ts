@@ -1,12 +1,13 @@
 import { VoxelData } from "Meta/index.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
 export declare const VoxelDataCreator: {
     voxelBuffer: SharedArrayBuffer;
     voxelMapBuffer: SharedArrayBuffer;
-    shapeMap: Record<string, number>;
+    initData: RemoteTagManagerInitData;
     __shapeMapSet: boolean;
     isReady(): boolean;
     $createVoxelData(): void;
-    setShapeMap(shapeMap: Record<string, number>): void;
+    setShapeMap(newShapeMap: Record<string, number>): void;
     palette: {
         _count: number;
         _palette: Record<number, string>;

@@ -20,7 +20,7 @@ export class DataTool {
     position = {
         x: 0,
         y: 0,
-        z: 0
+        z: 0,
     };
     _cached = {
         id: 0,
@@ -103,6 +103,11 @@ export class DataTool {
         }
         return this;
     }
+    getTagValue(id) {
+        const vId = this.getId(true);
+        VoxelData.setVoxel(vId);
+        return VoxelData.getTag(id);
+    }
     getLight() {
         const rawVoxelData = this.data.raw[0];
         if (rawVoxelData < 0)
@@ -112,8 +117,8 @@ export class DataTool {
             return VoxelReader.getLight(rawVoxelData);
         if (voxelId < 2)
             return -1;
-        const lightValue = VoxelData.getLightValue(voxelId);
-        if (VoxelData.isLightSource(voxelId) && lightValue) {
+        const lightValue = this.getTagValue("#dve:light_value");
+        if (this.getTagValue("#dve:is_light_source") && lightValue) {
             return lightValue;
         }
         if (VoxelData.getTrueSubstance(voxelId) == "solid") {
@@ -151,57 +156,34 @@ export class DataTool {
     }
     //voxel data
     getShapeId() {
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return -1;
-            return VoxelData.getShapeId(this.data.secondaryBaseId);
-        }
-        if (this.data.id < 2)
+        const vID = this.getId(true);
+        if (vID < 2)
             return -1;
-        return VoxelData.getShapeId(this.data.baseId);
+        VoxelData.setVoxel(vID);
+        return VoxelData.getTag("#dve:shape_id");
     }
     isLightSource() {
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return false;
-            return VoxelData.isLightSource(this.data.secondaryBaseId);
-        }
-        if (this.data.id < 2)
+        const vID = this.getId(true);
+        if (vID < 2)
             return false;
-        return VoxelData.isLightSource(this.data.baseId);
+        VoxelData.setVoxel(vID);
+        return VoxelData.getTag("#dve:is_light_source") == 1;
     }
     getLightSourceValue() {
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return -1;
-            return VoxelData.getLightValue(this.data.secondaryBaseId);
-        }
-        if (this.data.id < 2)
-            return -1;
-        return VoxelData.getLightValue(this.data.baseId);
+        const vID = this.getId(true);
+        if (vID < 2)
+            return 0;
+        VoxelData.setVoxel(vID);
+        return VoxelData.getTag("#dve:light_value");
     }
     getSubstance() {
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return "solid";
-            return VoxelData.getTrueSubstance(this.data.secondaryBaseId);
-        }
-        if (this.data.id < 2)
-            return "solid";
-        return VoxelData.getTrueSubstance(this.data.baseId);
+        const vID = this.getId(true);
+        if (vID < 2)
+            return "transparent";
+        return VoxelData.getTrueSubstance(vID);
     }
     getTemplateSubstance() {
-        let substance;
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return "solid";
-            substance = VoxelData.getTrueSubstance(this.data.secondaryBaseId);
-        }
-        else {
-            if (this.data.id < 2)
-                return "solid";
-            substance = VoxelData.getTrueSubstance(this.data.baseId);
-        }
+        let substance = this.getSubstance();
         if (substance == "transparent") {
             substance = "solid";
         }
@@ -214,14 +196,11 @@ export class DataTool {
         return this.data.id - this.data.baseId;
     }
     isRich() {
-        if (this.__secondary) {
-            if (this.data.secondaryBaseId < 2)
-                return false;
-            return VoxelData.isRich(this.data.secondaryBaseId);
-        }
-        if (this.data.id < 2)
-            return false;
-        return VoxelData.isRich(this.data.baseId);
+        const vID = this.getId(true);
+        if (vID < 2)
+            return 0;
+        VoxelData.setVoxel(vID);
+        return VoxelData.getTag("#dve:is_rich");
     }
     //util
     setAir() {
@@ -241,14 +220,12 @@ export class DataTool {
     //voxel id
     getId(base = false) {
         if (this.__secondary) {
-            if (!base) {
+            if (!base)
                 return this.data.secondaryId;
-            }
             return this.data.secondaryBaseId;
         }
-        if (!base) {
+        if (!base)
             return this.data.id;
-        }
         return this.data.baseId;
     }
     setId(id) {

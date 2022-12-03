@@ -6,12 +6,25 @@
     "ts"
    ],
    "id": "threadcomm"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/divineBinaryTags/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "dbt"
   }
  ],
  "outputs": [
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/ThreadComm",
    "sourceID": "threadcomm",
+   "codeSection": "all",
+   "keepComments": true
+  },
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/DivineBinaryTags",
+   "sourceID": "dbt",
    "codeSection": "all",
    "keepComments": true
   }
