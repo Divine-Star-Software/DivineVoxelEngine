@@ -22,7 +22,7 @@ const severMessage = (message, data = []) => {
 severMessage("DIVINE VOXEL ENGINE SERVER");
 const builder = DVEW.getBuilder();
 const brush = DVEW.getBrush();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 const depth = 128;
 const startX = -depth;
 const endX = depth;

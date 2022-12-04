@@ -14,6 +14,19 @@ export declare type ChunkUnSyncData = [
     y: number,
     z: number
 ];
+export declare type ColumnSyncData = [
+    dimesnionId: number | string,
+    x: number,
+    y: number,
+    z: number,
+    Buffer: SharedArrayBuffer
+];
+export declare type ColumnUnSyncData = [
+    dimensionId: number | string,
+    x: number,
+    y: number,
+    z: number
+];
 export declare type VoxelPaletteSyncData = [
     voxelPalette: VoxelPalette,
     voxelPaletteMap: VoxelPaletteMap

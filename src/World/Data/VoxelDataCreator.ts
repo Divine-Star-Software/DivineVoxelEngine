@@ -77,8 +77,8 @@ export const VoxelDataCreator = {
 
 
   this.initData = initData;
-  DVEW.data.voxel.sync(voxelMap);
-  DVEW.data.voxel.$INIT(initData);
+  DVEW.data.voxelTags.sync(voxelMap);
+  DVEW.data.voxelTags.$INIT(initData);
 
   //@ts-ignore
   delete this["shapeMap"];

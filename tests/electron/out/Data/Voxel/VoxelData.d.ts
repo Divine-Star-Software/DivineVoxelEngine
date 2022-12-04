@@ -31,5 +31,5 @@ declare class VDTags extends RemoteTagManager {
     };
     getTrueSubstance(id: number): VoxelSubstanceType;
 }
-export declare const VoxelData: VDTags;
+export declare const VoxelTags: VDTags;
 export {};

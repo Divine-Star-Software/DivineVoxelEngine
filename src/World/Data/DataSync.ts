@@ -5,15 +5,20 @@ import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type {
  ChunkSyncData,
  ChunkUnSyncData,
+ ColumnSyncData,
+ ColumnUnSyncData,
  VoxelDataSync,
  VoxelPaletteSyncData,
 } from "Meta/Data/DataSync.types.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
 //objects
 import { VoxelDataCreator } from "./VoxelDataCreator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
+import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
+import { InitalizeColumnTags } from "./Tags/ColumnTags.js";
 const loopThroughComms = (func: (comm: CommBase | CommManager) => void) => {
  for (const commKey of Object.keys(DataSync.comms)) {
   const comm = DataSync.comms[commKey];
@@ -37,9 +42,11 @@ export const DataSync = {
    const inte = setInterval(() => {
     if (VoxelDataCreator.isReady()) {
      this.voxelDataCreator.$createVoxelData();
-     this.voxelData.sync();
+     InitalizeChunkTags();
+     InitalizeColumnTags();
+     this.voxelTags.sync();
      this.voxelPalette.sync();
-
+     this.chunkTags.sync();
      VoxelPaletteReader.setVoxelPalette(
       this.voxelDataCreator.palette._palette,
       this.voxelDataCreator.palette._map
@@ -139,8 +146,83 @@ export const DataSync = {
    ]);
   },
  },
+ column: {
+  unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number) {
+   loopThroughComms((comm) => {
+    comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
+     dimesnion,
+     chunkX,
+     chunkY,
+     chunkZ,
+    ]);
+   });
+  },
+  unSyncInThread(
+   commName: string,
+   dimension: DID,
+   chunkX: number,
+   chunkY: number,
+   chunkZ: number
+  ) {
+   const comm = DataSync.comms[commName];
+   comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
+    dimension,
+    chunkX,
+    chunkY,
+    chunkZ,
+   ]);
+  },
+  sync(dimension: DID, x: number, y: number, z: number) {
+   const column = WorldRegister.column.get(dimension, x, y, z);
+   if (!column) return;
+   loopThroughComms((comm) => {
+    comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
+     dimension,
+     x,
+     y,
+     z,
+     column.buffer,
+    ]);
+   });
+  },
+  syncInThread(
+   commName: string,
+   dimesnion: DID,
+   x: number,
+   y: number,
+   z: number
+  ) {
+   const column = WorldRegister.column.get(dimesnion, x, y, z);
+   if (!column) return;
+   const comm = DataSync.comms[commName];
+   comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
+    dimesnion,
+    x,
+    y,
+    z,
+    column.buffer,
+   ]);
+  },
+ },
+ chunkTags: {
+  sync() {
+   loopThroughComms((comm) => {
+    comm.syncData<RemoteTagManagerInitData>(
+     DataSyncTypes.chunkTags,
+     ChunkDataTags.initData
+    );
+   });
+  },
+  syncInThread(commName: string) {
+   const comm = DataSync.comms[commName];
+   comm.syncData<RemoteTagManagerInitData>(
+    DataSyncTypes.chunkTags,
+    ChunkDataTags.initData
+   );
+  },
+ },
 
- voxelData: {
+ voxelTags: {
   sync() {
    loopThroughComms((comm) => {
     comm.syncData<VoxelDataSync>(DataSyncTypes.voxelData, [

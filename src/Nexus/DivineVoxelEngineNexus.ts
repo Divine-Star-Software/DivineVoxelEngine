@@ -14,7 +14,7 @@ import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
 import { WorldPainter } from "../Data/World/WorldPainter.js";
-import { ChunkReader } from "../Data/Chunk/ChunkReader.js";
+import { ChunkSpace } from "../Data/Chunk/ChunkSpace.js";
 
 export const DVEN = {
  environment: <"node" | "browser">"browser",

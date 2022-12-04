@@ -41,4 +41,20 @@ export const RenderTasks = {
    );
   }
  ),
+ removeAllChunk: ThreadComm.registerTasks<LocationData>(
+  "remove-all-chunks",
+  (data) => {
+   const dimension = data[0];
+   const chunkKey = WorldBounds.getChunkKeyFromPosition(
+    data[1],
+    data[2],
+    data[3]
+   );
+
+   DVER.meshManager.removeChunkMesh(dimension as string, "solid", chunkKey);
+   DVER.meshManager.removeChunkMesh(dimension as string, "liquid", chunkKey);
+   DVER.meshManager.removeChunkMesh(dimension as string, "flora", chunkKey);
+   DVER.meshManager.removeChunkMesh(dimension as string, "magma", chunkKey);
+  }
+ ),
 };

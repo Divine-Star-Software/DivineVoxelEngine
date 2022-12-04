@@ -1,7 +1,10 @@
-import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
+import { ChunkDataTool } from "../Data/ChunkDataTool.js";
+import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+const parentComm = ThreadComm.parent;
 export class BuilderTool {
+    static _chunkTool = new ChunkDataTool();
     data = {
         dimesnion: "main",
         x: 0,
@@ -45,13 +48,32 @@ export class BuilderTool {
         if (column.chunks.size == 0)
             return false;
         for (const [key, chunk] of column.chunks) {
-            const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
+            BuilderTool._chunkTool.setChunk(chunk);
+            const chunkPOS = BuilderTool._chunkTool.getPosition();
             CCM.tasks.build.chunk([
                 this.data.dimesnion,
                 chunkPOS.x,
                 chunkPOS.y,
                 chunkPOS.z,
                 this.data.LOD,
+            ]);
+        }
+        return this;
+    }
+    removeColumn() {
+        const column = WorldRegister.column.get(this.data.dimesnion, this.data.x, this.data.z, this.data.y);
+        if (!column)
+            return false;
+        if (column.chunks.size == 0)
+            return false;
+        for (const [key, chunk] of column.chunks) {
+            BuilderTool._chunkTool.setChunk(chunk);
+            const chunkPOS = BuilderTool._chunkTool.getPosition();
+            parentComm.runTasks("remove-all-chunks", [
+                this.data.dimesnion,
+                chunkPOS.x,
+                chunkPOS.y,
+                chunkPOS.z,
             ]);
         }
         return this;

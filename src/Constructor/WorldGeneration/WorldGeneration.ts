@@ -8,11 +8,10 @@ import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/Wor
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { ChunkData } from "Meta/Data/WorldData.types.js";
-import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
+
 export const WorldGeneration = {
  worldGen: <WorldGenInterface | null>null,
 
- heightByte: HeightMapData,
 
  worldBounds: WorldBounds,
 
@@ -37,14 +36,14 @@ export const WorldGeneration = {
   if (substance == "transparent") {
    substance = "solid";
   }
-  this.heightByte.calculateHeightAddDataForSubstance(
+/*   this.heightByte.calculateHeightAddDataForSubstance(
    voxelPOS.y,
    substance,
    voxelPOS.x,
    voxelPOS.z,
    chunk.data
   );
-  this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
+  this.heightByte.updateChunkMinMax(voxelPOS, chunk.data); */
  },
 
  getVoxelPaletteId(voxelId: string, voxelStateId: number) {

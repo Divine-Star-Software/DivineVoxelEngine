@@ -6,7 +6,7 @@ const waveLength = 100;
 const xOffSet = 1_000;
 const zOffSet = 1_000;
 const brush = DVEW.getBrush();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 export const WorldGen = {
 
 

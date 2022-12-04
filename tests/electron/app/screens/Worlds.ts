@@ -58,6 +58,11 @@ export const Worlds: WorldsData = [
   sectionDescription: "Worlds used for testing purposes.",
   worlds: [
    {
+    title: "Infinite World Gen Test",
+    description: "Used to test infinite world generation.",
+    world: "InfiniteWorldGenTest",
+   },
+   {
     title: "Server Test",
     description: "Used to test Divine Voxel Engine Server.",
     world: "ServerTest",

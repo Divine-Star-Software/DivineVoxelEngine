@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 export declare const DVER: {
@@ -282,7 +281,7 @@ export declare const DVER: {
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         };
         animationManager: {
-            animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+            animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
             animCount: number;
             animations: {
                 uniformShaderId: string;
@@ -290,10 +289,10 @@ export declare const DVER: {
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
-                substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
+                substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
             }[];
-            registerAnimations(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-            registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
+            registerAnimations(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+            registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
@@ -495,6 +494,7 @@ export declare const DVER: {
     tasks: {
         setChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
         removeChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks>;
+        removeAllChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
     _handleOptions(): void;
     syncSettingsWithWorkers(data: EngineSettingsData): void;

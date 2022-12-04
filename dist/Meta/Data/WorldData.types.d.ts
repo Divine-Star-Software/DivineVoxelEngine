@@ -1,8 +1,6 @@
 export declare type ChunkData = {
     buffer: SharedArrayBuffer;
     data: DataView;
-    segement1: Uint32Array;
-    segement2: Uint32Array;
 };
 export declare type Column = {
     data: DataView;

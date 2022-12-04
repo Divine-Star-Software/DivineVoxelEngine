@@ -1,3 +1,9 @@
+export const TagNodeTypes = {
+    boolean: 0,
+    number: 1,
+    typedNumber: 2,
+    typedNumberArray: 3,
+};
 const NumberTypeByteSize = {
     "8ui": 1,
     "8i": 1,
@@ -22,7 +28,7 @@ export const NumberTypeRecord = {
     "64i": 8,
     "64ui": 9,
 };
-const NumberTypeMap = {};
+export const NumberTypeMap = {};
 for (const key of Object.keys(NumberTypeRecord)) {
     //@ts-ignore
     NumberTypeMap[Number(NumberTypeRecord[key])] = key;
@@ -92,25 +98,28 @@ const TypedNumberGetFunctions = {
     },
 };
 export const DBTUtil = {
-    setTypedNumber(data, index, byteSize, value) {
-        TypedNumberSetFunctions[NumberTypeMap[byteSize]](data, index, value);
+    setTypedNumber(data, index, numberType, value) {
+        TypedNumberSetFunctions[NumberTypeMap[numberType]](data, index, value);
     },
-    getTypedNumber(data, index, byteSize) {
-        return TypedNumberGetFunctions[NumberTypeMap[byteSize]](data, index);
+    getTypedNumber(data, index, numberType) {
+        return TypedNumberGetFunctions[NumberTypeMap[numberType]](data, index);
     },
     calculateBitsNeeded(min, max) {
         let range = max - min;
         return Math.ceil(Math.log2(range));
     },
-    getNumberTypesize(type) {
+    getTypedSize(type) {
         return NumberTypeByteSize[type];
     },
-    getValue(data, index, bitSize) {
+    getTypedSizeFromNumber(t) {
+        return NumberTypeByteSize[NumberTypeMap[t]];
+    },
+    getBitValue(data, index, bitSize) {
         index *= bitSize;
         const mask = 2 ** bitSize - 1;
         return ((mask << index) & data) >>> index;
     },
-    setValue(data, index, value, bitSize) {
+    setBitValue(data, index, value, bitSize) {
         index *= bitSize;
         const mask = 2 ** bitSize - 1;
         return (data & ~(mask << index)) | ((value & mask) << index);

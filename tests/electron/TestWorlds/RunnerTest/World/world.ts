@@ -8,7 +8,7 @@ RegisterVoxels(DVEW);
 
 await DVEW.$INIT();
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 let startX = -32;
 let startZ = -128;
 let endX = 48;

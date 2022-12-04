@@ -2,7 +2,7 @@ import { DVEW } from "../../../../../out/World/DivineVoxelEngineWorld.js";
 import { WorldGen } from "../WorldGen";
 import { Directions, GenerateDiagonalLine } from "./GenerateLine.js";
 
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 const brush = DVEW.getBrush();
 
 const pillarData1 = [

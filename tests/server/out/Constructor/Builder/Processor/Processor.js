@@ -4,7 +4,6 @@ import { CalculateFlow } from "./Functions/CalculateFlow.js";
 //objects
 import { Builder } from "../Builder.js";
 //data
-import { HeightMapData } from "../../../Data/Chunk/HeightMapData.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
@@ -13,7 +12,7 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
-import { HeightMapTool } from "../../../Tools/HeightMap/HeightMapTool.js";
+import { HeightMapTool } from "../../../Tools/Data/HeightMapTool.js";
 import { OverrideManager } from "../Overrides/OverridesManager.js";
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
@@ -27,7 +26,6 @@ export const Processor = {
     LOD: 1,
     mDataTool: mDT,
     nDataTool: nDT,
-    heightByte: HeightMapData,
     faceByte: FaceByte,
     lightData: LightData,
     calculatFlow: CalculateFlow,

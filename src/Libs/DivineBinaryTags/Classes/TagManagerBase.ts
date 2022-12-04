@@ -1,11 +1,5 @@
 import { BufferTypes } from "../Meta/Util.types.js";
-import { DBTUtil } from "../Util/DBTUtil.js";
-
-const TagNodeTypes = {
-  boolean: 0,
-  number: 1,
-  typedNumber: 2,
-};
+import { DBTUtil, NumberTypeMap, TagNodeTypes } from "../Util/DBTUtil.js";
 
 const TagIndexData: [
   byteIndex: number,
@@ -16,13 +10,13 @@ const TagIndexData: [
 
 const getIndexData = (data: DataView, indexBufferIndex: number) => {
   TagIndexData[0] = data.getUint32(indexBufferIndex);
-  indexBufferIndex += DBTUtil.getNumberTypesize("32ui");
+  indexBufferIndex += DBTUtil.getTypedSize("32ui");
   TagIndexData[1] = data.getUint8(indexBufferIndex);
-  indexBufferIndex += DBTUtil.getNumberTypesize("8ui");
+  indexBufferIndex += DBTUtil.getTypedSize("8ui");
   TagIndexData[2] = data.getUint8(indexBufferIndex);
-  indexBufferIndex += DBTUtil.getNumberTypesize("8ui");
+  indexBufferIndex += DBTUtil.getTypedSize("8ui");
   TagIndexData[3] = data.getUint8(indexBufferIndex);
-  indexBufferIndex += DBTUtil.getNumberTypesize("8ui");
+  indexBufferIndex += DBTUtil.getTypedSize("8ui");
 
   return TagIndexData;
 };
@@ -39,8 +33,12 @@ export class TagManagerBase {
 
   constructor(public id: string) {}
 
-  setBuffer(buffer: BufferTypes) {
-    this.data = new DataView(buffer);
+  setBuffer(data: BufferTypes | DataView) {
+    if (data instanceof DataView) {
+      this.data = data;
+      return;
+    }
+    this.data = new DataView(data);
   }
 
   setTagIndex(index: number) {
@@ -57,7 +55,7 @@ export class TagManagerBase {
       indexData[3] == TagNodeTypes.boolean ||
       indexData[3] == TagNodeTypes.number
     ) {
-      return DBTUtil.getValue(
+      return DBTUtil.getBitValue(
         this.data.getUint8(indexData[0] + this.byteOffSet),
         indexData[1],
         indexData[2]
@@ -73,7 +71,7 @@ export class TagManagerBase {
     return -Infinity;
   }
 
-  setTag(id: string, value: number): void {
+  setTag(id: string, value: number) {
     const byteIndex = this.indexMap.get(id);
     if (byteIndex === undefined) {
       throw new Error(`Tag with id: ${id} does not exist.`);
@@ -85,14 +83,14 @@ export class TagManagerBase {
     ) {
       this.data.setUint8(
         indexData[0] + this.byteOffSet,
-        DBTUtil.setValue(
+        DBTUtil.setBitValue(
           this.data.getUint8(indexData[0] + this.byteOffSet),
           indexData[1],
           value,
           indexData[2]
         )
       );
-      return;
+      return true;
     }
     if (indexData[3] == TagNodeTypes.typedNumber) {
       DBTUtil.setTypedNumber(
@@ -101,12 +99,57 @@ export class TagManagerBase {
         indexData[2],
         value
       );
+      return true;
     }
+    return false;
+  }
+
+  getArrayTagValue(id: string, index: number) {
+    const byteIndex = this.indexMap.get(id);
+    if (byteIndex === undefined) {
+      throw new Error(`Tag with id: ${id} does not exist.`);
+    }
+    const indexData = getIndexData(this.index, byteIndex);
+    if (indexData[3] == TagNodeTypes.typedNumberArray) {
+      return DBTUtil.getTypedNumber(
+        this.data,
+        indexData[0] +
+          this.byteOffSet +
+          index * DBTUtil.getTypedSizeFromNumber(indexData[2]),
+        indexData[2]
+      );
+    }
+    return -Infinity;
+  }
+
+  setArrayTagValue(id: string, index: number, value: number) {
+    const byteIndex = this.indexMap.get(id);
+    if (byteIndex === undefined) {
+      throw new Error(`Tag with id: ${id} does not exist.`);
+    }
+    const indexData = getIndexData(this.index, byteIndex);
+    if (indexData[3] == TagNodeTypes.typedNumberArray) {
+      return DBTUtil.setTypedNumber(
+        this.data,
+        indexData[0] +
+          this.byteOffSet +
+          index * DBTUtil.getTypedSizeFromNumber(indexData[2]),
+        indexData[2],
+        value
+      );
+    }
+    return -Infinity;
   }
 
   loopThroughTags(run: (id: string, value: number) => void) {
     this.indexMap.forEach((i, id) => {
       run(id, this.getTag(id));
+    });
+  }
+  loopThroughIndex(run: (data: number[]) => void) {
+    this.indexMap.forEach((index, id) => {
+      const indexData = getIndexData(this.index, index);
+      run(indexData);
     });
   }
   loopThroughAllIndexTags(

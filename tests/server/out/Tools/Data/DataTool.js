@@ -1,13 +1,15 @@
-import { ChunkReader } from "../../Data/Chunk/ChunkReader.js";
+import { ChunkSpace } from "../../Data/Chunk/ChunkSpace.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelByte.js";
-import { VoxelData } from "../../Data/Voxel/VoxelData.js";
+import { VoxelTags } from "../../Data/Voxel/VoxelData.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
-import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
+import { ChunkDataTool } from "./ChunkDataTool.js";
+import { HeightMapTool } from "./HeightMapTool.js";
 export class DataTool {
     static _dtutil = new DataTool();
+    static _chunkTool = new ChunkDataTool();
+    static _heightMapTool = new HeightMapTool();
     _mode = "World";
     data = {
         dimension: "main",
@@ -67,11 +69,11 @@ export class DataTool {
         this.position.z = z;
         if (this._mode == "World") {
             const chunk = WorldRegister.chunk.get(this.data.dimension, x, y, z);
-            if (!chunk)
+            DataTool._chunkTool.setDimension(this.data.dimension);
+            if (!DataTool._chunkTool.loadIn(x, y, z))
                 return false;
-            const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
-            this.data.raw[0] = ChunkReader.getVoxelDataUseObj(chunk, voxelPOS);
-            this.data.raw[1] = ChunkReader.getVoxelDataUseObj(chunk, voxelPOS, true);
+            this.data.raw[0] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_data", ChunkSpace.getVoxelDataIndex(x, y, z));
+            this.data.raw[1] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_state_data", ChunkSpace.getVoxelDataIndex(x, y, z));
             this.__process();
             return true;
         }
@@ -81,21 +83,22 @@ export class DataTool {
     }
     commit(heightMapUpdate = 0) {
         if (this._mode == "World") {
-            const chunk = WorldRegister.chunk.get(this.data.dimension, this.position.x, this.position.y, this.position.z);
-            if (!chunk)
+            DataTool._chunkTool.setDimension(this.data.dimension);
+            if (!DataTool._chunkTool.loadIn(this.position.x, this.position.y, this.position.z))
                 return false;
-            const voxelPOS = WorldBounds.getVoxelPosition(this.position.x, this.position.y, this.position.z);
-            ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, this.data.raw[0]);
-            ChunkReader.setVoxelDataUseObj(chunk, voxelPOS, this.data.raw[1], true);
+            const index = ChunkSpace.getVoxelDataIndex(this.position.x, this.position.y, this.position.z);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_data", index, this.data.raw[0]);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_state_data", index, this.data.raw[1]);
             if (heightMapUpdate) {
+                DataTool._heightMapTool.chunk.setChunk(DataTool._chunkTool._c);
                 const substance = this.getTemplateSubstance();
+                //on add
                 if (heightMapUpdate == 1) {
-                    HeightMapData.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
-                    HeightMapData.updateChunkMinMax(voxelPOS, chunk.data);
+                    DataTool._heightMapTool.chunk.update("add", substance, this.position.x, this.position.y, this.position.z);
                 }
+                //on remove
                 if (heightMapUpdate == 2) {
-                    HeightMapData.calculateHeightRemoveDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
-                    HeightMapData.updateChunkMinMax(voxelPOS, chunk.data);
+                    DataTool._heightMapTool.chunk.update("remove", substance, this.position.x, this.position.y, this.position.z);
                 }
             }
         }
@@ -105,8 +108,8 @@ export class DataTool {
     }
     getTagValue(id) {
         const vId = this.getId(true);
-        VoxelData.setVoxel(vId);
-        return VoxelData.getTag(id);
+        VoxelTags.setVoxel(vId);
+        return VoxelTags.getTag(id);
     }
     getLight() {
         const rawVoxelData = this.data.raw[0];
@@ -121,7 +124,7 @@ export class DataTool {
         if (this.getTagValue("#dve:is_light_source") && lightValue) {
             return lightValue;
         }
-        if (VoxelData.getTrueSubstance(voxelId) == "solid") {
+        if (VoxelTags.getTrueSubstance(voxelId) == "solid") {
             return -1;
         }
         return VoxelReader.getLight(rawVoxelData);
@@ -159,28 +162,28 @@ export class DataTool {
         const vID = this.getId(true);
         if (vID < 2)
             return -1;
-        VoxelData.setVoxel(vID);
-        return VoxelData.getTag("#dve:shape_id");
+        VoxelTags.setVoxel(vID);
+        return VoxelTags.getTag("#dve:shape_id");
     }
     isLightSource() {
         const vID = this.getId(true);
         if (vID < 2)
             return false;
-        VoxelData.setVoxel(vID);
-        return VoxelData.getTag("#dve:is_light_source") == 1;
+        VoxelTags.setVoxel(vID);
+        return VoxelTags.getTag("#dve:is_light_source") == 1;
     }
     getLightSourceValue() {
         const vID = this.getId(true);
         if (vID < 2)
             return 0;
-        VoxelData.setVoxel(vID);
-        return VoxelData.getTag("#dve:light_value");
+        VoxelTags.setVoxel(vID);
+        return VoxelTags.getTag("#dve:light_value");
     }
     getSubstance() {
         const vID = this.getId(true);
         if (vID < 2)
             return "transparent";
-        return VoxelData.getTrueSubstance(vID);
+        return VoxelTags.getTrueSubstance(vID);
     }
     getTemplateSubstance() {
         let substance = this.getSubstance();
@@ -199,8 +202,8 @@ export class DataTool {
         const vID = this.getId(true);
         if (vID < 2)
             return 0;
-        VoxelData.setVoxel(vID);
-        return VoxelData.getTag("#dve:is_rich");
+        VoxelTags.setVoxel(vID);
+        return VoxelTags.getTag("#dve:is_rich");
     }
     //util
     setAir() {

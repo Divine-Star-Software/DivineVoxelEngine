@@ -1,4 +1,4 @@
-import { ChunkReader } from "../Chunk/ChunkReader.js";
+import { ChunkSpace } from "../Chunk/ChunkSpace.js";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { WorldBounds } from "../World/WorldBounds.js";
 
@@ -145,7 +145,7 @@ export const EngineSettings = {
      this.settings.world.maxY
     );
    }
-   ChunkReader.syncSettings();
+   ChunkSpace.syncSettings();
  },
 
  syncWithWorldBounds(worldBounds: typeof WorldBounds) {

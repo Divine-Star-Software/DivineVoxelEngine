@@ -1,6 +1,6 @@
 import { DVEW } from "../../../../../out/World/DivineVoxelEngineWorld.js";
 import { GenerateDiagonalLine } from "./GenerateLine.js";
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 const brush = DVEW.getBrush();
 const pillarData1 = [
     [0, 0, 1],

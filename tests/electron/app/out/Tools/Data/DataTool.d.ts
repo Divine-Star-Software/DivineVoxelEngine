@@ -1,6 +1,10 @@
 import type { VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
+import { ChunkDataTool } from "./ChunkDataTool.js";
+import { HeightMapTool } from "./HeightMapTool.js";
 export declare class DataTool {
     static _dtutil: DataTool;
+    static _chunkTool: ChunkDataTool;
+    static _heightMapTool: HeightMapTool;
     _mode: "World" | "Entity";
     data: {
         dimension: string;

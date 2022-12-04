@@ -19,15 +19,27 @@ export type ChunkUnSyncData = [
  z: number
 ];
 
+export type ColumnSyncData = [
+ dimesnionId: number | string,
+ x: number,
+ y: number,
+ z: number,
+ Buffer: SharedArrayBuffer
+];
+
+export type ColumnUnSyncData = [
+ dimensionId: number | string,
+ x: number,
+ y: number,
+ z: number
+];
 
 export type VoxelPaletteSyncData = [
  voxelPalette: VoxelPalette,
  voxelPaletteMap: VoxelPaletteMap
 ];
 
-
 export type VoxelDataSync = [
  initData: RemoteTagManagerInitData,
  voxelMapData: SharedArrayBuffer
 ];
-

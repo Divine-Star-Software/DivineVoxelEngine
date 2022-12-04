@@ -4,7 +4,7 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT();
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 let startX = -64;
 let startZ = -64;
 let endX = 64;

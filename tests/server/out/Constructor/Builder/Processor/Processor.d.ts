@@ -14,29 +14,6 @@ export declare const Processor: {
     LOD: number;
     mDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
     nDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
-    heightByte: {
-        _getHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (byteData: number) => number>;
-        _setHeightMapData: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (height: number, byteData: number) => number>;
-        _markSubstanceAsNotExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
-        _markSubstanceAsExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => number>;
-        _isSubstanceExposed: Record<import("Meta/index.js").VoxelTemplateSubstanceType, (data: number) => boolean>;
-        getStartingHeightMapValue(): number;
-        initalizeChunk(chunkData: DataView): void;
-        updateChunkMinMax(voxelPOS: import("Meta/index.js").Vector3, chunkData: DataView): void;
-        getChunkMin(chunkData: DataView): number;
-        getChunkMax(chunkData: DataView): number;
-        calculateHeightRemoveDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, heightMap: DataView): boolean | undefined;
-        calculateHeightAddDataForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
-        getLowestExposedVoxel(x: number, z: number, chunk: DataView): number;
-        getHighestExposedVoxel(x: number, z: number, chunk: DataView): number;
-        isSubstanceExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): boolean;
-        markSubstanceAsExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
-        markSubstanceAsNotExposed(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
-        setMinYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
-        getMinYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
-        setMaxYForSubstance(height: number, substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): void;
-        getMaxYForSubstance(substance: import("Meta/index.js").VoxelTemplateSubstanceType, x: number, z: number, chunk: DataView): number;
-    };
     faceByte: {
         _rotationMap: Record<TextureRotations, number>;
         _rotationReverseMap: Record<number, TextureRotations>;

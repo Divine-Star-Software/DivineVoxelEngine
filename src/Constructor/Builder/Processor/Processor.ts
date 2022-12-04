@@ -20,7 +20,6 @@ import { CalculateFlow } from "./Functions/CalculateFlow.js";
 //objects
 import { Builder } from "../Builder.js";
 //data
-import { HeightMapData } from "../../../Data/Chunk/HeightMapData.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
@@ -30,7 +29,7 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
-import { HeightMapTool } from "../../../Tools/HeightMap/HeightMapTool.js";
+import { HeightMapTool } from "../../../Tools/Data/HeightMapTool.js";
 import { OverrideManager } from "../Overrides/OverridesManager.js";
 
 const mDT = GetConstructorDataTool();
@@ -46,7 +45,6 @@ export const Processor = {
  LOD: 1,
  mDataTool: mDT,
  nDataTool: nDT,
- heightByte: HeightMapData,
  faceByte: FaceByte,
  lightData: LightData,
  calculatFlow: CalculateFlow,
@@ -378,6 +376,7 @@ export const Processor = {
    for (let z = 0; z < maxZ; z += LOD) {
     let minY = heightMapTool.chunk.setXZ(x, z).getMin();
     let maxY = heightMapTool.chunk.setXZ(x, z).getMax() + 1;
+
     for (let y = minY; y < maxY; y += LOD) {
      this._process(template, x + chunkX, y + chunkY, z + chunkZ);
     }

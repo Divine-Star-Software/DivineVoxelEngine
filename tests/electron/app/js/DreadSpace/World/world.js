@@ -9,7 +9,7 @@ let startZ = -depth;
 let endX = depth;
 let endZ = depth;
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 for (let x = startX; x < endX; x += 16) {
     for (let z = startZ; z < endZ; z += 16) {
         WorldGen.generate(x, 0, z);

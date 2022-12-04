@@ -1,4 +1,4 @@
-import { ChunkReader } from "../Chunk/ChunkReader.js";
+import { ChunkSpace } from "../Chunk/ChunkSpace.js";
 import { WorldBounds } from "../World/WorldBounds.js";
 /**# Engine Settings
  * ---
@@ -121,7 +121,7 @@ export const EngineSettings = {
         if (this.settings.world) {
             WorldBounds.setWorldBounds(this.settings.world.minX, this.settings.world.maxX, this.settings.world.minZ, this.settings.world.maxZ, this.settings.world.minY, this.settings.world.maxY);
         }
-        ChunkReader.syncSettings();
+        ChunkSpace.syncSettings();
     },
     syncWithWorldBounds(worldBounds) {
     },

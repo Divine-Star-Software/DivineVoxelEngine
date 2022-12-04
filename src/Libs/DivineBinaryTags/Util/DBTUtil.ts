@@ -1,5 +1,10 @@
 import { NumberTypes } from "Meta/DBTSchema.tyeps";
-
+export const TagNodeTypes = {
+  boolean: 0,
+  number: 1,
+  typedNumber: 2,
+  typedNumberArray: 3,
+};
 const NumberTypeByteSize: Record<NumberTypes, number> = {
   "8ui": 1,
   "8i": 1,
@@ -27,7 +32,7 @@ export const NumberTypeRecord: Record<NumberTypes, number> = {
 };
 
 
- const NumberTypeMap: Record<number, NumberTypes> = {
+ export const NumberTypeMap: Record<number, NumberTypes> = {
 };
 for (const key of Object.keys(NumberTypeRecord)) {
   //@ts-ignore
@@ -109,28 +114,31 @@ export const DBTUtil = {
   setTypedNumber(
     data: DataView,
     index: number,
-    byteSize: number,
+    numberType: number,
     value: number
   ) {
-    TypedNumberSetFunctions[NumberTypeMap[byteSize]](data, index, value);
+    TypedNumberSetFunctions[NumberTypeMap[numberType]](data, index, value);
   },
-  getTypedNumber(data: DataView, index: number, byteSize: number) {
-    return TypedNumberGetFunctions[NumberTypeMap[byteSize]](data, index);
+  getTypedNumber(data: DataView, index: number, numberType: number) {
+    return TypedNumberGetFunctions[NumberTypeMap[numberType]](data, index);
   },
   calculateBitsNeeded(min: number, max: number) {
     let range = max - min;
     return Math.ceil(Math.log2(range));
   },
 
-  getNumberTypesize(type: NumberTypes) {
+  getTypedSize(type: NumberTypes) {
     return NumberTypeByteSize[type];
   },
-  getValue(data: number, index: number, bitSize: number) {
+  getTypedSizeFromNumber(t : number) {
+    return NumberTypeByteSize[NumberTypeMap[t]];
+  },
+  getBitValue(data: number, index: number, bitSize: number) {
     index *= bitSize;
     const mask = 2 ** bitSize - 1;
     return ((mask << index) & data) >>> index;
   },
-  setValue(data: number, index: number, value: number, bitSize: number) {
+  setBitValue(data: number, index: number, value: number, bitSize: number) {
     index *= bitSize;
     const mask = 2 ** bitSize - 1;
     return (data & ~(mask << index)) | ((value & mask) << index);

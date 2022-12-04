@@ -13,7 +13,7 @@ let endX = depth * 4;
 let endZ = depth * 4;
 
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 const buildAll = () => {
  for (let x = startX; x < endX; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {

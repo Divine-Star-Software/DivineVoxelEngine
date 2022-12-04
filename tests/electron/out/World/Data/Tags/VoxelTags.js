@@ -1,5 +1,5 @@
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
-export const VoxelDataTags = new TagManager("voxel-data");
+export const VoxelDataTags = new TagManager("voxel-tags");
 VoxelDataTags.registerTag({
     id: "#dve:substance",
     type: "typed-number",

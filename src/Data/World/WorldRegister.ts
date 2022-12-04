@@ -6,11 +6,11 @@ import type {
  Region,
 } from "Meta/Data/WorldData.types";
 import { WorldBounds } from "./WorldBounds.js";
-import { ChunkReader } from "../Chunk/ChunkReader.js";
-import { HeightMapData } from "../Chunk/HeightMapData.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
 import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
+import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
 
+const chunkTool = new ChunkDataTool();
 export const WorldRegister = {
  _dimensions: <WorldDimensions>new Map(),
 
@@ -71,7 +71,13 @@ export const WorldRegister = {
   },
  },
  column: {
-  add(dimensionId: string | number, x: number, z: number, y = 0) {
+  add(
+   dimensionId: string | number,
+   x: number,
+   z: number,
+   y = 0,
+   sab: SharedArrayBuffer
+  ) {
    let region = WorldRegister.region.get(dimensionId, x, y, z);
    if (!region) {
     region = WorldRegister.region.add(dimensionId, x, y, z);
@@ -79,7 +85,6 @@ export const WorldRegister = {
    /**
    @TDO Impelement column data.
    */
-   const sab = new SharedArrayBuffer(1);
    const column: Column = {
     chunks: new Map(),
     buffer: sab,
@@ -129,9 +134,10 @@ export const WorldRegister = {
     let maxHeight = WorldBounds.bounds.MinY;
     for (const [key, chunk] of column.chunks) {
      if (!chunk) continue;
-     const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
 
-     let chunkMax = HeightMapData.getChunkMax(chunk.data);
+     chunkTool.setChunk(chunk);
+     const chunkPOS = chunkTool.getPosition();
+     let chunkMax = chunkTool.getTagValue("#dve:max_height");
      if (chunkMax == 0) continue;
      chunkMax += chunkPOS.y;
      if (maxHeight < chunkMax) {
@@ -152,13 +158,17 @@ export const WorldRegister = {
   ) {
    let column = WorldRegister.column.get(dimensionId, x, z, y);
    if (!column) {
-    column = WorldRegister.column.add(dimensionId, x, z, y);
+    let buffer = DataHooks.column.onGetSync.run([dimensionId, x, z, y]);
+    if (!buffer) return;
+    column = WorldRegister.column.add(dimensionId, x, z, y, buffer);
+    DataHooks.column.onNew.run([dimensionId, x, z, y]);
    }
+   if (!column) return;
    const chunk = this._getChunkData(sab);
-   ChunkReader.setChunkPosition(
-    chunk.data,
-    WorldBounds.getChunkPosition(x, y, z)
-   );
+   chunkTool.setChunk(chunk);
+   const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+   chunkTool.setPosition(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+
    column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
    DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
    return chunk;
@@ -167,16 +177,6 @@ export const WorldRegister = {
    return {
     buffer: sab,
     data: new DataView(sab),
-    segement1: new Uint32Array(
-     sab,
-     ChunkReader.indexes.voxelData,
-     ChunkReader.indexSizes.voxelData / 4
-    ),
-    segement2: new Uint32Array(
-     sab,
-     ChunkReader.indexes.voxelStateData,
-     ChunkReader.indexSizes.voxelStateData / 4
-    ),
    };
   },
   addFromServer(chunkBuffer: ArrayBuffer) {
@@ -185,22 +185,15 @@ export const WorldRegister = {
    const temp2 = new Uint8Array(sab);
    temp2.set(temp, 0);
    const chunk = this._getChunkData(sab);
-
-   const chunkPOS = ChunkReader.getChunkPosition(chunk.data);
+   chunkTool.setChunk(chunk);
+   const chunkPOS = chunkTool.getPosition();
    let column = WorldRegister.column.get(
     "main",
     chunkPOS.x,
     chunkPOS.z,
     chunkPOS.y
    );
-   if (!column) {
-    column = WorldRegister.column.add(
-     "main",
-     chunkPOS.x,
-     chunkPOS.z,
-     chunkPOS.y
-    );
-   }
+   if (!column) return;
 
    column.chunks.set(WorldBounds.getChunkColumnIndex(chunkPOS.y), chunk);
    DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);

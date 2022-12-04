@@ -27,7 +27,7 @@ let endZ = 16 * numChunks;
 
 const builder = DVEW.getBuilder();
 
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   WorldGen.generateWorldColumn(x, z);

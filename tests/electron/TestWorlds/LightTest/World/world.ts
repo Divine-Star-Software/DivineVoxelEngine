@@ -19,7 +19,7 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 await tasks.light.rgb.update.runAndAwait();
 
 const builder = DVEW.getBuilder();

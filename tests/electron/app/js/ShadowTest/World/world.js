@@ -4,7 +4,7 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 RegisterVoxels(DVEW);
 await DVEW.$INIT();
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 WorldGen.generateChunk(0, 0);
 WorldGen.generateChunk(-16, 0);
 WorldGen.generateChunk(16, 0);

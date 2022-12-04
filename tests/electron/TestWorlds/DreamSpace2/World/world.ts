@@ -7,7 +7,7 @@ import { WorldGen } from "./WorldGen.js";
 
 RegisterVoxels(DVEW);
 await DVEW.$INIT();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 const builder = DVEW.getBuilder();
 const depth = 128;
 let startX = -depth;

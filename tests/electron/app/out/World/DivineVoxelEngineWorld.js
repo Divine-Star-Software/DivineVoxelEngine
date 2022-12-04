@@ -19,16 +19,20 @@ import { VoxelDataCreator } from "./Data/VoxelDataCreator.js";
 import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
 import { ItemManager } from "../Data/Items/ItemManager.js";
 import { DataCreator } from "./Data/Creator.js";
-import { DataTool } from "../Tools/Data/DataTool.js";
-import { TasksTool } from "../Tools/Tasks/TasksTool.js";
 //tools
 import { BuilderTool } from "../Tools/Build/Builder.js";
 import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
+import { ChunkDataTool } from "../Tools/Data/ChunkDataTool.js";
+import { ColumnDataTool } from "../Tools/Data/ColumnDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
+import { TasksTool } from "../Tools/Tasks/TasksTool.js";
+import { HeightMapTool } from "../Tools/Data/HeightMapTool.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { VoxelDataTags } from "./Data/Tags/VoxelTags.js";
+import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -56,7 +60,8 @@ export const DVEW = {
     cQueues: ConstructorQueues,
     cTasks: ConstructorTasks,
     tags: {
-        voxels: VoxelDataTags
+        voxels: VoxelDataTags,
+        chunks: ChunkDataTags,
     },
     isReady() {
         return (DVEW.ccm.isReady() &&
@@ -77,6 +82,17 @@ export const DVEW = {
     async $INIT() {
         await InitWorldWorker(this);
     },
+    getAllTools() {
+        return {
+            brush: this.getBrush(),
+            builder: this.getBuilder(),
+            data: this.getDataTool(),
+            chunkData: this.getChunkDataTool(),
+            columnData: this.getColumnDataTool(),
+            heightMap: this.getHeightMapTool(),
+            tasks: this.getTasksTool(),
+        };
+    },
     getBrush() {
         return GetAdvancedBrushTool();
     },
@@ -86,7 +102,16 @@ export const DVEW = {
     getDataTool() {
         return new DataTool();
     },
-    getTasksManager() {
+    getChunkDataTool() {
+        return new ChunkDataTool();
+    },
+    getColumnDataTool() {
+        return new ColumnDataTool();
+    },
+    getHeightMapTool() {
+        return new HeightMapTool();
+    },
+    getTasksTool() {
         return TasksTool();
     },
 };

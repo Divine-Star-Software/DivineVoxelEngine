@@ -3,10 +3,8 @@ import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 //matrix
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
-import { HeightMapData } from "../../Data/Chunk/HeightMapData.js";
 export const WorldGeneration = {
     worldGen: null,
-    heightByte: HeightMapData,
     worldBounds: WorldBounds,
     setWorldGen(worldGen) {
         this.worldGen = worldGen;
@@ -22,8 +20,14 @@ export const WorldGeneration = {
         if (substance == "transparent") {
             substance = "solid";
         }
-        this.heightByte.calculateHeightAddDataForSubstance(voxelPOS.y, substance, voxelPOS.x, voxelPOS.z, chunk.data);
-        this.heightByte.updateChunkMinMax(voxelPOS, chunk.data);
+        /*   this.heightByte.calculateHeightAddDataForSubstance(
+           voxelPOS.y,
+           substance,
+           voxelPOS.x,
+           voxelPOS.z,
+           chunk.data
+          );
+          this.heightByte.updateChunkMinMax(voxelPOS, chunk.data); */
     },
     getVoxelPaletteId(voxelId, voxelStateId) {
         /*  const paletteId = WorldMatrix.getVoxelPaletteNumericId(voxelId, voxelStateId);

@@ -43,4 +43,4 @@ class VDTags extends RemoteTagManager {
         return this.substanceRecord[this.getTag("#dve:substance")];
     }
 }
-export const VoxelData = new VDTags("voxel-data");
+export const VoxelTags = new VDTags("voxel-data");

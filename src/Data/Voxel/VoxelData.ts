@@ -48,4 +48,4 @@ class VDTags extends RemoteTagManager {
  }
 }
 
-export const VoxelData = new VDTags("voxel-data");
+export const VoxelTags = new VDTags("voxel-data");

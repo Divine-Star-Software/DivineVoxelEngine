@@ -23,7 +23,7 @@ for (let x = startX; x <= endX; x += 16) {
  }
 }
 const builder = DVEW.getBuilder();
-const tasks = DVEW.getTasksManager();
+const tasks = DVEW.getTasksTool();
 for (let x = startX; x <= endX; x += 16) {
  for (let z = startZ; z <= endZ; z += 16) {
   builder.setXZ(x, z).fillColumn().buildColumn();

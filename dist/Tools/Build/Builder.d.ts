@@ -1,4 +1,6 @@
+import { ChunkDataTool } from "../Data/ChunkDataTool.js";
 export declare class BuilderTool {
+    static _chunkTool: ChunkDataTool;
     data: {
         dimesnion: string;
         x: number;
@@ -12,5 +14,6 @@ export declare class BuilderTool {
     setXYZ(x: number, y: number, z: number): this;
     buildChunk(): this;
     buildColumn(): false | this;
+    removeColumn(): false | this;
     fillColumn(): this;
 }

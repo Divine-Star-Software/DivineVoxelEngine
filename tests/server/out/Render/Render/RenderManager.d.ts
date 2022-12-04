@@ -10,8 +10,8 @@ export declare const RenderManager: {
     shaderBuilder: {
         buildVertexShader(data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
         buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-        getDefaultVertexShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-        getDefaultFragmentShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
+        getDefaultVertexShader(voxelSubstance: "Item" | import("Meta/index.js").VoxelTemplateSubstanceType, data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
+        getDefaultFragmentShader(voxelSubstance: "Item" | import("Meta/index.js").VoxelTemplateSubstanceType): string;
         getSkyBoxVertexShader(): string;
         getSkyBoxFragmentShader(): string;
     };
