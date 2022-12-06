@@ -1,4 +1,4 @@
-import type { BuildTasks, ExplosionTasks, LightUpdateTask, PaintTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
     _queueMap: Map<string | number, number>;
@@ -39,7 +39,5 @@ export declare const ConstructorQueues: {
     build: {
         chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<BuildTasks>;
     };
-    generate: {
-        chunk: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<LightUpdateTask>;
-    };
+    generate: import("../../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<GenerateTasks>;
 };

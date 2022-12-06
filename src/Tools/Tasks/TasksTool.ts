@@ -2,6 +2,9 @@ import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { ConstructorQueues as CQ } from "../../Common/Queues/ConstructorQueues.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
+import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
+import { GenerateTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
 class TasksBase {
  _data = {
   dimension: "main",
@@ -16,12 +19,15 @@ class TasksBase {
   this.light.rgb.remove._s = this;
   this.light.sun.update._s = this;
   this.light.sun.remove._s = this;
+  this.light.worldSun._s = this;
+  this.light.worldSun.deferred._s = this;
   this.flow.update._s = this;
   this.flow.remove._s = this;
-  this.light.worldSun._s = this;
   this.explosion.run._s = this;
   this.voxelUpdate.erease._s = this;
   this.voxelUpdate.paint._s = this;
+  this.generate.deferred._s = this;
+  this.generate.async._s = this;
  }
 
  setFocalPoint(
@@ -39,6 +45,43 @@ class TasksBase {
   this._data.queue = queueKey;
   this._thread = ThreadComm.threadName;
  }
+
+ generate = {
+  async: {
+   _s: <TasksBase>{},
+   add(x: number, y: number, z: number, data: any = []) {
+    CQ.generate.add(
+     [this._s._data.dimension, x, y, z, data],
+     this._s._data.queue
+    );
+   },
+   run(onDone: Function) {
+    CQ.generate.run(this._s._data.queue);
+    CQ.generate.onDone(this._s._data.queue, onDone);
+   },
+   async runAndAwait() {
+    await CQ.generate.runAndAwait(this._s._data.queue);
+   },
+  },
+  deferred: {
+   _s: <TasksBase>{},
+   run(
+    x: number,
+    y: number,
+    z: number,
+    data: any,
+    onDone: (data: any) => void
+   ) {
+    const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+    CCM.runPromiseTasks<GenerateTasks>(
+     ConstructorTasks.generate,
+     requestsKey,
+     onDone,
+     [this._s._data.dimension, x, y, z, data]
+    );
+   },
+  },
+ };
 
  voxelUpdate = {
   erease: {
@@ -233,6 +276,18 @@ class TasksBase {
   },
   worldSun: {
    _s: <TasksBase>{},
+   deferred: {
+    _s: <TasksBase>{},
+    run(x: number, y: number, z: number, onDone: (data: any) => void) {
+     const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+     CCM.runPromiseTasks<UpdateTasksO>(
+      ConstructorTasks.worldSun,
+      requestsKey,
+      onDone,
+      [this._s._data.dimension, x, z, y, this._s._data.queue, this._s._thread]
+     );
+    },
+   },
    add(x: number, z: number, y: number = 0) {
     CQ.worldSun.add([
      this._s._data.dimension,

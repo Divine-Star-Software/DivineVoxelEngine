@@ -5,17 +5,10 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 import { InitalizeAudio } from "../Shared/Audio/init.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,
-    lighting: {
-        doAO: true,
-        doRGBLight: false,
-        doSunLight: false,
-        autoRGBLight: false,
-        autoSunLight: false,
-    },
 });
 SyncWithGraphicsSettings(DVER);
 const init = async () => {
@@ -32,13 +25,15 @@ const init = async () => {
     await InitalizeAudio();
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(1);
+    DVER.renderManager.setBaseLevel(0.1);
+    DVER.renderManager.setSunLevel(0.7);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     const positionSAB = new SharedArrayBuffer(4 * 3);
     const position = new Float32Array(positionSAB);
     DVER.worldComm.listenForMessage("get-position", (data) => {
         DVER.worldComm.sendMessage("set-position", [positionSAB]);
     });
+    DVER.renderManager.updateFogOptions({ density: 0.000001, mode: "volumetric" });
     scene.registerBeforeRender(() => {
         position[0] = camera.position.x;
         position[1] = camera.position.y;

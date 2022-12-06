@@ -6,6 +6,7 @@ import { CommManager } from "./Manager/CommManager.js";
 import { CommBase } from "./Comm/Comm.js";
 import { SyncedQueue } from "./Queue/SyncedQueue.js";
 import { DataSync } from "./Data/DataSync.js";
+import { PromiseTasks } from "./Tasks/PromiseTasks.js";
 export const ThreadComm = {
     threadNumber: 0,
     threadName: "unamed-threadcomm-thread",
@@ -80,29 +81,53 @@ export const ThreadComm = {
     __isInternalMessage(data) {
         return this.__internal[data[0]] !== undefined;
     },
+    __handleTasksDone(tasksId, mode, threadId, tid, tasksData) {
+        if (mode == 1) {
+            const comm = this.getComm(threadId);
+            comm.sendMessage(TCMessageHeaders.internal, [
+                TCInternalMessages.completeTasks,
+                tasksId,
+                tid,
+                tasksData,
+            ]);
+        }
+        if (mode == 2) {
+            //complete queue
+            if (tid && threadId) {
+                const queue = this.getSyncedQueue(threadId, tid);
+                if (queue) {
+                    queue.subtractFromCount();
+                }
+            }
+        }
+    },
     async __handleTasksMessage(data) {
         //remove header
         data.shift();
         //remove tasks id
         const tasksId = data.shift();
-        //remove queue id
+        //remove thread id
         const threadId = data.shift();
         //remove queue id
-        const queueId = data.shift();
-        await this._tasks[tasksId].run(data[0]);
-        //complete queue
-        if (queueId && threadId) {
-            const queue = this.getSyncedQueue(threadId, queueId);
-            if (queue) {
-                queue.subtractFromCount();
-            }
+        const mode = data.shift();
+        //remove queue id
+        const tid = data.shift();
+        const takss = this._tasks[tasksId];
+        if (takss.mode == "async") {
+            const tasksData = await this._tasks[tasksId].run(data[0]);
+            this.__handleTasksDone(tasksId, mode, threadId, tid, tasksData);
+        }
+        if (takss.mode == "deffered") {
+            const tasksData = await this._tasks[tasksId].run(data[0], () => {
+                this.__handleTasksDone(tasksId, mode, threadId, tid, tasksData);
+            });
         }
     },
     __isTasks(data) {
         return (data[0] == TCMessageHeaders.runTasks && this._tasks[data[1]] !== undefined);
     },
-    registerTasks(id, run) {
-        const tasks = new Task(id, run);
+    registerTasks(id, run, mode = "async") {
+        const tasks = new Task(id, run, mode);
         this._tasks[id] = tasks;
         return tasks;
     },
@@ -196,4 +221,10 @@ internal[TCInternalMessages.unSyncQueue] = (data) => {
     }
     //@ts-ignore
     ThreadComm._queues.get(threadName).delete(queueId);
+};
+internal[TCInternalMessages.completeTasks] = (data) => {
+    const tasksId = data[0];
+    const requestsId = data[1];
+    const tasksData = data[2];
+    PromiseTasks.completePromiseTasks(tasksId, requestsId, tasksData);
 };

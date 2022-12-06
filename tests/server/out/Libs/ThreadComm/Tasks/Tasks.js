@@ -1,8 +1,10 @@
 export class Task {
     name;
     run;
-    constructor(name, run) {
+    mode;
+    constructor(name, run, mode) {
         this.name = name;
         this.run = run;
+        this.mode = mode;
     }
 }

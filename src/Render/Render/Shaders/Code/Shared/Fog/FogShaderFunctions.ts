@@ -45,6 +45,7 @@ export const SharedFogFunctions = {
  {
   // float fogDensity = vFogInfos.w;
   float fogDensity = fogOptions.y;
+ //float fogDensity = .00001;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
    float fogDepth = vDistance;

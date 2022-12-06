@@ -56,6 +56,11 @@ for (let x = -64; x <= -32; x += 16) {
 
 GetAnalyzerCubeWorld(DVEW);
 
+const tasks = DVEW.getTasksTool();
+
+tasks.generate.deferred.run(0, 1, 2, [], (d: any) => {
+ console.log("all done");
+});
 
 (self as any).DVEW = DVEW;
 (self as any).dataTool = dataTool;

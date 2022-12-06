@@ -38,6 +38,13 @@ export declare type BuildTasks = [
     z: number,
     LOD: number
 ];
+export declare type GenerateTasks = [
+    dimension: string,
+    x: number,
+    y: number,
+    z: number,
+    data: any
+];
 export declare type ExplosionTasks = [
     dimension: string,
     x: number,

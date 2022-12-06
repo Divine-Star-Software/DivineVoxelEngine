@@ -4,24 +4,28 @@ import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { $2dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { VoxelMath } from "../../../Libs/Math/VoxelMath.js";
 import { BuilderTool } from "../../../Tools/Build/Builder.js";
+import { TasksTool } from "../../../Tools/Tasks/TasksTool.js";
 
 /**# Infinite World Generator
  *
  */
 export class IWG {
  columnTool = new ColumnDataTool();
+ nColumnTool = new ColumnDataTool();
  builder = new BuilderTool();
+ tasks = TasksTool();
  dimension: string = "main";
  _cachedPosition = [0, 0, 0];
  _columnQueue: number[][] = [];
 
  _generateQueue: number[][] = [];
- _buildQueue: number[][] = [];
- _removeQueue: number[][] = [];
 
  _visitedMap: Map<string, boolean> = new Map();
 
  _activeColumns: Map<string, number[]> = new Map();
+
+ _generateMap: Map<string, boolean> = new Map();
+ _sunMap: Map<string, boolean> = new Map();
 
  constructor(public data: IWGData) {}
 
@@ -55,57 +59,96 @@ export class IWG {
    const cx = node[0];
    const cy = node[1];
    const cz = node[2];
+   const columnKey = WorldBounds.getColumnKey(cx, cz, cy);
+   const distance = VoxelMath.distance3D(wx, 0, wz, cx, 0, cz);
+   
+   if (distance > this.data.generateDistance) continue;
+   if (this._generateMap.has(columnKey)) continue;
 
-   if (
-    VoxelMath.distance3D(wx, wy, wz, cx, cy, cz) > this.data.renderDistance
-   ) {
+   if (distance > this.data.renderDistance) {
+    const value = this._activeColumns.get(columnKey);
+    if (value) {
+     this.builder
+      .setDimension(this.dimension)
+      .setXYZ(value[0], value[1], value[2])
+      .removeColumn();
+     this._activeColumns.delete(columnKey);
+    }
     continue;
    }
 
+
+   let needToGenerate = false;
    if (!this.columnTool.loadIn(cx, cy, cz)) {
-    this.data.generate(this.dimension, cx, cy, cz);
-    if (this.columnTool.loadIn(cx, cy, cz)) {
-     this.columnTool.setTagValue("#dve:is_world_gen_done", 1);
-    }
+    needToGenerate = true;
    } else {
     if (!this.columnTool.getTagValue("#dve:is_world_gen_done")) {
-     this.data.generate(this.dimension, cx, cy, cz);
+     needToGenerate = true;
+    }
+   }
+
+   if (needToGenerate) {
+    this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).fillColumn();
+    this._generateMap.set(columnKey, true);
+    this.tasks.generate.deferred.run(cx, cy, cz, [], () => {
      if (this.columnTool.loadIn(cx, cy, cz)) {
+      this._generateMap.delete(columnKey);
+
       this.columnTool.setTagValue("#dve:is_world_gen_done", 1);
      }
-     continue;
-    }
+    });
+    continue;
+   }
 
-    let nWorldGenAllDone = true;
-    for (const n of $2dMooreNeighborhood) {
-     const nx = cx + n[0] * WorldBounds.chunkXSize;
-     const nz = cz + n[1] * WorldBounds.chunkZSize;
-     const columnPOS = WorldBounds.getColumnPosition(nx, nz, cy);
-
-     const columnKey = WorldBounds.getColumnKey(columnPOS.x, columnPOS.z, cy);
-     if (this._visitedMap.has(columnKey)) continue;
-     this._visitedMap.set(columnKey, true);
-     this._generateQueue.push([columnPOS.x, cy, columnPOS.z]);
-
-     if (!this.columnTool.loadIn(columnPOS.x, cy, columnPOS.z)) {
+   let nWorldGenAllDone = true;
+   let nSunAllDone = true;
+   if (!this.columnTool.getTagValue("#dve:is_world_sun_done")) {
+    nSunAllDone = false;
+   }
+   for (const n of $2dMooreNeighborhood) {
+    const nx = cx + n[0] * WorldBounds.chunkXSize;
+    const nz = cz + n[1] * WorldBounds.chunkZSize;
+    const columnPOS = WorldBounds.getColumnPosition(nx, nz, cy);
+    const columnKey = WorldBounds.getColumnKey(columnPOS.x, columnPOS.z, cy);
+    if (this._visitedMap.has(columnKey)) continue;
+    this._visitedMap.set(columnKey, true);
+    this._generateQueue.push([columnPOS.x, cy, columnPOS.z]);
+    if (!this.nColumnTool.loadIn(columnPOS.x, cy, columnPOS.z)) {
+     nWorldGenAllDone = false;
+     nSunAllDone = false;
+     break;
+    } else {
+     if (!this.nColumnTool.getTagValue("#dve:is_world_gen_done")) {
       nWorldGenAllDone = false;
-     } else {
-      if (!this.columnTool.getTagValue("#dve:is_world_gen_done")) {
-       nWorldGenAllDone = false;
-      }
+      break;
+     }
+     if (!this.nColumnTool.getTagValue("#dve:is_world_sun_done")) {
+      nSunAllDone = false;
+      break;
      }
     }
+   }
 
-    if (nWorldGenAllDone) {
-     const columnKey = WorldBounds.getColumnKey(cx, cz, cy);
-     activeColumns.set(columnKey, true);
-     if (!this._activeColumns.has(columnKey)) {
-      this.builder
-       .setDimension(this.dimension)
-       .setXYZ(cx, cy, cz)
-       .buildColumn();
-      this._activeColumns.set(columnKey, [cx, cy, cz]);
+   if (
+    nWorldGenAllDone &&
+    !this.columnTool.getTagValue("#dve:is_world_sun_done") &&
+    !this._sunMap.has(columnKey)
+   ) {
+    this._sunMap.set(columnKey, true);
+    this.tasks.light.worldSun.deferred.run(cx, cy, cz, () => {
+     if (this.columnTool.loadIn(cx, cy, cz)) {
+      this._generateMap.delete(columnKey);
+
+      this.columnTool.setTagValue("#dve:is_world_sun_done", 1);
      }
+    });
+   }
+
+   if (nWorldGenAllDone && nSunAllDone) {
+    activeColumns.set(columnKey, true);
+    if (!this._activeColumns.has(columnKey)) {
+     this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).buildColumn();
+     this._activeColumns.set(columnKey, [cx, cy, cz]);
     }
    }
   }

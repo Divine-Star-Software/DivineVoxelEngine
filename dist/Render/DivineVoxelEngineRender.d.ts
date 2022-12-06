@@ -9,7 +9,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -18,7 +18,7 @@ export declare const DVER: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -39,9 +39,10 @@ export declare const DVER: {
         getWorkerPort(): Promise<any>;
         __handleInternalMessage(data: any[], event: any): void;
         __isInternalMessage(data: any[]): boolean;
+        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
         __handleTasksMessage(data: any[]): Promise<void>;
         __isTasks(data: any[]): boolean;
-        registerTasks<T_3>(id: string | number, run: (data: T_3) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+        registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
         __hanldeDataSyncMessage(data: any[]): Promise<void>;
         __isDataSync(data: any[]): boolean;
         onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;

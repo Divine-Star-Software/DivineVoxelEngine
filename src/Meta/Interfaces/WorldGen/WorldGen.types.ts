@@ -1,10 +1,3 @@
-import { DivineVoxelEngineWorldGeneration } from "Constructor/WorldGeneration/WorldGeneration";
-
 export type WorldGenInterface = {
-  generate(
-  DVEWG: DivineVoxelEngineWorldGeneration,
-  x: number,
-  z: number,
-  data: any
- ): Promise<void>;
+ generate(dimension: string, x: number, y: number, z: number, data: any): void;
 };

@@ -40,6 +40,14 @@ export type BuildTasks = [
  LOD: number
 ];
 
+export type GenerateTasks = [
+ dimension: string,
+ x: number,
+ y: number,
+ z: number,
+ data: any
+];
+
 export type ExplosionTasks = [
  dimension: string,
  x: number,

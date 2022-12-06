@@ -10,7 +10,7 @@ export const TextureCreator = {
         const _2dCanvas = document.createElement("canvas");
         _2dCanvas.width = this.imgWidth;
         _2dCanvas.height = this.imgHeight;
-        const context = _2dCanvas.getContext("2d");
+        const context = _2dCanvas.getContext("2d", { willReadFrequently: true });
         if (!context) {
             throw new Error("Context did not load for texture creation.");
         }

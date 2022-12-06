@@ -6,6 +6,18 @@ declare class TasksBase {
     _thread: string;
     constructor();
     setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+    generate: {
+        async: {
+            _s: TasksBase;
+            add(x: number, y: number, z: number, data?: any): void;
+            run(onDone: Function): void;
+            runAndAwait(): Promise<void>;
+        };
+        deferred: {
+            _s: TasksBase;
+            run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
+        };
+    };
     voxelUpdate: {
         erease: {
             _s: TasksBase;
@@ -81,6 +93,10 @@ declare class TasksBase {
         };
         worldSun: {
             _s: TasksBase;
+            deferred: {
+                _s: TasksBase;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
             add(x: number, z: number, y?: number): void;
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;

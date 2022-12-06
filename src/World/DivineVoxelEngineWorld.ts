@@ -35,6 +35,7 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { VoxelDataTags } from "./Data/Tags/VoxelTags.js";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
+import { WorldTasks } from "./Tasks/WorldTasks.js";
 
 /**# Divine Voxel Engine World
  * ---
@@ -49,6 +50,7 @@ export const DVEW = {
  TC: ThreadComm,
  UTIL: Util,
  settings: EngineSettings,
+ worldTasks: WorldTasks,
 
  dataCreator: DataCreator,
  data: DataManager,

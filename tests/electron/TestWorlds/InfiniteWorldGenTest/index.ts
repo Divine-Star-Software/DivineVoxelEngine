@@ -20,19 +20,12 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "../Shared/Constructor/constructor.js"
+ "./Constructor/constructor.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
- lighting: {
-  doAO: true,
-  doRGBLight: false,
-  doSunLight: false,
-  autoRGBLight: false,
-  autoSunLight: false,
- },
 });
 
 SyncWithGraphicsSettings(DVER);
@@ -56,7 +49,8 @@ const init = async () => {
  await InitalizeAudio();
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+ DVER.renderManager.setBaseLevel(0.1);
+ DVER.renderManager.setSunLevel(0.7);
 
  const hemLight = new BABYLON.HemisphericLight(
   "",
@@ -69,6 +63,8 @@ const init = async () => {
  DVER.worldComm.listenForMessage("get-position", (data) => {
   DVER.worldComm.sendMessage("set-position", [positionSAB]);
  });
+
+ DVER.renderManager.updateFogOptions({ density: 0.000001, mode: "volumetric" });
 
  scene.registerBeforeRender(() => {
   position[0] = camera.position.x;

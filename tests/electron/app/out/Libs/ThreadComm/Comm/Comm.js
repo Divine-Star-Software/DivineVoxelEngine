@@ -1,5 +1,6 @@
 import { ThreadComm } from "../ThreadComm.js";
 import { TCMessageHeaders, TCInternalMessages, TCDataSyncMessages, } from "../Constants/Messages.js";
+import { PromiseTasks } from "../Tasks/PromiseTasks.js";
 export class CommBase {
     name;
     managerName;
@@ -122,7 +123,17 @@ export class CommBase {
         ], [channel.port2]);
     }
     runTasks(id, data, transfers = [], queueId) {
-        this.sendMessage(TCMessageHeaders.runTasks, [id, ThreadComm.threadName, queueId, data], transfers);
+        let mode = 0;
+        let tid = "";
+        if (queueId) {
+            mode = 2;
+            tid = queueId;
+        }
+        this.sendMessage(TCMessageHeaders.runTasks, [id, ThreadComm.threadName, mode, tid, data], transfers);
+    }
+    runPromiseTasks(id, requestsID, onDone, data, transfers = []) {
+        PromiseTasks.addPromiseTakss(id, requestsID, onDone);
+        this.sendMessage(TCMessageHeaders.runTasks, [id, ThreadComm.threadName, 1, requestsID, data], transfers);
     }
     __syncQueue(id, sab) {
         this.sendMessage(TCMessageHeaders.internal, [

@@ -12,16 +12,14 @@ let position = new Float32Array(3);
 
 const runIWG = () => {
  const generator = new IWG({
-  generate: (dimension, x, y, z) => {
-   WorldGen.generate(x, z);
-   return true;
-  },
   positionWatch: position,
   renderDistance: 200,
+  generateDistance: 300,
  });
  setInterval(() => {
   generator.update();
- }, 100);
+ }, 20);
+ (self as any).generator = generator;
 };
 DVEW.parentComm.listenForMessage("set-position", (data) => {
  position = new Float32Array(data[1]);

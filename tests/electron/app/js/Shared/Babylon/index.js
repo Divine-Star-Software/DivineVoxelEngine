@@ -59,7 +59,7 @@ export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30,
     const camera = new BABYLON.UniversalCamera(name, BABYLON.Vector3.Zero(), scene);
     camera.fov = 1.5;
     camera.minZ = 0.01;
-    camera.maxZ = 500;
+    camera.maxZ = 1000;
     camera.angularSensibility = 1000;
     camera.speed = camera.speed * 0.2;
     camera.checkCollisions = false;
@@ -81,7 +81,7 @@ export const SetUpDefaultCamera = (scene, canvas, startPosition = { x: 0, y: 30,
     return camera;
 };
 export const SetUpDefaultSkybox = (scene) => {
-    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 400.0 }, scene);
+    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 800.0 }, scene);
     const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);

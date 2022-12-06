@@ -4,6 +4,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import type {
  BuildTasks,
  ExplosionTasks,
+ GenerateTasks,
  PaintTasks,
  UpdateTasksO,
  WorldSunTask,
@@ -136,14 +137,13 @@ export const Tasks = {
   ),
  },
  worldGen: {
-  generate: ThreadComm.registerTasks<any[]>(
+  generate: ThreadComm.registerTasks<GenerateTasks>(
    ConstructorTasks.generate,
-   async (data) => {
-    const x = data[0];
-    const z = data[1];
-    const genData = data[2];
-    await DVEC.worldGen.generate(x, z, genData);
-   }
+   (data, onDone) => {
+    if (!onDone) return;
+    DVEC.worldGen.generate(data, onDone);
+   },
+   "deffered"
   ),
  },
 };

@@ -28,9 +28,10 @@ export declare const ThreadComm: {
     getWorkerPort(): Promise<any>;
     __handleInternalMessage(data: any[], event: any): void;
     __isInternalMessage(data: any[]): boolean;
+    __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
     __handleTasksMessage(data: any[]): Promise<void>;
     __isTasks(data: any[]): boolean;
-    registerTasks<T_1>(id: string | number, run: (data: T_1) => void): Task<T_1>;
+    registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function) => void, mode?: "async" | "deffered"): Task<T_1>;
     __hanldeDataSyncMessage(data: any[]): Promise<void>;
     __isDataSync(data: any[]): boolean;
     onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): DataSync<T_2, K>;

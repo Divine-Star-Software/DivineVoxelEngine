@@ -1,6 +1,5 @@
-export declare type IWGGenerateFunction = (dimension: string, chunkX: number, chunkY: number, chunkZ: number) => boolean;
 export declare type IWGData = {
-    positionWatch: number[] | Float32Array;
+    positionWatch: number[] | Float32Array | Float64Array | Int32Array | Int16Array;
     renderDistance: number;
-    generate: IWGGenerateFunction;
+    generateDistance: number;
 };

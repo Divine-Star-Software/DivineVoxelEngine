@@ -1,4 +1,4 @@
-import type { BuildTasks, ExplosionTasks, PaintTasks, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
+import type { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     build: {
         chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
@@ -28,6 +28,6 @@ export declare const Tasks: {
         remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
     };
     worldGen: {
-        generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+        generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<GenerateTasks>;
     };
 };

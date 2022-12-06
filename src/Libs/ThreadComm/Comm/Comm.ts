@@ -7,6 +7,7 @@ import {
 	TCInternalMessages,
 	TCDataSyncMessages,
 } from "../Constants/Messages.js";
+import { PromiseTasks } from "../Tasks/PromiseTasks.js";
 
 export class CommBase {
 	environment: "node" | "browser" = "browser";
@@ -155,9 +156,30 @@ export class CommBase {
 		transfers: any[] = [],
 		queueId?: string
 	) {
+		let mode = 0;
+		let tid = "";
+		if (queueId) {
+			mode = 2;
+			tid = queueId;
+		}
 		this.sendMessage(
 			TCMessageHeaders.runTasks,
-			[id, ThreadComm.threadName, queueId, data],
+			[id, ThreadComm.threadName, mode, tid, data],
+			transfers
+		);
+	}
+
+	runPromiseTasks<T>(
+		id: string | number,
+		requestsID: string,
+		onDone: (data: any) => void,
+		data: T,
+		transfers: any[] = []
+	) {
+		PromiseTasks.addPromiseTakss(id, requestsID, onDone);
+		this.sendMessage(
+			TCMessageHeaders.runTasks,
+			[id, ThreadComm.threadName, 1, requestsID, data],
 			transfers
 		);
 	}

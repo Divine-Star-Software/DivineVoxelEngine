@@ -11,6 +11,7 @@ export const TCInternalMessages = Object.freeze({
 	connectPort: -97,
 	syncQueue: -96,
 	unSyncQueue: -95,
+	completeTasks: -94,
 });
 
 export const TCDataSyncMessages = Object.freeze({

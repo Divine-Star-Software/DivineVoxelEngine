@@ -107,16 +107,17 @@ export const RenderManager = {
    //@ts-ignore
    this.scene.fogColor = options.color;
   }
-  const fogData = new BABYLON.Vector4(0, 0, 0, 0);
+
   if (this.fogOptions.mode == "volumetric") {
-   fogData.x = 1;
+   this.fogData.x = 1;
   }
   if (this.fogOptions.mode == "animated-volumetric") {
-   fogData.x = 2;
+    this.fogData.x = 2;
   }
-  fogData.y = this.fogOptions.density;
-  fogData.z = this.fogOptions.volumetricOptions.heightFactor;
-  this.fogData = fogData;
+  this.fogData.y = this.fogOptions.density;
+  this.fogData.z = this.fogOptions.volumetricOptions.heightFactor;
+  this.fogData = this.fogData;
+  this._setFogData();
  },
 
  _setFogData() {

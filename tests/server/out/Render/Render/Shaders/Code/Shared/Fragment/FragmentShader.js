@@ -78,7 +78,7 @@ export const SharedFragmentShader = {
     `,
     doFog: `
     vec3 doFog(vec4 base) {
-         if(fogOptions.x == 0.) {
+        if(fogOptions.x == 0.) {
             float fog = CalcFogFactor();
             return fog * base.rgb + (1.0 - fog) * vFogColor;
          }

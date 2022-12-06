@@ -37,9 +37,10 @@ export declare const DVEW: {
         getWorkerPort(): Promise<any>;
         __handleInternalMessage(data: any[], event: any): void;
         __isInternalMessage(data: any[]): boolean;
+        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
         __handleTasksMessage(data: any[]): Promise<void>;
         __isTasks(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_1>;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_1>;
         __hanldeDataSyncMessage(data: any[]): Promise<void>;
         __isDataSync(data: any[]): boolean;
         onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_2, K>;
@@ -249,6 +250,9 @@ export declare const DVEW: {
         doRGBPropagation(): boolean;
         doLight(): boolean;
         doFlow(): boolean;
+    };
+    worldTasks: {
+        addChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
     dataCreator: {
         convertToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
@@ -696,9 +700,7 @@ export declare const DVEW: {
         build: {
             chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").BuildTasks>;
         };
-        generate: {
-            chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").LightUpdateTask>;
-        };
+        generate: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").GenerateTasks>;
     };
     cTasks: {
         runQueue: {
@@ -781,6 +783,18 @@ export declare const DVEW: {
             };
             _thread: string;
             setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+            generate: {
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number, data?: any): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
+                };
+            };
             voxelUpdate: {
                 erease: {
                     _s: any;
@@ -856,6 +870,10 @@ export declare const DVEW: {
                 };
                 worldSun: {
                     _s: any;
+                    deferred: {
+                        _s: any;
+                        run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                    };
                     add(x: number, z: number, y?: number): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
@@ -882,6 +900,18 @@ export declare const DVEW: {
         };
         _thread: string;
         setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+        generate: {
+            async: {
+                _s: any;
+                add(x: number, y: number, z: number, data?: any): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
+            deferred: {
+                _s: any;
+                run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
+            };
+        };
         voxelUpdate: {
             erease: {
                 _s: any;
@@ -957,6 +987,10 @@ export declare const DVEW: {
             };
             worldSun: {
                 _s: any;
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
                 add(x: number, z: number, y?: number): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;

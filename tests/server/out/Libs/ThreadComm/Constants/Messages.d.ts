@@ -10,6 +10,7 @@ export declare const TCInternalMessages: Readonly<{
     connectPort: -97;
     syncQueue: -96;
     unSyncQueue: -95;
+    completeTasks: -94;
 }>;
 export declare const TCDataSyncMessages: Readonly<{
     SyncData: -990;

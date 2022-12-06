@@ -24,7 +24,7 @@ export const SetUpWorkers = (
 
  const constructorWorkers: Worker[] = [];
  const cPath = new URL(constructorPath, basePath);
- for (let i = 0; i < navigator.hardwareConcurrency; i++) {
+ for (let i = 0; i < navigator.hardwareConcurrency - 1; i++) {
   constructorWorkers.push(
    new Worker(cPath, {
     type: "module",

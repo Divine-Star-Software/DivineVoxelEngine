@@ -2,6 +2,7 @@
 import type {
  BuildTasks,
  ExplosionTasks,
+ GenerateTasks,
  LightUpdateTask,
  PaintTasks,
  UpdateTasksO,
@@ -29,7 +30,7 @@ const QMBase = {
   this.flow.update.addQueue(queueKey);
   this.flow.remove.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
-  this.generate.chunk.addQueue(queueKey);
+  this.generate.addQueue(queueKey);
   this.explosion.run.addQueue(queueKey);
   this.voxelUpdate.erease.addQueue(queueKey);
   this.voxelUpdate.paint.addQueue(queueKey);
@@ -46,7 +47,7 @@ const QMBase = {
   this.flow.update.removeQueue(queueKey);
   this.flow.remove.removeQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
-  this.generate.chunk.removeQueue(queueKey);
+  this.generate.removeQueue(queueKey);
   this.explosion.run.removeQueue(queueKey);
   this.voxelUpdate.erease.removeQueue(queueKey);
   this.voxelUpdate.paint.removeQueue(queueKey);
@@ -126,12 +127,7 @@ const QMBase = {
  build: {
   chunk: CCM.addQueue<BuildTasks>("build-chunk", ConstructorTasks.buildChunk),
  },
- generate: {
-  chunk: CCM.addQueue<LightUpdateTask>(
-   "generate-chunk",
-   ConstructorTasks.generate
-  ),
- },
+ generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.generate),
 };
 
 export const ConstructorQueues = QMBase;

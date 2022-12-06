@@ -91,20 +91,32 @@ export class CommManager {
             comm.sendMessage(message, data, transfers);
         }
     }
-    runTasksForAll(id, data, transfers = [], queue) {
+    runTasksForAll(id, data, transfers = [], queueId) {
         for (const comm of this.__comms) {
-            comm.runTasks(id, data, transfers, queue);
+            comm.runTasks(id, data, transfers, queueId);
         }
     }
-    runTask(id, data, transfers = [], threadNumber = -1, queue) {
+    runTask(id, data, transfers = [], threadNumber = -1, queueId) {
         if (threadNumber < 0) {
             const comm = this.__comms[this._currentCom];
-            comm.runTasks(id, data, transfers, queue);
+            comm.runTasks(id, data, transfers, queueId);
             return this.__handleCount();
         }
         else {
             const comm = this.__comms[threadNumber];
-            comm.runTasks(id, data, transfers, queue);
+            comm.runTasks(id, data, transfers, queueId);
+            return threadNumber;
+        }
+    }
+    runPromiseTasks(id, requestsID, onDone, data, transfers = [], threadNumber = -1) {
+        if (threadNumber < 0) {
+            const comm = this.__comms[this._currentCom];
+            comm.runPromiseTasks(id, requestsID, onDone, data, transfers);
+            return this.__handleCount();
+        }
+        else {
+            const comm = this.__comms[threadNumber];
+            comm.runPromiseTasks(id, requestsID, onDone, data, transfers);
             return threadNumber;
         }
     }

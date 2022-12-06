@@ -1,9 +1,17 @@
 import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types";
-import type { VoxelData } from "Meta/index.js";
-import type { Vector3 } from "Meta/Util.types.js";
-import { ChunkData } from "Meta/Data/WorldData.types.js";
+import type { GenerateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const WorldGeneration: {
     worldGen: WorldGenInterface | null;
+    register: {
+        _requests: Map<string, {
+            dimension: string;
+            chunks: Map<string, [x: number, y: number, z: number]>;
+            voxels: [x: number, y: number, z: number, data: number[]][];
+        }>;
+        registerRequest(dimension: string, x: number, y: number, z: number): string;
+        addToRequest(registerId: string, x: number, y: number, z: number, rawData: number[]): void;
+        attemptRequestFullFill(registerId: string): boolean;
+    };
     worldBounds: {
         bounds: {
             MinZ: number;
@@ -71,11 +79,11 @@ export declare const WorldGeneration: {
             y: number;
             z: number;
         };
-        getChunkKey(chunkPOS: Vector3): string;
+        getChunkKey(chunkPOS: import("../../Meta/Util.types.js").Vector3): string;
         getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: Vector3): string;
+        getRegionKey(regionPOS: import("../../Meta/Util.types.js").Vector3): string;
         getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: Vector3): {
+        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../../Meta/Util.types.js").Vector3): {
             x: number;
             y: number;
             z: number;
@@ -100,12 +108,12 @@ export declare const WorldGeneration: {
             y: number;
         };
     };
+    _brushes: any[];
     setWorldGen(worldGen: WorldGenInterface): void;
-    generate(x: number, z: number, data: any): Promise<void>;
-    __handleHeightMapUpdateForVoxelAdd(voxelPOS: Vector3, voxelData: VoxelData, chunk: ChunkData): void;
-    getVoxelPaletteId(voxelId: string, voxelStateId: number): void;
-    _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
-    _addToRGBLightUpdateQue(voxelData: VoxelData, x: number, y: number, z: number): void;
-    paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
+    generate(data: GenerateTasks, onDone: Function): void;
+    getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
+        requestsId: string;
+        paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
+    };
 };
 export declare type DivineVoxelEngineWorldGeneration = typeof WorldGeneration;

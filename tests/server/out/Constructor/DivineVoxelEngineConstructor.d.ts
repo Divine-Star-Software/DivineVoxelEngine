@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -369,6 +369,16 @@ export declare const DVEC: {
     };
     worldGen: {
         worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
+        register: {
+            _requests: Map<string, {
+                dimension: string;
+                chunks: Map<string, [x: number, y: number, z: number]>;
+                voxels: [x: number, y: number, z: number, data: number[]][];
+            }>;
+            registerRequest(dimension: string, x: number, y: number, z: number): string;
+            addToRequest(registerId: string, x: number, y: number, z: number, rawData: number[]): void;
+            attemptRequestFullFill(registerId: string): boolean;
+        };
         worldBounds: {
             bounds: {
                 MinZ: number;
@@ -465,13 +475,13 @@ export declare const DVEC: {
                 y: number;
             };
         };
+        _brushes: any[];
         setWorldGen(worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface): void;
-        generate(x: number, z: number, data: any): Promise<void>;
-        __handleHeightMapUpdateForVoxelAdd(voxelPOS: import("Meta/index.js").Vector3, voxelData: import("Meta/index.js").VoxelData, chunk: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-        getVoxelPaletteId(voxelId: string, voxelStateId: number): void;
-        _paintVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number): void;
-        _addToRGBLightUpdateQue(voxelData: import("Meta/index.js").VoxelData, x: number, y: number, z: number): void;
-        paintVoxel(voxelId: string, voxelState: number, shapeState: number, x: number, y: number, z: number): Promise<void>;
+        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
+        getBrush(): import("../Tools/Brush/Brush.js").BrushTool & {
+            requestsId: string;
+            paint(this: import("../Tools/Brush/Brush.js").BrushTool): import("../Tools/Brush/Brush.js").BrushTool;
+        };
     };
     builder: {
         textureManager: {
@@ -949,7 +959,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -970,9 +980,10 @@ export declare const DVEC: {
         getWorkerPort(): Promise<any>;
         __handleInternalMessage(data: any[], event: any): void;
         __isInternalMessage(data: any[]): boolean;
+        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
         __handleTasksMessage(data: any[]): Promise<void>;
         __isTasks(data: any[]): boolean;
-        registerTasks<T_3>(id: string | number, run: (data: T_3) => void): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+        registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
         __hanldeDataSyncMessage(data: any[]): Promise<void>;
         __isDataSync(data: any[]): boolean;
         onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
@@ -1008,7 +1019,7 @@ export declare const DVEC: {
             remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         };
         worldGen: {
-            generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
+            generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").GenerateTasks>;
         };
     };
     syncSettings(data: EngineSettingsData): void;

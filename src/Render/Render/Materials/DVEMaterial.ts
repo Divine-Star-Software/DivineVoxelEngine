@@ -143,7 +143,6 @@ export class DVEMaterial {
 
   this.material = shaderMaterial;
 
-
   this.material.fogEnabled = true;
 
   if (this.options.alphaBlending) {
