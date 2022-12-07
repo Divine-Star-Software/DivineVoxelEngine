@@ -1,4 +1,4 @@
-import type { VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 import { HeightMapTool } from "./HeightMapTool.js";
 export declare class DataTool {
@@ -8,7 +8,7 @@ export declare class DataTool {
     _mode: "World" | "Entity";
     data: {
         dimension: string;
-        raw: number[];
+        raw: RawVoxelData;
         id: number;
         baseId: number;
         secondaryId: number;
@@ -29,7 +29,7 @@ export declare class DataTool {
     setDimension(dimensionId: string | number): this;
     setSecondary(enable: boolean): this;
     _getBaseId(id: number): number;
-    loadInRaw(rawData: number[]): void;
+    loadInRaw(rawData: RawVoxelData): void;
     __process(): void;
     loadIn(x: number, y: number, z: number): boolean | undefined;
     commit(heightMapUpdate?: number): false | this;

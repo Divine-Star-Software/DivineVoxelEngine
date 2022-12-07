@@ -47,15 +47,27 @@ export function InitalizeChunkTags() {
   length: WorldBounds.chunkArea * 2,
  });
  ChunkDataTags.registerTag({
-  id: "#dve:voxel_data",
+  id: "#dve:voxel_id",
   type: "typed-number-array",
-  numberType: "32ui",
+  numberType: "16ui",
   length: WorldBounds.chunkTotalVoxels,
  });
  ChunkDataTags.registerTag({
-  id: "#dve:voxel_state_data",
+  id: "#dve:voxel_light",
   type: "typed-number-array",
-  numberType: "32ui",
+  numberType: "16ui",
+  length: WorldBounds.chunkTotalVoxels,
+ });
+ ChunkDataTags.registerTag({
+  id: "#dve:voxel_state",
+  type: "typed-number-array",
+  numberType: "16ui",
+  length: WorldBounds.chunkTotalVoxels,
+ });
+ ChunkDataTags.registerTag({
+  id: "#dve:voxel_secondary_id",
+  type: "typed-number-array",
+  numberType: "16ui",
   length: WorldBounds.chunkTotalVoxels,
  });
  const initData = ChunkDataTags.$INIT({

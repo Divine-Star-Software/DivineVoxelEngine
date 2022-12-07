@@ -1,6 +1,6 @@
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 import { EntityFlat3dArray } from "../../../Data/Entity/EntityFlat3dArray.js";
-import { VoxelReader } from "../../../Data/Voxel/VoxelByte.js";
+import { VoxelReader } from "../../../Data/Voxel/VoxelReader.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 export const EntityConstructor = {
     voxelData: null,
@@ -40,7 +40,7 @@ export const EntityConstructor = {
         v = this.lightByte.setR(r, v);
         v = this.lightByte.setG(g, v);
         v = this.lightByte.setB(b, v);
-        v = this.voxelByte.setLight(0, v);
+        // v = this.voxelByte.setLight(0, v);
         this._3dArray.setValueUseObj(this.pos, voxelData, v);
     },
     fillLight(s, r, g, b, composed = 1) {
@@ -53,7 +53,7 @@ export const EntityConstructor = {
         v = this.lightByte.setR(r, v);
         v = this.lightByte.setG(g, v);
         v = this.lightByte.setB(b, v);
-        v = this.voxelByte.setLight(0, v);
+        // v = this.voxelByte.setLight(0, v);
         for (let x = 0; x < this.width; x++) {
             for (let z = 0; z < this.depth; z++) {
                 for (let y = 0; y < this.height; y++) {

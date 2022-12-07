@@ -10,7 +10,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -19,7 +19,7 @@ export declare const DVER: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -285,7 +285,7 @@ export declare const DVER: {
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         };
         animationManager: {
-            animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
+            animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
             animCount: number;
             animations: {
                 uniformShaderId: string;
@@ -293,10 +293,10 @@ export declare const DVER: {
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
-                substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
+                substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
             }[];
-            registerAnimations(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-            registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
+            registerAnimations(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+            registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;

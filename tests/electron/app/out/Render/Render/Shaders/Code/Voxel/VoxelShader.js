@@ -82,10 +82,10 @@ export const VoxelShaders = {
         float y = vUV.y - time * 4. * vFlow;
       
         vec4 rgb = getBase();
-        vec4 oRGB1 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.x));
-        vec4 oRGB2 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.y));
-        vec4 oRGB3 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.z));
-        vec4 oRGB4 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.w));
+        vec4 oRGB1 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.x));
+        vec4 oRGB2 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.y));
+        vec4 oRGB3 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.z));
+        vec4 oRGB4 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.w));
         
         if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
             discard;

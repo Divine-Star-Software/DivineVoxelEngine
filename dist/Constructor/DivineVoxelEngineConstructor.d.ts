@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -373,10 +373,10 @@ export declare const DVEC: {
             _requests: Map<string, {
                 dimension: string;
                 chunks: Map<string, [x: number, y: number, z: number]>;
-                voxels: [x: number, y: number, z: number, data: number[]][];
+                voxels: [x: number, y: number, z: number, data: import("Meta/index.js").RawVoxelData][];
             }>;
             registerRequest(dimension: string, x: number, y: number, z: number): string;
-            addToRequest(registerId: string, x: number, y: number, z: number, rawData: number[]): void;
+            addToRequest(registerId: string, x: number, y: number, z: number, rawData: import("Meta/index.js").RawVoxelData): void;
             attemptRequestFullFill(registerId: string): boolean;
         };
         worldBounds: {
@@ -632,10 +632,6 @@ export declare const DVEC: {
                 getXYZ(index: number): import("Meta/index.js").Vector3;
             };
             voxelReader: {
-                setId(id: number, value: number): number;
-                getId(value: number): number;
-                getLight(voxelData: number): number;
-                setLight(voxelData: number, encodedLight: number): number;
                 getLevel(stateData: number): number;
                 setLevel(stateData: number, level: number): number;
                 getLevelState(stateData: number): number;
@@ -959,7 +955,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

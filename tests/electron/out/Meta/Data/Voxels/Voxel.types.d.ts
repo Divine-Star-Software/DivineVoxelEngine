@@ -36,6 +36,12 @@ export declare type VoxelData = {
     lightSource?: boolean;
     lightValue?: number;
 };
+export declare type RawVoxelData = [
+    id: number,
+    light: number,
+    state: number,
+    secondaryId: number
+];
 export declare type VoxelConstructorObject = {
     id: string;
     hooks: Record<VoxelConstructorThreadHooks, (DVEB: typeof DVEBuilswe) => any>;

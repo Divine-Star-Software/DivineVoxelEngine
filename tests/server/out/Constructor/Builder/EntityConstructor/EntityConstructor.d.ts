@@ -24,10 +24,6 @@ export declare const EntityConstructor: {
         getXYZ(index: number): import("../../../Meta/Util.types.js").Vector3;
     };
     voxelReader: {
-        setId(id: number, value: number): number;
-        getId(value: number): number;
-        getLight(voxelData: number): number;
-        setLight(voxelData: number, encodedLight: number): number;
         getLevel(stateData: number): number;
         setLevel(stateData: number, level: number): number;
         getLevelState(stateData: number): number;
@@ -81,7 +77,10 @@ export declare const EntityConstructor: {
     depth: number;
     height: number;
     setEntityData(x: number, y: number, z: number, width: number, height: number, depth: number, composed: number, voxelData: Uint32Array[]): void;
-    getVoxel(x: number, y: number, z: number, composed?: number): [string, number] | false;
+    getVoxel(x: number, y: number, z: number, composed?: number): [
+        string,
+        number
+    ] | false;
     getLevel(x: number, y: number, z: number, composed?: number): number;
     getLevelState(x: number, y: number, z: number, composed?: number): number;
     getShapeState(x: number, y: number, z: number, composed?: number): number;

@@ -5,6 +5,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { GenerateTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
+import { RawVoxelData } from "Meta/index.js";
 class TasksBase {
  _data = {
   dimension: "main",
@@ -102,7 +103,7 @@ class TasksBase {
   },
   paint: {
    _s: <TasksBase>{},
-   add(x: number, y: number, z: number, raw: number[]) {
+   add(x: number, y: number, z: number, raw: RawVoxelData) {
     CQ.voxelUpdate.paint.add(
      [
       this._s._data.dimension,

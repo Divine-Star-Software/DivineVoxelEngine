@@ -1,4 +1,4 @@
-import { VoxelReader } from "../../../Data/Voxel/VoxelByte.js";
+import { VoxelReader } from "../../../Data/Voxel/VoxelReader.js";
 import { EntityFlat3dArray } from "../../../Data/Entity/EntityFlat3dArray.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
@@ -39,7 +39,7 @@ export const EntityConstructor = {
  getVoxel(x: number, y: number, z: number, composed: number = 1) : [string,number] | false{
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  const numericVoxelId = this.voxelReader.getId(voxelData);
+  const numericVoxelId =0;
   if (numericVoxelId == 0) return ["dve:air",0];
   if (numericVoxelId == 1) return ["dve:barrier",0];
   const paletteId =  VoxelPaletteReader._palette[numericVoxelId];
@@ -64,7 +64,7 @@ export const EntityConstructor = {
  getLight(x: number, y: number, z: number, composed: number = 1) {
   const rawVoxelData = this.voxelData[composed - 1];
   const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
-  return this.voxelReader.getLight(voxelData);
+  return 0;
  },
  clearEntityData() {
   this.pos.x = 0;

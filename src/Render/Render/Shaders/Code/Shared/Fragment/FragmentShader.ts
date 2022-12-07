@@ -23,7 +23,7 @@ export const SharedFragmentShader = {
   let varying = `
    //textures
     uniform sampler2DArray arrayTex[4];
-    uniform sampler2DArray overlayTex;
+    uniform sampler2DArray overlayTex[4];
 
     varying float mipMapLevel;
 

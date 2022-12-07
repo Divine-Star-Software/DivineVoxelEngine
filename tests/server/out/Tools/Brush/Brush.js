@@ -16,7 +16,6 @@ export class BrushTool {
         levelState: 0,
     };
     _dt = new DataTool();
-    _raw = [];
     setId(id, state = 0, shapeState = 0) {
         this.data.id = id;
         this.data.state = state;

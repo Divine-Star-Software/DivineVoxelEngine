@@ -37,7 +37,7 @@ export declare class IWG {
             };
             paint: {
                 _s: any;
-                add(x: number, y: number, z: number, raw: number[]): void;
+                add(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };

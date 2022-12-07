@@ -9,18 +9,6 @@ const voxelStateMasks = {
  * Used to decode voxel data.
  */
 export const VoxelReader = {
-    setId(id, value) {
-        return (value & ~(0xffff << 16)) | (id << 16);
-    },
-    getId(value) {
-        return (value & (0xffff << 16)) >> 16;
-    },
-    getLight(voxelData) {
-        return voxelData & 0xffff;
-    },
-    setLight(voxelData, encodedLight) {
-        return (voxelData & ~0xffff) | encodedLight;
-    },
     getLevel(stateData) {
         return stateData & voxelStateMasks.level;
     },

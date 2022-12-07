@@ -11,7 +11,7 @@ export const SetUpEngine = (canvas: HTMLCanvasElement) => {
   }
  }
 
- const engine = new BABYLON.Engine(canvas, antialias, {});
+ const engine = new BABYLON.Engine(canvas, antialias);
  engine.doNotHandleContextLost = true;
  engine.enableOfflineSupport = false;
  engine.setSize(1920, 1080);

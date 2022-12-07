@@ -1,3 +1,4 @@
+import { RawVoxelData } from "Meta/index.js";
 declare class TasksBase {
     _data: {
         dimension: string;
@@ -27,7 +28,7 @@ declare class TasksBase {
         };
         paint: {
             _s: TasksBase;
-            add(x: number, y: number, z: number, raw: number[]): void;
+            add(x: number, y: number, z: number, raw: RawVoxelData): void;
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;
         };

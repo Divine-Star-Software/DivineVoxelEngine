@@ -28,7 +28,7 @@ export declare const RenderManager: {
         _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
     };
     animationManager: {
-        animatedMaterials: Record<"Item" | import("Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
+        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
         animCount: number;
         animations: {
             uniformShaderId: string;
@@ -36,10 +36,10 @@ export declare const RenderManager: {
             currentFrame: number;
             currentCount: number;
             keyCounts: number[];
-            substance: "Item" | import("Meta/index.js").VoxelSubstanceType;
+            substance: import("Meta/index.js").VoxelSubstanceType | "Item";
         }[];
-        registerAnimations(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-        registerMaterial(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
+        registerAnimations(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
     solidMaterial: DVEMaterial;

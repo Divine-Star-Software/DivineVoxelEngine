@@ -1,7 +1,6 @@
 import { ChunkSpace } from "../../Data/Chunk/ChunkSpace.js";
-import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
-import { VoxelReader } from "../../Data/Voxel/VoxelByte.js";
+import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelData.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
@@ -13,7 +12,7 @@ export class DataTool {
     _mode = "World";
     data = {
         dimension: "main",
-        raw: [0, 0],
+        raw: [0, 0, 0, 0],
         id: 0,
         baseId: 0,
         secondaryId: 0,
@@ -47,9 +46,9 @@ export class DataTool {
         this.__process();
     }
     __process() {
-        this.data.id = VoxelReader.getId(this.data.raw[0]);
+        this.data.id = this.data.raw[0];
         this._cached.id = this.data.id;
-        this.data.secondaryId = VoxelReader.getId(this.data.raw[1]);
+        this.data.secondaryId = this.data.raw[3];
         this._cached.secondaryId = this.data.secondaryId;
         this.data.baseId = this._getBaseId(this.data.id);
         if (this.data.secondaryId > 1) {
@@ -68,12 +67,14 @@ export class DataTool {
         this.position.y = y;
         this.position.z = z;
         if (this._mode == "World") {
-            const chunk = WorldRegister.chunk.get(this.data.dimension, x, y, z);
             DataTool._chunkTool.setDimension(this.data.dimension);
             if (!DataTool._chunkTool.loadIn(x, y, z))
                 return false;
-            this.data.raw[0] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_data", ChunkSpace.getVoxelDataIndex(x, y, z));
-            this.data.raw[1] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_state_data", ChunkSpace.getVoxelDataIndex(x, y, z));
+            const index = ChunkSpace.getVoxelDataIndex(x, y, z);
+            this.data.raw[0] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_id", index);
+            this.data.raw[1] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_light", index);
+            this.data.raw[2] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_state", index);
+            this.data.raw[3] = DataTool._chunkTool.getArrayTagValue("#dve:voxel_secondary_id", index);
             this.__process();
             return true;
         }
@@ -87,8 +88,10 @@ export class DataTool {
             if (!DataTool._chunkTool.loadIn(this.position.x, this.position.y, this.position.z))
                 return false;
             const index = ChunkSpace.getVoxelDataIndex(this.position.x, this.position.y, this.position.z);
-            DataTool._chunkTool.setArrayTagValue("#dve:voxel_data", index, this.data.raw[0]);
-            DataTool._chunkTool.setArrayTagValue("#dve:voxel_state_data", index, this.data.raw[1]);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_id", index, this.data.raw[0]);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_light", index, this.data.raw[1]);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_state", index, this.data.raw[2]);
+            DataTool._chunkTool.setArrayTagValue("#dve:voxel_secondary_id", index, this.data.raw[3]);
             if (heightMapUpdate) {
                 DataTool._heightMapTool.chunk.setChunk(DataTool._chunkTool._c);
                 const substance = this.getTemplateSubstance();
@@ -112,12 +115,12 @@ export class DataTool {
         return VoxelTags.getTag(id);
     }
     getLight() {
-        const rawVoxelData = this.data.raw[0];
+        const rawVoxelData = this.data.raw[1];
         if (rawVoxelData < 0)
             return -1;
-        const voxelId = VoxelReader.getId(rawVoxelData);
+        const voxelId = this.data.raw[0];
         if (voxelId == 0)
-            return VoxelReader.getLight(rawVoxelData);
+            return this.data.raw[1];
         if (voxelId < 2)
             return -1;
         const lightValue = this.getTagValue("#dve:light_value");
@@ -127,31 +130,31 @@ export class DataTool {
         if (VoxelTags.getTrueSubstance(voxelId) == "solid") {
             return -1;
         }
-        return VoxelReader.getLight(rawVoxelData);
+        return this.data.raw[1];
     }
     setLight(light) {
-        this.data.raw[0] = VoxelReader.setLight(this.data.raw[0], light);
+        this.data.raw[1] = light;
         return this;
     }
     getLevel() {
-        return VoxelReader.getLevel(this.data.raw[1]);
+        return VoxelReader.getLevel(this.data.raw[2]);
     }
     setLevel(level) {
-        this.data.raw[1] = VoxelReader.setLevel(this.data.raw[1], level);
+        this.data.raw[2] = VoxelReader.setLevel(this.data.raw[2], level);
         return this;
     }
     getLevelState() {
-        return VoxelReader.getLevelState(this.data.raw[1]);
+        return VoxelReader.getLevelState(this.data.raw[2]);
     }
     setLevelState(state) {
-        this.data.raw[1] = VoxelReader.setLevelState(this.data.raw[1], state);
+        this.data.raw[2] = VoxelReader.setLevelState(this.data.raw[2], state);
         return this;
     }
     getShapeState() {
-        return VoxelReader.getShapeState(this.data.raw[1]);
+        return VoxelReader.getShapeState(this.data.raw[2]);
     }
     setShapeState(state) {
-        this.data.raw[1] = VoxelReader.setShapeState(this.data.raw[1], state);
+        this.data.raw[2] = VoxelReader.setShapeState(this.data.raw[2], state);
         return this;
     }
     hasSecondaryVoxel() {
@@ -207,18 +210,18 @@ export class DataTool {
     }
     //util
     setAir() {
-        this.data.raw[0] = VoxelReader.setId(0, this.data.raw[0]);
+        this.data.raw[0] = 0;
         return this;
     }
     isAir() {
-        return 0 == VoxelReader.getId(this.data.raw[0]);
+        return 0 == this.data.raw[0];
     }
     setBarrier() {
-        this.data.raw[0] = VoxelReader.setId(1, this.data.raw[0]);
+        this.data.raw[0] = 1;
         return this;
     }
     isBarrier() {
-        return 1 == VoxelReader.getId(this.data.raw[0]);
+        return 1 == this.data.raw[0];
     }
     //voxel id
     getId(base = false) {
@@ -233,12 +236,12 @@ export class DataTool {
     }
     setId(id) {
         if (this.__secondary) {
-            this.data.raw[1] = VoxelReader.setId(id, this.data.raw[1]);
+            this.data.raw[3] = id;
             this.data.secondaryId = id;
             this.data.secondaryBaseId = this._getBaseId(id);
             return this;
         }
-        this.data.raw[0] = VoxelReader.setId(id, this.data.raw[0]);
+        this.data.raw[0] = id;
         this.data.id = id;
         this.data.baseId = this._getBaseId(id);
         return this;

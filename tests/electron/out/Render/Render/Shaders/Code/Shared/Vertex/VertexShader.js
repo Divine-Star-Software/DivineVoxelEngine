@@ -161,8 +161,8 @@ export const SharedVertexShader = {
  cameraPOS = cameraPosition;
  worldPOS = worldPosition.xyz;
  vDistance = distance(worldPOS, cameraPOS);
-
- if(vDistance < 20.) {
+ mipMapLevel = 3.;
+ if(vDistance <= 20.) {
   mipMapLevel = 0.;
  }
  if(vDistance > 20. &&  vDistance < 30.) {
@@ -171,7 +171,7 @@ export const SharedVertexShader = {
  if(vDistance > 30. && vDistance < 40.) {
    mipMapLevel = 2.;
  }
- if(vDistance > 50.) {
+ if(vDistance >= 50.) {
   mipMapLevel = 3.;
   }
  `,

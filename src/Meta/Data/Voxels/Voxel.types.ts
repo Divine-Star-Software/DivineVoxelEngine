@@ -58,6 +58,13 @@ export type VoxelData = {
  lightValue?: number;
 };
 
+export type RawVoxelData = [
+ id: number,
+ light: number,
+ state: number,
+ secondaryId: number
+];
+
 export type VoxelConstructorObject = {
  id: string;
  hooks: Record<VoxelConstructorThreadHooks, (DVEB: typeof DVEBuilswe) => any>;

@@ -594,10 +594,6 @@ export declare const DVEW: {
             getXYZ(index: number): import("../Meta/Util.types.js").Vector3;
         };
         voxelByte: {
-            setId(id: number, value: number): number;
-            getId(value: number): number;
-            getLight(voxelData: number): number;
-            setLight(voxelData: number, encodedLight: number): number;
             getLevel(stateData: number): number;
             setLevel(stateData: number, level: number): number;
             getLevelState(stateData: number): number;
@@ -792,6 +788,10 @@ export declare const DVEW: {
                 };
                 deferred: {
                     _s: any;
+                    /**# Divine Voxel Engine World
+                     * ---
+                     * This handles everything in the world worker context.
+                     */
                     run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
                 };
             };
@@ -804,7 +804,7 @@ export declare const DVEW: {
                 };
                 paint: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: number[]): void;
+                    add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
@@ -909,6 +909,10 @@ export declare const DVEW: {
             };
             deferred: {
                 _s: any;
+                /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
                 run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
             };
         };
@@ -921,7 +925,7 @@ export declare const DVEW: {
             };
             paint: {
                 _s: any;
-                add(x: number, y: number, z: number, raw: number[]): void;
+                add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };

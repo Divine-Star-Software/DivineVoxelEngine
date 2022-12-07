@@ -1,3 +1,4 @@
+import { RawVoxelData } from "Meta/index";
 export declare type LightUpdateTask = [number, number, number];
 export declare type WorldSunTask = [
     dimension: string,
@@ -19,7 +20,7 @@ export declare type PaintTasks = [
     x: number,
     y: number,
     z: number,
-    raw: number[],
+    raw: RawVoxelData,
     buildQueue: string,
     originThread: string
 ];
