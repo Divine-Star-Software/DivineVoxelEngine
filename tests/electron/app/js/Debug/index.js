@@ -5,7 +5,7 @@ import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 import { InitalizeAudio } from "../Shared/Audio/init.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "../Shared/Constructor/constructor.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,

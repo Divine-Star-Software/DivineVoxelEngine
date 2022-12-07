@@ -35,7 +35,7 @@ export class ColumnDataTool {
   return true;
  }
 
- setChunk(column: Column) {
+ setColumn(column: Column) {
   ColumnTags.setBuffer(column.data);
   this._c = column;
   return this;

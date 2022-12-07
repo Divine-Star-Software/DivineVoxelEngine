@@ -22,7 +22,7 @@ RegisterTexutres(DVER);
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "./Constructor/constructor.js"
+ "../Shared/Constructor/constructor.js",
 );
 
 await DVER.$INIT({

@@ -11,7 +11,7 @@ export declare class ColumnDataTool {
     _c: Column;
     setDimension(dimensionId: string | number): this;
     loadIn(x: number, y: number, z: number): boolean;
-    setChunk(column: Column): this;
+    setColumn(column: Column): this;
     getPosition(): {
         x: number;
         y: number;

@@ -55,6 +55,7 @@ ${CommonShader.getMainFunction(`
   ${SharedFogFunctions.fogFragVars}
   ${SharedFogFunctions.fogFunctions}
   ${SharedFragmentShader.getColor}
+  ${SharedFragmentShader.getBase}
   ${doAO ? SharedFragmentShader.getAO : ""}
   ${SharedFragmentShader.getLight}
   ${SharedFragmentShader.doFog}

@@ -4,6 +4,13 @@ export const TextureCreator = {
  imgWidth: 16,
  imgHeight: 16,
 
+ _mipMapSizes: [
+  [16, 16],
+  [12, 12],
+  [8, 8],
+  [4, 4],
+ ],
+
  defineTextureDimensions(width: number, height: number) {
   this.imgWidth = width;
   this.imgHeight = height;
@@ -28,10 +35,32 @@ export const TextureCreator = {
   images: string[],
   width: number = -1,
   height: number = -1
- ): Promise<BABYLON.RawTexture2DArray> {
+ ): Promise<BABYLON.RawTexture2DArray[]> {
   if (width == -1) width = this.imgWidth;
   if (height == -1) height = this.imgHeight;
 
+  const textures: BABYLON.RawTexture2DArray[] = [];
+  for (const size of this._mipMapSizes) {
+   const texture = await this._createTextures(
+    name,
+    scene,
+    images,
+    size[0],
+    size[1]
+   );
+
+   textures.push(texture);
+  }
+  return textures;
+ },
+
+ async _createTextures(
+  name: string,
+  scene: BABYLON.Scene,
+  images: string[],
+  width: number,
+  height: number
+ ) {
   const resolvedImages: Uint8ClampedArray[] = [];
   //create blank fill to pad image array buffer
   let index = 0;

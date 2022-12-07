@@ -1,7 +1,7 @@
 export const VoxelShaders = {
  solid: {
   fragMain: `
-        vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
+        vec4 rgb = getBase();
         if(vDistance > 100.) {
        //   rgb = vec4(1.,1.,1.,1.);
         }
@@ -39,20 +39,12 @@ export const VoxelShaders = {
            `,
 
   fragMain: `
-   
-    vec4 rgb =  texture(arrayTex, vec3(vUV.x,vUV.y,animIndex)) ;
-   // vec4 oRGB = rgb;
-   // oRGB =  texture(overlayTex, vec3(vOVUV.x,vOVUV.y,overlayAnimIndex)) ;
-    
-     
+   vec4 rgb = getBase();
+
    if (rgb.a < 0.85 ) { 
         discard;
    }
    
-   //if(oRGB.a > 0.85) {
-   //    rgb = oRGB;
-   //}
-    
     rgb = getColor(rgb);
     rgb = getAO(rgb);
     vec4 mixLight = getLight(rgb);
@@ -92,7 +84,7 @@ export const VoxelShaders = {
   fragMain: `
         float y = vUV.y - time * 4. * vFlow;
       
-        vec4 rgb =  texture(arrayTex, vec3(vUV.x,y,animIndex));
+        vec4 rgb = getBase();
         vec4 oRGB1 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.x));
         vec4 oRGB2 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.y));
         vec4 oRGB3 =  texture(overlayTex, vec3(vUV.x,vUV.y,vOVUV.z));

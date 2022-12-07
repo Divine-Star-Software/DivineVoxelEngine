@@ -49,8 +49,10 @@ export const Tasks = {
         }),
     },
     worldSun: {
-        run: ThreadComm.registerTasks(ConstructorTasks.worldSun, (data) => {
+        run: ThreadComm.registerTasks(ConstructorTasks.worldSun, (data, onDone) => {
             DVEC.propagation.runWorldSun(data);
+            if (onDone)
+                onDone();
         }),
     },
     sun: {

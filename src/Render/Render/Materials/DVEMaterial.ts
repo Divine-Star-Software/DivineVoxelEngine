@@ -151,8 +151,10 @@ export class DVEMaterial {
    shaderMaterial.forceDepthWrite = true;
   }
 
-  shaderMaterial.setTexture("arrayTex", data.texture);
-  shaderMaterial.setTexture("overlayTex", data.overlayTexture);
+  shaderMaterial.setTextureArray("arrayTex", data.texture);
+
+  shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);
+
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
 

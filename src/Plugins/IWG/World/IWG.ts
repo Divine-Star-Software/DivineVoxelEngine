@@ -60,8 +60,10 @@ export class IWG {
    const cy = node[1];
    const cz = node[2];
    const columnKey = WorldBounds.getColumnKey(cx, cz, cy);
+   if (this._visitedMap.has(columnKey)) continue;
+   this._visitedMap.set(columnKey, true);
    const distance = VoxelMath.distance3D(wx, 0, wz, cx, 0, cz);
-   
+
    if (distance > this.data.generateDistance) continue;
    if (this._generateMap.has(columnKey)) continue;
 
@@ -76,7 +78,6 @@ export class IWG {
     }
     continue;
    }
-
 
    let needToGenerate = false;
    if (!this.columnTool.loadIn(cx, cy, cz)) {
@@ -109,9 +110,7 @@ export class IWG {
     const nx = cx + n[0] * WorldBounds.chunkXSize;
     const nz = cz + n[1] * WorldBounds.chunkZSize;
     const columnPOS = WorldBounds.getColumnPosition(nx, nz, cy);
-    const columnKey = WorldBounds.getColumnKey(columnPOS.x, columnPOS.z, cy);
-    if (this._visitedMap.has(columnKey)) continue;
-    this._visitedMap.set(columnKey, true);
+
     this._generateQueue.push([columnPOS.x, cy, columnPOS.z]);
     if (!this.nColumnTool.loadIn(columnPOS.x, cy, columnPOS.z)) {
      nWorldGenAllDone = false;
@@ -120,11 +119,9 @@ export class IWG {
     } else {
      if (!this.nColumnTool.getTagValue("#dve:is_world_gen_done")) {
       nWorldGenAllDone = false;
-      break;
      }
      if (!this.nColumnTool.getTagValue("#dve:is_world_sun_done")) {
       nSunAllDone = false;
-      break;
      }
     }
    }
@@ -137,8 +134,6 @@ export class IWG {
     this._sunMap.set(columnKey, true);
     this.tasks.light.worldSun.deferred.run(cx, cy, cz, () => {
      if (this.columnTool.loadIn(cx, cy, cz)) {
-      this._generateMap.delete(columnKey);
-
       this.columnTool.setTagValue("#dve:is_world_sun_done", 1);
      }
     });

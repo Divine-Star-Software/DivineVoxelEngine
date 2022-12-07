@@ -2,6 +2,12 @@ export const TextureCreator = {
     context: null,
     imgWidth: 16,
     imgHeight: 16,
+    _mipMapSizes: [
+        [16, 16],
+        [12, 12],
+        [8, 8],
+        [4, 4],
+    ],
     defineTextureDimensions(width, height) {
         this.imgWidth = width;
         this.imgHeight = height;
@@ -22,6 +28,14 @@ export const TextureCreator = {
             width = this.imgWidth;
         if (height == -1)
             height = this.imgHeight;
+        const textures = [];
+        for (const size of this._mipMapSizes) {
+            const texture = await this._createTextures(name, scene, images, size[0], size[1]);
+            textures.push(texture);
+        }
+        return textures;
+    },
+    async _createTextures(name, scene, images, width, height) {
         const resolvedImages = [];
         //create blank fill to pad image array buffer
         let index = 0;

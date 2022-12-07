@@ -42,6 +42,7 @@ export const SharedVertexShader = {
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
  varying float vDistance;
+ varying float mipMapLevel;
  `,
  varying(ao: boolean = true) {
   let varying = `
@@ -49,6 +50,8 @@ export const SharedVertexShader = {
   varying vec4 vOVUV;
   varying float vFaceData;
   varying vec3 vNormal;
+
+  
 
   //vectory nomral sun light color scale
   varying float vNColor;
@@ -105,6 +108,7 @@ export const SharedVertexShader = {
     vOVUV.y = getOverlayUVFace(ocuv3.y);
     vOVUV.z = getOverlayUVFace(ocuv3.z);
     vOVUV.w = getOverlayUVFace(ocuv3.w);
+
     `,
 
  passTime: `
@@ -164,6 +168,19 @@ export const SharedVertexShader = {
  cameraPOS = cameraPosition;
  worldPOS = worldPosition.xyz;
  vDistance = distance(worldPOS, cameraPOS);
+
+ if(vDistance < 20.) {
+  mipMapLevel = 0.;
+ }
+ if(vDistance > 20. &&  vDistance < 30.) {
+  mipMapLevel = 1.;
+ }
+ if(vDistance > 30. && vDistance < 40.) {
+   mipMapLevel = 2.;
+ }
+ if(vDistance > 50.) {
+  mipMapLevel = 3.;
+  }
  `,
 
  getAnimationType: `

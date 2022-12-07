@@ -3,6 +3,7 @@ export declare const SharedFragmentShader: {
     optionVariables(ao?: boolean): string;
     varying(ao?: boolean): string;
     defaultVarying: string;
+    getBase: string;
     useTime: string;
     getColor: string;
     getAO: string;

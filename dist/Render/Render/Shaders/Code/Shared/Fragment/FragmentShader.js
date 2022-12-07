@@ -22,8 +22,11 @@ export const SharedFragmentShader = {
     varying(ao = true) {
         let varying = `
    //textures
-    uniform sampler2DArray arrayTex;
+    uniform sampler2DArray arrayTex[4];
     uniform sampler2DArray overlayTex;
+
+    varying float mipMapLevel;
+
     //uvs
     varying vec3 vUV;
     varying vec4 vOVUV;
@@ -54,6 +57,26 @@ export const SharedFragmentShader = {
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
  varying float vDistance;
+ `,
+    getBase: `
+ vec4 getBase() {
+   vec4 rgb = vec4(0.,0.,0.,0.);
+   switch (int(mipMapLevel)) {
+      case 0:
+          rgb =  texture(arrayTex[0], vec3(vUV.x,vUV.y,animIndex)) ;
+          break;
+      case 1:
+         rgb =  texture(arrayTex[1], vec3(vUV.x,vUV.y,animIndex)) ;
+         break;
+      case 2:
+         rgb =  texture(arrayTex[2], vec3(vUV.x,vUV.y,animIndex)) ;
+         break;
+      case 3:
+         rgb =  texture(arrayTex[3], vec3(vUV.x,vUV.y,animIndex)) ;
+         break;
+      }
+   return rgb;
+}
  `,
     useTime: `
     varying float vTime;

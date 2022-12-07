@@ -15,7 +15,7 @@ const setUpMaterial = async (
   DVER.textureManager.processedTextureData.textureAnimations[substance];
  const animationTimes =
   DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
- const _2dTextureArray =
+ const materialTextures =
   await DVER.renderManager.textureCreator.createMaterialTexture(
    `${substance}-diffuse`,
    scene,
@@ -36,21 +36,21 @@ const setUpMaterial = async (
    scene,
    overlayTextures
   );
-
+/* 
  if (DVER.settings.getSettings().materials.mode == "standard") {
   if (substance == "solid") {
-   DVER.renderManager.solidStandardMaterial.$INIT(_2dTextureArray, scene);
+   DVER.renderManager.solidStandardMaterial.$INIT(materialTextures, scene);
   }
 
   if (substance == "liquid") {
-   DVER.renderManager.liquidStandardMaterial.$INIT(_2dTextureArray, scene);
+   DVER.renderManager.liquidStandardMaterial.$INIT(materialTextures, scene);
   }
- }
+ } */
 
  const materialCreateData: MaterialCreateData = {
   settings: DVER.settings.getSettings(),
   scene: scene,
-  texture: _2dTextureArray,
+  texture: materialTextures,
   animations: animations,
   animationTimes: animationTimes,
   overlayTexture: Overlay2dTextureArray,
