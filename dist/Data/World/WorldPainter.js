@@ -1,6 +1,5 @@
 import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
-import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
 const WP = {
@@ -16,7 +15,7 @@ const WP = {
             if (!data.dimension) {
                 data.dimension = WP._currentionDimension;
             }
-            const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
+            const dimension = data.dimension;
             const pos = data.position;
             let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
             if (!chunk) {
@@ -36,7 +35,7 @@ const WP = {
             if (!data.dimension) {
                 data.dimension = WP._currentionDimension;
             }
-            const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
+            const dimension = data.dimension;
             const pos = data.position;
             let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
             if (!chunk) {

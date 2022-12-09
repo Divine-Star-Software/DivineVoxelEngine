@@ -10,6 +10,8 @@ export type Column = {
 };
 
 export type Region = {
+ buffer: SharedArrayBuffer;
+ data: DataView;
  columns: Map<number, Column>;
 };
 export type WorldDimensions = Map<string, Map<string, Region>>;

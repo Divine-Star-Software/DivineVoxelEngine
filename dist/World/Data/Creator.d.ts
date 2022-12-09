@@ -6,4 +6,7 @@ export declare const DataCreator: {
     column: {
         getBuffer(buffer?: ArrayBuffer | false): SharedArrayBuffer;
     };
+    region: {
+        getBuffer(buffer?: ArrayBuffer | false): SharedArrayBuffer;
+    };
 };

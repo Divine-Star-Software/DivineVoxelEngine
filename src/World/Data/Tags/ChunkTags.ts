@@ -1,5 +1,5 @@
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
-import { ChunkTags } from "../../../Data/Chunk/ChunkTags.js";
+import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 export const ChunkDataTags = new TagManager("chunk-tags");
 ChunkDataTags.registerTag({

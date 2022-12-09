@@ -8,6 +8,8 @@ export declare type Column = {
     chunks: Map<number, ChunkData>;
 };
 export declare type Region = {
+    buffer: SharedArrayBuffer;
+    data: DataView;
     columns: Map<number, Column>;
 };
 export declare type WorldDimensions = Map<string, Map<string, Region>>;

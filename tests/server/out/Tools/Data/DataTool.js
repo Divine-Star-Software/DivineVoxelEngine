@@ -1,27 +1,22 @@
-import { ChunkSpace } from "../../Data/Chunk/ChunkSpace.js";
-import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
+import { ChunkSpace } from "../../Data/World/Chunk/ChunkSpace.js";
+import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelData.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 import { HeightMapTool } from "./HeightMapTool.js";
-export class DataTool {
+import { DataToolBase } from "./DataToolBase.js";
+export class DataTool extends DataToolBase {
     static _dtutil = new DataTool();
     static _chunkTool = new ChunkDataTool();
     static _heightMapTool = new HeightMapTool();
     _mode = "World";
     data = {
-        dimension: "main",
         raw: [0, 0, 0, 0],
         id: 0,
         baseId: 0,
         secondaryId: 0,
         secondaryBaseId: 0,
-    };
-    position = {
-        x: 0,
-        y: 0,
-        z: 0,
     };
     _cached = {
         id: 0,
@@ -30,12 +25,19 @@ export class DataTool {
         secondarySubstance: "solid",
     };
     __secondary = false;
+    tags = VoxelTags;
     setDimension(dimensionId) {
-        this.data.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
+        this.dimension = DimensionsRegister.getDimensionStringId(dimensionId);
         return this;
     }
     setSecondary(enable) {
         this.__secondary = enable;
+        if (enable) {
+            VoxelTags.setVoxel(this.data.secondaryBaseId);
+        }
+        else {
+            VoxelTags.setVoxel(this.data.baseId);
+        }
         return this;
     }
     _getBaseId(id) {
@@ -61,13 +63,15 @@ export class DataTool {
         this.setSecondary(true);
         this._cached.secondarySubstance = this.getSubstance();
         this.setSecondary(false);
+        VoxelTags.setVoxel(this.data.baseId);
     }
     loadIn(x, y, z) {
+        this._c = this.tags.data;
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
         if (this._mode == "World") {
-            DataTool._chunkTool.setDimension(this.data.dimension);
+            DataTool._chunkTool.setDimension(this.dimension);
             if (!DataTool._chunkTool.loadIn(x, y, z))
                 return false;
             const index = ChunkSpace.getVoxelDataIndex(x, y, z);
@@ -84,7 +88,7 @@ export class DataTool {
     }
     commit(heightMapUpdate = 0) {
         if (this._mode == "World") {
-            DataTool._chunkTool.setDimension(this.data.dimension);
+            DataTool._chunkTool.setDimension(this.dimension);
             if (!DataTool._chunkTool.loadIn(this.position.x, this.position.y, this.position.z))
                 return false;
             const index = ChunkSpace.getVoxelDataIndex(this.position.x, this.position.y, this.position.z);
@@ -93,7 +97,7 @@ export class DataTool {
             DataTool._chunkTool.setArrayTagValue("#dve:voxel_state", index, this.data.raw[2]);
             DataTool._chunkTool.setArrayTagValue("#dve:voxel_secondary_id", index, this.data.raw[3]);
             if (heightMapUpdate) {
-                DataTool._heightMapTool.chunk.setChunk(DataTool._chunkTool._c);
+                DataTool._heightMapTool.chunk._c = DataTool._chunkTool._c;
                 const substance = this.getTemplateSubstance();
                 //on add
                 if (heightMapUpdate == 1) {
@@ -109,25 +113,18 @@ export class DataTool {
         }
         return this;
     }
-    getTagValue(id) {
-        const vId = this.getId(true);
-        VoxelTags.setVoxel(vId);
-        return VoxelTags.getTag(id);
-    }
     getLight() {
-        const rawVoxelData = this.data.raw[1];
-        if (rawVoxelData < 0)
-            return -1;
-        const voxelId = this.data.raw[0];
-        if (voxelId == 0)
+        const vID = this.getId(true);
+        VoxelTags.setVoxel(vID);
+        if (vID == 0)
             return this.data.raw[1];
-        if (voxelId < 2)
+        if (vID < 2)
             return -1;
         const lightValue = this.getTagValue("#dve:light_value");
         if (this.getTagValue("#dve:is_light_source") && lightValue) {
             return lightValue;
         }
-        if (VoxelTags.getTrueSubstance(voxelId) == "solid") {
+        if (VoxelTags.getTrueSubstance(vID) == "solid") {
             return -1;
         }
         return this.data.raw[1];

@@ -1,5 +1,6 @@
 import { ChunkDataTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags } from "./Tags/ColumnTags.js";
+import { RegionDataTags } from "./Tags/RegionTags.js";
 export const DataCreator = {
     convertToSAB(buffer) {
         const sab = new SharedArrayBuffer(buffer.byteLength);
@@ -22,6 +23,14 @@ export const DataCreator = {
                 return DataCreator.convertToSAB(buffer);
             }
             return new SharedArrayBuffer(ColumnDataTags.initData.bufferSize);
+        },
+    },
+    region: {
+        getBuffer(buffer = false) {
+            if (buffer) {
+                return DataCreator.convertToSAB(buffer);
+            }
+            return new SharedArrayBuffer(RegionDataTags.initData.bufferSize);
         },
     },
 };

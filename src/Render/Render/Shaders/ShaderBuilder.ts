@@ -37,6 +37,7 @@ ${vars}
 ${SharedVertexShader.getAnimationType}
 ${SharedVertexShader.animationFunctions}
 ${CommonShader.getMainFunction(`
+${SharedVertexShader.updateVarying}
  ${setPosition}
  ${SharedFogFunctions.fogVertexMain}
  ${SharedVertexShader.passTime}
@@ -46,7 +47,6 @@ ${CommonShader.getMainFunction(`
  ${SharedVertexShader.doSun}
  ${SharedVertexShader.doColors}
  ${SharedVertexShader.doNormals}
- ${SharedVertexShader.updateVarying}
  ${SharedVertexShader.passAnimationState}
 `)}
 `;

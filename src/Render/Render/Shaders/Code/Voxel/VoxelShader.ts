@@ -1,10 +1,8 @@
 export const VoxelShaders = {
  solid: {
   fragMain: `
-        vec4 rgb = getBase();
-        if(vDistance > 100.) {
-       //   rgb = vec4(1.,1.,1.,1.);
-        }
+        vec4 rgb = getBase(arrayTex);
+   
         if (rgb.a < 0.5) { 
             discard;
         }
@@ -22,24 +20,28 @@ export const VoxelShaders = {
    
     int animationType = getAnimationType();
    
-    if(doEffects == 1.){
-       if(animationType == 1) {
-           p.xz = animType1(posWorld, p).xz;
-       }
-       if(animationType == 2) {
-           p.xz = animType2(posWorld, p).xz;
-       }
-       if(animationType == 3) {
-           p.xz = animType3(posWorld, p).xz;
-       }
+  
+    if(vDistance < 16.) {
+      if(doEffects == 1.){
+        if(animationType == 1) {
+            p.xz = animType1(posWorld, p).xz;
+        }
+        if(animationType == 2) {
+            p.xz = animType2(posWorld, p).xz;
+        }
+        if(animationType == 3) {
+            p.xz = animType3(posWorld, p).xz;
+        }
+      }
    }
+
    
     vec4 worldPosition = world * vec4(p, 1.0);
     gl_Position = viewProjection * worldPosition; 
            `,
 
   fragMain: `
-   vec4 rgb = getBase();
+   vec4 rgb = getBase(arrayTex);
 
    if (rgb.a < 0.85 ) { 
         discard;
@@ -84,7 +86,7 @@ export const VoxelShaders = {
   fragMain: `
         float y = vUV.y - time * 4. * vFlow;
       
-        vec4 rgb = getBase();
+        vec4 rgb = getBaseAnimated(arrayTex,vec2(vUV.x,y));
         vec4 oRGB1 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.x));
         vec4 oRGB2 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.y));
         vec4 oRGB3 =  texture(overlayTex[0], vec3(vUV.x,vUV.y,vOVUV.z));

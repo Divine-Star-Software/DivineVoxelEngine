@@ -1,9 +1,13 @@
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldBounds } from "./WorldBounds.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
-import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
+import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
+import { ColumnDataTool } from "../../Tools/Data/ColumnDataTool.js";
+import { RegionDataTool } from "../../Tools/Data/RegionDataTool.js";
 const chunkTool = new ChunkDataTool();
+const columnTool = new ColumnDataTool();
+const regionTool = new RegionDataTool();
 export const WorldRegister = {
     _dimensions: new Map(),
     _cacheOn: false,
@@ -40,16 +44,24 @@ export const WorldRegister = {
         },
     },
     region: {
-        add(dimensionId, x, y, z) {
+        add(dimensionId, x, y, z, sab) {
             let dimension = WorldRegister.dimensions.get(dimensionId);
             if (!dimension) {
                 dimension = WorldRegister.dimensions.add(dimensionId);
             }
-            const region = {
-                columns: new Map(),
-            };
+            const region = this._getRegionData(sab);
+            const regionPOS = WorldBounds.getRegionPosition(x, z, y);
+            regionTool.setRegion(region);
+            regionTool.setPosition(regionPOS.x, regionPOS.y, regionPOS.z);
             dimension.set(WorldBounds.getRegionKeyFromPosition(x, y, z), region);
             return region;
+        },
+        _getRegionData(sab) {
+            return {
+                columns: new Map(),
+                buffer: sab,
+                data: new DataView(sab),
+            };
         },
         get(dimensionId, x, y, z) {
             const dimension = WorldRegister.dimensions.get(dimensionId);
@@ -65,18 +77,25 @@ export const WorldRegister = {
         add(dimensionId, x, z, y = 0, sab) {
             let region = WorldRegister.region.get(dimensionId, x, y, z);
             if (!region) {
-                region = WorldRegister.region.add(dimensionId, x, y, z);
+                let buffer = DataHooks.region.onGetSync.run([dimensionId, x, y, z]);
+                if (!buffer)
+                    return;
+                region = WorldRegister.region.add(dimensionId, x, y, z, buffer);
+                DataHooks.region.onNew.run([dimensionId, x, y, z]);
             }
-            /**
-            @TDO Impelement column data.
-            */
-            const column = {
+            const column = this._getColumnData(sab);
+            const columnPOS = WorldBounds.getColumnPosition(x, z, y);
+            columnTool.setColumn(column);
+            columnTool.setPosition(columnPOS.x, columnPOS.y, columnPOS.z);
+            region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
+            return column;
+        },
+        _getColumnData(sab) {
+            return {
                 chunks: new Map(),
                 buffer: sab,
                 data: new DataView(sab),
             };
-            region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
-            return column;
         },
         get(dimensionId, x, z, y = 0) {
             const region = WorldRegister.region.get(dimensionId, x, y, z);

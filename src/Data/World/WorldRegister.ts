@@ -7,10 +7,14 @@ import type {
 } from "Meta/Data/WorldData.types";
 import { WorldBounds } from "./WorldBounds.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
-import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
+import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
+import { ColumnDataTool } from "../../Tools/Data/ColumnDataTool.js";
+import { RegionDataTool } from "../../Tools/Data/RegionDataTool.js";
 
 const chunkTool = new ChunkDataTool();
+const columnTool = new ColumnDataTool();
+const regionTool = new RegionDataTool();
 export const WorldRegister = {
  _dimensions: <WorldDimensions>new Map(),
 
@@ -51,18 +55,33 @@ export const WorldRegister = {
  },
 
  region: {
-  add(dimensionId: string | number, x: number, y: number, z: number) {
+  add(
+   dimensionId: string,
+   x: number,
+   y: number,
+   z: number,
+   sab: SharedArrayBuffer
+  ) {
    let dimension = WorldRegister.dimensions.get(dimensionId);
    if (!dimension) {
     dimension = WorldRegister.dimensions.add(dimensionId);
    }
-   const region: Region = {
-    columns: new Map(),
-   };
+   const region = this._getRegionData(sab);
+   const regionPOS = WorldBounds.getRegionPosition(x, z, y);
+   regionTool.setRegion(region);
+   regionTool.setPosition(regionPOS.x, regionPOS.y, regionPOS.z);
+
    dimension.set(WorldBounds.getRegionKeyFromPosition(x, y, z), region);
    return region;
   },
-  get(dimensionId: string | number, x: number, y: number, z: number) {
+  _getRegionData(sab: SharedArrayBuffer): Region {
+   return {
+    columns: new Map(),
+    buffer: sab,
+    data: new DataView(sab),
+   };
+  },
+  get(dimensionId: string, x: number, y: number, z: number) {
    const dimension = WorldRegister.dimensions.get(dimensionId);
    if (!dimension) return false;
    const region = dimension.get(WorldBounds.getRegionKeyFromPosition(x, y, z));
@@ -72,7 +91,7 @@ export const WorldRegister = {
  },
  column: {
   add(
-   dimensionId: string | number,
+   dimensionId: string,
    x: number,
    z: number,
    y = 0,
@@ -80,26 +99,33 @@ export const WorldRegister = {
   ) {
    let region = WorldRegister.region.get(dimensionId, x, y, z);
    if (!region) {
-    region = WorldRegister.region.add(dimensionId, x, y, z);
+    let buffer = DataHooks.region.onGetSync.run([dimensionId, x, y, z]);
+    if (!buffer) return;
+    region = WorldRegister.region.add(dimensionId, x, y, z, buffer);
+    DataHooks.region.onNew.run([dimensionId, x, y, z]);
    }
-   /**
-   @TDO Impelement column data.
-   */
-   const column: Column = {
-    chunks: new Map(),
-    buffer: sab,
-    data: new DataView(sab),
-   };
+
+   const column = this._getColumnData(sab);
+   const columnPOS = WorldBounds.getColumnPosition(x, z, y);
+   columnTool.setColumn(column);
+   columnTool.setPosition(columnPOS.x, columnPOS.y, columnPOS.z);
 
    region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
    return column;
   },
-  get(dimensionId: string | number, x: number, z: number, y = 0) {
+  _getColumnData(sab: SharedArrayBuffer): Column {
+   return {
+    chunks: new Map(),
+    buffer: sab,
+    data: new DataView(sab),
+   };
+  },
+  get(dimensionId: string, x: number, z: number, y = 0) {
    const region = WorldRegister.region.get(dimensionId, x, y, z);
    if (!region) return false;
    return region.columns.get(WorldBounds.getColumnIndex(x, z, y));
   },
-  fill(dimensionId: string | number, x: number, z: number, y = 0) {
+  fill(dimensionId: string, x: number, z: number, y = 0) {
    for (
     let cy = WorldBounds.bounds.MinY;
     cy < WorldBounds.bounds.MaxY;
@@ -113,7 +139,7 @@ export const WorldRegister = {
    }
   },
   height: {
-   getRelative(dimensionId: string | number, x: number, z: number, y = 0) {
+   getRelative(dimensionId: string, x: number, z: number, y = 0) {
     const chunkWidth = WorldBounds.chunkXSize;
     const chunkDepth = WorldBounds.chunkZSize;
     let maxHeight = -Infinity;
@@ -127,7 +153,7 @@ export const WorldRegister = {
     }
     return maxHeight;
    },
-   getAbsolute(dimensionId: string | number, x: number, z: number, y = 0) {
+   getAbsolute(dimensionId: string, x: number, z: number, y = 0) {
     const column = WorldRegister.column.get(dimensionId, x, z, y);
     if (!column) return WorldBounds.bounds.MinY;
     if (column.chunks.size == 0) return WorldBounds.bounds.MinY;
@@ -150,7 +176,7 @@ export const WorldRegister = {
  },
  chunk: {
   add(
-   dimensionId: string | number,
+   dimensionId: string,
    x: number,
    y: number,
    z: number,
@@ -199,7 +225,7 @@ export const WorldRegister = {
    DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);
    return chunk;
   },
-  get(dimensionId: string | number, x: number, y: number, z: number) {
+  get(dimensionId: string, x: number, y: number, z: number) {
    const chunkKey = WorldBounds.getChunkKeyFromPosition(x, y, z);
    let addChunk = false;
    if (WorldRegister._cacheOn) {

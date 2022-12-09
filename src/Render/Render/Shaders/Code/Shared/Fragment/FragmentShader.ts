@@ -60,23 +60,32 @@ export const SharedFragmentShader = {
  varying float vDistance;
  `,
  getBase: `
- vec4 getBase() {
-   vec4 rgb = vec4(0.,0.,0.,0.);
+
+ vec4 getBase(sampler2DArray[4] tex) {
    switch (int(mipMapLevel)) {
       case 0:
-          rgb =  texture(arrayTex[0], vec3(vUV.x,vUV.y,animIndex)) ;
-          break;
+         return texture(tex[0], vec3(vUV.x,vUV.y,animIndex));
       case 1:
-         rgb =  texture(arrayTex[1], vec3(vUV.x,vUV.y,animIndex)) ;
-         break;
+         return texture(tex[1], vec3(vUV.x,vUV.y,animIndex));
       case 2:
-         rgb =  texture(arrayTex[2], vec3(vUV.x,vUV.y,animIndex)) ;
-         break;
+         return texture(tex[2], vec3(vUV.x,vUV.y,animIndex));
       case 3:
-         rgb =  texture(arrayTex[3], vec3(vUV.x,vUV.y,animIndex)) ;
-         break;
+         return texture(tex[3], vec3(vUV.x,vUV.y,animIndex));
       }
-   return rgb;
+   return  vec4(0.,0.,0.,0.);
+}
+vec4 getBaseAnimated(sampler2DArray[4] tex, vec2 UV) {
+   switch (int(mipMapLevel)) {
+      case 0:
+         return texture(tex[0], vec3(UV.x,UV.y,animIndex));
+      case 1:
+         return texture(tex[1], vec3(UV.x,UV.y,animIndex));
+      case 2:
+         return texture(tex[2], vec3(UV.x,UV.y,animIndex));
+      case 3:
+         return texture(tex[3], vec3(UV.x,UV.y,animIndex));
+      }
+   return  vec4(0.,0.,0.,0.);
 }
  `,
  useTime: `

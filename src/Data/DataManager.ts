@@ -1,12 +1,13 @@
-import { ChunkSpace } from "./Chunk/ChunkSpace.js";
-import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
+import { ChunkSpace } from "./World/Chunk/ChunkSpace.js";
+import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
 import { Register } from "./Register/Register.js";
 import { VoxelTags } from "./Voxel/VoxelData.js";
 import { WorldBounds } from "./World/WorldBounds.js";
 import { WorldPainter } from "./World/WorldPainter.js";
 import { WorldRegister } from "./World/WorldRegister.js";
-import { ChunkTags } from "./Chunk/ChunkTags.js";
-import { ColumnTags } from "./Column/ColumnTags.js";
+import { ChunkTags } from "./World/Chunk/ChunkTags.js";
+import { ColumnTags } from "./World/Column/ColumnTags.js";
+import { RegionTags } from "./World/Region/RegionTags.js";
 export const DataManager = {
  dimensions: DimensionsRegister,
  voxelTags: VoxelTags,
@@ -16,6 +17,7 @@ export const DataManager = {
  worldBounds: WorldBounds,
  register: Register,
  chunkTags: ChunkTags,
+ regionTags: RegionTags,
  chunks: {
   space: ChunkSpace,
  },

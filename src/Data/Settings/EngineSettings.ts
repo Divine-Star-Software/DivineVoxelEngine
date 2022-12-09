@@ -1,4 +1,4 @@
-import { ChunkSpace } from "../Chunk/ChunkSpace.js";
+import { ChunkSpace } from "../World/Chunk/ChunkSpace.js";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { WorldBounds } from "../World/WorldBounds.js";
 

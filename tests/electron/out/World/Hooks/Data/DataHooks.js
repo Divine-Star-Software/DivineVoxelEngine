@@ -5,20 +5,26 @@ import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const RegisterDataHooks = () => {
     const tasks = DVEW.getTasksTool();
     /*
-   [columns]
-   */
-    DataHooks.column.onGetAsync.addToRun(async () => DataCreator.column.getBuffer());
-    DataHooks.column.onGetSync.addToRun(() => DataCreator.column.getBuffer());
-    DataHooks.column.onNew.addToRun(async (data) => {
-        DataSync.column.sync(data[0], data[1], data[2], data[3]);
-    });
-    /*
    [chunks]
    */
     DataHooks.chunk.onGetAsync.addToRun(async () => DataCreator.chunk.getBuffer());
     DataHooks.chunk.onGetSync.addToRun(() => DataCreator.chunk.getBuffer());
     DataHooks.chunk.onNew.addToRun(async (data) => {
         DataSync.chunk.sync(data[0], data[1], data[2], data[3]);
+    });
+    /*
+   [columns]
+   */
+    DataHooks.column.onGetAsync.addToRun(async () => DataCreator.column.getBuffer());
+    DataHooks.column.onGetSync.addToRun(() => DataCreator.column.getBuffer());
+    DataHooks.column.onNew.addToRun(async (data) => DataSync.column.sync(data[0], data[1], data[2], data[3]));
+    /*
+   [region]
+   */
+    DataHooks.region.onGetAsync.addToRun(async () => DataCreator.region.getBuffer());
+    DataHooks.region.onGetSync.addToRun(() => DataCreator.region.getBuffer());
+    DataHooks.region.onNew.addToRun(async (data) => {
+        DataSync.region.sync(data[0], data[1], data[2], data[3]);
     });
     /*
    [paint]

@@ -1,6 +1,6 @@
 import type { AddVoxelData } from "Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { DimensionsRegister } from "../../Data/Dimensions/DimensionsRegister.js";
+import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { WorldPainter } from "../../Data/World/WorldPainter.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";

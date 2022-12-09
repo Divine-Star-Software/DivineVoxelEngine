@@ -1,5 +1,5 @@
 import { Flat3DArray } from "../Util/Flat3DArray.js";
-import { HeightMapArray } from "../Chunk/HeightMapArray.js";
+import { HeightMapArray } from "./Chunk/HeightMapArray.js";
 import type { Vector3 } from "Meta/Util.types";
 
 const __maxChunkYSize = 128;

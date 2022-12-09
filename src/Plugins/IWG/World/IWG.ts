@@ -107,30 +107,25 @@ export class IWG {
     nSunAllDone = false;
    }
    for (const n of $2dMooreNeighborhood) {
+    if (!nWorldGenAllDone && !nSunAllDone) break;
     const nx = cx + n[0] * WorldBounds.chunkXSize;
     const nz = cz + n[1] * WorldBounds.chunkZSize;
     const columnPOS = WorldBounds.getColumnPosition(nx, nz, cy);
-
     this._generateQueue.push([columnPOS.x, cy, columnPOS.z]);
     if (!this.nColumnTool.loadIn(columnPOS.x, cy, columnPOS.z)) {
      nWorldGenAllDone = false;
      nSunAllDone = false;
      break;
-    } else {
-     if (!this.nColumnTool.getTagValue("#dve:is_world_gen_done")) {
-      nWorldGenAllDone = false;
-     }
-     if (!this.nColumnTool.getTagValue("#dve:is_world_sun_done")) {
-      nSunAllDone = false;
-     }
+    }
+    if (!this.nColumnTool.getTagValue("#dve:is_world_gen_done")) {
+     nWorldGenAllDone = false;
+    }
+    if (!this.nColumnTool.getTagValue("#dve:is_world_sun_done")) {
+     nSunAllDone = false;
     }
    }
 
-   if (
-    nWorldGenAllDone &&
-    !this.columnTool.getTagValue("#dve:is_world_sun_done") &&
-    !this._sunMap.has(columnKey)
-   ) {
+   if (nWorldGenAllDone && !nSunAllDone && !this._sunMap.has(columnKey)) {
     this._sunMap.set(columnKey, true);
     this.tasks.light.worldSun.deferred.run(cx, cy, cz, () => {
      if (this.columnTool.loadIn(cx, cy, cz)) {

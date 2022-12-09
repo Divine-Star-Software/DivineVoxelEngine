@@ -2,7 +2,6 @@ import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
-declare type DID = string | number;
 declare type CommSyncOptions = {
     chunks: boolean;
     voxelPalette: boolean;
@@ -42,22 +41,36 @@ export declare const DataSync: {
         syncInThread(commName: string, data: DimensionData): void;
     };
     chunk: {
-        unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number): void;
-        unSyncInThread(commName: string, dimension: DID, chunkX: number, chunkY: number, chunkZ: number): void;
-        sync(dimension: DID, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimesnion: DID, x: number, y: number, z: number): void;
+        unSync(dimesnion: string, x: number, y: number, z: number): void;
+        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+        sync(dimension: string, x: number, y: number, z: number): void;
+        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
     };
     column: {
-        unSync(dimesnion: DID, chunkX: number, chunkY: number, chunkZ: number): void;
-        unSyncInThread(commName: string, dimension: DID, chunkX: number, chunkY: number, chunkZ: number): void;
-        sync(dimension: DID, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimesnion: DID, x: number, y: number, z: number): void;
+        unSync(dimesnion: string, x: number, y: number, z: number): void;
+        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+        sync(dimension: string, x: number, y: number, z: number): void;
+        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+    };
+    region: {
+        unSync(dimesnion: string, x: number, y: number, z: number): void;
+        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+        sync(dimension: string, x: number, y: number, z: number): void;
+        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+    };
+    voxelTags: {
+        sync(): void;
+        syncInThread(commName: string): void;
     };
     chunkTags: {
         sync(): void;
         syncInThread(commName: string): void;
     };
-    voxelTags: {
+    columnTags: {
+        sync(): void;
+        syncInThread(commName: string): void;
+    };
+    regionTags: {
         sync(): void;
         syncInThread(commName: string): void;
     };

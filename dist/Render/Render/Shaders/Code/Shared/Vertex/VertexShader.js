@@ -4,8 +4,7 @@ export const SharedVertexShader = {
   `,
     standardPositionMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
-  vec3 p = position;
-  gl_Position = worldViewProjection * vec4(p, 1.0); 
+  gl_Position = worldViewProjection * vec4(position, 1.0); 
   `,
     uniforams: `
   uniform mat4 worldViewProjection;
@@ -159,7 +158,8 @@ export const SharedVertexShader = {
  `,
     updateVarying: `
  cameraPOS = cameraPosition;
- worldPOS = worldPosition.xyz;
+ vec4 temp =  world * vec4(position, 1.0);
+ worldPOS = vec3(temp.x,temp.y,temp.z);
  vDistance = distance(worldPOS, cameraPOS);
  mipMapLevel = 3.;
  if(vDistance <= 20.) {

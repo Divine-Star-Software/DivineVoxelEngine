@@ -1,7 +1,7 @@
 import type { AddVoxelData, ChunkData } from "../../Meta/Data/WorldData.types";
 import { WorldRegister } from "./WorldRegister.js";
 import { DataHooks } from "../DataHooks.js";
-import { DimensionsRegister } from "../Dimensions/DimensionsRegister.js";
+import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
 
@@ -28,7 +28,7 @@ const WP = {
    if (!data.dimension) {
     data.dimension = WP._currentionDimension;
    }
-   const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
+   const dimension = data.dimension;
    const pos = data.position;
    let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
    if (!chunk) {
@@ -48,7 +48,7 @@ const WP = {
    if (!data.dimension) {
     data.dimension = WP._currentionDimension;
    }
-   const dimension = DimensionsRegister.getDimensionNumericId(data.dimension);
+   const dimension = data.dimension;
    const pos = data.position;
    let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
    if (!chunk) {
@@ -63,7 +63,7 @@ const WP = {
    }
    this.__paint(dimension, data);
   },
-  __paint(dimension: number, data: AddVoxelData, update = true) {
+  __paint(dimension: string, data: AddVoxelData, update = true) {
    this._dt.setDimension(dimension);
    const x = data.position[0];
    const y = data.position[1];

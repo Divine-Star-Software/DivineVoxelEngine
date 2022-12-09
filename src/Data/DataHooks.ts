@@ -17,6 +17,11 @@ export const DataHooks = {
   onGetSync: Hooks.getSyncHook<LocationData, SharedArrayBuffer>(),
   onNew: Hooks.getAsyncHook<LocationData, void>(),
  },
+ region: {
+  onGetAsync: Hooks.getAsyncHook<LocationData, SharedArrayBuffer>(),
+  onGetSync: Hooks.getSyncHook<LocationData, SharedArrayBuffer>(),
+  onNew: Hooks.getAsyncHook<LocationData, void>(),
+ },
  paint: {
   onAddToRGBUpdate: Hooks.getSyncHook<LocationData, void>(),
   onRichVoxelPaint: Hooks.getSyncHook<SetRichVoxel, void>(),

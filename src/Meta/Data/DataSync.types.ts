@@ -1,34 +1,49 @@
-import { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types";
-import { DimensionData } from "./DimensionData.types";
-import { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types";
+import type { DimensionData } from "./DimensionData.types";
+import type { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
 
 export type DataSyncTypes = "chunk" | "voxel-data" | "iten-data" | "shape-map";
 
 export type ChunkSyncData = [
- dimesnionId: number | string,
+ dimesnionId: string,
  x: number,
  y: number,
  z: number,
- Buffer: SharedArrayBuffer
+ buffer: SharedArrayBuffer
 ];
 
 export type ChunkUnSyncData = [
- dimensionId: number | string,
+ dimensionId: string,
  x: number,
  y: number,
  z: number
 ];
 
 export type ColumnSyncData = [
- dimesnionId: number | string,
+ dimesnionId: string,
  x: number,
  y: number,
  z: number,
- Buffer: SharedArrayBuffer
+ buffer: SharedArrayBuffer
 ];
 
 export type ColumnUnSyncData = [
- dimensionId: number | string,
+ dimensionId: string,
+ x: number,
+ y: number,
+ z: number
+];
+
+export type RegionSyncData = [
+ dimesnionId: string,
+ x: number,
+ y: number,
+ z: number,
+ buffer: SharedArrayBuffer
+];
+
+export type RegionUnSyncData = [
+ dimensionId: string,
  x: number,
  y: number,
  z: number

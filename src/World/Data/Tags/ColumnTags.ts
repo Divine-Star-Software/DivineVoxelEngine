@@ -1,5 +1,5 @@
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
-import { ColumnTags } from "../../../Data/Column/ColumnTags.js";
+import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 export const ColumnDataTags = new TagManager("column-tags");
 ColumnDataTags.registerTag({
  id: "#dve:message_header",

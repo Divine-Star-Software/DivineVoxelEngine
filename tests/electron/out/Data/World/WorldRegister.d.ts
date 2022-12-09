@@ -15,22 +15,24 @@ export declare const WorldRegister: {
         get(id: number | string): Map<string, Region> | undefined;
     };
     region: {
-        add(dimensionId: string | number, x: number, y: number, z: number): Region;
-        get(dimensionId: string | number, x: number, y: number, z: number): false | Region;
+        add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): Region;
+        _getRegionData(sab: SharedArrayBuffer): Region;
+        get(dimensionId: string, x: number, y: number, z: number): false | Region;
     };
     column: {
-        add(dimensionId: string | number, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): Column;
-        get(dimensionId: string | number, x: number, z: number, y?: number): false | Column | undefined;
-        fill(dimensionId: string | number, x: number, z: number, y?: number): void;
+        add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): Column | undefined;
+        _getColumnData(sab: SharedArrayBuffer): Column;
+        get(dimensionId: string, x: number, z: number, y?: number): false | Column | undefined;
+        fill(dimensionId: string, x: number, z: number, y?: number): void;
         height: {
-            getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
-            getAbsolute(dimensionId: string | number, x: number, z: number, y?: number): number;
+            getRelative(dimensionId: string, x: number, z: number, y?: number): number;
+            getAbsolute(dimensionId: string, x: number, z: number, y?: number): number;
         };
     };
     chunk: {
-        add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): ChunkData | undefined;
+        add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): ChunkData | undefined;
         _getChunkData(sab: SharedArrayBuffer): ChunkData;
         addFromServer(chunkBuffer: ArrayBuffer): ChunkData | undefined;
-        get(dimensionId: string | number, x: number, y: number, z: number): false | ChunkData | undefined;
+        get(dimensionId: string, x: number, y: number, z: number): false | ChunkData | undefined;
     };
 };

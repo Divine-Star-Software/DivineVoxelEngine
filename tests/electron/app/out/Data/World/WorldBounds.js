@@ -1,5 +1,5 @@
 import { Flat3DArray } from "../Util/Flat3DArray.js";
-import { HeightMapArray } from "../Chunk/HeightMapArray.js";
+import { HeightMapArray } from "./Chunk/HeightMapArray.js";
 const __maxChunkYSize = 128;
 const maxBounds = Object.freeze({
     minZ: -32_000_000,

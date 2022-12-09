@@ -9,14 +9,14 @@ import { HeightMapTool } from "../Tools/Data/HeightMapTool.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -53,7 +53,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -262,6 +262,9 @@ export declare const DVEW: {
         column: {
             getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
         };
+        region: {
+            getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+        };
     };
     data: {
         dimensions: {
@@ -330,7 +333,7 @@ export declare const DVEW: {
                 _dt: DataTool;
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-                __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
+                __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erease(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
@@ -350,23 +353,25 @@ export declare const DVEW: {
                 get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
             };
             region: {
-                add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").Region;
-                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").Region;
+                add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
+                _getRegionData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
+                get(dimensionId: string, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").Region;
             };
             column: {
-                add(dimensionId: string | number, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
-                get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
-                fill(dimensionId: string | number, x: number, z: number, y?: number): void;
+                add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column | undefined;
+                _getColumnData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
+                get(dimensionId: string, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
+                fill(dimensionId: string, x: number, z: number, y?: number): void;
                 height: {
-                    getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
-                    getAbsolute(dimensionId: string | number, x: number, z: number, y?: number): number;
+                    getRelative(dimensionId: string, x: number, z: number, y?: number): number;
+                    getAbsolute(dimensionId: string, x: number, z: number, y?: number): number;
                 };
             };
             chunk: {
-                add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                 _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
                 addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
-                get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                get(dimensionId: string, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             };
         };
         columnTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
@@ -473,6 +478,7 @@ export declare const DVEW: {
             };
         };
         chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+        regionTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
         chunks: {
             space: {
                 syncSettings(): void;
@@ -526,22 +532,36 @@ export declare const DVEW: {
             syncInThread(commName: string, data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
         };
         chunk: {
-            unSync(dimesnion: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
-            unSyncInThread(commName: string, dimension: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
-            sync(dimension: string | number, x: number, y: number, z: number): void;
-            syncInThread(commName: string, dimesnion: string | number, x: number, y: number, z: number): void;
+            unSync(dimesnion: string, x: number, y: number, z: number): void;
+            unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+            sync(dimension: string, x: number, y: number, z: number): void;
+            syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
         };
         column: {
-            unSync(dimesnion: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
-            unSyncInThread(commName: string, dimension: string | number, chunkX: number, chunkY: number, chunkZ: number): void;
-            sync(dimension: string | number, x: number, y: number, z: number): void;
-            syncInThread(commName: string, dimesnion: string | number, x: number, y: number, z: number): void;
+            unSync(dimesnion: string, x: number, y: number, z: number): void;
+            unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+            sync(dimension: string, x: number, y: number, z: number): void;
+            syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+        };
+        region: {
+            unSync(dimesnion: string, x: number, y: number, z: number): void;
+            unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+            sync(dimension: string, x: number, y: number, z: number): void;
+            syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+        };
+        voxelTags: {
+            sync(): void;
+            syncInThread(commName: string): void;
         };
         chunkTags: {
             sync(): void;
             syncInThread(commName: string): void;
         };
-        voxelTags: {
+        columnTags: {
+            sync(): void;
+            syncInThread(commName: string): void;
+        };
+        regionTags: {
             sync(): void;
             syncInThread(commName: string): void;
         };

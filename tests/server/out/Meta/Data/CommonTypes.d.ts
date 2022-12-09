@@ -1,5 +1,5 @@
 export declare type LocationData = [
-    dimensionId: string | number,
+    dimensionId: string,
     x: number,
     y: number,
     z: number

@@ -65,7 +65,7 @@ export declare const DataManager: {
             _dt: import("../Tools/Data/DataTool.js").DataTool;
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
-            __paint(dimension: number, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
+            __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
             erease(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };
@@ -85,23 +85,25 @@ export declare const DataManager: {
             get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
         };
         region: {
-            add(dimensionId: string | number, x: number, y: number, z: number): import("../Meta/Data/WorldData.types.js").Region;
-            get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").Region;
+            add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
+            _getRegionData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
+            get(dimensionId: string, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").Region;
         };
         column: {
-            add(dimensionId: string | number, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
-            get(dimensionId: string | number, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
-            fill(dimensionId: string | number, x: number, z: number, y?: number): void;
+            add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column | undefined;
+            _getColumnData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
+            get(dimensionId: string, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
+            fill(dimensionId: string, x: number, z: number, y?: number): void;
             height: {
-                getRelative(dimensionId: string | number, x: number, z: number, y?: number): number;
-                getAbsolute(dimensionId: string | number, x: number, z: number, y?: number): number;
+                getRelative(dimensionId: string, x: number, z: number, y?: number): number;
+                getAbsolute(dimensionId: string, x: number, z: number, y?: number): number;
             };
         };
         chunk: {
-            add(dimensionId: string | number, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+            add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
             _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
             addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
-            get(dimensionId: string | number, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+            get(dimensionId: string, x: number, y: number, z: number): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
         };
     };
     columnTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
@@ -208,6 +210,7 @@ export declare const DataManager: {
         };
     };
     chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+    regionTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
     chunks: {
         space: {
             syncSettings(): void;

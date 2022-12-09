@@ -11,7 +11,7 @@ export type RichWorldDimensions = Record<string, Record<string, RichRegion>>;
 
 export type SetRichVoxel = [
  id: string,
- dimesnion: number,
+ dimesnion: string,
  x: number,
  y: number,
  z: number

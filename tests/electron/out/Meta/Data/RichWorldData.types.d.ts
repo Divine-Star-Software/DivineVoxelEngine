@@ -8,7 +8,7 @@ export declare type RichRegion = {
 export declare type RichWorldDimensions = Record<string, Record<string, RichRegion>>;
 export declare type SetRichVoxel = [
     id: string,
-    dimesnion: number,
+    dimesnion: string,
     x: number,
     y: number,
     z: number
