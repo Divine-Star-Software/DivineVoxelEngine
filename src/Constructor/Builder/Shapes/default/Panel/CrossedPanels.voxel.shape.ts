@@ -4,7 +4,7 @@ export const CrossedPanels: VoxelShape = {
  id: "CrossedPanels",
 
  build(mesher) {
-  let animationState = 0;
+  let animationState = 1;
   if (mesher.data.getSubstance() == "flora") {
    animationState = 1;
   }

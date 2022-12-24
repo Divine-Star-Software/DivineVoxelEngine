@@ -6,6 +6,7 @@ export const GetAnalyzerCubeRender = (DVER, positionLock) => {
     const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
         size: 1.1,
     });
+    //\cube.parent = DVER.renderManager.worldOrigin;
     cube.material = cubeMaterial;
     cube.enableEdgesRendering();
     cube.edgesWidth = 0.3;
@@ -98,6 +99,8 @@ export const GetAnalyzerCubeWorld = (DVEW) => {
 > r: ${LightData.getR(l)}
 > g: ${LightData.getG(l)}
 > b: ${LightData.getB(l)}
+> material: ${dataTool.getMaterial()}
+> collider: ${dataTool.getCollider()}
 |||||||||||||||||||||||||||||
 `;
         console.log(logData, "color:cyan;font-wieght:bold;");

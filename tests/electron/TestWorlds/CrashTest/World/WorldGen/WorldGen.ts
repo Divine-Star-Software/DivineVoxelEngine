@@ -6,7 +6,7 @@ export const WorldGen = {
    for (let z = chunkZ; z < 16 + chunkZ; z++) {
     for (let y = 0; y < 128; y++) {
      if ((z % 2 == 0 && x % 2 == 0) || y % 2 == 0) {
-      brush.setId("dve:dreamstonepillar").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreamstonepillar").setXYZ(x, y, z).paint();
      }
     }
    }

@@ -1,5 +1,6 @@
 export const ConstructorTasks = {
     buildChunk: 0,
+    buildColumn: 0,
     generate: 0,
     RGBlightUpdate: 0,
     RGBlightRemove: 0,

@@ -1,26 +1,34 @@
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
-import { VoxelSubstanceRecord } from "../../Data/Register/VoxelRecords.js";
+import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
 export const RenderTasks = {
     setChunk: ThreadComm.registerTasks("set-chunk", (data) => {
-        const dimension = data[0];
-        const substance = data[1];
-        const chunkKey = WorldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
-        DVER.meshManager.handleChunkUpdate(dimension, VoxelSubstanceRecord[substance], chunkKey, data);
+        DVER.meshManager.updateChunk(data);
     }),
     removeChunk: ThreadComm.registerTasks("remove-chunk", (data) => {
-        const dimension = data[0];
-        const substance = data[1];
-        const chunkKey = WorldBounds.getChunkKeyFromPosition(data[2], data[3], data[4]);
-        DVER.meshManager.removeChunkMesh(dimension, VoxelSubstanceRecord[substance], chunkKey);
+        DVER.meshManager.removeChunk(data);
     }),
-    removeAllChunk: ThreadComm.registerTasks("remove-all-chunks", (data) => {
-        const dimension = data[0];
-        const chunkKey = WorldBounds.getChunkKeyFromPosition(data[1], data[2], data[3]);
-        DVER.meshManager.removeChunkMesh(dimension, "solid", chunkKey);
-        DVER.meshManager.removeChunkMesh(dimension, "liquid", chunkKey);
-        DVER.meshManager.removeChunkMesh(dimension, "flora", chunkKey);
-        DVER.meshManager.removeChunkMesh(dimension, "magma", chunkKey);
+    removeColumn: ThreadComm.registerTasks("remove-column", (data) => {
+        DVER.meshManager.removeColumn(data);
+    }),
+    removeColumnsOutsideRadius: ThreadComm.registerTasks("remove-column-outside-radius", (data) => {
+        const dimesnionId = data[0];
+        const x = data[1];
+        const y = data[2];
+        const z = data[3];
+        const maxRadius = data[4];
+        const register = DVER.renderManager.meshRegister;
+        const dimension = register.dimensions.get(dimesnionId);
+        if (!dimension)
+            return;
+        dimension.forEach((region) => {
+            region.columns.forEach((column) => {
+                const pos = column.position;
+                const distnace = Distance3D(pos[0], 0, pos[2], x, 0, z);
+                if (distnace > maxRadius) {
+                    register.column.remove(dimesnionId, pos[0], pos[2], pos[1]);
+                }
+            });
+        });
     }),
 };

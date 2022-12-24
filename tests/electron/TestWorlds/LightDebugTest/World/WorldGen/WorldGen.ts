@@ -14,19 +14,19 @@ export const WorldGen = {
       continue;
      }
      if (rx == 7 && y <= baseY + 15 && rz != 7) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
      }
      if (rx == 8 && y <= baseY + 15 && rz == 10) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
      }
      if (y <= baseY + 3 && chunkX >= 0) {
-      brush.setId("dve:liquiddreamether").paint();
+      brush.setId("dve_liquiddreamether").paint();
      }
      if (y <= baseY + 3 && chunkX < 0) {
-      brush.setId("dve:lightdebug").paint();
+      brush.setId("dve_lightdebug").paint();
      }
      if (y == baseY + 10) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
      }
      if (y == baseY + 6) {
      }

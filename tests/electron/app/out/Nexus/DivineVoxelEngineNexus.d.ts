@@ -212,6 +212,8 @@ export declare const DVEN: {
         isReady(): boolean;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        materialMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
+        colliderMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
         dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
         column: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
@@ -235,13 +237,15 @@ export declare const DVEN: {
         voxelTags: {
             voxelMap: Uint16Array;
             substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
+            materialMap: Record<number, string>;
+            colliderMap: Record<number, string>;
             voxelData: {
                 substance: import("Meta/index.js").VoxelSubstanceType;
                 shapeId: number;
                 hardness: number;
-                material: number;
+                material: string;
                 checkCollision: number;
-                colliderId: number;
+                colliderId: string;
                 lightSource: number;
                 lightValue: number;
                 isRich: number;
@@ -253,14 +257,16 @@ export declare const DVEN: {
                 substance: import("Meta/index.js").VoxelSubstanceType;
                 shapeId: number;
                 hardness: number;
-                material: number;
+                material: string;
                 checkCollision: number;
-                colliderId: number;
+                colliderId: string;
                 lightSource: number;
                 lightValue: number;
                 isRich: number;
             };
             getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
+            getMaterial(id: number): string;
+            getCollider(id: number): string;
             $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
             byteOffSet: number;
             tagSize: number;
@@ -288,7 +294,7 @@ export declare const DVEN: {
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
                 __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
-                erease(dimensionId: string | number, x: number, y: number, z: number): void;
+                erase(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
         worldRegister: {
@@ -429,6 +435,8 @@ export declare const DVEN: {
             voxels: {
                 substanceMap: Record<import("Meta/index.js").VoxelSubstanceType, number>;
                 substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
+                materialMap: Record<number, string>;
+                colliderMap: Record<number, string>;
             };
         };
         chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
@@ -458,7 +466,7 @@ export declare const DVEN: {
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
             __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
-            erease(dimensionId: string | number, x: number, y: number, z: number): void;
+            erase(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -475,13 +483,6 @@ export declare const DVEN: {
         _generateUUI(): string;
         spawnEntity(entityId: string, position: import("Meta/index.js").Vector3, otherData?: any, identiferId?: string | undefined): void;
         ddSepawnEntity(entityId: string, identiferId: string): void;
-    };
-    voxelManager: {
-        voxelData: Record<string, import("Meta/index.js").VoxelData>;
-        _onRegister: (data: import("Meta/index.js").VoxelData) => void;
-        getVoxelData(id: string): import("Meta/index.js").VoxelData;
-        registerVoxelData(data: import("Meta/index.js").VoxelData): void;
-        onRegister(func: (data: import("Meta/index.js").VoxelData) => void): void;
     };
     $INIT(): Promise<void>;
     isReady(): boolean;

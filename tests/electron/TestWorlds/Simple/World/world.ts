@@ -57,7 +57,7 @@ WorldGen.generateChunk(16, 16);
 
 WorldGen.generateChunk(-16, -16);
 const brush = DVEW.getBrush();
-brush.setId("dve:liquiddreadether").setXYZ(7, 47, 7).paint();
+brush.setId("dve_liquiddreadether").setXYZ(7, 47, 7).paint();
 load();
 
 const tasks = DVEW.getTasksTool();

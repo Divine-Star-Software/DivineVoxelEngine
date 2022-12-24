@@ -1,9 +1,9 @@
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { VoxelMath } from "../.././../Libs/Math/VoxelMath.js";
 import { Propagation } from "../Propagation.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
+import { Distance3D } from "../../../Libs/Math/Functions/Distance3d.js";
 
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
@@ -42,7 +42,7 @@ export const ExplosionManager = {
 
    if (!this.inMap(x + 1, y, z)) {
     if (dataTool.loadIn(x + 1, y, z)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x + 1, y, z);
+     const d = Distance3D(sx, sy, sz, x + 1, y, z);
      if (d <= radius) {
       this._queue.push([x + 1, y, z]);
      }
@@ -51,7 +51,7 @@ export const ExplosionManager = {
    }
    if (!this.inMap(x - 1, y, z)) {
     if (dataTool.loadIn(x - 1, y, z)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x - 1, y, z);
+     const d = Distance3D(sx, sy, sz, x - 1, y, z);
      if (d <= radius) {
       this._queue.push([x - 1, y, z]);
      }
@@ -60,7 +60,7 @@ export const ExplosionManager = {
    }
    if (!this.inMap(x, y, z + 1)) {
     if (dataTool.loadIn(x, y, z + 1)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x, y, z + 1);
+     const d = Distance3D(sx, sy, sz, x, y, z + 1);
      if (d <= radius) {
       this._queue.push([x, y, z + 1]);
      }
@@ -69,7 +69,7 @@ export const ExplosionManager = {
    }
    if (!this.inMap(x, y, z - 1)) {
     if (dataTool.loadIn(x, y, z - 1)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x, y, z - 1);
+     const d = Distance3D(sx, sy, sz, x, y, z - 1);
      if (d <= radius) {
       this._queue.push([x, y, z - 1]);
      }
@@ -78,7 +78,7 @@ export const ExplosionManager = {
    }
    if (!this.inMap(x, y + 1, z)) {
     if (dataTool.loadIn(x, y + 1, z)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x, y + 1, z);
+     const d = Distance3D(sx, sy, sz, x, y + 1, z);
      if (d <= radius) {
       this._queue.push([x, y + 1, z]);
      }
@@ -87,7 +87,7 @@ export const ExplosionManager = {
    }
    if (!this.inMap(x, y - 1, z)) {
     if (dataTool.loadIn(x, y - 1, z)) {
-     const d = VoxelMath.distance3D(sx, sy, sz, x, y - 1, z);
+     const d = Distance3D(sx, sy, sz, x, y - 1, z);
      if (d <= dia) {
       this._queue.push([x, y - 1, z]);
      }
@@ -116,7 +116,7 @@ export const ExplosionManager = {
      }
 
      if (dataTool.isLightSource() && dataTool.getLightSourceValue()) {
-        IlluminationManager.runRGBRemoveAt(true,x,y,z);
+      IlluminationManager.runRGBRemoveAt(true, x, y, z);
      }
 
      dataTool.setAir().commit(2);
@@ -127,7 +127,7 @@ export const ExplosionManager = {
 
   IlluminationManager.runSunLightRemove();
   IlluminationManager.runRGBRemove();
-  
+
   IlluminationManager.runSunLightUpdate();
   IlluminationManager.runRGBUpdate();
   this._visitedMap.clear();

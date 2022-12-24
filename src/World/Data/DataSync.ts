@@ -7,6 +7,7 @@ import type {
  ChunkUnSyncData,
  ColumnSyncData,
  ColumnUnSyncData,
+ VoxelMapSyncData,
  RegionSyncData,
  RegionUnSyncData,
  VoxelDataSync,
@@ -14,7 +15,7 @@ import type {
 } from "Meta/Data/DataSync.types.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
 //objects
-import { VoxelDataCreator } from "./VoxelDataCreator.js";
+import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
@@ -22,28 +23,36 @@ import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
 import { InitalizeRegionTags } from "./Tags/RegionTags.js";
-const loopThroughComms = (func: (comm: CommBase | CommManager) => void) => {
+import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
+
+type CommSyncOptions = {
+ worldData: boolean;
+ worldDataTags: boolean;
+ voxelPalette: boolean;
+ voxelTags: boolean;
+ materials: boolean;
+ colliders: boolean;
+};
+const loopThroughComms = (
+ func: (comm: CommBase | CommManager, options: CommSyncOptions) => void
+) => {
  for (const commKey of Object.keys(DataSync.comms)) {
   const comm = DataSync.comms[commKey];
+  const options = DataSync.commOptions[commKey];
   if (!comm.isReady()) continue;
-  func(comm);
+  func(comm, options);
  }
 };
 
-type CommSyncOptions = {
- chunks: boolean;
- voxelPalette: boolean;
- voxelData: boolean;
-};
 export const DataSync = {
- voxelDataCreator: VoxelDataCreator,
+ voxelDataCreator: VoxelDataGenerator,
  comms: <Record<string, CommBase | CommManager>>{},
  commOptions: <Record<string, CommSyncOptions>>{},
  $INIT() {
   return new Promise((resolve) => {
    const inte = setInterval(() => {
-    if (VoxelDataCreator.isReady()) {
-     this.voxelDataCreator.$createVoxelData();
+    if (VoxelDataGenerator.isReady()) {
+     this.voxelDataCreator.$generateVoxelData();
      InitalizeChunkTags();
      InitalizeColumnTags();
      InitalizeRegionTags();
@@ -52,6 +61,8 @@ export const DataSync = {
      this.chunkTags.sync();
      this.columnTags.sync();
      this.regionTags.sync();
+     this.materials.sync();
+     this.colliders.sync();
      VoxelPaletteReader.setVoxelPalette(
       this.voxelDataCreator.palette._palette,
       this.voxelDataCreator.palette._map
@@ -65,37 +76,52 @@ export const DataSync = {
  isReady() {
   return this.voxelDataCreator.isReady();
  },
- registerComm(comm: CommBase | CommManager) {
+ registerComm(
+  comm: CommBase | CommManager,
+  data: Partial<CommSyncOptions> = {}
+ ) {
   this.comms[comm.name] = comm;
   this.commOptions[comm.name] = {
-   chunks: true,
-   voxelPalette: true,
-   voxelData: true,
+   worldData: data.worldData !== undefined ? data.worldData : true,
+   voxelPalette: data.voxelPalette !== undefined ? data.voxelPalette : true,
+   voxelTags: data.voxelTags !== undefined ? data.voxelTags : true,
+   materials: data.materials !== undefined ? data.materials : false,
+   colliders: data.colliders !== undefined ? data.colliders : false,
+   worldDataTags: data.worldDataTags !== undefined ? data.worldDataTags : true,
   };
  },
  dimesnion: {
   unSync(id: string | number) {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.unSyncData<typeof id>(DataSyncTypes.dimesnion, id);
    });
   },
   unSyncInThread(commName: string, id: string | number) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.unSyncData<typeof id>(DataSyncTypes.dimesnion, id);
   },
   sync(data: DimensionData) {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.syncData<DimensionData>(DataSyncTypes.dimesnion, data);
    });
   },
   syncInThread(commName: string, data: DimensionData) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.syncData<DimensionData>(DataSyncTypes.dimesnion, data);
   },
  },
  chunk: {
   unSync(dimesnion: string, x: number, y: number, z: number) {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.unSyncData<ChunkUnSyncData>(DataSyncTypes.chunk, [dimesnion, x, y, z]);
    });
   },
@@ -107,12 +133,16 @@ export const DataSync = {
    z: number
   ) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.unSyncData<ChunkUnSyncData>(DataSyncTypes.chunk, [dimension, x, y, z]);
   },
   sync(dimension: string, x: number, y: number, z: number) {
    const chunk = WorldRegister.chunk.get(dimension, x, y, z);
    if (!chunk) return;
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.syncData<ChunkSyncData>(DataSyncTypes.chunk, [
      dimension,
      x,
@@ -132,6 +162,9 @@ export const DataSync = {
    const chunk = WorldRegister.chunk.get(dimesnion, x, y, z);
    if (!chunk) return;
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.syncData<ChunkSyncData>(DataSyncTypes.chunk, [
     dimesnion,
     x,
@@ -143,7 +176,8 @@ export const DataSync = {
  },
  column: {
   unSync(dimesnion: string, x: number, y: number, z: number) {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
      dimesnion,
      x,
@@ -160,6 +194,9 @@ export const DataSync = {
    z: number
   ) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
     dimension,
     x,
@@ -170,7 +207,8 @@ export const DataSync = {
   sync(dimension: string, x: number, y: number, z: number) {
    const column = WorldRegister.column.get(dimension, x, y, z);
    if (!column) return;
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
      dimension,
      x,
@@ -190,6 +228,9 @@ export const DataSync = {
    const column = WorldRegister.column.get(dimesnion, x, y, z);
    if (!column) return;
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
     dimesnion,
     x,
@@ -202,7 +243,8 @@ export const DataSync = {
 
  region: {
   unSync(dimesnion: string, x: number, y: number, z: number) {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.unSyncData<RegionUnSyncData>(DataSyncTypes.region, [
      dimesnion,
      x,
@@ -219,6 +261,9 @@ export const DataSync = {
    z: number
   ) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.region, [
     dimension,
     x,
@@ -229,7 +274,8 @@ export const DataSync = {
   sync(dimension: string, x: number, y: number, z: number) {
    const region = WorldRegister.region.get(dimension, x, y, z);
    if (!region) return;
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
     comm.syncData<RegionSyncData>(DataSyncTypes.region, [
      dimension,
      x,
@@ -249,6 +295,9 @@ export const DataSync = {
    const region = WorldRegister.region.get(dimesnion, x, y, z);
    if (!region) return;
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
    comm.syncData<RegionSyncData>(DataSyncTypes.column, [
     dimesnion,
     x,
@@ -261,25 +310,70 @@ export const DataSync = {
 
  voxelTags: {
   sync() {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.voxelTags) return;
     comm.syncData<VoxelDataSync>(DataSyncTypes.voxelData, [
-     VoxelDataCreator.initData,
-     VoxelDataCreator.voxelMapBuffer,
+     VoxelDataGenerator.initData,
+     VoxelDataGenerator.voxelMapBuffer,
     ]);
    });
   },
   syncInThread(commName: string) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.voxelTags) return;
    comm.syncData<VoxelDataSync>(DataSyncTypes.voxelData, [
-    VoxelDataCreator.initData,
-    VoxelDataCreator.voxelMapBuffer,
+    VoxelDataGenerator.initData,
+    VoxelDataGenerator.voxelMapBuffer,
+   ]);
+  },
+ },
+
+ materials: {
+  sync() {
+   loopThroughComms((comm, options) => {
+    if (!options.materials) return;
+    comm.syncData<VoxelMapSyncData>(DataSyncTypes.materials, [
+     VoxelTags.materialMap,
+    ]);
+   });
+  },
+  syncInThread(commName: string) {
+   const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.materials) return;
+   comm.syncData<VoxelMapSyncData>(DataSyncTypes.materials, [
+    VoxelTags.materialMap,
+   ]);
+  },
+ },
+
+ colliders: {
+  sync() {
+   loopThroughComms((comm, options) => {
+    if (!options.colliders) return;
+    comm.syncData<VoxelMapSyncData>(DataSyncTypes.colliders, [
+     VoxelTags.colliderMap,
+    ]);
+   });
+  },
+  syncInThread(commName: string) {
+   const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.colliders) return;
+   comm.syncData<VoxelMapSyncData>(DataSyncTypes.colliders, [
+    VoxelTags.colliderMap,
    ]);
   },
  },
 
  chunkTags: {
   sync() {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldDataTags) return;
     comm.syncData<RemoteTagManagerInitData>(
      DataSyncTypes.chunkTags,
      ChunkDataTags.initData
@@ -288,6 +382,9 @@ export const DataSync = {
   },
   syncInThread(commName: string) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldDataTags) return;
    comm.syncData<RemoteTagManagerInitData>(
     DataSyncTypes.chunkTags,
     ChunkDataTags.initData
@@ -297,7 +394,8 @@ export const DataSync = {
 
  columnTags: {
   sync() {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldDataTags) return;
     comm.syncData<RemoteTagManagerInitData>(
      DataSyncTypes.columnTags,
      ColumnDataTags.initData
@@ -306,6 +404,9 @@ export const DataSync = {
   },
   syncInThread(commName: string) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldDataTags) return;
    comm.syncData<RemoteTagManagerInitData>(
     DataSyncTypes.columnTags,
     ColumnDataTags.initData
@@ -315,7 +416,8 @@ export const DataSync = {
 
  regionTags: {
   sync() {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.worldDataTags) return;
     comm.syncData<RemoteTagManagerInitData>(
      DataSyncTypes.regionTags,
      ColumnDataTags.initData
@@ -324,6 +426,9 @@ export const DataSync = {
   },
   syncInThread(commName: string) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldDataTags) return;
    comm.syncData<RemoteTagManagerInitData>(
     DataSyncTypes.regionTags,
     ColumnDataTags.initData
@@ -333,7 +438,8 @@ export const DataSync = {
 
  voxelPalette: {
   sync() {
-   loopThroughComms((comm) => {
+   loopThroughComms((comm, options) => {
+    if (!options.voxelPalette) return;
     comm.syncData<VoxelPaletteSyncData>(DataSyncTypes.voxelPalette, [
      DataSync.voxelDataCreator.palette._palette,
      DataSync.voxelDataCreator.palette._map,
@@ -342,6 +448,9 @@ export const DataSync = {
   },
   syncInThread(commName: string) {
    const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.voxelPalette) return;
    comm.syncData<VoxelPaletteSyncData>(DataSyncTypes.voxelPalette, [
     DataSync.voxelDataCreator.palette._palette,
     DataSync.voxelDataCreator.palette._map,
@@ -351,5 +460,5 @@ export const DataSync = {
 };
 
 ThreadComm.onDataSync("shape-map", (data: any) => {
- VoxelDataCreator.setShapeMap(data);
+ VoxelDataGenerator.setShapeMap(data);
 });

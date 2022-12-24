@@ -3,7 +3,7 @@ import { Util } from "../Global/Util.helper.js";
 import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
-import { MeshManager } from "./Meshes/MeshManager.js";
+import { MeshManager } from "./Scene/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 //inter comms
 import { DataComm } from "./Threads/Data/DataComm.js";
@@ -69,7 +69,7 @@ export const DVER = {
         this._handleOptions();
     },
     async $INIT(initData) {
-        InitWorkers(this, initData);
+        await InitWorkers(this, initData);
     },
     async $SCENEINIT(data) {
         await BuildInitalMeshes(this, data.scene);

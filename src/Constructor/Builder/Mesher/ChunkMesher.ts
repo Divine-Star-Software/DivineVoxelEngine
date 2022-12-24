@@ -6,9 +6,7 @@ import type {
  SetChunkMeshTask,
 } from "Meta/Tasks/RenderTasks.types.js";
 //objects
-import { Builder } from "../Builder.js";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
-import { VoxelSubstanceMap } from "../../../Data/Register/VoxelRecords.js";
 import { VoxelMesher } from "../Tools/VoxelMesher.js";
 
 export const ChunkMesher = {
@@ -36,7 +34,7 @@ export const ChunkMesher = {
    if (baseTemplate.positionTemplate.length == 0) {
     DVEC.parentComm.runTasks<RemoveChunkMeshTasks>("remove-chunk", [
      dimension,
-     VoxelSubstanceMap[type],
+     type,
      chunkX,
      chunkY,
      chunkZ,
@@ -44,13 +42,20 @@ export const ChunkMesher = {
     continue;
    }
 
-   const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD);
+   const meshData = VoxelMesher.$buildMesh(
+    type,
+    baseTemplate,
+    LOD,
+    chunkX,
+    chunkY,
+    chunkZ
+   );
 
    DVEC.parentComm.runTasks<SetChunkMeshTask>(
     "set-chunk",
     [
      dimension,
-     VoxelSubstanceMap[type],
+     type,
      chunkX,
      chunkY,
      chunkZ,

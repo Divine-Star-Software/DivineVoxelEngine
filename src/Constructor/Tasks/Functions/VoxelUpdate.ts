@@ -1,21 +1,47 @@
 import type {
  PaintTasks,
+ ReBuildTasks,
  RunRebuildTasks,
  UpdateTasksO,
 } from "Meta/Tasks/Tasks.types.js";
+import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import { ConstructorRemoteThreadTasks } from "../../../Common/Threads/Contracts/WorldTasks.js";
 import { Propagation } from "../../Propagation/Propagation.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import {
+ $3dCardinalNeighbors,
+ $3dMooreNeighborhood,
+} from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
+import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
 
+const addToRebuildQue = (
+ dimension: string,
+ rebuildQueue : string,
+ x: number,
+ y: number,
+ z: number,
+ comm: CommBase
+) => {
+ for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
+  const n = $3dMooreNeighborhood[i];
+  const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
+  comm.runTasks<ReBuildTasks>(ConstructorRemoteThreadTasks.addToRebuildQue, [
+   dimension,
+   chunkPOS.x,
+   chunkPOS.y,
+   chunkPOS.z,
+   rebuildQueue
+  ]);
+ }
+};
 const updateLight = (x: number, y: number, z: number) => {
  let doRGB = ES.doRGBPropagation();
  let doSun = ES.doSunPropagation();
@@ -39,13 +65,13 @@ const updateLight = (x: number, y: number, z: number) => {
  }
 };
 export async function EreaseAndUpdate(data: UpdateTasksO) {
- const dimenson = data[0];
+ const dimension = data[0];
  const x = data[1];
  const y = data[2];
  const z = data[3];
  const rebuildQueue = data[4];
  const threadId = data[5];
- dataTool.setDimension(dimenson).loadIn(x, y, z);
+ dataTool.setDimension(dimension).loadIn(x, y, z);
 
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
@@ -82,6 +108,7 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
  }
 
  const thread = ThreadComm.getComm(threadId);
+ addToRebuildQue(dimension,rebuildQueue,x,y,z,thread);
  thread.runTasks<RunRebuildTasks>(ConstructorRemoteThreadTasks.runRebuildQue, [
   rebuildQueue,
  ]);
@@ -130,6 +157,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
   }
  }
  const thread = ThreadComm.getComm(threadId);
+ addToRebuildQue(dimension,rebuildQueue,x,y,z,thread);
  thread.runTasks<RunRebuildTasks>(ConstructorRemoteThreadTasks.runRebuildQue, [
   rebuildQueue,
  ]);

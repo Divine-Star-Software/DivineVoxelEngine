@@ -11,7 +11,7 @@ export declare const WorldPainter: {
         voxel(data: AddVoxelData, update?: boolean): void;
         voxelAsync(data: AddVoxelData): Promise<void>;
         __paint(dimension: string, data: AddVoxelData, update?: boolean): false | undefined;
-        erease(dimensionId: ID, x: number, y: number, z: number): void;
+        erase(dimensionId: ID, x: number, y: number, z: number): void;
     };
 };
 export {};

@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreamLogVoxelBuilderThread = {
-    id: "dve:dream-log",
+    id: "dve_dream-log",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("solid", "dream-log");

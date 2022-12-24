@@ -3,72 +3,72 @@ const getTexturePath = (id) => {
 };
 export const VoxelList = [
     {
-        id: "dve:dreamstone",
+        id: "dve_dreamstone",
         name: "Dream Stone",
         texturePath: getTexturePath("dreamstone"),
     },
     {
-        id: "dve:dreadstone",
+        id: "dve_dreadstone",
         name: "Dread Stone",
         texturePath: getTexturePath("dreadstone"),
     },
     {
-        id: "dve:dreamstonepillar",
+        id: "dve_dreamstonepillar",
         name: "Dream Stone Pillar",
         texturePath: getTexturePath("dreamstone-pillar"),
     },
     {
-        id: "dve:dreadstonepillar",
+        id: "dve_dreadstonepillar",
         name: "Dread Stone Pillar",
         texturePath: getTexturePath("dreadstone-pillar"),
     },
     {
-        id: "dve:dreamlamp",
+        id: "dve_dreamlamp",
         name: "Dream Lamp",
         texturePath: getTexturePath("dreamlamp"),
     },
     {
-        id: "dve:dreadlamp",
+        id: "dve_dreadlamp",
         name: "Dread Lamp",
         texturePath: getTexturePath("dreadlamp"),
     },
     {
-        id: "dve:dreamgrass",
+        id: "dve_dreamgrass",
         name: "Dream Grass",
         texturePath: getTexturePath("dreamgrass"),
     },
     {
-        id: "dve:dreadgrass",
+        id: "dve_dreadgrass",
         name: "Dread Grass",
         texturePath: getTexturePath("dreadgrass"),
     },
     {
-        id: "dve:dream-log",
+        id: "dve_dream-log",
         name: "Dream Log",
         texturePath: getTexturePath("dream-log"),
     },
     {
-        id: "dve:dream-leafs",
+        id: "dve_dream-leafs",
         name: "Dread Leafs",
         texturePath: getTexturePath("dream-leafs"),
     },
     {
-        id: "dve:dreamvine",
+        id: "dve_dreamvine",
         name: "Dread Vine",
         texturePath: getTexturePath("dream-vine"),
     },
     {
-        id: "dve:liquiddreamether",
+        id: "dve_liquiddreamether",
         name: "Liquid Dream Ether",
         texturePath: getTexturePath("liquid-dream-ether"),
     },
     {
-        id: "dve:liquiddreadether",
+        id: "dve_liquiddreadether",
         name: "Liquid Dread Ether",
         texturePath: getTexturePath("liquid-dread-ether"),
     },
     {
-        id: "dve:debugbox",
+        id: "dve_debugbox",
         name: "Debug",
         texturePath: getTexturePath("debug"),
     },

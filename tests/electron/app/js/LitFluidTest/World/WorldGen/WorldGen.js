@@ -20,7 +20,7 @@ export const WorldGen = {
         for (let x = chunkX; x < chunkX + 16; x++) {
             for (let z = chunkZ; z < chunkZ + 16; z++) {
                 for (let y = 0; y < 32; y++) {
-                    brush.setXYZ(x, y, z).setId("dve:liquiddreamether");
+                    brush.setXYZ(x, y, z).setId("dve_liquiddreamether");
                     if (type == 0) {
                         this._type0(x, y, z);
                     }

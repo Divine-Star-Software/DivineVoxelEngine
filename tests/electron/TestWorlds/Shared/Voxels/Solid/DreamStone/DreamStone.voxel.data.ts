@@ -3,10 +3,10 @@ import type { VoxelData } from "out/Meta/index";
 export const DreamStoneVoxelData: VoxelData = {
  name: "Dream Stone",
  shapeId: "Box",
- id: "dve:dreamstone",
+ id: "dve_dreamstone",
  substance: "solid",
  states: 1,
- material : "stone",
+ material : "grassy-stone",
  hardnress : 1000,
  physics : {
     collider : "Box",

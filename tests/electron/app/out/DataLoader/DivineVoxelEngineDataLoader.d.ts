@@ -213,6 +213,8 @@ export declare const DVEDL: {
         isReady(): boolean;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        materialMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
+        colliderMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
         dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
         column: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").ChunkSyncData, import("../Meta/Data/DataSync.types.js").ChunkUnSyncData>;
@@ -228,7 +230,7 @@ export declare const DVEDL: {
             initData: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData;
             __shapeMapSet: boolean;
             isReady(): boolean;
-            $createVoxelData(): void;
+            $generateVoxelData(): void;
             setShapeMap(newShapeMap: Record<string, number>): void;
             palette: {
                 _count: number;
@@ -245,13 +247,23 @@ export declare const DVEDL: {
         };
         comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         commOptions: Record<string, {
-            chunks: boolean;
+            worldData: boolean;
+            worldDataTags: boolean;
             voxelPalette: boolean;
-            voxelData: boolean;
+            voxelTags: boolean;
+            materials: boolean;
+            colliders: boolean;
         }>;
         $INIT(): Promise<unknown>;
         isReady(): boolean;
-        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager): void;
+        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, data?: Partial<{
+            worldData: boolean;
+            worldDataTags: boolean;
+            voxelPalette: boolean;
+            voxelTags: boolean;
+            materials: boolean;
+            colliders: boolean;
+        }>): void;
         dimesnion: {
             unSync(id: string | number): void;
             unSyncInThread(commName: string, id: string | number): void;
@@ -277,6 +289,14 @@ export declare const DVEDL: {
             syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
         };
         voxelTags: {
+            sync(): void;
+            syncInThread(commName: string): void;
+        };
+        materials: {
+            sync(): void;
+            syncInThread(commName: string): void;
+        };
+        colliders: {
             sync(): void;
             syncInThread(commName: string): void;
         };

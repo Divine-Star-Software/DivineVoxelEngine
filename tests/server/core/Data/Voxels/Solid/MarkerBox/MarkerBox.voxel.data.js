@@ -1,7 +1,7 @@
 export const MarkerBoxVoxelData = {
     name: "Marker Box",
     shapeId: "Box",
-    id: "dve:markerbox",
+    id: "dve_markerbox",
     substance: "solid",
     lightSource: false,
     material: "stone",

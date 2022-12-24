@@ -1,7 +1,7 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";
 let uv = 0;
 export const DreadGrassVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreadgrass",
+ id: "dve_dreadgrass",
 
  hooks: {
   texturesRegistered: (DVEB) => {

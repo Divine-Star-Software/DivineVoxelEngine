@@ -36,7 +36,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
     opetionsMenu.style.display = "none";
    }
   }
-  if (event.key == "F3") {
+  if (event.key == "F7") {
    if (!DVER) return;
    //@ts-ignore
    const scene: BABYLON.Scene = DVER.renderManager.getScene();
@@ -59,7 +59,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
 
  return (
   engine: BABYLON.Engine,
-  positionWatch: BABYLON.FreeCamera | BABYLON.Mesh
+  positionWatch: {position : BABYLON.Vector3}
  ) => {
   //@ts-ignore
   divFps.innerHTML = engine.getFps().toFixed() + " fps";

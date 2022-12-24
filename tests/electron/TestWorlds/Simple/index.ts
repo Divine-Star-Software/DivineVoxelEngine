@@ -32,13 +32,6 @@ await DVER.$INIT({
  world: {
   maxY: 128,
  },
- meshes: {
-  checkFloraCollisions: false,
-  checkLiquidCollisions: false,
-  checkMagmaCollisions: false,
-  checkSolidCollisions: false,
-  clearChachedGeometry: true,
- },
  lighting: {
   doAO: true,
   doRGBLight: false,

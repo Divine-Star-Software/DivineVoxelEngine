@@ -39,7 +39,7 @@ export const WorldGen = {
  ],
 
  generateTree(x: number, y: number, z: number) {
-  brush.setId("dve:dream-log");
+  brush.setId("dve_dream-log");
   let height = (30 * Math.random()) >> 0;
   height < 5 ? (height += 5) : true;
   for (let i = 0; i < height; i++) {
@@ -47,11 +47,11 @@ export const WorldGen = {
   }
   let k = 5;
   for (let iy = height - 4; iy <= height + 1; iy++) {
-   this.generateCircle("dve:dream-leafs", x, iy + y, z, k, true);
+   this.generateCircle("dve_dream-leafs", x, iy + y, z, k, true);
    k--;
   }
   brush
-   .setId("dve:dream-leafs")
+   .setId("dve_dream-leafs")
    .setXYZ(x, y + height, z)
    .paint();
  },
@@ -86,22 +86,22 @@ export const WorldGen = {
     for (let y = 0; y < this.chunkHeight; y++) {
      brush.setXYZ(x, y, z);
      if (y <= baseY - 1) {
-      brush.setId("dve:dreamstone").paint();
+      brush.setId("dve_dreamstone").paint();
      }
      if (y >= baseY - 2 && y < baseY + 1) {
       if (y == baseY - 2 && Math.random() > 0.8) {
        brush
-        .setId("dve:liquiddreadether")
-        .setSecondaryId("dve:dreamgrass")
+        .setId("dve_liquiddreadether")
+        .setSecondaryId("dve_dreamgrass")
         .paint()
-        .setSecondaryId("dve:air");
+        .setSecondaryId("dve_air");
       } else {
-       brush.setId("dve:liquiddreadether").paint();
+       brush.setId("dve_liquiddreadether").paint();
       }
      }
      if (y <= baseY + 2 && baseY >= baseY) {
       if (x == chunkX + 15 || z == chunkZ + 15 || x == chunkX || z == chunkZ) {
-       brush.setId("dve:dreadstonepillar").paint();
+       brush.setId("dve_dreadstonepillar").paint();
       }
      }
      if (y <= baseY + 2) {
@@ -130,17 +130,17 @@ export const WorldGen = {
        (z == chunkZ + 2 && x == chunkX + 13) ||
        (z == chunkZ + 1 && x == chunkX + 13)
       ) {
-       brush.setId("dve:dreadstonepillar").paint();
+       brush.setId("dve_dreadstonepillar").paint();
       }
      }
      if (y == baseY + 1 && z == chunkZ + 14 && x == chunkX + 7) {
-      brush.setId("dve:dreadstonepillar").paint();
+      brush.setId("dve_dreadstonepillar").paint();
      }
      if (y <= 46 && z == chunkZ + 7 && x == chunkX + 7) {
-      brush.setId("dve:dreadstonepillar").paint();
+      brush.setId("dve_dreadstonepillar").paint();
      }
      if (y <= 36 && z == chunkZ + 7 && x == chunkX + 6) {
-      brush.setId("dve:dreadstonepillar").paint();
+      brush.setId("dve_dreadstonepillar").paint();
      }
     }
    }
@@ -168,35 +168,35 @@ export const WorldGen = {
     }
     for (let y = 0; y < this.chunkHeight; y++) {
      if (y < baseY) {
-      brush.setId("dve:dreamstone").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreamstone").setXYZ(x, y, z).paint();
      }
 
      if (y >= baseY && y <= topY) {
-      brush.setId("dve:dreamstonepillar").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreamstonepillar").setXYZ(x, y, z).paint();
       if (addVine && x == chunkX) {
        brush
-        .setId("dve:dreamvine")
+        .setId("dve_dreamvine")
         .setXYZ(x - 1, y, z)
         .setShapeState(2)
         .paint();
       }
       if (addVine && x == chunkX + 15) {
        brush
-        .setId("dve:dreamvine")
+        .setId("dve_dreamvine")
         .setXYZ(x + 1, y, z)
         .setShapeState(3)
         .paint();
       }
       if (addVine && z == chunkZ) {
        brush
-        .setId("dve:dreamvine")
+        .setId("dve_dreamvine")
         .setXYZ(x, y, z - 1)
         .setShapeState(1)
         .paint();
       }
       if (addVine && z == chunkZ + 15) {
        brush
-        .setId("dve:dreamvine")
+        .setId("dve_dreamvine")
         .setXYZ(x, y, z + 1)
         .setShapeState(0)
         .paint();
@@ -204,7 +204,7 @@ export const WorldGen = {
      }
 
      if (y >= topY + 1 && x == chunkX && z == chunkZ) {
-      this.generateCircle("dve:dreamstonepillar", chunkX + 8, y, chunkZ + 8, k);
+      this.generateCircle("dve_dreamstonepillar", chunkX + 8, y, chunkZ + 8, k);
       k--;
      }
     }
@@ -217,7 +217,7 @@ export const WorldGen = {
     for (let y = 0; y < 32; y++) {
      brush.setXYZ(x, y, z);
      if (y < 31) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
       continue;
      }
 
@@ -228,7 +228,7 @@ export const WorldGen = {
      }
 
      if (flip >= 0.02 && flip <= 0.03) {
-      brush.setId("dve:dreamgrass").paint();
+      brush.setId("dve_dreamgrass").paint();
       continue;
      }
     }

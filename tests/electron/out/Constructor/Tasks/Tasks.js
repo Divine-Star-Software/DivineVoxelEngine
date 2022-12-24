@@ -3,11 +3,26 @@ import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
+const chunkTool = new ChunkDataTool();
 export const Tasks = {
     build: {
         chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (data) => {
             const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
             await DVEC.builder.buildChunk(data[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[4]);
+        }),
+        column: ThreadComm.registerTasks(ConstructorTasks.buildColumn, async (data) => {
+            const column = WorldRegister.column.get(data[0], data[1], data[3], data[2]);
+            if (!column)
+                return false;
+            if (column.chunks.size == 0)
+                return false;
+            for (const [key, chunk] of column.chunks) {
+                chunkTool.setChunk(chunk);
+                const chunkPOS = chunkTool.getPosition();
+                await DVEC.builder.buildChunk(data[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[4]);
+            }
         }),
         entity: ThreadComm.registerTasks(ConstructorTasks.constructEntity, (data) => {
             const x = data[0];
@@ -33,7 +48,7 @@ export const Tasks = {
         }),
     },
     voxelUpdate: {
-        erease: ThreadComm.registerTasks(ConstructorTasks.voxelErease, async (data) => {
+        erase: ThreadComm.registerTasks(ConstructorTasks.voxelErease, async (data) => {
             await EreaseAndUpdate(data);
         }),
         paint: ThreadComm.registerTasks(ConstructorTasks.voxelPaint, async (data) => {

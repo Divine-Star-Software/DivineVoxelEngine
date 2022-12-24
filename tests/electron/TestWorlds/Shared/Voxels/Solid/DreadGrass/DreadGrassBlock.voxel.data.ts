@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const DreadGrassBlockVoxelData: VoxelData = {
  name: "Dread Grass Block",
  shapeId: "Box",
- id: "dve:dreadgrassblock",
+ id: "dve_dreadgrassblock",
  substance: "flora",
  material: "grass",
  hardnress: 1000,

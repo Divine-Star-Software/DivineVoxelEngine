@@ -13,18 +13,18 @@ export const WorldGen = {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     brush.setXYZ(x, y, z);
                     if (y < groundY - 1 || (y == 60 && Math.random() > 0.5)) {
-                        brush.setId("dve:dreamstone").paint();
+                        brush.setId("dve_dreamstone").paint();
                     }
                     if (y == groundY - 1) {
-                        brush.setId("dve:liquiddreamether").paint();
+                        brush.setId("dve_liquiddreamether").paint();
                     }
                     if (y >= groundY && y <= maxY) {
                         if (x % 7 == 0 && z % 7 == 0) {
                             if (y == groundY) {
-                                brush.setId("dve:dreamstone").paint();
+                                brush.setId("dve_dreamstone").paint();
                             }
                             else {
-                                brush.setId("dve:dreamstone").paint();
+                                brush.setId("dve_dreamstone").paint();
                             }
                         }
                     }

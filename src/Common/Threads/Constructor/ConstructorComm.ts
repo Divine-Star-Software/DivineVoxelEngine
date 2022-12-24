@@ -1,8 +1,7 @@
 import { ConstructorTasks } from "../Contracts/ConstructorTasks.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-import { ConstructorRemoteThreadTasks } from "../Contracts/WorldTasks.js";
+
 import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
-import { ConstructorQueues } from "../../Queues/ConstructorQueues.js";
 
 const ccm = ThreadComm.createCommManager({
  name: "constructor",
@@ -14,6 +13,9 @@ export const CCM = Object.assign(ccm, {
   build: {
    chunk: (data: BuildTasks) => {
     return CCM.runTask(ConstructorTasks.buildChunk, data);
+   },
+   column: (data: BuildTasks) => {
+    return CCM.runTask(ConstructorTasks.buildColumn, data);
    },
    entity: (
     x: number,

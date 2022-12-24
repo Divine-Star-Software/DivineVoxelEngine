@@ -1,6 +1,6 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";let uv = 0;
 export const DreamStoneStairVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreamstone-stair",
+ id: "dve_dreamstone-stair",
  
  hooks: {
   texturesRegistered: (DVEB) => {

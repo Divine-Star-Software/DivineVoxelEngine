@@ -48,3 +48,4 @@ export declare type VoxelDataSync = [
     initData: RemoteTagManagerInitData,
     voxelMapData: SharedArrayBuffer
 ];
+export declare type VoxelMapSyncData = [data: Record<number, string>];

@@ -20,7 +20,7 @@ declare class TasksBase {
         };
     };
     voxelUpdate: {
-        erease: {
+        erase: {
             _s: TasksBase;
             add(x: number, y: number, z: number): void;
             run(onDone: Function): void;

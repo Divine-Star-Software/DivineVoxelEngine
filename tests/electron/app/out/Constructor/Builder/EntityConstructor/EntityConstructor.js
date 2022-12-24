@@ -28,9 +28,9 @@ export const EntityConstructor = {
         const voxelData = this._3dArray.getValue(x, y, z, rawVoxelData);
         const numericVoxelId = 0;
         if (numericVoxelId == 0)
-            return ["dve:air", 0];
+            return ["dve_air", 0];
         if (numericVoxelId == 1)
-            return ["dve:barrier", 0];
+            return ["dve_barrier", 0];
         const paletteId = VoxelPaletteReader._palette[numericVoxelId];
         const mapId = VoxelPaletteReader._map[paletteId];
         return [paletteId, numericVoxelId - mapId];

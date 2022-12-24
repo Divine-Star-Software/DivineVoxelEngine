@@ -35,16 +35,16 @@ export class DataToolBase {
 
 export class PositionBoundDataTool extends DataToolBase {
  getPosition() {
-  this.position.x = this.getTagValue("#dve:p_x");
-  this.position.y = this.getTagValue("#dve:p_y");
-  this.position.z = this.getTagValue("#dve:p_z");
+  this.position.x = this.getTagValue("#dve_p_x");
+  this.position.y = this.getTagValue("#dve_p_y");
+  this.position.z = this.getTagValue("#dve_p_z");
   return this.position;
  }
 
  setPosition(x: number, y: number, z: number) {
-  this.setTagValue("#dve:p_x", x);
-  this.setTagValue("#dve:p_y", y);
-  this.setTagValue("#dve:p_z", z);
+  this.setTagValue("#dve_p_x", x);
+  this.setTagValue("#dve_p_y", y);
+  this.setTagValue("#dve_p_z", z);
   return this.position;
  }
 }

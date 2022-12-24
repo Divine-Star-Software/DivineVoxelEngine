@@ -6,7 +6,7 @@ const waveLength = 100;
 const xOffSet = 2_000;
 const zOffSet = -1_234;
 const brush = DVEW.getBrush();
-brush.setId("dve:lightdebug");
+brush.setId("dve_lightdebug");
 export const WorldGen = {
  generateChunk(chunkX: number, chunkZ: number) {
   brush.start();

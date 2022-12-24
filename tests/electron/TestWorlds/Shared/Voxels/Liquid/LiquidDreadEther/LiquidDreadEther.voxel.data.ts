@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const LiquidDreadEtherVoxelData: VoxelData = {
  name: "Liquid Dread Ether",
  shapeId: "Liquid",
- id: "dve:liquiddreadether",
+ id: "dve_liquiddreadether",
  substance: "liquid",
  material: "water",
  hardnress: 1000,

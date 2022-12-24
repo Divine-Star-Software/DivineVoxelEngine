@@ -84,7 +84,7 @@ const WP = {
     this._dt.setLevel(15);
    }
 
-   if (data.secondaryVoxelId && data.secondaryVoxelId != "dve:air") {
+   if (data.secondaryVoxelId && data.secondaryVoxelId != "dve_air") {
     const vid = VoxelPaletteReader.id.getPaletteId(
      data.secondaryVoxelId,
      data.secondaryState ? data.secondaryState : 0
@@ -116,7 +116,7 @@ const WP = {
    }
   },
 
-  erease(dimensionId: ID, x: number, y: number, z: number) {
+  erase(dimensionId: ID, x: number, y: number, z: number) {
    this._dt.setDimension(dimensionId);
    if (!this._dt.loadIn(x, y, z)) return;
    if (!this._dt.isRenderable()) return;

@@ -46,9 +46,13 @@ export const Worlds: WorldsData = [
   sectionDescription: "Simple example games made with the engine.",
   worlds: [
    {
-    title: "Runner Demo",
-    description:
-     "Run along a long hallway and try not to fall into the liquid.",
+    title: "Dream Space Infinite",
+    description: "An infinite dream space.",
+    world: "DreamSpaceInfinite",
+   },
+   {
+    title: "Runner",
+    description: "",
     world: "RunnerTest",
    },
   ],

@@ -27,7 +27,7 @@ const pillarData2 = [
 ];
 const generatePillar = (x: number, y: number, z: number) => {
  //bottom
- brush.setId("dve:dreamstone-stair");
+ brush.setId("dve_dreamstone-stair");
  for (const d of pillarData1) {
   brush
    .setShapeState(d[0])
@@ -45,7 +45,7 @@ const generatePillar = (x: number, y: number, z: number) => {
  }
 
  for (let py = y; py < y + height; py++) {
-  brush.setId("dve:dreamstone").setXYZ(x, py, z).paint();
+  brush.setId("dve_dreamstone").setXYZ(x, py, z).paint();
  }
 };
 
@@ -82,7 +82,7 @@ export function GenerateTemple(
       !(x == chunkX + 7 && z == chunkZ + 8) &&
       !(x == chunkX + 8 && z == chunkZ + 8)
      ) {
-      brush.setId("dve:liquiddreamether").paint();
+      brush.setId("dve_liquiddreamether").paint();
      }
      if (
       (x == chunkX + 7 && z == chunkZ + 7) ||
@@ -90,46 +90,46 @@ export function GenerateTemple(
       (x == chunkX + 7 && z == chunkZ + 8) ||
       (x == chunkX + 8 && z == chunkZ + 8)
      ) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
      }
      continue;
     }
     if (x == chunkX + 7 && z == chunkZ + 7 && y < baseY + 6 && y > baseY - 2) {
-     brush.setId("dve:dreamstonepillar").paint();
+     brush.setId("dve_dreamstonepillar").paint();
     }
     if (x == chunkX + 8 && z == chunkZ + 7 && y < baseY + 4 && y > baseY - 2) {
-     brush.setId("dve:dreamstonepillar").paint();
+     brush.setId("dve_dreamstonepillar").paint();
     }
     if (x == chunkX + 7 && z == chunkZ + 8 && y < baseY + 2 && y > baseY - 2) {
-     brush.setId("dve:dreamstonepillar").paint();
+     brush.setId("dve_dreamstonepillar").paint();
     }
     if (x == chunkX + 8 && z == chunkZ + 8 && y < baseY + 8 && y > baseY - 2) {
-     brush.setId("dve:dreamstonepillar").paint();
+     brush.setId("dve_dreamstonepillar").paint();
     }
     if (y > 0 && y < baseY - 1) {
-     brush.setId("dve:dreamstonepillar").paint();
+     brush.setId("dve_dreamstonepillar").paint();
     }
     if (y >= baseY - 1) {
      if (y == baseY - 1) {
-      brush.setState(1).setId("dve:dreamstone").paint().setState(0);
+      brush.setState(1).setId("dve_dreamstone").paint().setState(0);
      }
     }
     if (y >= baseY + 10 && y <= baseY + 12) {
-     brush.setState(1).setId("dve:dreamstone").paint().setState(0);
+     brush.setState(1).setId("dve_dreamstone").paint().setState(0);
     }
    }
   }
  }
  brush
   .setXYZ(chunkX + 8, 55, chunkZ + 8)
-  .setId("dve:liquiddreamether")
+  .setId("dve_liquiddreamether")
   .paint();
 
  tasks.flow.update.add(chunkX + 8, 55, chunkZ + 8);
 
  if (direction == "south" || direction == "north") {
   for (let z = chunkZ; z < chunkZ + this.chunkDepth; z++) {
-   let voxel = "dve:dreamstone-stair";
+   let voxel = "dve_dreamstone-stair";
    GenerateDiagonalLine("east", voxel, 3, baseY + 12, z, chunkX, chunkX + 8);
    GenerateDiagonalLine(
     "west",
@@ -145,7 +145,7 @@ export function GenerateTemple(
 
  if (direction == "east" || direction == "west") {
   for (let x = chunkX; x < chunkX + this.chunkDepth; x++) {
-   let voxel = "dve:dreamstone-stair";
+   let voxel = "dve_dreamstone-stair";
    GenerateDiagonalLine("north", voxel, 2, baseY + 12, x, chunkZ, chunkZ + 8);
    GenerateDiagonalLine(
     "south",

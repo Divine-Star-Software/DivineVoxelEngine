@@ -1,11 +1,11 @@
 export const VoxelPaletteReader = {
     _palette: {
-        0: "dve:air",
-        1: "dve:barrier",
+        0: "dve_air",
+        1: "dve_barrier",
     },
     _map: {
-        "dve:air": 0,
-        "dve:barrier": 1,
+        "dve_air": 0,
+        "dve_barrier": 1,
     },
     setVoxelPalette(voxelPalette, voxelPaletteMap) {
         this._palette = voxelPalette;

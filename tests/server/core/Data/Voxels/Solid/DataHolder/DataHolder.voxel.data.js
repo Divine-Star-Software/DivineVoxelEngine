@@ -1,7 +1,7 @@
 export const DataHolderVoxelData = {
     name: "Data Holder",
     shapeId: "Box",
-    id: "dve:dataholder",
+    id: "dve_dataholder",
     substance: "solid",
     material: "stone",
     hardnress: 1000,

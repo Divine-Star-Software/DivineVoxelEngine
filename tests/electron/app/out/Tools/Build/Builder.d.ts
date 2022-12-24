@@ -13,7 +13,8 @@ export declare class BuilderTool {
     setXZ(x: number, z: number): this;
     setXYZ(x: number, y: number, z: number): this;
     buildChunk(): this;
-    buildColumn(): false | this;
+    buildColumn(): this;
     removeColumn(): false | this;
     fillColumn(): this;
+    removeColumnsOutsideRadius(radius: number): void;
 }

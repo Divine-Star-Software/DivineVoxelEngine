@@ -37,41 +37,41 @@ export const WorldGen = {
      if (type == "track") {
       if (!fill) {
        if (y <= baseY + height && x >= 6 && x <= 9) {
-        brush.setId("dve:dreamstonepillar").paint();
+        brush.setId("dve_dreamstonepillar").paint();
         if (y == baseY + height && Math.random() < 0.5) {
-         brush.setId("dve:dreamlamp").paint();
+         brush.setId("dve_dreamlamp").paint();
         }
        }
 
        if (y <= baseY - 5) {
-        brush.setId("dve:dreamstonepillar").paint();
+        brush.setId("dve_dreamstonepillar").paint();
        }
        if (y >= baseY - 5 && y <= baseY - 1 && (x < 6 || x > 9)) {
-        brush.setId("dve:liquiddreamether").paint();
+        brush.setId("dve_liquiddreamether").paint();
        }
       } else {
        if (y <= baseY - 5) {
-        brush.setId("dve:dreamstonepillar").paint();
+        brush.setId("dve_dreamstonepillar").paint();
        }
        if (y >= baseY - 5 && y <= baseY - 1) {
-        brush.setId("dve:liquiddreamether").paint();
+        brush.setId("dve_liquiddreamether").paint();
        }
       }
      }
 
      if (type == "trench") {
       if (y <= baseY - 5) {
-       brush.setId("dve:dreamstonepillar").paint();
+       brush.setId("dve_dreamstonepillar").paint();
       }
 
       if (y >= baseY - 5 && y <= baseY - 1) {
-       brush.setId("dve:liquiddreamether").paint();
+       brush.setId("dve_liquiddreamether").paint();
       }
      }
 
      if (type == "wall") {
       if (y <= maxY) {
-       brush.setId("dve:dreamstone").paint();
+       brush.setId("dve_dreamstone").paint();
       }
      }
     }

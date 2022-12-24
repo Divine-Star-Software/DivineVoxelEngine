@@ -19,7 +19,7 @@ export const WorldRegister = {
  _dimensions: <WorldDimensions>new Map(),
 
  _cacheOn: false,
- _cache: <Map<string, ChunkData>>{},
+ _cache: <Map<string, ChunkData>>new Map(),
 
  $INIT() {
   this._dimensions.set("main", new Map());
@@ -28,7 +28,7 @@ export const WorldRegister = {
  cache: {
   enable() {
    WorldRegister._cacheOn = true;
-   WorldRegister._cache = new Map();
+   WorldRegister._cache.clear();
   },
   disable() {
    WorldRegister._cacheOn = false;
@@ -163,7 +163,7 @@ export const WorldRegister = {
 
      chunkTool.setChunk(chunk);
      const chunkPOS = chunkTool.getPosition();
-     let chunkMax = chunkTool.getTagValue("#dve:max_height");
+     let chunkMax = chunkTool.getTagValue("#dve_max_height");
      if (chunkMax == 0) continue;
      chunkMax += chunkPOS.y;
      if (maxHeight < chunkMax) {

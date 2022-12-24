@@ -20,21 +20,21 @@ const buildAll = () => {
 };
 const runLightRemove = () => {
     setTimeout(async () => {
-        await brush.setXYZ(x, 12, z + 5).ereaseAndAwaitUpdate();
+        await brush.setXYZ(x, 12, z + 5).eraseAndAwaitUpdate();
         buildAll();
     }, 2000);
 };
 const runAdd = () => {
     setTimeout(async () => {
-        await brush.setId("dve:dreamstone").setXYZ(0, 10, 0).paintAndAwaitUpdate();
-        await brush.setId("dve:dreamstone").setXYZ(0, 10, -10).paintAndAwaitUpdate();
+        await brush.setId("dve_dreamstone").setXYZ(0, 10, 0).paintAndAwaitUpdate();
+        await brush.setId("dve_dreamstone").setXYZ(0, 10, -10).paintAndAwaitUpdate();
         runLightRemove();
     }, 2000);
 };
 const runRemove = () => {
     setTimeout(async () => {
-        await brush.setXYZ(x, 10, -10).ereaseAndAwaitUpdate();
-        await brush.setXYZ(x, 10, z).ereaseAndAwaitUpdate();
+        await brush.setXYZ(x, 10, -10).eraseAndAwaitUpdate();
+        await brush.setXYZ(x, 10, z).eraseAndAwaitUpdate();
         runAdd();
     }, 2000);
 };
@@ -55,9 +55,9 @@ console.log(t2 - t1);
 //-1 10 0
 //0 10 -1
 buildAll();
-await brush.setId("dve:dreamlamp").setXYZ(23, 6, -6).paintAndAwaitUpdate();
+await brush.setId("dve_dreamlamp").setXYZ(23, 6, -6).paintAndAwaitUpdate();
 setTimeout(async () => {
-    await brush.setId("dve:dreamlamp").setXYZ(0, 12, 5).paintAndAwaitUpdate();
+    await brush.setId("dve_dreamlamp").setXYZ(0, 12, 5).paintAndAwaitUpdate();
     runRemove();
 }, 2000);
 self.DVEW = DVEW;

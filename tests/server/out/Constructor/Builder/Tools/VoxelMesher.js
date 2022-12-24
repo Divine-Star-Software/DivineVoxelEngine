@@ -17,7 +17,7 @@ export const VoxelMesher = {
         this.templateIncrement = onOff;
         return this;
     },
-    $buildMesh(type, template, LOD = 1) {
+    $buildMesh(type, template, LOD = 1, chunkX = 0, chunkY = 0, chunkZ = 0) {
         const data = {
             substance: type,
             LOD: LOD,
@@ -58,7 +58,7 @@ export const VoxelMesher = {
             data.position.x = template.positionTemplate[positionIndex];
             data.position.y = template.positionTemplate[positionIndex + 1];
             data.position.z = template.positionTemplate[positionIndex + 2];
-            this.data.loadIn(data.position.x, data.position.y, data.position.z);
+            this.data.loadIn(chunkX + data.position.x, chunkY + data.position.y, chunkZ + data.position.z);
             this.quad.setPosition(data.position.x, data.position.y, data.position.z);
             data.face = template.faceTemplate[i];
             data.shapeState = template.shapeStateTemplate[i];

@@ -232,7 +232,8 @@ export const Processor = {
         this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
         voxelObject.process(this.voxelProcesseData, Builder);
         baseTemplate.shapeTemplate.push(this.mDataTool.getShapeId());
-        baseTemplate.positionTemplate.push(x, y, z);
+        const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
+        baseTemplate.positionTemplate.push(voxelPOS.x, voxelPOS.y, voxelPOS.z);
         for (const face of FaceMap) {
             faceBit = this.faceStateCheck(face, faceBit);
         }

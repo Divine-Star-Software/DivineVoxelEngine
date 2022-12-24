@@ -6,7 +6,7 @@ let southUV = 0;
 let eastUV = 0;
 let westUV = 0;
 export const DebugBoxVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:debugbox",
+ id: "dve_debugbox",
 
  hooks: {
   texturesRegistered: (DVEB) => {

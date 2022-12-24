@@ -1,7 +1,7 @@
 export const LightDebugBoxVoxelData = {
     name: "Light Debug Box",
     shapeId: "Box",
-    id: "dve:lightdebug",
+    id: "dve_lightdebug",
     substance: "solid",
     lightSource: false,
     material: "stone",

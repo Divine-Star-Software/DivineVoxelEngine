@@ -1,7 +1,7 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";
 const uvs: number[] = [];
 export const DreamStonePillarVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreamstonepillar",
+ id: "dve_dreamstonepillar",
  
  hooks: {
   texturesRegistered: (DVEB) => {

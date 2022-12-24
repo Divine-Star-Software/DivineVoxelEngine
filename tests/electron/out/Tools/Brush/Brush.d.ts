@@ -15,7 +15,7 @@ export declare class BrushTool {
     setXYZ(x: number, y: number, z: number): this;
     getData(): AddVoxelData;
     paint(): this;
-    erease(): this;
+    erase(): this;
     start(): this;
     stop(): this;
 }

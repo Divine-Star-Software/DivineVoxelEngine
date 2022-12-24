@@ -2,7 +2,7 @@ import { ItemConstructorObject } from "../../../../out/Meta/Data/Items/Item.type
 
 let uv = 0;
 export const DebugItemConstructorObject: ItemConstructorObject = {
- id: "dve:debug-item",
+ id: "dve_debug-item",
  shapeId: "debug",
  hooks: {
   texturesRegistered: (DVEB) => {

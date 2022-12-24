@@ -1,7 +1,7 @@
 export const LiquidDreadEtherVoxelData = {
     name: "Liquid Dread Ether",
     shapeId: "Liquid",
-    id: "dve:liquiddreadether",
+    id: "dve_liquiddreadether",
     substance: "liquid",
     material: "water",
     hardnress: 1000,

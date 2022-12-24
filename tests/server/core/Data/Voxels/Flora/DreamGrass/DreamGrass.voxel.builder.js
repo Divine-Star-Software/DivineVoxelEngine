@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreamGrassVoxelBuilderThread = {
-    id: "dve:dreamgrass",
+    id: "dve_dreamgrass",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("flora", "dreamgrass");

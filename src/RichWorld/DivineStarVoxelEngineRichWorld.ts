@@ -10,7 +10,7 @@ import { ParentComm } from "./Threads/Parent/ParentComm.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { RichData } from "./RichData/RichData.js";
-import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
+import { VoxelManager } from "../World/Data/Managers/VoxelManager.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 
 export const DVERW = {

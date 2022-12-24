@@ -38,84 +38,84 @@ const brush = DVEW.getBrush();
 
 const doStairTest = (shapeState: number, x: number, y: number, z: number) => {
  brush
-  .setId("dve:markerbox")
+  .setId("dve_markerbox")
   .setState(shapeState)
   .setXYZ(x + 2, y + 1, z)
   .paint();
  brush
   .setState(0)
   .setShapeState(shapeState)
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setXYZ(x, y + 1, z)
   .paint();
  x -= 2;
  brush.setXYZ(x, y, z).paint();
  x -= 2;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y, z - 1)
   .paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x, y, z)
   .paint();
 
  x -= 2;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z - 1)
   .paint();
  brush.setXYZ(x, y, z - 1).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x, y, z)
   .paint();
 
  x -= 2;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y, z - 1)
   .paint();
  brush.setXYZ(x, y, z).paint();
  brush.setXYZ(x, y, z + 1).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x, y, z)
   .paint();
 
  x -= 2;
- brush.setId("dve:dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
+ brush.setId("dve_dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
  brush.setXYZ(x - 2, y, z).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z)
   .paint();
  brush.setXYZ(x - 2, y + 1, z).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
- brush.setId("dve:dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
+ brush.setId("dve_dreamstone").setShapeState(0).setXYZ(x, y, z).paint();
  brush.setXYZ(x - 2, y + 1, z).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y + 1, z)
   .paint();
@@ -123,79 +123,79 @@ const doStairTest = (shapeState: number, x: number, y: number, z: number) => {
  x -= 4;
 
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z + 1)
   .paint();
  brush.setXYZ(x - 2, y + 1, z + 1).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z - 1)
   .paint();
  brush.setXYZ(x - 2, y + 1, z - 1).paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z + 1)
   .paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x - 2, y + 1, z + 1)
   .paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x, y + 1, z - 1)
   .paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
  x -= 4;
  brush
-  .setId("dve:dreamstone")
+  .setId("dve_dreamstone")
   .setShapeState(0)
   .setXYZ(x - 2, y + 1, z - 1)
   .paint();
  brush
-  .setId("dve:dreamstone-stair")
+  .setId("dve_dreamstone-stair")
   .setShapeState(shapeState)
   .setXYZ(x - 1, y, z)
   .paint();
 
- brush.setId("dve:dreamstone-stair").setShapeState(shapeState);
+ brush.setId("dve_dreamstone-stair").setShapeState(shapeState);
  x -= 4;
  brush
   .setXYZ(x, y, z)
@@ -254,7 +254,7 @@ const doStairTest = (shapeState: number, x: number, y: number, z: number) => {
 const doVineTest = (x: number, y: number, z: number) => {
  for (let vy = y; vy < 60; vy++) {
   brush
-   .setId("dve:dreamvine")
+   .setId("dve_dreamvine")
    .setShapeState(0)
    .setXYZ(x, vy, z)
    .paint()
@@ -269,7 +269,7 @@ const doVineTest = (x: number, y: number, z: number) => {
    .paint();
 
   /*    brush
-   .setId("dve:dreamstone")
+   .setId("dve_dreamstone")
    .setShapeState(0)
    .setXYZ(x, vy, z - 1)
    .paint()
@@ -303,7 +303,7 @@ doStairTest(3, 25, 16, -12);
 //-1 10 0
 //0 10 -1
 
-brush.setId("dve:debugbox");
+brush.setId("dve_debugbox");
 brush.setXYZ(30, 26, 107).paint();
 brush.setXYZ(30, 26, 99).paint();
 brush.setXYZ(30, 26, 91).paint();

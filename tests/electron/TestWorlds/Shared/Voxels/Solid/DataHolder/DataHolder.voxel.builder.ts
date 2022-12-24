@@ -3,7 +3,7 @@ let frontUV = 0;
 let sideUV = 0;
 
 export const DataHolderVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dataholder",
+ id: "dve_dataholder",
  
  hooks: {
   texturesRegistered: (DVEB) => {

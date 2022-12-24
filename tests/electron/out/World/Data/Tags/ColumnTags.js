@@ -2,48 +2,48 @@ import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 export const ColumnDataTags = new TagManager("column-tags");
 ColumnDataTags.registerTag({
-    id: "#dve:message_header",
+    id: "#dve_header",
+    type: "header",
+    numberType: "16ui",
+});
+ColumnDataTags.registerTag({
+    id: "#dve_dimension_id",
     type: "typed-number",
     numberType: "16ui",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:dimension_id",
-    type: "typed-number",
-    numberType: "16ui",
-});
-ColumnDataTags.registerTag({
-    id: "#dve:p_x",
+    id: "#dve_p_x",
     type: "typed-number",
     numberType: "32i",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:p_y",
+    id: "#dve_p_y",
     type: "typed-number",
     numberType: "32i",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:p_z",
+    id: "#dve_p_z",
     type: "typed-number",
     numberType: "32i",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:is_world_gen_done",
+    id: "#dve_is_world_gen_done",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:is_world_sun_done",
+    id: "#dve_is_world_sun_done",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:is_rgb_done",
+    id: "#dve_is_rgb_done",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:is_liquid_flow_donw",
+    id: "#dve_is_liquid_flow_donw",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve:is_magma_flow_donw",
+    id: "#dve_is_magma_flow_donw",
     type: "boolean",
 });
 export function InitalizeColumnTags() {

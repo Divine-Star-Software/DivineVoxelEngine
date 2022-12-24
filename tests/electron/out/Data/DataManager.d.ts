@@ -13,13 +13,15 @@ export declare const DataManager: {
     voxelTags: {
         voxelMap: Uint16Array;
         substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
+        materialMap: Record<number, string>;
+        colliderMap: Record<number, string>;
         voxelData: {
             substance: import("../Meta/index.js").VoxelSubstanceType;
             shapeId: number;
             hardness: number;
-            material: number;
+            material: string;
             checkCollision: number;
-            colliderId: number;
+            colliderId: string;
             lightSource: number;
             lightValue: number;
             isRich: number;
@@ -31,14 +33,16 @@ export declare const DataManager: {
             substance: import("../Meta/index.js").VoxelSubstanceType;
             shapeId: number;
             hardness: number;
-            material: number;
+            material: string;
             checkCollision: number;
-            colliderId: number;
+            colliderId: string;
             lightSource: number;
             lightValue: number;
             isRich: number;
         };
         getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
+        getMaterial(id: number): string;
+        getCollider(id: number): string;
         $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
         byteOffSet: number;
         tagSize: number;
@@ -66,7 +70,7 @@ export declare const DataManager: {
             voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
             __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
-            erease(dimensionId: string | number, x: number, y: number, z: number): void;
+            erase(dimensionId: string | number, x: number, y: number, z: number): void;
         };
     };
     worldRegister: {
@@ -207,6 +211,8 @@ export declare const DataManager: {
         voxels: {
             substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
+            materialMap: Record<number, string>;
+            colliderMap: Record<number, string>;
         };
     };
     chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;

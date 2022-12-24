@@ -10,14 +10,14 @@ export const WorldGen = {
     let middlePillar = Math.random() > 0.8;
     let airPillar = Math.random() > 0.9;
     let voxelFlip = Math.random() > 0.5;
-    let voxel = "dve:dreamstone";
+    let voxel = "dve_dreamstone";
     if (voxelFlip) {
-     voxel = "dve:dreamstonepillar";
+     voxel = "dve_dreamstonepillar";
     }
     for (let y = 0; y < 50; y++) {
      brush.setXYZ(x, y, z);
      if (y <= baseY + 5) {
-      brush.setId("dve:dreamstone").paint();
+      brush.setId("dve_dreamstone").paint();
      }
      if (airPillar && y > baseY + 10 && y <= baseY + 10 + add) {
       brush.setId(voxel).paint();
@@ -43,7 +43,7 @@ export const WorldGen = {
      if (y == baseY + 6) {
       let flip = Math.random() > 0.7;
       if (flip) {
-       brush.setId("dve:dreamgrass").paint();
+       brush.setId("dve_dreamgrass").paint();
       }
      }
     }

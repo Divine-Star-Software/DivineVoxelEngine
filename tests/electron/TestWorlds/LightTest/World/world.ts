@@ -33,7 +33,7 @@ const buildAll = () => {
 };
 buildAll();
 const brush = DVEW.getBrush();
-brush.setId("dve:dreadlamp");
+brush.setId("dve_dreadlamp");
 
 const y = 60;
 
@@ -43,12 +43,12 @@ const run = async () => {
  for (let x = startX; x < endX + 16; x += 16) {
   for (let z = startZ; z < endZ; z += 16) {
    await brush.setXYZ(x + 7, y + 7, z + 7).paintAndAwaitUpdate();
-   await brush.setXYZ(x + 7 - 16, y + 7, z + 7).ereaseAndAwaitUpdate();
+   await brush.setXYZ(x + 7 - 16, y + 7, z + 7).eraseAndAwaitUpdate();
   }
  }
 
  for (let z = startZ; z < endZ; z += 16) {
-  await brush.setXYZ(endX + 16 + 7 - 16, y + 7, z + 7).ereaseAndAwaitUpdate();
+  await brush.setXYZ(endX + 16 + 7 - 16, y + 7, z + 7).eraseAndAwaitUpdate();
  }
 
  await run();

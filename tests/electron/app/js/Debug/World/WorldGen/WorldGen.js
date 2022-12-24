@@ -4,10 +4,10 @@ export const WorldGen = {
     generateChunk(dimesnion, chunkX, chunkZ) {
         brush.setDimension(dimesnion);
         if (dimesnion == "main") {
-            brush.setId("dve:dreamstone");
+            brush.setId("dve_dreamstone");
         }
         if (dimesnion == "other") {
-            brush.setId("dve:dreadstone");
+            brush.setId("dve_dreadstone");
         }
         brush.start();
         for (let x = chunkX; x < 16 + chunkX; x++) {
@@ -15,14 +15,14 @@ export const WorldGen = {
                 for (let y = 0; y < 18; y++) {
                     brush.setXYZ(x, y, z);
                     if (y == 5 && Math.random() > 0.98) {
-                        brush.setId("dve:dreamgrass").setShapeState(0).paint();
+                        brush.setId("dve_dreamgrass").setShapeState(0).paint();
                     }
                     if (y < 5) {
                         if (dimesnion == "main") {
-                            brush.setId("dve:dreamstone");
+                            brush.setId("dve_dreamstone");
                         }
                         if (dimesnion == "other") {
-                            brush.setId("dve:dreadstone");
+                            brush.setId("dve_dreadstone");
                         }
                         brush.paint();
                     }

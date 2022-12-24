@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreamLampVoxelBuilderThread = {
-    id: "dve:dreamlamp",
+    id: "dve_dreamlamp",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("solid", "dreamlamp");

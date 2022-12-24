@@ -1,12 +1,14 @@
 import type { DivineVoxelEngineRender } from "../DivineVoxelEngineRender.js";
 import type { DVERInitData } from "Meta/Render/DVER";
 
-export function InitWorkers(
+export async function InitWorkers(
  DVER: DivineVoxelEngineRender,
  initData: DVERInitData
 ) {
  DVER.settings.syncSettings(<any>initData);
  DVER._handleOptions();
+
+ await DVER.TC.$INIT("render");
 
  if (typeof initData.worldWorker == "string") {
   const worker = DVER.__createWorker(initData.worldWorker);
@@ -93,6 +95,15 @@ export function InitWorkers(
  DVER.textureManager.generateTexturesData();
  DVER.textureManager.generateTexturesData(true);
  DVER.constructorCommManager.$INIT();
+
+/*  DVER.worldComm.onMessage = () => {
+  console.log("world");
+ };
+ DVER.constructorCommManager.__comms.forEach((com) => {
+  com.onMessage = () => {
+   console.log(com.name);
+  };
+ }); */
 
  //terminate all workers
  window.addEventListener("beforeunload", () => {

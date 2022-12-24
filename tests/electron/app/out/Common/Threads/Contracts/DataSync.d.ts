@@ -4,6 +4,8 @@ export declare const DataSyncTypes: {
     region: number;
     voxelPalette: number;
     voxelData: number;
+    materials: number;
+    colliders: number;
     dimesnion: number;
     chunkTags: number;
     columnTags: number;

@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const MarkerBoxVoxelData: VoxelData = {
  name: "Marker Box",
  shapeId: "Box",
- id: "dve:markerbox",
+ id: "dve_markerbox",
  substance: "solid",
  lightSource: false,
  material: "stone",

@@ -1,7 +1,7 @@
 export const DreamGrassBlockVoxelData = {
     name: "Dream Grass Block",
     shapeId: "Box",
-    id: "dve:dreamgrassblock",
+    id: "dve_dreamgrassblock",
     substance: "flora",
     material: "stone",
     hardnress: 1000,

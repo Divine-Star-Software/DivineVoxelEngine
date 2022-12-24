@@ -7,6 +7,7 @@ import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
+import { FOManager } from "./FloatingOrigin/FoManager.js";
 
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
@@ -16,6 +17,10 @@ import {
  RenderFogOptions,
  RenderEffectsOptions,
 } from "Meta/Render/Render/Render.options.types.js";
+import { MeshRegister } from "../Scene/MeshRegister.js";
+import { MeshManager } from "../Scene/MeshManager.js";
+import { MeshCuller } from "../Scene/MeshCuller.js";
+
 
 const solidMaterial = new DVEMaterial("solid", {
  alphaBlending: false,
@@ -46,12 +51,16 @@ const itemMesh = new DVEMesh("Item", itemMat);
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{
   mode: "volumetric",
-  density: 0.0002,
+  density: 0.0005,
   color: new BABYLON.Color3(1, 1, 1),
   volumetricOptions: {
    heightFactor: 0.25,
   },
  },
+
+ meshRegister: MeshRegister,
+ meshManager : MeshManager,
+ meshCuller : MeshCuller,
 
  fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
 
@@ -59,6 +68,8 @@ export const RenderManager = {
   floraEffects: false,
   liquidEffects: false,
  },
+
+ fo: FOManager,
 
  shaderBuilder: ShaderBuilder,
  textureCreator: TextureCreator,
@@ -83,12 +94,6 @@ export const RenderManager = {
 
  scene: <BABYLON.Scene | null>null,
 
- reStart() {},
-
- setScene(scene: BABYLON.Scene) {
-  this.scene = scene;
- },
-
  updateFogOptions(options: RecursivePartial<RenderFogOptions>) {
   for (const key of Object.keys(options)) {
    //@ts-ignore
@@ -112,7 +117,7 @@ export const RenderManager = {
    this.fogData.x = 1;
   }
   if (this.fogOptions.mode == "animated-volumetric") {
-    this.fogData.x = 2;
+   this.fogData.x = 2;
   }
   this.fogData.y = this.fogOptions.density;
   this.fogData.z = this.fogOptions.volumetricOptions.heightFactor;
@@ -130,9 +135,12 @@ export const RenderManager = {
   this.skyBoxMaterial.updateFogOptions(fogData);
  },
 
- $INIT() {
+ $INIT(scene: BABYLON.Scene) {
   this.updateFogOptions(this.fogOptions);
   this._setFogData();
+  this.scene = scene;
+  this.meshManager.$INIT(scene);
+  this.meshCuller.$INIT(scene);
  },
 
  updateShaderEffectOptions(options: RecursivePartial<RenderEffectsOptions>) {

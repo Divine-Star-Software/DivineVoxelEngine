@@ -12,7 +12,7 @@ const fillWithChunks = () => {
     let endZ = 64;
     for (let x = startX; x < endX; x += 16) {
         for (let z = startZ; z < endZ; z += 16) {
-            DVEW.data.worldRegister.column.fill(0, x, z);
+            builder.setXZ(x, z).fillColumn();
         }
     }
 };
@@ -51,7 +51,7 @@ const eastWestTest = async () => {
 };
 fillWithChunks();
 brush
-    .setId("dve:dreamstone")
+    .setId("dve_dreamstone")
     .setXYZ(-15, 17, 15)
     .paint()
     .setXYZ(-15, 17, 14)
@@ -59,13 +59,13 @@ brush
 topBottomTest();
 northSouthTest();
 eastWestTest();
-brush.setId("dve:debugbox").setXYZ(0, 16, 0).paintAndAwaitUpdate();
+brush.setId("dve_debugbox").setXYZ(0, 16, 0).paintAndAwaitUpdate();
 brush
-    .setId("dve:debugbox")
+    .setId("dve_debugbox")
     .setXYZ(-48 + 16, 16, 1)
     .paintAndAwaitUpdate();
 brush
-    .setId("dve:debugbox")
+    .setId("dve_debugbox")
     .setXYZ(16 + 14, 16, 1)
     .paintAndAwaitUpdate();
 self.DVEW = DVEW;

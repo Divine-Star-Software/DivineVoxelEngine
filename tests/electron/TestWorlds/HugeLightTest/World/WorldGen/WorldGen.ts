@@ -9,10 +9,10 @@ export const WorldGen = {
     for (let y = 0; y < maxY; y++) {
      brush.setXYZ(x, y, z);
      if (y < maxY - 2) {
-      brush.setId("dve:dreamstonepillar").paint();
+      brush.setId("dve_dreamstonepillar").paint();
      }
      if (y == maxY - 2) {
-      brush.setId("dve:dreamlamp").paint();
+      brush.setId("dve_dreamlamp").paint();
      }
     }
    }

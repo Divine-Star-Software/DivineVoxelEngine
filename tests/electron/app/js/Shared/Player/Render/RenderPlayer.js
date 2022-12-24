@@ -1,11 +1,12 @@
 import { InitalizeAudio } from "../../../Shared/Audio/init.js";
 import { GetPlayerModel, SetUpDefaultCamera } from "../../Babylon/index.js";
-import { PlayerStatesIndexes, PlayerStatesValues, } from "../Shared/Player.data.js";
+import { PlayerStatesValues } from "../Shared/Player.data.js";
+import { PlayerData } from "../Shared/PlayerData.js";
+import { PlayerTags } from "../Shared/PlayerTags.js";
+/*
+PICK CUBE
+*/
 export const GetPlayerPickCube = (DVER, camera, scene, model) => {
-    let pickVectorDV = new DataView(new ArrayBuffer(4 * 3 + 3));
-    DVER.worldComm.listenForMessage("connect-player-pick", (data) => {
-        pickVectorDV = new DataView(data[1]);
-    });
     const cubeMaterial = new BABYLON.StandardMaterial("block");
     cubeMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
     cubeMaterial.alpha = 0.3;
@@ -32,22 +33,21 @@ export const GetPlayerPickCube = (DVER, camera, scene, model) => {
         }
         if (event.button == 2) {
             cameraPickPostion.x = model.position.x;
-            cameraPickPostion.y = model.position.y;
+            cameraPickPostion.y = model.position.y + PlayerData.eyeLevel;
             cameraPickPostion.z = model.position.z;
-            cameraPickPostion.y += 0.75;
             const camPick = scene.pickWithRay(camera.getForwardRay(10, undefined, cameraPickPostion));
             if (camPick) {
                 if (camPick.hit) {
                     if (camPick.pickedMesh && camPick.faceId !== undefined) {
                         let normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-                        pickVectorDV.setInt8(12, normal.x);
-                        pickVectorDV.setInt8(13, normal.y);
-                        pickVectorDV.setInt8(14, normal.z);
+                        PlayerData.pick.normal.x = normal.x;
+                        PlayerData.pick.normal.y = normal.y;
+                        PlayerData.pick.normal.z = normal.z;
                     }
                 }
             }
             let voxel = localStorage.getItem("voxel");
-            voxel = voxel ? voxel : "dve:dreamstone";
+            voxel = voxel ? voxel : "dve_dreamstone";
             DVER.worldComm.sendMessage("voxel-add", [voxel]);
             cameraPickPostion.setAll(0);
         }
@@ -56,22 +56,35 @@ export const GetPlayerPickCube = (DVER, camera, scene, model) => {
         }
     });
     scene.registerBeforeRender(() => {
-        cube.position.x = pickVectorDV.getFloat32(0) + 0.5;
-        cube.position.y = pickVectorDV.getFloat32(4) + 0.5;
-        cube.position.z = pickVectorDV.getFloat32(8) + 0.5;
+        cube.position.x = PlayerData.pick.position.x + 0.5;
+        cube.position.y = PlayerData.pick.position.y + 0.5;
+        cube.position.z = PlayerData.pick.position.z + 0.5;
     });
     return cube;
 };
+/*
+PLAYER
+*/
 export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
     const DAE = await InitalizeAudio();
-    // DAE.music.play("main");
-    let ready = false;
-    let playerPostionArray = new Float32Array();
-    DVER.nexusComm.listenForMessage("connect-player-data", (data) => {
-        playerPostionArray = new Float32Array(data[1]);
-        ready = true;
+    let playerDataReady = false;
+    DVER.nexusComm.listenForMessage("connect-player-tags", (data) => {
+        PlayerData.$INIT(PlayerTags, data);
+        playerDataReady = true;
     });
-    const playerCamera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.8, z: 0 }, { x: 0, y: 0, z: 0 }, true, false, "playercam");
+    DVER.nexusComm.sendMessage("request-player-tags", []);
+    window.data = PlayerData;
+    await DVER.UTIL.createPromiseCheck({
+        check: () => {
+            if (!playerDataReady) {
+                DVER.nexusComm.sendMessage("request-player-tags", []);
+            }
+            return playerDataReady;
+        },
+        checkInterval: 1,
+    });
+    PlayerData.eyeLevel = 0.7;
+    const playerCamera = SetUpDefaultCamera(scene, canvas, { x: 0, y: PlayerData.eyeLevel, z: 0 }, { x: 0, y: 0, z: 0 }, true, false, "playercam");
     playerCamera.attachControl(canvas, true);
     playerCamera.inputs.removeByType("FreeCameraKeyboardMoveInput");
     const playerModel = await GetPlayerModel(scene);
@@ -79,21 +92,11 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
     const camNode = new BABYLON.TransformNode("camnode", scene);
     playerCamera.parent = camNode;
     camNode.parent = playerModel;
-    DVER.nexusComm.sendMessage("request-player-states", []);
-    await DVER.UTIL.createPromiseCheck({
-        check: () => ready,
-        checkInterval: 1,
-    });
     if (enablePicking) {
         GetPlayerPickCube(DVER, playerCamera, scene, playerModel);
     }
-    const playerDirectionSAB = new SharedArrayBuffer(4 * 6);
-    const playerStatesSAB = new SharedArrayBuffer(PlayerStatesIndexes.total);
-    const playerDirection = new Float32Array(playerDirectionSAB);
-    const playerStates = new Uint8Array(playerStatesSAB);
-    playerStates[PlayerStatesIndexes.movement] = PlayerStatesValues.still;
-    playerStates[PlayerStatesIndexes.secondaryMovment] =
-        PlayerStatesValues.secondaryStill;
+    PlayerData.states.movement = PlayerStatesValues.still;
+    PlayerData.states.secondaryMovement = PlayerStatesValues.secondaryStill;
     window.addEventListener("keydown", (event) => {
         if (event.key == "Home") {
             DVER.renderManager.setSunLevel(1);
@@ -116,26 +119,22 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
             DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
         }
         if (event.key == "w" || event.key == "W") {
-            playerStates[PlayerStatesIndexes.movement] =
-                PlayerStatesValues.walkingForward;
+            PlayerData.states.movement = PlayerStatesValues.walkingForward;
         }
         if (event.key == "s" || event.key == "S") {
-            playerStates[PlayerStatesIndexes.movement] =
-                PlayerStatesValues.walkingBackward;
+            PlayerData.states.movement = PlayerStatesValues.walkingBackward;
         }
         if (event.key == "a" || event.key == "A") {
-            playerStates[PlayerStatesIndexes.secondaryMovment] =
-                PlayerStatesValues.walkingLeft;
+            PlayerData.states.secondaryMovement = PlayerStatesValues.walkingLeft;
         }
         if (event.key == "d" || event.key == "D") {
-            playerStates[PlayerStatesIndexes.secondaryMovment] =
-                PlayerStatesValues.walkingRight;
+            PlayerData.states.secondaryMovement = PlayerStatesValues.walkingRight;
         }
         if (event.key == " ") {
-            playerStates[PlayerStatesIndexes.jumping] = 1;
+            PlayerData.states.jumping = 1;
         }
         if (event.key == "Control") {
-            playerStates[PlayerStatesIndexes.running] = 1;
+            PlayerData.states.running = 1;
         }
     });
     window.addEventListener("keyup", (event) => {
@@ -143,30 +142,20 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
             event.key == "W" ||
             event.key == "s" ||
             event.key == "S") {
-            playerStates[PlayerStatesIndexes.movement] = PlayerStatesValues.still;
+            PlayerData.states.movement = PlayerStatesValues.still;
         }
         if (event.key == "a" ||
             event.key == "A" ||
             event.key == "d" ||
             event.key == "D") {
-            playerStates[PlayerStatesIndexes.secondaryMovment] =
-                PlayerStatesValues.secondaryStill;
+            PlayerData.states.secondaryMovement = PlayerStatesValues.secondaryStill;
         }
         if (event.key == " ") {
-            playerStates[PlayerStatesIndexes.jumping] = 0;
+            PlayerData.states.jumping = 0;
         }
         if (event.key == "Control") {
-            playerStates[PlayerStatesIndexes.running] = 0;
+            PlayerData.states.running = 0;
         }
-    });
-    DVER.nexusComm.sendMessage("connect-player-states", [
-        playerDirectionSAB,
-        playerStatesSAB,
-    ]);
-    const playerDataBuffer = new SharedArrayBuffer(4 + 4 * 3 * 3);
-    const playerData = new DataView(playerDataBuffer);
-    DVER.worldComm.listenForMessage("send-player-server-data", () => {
-        DVER.worldComm.sendMessage("player-server-data", [playerDataBuffer]);
     });
     const direction = new BABYLON.Vector3(0, 0, 0);
     const sideDirection = new BABYLON.Vector3(0, 0, 0);
@@ -175,37 +164,25 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
     scene.registerBeforeRender(() => {
         let et = performance.now();
         const position = playerModel.position;
-        position.x = playerPostionArray[0];
-        position.y = playerPostionArray[1] - 0.5;
-        position.z = playerPostionArray[2];
-        playerData.setFloat32(4, playerPostionArray[0]);
-        playerData.setFloat32(8, playerPostionArray[1]);
-        playerData.setFloat32(12, playerPostionArray[2]);
+        position.x = PlayerData.position.x;
+        position.y = PlayerData.position.y;
+        position.z = PlayerData.position.z;
         const camera = scene.activeCamera;
         if (!camera)
             return;
         playerCamera.getDirectionToRef(BABYLON.Vector3.Forward(), direction);
         playerCamera.getDirectionToRef(BABYLON.Vector3.Left(), sideDirection);
-        playerDirection[0] = direction.x;
-        playerDirection[1] = direction.y;
-        playerDirection[2] = direction.z;
-        playerData.setFloat32(16, playerDirection[0]);
-        playerData.setFloat32(20, playerDirection[1]);
-        playerData.setFloat32(24, playerDirection[2]);
-        playerData.setFloat32(28, camera.rotation.x);
-        playerData.setFloat32(32, camera.rotation.y);
-        playerData.setFloat32(26, camera.rotation.z);
+        PlayerData.direction.set(direction.x, direction.y, direction.z);
+        PlayerData.sideDirection.set(sideDirection.x, sideDirection.y, sideDirection.z);
+        const rotation = camera.rotation;
+        PlayerData.rotation.set(rotation.x, rotation.y, rotation.z);
         DAE.space.setListenerPosition(position.x, position.y, position.z);
-        DAE.space.setListenerDirection(direction.x, direction.y, direction.z);
-        playerDirection[3] = sideDirection.x;
-        playerDirection[4] = sideDirection.y;
-        playerDirection[5] = sideDirection.z;
+        DAE.space.setListenerDirection(direction.x * -1, direction.y, direction.z * -1);
         xzd.x = direction.x;
         xzd.z = direction.z;
         xzd.normalize();
-        if (playerStates[PlayerStatesIndexes.movement] ==
-            PlayerStatesValues.walkingForward) {
-            let runFactor = 0.02 * playerStates[PlayerStatesIndexes.running];
+        if (PlayerData.states.movement == PlayerStatesValues.walkingForward) {
+            let runFactor = 0.02 * PlayerData.states.running;
             let factor = 0.008 + runFactor;
             let yd = Math.abs(direction.y) > 0.5 ? 0 : 1;
             cameraRotation.x =
@@ -219,5 +196,36 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
         }
         camNode.rotation = BABYLON.Vector3.Lerp(cameraRotation, camNode.rotation, 0.25);
     });
+    let currentMaterial = "none";
+    DVER.nexusComm.listenForMessage("set-material", (data) => {
+        currentMaterial = data[1];
+    });
+    let lastSFX = "";
+    let t = performance.now();
+    setInterval(() => {
+        const maxDelta = PlayerData.is.running ? 400 : 800;
+        if (PlayerData.is.walking && PlayerData.is.onGround) {
+            let delta = performance.now() - t;
+            if (delta <= maxDelta)
+                return;
+            t = performance.now();
+            if (currentMaterial == "none")
+                currentMaterial = "stone";
+            lastSFX = DAE.sfx.play(`walking-${currentMaterial}`, {
+                _3dSoundPosition: {
+                    x: PlayerData.position.x,
+                    y: PlayerData.position.y,
+                    z: PlayerData.position.z,
+                },
+                playBackRate: PlayerData.is.running ? 1.5 : 1,
+            });
+        }
+        else {
+            if (currentMaterial == "none")
+                return;
+            DAE.sfx.stopSpecific(`walking-${currentMaterial}`, lastSFX);
+        }
+    }, 100);
+    //DAE.music.play("dream-ambience");
     return playerModel;
 };

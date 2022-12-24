@@ -43,23 +43,23 @@ export const WorldGen = {
                     let tz = z + chunkZ;
                     brush.setXYZ(tx, ty, tz);
                     if (pillarLiquid && y < spikeHeight + maxY + add * spaceHeight) {
-                        brush.setId("dve:liquiddreadether").paint();
+                        brush.setId("dve_liquiddreadether").paint();
                         continue;
                     }
                     if (pondPilar && y <= pondY + pondPillarSpikeHeight) {
                         if (y == pondY + pondPillarSpikeHeight) {
-                            brush.setId("dve:dreadlamp").paint();
+                            brush.setId("dve_dreadlamp").paint();
                         }
                         else {
-                            brush.setId("dve:dreadstonepillar").paint();
+                            brush.setId("dve_dreadstonepillar").paint();
                         }
                     }
                     else {
                         if (y <= 20 + pondSpikeHeight) {
-                            brush.setId("dve:dreadstonepillar").paint();
+                            brush.setId("dve_dreadstonepillar").paint();
                         }
                         if (y >= 20 + pondSpikeHeight && y <= pondY) {
-                            brush.setId("dve:liquiddreadether").paint();
+                            brush.setId("dve_liquiddreadether").paint();
                         }
                     }
                     if (y >= maxY + add * spaceHeight - spikeHeight + 5 &&
@@ -71,28 +71,28 @@ export const WorldGen = {
                         }
                         if (y < maxY + spaceHeight) {
                             if (!pillar) {
-                                brush.setId("dve:dreadstone").paint();
+                                brush.setId("dve_dreadstone").paint();
                             }
                             else {
                                 if (y == maxY + add * spaceHeight - spikeHeight + 5) {
-                                    brush.setId("dve:dreadlamp").paint();
+                                    brush.setId("dve_dreadlamp").paint();
                                 }
                                 else {
-                                    brush.setId("dve:dreadstonepillar").paint();
+                                    brush.setId("dve_dreadstonepillar").paint();
                                 }
                             }
                         }
                         else {
-                            brush.setId("dve:dreadstone").paint();
+                            brush.setId("dve_dreadstone").paint();
                         }
                     }
                     if (y == maxY + add * spaceHeight + spikeHeight + 1) {
                         if (Math.random() > 0.9) {
-                            brush.setId("dve:dreadgrass").paint();
+                            brush.setId("dve_dreadgrass").paint();
                         }
                         else {
                             if (Math.random() > 0.98) {
-                                //   brush.setId("dve:dreadstoneslab").paint();
+                                //   brush.setId("dve_dreadstoneslab").paint();
                             }
                         }
                     }
@@ -117,21 +117,21 @@ export const WorldGen = {
                     brush.setXYZ(tx, ty, tz);
                     if (!pillar) {
                         if (y <= maxY - spaceHeight + 1) {
-                            brush.setId("dve:dreadstonepillar").paint();
+                            brush.setId("dve_dreadstonepillar").paint();
                         }
                         if (y > maxY - spaceHeight && y <= maxY - spaceHeight + spikeHeight) {
-                            brush.setId("dve:dreadstonepillar").paint();
+                            brush.setId("dve_dreadstonepillar").paint();
                         }
                         if (y <= maxY && y >= maxY - spaceHeight + spikeHeight) {
-                            brush.setId("dve:liquiddreadether").paint();
+                            brush.setId("dve_liquiddreadether").paint();
                         }
                     }
                     else {
                         if (y < maxY + spaceHeight + pillarHeight) {
-                            brush.setId("dve:dreadstonepillar").paint();
+                            brush.setId("dve_dreadstonepillar").paint();
                         }
                         if (y == maxY + spaceHeight + pillarHeight) {
-                            brush.setId("dve:dreadlamp").paint();
+                            brush.setId("dve_dreadlamp").paint();
                         }
                     }
                 }

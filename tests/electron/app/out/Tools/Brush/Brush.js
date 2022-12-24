@@ -5,13 +5,13 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 export class BrushTool {
     data = {
-        id: "dve:air",
+        id: "dve_air",
         position: [0, 0, 0],
         state: 0,
         shapeState: 0,
         dimension: "main",
         secondaryState: 0,
-        secondaryVoxelId: "dve:air",
+        secondaryVoxelId: "dve_air",
         level: 0,
         levelState: 0,
     };
@@ -41,8 +41,8 @@ export class BrushTool {
         return this;
     }
     clear() {
-        this.data.id = "dve:air";
-        this.data.secondaryVoxelId = "dve:air";
+        this.data.id = "dve_air";
+        this.data.secondaryVoxelId = "dve_air";
         this.data.level = 0;
         this.data.levelState = 0;
         this.data.state = 0;
@@ -88,8 +88,8 @@ export class BrushTool {
         WorldPainter.paint.voxel(this.data);
         return this;
     }
-    erease() {
-        WorldPainter.paint.erease(this.data.dimension, this.data.position[0], this.data.position[1], this.data.position[2]);
+    erase() {
+        WorldPainter.paint.erase(this.data.dimension, this.data.position[0], this.data.position[1], this.data.position[2]);
         return this;
     }
     start() {

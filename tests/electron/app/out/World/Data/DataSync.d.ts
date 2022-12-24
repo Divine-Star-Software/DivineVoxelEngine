@@ -3,9 +3,12 @@ import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
 declare type CommSyncOptions = {
-    chunks: boolean;
+    worldData: boolean;
+    worldDataTags: boolean;
     voxelPalette: boolean;
-    voxelData: boolean;
+    voxelTags: boolean;
+    materials: boolean;
+    colliders: boolean;
 };
 export declare const DataSync: {
     voxelDataCreator: {
@@ -14,7 +17,7 @@ export declare const DataSync: {
         initData: RemoteTagManagerInitData;
         __shapeMapSet: boolean;
         isReady(): boolean;
-        $createVoxelData(): void;
+        $generateVoxelData(): void;
         setShapeMap(newShapeMap: Record<string, number>): void;
         palette: {
             _count: number;
@@ -33,7 +36,7 @@ export declare const DataSync: {
     commOptions: Record<string, CommSyncOptions>;
     $INIT(): Promise<unknown>;
     isReady(): boolean;
-    registerComm(comm: CommBase | CommManager): void;
+    registerComm(comm: CommBase | CommManager, data?: Partial<CommSyncOptions>): void;
     dimesnion: {
         unSync(id: string | number): void;
         unSyncInThread(commName: string, id: string | number): void;
@@ -59,6 +62,14 @@ export declare const DataSync: {
         syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
     };
     voxelTags: {
+        sync(): void;
+        syncInThread(commName: string): void;
+    };
+    materials: {
+        sync(): void;
+        syncInThread(commName: string): void;
+    };
+    colliders: {
         sync(): void;
         syncInThread(commName: string): void;
     };

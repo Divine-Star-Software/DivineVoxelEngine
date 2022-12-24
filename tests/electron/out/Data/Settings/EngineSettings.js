@@ -70,11 +70,11 @@ export const EngineSettings = {
             autoSunLight: true,
         },
         meshes: {
-            clearChachedGeometry: false,
+            clearChachedGeometry: true,
             checkMagmaCollisions: false,
             checkLiquidCollisions: false,
             checkFloraCollisions: false,
-            checkSolidCollisions: true,
+            checkSolidCollisions: false,
             seralize: false,
             pickable: false,
         },

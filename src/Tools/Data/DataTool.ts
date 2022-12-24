@@ -6,7 +6,7 @@ import type {
 import { ChunkSpace } from "../../Data/World/Chunk/ChunkSpace.js";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
-import { VoxelTags } from "../../Data/Voxel/VoxelData.js";
+import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 import { HeightMapTool } from "./HeightMapTool.js";
@@ -88,19 +88,19 @@ export class DataTool extends DataToolBase {
 
    const index = ChunkSpace.getVoxelDataIndex(x, y, z);
    this.data.raw[0] = DataTool._chunkTool.getArrayTagValue(
-    "#dve:voxel_id",
+    "#dve_voxel_id",
     index
    );
    this.data.raw[1] = DataTool._chunkTool.getArrayTagValue(
-    "#dve:voxel_light",
+    "#dve_voxel_light",
     index
    );
    this.data.raw[2] = DataTool._chunkTool.getArrayTagValue(
-    "#dve:voxel_state",
+    "#dve_voxel_state",
     index
    );
    this.data.raw[3] = DataTool._chunkTool.getArrayTagValue(
-    "#dve:voxel_secondary_id",
+    "#dve_voxel_secondary_id",
     index
    );
    this.__process();
@@ -129,22 +129,22 @@ export class DataTool extends DataToolBase {
     this.position.z
    );
    DataTool._chunkTool.setArrayTagValue(
-    "#dve:voxel_id",
+    "#dve_voxel_id",
     index,
     this.data.raw[0]
    );
    DataTool._chunkTool.setArrayTagValue(
-    "#dve:voxel_light",
+    "#dve_voxel_light",
     index,
     this.data.raw[1]
    );
    DataTool._chunkTool.setArrayTagValue(
-    "#dve:voxel_state",
+    "#dve_voxel_state",
     index,
     this.data.raw[2]
    );
    DataTool._chunkTool.setArrayTagValue(
-    "#dve:voxel_secondary_id",
+    "#dve_voxel_secondary_id",
     index,
     this.data.raw[3]
    );
@@ -183,8 +183,8 @@ export class DataTool extends DataToolBase {
   VoxelTags.setVoxel(vID);
   if (vID == 0) return this.data.raw[1];
   if (vID < 2) return -1;
-  const lightValue = this.getTagValue("#dve:light_value");
-  if (this.getTagValue("#dve:is_light_source") && lightValue) {
+  const lightValue = this.getTagValue("#dve_light_value");
+  if (this.getTagValue("#dve_is_light_source") && lightValue) {
    return lightValue;
   }
   if (VoxelTags.getTrueSubstance(vID) == "solid") {
@@ -226,25 +226,46 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return -1;
   VoxelTags.setVoxel(vID);
-  return VoxelTags.getTag("#dve:shape_id");
+  return VoxelTags.getTag("#dve_shape_id");
  }
  isLightSource() {
   const vID = this.getId(true);
   if (vID < 2) return false;
   VoxelTags.setVoxel(vID);
-  return VoxelTags.getTag("#dve:is_light_source") == 1;
+  return VoxelTags.getTag("#dve_is_light_source") == 1;
  }
  getLightSourceValue() {
   const vID = this.getId(true);
   if (vID < 2) return 0;
   VoxelTags.setVoxel(vID);
-  return VoxelTags.getTag("#dve:light_value");
+  return VoxelTags.getTag("#dve_light_value");
  }
  getSubstance() {
   const vID = this.getId(true);
   if (vID < 2) return "transparent";
+  VoxelTags.setVoxel(vID);
   return VoxelTags.getTrueSubstance(vID);
  }
+ getMaterial() {
+  const vID = this.getId(true);
+  if (vID < 2) return "none";
+  VoxelTags.setVoxel(vID);
+  return VoxelTags.getMaterial(vID);
+ }
+ getCollider() {
+  const vID = this.getId(true);
+  if (vID < 2) return "none";
+  VoxelTags.setVoxel(vID);
+  return VoxelTags.getCollider(vID);
+ }
+ checkCollisions() {
+  const vID = this.getId(true);
+  if (vID == 0) return false;
+  if (vID == 1) return true;
+  VoxelTags.setVoxel(vID);
+  return this.getTagValue("#dve_check_collisions") == 1;
+ }
+
  getTemplateSubstance(): VoxelTemplateSubstanceType {
   let substance = this.getSubstance();
   if (substance == "transparent") {
@@ -262,12 +283,13 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return 0;
   VoxelTags.setVoxel(vID);
-  return VoxelTags.getTag("#dve:is_rich");
+  return VoxelTags.getTag("#dve_is_rich");
  }
 
  //util
  setAir() {
   this.data.raw[0] = 0;
+  this.__process();
   return this;
  }
  isAir() {
@@ -275,6 +297,7 @@ export class DataTool extends DataToolBase {
  }
  setBarrier() {
   this.data.raw[0] = 1;
+  this.__process();
   return this;
  }
  isBarrier() {

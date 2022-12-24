@@ -12,7 +12,7 @@ export declare const VoxelMesher: {
     _template: ChunkTemplate;
     templateIncrement: boolean;
     setTemplateIncrement(onOff: boolean): any;
-    $buildMesh(type: VoxelTemplateSubstanceType, template: ChunkTemplate, LOD?: number): ArrayBufferLike[][];
+    $buildMesh(type: VoxelTemplateSubstanceType, template: ChunkTemplate, LOD?: number, chunkX?: number, chunkY?: number, chunkZ?: number): ArrayBufferLike[][];
     data: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
     quad: {
         _direction: DirectionNames;

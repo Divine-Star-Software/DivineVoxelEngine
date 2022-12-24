@@ -2,7 +2,7 @@ import type { VoxelConstructorObject } from "out/Meta/index.js";let topUV = 0;
 let bottomUV = 0;
 let sideUV = 0;
 export const DreamStoneSlabVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreamstoneslab",
+ id: "dve_dreamstoneslab",
  
  hooks: {
   texturesRegistered: (DVEB) => {

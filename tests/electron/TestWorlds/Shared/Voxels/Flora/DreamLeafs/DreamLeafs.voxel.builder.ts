@@ -1,6 +1,6 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";let uv = 0;
 export const DreamLeafVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dream-leafs",
+ id: "dve_dream-leafs",
  
  hooks: {
   texturesRegistered: (DVEB) => {

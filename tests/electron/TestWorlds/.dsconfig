@@ -5,16 +5,42 @@
    "fileExtensions": [
     "ts"
    ],
-   "id": "main"
+   "id": "dae"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/divineBinaryTags/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "dbt"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/starCommand/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "star"
   }
  ],
  "outputs": [
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/DAE",
-   "sourceID": "main",
+   "sourceID": "dae",
    "codeSection": "all",
    "keepComments": true
-  }
+  },
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/DBT",
+   "sourceID": "dbt",
+   "codeSection": "all",
+   "keepComments": true
+  },
+  {
+    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/SC",
+    "sourceID": "star",
+    "codeSection": "all",
+    "keepComments": true
+   }
  ],
  "codeSections": {
   "main": {

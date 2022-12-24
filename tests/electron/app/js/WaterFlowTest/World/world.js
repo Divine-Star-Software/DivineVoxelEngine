@@ -10,10 +10,10 @@ RegisterVoxels(DVEW);
 await DVEW.$INIT();
 const brush = DVEW.getBrush();
 brush
-    .setId("dve:liquiddreamether")
+    .setId("dve_liquiddreamether")
     .setXYZ(-10, 38, -10)
     .paint()
-    .setId("dve:liquiddreadether")
+    .setId("dve_liquiddreadether")
     .setXYZ(12, 38, 9)
     .paint();
 for (let x = startX; x <= endX; x += 16) {

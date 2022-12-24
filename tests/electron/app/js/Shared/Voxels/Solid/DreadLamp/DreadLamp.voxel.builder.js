@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreadLampVoxelBuilderThread = {
-    id: "dve:dreadlamp",
+    id: "dve_dreadlamp",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("solid", "dreadlamp");

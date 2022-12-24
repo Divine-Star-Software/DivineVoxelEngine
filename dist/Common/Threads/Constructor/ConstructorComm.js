@@ -10,6 +10,9 @@ export const CCM = Object.assign(ccm, {
             chunk: (data) => {
                 return CCM.runTask(ConstructorTasks.buildChunk, data);
             },
+            column: (data) => {
+                return CCM.runTask(ConstructorTasks.buildColumn, data);
+            },
             entity: (x, y, z, width, depth, height, composed, voxelData, voxelStateData) => {
                 const transferArray = [];
                 const dataArray = [];

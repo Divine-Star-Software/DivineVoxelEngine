@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreamVineItemConstructorObject = {
-    id: "dve:dreamvine-item",
+    id: "dve_dreamvine-item",
     shapeId: "vine",
     hooks: {
         texturesRegistered: (DVEB) => {

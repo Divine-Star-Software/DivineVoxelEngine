@@ -2,12 +2,12 @@ import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types";
 
 export const VoxelPaletteReader = {
  _palette: <Record<number, string>>{
-  0: "dve:air",
-  1: "dve:barrier",
+  0: "dve_air",
+  1: "dve_barrier",
  },
  _map: <Record<string, number>>{
-  "dve:air": 0,
-  "dve:barrier": 1,
+  "dve_air": 0,
+  "dve_barrier": 1,
  },
 
  setVoxelPalette(voxelPalette: VoxelPalette, voxelPaletteMap: VoxelPaletteMap) {

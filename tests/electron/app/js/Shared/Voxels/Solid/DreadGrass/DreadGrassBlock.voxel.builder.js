@@ -1,6 +1,6 @@
 let uv = 0;
 export const DreadGrassBlockVoxelBuilderThread = {
-    id: "dve:dreadgrassblock",
+    id: "dve_dreadgrassblock",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("flora", "dreamgrassblock", "grassy-top");

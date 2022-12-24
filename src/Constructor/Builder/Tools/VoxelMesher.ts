@@ -34,9 +34,12 @@ export const VoxelMesher = {
  $buildMesh(
   type: VoxelTemplateSubstanceType,
   template: ChunkTemplate,
-  LOD = 1
+  LOD = 1,
+  chunkX = 0,
+  chunkY = 0,
+  chunkZ = 0
  ) {
-  const data = {
+  const data: VoxelShapeAddData = {
    substance: type,
    LOD: LOD,
    //mesh data
@@ -82,7 +85,11 @@ export const VoxelMesher = {
    data.position.x = template.positionTemplate[positionIndex];
    data.position.y = template.positionTemplate[positionIndex + 1];
    data.position.z = template.positionTemplate[positionIndex + 2];
-   this.data.loadIn(data.position.x, data.position.y, data.position.z);
+   this.data.loadIn(
+    chunkX + data.position.x,
+    chunkY + data.position.y,
+    chunkZ + data.position.z
+   );
    this.quad.setPosition(data.position.x, data.position.y, data.position.z);
    data.face = template.faceTemplate[i];
    data.shapeState = template.shapeStateTemplate[i];
@@ -90,7 +97,7 @@ export const VoxelMesher = {
 
    if (data.flowTemplate) {
     if (this.templateData.loadIn("top").isExposed()) {
-     data.flowTemplateIndex += 4;
+     data.flowTemplateIndex! += 4;
     }
    }
 

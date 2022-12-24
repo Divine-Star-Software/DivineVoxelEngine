@@ -1,4 +1,4 @@
 export const DebugItemData = {
-    id: "dve:debug-item",
+    id: "dve_debug-item",
     data: {},
 };

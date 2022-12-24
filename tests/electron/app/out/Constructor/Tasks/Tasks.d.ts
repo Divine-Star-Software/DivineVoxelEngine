@@ -2,11 +2,12 @@ import type { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, UpdateTasks
 export declare const Tasks: {
     build: {
         chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
+        column: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<BuildTasks>;
         entity: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
         item: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any[]>;
     };
     voxelUpdate: {
-        erease: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        erase: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
         paint: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<PaintTasks>;
     };
     rgb: {

@@ -67,7 +67,7 @@ const WP = {
             if (substance == "liquid" || substance == "magma") {
                 this._dt.setLevel(15);
             }
-            if (data.secondaryVoxelId && data.secondaryVoxelId != "dve:air") {
+            if (data.secondaryVoxelId && data.secondaryVoxelId != "dve_air") {
                 const vid = VoxelPaletteReader.id.getPaletteId(data.secondaryVoxelId, data.secondaryState ? data.secondaryState : 0);
                 if (vid > 0) {
                     this._dt.setSecondary(true);
@@ -91,7 +91,7 @@ const WP = {
                 ]);
             }
         },
-        erease(dimensionId, x, y, z) {
+        erase(dimensionId, x, y, z) {
             this._dt.setDimension(dimensionId);
             if (!this._dt.loadIn(x, y, z))
                 return;

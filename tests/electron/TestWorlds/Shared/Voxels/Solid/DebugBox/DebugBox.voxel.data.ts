@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const DebugBoxVoxelData: VoxelData = {
  name: "Debug Box",
  shapeId: "Box",
- id: "dve:debugbox",
+ id: "dve_debugbox",
  substance: "solid",
  material: "stone",
  hardnress: 1000,

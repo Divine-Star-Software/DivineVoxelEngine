@@ -38,6 +38,7 @@ export class CommBase {
         this.__onSetPortRun = set;
     }
     __handleMessage(data, event) {
+        this.onMessage(data);
         if (ThreadComm.__isInternalMessage(data)) {
             ThreadComm.__handleInternalMessage(data, event);
             this.onMessage(event);
@@ -62,7 +63,6 @@ export class CommBase {
         if (this.messageFunctions[message]) {
             this.messageFunctions[message].forEach((_) => _(data, event));
         }
-        this.onMessage(event);
     }
     setPort(port) {
         if (!port) {

@@ -87,6 +87,7 @@ export class DVEMaterial {
             ],
             uniforms: [
                 "world",
+                "worldOrigin",
                 "view",
                 "cameraPosition",
                 "viewProjection",
@@ -117,6 +118,8 @@ export class DVEMaterial {
             shaderMaterial.separateCullingPass = true;
             shaderMaterial.backFaceCulling = false;
             shaderMaterial.forceDepthWrite = true;
+            shaderMaterial.needDepthPrePass = true;
+            shaderMaterial.alpha = 0.6;
         }
         shaderMaterial.setTextureArray("arrayTex", data.texture);
         shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);
@@ -145,5 +148,8 @@ export class DVEMaterial {
             return;
         this.time += 0.005;
         this.material.setFloat("time", this.time);
+        if (DVER.renderManager.fo.activeNode) {
+            this.material.setVector3("worldOrigin", DVER.renderManager.fo.activeNode.position);
+        }
     }
 }

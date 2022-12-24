@@ -8,7 +8,7 @@ const diagonalLineGenerators = {
             for (let zy = y - 1; zy >= yStart; zy--) {
                 brush
                     .setXYZ(xzStart, zy, z)
-                    .setId("dve:dreamstonepillar")
+                    .setId("dve_dreamstonepillar")
                     .setShapeState(shapeState)
                     .paint();
             }
@@ -22,7 +22,7 @@ const diagonalLineGenerators = {
             for (let zy = y - 1; zy >= yStart; zy--) {
                 brush
                     .setXYZ(xzStart, zy, z)
-                    .setId("dve:dreamstonepillar")
+                    .setId("dve_dreamstonepillar")
                     .setShapeState(shapeState)
                     .paint();
             }
@@ -36,7 +36,7 @@ const diagonalLineGenerators = {
             for (let zy = y - 1; zy >= yStart; zy--) {
                 brush
                     .setXYZ(x, zy, xzStart)
-                    .setId("dve:dreamstonepillar")
+                    .setId("dve_dreamstonepillar")
                     .setShapeState(shapeState)
                     .paint();
             }
@@ -50,7 +50,7 @@ const diagonalLineGenerators = {
             for (let zy = y - 1; zy >= yStart; zy--) {
                 brush
                     .setXYZ(x, zy, xzStart)
-                    .setId("dve:dreamstonepillar")
+                    .setId("dve_dreamstonepillar")
                     .setShapeState(shapeState)
                     .paint();
             }

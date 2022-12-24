@@ -1,6 +1,6 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";let uv = 0;
 export const DreamLampVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreamlamp",
+ id: "dve_dreamlamp",
  
  hooks: {
   texturesRegistered: (DVEB) => {

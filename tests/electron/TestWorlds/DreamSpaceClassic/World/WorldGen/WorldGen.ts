@@ -13,10 +13,10 @@ export const WorldGen = {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.worldHeight; y++) {
      if (y < Math.floor(Math.random() * this.minY)) {
-      brush.setId("dve:dreadstone");
+      brush.setId("dve_dreadstone");
       brush.setXYZ(x, y, z).paint();
       if (Math.random() > 0.8) {
-       brush.setId("dve:dreadgrass");
+       brush.setId("dve_dreadgrass");
        brush.setXYZ(x, y + 1, z).paint();
       }
      }
@@ -26,7 +26,7 @@ export const WorldGen = {
  },
 
  generateSpikeChunk(chunkX: number, chunkZ: number) {
-  brush.setId("dve:dreadstonepillar");
+  brush.setId("dve_dreadstonepillar");
 
   let rx = 0;
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
@@ -43,10 +43,10 @@ export const WorldGen = {
        y == this.minY + 56 ||
        y == this.minY + 86
       ) {
-       brush.setId("dve:dreadstonepillar").paint();
+       brush.setId("dve_dreadstonepillar").paint();
       }
      }
-     brush.setId("dve:dreadstonepillar");
+     brush.setId("dve_dreadstonepillar");
      if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
       if (
        y == this.minY + 1 ||
@@ -154,11 +154,11 @@ export const WorldGen = {
   for (let x = chunkX; x < this.chunkWidth + chunkX; x++) {
    for (let z = chunkZ; z < this.chunkDepth + chunkZ; z++) {
     for (let y = 0; y < this.worldHeight; y++) {
-     brush.setId("dve:dreadstone").setXYZ(x, y, z);
+     brush.setId("dve_dreadstone").setXYZ(x, y, z);
      if (y < this.minY - 6) {
       brush.paint();
      }
-     brush.setId("dve:liquiddreadether");
+     brush.setId("dve_liquiddreadether");
      if (y >= this.minY - 6 && y <= this.minY) {
       brush.paint();
      }
@@ -178,10 +178,10 @@ export const WorldGen = {
      if (rx == 0 || rz == 0 || rx == 15 || rz == 15) {
       if (y > this.minY) break;
       if (y == this.minY) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -189,10 +189,10 @@ export const WorldGen = {
      }
      if (rx == 1 || rz == 1 || rx == 14 || rz == 14) {
       if (y == this.minY - 1) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -200,10 +200,10 @@ export const WorldGen = {
      }
      if (rx == 2 || rz == 2 || rx == 13 || rz == 13) {
       if (y == this.minY - 2) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -211,10 +211,10 @@ export const WorldGen = {
      }
      if (rx == 3 || rz == 3 || rx == 12 || rz == 12) {
       if (y == this.minY - 3) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -222,10 +222,10 @@ export const WorldGen = {
      }
      if (rx == 4 || rz == 4 || rx == 11 || rz == 11) {
       if (y == this.minY - 4) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -233,10 +233,10 @@ export const WorldGen = {
      }
      if (rx == 5 || rz == 5 || rx == 10 || rz == 10) {
       if (y == this.minY - 5) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -244,10 +244,10 @@ export const WorldGen = {
      }
      if (rx == 6 || rz == 6 || rx == 9 || rz == 9) {
       if (y == this.minY - 6) {
-       brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
        if (Math.random() > 0.8) {
         brush
-         .setId("dve:dreadgrass")
+         .setId("dve_dreadgrass")
          .setXYZ(x, y + 1, z)
          .paint();
        }
@@ -255,10 +255,10 @@ export const WorldGen = {
      }
 
      if (y < this.minY - 7) {
-      brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
       if (Math.random() > 0.8) {
        brush
-        .setId("dve:dreadgrass")
+        .setId("dve_dreadgrass")
         .setXYZ(x, y + 1, z)
         .paint();
       }
@@ -276,11 +276,11 @@ export const WorldGen = {
     for (let y = 0; y < this.worldHeight; y++) {
      if (y > this.minY + 1) break;
      if (y <= this.minY) {
-      brush.setId("dve:dreadstone").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreadstone").setXYZ(x, y, z).paint();
      }
      if (y == this.minY + 1) {
       if (Math.random() > 0.8) {
-       brush.setId("dve:dreadgrass").setXYZ(x, y, z).paint();
+       brush.setId("dve_dreadgrass").setXYZ(x, y, z).paint();
       }
      }
     }

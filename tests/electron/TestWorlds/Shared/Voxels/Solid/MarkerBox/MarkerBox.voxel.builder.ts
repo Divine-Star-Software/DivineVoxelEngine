@@ -2,7 +2,7 @@ import type { VoxelConstructorObject } from "out/Meta/index.js";
 let lightDebugBoxTextures: Record<number, number> = {};
 
 export const MarkerBoxVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:markerbox",
+ id: "dve_markerbox",
  
  hooks: {
   texturesRegistered: (DVEB) => {

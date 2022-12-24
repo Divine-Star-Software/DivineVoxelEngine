@@ -25,7 +25,7 @@ class TasksBase {
   this.flow.update._s = this;
   this.flow.remove._s = this;
   this.explosion.run._s = this;
-  this.voxelUpdate.erease._s = this;
+  this.voxelUpdate.erase._s = this;
   this.voxelUpdate.paint._s = this;
   this.generate.deferred._s = this;
   this.generate.async._s = this;
@@ -85,20 +85,20 @@ class TasksBase {
  };
 
  voxelUpdate = {
-  erease: {
+  erase: {
    _s: <TasksBase>{},
    add(x: number, y: number, z: number) {
-    CQ.voxelUpdate.erease.add(
+    CQ.voxelUpdate.erase.add(
      [this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread],
      this._s._data.queue
     );
    },
    run(onDone: Function) {
-    CQ.voxelUpdate.erease.run(this._s._data.queue);
-    CQ.voxelUpdate.erease.onDone(this._s._data.queue, onDone);
+    CQ.voxelUpdate.erase.run(this._s._data.queue);
+    CQ.voxelUpdate.erase.onDone(this._s._data.queue, onDone);
    },
    async runAndAwait() {
-    await CQ.voxelUpdate.erease.runAndAwait(this._s._data.queue);
+    await CQ.voxelUpdate.erase.runAndAwait(this._s._data.queue);
    },
   },
   paint: {
@@ -143,6 +143,7 @@ class TasksBase {
     await CQ.build.chunk.runAndAwait(this._s._data.queue);
    },
   },
+  
  };
  explosion = {
   run: {

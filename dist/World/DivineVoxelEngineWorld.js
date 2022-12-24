@@ -15,10 +15,10 @@ import { Util } from "../Global/Util.helper.js";
 //data
 import { DataSync } from "./Data/DataSync.js";
 import { DataManager } from "../Data/DataManager.js";
-import { VoxelDataCreator } from "./Data/VoxelDataCreator.js";
-import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
+import { VoxelDataGenerator } from "./Data/Generators/VoxelDataGenerator.js";
+import { VoxelManager } from "./Data/Managers/VoxelManager.js";
 import { ItemManager } from "../Data/Items/ItemManager.js";
-import { DataCreator } from "./Data/Creator.js";
+import { WorldDataGenerator } from "./Data/Generators/WorldDataGenerator.js";
 //tools
 import { BuilderTool } from "../Tools/Build/Builder.js";
 import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
@@ -47,7 +47,9 @@ export const DVEW = {
     UTIL: Util,
     settings: EngineSettings,
     worldTasks: WorldTasks,
-    dataCreator: DataCreator,
+    generators: {
+        worldData: WorldDataGenerator,
+    },
     data: DataManager,
     dataSync: DataSync,
     fxComm: FXComm,
@@ -119,6 +121,6 @@ export const DVEW = {
 };
 DVEW.environment = Util.getEnviorment();
 DVEW.voxelManager.onRegister((voxel) => {
-    VoxelDataCreator.palette.registerVoxel(voxel);
+    VoxelDataGenerator.palette.registerVoxel(voxel);
     // DVEW.worldGeneration.voxelPalette.registerVoxel(voxel);
 });

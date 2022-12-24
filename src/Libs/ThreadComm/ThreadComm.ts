@@ -151,8 +151,8 @@ export const ThreadComm = {
 			this.__handleTasksDone(tasksId, mode, threadId, tid, tasksData);
 		}
 		if (takss.mode == "deffered") {
-			const tasksData = await this._tasks[tasksId].run(data[0], () => {
-				this.__handleTasksDone(tasksId, mode, threadId, tid, tasksData);
+			await this._tasks[tasksId].run(data[0], (tasksData: any) => {
+				ThreadComm.__handleTasksDone(tasksId, mode, threadId, tid, tasksData);
 			});
 		}
 	},

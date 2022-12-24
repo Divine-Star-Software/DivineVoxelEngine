@@ -5,10 +5,14 @@ import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
+import { FOManager } from "./FloatingOrigin/FoManager.js";
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.js";
 import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsmp.js";
+import { MeshRegister } from "../Scene/MeshRegister.js";
+import { MeshManager } from "../Scene/MeshManager.js";
+import { MeshCuller } from "../Scene/MeshCuller.js";
 const solidMaterial = new DVEMaterial("solid", {
     alphaBlending: false,
     alphaTesting: true,
@@ -37,17 +41,21 @@ const itemMesh = new DVEMesh("Item", itemMat);
 export const RenderManager = {
     fogOptions: {
         mode: "volumetric",
-        density: 0.0002,
+        density: 0.0005,
         color: new BABYLON.Color3(1, 1, 1),
         volumetricOptions: {
             heightFactor: 0.25,
         },
     },
+    meshRegister: MeshRegister,
+    meshManager: MeshManager,
+    meshCuller: MeshCuller,
     fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
     effectOptions: {
         floraEffects: false,
         liquidEffects: false,
     },
+    fo: FOManager,
     shaderBuilder: ShaderBuilder,
     textureCreator: TextureCreator,
     animationManager: AnimationManager,
@@ -65,10 +73,6 @@ export const RenderManager = {
     liquidStandardMaterial: StandardLiquidMaterial,
     skyBoxMaterial: SkyBoxMaterial,
     scene: null,
-    reStart() { },
-    setScene(scene) {
-        this.scene = scene;
-    },
     updateFogOptions(options) {
         for (const key of Object.keys(options)) {
             //@ts-ignore
@@ -107,9 +111,12 @@ export const RenderManager = {
         this.itemMaterial.updateFogOptions(fogData);
         this.skyBoxMaterial.updateFogOptions(fogData);
     },
-    $INIT() {
+    $INIT(scene) {
         this.updateFogOptions(this.fogOptions);
         this._setFogData();
+        this.scene = scene;
+        this.meshManager.$INIT(scene);
+        this.meshCuller.$INIT(scene);
     },
     updateShaderEffectOptions(options) {
         if (options.floraEffects !== undefined) {

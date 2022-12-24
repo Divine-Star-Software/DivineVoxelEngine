@@ -90,7 +90,7 @@ const getFoamUV = (builder: typeof Builder, data: VoxelProcessData) => {
 
 let uv = 0;
 export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:liquiddreamether",
+ id: "dve_liquiddreamether",
 
  hooks: {
   texturesRegistered: (builder) => {

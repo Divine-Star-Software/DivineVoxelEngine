@@ -1,7 +1,7 @@
 export const DreamStoneStairVoxelData = {
     name: "Dream Stone Stair",
     shapeId: "Stair",
-    id: "dve:dreamstone-stair",
+    id: "dve_dreamstone-stair",
     substance: "transparent",
     material: "stone",
     hardnress: 1000,

@@ -1,6 +1,6 @@
 let uv = 0;
 export const DebugItemConstructorObject = {
-    id: "dve:debug-item",
+    id: "dve_debug-item",
     shapeId: "debug",
     hooks: {
         texturesRegistered: (DVEB) => {

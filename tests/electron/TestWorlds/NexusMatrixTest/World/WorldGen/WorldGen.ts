@@ -19,10 +19,10 @@ export const WorldGen = {
     currentY = currentY >> 0;
     for (let y = 0; y < maxY + 2; y++) {
      if (y < currentY) {
-      brush.setId("dve:dreamstonepillar").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreamstonepillar").setXYZ(x, y, z).paint();
      }
      if (Math.random() < 0.01 && y == currentY) {
-      brush.setId("dve:dreamlamp").setXYZ(x, y, z).paint();
+      brush.setId("dve_dreamlamp").setXYZ(x, y, z).paint();
      }
     }
    }

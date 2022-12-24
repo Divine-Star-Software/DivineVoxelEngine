@@ -254,16 +254,18 @@ export declare const DVEW: {
     worldTasks: {
         addChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
-    dataCreator: {
-        convertToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
-        chunk: {
-            getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
-        };
-        column: {
-            getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
-        };
-        region: {
-            getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+    generators: {
+        worldData: {
+            convertToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
+            chunk: {
+                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+            };
+            column: {
+                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+            };
+            region: {
+                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+            };
         };
     };
     data: {
@@ -281,13 +283,15 @@ export declare const DVEW: {
         voxelTags: {
             voxelMap: Uint16Array;
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
+            materialMap: Record<number, string>;
+            colliderMap: Record<number, string>;
             voxelData: {
                 substance: import("../Meta/index.js").VoxelSubstanceType;
                 shapeId: number;
                 hardness: number;
-                material: number;
+                material: string;
                 checkCollision: number;
-                colliderId: number;
+                colliderId: string;
                 lightSource: number;
                 lightValue: number;
                 isRich: number;
@@ -299,14 +303,16 @@ export declare const DVEW: {
                 substance: import("../Meta/index.js").VoxelSubstanceType;
                 shapeId: number;
                 hardness: number;
-                material: number;
+                material: string;
                 checkCollision: number;
-                colliderId: number;
+                colliderId: string;
                 lightSource: number;
                 lightValue: number;
                 isRich: number;
             };
             getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
+            getMaterial(id: number): string;
+            getCollider(id: number): string;
             $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
             byteOffSet: number;
             tagSize: number;
@@ -334,7 +340,7 @@ export declare const DVEW: {
                 voxel(data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 voxelAsync(data: import("../Meta/Data/WorldData.types.js").AddVoxelData): Promise<void>;
                 __paint(dimension: string, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
-                erease(dimensionId: string | number, x: number, y: number, z: number): void;
+                erase(dimensionId: string | number, x: number, y: number, z: number): void;
             };
         };
         worldRegister: {
@@ -475,6 +481,8 @@ export declare const DVEW: {
             voxels: {
                 substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
                 substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
+                materialMap: Record<number, string>;
+                colliderMap: Record<number, string>;
             };
         };
         chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
@@ -501,7 +509,7 @@ export declare const DVEW: {
             initData: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData;
             __shapeMapSet: boolean;
             isReady(): boolean;
-            $createVoxelData(): void;
+            $generateVoxelData(): void;
             setShapeMap(newShapeMap: Record<string, number>): void;
             palette: {
                 _count: number;
@@ -518,13 +526,23 @@ export declare const DVEW: {
         };
         comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         commOptions: Record<string, {
-            chunks: boolean;
+            worldData: boolean;
+            worldDataTags: boolean;
             voxelPalette: boolean;
-            voxelData: boolean;
+            voxelTags: boolean;
+            materials: boolean;
+            colliders: boolean;
         }>;
         $INIT(): Promise<unknown>;
         isReady(): boolean;
-        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager): void;
+        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, data?: Partial<{
+            worldData: boolean;
+            worldDataTags: boolean;
+            voxelPalette: boolean;
+            voxelTags: boolean;
+            materials: boolean;
+            colliders: boolean;
+        }>): void;
         dimesnion: {
             unSync(id: string | number): void;
             unSyncInThread(commName: string, id: string | number): void;
@@ -553,6 +571,14 @@ export declare const DVEW: {
             sync(): void;
             syncInThread(commName: string): void;
         };
+        materials: {
+            sync(): void;
+            syncInThread(commName: string): void;
+        };
+        colliders: {
+            sync(): void;
+            syncInThread(commName: string): void;
+        };
         chunkTags: {
             sync(): void;
             syncInThread(commName: string): void;
@@ -578,6 +604,7 @@ export declare const DVEW: {
         tasks: {
             build: {
                 chunk: (data: import("../Meta/Tasks/Tasks.types.js").BuildTasks) => number;
+                column: (data: import("../Meta/Tasks/Tasks.types.js").BuildTasks) => number;
                 entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number;
                 item: (data: any) => number;
             };
@@ -699,7 +726,7 @@ export declare const DVEW: {
         };
         worldSun: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         voxelUpdate: {
-            erease: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            erase: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
             paint: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").PaintTasks>;
         };
         sun: {
@@ -782,9 +809,9 @@ export declare const DVEW: {
     getAllTools(): {
         brush: import("../Tools/Brush/Brush.js").BrushTool & {
             paintAndAwaitUpdate(): Promise<unknown>;
-            ereaseAndAwaitUpdate(): Promise<unknown>;
+            eraseAndAwaitUpdate(): Promise<unknown>;
             paintAndUpdate(onDone?: Function | undefined): void;
-            ereaseAndUpdate(onDone?: Function | undefined): void;
+            eraseAndUpdate(onDone?: Function | undefined): void;
             explode(radius?: number, onDone?: Function | undefined): void;
         };
         builder: BuilderTool;
@@ -808,15 +835,11 @@ export declare const DVEW: {
                 };
                 deferred: {
                     _s: any;
-                    /**# Divine Voxel Engine World
-                     * ---
-                     * This handles everything in the world worker context.
-                     */
                     run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
                 };
             };
             voxelUpdate: {
-                erease: {
+                erase: {
                     _s: any;
                     add(x: number, y: number, z: number): void;
                     run(onDone: Function): void;
@@ -903,9 +926,9 @@ export declare const DVEW: {
     };
     getBrush(): import("../Tools/Brush/Brush.js").BrushTool & {
         paintAndAwaitUpdate(): Promise<unknown>;
-        ereaseAndAwaitUpdate(): Promise<unknown>;
+        eraseAndAwaitUpdate(): Promise<unknown>;
         paintAndUpdate(onDone?: Function | undefined): void;
-        ereaseAndUpdate(onDone?: Function | undefined): void;
+        eraseAndUpdate(onDone?: Function | undefined): void;
         explode(radius?: number, onDone?: Function | undefined): void;
     };
     getBuilder(): BuilderTool;
@@ -929,15 +952,11 @@ export declare const DVEW: {
             };
             deferred: {
                 _s: any;
-                /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
                 run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
             };
         };
         voxelUpdate: {
-            erease: {
+            erase: {
                 _s: any;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;

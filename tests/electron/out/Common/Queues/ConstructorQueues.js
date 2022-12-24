@@ -21,7 +21,7 @@ const QMBase = {
         this.build.chunk.addQueue(queueKey);
         this.generate.addQueue(queueKey);
         this.explosion.run.addQueue(queueKey);
-        this.voxelUpdate.erease.addQueue(queueKey);
+        this.voxelUpdate.erase.addQueue(queueKey);
         this.voxelUpdate.paint.addQueue(queueKey);
         this._queueMap.set(queueKey, Date.now());
         return true;
@@ -39,7 +39,7 @@ const QMBase = {
         this.build.chunk.addQueue(queueKey);
         this.generate.removeQueue(queueKey);
         this.explosion.run.removeQueue(queueKey);
-        this.voxelUpdate.erease.removeQueue(queueKey);
+        this.voxelUpdate.erase.removeQueue(queueKey);
         this.voxelUpdate.paint.removeQueue(queueKey);
         this._queueMap.delete(queueKey);
         return true;
@@ -75,7 +75,7 @@ const QMBase = {
     },
     worldSun: CCM.addQueue("world-sun", ConstructorTasks.worldSun),
     voxelUpdate: {
-        erease: CCM.addQueue("voxel-update-erease", ConstructorTasks.voxelErease),
+        erase: CCM.addQueue("voxel-update-erase", ConstructorTasks.voxelErease),
         paint: CCM.addQueue("voxel-update-paint", ConstructorTasks.voxelPaint),
     },
     sun: {

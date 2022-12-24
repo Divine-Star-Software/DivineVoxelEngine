@@ -13,26 +13,26 @@ const zOffSet = 1_000;
 const brush = DVEC.worldGen.getBrush();
 const dataTool = brush._dt;
 const dreamBiomeVoxels = {
-    stone: "dve:dreamstone",
-    grass: "dve:dreamgrass",
-    water: "dve:liquiddreamether",
+    stone: "dve_dreamstone",
+    grass: "dve_dreamgrass",
+    water: "dve_liquiddreamether",
 };
 const dreadBiomeVoxels = {
-    stone: "dve:dreadstone",
-    grass: "dve:dreadgrass",
-    water: "dve:liquiddreadether",
+    stone: "dve_dreadstone",
+    grass: "dve_dreadgrass",
+    water: "dve_liquiddreadether",
 };
 const pillarBiome = {
-    stone: "dve:dreadstonepillar",
-    grass: "dve:dreadstonepillar",
-    water: "dve:dreadstonepillar",
+    stone: "dve_dreadstonepillar",
+    grass: "dve_dreadstonepillar",
+    water: "dve_dreadstonepillar",
 };
 export const WorldGen = {
     chunkDepth: 16,
     chunkWidth: 16,
     chunkHeight: 128,
     generateTree(x, y, z) {
-        brush.setId("dve:dream-log");
+        brush.setId("dve_dream-log");
         if (dataTool.loadIn(x, y - 1, z)) {
             if (!dataTool.isRenderable())
                 return;
@@ -44,16 +44,16 @@ export const WorldGen = {
         }
         let k = 5;
         for (let iy = height - 4; iy <= height + 1; iy++) {
-            this.generateCircle("dve:dream-leafs", x, iy + y, z, k, true, true);
+            this.generateCircle("dve_dream-leafs", x, iy + y, z, k, true, true);
             k--;
         }
         brush
-            .setId("dve:dream-leafs")
+            .setId("dve_dream-leafs")
             .setXYZ(x, y + height, z)
             .paint();
     },
     generateSpike(xp, minY, zp) {
-        brush.setId("dve:dreadstonepillar");
+        brush.setId("dve_dreadstonepillar");
         let rx = 0;
         for (let x = xp; x < 16 + xp; x++) {
             let rz = 0;

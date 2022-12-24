@@ -29,7 +29,7 @@ export declare class IWG {
             };
         };
         voxelUpdate: {
-            erease: {
+            erase: {
                 _s: any;
                 add(x: number, y: number, z: number): void;
                 run(onDone: Function): void;

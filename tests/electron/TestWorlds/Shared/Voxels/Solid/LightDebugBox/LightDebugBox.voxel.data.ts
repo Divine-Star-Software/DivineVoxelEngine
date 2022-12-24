@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const LightDebugBoxVoxelData: VoxelData = {
     name: "Light Debug Box",
     shapeId: "Box",
-    id: "dve:lightdebug",
+    id: "dve_lightdebug",
     substance: "solid",
     lightSource: false,
     material : "stone",

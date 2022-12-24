@@ -38,7 +38,7 @@ export const CreateGUI = (DVER) => {
                 opetionsMenu.style.display = "none";
             }
         }
-        if (event.key == "F3") {
+        if (event.key == "F7") {
             if (!DVER)
                 return;
             //@ts-ignore

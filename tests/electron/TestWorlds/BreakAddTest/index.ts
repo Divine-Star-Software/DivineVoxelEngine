@@ -22,7 +22,7 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
  "../Shared/Constructor/constructor.js",
- "./Nexus/nexus.js"
+ "../Shared/Nexus/nexus-with-player.js",
 );
 
 await DVER.$INIT({

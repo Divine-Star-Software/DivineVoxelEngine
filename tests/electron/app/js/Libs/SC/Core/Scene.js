@@ -1,0 +1,88 @@
+import { Console } from "./Console.js";
+export const Scene = {
+    ctx: {},
+    dimensions: {
+        width: 0,
+        height: 0,
+    },
+    font: {
+        size: 16,
+        padding: 8,
+    },
+    _bgColor: "rgba(0,0,0,0.2)",
+    $INIT(context) {
+        this.ctx = context;
+        const opacity = localStorage.getItem("console_opacity");
+        if (opacity) {
+            this.setOpacity(Number(opacity));
+        }
+        else {
+            localStorage.setItem("console_opacity", "0.3");
+            this.setOpacity(0.3);
+        }
+    },
+    _setStyle() {
+        this.ctx.fillStyle = "rgb(17,184,161)";
+        this.ctx.font = `${this.font.size}px Consolas`;
+    },
+    _setActiveStyle() {
+        this.ctx.fillStyle = "cyan";
+        this.ctx.font = `${this.font.size}px Consolas`;
+    },
+    renderLog() {
+        this.clearCanvas();
+        let y = this.font.size;
+        const consoleText = Console.text;
+        for (let i = Console.startIndex; i < Console.startIndex + Console.maxLines; i++) {
+            if (consoleText[i] == undefined)
+                break;
+            const text = consoleText[i];
+            this.clearLine(y - this.font.size);
+            this._setStyle();
+            this.ctx.fillText(text, 0, y);
+            y += this.font.size + this.font.padding;
+        }
+    },
+    _processText(text) {
+        return [text];
+    },
+    fullReRender() {
+        this.renderLog();
+        this.renderConsole();
+    },
+    setOpacity(value) {
+        this._bgColor = `rgba(0,0,0,${value})`;
+        this.fullReRender();
+    },
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height);
+        this.ctx.fillStyle = this._bgColor;
+        this.ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
+    },
+    clearLine(y) {
+        this.ctx.clearRect(0, y, this.dimensions.width, this.font.size + 5);
+        this.ctx.fillStyle = this._bgColor;
+        this.ctx.fillRect(0, y, this.dimensions.width, this.font.size + 5);
+    },
+    renderConsole() {
+        const text = Console.getActiveText();
+        const consoleText = Console.text;
+        let line = consoleText.length;
+        if (line > Console.maxLines)
+            line = Console.maxLines;
+        let y = (this.font.size + this.font.padding) * (line + 1);
+        for (let i = 0; i < text.length; i++) {
+            const string = text[i];
+            this.clearLine(y - this.font.size);
+            this._setActiveStyle();
+            this.ctx.fillText(string, 0, y);
+            y += this.font.size + this.font.padding;
+        }
+    },
+    resize(width, height) {
+        this.dimensions.width = width;
+        this.dimensions.height = height;
+        Console.maxLines =
+            ((this.dimensions.height / (this.font.size + this.font.padding)) >> 0) - 5;
+    },
+};

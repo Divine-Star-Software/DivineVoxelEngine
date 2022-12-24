@@ -1,5 +1,4 @@
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
-import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
 import { IWG } from "../../../out/Plugins/IWG/World/IWG.js";
@@ -8,7 +7,7 @@ RegisterVoxels(DVEW);
 
 await DVEW.$INIT();
 
-let position = new Float32Array(3);
+let position = new Float64Array(3);
 
 const runIWG = () => {
  const generator = new IWG({
@@ -18,15 +17,15 @@ const runIWG = () => {
  });
  setInterval(() => {
   generator.update();
- }, 20);
+ }, 100);
  (self as any).generator = generator;
 };
 DVEW.parentComm.listenForMessage("set-position", (data) => {
- position = new Float32Array(data[1]);
+ position = new Float64Array(data[1]);
  runIWG();
 });
 DVEW.parentComm.sendMessage("get-position");
 
-GetAnalyzerCubeWorld(DVEW);
+//GetAnalyzerCubeWorld(DVEW);
 
 (self as any).DVEW = DVEW;

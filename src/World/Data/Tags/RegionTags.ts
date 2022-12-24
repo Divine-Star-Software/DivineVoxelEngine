@@ -2,27 +2,27 @@ import { RegionTags } from "../../../Data/World/Region/RegionTags.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 export const RegionDataTags = new TagManager("column-tags");
 RegionDataTags.registerTag({
- id: "#dve:message_header",
+ id: "#dve_header",
  type: "typed-number",
  numberType: "16ui",
 });
 RegionDataTags.registerTag({
- id: "#dve:dimension_id",
+ id: "#dve_dimension_id",
  type: "typed-number",
  numberType: "16ui",
 });
 RegionDataTags.registerTag({
- id: "#dve:p_x",
+ id: "#dve_p_x",
  type: "typed-number",
  numberType: "32i",
 });
 RegionDataTags.registerTag({
- id: "#dve:p_y",
+ id: "#dve_p_y",
  type: "typed-number",
  numberType: "32i",
 });
 RegionDataTags.registerTag({
- id: "#dve:p_z",
+ id: "#dve_p_z",
  type: "typed-number",
  numberType: "32i",
 });

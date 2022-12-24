@@ -20,5 +20,10 @@ export declare type DBTTypedNumberArrayTag = {
     numberType: NumberTypes;
     length: number;
 };
-export declare type DBTTagNodes = DBTBooleanTag | DBTNumberTag | DBTTypedNumberTag | DBTTypedNumberArrayTag;
+export declare type DBTHeaderTag = {
+    id: string;
+    type: "header";
+    numberType: NumberTypes;
+};
+export declare type DBTTagNodes = DBTBooleanTag | DBTNumberTag | DBTTypedNumberTag | DBTTypedNumberArrayTag | DBTHeaderTag;
 export declare type DBTSchema = Map<string, DBTTagNodes>;

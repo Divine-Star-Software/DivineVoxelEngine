@@ -89,7 +89,7 @@ socket.addEventListener("message", (event) => {
     if (message == 600) {
         brush
             .setXYZ(dv.getFloat32(4), dv.getFloat32(8), dv.getFloat32(12))
-            .ereaseAndUpdate();
+            .eraseAndUpdate();
     }
     if (message == 700) {
         console.log("remove");
@@ -107,7 +107,7 @@ await DVEW.UTIL.createPromiseCheck({
     checkInterval: 2000,
 });
 const player = await WorldPlayer(DVEW);
-player.playerData.setUint16(2, connectionId);
+player.data.setUint16(2, connectionId);
 player.onExplode.push((x, y, z, radius) => {
     const message = new ArrayBuffer(4 + 4 * 3);
     const mdv = new DataView(message);
@@ -141,6 +141,6 @@ player.onRemove.push((x, y, z) => {
     socket.send(message);
 });
 player.onUpdate.push(() => {
-    player.playerData.setUint16(0, 200);
+    player.data.setUint16(0, 200);
     socket.send(sharedBufferToBuffer(player.playerDataBuffer));
 });

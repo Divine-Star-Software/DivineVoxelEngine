@@ -1,6 +1,6 @@
 import { ElementTree } from "../../libs/ElementTree/ElementTree.js";
 import { VoxelList } from "./VoxelList.js";
-let currentvoxel = "dve:dreamstone";
+let currentvoxel = "dve_dreamstone";
 let loadedVoxel = localStorage.getItem("voxel");
 if (loadedVoxel) {
     currentvoxel = loadedVoxel;

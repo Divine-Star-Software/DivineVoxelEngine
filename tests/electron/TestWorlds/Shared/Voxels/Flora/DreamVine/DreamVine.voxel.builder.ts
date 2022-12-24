@@ -1,7 +1,7 @@
 import type { VoxelConstructorObject } from "out/Meta/index.js";
 let uv = 0;
 export const DreamVineVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:dreamvine",
+ id: "dve_dreamvine",
 
  hooks: {
   texturesRegistered: (DVEB) => {

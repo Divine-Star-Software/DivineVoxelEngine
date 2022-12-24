@@ -3,7 +3,7 @@ import type { VoxelData } from "out/Meta/index";
 export const DreamGrassBlockVoxelData: VoxelData = {
     name: "Dream Grass Block",
     shapeId: "Box",
-    id: "dve:dreamgrassblock",
+    id: "dve_dreamgrassblock",
     substance: "flora",
     material : "stone",
     hardnress : 1000,

@@ -73,7 +73,7 @@ export const FlowManager = {
                 IlluminationManager._RGBlightUpdateQ.push([nx, ny, nz]);
             }
         }
-        this._brush.setXYZ(x, y, z).erease();
+        this._brush.setXYZ(x, y, z).erase();
         IlluminationManager.runSunLightUpdate();
         IlluminationManager.runRGBUpdate();
     },

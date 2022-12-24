@@ -8,15 +8,15 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
     const overlayAnimationTimes = DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[substance];
     const Overlay2dTextureArray = await DVER.renderManager.textureCreator.createMaterialTexture(`${substance}-overlay`, scene, overlayTextures);
     /*
-     if (DVER.settings.getSettings().materials.mode == "standard") {
-      if (substance == "solid") {
-       DVER.renderManager.solidStandardMaterial.$INIT(materialTextures, scene);
-      }
-    
-      if (substance == "liquid") {
-       DVER.renderManager.liquidStandardMaterial.$INIT(materialTextures, scene);
-      }
-     } */
+    if (DVER.settings.getSettings().materials.mode == "standard") {
+     if (substance == "solid") {
+      DVER.renderManager.solidStandardMaterial.$INIT(materialTextures, scene);
+     }
+   
+     if (substance == "liquid") {
+      DVER.renderManager.liquidStandardMaterial.$INIT(materialTextures, scene);
+     }
+    } */
     const materialCreateData = {
         settings: DVER.settings.getSettings(),
         scene: scene,
@@ -33,10 +33,8 @@ export async function BuildInitalMeshes(DVER, scene) {
     if (!DVER.textureManager.processedTextureData) {
         throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
     }
-    DVER.renderManager.setScene(scene);
-    DVER.meshManager.$INIT();
+    DVER.renderManager.$INIT(scene);
     await DVER.renderManager.textureCreator.setUpImageCreation();
-    DVER.meshManager.setScene(scene);
     await setUpMaterial(DVER, scene, "solid", DVER.renderManager.solidMaterial);
     await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
     await setUpMaterial(DVER, scene, "liquid", DVER.renderManager.liquidMaterial);
@@ -52,5 +50,4 @@ export async function BuildInitalMeshes(DVER, scene) {
         DVER.renderManager.itemMaterial.runEffects();
         DVER.renderManager.skyBoxMaterial.runEffects();
     });
-    DVER.renderManager.$INIT();
 }

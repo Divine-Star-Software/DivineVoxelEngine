@@ -1,6 +1,7 @@
+import type { VoxelTemplateSubstanceType } from "Meta/index";
 export declare type SetChunkMeshTask = [
     dimension: string,
-    substanceType: number,
+    substanceType: VoxelTemplateSubstanceType,
     chunkX: number,
     chunkY: number,
     chunkZ: number,
@@ -16,8 +17,15 @@ export declare type SetChunkMeshTask = [
 ];
 export declare type RemoveChunkMeshTasks = [
     dimension: string,
-    substanceType: number,
+    substanceType: VoxelTemplateSubstanceType,
     chunkX: number,
     chunkY: number,
     chunkZ: number
+];
+export declare type RemoveChunksOutsideDistance = [
+    dimension: string,
+    x: number,
+    y: number,
+    z: number,
+    distance: number
 ];

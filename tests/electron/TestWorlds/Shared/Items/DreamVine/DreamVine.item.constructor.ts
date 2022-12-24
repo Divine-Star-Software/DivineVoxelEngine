@@ -2,7 +2,7 @@ import { ItemConstructorObject } from "../../../../out/Meta/Data/Items/Item.type
 
 let uv = 0;
 export const DreamVineItemConstructorObject: ItemConstructorObject  = {
- id: "dve:dreamvine-item",
+ id: "dve_dreamvine-item",
  shapeId: "vine",
  hooks: {
   texturesRegistered: (DVEB) => {

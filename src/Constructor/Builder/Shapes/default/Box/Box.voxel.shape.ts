@@ -55,7 +55,127 @@ export const BoxVoxelShape: VoxelShape = {
   }
  },
 };
+
+//cull leaf faces
+const boxCullFunctions: Record<
+ DirectionNames,
+ (data: FaceDataOverride) => boolean
+> = {
+ top: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y + 1,
+    data.currentVoxel.position.z
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y + 2,
+    data.currentVoxel.position.z
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+ bottom: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y - 1,
+    data.currentVoxel.position.z
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y - 2,
+    data.currentVoxel.position.z
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+ east: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x + 1,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x + 2,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+ west: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x - 1,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x - 2,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+ north: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z + 1
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z + 2
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+ south: (data) => {
+  if (
+   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z - 1
+   ) &&
+   data.currentVoxel.isSameVoxel(
+    data.currentVoxel.position.x,
+    data.currentVoxel.position.y,
+    data.currentVoxel.position.z - 2
+   )
+  ) {
+   return false;
+  }
+  return data.default;
+ },
+};
+
 //cullface
+OverrideManager.registerOverride("CullFace", "Box", "Box", (data) => {
+
+ return boxCullFunctions[data.face](data);
+});
 OverrideManager.registerOverride("CullFace", "Box", "Panel", (data) => {
  return true;
 });
@@ -69,7 +189,7 @@ OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
  return true;
 });
 OverrideManager.registerOverride("CullFace", "Box", "Stair", (data) => {
-  stairCullFunctions[data.face](data);
+ stairCullFunctions[data.face](data);
  return true;
 });
 //ao

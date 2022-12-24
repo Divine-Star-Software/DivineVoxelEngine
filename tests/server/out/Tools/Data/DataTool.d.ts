@@ -24,13 +24,15 @@ export declare class DataTool extends DataToolBase {
     tags: {
         voxelMap: Uint16Array;
         substanceRecord: Record<number, VoxelSubstanceType>;
+        materialMap: Record<number, string>;
+        colliderMap: Record<number, string>;
         voxelData: {
             substance: VoxelSubstanceType;
             shapeId: number;
             hardness: number;
-            material: number;
+            material: string;
             checkCollision: number;
-            colliderId: number;
+            colliderId: string;
             lightSource: number;
             lightValue: number;
             isRich: number;
@@ -42,14 +44,16 @@ export declare class DataTool extends DataToolBase {
             substance: VoxelSubstanceType;
             shapeId: number;
             hardness: number;
-            material: number;
+            material: string;
             checkCollision: number;
-            colliderId: number;
+            colliderId: string;
             lightSource: number;
             lightValue: number;
             isRich: number;
         };
         getTrueSubstance(id: number): VoxelSubstanceType;
+        getMaterial(id: number): string;
+        getCollider(id: number): string;
         $INIT(data: import("../../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
         byteOffSet: number;
         tagSize: number;
@@ -87,6 +91,9 @@ export declare class DataTool extends DataToolBase {
     isLightSource(): boolean;
     getLightSourceValue(): number;
     getSubstance(): VoxelSubstanceType;
+    getMaterial(): string;
+    getCollider(): string;
+    checkCollisions(): boolean;
     getTemplateSubstance(): VoxelTemplateSubstanceType;
     getState(): number;
     isRich(): number;

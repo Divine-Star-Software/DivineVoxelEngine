@@ -11,14 +11,14 @@ const regionTool = new RegionDataTool();
 export const WorldRegister = {
     _dimensions: new Map(),
     _cacheOn: false,
-    _cache: {},
+    _cache: new Map(),
     $INIT() {
         this._dimensions.set("main", new Map());
     },
     cache: {
         enable() {
             WorldRegister._cacheOn = true;
-            WorldRegister._cache = new Map();
+            WorldRegister._cache.clear();
         },
         disable() {
             WorldRegister._cacheOn = false;
@@ -140,7 +140,7 @@ export const WorldRegister = {
                         continue;
                     chunkTool.setChunk(chunk);
                     const chunkPOS = chunkTool.getPosition();
-                    let chunkMax = chunkTool.getTagValue("#dve:max_height");
+                    let chunkMax = chunkTool.getTagValue("#dve_max_height");
                     if (chunkMax == 0)
                         continue;
                     chunkMax += chunkPOS.y;

@@ -92,7 +92,7 @@ export const FlowManager = {
    }
   }
 
-  this._brush.setXYZ(x, y, z).erease();
+  this._brush.setXYZ(x, y, z).erase();
 
   IlluminationManager.runSunLightUpdate();
   IlluminationManager.runRGBUpdate();

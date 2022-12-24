@@ -2,6 +2,7 @@ import { DivineVoxelEngineRender } from "../../../out/Render/DivineVoxelEngineRe
 
 export const RunInit = (init: Function) => {
  const readyStateCheckInterval = setInterval(function () {
+console.log("Sup")
   if (document.readyState === "complete" && typeof BABYLON !== undefined) {
    clearInterval(readyStateCheckInterval);
    init();

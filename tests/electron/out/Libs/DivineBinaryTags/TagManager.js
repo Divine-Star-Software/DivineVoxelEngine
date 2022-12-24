@@ -27,11 +27,20 @@ export class TagManager extends TagManagerBase {
         /*
     [Process Tags]
     */
+        const headers = new Map();
         const booleans = [];
         const numbers = [];
         const typedNumbers = new Map();
         const typedNumbersArrays = new Map();
         this.schema.forEach((tag) => {
+            if (tag.type == "header") {
+                let tags = headers.get(tag.numberType);
+                if (!tags) {
+                    tags = [];
+                    headers.set(tag.numberType, tags);
+                }
+                tags.push(tag);
+            }
             if (tag.type == "boolean") {
                 booleans.push(tag);
             }
@@ -69,12 +78,25 @@ export class TagManager extends TagManagerBase {
         const index = new DataView(indexBuffer);
         this.index = index;
         let indexBufferIndex = 0;
-        /*
-    [Booleans]
-    */
         let byteIndex = 0;
         let bitIndex = 0;
         let bitSize = 1;
+        /*
+    [Typed Numbers]
+    */
+        headers.forEach((tags, type) => {
+            const byteSise = DBTUtil.getTypedSize(type);
+            for (let i = 0; i < tags.length; i++) {
+                const tag = tags[i];
+                this.indexMap.set(tag.id, indexBufferIndex);
+                indexBufferIndex = setIndexData(index, indexBufferIndex, byteIndex, 0, NumberTypeRecord[tag.numberType], TagNodeTypes.typedNumber);
+                byteIndex += byteSise;
+            }
+        });
+        /*
+    [Booleans]
+    */
+        bitSize = 1;
         for (let i = 0; i < booleans.length; i++) {
             const bool = booleans[i];
             this.indexMap.set(bool.id, indexBufferIndex);

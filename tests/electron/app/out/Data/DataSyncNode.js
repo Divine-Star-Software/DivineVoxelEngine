@@ -7,7 +7,7 @@ import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
 import { ChunkTags } from "./World/Chunk/ChunkTags.js";
 import { RegionTags } from "./World/Region/RegionTags.js";
 import { ColumnTags } from "./World/Column/ColumnTags.js";
-import { VoxelTags } from "./Voxel/VoxelData.js";
+import { VoxelTags } from "./Voxel/VoxelTags.js";
 export const DataSyncNode = {
     _states: {
         voxelData: false,
@@ -23,6 +23,8 @@ export const DataSyncNode = {
     },
     voxelPalette: ThreadComm.onDataSync(DataSyncTypes.voxelPalette),
     voxelData: ThreadComm.onDataSync(DataSyncTypes.voxelData),
+    materialMap: ThreadComm.onDataSync(DataSyncTypes.materials),
+    colliderMap: ThreadComm.onDataSync(DataSyncTypes.colliders),
     dimension: ThreadComm.onDataSync(DataSyncTypes.dimesnion),
     chunk: ThreadComm.onDataSync(DataSyncTypes.chunk),
     column: ThreadComm.onDataSync(DataSyncTypes.column),
@@ -33,6 +35,12 @@ export const DataSyncNode = {
 };
 DataSyncNode.voxelPalette.addOnSync((data) => {
     VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
+});
+DataSyncNode.colliderMap.addOnSync((data) => {
+    VoxelTags.colliderMap = data[0];
+});
+DataSyncNode.materialMap.addOnSync((data) => {
+    VoxelTags.materialMap = data[0];
 });
 DataSyncNode.voxelData.addOnSync((data) => {
     VoxelTags.$INIT(data[0]);

@@ -1,6 +1,6 @@
 let uv = 0;
 export const LiquidDreadEtherVoxelBuilderThread = {
-    id: "dve:liquiddreadether",
+    id: "dve_liquiddreadether",
     hooks: {
         texturesRegistered: (DVEB) => {
             uv = DVEB.textureManager.getTextureUV("liquid", "liquid-dread-ether", "still-1");

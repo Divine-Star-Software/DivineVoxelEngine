@@ -7,13 +7,13 @@ import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { RawVoxelData } from "Meta/index.js";
 export class BrushTool {
  data: AddVoxelData = {
-  id: "dve:air",
+  id: "dve_air",
   position: [0, 0, 0],
   state: 0,
   shapeState: 0,
   dimension: "main",
   secondaryState: 0,
-  secondaryVoxelId: "dve:air",
+  secondaryVoxelId: "dve_air",
   level: 0,
   levelState: 0,
  };
@@ -49,8 +49,8 @@ export class BrushTool {
  }
 
  clear() {
-  this.data.id = "dve:air";
-  this.data.secondaryVoxelId = "dve:air";
+  this.data.id = "dve_air";
+  this.data.secondaryVoxelId = "dve_air";
   this.data.level = 0;
   this.data.levelState = 0;
   this.data.state = 0;
@@ -109,8 +109,8 @@ export class BrushTool {
   return this;
  }
 
- erease() {
-  WorldPainter.paint.erease(
+ erase() {
+  WorldPainter.paint.erase(
    this.data.dimension,
    this.data.position[0],
    this.data.position[1],

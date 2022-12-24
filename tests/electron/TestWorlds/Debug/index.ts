@@ -17,12 +17,13 @@ import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
 import { InitalizeAudio } from "../Shared/Audio/init.js";
+import { InitalizeCommands } from "../Shared/Commands/Render/RenderCommands.js";
 RegisterTexutres(DVER);
 
 const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
- "../Shared/Constructor/constructor.js",
+ "../Shared/Constructor/constructor.js"
 );
 
 await DVER.$INIT({
@@ -35,8 +36,10 @@ await DVER.$INIT({
   autoRGBLight: false,
   autoSunLight: false,
  },
+ floatingOrigin: {
+  enable: true,
+ },
 });
-
 
 SyncWithGraphicsSettings(DVER);
 const init = async () => {
@@ -44,13 +47,14 @@ const init = async () => {
  const engine = SetUpEngine(canvas);
 
  const scene = SetUpDefaultScene(engine);
- const camera = SetUpDefaultCamera(
+ const camera = DVER.renderManager.fo.getCamera(
   scene,
-  canvas,
-  { x: 17, y: 8, z: 3 },
-  { x: 20, y: 7, z: 0 }
+  "",
+  new BABYLON.Vector3(0, 10, 0),
+  canvas
  );
- camera.speed = 0.5;
+
+ (window as any).scene = scene;
  const box = SetUpDefaultSkybox(scene);
  const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
  if (bmat) {
@@ -80,6 +84,15 @@ const init = async () => {
  chunkMarkers.position.x = 8;
  chunkMarkers.position.z = 8; */
 
+ InitalizeCommands();
+
+ const truePosition = new BABYLON.Vector3();
+ scene.registerBeforeRender(() => {
+  truePosition.x = camera.doublepos.x;
+  truePosition.y = camera.doublepos.y;
+  truePosition.z = camera.doublepos.z;
+ });
+
  const playerModel = await GetPlayerModel(scene);
 
  playerModel.position.y = 5;
@@ -87,7 +100,8 @@ const init = async () => {
  const debugCube = GetAnalyzerCubeRender(DVER, camera);
  (window as any).debugCube = debugCube;
 
- runRenderLoop(engine, scene, camera, DVER);
+ 
+ runRenderLoop(engine, scene, {position : truePosition}, DVER);
 };
 (window as any).DVER = DVER;
 RunInit(init);

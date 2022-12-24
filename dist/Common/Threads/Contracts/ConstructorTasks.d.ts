@@ -1,5 +1,6 @@
 export declare const ConstructorTasks: {
     buildChunk: number;
+    buildColumn: number;
     generate: number;
     RGBlightUpdate: number;
     RGBlightRemove: number;

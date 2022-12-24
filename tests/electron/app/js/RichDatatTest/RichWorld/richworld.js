@@ -1,5 +1,5 @@
 import { DVERW } from "../../../out/RichWorld/DivineStarVoxelEngineRichWorld.js";
-DVERW.richData.registerInitalDataForVoxel("dve:dataholder", {
+DVERW.richData.registerInitalDataForVoxel("dve_dataholder", {
     data: "THIS A PLACE HOLDER DATA",
 });
 await DVERW.$INIT();

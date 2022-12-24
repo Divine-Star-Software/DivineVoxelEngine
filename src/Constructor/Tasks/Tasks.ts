@@ -11,6 +11,11 @@ import type {
 } from "Meta/Tasks/Tasks.types.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
+
+const chunkTool = new ChunkDataTool();
+
 export const Tasks = {
  build: {
   chunk: ThreadComm.registerTasks<BuildTasks>(
@@ -24,6 +29,25 @@ export const Tasks = {
      chunkPOS.z,
      data[4]
     );
+   }
+  ),
+  column: ThreadComm.registerTasks<BuildTasks>(
+   ConstructorTasks.buildColumn,
+   async (data) => {
+    const column = WorldRegister.column.get(data[0], data[1], data[3], data[2]);
+    if (!column) return false;
+    if (column.chunks.size == 0) return false;
+    for (const [key, chunk] of column.chunks) {
+     chunkTool.setChunk(chunk);
+     const chunkPOS = chunkTool.getPosition();
+     await DVEC.builder.buildChunk(
+      data[0],
+      chunkPOS.x,
+      chunkPOS.y,
+      chunkPOS.z,
+      data[4]
+     );
+    }
    }
   ),
   entity: ThreadComm.registerTasks<any[]>(
@@ -65,7 +89,7 @@ export const Tasks = {
   ),
  },
  voxelUpdate: {
-  erease: ThreadComm.registerTasks<UpdateTasksO>(
+  erase: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.voxelErease,
    async (data) => {
     await EreaseAndUpdate(data);

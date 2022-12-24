@@ -1,4 +1,4 @@
 export const DreamvineItemData = {
-    id: "dve:dreamvine-item",
+    id: "dve_dreamvine-item",
     data: {},
 };

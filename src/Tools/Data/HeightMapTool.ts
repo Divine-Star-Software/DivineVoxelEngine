@@ -46,14 +46,14 @@ export class HeightMapTool {
   getMin(substance: VoxelTemplateSubstanceType | "all" = "all") {
    HeightMapTool._chunkTool._c = this._c;
    if (substance == "all") {
-    return HeightMapTool._chunkTool.getTagValue("#dve:min_height");
+    return HeightMapTool._chunkTool.getTagValue("#dve_min_height");
    }
    return 0;
   },
   getMax(substance: VoxelTemplateSubstanceType | "all" = "all") {
     HeightMapTool._chunkTool._c = this._c;
    if (substance == "all") {
-    return HeightMapTool._chunkTool.getTagValue("#dve:max_height");
+    return HeightMapTool._chunkTool.getTagValue("#dve_max_height");
    }
    return 0;
   },
@@ -66,14 +66,14 @@ export class HeightMapTool {
   ) {
    if (mode == "add") {
     HeightMapTool._chunkTool._c = this._c;
-    const minY = HeightMapTool._chunkTool.getTagValue("#dve:min_height");
-    const maxY = HeightMapTool._chunkTool.getTagValue("#dve:max_height");
+    const minY = HeightMapTool._chunkTool.getTagValue("#dve_min_height");
+    const maxY = HeightMapTool._chunkTool.getTagValue("#dve_max_height");
     const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
     if (minY > voxelPOS.y) {
-     HeightMapTool._chunkTool.setTagValue("#dve:min_height", voxelPOS.y);
+     HeightMapTool._chunkTool.setTagValue("#dve_min_height", voxelPOS.y);
     }
     if (maxY < voxelPOS.y) {
-     HeightMapTool._chunkTool.setTagValue("#dve:max_height", voxelPOS.y);
+     HeightMapTool._chunkTool.setTagValue("#dve_max_height", voxelPOS.y);
     }
    }
   },

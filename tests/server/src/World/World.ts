@@ -144,7 +144,7 @@ wss.on("connection", function connection(ws) {
    const x = dv.getFloat32(4);
    const y = dv.getFloat32(8);
    const z = dv.getFloat32(12);
-   brush.setXYZ(x, y, z).ereaseAndUpdate();
+   brush.setXYZ(x, y, z).eraseAndUpdate();
    console.log(x, y, z);
    dv.setUint16(0, 600);
    updateClients((con) => {

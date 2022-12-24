@@ -11,7 +11,11 @@ export const SetUpEngine = (canvas: HTMLCanvasElement) => {
   }
  }
 
- const engine = new BABYLON.Engine(canvas, antialias);
+ const engine = new BABYLON.Engine(canvas, antialias, {
+  useHighPrecisionMatrix: true,
+  useHighPrecisionFloats: true,
+ });
+
  engine.doNotHandleContextLost = true;
  engine.enableOfflineSupport = false;
  engine.setSize(1920, 1080);
@@ -36,21 +40,18 @@ export const SetUpCanvas = () => {
 };
 
 export const SetUpDefaultScene = (engine: BABYLON.Engine) => {
+/*  const scene = new BABYLON.Scene(engine, {
+  useGeometryUniqueIdsMap: true,
+ }); */
  const scene = new BABYLON.Scene(engine);
- const assumedFramesPerSecond = 60;
- const earthGravity = -9.81;
- scene.gravity = new BABYLON.Vector3(
-  0,
-  earthGravity / assumedFramesPerSecond,
-  0
- );
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
  scene.fogDensity = 0.008;
  scene.fogColor = new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255);
  scene.fogEnabled = true;
  scene.autoClear = false;
  scene.autoClearDepthAndStencil = false;
-
+ scene.skipPointerMovePicking = true;
+ scene.constantlyUpdateMeshUnderPointer = false;
  // scene.debugLayer.show();
 
  return scene;
@@ -58,21 +59,14 @@ export const SetUpDefaultScene = (engine: BABYLON.Engine) => {
 
 export const SetUpDarkScene = (engine: BABYLON.Engine) => {
  const scene = new BABYLON.Scene(engine);
- const assumedFramesPerSecond = 60;
- const earthGravity = -9.81;
- scene.gravity = new BABYLON.Vector3(
-  0,
-  earthGravity / assumedFramesPerSecond,
-  0
- );
-
  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
  scene.fogDensity = 0.008;
  scene.fogColor = new BABYLON.Color3(1 / 255, 1 / 255, 1 / 255);
  scene.fogEnabled = false;
  scene.autoClear = false;
  scene.autoClearDepthAndStencil = false;
-
+ scene.skipPointerMovePicking = true;
+ scene.constantlyUpdateMeshUnderPointer = false;
  return scene;
 };
 
@@ -96,13 +90,15 @@ export const SetUpDefaultCamera = (
   scene
  );
 
+ camera.inertia = 0.1;
  camera.fov = 1.5;
  camera.minZ = 0.01;
  camera.maxZ = 1000;
  camera.angularSensibility = 1000;
- camera.speed = camera.speed * 0.2;
+ camera.speed = 10;
 
  camera.checkCollisions = false;
+
  camera.position.x = startPosition.x;
  camera.position.y = startPosition.y;
  camera.position.z = startPosition.z;
@@ -144,7 +140,7 @@ export const CreateWorldAxis = (scene: BABYLON.Scene, y: number) => {
 export const runRenderLoop = (
  engine: BABYLON.Engine,
  scene: BABYLON.Scene,
- watchPositon: BABYLON.FreeCamera | BABYLON.Mesh,
+ watchPositon: { position: BABYLON.Vector3 },
  DVER?: DivineVoxelEngineRender
 ) => {
  const runGui = CreateGUI(DVER);

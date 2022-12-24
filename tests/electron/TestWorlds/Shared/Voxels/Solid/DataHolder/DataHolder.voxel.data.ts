@@ -3,7 +3,7 @@ import { VoxelData } from "out/Meta/index";
 export const DataHolderVoxelData: VoxelData = {
  name: "Data Holder",
  shapeId: "Box",
- id: "dve:dataholder",
+ id: "dve_dataholder",
  substance: "solid",
  material : "stone",
  hardnress : 1000,

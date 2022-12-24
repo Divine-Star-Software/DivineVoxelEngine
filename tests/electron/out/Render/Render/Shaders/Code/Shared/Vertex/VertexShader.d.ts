@@ -1,6 +1,7 @@
 export declare const SharedVertexShader: {
     top: string;
     standardPositionMain: string;
+    standardPositioFOnMain: string;
     uniforams: string;
     attributes(ao?: boolean): string;
     defaultAttributes: string;

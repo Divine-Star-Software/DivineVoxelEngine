@@ -3,7 +3,7 @@ import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
-import {VoxelReader} from "../../../out/Data/Voxel/VoxelByte.js";
+
 RegisterVoxels(DVEW);
 
 
@@ -39,5 +39,5 @@ await WorldPlayer(DVEW);
 (self as any).tasks = DVEW.getTasksTool();
 (self as any).builder = DVEW.getBuilder();
 (self as any).dt = DVEW.getDataTool();
-(self as any).VR = VoxelReader;
+
 (self as any).DVEW = DVEW;

@@ -13,7 +13,7 @@ export const WorldGen = {
  genChunks: <Record<string, boolean>>{},
 
  generateFountian(x: number, y: number, z: number) {
-  brush.setId("dve:dreadstone").setState(1);
+  brush.setId("dve_dreadstone").setState(1);
 
   //eyes
   brush.setXYZ(x, y, z).paint();
@@ -44,7 +44,7 @@ export const WorldGen = {
   brush.setXYZ(x + 2, y, z + 1).paint();
 
   //liquid
-  brush.setId("dve:liquiddreadether");
+  brush.setId("dve_liquiddreadether");
   brush.setXYZ(x - 1, y, z - 1).paint();
   brush.setXYZ(x + 1, y, z - 1).paint();
 
@@ -57,7 +57,7 @@ export const WorldGen = {
   tasks.flow.update.add(x - 1, y, z + 1);
   tasks.flow.update.add(x + 1, y, z + 1);
 
-  brush.setId("dve:dreadstone").setState(1);
+  brush.setId("dve_dreadstone").setState(1);
   let i = y;
   while (i--) {
    brush.setXYZ(x, i, z).paint();
@@ -92,10 +92,10 @@ export const WorldGen = {
 
      if (pillar) {
       if (y < waterLevel + pillarHeight) {
-       brush.setId("dve:dreadstonepillar").paint();
+       brush.setId("dve_dreadstonepillar").paint();
       }
       if (y == waterLevel + pillarHeight) {
-       brush.setId("dve:dreadlamp").paint();
+       brush.setId("dve_dreadlamp").paint();
       }
       continue;
      }
@@ -105,13 +105,13 @@ export const WorldGen = {
        dreadStoneState = 0;
       }
       if (y <= spikeHeight) {
-       brush.setId("dve:dreadstone").setState(dreadStoneState).paint();
+       brush.setId("dve_dreadstone").setState(dreadStoneState).paint();
       }
       if (y > waterLevel && y == spikeHeight + 1 && Math.random() > 0.9) {
-       brush.setId("dve:dreadstone").setState(dreadStoneState).paint();
+       brush.setId("dve_dreadstone").setState(dreadStoneState).paint();
       }
       if (y <= waterLevel && y > spikeHeight) {
-       brush.setId("dve:liquiddreadether").paint();
+       brush.setId("dve_liquiddreadether").paint();
       }
       continue;
      }

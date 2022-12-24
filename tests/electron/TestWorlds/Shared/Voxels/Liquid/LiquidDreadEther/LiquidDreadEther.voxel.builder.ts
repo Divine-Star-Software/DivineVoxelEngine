@@ -2,7 +2,7 @@ import type { VoxelConstructorObject } from "out/Meta/index.js";
 
 let uv = 0;
 export const LiquidDreadEtherVoxelBuilderThread: VoxelConstructorObject = {
- id: "dve:liquiddreadether",
+ id: "dve_liquiddreadether",
  hooks: {
   texturesRegistered: (DVEB) => {
    uv = DVEB.textureManager.getTextureUV(

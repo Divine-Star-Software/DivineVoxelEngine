@@ -1,49 +1,54 @@
-import {
- PlayerStatesIndexes,
- PlayerStatesValues,
-} from "../Shared/Player.data.js";
-import type { DivineVoxelEnginePhysics } from "../../../../out/Physics/DivineVoxelEnginePhysics.js";
+import { PlayerStatesValues } from "../Shared/Player.data.js";
+import { DVP as Physics} from "../../../../out/Plugins/Physics/Nexus/DivineVoxelPhysics.js";
 import { DivineVoxelEngineNexus } from "../../../../out/Nexus/DivineVoxelEngineNexus.js";
-import { DataTool } from "../../../../out/Tools/Data/DataTool.js";
+import { PlayerData } from "../Shared/PlayerData.js";
+import { PlayerTagManger } from "./PlayerTagManager.js";
 
 export const GetNexusPlayer = async (
  DVEN: DivineVoxelEngineNexus,
- DVEPH: DivineVoxelEnginePhysics,
+ DVP: typeof Physics,
  waitForMessageFromWorld = false
 ) => {
- const gravity = -0.1;
-
- const playerPositionSAB = new SharedArrayBuffer(4 * 3);
- const playerPosition = new Float32Array(playerPositionSAB);
-
- DVEN.parentComm.listenForMessage("request-player-states", (data) => {
-  DVEN.parentComm.sendMessage("connect-player-data", [playerPositionSAB]);
+ const remoteData = PlayerTagManger.$INIT({
+  indexBufferMode: "shared",
  });
 
- let playerDirection = new Float32Array();
- let playerStates = new Uint8Array();
+ const playerDataSAB = new SharedArrayBuffer(remoteData.bufferSize);
+ PlayerTagManger.setBuffer(playerDataSAB);
 
- let ready = false;
-
- DVEN.parentComm.listenForMessage("connect-player-states", (data) => {
-  playerDirection = new Float32Array(data[1]);
-  playerStates = new Uint8Array(data[2]);
-  ready = true;
+ PlayerData.$INIT(PlayerTagManger, ["", playerDataSAB, null]);
+ let renderReady = false;
+ DVEN.parentComm.listenForMessage("request-player-tags", (data) => {
+  DVEN.parentComm.sendMessage("connect-player-tags", [
+   playerDataSAB,
+   remoteData,
+  ]);
+  renderReady = true;
+ });
+ DVEN.worldComm.listenForMessage("request-player-tags", (data) => {
+  DVEN.worldComm.sendMessage("connect-player-tags", [
+   playerDataSAB,
+   remoteData,
+  ]);
+  renderReady = true;
  });
 
  await DVEN.UTIL.createPromiseCheck({
   checkInterval: 1,
-  check: () => ready,
+  check: () => renderReady,
  });
 
- const player = DVEN.UTIL.merge(DVEPH.createEntityObject(), {
+ const gravity = -0.1;
+
+ const player = DVEN.UTIL.merge(DVP.createEntityObject(), {
   states: {
    cilmbingStair: false,
    inWater: false,
    onLadder: false,
   },
-  finalDirection: DVEPH.math.getVector3(0, 0, 0),
-  sideDirecton: DVEPH.math.getVector3(0, 0, 0),
+  msterialStandingOn: "none",
+  finalDirection: DVP.math.getVector3(0, 0, 0),
+  sideDirection: DVP.math.getVector3(0, 0, 0),
   speed: 0.05,
   runSpeed: 0.05,
   hitBox: { w: 0.8, h: 1.8, d: 0.8 },
@@ -55,60 +60,44 @@ export const GetNexusPlayer = async (
   },
   movementFunctions: <Record<number, Function>>{},
   gravityAcceleration: 0,
-  playerStates: new Uint8Array(),
-  playerDirection: new Float32Array(),
-  playerPosition: new Float32Array(),
-  $INIT(
-   playerStates: Uint8Array,
-   playerDirection: Float32Array,
-   playerPosition: Float32Array
-  ) {
-   player.playerStates = playerStates;
-   player.playerDirection = playerDirection;
-   player.playerPosition = playerPosition;
+
+  $INIT() {
    player.setPosition(10, 80, 7);
    player.cachePosition();
-   player.syncPosition(playerPosition);
    player.velocity.y = gravity;
+   player.syncPosition(PlayerData.position);
   },
   controlsUpdate() {
    //reset direction
    player.finalDirection.scaleXYZ(0);
    //get forward direction from where the player is looking
    player.direction.updateVector(
-    player.playerDirection[0],
+    PlayerData.direction.x,
     0,
-    player.playerDirection[2]
+    PlayerData.direction.z
    );
    player.direction.normalize();
    //get side direction from where the player is looking
-   player.sideDirecton.updateVector(
-    player.playerDirection[3],
+   player.sideDirection.updateVector(
+    PlayerData.sideDirection.x,
     0,
-    player.playerDirection[5]
+    PlayerData.sideDirection.z
    );
-   player.sideDirecton.normalize();
+   player.sideDirection.normalize();
    //apply any changes on the direction vector based on player's state
-   player.movementFunctions[
-    player.playerStates[PlayerStatesIndexes.movement]
-   ]();
-   player.movementFunctions[
-    player.playerStates[PlayerStatesIndexes.secondaryMovment]
-   ]();
+   player.movementFunctions[PlayerData.states.movement]();
+   player.movementFunctions[PlayerData.states.secondaryMovement]();
 
    //finally add, nomalize, then scale
    player.finalDirection.addFromVec3(player.direction);
-   player.finalDirection.addFromVec3(player.sideDirecton);
+   player.finalDirection.addFromVec3(player.sideDirection);
    if (!player.finalDirection.isZero()) {
     player.finalDirection.normalize();
    }
    player.finalDirection.scaleXYZ(player.getSpeed());
 
    //set the player's velcoity based on their state
-   if (
-    player.playerStates[PlayerStatesIndexes.movement] ||
-    player.playerStates[PlayerStatesIndexes.secondaryMovment]
-   ) {
+   if (PlayerData.states.movement || PlayerData.states.secondaryMovement) {
     player.velocity.x = player.finalDirection.x;
     player.velocity.z = player.finalDirection.z;
    }
@@ -122,13 +111,13 @@ export const GetNexusPlayer = async (
 
    //player jump
    if (
-    player.playerStates[PlayerStatesIndexes.jumping] &&
+    PlayerData.states.jumping &&
     !player.jumpStates.jumping &&
     (player.onGround || player.states.inWater)
    ) {
     player.jumpStates.jumping = true;
     player.velocity.y = 0.1;
-    player.playerStates[PlayerStatesIndexes.jumping] = 0;
+    PlayerData.states.jumping = 0;
    }
 
    if (player.jumpStates.jumping) {
@@ -157,10 +146,7 @@ export const GetNexusPlayer = async (
    }
   },
   getSpeed() {
-   return (
-    player.playerStates[PlayerStatesIndexes.running] * player.runSpeed +
-    player.speed
-   );
+   return PlayerData.states.running * player.runSpeed + player.speed;
   },
   beforeUpdate() {
    player.states.inWater = false;
@@ -177,6 +163,24 @@ export const GetNexusPlayer = async (
     }
    }
    player.controlsUpdate();
+   if (player.onGround) {
+    if (
+     player.dataTool.loadIn(
+      player.position.x >> 0,
+      (player.position.y - 1) >> 0,
+      player.position.z >> 0
+     ) 
+    ) {
+     let material = player.dataTool.getMaterial();
+
+     if (material != this.msterialStandingOn) {
+      this.msterialStandingOn = material;
+      DVEN.parentComm.sendMessage("set-material", [material]);
+     }
+    }
+   }
+   PlayerData.states.onGround = player.onGround;
+   PlayerData.states.inWater = player.states.inWater;
    if (player.states.cilmbingStair) {
     player.setVelocity(0, 1, -1.5);
     player.velocity.scaleXYZ(player.getSpeed());
@@ -184,7 +188,7 @@ export const GetNexusPlayer = async (
    player.states.cilmbingStair = false;
   },
   afterUpdate() {
-   player.syncPosition(player.playerPosition);
+   player.syncPosition(PlayerData.position);
   },
  });
 
@@ -192,7 +196,7 @@ export const GetNexusPlayer = async (
   player.direction.scaleXYZ(0);
  };
  player.movementFunctions[PlayerStatesValues.secondaryStill] = () => {
-  player.sideDirecton.scaleXYZ(0);
+  player.sideDirection.scaleXYZ(0);
  };
  player.movementFunctions[PlayerStatesValues.walkingForward] = () => {};
  player.movementFunctions[PlayerStatesValues.walkingBackward] = () => {
@@ -200,7 +204,7 @@ export const GetNexusPlayer = async (
  };
  player.movementFunctions[PlayerStatesValues.walkingLeft] = () => {};
  player.movementFunctions[PlayerStatesValues.walkingRight] = () => {
-  player.sideDirecton.scaleXYZ(-1);
+  player.sideDirection.scaleXYZ(-1);
  };
 
  player.doCollision = (colliderName, colliderData) => {
@@ -221,7 +225,7 @@ export const GetNexusPlayer = async (
   player.states.cilmbingStair = false;
  };
 
- player.$INIT(playerStates, playerDirection, playerPosition);
+ player.$INIT();
 
  const runUpdate = () => {
   setTimeout(() => {

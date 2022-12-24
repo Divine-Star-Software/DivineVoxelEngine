@@ -4,14 +4,19 @@ import { WorldGen } from "./WorldGen/WorldGen.js";
 RegisterVoxels(DVEW);
 
 await DVEW.$INIT();
+
+const builder = DVEW.getBuilder();
+const brush = DVEW.getBrush();
+
 const depth = 64;
+
 let startX = -depth;
 let startZ = -depth;
 let endX = depth;
 let endZ = depth;
 for (let x = startX - 16; x < endX + 16; x += 16) {
  for (let z = startZ - 16; z < endZ + 16; z += 16) {
-  DVEW.data.worldRegister.column.fill(0, x, z);
+  builder.setXZ(x, z).fillColumn();
  }
 }
 
@@ -21,14 +26,11 @@ for (let x = startX; x < endX; x += 16) {
  }
 }
 
-const brush = DVEW.getBrush();
-
-brush.setId("dve:dreamstone-stair");
+brush.setId("dve_dreamstone-stair");
 for (let i = 0; i < 6; i++) {
  brush.setXYZ(7, 6 + i, 5 - i);
 }
 
-const builder = DVEW.getBuilder();
 for (let x = startX; x < endX; x += 16) {
  for (let z = startZ; z < endZ; z += 16) {
   builder.setXZ(x, z).buildColumn();

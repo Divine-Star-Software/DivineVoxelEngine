@@ -1,15 +1,6 @@
 import { Flat3DArray } from "../Util/Flat3DArray.js";
 import { HeightMapArray } from "./Chunk/HeightMapArray.js";
 const __maxChunkYSize = 128;
-const maxBounds = Object.freeze({
-    minZ: -32_000_000,
-    maxZ: 32_000_000,
-    minX: -32_000_000,
-    maxX: 32_000_000,
-    minY: -32_000_000,
-    maxY: 32_000_000,
-});
-const maxWorldXZSize = 32_000_000;
 /**# World Bounds
  * ---
  * This holds the data for the size of chunks, regions, and the world.

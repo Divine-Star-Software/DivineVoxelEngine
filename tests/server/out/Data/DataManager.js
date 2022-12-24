@@ -1,7 +1,7 @@
 import { ChunkSpace } from "./World/Chunk/ChunkSpace.js";
 import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
 import { Register } from "./Register/Register.js";
-import { VoxelTags } from "./Voxel/VoxelData.js";
+import { VoxelTags } from "./Voxel/VoxelTags.js";
 import { WorldBounds } from "./World/WorldBounds.js";
 import { WorldPainter } from "./World/WorldPainter.js";
 import { WorldRegister } from "./World/WorldRegister.js";

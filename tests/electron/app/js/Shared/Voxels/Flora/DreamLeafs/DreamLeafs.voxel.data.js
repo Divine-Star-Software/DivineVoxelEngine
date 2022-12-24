@@ -1,7 +1,7 @@
 export const DreamLeafsVoxelData = {
     name: "Dream Leafs",
     shapeId: "Box",
-    id: "dve:dream-leafs",
+    id: "dve_dream-leafs",
     substance: "flora",
     material: "grass",
     hardnress: 1000,

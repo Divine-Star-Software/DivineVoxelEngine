@@ -12,10 +12,10 @@ export const WorldGen = {
                 for (let y = 0; y < this.chunkHeight; y++) {
                     brush.setXYZ(x + chunkX, y + chunkY, z + chunkZ);
                     if (y <= baseY + 5) {
-                        brush.setId("dve:dreadstonepillar").paint();
+                        brush.setId("dve_dreadstonepillar").paint();
                     }
                     if (y == baseY + 5 && x == 1 && z == 1) {
-                        brush.setId("dve:dreadlamp").paint();
+                        brush.setId("dve_dreadlamp").paint();
                     }
                 }
             }

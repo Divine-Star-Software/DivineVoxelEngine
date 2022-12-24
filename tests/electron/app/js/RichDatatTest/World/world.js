@@ -39,7 +39,7 @@ await DVEW.$INIT();
 generate();
 const brush = DVEW.getBrush();
 for (let i = 13; i > -2; i -= 2) {
-    brush.setId("dve:dataholder").setXYZ(i, 31, 31).paint();
+    brush.setId("dve_dataholder").setXYZ(i, 31, 31).paint();
 }
 load();
 await DVEW.UTIL.createPromiseCheck({
@@ -89,11 +89,11 @@ setInterval(() => {
         break;
     }
 }, 20);
-DVEW.createItem("dve:debug-item", 3, 35, 0);
-DVEW.createItem("dve:dreamvine-item", 3, 35, 5);
+DVEW.createItem("dve_debug-item", 3, 35, 0);
+DVEW.createItem("dve_dreamvine-item", 3, 35, 5);
 /* DVEW.entityConstructor.begin(3, 3, 3);
 DVEW.entityConstructor.fillLight(15, 15, 15, 15);
-DVEW.entityConstructor.addVoxel("dve:dreamstone-stair", 0, 0, 1, 1, 1);
+DVEW.entityConstructor.addVoxel("dve_dreamstone-stair", 0, 0, 1, 1, 1);
 DVEW.entityConstructor.build(8, 33, 0);
 
 

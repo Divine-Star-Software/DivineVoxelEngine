@@ -4,24 +4,29 @@ export const SharedVertexShader = {
   `,
     standardPositionMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
-  gl_Position = worldViewProjection * vec4(position, 1.0); 
+  gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
+  `,
+    standardPositioFOnMain: `
+  vec4 worldPosition = world * vec4(position, 1.0);
+  gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
   `,
     uniforams: `
-  uniform mat4 worldViewProjection;
-  uniform mat4 world;      
-  uniform vec3 worldMatrix;       
-  uniform vec3 cameraPosition;         
-  uniform mat4 view;                    
-  uniform mat4 viewProjection;       
-  uniform float doEffects;      
-  uniform vec4 fogOptions;      
+uniform mat4 worldViewProjection;
+uniform mat4 world;      
+uniform vec3 worldMatrix;       
+uniform vec3 cameraPosition;         
+uniform mat4 view;                    
+uniform mat4 viewProjection;       
+uniform float doEffects;      
+uniform vec4 fogOptions;      
+uniform vec3 worldOrigin;
   `,
     attributes(ao = true) {
         let attributes = `
   ${SharedVertexShader.defaultAttributes}
   attribute vec3 cuv3;
   attribute vec4 ocuv3;
-  attribute float faceData;
+  attribute float faceData; 
   attribute vec4 lightColors;
   attribute vec4 colors;
   `;
@@ -161,19 +166,20 @@ export const SharedVertexShader = {
  vec4 temp =  world * vec4(position, 1.0);
  worldPOS = vec3(temp.x,temp.y,temp.z);
  vDistance = distance(worldPOS, cameraPOS);
- mipMapLevel = 3.;
- if(vDistance <= 20.) {
+ mipMapLevel = 0.;
+ if(vDistance <= 30.) {
   mipMapLevel = 0.;
  }
- if(vDistance > 20. &&  vDistance < 30.) {
+ if(vDistance > 30. &&  vDistance <= 40.) {
   mipMapLevel = 1.;
  }
- if(vDistance > 30. && vDistance < 40.) {
+ if(vDistance > 40. && vDistance < 50.) {
    mipMapLevel = 2.;
  }
  if(vDistance >= 50.) {
   mipMapLevel = 3.;
   }
+
  `,
     getAnimationType: `
  int getAnimationType() {

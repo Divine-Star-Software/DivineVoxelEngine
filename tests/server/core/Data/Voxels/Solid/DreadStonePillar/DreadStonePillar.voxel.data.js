@@ -1,7 +1,7 @@
 export const DreadStonePillarVoxelData = {
     name: "Dread Stone Pillar",
     shapeId: "Box",
-    id: "dve:dreadstonepillar",
+    id: "dve_dreadstonepillar",
     substance: "solid",
     material: "stone",
     hardnress: 1000,

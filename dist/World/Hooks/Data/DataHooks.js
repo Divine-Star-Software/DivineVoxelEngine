@@ -1,5 +1,5 @@
 import { DataHooks } from "../../../Data/DataHooks.js";
-import { DataCreator } from "../../Data/Creator.js";
+import { WorldDataGenerator } from "../../Data/Generators/WorldDataGenerator.js";
 import { DataSync } from "../../Data/DataSync.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 export const RegisterDataHooks = () => {
@@ -7,22 +7,22 @@ export const RegisterDataHooks = () => {
     /*
    [chunks]
    */
-    DataHooks.chunk.onGetAsync.addToRun(async () => DataCreator.chunk.getBuffer());
-    DataHooks.chunk.onGetSync.addToRun(() => DataCreator.chunk.getBuffer());
+    DataHooks.chunk.onGetAsync.addToRun(async () => WorldDataGenerator.chunk.getBuffer());
+    DataHooks.chunk.onGetSync.addToRun(() => WorldDataGenerator.chunk.getBuffer());
     DataHooks.chunk.onNew.addToRun(async (data) => {
         DataSync.chunk.sync(data[0], data[1], data[2], data[3]);
     });
     /*
    [columns]
    */
-    DataHooks.column.onGetAsync.addToRun(async () => DataCreator.column.getBuffer());
-    DataHooks.column.onGetSync.addToRun(() => DataCreator.column.getBuffer());
+    DataHooks.column.onGetAsync.addToRun(async () => WorldDataGenerator.column.getBuffer());
+    DataHooks.column.onGetSync.addToRun(() => WorldDataGenerator.column.getBuffer());
     DataHooks.column.onNew.addToRun(async (data) => DataSync.column.sync(data[0], data[1], data[2], data[3]));
     /*
    [region]
    */
-    DataHooks.region.onGetAsync.addToRun(async () => DataCreator.region.getBuffer());
-    DataHooks.region.onGetSync.addToRun(() => DataCreator.region.getBuffer());
+    DataHooks.region.onGetAsync.addToRun(async () => WorldDataGenerator.region.getBuffer());
+    DataHooks.region.onGetSync.addToRun(() => WorldDataGenerator.region.getBuffer());
     DataHooks.region.onNew.addToRun(async (data) => {
         DataSync.region.sync(data[0], data[1], data[2], data[3]);
     });

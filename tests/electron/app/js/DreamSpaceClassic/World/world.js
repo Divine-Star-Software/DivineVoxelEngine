@@ -6,12 +6,12 @@ RegisterVoxels(DVEW);
 const brush = DVEW.getBrush();
 DVEW.parentComm.listenForMessage("voxel-add", (data, event) => {
     brush
-        .setId("dve:dreamstone")
+        .setId("dve_dreamstone")
         .setXYZ(data[1], data[2], data[3])
         .paintAndUpdate();
 });
 DVEW.parentComm.listenForMessage("voxel-remove", (data, event) => {
-    brush.setXYZ(data[1], data[2], data[3]).ereaseAndUpdate();
+    brush.setXYZ(data[1], data[2], data[3]).eraseAndUpdate();
 });
 await DVEW.$INIT();
 console.log("start");

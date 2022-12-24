@@ -5,7 +5,6 @@ import { WorldComm } from "./Threads/World/WorldComm.js";
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
-import { VoxelManager } from "../Data/Voxel/VoxelManager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
@@ -21,7 +20,6 @@ export const DVEN = {
     worldComm: WorldComm,
     parentComm: ParentComm,
     nexusEntites: NexusEntites,
-    voxelManager: VoxelManager,
     async $INIT() {
         await InitNexusWorker(this);
     },

@@ -10,10 +10,10 @@ export const WorldGen = {
                 for (let y = 0; y < 50; y++) {
                     brush.setXYZ(x, y, z);
                     if (y > baseY && y <= maxY) {
-                        brush.setId("dve:liquiddreamether").paint();
+                        brush.setId("dve_liquiddreamether").paint();
                     }
                     if (y == baseY) {
-                        brush.setId("dve:dreamstone").paint();
+                        brush.setId("dve_dreamstone").paint();
                     }
                 }
             }

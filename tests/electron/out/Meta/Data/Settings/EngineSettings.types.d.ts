@@ -26,6 +26,9 @@ export declare type EngineSettingsData = {
         height: number;
         animationTime: number;
     };
+    floatingOrigin: {
+        enable: boolean;
+    };
     world: {
         maxX: number;
         minX: number;
