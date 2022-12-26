@@ -14,14 +14,10 @@ type DVESaveMessages = {
 type DVEMessages = DVELoadMessages | DVESaveMessages;
 
 const getRegionName = (location: LocationData) => {
- return `region_${location[0]}_${location[1]}_${location[2]}-${location[3]}.dved`;
+ return `region_${location[0]}_${location[1]}_${location[2]}_${location[3]}.dved`;
 };
 
-const getMatching = (item: string, regex: RegExp) => {
- const matching = item.match(regex);
- if (!matching) return false;
- return matching[0];
-};
+
 const server = http.createServer(function (request, response) {
  if (request.method == "POST") {
   console.log("POST");
@@ -31,10 +27,11 @@ const server = http.createServer(function (request, response) {
   const contentType = request.headers["content-type"] || "";
   if (contentType.includes("dve")) {
    messageType = "dve";
-   //  request.setEncoding("latin1");
+    request.setEncoding("utf8");
   }
   request.on("data", function (data) {
    body += data;
+   console.log("adding data")
   });
   request.on("end", async function () {
    if (messageType == "json") {
@@ -48,6 +45,7 @@ const server = http.createServer(function (request, response) {
        encoding: "utf8",
       }
      );
+     console.log(regionString.length);
      response.end(regionString);
     }
    }
@@ -66,11 +64,14 @@ const server = http.createServer(function (request, response) {
      jsonString += char;
     }
     const json = <DVEMessages>JSON.parse(jsonString);
+    console.log(body.length);
     const regionString = body.substring(finalCount);
+    console.log(body.substring(0,finalCount + 10))
     await fs.writeFile(`./data/${getRegionName(json.location)}`, regionString, {
      encoding: "utf8",
     });
     console.log(json);
+    console.log(regionString.length);
     // console.log(JSON.parse(jsonString));
     response.end("1");
    }
@@ -87,6 +88,8 @@ const server = http.createServer(function (request, response) {
   response.end(html);
  }
 });
+
+
 
 const port = 3000;
 const host = "127.0.0.1";

@@ -62,13 +62,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var http = __importStar(require("http"));
 var fs = __importStar(require("fs/promises"));
 var getRegionName = function (location) {
-    return "region_".concat(location[0], "_").concat(location[1], "_").concat(location[2], "-").concat(location[3], ".dved");
-};
-var getMatching = function (item, regex) {
-    var matching = item.match(regex);
-    if (!matching)
-        return false;
-    return matching[0];
+    return "region_".concat(location[0], "_").concat(location[1], "_").concat(location[2], "_").concat(location[3], ".dved");
 };
 var server = http.createServer(function (request, response) {
     if (request.method == "POST") {
@@ -78,10 +72,11 @@ var server = http.createServer(function (request, response) {
         var contentType = request.headers["content-type"] || "";
         if (contentType.includes("dve")) {
             messageType_1 = "dve";
-            //  request.setEncoding("latin1");
+            request.setEncoding("utf8");
         }
         request.on("data", function (data) {
             body_1 += data;
+            console.log("adding data");
         });
         request.on("end", function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -99,6 +94,7 @@ var server = http.createServer(function (request, response) {
                                 })];
                         case 1:
                             regionString = _a.sent();
+                            console.log(regionString.length);
                             response.end(regionString);
                             _a.label = 2;
                         case 2:
@@ -118,13 +114,16 @@ var server = http.createServer(function (request, response) {
                                 jsonString += char;
                             }
                             json = JSON.parse(jsonString);
+                            console.log(body_1.length);
                             regionString = body_1.substring(finalCount);
+                            console.log(body_1.substring(0, finalCount + 10));
                             return [4 /*yield*/, fs.writeFile("./data/".concat(getRegionName(json.location)), regionString, {
                                     encoding: "utf8",
                                 })];
                         case 3:
                             _a.sent();
                             console.log(json);
+                            console.log(regionString.length);
                             // console.log(JSON.parse(jsonString));
                             response.end("1");
                             _a.label = 4;

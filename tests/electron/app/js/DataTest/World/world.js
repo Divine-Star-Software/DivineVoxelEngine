@@ -13,7 +13,7 @@ const generate = () => {
     for (let x = startX; x <= endX; x += 16) {
         for (let z = startZ; z <= endZ; z += 16) {
             WorldGen.generateChunk(x, z);
-            builder.setXZ(x, z);
+            builder.setXZ(x, z).fillColumn();
         }
     }
 };
@@ -40,4 +40,4 @@ const load = async () => {
     console.log("done");
     build();
 };
-await save();
+await load();

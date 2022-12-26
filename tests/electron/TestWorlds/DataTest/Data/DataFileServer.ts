@@ -19,7 +19,7 @@ export const DataFileServer = {
    regionArray[i] = text[i].charCodeAt(0);
   }
   const unCompressed = await CrystalCompressor.decompressArray(
-   regionArray,
+   regionArray.buffer,
    "Uint8"
   );
   return unCompressed.buffer;

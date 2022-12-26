@@ -16,7 +16,7 @@ export const DataFileServer = {
         for (let i = 0; i < length; i++) {
             regionArray[i] = text[i].charCodeAt(0);
         }
-        const unCompressed = await CrystalCompressor.decompressArray(regionArray, "Uint8");
+        const unCompressed = await CrystalCompressor.decompressArray(regionArray.buffer, "Uint8");
         return unCompressed.buffer;
     },
     async saveRegion(location, buffer) {
