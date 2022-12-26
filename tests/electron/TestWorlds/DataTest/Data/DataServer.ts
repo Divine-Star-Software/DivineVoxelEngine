@@ -1,4 +1,4 @@
-const ready = { ready: false };
+/* const ready = { ready: false };
 const socket = new WebSocket("ws://127.0.0.1:8080");
 socket.binaryType = "arraybuffer";
 socket.addEventListener("open", (event) => {
@@ -65,3 +65,4 @@ export const DataServer = {
   this.socket.send(data);
  },
 };
+ */

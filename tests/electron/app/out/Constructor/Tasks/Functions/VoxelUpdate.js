@@ -1,4 +1,3 @@
-import { ConstructorRemoteThreadTasks } from "../../../Common/Threads/Contracts/WorldTasks.js";
 import { Propagation } from "../../Propagation/Propagation.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
@@ -14,13 +13,7 @@ const addToRebuildQue = (dimension, rebuildQueue, x, y, z, comm) => {
     for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
         const n = $3dMooreNeighborhood[i];
         const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
-        comm.runTasks(ConstructorRemoteThreadTasks.addToRebuildQue, [
-            dimension,
-            chunkPOS.x,
-            chunkPOS.y,
-            chunkPOS.z,
-            rebuildQueue
-        ]);
+        Propagation.addToRebuildQue(chunkPOS.x, chunkPOS.y, chunkPOS.z, "all");
     }
 };
 const updateLight = (x, y, z) => {
@@ -55,6 +48,7 @@ export async function EreaseAndUpdate(data) {
     const rebuildQueue = data[4];
     const threadId = data[5];
     dataTool.setDimension(dimension).loadIn(x, y, z);
+    Propagation.setBuildData(dimension, rebuildQueue);
     if (ES.doFlow()) {
         const substance = dataTool.getSubstance();
         if (substance == "liquid" || substance == "magma") {
@@ -88,9 +82,7 @@ export async function EreaseAndUpdate(data) {
     }
     const thread = ThreadComm.getComm(threadId);
     addToRebuildQue(dimension, rebuildQueue, x, y, z, thread);
-    thread.runTasks(ConstructorRemoteThreadTasks.runRebuildQue, [
-        rebuildQueue,
-    ]);
+    Propagation.runRebuildQue();
     return true;
 }
 export async function PaintAndUpdate(data) {
@@ -104,6 +96,7 @@ export async function PaintAndUpdate(data) {
     const tasks = [dimension, x, y, z, rebuildQueue, threadId];
     brushTool.setDimension(dimension).setXYZ(x, y, z).setRaw(raw);
     dataTool.setDimension(dimension).loadIn(x, y, z);
+    Propagation.setBuildData(dimension, rebuildQueue);
     let doRGB = ES.doRGBPropagation();
     let doSun = ES.doSunPropagation();
     lighttest: if (ES.doLight()) {
@@ -133,9 +126,7 @@ export async function PaintAndUpdate(data) {
     }
     const thread = ThreadComm.getComm(threadId);
     addToRebuildQue(dimension, rebuildQueue, x, y, z, thread);
-    thread.runTasks(ConstructorRemoteThreadTasks.runRebuildQue, [
-        rebuildQueue,
-    ]);
+    Propagation.runRebuildQue();
     if (ES.doFlow()) {
         const substance = brushTool._dt.getSubstance();
         if (substance == "liquid" || substance == "magma") {

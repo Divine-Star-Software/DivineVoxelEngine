@@ -11,13 +11,11 @@ import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
 export const RenderTasks = {
  setChunk: ThreadComm.registerTasks<SetChunkMeshTask>("set-chunk", (data) => {
   DVER.meshManager.updateChunk(data);
-
-
  }),
  removeChunk: ThreadComm.registerTasks<RemoveChunkMeshTasks>(
   "remove-chunk",
   (data) => {
-DVER.meshManager.removeChunk(data);
+   DVER.meshManager.removeChunk(data);
   }
  ),
  removeColumn: ThreadComm.registerTasks<LocationData>(

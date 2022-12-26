@@ -1,6 +1,6 @@
 //Data
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { ChunkDataTool } from "./ChunkDataTool.js";
+import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 export class HeightMapTool {
     static _chunkTool = new ChunkDataTool();

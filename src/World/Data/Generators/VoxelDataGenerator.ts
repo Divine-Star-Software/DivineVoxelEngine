@@ -95,8 +95,6 @@ export const VoxelDataGenerator = {
    }
   }
 
-
-  console.log(materialMap);
   this.initData = initData;
   DVEW.data.voxelTags.colliderMap = colliderMap;
   DVEW.data.voxelTags.materialMap = materialMap;

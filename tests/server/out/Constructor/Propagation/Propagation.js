@@ -30,6 +30,10 @@ export const Propagation = {
             DVEC.worldComm.runTasks(ConstructorRemoteThreadTasks.addToRebuildQue, [this._dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z, this._buildQueue]);
         }
     },
+    setBuildData(dimension, buildQueue) {
+        this._dimension = dimension;
+        this._buildQueue = buildQueue;
+    },
     _process(data) {
         this._dimension = data[0];
         this._buildQueue = data[4];

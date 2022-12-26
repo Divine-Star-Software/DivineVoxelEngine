@@ -147,6 +147,7 @@ export declare const Propagation: {
     _dimension: string;
     _buildQueue: string;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
+    setBuildData(dimension: string, buildQueue: string): void;
     _process(data: UpdateTasksO): void;
     resetRebuildQue(): void;
     runRebuildQue(): void;

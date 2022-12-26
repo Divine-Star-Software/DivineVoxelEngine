@@ -1,3 +1,4 @@
+import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 export class DataToolBase {
     tags;
     _c;
@@ -28,6 +29,13 @@ export class DataToolBase {
         this.tags.setBuffer(this._c);
         return this.tags.setArrayTagValue(id, index, value);
     }
+    setBuffer(buffer) {
+        this._c = buffer;
+        this.tags.setBuffer(this._c);
+    }
+    getBufferSize() {
+        return this.tags.tagSize;
+    }
 }
 export class PositionBoundDataTool extends DataToolBase {
     getPosition() {
@@ -41,5 +49,15 @@ export class PositionBoundDataTool extends DataToolBase {
         this.setTagValue("#dve_p_y", y);
         this.setTagValue("#dve_p_z", z);
         return this.position;
+    }
+    setDimensionId(dimensionId) {
+        this.setTagValue("#dve_dimension_id", DimensionsRegister.getDimensionNumericId(dimensionId));
+    }
+    getDimensionId() {
+        return DimensionsRegister.getDimensionStringId(this.getTagValue("#dve_dimension_id"));
+    }
+    getLocationData() {
+        const pos = this.getPosition();
+        return [this.getDimensionId(), pos.x, pos.y, pos.z];
     }
 }

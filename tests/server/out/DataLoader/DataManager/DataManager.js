@@ -2,10 +2,21 @@
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 //objects
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
+import { RegionDataTool } from "../../Tools/Data/RegionDataTool.js";
+import { ColumnDataTool } from "../../Tools/Data/ColumnDataTool.js";
+import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
 export const DataManager = {
     dataHanlder: null,
+    regions: {},
+    columns: {},
+    chunks: {},
     setDataHandler(handler) {
         this.dataHanlder = handler;
+    },
+    $INIT() {
+        this.regions = new RegionDataTool();
+        this.columns = new ColumnDataTool();
+        this.chunks = new ChunkDataTool();
     },
     saveChunk(x, y, z) { },
     loadChunk(x, y, z) { },
@@ -77,68 +88,33 @@ export const DataManager = {
         return this._pos;
     },
     //this is just a test of converting a whole region into a typed array
-    saveRegion(x, y, z) {
-        /* if (!this.dataHanlder) {
-         throw new Error("A data hanlder must be set.");
+    saveRegion(dimesnon, x, y, z) {
+        if (!this.regions.setDimension(dimesnon).loadIn(x, y, z))
+            return false;
+        const dataCount = this.regions.getRegionDataCount();
+        const bufferTotalSize = this.regions.getBufferSize() +
+            dataCount.chunks * this.chunks.getBufferSize() +
+            dataCount.columns * this.columns.getBufferSize();
+        const regionBuffer = new ArrayBuffer(bufferTotalSize);
+        const regionArray = new Uint8Array(regionBuffer);
+        const region = this.regions.getRegion();
+        let offset = this._readDataIntoBuffer(region.buffer, 0, regionArray);
+        region.columns.forEach((column) => {
+            offset += this._readDataIntoBuffer(column.buffer, offset, regionArray);
+            column.chunks.forEach((chunk) => {
+                offset += this._readDataIntoBuffer(chunk.buffer, offset, regionArray);
+            });
+        });
+        return regionBuffer;
+    },
+    _readDataIntoBuffer(source, offset, target) {
+        let newOffset = offset;
+        const bufferArray = new Uint8Array(source);
+        for (let i = 0; i < bufferArray.length; i++) {
+            target[i + offset] = bufferArray[i];
+            newOffset++;
         }
-        const region = DVED.worldMatrix.getRegion(x, y, z);
-        if (!region) {
-         console.warn(`Region ${x}-${y}-${z} does not exists!`);
-         return;
-        }
-      
-        let totalChunks = 0;
-        for (const worldColumnKey of Object.keys(region.chunks)) {
-         totalChunks += Object.keys(region.chunks[worldColumnKey]).length;
-        }
-        const totalSize = this._getRegionBufferSize(totalChunks);
-        const regionBuffer = new ArrayBuffer(totalSize);
-        const regionArray = new Uint32Array(regionBuffer);
-        //set message
-        regionArray[0] = 0;
-        //set chunk voxel and voxel state array size
-        regionArray[1] = DVED.worldBounds.chunkTotalVoxels;
-        regionArray[2] = DVED.worldBounds.chunkArea * 2;
-        regionArray[3] = 2;
-        let currentIndex = 3;
-        currentIndex = this._addPositionToBuffer(x, y, z, regionArray, currentIndex);
-        currentIndex++;
-        for (const worldColumnKey of Object.keys(region.chunks)) {
-         const worldColumn = region.chunks[worldColumnKey];
-         for (const chunkKey of Object.keys(worldColumn)) {
-          const chunk = worldColumn[chunkKey];
-          const position = chunk.position;
-          currentIndex = this._addPositionToBuffer(
-           position[0],
-           position[1],
-           position[2],
-           regionArray,
-           currentIndex
-          );
-      
-          currentIndex = this._addArrayToBuffer(
-           regionArray,
-           currentIndex,
-           chunk.voxels
-          );
-          currentIndex = this._addArrayToBuffer(
-           regionArray,
-           currentIndex,
-           chunk.voxelStates
-          );
-          currentIndex = this._addArrayToBuffer(
-           regionArray,
-           currentIndex,
-           chunk.heightMap
-          );
-          currentIndex = this._addArrayToBuffer(
-           regionArray,
-           currentIndex,
-           chunk.minMaxMap
-          );
-         }
-        }
-        this.dataHanlder.saveRegion(x, y, z, regionArray); */
+        return newOffset;
     },
     _addPositionToBuffer(x, y, z, regionArray, currentIndex) {
         if (x < 0) {

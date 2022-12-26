@@ -70,7 +70,6 @@ export const VoxelDataGenerator = {
                 currentCount++;
             }
         }
-        console.log(materialMap);
         this.initData = initData;
         DVEW.data.voxelTags.colliderMap = colliderMap;
         DVEW.data.voxelTags.materialMap = materialMap;

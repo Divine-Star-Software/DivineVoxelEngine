@@ -23,11 +23,13 @@ import { WorldDataGenerator } from "./Data/Generators/WorldDataGenerator.js";
 import { BuilderTool } from "../Tools/Build/Builder.js";
 import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
-import { ChunkDataTool } from "../Tools/Data/ChunkDataTool.js";
-import { ColumnDataTool } from "../Tools/Data/ColumnDataTool.js";
+import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";
+import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 import { TasksTool } from "../Tools/Tasks/TasksTool.js";
-import { HeightMapTool } from "../Tools/Data/HeightMapTool.js";
+import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
+import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
+import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
@@ -93,6 +95,7 @@ export const DVEW = {
             data: this.getDataTool(),
             chunkData: this.getChunkDataTool(),
             columnData: this.getColumnDataTool(),
+            regonData: this.getRegionTool(),
             heightMap: this.getHeightMapTool(),
             tasks: this.getTasksTool(),
         };
@@ -106,6 +109,9 @@ export const DVEW = {
     getDataTool() {
         return new DataTool();
     },
+    getRegionTool() {
+        return new RegionDataTool();
+    },
     getChunkDataTool() {
         return new ChunkDataTool();
     },
@@ -118,6 +124,9 @@ export const DVEW = {
     getTasksTool() {
         return TasksTool();
     },
+    getDataLoaderTool() {
+        return new DataLoaderTool();
+    }
 };
 DVEW.environment = Util.getEnviorment();
 DVEW.voxelManager.onRegister((voxel) => {

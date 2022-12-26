@@ -1,4 +1,4 @@
-import { ChunkDataTool } from "../Data/ChunkDataTool.js";
+import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 export declare class BuilderTool {
     static _chunkTool: ChunkDataTool;
     data: {

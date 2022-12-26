@@ -1,9 +1,9 @@
 //types
 import type { ChunkData } from "Meta/Data/WorldData.types.js";
 //objects
-import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { ChunkTags } from "../../Data/World/Chunk/ChunkTags.js";
-import { PositionBoundDataTool } from "./DataToolBase.js";
+import { WorldRegister } from "../../../Data/World/WorldRegister.js";
+import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
+import { PositionBoundDataTool } from "../Classes/DataToolBase.js";
 
 export class ChunkDataTool extends PositionBoundDataTool {
  tags = ChunkTags;

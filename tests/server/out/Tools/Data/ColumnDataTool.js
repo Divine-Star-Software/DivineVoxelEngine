@@ -1,6 +1,6 @@
 //objects
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { PositionBoundDataTool } from "./DataToolBase.js";
+import { PositionBoundDataTool } from "./Classes/DataToolBase.js";
 import { ColumnTags } from "../../Data/World/Column/ColumnTags.js";
 export class ColumnDataTool extends PositionBoundDataTool {
     tags = ColumnTags;

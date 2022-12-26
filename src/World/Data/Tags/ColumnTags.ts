@@ -7,6 +7,11 @@ ColumnDataTags.registerTag({
  numberType: "16ui",
 });
 ColumnDataTags.registerTag({
+ id: "#dve_data_type",
+ type: "header",
+ numberType: "16ui",
+});
+ColumnDataTags.registerTag({
  id: "#dve_dimension_id",
  type: "typed-number",
  numberType: "16ui",
@@ -51,7 +56,6 @@ export function InitalizeColumnTags() {
  const initData = ColumnDataTags.$INIT({
   indexBufferMode: "shared",
  });
-
 
  ColumnTags.$INIT(initData);
 }

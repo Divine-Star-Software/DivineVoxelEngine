@@ -1,24 +1,20 @@
 //@ts-ignore
-const { Worker } = require("worker_threads");
-const { app, BrowserWindow, nativeImage,globalShortcut } = require("electron");
-const ipcMain: Electron.IpcMain = require("electron").ipcMain;
-
-const path = require("path");
-
-const { session } = require("electron");
+import { Worker } from "worker_threads";
+import * as path from "path";
+import { app, BrowserWindow, globalShortcut, ipcMain, session } from "electron";
 
 /*
 *fix webgl context lost
 https://github.com/electron/electron/issues/11934
 */
-app.commandLine.appendSwitch('enable-features', "SharedArrayBuffer");
-app.commandLine.appendSwitch('enable-unsafe-webgpu');
+app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer");
+app.commandLine.appendSwitch("enable-unsafe-webgpu");
 app.commandLine.appendSwitch("disable-gpu-process-crash-limit");
 app.disableDomainBlockingFor3DAPIs();
 app.commandLine.appendSwitch("js-flags", "--max-old-space-size=10000");
-app.commandLine.appendSwitch ("disable-http-cache");
+app.commandLine.appendSwitch("disable-http-cache");
 const APP_INIT = async () => {
-/*  session.defaultSession.webRequest.onHeadersReceived(
+ /*  session.defaultSession.webRequest.onHeadersReceived(
   (details: any, callback: any) => {
    //enable headers to enable shared array buffer
    callback({
@@ -31,19 +27,18 @@ const APP_INIT = async () => {
   }
  ); */
  const editorWindow = await CreateMainWindow();
- //const worker = new Worker("./electronstart/server/index.js");
+ const worker = new Worker("./electronstart/server/fileserver.js");
 };
-
 
 app.whenReady().then(async () => {
  await APP_INIT();
  globalShortcut.register("CommandOrControl+W", () => {
-    //do nothing 
-});
+  //do nothing
+ });
 });
 
 const CreateMainWindow = async () => {
- const mainWindow: any = new BrowserWindow({
+ const mainWindow = new BrowserWindow({
   width: 1280,
   height: 720,
   frame: true,

@@ -51,6 +51,11 @@ export const Propagation = {
   }
  },
 
+ setBuildData(dimension: string, buildQueue: string) {
+  this._dimension = dimension;
+  this._buildQueue = buildQueue;
+ },
+
  _process(data: UpdateTasksO) {
   this._dimension = data[0];
   this._buildQueue = data[4];

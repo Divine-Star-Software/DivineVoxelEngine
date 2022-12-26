@@ -1,22 +1,22 @@
 "use strict";
-const { contextBridge, ipcRenderer } = require("electron");
+var _a = require("electron"), contextBridge = _a.contextBridge, ipcRenderer = _a.ipcRenderer;
 console.log("sup from preload");
-const validSendChannels = ["$DSIRRCOM-%S%-DATA-REQUEST", "$DSIRRCOM-%S%-COMMAND"];
-const validRecieveChannels = ["$DSIRRCOM-%R%-DATA-REQUEST", "$DSIRRCOM-%R%-COMMAND"];
-const _isValidSendChannel = (channel) => {
+var validSendChannels = ["$DSIRRCOM-%S%-DATA-REQUEST", "$DSIRRCOM-%S%-COMMAND"];
+var validRecieveChannels = ["$DSIRRCOM-%R%-DATA-REQUEST", "$DSIRRCOM-%R%-COMMAND"];
+var _isValidSendChannel = function (channel) {
     return validSendChannels.includes(channel);
 };
-const _isValidRecieveChannel = (channel) => {
+var _isValidRecieveChannel = function (channel) {
     return validRecieveChannels.includes(channel);
 };
 contextBridge.exposeInMainWorld("IS_ELECTRON", true);
 contextBridge.exposeInMainWorld("api", {
-    send: (channel, data) => {
+    send: function (channel, data) {
         if (_isValidSendChannel(channel)) {
             ipcRenderer.send(channel, data);
         }
     },
-    receive: (channel, func) => {
+    receive: function (channel, func) {
         if (_isValidRecieveChannel(channel)) {
             ipcRenderer.on(channel, func);
         }

@@ -24,7 +24,7 @@ const brushTool = new BrushTool();
 
 const addToRebuildQue = (
  dimension: string,
- rebuildQueue : string,
+ rebuildQueue: string,
  x: number,
  y: number,
  z: number,
@@ -33,13 +33,7 @@ const addToRebuildQue = (
  for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
   const n = $3dMooreNeighborhood[i];
   const chunkPOS = WorldBounds.getChunkPosition(n[0] + x, n[1] + y, n[2] + z);
-  comm.runTasks<ReBuildTasks>(ConstructorRemoteThreadTasks.addToRebuildQue, [
-   dimension,
-   chunkPOS.x,
-   chunkPOS.y,
-   chunkPOS.z,
-   rebuildQueue
-  ]);
+  Propagation.addToRebuildQue(chunkPOS.x, chunkPOS.y, chunkPOS.z, "all");
  }
 };
 const updateLight = (x: number, y: number, z: number) => {
@@ -72,7 +66,7 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
  const rebuildQueue = data[4];
  const threadId = data[5];
  dataTool.setDimension(dimension).loadIn(x, y, z);
-
+ Propagation.setBuildData(dimension,rebuildQueue);
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
   if (substance == "liquid" || substance == "magma") {
@@ -108,10 +102,8 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
  }
 
  const thread = ThreadComm.getComm(threadId);
- addToRebuildQue(dimension,rebuildQueue,x,y,z,thread);
- thread.runTasks<RunRebuildTasks>(ConstructorRemoteThreadTasks.runRebuildQue, [
-  rebuildQueue,
- ]);
+ addToRebuildQue(dimension, rebuildQueue, x, y, z, thread);
+ Propagation.runRebuildQue();
  return true;
 }
 
@@ -126,7 +118,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
  const tasks: UpdateTasksO = [dimension, x, y, z, rebuildQueue, threadId];
  brushTool.setDimension(dimension).setXYZ(x, y, z).setRaw(raw);
  dataTool.setDimension(dimension).loadIn(x, y, z);
-
+ Propagation.setBuildData(dimension,rebuildQueue);
  let doRGB = ES.doRGBPropagation();
  let doSun = ES.doSunPropagation();
 
@@ -157,10 +149,8 @@ export async function PaintAndUpdate(data: PaintTasks) {
   }
  }
  const thread = ThreadComm.getComm(threadId);
- addToRebuildQue(dimension,rebuildQueue,x,y,z,thread);
- thread.runTasks<RunRebuildTasks>(ConstructorRemoteThreadTasks.runRebuildQue, [
-  rebuildQueue,
- ]);
+ addToRebuildQue(dimension, rebuildQueue, x, y, z, thread);
+ Propagation.runRebuildQue();
 
  if (ES.doFlow()) {
   const substance = brushTool._dt.getSubstance();

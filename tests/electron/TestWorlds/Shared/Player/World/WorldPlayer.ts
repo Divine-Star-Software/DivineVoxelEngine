@@ -62,16 +62,17 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   let z = PlayerData.pick.position.z;
   if (!dataTool.loadIn(x, y, z)) return;
   if (dataTool.isRenderable()) {
-   brush.setXYZ(x, y, z).eraseAndUpdate();
+   brush.setXYZ(x, y, z).eraseAndUpdate(() => {
+    DVEW.parentComm.runTasks("play-sound", [
+     "voxel-break",
+     dataTool.getStringId(),
+     x,
+     y,
+     z,
+    ]);
+   });
   }
   worldPlayerObject.onRemove.forEach((_) => _(x, y, z));
-  DVEW.parentComm.runTasks("play-sound", [
-   "voxel-break",
-   dataTool.getStringId(),
-   x,
-   y,
-   z,
-  ]);
  });
 
  DVEW.parentComm.listenForMessage("explode", () => {

@@ -2,9 +2,9 @@ import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldBounds } from "./WorldBounds.js";
 import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
-import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
-import { ColumnDataTool } from "../../Tools/Data/ColumnDataTool.js";
-import { RegionDataTool } from "../../Tools/Data/RegionDataTool.js";
+import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
+import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 const chunkTool = new ChunkDataTool();
 const columnTool = new ColumnDataTool();
 const regionTool = new RegionDataTool();
@@ -52,7 +52,8 @@ export const WorldRegister = {
             const region = this._getRegionData(sab);
             const regionPOS = WorldBounds.getRegionPosition(x, z, y);
             regionTool.setRegion(region);
-            regionTool.setPosition(regionPOS.x, regionPOS.y, regionPOS.z);
+            regionTool.setPositionData(regionPOS.x, regionPOS.y, regionPOS.z);
+            regionTool.setDimensionId(dimensionId);
             dimension.set(WorldBounds.getRegionKeyFromPosition(x, y, z), region);
             return region;
         },
@@ -86,7 +87,8 @@ export const WorldRegister = {
             const column = this._getColumnData(sab);
             const columnPOS = WorldBounds.getColumnPosition(x, z, y);
             columnTool.setColumn(column);
-            columnTool.setPosition(columnPOS.x, columnPOS.y, columnPOS.z);
+            columnTool.setPositionData(columnPOS.x, columnPOS.y, columnPOS.z);
+            columnTool.setDimensionId(dimensionId);
             region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
             return column;
         },
@@ -139,7 +141,7 @@ export const WorldRegister = {
                     if (!chunk)
                         continue;
                     chunkTool.setChunk(chunk);
-                    const chunkPOS = chunkTool.getPosition();
+                    const chunkPOS = chunkTool.getPositionData();
                     let chunkMax = chunkTool.getTagValue("#dve_max_height");
                     if (chunkMax == 0)
                         continue;
@@ -167,7 +169,8 @@ export const WorldRegister = {
             const chunk = this._getChunkData(sab);
             chunkTool.setChunk(chunk);
             const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
-            chunkTool.setPosition(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+            chunkTool.setPositionData(chunkPOS.x, chunkPOS.y, chunkPOS.z);
+            chunkTool.setDimensionId(dimensionId);
             column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
             DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
             return chunk;
@@ -185,7 +188,7 @@ export const WorldRegister = {
             temp2.set(temp, 0);
             const chunk = this._getChunkData(sab);
             chunkTool.setChunk(chunk);
-            const chunkPOS = chunkTool.getPosition();
+            const chunkPOS = chunkTool.getPositionData();
             let column = WorldRegister.column.get("main", chunkPOS.x, chunkPOS.z, chunkPOS.y);
             if (!column)
                 return;

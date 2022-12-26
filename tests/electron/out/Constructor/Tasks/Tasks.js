@@ -4,7 +4,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { ChunkDataTool } from "../../Tools/Data/ChunkDataTool.js";
+import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 const chunkTool = new ChunkDataTool();
 export const Tasks = {
     build: {
@@ -20,7 +20,7 @@ export const Tasks = {
                 return false;
             for (const [key, chunk] of column.chunks) {
                 chunkTool.setChunk(chunk);
-                const chunkPOS = chunkTool.getPosition();
+                const chunkPOS = chunkTool.getPositionData();
                 await DVEC.builder.buildChunk(data[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[4]);
             }
         }),

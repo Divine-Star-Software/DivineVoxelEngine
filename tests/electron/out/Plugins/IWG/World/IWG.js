@@ -1,4 +1,4 @@
-import { ColumnDataTool } from "../../../Tools/Data/ColumnDataTool.js";
+import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { $2dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { BuilderTool } from "../../../Tools/Build/Builder.js";
@@ -46,16 +46,13 @@ export class IWG {
             this._cachedPosition[1] = worldColumnPOS.y;
             this._cachedPosition[2] = worldColumnPOS.z;
             this._generateQueue = [];
+            for (const [key, pos] of this._activeColumns) {
+                const distance = Distance3D(worldColumnPOS.x, 0, worldColumnPOS.z, pos[0], 0, pos[2]);
+                if (distance <= this.data.renderDistance)
+                    continue;
+                this._activeColumns.delete(key);
+            }
         }
-        /*   for (const [key, pos] of this._activeColumns) {
-         const distance = Distance3D(wx, 0, wz, pos[0], 0, pos[2]);
-         if (distance < this.data.renderDistance) continue;
-         this._activeColumns.delete(key);
-         this.builder
-          .setDimension(this.dimension)
-          .setXYZ(pos[0], pos[1], pos[2])
-          .removeColumn();
-        } */
         this._generateQueue.push([
             worldColumnPOS.x,
             worldColumnPOS.y,
@@ -122,11 +119,14 @@ export class IWG {
                     nSunAllDone = false;
                 }
             }
-            if (nWorldGenAllDone && !nSunAllDone && !this._sunMap.has(columnKey)) {
+            if (nWorldGenAllDone &&
+                !this._sunMap.has(columnKey) &&
+                !this.columnTool.getTagValue("#dve_is_world_sun_done")) {
                 this._sunMap.set(columnKey, true);
                 this.tasks.light.worldSun.deferred.run(cx, cy, cz, () => {
                     if (this.columnTool.loadIn(cx, cy, cz)) {
                         this._sunMap.delete(columnKey);
+                        console.log("sup");
                         this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
                     }
                 });

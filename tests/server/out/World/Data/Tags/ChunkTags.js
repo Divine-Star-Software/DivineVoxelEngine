@@ -8,6 +8,11 @@ ChunkDataTags.registerTag({
     numberType: "16ui",
 });
 ChunkDataTags.registerTag({
+    id: "#dve_data_type",
+    type: "header",
+    numberType: "16ui",
+});
+ChunkDataTags.registerTag({
     id: "#dve_dimension_id",
     type: "typed-number",
     numberType: "16ui",

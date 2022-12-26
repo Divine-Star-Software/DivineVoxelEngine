@@ -114,7 +114,7 @@ export class TagManager extends TagManagerBase {
     let bitIndex = 0;
     let bitSize = 1;
     /*
-[Typed Numbers]
+[Headers]
 */
     headers.forEach((tags, type) => {
       const byteSise = DBTUtil.getTypedSize(type);

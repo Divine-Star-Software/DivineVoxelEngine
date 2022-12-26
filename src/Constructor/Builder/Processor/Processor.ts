@@ -29,7 +29,7 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
-import { HeightMapTool } from "../../../Tools/Data/HeightMapTool.js";
+import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
 import { OverrideManager } from "../Overrides/OverridesManager.js";
 
 const mDT = GetConstructorDataTool();

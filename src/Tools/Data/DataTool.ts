@@ -8,9 +8,9 @@ import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegist
 import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
-import { ChunkDataTool } from "./ChunkDataTool.js";
-import { HeightMapTool } from "./HeightMapTool.js";
-import { DataToolBase } from "./DataToolBase.js";
+import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
+import { HeightMapTool } from "./WorldData/HeightMapTool.js";
+import { DataToolBase } from "./Classes/DataToolBase.js";
 
 export class DataTool extends DataToolBase {
  static _dtutil = new DataTool();

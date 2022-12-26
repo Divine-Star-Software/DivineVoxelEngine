@@ -55,3 +55,6 @@ export declare type ExplosionTasks = [
     buildQueue: string,
     originThread: string
 ];
+export declare type LoadWorldDataTasks = [
+    data: SharedArrayBuffer
+];

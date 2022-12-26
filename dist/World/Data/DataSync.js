@@ -6,7 +6,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
-import { InitalizeRegionTags } from "./Tags/RegionTags.js";
+import { InitalizeRegionTags, RegionDataTags } from "./Tags/RegionTags.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
 const loopThroughComms = (func) => {
     for (const commKey of Object.keys(DataSync.comms)) {
@@ -376,7 +376,7 @@ export const DataSync = {
             loopThroughComms((comm, options) => {
                 if (!options.worldDataTags)
                     return;
-                comm.syncData(DataSyncTypes.regionTags, ColumnDataTags.initData);
+                comm.syncData(DataSyncTypes.regionTags, RegionDataTags.initData);
             });
         },
         syncInThread(commName) {
@@ -386,7 +386,7 @@ export const DataSync = {
             const options = DataSync.commOptions[commName];
             if (!options.worldDataTags)
                 return;
-            comm.syncData(DataSyncTypes.regionTags, ColumnDataTags.initData);
+            comm.syncData(DataSyncTypes.regionTags, RegionDataTags.initData);
         },
     },
     voxelPalette: {

@@ -16,11 +16,11 @@ const generator = new IWG({
  generateDistance: 200,
 });
 
-setInterval(() => {
+player.onUpdate.push(() => {
  position[0] = PlayerData.position.x;
  position[1] = PlayerData.position.y;
  position[2] = PlayerData.position.z;
  generator.update();
-}, 100);
+});
 
 (self as any).DVEW = DVEW;

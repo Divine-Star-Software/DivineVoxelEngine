@@ -1,17 +1,9 @@
-import { DataServer } from "./DataServer.js";
+import { DataFileServer } from "./DataFileServer.js";
 export const DataHanlder = {
-    async getRegion(x, y, z) {
-        const region = await DataServer.awaitRegionLoad(x, y, z);
-        DataServer.flush();
-        return region;
+    async getRegion(location) {
+        return await DataFileServer.loadRegion(location);
     },
-    async saveRegion(x, y, z, regionArray) {
-        DataServer.sendMessage(regionArray);
-    },
-    async getChunk(x, y, z) {
-        return new Uint32Array();
-    },
-    async saveChunk(x, y, z, chunkArray) {
-        DataServer.sendMessage(chunkArray);
+    async saveRegion(location, buffer) {
+        await DataFileServer.saveRegion(location, buffer);
     },
 };

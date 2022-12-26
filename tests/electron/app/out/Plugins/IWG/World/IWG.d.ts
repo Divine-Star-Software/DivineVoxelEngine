@@ -1,5 +1,5 @@
-import type { IWGData } from "../Meta/IWG.types";
-import { ColumnDataTool } from "../../../Tools/Data/ColumnDataTool.js";
+import type { IWGData } from "./Meta/IWG.types";
+import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { BuilderTool } from "../../../Tools/Build/Builder.js";
 /**# Infinite World Generator
  *

@@ -1,7 +1,7 @@
 import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
-import { ChunkDataTool } from "./ChunkDataTool.js";
-import { HeightMapTool } from "./HeightMapTool.js";
-import { DataToolBase } from "./DataToolBase.js";
+import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
+import { HeightMapTool } from "./WorldData/HeightMapTool.js";
+import { DataToolBase } from "./Classes/DataToolBase.js";
 export declare class DataTool extends DataToolBase {
     static _dtutil: DataTool;
     static _chunkTool: ChunkDataTool;

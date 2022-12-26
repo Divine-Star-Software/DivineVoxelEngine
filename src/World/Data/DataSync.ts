@@ -22,7 +22,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
-import { InitalizeRegionTags } from "./Tags/RegionTags.js";
+import { InitalizeRegionTags, RegionDataTags } from "./Tags/RegionTags.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
 
 type CommSyncOptions = {
@@ -420,7 +420,7 @@ export const DataSync = {
     if (!options.worldDataTags) return;
     comm.syncData<RemoteTagManagerInitData>(
      DataSyncTypes.regionTags,
-     ColumnDataTags.initData
+     RegionDataTags.initData
     );
    });
   },
@@ -431,7 +431,7 @@ export const DataSync = {
    if (!options.worldDataTags) return;
    comm.syncData<RemoteTagManagerInitData>(
     DataSyncTypes.regionTags,
-    ColumnDataTags.initData
+    RegionDataTags.initData
    );
   },
  },

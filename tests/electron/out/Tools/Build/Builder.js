@@ -1,6 +1,6 @@
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
-import { ChunkDataTool } from "../Data/ChunkDataTool.js";
+import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
 const parentComm = ThreadComm.parent;

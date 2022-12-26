@@ -3,6 +3,16 @@ import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 export const RegionDataTags = new TagManager("column-tags");
 RegionDataTags.registerTag({
     id: "#dve_header",
+    type: "header",
+    numberType: "16ui",
+});
+RegionDataTags.registerTag({
+    id: "#dve_data_type",
+    type: "header",
+    numberType: "16ui",
+});
+RegionDataTags.registerTag({
+    id: "#dve_total_players",
     type: "typed-number",
     numberType: "16ui",
 });

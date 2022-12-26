@@ -1,22 +1,24 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { BuilderTool } from "../Tools/Build/Builder.js";
-import { ChunkDataTool } from "../Tools/Data/ChunkDataTool.js";
-import { ColumnDataTool } from "../Tools/Data/ColumnDataTool.js";
+import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";
+import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
-import { HeightMapTool } from "../Tools/Data/HeightMapTool.js";
+import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
+import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
+import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -53,7 +55,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -253,18 +255,23 @@ export declare const DVEW: {
     };
     worldTasks: {
         addChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
+        load: {
+            loadRegino: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
+            loadColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
+            loadChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
+        };
     };
     generators: {
         worldData: {
             convertToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
             chunk: {
-                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+                create(buffer?: false | ArrayBuffer): SharedArrayBuffer;
             };
             column: {
-                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+                create(buffer?: false | ArrayBuffer): SharedArrayBuffer;
             };
             region: {
-                getBuffer(buffer?: false | ArrayBuffer): SharedArrayBuffer;
+                create(buffer?: false | ArrayBuffer): SharedArrayBuffer;
             };
         };
     };
@@ -719,6 +726,10 @@ export declare const DVEW: {
         addQueue(queueKey: string | number): boolean;
         removeQueue(queueKey: string | number): boolean;
         filterQueues(filter: (queueKey: string | number) => boolean): void;
+        /**# Divine Voxel Engine World
+         * ---
+         * This handles everything in the world worker context.
+         */
         filterOldQueues(maxTime?: number): void;
         rgb: {
             update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
@@ -818,6 +829,7 @@ export declare const DVEW: {
         data: DataTool;
         chunkData: ChunkDataTool;
         columnData: ColumnDataTool;
+        regonData: RegionDataTool;
         heightMap: HeightMapTool;
         tasks: {
             _data: {
@@ -933,6 +945,7 @@ export declare const DVEW: {
     };
     getBuilder(): BuilderTool;
     getDataTool(): DataTool;
+    getRegionTool(): RegionDataTool;
     getChunkDataTool(): ChunkDataTool;
     getColumnDataTool(): ColumnDataTool;
     getHeightMapTool(): HeightMapTool;
@@ -1040,5 +1053,6 @@ export declare const DVEW: {
             };
         };
     };
+    getDataLoaderTool(): DataLoaderTool;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

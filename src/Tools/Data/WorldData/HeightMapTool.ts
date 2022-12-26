@@ -2,9 +2,9 @@
 import type { ChunkData, Column } from "Meta/Data/WorldData.types";
 import type { VoxelTemplateSubstanceType } from "Meta/index";
 //Data
-import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
+import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 
 export class HeightMapTool {
  static _chunkTool = new ChunkDataTool();
