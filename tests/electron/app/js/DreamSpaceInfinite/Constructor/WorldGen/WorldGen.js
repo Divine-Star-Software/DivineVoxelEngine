@@ -9,9 +9,9 @@ perlin.noiseSeed(12341234);
 perlin2.noiseSeed(989989989);
 bioneNoise.noiseSeed(59695022384);
 */
-perlin.noiseSeed(129387128937);
-perlin2.noiseSeed(98789707870);
-bioneNoise.noiseSeed(78978078979);
+perlin.noiseSeed(2934782394782372);
+perlin2.noiseSeed(89898778990878798);
+bioneNoise.noiseSeed(7890878787788789987);
 const waveLength = 100;
 const xOffSet = 1_000;
 const zOffSet = 1_000;

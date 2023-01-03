@@ -1,4 +1,4 @@
-import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type.js";
+import type { ColliderObject } from "Plugins/Physics/Types/Physics/Collider.type.js";
 import { EntityBase } from "./Entities/Entity.base.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 export declare const DVP: {

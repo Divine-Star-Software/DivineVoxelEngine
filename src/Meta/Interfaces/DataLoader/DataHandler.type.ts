@@ -4,9 +4,19 @@ interface AnyData {
  [key: string]: any;
 }
 export interface DataHandler extends AnyData {
- getRegion(location: LocationData): Promise<ArrayBuffer | SharedArrayBuffer>;
+ getRegionHeader(location: LocationData): Promise<ArrayBuffer>;
+ getRegion(
+  location: LocationData
+ ): Promise<ArrayBuffer[] | SharedArrayBuffer[]>;
  saveRegion(
+  regionBuffer: [location: LocationData, buffer: ArrayBuffer][]
+ ): Promise<boolean>;
+ getColumn(location: LocationData): Promise<ArrayBuffer | SharedArrayBuffer>;
+ saveColumn(
   location: LocationData,
-  regionBuffer: ArrayBuffer | SharedArrayBuffer
- ): Promise<void>;
+  columnBuffer: ArrayBuffer | SharedArrayBuffer
+ ): Promise<boolean>;
+ setPath(id: string): Promise<boolean>;
+ columnExists(location: LocationData): Promise<boolean>;
+ columnTimestamp(location: LocationData): Promise<number>;
 }

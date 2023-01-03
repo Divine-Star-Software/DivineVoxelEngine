@@ -4,10 +4,14 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldDataGenerator } from "../Data/Generators/WorldDataGenerator.js";
 import { DataSync } from "../Data/DataSync.js";
-import { LoadWorldDataTasks } from "Meta/Tasks/Tasks.types.js";
+import {
+ LoadRegionHeadertasks,
+ LoadWorldDataTasks,
+} from "Meta/Tasks/Tasks.types.js";
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 
 const regionTool = new RegionDataTool();
 const columnTool = new ColumnDataTool();
@@ -37,6 +41,20 @@ export const WorldTasks = {
      data[0]
     );
     DataSync.region.sync(location[0], location[1], location[2], location[3]);
+   }
+  ),
+  loadReginoHeader: ThreadComm.registerTasks<LoadRegionHeadertasks>(
+   "load-region-header",
+   (data) => {
+    RegionHeaderRegister.add(data[0], data[1]);
+    const location = data[0];
+    DataSync.regionHeader.sync(
+     location[0],
+     location[1],
+     location[2],
+     location[3]
+    );
+
    }
   ),
   loadColumn: ThreadComm.registerTasks<LoadWorldDataTasks>(

@@ -46,6 +46,7 @@ export const CCCore = {
    concatenated.set(array, offset);
    offset += array.byteLength;
   }
+
   return concatenated;
  },
 

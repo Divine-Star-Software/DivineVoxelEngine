@@ -9,10 +9,12 @@ import type {
  UpdateTasksO,
  WorldSunTask,
 } from "Meta/Tasks/Tasks.types.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
+
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+
 
 const chunkTool = new ChunkDataTool();
 
@@ -21,7 +23,7 @@ export const Tasks = {
   chunk: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildChunk,
    async (data) => {
-    const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
+    const chunkPOS = WorldSpaces.chunk.getPositionXYZ(data[1],data[2],data[3]);
     await DVEC.builder.buildChunk(
      data[0],
      chunkPOS.x,

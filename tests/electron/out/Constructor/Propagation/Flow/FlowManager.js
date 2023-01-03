@@ -6,10 +6,10 @@ import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 export const FlowManager = {
     //voxelByte : Util.
     lightData: LightData,
@@ -139,8 +139,8 @@ export const FlowManager = {
         this.rebuildMap = {};
     },
     __addToRebuildQue(x, y, z) {
-        const key = WorldBounds.getChunkKeyFromPosition(x, y, z);
-        const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+        const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
+        const key = WorldSpaces.chunk.getKey();
         if (!WorldRegister.chunk.get(this.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z))
             return;
         if (!this.rebuildMap[key]) {

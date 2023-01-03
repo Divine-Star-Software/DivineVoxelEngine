@@ -5,9 +5,10 @@ import { DataSyncTypes } from "../Common/Threads/Contracts/DataSync.js";
 import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
 import { DimensionsRegister } from "./World/Dimensions/DimensionsRegister.js";
 import { ChunkTags } from "./World/Chunk/ChunkTags.js";
-import { RegionTags } from "./World/Region/RegionTags.js";
+import { RegionHeaderTags, RegionTags } from "./World/Region/RegionTags.js";
 import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
+import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
 export const DataSyncNode = {
     _states: {
         voxelData: false,
@@ -29,6 +30,7 @@ export const DataSyncNode = {
     chunk: ThreadComm.onDataSync(DataSyncTypes.chunk),
     column: ThreadComm.onDataSync(DataSyncTypes.column),
     region: ThreadComm.onDataSync(DataSyncTypes.region),
+    regionHeader: ThreadComm.onDataSync(DataSyncTypes.regionHeader),
     chunkTags: ThreadComm.onDataSync(DataSyncTypes.chunkTags),
     columnTags: ThreadComm.onDataSync(DataSyncTypes.columnTags),
     regionTags: ThreadComm.onDataSync(DataSyncTypes.regionTags),
@@ -59,6 +61,9 @@ DataSyncNode.column.addOnSync((data) => {
 DataSyncNode.region.addOnSync((data) => {
     WorldRegister.region.add(data[0], data[1], data[2], data[3], data[4]);
 });
+DataSyncNode.regionHeader.addOnSync((data) => {
+    RegionHeaderRegister.add([data[0], data[1], data[2], data[3]], data[4]);
+});
 DataSyncNode.chunkTags.addOnSync((data) => {
     ChunkTags.$INIT(data);
 });
@@ -66,5 +71,6 @@ DataSyncNode.columnTags.addOnSync((data) => {
     ColumnTags.$INIT(data);
 });
 DataSyncNode.regionTags.addOnSync((data) => {
-    RegionTags.$INIT(data);
+    RegionTags.$INIT(data[0]);
+    RegionHeaderTags.$INIT(data[1]);
 });

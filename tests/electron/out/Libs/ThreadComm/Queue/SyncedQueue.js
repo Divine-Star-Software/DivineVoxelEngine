@@ -13,4 +13,25 @@ export class SyncedQueue {
     subtractFromCount(total = 1) {
         Atomics.sub(this.states, 0, total);
     }
+    getCount() {
+        return Atomics.load(this.states, 0);
+    }
+    isDone() {
+        return this.getCount() == 0;
+    }
+    onDone(onDone) {
+        const inte = setInterval(() => {
+            if (this.getCount() == 0) {
+                clearInterval(inte);
+                onDone();
+            }
+        }, 1);
+    }
+    wait() {
+        return new Promise((resolve, reject) => {
+            this.onDone(() => {
+                resolve(true);
+            });
+        });
+    }
 }

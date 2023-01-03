@@ -31,7 +31,10 @@ ColumnDataTags.registerTag({
  type: "typed-number",
  numberType: "32i",
 });
-
+ColumnDataTags.registerTag({
+ id: "#dve_is_stored",
+ type: "boolean",
+});
 ColumnDataTags.registerTag({
  id: "#dve_is_world_gen_done",
  type: "boolean",

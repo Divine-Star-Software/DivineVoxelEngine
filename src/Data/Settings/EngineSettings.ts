@@ -1,6 +1,6 @@
-import { ChunkSpace } from "../World/Chunk/ChunkSpace.js";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { WorldBounds } from "../World/WorldBounds.js";
+import { WorldSpaces } from "../World/WorldSpaces.js";
 
 /**# Engine Settings
  * ---
@@ -8,7 +8,7 @@ import { WorldBounds } from "../World/WorldBounds.js";
  */
 export const EngineSettings = {
  //context: <EngineSettingsContext>"MatrixLoadedThread",
- settings: {
+ settings: <EngineSettingsData>{
   nexus: {
    enabled: false,
    autoSyncChunks: true,
@@ -49,7 +49,7 @@ export const EngineSettings = {
   },
   regions: {
    regionXPow2: 9,
-   regionYPow2: 9,
+   regionYPow2: 8,
    regionZPow2: 9,
   },
   chunks: {
@@ -120,21 +120,7 @@ export const EngineSettings = {
 
  __syncWithObjects() {
 
-  if (this.settings.chunks) {
-    WorldBounds.setChunkBounds(
-     this.settings.chunks.chunkXPow2,
-     this.settings.chunks.chunkYPow2,
-     this.settings.chunks.chunkZPow2
-    );
-    WorldBounds.syncBoundsWithArrays();
-   }
-   if (this.settings.regions) {
-    WorldBounds.setRegionBounds(
-     this.settings.regions.regionXPow2,
-     this.settings.regions.regionYPow2,
-     this.settings.regions.regionZPow2
-    );
-   }
+  WorldSpaces.$INIT(this.settings);
    if (this.settings.world) {
     WorldBounds.setWorldBounds(
      this.settings.world.minX,
@@ -145,7 +131,6 @@ export const EngineSettings = {
      this.settings.world.maxY
     );
    }
-   ChunkSpace.syncSettings();
  },
 
  syncWithWorldBounds(worldBounds: typeof WorldBounds) {

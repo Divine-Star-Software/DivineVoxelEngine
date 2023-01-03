@@ -5,4 +5,8 @@ export declare class SyncedQueue {
     constructor(id: string, sab: SharedArrayBuffer);
     addToCount(total?: number): void;
     subtractFromCount(total?: number): void;
+    getCount(): number;
+    isDone(): boolean;
+    onDone(onDone: Function): void;
+    wait(): Promise<unknown>;
 }

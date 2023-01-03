@@ -14,6 +14,8 @@ export const Scene = {
   padding: 8,
  },
 
+ startingY : 16,
+
  _bgColor: "rgba(0,0,0,0.2)",
 
  $INIT(context: CanvasRenderingContext2D) {
@@ -74,21 +76,22 @@ export const Scene = {
  },
 
  clearLine(y: number) {
-  this.ctx.clearRect(0, y, this.dimensions.width, this.font.size + 5);
+  this.ctx.clearRect(0, y, this.dimensions.width, this.font.size + 15);
   this.ctx.fillStyle = this._bgColor;
-  this.ctx.fillRect(0, y, this.dimensions.width, this.font.size + 5);
+  this.ctx.fillRect(0, y, this.dimensions.width, this.font.size + 15);
  },
 
  renderConsole() {
   const text = Console.getActiveText();
-  const consoleText = Console.text;
-  let line = consoleText.length;
-  if (line > Console.maxLines) line = Console.maxLines;
-  let y = (this.font.size + this.font.padding) * (line + 1);
+  let line = Console.maxLines ;
+  let y = (this.font.size + this.font.padding) * (line) + this.startingY;
+  this._setActiveStyle();
+  const position = Console.getCursorPosition(this.ctx);
   for (let i = 0; i < text.length; i++) {
    const string = text[i];
    this.clearLine(y - this.font.size);
    this._setActiveStyle();
+   this.ctx.fillText("_", position, y + 5);
    this.ctx.fillText(string, 0, y);
    y += this.font.size + this.font.padding;
   }
@@ -98,6 +101,6 @@ export const Scene = {
   this.dimensions.width = width;
   this.dimensions.height = height;
   Console.maxLines =
-   ((this.dimensions.height / (this.font.size + this.font.padding)) >> 0) - 5;
+   ((this.dimensions.height / (this.font.size + this.font.padding)) >> 0) - 1;
  },
 };

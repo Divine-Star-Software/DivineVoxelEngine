@@ -1,5 +1,5 @@
 import { VoxelData } from "Meta/index.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 export declare const VoxelDataGenerator: {
     voxelBuffer: SharedArrayBuffer;
     voxelMapBuffer: SharedArrayBuffer;

@@ -21,6 +21,7 @@ import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
 import { RenderTasks } from "./Tasks/Tasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { WorldSpaces } from "../Data/World/WorldSpaces.js";
 
 export const DVER = {
  UTIL: Util,
@@ -39,6 +40,7 @@ export const DVER = {
 
  data: {
   worldBounds: WorldBounds,
+  spaces : WorldSpaces
  },
 
  textureManager: TextureManager,

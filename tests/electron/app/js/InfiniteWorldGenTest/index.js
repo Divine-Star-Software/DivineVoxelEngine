@@ -2,11 +2,17 @@ import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRe
 import { RunInit, SetUpWorkers, SyncWithGraphicsSettings, } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
+import { $INITDataLoader } from "../Shared/DataLoader/DataLoaderRender.js";
 RegisterTexutres(DVER);
-const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js");
+const workers = SetUpWorkers(import.meta.url, "./World/world.js", "./Constructor/constructor.js", null, "../Shared/DataLoader/data.js");
 await DVER.$INIT({
     worldWorker: workers.worldWorker,
     constructorWorker: workers.constructorWorkers,
+    dataWorker: workers.dataWorker,
+    data: {
+        enabled: true,
+        autoSyncChunks: true,
+    },
     floatingOrigin: {
         enable: true,
     },
@@ -56,6 +62,7 @@ const init = async () => {
         density: 0.000000005,
         color: new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255),
     });
+    $INITDataLoader(DVER);
     // const debugCube = GetAnalyzerCubeRender(DVER, camera);
     // (window as any).debugCube = debugCube;
     //@ts-ignore

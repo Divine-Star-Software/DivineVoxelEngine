@@ -1,15 +1,15 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 const chunkTool = new ChunkDataTool();
 export const Tasks = {
     build: {
         chunk: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (data) => {
-            const chunkPOS = WorldBounds.getChunkPosition(data[1], data[2], data[3]);
+            const chunkPOS = WorldSpaces.chunk.getPositionXYZ(data[1], data[2], data[3]);
             await DVEC.builder.buildChunk(data[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[4]);
         }),
         column: ThreadComm.registerTasks(ConstructorTasks.buildColumn, async (data) => {

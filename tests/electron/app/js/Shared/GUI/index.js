@@ -65,7 +65,7 @@ export const CreateGUI = (DVER) => {
         //@ts-ignore
         position.innerHTML = `${positionWatch.position.x.toFixed(2)} ${positionWatch.position.y.toFixed(2)} ${positionWatch.position.z.toFixed(2)}`;
         if (DVER) {
-            const pos = DVER.data.worldBounds.getChunkPosition(positionWatch.position.x, positionWatch.position.y, positionWatch.position.z);
+            const pos = DVER.data.spaces.chunk.getPositionXYZ(positionWatch.position.x, positionWatch.position.y, positionWatch.position.z);
             //@ts-ignore
             chunkPosition.innerHTML = `chunk: x: ${pos.x} y: ${pos.y} z: ${pos.z}`;
         }

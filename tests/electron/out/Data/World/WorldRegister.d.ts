@@ -2,13 +2,16 @@ import type { ChunkData, Column, WorldDimensions, Region } from "Meta/Data/World
 export declare const WorldRegister: {
     _dimensions: WorldDimensions;
     _cacheOn: boolean;
-    _cache: Map<string, ChunkData>;
+    _chunkCache: Map<string, ChunkData>;
+    _columnCache: Map<string, Column>;
     $INIT(): void;
     cache: {
         enable(): void;
         disable(): void;
-        _add(key: string, data: ChunkData): void;
-        _get(key: string): ChunkData | undefined;
+        _addChunk(key: string, data: ChunkData): void;
+        _addColumn(key: string, data: Column): void;
+        _getChunk(key: string): ChunkData | undefined;
+        _getColumn(key: string): Column | undefined;
     };
     dimensions: {
         add(id: number | string): Map<any, any>;
@@ -22,7 +25,7 @@ export declare const WorldRegister: {
     column: {
         add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): Column | undefined;
         _getColumnData(sab: SharedArrayBuffer): Column;
-        get(dimensionId: string, x: number, z: number, y?: number): false | Column | undefined;
+        get(dimensionId: string, x: number, z: number, y?: number): false | Column;
         fill(dimensionId: string, x: number, z: number, y?: number): void;
         height: {
             getRelative(dimensionId: string, x: number, z: number, y?: number): number;

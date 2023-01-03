@@ -28,7 +28,7 @@ export const WorldPlayer = async (DVEW) => {
     };
     const dataTool = DVEW.getDataTool();
     const brush = DVEW.getBrush();
-    DVEW.parentComm.listenForMessage("voxel-add", (data) => {
+    DVEW.parentComm.listenForMessage("voxel-add", async (data) => {
         let x = PlayerData.pick.position.x + PlayerData.pick.normal.x;
         let y = PlayerData.pick.position.y + PlayerData.pick.normal.y;
         let z = PlayerData.pick.position.z + PlayerData.pick.normal.z;
@@ -36,39 +36,21 @@ export const WorldPlayer = async (DVEW) => {
             return;
         if (dataTool.isRenderable())
             return;
-        brush
-            .setId(data[1])
-            .setXYZ(x, y, z)
-            .paintAndUpdate(() => {
-            if (!dataTool.loadIn(x, y, z))
-                return;
-            DVEW.parentComm.runTasks("play-sound", [
-                "voxel-place",
-                dataTool.getStringId(),
-                x,
-                y,
-                z,
-            ]);
-        });
+        DVEW.parentComm.runTasks("play-sound", ["voxel-place", data[1], x, y, z]);
+        await brush.setId(data[1]).setXYZ(x, y, z).paintAndAwaitUpdate();
         const raw = brush.getRaw();
         worldPlayerObject.onAdd.forEach((_) => _(raw, x, y, z));
     });
-    DVEW.parentComm.listenForMessage("voxel-remove", () => {
+    DVEW.parentComm.listenForMessage("voxel-remove", async () => {
         let x = PlayerData.pick.position.x;
         let y = PlayerData.pick.position.y;
         let z = PlayerData.pick.position.z;
         if (!dataTool.loadIn(x, y, z))
             return;
         if (dataTool.isRenderable()) {
-            brush.setXYZ(x, y, z).eraseAndUpdate(() => {
-                DVEW.parentComm.runTasks("play-sound", [
-                    "voxel-break",
-                    dataTool.getStringId(),
-                    x,
-                    y,
-                    z,
-                ]);
-            });
+            const id = dataTool.getStringId();
+            DVEW.parentComm.runTasks("play-sound", ["voxel-break", id, x, y, z]);
+            await brush.setXYZ(x, y, z).eraseAndAwaitUpdate();
         }
         worldPlayerObject.onRemove.forEach((_) => _(x, y, z));
     });

@@ -1,4 +1,6 @@
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
+WorldBounds;
 export const MeshRegister = {
     _dimensions: new Map(),
     $INIT() {
@@ -36,7 +38,7 @@ export const MeshRegister = {
                 dimension = MeshRegister.dimensions.add(dimensionId);
             }
             const region = this._getRegionData();
-            dimension.set(WorldBounds.getRegionKeyFromPosition(x, y, z), region);
+            dimension.set(WorldSpaces.region.getKeyXYZ(x, y, z), region);
             return region;
         },
         remove(dimensionId, x, z, y = 0) {
@@ -46,7 +48,7 @@ export const MeshRegister = {
             let region = MeshRegister.region.get(dimensionId, x, y, z);
             if (!region)
                 return false;
-            dimension.delete(WorldBounds.getRegionKeyFromPosition(x, y, z));
+            dimension.delete(WorldSpaces.region.getKeyXYZ(x, y, z));
             region.columns.forEach((column) => {
                 column.chunks.forEach((chunk) => {
                     chunk.forEach((chunkMeshes) => {
@@ -65,7 +67,7 @@ export const MeshRegister = {
             const dimension = MeshRegister.dimensions.get(dimensionId);
             if (!dimension)
                 return false;
-            const region = dimension.get(WorldBounds.getRegionKeyFromPosition(x, y, z));
+            const region = dimension.get(WorldSpaces.region.getKeyXYZ(x, y, z));
             if (!region)
                 return false;
             return region;
@@ -78,14 +80,14 @@ export const MeshRegister = {
                 region = MeshRegister.region.add(dimensionId, x, y, z);
             }
             const column = this._getColumnData([x, y, z]);
-            region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
+            region.columns.set(WorldSpaces.column.getIndexXYZ(x, y, z), column);
             return column;
         },
         remove(dimensionId, x, z, y = 0) {
             let region = MeshRegister.region.get(dimensionId, x, y, z);
             if (!region)
                 return false;
-            const index = WorldBounds.getColumnIndex(x, z, y);
+            const index = WorldSpaces.column.getIndexXYZ(x, y, z);
             const column = region.columns.get(index);
             if (!column)
                 return false;
@@ -110,7 +112,7 @@ export const MeshRegister = {
             const region = MeshRegister.region.get(dimensionId, x, y, z);
             if (!region)
                 return false;
-            return region.columns.get(WorldBounds.getColumnIndex(x, z, y));
+            return region.columns.get(WorldSpaces.column.getIndexXYZ(x, y, z));
         },
     },
     chunk: {
@@ -119,7 +121,7 @@ export const MeshRegister = {
             if (!column) {
                 column = MeshRegister.column.add(dimensionId, x, z, y);
             }
-            const index = WorldBounds.getChunkColumnIndex(y);
+            const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
             let chunk = column.chunks.get(index);
             if (!chunk) {
                 chunk = new Map();
@@ -137,7 +139,7 @@ export const MeshRegister = {
             const column = MeshRegister.column.get(dimensionId, x, z, y);
             if (!column)
                 return false;
-            const index = WorldBounds.getChunkColumnIndex(y);
+            const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
             const chunk = column.chunks.get(index);
             if (!chunk)
                 return false;
@@ -155,7 +157,7 @@ export const MeshRegister = {
             const column = MeshRegister.column.get(dimensionId, x, z, y);
             if (!column)
                 return false;
-            const chunk = column.chunks.get(WorldBounds.getChunkColumnIndex(y));
+            const chunk = column.chunks.get(WorldSpaces.chunk.getIndexXYZ(x, y, z));
             if (!chunk)
                 return false;
             const chunkMesh = chunk.get(substance);

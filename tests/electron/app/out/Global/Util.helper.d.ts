@@ -12,4 +12,6 @@ export declare const Util: {
     merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
     degtoRad(degrees: number): number;
     radToDeg(radians: number): number;
+    convertBufferToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
+    converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
 };

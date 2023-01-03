@@ -43,18 +43,19 @@ export declare const DataManager: {
         getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
         getMaterial(id: number): string;
         getCollider(id: number): string;
-        $INIT(data: import("../Libs/DivineBinaryTags/Meta/Util.types.js").RemoteTagManagerInitData): void;
+        $INIT(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
         byteOffSet: number;
         tagSize: number;
         tagIndexes: number;
         data: DataView;
         indexMap: Map<string, number>;
         index: DataView;
-        setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Meta/Util.types.js").BufferTypes): void;
+        setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
         setTagIndex(index: number): void;
         getTag(id: string): number;
         setTag(id: string, value: number): boolean;
         getArrayTagValue(id: string, index: number): number;
+        getArrayTagByteIndex(id: string, index: number): number;
         setArrayTagValue(id: string, index: number, value: number): number | void;
         loopThroughTags(run: (id: string, value: number) => void): void;
         loopThroughIndex(run: (data: number[]) => void): void;
@@ -76,13 +77,16 @@ export declare const DataManager: {
     worldRegister: {
         _dimensions: import("../Meta/Data/WorldData.types.js").WorldDimensions;
         _cacheOn: boolean;
-        _cache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+        _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
+        _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
         $INIT(): void;
         cache: {
             enable(): void;
             disable(): void;
-            _add(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
-            _get(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+            _addChunk(key: string, data: import("../Meta/Data/WorldData.types.js").ChunkData): void;
+            _addColumn(key: string, data: import("../Meta/Data/WorldData.types.js").Column): void;
+            _getChunk(key: string): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+            _getColumn(key: string): import("../Meta/Data/WorldData.types.js").Column | undefined;
         };
         dimensions: {
             add(id: string | number): Map<any, any>;
@@ -96,7 +100,7 @@ export declare const DataManager: {
         column: {
             add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column | undefined;
             _getColumnData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
-            get(dimensionId: string, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column | undefined;
+            get(dimensionId: string, x: number, z: number, y?: number): false | import("../Meta/Data/WorldData.types.js").Column;
             fill(dimensionId: string, x: number, z: number, y?: number): void;
             height: {
                 getRelative(dimensionId: string, x: number, z: number, y?: number): number;
@@ -120,92 +124,63 @@ export declare const DataManager: {
             MinY: number;
             MaxY: number;
         };
-        _hashMask(n: number): number;
-        hash(x: number, y: number, z: number): number;
-        chunkXPow2: number;
-        chunkYPow2: number;
-        chunkZPow2: number;
-        chunkXSize: number;
-        chunkYSize: number;
-        chunkZSize: number;
-        chunkTotalVoxels: number;
-        chunkArea: number;
-        regionColumnWidth: number;
-        regionXPow2: number;
-        regionYPow2: number;
-        regionZPow2: number;
-        regionXSize: number;
-        regionYSize: number;
-        regionZSize: number;
-        __regionPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        __worldColumnPosition: {
-            x: number;
-            z: number;
-            y: number;
-        };
-        __chunkPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        __voxelPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        __columnPosition: {
-            x: number;
-            z: number;
-            y: number;
-        };
-        syncBoundsWithArrays(): void;
         setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
-        isPositonOutsideOfBounds(x: number, y: number, z: number): boolean;
-        isPositonInBounds(x: number, y: number, z: number): boolean;
-        setChunkBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-        setRegionBounds(pow2X: number, pow2Y: number, pow2Z: number): void;
-        getRegionPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
+    };
+    spaces: {
+        region: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+            chunkBounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            columnBounds: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getChunkVolume(): number;
+            getColumnVolume(): number;
         };
-        getChunkPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
+        column: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+        chunk: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+            _regionPosition: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getRegionPositonx(): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getRegionPositonxXYZ(x: number, y: number, z: number): {
+                x: number;
+                y: number;
+                z: number;
+            };
+            getRegionIndex(): number;
+            getRegionIndexXYZ(x: number, y: number, z: number): number;
         };
-        getChunkKey(chunkPOS: import("../Meta/Util.types.js").Vector3): string;
-        getChunkKeyFromPosition(x: number, y: number, z: number): string;
-        getRegionKey(regionPOS: import("../Meta/Util.types.js").Vector3): string;
-        getRegionKeyFromPosition(x: number, y: number, z: number): string;
-        getVoxelPositionFromChunkPosition(x: number, y: number, z: number, chunkPOS: import("../Meta/Util.types.js").Vector3): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getRichPositionKey(x: number, y: number, z: number): string;
-        getVoxelPosition(x: number, y: number, z: number): {
-            x: number;
-            y: number;
-            z: number;
-        };
-        _columnIndexPosition: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        getColumnIndex(x: number, z: number, y: number): number;
-        getChunkColumnIndex(y: number): number;
-        getColumnKey(x: number, z: number, y?: number): string;
-        getColumnPosition(x: number, z: number, y?: number): {
-            x: number;
-            z: number;
-            y: number;
-        };
+        voxel: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+        setDimensions(data: {
+            regions: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            columns: {
+                x: number;
+                y: number;
+                z: number;
+            };
+            chunks: {
+                x: number;
+                y: number;
+                z: number;
+            };
+        }): void;
+    } & {
+        $INIT(settings: import("../Meta/index.js").EngineSettingsData): void;
     };
     register: {
         voxels: {
@@ -217,18 +192,16 @@ export declare const DataManager: {
     };
     chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
     regionTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
-    chunks: {
-        space: {
-            syncSettings(): void;
-            hmBounds: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            getHeightMapIndex(x: number, y: number, z: number): number;
-            getVoxelDataIndex(x: number, y: number, z: number): number;
-            getHeightMapIndexUseObj(pos: import("../Meta/Util.types.js").Vector3): number;
-            getVoxelDataIndexUseObj(pos: import("../Meta/Util.types.js").Vector3): number;
-        };
+    regionHeaderReigster: {
+        _headers: Map<string, Map<string, {
+            data: DataView;
+            buffer: SharedArrayBuffer;
+        }>>;
+        add(location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: SharedArrayBuffer): void;
+        get(location: import("../Meta/Data/CommonTypes.js").LocationData): false | {
+            data: DataView;
+            buffer: SharedArrayBuffer;
+        } | undefined;
+        isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 1 | 0 | -1;
     };
 };

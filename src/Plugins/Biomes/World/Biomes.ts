@@ -1,5 +1,5 @@
 import { PerlinNoise3d } from "../../../Libs/divineRNG/perlin/index.js";
-import { BiomeData, BiomeInitData } from "../Meta/Biome.types.js";
+import { BiomeData, BiomeInitData } from "../Types/Biome.types.js";
 
 export const Biomes = {
  biomeNoise: new PerlinNoise3d(),

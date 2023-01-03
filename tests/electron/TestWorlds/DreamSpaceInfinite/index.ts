@@ -15,6 +15,7 @@ import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
+import { $INITDataLoader } from "../Shared/DataLoader/DataLoaderRender.js";
 
 RegisterTexutres(DVER);
 
@@ -23,12 +24,18 @@ const workers = SetUpWorkers(
  "./World/world.js",
  "./Constructor/constructor.js",
  "../Shared/Nexus/nexus-with-player.js",
+ "../Shared/DataLoader/data.js"
 );
 
 await DVER.$INIT({
  worldWorker: workers.worldWorker,
  constructorWorker: workers.constructorWorkers,
  nexusWorker: workers.nexusWorker,
+ dataWorker: workers.dataWorker,
+ data: {
+  enabled: true,
+  autoSyncChunks: true,
+ },
  nexus: {
   enabled: true,
   autoSyncVoxelPalette: true,
@@ -54,7 +61,7 @@ const init = async () => {
 
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.1);
+ DVER.renderManager.setBaseLevel(0);
  DVER.renderManager.setSunLevel(0.8);
  const hemLight = new BABYLON.HemisphericLight(
   "",
@@ -63,9 +70,10 @@ const init = async () => {
  );
  const player = await GetRenderPlayer(true, scene, canvas, DVER);
 
-
  const debugCube = GetAnalyzerCubeRender(DVER, player);
  (window as any).debugCube = debugCube;
+
+ $INITDataLoader(DVER);
 
  runRenderLoop(engine, scene, player, DVER);
 };

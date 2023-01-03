@@ -1,6 +1,7 @@
-import type { IWGData } from "./Meta/IWG.types";
+import type { IWGData } from "./Types/IWG.types";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
-import { BuilderTool } from "../../../Tools/Build/Builder.js";
+import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
+import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
 /**# Infinite World Generator
  *
  */
@@ -9,6 +10,7 @@ export declare class IWG {
     columnTool: ColumnDataTool;
     nColumnTool: ColumnDataTool;
     builder: BuilderTool;
+    dataLoader: DataLoaderTool;
     tasks: {
         _data: {
             dimension: string;
@@ -120,8 +122,10 @@ export declare class IWG {
     _visitedMap: Map<string, boolean>;
     _activeColumns: Map<string, number[]>;
     _generateMap: Map<string, boolean>;
+    _existsCheckMap: Map<string, boolean>;
     _sunMap: Map<string, boolean>;
     constructor(data: IWGData);
     setDimension(id: string): void;
+    _generate(columnKey: string, x: number, y: number, z: number, onDone?: Function): void;
     update(): void;
 }

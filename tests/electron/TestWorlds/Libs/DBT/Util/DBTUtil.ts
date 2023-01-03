@@ -1,4 +1,4 @@
-import { NumberTypes } from "Meta/DBTSchema.tyeps";
+import { NumberTypes } from "../Types/DBTSchema.tyeps";
 export const TagNodeTypes = {
   boolean: 0,
   number: 1,

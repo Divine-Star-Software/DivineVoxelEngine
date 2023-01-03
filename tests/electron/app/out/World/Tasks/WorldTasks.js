@@ -6,6 +6,7 @@ import { DataSync } from "../Data/DataSync.js";
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 const regionTool = new RegionDataTool();
 const columnTool = new ColumnDataTool();
 const chunkTool = new ChunkDataTool();
@@ -26,6 +27,11 @@ export const WorldTasks = {
             const location = regionTool.getLocationData();
             WorldRegister.region.add(location[0], location[1], location[2], location[3], data[0]);
             DataSync.region.sync(location[0], location[1], location[2], location[3]);
+        }),
+        loadReginoHeader: ThreadComm.registerTasks("load-region-header", (data) => {
+            RegionHeaderRegister.add(data[0], data[1]);
+            const location = data[0];
+            DataSync.regionHeader.sync(location[0], location[1], location[2], location[3]);
         }),
         loadColumn: ThreadComm.registerTasks("load-column", (data) => {
             columnTool.setBuffer(data[0]);

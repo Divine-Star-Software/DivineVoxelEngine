@@ -19,15 +19,13 @@ export const Commands = {
         const command = Commands.commands.get(commandData.id);
         if (!command) {
             Commands.error(`Command with ID "${commandData.id}" does not exist.`);
-            onDone();
-            return;
+            return onDone();
         }
         if (command.arguments) {
             const argsData = CommandParser.parseArgs(input, command.arguments, commandData.index);
             if (!argsData)
-                return;
-            command.run(onDone, IO, argsData);
-            return;
+                return onDone();
+            return command.run(onDone, IO, argsData);
         }
         let string = input.substring(commandData.index, input.length);
         command.run(onDone, IO, { input: string });

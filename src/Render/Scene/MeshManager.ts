@@ -25,7 +25,7 @@ export const MeshManager = {
  meshMakers: <Record<VoxelSubstanceType, DVEMesh>>{},
 
  $INIT(scene: BABYLON.Scene) {
-    this.scene = scene;
+  this.scene = scene;
   //@ts-ignore
   this.meshMakers = {
    solid: DVER.renderManager.solidMesh,
@@ -35,8 +35,6 @@ export const MeshManager = {
    magma: DVER.renderManager.magmaMesh,
   };
  },
-
-
 
  removeChunk(data: RemoveChunkMeshTasks) {
   const dimension = data[0];

@@ -20,6 +20,20 @@
     "ts"
    ],
    "id": "star"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/divineVoxelEngineData/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "dved"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/crystalCompressor/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "cc"
   }
  ],
  "outputs": [
@@ -36,11 +50,23 @@
    "keepComments": true
   },
   {
-    "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/SC",
-    "sourceID": "star",
-    "codeSection": "all",
-    "keepComments": true
-   }
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/SC",
+   "sourceID": "star",
+   "codeSection": "all",
+   "keepComments": true
+  },
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/backend/server/libs/dved",
+   "sourceID": "dved",
+   "codeSection": "all",
+   "keepComments": true
+  },
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/TestWorlds/Libs/CC",
+   "sourceID": "cc",
+   "codeSection": "all",
+   "keepComments": true
+  }
  ],
  "codeSections": {
   "main": {

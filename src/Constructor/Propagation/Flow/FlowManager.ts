@@ -15,10 +15,10 @@ import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 export const FlowManager = {
  //voxelByte : Util.
@@ -126,8 +126,6 @@ export const FlowManager = {
   const n1 = this.getLevel(x + 1, y, z);
   const n1s = this.getLevelState(x + 1, y, z);
 
-
-
   if ((n1 > -1 && n1 < cl) || n1s == 1) {
    this._flowRemoveQue.push([x + 1, y, z]);
   }
@@ -174,8 +172,8 @@ export const FlowManager = {
  },
 
  __addToRebuildQue(x: number, y: number, z: number) {
-  const key = WorldBounds.getChunkKeyFromPosition(x, y, z);
-  const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
+  const key = WorldSpaces.chunk.getKey();
   if (
    !WorldRegister.chunk.get(this.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z)
   )
@@ -243,7 +241,6 @@ export const FlowManager = {
   }
   return false;
  },
-
 
  flowDownTest(x: number, y: number, z: number) {
   const level = this.getLevel(x, y - 1, z);

@@ -1,7 +1,7 @@
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { RawVoxelData } from "Meta/index.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 
 const brush = new BrushTool();
 const dataTool = brush._dt;
@@ -36,8 +36,8 @@ export const WorldGenRegister = {
  ) {
   const requests = this._requests.get(registerId);
   if (!requests) return;
-  const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
-  const chunkKey = WorldBounds.getChunkKey(chunkPOS);
+  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
+  const chunkKey = WorldSpaces.chunk.getKey();
   if (!requests.chunks.has(chunkKey)) {
    const world = ThreadComm.getComm("world");
 

@@ -15,12 +15,19 @@
    "id": "dbt"
   },
   {
-    "dir": "D:/DSSoftware/DSLIBS/divineRNG/src",
-    "fileExtensions": [
-     "ts"
-    ],
-    "id": "drng"
-   }
+   "dir": "D:/DSSoftware/DSLIBS/divineRNG/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "drng"
+  },
+  {
+   "dir": "D:/DSSoftware/DSLIBS/voxelSpaces/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "voxelSpaces"
+  }
  ],
  "outputs": [
   {
@@ -36,11 +43,17 @@
    "keepComments": true
   },
   {
-    "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/divineRNG",
-    "sourceID": "drng",
-    "codeSection": "all",
-    "keepComments": true
-   }
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/divineRNG",
+   "sourceID": "drng",
+   "codeSection": "all",
+   "keepComments": true
+  },
+  {
+   "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/voxelSpaces",
+   "sourceID": "voxelSpaces",
+   "codeSection": "all",
+   "keepComments": true
+  }
  ],
  "codeSections": {
   "test": {

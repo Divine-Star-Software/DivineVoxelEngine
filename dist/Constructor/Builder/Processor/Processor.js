@@ -6,7 +6,6 @@ import { Builder } from "../Builder.js";
 //data
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 //maps
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
@@ -14,6 +13,7 @@ import { FaceMap } from "../../../Data/Constants/Util/Faces.js";
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
 import { OverrideManager } from "../Overrides/OverridesManager.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
 const heightMapTool = new HeightMapTool();
@@ -232,7 +232,7 @@ export const Processor = {
         this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
         voxelObject.process(this.voxelProcesseData, Builder);
         baseTemplate.shapeTemplate.push(this.mDataTool.getShapeId());
-        const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
+        const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x, y, z);
         baseTemplate.positionTemplate.push(voxelPOS.x, voxelPOS.y, voxelPOS.z);
         for (const face of FaceMap) {
             faceBit = this.faceStateCheck(face, faceBit);
@@ -267,8 +267,8 @@ export const Processor = {
         this.settings.entity = false;
         this.LOD = LOD;
         const template = this.template;
-        let maxX = WorldBounds.chunkXSize;
-        let maxZ = WorldBounds.chunkZSize;
+        let maxX = WorldSpaces.chunk._bounds.x;
+        let maxZ = WorldSpaces.chunk._bounds.z;
         for (let x = 0; x < maxX; x += LOD) {
             for (let z = 0; z < maxZ; z += LOD) {
                 let minY = heightMapTool.chunk.setXZ(x, z).getMin();

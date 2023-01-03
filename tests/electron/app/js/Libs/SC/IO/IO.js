@@ -8,6 +8,10 @@ export const IO = {
         this.console.addText(text);
         this.scene.renderLog();
     },
+    error(text) {
+        this.console.addText(`ERROR: ${text}`);
+        this.scene.renderLog();
+    },
     clear() {
         this.console.clear();
         this.scene.clearCanvas();
@@ -15,5 +19,5 @@ export const IO = {
     },
     exit() {
         StarCommander.setActive(false);
-    }
+    },
 };

@@ -5,13 +5,14 @@ import type { IlluminationManager } from "../IlluminationManager";
 import { WorldBounds } from "../../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
+import { WorldSpaces } from "../../../../Data/World/WorldSpaces.js";
 
 const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
  if (
   x >= cx &&
-  x <= cx + WorldBounds.chunkXSize &&
+  x <= cx + WorldSpaces.chunk._bounds.x &&
   z >= cz &&
-  z <= cz + WorldBounds.chunkXSize
+  z <= cz + WorldSpaces.chunk._bounds.z
  )
   return true;
  return false;
@@ -30,8 +31,8 @@ export function RunWorldSun(
  const RmaxY = WorldRegister.column.height.getRelative(dimension, cx, cz, cy);
  const AmaxY = WorldRegister.column.height.getAbsolute(dimension, cx, cz, cy);
 
- for (let ix = cx; ix < cx + WorldBounds.chunkXSize; ix++) {
-  for (let iz = cz; iz < cz + WorldBounds.chunkZSize; iz++) {
+ for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
+  for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
    for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
     if (!this._sDataTool.loadIn(ix, iy, iz)) continue;
     const l = this._sDataTool.getLight();
@@ -44,8 +45,8 @@ export function RunWorldSun(
   }
  }
 
- for (let ix = cx; ix < cx + WorldBounds.chunkXSize; ix++) {
-  for (let iz = cz; iz < cz + WorldBounds.chunkZSize; iz++) {
+ for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
+  for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
    for (let iy = AmaxY; iy <= RmaxY; iy++) {
     if (!this._sDataTool.loadIn(ix, iy, iz)) continue;
     const l = this._sDataTool.getLight();

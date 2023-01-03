@@ -1,3 +1,4 @@
+import { Util } from "../../../Global/Util.helper.js";
 import { DimensionsRegister } from "../../../Data/World/Dimensions/DimensionsRegister.js";
 export class DataToolWorldBound {
     dimension = "main";
@@ -18,6 +19,13 @@ export class DataToolWorldBound {
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
+        return this;
+    }
+    setLocation(location) {
+        this.dimension = location[0];
+        this.position.x = location[1];
+        this.position.y = location[2];
+        this.position.z = location[3];
         return this;
     }
 }
@@ -46,6 +54,14 @@ export class DataToolBase extends DataToolWorldBound {
     setBuffer(buffer) {
         this._c = buffer;
         this.tags.setBuffer(this._c);
+    }
+    getBuffer() {
+        if (this._c instanceof DataView)
+            return this._c.buffer;
+        return this._c;
+    }
+    getAsArrayBuffer() {
+        return Util.converSABToBuffer(this.getBuffer());
     }
     getBufferSize() {
         return this.tags.tagSize;

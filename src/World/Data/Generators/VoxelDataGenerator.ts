@@ -1,6 +1,6 @@
 import { VoxelData } from "Meta/index.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 import { VoxelDataTags } from "../Tags/VoxelTags.js";
 
 let shapeMap: Record<string, number> | null = null;

@@ -53,6 +53,8 @@ export const StarCommander = {
             if (key == "Enter") {
                 Console.addActiveText();
                 Commands.run(Console.acitveText);
+                Console.centerAtBottom();
+                Scene.fullReRender();
                 return;
             }
             if (key == "Backspace") {

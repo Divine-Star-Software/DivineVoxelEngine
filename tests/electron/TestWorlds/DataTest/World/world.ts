@@ -35,7 +35,7 @@ const build = () => {
 
 const dataLoader = DVEW.getDataLoaderTool();
 
-const save = async () => {
+const saveRegion = async () => {
  generate();
  console.log("saving");
  await dataLoader.setDimension("main").setPosition(0, 0, 0).saveRegionAsync();
@@ -43,13 +43,46 @@ const save = async () => {
  build();
 };
 
-const load = async () => {
+const saveColumns = async () => {
+ console.log("saving columns");
+ generate();
+ dataLoader.setDimension("main");
+ for (let x = startX; x <= endX; x += 16) {
+  for (let z = startZ; z <= endZ; z += 16) {
+   await dataLoader.setPosition(x, 0, z).saveColumnAsync();
+  }
+ }
+ build();
+};
+
+const loadRegion = async () => {
  console.log("loading");
  await dataLoader.setDimension("main").setPosition(0, 0, 0).loadRegionAsync();
  console.log("done");
  build();
 };
 
+const loadColumns = async () => {
+ console.log("loading columns");
+ dataLoader.setDimension("main");
+ for (let x = startX; x <= endX; x += 16) {
+  for (let z = startZ; z <= endZ; z += 16) {
+   await dataLoader.setPosition(x, 0, z).loadColumnAsync();
+  }
+ }
+ build();
+};
 
+WorldGen.generateChunk(0, 0);
+//builder.setXZ(0, 0).fillColumn().buildColumn();
+await dataLoader.setDimension("main").setPosition(0, 0, 0).loadColumnAsync();
+//await dataLoader.loadColumnAsync();
+builder.setXZ(0, 0).buildColumn();
+dataLoader.columnExists((answer) => {
+ console.log(answer);
+});
+dataLoader.columnTimestamp((timeStamp) => {
+ console.log(timeStamp);
+});
 
-await load();
+//await saveColumns();

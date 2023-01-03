@@ -6,7 +6,6 @@ import { IlluminationManager } from "./Illumanation/IlluminationManager.js";
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { FlowManager } from "./Flow/FlowManager.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import {
  ExplosionTasks,
  ReBuildTasks,
@@ -15,6 +14,8 @@ import {
  WorldSunTask,
 } from "Meta/Tasks/Tasks.types.js";
 import { ExplosionManager } from "./Explosion/ExplosionManager.js";
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+
 export const Propagation = {
  illumination: IlluminationManager,
  flow: FlowManager,
@@ -33,8 +34,8 @@ export const Propagation = {
   substance: VoxelSubstanceType | "all"
  ) {
   if (DVEC.settings.settings.server.enabled) return;
-  const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
-  const chunkKey = WorldBounds.getChunkKey(chunkPOS);
+  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
+  const chunkKey = WorldSpaces.chunk.getKey();
 
   if (!this.rebuildQueMap.has(this._buildQueue)) {
    this.rebuildQueMap.set(this._buildQueue, new Map());

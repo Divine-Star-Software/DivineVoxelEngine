@@ -1,11 +1,11 @@
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import {
  RichChunk,
  RichRegion,
  RichWorldDimensions,
 } from "Meta/Data/RichWorldData.types.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
+
 export const RichData = {
- worldBounds: WorldBounds,
  _dimensions: <RichWorldDimensions>{
   main: {},
  },
@@ -14,7 +14,7 @@ export const RichData = {
 
  getRegion(x: number, y: number, z: number) {
   const dimension = this.getDimension("main");
-  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  const regionKey = WorldSpaces.region.getKeyXYZ(x, y, z);
   if (!dimension[regionKey]) return false;
   return dimension[regionKey];
  },
@@ -24,9 +24,9 @@ export const RichData = {
  getChunk(x: number, y: number, z: number) {
   const region = this.getRegion(x, y, z);
   if (!region) return false;
-  const worldColumnKey = this.worldBounds.getColumnKey(x, z);
+  const worldColumnKey = WorldSpaces.column.getKeyXYZ(x, y, z);
   if (!region.columns[worldColumnKey]) return false;
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+  const chunkKey = WorldSpaces.chunk.getKeyXYZ(x, y, z);
   const chunk = region.columns[worldColumnKey].chunks[chunkKey];
   if (!chunk) return false;
   return chunk;
@@ -34,7 +34,7 @@ export const RichData = {
  addRegion(x: number, y: number, z: number) {
   if (this.getRegion(x, y, z)) return false;
   const dimension = this.getDimension("main");
-  const regionKey = this.worldBounds.getRegionKeyFromPosition(x, y, z);
+  const regionKey = WorldSpaces.region.getKeyXYZ(x, y, z);
   const newRegion: RichRegion = {
    columns: {},
   };
@@ -46,13 +46,13 @@ export const RichData = {
   if (!region) {
    region = <RichRegion>this.addRegion(x, y, z);
   }
-  const worldColumnKey = this.worldBounds.getColumnKey(x, z);
+  const worldColumnKey =WorldSpaces.column.getKeyXYZ(x, y, z);
   if (!region.columns[worldColumnKey]) {
    region.columns[worldColumnKey] = {
     chunks: {},
    };
   }
-  const chunkKey = this.worldBounds.getChunkKeyFromPosition(x, y, z);
+  const chunkKey = WorldSpaces.chunk.getKeyXYZ(x, y, z);
   region.columns[worldColumnKey].chunks[chunkKey] = <RichChunk>{};
   return <RichChunk>region.columns[worldColumnKey].chunks[chunkKey];
  },
@@ -62,14 +62,14 @@ export const RichData = {
   if (!chunk) {
    chunk = <RichChunk>this.addChunk(x, y, z);
   }
-  const richKey = this.worldBounds.getRichPositionKey(x, y, z);
+  const richKey = WorldSpaces.voxel.getKeyXYZ(x, y, z);
   chunk[richKey] = data;
  },
 
  getData<T>(x: number, y: number, z: number): T | false {
   let chunk = this.getChunk(x, y, z);
   if (!chunk) return false;
-  const richKey = this.worldBounds.getRichPositionKey(x, y, z);
+  const richKey = WorldSpaces.voxel.getKeyXYZ(x, y, z);
   const data: T = chunk[richKey];
   if (!data) return false;
   return data;
@@ -80,7 +80,7 @@ export const RichData = {
   if (!chunk) {
    chunk = <RichChunk>this.addChunk(x, y, z);
   }
-  const richKey = this.worldBounds.getRichPositionKey(x, y, z);
+  const richKey = WorldSpaces.voxel.getKeyXYZ(x, y, z);
   delete chunk[richKey];
  },
 

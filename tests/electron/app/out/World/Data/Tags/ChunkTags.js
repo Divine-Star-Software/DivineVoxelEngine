@@ -1,6 +1,6 @@
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 export const ChunkDataTags = new TagManager("chunk-tags");
 ChunkDataTags.registerTag({
     id: "#dve_header",
@@ -47,31 +47,31 @@ export function InitalizeChunkTags() {
         id: "#dve_height_map",
         type: "typed-number-array",
         numberType: "32ui",
-        length: WorldBounds.chunkArea * 2,
+        length: WorldSpaces.chunk.getArea() * 2,
     });
     ChunkDataTags.registerTag({
         id: "#dve_voxel_id",
         type: "typed-number-array",
         numberType: "16ui",
-        length: WorldBounds.chunkTotalVoxels,
+        length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
         id: "#dve_voxel_light",
         type: "typed-number-array",
         numberType: "16ui",
-        length: WorldBounds.chunkTotalVoxels,
+        length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
         id: "#dve_voxel_state",
         type: "typed-number-array",
         numberType: "16ui",
-        length: WorldBounds.chunkTotalVoxels,
+        length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
         id: "#dve_voxel_secondary_id",
         type: "typed-number-array",
         numberType: "16ui",
-        length: WorldBounds.chunkTotalVoxels,
+        length: WorldSpaces.chunk.getVolume(),
     });
     const initData = ChunkDataTags.$INIT({
         indexBufferMode: "shared",

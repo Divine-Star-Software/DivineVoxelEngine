@@ -7,8 +7,8 @@ import type {
   DBTTagNodes,
   DBTTypedNumberArrayTag,
   DBTHeaderTag,
-} from "./Meta/DBTSchema.tyeps";
-import type { RemoteTagManagerInitData } from "./Meta/Util.types.js";
+} from "./Types/DBTSchema.tyeps";
+import type { RemoteTagManagerInitData } from "./Types/Util.types.js";
 import { DBTUtil, TagNodeTypes, NumberTypeRecord } from "./Util/DBTUtil.js";
 import { TagManagerBase } from "./Classes/TagManagerBase.js";
 
@@ -114,7 +114,7 @@ export class TagManager extends TagManagerBase {
     let bitIndex = 0;
     let bitSize = 1;
     /*
-[Typed Numbers]
+[Headers]
 */
     headers.forEach((tags, type) => {
       const byteSise = DBTUtil.getTypedSize(type);

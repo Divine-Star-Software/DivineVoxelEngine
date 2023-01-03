@@ -77,6 +77,25 @@ export class TagManagerBase {
         }
         return -Infinity;
     }
+    /**## getArrayTagByteIndex
+     *  Get the actual byte index for the provided index of the array.
+     * @param id
+     * @param index
+     * @returns
+     */
+    getArrayTagByteIndex(id, index) {
+        const byteIndex = this.indexMap.get(id);
+        if (byteIndex === undefined) {
+            throw new Error(`Tag with id: ${id} does not exist.`);
+        }
+        const indexData = getIndexData(this.index, byteIndex);
+        if (indexData[3] == TagNodeTypes.typedNumberArray) {
+            return (indexData[0] +
+                this.byteOffSet +
+                index * DBTUtil.getTypedSizeFromNumber(indexData[2]));
+        }
+        return -Infinity;
+    }
     setArrayTagValue(id, index, value) {
         const byteIndex = this.indexMap.get(id);
         if (byteIndex === undefined) {

@@ -5,30 +5,40 @@ import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
+import { WorldSpaces } from "./WorldSpaces.js";
 const chunkTool = new ChunkDataTool();
 const columnTool = new ColumnDataTool();
 const regionTool = new RegionDataTool();
 export const WorldRegister = {
     _dimensions: new Map(),
     _cacheOn: false,
-    _cache: new Map(),
+    _chunkCache: new Map(),
+    _columnCache: new Map(),
     $INIT() {
         this._dimensions.set("main", new Map());
     },
     cache: {
         enable() {
             WorldRegister._cacheOn = true;
-            WorldRegister._cache.clear();
+            WorldRegister._chunkCache.clear();
+            WorldRegister._columnCache.clear();
         },
         disable() {
             WorldRegister._cacheOn = false;
-            WorldRegister._cache.clear();
+            WorldRegister._chunkCache.clear();
+            WorldRegister._columnCache.clear();
         },
-        _add(key, data) {
-            WorldRegister._cache.set(key, data);
+        _addChunk(key, data) {
+            WorldRegister._chunkCache.set(key, data);
         },
-        _get(key) {
-            return WorldRegister._cache.get(key);
+        _addColumn(key, data) {
+            WorldRegister._columnCache.set(key, data);
+        },
+        _getChunk(key) {
+            return WorldRegister._chunkCache.get(key);
+        },
+        _getColumn(key) {
+            return WorldRegister._columnCache.get(key);
         },
     },
     dimensions: {
@@ -50,11 +60,11 @@ export const WorldRegister = {
                 dimension = WorldRegister.dimensions.add(dimensionId);
             }
             const region = this._getRegionData(sab);
-            const regionPOS = WorldBounds.getRegionPosition(x, z, y);
+            const regionPOS = WorldSpaces.region.getPositionXYZ(x, y, z);
             regionTool.setRegion(region);
             regionTool.setPositionData(regionPOS.x, regionPOS.y, regionPOS.z);
             regionTool.setDimensionId(dimensionId);
-            dimension.set(WorldBounds.getRegionKeyFromPosition(x, y, z), region);
+            dimension.set(WorldSpaces.region.getKey(), region);
             return region;
         },
         _getRegionData(sab) {
@@ -68,7 +78,7 @@ export const WorldRegister = {
             const dimension = WorldRegister.dimensions.get(dimensionId);
             if (!dimension)
                 return false;
-            const region = dimension.get(WorldBounds.getRegionKeyFromPosition(x, y, z));
+            const region = dimension.get(WorldSpaces.region.getKeyXYZ(x, y, z));
             if (!region)
                 return false;
             return region;
@@ -85,11 +95,11 @@ export const WorldRegister = {
                 DataHooks.region.onNew.run([dimensionId, x, y, z]);
             }
             const column = this._getColumnData(sab);
-            const columnPOS = WorldBounds.getColumnPosition(x, z, y);
+            const columnPOS = WorldSpaces.column.getPositionXYZ(x, y, z);
             columnTool.setColumn(column);
             columnTool.setPositionData(columnPOS.x, columnPOS.y, columnPOS.z);
             columnTool.setDimensionId(dimensionId);
-            region.columns.set(WorldBounds.getColumnIndex(x, z, y), column);
+            region.columns.set(WorldSpaces.column.getIndex(), column);
             return column;
         },
         _getColumnData(sab) {
@@ -100,13 +110,27 @@ export const WorldRegister = {
             };
         },
         get(dimensionId, x, z, y = 0) {
+            const columnKey = WorldSpaces.column.getKeyXYZ(x, y, z);
+            let addColumn = false;
+            if (WorldRegister._cacheOn) {
+                const column = WorldRegister.cache._getColumn(columnKey);
+                if (column)
+                    return column;
+                addColumn = true;
+            }
             const region = WorldRegister.region.get(dimensionId, x, y, z);
             if (!region)
                 return false;
-            return region.columns.get(WorldBounds.getColumnIndex(x, z, y));
+            const column = region.columns.get(WorldSpaces.column.getIndexXYZ(x, y, z));
+            if (!column)
+                return false;
+            if (addColumn) {
+                WorldRegister.cache._addColumn(columnKey, column);
+            }
+            return column;
         },
         fill(dimensionId, x, z, y = 0) {
-            for (let cy = WorldBounds.bounds.MinY; cy < WorldBounds.bounds.MaxY; cy += WorldBounds.chunkYSize) {
+            for (let cy = WorldBounds.bounds.MinY; cy < WorldBounds.bounds.MaxY; cy += WorldSpaces.chunk._bounds.y) {
                 if (!WorldRegister.chunk.get(dimensionId, x, y + cy, z)) {
                     const chunk = DataHooks.chunk.onGetSync.run([dimensionId, x, cy, z]);
                     if (!chunk)
@@ -117,8 +141,8 @@ export const WorldRegister = {
         },
         height: {
             getRelative(dimensionId, x, z, y = 0) {
-                const chunkWidth = WorldBounds.chunkXSize;
-                const chunkDepth = WorldBounds.chunkZSize;
+                const chunkWidth = WorldSpaces.chunk._bounds.x;
+                const chunkDepth = WorldSpaces.chunk._bounds.z;
                 let maxHeight = -Infinity;
                 for (const check of $2dMooreNeighborhood) {
                     const cx = check[0] * chunkWidth + x;
@@ -168,10 +192,10 @@ export const WorldRegister = {
                 return;
             const chunk = this._getChunkData(sab);
             chunkTool.setChunk(chunk);
-            const chunkPOS = WorldBounds.getChunkPosition(x, y, z);
+            const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
             chunkTool.setPositionData(chunkPOS.x, chunkPOS.y, chunkPOS.z);
             chunkTool.setDimensionId(dimensionId);
-            column.chunks.set(WorldBounds.getChunkColumnIndex(y), chunk);
+            column.chunks.set(WorldSpaces.chunk.getIndex(), chunk);
             DataHooks.chunk.onNew.run([dimensionId, x, y, z]);
             return chunk;
         },
@@ -192,15 +216,15 @@ export const WorldRegister = {
             let column = WorldRegister.column.get("main", chunkPOS.x, chunkPOS.z, chunkPOS.y);
             if (!column)
                 return;
-            column.chunks.set(WorldBounds.getChunkColumnIndex(chunkPOS.y), chunk);
+            column.chunks.set(WorldSpaces.chunk.getIndexXYZ(chunkPOS.x, chunkPOS.z, chunkPOS.y), chunk);
             DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);
             return chunk;
         },
         get(dimensionId, x, y, z) {
-            const chunkKey = WorldBounds.getChunkKeyFromPosition(x, y, z);
+            const chunkKey = WorldSpaces.chunk.getKeyXYZ(x, y, z);
             let addChunk = false;
             if (WorldRegister._cacheOn) {
-                const chunk = WorldRegister.cache._get(chunkKey);
+                const chunk = WorldRegister.cache._getChunk(chunkKey);
                 if (chunk)
                     return chunk;
                 addChunk = true;
@@ -208,11 +232,11 @@ export const WorldRegister = {
             const column = WorldRegister.column.get(dimensionId, x, z, y);
             if (!column)
                 return false;
-            const chunk = column.chunks.get(WorldBounds.getChunkColumnIndex(y));
+            const chunk = column.chunks.get(WorldSpaces.chunk.getIndex());
             if (!chunk)
                 return;
             if (addChunk) {
-                WorldRegister.cache._add(chunkKey, chunk);
+                WorldRegister.cache._addChunk(chunkKey, chunk);
             }
             return chunk;
         },

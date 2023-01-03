@@ -22,7 +22,7 @@ import { VoxelManager } from "./Data/Managers/VoxelManager.js";
 import { ItemManager } from "../Data/Items/ItemManager.js";
 import { WorldDataGenerator } from "./Data/Generators/WorldDataGenerator.js";
 //tools
-import { BuilderTool } from "../Tools/Build/Builder.js";
+import { BuilderTool } from "../Tools/Build/BuilderTool.js";
 import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { EntityConstructor } from "./Tools/EntityConstructor/EntityConstructor.js";
 import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";

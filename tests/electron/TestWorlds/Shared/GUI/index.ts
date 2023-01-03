@@ -72,7 +72,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
 
 
   if (DVER) {
-   const pos = DVER.data.worldBounds.getChunkPosition(
+   const pos = DVER.data.spaces.chunk.getPositionXYZ(
     positionWatch.position.x,
     positionWatch.position.y,
     positionWatch.position.z

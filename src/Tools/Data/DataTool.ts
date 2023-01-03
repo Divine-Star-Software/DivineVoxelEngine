@@ -3,7 +3,6 @@ import type {
  VoxelSubstanceType,
  VoxelTemplateSubstanceType,
 } from "Meta/index.js";
-import { ChunkSpace } from "../../Data/World/Chunk/ChunkSpace.js";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
@@ -11,11 +10,14 @@ import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "./Classes/DataToolBase.js";
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 
 export class DataTool extends DataToolBase {
  static _dtutil = new DataTool();
  static _chunkTool = new ChunkDataTool();
  static _heightMapTool = new HeightMapTool();
+ static _columntool = new ColumnDataTool();
 
  _mode: "World" | "Entity" = "World";
  data = {
@@ -86,7 +88,11 @@ export class DataTool extends DataToolBase {
    DataTool._chunkTool.setDimension(this.dimension);
    if (!DataTool._chunkTool.loadIn(x, y, z)) return false;
 
-   const index = ChunkSpace.getVoxelDataIndex(x, y, z);
+   const index = WorldSpaces.voxel.getIndexXYZ(
+    this.position.x,
+    this.position.y,
+    this.position.z
+   );
    this.data.raw[0] = DataTool._chunkTool.getArrayTagValue(
     "#dve_voxel_id",
     index
@@ -123,7 +129,7 @@ export class DataTool extends DataToolBase {
    )
     return false;
 
-   const index = ChunkSpace.getVoxelDataIndex(
+   const index = WorldSpaces.voxel.getIndexXYZ(
     this.position.x,
     this.position.y,
     this.position.z
@@ -171,6 +177,16 @@ export class DataTool extends DataToolBase {
       this.position.z
      );
     }
+   }
+
+   if (
+    DataTool._columntool.loadIn(
+     this.position.x,
+     this.position.y,
+     this.position.z
+    )
+   ) {
+    DataTool._columntool.markAsNotStored();
    }
   }
   if (this._mode == "Entity") {

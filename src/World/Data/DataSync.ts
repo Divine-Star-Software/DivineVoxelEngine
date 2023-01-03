@@ -13,7 +13,7 @@ import type {
  VoxelDataSync,
  VoxelPaletteSyncData,
 } from "Meta/Data/DataSync.types.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 //objects
 import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
@@ -22,8 +22,13 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
-import { InitalizeRegionTags, RegionDataTags } from "./Tags/RegionTags.js";
+import {
+ InitalizeRegionTags,
+ RegionDataTags,
+ RegionHeaderTagManager,
+} from "./Tags/RegionTags.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
+import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 
 type CommSyncOptions = {
  worldData: boolean;
@@ -241,6 +246,73 @@ export const DataSync = {
   },
  },
 
+ regionHeader: {
+  unSync(dimesnion: string, x: number, y: number, z: number) {
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
+    comm.unSyncData<RegionUnSyncData>(DataSyncTypes.regionHeader, [
+     dimesnion,
+     x,
+     y,
+     z,
+    ]);
+   });
+  },
+  unSyncInThread(
+   commName: string,
+   dimension: string,
+   x: number,
+   y: number,
+   z: number
+  ) {
+   const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
+   comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.regionHeader, [
+    dimension,
+    x,
+    y,
+    z,
+   ]);
+  },
+  sync(dimension: string, x: number, y: number, z: number) {
+   const region = RegionHeaderRegister.get([dimension, x, y, z]);
+   if (!region) return;
+   loopThroughComms((comm, options) => {
+    if (!options.worldData) return;
+    comm.syncData<RegionSyncData>(DataSyncTypes.regionHeader, [
+     dimension,
+     x,
+     y,
+     z,
+     region.buffer,
+    ]);
+   });
+  },
+  syncInThread(
+   commName: string,
+   dimension: string,
+   x: number,
+   y: number,
+   z: number
+  ) {
+   const region = RegionHeaderRegister.get([dimension, x, y, z]);
+   if (!region) return;
+   const comm = DataSync.comms[commName];
+   if (!comm) return;
+   const options = DataSync.commOptions[commName];
+   if (!options.worldData) return;
+   comm.syncData<RegionSyncData>(DataSyncTypes.regionHeader, [
+    dimension,
+    x,
+    y,
+    z,
+    region.buffer,
+   ]);
+  },
+ },
+
  region: {
   unSync(dimesnion: string, x: number, y: number, z: number) {
    loopThroughComms((comm, options) => {
@@ -298,7 +370,7 @@ export const DataSync = {
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.syncData<RegionSyncData>(DataSyncTypes.column, [
+   comm.syncData<RegionSyncData>(DataSyncTypes.region, [
     dimesnion,
     x,
     y,
@@ -418,10 +490,10 @@ export const DataSync = {
   sync() {
    loopThroughComms((comm, options) => {
     if (!options.worldDataTags) return;
-    comm.syncData<RemoteTagManagerInitData>(
-     DataSyncTypes.regionTags,
-     RegionDataTags.initData
-    );
+    comm.syncData<RemoteTagManagerInitData[]>(DataSyncTypes.regionTags, [
+     RegionDataTags.initData,
+     RegionHeaderTagManager.initData,
+    ]);
    });
   },
   syncInThread(commName: string) {
@@ -429,10 +501,10 @@ export const DataSync = {
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldDataTags) return;
-   comm.syncData<RemoteTagManagerInitData>(
-    DataSyncTypes.regionTags,
-    RegionDataTags.initData
-   );
+   comm.syncData<RemoteTagManagerInitData[]>(DataSyncTypes.regionTags, [
+    RegionDataTags.initData,
+    RegionHeaderTagManager.initData,
+   ]);
   },
  },
 

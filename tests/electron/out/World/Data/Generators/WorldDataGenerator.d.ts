@@ -1,5 +1,4 @@
 export declare const WorldDataGenerator: {
-    convertToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
     chunk: {
         create(buffer?: ArrayBuffer | false): SharedArrayBuffer;
     };

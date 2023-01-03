@@ -1,4 +1,4 @@
-import { BufferTypes } from "../Meta/Util.types.js";
+import { BufferTypes } from "../Types/Util.types.js";
 import { DBTUtil, NumberTypeMap, TagNodeTypes } from "../Util/DBTUtil.js";
 
 const TagIndexData: [
@@ -117,6 +117,28 @@ export class TagManagerBase {
           this.byteOffSet +
           index * DBTUtil.getTypedSizeFromNumber(indexData[2]),
         indexData[2]
+      );
+    }
+    return -Infinity;
+  }
+
+  /**## getArrayTagByteIndex
+   *  Get the actual byte index for the provided index of the array.
+   * @param id
+   * @param index
+   * @returns
+   */
+  getArrayTagByteIndex(id: string, index: number) {
+    const byteIndex = this.indexMap.get(id);
+    if (byteIndex === undefined) {
+      throw new Error(`Tag with id: ${id} does not exist.`);
+    }
+    const indexData = getIndexData(this.index, byteIndex);
+    if (indexData[3] == TagNodeTypes.typedNumberArray) {
+      return (
+        indexData[0] +
+        this.byteOffSet +
+        index * DBTUtil.getTypedSizeFromNumber(indexData[2])
       );
     }
     return -Infinity;

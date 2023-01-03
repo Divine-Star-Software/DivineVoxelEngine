@@ -1,19 +1,13 @@
+import { Util } from "../../../Global/Util.helper.js";
 import { DVEMessageHeader, WorldDataHeaders, } from "../../../Data/Constants/DataHeaders.js";
 import { ChunkDataTags } from "../Tags/ChunkTags.js";
 import { ColumnDataTags } from "../Tags/ColumnTags.js";
 import { RegionDataTags } from "../Tags/RegionTags.js";
 export const WorldDataGenerator = {
-    convertToSAB(buffer) {
-        const sab = new SharedArrayBuffer(buffer.byteLength);
-        const temp = new Uint8Array(buffer);
-        const temp2 = new Uint8Array(sab);
-        temp2.set(temp, 0);
-        return sab;
-    },
     chunk: {
         create(buffer = false) {
             if (buffer) {
-                return WorldDataGenerator.convertToSAB(buffer);
+                return Util.convertBufferToSAB(buffer);
             }
             const newBuffer = new SharedArrayBuffer(ChunkDataTags.tagSize);
             ChunkDataTags.setBuffer(newBuffer);
@@ -25,7 +19,7 @@ export const WorldDataGenerator = {
     column: {
         create(buffer = false) {
             if (buffer) {
-                return WorldDataGenerator.convertToSAB(buffer);
+                return Util.convertBufferToSAB(buffer);
             }
             const newBuffer = new SharedArrayBuffer(ColumnDataTags.tagSize);
             ColumnDataTags.setBuffer(newBuffer);
@@ -37,7 +31,7 @@ export const WorldDataGenerator = {
     region: {
         create(buffer = false) {
             if (buffer) {
-                return WorldDataGenerator.convertToSAB(buffer);
+                return Util.convertBufferToSAB(buffer);
             }
             const newBuffer = new SharedArrayBuffer(RegionDataTags.tagSize);
             RegionDataTags.setBuffer(newBuffer);

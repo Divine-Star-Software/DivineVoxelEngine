@@ -22,4 +22,18 @@ export const Util = {
     radToDeg(radians) {
         return radians * (180 / Math.PI);
     },
+    convertBufferToSAB(buffer) {
+        const sab = new SharedArrayBuffer(buffer.byteLength);
+        const temp = new Uint8Array(buffer);
+        const temp2 = new Uint8Array(sab);
+        temp2.set(temp, 0);
+        return sab;
+    },
+    converSABToBuffer(buffer) {
+        const newBuffer = new ArrayBuffer(buffer.byteLength);
+        const temp = new Uint8Array(buffer);
+        const temp2 = new Uint8Array(newBuffer);
+        temp2.set(temp, 0);
+        return newBuffer;
+    },
 };

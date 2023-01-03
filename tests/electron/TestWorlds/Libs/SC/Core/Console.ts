@@ -27,6 +27,13 @@ export const Console = {
   this.historyIndex = history.length;
  },
 
+
+ centerAtBottom(){
+  let start = this.text.length - this.maxLines;
+  start = start < 0 ? start = 0 : start;
+  this.startIndex = start;
+ },
+
  clearActiveText() {
   this.acitveText = "";
   this.activeTextCursor.position = 0;
@@ -128,18 +135,19 @@ export const Console = {
   localStorage.setItem("console_history", JSON.stringify(this.history));
  },
 
+ getCursorPosition(ctx: CanvasRenderingContext2D) {
+  const text = this.getActiveText()[0];
+  const string = text.substring(
+   0,
+   this.activeTextCursor.position + this.consoleMarker.length
+  );
+  const data = ctx.measureText(string);
+  return data.width;
+ },
+
  getActiveText(cursor = true) {
   let activeText = this.acitveText;
-  if (cursor) {
-   activeText =
-    this.acitveText.substring(0, this.activeTextCursor.position) +
-    "|" +
-    this.acitveText.substring(
-     this.activeTextCursor.position,
-     this.acitveText.length
-    );
-  }
-  let text = `${this.consoleMarker} ${activeText}`;
+  let text = `${this.consoleMarker}${activeText}`;
   return TextProcessor.processText(text);
  },
 };

@@ -10,6 +10,7 @@ export declare class DataToolWorldBound {
     setDimension(dimensionId: string): this;
     getLocation(): LocationData;
     setPosition(x: number, y: number, z: number): this;
+    setLocation(location: LocationData): this;
 }
 export declare class DataToolBase extends DataToolWorldBound {
     tags: RemoteTagManager;
@@ -20,6 +21,8 @@ export declare class DataToolBase extends DataToolWorldBound {
     getArrayTagValue(id: string, index: number): number;
     setArrayTagValue(id: string, index: number, value: number): number | void;
     setBuffer(buffer: ArrayBuffer | DataView | SharedArrayBuffer): void;
+    getBuffer(): ArrayBuffer;
+    getAsArrayBuffer(): ArrayBuffer;
     getBufferSize(): number;
 }
 export declare class PositionBoundDataTool extends DataToolBase {

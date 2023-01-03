@@ -1,5 +1,5 @@
-import { ChunkSpace } from "../World/Chunk/ChunkSpace.js";
 import { WorldBounds } from "../World/WorldBounds.js";
+import { WorldSpaces } from "../World/WorldSpaces.js";
 /**# Engine Settings
  * ---
  * Handles common settings for all contexts
@@ -47,7 +47,7 @@ export const EngineSettings = {
         },
         regions: {
             regionXPow2: 9,
-            regionYPow2: 9,
+            regionYPow2: 8,
             regionZPow2: 9,
         },
         chunks: {
@@ -111,17 +111,10 @@ export const EngineSettings = {
         this.__syncWithObjects();
     },
     __syncWithObjects() {
-        if (this.settings.chunks) {
-            WorldBounds.setChunkBounds(this.settings.chunks.chunkXPow2, this.settings.chunks.chunkYPow2, this.settings.chunks.chunkZPow2);
-            WorldBounds.syncBoundsWithArrays();
-        }
-        if (this.settings.regions) {
-            WorldBounds.setRegionBounds(this.settings.regions.regionXPow2, this.settings.regions.regionYPow2, this.settings.regions.regionZPow2);
-        }
+        WorldSpaces.$INIT(this.settings);
         if (this.settings.world) {
             WorldBounds.setWorldBounds(this.settings.world.minX, this.settings.world.maxX, this.settings.world.minZ, this.settings.world.maxZ, this.settings.world.minY, this.settings.world.maxY);
         }
-        ChunkSpace.syncSettings();
     },
     syncWithWorldBounds(worldBounds) {
     },

@@ -1,5 +1,5 @@
 //types
-import type { ColliderObject } from "Meta/Interfaces/Physics/Collider.type.js";
+import type { ColliderObject } from "Plugins/Physics/Types/Physics/Collider.type.js";
 //objects
 import { VoxelMath } from "../../../Libs/Math/VoxelMath.js";
 import { CollisionsHanlder } from "./Collisions/CollisionsHandler.js";

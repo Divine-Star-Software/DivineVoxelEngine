@@ -5,57 +5,66 @@ export function RegisterDefaultCommands() {
   id: "clear",
   note: "Will clear the console.",
   arguments: false,
-  run: (on, io) => {
+  run: (done, io) => {
    io.clear();
-   on();
+   done();
   },
  });
  Commands.registerCommand({
   id: "clearHistory",
   note: "Will clear the command history.",
   arguments: false,
-  run: (on, io) => {
+  run: (done, io) => {
    io.console.clearHistory();
    io.displayText("History has been cleared.");
-   on();
+   done();
   },
  });
  Commands.registerCommand({
   id: "exit",
   note: "Will close the console.",
   arguments: false,
-  run: (on, io) => {
+  run: (done, io) => {
    io.exit();
-   on();
+   done();
   },
  });
  Commands.registerCommand({
   id: "eval",
   note: "Will run js code",
   arguments: false,
-  run: (on, io, args) => {
+  run: (done, io, args) => {
    if (args.input && typeof args.input == "string") {
     const returnData = eval(args.input);
     io.displayText(String(returnData));
    }
-   on();
+   done();
+  },
+ });
+ Commands.registerCommand({
+  id: "help",
+  note: "",
+  arguments: false,
+  run: (done, io, args) => {
+   Commands.commands.forEach((c) => {
+    const text = `${c.id}: ${c.note ? c.note : ""}`;
+    io.displayText(text);
+   });
+   done();
   },
  });
  Commands.registerCommand({
   id: "describe",
   note: "Will show info about any command.",
-  arguments: [
-   {
-    fullId: "id",
-    shortId: "i",
-    type: "string",
-    required: true,
-   },
-  ],
+  arguments: false,
   run: (onDone, io, args) => {
-   const command = Commands.getCommand(args.id);
+   let commandId = "";
+   if (args.input && typeof args.input == "string") {
+    commandId = String(args.input).trim();
+   }
+   const command = Commands.getCommand(commandId);
    if (!command) {
-    Commands.error(`command with ID "${args.id}" does not exist`);
+    Commands.error(`command with ID "${commandId}" does not exist`);
     return onDone();
    }
 
@@ -113,6 +122,10 @@ export function RegisterDefaultCommands() {
    },
   ],
   run: (onDone, io, args) => {
+   if (!args.key) {
+    io.error("Key must be defined.");
+    return onDone();
+   }
    args.key = String(args.key).trim();
    if (args.delete) {
     localStorage.removeItem(args.key);
@@ -135,7 +148,7 @@ export function RegisterDefaultCommands() {
    }
    const data = localStorage.getItem(args.key);
    if (data) {
-    io.displayText(`Found data for "${args.key}".`);
+    io.displayText(`Found data for "${args.key}":`);
     io.displayText(data);
    } else {
     io.displayText(`No data for ${args.key}`);

@@ -1,3 +1,4 @@
+import { Util } from "../../../Global/Util.helper.js";
 import type { RemoteTagManager } from "Libs/DivineBinaryTags/RemoteTagManager";
 import type { LocationData } from "Meta/Data/CommonTypes";
 import { DimensionsRegister } from "../../../Data/World/Dimensions/DimensionsRegister.js";
@@ -22,6 +23,14 @@ export class DataToolWorldBound {
   this.position.x = x;
   this.position.y = y;
   this.position.z = z;
+  return this;
+ }
+
+ setLocation(location: LocationData) {
+  this.dimension = location[0];
+  this.position.x = location[1];
+  this.position.y = location[2];
+  this.position.z = location[3];
   return this;
  }
 }
@@ -55,6 +64,15 @@ export class DataToolBase extends DataToolWorldBound {
  setBuffer(buffer: ArrayBuffer | DataView | SharedArrayBuffer) {
   this._c = buffer;
   this.tags.setBuffer(this._c);
+ }
+
+ getBuffer() {
+  if (this._c instanceof DataView) return this._c.buffer;
+  return this._c;
+ }
+
+ getAsArrayBuffer() {
+  return Util.converSABToBuffer(<SharedArrayBuffer>this.getBuffer());
  }
 
  getBufferSize() {

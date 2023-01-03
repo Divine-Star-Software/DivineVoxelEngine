@@ -1,4 +1,3 @@
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
 import { ConstructorQueues as CQ } from "../../Common/Queues/ConstructorQueues.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
@@ -6,6 +5,8 @@ import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { GenerateTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
 import { RawVoxelData } from "Meta/index.js";
+import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+
 class TasksBase {
  _data = {
   dimension: "main",
@@ -37,11 +38,7 @@ class TasksBase {
   z: number,
   dimension = this._data.dimension
  ) {
-  const queueKey = `${dimension}-${WorldBounds.getRegionKeyFromPosition(
-   x,
-   y,
-   z
-  )}`;
+  const queueKey = `${dimension}-${WorldSpaces.region.getKeyXYZ(x, y, z)}`;
   CQ.addQueue(queueKey);
   this._data.queue = queueKey;
   this._thread = ThreadComm.threadName;
@@ -143,7 +140,6 @@ class TasksBase {
     await CQ.build.chunk.runAndAwait(this._s._data.queue);
    },
   },
-  
  };
  explosion = {
   run: {

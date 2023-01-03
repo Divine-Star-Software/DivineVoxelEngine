@@ -1,7 +1,7 @@
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Meta/Util.types.js";
+import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 declare type CommSyncOptions = {
     worldData: boolean;
     worldDataTags: boolean;
@@ -54,6 +54,12 @@ export declare const DataSync: {
         unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
         sync(dimension: string, x: number, y: number, z: number): void;
         syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+    };
+    regionHeader: {
+        unSync(dimesnion: string, x: number, y: number, z: number): void;
+        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+        sync(dimension: string, x: number, y: number, z: number): void;
+        syncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
     };
     region: {
         unSync(dimesnion: string, x: number, y: number, z: number): void;

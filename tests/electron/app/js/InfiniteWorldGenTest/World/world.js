@@ -7,8 +7,8 @@ let position = new Float64Array(3);
 const runIWG = () => {
     const generator = new IWG({
         positionWatch: position,
-        renderDistance: 200,
-        generateDistance: 300,
+        renderDistance: 100,
+        generateDistance: 150,
     });
     setInterval(() => {
         generator.update();
@@ -20,5 +20,4 @@ DVEW.parentComm.listenForMessage("set-position", (data) => {
     runIWG();
 });
 DVEW.parentComm.sendMessage("get-position");
-//GetAnalyzerCubeWorld(DVEW);
 self.DVEW = DVEW;

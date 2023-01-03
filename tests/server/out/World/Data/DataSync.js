@@ -6,8 +6,9 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DataSyncTypes } from "../../Common/Threads/Contracts/DataSync.js";
 import { ChunkDataTags, InitalizeChunkTags } from "./Tags/ChunkTags.js";
 import { ColumnDataTags, InitalizeColumnTags } from "./Tags/ColumnTags.js";
-import { InitalizeRegionTags, RegionDataTags } from "./Tags/RegionTags.js";
+import { InitalizeRegionTags, RegionDataTags, RegionHeaderTagManager, } from "./Tags/RegionTags.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
+import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 const loopThroughComms = (func) => {
     for (const commKey of Object.keys(DataSync.comms)) {
         const comm = DataSync.comms[commKey];
@@ -205,6 +206,68 @@ export const DataSync = {
             ]);
         },
     },
+    regionHeader: {
+        unSync(dimesnion, x, y, z) {
+            loopThroughComms((comm, options) => {
+                if (!options.worldData)
+                    return;
+                comm.unSyncData(DataSyncTypes.regionHeader, [
+                    dimesnion,
+                    x,
+                    y,
+                    z,
+                ]);
+            });
+        },
+        unSyncInThread(commName, dimension, x, y, z) {
+            const comm = DataSync.comms[commName];
+            if (!comm)
+                return;
+            const options = DataSync.commOptions[commName];
+            if (!options.worldData)
+                return;
+            comm.unSyncData(DataSyncTypes.regionHeader, [
+                dimension,
+                x,
+                y,
+                z,
+            ]);
+        },
+        sync(dimension, x, y, z) {
+            const region = RegionHeaderRegister.get([dimension, x, y, z]);
+            if (!region)
+                return;
+            loopThroughComms((comm, options) => {
+                if (!options.worldData)
+                    return;
+                comm.syncData(DataSyncTypes.regionHeader, [
+                    dimension,
+                    x,
+                    y,
+                    z,
+                    region.buffer,
+                ]);
+            });
+        },
+        syncInThread(commName, dimension, x, y, z) {
+            const region = RegionHeaderRegister.get([dimension, x, y, z]);
+            if (!region)
+                return;
+            const comm = DataSync.comms[commName];
+            if (!comm)
+                return;
+            const options = DataSync.commOptions[commName];
+            if (!options.worldData)
+                return;
+            comm.syncData(DataSyncTypes.regionHeader, [
+                dimension,
+                x,
+                y,
+                z,
+                region.buffer,
+            ]);
+        },
+    },
     region: {
         unSync(dimesnion, x, y, z) {
             loopThroughComms((comm, options) => {
@@ -258,7 +321,7 @@ export const DataSync = {
             const options = DataSync.commOptions[commName];
             if (!options.worldData)
                 return;
-            comm.syncData(DataSyncTypes.column, [
+            comm.syncData(DataSyncTypes.region, [
                 dimesnion,
                 x,
                 y,
@@ -376,7 +439,10 @@ export const DataSync = {
             loopThroughComms((comm, options) => {
                 if (!options.worldDataTags)
                     return;
-                comm.syncData(DataSyncTypes.regionTags, RegionDataTags.initData);
+                comm.syncData(DataSyncTypes.regionTags, [
+                    RegionDataTags.initData,
+                    RegionHeaderTagManager.initData,
+                ]);
             });
         },
         syncInThread(commName) {
@@ -386,7 +452,10 @@ export const DataSync = {
             const options = DataSync.commOptions[commName];
             if (!options.worldDataTags)
                 return;
-            comm.syncData(DataSyncTypes.regionTags, RegionDataTags.initData);
+            comm.syncData(DataSyncTypes.regionTags, [
+                RegionDataTags.initData,
+                RegionHeaderTagManager.initData,
+            ]);
         },
     },
     voxelPalette: {

@@ -1,10 +1,13 @@
 //types
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import type { ChunkData, Column } from "Meta/Data/WorldData.types";
 import type { VoxelTemplateSubstanceType } from "Meta/index";
 //Data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
-import { WorldBounds } from "../../../Data/World/WorldBounds.js";
+
+
+
 
 export class HeightMapTool {
  static _chunkTool = new ChunkDataTool();
@@ -68,7 +71,7 @@ export class HeightMapTool {
     HeightMapTool._chunkTool._c = this._c;
     const minY = HeightMapTool._chunkTool.getTagValue("#dve_min_height");
     const maxY = HeightMapTool._chunkTool.getTagValue("#dve_max_height");
-    const voxelPOS = WorldBounds.getVoxelPosition(x, y, z);
+    const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x,y,z);
     if (minY > voxelPOS.y) {
      HeightMapTool._chunkTool.setTagValue("#dve_min_height", voxelPOS.y);
     }
