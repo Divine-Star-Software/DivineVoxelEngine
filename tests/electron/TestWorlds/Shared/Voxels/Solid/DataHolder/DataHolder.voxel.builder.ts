@@ -1,49 +1,35 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types";
 let frontUV = 0;
 let sideUV = 0;
 
-export const DataHolderVoxelBuilderThread: VoxelConstructorObject = {
+export const DataHolderVoxelBuilderThread: VoxelConstructor = {
  id: "dve_dataholder",
- 
+
  hooks: {
   texturesRegistered: (DVEB) => {
    frontUV = DVEB.textureManager.getTextureUV("solid", "data-holder", "front");
    sideUV = DVEB.textureManager.getTextureUV("solid", "data-holder");
   },
  },
- process: function (data, DVEB) {
-  //top
-  if (data.exposedFaces[0]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+ process(templater) {
+  if (templater.isFaceExpposed("top")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
   }
-  //bottom
-  if (data.exposedFaces[1]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("bottom")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
   }
-  //east
-  if (data.exposedFaces[2]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("east")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
   }
-  //west
-  if (data.exposedFaces[3]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("west")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
   }
-  //south face
-  if (data.exposedFaces[4]) {
-   data.uvTemplate.push(frontUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("south")) {
+   templater.addUV(frontUV).addOverlayUVs([0]);
   }
-  //north face
-  if (data.exposedFaces[5]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("north")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
   }
-
-  DVEB.processor.processVoxelLight(data);
-  return;
+  templater.processVoxelLight();
  },
 };

@@ -1,9 +1,8 @@
 import type {
- VoxelConstructorObject,
  VoxelSubstanceType,
 } from "Meta/Data/Voxels/Voxel.types";
 import { Processor } from "../Processor.js";
-import { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import { VoxelConstructor  } from "Meta/Constructor/Voxel.types.js";
 import { DirectionNames } from "Meta/Util.types.js";
 import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { VoxelShape } from "Meta/index.js";
@@ -11,6 +10,7 @@ import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNe
 import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
 import { OverrideManager } from "../../Overrides/OverridesManager.js";
+import { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
 type Nullable<T> = T | false | null;
 const LD = LightData;
 type Vertexes = 1 | 2 | 3 | 4;
@@ -214,12 +214,12 @@ const flipCheck = (face: DirectionNames) => {
 };
 
 const handleAdd = (
- data: VoxelProcessData,
+ data: ChunkTemplate,
  face: number,
  direction: DirectionNames
 ) => {
  if (flipCheck(direction)) {
-  data.faceStates[face] = 1;
+  Processor.faceStates[face] = 1;
   data.lightTemplate.push(
    RGBvertexStates[2].value,
    RGBvertexStates[1].value,
@@ -301,7 +301,7 @@ const currentVoxelData: {
  voxelId: string;
  shapeState: number;
  currentShape: Nullable<VoxelShape>;
- voxelObject: Nullable<VoxelConstructorObject>;
+ voxelObject: Nullable<VoxelConstructor>;
  x: number;
  y: number;
  z: number;
@@ -324,7 +324,7 @@ const AOValues = { a: 0 };
 
 export function CalculateVoxelLight(
  this: typeof Processor,
- data: VoxelProcessData,
+ data: ChunkTemplate,
  tx: number,
  ty: number,
  tz: number,
@@ -364,7 +364,7 @@ export function CalculateVoxelLight(
  const currentLight = this.mDataTool.getLight();
  let faceIndex = 0;
  for (const point of $3dCardinalNeighbors) {
-  if (data.exposedFaces[faceIndex]) {
+  if (Processor.exposedFaces[faceIndex]) {
    this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
    currentVoxelData.light = this.nDataTool.getLight();
    if (currentVoxelData.light < 0) {

@@ -106,12 +106,11 @@ export declare const Builder: {
         faceIndexMap: Record<import("Meta/index.js").DirectionNames, number>;
         dimension: number;
         $INIT(): void;
-        cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("Meta/index.js").VoxelConstructorObject, voxelShape: import("Meta/index.js").VoxelShape, voxelSubstance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
+        cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("Meta/index.js").VoxelShape, voxelSubstance: import("Meta/index.js").VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
         _process(template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
         constructEntity(composed?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
         makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
-        processVoxelLight(data: import("../../Meta/Constructor/Voxel.types.js").VoxelProcessData, ignoreAO?: boolean): void;
         syncSettings(settings: EngineSettingsData): void;
         flush(): void;
     };

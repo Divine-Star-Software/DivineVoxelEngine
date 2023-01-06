@@ -1,9 +1,8 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types";
 let lightDebugBoxTextures: Record<number, number> = {};
-
-export const MarkerBoxVoxelBuilderThread: VoxelConstructorObject = {
+export const MarkerBoxVoxelBuilderThread: VoxelConstructor = {
  id: "dve_markerbox",
- 
+
  hooks: {
   texturesRegistered: (DVEB) => {
    lightDebugBoxTextures = {
@@ -91,33 +90,26 @@ export const MarkerBoxVoxelBuilderThread: VoxelConstructorObject = {
   },
  },
 
- process: function (data, DVEB) {
-  let uv = lightDebugBoxTextures[data.voxelState];
-  if (data.exposedFaces[0]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+ process(templater) {
+  let uv = lightDebugBoxTextures[templater.currentVoxel.getState()];
+  if (templater.isFaceExpposed("top")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[1]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("bottom")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[2]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("east")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[3]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("west")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[4]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("south")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[5]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("north")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-
-  DVEB.processor.processVoxelLight(data);
+  templater.processVoxelLight();
  },
 };

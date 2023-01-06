@@ -14,6 +14,7 @@ import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/Construc
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
 import { OverrideManager } from "../Overrides/OverridesManager.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
+import { VoxelTemplater } from "../Tools/VoxelTemplater.js";
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
 const heightMapTool = new HeightMapTool();
@@ -142,6 +143,8 @@ export const Processor = {
         this.voxelProcesseData.faceStates = this.faceStates;
         this.voxelProcesseData.exposedFaces = this.exposedFaces;
         this.voxelProcesseData.textureRotations = this.textureRotation;
+        VoxelTemplater.currentVoxel = mDT;
+        VoxelTemplater.utilDataTool = nDT;
     },
     cullCheck(face, voxelObject, voxelShape, voxelSubstance, x, y, z, faceBit) {
         const voxelExists = this.nDataTool.loadInAt(x, y, z);
@@ -198,7 +201,6 @@ export const Processor = {
         const voxelObject = this.mDataTool.getVoxelObj();
         if (!voxelObject)
             return;
-        const voxelState = this.mDataTool.getState();
         const voxelShape = this.mDataTool.getVoxelShapeObj();
         const voxelShapeState = this.mDataTool.getShapeState();
         const voxelSubstance = this.mDataTool.getSubstance();
@@ -217,20 +219,9 @@ export const Processor = {
         else {
             baseTemplate = template[voxelSubstance];
         }
+        VoxelTemplater._template = baseTemplate;
         baseTemplate.shapeStateTemplate.push(voxelShapeState);
-        this.voxelProcesseData.voxelState = voxelState;
-        this.voxelProcesseData.voxelShapeState = voxelShapeState;
-        this.voxelProcesseData.level = this.mDataTool.getLevel();
-        this.voxelProcesseData.levelState = this.mDataTool.getLevelState();
-        this.voxelProcesseData.x = x;
-        this.voxelProcesseData.y = y;
-        this.voxelProcesseData.z = z;
-        this.voxelProcesseData.overlayUVTemplate = baseTemplate.overlayUVTemplate;
-        this.voxelProcesseData.uvTemplate = baseTemplate.uvTemplate;
-        this.voxelProcesseData.colorTemplate = baseTemplate.colorTemplate;
-        this.voxelProcesseData.aoTemplate = baseTemplate.aoTemplate;
-        this.voxelProcesseData.lightTemplate = baseTemplate.lightTemplate;
-        voxelObject.process(this.voxelProcesseData, Builder);
+        voxelObject.process(VoxelTemplater);
         baseTemplate.shapeTemplate.push(this.mDataTool.getShapeId());
         const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x, y, z);
         baseTemplate.positionTemplate.push(voxelPOS.x, voxelPOS.y, voxelPOS.z);
@@ -280,9 +271,10 @@ export const Processor = {
         }
         return this.template;
     },
-    processVoxelLight(data, ignoreAO = false) {
-        this.doVoxelLight(data, data.x, data.y, data.z, ignoreAO, this.LOD);
-    },
+    /*  processVoxelLight(template : , ignoreAO = false): void {
+      this.doVoxelLight(data, data.x, data.y, data.z, ignoreAO, this.LOD);
+     },
+     */
     syncSettings(settings) {
         const materials = settings.materials;
         if (materials?.doAO) {

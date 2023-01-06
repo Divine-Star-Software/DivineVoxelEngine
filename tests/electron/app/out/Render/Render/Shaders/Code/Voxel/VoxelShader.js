@@ -16,19 +16,19 @@ gl_FragColor = vec4(finalColor.rgb , rgb.w ); `,
 vec4 posWorld = world * vec4(position, 1.0);
 vec3 p = position + worldOrigin;
 int animationType = getAnimationType();
-//if(vDistance < 16.) {
 if(doEffects == 1.){
-  if(animationType == 1) {
-    p.xz = animType1(posWorld, p).xz;
-  }
-  if(animationType == 2) {
-    p.xz = animType2(posWorld, p).xz;
-  }
-  if(animationType == 3) {
-    p.xz = animType3(posWorld, p).xz;
+  if(vDistance < 50.) {
+    if(animationType == 1) {
+      p.xz = animType1(posWorld, p).xz;
+    }
+    if(animationType == 2) {
+      p.xz = animType2(posWorld, p).xz;
+    }
+    if(animationType == 3) {
+      p.xz = animType3(posWorld, p).xz;
+    }
   }
 }
-//}
 
 vec4 worldPosition = world * vec4(p, 1.0);
 gl_Position = viewProjection * worldPosition; `,

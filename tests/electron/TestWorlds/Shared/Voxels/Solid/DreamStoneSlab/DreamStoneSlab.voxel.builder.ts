@@ -1,53 +1,49 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";let topUV = 0;
-let bottomUV = 0;
-let sideUV = 0;
-export const DreamStoneSlabVoxelBuilderThread: VoxelConstructorObject = {
+import { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types";
+
+const uvs: number[] = [];
+export const DreamStoneSlabVoxelBuilderThread: VoxelConstructor = {
  id: "dve_dreamstoneslab",
- 
+
  hooks: {
   texturesRegistered: (DVEB) => {
-   topUV = DVEB.textureManager.getTextureUV(
-    "solid",
-    "dreamstone",
-    "grassy-top"
-   );
-   bottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone");
-   sideUV = DVEB.textureManager.getTextureUV(
-    "solid",
-    "dreamstone",
-    "grassy-side"
+   uvs.push(
+    DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top"),
+    DVEB.textureManager.getTextureUV("solid", "dreamstone"),
+    DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-side")
    );
   },
  },
- process: function (data, DVEB) {
-  if (data.exposedFaces[0]) {
-   data.uvTemplate.push(topUV);
-   data.overlayUVTemplate.push(0);
+ process(templater) {
+  let topUV = uvs[0];
+  let bottomUV = uvs[1];
+  let sideUV = uvs[2];
+
+  if (templater.currentVoxel.getState() == 1) {
+   sideUV = bottomUV;
+   topUV = bottomUV;
+  }
+  //top
+  if (templater.isFaceExpposed("top")) {
+   templater.addUV(topUV).addOverlayUVs([0]);
   } else {
    sideUV = bottomUV;
   }
-  if (data.exposedFaces[1]) {
-   data.uvTemplate.push(bottomUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
-  }
-  if (data.exposedFaces[2]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
-  }
-  if (data.exposedFaces[3]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
-  }
-  if (data.exposedFaces[4]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
-  }
-  if (data.exposedFaces[5]) {
-   data.uvTemplate.push(sideUV);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
-  }
 
-  DVEB.processor.processVoxelLight(data);
-  return;
+  if (templater.isFaceExpposed("bottom")) {
+   templater.addUV(bottomUV).addOverlayUVs([0]);
+  }
+  if (templater.isFaceExpposed("east")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
+  }
+  if (templater.isFaceExpposed("west")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
+  }
+  if (templater.isFaceExpposed("south")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
+  }
+  if (templater.isFaceExpposed("north")) {
+   templater.addUV(sideUV).addOverlayUVs([0]);
+  }
+  templater.processVoxelLight();
  },
 };

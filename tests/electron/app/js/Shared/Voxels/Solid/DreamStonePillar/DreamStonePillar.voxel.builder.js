@@ -6,40 +6,39 @@ export const DreamStonePillarVoxelBuilderThread = {
             uvs.push(DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "top"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top"));
         },
     },
-    process: function (data, DVEB) {
+    process(templater) {
         let topBottomUV = uvs[0];
         let sideUV = uvs[1];
         let sideTopUV = uvs[2];
-        if (!DVEB.processor.mDataTool.isSameVoxel(data.x, data.y + 1, data.z)) {
+        if (!templater.currentVoxel.isSameVoxel(templater.currentVoxel.x, templater.currentVoxel.y + 1, templater.currentVoxel.z)) {
             sideUV = sideTopUV;
         }
-        if (data.exposedFaces[0]) {
-            data.uvTemplate.push(topBottomUV);
+        let topExposed = false;
+        let bottomExposed = false;
+        if (templater.isFaceExpposed("top")) {
+            templater.addUV(topBottomUV).addOverlayUVs([0]);
             sideUV = sideTopUV;
+            topExposed = true;
         }
-        if (data.exposedFaces[1]) {
-            data.uvTemplate.push(topBottomUV);
-            data.overlayUVTemplate.push(0);
+        if (templater.isFaceExpposed("bottom")) {
+            templater.addUV(topBottomUV).addOverlayUVs([0]);
+            bottomExposed = true;
         }
-        if (data.exposedFaces[0] && data.exposedFaces[1]) {
+        if (topExposed && bottomExposed) {
             sideUV = topBottomUV;
         }
-        if (data.exposedFaces[2]) {
-            data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("east")) {
+            templater.addUV(sideUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[3]) {
-            data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("west")) {
+            templater.addUV(sideUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[4]) {
-            data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("south")) {
+            templater.addUV(sideUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[5]) {
-            data.uvTemplate.push(sideUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("north")) {
+            templater.addUV(sideUV).addOverlayUVs([0]);
         }
-        DVEB.processor.processVoxelLight(data);
+        templater.processVoxelLight();
     },
 };

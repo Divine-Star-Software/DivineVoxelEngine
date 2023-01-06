@@ -1,6 +1,5 @@
-import { Builder } from "../../../../../out/Constructor/Builder/Builder.js";
-import { VoxelProcessData } from "../../../../../out/Meta/Constructor/Voxel.types.js";
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types.js";
+import type { DataTool } from "../../../../../out/Tools/Data/DataTool.js";
 const checkSets = {
  north: [
   [0, 1],
@@ -52,8 +51,7 @@ const getUV = (
  x: number,
  y: number,
  z: number,
- builder: typeof Builder,
- dimension: number
+ data: DataTool
 ) => {
  let key = "";
  const sets = checkSets[direction];
@@ -62,7 +60,7 @@ const getUV = (
   const set = sets[i];
   const cx = x + set[0];
   const cz = z + set[1];
-  const check = builder.processor.mDataTool.isSameVoxel(cx, y, cz);
+  const check = data.isSameVoxel(cx, y, cz);
   if (check) {
    key += "1|";
   } else {
@@ -76,20 +74,8 @@ const getUV = (
  return overlayTextures[index];
 };
 
-const getFoamUV = (builder: typeof Builder, data: VoxelProcessData) => {
- const tx = data.x;
- const ty = data.y;
- const tz = data.z;
- data.overlayUVTemplate.push(
-  getUV("north", tx, ty, tz, builder, data.dimension),
-  getUV("south", tx, ty, tz, builder, data.dimension),
-  getUV("east", tx, ty, tz, builder, data.dimension),
-  getUV("west", tx, ty, tz, builder, data.dimension)
- );
-};
-
 let uv = 0;
-export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
+export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructor = {
  id: "dve_liquiddreamether",
 
  hooks: {
@@ -113,36 +99,41 @@ export const LiquidDreamEtherVoxelBuilderThread: VoxelConstructorObject = {
    );
   },
  },
- process: function (data, builder) {
-  if (data.exposedFaces[0]) {
-   data.uvTemplate.push(uv);
-   if (data.level == 15 && data.levelState != 1) {
-    getFoamUV(builder, data);
+ process(templater) {
+  if (templater.isFaceExpposed("top")) {
+   templater.addUV(uv);
+   if (
+    templater.currentVoxel.getLevel() == 15 &&
+    templater.currentVoxel.getLevelState() != 1
+   ) {
+    const x = templater.currentVoxel.x;
+    const y = templater.currentVoxel.y;
+    const z = templater.currentVoxel.z;
+    templater.addOverlayUVs([
+     getUV("north", x, y, z, templater.currentVoxel),
+     getUV("south", x, y, z, templater.currentVoxel),
+     getUV("east", x, y, z, templater.currentVoxel),
+     getUV("west", x, y, z, templater.currentVoxel),
+    ]);
    } else {
-    data.overlayUVTemplate.push(0, 0, 0, 0);
+    templater.addOverlayUVs([0]);
    }
   }
-  if (data.exposedFaces[1]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("bottom")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[2]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("east")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[3]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("west")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[4]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("south")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[5]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("north")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-
-  builder.processor.processVoxelLight(data, true);
+  templater.processVoxelLight(true);
  },
 };

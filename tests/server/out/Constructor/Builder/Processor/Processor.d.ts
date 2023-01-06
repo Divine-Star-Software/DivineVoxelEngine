@@ -1,6 +1,6 @@
-import type { DirectionNames, EngineSettingsData, VoxelConstructorObject, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
+import type { DirectionNames, EngineSettingsData, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
-import type { VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import type { VoxelConstructor, VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
@@ -87,12 +87,11 @@ export declare const Processor: {
     faceIndexMap: Record<DirectionNames, number>;
     dimension: number;
     $INIT(): void;
-    cullCheck(face: DirectionNames, voxelObject: VoxelConstructorObject, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
     constructEntity(composed?: number): FullChunkTemplate;
     makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
-    processVoxelLight(data: VoxelProcessData, ignoreAO?: boolean): void;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;
 };

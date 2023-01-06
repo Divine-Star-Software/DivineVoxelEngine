@@ -16,31 +16,25 @@ export const DebugBoxVoxelBuilderThread = {
             westUV = DVEB.textureManager.getTextureUV("solid", "debug", "west");
         },
     },
-    process(data, DVEB) {
-        if (data.exposedFaces[0]) {
-            data.uvTemplate.push(topUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+    process(templater) {
+        if (templater.isFaceExpposed("top")) {
+            templater.addUV(topUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[1]) {
-            data.uvTemplate.push(bottomUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("bottom")) {
+            templater.addUV(bottomUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[2]) {
-            data.uvTemplate.push(eastUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("east")) {
+            templater.addUV(eastUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[3]) {
-            data.uvTemplate.push(westUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("west")) {
+            templater.addUV(westUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[4]) {
-            data.uvTemplate.push(southUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("south")) {
+            templater.addUV(southUV).addOverlayUVs([0]);
         }
-        if (data.exposedFaces[5]) {
-            data.uvTemplate.push(northUV);
-            data.overlayUVTemplate.push(0, 0, 0, 0);
+        if (templater.isFaceExpposed("north")) {
+            templater.addUV(northUV).addOverlayUVs([0]);
         }
-        DVEB.processor.processVoxelLight(data);
+        templater.processVoxelLight();
     },
 };

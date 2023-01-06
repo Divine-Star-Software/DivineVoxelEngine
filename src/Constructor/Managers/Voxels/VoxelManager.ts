@@ -1,31 +1,17 @@
 //types
-import type {
- VoxelHooks,
- VoxelConstructorObject,
- VoxelData,
-} from "Meta/Data/Voxels/Voxel.types";
+import { VoxelConstructor } from "../../../Meta/Constructor/Voxel.types.js";
+import type { VoxelHooks } from "Meta/Data/Voxels/Voxel.types";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 
 export const VoxelManager = {
- voxelObjects: <Record<string, VoxelConstructorObject>>{},
- */*  
- syncData() {
-  for (const voxelId of Object.keys(this.voxelObjects)) {
-   const trueId = DVEC.worldMatrix.getVoxelPaletteId(voxelId,0);
-   const shapeId = DVEC.worldMatrix.
-   voxel.trueShapeId = shapeMap[voxel.data.shapeId];
-  }
- },
- */
+ voxelObjects: <Record<string, VoxelConstructor>>{},
 
- syncShapeData() {},
-
- getVoxel(id: string): VoxelConstructorObject {
+ getVoxel(id: string): VoxelConstructor {
   return this.voxelObjects[id];
  },
 
- registerVoxel(voxel: VoxelConstructorObject) {
+ registerVoxel(voxel: VoxelConstructor) {
   this.voxelObjects[voxel.id] = voxel;
  },
 

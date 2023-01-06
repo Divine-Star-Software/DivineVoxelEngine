@@ -1,6 +1,6 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";
+import type { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types";
 let uv = 0;
-export const DreamVineVoxelBuilderThread: VoxelConstructorObject = {
+export const DreamVineVoxelBuilderThread: VoxelConstructor = {
  id: "dve_dreamvine",
 
  hooks: {
@@ -8,12 +8,11 @@ export const DreamVineVoxelBuilderThread: VoxelConstructorObject = {
    uv = DVEB.textureManager.getTextureUV("flora", "dream-vine");
   },
  },
- process: function (data, DVEB) {
-  data.uvTemplate.push(uv, uv);
-  data.overlayUVTemplate.push(0, 0, 0, 0);
-  data.overlayUVTemplate.push(0, 0, 0, 0);
-  data.aoTemplate.push(1, 1);
-  const lightValue = DVEB.processor.mDataTool.getLight();
-  data.lightTemplate.push(lightValue, lightValue);
- },
+ process(templater) {
+    templater
+     .addUV(uv, 2)
+     .addOverlayUVs([0], 2)
+     .addCurrentLightValue(2)
+     .addAOValue(1, 2);
+   },
 };

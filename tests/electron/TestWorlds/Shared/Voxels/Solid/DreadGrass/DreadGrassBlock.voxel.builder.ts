@@ -1,7 +1,8 @@
-import type { VoxelConstructorObject } from "out/Meta/index.js";let uv = 0;
-export const DreadGrassBlockVoxelBuilderThread: VoxelConstructorObject = {
+import { VoxelConstructor } from "../../../../../out/Meta/Constructor/Voxel.types";
+let uv = 0;
+export const DreadGrassBlockVoxelBuilderThread: VoxelConstructor = {
  id: "dve_dreadgrassblock",
- 
+
  hooks: {
   texturesRegistered: (DVEB) => {
    uv = DVEB.textureManager.getTextureUV(
@@ -11,32 +12,25 @@ export const DreadGrassBlockVoxelBuilderThread: VoxelConstructorObject = {
    );
   },
  },
- process: function (data, DVEB) {
-  if (data.exposedFaces[0]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+ process(templater) {
+  if (templater.isFaceExpposed("top")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[1]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("bottom")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[2]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("east")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[3]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("west")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[4]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("south")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-  if (data.exposedFaces[5]) {
-   data.uvTemplate.push(uv);
-   data.overlayUVTemplate.push(0, 0, 0, 0);
+  if (templater.isFaceExpposed("north")) {
+   templater.addUV(uv).addOverlayUVs([0]);
   }
-
-  DVEB.processor.processVoxelLight(data);
+  templater.processVoxelLight();
  },
 };

@@ -170,7 +170,7 @@ const flipCheck = (face) => {
 };
 const handleAdd = (data, face, direction) => {
     if (flipCheck(direction)) {
-        data.faceStates[face] = 1;
+        Processor.faceStates[face] = 1;
         data.lightTemplate.push(RGBvertexStates[2].value, RGBvertexStates[1].value, RGBvertexStates[4].value, RGBvertexStates[3].value);
         if (!states.ignoreAO) {
             data.aoTemplate.push(AOVerotexStates[4].value, AOVerotexStates[1].value, AOVerotexStates[2].value, AOVerotexStates[3].value);
@@ -274,7 +274,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     const currentLight = this.mDataTool.getLight();
     let faceIndex = 0;
     for (const point of $3dCardinalNeighbors) {
-        if (data.exposedFaces[faceIndex]) {
+        if (Processor.exposedFaces[faceIndex]) {
             this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
             currentVoxelData.light = this.nDataTool.getLight();
             if (currentVoxelData.light < 0) {
