@@ -12,7 +12,7 @@ export const DVP = {
     colliders: ColliderManager,
     _dataTool: new DataTool(),
     getCollider(x, y, z, dimension = 0) {
-        if (!this._dataTool.loadIn(x, y, z))
+        if (!this._dataTool.loadInAt(x, y, z))
             return false;
         if (!this._dataTool.checkCollisions())
             return false;

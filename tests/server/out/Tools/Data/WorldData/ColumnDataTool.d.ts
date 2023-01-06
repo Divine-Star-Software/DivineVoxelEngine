@@ -1,5 +1,5 @@
 import type { Column } from "Meta/Data/WorldData.types.js";
-import { PositionBoundDataTool } from "../Classes/DataToolBase.js";
+import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
 import { LocationData } from "Meta/Data/CommonTypes.js";
 export declare class ColumnDataTool extends PositionBoundDataTool {
     tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;

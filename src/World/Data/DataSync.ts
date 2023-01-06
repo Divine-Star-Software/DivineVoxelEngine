@@ -3,15 +3,10 @@ import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type {
- ChunkSyncData,
- ChunkUnSyncData,
- ColumnSyncData,
- ColumnUnSyncData,
  VoxelMapSyncData,
- RegionSyncData,
- RegionUnSyncData,
  VoxelDataSync,
  VoxelPaletteSyncData,
+ WorldDataSync,
 } from "Meta/Data/DataSync.types.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 //objects
@@ -29,6 +24,10 @@ import {
 } from "./Tags/RegionTags.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
+import {
+ LocationData,
+ LocationNode,
+} from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 
 type CommSyncOptions = {
  worldData: boolean;
@@ -124,257 +123,149 @@ export const DataSync = {
   },
  },
  chunk: {
-  unSync(dimesnion: string, x: number, y: number, z: number) {
+  unSync(location: LocationData) {
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.unSyncData<ChunkUnSyncData>(DataSyncTypes.chunk, [dimesnion, x, y, z]);
+    comm.unSyncData<LocationData>(DataSyncTypes.chunk, location);
    });
   },
-  unSyncInThread(
-   commName: string,
-   dimension: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
+  unSyncInThread(commName: string, location: LocationData) {
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.unSyncData<ChunkUnSyncData>(DataSyncTypes.chunk, [dimension, x, y, z]);
+   comm.unSyncData<LocationData>(DataSyncTypes.chunk, location);
   },
-  sync(dimension: string, x: number, y: number, z: number) {
-   const chunk = WorldRegister.chunk.get(dimension, x, y, z);
+  sync(location: LocationData) {
+   const chunk = WorldRegister.chunk.get(location);
    if (!chunk) return;
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.syncData<ChunkSyncData>(DataSyncTypes.chunk, [
-     dimension,
-     x,
-     y,
-     z,
-     chunk.buffer,
-    ]);
+    comm.syncData<WorldDataSync>(DataSyncTypes.chunk, [location, chunk.buffer]);
    });
   },
-  syncInThread(
-   commName: string,
-   dimesnion: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
-   const chunk = WorldRegister.chunk.get(dimesnion, x, y, z);
+  syncInThread(commName: string, location: LocationData) {
+   const chunk = WorldRegister.chunk.get(location);
    if (!chunk) return;
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.syncData<ChunkSyncData>(DataSyncTypes.chunk, [
-    dimesnion,
-    x,
-    y,
-    z,
-    chunk.buffer,
-   ]);
+   comm.syncData<WorldDataSync>(DataSyncTypes.chunk, [location, chunk.buffer]);
   },
  },
  column: {
-  unSync(dimesnion: string, x: number, y: number, z: number) {
+  unSync(location: LocationData) {
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
-     dimesnion,
-     x,
-     y,
-     z,
-    ]);
+    comm.unSyncData<LocationData>(DataSyncTypes.column, location);
    });
   },
-  unSyncInThread(
-   commName: string,
-   dimension: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
+  unSyncInThread(commName: string, location: LocationData) {
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.column, [
-    dimension,
-    x,
-    y,
-    z,
-   ]);
+   comm.unSyncData<LocationData>(DataSyncTypes.column, location);
   },
-  sync(dimension: string, x: number, y: number, z: number) {
-   const column = WorldRegister.column.get(dimension, x, y, z);
+  sync(location: LocationData) {
+   const column = WorldRegister.column.get(location);
    if (!column) return;
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
-     dimension,
-     x,
-     y,
-     z,
+    comm.syncData<WorldDataSync>(DataSyncTypes.column, [
+     location,
      column.buffer,
     ]);
    });
   },
-  syncInThread(
-   commName: string,
-   dimesnion: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
-   const column = WorldRegister.column.get(dimesnion, x, y, z);
+  syncInThread(commName: string, location: LocationData) {
+   const column = WorldRegister.column.get(location);
    if (!column) return;
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.syncData<ColumnSyncData>(DataSyncTypes.column, [
-    dimesnion,
-    x,
-    y,
-    z,
+   comm.syncData<WorldDataSync>(DataSyncTypes.column, [
+    location,
     column.buffer,
    ]);
   },
  },
 
  regionHeader: {
-  unSync(dimesnion: string, x: number, y: number, z: number) {
+  unSync(location: LocationData) {
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.unSyncData<RegionUnSyncData>(DataSyncTypes.regionHeader, [
-     dimesnion,
-     x,
-     y,
-     z,
-    ]);
+    comm.unSyncData<LocationData>(DataSyncTypes.regionHeader, location);
    });
   },
-  unSyncInThread(
-   commName: string,
-   dimension: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
+  unSyncInThread(commName: string, location: LocationData) {
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.regionHeader, [
-    dimension,
-    x,
-    y,
-    z,
-   ]);
+   comm.unSyncData<LocationData>(DataSyncTypes.regionHeader, location);
   },
-  sync(dimension: string, x: number, y: number, z: number) {
-   const region = RegionHeaderRegister.get([dimension, x, y, z]);
+  sync(location: LocationData) {
+   const region = RegionHeaderRegister.get(location);
    if (!region) return;
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.syncData<RegionSyncData>(DataSyncTypes.regionHeader, [
-     dimension,
-     x,
-     y,
-     z,
+    comm.syncData<WorldDataSync>(DataSyncTypes.regionHeader, [
+     location,
      region.buffer,
     ]);
    });
   },
-  syncInThread(
-   commName: string,
-   dimension: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
-   const region = RegionHeaderRegister.get([dimension, x, y, z]);
+  syncInThread(commName: string, location: LocationData) {
+   const region = RegionHeaderRegister.get(location);
    if (!region) return;
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.syncData<RegionSyncData>(DataSyncTypes.regionHeader, [
-    dimension,
-    x,
-    y,
-    z,
+   comm.syncData<WorldDataSync>(DataSyncTypes.regionHeader, [
+    location,
     region.buffer,
    ]);
   },
  },
 
  region: {
-  unSync(dimesnion: string, x: number, y: number, z: number) {
+  unSync(location: LocationData) {
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.unSyncData<RegionUnSyncData>(DataSyncTypes.region, [
-     dimesnion,
-     x,
-     y,
-     z,
-    ]);
+    comm.unSyncData<LocationData>(DataSyncTypes.region, location);
    });
   },
-  unSyncInThread(
-   commName: string,
-   dimension: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
+  unSyncInThread(commName: string, location: LocationData) {
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.unSyncData<ColumnUnSyncData>(DataSyncTypes.region, [
-    dimension,
-    x,
-    y,
-    z,
-   ]);
+   comm.unSyncData<LocationData>(DataSyncTypes.region, location);
   },
-  sync(dimension: string, x: number, y: number, z: number) {
-   const region = WorldRegister.region.get(dimension, x, y, z);
+  sync(location: LocationData) {
+   const region = WorldRegister.region.get(location);
    if (!region) return;
    loopThroughComms((comm, options) => {
     if (!options.worldData) return;
-    comm.syncData<RegionSyncData>(DataSyncTypes.region, [
-     dimension,
-     x,
-     y,
-     z,
+    comm.syncData<WorldDataSync>(DataSyncTypes.region, [
+     location,
      region.buffer,
     ]);
    });
   },
-  syncInThread(
-   commName: string,
-   dimesnion: string,
-   x: number,
-   y: number,
-   z: number
-  ) {
-   const region = WorldRegister.region.get(dimesnion, x, y, z);
+  syncInThread(commName: string, location: LocationData) {
+   const region = WorldRegister.region.get(location);
    if (!region) return;
    const comm = DataSync.comms[commName];
    if (!comm) return;
    const options = DataSync.commOptions[commName];
    if (!options.worldData) return;
-   comm.syncData<RegionSyncData>(DataSyncTypes.region, [
-    dimesnion,
-    x,
-    y,
-    z,
+   comm.syncData<WorldDataSync>(DataSyncTypes.region, [
+    location,
     region.buffer,
    ]);
   },

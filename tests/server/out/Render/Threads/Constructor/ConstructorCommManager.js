@@ -18,9 +18,6 @@ const CCM = Object.assign(CCMBase, {
     $INIT() {
         const worldComm = ThreadComm.getComm("world");
         for (const constructor of CCM.__comms) {
-            constructor.onMessage((event) => {
-                console.log(event.data);
-            });
             worldComm.connectToComm(constructor);
             constructor.sendMessage("sync-uv-texuture-data", [
                 DVER.textureManager.uvTextureMap,

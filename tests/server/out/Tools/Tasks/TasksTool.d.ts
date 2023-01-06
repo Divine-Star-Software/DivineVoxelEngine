@@ -1,12 +1,16 @@
+import { Priorities } from "Meta/Tasks/Tasks.types.js";
 import { RawVoxelData } from "Meta/index.js";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 declare class TasksBase {
     _data: {
         dimension: string;
         queue: string;
     };
     _thread: string;
+    _priority: Priorities;
     constructor();
-    setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+    setPriority(priority: Priorities): this;
+    setFocalPoint(location: LocationData): this;
     generate: {
         async: {
             _s: TasksBase;

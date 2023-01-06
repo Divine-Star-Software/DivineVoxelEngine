@@ -26,11 +26,11 @@ export const CCCore = {
     async decompressArrayBuffer(input) {
         //@ts-ignore
         const ds = new DecompressionStream("gzip");
-        const writer = ds.writable.getWriter();
+        const writer = await ds.writable.getWriter();
         writer.write(input);
-        writer.close();
         const output = [];
-        const reader = ds.readable.getReader();
+        const reader = await ds.readable.getReader();
+        writer.close();
         let totalSize = 0;
         while (true) {
             const { value, done } = await reader.read();

@@ -1,17 +1,12 @@
 import type { AddVoxelData } from "../../Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-declare type ID = string | number;
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 export declare const WorldPainter: {
     _currentionDimension: string;
-    util: {
-        isSameVoxel(dimensionId: ID, x: number, y: number, z: number, x2: number, y2: number, z2: number, secondary?: boolean): boolean;
-    };
     paint: {
         _dt: DataTool;
-        voxel(data: AddVoxelData, update?: boolean): void;
-        voxelAsync(data: AddVoxelData): Promise<void>;
-        __paint(dimension: string, data: AddVoxelData, update?: boolean): false | undefined;
-        erase(dimensionId: ID, x: number, y: number, z: number): void;
+        voxel(location: LocationData, data: AddVoxelData, update?: boolean): void;
+        __paint(location: LocationData, data: AddVoxelData, update?: boolean): false | undefined;
+        erase(location: LocationData): void;
     };
 };
-export {};

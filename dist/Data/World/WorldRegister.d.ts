@@ -1,4 +1,5 @@
 import type { ChunkData, Column, WorldDimensions, Region } from "Meta/Data/WorldData.types";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 export declare const WorldRegister: {
     _dimensions: WorldDimensions;
     _cacheOn: boolean;
@@ -18,24 +19,27 @@ export declare const WorldRegister: {
         get(id: number | string): Map<string, Region> | undefined;
     };
     region: {
-        add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): Region;
+        add(location: LocationData, sab: SharedArrayBuffer): Region;
         _getRegionData(sab: SharedArrayBuffer): Region;
-        get(dimensionId: string, x: number, y: number, z: number): false | Region;
+        get(location: LocationData): false | Region;
+        remove(location: LocationData): boolean;
     };
     column: {
-        add(dimensionId: string, x: number, z: number, y: number | undefined, sab: SharedArrayBuffer): Column | undefined;
+        add(location: LocationData, sab: SharedArrayBuffer): Column | undefined;
         _getColumnData(sab: SharedArrayBuffer): Column;
-        get(dimensionId: string, x: number, z: number, y?: number): false | Column;
-        fill(dimensionId: string, x: number, z: number, y?: number): void;
+        get(location: LocationData): false | Column;
+        remove(location: LocationData): boolean;
+        fill(location: LocationData): void;
         height: {
-            getRelative(dimensionId: string, x: number, z: number, y?: number): number;
-            getAbsolute(dimensionId: string, x: number, z: number, y?: number): number;
+            getRelative(location: LocationData): number;
+            getAbsolute(location: LocationData): number;
         };
     };
     chunk: {
-        add(dimensionId: string, x: number, y: number, z: number, sab: SharedArrayBuffer): ChunkData | undefined;
+        add(location: LocationData, sab: SharedArrayBuffer): ChunkData | undefined;
         _getChunkData(sab: SharedArrayBuffer): ChunkData;
         addFromServer(chunkBuffer: ArrayBuffer): ChunkData | undefined;
-        get(dimensionId: string, x: number, y: number, z: number): false | ChunkData | undefined;
+        get(location: LocationData): false | ChunkData | undefined;
+        remove(location: LocationData): boolean;
     };
 };

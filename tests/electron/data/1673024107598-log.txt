@@ -1,0 +1,975 @@
+set path: DreamSpaceInfinite
+loading column at main,-16,0,-16size: 3893
+3893 : 2272984846 : 110
+loading column at main,-32,0,-16size: 4196
+4196 : 2272984846 : 108
+loading column at main,-16,0,-32size: 2589
+2589 : 2272984837 : 83
+loading column at main,-32,0,-32size: 3440
+3440 : 2272984836 : 82
+loading column at main,-48,0,-16size: 3924
+3924 : 2272984845 : 107
+loading column at main,0,0,-32size: 4033
+4033 : 2272929535 : 59
+loading column at main,-48,0,-32size: 3687
+3687 : 2272984836 : 81
+loading column at main,-16,0,-48size: 2311
+2311 : 2272984826 : 58
+loading column at main,32,0,-16size: 4489
+4489 : 2272923749 : 76
+loading column at main,-32,0,-48size: 2279
+2279 : 2272984826 : 57
+loading column at main,16,0,-32size: 3570
+3570 : 2272923744 : 60
+loading column at main,-64,0,-16size: 3031
+3031 : 2272984845 : 106
+loading column at main,-64,0,-32size: 3660
+3660 : 2272984835 : 80
+loading column at main,0,0,-48size: 3626
+3626 : 2272929559 : 46
+loading column at main,-48,0,-48size: 3689
+3689 : 2272984826 : 56
+loading column at main,32,0,-32size: 3445
+3445 : 2272923744 : 61
+loading column at main,48,0,-16size: 4220
+4220 : 2272923750 : 78
+loading column at main,16,0,-48size: 3039
+3039 : 2272923738 : 47
+loading column at main,48,0,-32size: 4485
+4485 : 2272923744 : 62
+loading column at main,-64,0,-48size: 3093
+3093 : 2272984825 : 55
+loading column at main,-16,0,-64size: 3198
+3198 : 2272984817 : 35
+loading column at main,-32,0,-64size: 3444
+3444 : 2272984817 : 34
+loading column at main,-80,0,-16size: 2837
+2837 : 2272984845 : 105
+loading column at main,-80,0,-32size: 3206
+3206 : 2272984835 : 79
+loading column at main,32,0,-48size: 3929
+3929 : 2272923739 : 48
+loading column at main,0,0,-64size: 2728
+2728 : 2272923733 : 34
+loading column at main,-48,0,-64size: 2816
+2816 : 2272984816 : 33
+loading column at main,-80,0,-48size: 4017
+4017 : 2272984825 : 54
+loading column at main,16,0,-64size: 3217
+3217 : 2272923733 : 35
+loading column at main,48,0,-48size: 4550
+4550 : 2272923739 : 49
+loading column at main,-64,0,-64size: 3188
+3188 : 2272984816 : 32
+loading column at main,-16,0,-80size: 2966
+2966 : 2272984811 : 18
+loading column at main,64,0,-32size: 3118
+3118 : 2272923745 : 64
+loading column at main,32,0,-64size: 3636
+3636 : 2272923734 : 36
+loading column at main,-32,0,-80size: 2772
+2772 : 2272984811 : 17
+loading column at main,-96,0,-16size: 3951
+3951 : 2272984844 : 104
+loading column at main,-96,0,-32size: 2711
+2711 : 2272984861 : 78
+loading column at main,48,0,-64size: 4278
+4278 : 2272923734 : 37
+loading column at main,0,0,-80size: 2512
+2512 : 2272923728 : 22
+loading column at main,-48,0,-80size: 2432
+2432 : 2272984810 : 16
+loading column at main,64,0,-48size: 1972
+1972 : 2272923739 : 51
+loading column at main,-80,0,-64size: 4110
+4110 : 2272984816 : 30
+==========================================
+saving column at main,0,0,-16size: 3151
+saving over column at : main,0,0,-16
+[object ArrayBuffer]
+3151 : 2282453076 : 106
+loading column at main,16,0,-80size: 4454
+4454 : 2282453045 : 53
+loading column at main,-96,0,-48size: 1679
+1679 : 2272998305 : 53
+==========================================
+saving column at main,0,0,0size: 3027
+saving over column at : main,0,0,0
+[object ArrayBuffer]
+3027 : 2282453112 : 1
+loading column at main,64,0,-64size: 1932
+1932 : 2282453054 : 71
+loading column at main,80,0,-32size: 2646
+2646 : 2282453071 : 98
+loading column at main,-64,0,-80size: 3089
+3089 : 2272984810 : 15
+loading column at main,-16,0,-96size: 4081
+4081 : 2272984807 : 10
+loading column at main,32,0,-80size: 5316
+5316 : 2282453046 : 55
+loading column at main,-32,0,-96size: 3888
+3888 : 2272984807 : 9
+loading column at main,-112,0,-16size: 2683
+2683 : 2272984844 : 103
+loading column at main,-112,0,-32size: 2179
+2179 : 2273013376 : 77
+loading column at main,80,0,-48size: 1919
+1919 : 2282453064 : 85
+loading column at main,48,0,-80size: 2777
+2777 : 2282453046 : 57
+loading column at main,-96,0,-64size: 1997
+1997 : 2273007742 : 29
+loading column at main,0,0,-96size: 4489
+4489 : 2282453038 : 38
+loading column at main,-80,0,-80size: 2937
+2937 : 2272998249 : 14
+loading column at main,-48,0,-96size: 2789
+2789 : 2272984806 : 8
+loading column at main,-112,0,-48size: 1498
+1498 : 2273013363 : 52
+==========================================
+saving column at main,16,0,-16size: 3154
+saving over column at : main,16,0,-16
+[object ArrayBuffer]
+3154 : 2282454030 : 107
+loading column at main,80,0,-64size: 2199
+2199 : 2282453055 : 72
+loading column at main,64,0,-80size: 1964
+1964 : 2282453046 : 58
+loading column at main,16,0,-96size: 5351
+5351 : 2282453039 : 40
+loading column at main,96,0,-32size: 2986
+2986 : 2282453072 : 99
+loading column at main,-96,0,-80size: 2687
+2687 : 2273013327 : 13
+loading column at main,32,0,-96size: 4372
+4372 : 2282453039 : 42
+loading column at main,-64,0,-96size: 3043
+3043 : 2272998233 : 7
+loading column at main,-112,0,-64size: 1529
+1529 : 2273013418 : 28
+loading column at main,-16,0,-112size: 3838
+3838 : 2272984882 : 6
+loading column at main,-32,0,-112size: 4779
+4779 : 2272998261 : 4
+loading column at main,-128,0,-16size: 2944
+2944 : 2272984844 : 102
+loading column at main,-128,0,-32size: 2094
+2094 : 2272984834 : 76
+loading column at main,80,0,-80size: 2480
+2480 : 2282453047 : 59
+loading column at main,96,0,-48size: 2216
+2216 : 2282453064 : 86
+loading column at main,48,0,-96size: 2672
+2672 : 2282453039 : 44
+loading column at main,0,0,-112size: 3969
+3969 : 2282453031 : 27
+loading column at main,96,0,-16size: 3912
+3912 : 2282453080 : 115
+loading column at main,-80,0,-96size: 2551
+2551 : 2273007676 : 112
+loading column at main,-112,0,-80size: 1713
+1713 : 2273024318 : 12
+loading column at main,-48,0,-112size: 4154
+4154 : 2272998279 : 2
+loading column at main,-128,0,-48size: 1942
+1942 : 2272984824 : 51
+==========================================
+saving column at main,0,0,16size: 3054
+saving over column at : main,0,0,16
+[object ArrayBuffer]
+3054 : 2282455389 : 15
+loading column at main,96,0,-64size: 1897
+1897 : 2282453056 : 73
+loading column at main,64,0,-96size: 1842
+1842 : 2282453040 : 45
+loading column at main,16,0,-112size: 3672
+3672 : 2282453031 : 28
+loading column at main,96,0,-80size: 2139
+2139 : 2282453047 : 60
+loading column at main,-96,0,-96size: 1791
+1791 : 2273013338 : 120
+loading column at main,112,0,-32size: 3408
+3408 : 2282453072 : 100
+loading column at main,32,0,-112size: 3522
+3522 : 2282453032 : 29
+loading column at main,-64,0,-112size: 3547
+3547 : 2273007663 : 111
+loading column at main,-128,0,-64size: 2907
+2907 : 2272984814 : 27
+loading column at main,-16,0,-128size: 3078
+3078 : 2272998292 : 1
+loading column at main,-32,0,-128size: 4509
+4509 : 2273007686 : 113
+loading column at main,-144,0,-16size: 3653
+3653 : 2272984843 : 101
+loading column at main,-144,0,-32size: 3282
+3282 : 2272984833 : 75
+loading column at main,80,0,-96size: 1906
+1906 : 2282453040 : 46
+loading column at main,112,0,-48size: 2437
+2437 : 2282453065 : 87
+loading column at main,48,0,-112size: 2476
+2476 : 2282453032 : 30
+loading column at main,0,0,-128size: 2720
+2720 : 2282453023 : 17
+==========================================
+saving column at main,16,0,0size: 4042
+saving over column at : main,16,0,0
+[object ArrayBuffer]
+4042 : 2282456110 : 2
+loading column at main,112,0,-16size: 2854
+2854 : 2282453081 : 116
+loading column at main,-80,0,-112size: 1724
+1724 : 2273013314 : 119
+loading column at main,-128,0,-80size: 2083
+2083 : 2272984808 : 11
+loading column at main,-48,0,-128size: 4755
+4755 : 2273007708 : 115
+loading column at main,-144,0,-48size: 2747
+2747 : 2272984824 : 50
+==========================================
+saving column at main,16,0,16size: 3150
+saving over column at : main,16,0,16
+[object ArrayBuffer]
+3150 : 2282456342 : 16
+loading column at main,96,0,-96size: 1743
+1743 : 2282453041 : 47
+loading column at main,112,0,-64size: 2125
+2125 : 2282453057 : 74
+loading column at main,64,0,-112size: 1708
+1708 : 2282453033 : 31
+loading column at main,16,0,-128size: 2577
+2577 : 2282453023 : 18
+loading column at main,112,0,-80size: 2367
+2367 : 2282453048 : 61
+loading column at main,-96,0,-112size: 1732
+1732 : 2273024268 : 125
+loading column at main,128,0,-32size: 2519
+2519 : 2282453073 : 101
+loading column at main,32,0,-128size: 2154
+2154 : 2282453024 : 19
+loading column at main,-64,0,-128size: 2993
+2993 : 2273013349 : 121
+loading column at main,-144,0,-64size: 2442
+2442 : 2272984814 : 26
+loading column at main,-16,0,-144size: 4212
+4212 : 2273007752 : 117
+loading column at main,-32,0,-144size: 5899
+5899 : 2273013430 : 122
+loading column at main,-160,0,-16size: 1857
+1857 : 2272984843 : 100
+loading column at main,-160,0,-32size: 3159
+3159 : 2272984833 : 74
+loading column at main,80,0,-112size: 2174
+2174 : 2282453033 : 32
+loading column at main,128,0,-48size: 3066
+3066 : 2282453066 : 88
+loading column at main,48,0,-128size: 2114
+2114 : 2282453025 : 20
+loading column at main,0,0,-144size: 3031
+3031 : 2282453014 : 8
+loading column at main,112,0,-96size: 2771
+2771 : 2282453041 : 48
+loading column at main,96,0,-112size: 1451
+1451 : 2282453034 : 33
+loading column at main,128,0,-16size: 1805
+1805 : 2282453081 : 117
+loading column at main,-80,0,-128size: 3263
+3263 : 2273024258 : 124
+loading column at main,-48,0,-144size: 6572
+6572 : 2273024280 : 126
+loading column at main,-160,0,-48size: 2337
+2337 : 2272984823 : 49
+==========================================
+saving column at main,-16,0,0size: 4313
+saving over column at : main,-16,0,0
+[object ArrayBuffer]
+4313 : 2282457214 : 30
+loading column at main,128,0,-64size: 2036
+2036 : 2282453058 : 75
+loading column at main,64,0,-128size: 3618
+3618 : 2282453025 : 21
+loading column at main,16,0,-144size: 2929
+2929 : 2282453015 : 9
+loading column at main,112,0,-112size: 1437
+1437 : 2282453035 : 34
+loading column at main,128,0,-80size: 2954
+2954 : 2282453049 : 62
+loading column at main,80,0,-128size: 3287
+3287 : 2282453026 : 22
+loading column at main,144,0,-32size: 2193
+2193 : 2282453073 : 102
+loading column at main,32,0,-144size: 3302
+3302 : 2282453016 : 10
+loading column at main,-64,0,-144size: 2333
+2333 : 2273024292 : 128
+loading column at main,-160,0,-64size: 2311
+2311 : 2272984814 : 25
+loading column at main,-16,0,-160size: 4624
+4624 : 2273024329 : 129
+loading column at main,-32,0,-160size: 5955
+5955 : 2273024338 : 131
+loading column at main,-176,0,-16size: 2122
+2122 : 2272984843 : 99
+loading column at main,-176,0,-32size: 2360
+2360 : 2272984833 : 73
+loading column at main,128,0,-96size: 3886
+3886 : 2282453041 : 49
+loading column at main,144,0,-16size: 1902
+1902 : 2282453082 : 118
+loading column at main,144,0,-48size: 2188
+2188 : 2282453067 : 89
+==========================================
+saving column at main,32,0,0size: 3992
+saving over column at : main,32,0,0
+[object ArrayBuffer]
+3992 : 2282457563 : 3
+loading column at main,-176,0,-48size: 2284
+2284 : 2272984823 : 48
+loading column at main,48,0,-144size: 3233
+3233 : 2282453017 : 11
+loading column at main,0,0,-160size: 3879
+3879 : 2282452993 : 1
+loading column at main,128,0,-112size: 3299
+3299 : 2282453035 : 35
+loading column at main,96,0,-128size: 1791
+1791 : 2282453027 : 23
+loading column at main,144,0,-64size: 2269
+2269 : 2282453058 : 76
+loading column at main,64,0,-144size: 3034
+3034 : 2282453018 : 12
+loading column at main,16,0,-160size: 3306
+3306 : 2282452994 : 2
+loading column at main,112,0,-128size: 1652
+1652 : 2282453028 : 24
+loading column at main,144,0,-80size: 2618
+2618 : 2282453050 : 63
+loading column at main,144,0,-96size: 2354
+2354 : 2282453042 : 50
+loading column at main,80,0,-144size: 2687
+2687 : 2282453018 : 13
+loading column at main,160,0,-16size: 1618
+1618 : 2282453083 : 119
+loading column at main,160,0,-32size: 1960
+1960 : 2282453074 : 103
+loading column at main,160,0,-48size: 2298
+2298 : 2282453067 : 90
+loading column at main,32,0,-160size: 2700
+2700 : 2282452995 : 3
+loading column at main,-192,0,-16size: 2560
+2560 : 2272984842 : 98
+loading column at main,-192,0,-32size: 3385
+3385 : 2272984832 : 72
+loading column at main,48,0,-160size: 3603
+3603 : 2282452995 : 4
+loading column at main,-192,0,-48size: 2714
+2714 : 2272984823 : 47
+loading column at main,128,0,-128size: 3879
+3879 : 2282453028 : 25
+loading column at main,144,0,-112size: 2783
+2783 : 2282453036 : 36
+loading column at main,96,0,-144size: 2411
+2411 : 2282453019 : 14
+loading column at main,160,0,-64size: 2625
+2625 : 2282453059 : 77
+loading column at main,64,0,-160size: 2463
+2463 : 2282452996 : 5
+loading column at main,144,0,-128size: 2559
+2559 : 2282453029 : 26
+loading column at main,112,0,-144size: 2096
+2096 : 2282453020 : 15
+loading column at main,160,0,-80size: 2948
+2948 : 2282453051 : 64
+loading column at main,160,0,-96size: 2889
+2889 : 2282453042 : 51
+loading column at main,80,0,-160size: 2424
+2424 : 2282452997 : 6
+loading column at main,176,0,-16size: 1649
+1649 : 2282453084 : 120
+loading column at main,176,0,-32size: 2278
+2278 : 2282453075 : 104
+loading column at main,176,0,-48size: 3458
+3458 : 2282453068 : 91
+==========================================
+saving column at main,-16,0,16size: 3489
+saving over column at : main,-16,0,16
+[object ArrayBuffer]
+3489 : 2282458682 : 63
+loading column at main,128,0,-144size: 2869
+2869 : 2282453021 : 16
+loading column at main,160,0,-112size: 3441
+3441 : 2282453037 : 37
+loading column at main,96,0,-160size: 2408
+2408 : 2282452998 : 7
+loading column at main,176,0,-64size: 2795
+2795 : 2282453060 : 78
+loading column at main,176,0,-80size: 2662
+2662 : 2282453051 : 65
+loading column at main,192,0,-16size: 2643
+2643 : 2282453084 : 121
+loading column at main,192,0,-32size: 2296
+2296 : 2282453075 : 105
+==========================================
+saving column at main,32,0,16size: 4293
+saving over column at : main,32,0,16
+[object ArrayBuffer]
+4293 : 2282459858 : 17
+==========================================
+saving column at main,-32,0,0size: 3884
+saving over column at : main,-32,0,0
+[object ArrayBuffer]
+3884 : 2282461545 : 29
+==========================================
+saving column at main,-48,0,0size: 2630
+saving over column at : main,-48,0,0
+[object ArrayBuffer]
+2630 : 2282461555 : 28
+==========================================
+saving column at main,-64,0,0size: 2929
+saving over column at : main,-64,0,0
+[object ArrayBuffer]
+2929 : 2282461561 : 27
+==========================================
+saving column at main,-32,0,16size: 2718
+saving over column at : main,-32,0,16
+[object ArrayBuffer]
+2718 : 2282462170 : 62
+==========================================
+saving column at main,-48,0,16size: 3261
+saving over column at : main,-48,0,16
+[object ArrayBuffer]
+3261 : 2282462179 : 61
+==========================================
+saving column at main,-64,0,16size: 3930
+saving over column at : main,-64,0,16
+[object ArrayBuffer]
+3930 : 2282462190 : 60
+==========================================
+saving column at main,16,0,32size: 3919
+saving over column at : main,16,0,32
+[object ArrayBuffer]
+3919 : 2282464762 : 31
+==========================================
+saving column at main,-80,0,0size: 2937
+saving over column at : main,-80,0,0
+[object ArrayBuffer]
+2937 : 2282465381 : 26
+==========================================
+saving column at main,0,0,32size: 3544
+saving over column at : main,0,0,32
+[object ArrayBuffer]
+3544 : 2282465685 : 30
+==========================================
+saving column at main,-80,0,16size: 2850
+saving over column at : main,-80,0,16
+[object ArrayBuffer]
+2850 : 2282469891 : 59
+==========================================
+saving column at main,-16,0,32size: 3066
+saving over column at : main,-16,0,32
+[object ArrayBuffer]
+3066 : 2282469985 : 96
+==========================================
+saving column at main,-32,0,32size: 2977
+saving over column at : main,-32,0,32
+[object ArrayBuffer]
+2977 : 2282469994 : 95
+==========================================
+saving column at main,-48,0,32size: 2996
+saving over column at : main,-48,0,32
+[object ArrayBuffer]
+2996 : 2282470007 : 94
+==========================================
+saving column at main,0,0,48size: 5425
+saving over column at : main,0,0,48
+[object ArrayBuffer]
+5425 : 2282471515 : 45
+==========================================
+saving column at main,16,0,48size: 4670
+saving over column at : main,16,0,48
+[object ArrayBuffer]
+4670 : 2282471525 : 47
+==========================================
+saving column at main,32,0,32size: 4560
+saving over column at : main,32,0,32
+[object ArrayBuffer]
+4560 : 2282473236 : 32
+==========================================
+saving column at main,32,0,48size: 4071
+saving over column at : main,32,0,48
+[object ArrayBuffer]
+4071 : 2282473271 : 49
+==========================================
+saving column at main,48,0,48size: 3520
+saving over column at : main,48,0,48
+[object ArrayBuffer]
+3520 : 2282473353 : 50
+==========================================
+saving column at main,32,0,64size: 4704
+saving over column at : main,32,0,64
+[object ArrayBuffer]
+4704 : 2282473365 : 66
+==========================================
+saving column at main,48,0,64size: 4341
+saving over column at : main,48,0,64
+[object ArrayBuffer]
+4341 : 2282473375 : 68
+==========================================
+saving column at main,16,0,64size: 4775
+saving over column at : main,16,0,64
+[object ArrayBuffer]
+4775 : 2282473386 : 64
+==========================================
+saving column at main,-96,0,0size: 3459
+saving over column at : main,-96,0,0
+[object ArrayBuffer]
+3459 : 2282475000 : 25
+==========================================
+saving column at main,-64,0,32size: 4754
+saving over column at : main,-64,0,32
+[object ArrayBuffer]
+4754 : 2282475242 : 92
+==========================================
+saving column at main,64,0,48size: 2545
+saving over column at : main,64,0,48
+[object ArrayBuffer]
+2545 : 2282475751 : 51
+==========================================
+saving column at main,48,0,0size: 3860
+saving over column at : main,48,0,0
+[object ArrayBuffer]
+3860 : 2282476011 : 4
+==========================================
+saving column at main,48,0,16size: 3832
+saving over column at : main,48,0,16
+[object ArrayBuffer]
+3832 : 2282476034 : 19
+==========================================
+saving column at main,48,0,32size: 3688
+saving over column at : main,48,0,32
+[object ArrayBuffer]
+3688 : 2282476044 : 34
+==========================================
+saving column at main,64,0,16size: 3245
+saving over column at : main,64,0,16
+[object ArrayBuffer]
+3245 : 2282476085 : 20
+==========================================
+saving column at main,64,0,32size: 3529
+saving over column at : main,64,0,32
+[object ArrayBuffer]
+3529 : 2282476096 : 35
+==========================================
+saving column at main,64,0,0size: 3837
+saving over column at : main,64,0,0
+[object ArrayBuffer]
+3837 : 2282476177 : 5
+==========================================
+saving column at main,64,0,-16size: 4647
+saving over column at : main,64,0,-16
+[object ArrayBuffer]
+4647 : 2282476188 : 112
+==========================================
+saving column at main,0,0,64size: 5057
+saving over column at : main,0,0,64
+[object ArrayBuffer]
+5057 : 2282477977 : 62
+==========================================
+saving column at main,-96,0,16size: 2830
+saving over column at : main,-96,0,16
+[object ArrayBuffer]
+2830 : 2282479177 : 58
+==========================================
+saving column at main,-80,0,32size: 4027
+saving over column at : main,-80,0,32
+[object ArrayBuffer]
+4027 : 2282479429 : 91
+==========================================
+saving column at main,48,0,80size: 3625
+saving over column at : main,48,0,80
+[object ArrayBuffer]
+3625 : 2282479668 : 85
+==========================================
+saving column at main,-16,0,48size: 2830
+saving over column at : main,-16,0,48
+[object ArrayBuffer]
+2830 : 2282479799 : 130
+==========================================
+saving column at main,32,0,80size: 4414
+saving over column at : main,32,0,80
+[object ArrayBuffer]
+4414 : 2282480641 : 83
+==========================================
+saving column at main,-32,0,48size: 4168
+saving over column at : main,-32,0,48
+[object ArrayBuffer]
+4168 : 2282481983 : 129
+==========================================
+saving column at main,-48,0,48size: 3410
+saving over column at : main,-48,0,48
+[object ArrayBuffer]
+3410 : 2282482183 : 128
+==========================================
+saving column at main,-64,0,48size: 4609
+saving over column at : main,-64,0,48
+[object ArrayBuffer]
+4609 : 2282482194 : 126
+==========================================
+saving column at main,64,0,64size: 1580
+saving over column at : main,64,0,64
+[object ArrayBuffer]
+1580 : 2282482259 : 70
+==========================================
+saving column at main,80,0,0size: 3382
+saving over column at : main,80,0,0
+[object ArrayBuffer]
+3382 : 2282482668 : 6
+==========================================
+saving column at main,80,0,-16size: 3708
+saving over column at : main,80,0,-16
+[object ArrayBuffer]
+3708 : 2282482678 : 114
+==========================================
+saving column at main,-80,0,48size: 4151
+saving over column at : main,-80,0,48
+[object ArrayBuffer]
+4151 : 2282482993 : 124
+==========================================
+saving column at main,96,0,0size: 3265
+saving over column at : main,96,0,0
+[object ArrayBuffer]
+3265 : 2282483003 : 7
+==========================================
+saving column at main,80,0,16size: 3146
+saving over column at : main,80,0,16
+[object ArrayBuffer]
+3146 : 2282483208 : 21
+==========================================
+saving column at main,80,0,32size: 2713
+saving over column at : main,80,0,32
+[object ArrayBuffer]
+2713 : 2282483219 : 36
+==========================================
+saving column at main,80,0,48size: 1497
+saving over column at : main,80,0,48
+[object ArrayBuffer]
+1497 : 2282483228 : 52
+==========================================
+saving column at main,-16,0,64size: 4038
+saving over column at : main,-16,0,64
+[object ArrayBuffer]
+4038 : 2282483960 : 163
+==========================================
+saving column at main,-32,0,64size: 4649
+saving over column at : main,-32,0,64
+[object ArrayBuffer]
+4649 : 2282484049 : 162
+==========================================
+saving column at main,96,0,16size: 3204
+saving over column at : main,96,0,16
+[object ArrayBuffer]
+3204 : 2282486858 : 22
+==========================================
+saving column at main,16,0,80size: 4040
+saving over column at : main,16,0,80
+[object ArrayBuffer]
+4040 : 2282487005 : 81
+==========================================
+saving column at main,16,0,96size: 3944
+saving over column at : main,16,0,96
+[object ArrayBuffer]
+3944 : 2282489710 : 96
+==========================================
+saving column at main,0,0,80size: 5162
+saving over column at : main,0,0,80
+[object ArrayBuffer]
+5162 : 2282490409 : 79
+==========================================
+saving column at main,-16,0,80size: 4551
+saving over column at : main,-16,0,80
+[object ArrayBuffer]
+4551 : 2282490422 : 198
+==========================================
+saving column at main,-32,0,80size: 4810
+saving over column at : main,-32,0,80
+[object ArrayBuffer]
+4810 : 2282490435 : 196
+==========================================
+saving column at main,0,0,96size: 4605
+saving over column at : main,0,0,96
+[object ArrayBuffer]
+4605 : 2282490444 : 94
+==========================================
+saving column at main,-16,0,96size: 4177
+saving over column at : main,-16,0,96
+[object ArrayBuffer]
+4177 : 2282490456 : 233
+==========================================
+saving column at main,-48,0,64size: 3921
+saving over column at : main,-48,0,64
+[object ArrayBuffer]
+3921 : 2282495833 : 161
+==========================================
+saving column at main,-64,0,64size: 3985
+saving over column at : main,-64,0,64
+[object ArrayBuffer]
+3985 : 2282495844 : 160
+==========================================
+saving column at main,-48,0,80size: 3758
+saving over column at : main,-48,0,80
+[object ArrayBuffer]
+3758 : 2282495855 : 195
+==========================================
+saving column at main,-80,0,64size: 4727
+saving over column at : main,-80,0,64
+[object ArrayBuffer]
+4727 : 2282512800 : 159
+==========================================
+saving column at main,-64,0,80size: 4150
+saving over column at : main,-64,0,80
+[object ArrayBuffer]
+4150 : 2282513078 : 195
+==========================================
+saving column at main,-96,0,32size: 1991
+saving over column at : main,-96,0,32
+[object ArrayBuffer]
+1991 : 2282513205 : 90
+==========================================
+saving column at main,-96,0,48size: 1677
+saving over column at : main,-96,0,48
+[object ArrayBuffer]
+1677 : 2282513214 : 123
+==========================================
+saving column at main,-32,0,96size: 4924
+saving over column at : main,-32,0,96
+[object ArrayBuffer]
+4924 : 2282513224 : 233
+==========================================
+saving column at main,-112,0,0size: 2703
+saving over column at : main,-112,0,0
+[object ArrayBuffer]
+2703 : 2282513234 : 24
+==========================================
+saving column at main,-112,0,16size: 2575
+saving over column at : main,-112,0,16
+[object ArrayBuffer]
+2575 : 2282513246 : 57
+loading column at main,-208,0,-16size: 3018
+3018 : 2272984842 : 97
+loading column at main,-208,0,-32size: 2661
+2661 : 2272984832 : 71
+loading column at main,-208,0,-48size: 3260
+3260 : 2272984822 : 46
+==========================================
+saving column at main,-96,0,64size: 4703
+saving over column at : main,-96,0,64
+[object ArrayBuffer]
+4703 : 2282527671 : 158
+==========================================
+saving column at main,-80,0,80size: 2856
+saving over column at : main,-80,0,80
+[object ArrayBuffer]
+2856 : 2282527825 : 195
+==========================================
+saving column at main,-112,0,32size: 1668
+saving over column at : main,-112,0,32
+[object ArrayBuffer]
+1668 : 2282527839 : 89
+==========================================
+saving column at main,-112,0,48size: 1420
+saving over column at : main,-112,0,48
+[object ArrayBuffer]
+1420 : 2282527850 : 122
+==========================================
+saving column at main,-48,0,96size: 2137
+saving over column at : main,-48,0,96
+[object ArrayBuffer]
+2137 : 2282527861 : 233
+==========================================
+saving column at main,-128,0,0size: 2352
+saving over column at : main,-128,0,0
+[object ArrayBuffer]
+2352 : 2282527871 : 23
+==========================================
+saving column at main,-128,0,16size: 3065
+saving over column at : main,-128,0,16
+[object ArrayBuffer]
+3065 : 2282527880 : 56
+loading column at main,-224,0,-16size: 3252
+3252 : 2272984841 : 96
+loading column at main,-224,0,-32size: 1811
+1811 : 2272984832 : 70
+loading column at main,-224,0,-48size: 1728
+1728 : 2272984822 : 45
+==========================================
+saving column at main,-96,0,80size: 4382
+saving over column at : main,-96,0,80
+[object ArrayBuffer]
+4382 : 2282527899 : 193
+==========================================
+saving column at main,-64,0,96size: 2287
+saving over column at : main,-64,0,96
+[object ArrayBuffer]
+2287 : 2282527910 : 232
+==========================================
+saving column at main,-80,0,96size: 1453
+saving over column at : main,-80,0,96
+[object ArrayBuffer]
+1453 : 2282527920 : 231
+==========================================
+saving column at main,-112,0,64size: 1718
+saving over column at : main,-112,0,64
+[object ArrayBuffer]
+1718 : 2282527931 : 157
+==========================================
+saving column at main,-32,0,112size: 2821
+saving over column at : main,-32,0,112
+[object ArrayBuffer]
+2821 : 2282527942 : 268
+==========================================
+saving column at main,-16,0,112size: 2938
+saving over column at : main,-16,0,112
+[object ArrayBuffer]
+2938 : 2282527954 : 269
+==========================================
+saving column at main,-48,0,112size: 1924
+saving over column at : main,-48,0,112
+[object ArrayBuffer]
+1924 : 2282527965 : 267
+==========================================
+saving column at main,-128,0,32size: 1621
+saving over column at : main,-128,0,32
+[object ArrayBuffer]
+1621 : 2282527978 : 88
+==========================================
+saving column at main,-112,0,80size: 1949
+saving over column at : main,-112,0,80
+[object ArrayBuffer]
+1949 : 2282546280 : 192
+==========================================
+saving column at main,-96,0,96size: 1340
+saving over column at : main,-96,0,96
+[object ArrayBuffer]
+1340 : 2282546400 : 229
+==========================================
+saving column at main,-128,0,48size: 1823
+saving over column at : main,-128,0,48
+[object ArrayBuffer]
+1823 : 2282546531 : 121
+==========================================
+saving column at main,-128,0,64size: 1454
+saving over column at : main,-128,0,64
+[object ArrayBuffer]
+1454 : 2282546556 : 156
+==========================================
+saving column at main,-64,0,112size: 2354
+saving over column at : main,-64,0,112
+[object ArrayBuffer]
+2354 : 2282546568 : 265
+==========================================
+saving column at main,-144,0,16size: 2415
+saving over column at : main,-144,0,16
+[object ArrayBuffer]
+2415 : 2282546578 : 55
+==========================================
+saving column at main,-144,0,0size: 2624
+saving over column at : main,-144,0,0
+[object ArrayBuffer]
+2624 : 2282546588 : 22
+==========================================
+saving column at main,-144,0,32size: 2592
+saving over column at : main,-144,0,32
+[object ArrayBuffer]
+2592 : 2282546604 : 87
+loading column at main,-240,0,-16size: 3595
+3595 : 2272984841 : 95
+loading column at main,-240,0,-32size: 3288
+3288 : 2272984831 : 69
+==========================================
+saving column at main,-112,0,96size: 1753
+saving over column at : main,-112,0,96
+[object ArrayBuffer]
+1753 : 2282547183 : 228
+==========================================
+saving column at main,-80,0,112size: 1862
+saving over column at : main,-80,0,112
+[object ArrayBuffer]
+1862 : 2282547194 : 264
+==========================================
+saving column at main,0,0,112size: 4068
+saving over column at : main,0,0,112
+[object ArrayBuffer]
+4068 : 2282547205 : 109
+==========================================
+saving column at main,-96,0,112size: 1452
+saving over column at : main,-96,0,112
+[object ArrayBuffer]
+1452 : 2282547226 : 263
+==========================================
+saving column at main,-128,0,80size: 1707
+saving over column at : main,-128,0,80
+[object ArrayBuffer]
+1707 : 2282547236 : 191
+==========================================
+saving column at main,-48,0,128size: 1725
+saving over column at : main,-48,0,128
+[object ArrayBuffer]
+1725 : 2282547247 : 298
+==========================================
+saving column at main,-32,0,128size: 2190
+2190 : 2282547261 : 404
+==========================================
+saving column at main,-64,0,128size: 2565
+saving over column at : main,-64,0,128
+[object ArrayBuffer]
+2565 : 2282547275 : 297
+==========================================
+saving column at main,-144,0,48size: 1995
+saving over column at : main,-144,0,48
+[object ArrayBuffer]
+1995 : 2282547286 : 120
+==========================================
+saving column at main,-128,0,96size: 2747
+saving over column at : main,-128,0,96
+[object ArrayBuffer]
+2747 : 2282555725 : 227
+==========================================
+saving column at main,-112,0,112size: 1662
+saving over column at : main,-112,0,112
+[object ArrayBuffer]
+1662 : 2282555738 : 262
+==========================================
+saving column at main,-144,0,64size: 2107
+saving over column at : main,-144,0,64
+[object ArrayBuffer]
+2107 : 2282555751 : 155
+==========================================
+saving column at main,-144,0,80size: 2700
+saving over column at : main,-144,0,80
+[object ArrayBuffer]
+2700 : 2282555761 : 190
+==========================================
+saving column at main,-80,0,128size: 2752
+saving over column at : main,-80,0,128
+[object ArrayBuffer]
+2752 : 2282555772 : 296
+==========================================
+saving column at main,-160,0,32size: 2730
+saving over column at : main,-160,0,32
+[object ArrayBuffer]
+2730 : 2282555783 : 86
+==========================================
+saving column at main,-160,0,16size: 3493
+saving over column at : main,-160,0,16
+[object ArrayBuffer]
+3493 : 2282555795 : 54
+==========================================
+saving column at main,-160,0,48size: 2223
+saving over column at : main,-160,0,48
+[object ArrayBuffer]
+2223 : 2282555806 : 119
+loading column at main,-240,0,-48size: 2334
+2334 : 2272984821 : 44
+loading column at main,-256,0,-16size: 3094
+3094 : 2272984841 : 94

@@ -39,12 +39,12 @@ export const Builder = {
   chunkZ: number,
   LOD = 1
  ) {
-  let chunk = DVEC.data.worldRegister.chunk.get(
+  let chunk = DVEC.data.worldRegister.chunk.get([
    dimension,
    chunkX,
    chunkY,
-   chunkZ
-  );
+   chunkZ,
+  ]);
   if (!chunk) {
    console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
    return;

@@ -1,16 +1,16 @@
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { PositionBoundDataTool } from "../Classes/DataToolBase.js";
+import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
 import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 export class ColumnDataTool extends PositionBoundDataTool {
     tags = ColumnTags;
     _column = {};
     loadIn(x, y, z) {
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
-        const column = WorldRegister.column.get(this.dimension, x, z, y);
+        this.location[1] = x;
+        this.location[2] = y;
+        this.location[3] = z;
+        const column = WorldRegister.column.get(this.location);
         if (!column)
             return false;
         this.tags.setBuffer(column.data);
@@ -20,7 +20,7 @@ export class ColumnDataTool extends PositionBoundDataTool {
     }
     loadInAt(location) {
         this.setLocation(location);
-        const column = WorldRegister.column.get(this.dimension, this.position.x, this.position.z, this.position.y);
+        const column = WorldRegister.column.get(this.location);
         if (!column)
             return false;
         this.tags.setBuffer(column.data);

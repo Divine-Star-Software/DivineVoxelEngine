@@ -38,7 +38,7 @@ export const WorldGenRegister = {
             return true;
         let done = true;
         for (const [key, pos] of requests.chunks) {
-            if (!dataTool.loadIn(pos[0], pos[1], pos[2])) {
+            if (!dataTool.loadInAt(pos[0], pos[1], pos[2])) {
                 done = false;
                 break;
             }

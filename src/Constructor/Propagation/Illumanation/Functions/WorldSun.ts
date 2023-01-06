@@ -6,6 +6,7 @@ import { WorldBounds } from "../../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../../Data/World/WorldSpaces.js";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 
 const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
  if (
@@ -22,19 +23,19 @@ export function RunWorldSun(
  this: typeof IlluminationManager,
  data: WorldSunTask
 ) {
- const dimension = data[0];
- const cx = data[1];
- const cz = data[2];
- const cy = data[3];
-
- if (!WorldRegister.column.get(dimension, cx, cz, cy)) return false;
- const RmaxY = WorldRegister.column.height.getRelative(dimension, cx, cz, cy);
- const AmaxY = WorldRegister.column.height.getAbsolute(dimension, cx, cz, cy);
+ const location: LocationData = data[0];
+ const dimension = location[0];
+ const cx = location[1];
+ const cy = location[2];
+ const cz = location[3];
+ if (!WorldRegister.column.get(location)) return false;
+ const RmaxY = WorldRegister.column.height.getRelative(location);
+ const AmaxY = WorldRegister.column.height.getAbsolute(location);
 
  for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
    for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
-    if (!this._sDataTool.loadIn(ix, iy, iz)) continue;
+    if (!this._sDataTool.loadInAt(ix, iy, iz)) continue;
     const l = this._sDataTool.getLight();
     if (l < 0) continue;
     this._sDataTool.setLight(this.lightData.setS(0xf, l)).commit();
@@ -48,7 +49,7 @@ export function RunWorldSun(
  for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
    for (let iy = AmaxY; iy <= RmaxY; iy++) {
-    if (!this._sDataTool.loadIn(ix, iy, iz)) continue;
+    if (!this._sDataTool.loadInAt(ix, iy, iz)) continue;
     const l = this._sDataTool.getLight();
     if (l < 0 && this.lightData.getS(l) != 0xf) continue;
     let add = false;
@@ -56,7 +57,7 @@ export function RunWorldSun(
      const nx = ix + n[0];
      const ny = iy + n[1];
      const nz = iz + n[2];
-     if (this._nDataTool.loadIn(nx, ny, nz)) {
+     if (this._nDataTool.loadInAt(nx, ny, nz)) {
       const nl = this._nDataTool.getLight();
       if (nl >= 0 && this.lightData.getS(nl) < 0xf) {
        add = true;
@@ -81,13 +82,13 @@ export function RunWorldSun(
   const y = node[1];
   const z = node[2];
 
-  if (!this._sDataTool.loadIn(x, y, z)) continue;
+  if (!this._sDataTool.loadInAt(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
   if (sl <= 0) continue;
   const sunL = this.lightData.getS(sl);
   if (sunL >= 0xf && !inColumnBounds(cx, cz, x, z)) continue;
 
-  if (this._nDataTool.loadIn(x - 1, y, z)) {
+  if (this._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.push([x - 1, y, z]);
@@ -95,7 +96,7 @@ export function RunWorldSun(
    }
   }
 
-  if (this._nDataTool.loadIn(x + 1, y, z)) {
+  if (this._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.push([x + 1, y, z]);
@@ -103,7 +104,7 @@ export function RunWorldSun(
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z - 1)) {
+  if (this._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.push([x, y, z - 1]);
@@ -111,7 +112,7 @@ export function RunWorldSun(
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z + 1)) {
+  if (this._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.push([x, y, z + 1]);
@@ -119,7 +120,7 @@ export function RunWorldSun(
    }
   }
 
-  if (this._nDataTool.loadIn(x, y - 1, z)) {
+  if (this._nDataTool.loadInAt(x, y - 1, z)) {
    const nl = this._nDataTool.getLight();
 
    if (nl > -1 && this.lightData.isLessThanForSunAddDown(nl, sl)) {
@@ -140,7 +141,7 @@ export function RunWorldSun(
    }
   }
 
-  if (this._nDataTool.loadIn(x, y + 1, z)) {
+  if (this._nDataTool.loadInAt(x, y + 1, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.push([x, y + 1, z]);

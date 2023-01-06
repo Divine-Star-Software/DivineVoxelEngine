@@ -70,7 +70,7 @@ const calculateFlowV = (process, cs, cl, vertex, x, y, z) => {
         for (let i = 0; i < 6; i += 2) {
             const cx = checkSet[i] + x;
             const cz = checkSet[i + 1] + z;
-            const loadedIn = process.nDataTool.loadIn(cx, y + iy, cz);
+            const loadedIn = process.nDataTool.loadInAt(cx, y + iy, cz);
             if (!loadedIn)
                 continue;
             const level = getLevel(process);

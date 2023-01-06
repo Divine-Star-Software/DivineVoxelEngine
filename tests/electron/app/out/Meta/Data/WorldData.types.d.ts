@@ -15,8 +15,6 @@ export declare type Region = {
 export declare type WorldDimensions = Map<string, Map<string, Region>>;
 export declare type AddVoxelData = {
     id: string;
-    dimension: string;
-    position: [number, number, number];
     state: number;
     shapeState: number;
     level: number;

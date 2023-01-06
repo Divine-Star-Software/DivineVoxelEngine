@@ -2,10 +2,11 @@ import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegist
 import { LocationData } from "Meta/Data/CommonTypes.js";
 import { CommBase } from "../../Libs/ThreadComm/Comm/Comm.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { DataToolWorldBound } from "./Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 
-export class DataLoaderTool extends DataToolWorldBound {
+export class DataLoaderTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();
  static isEnabled() {
   const comm = ThreadComm.getComm("data-loader");
@@ -109,10 +110,18 @@ export class DataLoaderTool extends DataToolWorldBound {
 
  loadColumn(onDone?: Function) {
   const location = this.getLocation();
+  const cache  : LocationData= [...location];
   this.dataComm.runPromiseTasks(
    "load-column",
    location.toString(),
-   () => (onDone ? onDone() : false),
+   () => {
+    const inte = setInterval(() => {
+     if (WorldRegister.column.get(cache)) {
+      clearInterval(inte);
+      onDone ? onDone(true) : false
+     }
+    }, 1);
+   },
    location
   );
  }

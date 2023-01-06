@@ -177,7 +177,7 @@ export const Processor = {
   z: number,
   faceBit: number
  ) {
-  const voxelExists = this.nDataTool.loadIn(x, y, z);
+  const voxelExists = this.nDataTool.loadInAt(x, y, z);
   let finalResult = false;
   if (voxelExists && this.nDataTool.isRenderable()) {
    let substanceRuleResult = Builder.voxelHelper.substanceRuleCheck(
@@ -251,7 +251,7 @@ export const Processor = {
   doSecondCheck = false
  ) {
   const LOD = this.LOD;
-  if (!this.mDataTool.loadIn(x, y, z)) return;
+  if (!this.mDataTool.loadInAt(x, y, z)) return;
   if (!this.mDataTool.isRenderable()) return;
 
   if (!doSecondCheck) {

@@ -39,7 +39,6 @@ export const DataHanlderWrapper = {
    try {
     columnDatatool.markAsStored();
     const column = WorldDataSerialize.serializeColumn(location);
-
     if (!column) return false;
     const success = await this.handler.saveColumn(location, column);
     if (!success) {

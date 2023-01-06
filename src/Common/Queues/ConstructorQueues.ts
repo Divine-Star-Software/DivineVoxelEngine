@@ -1,11 +1,12 @@
 //types
-import type {
+import {
  BuildTasks,
  ExplosionTasks,
  GenerateTasks,
  LightUpdateTask,
  PaintTasks,
  UpdateTasksO,
+ PriorityTask,
 } from "Meta/Tasks/Tasks.types.js";
 //objects
 import { CCM } from "../Threads/Constructor/ConstructorComm.js";
@@ -125,7 +126,7 @@ const QMBase = {
   ),
  },
  build: {
-  chunk: CCM.addQueue<BuildTasks>("build-chunk", ConstructorTasks.buildChunk),
+  chunk: CCM.addQueue<PriorityTask<BuildTasks>>("build-chunk", ConstructorTasks.buildChunk),
  },
  generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.generate),
 };

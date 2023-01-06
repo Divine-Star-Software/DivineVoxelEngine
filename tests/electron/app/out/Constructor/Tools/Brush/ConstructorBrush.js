@@ -6,16 +6,16 @@ export function GetConstructorBrush() {
     const newBrush = Util.merge(new BrushTool(), {
         requestsId: "",
         paint() {
-            const x = this.data.position[0];
-            const y = this.data.position[1];
-            const z = this.data.position[2];
-            if (!this._dt.loadIn(x, y, z)) {
+            const x = this.location[1];
+            const y = this.location[2];
+            const z = this.location[3];
+            if (!this._dt.loadInAt(x, y, z)) {
                 WorldGenRegister.addToRequest(newBrush.requestsId, x, y, z, [
                     ...this.getRaw(),
                 ]);
                 return this;
             }
-            WorldPainter.paint.voxel(this.data);
+            WorldPainter.paint.voxel(this.location, this.data);
             return this;
         },
     });

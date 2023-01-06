@@ -10,6 +10,7 @@ class TasksBase {
         queue: "main",
     };
     _thread = "";
+    _priority = 0;
     constructor() {
         this.build.chunk._s = this;
         this.light.rgb.update._s = this;
@@ -26,17 +27,23 @@ class TasksBase {
         this.generate.deferred._s = this;
         this.generate.async._s = this;
     }
-    setFocalPoint(x, y, z, dimension = this._data.dimension) {
-        const queueKey = `${dimension}-${WorldSpaces.region.getKeyXYZ(x, y, z)}`;
+    setPriority(priority) {
+        this._priority = priority;
+        return this;
+    }
+    setFocalPoint(location) {
+        const [dimesnion, x, y, z] = location;
+        const queueKey = `${dimesnion}-${WorldSpaces.region.getKeyXYZ(x, y, z)}`;
         CQ.addQueue(queueKey);
         this._data.queue = queueKey;
         this._thread = ThreadComm.threadName;
+        return this;
     }
     generate = {
         async: {
             _s: {},
             add(x, y, z, data = []) {
-                CQ.generate.add([this._s._data.dimension, x, y, z, data], this._s._data.queue);
+                CQ.generate.add([[this._s._data.dimension, x, y, z], data], this._s._data.queue);
             },
             run(onDone) {
                 CQ.generate.run(this._s._data.queue);
@@ -50,7 +57,7 @@ class TasksBase {
             _s: {},
             run(x, y, z, data, onDone) {
                 const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
-                CCM.runPromiseTasks(ConstructorTasks.generate, requestsKey, onDone, [this._s._data.dimension, x, y, z, data]);
+                CCM.runPromiseTasks(ConstructorTasks.generate, requestsKey, onDone, [[this._s._data.dimension, x, y, z], data]);
             },
         },
     };
@@ -58,7 +65,7 @@ class TasksBase {
         erase: {
             _s: {},
             add(x, y, z) {
-                CQ.voxelUpdate.erase.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+                CQ.voxelUpdate.erase.add([[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread], this._s._data.queue);
             },
             run(onDone) {
                 CQ.voxelUpdate.erase.run(this._s._data.queue);
@@ -72,10 +79,7 @@ class TasksBase {
             _s: {},
             add(x, y, z, raw) {
                 CQ.voxelUpdate.paint.add([
-                    this._s._data.dimension,
-                    x,
-                    y,
-                    z,
+                    [this._s._data.dimension, x, y, z],
                     raw,
                     this._s._data.queue,
                     this._s._thread,
@@ -94,7 +98,10 @@ class TasksBase {
         chunk: {
             _s: {},
             add(x, y, z) {
-                CQ.build.chunk.add([this._s._data.dimension, x, y, z, 1], this._s._data.queue);
+                CQ.build.chunk.add({
+                    data: [[this._s._data.dimension, x, y, z], 1],
+                    priority: this._s._priority,
+                }, this._s._data.queue);
             },
             run(onDone) {
                 CQ.build.chunk.run(this._s._data.queue);
@@ -110,10 +117,7 @@ class TasksBase {
             _s: {},
             add(x, y, z, radius) {
                 CQ.explosion.run.add([
-                    this._s._data.dimension,
-                    x,
-                    y,
-                    z,
+                    [this._s._data.dimension, x, y, z],
                     radius,
                     this._s._data.queue,
                     this._s._thread,
@@ -132,7 +136,7 @@ class TasksBase {
         update: {
             _s: {},
             add(x, y, z) {
-                CQ.flow.update.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+                CQ.flow.update.add([[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread], this._s._data.queue);
             },
             run(onDone) {
                 CQ.flow.update.run(this._s._data.queue);
@@ -145,7 +149,7 @@ class TasksBase {
         remove: {
             _s: {},
             add(x, y, z) {
-                CQ.flow.remove.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+                CQ.flow.remove.add([[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread], this._s._data.queue);
             },
             run(onDone) {
                 CQ.flow.remove.run(this._s._data.queue);
@@ -162,7 +166,7 @@ class TasksBase {
                 _s: {},
                 add(x, y, z, queue = null) {
                     queue = queue ? queue : this._s._data.queue;
-                    CQ.rgb.update.add([this._s._data.dimension, x, y, z, queue, this._s._thread], queue);
+                    CQ.rgb.update.add([[this._s._data.dimension, x, y, z], queue, this._s._thread], queue);
                 },
                 run(onDone) {
                     CQ.rgb.update.run(this._s._data.queue);
@@ -176,7 +180,7 @@ class TasksBase {
                 _s: {},
                 add(x, y, z, queue = null) {
                     queue = queue ? queue : this._s._data.queue;
-                    CQ.rgb.remove.add([this._s._data.dimension, x, y, z, queue, this._s._thread], queue);
+                    CQ.rgb.remove.add([[this._s._data.dimension, x, y, z], queue, this._s._thread], queue);
                 },
                 run(onDone) {
                     CQ.rgb.remove.run(this._s._data.queue);
@@ -191,7 +195,11 @@ class TasksBase {
             update: {
                 _s: {},
                 add(x, y, z) {
-                    CQ.sun.update.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+                    CQ.sun.update.add([
+                        [this._s._data.dimension, x, y, z],
+                        this._s._data.queue,
+                        this._s._thread,
+                    ], this._s._data.queue);
                 },
                 run(onDone) {
                     CQ.sun.update.run(this._s._data.queue);
@@ -204,7 +212,11 @@ class TasksBase {
             remove: {
                 _s: {},
                 add(x, y, z) {
-                    CQ.sun.remove.add([this._s._data.dimension, x, y, z, this._s._data.queue, this._s._thread], this._s._data.queue);
+                    CQ.sun.remove.add([
+                        [this._s._data.dimension, x, y, z],
+                        this._s._data.queue,
+                        this._s._thread,
+                    ], this._s._data.queue);
                 },
                 run(onDone) {
                     CQ.sun.remove.run(this._s._data.queue);
@@ -221,19 +233,16 @@ class TasksBase {
                 _s: {},
                 run(x, y, z, onDone) {
                     const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
-                    CCM.runPromiseTasks(ConstructorTasks.worldSun, requestsKey, onDone, [this._s._data.dimension, x, z, y, this._s._data.queue, this._s._thread]);
+                    CCM.runPromiseTasks(ConstructorTasks.worldSun, requestsKey, onDone, [[this._s._data.dimension, x, y, z], this._s._thread]);
                 },
             },
             add(x, z, y = 0) {
                 CQ.worldSun.add([
-                    this._s._data.dimension,
-                    x,
-                    z,
-                    y,
+                    [this._s._data.dimension, x, y, z],
                     this._s._data.queue,
                     this._s._thread,
                 ]);
-                WorldRegister.column.fill(this._s._data.dimension, x, z, y);
+                WorldRegister.column.fill([this._s._data.dimension, x, y, z]);
             },
             run(onDone) {
                 CQ.worldSun.run(this._s._data.queue);

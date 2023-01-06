@@ -5,6 +5,7 @@ declare type RegionHeaderData = Map<string, Map<string, {
 }>>;
 export declare const RegionHeaderRegister: {
     _headers: RegionHeaderData;
+    remove(location: LocationData): boolean;
     add(location: LocationData, buffer: SharedArrayBuffer): void;
     get(location: LocationData): false | {
         data: DataView;

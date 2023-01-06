@@ -1,4 +1,4 @@
-import { ReBuildTasks, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
+import { AddToRebuildQueue, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorTasks: {
     runQueue: {
         rgb: {
@@ -44,7 +44,7 @@ export declare const ConstructorTasks: {
             remove: null;
         };
         build: {
-            chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<ReBuildTasks>;
+            addToRebuildQueue: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<AddToRebuildQueue>;
         };
         generate: {
             chunk: null;

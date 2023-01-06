@@ -23,11 +23,8 @@ export const WorldGeneration = {
   if (!this.worldGen) {
    throw new Error(`A World Generator must be set.`);
   }
-  const dimension = data[0];
-  const x = data[1];
-  const y = data[2];
-  const z = data[3];
-  const genData = data[4];
+  const [dimension, x, y, z] = data[0];
+  const genData = data[1];
   const requestsId = WorldGenRegister.registerRequest(dimension, x, y, z);
   for (const brush of this._brushes) {
    brush.requestsId = requestsId;

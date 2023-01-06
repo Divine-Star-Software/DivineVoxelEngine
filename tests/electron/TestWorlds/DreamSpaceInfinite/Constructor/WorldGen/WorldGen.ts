@@ -43,7 +43,7 @@ export const WorldGen = {
  chunkHeight: 128,
  generateTree(x: number, y: number, z: number) {
   brush.setId("dve_dream-log");
-  if (dataTool.loadIn(x, y - 1, z)) {
+  if (dataTool.loadInAt(x, y - 1, z)) {
    if (!dataTool.isRenderable()) return;
   }
   let height = (30 * Math.random()) >> 0;
@@ -72,7 +72,7 @@ export const WorldGen = {
     for (let y = 0; y < +200; y++) {
      brush.setXYZ(x, y, z);
 
-     if (dataTool.loadIn(x, y, z)) {
+     if (dataTool.loadInAt(x, y, z)) {
       if (dataTool.isRenderable()) continue;
      }
 
@@ -209,7 +209,7 @@ export const WorldGen = {
      if (ix == x && iz == z) continue;
     }
     if (noDestory) {
-     if (dataTool.loadIn(ix, y, iz)) {
+     if (dataTool.loadInAt(ix, y, iz)) {
       if (dataTool.isRenderable()) continue;
      }
     }

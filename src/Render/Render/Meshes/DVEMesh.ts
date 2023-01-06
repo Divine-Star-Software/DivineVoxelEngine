@@ -27,7 +27,23 @@ export class DVEMesh {
 
   mesh.doNotSerialize = this.seralize;
   mesh.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_STANDARD;
+  mesh.material = this.dveMat.getMaterial();
 
+  const chunkVertexData = new BABYLON.VertexData();
+  mesh.position.x = 0;
+  mesh.position.y = 0;
+  mesh.position.z = 0;
+  chunkVertexData.positions = [];
+  chunkVertexData.normals = [];
+  chunkVertexData.indices = [];
+  mesh.setVerticesData("faceData", [], false, 1);
+  mesh.setVerticesData("aoColors", [], false, 1);
+  mesh.setVerticesData("lightColors", [], false, 4);
+  mesh.setVerticesData("colors", [], false, 4);
+  mesh.setVerticesData("cuv3", [], false, 3);
+  mesh.setVerticesData("ocuv3", [], false, 4);
+  chunkVertexData.applyToMesh(mesh, false);
+  (mesh as any).vertexData = chunkVertexData;
   return mesh;
  }
 
@@ -46,15 +62,13 @@ export class DVEMesh {
  _applyVertexData(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
   mesh.unfreezeWorldMatrix();
 
-  const chunkVertexData = new BABYLON.VertexData();
-
+  const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
   mesh.position.x = data[2];
   mesh.position.y = data[3];
   mesh.position.z = data[4];
   chunkVertexData.positions = data[5];
   chunkVertexData.normals = data[6];
   chunkVertexData.indices = data[7];
-
   mesh.setVerticesData("faceData", data[8], false, 1);
   mesh.setVerticesData("aoColors", data[9], false, 1);
   mesh.setVerticesData("lightColors", data[10], false, 4);
@@ -75,13 +89,7 @@ export class DVEMesh {
   mesh.freezeWorldMatrix();
  }
 
- async rebuildMeshGeometory(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
-  this._applyVertexData(mesh, data);
-  return mesh;
- }
-
- async createMeshGeometory(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
-  mesh.material = this.dveMat.getMaterial();
+ async setMeshData(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
   this._applyVertexData(mesh, data);
   return mesh;
  }

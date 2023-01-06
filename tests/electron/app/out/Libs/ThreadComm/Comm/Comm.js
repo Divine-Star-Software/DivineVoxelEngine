@@ -38,30 +38,29 @@ export class CommBase {
         this.__onSetPortRun = set;
     }
     __handleMessage(data, event) {
-        this.onMessage(data);
+        this.onMessage(data, event);
         if (ThreadComm.__isInternalMessage(data)) {
             ThreadComm.__handleInternalMessage(data, event);
-            this.onMessage(event);
             return;
         }
         if (ThreadComm.__isTasks(data)) {
             ThreadComm.__handleTasksMessage(data);
-            this.onMessage(event);
             return;
         }
         if (ThreadComm.__isDataSync(data)) {
             ThreadComm.__hanldeDataSyncMessage(data);
-            this.onMessage(event);
             return;
         }
         if (this._manager) {
             if (this._manager.__isManagerMessage(data)) {
                 this._manager.__handleManagerMessage(data, event);
+                return;
             }
         }
         const message = data[0];
         if (this.messageFunctions[message]) {
             this.messageFunctions[message].forEach((_) => _(data, event));
+            return;
         }
     }
     setPort(port) {
@@ -168,5 +167,5 @@ export class CommBase {
         });
     }
     //meant to be over-ridden for debugging or custom behavior
-    onMessage(event) { }
+    onMessage(data, event) { }
 }

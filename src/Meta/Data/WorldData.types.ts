@@ -1,3 +1,5 @@
+
+
 export type ChunkData = {
  buffer: SharedArrayBuffer;
  data: DataView;
@@ -18,8 +20,6 @@ export type WorldDimensions = Map<string, Map<string, Region>>;
 
 export type AddVoxelData = {
  id: string;
- dimension: string;
- position: [number, number, number];
  state: number;
  shapeState: number;
  level: number;

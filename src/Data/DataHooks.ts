@@ -11,19 +11,22 @@ export const DataHooks = {
   onGetAsync: Hooks.getAsyncHook<LocationData, SharedArrayBuffer>(),
   onGetSync: Hooks.getSyncHook<LocationData, SharedArrayBuffer>(),
   onNew: Hooks.getAsyncHook<LocationData, void>(),
+  onRemove: Hooks.getSyncHook<LocationData, void>(),
  },
  column: {
   onGetAsync: Hooks.getAsyncHook<LocationData, SharedArrayBuffer>(),
   onGetSync: Hooks.getSyncHook<LocationData, SharedArrayBuffer>(),
   onNew: Hooks.getAsyncHook<LocationData, void>(),
+  onRemove: Hooks.getSyncHook<LocationData, void>(),
  },
  region: {
   onGetAsync: Hooks.getAsyncHook<LocationData, SharedArrayBuffer>(),
   onGetSync: Hooks.getSyncHook<LocationData, SharedArrayBuffer>(),
   onNew: Hooks.getAsyncHook<LocationData, void>(),
+  onRemove: Hooks.getSyncHook<LocationData, void>(),
  },
  paint: {
   onAddToRGBUpdate: Hooks.getSyncHook<LocationData, void>(),
-  onRichVoxelPaint: Hooks.getSyncHook<SetRichVoxel, void>(),
+  onRichVoxelPaint: Hooks.getSyncHook<[id:string,location : LocationData], void>(),
  },
 };

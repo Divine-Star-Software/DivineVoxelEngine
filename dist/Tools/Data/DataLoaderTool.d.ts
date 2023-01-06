@@ -1,8 +1,8 @@
 import { LocationData } from "Meta/Data/CommonTypes.js";
 import { CommBase } from "../../Libs/ThreadComm/Comm/Comm.js";
-import { DataToolWorldBound } from "./Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
-export declare class DataLoaderTool extends DataToolWorldBound {
+import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
+export declare class DataLoaderTool extends LocationBoundTool {
     static columnDataTool: ColumnDataTool;
     static isEnabled(): boolean;
     dataComm: CommBase;

@@ -1,12 +1,10 @@
 import type {
- ChunkSyncData,
- ChunkUnSyncData,
  VoxelMapSyncData,
- RegionSyncData,
- RegionUnSyncData,
  VoxelDataSync,
  VoxelPaletteSyncData,
+ WorldDataSync,
 } from "Meta/Data/DataSync.types.js";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 //objects
@@ -21,6 +19,7 @@ import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
 import { Register } from "./Register/Register.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
+
 
 export const DataSyncNode = {
  _states: <Record<string, boolean>>{
@@ -46,16 +45,14 @@ export const DataSyncNode = {
   DataSyncTypes.colliders
  ),
  dimension: ThreadComm.onDataSync<DimensionData, void>(DataSyncTypes.dimesnion),
- chunk: ThreadComm.onDataSync<ChunkSyncData, ChunkUnSyncData>(
-  DataSyncTypes.chunk
- ),
- column: ThreadComm.onDataSync<ChunkSyncData, ChunkUnSyncData>(
+ chunk: ThreadComm.onDataSync<WorldDataSync, LocationData>(DataSyncTypes.chunk),
+ column: ThreadComm.onDataSync<WorldDataSync, LocationData>(
   DataSyncTypes.column
  ),
- region: ThreadComm.onDataSync<RegionSyncData, RegionUnSyncData>(
+ region: ThreadComm.onDataSync<WorldDataSync, LocationData>(
   DataSyncTypes.region
  ),
- regionHeader: ThreadComm.onDataSync<RegionSyncData, RegionUnSyncData>(
+ regionHeader: ThreadComm.onDataSync<WorldDataSync, LocationData>(
   DataSyncTypes.regionHeader
  ),
  chunkTags: ThreadComm.onDataSync<RemoteTagManagerInitData, void>(
@@ -93,19 +90,31 @@ DataSyncNode.dimension.addOnSync((data) => {
 });
 
 DataSyncNode.chunk.addOnSync((data) => {
- WorldRegister.chunk.add(data[0], data[1], data[2], data[3], data[4]);
+ WorldRegister.chunk.add(data[0], data[1]);
+});
+
+DataSyncNode.chunk.addOnUnSync((data) => {
+ WorldRegister.chunk.remove(data);
 });
 
 DataSyncNode.column.addOnSync((data) => {
- WorldRegister.column.add(data[0], data[1], data[2], data[3], data[4]);
+ WorldRegister.column.add(data[0], data[1]);
+});
+
+DataSyncNode.column.addOnUnSync((data) => {
+ WorldRegister.column.remove(data);
 });
 
 DataSyncNode.region.addOnSync((data) => {
- WorldRegister.region.add(data[0], data[1], data[2], data[3], data[4]);
+ WorldRegister.region.add(data[0], data[1]);
+});
+
+DataSyncNode.region.addOnUnSync((data) => {
+ WorldRegister.region.remove(data);
 });
 
 DataSyncNode.regionHeader.addOnSync((data) => {
- RegionHeaderRegister.add([data[0], data[1], data[2], data[3]], data[4]);
+ RegionHeaderRegister.add(data[0], data[1]);
 });
 
 DataSyncNode.chunkTags.addOnSync((data) => {

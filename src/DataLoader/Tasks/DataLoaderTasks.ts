@@ -31,20 +31,24 @@ export const DataLoaderTasks = {
  saveColumn: ThreadComm.registerTasks<LocationData>(
   "save-column",
   async (data, onDone) => {
-   setTimeout(async () => {
-    await DataHanlderWrapper.saveColumn(data);
-    return onDone ? onDone() : false;
-   }, 500);
+   await DataHanlderWrapper.saveColumn(data);
+   return onDone ? onDone() : false;
   },
   "deffered"
  ),
  loadColumn: ThreadComm.registerTasks<LocationData>(
   "load-column",
   async (data, onDone) => {
-   setTimeout(async () => {
-    await DataHanlderWrapper.loadColumn(data);
-    return onDone ? onDone() : false;
-   }, 500);
+   await DataHanlderWrapper.loadColumn(data);
+   const inte = setInterval(() => {
+    if (
+     DVEDL.data.worldRegister.column.get(data)
+    ) {
+     console.log("now it is done");
+     onDone ? onDone() : false;
+     clearInterval(inte);
+    }
+   }, 1);
   },
   "deffered"
  ),

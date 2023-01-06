@@ -1,12 +1,13 @@
 export const SharedVertexShader = {
  top: `
+ #extension GL_EXT_gpu_shader4 : enable
   precision highp float;
   `,
  standardPositionMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
   gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
   `,
-  standardPositioFOnMain: `
+ standardPositioFOnMain: `
   vec4 worldPosition = world * vec4(position, 1.0);
   gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
   `,
@@ -37,7 +38,7 @@ uniform vec3 worldOrigin;
   }
   return attributes;
  },
- defaultAttributes : `
+ defaultAttributes: `
  attribute vec3 position;
  attribute vec3 normal;
  `,
@@ -165,7 +166,7 @@ uniform vec3 worldOrigin;
  }
  `,
 
- passAnimationState : `
+ passAnimationState: `
  vAnimation = float(getAnimationType());
  `,
  updateVarying: `
@@ -191,8 +192,8 @@ uniform vec3 worldOrigin;
 
  getAnimationType: `
  int getAnimationType() {
-   highp int index = int(faceData);
-   return  index & 0xff;
+   int index = int(faceData);
+  return  index & 0xff;
 }
  `,
  animationFunctions: `

@@ -22,7 +22,7 @@ export const EngineSettings = {
             autoSyncVoxelPalette: true,
         },
         server: {
-            enabled: false
+            enabled: false,
         },
         richWorld: {
             enabled: false,
@@ -60,7 +60,7 @@ export const EngineSettings = {
             doColors: true,
         },
         flow: {
-            enable: true
+            enable: true,
         },
         lighting: {
             doAO: true,
@@ -116,8 +116,7 @@ export const EngineSettings = {
             WorldBounds.setWorldBounds(this.settings.world.minX, this.settings.world.maxX, this.settings.world.minZ, this.settings.world.maxZ, this.settings.world.minY, this.settings.world.maxY);
         }
     },
-    syncWithWorldBounds(worldBounds) {
-    },
+    syncWithWorldBounds(worldBounds) { },
     getSettingsCopy() {
         return JSON.parse(JSON.stringify(this.settings));
     },
@@ -147,5 +146,8 @@ export const EngineSettings = {
     },
     doFlow() {
         return this.settings.flow.enable;
-    }
+    },
+    saveWorldData() {
+        return this.settings.data.enabled;
+    },
 };

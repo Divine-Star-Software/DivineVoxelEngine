@@ -39,18 +39,16 @@ export const MeshManager = {
         const chunkY = data[3];
         const chunkZ = data[4];
         let chunk = MeshRegister.chunk.get(dimension, chunkX, chunkY, chunkZ, substance);
-        this.scene.unfreezeActiveMeshes();
         let mesh;
         if (!chunk) {
             mesh = this.meshMakers[substance].createTemplateMesh(this.scene);
-            this.meshMakers[substance].createMeshGeometory(mesh, data);
             MeshRegister.chunk.add(dimension, chunkX, chunkY, chunkZ, mesh, substance);
+            this.meshMakers[substance].setMeshData(mesh, data);
         }
         else {
             mesh = chunk.mesh;
-            this.meshMakers[substance].rebuildMeshGeometory(mesh, data);
+            this.meshMakers[substance].setMeshData(mesh, data);
         }
-        this.scene.freeActiveMeshes();
     },
     removeColumn(data) {
         const dimension = data[0];

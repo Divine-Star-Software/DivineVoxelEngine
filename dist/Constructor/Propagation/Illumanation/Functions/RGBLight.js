@@ -7,49 +7,49 @@ export function runRGBUpdate() {
         const x = node[0];
         const y = node[1];
         const z = node[2];
-        if (!this._sDataTool.loadIn(x, y, z))
+        if (!this._sDataTool.loadInAt(x, y, z))
             continue;
         if (this._sDataTool.isBarrier())
             continue;
         const sl = this._sDataTool.getLight();
         if (sl <= 0)
             continue;
-        if (this._nDataTool.loadIn(x - 1, y, z)) {
+        if (this._nDataTool.loadInAt(x - 1, y, z)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x - 1, y, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
             }
         }
-        if (this._nDataTool.loadIn(x + 1, y, z)) {
+        if (this._nDataTool.loadInAt(x + 1, y, z)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x + 1, y, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
             }
         }
-        if (this._nDataTool.loadIn(x, y, z - 1)) {
+        if (this._nDataTool.loadInAt(x, y, z - 1)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x, y, z - 1]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
             }
         }
-        if (this._nDataTool.loadIn(x, y, z + 1)) {
+        if (this._nDataTool.loadInAt(x, y, z + 1)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x, y, z + 1]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
             }
         }
-        if (this._nDataTool.loadIn(x, y - 1, z)) {
+        if (this._nDataTool.loadInAt(x, y - 1, z)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x, y - 1, z]);
                 this._nDataTool.setLight(this.lightData.getMinusOneForRGB(sl, nl)).commit();
             }
         }
-        if (this._nDataTool.loadIn(x, y + 1, z)) {
+        if (this._nDataTool.loadInAt(x, y + 1, z)) {
             const nl = this._nDataTool.getLight();
             if (nl > -1 && this.lightData.isLessThanForRGBAdd(nl, sl)) {
                 this._RGBlightUpdateQ.push([x, y + 1, z]);
@@ -81,12 +81,12 @@ export function runRGBRemove(lightSource) {
         const x = node[0];
         const y = node[1];
         const z = node[2];
-        if (!this._sDataTool.loadIn(x, y, z))
+        if (!this._sDataTool.loadInAt(x, y, z))
             continue;
         const sl = this._sDataTool.getLight();
         if (sl <= 0)
             continue;
-        if (this._nDataTool.loadIn(x - 1, y, z)) {
+        if (this._nDataTool.loadInAt(x - 1, y, z)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -98,7 +98,7 @@ export function runRGBRemove(lightSource) {
                 }
             }
         }
-        if (this._nDataTool.loadIn(x + 1, y, z)) {
+        if (this._nDataTool.loadInAt(x + 1, y, z)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -110,7 +110,7 @@ export function runRGBRemove(lightSource) {
                 }
             }
         }
-        if (this._nDataTool.loadIn(x, y, z - 1)) {
+        if (this._nDataTool.loadInAt(x, y, z - 1)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -122,7 +122,7 @@ export function runRGBRemove(lightSource) {
                 }
             }
         }
-        if (this._nDataTool.loadIn(x, y, z + 1)) {
+        if (this._nDataTool.loadInAt(x, y, z + 1)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -134,7 +134,7 @@ export function runRGBRemove(lightSource) {
                 }
             }
         }
-        if (this._nDataTool.loadIn(x, y - 1, z)) {
+        if (this._nDataTool.loadInAt(x, y - 1, z)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -146,7 +146,7 @@ export function runRGBRemove(lightSource) {
                 }
             }
         }
-        if (this._nDataTool.loadIn(x, y + 1, z)) {
+        if (this._nDataTool.loadInAt(x, y + 1, z)) {
             const nl = this._nDataTool.getLight();
             const n1HasRGB = this.lightData.hasRGBLight(nl);
             if (n1HasRGB && this.lightData.isLessThanForRGBRemove(nl, sl)) {
@@ -162,10 +162,10 @@ export function runRGBRemove(lightSource) {
         this._sDataTool.setLight(this.lightData.removeRGBLight(sl)).commit();
     }
     if (lightSource) {
-        this._sDataTool.loadIn(lightSource.x, lightSource.y, lightSource.z);
+        this._sDataTool.loadInAt(lightSource.x, lightSource.y, lightSource.z);
         this._sDataTool.setBarrier().commit();
         this.runRGBUpdate();
-        this._sDataTool.loadIn(lightSource.x, lightSource.y, lightSource.z);
+        this._sDataTool.loadInAt(lightSource.x, lightSource.y, lightSource.z);
         this._sDataTool.setAir().commit();
     }
     else {

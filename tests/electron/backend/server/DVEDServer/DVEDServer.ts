@@ -2,10 +2,10 @@ import { DVEDMessages } from "server/Types/DVEDServer.types";
 import * as fs from "fs";
 
 import { DVED } from "../libs/dved/Node/DivineVoxelEngineData.js";
-import { DVEDSystem } from "../libs/dved/Node/DVEDSystem.js";
 
 DVED.$INIT({
  fs: fs,
+ dataDirecotry: "dve-testing",
  sectorSize: 4096,
  spaceBounds: {
   regions: { x: 9, y: 8, z: 9 },
@@ -15,11 +15,23 @@ DVED.$INIT({
 });
 
 const regionTool = DVED.getRegionTool();
-const dataPath = "D:/DSSoftware/APPS/divinevoxelengine/tests/electron/data";
-const setPath = (id: string) => {
- const path = `${dataPath}/${id}`;
- DVEDSystem.mkdirs([path]);
- regionTool.setPath(path);
+
+regionTool.setLocation(["main", 0, 0, 0]);
+console.log("region exists => ", regionTool.regionExists());
+console.log("region has column => ", regionTool.regionHasColumn());
+console.log("column timestamp => ", regionTool.getColumnTimestamp());
+
+const logPath = "./data/" + Date.now() + "-log.txt";
+fs.writeFileSync(logPath, "");
+
+const addSeperator = () => {
+ fs.appendFileSync(
+  logPath,
+  "==========================================" + "\n"
+ );
+};
+const addToLog = (data: string) => {
+ fs.appendFileSync(logPath, data + "\n");
 };
 
 export const DVEDServer = {
@@ -45,14 +57,29 @@ export const DVEDServer = {
 
  hanldeMessage(body: string) {
   const { message, data } = this.parseDVEDMessasge(body);
-  console.log(message);
   if (message.type == "set-path") {
-   setPath(message.id);
+   DVED.system.updateFolder(message.id);
+   addToLog("set path: " + message.id)
   }
 
   if (message.type == "save-column") {
-   regionTool.setLocation(message.location).saveColumn(data);
-   console.log("saving column at ", message.location, "size: ", data.length);
+   addSeperator();
+   regionTool.setLocation(message.location);
+   addToLog("saving column at " + message.location + "size: " + data.length);
+   if (regionTool.regionHasColumn()) {
+    addToLog("saving over column at : " + message.location.toString());
+    addToLog(String(regionTool.loadColumn()));
+   }
+   regionTool.saveColumn(data);
+   addToLog(
+    String(
+     regionTool.getColumnDataLength() +
+      " : " +
+      regionTool.getColumnTimestamp() +
+      " : " +
+      regionTool.getSectorIndex()
+    )
+   );
    return new Uint8Array([1]);
   }
   if (message.type == "load-region-header") {
@@ -66,13 +93,38 @@ export const DVEDServer = {
   }
   if (message.type == "load-column") {
    const column = regionTool.setLocation(message.location).loadColumn();
-   console.log(column);
-   console.log(
-    "loading column at ",
-    message.location,
-    "size: ",
-    column ? column.byteLength : 0
+
+   addToLog(
+    "loading column at " +
+     message.location +
+     "size: " +
+     String(column ? column.byteLength : 0)
    );
+   addToLog(
+    String(
+     regionTool.getColumnDataLength() +
+      " : " +
+      regionTool.getColumnTimestamp() +
+      " : " +
+      regionTool.getSectorIndex()
+    )
+   );
+   if (!column) {
+    addToLog("column at " + message.location + " could not be loaded");
+    addToLog(
+     String(
+      column +
+       String(
+        DVED.spaces.column.getIndexXYZ(
+         message.location[1],
+         message.location[2],
+         message.location[3]
+        )
+       )
+     )
+    );
+    addToLog(String(regionTool.regionHasColumn()));
+   }
    return column ? new Uint8Array(column) : new Uint8Array([0]);
   }
   if (message.type == "column-exists") {
@@ -85,6 +137,19 @@ export const DVEDServer = {
     .getColumnTimestamp();
    console.log("Get timestamp");
    console.log(timeStamp);
+   console.log(
+    "index",
+    DVED.regionTags.getArrayTagByteIndex(
+     "#dved-column-save-timestamp",
+     DVED.spaces.column.getIndexXYZ(
+      message.location[1],
+      message.location[2],
+      message.location[3]
+     )
+    ),
+    DVED.regionTags.tagSize
+   );
+
    return new Uint8Array(new Uint32Array([timeStamp ? timeStamp : 0]).buffer);
   }
   return new Uint8Array([1]);

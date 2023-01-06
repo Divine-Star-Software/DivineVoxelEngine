@@ -27,7 +27,12 @@ export const Builder = {
         this.processor.syncSettings(settings);
     },
     async buildChunk(dimension, chunkX, chunkY, chunkZ, LOD = 1) {
-        let chunk = DVEC.data.worldRegister.chunk.get(dimension, chunkX, chunkY, chunkZ);
+        let chunk = DVEC.data.worldRegister.chunk.get([
+            dimension,
+            chunkX,
+            chunkY,
+            chunkZ,
+        ]);
         if (!chunk) {
             console.warn(`${chunkX} ${chunkY} ${chunkZ} could not be loaded`);
             return;

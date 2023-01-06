@@ -2,6 +2,7 @@ import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
 import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 declare type CommSyncOptions = {
     worldData: boolean;
     worldDataTags: boolean;
@@ -44,28 +45,28 @@ export declare const DataSync: {
         syncInThread(commName: string, data: DimensionData): void;
     };
     chunk: {
-        unSync(dimesnion: string, x: number, y: number, z: number): void;
-        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
-        sync(dimension: string, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+        unSync(location: LocationData): void;
+        unSyncInThread(commName: string, location: LocationData): void;
+        sync(location: LocationData): void;
+        syncInThread(commName: string, location: LocationData): void;
     };
     column: {
-        unSync(dimesnion: string, x: number, y: number, z: number): void;
-        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
-        sync(dimension: string, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+        unSync(location: LocationData): void;
+        unSyncInThread(commName: string, location: LocationData): void;
+        sync(location: LocationData): void;
+        syncInThread(commName: string, location: LocationData): void;
     };
     regionHeader: {
-        unSync(dimesnion: string, x: number, y: number, z: number): void;
-        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
-        sync(dimension: string, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
+        unSync(location: LocationData): void;
+        unSyncInThread(commName: string, location: LocationData): void;
+        sync(location: LocationData): void;
+        syncInThread(commName: string, location: LocationData): void;
     };
     region: {
-        unSync(dimesnion: string, x: number, y: number, z: number): void;
-        unSyncInThread(commName: string, dimension: string, x: number, y: number, z: number): void;
-        sync(dimension: string, x: number, y: number, z: number): void;
-        syncInThread(commName: string, dimesnion: string, x: number, y: number, z: number): void;
+        unSync(location: LocationData): void;
+        unSyncInThread(commName: string, location: LocationData): void;
+        sync(location: LocationData): void;
+        syncInThread(commName: string, location: LocationData): void;
     };
     voxelTags: {
         sync(): void;

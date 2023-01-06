@@ -1,5 +1,5 @@
 import { PlayerStatesValues } from "../Shared/Player.data.js";
-import { DVP as Physics} from "../../../../out/Plugins/Physics/Nexus/DivineVoxelPhysics.js";
+import { DVP as Physics } from "../../../../out/Plugins/Physics/Nexus/DivineVoxelPhysics.js";
 import { DivineVoxelEngineNexus } from "../../../../out/Nexus/DivineVoxelEngineNexus.js";
 import { PlayerData } from "../Shared/PlayerData.js";
 import { PlayerTagManger } from "./PlayerTagManager.js";
@@ -153,7 +153,7 @@ export const GetNexusPlayer = async (
    for (let y = player.position.y; y <= player.position.y + 1; y++) {
     for (let x = player.position.x - 1; x <= player.position.x + 1; x++) {
      for (let z = player.position.z - 1; z <= player.position.z + 1; z++) {
-      if (player.dataTool.loadIn(x >> 0, y >> 0, z >> 0)) {
+      if (player.dataTool.loadInAt(x >> 0, y >> 0, z >> 0)) {
        if (player.dataTool.getSubstance() == "liquid") {
         player.states.inWater = true;
         break;
@@ -165,11 +165,11 @@ export const GetNexusPlayer = async (
    player.controlsUpdate();
    if (player.onGround) {
     if (
-     player.dataTool.loadIn(
+     player.dataTool.loadInAt(
       player.position.x >> 0,
       (player.position.y - 1) >> 0,
       player.position.z >> 0
-     ) 
+     )
     ) {
      let material = player.dataTool.getMaterial();
 

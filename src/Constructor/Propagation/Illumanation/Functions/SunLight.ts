@@ -6,10 +6,10 @@ const removeEnd = (
  y: number,
  z: number
 ) => {
- IM._sDataTool.loadIn(x, y, z);
+ IM._sDataTool.loadInAt(x, y, z);
  IM._sDataTool.setBarrier().commit();
  IM.runSunLightUpdate();
- IM._sDataTool.loadIn(x, y, z);
+ IM._sDataTool.loadInAt(x, y, z);
  IM._sDataTool.setAir().commit();
 };
 
@@ -19,7 +19,7 @@ export function runSunLightRemoveAt(
  y: number,
  z: number
 ) {
- this._sDataTool.loadIn(x, y, z);
+ this._sDataTool.loadInAt(x, y, z);
  const l = this.lightData.getS(this._sDataTool.getLight());
 
  if (l >= 0) {
@@ -29,7 +29,7 @@ export function runSunLightRemoveAt(
   return;
  }
 
- this._nDataTool.loadIn(x, y - 1, z);
+ this._nDataTool.loadInAt(x, y - 1, z);
  const l2 = this.lightData.getS(this._nDataTool.getLight());
  if (l2 >= 0) {
   this._sunLightRemove.push([x, y, z]);
@@ -48,12 +48,12 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  if (!this._sDataTool.loadIn(x, y, z)) continue;
+  if (!this._sDataTool.loadInAt(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
   if (sl <= 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
-  if (this._nDataTool.loadIn(x - 1, y, z)) {
+  if (this._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > 0) {
     if (this.lightData.isLessThanForSunRemove(nl, sl)) {
@@ -65,7 +65,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
     }
    }
   }
-  if (this._nDataTool.loadIn(x + 1, y, z)) {
+  if (this._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > 0) {
     if (this.lightData.isLessThanForSunRemove(nl, sl)) {
@@ -78,7 +78,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z - 1)) {
+  if (this._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > 0) {
     if (this.lightData.isLessThanForSunRemove(nl, sl)) {
@@ -91,7 +91,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z + 1)) {
+  if (this._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > 0) {
     if (this.lightData.isLessThanForSunRemove(nl, sl)) {
@@ -104,7 +104,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y - 1, z)) {
+  if (this._nDataTool.loadInAt(x, y - 1, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > 0) {
     if (this.lightData.sunLightCompareForDownSunRemove(nl, sl)) {
@@ -117,7 +117,7 @@ export function runSunLightRemove(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y + 1, z)) {
+  if (this._nDataTool.loadInAt(x, y + 1, z)) {
    const n6 = this._nDataTool.getLight();
    if (n6 > 0) {
     if (this.lightData.isLessThanForSunRemove(n6, sl)) {
@@ -144,12 +144,12 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
   const x = node[0];
   const y = node[1];
   const z = node[2];
-  if (!this._sDataTool.loadIn(x, y, z)) continue;
+  if (!this._sDataTool.loadInAt(x, y, z)) continue;
   const sl = this._sDataTool.getLight();
   if (sl <= 0) continue;
   if (!this.lightData.getS(sl)) continue;
 
-  if (this._nDataTool.loadIn(x - 1, y, z)) {
+  if (this._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.enqueue([x - 1, y, z]);
@@ -157,7 +157,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x + 1, y, z)) {
+  if (this._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.enqueue([x + 1, y, z]);
@@ -165,7 +165,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z - 1)) {
+  if (this._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.enqueue([x, y, z - 1]);
@@ -173,7 +173,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y, z + 1)) {
+  if (this._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.enqueue([x, y, z + 1]);
@@ -181,7 +181,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y - 1, z)) {
+  if (this._nDataTool.loadInAt(x, y - 1, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAddDown(nl, sl)) {
     if (this._nDataTool.isAir()) {
@@ -201,7 +201,7 @@ export function runSunLightUpdate(this: typeof IlluminationManager) {
    }
   }
 
-  if (this._nDataTool.loadIn(x, y + 1, z)) {
+  if (this._nDataTool.loadInAt(x, y + 1, z)) {
    const nl = this._nDataTool.getLight();
    if (nl > -1 && this.lightData.isLessThanForSunAdd(nl, sl)) {
     queue.enqueue([x, y + 1, z]);

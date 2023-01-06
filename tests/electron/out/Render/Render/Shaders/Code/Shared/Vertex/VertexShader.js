@@ -1,5 +1,6 @@
 export const SharedVertexShader = {
     top: `
+ #extension GL_EXT_gpu_shader4 : enable
   precision highp float;
   `,
     standardPositionMain: `
@@ -183,8 +184,8 @@ uniform vec3 worldOrigin;
  `,
     getAnimationType: `
  int getAnimationType() {
-   highp int index = int(faceData);
-   return  index & 0xff;
+   int index = int(faceData);
+  return  index & 0xff;
 }
  `,
     animationFunctions: `

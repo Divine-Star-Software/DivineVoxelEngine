@@ -12,7 +12,7 @@ export function GetWorldCommands() {
   const y = data[3];
   const z = data[4];
 
-  if (!dataTool.loadIn(x, y, z)) {
+  if (!dataTool.loadInAt(x, y, z)) {
    TC.parent.sendMessage("sc-send-data", [`No data at: ${x} ${y} ${z}`]);
    return false;
   }

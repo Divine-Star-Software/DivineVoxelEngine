@@ -53,16 +53,25 @@ DataSyncNode.dimension.addOnSync((data) => {
     DimensionsRegister.registerDimension(data.id, data.options);
 });
 DataSyncNode.chunk.addOnSync((data) => {
-    WorldRegister.chunk.add(data[0], data[1], data[2], data[3], data[4]);
+    WorldRegister.chunk.add(data[0], data[1]);
+});
+DataSyncNode.chunk.addOnUnSync((data) => {
+    WorldRegister.chunk.remove(data);
 });
 DataSyncNode.column.addOnSync((data) => {
-    WorldRegister.column.add(data[0], data[1], data[2], data[3], data[4]);
+    WorldRegister.column.add(data[0], data[1]);
+});
+DataSyncNode.column.addOnUnSync((data) => {
+    WorldRegister.column.remove(data);
 });
 DataSyncNode.region.addOnSync((data) => {
-    WorldRegister.region.add(data[0], data[1], data[2], data[3], data[4]);
+    WorldRegister.region.add(data[0], data[1]);
+});
+DataSyncNode.region.addOnUnSync((data) => {
+    WorldRegister.region.remove(data);
 });
 DataSyncNode.regionHeader.addOnSync((data) => {
-    RegionHeaderRegister.add([data[0], data[1], data[2], data[3]], data[4]);
+    RegionHeaderRegister.add(data[0], data[1]);
 });
 DataSyncNode.chunkTags.addOnSync((data) => {
     ChunkTags.$INIT(data);

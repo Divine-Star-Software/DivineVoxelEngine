@@ -26,7 +26,7 @@ export const GetAnalyzerCubeRender = (
    y: 0,
    z: 0,
   },
-  setPosition(x: number, y: number, z: number) {
+  setXYZ(x: number, y: number, z: number) {
    this._pos.x = x >> 0;
    this._pos.y = y >> 0;
    this._pos.z = z >> 0;
@@ -37,7 +37,7 @@ export const GetAnalyzerCubeRender = (
   },
   setPositonToLock() {
    if (positionLock) {
-    this.setPosition(
+    this.setXYZ(
      positionLock.position.x,
      positionLock.position.y,
      positionLock.position.z
@@ -63,14 +63,14 @@ export const GetAnalyzerCubeRender = (
    debugCube.requestData();
   }
   if (ev.key == "ArrowUp") {
-   debugCube.setPosition(
+   debugCube.setXYZ(
     debugCube._pos.x,
     debugCube._pos.y + 1,
     debugCube._pos.z
    );
   }
   if (ev.key == "ArrowDown") {
-   debugCube.setPosition(
+   debugCube.setXYZ(
     debugCube._pos.x,
     debugCube._pos.y - 1,
     debugCube._pos.z
@@ -78,14 +78,14 @@ export const GetAnalyzerCubeRender = (
   }
   if (!ev.shiftKey) {
    if (ev.key == "ArrowLeft") {
-    debugCube.setPosition(
+    debugCube.setXYZ(
      debugCube._pos.x - 1,
      debugCube._pos.y,
      debugCube._pos.z
     );
    }
    if (ev.key == "ArrowRight") {
-    debugCube.setPosition(
+    debugCube.setXYZ(
      debugCube._pos.x + 1,
      debugCube._pos.y,
      debugCube._pos.z
@@ -94,14 +94,14 @@ export const GetAnalyzerCubeRender = (
   }
   if (ev.shiftKey) {
    if (ev.key == "ArrowLeft") {
-    debugCube.setPosition(
+    debugCube.setXYZ(
      debugCube._pos.x,
      debugCube._pos.y,
      debugCube._pos.z - 1
     );
    }
    if (ev.key == "ArrowRight") {
-    debugCube.setPosition(
+    debugCube.setXYZ(
      debugCube._pos.x,
      debugCube._pos.y,
      debugCube._pos.z + 1
@@ -121,7 +121,7 @@ export const GetAnalyzerCubeWorld = (DVEW: DivineVoxelEngineWorld) => {
   const y = data[2];
   const z = data[3];
 
-  if (!dataTool.loadIn(x, y, z)) {
+  if (!dataTool.loadInAt(x, y, z)) {
    console.log(`No data at: ${x} ${y} ${z}`);
    return false;
   }

@@ -1,12 +1,10 @@
-//import { TagManager } from "../libs/divineBinaryTags/TagManager.js";
-
 import type * as FileSystem from "fs";
-import { DVEDSystem } from "./DVEDSystem.js";
 import { RegionTool } from "./Tools/RegionTool.js";
-import { RegionHeaderData, SecotrData } from "./Constants/DVED.constants.js";
+import { RegionData, RegionTagIds, SecotrData } from "./Util/DVED.util.js";
 import { VoxelSpaces } from "./Libs/voxelSpaces/VoxelSpaces.js";
 import { TagManager } from "./Libs/divineBinaryTags/TagManager.js";
 import { System } from "./System/System.js";
+import { SystemPath } from "./System/SystemPath.js";
 
 type Vector3 = { x: number; y: number; z: number };
 
@@ -16,9 +14,12 @@ const regionTagManager = new TagManager("region-tagsx");
 export const DVED = {
   spaces: voxelSpaces,
   regionTags: regionTagManager,
+  system: System,
+  path: SystemPath,
 
   $INIT(data: {
     fs: typeof FileSystem;
+    dataDirecotry: string;
     sectorSize: number;
     spaceBounds: {
       regions: Vector3;
@@ -26,32 +27,35 @@ export const DVED = {
       chunks: Vector3;
     };
   }) {
+    SystemPath.setFolder(data.dataDirecotry);
+    console.log(SystemPath.getDataPath());
     this.spaces = voxelSpaces;
     SecotrData.byteSize = data.sectorSize;
-    DVEDSystem.setFS(data.fs);
+    SystemPath._dataFolder = data.dataDirecotry;
     System.$INIT(data.fs);
     this.spaces.setDimensions(data.spaceBounds);
-
+    const numberColumns = this.spaces.region.getColumnVolume();
     regionTagManager.registerTag({
-      id: "#dved-column-sector-index",
+      id: RegionTagIds.sectorIndex,
       type: "typed-number-array",
       numberType: "16ui",
-      length: this.spaces.region.getColumnVolume(),
+      length: numberColumns,
     });
     regionTagManager.registerTag({
-      id: "#dved-column-legnth-index",
+      id: RegionTagIds.columnLength,
       type: "typed-number-array",
       numberType: "16ui",
-      length: this.spaces.region.getColumnVolume(),
+      length: numberColumns,
     });
     regionTagManager.registerTag({
-      id: "#dved-column-save-timestamp",
+      id: RegionTagIds.timeStamp,
       type: "typed-number-array",
       numberType: "32ui",
-      length: this.spaces.region.getColumnVolume(),
+      length: numberColumns,
     });
     regionTagManager.$INIT();
-    RegionHeaderData.byteSize = regionTagManager.tagSize;
+    RegionData.headByteSize = regionTagManager.tagSize;
+    RegionData.numColumns = numberColumns;
   },
 
   getRegionTool() {

@@ -20,7 +20,7 @@ export class Entity1Nexus implements NexusEntityInterface {
   setTimeout(() => {
    setInterval(() => {
     if (
-     !dataTool.loadIn(
+     !dataTool.loadInAt(
       this.position[0] >> 0,
       (this.position[1] - 1) >> 0,
       this.position[2] >> 0

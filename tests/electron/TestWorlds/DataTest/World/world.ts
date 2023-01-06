@@ -8,8 +8,8 @@ await DVEW.$INIT();
 
 let startX = 0;
 let startZ = 0;
-let endX = 512;
-let endZ = 512;
+let endX = 64;
+let endZ = 64;
 const builder = DVEW.getBuilder();
 console.log("generate");
 
@@ -38,7 +38,7 @@ const dataLoader = DVEW.getDataLoaderTool();
 const saveRegion = async () => {
  generate();
  console.log("saving");
- await dataLoader.setDimension("main").setPosition(0, 0, 0).saveRegionAsync();
+ await dataLoader.setDimension("main").setXYZ(0, 0, 0).saveRegionAsync();
  console.log("done");
  build();
 };
@@ -49,7 +49,7 @@ const saveColumns = async () => {
  dataLoader.setDimension("main");
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   await dataLoader.setPosition(x, 0, z).saveColumnAsync();
+   await dataLoader.setXYZ(x, 0, z).saveColumnAsync();
   }
  }
  build();
@@ -57,7 +57,7 @@ const saveColumns = async () => {
 
 const loadRegion = async () => {
  console.log("loading");
- await dataLoader.setDimension("main").setPosition(0, 0, 0).loadRegionAsync();
+ await dataLoader.setDimension("main").setXYZ(0, 0, 0).loadRegionAsync();
  console.log("done");
  build();
 };
@@ -67,22 +67,30 @@ const loadColumns = async () => {
  dataLoader.setDimension("main");
  for (let x = startX; x <= endX; x += 16) {
   for (let z = startZ; z <= endZ; z += 16) {
-   await dataLoader.setPosition(x, 0, z).loadColumnAsync();
+   await dataLoader.setXYZ(x, 0, z).loadColumnAsync();
   }
  }
  build();
 };
 
-WorldGen.generateChunk(0, 0);
-//builder.setXZ(0, 0).fillColumn().buildColumn();
-await dataLoader.setDimension("main").setPosition(0, 0, 0).loadColumnAsync();
+const save = async () => {
+ WorldGen.generateChunk(0, 0);
+ builder.setXZ(0, 0).fillColumn().buildColumn();
+ await dataLoader.setDimension("main").setXYZ(0, 0, 0).saveColumn();
+};
+const load = async () => {
+ await dataLoader.setDimension("main").setXYZ(0, 0, 0).loadColumnAsync();
+ dataLoader.columnExists((answer) => {
+  console.log(answer);
+ });
+ dataLoader.columnTimestamp((timeStamp) => {
+  console.log(timeStamp);
+ });
+ builder.setXZ(0, 0).buildColumn();
+};
+
+await loadColumns();
+
 //await dataLoader.loadColumnAsync();
-builder.setXZ(0, 0).buildColumn();
-dataLoader.columnExists((answer) => {
- console.log(answer);
-});
-dataLoader.columnTimestamp((timeStamp) => {
- console.log(timeStamp);
-});
 
 //await saveColumns();

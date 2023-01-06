@@ -7,7 +7,7 @@ exports.TagNodeTypes = {
     typedNumber: 2,
     typedNumberArray: 3,
 };
-var NumberTypeByteSize = {
+const NumberTypeByteSize = {
     "8ui": 1,
     "8i": 1,
     "16ui": 2,
@@ -32,100 +32,99 @@ exports.NumberTypeRecord = {
     "64ui": 9,
 };
 exports.NumberTypeMap = {};
-for (var _i = 0, _a = Object.keys(exports.NumberTypeRecord); _i < _a.length; _i++) {
-    var key = _a[_i];
+for (const key of Object.keys(exports.NumberTypeRecord)) {
     //@ts-ignore
     exports.NumberTypeMap[Number(exports.NumberTypeRecord[key])] = key;
 }
-var TypedNumberSetFunctions = {
-    "8ui": function (data, index, value) {
+const TypedNumberSetFunctions = {
+    "8ui": (data, index, value) => {
         data.setUint8(index, value);
     },
-    "8i": function (data, index, value) {
+    "8i": (data, index, value) => {
         data.setInt8(index, value);
     },
-    "16ui": function (data, index, value) {
+    "16ui": (data, index, value) => {
         data.setUint16(index, value);
     },
-    "16i": function (data, index, value) {
+    "16i": (data, index, value) => {
         data.setInt16(index, value);
     },
-    "32ui": function (data, index, value) {
+    "32ui": (data, index, value) => {
         data.setUint32(index, value);
     },
-    "32i": function (data, index, value) {
+    "32i": (data, index, value) => {
         data.setInt32(index, value);
     },
-    "32f": function (data, index, value) {
+    "32f": (data, index, value) => {
         data.setFloat32(index, value);
     },
-    "64f": function (data, index, value) {
+    "64f": (data, index, value) => {
         data.setFloat64(index, value);
     },
-    "64i": function (data, index, value) {
+    "64i": (data, index, value) => {
         data.setBigUint64(index, BigInt(value));
     },
-    "64ui": function (data, index, value) {
+    "64ui": (data, index, value) => {
         data.setBigUint64(index, BigInt(value));
     },
 };
-var TypedNumberGetFunctions = {
-    "8ui": function (data, index) {
+const TypedNumberGetFunctions = {
+    "8ui": (data, index) => {
         return data.getUint8(index);
     },
-    "8i": function (data, index) {
+    "8i": (data, index) => {
         return data.getInt8(index);
     },
-    "16ui": function (data, index) {
+    "16ui": (data, index) => {
         return data.getUint16(index);
     },
-    "16i": function (data, index) {
+    "16i": (data, index) => {
         return data.getInt16(index);
     },
-    "32ui": function (data, index) {
+    "32ui": (data, index) => {
         return data.getUint32(index);
     },
-    "32i": function (data, index) {
+    "32i": (data, index) => {
         return data.getInt32(index);
     },
-    "32f": function (data, index) {
+    "32f": (data, index) => {
         return data.getFloat32(index);
     },
-    "64f": function (data, index) {
+    "64f": (data, index) => {
         return data.getFloat64(index);
     },
-    "64i": function (data, index) {
+    "64i": (data, index) => {
         return Number(data.getBigUint64(index));
     },
-    "64ui": function (data, index) {
+    "64ui": (data, index) => {
         return Number(data.getBigUint64(index));
     },
 };
 exports.DBTUtil = {
-    setTypedNumber: function (data, index, numberType, value) {
+    setTypedNumber(data, index, numberType, value) {
         TypedNumberSetFunctions[exports.NumberTypeMap[numberType]](data, index, value);
     },
-    getTypedNumber: function (data, index, numberType) {
+    getTypedNumber(data, index, numberType) {
         return TypedNumberGetFunctions[exports.NumberTypeMap[numberType]](data, index);
     },
-    calculateBitsNeeded: function (min, max) {
-        var range = max - min;
+    calculateBitsNeeded(min, max) {
+        let range = max - min;
         return Math.ceil(Math.log2(range));
     },
-    getTypedSize: function (type) {
+    getTypedSize(type) {
         return NumberTypeByteSize[type];
     },
-    getTypedSizeFromNumber: function (t) {
+    getTypedSizeFromNumber(t) {
         return NumberTypeByteSize[exports.NumberTypeMap[t]];
     },
-    getBitValue: function (data, index, bitSize) {
+    getBitValue(data, index, bitSize) {
         index *= bitSize;
-        var mask = Math.pow(2, bitSize) - 1;
+        const mask = 2 ** bitSize - 1;
         return ((mask << index) & data) >>> index;
     },
-    setBitValue: function (data, index, value, bitSize) {
+    setBitValue(data, index, value, bitSize) {
         index *= bitSize;
-        var mask = Math.pow(2, bitSize) - 1;
+        const mask = 2 ** bitSize - 1;
         return (data & ~(mask << index)) | ((value & mask) << index);
     },
 };

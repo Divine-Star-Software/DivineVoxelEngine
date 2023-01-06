@@ -48,10 +48,9 @@ export class IWG {
     update() {
         const position = this.data.positionWatch;
         let positionChanged = false;
-        const wx = position[0];
-        const wy = 0;
-        const wz = position[2];
-        const worldColumnPOS = WorldSpaces.column.getPositionXYZ(wx, 0, wz);
+        const worldColumnPOS = WorldSpaces.column
+            .getPositionXYZ(position[0], 0, position[2])
+            .copy();
         if (worldColumnPOS.x != this._cachedPosition[0] ||
             worldColumnPOS.y != this._cachedPosition[1] ||
             worldColumnPOS.z != this._cachedPosition[2])
@@ -84,17 +83,16 @@ export class IWG {
             const cy = 0;
             const cz = node[2];
             const columnKey = WorldSpaces.column.getKeyXYZ(cx, 0, cz);
-            if (this._visitedMap.has(columnKey) || this._existsCheckMap.has(columnKey))
+            if (this._visitedMap.has(columnKey) ||
+                this._existsCheckMap.has(columnKey) ||
+                this._generateMap.has(columnKey) ||
+                this._sunMap.has(columnKey))
                 continue;
             this._visitedMap.set(columnKey, true);
-            const distance = Distance3D(wx, 0, wz, cx, 0, cz);
+            const distance = Distance3D(worldColumnPOS.x, 0, worldColumnPOS.z, cx, 0, cz);
             if (distance > this.data.generateDistance)
                 continue;
-            if (this._generateMap.has(columnKey) || this._sunMap.has(columnKey))
-                continue;
-            let needToGenerate = false;
             if (!this.columnTool.loadIn(cx, cy, cz)) {
-                needToGenerate = true;
                 this._existsCheckMap.set(columnKey, true);
                 this.dataLoader
                     .setLocation([this.dimension, cx, cy, cz])
@@ -109,11 +107,9 @@ export class IWG {
                 });
                 continue;
             }
-            else {
-                if (!this.columnTool.getTagValue("#dve_is_world_gen_done")) {
-                    this._generate(columnKey, cx, cy, cz);
-                    continue;
-                }
+            if (!this.columnTool.getTagValue("#dve_is_world_gen_done")) {
+                this._generate(columnKey, cx, cy, cz);
+                continue;
             }
             let nWorldGenAllDone = true;
             let nSunAllDone = true;
@@ -156,8 +152,10 @@ export class IWG {
                 nSunAllDone &&
                 distance < this.data.renderDistance &&
                 !this._activeColumns.has(columnKey)) {
-                this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).buildColumn();
                 this._activeColumns.set(columnKey, [cx, cy, cz]);
+                setTimeout(() => {
+                    this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).buildColumn();
+                }, 1000);
                 this.dataLoader
                     .setLocation([this.dimension, cx, cy, cz])
                     .saveColumnIfNotStored();

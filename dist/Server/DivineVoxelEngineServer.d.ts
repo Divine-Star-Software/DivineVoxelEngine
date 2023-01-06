@@ -27,6 +27,7 @@ export declare const DVES: {
         doRGBPropagation(): boolean;
         doLight(): boolean;
         doFlow(): boolean;
+        saveWorldData(): boolean;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
@@ -54,7 +55,7 @@ export declare const DVES: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;

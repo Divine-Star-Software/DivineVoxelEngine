@@ -1,6 +1,6 @@
 import type {
  PaintTasks,
- ReBuildTasks,
+ AddToRebuildQueue,
  RunRebuildTasks,
  UpdateTasksO,
 } from "Meta/Tasks/Tasks.types.js";
@@ -33,7 +33,11 @@ const addToRebuildQue = (
 ) => {
  for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
   const n = $3dMooreNeighborhood[i];
-  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(n[0] + x, n[1] + y, n[2] + z);
+  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(
+   n[0] + x,
+   n[1] + y,
+   n[2] + z
+  );
   Propagation.addToRebuildQue(chunkPOS.x, chunkPOS.y, chunkPOS.z, "all");
  }
 };
@@ -44,7 +48,7 @@ const updateLight = (x: number, y: number, z: number) => {
   const nx = n[0] + x;
   const ny = n[1] + y;
   const nz = n[2] + z;
-  if (!nDataTool.loadIn(nx, ny, nz)) continue;
+  if (!nDataTool.loadInAt(nx, ny, nz)) continue;
   const l = nDataTool.getLight();
   if (l <= 0) continue;
   if (doRGB) {
@@ -60,20 +64,18 @@ const updateLight = (x: number, y: number, z: number) => {
  }
 };
 export async function EreaseAndUpdate(data: UpdateTasksO) {
- const dimension = data[0];
- const x = data[1];
- const y = data[2];
- const z = data[3];
- const rebuildQueueId = data[4];
- const threadId = data[5];
+ const [dimension, x, y, z] = data[0];
+ const rebuildQueueId = data[1];
+ const threadId = data[2];
  const thread = ThreadComm.getComm(threadId);
  const rebuildqQueue = ThreadComm.getSyncedQueue(
   threadId,
   "build-chunk-" + rebuildQueueId
  );
  if (!rebuildqQueue) return false;
- dataTool.setDimension(dimension).loadIn(x, y, z);
+ dataTool.setDimension(dimension).loadInAt(x, y, z);
  Propagation.setBuildData(dimension, rebuildQueueId);
+ Propagation.setPriority(0);
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
   if (substance == "liquid" || substance == "magma") {
@@ -110,29 +112,27 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
 
  addToRebuildQue(dimension, rebuildQueueId, x, y, z, thread);
  Propagation.runRebuildQue();
-
+ Propagation.setPriority(2);
  //await rebuildqQueue.wait();
  return true;
 }
 
 export async function PaintAndUpdate(data: PaintTasks) {
- const dimension = data[0];
- const x = data[1];
- const y = data[2];
- const z = data[3];
- const raw = data[4];
- const rebuildQueueId = data[5];
- const threadId = data[6];
+ const [dimension, x, y, z] = data[0];
+ const raw = data[1];
+ const rebuildQueueId = data[2];
+ const threadId = data[3];
  const thread = ThreadComm.getComm(threadId);
  const rebuildqQueue = ThreadComm.getSyncedQueue(
   threadId,
   "build-chunk-" + rebuildQueueId
  );
  if (!rebuildqQueue) return false;
- const tasks: UpdateTasksO = [dimension, x, y, z, rebuildQueueId, threadId];
+ const tasks: UpdateTasksO = [[dimension, x, y, z], rebuildQueueId, threadId];
  brushTool.setDimension(dimension).setXYZ(x, y, z).setRaw(raw);
- dataTool.setDimension(dimension).loadIn(x, y, z);
+ dataTool.setDimension(dimension).loadInAt(x, y, z);
  Propagation.setBuildData(dimension, rebuildQueueId);
+ Propagation.setPriority(0);
  let doRGB = ES.doRGBPropagation();
  let doSun = ES.doSunPropagation();
 
@@ -165,7 +165,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
 
  addToRebuildQue(dimension, rebuildQueueId, x, y, z, thread);
  Propagation.runRebuildQue();
-
+ Propagation.setPriority(2);
  if (ES.doFlow()) {
   const substance = brushTool._dt.getSubstance();
   if (substance == "liquid" || substance == "magma") {
@@ -173,5 +173,5 @@ export async function PaintAndUpdate(data: PaintTasks) {
   }
  }
 
- //await rebuildqQueue.wait();
+ return;
 }

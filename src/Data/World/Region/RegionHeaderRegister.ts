@@ -16,11 +16,16 @@ type RegionHeaderData = Map<
 export const RegionHeaderRegister = {
  _headers: <RegionHeaderData>new Map(),
 
+ remove(location: LocationData) {
+  const [dimensionId, x, y, z] = location;
+  const dimension = this._headers.get(dimensionId);
+  if (!dimension) return false;
+  const regionKey = WorldSpaces.region.getKeyXYZ(x, y, z);
+  return dimension.delete(regionKey);
+ },
  add(location: LocationData, buffer: SharedArrayBuffer) {
-  const dimensionId = location[0];
-  const x = location[1];
-  const y = location[2];
-  const z = location[3];
+  const [dimensionId, x, y, z] = location;
+
   let dimension = this._headers.get(dimensionId);
   if (!dimension) {
    dimension = new Map();
@@ -34,14 +39,10 @@ export const RegionHeaderRegister = {
   });
  },
  get(location: LocationData) {
-  const dimensionId = location[0];
-  const x = location[1];
-  const y = location[2];
-  const z = location[3];
+  const [dimensionId, x, y, z] = location;
   let dimension = this._headers.get(dimensionId);
   if (!dimension) return false;
-  const regionKey = WorldSpaces.region.getKeyXYZ(x, y, z);
-  return dimension.get(regionKey);
+  return dimension.get(WorldSpaces.region.getKeyXYZ(x, y, z));
  },
  /**# isStored
   * @param location

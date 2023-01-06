@@ -23,29 +23,20 @@ export const GetAdvancedBrushTool = () => {
             });
         },
         paintAndUpdate(onDone) {
-            const dimesnion = brush.data.dimension;
-            const x = brush.data.position[0];
-            const y = brush.data.position[1];
-            const z = brush.data.position[2];
-            tasks.setFocalPoint(x, y, z, dimesnion);
+            tasks.setFocalPoint(brush.location);
+            const [dimesnion, x, y, z] = brush.location;
             tasks.voxelUpdate.paint.add(x, y, z, brush.getRaw());
             tasks.voxelUpdate.paint.run(() => (onDone ? onDone() : false));
         },
         eraseAndUpdate(onDone) {
-            const dimesnion = brush.data.dimension;
-            const x = brush.data.position[0];
-            const y = brush.data.position[1];
-            const z = brush.data.position[2];
-            tasks.setFocalPoint(x, y, z, dimesnion);
+            tasks.setFocalPoint(brush.location);
+            const [dimesnion, x, y, z] = brush.location;
             tasks.voxelUpdate.erase.add(x, y, z);
             tasks.voxelUpdate.erase.run(() => (onDone ? onDone() : false));
         },
         explode(radius = 6, onDone) {
-            const dimesnion = brush.data.dimension;
-            const x = brush.data.position[0];
-            const y = brush.data.position[1];
-            const z = brush.data.position[2];
-            tasks.setFocalPoint(x, y, z, dimesnion);
+            tasks.setFocalPoint(brush.location);
+            const [dimesnion, x, y, z] = brush.location;
             tasks.explosion.run.add(x, y, z, radius);
             tasks.explosion.run.run(() => {
                 tasks.build.chunk.run(() => (onDone ? onDone() : 0));

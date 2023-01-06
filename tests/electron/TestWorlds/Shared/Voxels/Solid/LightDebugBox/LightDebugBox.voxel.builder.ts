@@ -93,7 +93,7 @@ export const LightDebugBoxVoxelBuilderThread: VoxelConstructorObject = {
 
  process: function (data, DVEB) {
   let light = 0;
-  if (DVEB.processor.nDataTool.loadIn(data.x, data.y + 1, data.z)) {
+  if (DVEB.processor.nDataTool.loadInAt(data.x, data.y + 1, data.z)) {
    light = DVEB.processor.nDataTool.getLevel();
   }
   let uv = lightDebugBoxTextures[light];

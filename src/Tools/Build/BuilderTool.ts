@@ -4,73 +4,35 @@ import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { LocationData } from "Meta/Data/CommonTypes.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 
 const parentComm = ThreadComm.parent;
-export class BuilderTool {
+export class BuilderTool extends LocationBoundTool {
  static _chunkTool = new ChunkDataTool();
 
  data = {
-  dimesnion: "main",
-  x: 0,
-  y: 0,
-  z: 0,
   LOD: 1,
  };
- setDimension(dimensionId: string) {
-  this.data.dimesnion = dimensionId;
-  return this;
- }
+
  setLOD(lod: number) {
   this.data.LOD = lod;
   return this;
  }
- setXZ(x: number, z: number) {
-  this.data.x = x;
-  this.data.z = z;
-  return this;
- }
- setXYZ(x: number, y: number, z: number) {
-  this.data.x = x;
-  this.data.y = y;
-  this.data.z = z;
-  return this;
- }
  buildChunk() {
-  CCM.tasks.build.chunk([
-   this.data.dimesnion,
-   this.data.x,
-   this.data.y,
-   this.data.z,
-   this.data.LOD,
-  ]);
+  CCM.tasks.build.chunk([this.location, this.data.LOD]);
   return this;
  }
  buildColumn() {
-  CCM.tasks.build.column([
-   this.data.dimesnion,
-   this.data.x,
-   this.data.y,
-   this.data.z,
-   this.data.LOD,
-  ]);
+  CCM.tasks.build.column([this.location, this.data.LOD]);
   return this;
  }
  removeColumn() {
-  const column = WorldRegister.column.get(
-   this.data.dimesnion,
-   this.data.x,
-   this.data.z,
-   this.data.y
-  );
+  const column = WorldRegister.column.get(this.location);
   if (!column) return false;
   if (column.chunks.size == 0) return false;
-  const columnPOS = WorldSpaces.column.getPositionXYZ(
-   this.data.x,
-   this.data.y,
-   this.data.z
-  );
+  const columnPOS = WorldSpaces.column.getPositionLocation(this.location);
   parentComm.runTasks<LocationData>("remove-column", [
-   this.data.dimesnion,
+   this.location[0],
    columnPOS.x,
    columnPOS.y,
    columnPOS.z,
@@ -78,22 +40,13 @@ export class BuilderTool {
   return this;
  }
  fillColumn() {
-  WorldRegister.column.fill(
-   this.data.dimesnion,
-   this.data.x,
-   this.data.z,
-   this.data.y
-  );
+  WorldRegister.column.fill(this.location);
   return this;
  }
  removeColumnsOutsideRadius(radius: number) {
-  const columnPOS = WorldSpaces.column.getPositionXYZ(
-   this.data.x,
-   this.data.y,
-   this.data.z
-  );
+  const columnPOS = WorldSpaces.column.getPositionLocation(this.location);
   parentComm.runTasks("remove-column-outside-radius", [
-   this.data.dimesnion,
+   this.location[0],
    columnPOS.x,
    columnPOS.y,
    columnPOS.z,

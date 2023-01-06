@@ -14,6 +14,5 @@ export declare class DVEMesh {
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
     syncSettings(settings: EngineSettingsData): void;
     _applyVertexData(mesh: BABYLON.Mesh, data: SetChunkMeshTask): void;
-    rebuildMeshGeometory(mesh: BABYLON.Mesh, data: SetChunkMeshTask): Promise<BABYLON.Mesh>;
-    createMeshGeometory(mesh: BABYLON.Mesh, data: SetChunkMeshTask): Promise<BABYLON.Mesh>;
+    setMeshData(mesh: BABYLON.Mesh, data: SetChunkMeshTask): Promise<BABYLON.Mesh>;
 }

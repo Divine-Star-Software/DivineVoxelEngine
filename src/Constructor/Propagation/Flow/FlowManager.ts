@@ -64,7 +64,7 @@ export const FlowManager = {
  setVoxel(level: number, levelState: number, x: number, y: number, z: number) {
   this.sunCheck(x, y, z);
   this._brush.setXYZ(x, y, z).paint();
-  this._sDataTool.loadIn(x, y, z);
+  this._sDataTool.loadInAt(x, y, z);
   this._sDataTool
    .setLevel(level)
    .setLevelState(levelState)
@@ -77,7 +77,7 @@ export const FlowManager = {
    const nx = x + n[0];
    const ny = y + n[1];
    const nz = z + n[2];
-   if (!this._nDataTool.loadIn(nx, ny, nz)) continue;
+   if (!this._nDataTool.loadInAt(nx, ny, nz)) continue;
 
    const l = this._nDataTool.getLight();
 
@@ -147,7 +147,7 @@ export const FlowManager = {
  },
 
  setCurrentVoxel(x: number, y: number, z: number) {
-  if (!this._sDataTool.loadIn(x, y, z)) return false;
+  if (!this._sDataTool.loadInAt(x, y, z)) return false;
   if (!this._sDataTool.isRenderable()) {
    return false;
   }
@@ -175,7 +175,7 @@ export const FlowManager = {
   const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
   const key = WorldSpaces.chunk.getKey();
   if (
-   !WorldRegister.chunk.get(this.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z)
+   !WorldRegister.chunk.get([this.dimension, chunkPOS.x, chunkPOS.y, chunkPOS.z])
   )
    return;
   if (!this.rebuildMap[key]) {
@@ -206,12 +206,12 @@ export const FlowManager = {
   }
  },
  setLevel(level: number, x: number, y: number, z: number) {
-  this._nDataTool.loadIn(x, y, z);
+  this._nDataTool.loadInAt(x, y, z);
   this._nDataTool.setLevel(level).commit();
  },
 
  getLevel(x: number, y: number, z: number) {
-  if (!this._nDataTool.loadIn(x, y, z)) return -2;
+  if (!this._nDataTool.loadInAt(x, y, z)) return -2;
   const voxel = this._nDataTool.data.baseId;
   if (this._nDataTool.isAir()) {
    return 0;
@@ -223,7 +223,7 @@ export const FlowManager = {
  },
 
  getLevelState(x: number, y: number, z: number) {
-  if (!this._nDataTool.loadIn(x, y, z)) return -2;
+  if (!this._nDataTool.loadInAt(x, y, z)) return -2;
   const voxel = this._nDataTool.data.baseId;
   if (voxel == this.currentVoxel) {
    return this._nDataTool.getLevelState();
@@ -257,7 +257,7 @@ export const FlowManager = {
  _lightValues: <[s: number, r: number, g: number, b: number]>[0, 0, 0, 0],
  getAbsorbLight(x: number, y: number, z: number) {
   for (const n of $3dCardinalNeighbors) {
-   if (!this._nDataTool.loadIn(x + n[0], y + n[1], z + n[2])) continue;
+   if (!this._nDataTool.loadInAt(x + n[0], y + n[1], z + n[2])) continue;
    let l = this._nDataTool.getLight();
    if (l <= 0) continue;
    const v = this.lightData.getLightValues(l);
@@ -275,7 +275,7 @@ export const FlowManager = {
  },
 
  sunCheck(x: number, y: number, z: number) {
-  if (!this._nDataTool.loadIn(x, y - 1, z)) return;
+  if (!this._nDataTool.loadInAt(x, y - 1, z)) return;
   if (!this._nDataTool.isAir()) return;
   const l = this._nDataTool.getLight();
   if (this.lightData.getS(l) == 0xf) {

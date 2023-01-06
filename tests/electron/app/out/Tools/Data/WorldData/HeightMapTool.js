@@ -23,7 +23,7 @@ export class HeightMapTool {
         _c: new DataView(new ArrayBuffer(0)),
         _s: {},
         loadIn(x, y, z) {
-            const chunk = WorldRegister.chunk.get(this._s._data.dimension, x, y, z);
+            const chunk = WorldRegister.chunk.get([this._s._data.dimension, x, y, z]);
             if (!chunk)
                 return false;
             HeightMapTool._chunkTool.setChunk(chunk);

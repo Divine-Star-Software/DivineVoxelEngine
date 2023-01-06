@@ -19,7 +19,7 @@ export const DVP = {
   z: number,
   dimension: number = 0
  ): false | ColliderObject {
-  if (!this._dataTool.loadIn(x, y, z)) return false;
+  if (!this._dataTool.loadInAt(x, y, z)) return false;
   if (!this._dataTool.checkCollisions()) return false;
   if (this._dataTool.getSubstance() == "liquid") return false;
   let collider = this._dataTool.getCollider();

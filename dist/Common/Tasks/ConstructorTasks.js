@@ -50,8 +50,11 @@ export const ConstructorTasks = {
             remove: null,
         },
         build: {
-            chunk: ThreadComm.registerTasks(ConstructorRemoteThreadTasks.addToRebuildQue, (data) => {
-                ConstructorQueues.build.chunk.add([data[0], data[1], data[2], data[3], 1], data[4]);
+            addToRebuildQueue: ThreadComm.registerTasks(ConstructorRemoteThreadTasks.addToRebuildQue, (data) => {
+                ConstructorQueues.build.chunk.add({
+                    data: [data[0], 1],
+                    priority: data[2],
+                }, data[1]);
             }),
         },
         generate: {

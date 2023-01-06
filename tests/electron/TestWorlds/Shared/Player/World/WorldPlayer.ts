@@ -37,7 +37,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   let x = PlayerData.pick.position.x + PlayerData.pick.normal.x;
   let y = PlayerData.pick.position.y + PlayerData.pick.normal.y;
   let z = PlayerData.pick.position.z + PlayerData.pick.normal.z;
-  if (!dataTool.loadIn(x, y, z)) return;
+  if (!dataTool.loadInAt(x, y, z)) return;
   if (dataTool.isRenderable()) return;
   DVEW.parentComm.runTasks("play-sound", ["voxel-place", data[1], x, y, z]);
   await brush.setId(data[1]).setXYZ(x, y, z).paintAndAwaitUpdate();
@@ -49,7 +49,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   let x = PlayerData.pick.position.x;
   let y = PlayerData.pick.position.y;
   let z = PlayerData.pick.position.z;
-  if (!dataTool.loadIn(x, y, z)) return;
+  if (!dataTool.loadInAt(x, y, z)) return;
   if (dataTool.isRenderable()) {
    const id = dataTool.getStringId();
    DVEW.parentComm.runTasks("play-sound", ["voxel-break", id, x, y, z]);
@@ -93,7 +93,7 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
    const y = voxels[i + 1];
    const z = voxels[i + 2];
 
-   if (!dataTool.loadIn(x, y, z)) continue;
+   if (!dataTool.loadInAt(x, y, z)) continue;
 
    if (dataTool.isRenderable()) {
     PlayerData.pick.position.x = x;

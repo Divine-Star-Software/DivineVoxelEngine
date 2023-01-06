@@ -29,5 +29,5 @@ export declare class CommBase {
     syncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
     unSyncData<T>(dataType: string | number, data: T, transfers?: any[]): void;
     waitTillReady(): Promise<boolean>;
-    onMessage(event: any): void;
+    onMessage(data: any, event: any): void;
 }

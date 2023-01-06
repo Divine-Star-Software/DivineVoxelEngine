@@ -144,7 +144,7 @@ export const Processor = {
         this.voxelProcesseData.textureRotations = this.textureRotation;
     },
     cullCheck(face, voxelObject, voxelShape, voxelSubstance, x, y, z, faceBit) {
-        const voxelExists = this.nDataTool.loadIn(x, y, z);
+        const voxelExists = this.nDataTool.loadInAt(x, y, z);
         let finalResult = false;
         if (voxelExists && this.nDataTool.isRenderable()) {
             let substanceRuleResult = Builder.voxelHelper.substanceRuleCheck(voxelSubstance, this.nDataTool.getSubstance());
@@ -185,7 +185,7 @@ export const Processor = {
     },
     _process(template, x, y, z, doSecondCheck = false) {
         const LOD = this.LOD;
-        if (!this.mDataTool.loadIn(x, y, z))
+        if (!this.mDataTool.loadInAt(x, y, z))
             return;
         if (!this.mDataTool.isRenderable())
             return;

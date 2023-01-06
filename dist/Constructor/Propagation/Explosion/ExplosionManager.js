@@ -30,7 +30,7 @@ export const ExplosionManager = {
             const y = node[1];
             const z = node[2];
             if (!this.inMap(x + 1, y, z)) {
-                if (dataTool.loadIn(x + 1, y, z)) {
+                if (dataTool.loadInAt(x + 1, y, z)) {
                     const d = Distance3D(sx, sy, sz, x + 1, y, z);
                     if (d <= radius) {
                         this._queue.push([x + 1, y, z]);
@@ -39,7 +39,7 @@ export const ExplosionManager = {
                 }
             }
             if (!this.inMap(x - 1, y, z)) {
-                if (dataTool.loadIn(x - 1, y, z)) {
+                if (dataTool.loadInAt(x - 1, y, z)) {
                     const d = Distance3D(sx, sy, sz, x - 1, y, z);
                     if (d <= radius) {
                         this._queue.push([x - 1, y, z]);
@@ -48,7 +48,7 @@ export const ExplosionManager = {
                 this.addToMap(x - 1, y, z);
             }
             if (!this.inMap(x, y, z + 1)) {
-                if (dataTool.loadIn(x, y, z + 1)) {
+                if (dataTool.loadInAt(x, y, z + 1)) {
                     const d = Distance3D(sx, sy, sz, x, y, z + 1);
                     if (d <= radius) {
                         this._queue.push([x, y, z + 1]);
@@ -57,7 +57,7 @@ export const ExplosionManager = {
                 this.addToMap(x, y, z + 1);
             }
             if (!this.inMap(x, y, z - 1)) {
-                if (dataTool.loadIn(x, y, z - 1)) {
+                if (dataTool.loadInAt(x, y, z - 1)) {
                     const d = Distance3D(sx, sy, sz, x, y, z - 1);
                     if (d <= radius) {
                         this._queue.push([x, y, z - 1]);
@@ -66,7 +66,7 @@ export const ExplosionManager = {
                 this.addToMap(x, y, z - 1);
             }
             if (!this.inMap(x, y + 1, z)) {
-                if (dataTool.loadIn(x, y + 1, z)) {
+                if (dataTool.loadInAt(x, y + 1, z)) {
                     const d = Distance3D(sx, sy, sz, x, y + 1, z);
                     if (d <= radius) {
                         this._queue.push([x, y + 1, z]);
@@ -75,7 +75,7 @@ export const ExplosionManager = {
                 this.addToMap(x, y + 1, z);
             }
             if (!this.inMap(x, y - 1, z)) {
-                if (dataTool.loadIn(x, y - 1, z)) {
+                if (dataTool.loadInAt(x, y - 1, z)) {
                     const d = Distance3D(sx, sy, sz, x, y - 1, z);
                     if (d <= dia) {
                         this._queue.push([x, y - 1, z]);
@@ -83,13 +83,13 @@ export const ExplosionManager = {
                 }
                 this.addToMap(x, y - 1, z);
             }
-            if (dataTool.loadIn(x, y, z)) {
+            if (dataTool.loadInAt(x, y, z)) {
                 if (dataTool.isRenderable()) {
                     for (const n of $3dCardinalNeighbors) {
                         const nx = x + n[0];
                         const ny = y + n[1];
                         const nz = z + n[2];
-                        if (nDataTool.loadIn(nx, ny, nz)) {
+                        if (nDataTool.loadInAt(nx, ny, nz)) {
                             const l = nDataTool.getLight();
                             if (l > 0) {
                                 if (LightData.getS(l) > 0) {

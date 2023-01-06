@@ -20,4 +20,5 @@ export declare const EngineSettings: {
     doRGBPropagation(): boolean;
     doLight(): boolean;
     doFlow(): boolean;
+    saveWorldData(): boolean;
 };

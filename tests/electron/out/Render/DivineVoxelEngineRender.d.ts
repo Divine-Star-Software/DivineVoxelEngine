@@ -95,6 +95,7 @@ export declare const DVER: {
         doRGBPropagation(): boolean;
         doLight(): boolean;
         doFlow(): boolean;
+        saveWorldData(): boolean;
     };
     renderManager: {
         fogOptions: import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions;
@@ -169,7 +170,7 @@ export declare const DVER: {
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         };
         animationManager: {
-            animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+            animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
             animCount: number;
             animations: {
                 uniformShaderId: string;
@@ -177,10 +178,10 @@ export declare const DVER: {
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
-                substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
+                substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
             }[];
-            registerAnimations(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-            registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
+            registerAnimations(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+            registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
@@ -280,11 +281,35 @@ export declare const DVER: {
                     x: number;
                     y: number;
                     z: number;
+                    copy(): any;
+                    copyTo(vec3: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    }): void;
+                    toString(): string;
+                    multiply(vec3: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    }): any;
                 };
                 getRegionPositonxXYZ(x: number, y: number, z: number): {
                     x: number;
                     y: number;
                     z: number;
+                    copy(): any;
+                    copyTo(vec3: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    }): void;
+                    toString(): string;
+                    multiply(vec3: {
+                        x: number;
+                        y: number;
+                        z: number;
+                    }): any;
                 };
                 getRegionIndex(): number;
                 getRegionIndexXYZ(x: number, y: number, z: number): number;

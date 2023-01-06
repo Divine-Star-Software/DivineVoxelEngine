@@ -4,72 +4,31 @@ import { DataHooks } from "../DataHooks.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 
 type ID = string | number;
 const WP = {
  _currentionDimension: "main",
- util: {
-  isSameVoxel(
-   dimensionId: ID,
-   x: number,
-   y: number,
-   z: number,
-   x2: number,
-   y2: number,
-   z2: number,
-   secondary = false
-  ) {
-   return true;
-  },
- },
  paint: {
   _dt: new DataTool(),
-  voxel(data: AddVoxelData, update = true) {
-   if (!data.dimension) {
-    data.dimension = WP._currentionDimension;
+  voxel(location: LocationData, data: AddVoxelData, update = true) {
+   if (!location[0]) {
+    location[0] = WP._currentionDimension;
    }
-   const dimension = data.dimension;
-   const pos = data.position;
-   let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
+
+   let chunk = WorldRegister.chunk.get(location);
    if (!chunk) {
-    let buffer = DataHooks.chunk.onGetSync.run([
-     dimension,
-     pos[0],
-     pos[1],
-     pos[2],
-    ]);
+    let buffer = DataHooks.chunk.onGetSync.run(location);
     if (!buffer) return;
-    chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
+    chunk = WorldRegister.chunk.add(location, buffer);
    }
-   this.__paint(dimension, data, update);
+   this.__paint(location, data, update);
   },
 
-  async voxelAsync(data: AddVoxelData) {
-   if (!data.dimension) {
-    data.dimension = WP._currentionDimension;
-   }
-   const dimension = data.dimension;
-   const pos = data.position;
-   let chunk = WorldRegister.chunk.get(dimension, pos[0], pos[1], pos[2]);
-   if (!chunk) {
-    let buffer = await DataHooks.chunk.onGetAsync.run([
-     dimension,
-     pos[0],
-     pos[1],
-     pos[2],
-    ]);
-    if (!buffer) return;
-    chunk = WorldRegister.chunk.add(dimension, pos[0], pos[1], pos[2], buffer);
-   }
-   this.__paint(dimension, data);
-  },
-  __paint(dimension: string, data: AddVoxelData, update = true) {
-   this._dt.setDimension(dimension);
-   const x = data.position[0];
-   const y = data.position[1];
-   const z = data.position[2];
+  __paint(location: LocationData, data: AddVoxelData, update = true) {
+   this._dt.setLocation(location);
 
-   if (!this._dt.loadIn(x, y, z)) return;
+   if (!this._dt.setLocation(location).loadIn()) return;
    const id = VoxelPaletteReader.id.getPaletteId(
     data.id,
     data.state ? data.state : 0
@@ -101,24 +60,18 @@ const WP = {
 
    if (update) {
     if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
-     DataHooks.paint.onAddToRGBUpdate.run([dimension, x, y, z]);
+     DataHooks.paint.onAddToRGBUpdate.run(location);
     }
    }
 
    if (this._dt.isRich()) {
-    DataHooks.paint.onRichVoxelPaint.run([
-     this._dt.getStringId(),
-     dimension,
-     x,
-     y,
-     z,
-    ]);
+    DataHooks.paint.onRichVoxelPaint.run([this._dt.getStringId(), location]);
    }
   },
 
-  erase(dimensionId: ID, x: number, y: number, z: number) {
-   this._dt.setDimension(dimensionId);
-   if (!this._dt.loadIn(x, y, z)) return;
+  erase(location: LocationData) {
+   this._dt.setLocation(location);
+   if (!this._dt.loadIn()) return;
    if (!this._dt.isRenderable()) return;
    this._dt
     .setLight(0)

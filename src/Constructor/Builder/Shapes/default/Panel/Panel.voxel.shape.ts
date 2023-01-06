@@ -94,6 +94,7 @@ export const PanelVoxelShape: VoxelShape = {
  id: "Panel",
  build(mesher) {
   animationState = 0;
+
   if (mesher.data.getSubstance() == "flora") {
    animationState = 2;
   }

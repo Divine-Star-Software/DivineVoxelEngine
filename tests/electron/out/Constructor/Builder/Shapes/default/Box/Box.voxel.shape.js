@@ -55,48 +55,48 @@ export const BoxVoxelShape = {
 const boxCullFunctions = {
     top: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y + 1, data.currentVoxel.position.z) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y + 2, data.currentVoxel.position.z)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] + 1, data.currentVoxel.location[3]) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] + 2, data.currentVoxel.location[3])) {
             return false;
         }
         return data.default;
     },
     bottom: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y - 1, data.currentVoxel.position.z) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y - 2, data.currentVoxel.position.z)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] - 1, data.currentVoxel.location[3]) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] - 2, data.currentVoxel.location[3])) {
             return false;
         }
         return data.default;
     },
     east: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x + 1, data.currentVoxel.position.y, data.currentVoxel.position.z) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x + 2, data.currentVoxel.position.y, data.currentVoxel.position.z)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] + 1, data.currentVoxel.location[2], data.currentVoxel.location[3]) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] + 2, data.currentVoxel.location[2], data.currentVoxel.location[3])) {
             return false;
         }
         return data.default;
     },
     west: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x - 1, data.currentVoxel.position.y, data.currentVoxel.position.z) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x - 2, data.currentVoxel.position.y, data.currentVoxel.position.z)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] - 1, data.currentVoxel.location[2], data.currentVoxel.location[3]) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] - 2, data.currentVoxel.location[2], data.currentVoxel.location[3])) {
             return false;
         }
         return data.default;
     },
     north: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y, data.currentVoxel.position.z + 1) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y, data.currentVoxel.position.z + 2)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] + 1) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] + 2)) {
             return false;
         }
         return data.default;
     },
     south: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y, data.currentVoxel.position.z - 1) &&
-            data.currentVoxel.isSameVoxel(data.currentVoxel.position.x, data.currentVoxel.position.y, data.currentVoxel.position.z - 2)) {
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] - 1) &&
+            data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] - 2)) {
             return false;
         }
         return data.default;

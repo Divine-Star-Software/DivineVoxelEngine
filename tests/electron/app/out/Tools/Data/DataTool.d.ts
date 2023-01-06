@@ -1,7 +1,7 @@
 import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
-import { DataToolBase } from "./Classes/DataToolBase.js";
+import { DataToolBase } from "../Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 export declare class DataTool extends DataToolBase {
     static _dtutil: DataTool;
@@ -79,7 +79,8 @@ export declare class DataTool extends DataToolBase {
     _getBaseId(id: number): number;
     loadInRaw(rawData: RawVoxelData): void;
     __process(): void;
-    loadIn(x: number, y: number, z: number): boolean | undefined;
+    loadIn(): boolean | undefined;
+    loadInAt(x: number, y: number, z: number): boolean | undefined;
     commit(heightMapUpdate?: number): false | this;
     getLight(): number;
     setLight(light: number): this;

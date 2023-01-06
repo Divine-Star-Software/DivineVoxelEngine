@@ -1,17 +1,9 @@
 import type { DVEDDataTypes, DVEDLocationData } from "../../Types/DVED.types";
-import { DVEDSystem } from "../DVEDSystem.js";
 import { DVED } from "../DivineVoxelEngineData.js";
-import { SecotrData } from "../Constants/DVED.constants.js";
 import { System } from "../System/System.js";
-
-const getTagIndex = (id: string, location: DVEDLocationData) => {
-  const columnIndex = DVED.spaces.column.getIndexXYZ(
-    location[1],
-    location[2],
-    location[3]
-  );
-  return DVED.regionTags.getArrayTagByteIndex(id, columnIndex);
-};
+import { RegionSystem } from "../System/RegionSystem.js";
+import { RegionData } from "../Util/DVED.util.js";
+import { SystemPath } from "../System/SystemPath.js";
 
 export class RegionTool {
   location: DVEDLocationData = ["main", 0, 0, 0];
@@ -20,11 +12,6 @@ export class RegionTool {
   path = "";
   fileName = "";
   dataType: DVEDDataTypes = "world-data";
-
-  setPath(path: string) {
-    this.path = path;
-    return this;
-  }
 
   setDataType(dataTypes: DVEDDataTypes) {
     this.dataType = dataTypes;
@@ -35,9 +22,10 @@ export class RegionTool {
   setLocation(location: DVEDLocationData) {
     this.location = location;
     this.dimension = location[0];
+    this.path = SystemPath.getDataDirectory();
     this._setFileName();
     if (location[0] != this.previousDimension) {
-      DVEDSystem.mkdirs([
+      System.mkdirs([
         this._dimensionPath(),
         this._getDataPath("world-data"),
         this._getDataPath("rich-data"),
@@ -53,12 +41,18 @@ export class RegionTool {
     return this._getDataPath(this.dataType, this.fileName);
   }
 
+  _getSwapPath() {
+    return this._getDataPath(this.dataType, "swap-" + this.fileName);
+  }
+
   _dimensionPath(dataPath: string = "") {
     return `${this.path}/${this.dimension}/${dataPath}`;
   }
+
   _getDataPath(dataType: DVEDDataTypes, fileName = "") {
     return this._dimensionPath(`${dataType}/${fileName}`);
   }
+
   _setFileName() {
     const regionPOS = DVED.spaces.region.getPositionXYZ(
       this.location[1],
@@ -71,13 +65,16 @@ export class RegionTool {
   }
 
   regionExists() {
-    const file = System.openFile(this.getCurrentPath());
+    const file = System.sync.openFile(this.getCurrentPath());
     if (file) file.close();
     return Boolean(file);
   }
 
-  createRegion(buffer = new ArrayBuffer(DVED.regionTags.tagSize)) {
-    return DVEDSystem.createFileSync(this.getCurrentPath(), buffer);
+  createRegion() {
+    return System.sync.createFile(
+      this.getCurrentPath(),
+      RegionData.headByteSize
+    );
   }
 
   regionHasColumn() {
@@ -85,115 +82,85 @@ export class RegionTool {
     return timeStamp > 0;
   }
 
-  getColumnTimestamp() {
-    const file = System.openFile(this.getCurrentPath());
+  getAllColumns() {
+    const file = System.sync.openFile(this.getCurrentPath());
     if (!file) return false;
-    const timeStampData = file.read(
-      getTagIndex("#dved-column-save-timestamp", this.location),
-      4
-    );
-    file.close();
-    if (!timeStampData) return false;
-    const timeStamp = new Uint32Array(timeStampData)[0];
-    return timeStamp;
+    return RegionSystem._getAllColumns(file);
   }
 
-  loadColumn() {
-    const file = System.openFile(this.getCurrentPath());
-    if (!file) return;
-
-    const sectorIndexData = file.read(
-      getTagIndex("#dved-column-sector-index", this.location),
-      2
+  copyToNewfile() {
+    const swapFile = System.sync.createAndOpenFile(
+      this._getSwapPath(),
+      RegionData.headByteSize
     );
-
-    let sectorIndex = 0;
-    if (!sectorIndexData) {
-      return false;
-    } else {
-      sectorIndex = new Uint16Array(sectorIndexData)[0];
+    if (!swapFile) return;
+    const columns = this.getAllColumns();
+    if (!columns) return;
+    for (const column of columns) {
+      RegionSystem.saveColumn(swapFile, column[0], column[1]);
     }
-    const columnLengthData = file.read(
-      getTagIndex("#dved-column-legnth-index", this.location),
-      2
-    );
-    let columnLength = 0;
-    if (!columnLengthData) {
-      return false;
-    } else {
-      columnLength = new Uint16Array(columnLengthData)[0];
-    }
-    const data = file.read(
-      SecotrData.getSectorByteIndex(sectorIndex),
-      columnLength
-    );
-    file.close();
-    return data;
   }
 
-  _processInput(buffer: ArrayBuffer | string) {
-    if (buffer instanceof ArrayBuffer) return buffer;
-    if (ArrayBuffer.isView(buffer)) return buffer.buffer;
-    let newBuf = new ArrayBuffer(buffer.length);
-    const array = new Uint8Array(newBuf);
-    let i = newBuf.byteLength;
-    while (i--) {
-      array[i] = buffer.charCodeAt(i);
-    }
-    return newBuf;
+  getColumnTimestamp() {
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    const timeStamp = RegionSystem.timeStamp.get(
+      file,
+      RegionSystem._getIndex(this.location)
+    );
+    file.close();
+    return !timeStamp ? 0 : timeStamp;
+  }
+
+  getSectorIndex() {
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    const index = RegionSystem.sectorIndex.get(
+      file,
+      RegionSystem._getIndex(this.location)
+    );
+    file.close();
+    return !index ? 0 : index;
+  }
+
+  getColumnDataLength() {
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    const length = RegionSystem.columnLength.get(
+      file,
+      RegionSystem._getIndex(this.location)
+    );
+    file.close();
+    return !length ? 0 : length;
   }
 
   getHeader() {
     if (!this.regionExists()) {
       this.createRegion();
     }
-    const file = System.openFile(this.getCurrentPath());
-    if (!file) return;
-    const buffer = file.read(0,DVED.regionTags.tagSize);
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    const buffer = RegionSystem.getHeader(file);
     file.close();
     return buffer;
+  }
+
+  loadColumn() {
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    const data = RegionSystem.loadColumn(file, this.location);
+    file.close();
+    return data;
   }
 
   saveColumn(buffer: ArrayBuffer | string) {
     if (!this.regionExists()) {
       this.createRegion();
     }
-    const file = System.openFile(this.getCurrentPath());
-    if (!file) return;
-
-    const currentSize = file.getSize();
-    buffer = this._processInput(buffer);
-
-    const columnSectorIndex = getTagIndex(
-      "#dved-column-sector-index",
-      this.location
-    );
-    const sectorIndexData = file.read(columnSectorIndex, 2);
-
-    let sectorIndex = 0;
-    if (!sectorIndexData) {
-    } else {
-      sectorIndex = new Uint16Array(sectorIndexData)[0];
-    }
-    if (!sectorIndex) {
-      sectorIndex = SecotrData.getTotalSectorsInFile(currentSize);
-      file.write(columnSectorIndex, new Uint16Array([sectorIndex]).buffer);
-    }
-
-    const sectorByteIndex = SecotrData.getSectorByteIndex(sectorIndex);
-    file.clear(
-      sectorByteIndex,
-      SecotrData.getTotalBytesNeeded(buffer.byteLength)
-    );
-    file.write(sectorByteIndex, buffer);
-    file.write(
-      getTagIndex("#dved-column-legnth-index", this.location),
-      new Uint16Array([buffer.byteLength]).buffer
-    );
-    file.write(
-      getTagIndex("#dved-column-save-timestamp", this.location),
-      new Uint32Array([Date.now()]).buffer
-    );
+    const file = System.sync.openFile(this.getCurrentPath());
+    if (!file) return false;
+    RegionSystem.saveColumn(file, this.location, buffer);
     file.close();
+    return true;
   }
 }

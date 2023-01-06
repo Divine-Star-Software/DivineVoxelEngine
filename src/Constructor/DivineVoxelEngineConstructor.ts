@@ -6,6 +6,7 @@ import { Util } from "../Global/Util.helper.js";
 import { Builder } from "./Builder/Builder.js";
 import { Propagation } from "./Propagation/Propagation.js";
 import { WorldGeneration } from "./WorldGeneration/WorldGeneration.js";
+import { TasksQueue } from "./Tasks/TasksQueue.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
@@ -41,6 +42,7 @@ export const DVEC = {
  parentComm: ParentComm,
  worldComm: WorldComm,
  tasks: Tasks,
+ tasksQueue : TasksQueue,
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);

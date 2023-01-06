@@ -85,11 +85,11 @@ OverrideManager.registerOverride("AO", "HalfBox", "Box", (data) => {
     const shapeState = data.currentVoxel.getShapeState();
     if (shapeState == 1) {
         if (data.face == "top") {
-            if (data.neighborVoxel.position.y > data.currentVoxel.position.y) {
+            if (data.neighborVoxel.location[2] > data.currentVoxel.location[2]) {
                 return true;
             }
         }
-        if (data.neighborVoxel.position.y == data.currentVoxel.position.y) {
+        if (data.neighborVoxel.location[2] == data.currentVoxel.location[2]) {
             return true;
         }
         return false;

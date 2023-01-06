@@ -1,8 +1,9 @@
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { DataToolWorldBound } from "./Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
-export class DataLoaderTool extends DataToolWorldBound {
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
+import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
+export class DataLoaderTool extends LocationBoundTool {
     static columnDataTool = new ColumnDataTool();
     static isEnabled() {
         const comm = ThreadComm.getComm("data-loader");
@@ -74,7 +75,15 @@ export class DataLoaderTool extends DataToolWorldBound {
     }
     loadColumn(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("load-column", location.toString(), () => (onDone ? onDone() : false), location);
+        const cache = [...location];
+        this.dataComm.runPromiseTasks("load-column", location.toString(), () => {
+            const inte = setInterval(() => {
+                if (WorldRegister.column.get(cache)) {
+                    clearInterval(inte);
+                    onDone ? onDone(true) : false;
+                }
+            }, 1);
+        }, location);
     }
     loadColumnAsync() {
         return new Promise((resolve) => {

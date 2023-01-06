@@ -1,0 +1,1521 @@
+==========================================
+saving column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+==========================================
+saving column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+==========================================
+saving column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+==========================================
+saving column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+==========================================
+saving column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+==========================================
+saving column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+==========================================
+saving column at main,0,0,-16size: 1503
+1503 : 2205003689 : 1
+==========================================
+saving column at main,16,0,-16size: 1827
+1827 : 2205003700 : 2
+==========================================
+saving column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+==========================================
+saving column at main,0,0,-32size: 3017
+3017 : 2205004081 : 3
+==========================================
+saving column at main,-16,0,-16size: 1780
+1780 : 2205004162 : 1
+==========================================
+saving column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+==========================================
+saving column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+==========================================
+saving column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+==========================================
+saving column at main,32,0,-16size: 4361
+4361 : 2205004784 : 4
+==========================================
+saving column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+==========================================
+saving column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+==========================================
+saving column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+==========================================
+saving column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+==========================================
+saving column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+==========================================
+saving column at main,16,0,-32size: 3083
+3083 : 2205005211 : 6
+==========================================
+saving column at main,32,0,-32size: 4812
+4812 : 2205005233 : 7
+==========================================
+saving column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+==========================================
+saving column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+==========================================
+saving column at main,0,0,-48size: 3851
+3851 : 2205005780 : 9
+==========================================
+saving column at main,16,0,-48size: 3699
+3699 : 2205005866 : 10
+==========================================
+saving column at main,-16,0,-32size: 2679
+2679 : 2205006709 : 2
+==========================================
+saving column at main,-16,0,-48size: 4943
+4943 : 2205006916 : 3
+==========================================
+saving column at main,0,0,-64size: 3902
+3902 : 2205007012 : 11
+==========================================
+saving column at main,-16,0,-64size: 4449
+4449 : 2205007478 : 5
+==========================================
+saving column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+==========================================
+saving column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+==========================================
+saving column at main,64,0,48size: 2111
+2111 : 2205008208 : 17
+==========================================
+saving column at main,-32,0,-16size: 2425
+2425 : 2205008303 : 7
+==========================================
+saving column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+==========================================
+saving column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+==========================================
+saving column at main,48,0,-32size: 5244
+5244 : 2205008402 : 12
+==========================================
+saving column at main,-32,0,48size: 3509
+3509 : 2205008415 : 8
+==========================================
+saving column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+==========================================
+saving column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+==========================================
+saving column at main,48,0,-16size: 4384
+4384 : 2205008704 : 14
+==========================================
+saving column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+==========================================
+saving column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+==========================================
+saving column at main,32,0,64size: 3087
+3087 : 2205009399 : 25
+==========================================
+saving column at main,-32,0,-32size: 3057
+3057 : 2205009570 : 8
+==========================================
+saving column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+==========================================
+saving column at main,64,0,-16size: 4772
+4772 : 2205010007 : 16
+==========================================
+saving column at main,64,0,-32size: 3909
+3909 : 2205010017 : 18
+==========================================
+saving column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+==========================================
+saving column at main,48,0,64size: 2636
+2636 : 2205010516 : 29
+==========================================
+saving column at main,64,0,64size: 2406
+2406 : 2205010596 : 30
+==========================================
+saving column at main,16,0,-64size: 3126
+3126 : 2205010606 : 19
+==========================================
+saving column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+==========================================
+saving column at main,-48,0,-16size: 4059
+4059 : 2205011083 : 9
+==========================================
+saving column at main,-48,0,16size: 3617
+3617 : 2205011674 : 11
+==========================================
+saving column at main,0,0,-80size: 2950
+2950 : 2205011768 : 20
+==========================================
+saving column at main,16,0,-80size: 2881
+2881 : 2205012277 : 21
+==========================================
+saving column at main,32,0,-48size: 3592
+3592 : 2205012467 : 22
+==========================================
+saving column at main,-48,0,32size: 3448
+3448 : 2205013469 : 12
+==========================================
+saving column at main,48,0,-48size: 3706
+3706 : 2205013495 : 23
+==========================================
+saving column at main,32,0,-64size: 3087
+3087 : 2205013521 : 24
+==========================================
+saving column at main,80,0,-32size: 4153
+4153 : 2205013571 : 25
+==========================================
+saving column at main,-48,0,48size: 4177
+4177 : 2205013974 : 13
+==========================================
+saving column at main,80,0,-16size: 4897
+4897 : 2205013984 : 27
+==========================================
+saving column at main,-32,0,-48size: 2670
+2670 : 2205014361 : 10
+==========================================
+saving column at main,80,0,48size: 3078
+3078 : 2205014372 : 31
+==========================================
+saving column at main,32,0,80size: 2809
+2809 : 2205014382 : 32
+==========================================
+saving column at main,64,0,-48size: 1748
+1748 : 2205014568 : 29
+==========================================
+saving column at main,80,0,-48size: 2046
+2046 : 2205014581 : 30
+==========================================
+saving column at main,16,0,80size: 1992
+1992 : 2205014684 : 33
+==========================================
+saving column at main,48,0,80size: 2852
+2852 : 2205014694 : 34
+==========================================
+saving column at main,-48,0,64size: 4106
+4106 : 2205014865 : 15
+==========================================
+saving column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+==========================================
+saving column at main,-16,0,64size: 2773
+2773 : 2205014983 : 17
+==========================================
+saving column at main,-32,0,64size: 3096
+3096 : 2205015003 : 18
+==========================================
+saving column at main,0,0,80size: 4088
+4088 : 2205015016 : 36
+==========================================
+saving column at main,0,0,-96size: 3036
+3036 : 2205015271 : 31
+==========================================
+saving column at main,-32,0,-64size: 2449
+2449 : 2205015395 : 11
+==========================================
+saving column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+==========================================
+saving column at main,80,0,16size: 3763
+3763 : 2205015489 : 38
+==========================================
+saving column at main,80,0,32size: 3349
+3349 : 2205015500 : 39
+==========================================
+saving column at main,-48,0,-32size: 3259
+3259 : 2205015971 : 12
+==========================================
+saving column at main,-48,0,-48size: 1772
+1772 : 2205015982 : 13
+==========================================
+saving column at main,-16,0,-80size: 3837
+3837 : 2205016068 : 14
+==========================================
+saving column at main,32,0,-80size: 2208
+2208 : 2205016178 : 32
+==========================================
+saving column at main,-16,0,80size: 3613
+3613 : 2205016477 : 19
+==========================================
+saving column at main,48,0,-64size: 3006
+3006 : 2205016871 : 33
+==========================================
+saving column at main,-32,0,80size: 3840
+3840 : 2205017278 : 20
+==========================================
+saving column at main,-32,0,-80size: 2097
+2097 : 2205017290 : 15
+==========================================
+saving column at main,-48,0,80size: 4302
+4302 : 2205017394 : 21
+==========================================
+saving column at main,-64,0,0size: 4575
+4575 : 2205017880 : 23
+==========================================
+saving column at main,-64,0,16size: 4968
+4968 : 2205017891 : 25
+==========================================
+saving column at main,-16,0,-96size: 3062
+3062 : 2205017971 : 16
+==========================================
+saving column at main,-48,0,-64size: 2108
+2108 : 2205018269 : 17
+==========================================
+saving column at main,-48,0,-80size: 1549
+1549 : 2205018282 : 18
+==========================================
+saving column at main,64,0,-64size: 1895
+1895 : 2205018970 : 34
+==========================================
+saving column at main,16,0,-96size: 2611
+2611 : 2205019379 : 35
+==========================================
+saving column at main,-64,0,-16size: 3864
+3864 : 2205019677 : 19
+==========================================
+saving column at main,-64,0,-32size: 4197
+4197 : 2205019688 : 20
+==========================================
+saving column at main,-64,0,-48size: 3910
+3910 : 2205019709 : 22
+==========================================
+saving column at main,48,0,-80size: 2760
+2760 : 2205019865 : 36
+==========================================
+saving column at main,0,0,96size: 4076
+4076 : 2205019876 : 40
+==========================================
+saving column at main,-16,0,96size: 3965
+3965 : 2205019974 : 27
+==========================================
+saving column at main,-80,0,-16size: 5162
+5162 : 2205020264 : 23
+==========================================
+saving column at main,-80,0,-32size: 4828
+4828 : 2205020295 : 25
+==========================================
+saving column at main,-80,0,-48size: 4663
+4663 : 2205020307 : 27
+==========================================
+saving column at main,16,0,96size: 2241
+2241 : 2205020318 : 41
+==========================================
+saving column at main,-64,0,32size: 4551
+4551 : 2205020774 : 28
+==========================================
+saving column at main,-64,0,48size: 4851
+4851 : 2205020784 : 30
+==========================================
+saving column at main,-64,0,-64size: 2520
+2520 : 2205020795 : 29
+==========================================
+saving column at main,-64,0,64size: 4079
+4079 : 2205020805 : 32
+==========================================
+saving column at main,96,0,0size: 3614
+3614 : 2205020969 : 42
+==========================================
+saving column at main,96,0,16size: 3978
+3978 : 2205020984 : 43
+==========================================
+saving column at main,96,0,-16size: 3484
+3484 : 2205020995 : 37
+==========================================
+saving column at main,-80,0,0size: 4545
+4545 : 2205021171 : 33
+==========================================
+saving column at main,-80,0,16size: 3797
+3797 : 2205022369 : 35
+==========================================
+saving column at main,-80,0,32size: 4108
+4108 : 2205022507 : 36
+==========================================
+saving column at main,-96,0,0size: 2676
+2676 : 2205022783 : 38
+==========================================
+saving column at main,-96,0,-16size: 2792
+2792 : 2205022868 : 30
+==========================================
+saving column at main,-80,0,48size: 3673
+3673 : 2205023768 : 39
+==========================================
+saving column at main,-96,0,16size: 2263
+2263 : 2205024564 : 40
+loading column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+loading column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+loading column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+loading column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+loading column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+loading column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+loading column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+loading column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+loading column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+loading column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+loading column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+loading column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+loading column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+loading column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+loading column at main,0,0,-16size: 1503
+1503 : 2205003689 : 1
+loading column at main,16,0,-16size: 1827
+1827 : 2205003700 : 2
+loading column at main,32,0,-16size: 4361
+4361 : 2205004784 : 4
+loading column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+loading column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+loading column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+loading column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+loading column at main,-16,0,-16size: 1780
+1780 : 2205004162 : 1
+loading column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+loading column at main,-32,0,-16size: 2425
+2425 : 2205008303 : 7
+loading column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+loading column at main,48,0,-16size: 4384
+4384 : 2205008704 : 14
+loading column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+loading column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+loading column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+loading column at main,80,0,16size: 3763
+3763 : 2205015489 : 38
+loading column at main,96,0,0size: 3614
+3614 : 2205020969 : 42
+loading column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+loading column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+loading column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+loading column at main,64,0,-16size: 4772
+4772 : 2205010007 : 16
+loading column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+loading column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+loading column at main,96,0,16size: 3978
+3978 : 2205020984 : 43
+loading column at main,-32,0,48size: 3509
+3509 : 2205008415 : 8
+loading column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+loading column at main,-48,0,-16size: 4059
+4059 : 2205011083 : 9
+loading column at main,-48,0,16size: 3617
+3617 : 2205011674 : 11
+loading column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+loading column at main,-16,0,64size: 2773
+2773 : 2205014983 : 17
+loading column at main,80,0,-16size: 4897
+4897 : 2205013984 : 27
+loading column at main,80,0,32size: 3349
+3349 : 2205015500 : 39
+loading column at main,-48,0,32size: 3448
+3448 : 2205013469 : 12
+loading column at main,64,0,48size: 2111
+2111 : 2205008208 : 17
+loading column at main,32,0,64size: 3087
+3087 : 2205009399 : 25
+loading column at main,-64,0,0size: 4575
+4575 : 2205017880 : 23
+loading column at main,0,0,80size: 4088
+4088 : 2205015016 : 36
+loading column at main,-32,0,64size: 3096
+3096 : 2205015003 : 18
+loading column at main,-48,0,48size: 4177
+4177 : 2205013974 : 13
+loading column at main,48,0,64size: 2636
+2636 : 2205010516 : 29
+loading column at main,-64,0,-16size: 3864
+3864 : 2205019677 : 19
+loading column at main,-64,0,16size: 4968
+4968 : 2205017891 : 25
+loading column at main,80,0,48size: 3078
+3078 : 2205014372 : 31
+loading column at main,16,0,80size: 1992
+1992 : 2205014684 : 33
+loading column at main,-16,0,80size: 3613
+3613 : 2205016477 : 19
+loading column at main,-48,0,64size: 4106
+4106 : 2205014865 : 15
+loading column at main,64,0,64size: 2406
+2406 : 2205010596 : 30
+loading column at main,-64,0,32size: 4551
+4551 : 2205020774 : 28
+loading column at main,32,0,80size: 2809
+2809 : 2205014382 : 32
+loading column at main,-32,0,80size: 3840
+3840 : 2205017278 : 20
+loading column at main,-64,0,48size: 4851
+4851 : 2205020784 : 30
+loading column at main,48,0,80size: 2852
+2852 : 2205014694 : 34
+loading column at main,-48,0,80size: 4302
+4302 : 2205017394 : 21
+loading column at main,-80,0,0size: 4545
+4545 : 2205021171 : 33
+loading column at main,0,0,96size: 4076
+4076 : 2205019876 : 40
+loading column at main,-64,0,64size: 4079
+4079 : 2205020805 : 32
+loading column at main,-80,0,16size: 3797
+3797 : 2205022369 : 35
+loading column at main,-80,0,32size: 4108
+4108 : 2205022507 : 36
+loading column at main,16,0,96size: 2241
+2241 : 2205020318 : 41
+loading column at main,-16,0,96size: 3965
+3965 : 2205019974 : 27
+loading column at main,-80,0,-16size: 5162
+5162 : 2205020264 : 23
+loading column at main,-80,0,48size: 3673
+3673 : 2205023768 : 39
+loading column at main,-96,0,0size: 2676
+2676 : 2205022783 : 38
+loading column at main,-96,0,16size: 2263
+2263 : 2205024564 : 40
+loading column at main,-96,0,-16size: 2792
+2792 : 2205022868 : 30
+loading column at main,64,0,-64size: 1895
+1895 : 2205018970 : 34
+loading column at main,48,0,-48size: 3706
+3706 : 2205013495 : 23
+loading column at main,48,0,-64size: 3006
+3006 : 2205016871 : 33
+loading column at main,48,0,-32size: 5244
+5244 : 2205008402 : 12
+loading column at main,-64,0,-64size: 2520
+2520 : 2205020795 : 29
+loading column at main,48,0,-80size: 2760
+2760 : 2205019865 : 36
+loading column at main,-48,0,-80size: 1549
+1549 : 2205018282 : 18
+loading column at main,-48,0,-64size: 2108
+2108 : 2205018269 : 17
+==========================================
+saving column at main,96,0,-16size: 3319
+saving over column at : main,96,0,-16
+[object ArrayBuffer]
+3319 : 2205061287 : 37
+loading column at main,32,0,-80size: 2208
+2208 : 2205016178 : 32
+loading column at main,-32,0,-80size: 2097
+2097 : 2205017290 : 15
+loading column at main,-16,0,-96size: 3062
+3062 : 2205017971 : 16
+loading column at main,16,0,-96size: 2611
+2611 : 2205019379 : 35
+loading column at main,16,0,-80size: 2881
+2881 : 2205012277 : 21
+loading column at main,0,0,-96size: 3036
+3036 : 2205015271 : 31
+==========================================
+saving column at main,80,0,-32size: 3462
+saving over column at : main,80,0,-32
+[object ArrayBuffer]
+3462 : 2205064158 : 25
+==========================================
+saving column at main,80,0,-48size: 2072
+saving over column at : main,80,0,-48
+[object ArrayBuffer]
+2072 : 2205064175 : 17
+==========================================
+saving column at main,64,0,-32size: 3498
+saving over column at : main,64,0,-32
+[object ArrayBuffer]
+3498 : 2205064187 : 24
+==========================================
+saving column at main,64,0,-48size: 1757
+saving over column at : main,64,0,-48
+[object ArrayBuffer]
+1757 : 2205064199 : 16
+loading column at main,-32,0,-48size: 2670
+2670 : 2205014361 : 10
+loading column at main,-32,0,-32size: 3057
+3057 : 2205009570 : 8
+loading column at main,-32,0,-64size: 2449
+2449 : 2205015395 : 11
+loading column at main,-16,0,-80size: 3837
+3837 : 2205016068 : 14
+==========================================
+saving column at main,-80,0,-32size: 5153
+saving over column at : main,-80,0,-32
+[object ArrayBuffer]
+5153 : 2205065880 : 25
+==========================================
+saving column at main,-80,0,-48size: 5449
+saving over column at : main,-80,0,-48
+[object ArrayBuffer]
+5449 : 2205065891 : 27
+==========================================
+saving column at main,-64,0,-32size: 4093
+saving over column at : main,-64,0,-32
+[object ArrayBuffer]
+4093 : 2205065950 : 19
+==========================================
+saving column at main,-64,0,-48size: 4096
+saving over column at : main,-64,0,-48
+[object ArrayBuffer]
+4096 : 2205065981 : 12
+==========================================
+saving column at main,-48,0,-32size: 2619
+saving over column at : main,-48,0,-32
+[object ArrayBuffer]
+2619 : 2205065993 : 20
+==========================================
+saving column at main,-48,0,-48size: 1714
+saving over column at : main,-48,0,-48
+[object ArrayBuffer]
+1714 : 2205066006 : 13
+==========================================
+saving column at main,80,0,64size: 2586
+2586 : 2205077678 : 44
+==========================================
+saving column at main,96,0,32size: 6464
+6464 : 2205077690 : 45
+==========================================
+saving column at main,64,0,80size: 2813
+2813 : 2205077699 : 47
+==========================================
+saving column at main,112,0,0size: 3265
+3265 : 2205077709 : 48
+==========================================
+saving column at main,96,0,-32size: 2349
+2349 : 2205077720 : 37
+==========================================
+saving column at main,32,0,96size: 2227
+2227 : 2205077730 : 49
+==========================================
+saving column at main,80,0,-64size: 2031
+2031 : 2205077741 : 38
+==========================================
+saving column at main,64,0,-80size: 2851
+2851 : 2205077810 : 39
+==========================================
+saving column at main,32,0,-96size: 2473
+2473 : 2205077882 : 40
+loading column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+loading column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+loading column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+loading column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+loading column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+loading column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+loading column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+loading column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+loading column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+loading column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+loading column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+loading column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+loading column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+loading column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+loading column at main,0,0,-16size: 1503
+1503 : 2205064159 : 26
+loading column at main,16,0,-16size: 1827
+1827 : 2205064160 : 27
+loading column at main,32,0,-16size: 4361
+4361 : 2205064160 : 28
+loading column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+loading column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+loading column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+loading column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+loading column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+loading column at main,96,0,0size: 3614
+3614 : 2205020969 : 42
+loading column at main,-16,0,-16size: 1780
+1780 : 2205065970 : 29
+loading column at main,-32,0,-16size: 2425
+2425 : 2205065969 : 28
+loading column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+loading column at main,48,0,-16size: 4384
+4384 : 2205064161 : 30
+loading column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+loading column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+loading column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+loading column at main,80,0,16size: 3763
+3763 : 2205015489 : 38
+loading column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+loading column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+loading column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+loading column at main,64,0,-16size: 4772
+4772 : 2205064161 : 32
+loading column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+loading column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+loading column at main,96,0,16size: 3978
+3978 : 2205020984 : 43
+loading column at main,112,0,0size: 3265
+3265 : 2205077709 : 48
+loading column at main,-32,0,48size: 3509
+3509 : 2205008415 : 8
+loading column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+loading column at main,-48,0,-16size: 4059
+4059 : 2205065969 : 27
+loading column at main,-48,0,16size: 3617
+3617 : 2205011674 : 11
+loading column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+loading column at main,-16,0,64size: 2773
+2773 : 2205014983 : 17
+loading column at main,80,0,-16size: 4897
+4897 : 2205064161 : 34
+loading column at main,80,0,32size: 3349
+3349 : 2205015500 : 39
+loading column at main,-48,0,32size: 3448
+3448 : 2205013469 : 12
+loading column at main,64,0,48size: 2111
+2111 : 2205008208 : 17
+loading column at main,32,0,64size: 3087
+3087 : 2205009399 : 25
+loading column at main,-32,0,64size: 3096
+3096 : 2205015003 : 18
+loading column at main,-64,0,0size: 4575
+4575 : 2205017880 : 23
+loading column at main,0,0,80size: 4088
+4088 : 2205015016 : 36
+loading column at main,96,0,-16size: 3319
+3319 : 2205064162 : 36
+loading column at main,96,0,32size: 6464
+6464 : 2205077690 : 45
+loading column at main,-48,0,48size: 4177
+4177 : 2205013974 : 13
+loading column at main,48,0,64size: 2636
+2636 : 2205010516 : 29
+loading column at main,-64,0,-16size: 3864
+3864 : 2205065969 : 26
+loading column at main,-64,0,16size: 4968
+4968 : 2205017891 : 25
+loading column at main,80,0,48size: 3078
+3078 : 2205014372 : 31
+loading column at main,16,0,80size: 1992
+1992 : 2205014684 : 33
+loading column at main,-16,0,80size: 3613
+3613 : 2205016477 : 19
+loading column at main,-48,0,64size: 4106
+4106 : 2205014865 : 15
+loading column at main,64,0,64size: 2406
+2406 : 2205010596 : 30
+loading column at main,-64,0,32size: 4551
+4551 : 2205020774 : 28
+loading column at main,32,0,80size: 2809
+2809 : 2205014382 : 32
+loading column at main,-32,0,80size: 3840
+3840 : 2205017278 : 20
+loading column at main,-80,0,0size: 4545
+4545 : 2205021171 : 33
+loading column at main,0,0,96size: 4076
+4076 : 2205019876 : 40
+loading column at main,-64,0,48size: 4851
+4851 : 2205020784 : 30
+loading column at main,80,0,64size: 2586
+2586 : 2205077678 : 44
+loading column at main,-16,0,96size: 3965
+3965 : 2205019974 : 27
+loading column at main,48,0,80size: 2852
+2852 : 2205014694 : 34
+loading column at main,-48,0,80size: 4302
+4302 : 2205017394 : 21
+loading column at main,-80,0,-16size: 5162
+5162 : 2205065968 : 24
+loading column at main,-80,0,16size: 3797
+3797 : 2205022369 : 35
+loading column at main,16,0,96size: 2241
+2241 : 2205020318 : 41
+loading column at main,96,0,-32size: 2349
+2349 : 2205077720 : 37
+loading column at main,-64,0,64size: 4079
+4079 : 2205020805 : 32
+loading column at main,64,0,80size: 2813
+2813 : 2205077699 : 47
+loading column at main,-80,0,32size: 4108
+4108 : 2205022507 : 36
+loading column at main,32,0,96size: 2227
+2227 : 2205077730 : 49
+loading column at main,-80,0,48size: 3673
+3673 : 2205023768 : 39
+loading column at main,-96,0,0size: 2676
+2676 : 2205022783 : 38
+loading column at main,-96,0,16size: 2263
+2263 : 2205024564 : 40
+loading column at main,-96,0,-16size: 2792
+2792 : 2205065968 : 23
+loading column at main,-80,0,-48size: 5449
+5449 : 2205065947 : 10
+loading column at main,80,0,-48size: 2072
+2072 : 2205064175 : 17
+loading column at main,80,0,-64size: 2031
+2031 : 2205077741 : 38
+loading column at main,80,0,-32size: 3462
+3462 : 2205064158 : 25
+loading column at main,-64,0,-64size: 2520
+2520 : 2205065945 : 5
+loading column at main,-48,0,-64size: 2108
+2108 : 2205065946 : 6
+loading column at main,-32,0,-48size: 2670
+2670 : 2205065948 : 14
+loading column at main,-32,0,-32size: 3057
+3057 : 2205065951 : 21
+loading column at main,-48,0,-80size: 1549
+1549 : 2205065944 : 2
+loading column at main,-32,0,-64size: 2449
+2449 : 2205065946 : 7
+loading column at main,64,0,-80size: 2851
+2851 : 2205077810 : 39
+loading column at main,-32,0,-80size: 2097
+2097 : 2205065944 : 3
+loading column at main,64,0,-64size: 1895
+1895 : 2205064151 : 11
+==========================================
+saving column at main,-80,0,-32size: 5181
+saving over column at : main,-80,0,-32
+[object ArrayBuffer]
+5181 : 2205147912 : 17
+==========================================
+saving column at main,-64,0,-32size: 4422
+saving over column at : main,-64,0,-32
+[object ArrayBuffer]
+4422 : 2205147993 : 19
+==========================================
+saving column at main,-48,0,-32size: 3416
+saving over column at : main,-48,0,-32
+[object ArrayBuffer]
+3416 : 2205148054 : 21
+==========================================
+saving column at main,-48,0,-48size: 1715
+saving over column at : main,-48,0,-48
+[object ArrayBuffer]
+1715 : 2205148066 : 13
+loading column at main,-16,0,-96size: 3062
+3062 : 2205147965 : 1
+==========================================
+saving column at main,-64,0,-48size: 3942
+saving over column at : main,-64,0,-48
+[object ArrayBuffer]
+3942 : 2205148080 : 12
+loading column at main,0,0,-96size: 3036
+3036 : 2205064144 : 1
+loading column at main,48,0,-80size: 2760
+2760 : 2205064147 : 6
+loading column at main,32,0,-96size: 2473
+2473 : 2205077882 : 40
+loading column at main,16,0,-96size: 2611
+2611 : 2205064144 : 2
+loading column at main,32,0,-80size: 2208
+2208 : 2205064147 : 5
+loading column at main,-16,0,-80size: 3837
+3837 : 2205147985 : 4
+loading column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+loading column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+loading column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+loading column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+loading column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+loading column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+loading column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+loading column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+loading column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+loading column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+loading column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+loading column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+loading column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+loading column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+loading column at main,0,0,-16size: 1503
+1503 : 2205064159 : 26
+loading column at main,16,0,-16size: 1827
+1827 : 2205064160 : 27
+loading column at main,32,0,-16size: 4361
+4361 : 2205064160 : 28
+loading column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+loading column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+loading column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+loading column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+loading column at main,96,0,0size: 3614
+3614 : 2205020969 : 42
+loading column at main,-16,0,-16size: 1780
+1780 : 2205147997 : 30
+loading column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+loading column at main,-32,0,-16size: 2425
+2425 : 2205147997 : 29
+loading column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+loading column at main,48,0,-16size: 4384
+4384 : 2205064161 : 30
+loading column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+loading column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+loading column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+loading column at main,80,0,16size: 3763
+3763 : 2205015489 : 38
+loading column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+loading column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+loading column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+loading column at main,64,0,-16size: 4772
+4772 : 2205064161 : 32
+loading column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+loading column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+loading column at main,96,0,16size: 3978
+3978 : 2205020984 : 43
+loading column at main,112,0,0size: 3265
+3265 : 2205077709 : 48
+loading column at main,-32,0,48size: 3509
+3509 : 2205008415 : 8
+loading column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+loading column at main,-48,0,-16size: 4059
+4059 : 2205147997 : 28
+loading column at main,-48,0,16size: 3617
+3617 : 2205011674 : 11
+loading column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+loading column at main,-16,0,64size: 2773
+2773 : 2205014983 : 17
+loading column at main,80,0,-16size: 4897
+4897 : 2205064161 : 34
+loading column at main,80,0,32size: 3349
+3349 : 2205015500 : 39
+loading column at main,-48,0,32size: 3448
+3448 : 2205013469 : 12
+loading column at main,64,0,48size: 2111
+2111 : 2205008208 : 17
+loading column at main,32,0,64size: 3087
+3087 : 2205009399 : 25
+loading column at main,-32,0,64size: 3096
+3096 : 2205015003 : 18
+loading column at main,-64,0,0size: 4575
+4575 : 2205017880 : 23
+loading column at main,0,0,80size: 4088
+4088 : 2205015016 : 36
+loading column at main,96,0,-16size: 3319
+3319 : 2205064162 : 36
+loading column at main,96,0,32size: 6464
+6464 : 2205077690 : 45
+loading column at main,-48,0,48size: 4177
+4177 : 2205013974 : 13
+loading column at main,48,0,64size: 2636
+2636 : 2205010516 : 29
+loading column at main,-64,0,16size: 4968
+4968 : 2205017891 : 25
+loading column at main,80,0,48size: 3078
+3078 : 2205014372 : 31
+loading column at main,-16,0,80size: 3613
+3613 : 2205016477 : 19
+loading column at main,-48,0,64size: 4106
+4106 : 2205014865 : 15
+loading column at main,64,0,64size: 2406
+2406 : 2205010596 : 30
+loading column at main,-64,0,-16size: 3864
+3864 : 2205147996 : 27
+loading column at main,-64,0,32size: 4551
+4551 : 2205020774 : 28
+loading column at main,16,0,80size: 1992
+1992 : 2205014684 : 33
+loading column at main,-32,0,80size: 3840
+3840 : 2205017278 : 20
+loading column at main,-64,0,48size: 4851
+4851 : 2205020784 : 30
+loading column at main,32,0,80size: 2809
+2809 : 2205014382 : 32
+loading column at main,-80,0,0size: 4545
+4545 : 2205021171 : 33
+loading column at main,80,0,64size: 2586
+2586 : 2205077678 : 44
+loading column at main,-16,0,96size: 3965
+3965 : 2205019974 : 27
+loading column at main,-48,0,80size: 4302
+4302 : 2205017394 : 21
+loading column at main,48,0,80size: 2852
+2852 : 2205014694 : 34
+loading column at main,-80,0,16size: 3797
+3797 : 2205022369 : 35
+loading column at main,0,0,96size: 4076
+4076 : 2205019876 : 40
+loading column at main,-64,0,64size: 4079
+4079 : 2205020805 : 32
+loading column at main,64,0,80size: 2813
+2813 : 2205077699 : 47
+loading column at main,-80,0,-16size: 5162
+5162 : 2205147996 : 25
+loading column at main,-80,0,32size: 4108
+4108 : 2205022507 : 36
+loading column at main,16,0,96size: 2241
+2241 : 2205020318 : 41
+loading column at main,-80,0,48size: 3673
+3673 : 2205023768 : 39
+loading column at main,32,0,96size: 2227
+2227 : 2205077730 : 49
+loading column at main,-96,0,0size: 2676
+2676 : 2205022783 : 38
+loading column at main,-96,0,16size: 2263
+2263 : 2205024564 : 40
+loading column at main,96,0,-32size: 2349
+2349 : 2205077720 : 37
+loading column at main,-96,0,-16size: 2792
+2792 : 2205147996 : 24
+loading column at main,-80,0,-48size: 5449
+5449 : 2205147989 : 10
+loading column at main,-64,0,-48size: 3942
+3942 : 2205148080 : 12
+loading column at main,-48,0,-32size: 3416
+3416 : 2205148054 : 21
+loading column at main,-48,0,-48size: 1715
+1715 : 2205148066 : 13
+loading column at main,80,0,-48size: 2072
+2072 : 2205064175 : 17
+loading column at main,80,0,-64size: 2031
+2031 : 2205077741 : 38
+loading column at main,80,0,-32size: 3462
+3462 : 2205064158 : 25
+loading column at main,-64,0,-64size: 2520
+2520 : 2205147987 : 5
+==========================================
+saving column at main,-64,0,-32size: 3785
+saving over column at : main,-64,0,-32
+[object ArrayBuffer]
+3785 : 2205218857 : 19
+loading column at main,-48,0,-80size: 1549
+1549 : 2205218848 : 2
+loading column at main,-48,0,-64size: 2108
+2108 : 2205218851 : 6
+==========================================
+saving column at main,-80,0,-32size: 4689
+saving over column at : main,-80,0,-32
+[object ArrayBuffer]
+4689 : 2205219448 : 17
+loading column at main,64,0,-80size: 2851
+2851 : 2205077810 : 39
+loading column at main,-32,0,-80size: 2097
+2097 : 2205218849 : 3
+loading column at main,-16,0,-96size: 3062
+3062 : 2205218847 : 1
+loading column at main,48,0,-80size: 2760
+2760 : 2205064147 : 6
+loading column at main,-16,0,-80size: 3837
+3837 : 2205218849 : 4
+loading column at main,64,0,-64size: 1895
+1895 : 2205064151 : 11
+loading column at main,32,0,-96size: 2473
+2473 : 2205077882 : 40
+loading column at main,0,0,-96size: 3036
+3036 : 2205064144 : 1
+loading column at main,32,0,-80size: 2208
+2208 : 2205064147 : 5
+loading column at main,16,0,-96size: 2611
+2611 : 2205064144 : 2
+loading column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+loading column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+loading column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+loading column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+loading column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+loading column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+loading column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+loading column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+loading column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+loading column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+loading column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+loading column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+loading column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+loading column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+loading column at main,0,0,-16size: 1503
+1503 : 2205064159 : 26
+loading column at main,16,0,-16size: 1827
+1827 : 2205064160 : 27
+loading column at main,32,0,-16size: 4361
+4361 : 2205064160 : 28
+loading column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+loading column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+loading column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+loading column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+loading column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+loading column at main,96,0,0size: 3614
+3614 : 2205020969 : 42
+loading column at main,-16,0,-16size: 1780
+1780 : 2205218877 : 29
+loading column at main,-32,0,-16size: 2425
+2425 : 2205218877 : 28
+loading column at main,0,0,-32size: 3017
+3017 : 2205064156 : 18
+loading column at main,16,0,-32size: 3083
+3083 : 2205064156 : 19
+loading column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+loading column at main,48,0,-16size: 4384
+4384 : 2205064161 : 30
+loading column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+loading column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+loading column at main,80,0,16size: 3763
+3763 : 2205015489 : 38
+loading column at main,-16,0,-32size: 2679
+2679 : 2205218858 : 22
+loading column at main,32,0,-32size: 4812
+4812 : 2205064157 : 20
+loading column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+loading column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+loading column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+loading column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+loading column at main,-48,0,-16size: 4059
+4059 : 2205218876 : 27
+loading column at main,64,0,-16size: 4772
+4772 : 2205064161 : 32
+loading column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+loading column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+loading column at main,96,0,16size: 3978
+3978 : 2205020984 : 43
+loading column at main,112,0,0size: 3265
+3265 : 2205077709 : 48
+loading column at main,-32,0,-32size: 3057
+3057 : 2205218858 : 21
+loading column at main,48,0,-32size: 5244
+5244 : 2205064157 : 22
+loading column at main,-32,0,48size: 3509
+3509 : 2205008415 : 8
+loading column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+loading column at main,-48,0,16size: 3617
+3617 : 2205011674 : 11
+loading column at main,0,0,-48size: 3851
+3851 : 2205064152 : 12
+loading column at main,16,0,-48size: 3699
+3699 : 2205064153 : 13
+loading column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+loading column at main,80,0,-16size: 4897
+4897 : 2205064161 : 34
+loading column at main,80,0,32size: 3349
+3349 : 2205015500 : 39
+loading column at main,-48,0,-32size: 3416
+3416 : 2205218857 : 20
+loading column at main,-48,0,32size: 3448
+3448 : 2205013469 : 12
+loading column at main,-16,0,-48size: 4943
+4943 : 2205218855 : 15
+loading column at main,32,0,-48size: 3592
+3592 : 2205064153 : 14
+loading column at main,64,0,-32size: 3498
+3498 : 2205064187 : 24
+loading column at main,64,0,48size: 2111
+2111 : 2205008208 : 17
+loading column at main,-16,0,64size: 2773
+2773 : 2205014983 : 17
+loading column at main,32,0,64size: 3087
+3087 : 2205009399 : 25
+loading column at main,-64,0,0size: 4575
+4575 : 2205017880 : 23
+loading column at main,-64,0,-16size: 3864
+3864 : 2205218876 : 26
+loading column at main,0,0,80size: 4088
+4088 : 2205015016 : 36
+loading column at main,96,0,-16size: 3319
+3319 : 2205064162 : 36
+loading column at main,96,0,32size: 6464
+6464 : 2205077690 : 45
+loading column at main,-32,0,64size: 3096
+3096 : 2205015003 : 18
+loading column at main,-32,0,-48size: 2670
+2670 : 2205218855 : 14
+loading column at main,48,0,-48size: 3706
+3706 : 2205064153 : 15
+loading column at main,-48,0,48size: 4177
+4177 : 2205013974 : 13
+loading column at main,48,0,64size: 2636
+2636 : 2205010516 : 29
+loading column at main,-64,0,16size: 4968
+4968 : 2205017891 : 25
+loading column at main,-64,0,-32size: 3785
+3785 : 2205218857 : 19
+loading column at main,0,0,-64size: 3902
+3902 : 2205064149 : 7
+loading column at main,16,0,-64size: 3126
+3126 : 2205064149 : 8
+loading column at main,80,0,-32size: 3462
+3462 : 2205064158 : 25
+loading column at main,80,0,48size: 3078
+3078 : 2205014372 : 31
+loading column at main,16,0,80size: 1992
+1992 : 2205014684 : 33
+loading column at main,-48,0,-48size: 1715
+1715 : 2205218854 : 13
+loading column at main,64,0,-48size: 1757
+1757 : 2205064199 : 16
+loading column at main,-48,0,64size: 4106
+4106 : 2205014865 : 15
+loading column at main,64,0,64size: 2406
+2406 : 2205010596 : 30
+loading column at main,-64,0,32size: 4551
+4551 : 2205020774 : 28
+loading column at main,-16,0,-64size: 4449
+4449 : 2205218852 : 8
+loading column at main,32,0,-64size: 3087
+3087 : 2205064150 : 9
+loading column at main,-16,0,80size: 3613
+3613 : 2205016477 : 19
+loading column at main,32,0,80size: 2809
+2809 : 2205014382 : 32
+loading column at main,-32,0,80size: 3840
+3840 : 2205017278 : 20
+loading column at main,-80,0,0size: 4545
+4545 : 2205021171 : 33
+loading column at main,-80,0,-16size: 5162
+5162 : 2205218876 : 24
+loading column at main,96,0,-32size: 2349
+2349 : 2205077720 : 37
+loading column at main,-64,0,-48size: 3942
+3942 : 2205218854 : 12
+loading column at main,-64,0,48size: 4851
+4851 : 2205020784 : 30
+loading column at main,-32,0,-64size: 2449
+2449 : 2205218852 : 7
+loading column at main,48,0,-64size: 3006
+3006 : 2205064150 : 10
+loading column at main,80,0,-48size: 2072
+2072 : 2205064175 : 17
+loading column at main,80,0,64size: 2586
+2586 : 2205077678 : 44
+loading column at main,48,0,80size: 2852
+2852 : 2205014694 : 34
+loading column at main,0,0,96size: 4076
+4076 : 2205019876 : 40
+loading column at main,-48,0,80size: 4302
+4302 : 2205017394 : 21
+loading column at main,-80,0,16size: 3797
+3797 : 2205022369 : 35
+loading column at main,-80,0,-32size: 4689
+4689 : 2205219448 : 17
+loading column at main,-48,0,-64size: 2108
+2108 : 2205218851 : 6
+loading column at main,64,0,-64size: 1895
+1895 : 2205064151 : 11
+loading column at main,-64,0,64size: 4079
+4079 : 2205020805 : 32
+loading column at main,64,0,80size: 2813
+2813 : 2205077699 : 47
+loading column at main,-80,0,32size: 4108
+4108 : 2205022507 : 36
+loading column at main,0,0,-80size: 2950
+2950 : 2205064146 : 3
+loading column at main,-16,0,-80size: 3837
+3837 : 2205218849 : 4
+loading column at main,16,0,-80size: 2881
+2881 : 2205064146 : 4
+loading column at main,32,0,-80size: 2208
+2208 : 2205064147 : 5
+loading column at main,16,0,96size: 2241
+2241 : 2205020318 : 41
+loading column at main,-16,0,96size: 3965
+3965 : 2205019974 : 27
+loading column at main,32,0,96size: 2227
+2227 : 2205077730 : 49
+loading column at main,-64,0,-64size: 2520
+2520 : 2205218851 : 5
+loading column at main,-80,0,-48size: 5449
+5449 : 2205218854 : 10
+loading column at main,-96,0,0size: 2676
+2676 : 2205022783 : 38
+loading column at main,-96,0,-16size: 2792
+2792 : 2205218875 : 23
+loading column at main,80,0,-64size: 2031
+2031 : 2205077741 : 38
+loading column at main,-80,0,48size: 3673
+3673 : 2205023768 : 39
+loading column at main,-32,0,-80size: 2097
+2097 : 2205218849 : 3
+loading column at main,48,0,-80size: 2760
+2760 : 2205064147 : 6
+loading column at main,-48,0,-80size: 1549
+1549 : 2205218848 : 2
+loading column at main,-96,0,16size: 2263
+2263 : 2205024564 : 40
+loading column at main,64,0,-80size: 2851
+2851 : 2205077810 : 39
+loading column at main,0,0,-96size: 3036
+3036 : 2205064144 : 1
+loading column at main,-16,0,-96size: 3062
+3062 : 2205218847 : 1
+loading column at main,16,0,-96size: 2611
+2611 : 2205064144 : 2
+loading column at main,32,0,-96size: 2473
+2473 : 2205077882 : 40
+loading column at main,0,0,0size: 1492
+1492 : 2205002382 : 1
+loading column at main,16,0,0size: 1837
+1837 : 2205002769 : 2
+loading column at main,0,0,16size: 1894
+1894 : 2205002867 : 3
+loading column at main,16,0,16size: 2897
+2897 : 2205002973 : 4
+loading column at main,32,0,0size: 4132
+4132 : 2205004574 : 6
+loading column at main,32,0,16size: 3900
+3900 : 2205003397 : 5
+loading column at main,0,0,32size: 2642
+2642 : 2205004866 : 10
+loading column at main,-16,0,0size: 1787
+1787 : 2205004064 : 2
+loading column at main,16,0,32size: 2781
+2781 : 2205004884 : 11
+loading column at main,48,0,0size: 4134
+4134 : 2205008600 : 18
+loading column at main,16,0,-16size: 1827
+1827 : 2205064160 : 27
+loading column at main,0,0,-16size: 1503
+1503 : 2205064159 : 26
+loading column at main,-16,0,16size: 2586
+2586 : 2205003369 : 1
+loading column at main,32,0,32size: 1681
+1681 : 2205004668 : 9
+loading column at main,48,0,16size: 4112
+4112 : 2205008694 : 20
+loading column at main,32,0,-16size: 4361
+4361 : 2205064160 : 28
+loading column at main,0,0,48size: 3671
+3671 : 2205005542 : 15
+loading column at main,-16,0,-16size: 1780
+1780 : 2205218877 : 29
+loading column at main,-16,0,32size: 2702
+2702 : 2205004938 : 3
+loading column at main,-32,0,0size: 2360
+2360 : 2205007668 : 4
+loading column at main,48,0,32size: 1968
+1968 : 2205004585 : 8
+loading column at main,64,0,0size: 4806
+4806 : 2205009996 : 26
+loading column at main,16,0,48size: 4172
+4172 : 2205004966 : 12
+loading column at main,48,0,-16size: 4384
+4384 : 2205064161 : 30
+loading column at main,16,0,-32size: 3083
+3083 : 2205064156 : 19
+loading column at main,-32,0,-16size: 2425
+2425 : 2205218877 : 28
+loading column at main,0,0,-32size: 3017
+3017 : 2205064156 : 18
+loading column at main,-32,0,16size: 2834
+2834 : 2205008364 : 6
+loading column at main,-16,0,48size: 3283
+3283 : 2205007963 : 5
+loading column at main,32,0,48size: 2625
+2625 : 2205005050 : 14
+loading column at main,64,0,16size: 4862
+4862 : 2205008966 : 22
+loading column at main,32,0,-32size: 4812
+4812 : 2205064157 : 20
+loading column at main,0,0,64size: 3868
+3868 : 2205014973 : 35
+loading column at main,-16,0,-32size: 2679
+2679 : 2205218858 : 22
+loading column at main,-32,0,32size: 3778
+3778 : 2205008385 : 7
+loading column at main,48,0,-32size: 5244
+5244 : 2205064157 : 22
+loading column at main,48,0,48size: 2357
+2357 : 2205005611 : 16
+loading column at main,-48,0,0size: 4205
+4205 : 2205011065 : 9
+loading column at main,64,0,-16size: 4772
+4772 : 2205064161 : 32
+loading column at main,16,0,64size: 3828
+3828 : 2205010333 : 28
+loading column at main,80,0,0size: 3341
+3341 : 2205015478 : 37
+loading column at main,64,0,32size: 3133
+3133 : 2205009001 : 24
+loading column at main,-48,0,-16size: 4059
+4059 : 2205218876 : 27
+loading column at main,16,0,-48size: 3699
+3699 : 2205064153 : 13
+loading column at main,-32,0,-32size: 0
+false : false : false
+column at main,-32,0,-32 could not be loaded
+false990
+false
+loading column at main,-32,0,48size: 0
+false : false : false
+column at main,-32,0,48 could not be loaded
+false126
+false
+loading column at main,-48,0,16size: 0
+false : false : false
+column at main,-48,0,16 could not be loaded
+false61
+false
+loading column at main,0,0,-48size: 0
+false : false : false
+column at main,0,0,-48 could not be loaded
+false928
+false
+loading column at main,32,0,-48size: 0
+false : false : false
+column at main,32,0,-48 could not be loaded
+false930
+false
+loading column at main,64,0,-32size: 0
+false : false : false
+column at main,64,0,-32 could not be loaded
+false964
+false
+loading column at main,-16,0,64size: 0
+false : false : false
+column at main,-16,0,64 could not be loaded
+false159
+false
+loading column at main,32,0,64size: 0
+false : false : false
+column at main,32,0,64 could not be loaded
+false130
+false
+loading column at main,80,0,16size: 0
+false : false : false
+column at main,80,0,16 could not be loaded
+false37
+false
+loading column at main,64,0,48size: 0
+false : false : false
+column at main,64,0,48 could not be loaded
+false100
+false
+loading column at main,0,0,80size: 0
+false : false : false
+column at main,0,0,80 could not be loaded
+false160
+false
+loading column at main,-64,0,-16size: 0
+false : false : false
+column at main,-64,0,-16 could not be loaded
+false1020
+false
+loading column at main,80,0,-16size: 0
+false : false : false
+column at main,80,0,-16 could not be loaded
+false997
+false
+loading column at main,80,0,32size: 0
+false : false : false
+column at main,80,0,32 could not be loaded
+false69
+false
+loading column at main,96,0,0size: 0
+false : false : false
+column at main,96,0,0 could not be loaded
+false6
+false

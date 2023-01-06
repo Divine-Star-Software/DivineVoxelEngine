@@ -84,7 +84,7 @@ export const DataFileServer = {
             if (buffer.byteLength == 0) {
                 throw new Error(`Column at ${location.toString()} could not be loaded`);
             }
-            const uncompressed = await CrystalCompressor.decompressArray(buffer, "Uint8");
+            const uncompressed = await CrystalCompressor.core.decompressArrayBuffer(buffer);
             return uncompressed.buffer;
         }
         catch (error) {
@@ -99,7 +99,6 @@ export const DataFileServer = {
                 location: location,
             });
             const buffer = await response.arrayBuffer();
-            console.log(buffer);
             if (buffer.byteLength == 1) {
                 throw new Error(`Region header at ${location.toString()} could not be loaded`);
             }

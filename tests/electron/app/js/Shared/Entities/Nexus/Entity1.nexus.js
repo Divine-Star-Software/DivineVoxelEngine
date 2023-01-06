@@ -12,7 +12,7 @@ export class Entity1Nexus {
     $INIT(DVEN, data, otherData) {
         setTimeout(() => {
             setInterval(() => {
-                if (!dataTool.loadIn(this.position[0] >> 0, (this.position[1] - 1) >> 0, this.position[2] >> 0))
+                if (!dataTool.loadInAt(this.position[0] >> 0, (this.position[1] - 1) >> 0, this.position[2] >> 0))
                     return;
                 if (dataTool.isAir()) {
                     this.position[1] -= 0.1;

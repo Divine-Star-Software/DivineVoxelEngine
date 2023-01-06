@@ -160,6 +160,7 @@ export class DVEMaterial {
 
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
+  shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());
 
   this.material.onBind = (mesh) => {
    if (!this.material) return;

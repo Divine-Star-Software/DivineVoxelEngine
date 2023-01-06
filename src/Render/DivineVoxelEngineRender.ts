@@ -18,7 +18,7 @@ import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
 import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
-import { RenderTasks } from "./Tasks/Tasks.js";
+import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { WorldSpaces } from "../Data/World/WorldSpaces.js";

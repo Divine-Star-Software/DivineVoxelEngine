@@ -1,5 +1,5 @@
 import type { VoxelSubstanceType } from "Meta/index.js";
-import { ExplosionTasks, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
+import { ExplosionTasks, UpdateTasksO, WorldSunTask, Priorities } from "Meta/Tasks/Tasks.types.js";
 export declare const Propagation: {
     illumination: {
         lightData: {
@@ -146,6 +146,8 @@ export declare const Propagation: {
     $INIT(): void;
     _dimension: string;
     _buildQueue: string;
+    _priority: Priorities;
+    setPriority(priority?: Priorities): void;
     addToRebuildQue(x: number, y: number, z: number, substance: VoxelSubstanceType | "all"): void;
     setBuildData(dimension: string, buildQueue: string): void;
     _process(data: UpdateTasksO): void;

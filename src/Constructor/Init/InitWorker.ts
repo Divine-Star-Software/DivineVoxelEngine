@@ -7,6 +7,7 @@ export async function InitWorker(DVEC: DivineVoxelEngineConstructor) {
 
  DVEC.builder.$INIT();
  DVEC.propagation.$INIT();
+ DVEC.tasksQueue.$INIT();
  await DVEC.UTIL.createPromiseCheck({
   check: () => {
    return DVEC.isReady();

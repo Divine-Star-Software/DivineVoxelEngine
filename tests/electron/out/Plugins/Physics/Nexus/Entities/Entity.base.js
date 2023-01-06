@@ -65,7 +65,7 @@ export class EntityBase {
             for (let y = minY; y <= maxY; y++) {
                 for (let z = minZ; z <= maxZ; z++) {
                     for (let x = minX; x <= maxX; x++) {
-                        if (!this.dataTool.loadIn(x, y, z))
+                        if (!this.dataTool.loadInAt(x, y, z))
                             continue;
                         const colliderObject = DVP.getCollider(x, y, z);
                         if (!colliderObject)

@@ -32,11 +32,35 @@ export declare const VoxelSpaces: {
                 x: number;
                 y: number;
                 z: number;
+                copy(): any;
+                copyTo(vec3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                }): void;
+                toString(): string;
+                multiply(vec3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                }): any;
             };
             getRegionPositonxXYZ(x: number, y: number, z: number): {
                 x: number;
                 y: number;
                 z: number;
+                copy(): any;
+                copyTo(vec3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                }): void;
+                toString(): string;
+                multiply(vec3: {
+                    x: number;
+                    y: number;
+                    z: number;
+                }): any;
             };
             getRegionIndex(): number;
             getRegionIndexXYZ(x: number, y: number, z: number): number;

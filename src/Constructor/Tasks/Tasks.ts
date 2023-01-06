@@ -1,11 +1,12 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import type {
+import {
  BuildTasks,
  ExplosionTasks,
  GenerateTasks,
  PaintTasks,
+ PriorityTask,
  UpdateTasksO,
  WorldSunTask,
 } from "Meta/Tasks/Tasks.types.js";
@@ -15,78 +16,57 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
-
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
  build: {
-  chunk: ThreadComm.registerTasks<BuildTasks>(
-   ConstructorTasks.buildChunk,
-   async (data) => {
-    const chunkPOS = WorldSpaces.chunk.getPositionXYZ(data[1],data[2],data[3]);
+  chunk: {
+   tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
+    ConstructorTasks.buildChunk,
+    async (buildData) => {
+     if (buildData.priority == 0) {
+      Tasks.build.chunk.run(buildData.data);
+      return;
+     }
+     DVEC.tasksQueue.addTasks(
+      buildData.priority,
+      buildData.data,
+      Tasks.build.chunk.run
+     );
+    }
+   ),
+   async run(data: BuildTasks) {
+    const location = data[0];
+    const chunkPOS = WorldSpaces.chunk.getPositionLocation(location);
     await DVEC.builder.buildChunk(
-     data[0],
+     location[0],
      chunkPOS.x,
      chunkPOS.y,
      chunkPOS.z,
-     data[4]
+     data[1]
     );
-   }
-  ),
+   },
+  },
   column: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildColumn,
    async (data) => {
-    const column = WorldRegister.column.get(data[0], data[1], data[3], data[2]);
+    const column = WorldRegister.column.get(data[0]);
     if (!column) return false;
     if (column.chunks.size == 0) return false;
+    const location = data[0];
     for (const [key, chunk] of column.chunks) {
      chunkTool.setChunk(chunk);
      const chunkPOS = chunkTool.getPositionData();
-     await DVEC.builder.buildChunk(
-      data[0],
-      chunkPOS.x,
-      chunkPOS.y,
-      chunkPOS.z,
-      data[4]
+     location[1] = chunkPOS.x;
+     location[2] = chunkPOS.y;
+     location[3] = chunkPOS.z;
+
+     DVEC.tasksQueue.addTasks(
+      2,
+      <BuildTasks>[[...location], data[1]],
+      Tasks.build.chunk.run
      );
     }
-   }
-  ),
-  entity: ThreadComm.registerTasks<any[]>(
-   ConstructorTasks.constructEntity,
-   (data) => {
-    const x = data[0];
-    const y = data[1];
-    const z = data[2];
-    const width = data[3];
-    const depth = data[4];
-    const height = data[5];
-    const composed = data[6];
-    const arrays: Uint32Array[] = [];
-    for (let i = 7; i < 7 + 2 * composed; i += 2) {
-     arrays.push(new Uint32Array(data[i]), new Uint32Array(data[i + 1]));
-    }
-    DVEC.builder.entityConstructor.setEntityData(
-     x,
-     y,
-     z,
-     width,
-     depth,
-     height,
-     composed,
-     arrays
-    );
-    DVEC.builder.constructEntity();
-   }
-  ),
-  item: ThreadComm.registerTasks<any[]>(
-   ConstructorTasks.constructItem,
-   (data) => {
-    const itemId = data[0];
-    const x = data[1];
-    const y = data[2];
-    const z = data[3];
-    DVEC.builder.itemMesher.createItem(itemId, x, y, z);
    }
   ),
  },
@@ -97,10 +77,55 @@ export const Tasks = {
     await EreaseAndUpdate(data);
    }
   ),
+
   paint: ThreadComm.registerTasks<PaintTasks>(
    ConstructorTasks.voxelPaint,
    async (data) => {
     await PaintAndUpdate(data);
+   }
+  ),
+ },
+ explosion: ThreadComm.registerTasks<ExplosionTasks>(
+  ConstructorTasks.explosion,
+  async (data) => {
+   await DVEC.propagation.runExplosion(data);
+  }
+ ),
+
+ worldSun: ThreadComm.registerTasks<WorldSunTask>(
+  ConstructorTasks.worldSun,
+  (data, onDone) => {
+   DVEC.tasksQueue.addTasks(2, data, () => {
+    DVEC.propagation.runWorldSun(data);
+    if (onDone) onDone();
+   });
+  },
+  "deffered"
+ ),
+ worldGen: {
+  generate: ThreadComm.registerTasks<GenerateTasks>(
+   ConstructorTasks.generate,
+   (data, onDone) => {
+    if (!onDone) return;
+    DVEC.tasksQueue.addTasks(2, data, () => {
+     DVEC.worldGen.generate(data, onDone);
+    });
+   },
+   "deffered"
+  ),
+ },
+
+ flow: {
+  update: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.flowUpdate,
+   async (data) => {
+    await DVEC.propagation.updateFlowAt(data);
+   }
+  ),
+  remove: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.flowRemove,
+   (data) => {
+    DVEC.propagation.removeFlowAt(data);
    }
   ),
  },
@@ -118,15 +143,6 @@ export const Tasks = {
    }
   ),
  },
- worldSun: {
-  run: ThreadComm.registerTasks<WorldSunTask>(
-   ConstructorTasks.worldSun,
-   (data, onDone) => {
-    DVEC.propagation.runWorldSun(data);
-    if (onDone) onDone();
-   }
-  ),
- },
  sun: {
   update: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.sunLightUpdate,
@@ -139,38 +155,6 @@ export const Tasks = {
    (data) => {
     DVEC.propagation.runSunLightRemove(data);
    }
-  ),
- },
- explosion: {
-  run: ThreadComm.registerTasks<ExplosionTasks>(
-   ConstructorTasks.explosion,
-   (data) => {
-    DVEC.propagation.runExplosion(data);
-   }
-  ),
- },
- flow: {
-  update: ThreadComm.registerTasks<UpdateTasksO>(
-   ConstructorTasks.flowUpdate,
-   async (data) => {
-    await DVEC.propagation.updateFlowAt(data);
-   }
-  ),
-  remove: ThreadComm.registerTasks<UpdateTasksO>(
-   ConstructorTasks.flowRemove,
-   (data) => {
-    DVEC.propagation.removeFlowAt(data);
-   }
-  ),
- },
- worldGen: {
-  generate: ThreadComm.registerTasks<GenerateTasks>(
-   ConstructorTasks.generate,
-   (data, onDone) => {
-    if (!onDone) return;
-    DVEC.worldGen.generate(data, onDone);
-   },
-   "deffered"
   ),
  },
 };

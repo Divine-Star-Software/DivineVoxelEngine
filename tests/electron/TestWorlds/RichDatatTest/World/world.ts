@@ -62,7 +62,7 @@ const pickedVector = VoxelMath.getVector3(0, 0, 0);
 
 const dataTool = DVEW.getDataTool();
 DVEW.parentComm.listenForMessage("pick-voxel", (data) => {
- if (!dataTool.loadIn(pickedVector.x, pickedVector.y, pickedVector.z)) return;
+ if (!dataTool.loadInAt(pickedVector.x, pickedVector.y, pickedVector.z)) return;
  if (!dataTool.isRenderable()) return;
  const voxel = dataTool.getStringId();
  const voxelData = DVEW.voxelManager.getVoxelData(voxel);
@@ -91,7 +91,7 @@ setInterval(() => {
   const y = voxels[i + 1];
   const z = voxels[i + 2];
 
-  if (!dataTool.loadIn(x, y, z)) continue;
+  if (!dataTool.loadInAt(x, y, z)) continue;
   if (!dataTool.isRenderable()) continue;
 
   pickedVector.updateVector(x, y, z);

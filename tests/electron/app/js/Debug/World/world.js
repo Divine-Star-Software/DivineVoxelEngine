@@ -1,5 +1,4 @@
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
-import { CrystalCompressor } from "../../Libs/CC/index.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
@@ -54,14 +53,3 @@ for (let x = -64; x <= -32; x += 16) {
 GetAnalyzerCubeWorld(DVEW);
 self.DVEW = DVEW;
 self.dataTool = dataTool;
-const chunkTool = DVEW.getChunkDataTool();
-const test = async () => {
-    chunkTool.loadIn(0, 0, 0);
-    const chunk = chunkTool.getAsArrayBuffer();
-    console.log(chunk);
-    if (!chunk)
-        return;
-    const compressed = await CrystalCompressor.compressArray(new Uint8Array(chunk));
-    console.log(compressed);
-};
-self.test = test;

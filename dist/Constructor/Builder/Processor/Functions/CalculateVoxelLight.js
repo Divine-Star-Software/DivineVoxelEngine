@@ -275,7 +275,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     let faceIndex = 0;
     for (const point of $3dCardinalNeighbors) {
         if (data.exposedFaces[faceIndex]) {
-            this.nDataTool.loadIn(point[0] + tx, point[1] + ty, point[2] + tz);
+            this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
             currentVoxelData.light = this.nDataTool.getLight();
             if (currentVoxelData.light < 0) {
                 if (currentLight >= 0) {
@@ -429,7 +429,7 @@ export function VoxelLightMixCalc(face, x, y, z, checkSet, vertex, LOD = 1) {
         const cy = checkSet[i + 1] * LOD + y;
         const cz = checkSet[i + 2] * LOD + z;
         if (this.settings.doRGB || this.settings.doSun) {
-            if (!this.nDataTool.loadIn(cx, cy, cz))
+            if (!this.nDataTool.loadInAt(cx, cy, cz))
                 continue;
             const nl = this.nDataTool.getLight();
             if (nl != -1) {

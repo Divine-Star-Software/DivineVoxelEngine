@@ -17,7 +17,9 @@ export declare class IWG {
             queue: string;
         };
         _thread: string;
-        setFocalPoint(x: number, y: number, z: number, dimension?: string): void;
+        _priority: import("../../../Meta/Tasks/Tasks.types").Priorities;
+        setPriority(priority: import("../../../Meta/Tasks/Tasks.types").Priorities): any;
+        setFocalPoint(location: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types").LocationData): any;
         generate: {
             async: {
                 _s: any;

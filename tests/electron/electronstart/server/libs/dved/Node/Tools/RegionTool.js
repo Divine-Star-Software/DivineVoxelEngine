@@ -1,38 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegionTool = void 0;
-var DVEDSystem_js_1 = require("../DVEDSystem.js");
-var DivineVoxelEngineData_js_1 = require("../DivineVoxelEngineData.js");
-var DVED_constants_js_1 = require("../Constants/DVED.constants.js");
-var System_js_1 = require("../System/System.js");
-var getTagIndex = function (id, location) {
-    var columnIndex = DivineVoxelEngineData_js_1.DVED.spaces.column.getIndexXYZ(location[1], location[2], location[3]);
-    return DivineVoxelEngineData_js_1.DVED.regionTags.getArrayTagByteIndex(id, columnIndex);
-};
-var RegionTool = /** @class */ (function () {
-    function RegionTool() {
-        this.location = ["main", 0, 0, 0];
-        this.dimension = "";
-        this.previousDimension = "";
-        this.path = "";
-        this.fileName = "";
-        this.dataType = "world-data";
-    }
-    RegionTool.prototype.setPath = function (path) {
-        this.path = path;
-        return this;
-    };
-    RegionTool.prototype.setDataType = function (dataTypes) {
+const DivineVoxelEngineData_js_1 = require("../DivineVoxelEngineData.js");
+const System_js_1 = require("../System/System.js");
+const RegionSystem_js_1 = require("../System/RegionSystem.js");
+const DVED_util_js_1 = require("../Util/DVED.util.js");
+const SystemPath_js_1 = require("../System/SystemPath.js");
+class RegionTool {
+    location = ["main", 0, 0, 0];
+    dimension = "";
+    previousDimension = "";
+    path = "";
+    fileName = "";
+    dataType = "world-data";
+    setDataType(dataTypes) {
         this.dataType = dataTypes;
         this._setFileName();
         return this;
-    };
-    RegionTool.prototype.setLocation = function (location) {
+    }
+    setLocation(location) {
         this.location = location;
         this.dimension = location[0];
+        this.path = SystemPath_js_1.SystemPath.getDataDirectory();
         this._setFileName();
         if (location[0] != this.previousDimension) {
-            DVEDSystem_js_1.DVEDSystem.mkdirs([
+            System_js_1.System.mkdirs([
                 this._dimensionPath(),
                 this._getDataPath("world-data"),
                 this._getDataPath("rich-data"),
@@ -41,123 +33,106 @@ var RegionTool = /** @class */ (function () {
             ]);
         }
         return this;
-    };
-    RegionTool.prototype.getCurrentPath = function () {
+    }
+    getCurrentPath() {
         return this._getDataPath(this.dataType, this.fileName);
-    };
-    RegionTool.prototype._dimensionPath = function (dataPath) {
-        if (dataPath === void 0) { dataPath = ""; }
-        return "".concat(this.path, "/").concat(this.dimension, "/").concat(dataPath);
-    };
-    RegionTool.prototype._getDataPath = function (dataType, fileName) {
-        if (fileName === void 0) { fileName = ""; }
-        return this._dimensionPath("".concat(dataType, "/").concat(fileName));
-    };
-    RegionTool.prototype._setFileName = function () {
-        var regionPOS = DivineVoxelEngineData_js_1.DVED.spaces.region.getPositionXYZ(this.location[1], this.location[2], this.location[3]);
-        this.fileName = "region_".concat(this.dataType.replace("-", "_"), "_").concat(this.dimension, "_").concat(regionPOS.x, "_").concat(regionPOS.y, "_").concat(regionPOS.z, ".dved");
-    };
-    RegionTool.prototype.regionExists = function () {
-        var file = System_js_1.System.openFile(this.getCurrentPath());
+    }
+    _getSwapPath() {
+        return this._getDataPath(this.dataType, "swap-" + this.fileName);
+    }
+    _dimensionPath(dataPath = "") {
+        return `${this.path}/${this.dimension}/${dataPath}`;
+    }
+    _getDataPath(dataType, fileName = "") {
+        return this._dimensionPath(`${dataType}/${fileName}`);
+    }
+    _setFileName() {
+        const regionPOS = DivineVoxelEngineData_js_1.DVED.spaces.region.getPositionXYZ(this.location[1], this.location[2], this.location[3]);
+        this.fileName = `region_${this.dataType.replace("-", "_")}_${this.dimension}_${regionPOS.x}_${regionPOS.y}_${regionPOS.z}.dved`;
+    }
+    regionExists() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
         if (file)
             file.close();
         return Boolean(file);
-    };
-    RegionTool.prototype.createRegion = function (buffer) {
-        if (buffer === void 0) { buffer = new ArrayBuffer(DivineVoxelEngineData_js_1.DVED.regionTags.tagSize); }
-        return DVEDSystem_js_1.DVEDSystem.createFileSync(this.getCurrentPath(), buffer);
-    };
-    RegionTool.prototype.regionHasColumn = function () {
-        var timeStamp = this.getColumnTimestamp();
+    }
+    createRegion() {
+        return System_js_1.System.sync.createFile(this.getCurrentPath(), DVED_util_js_1.RegionData.headByteSize);
+    }
+    regionHasColumn() {
+        const timeStamp = this.getColumnTimestamp();
         return timeStamp > 0;
-    };
-    RegionTool.prototype.getColumnTimestamp = function () {
-        var file = System_js_1.System.openFile(this.getCurrentPath());
+    }
+    getAllColumns() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
         if (!file)
             return false;
-        var timeStampData = file.read(getTagIndex("#dved-column-save-timestamp", this.location), 4);
-        file.close();
-        if (!timeStampData)
-            return false;
-        var timeStamp = new Uint32Array(timeStampData)[0];
-        return timeStamp;
-    };
-    RegionTool.prototype.loadColumn = function () {
-        var file = System_js_1.System.openFile(this.getCurrentPath());
-        if (!file)
+        return RegionSystem_js_1.RegionSystem._getAllColumns(file);
+    }
+    copyToNewfile() {
+        const swapFile = System_js_1.System.sync.createAndOpenFile(this._getSwapPath(), DVED_util_js_1.RegionData.headByteSize);
+        if (!swapFile)
             return;
-        var sectorIndexData = file.read(getTagIndex("#dved-column-sector-index", this.location), 2);
-        var sectorIndex = 0;
-        if (!sectorIndexData) {
+        const columns = this.getAllColumns();
+        if (!columns)
+            return;
+        for (const column of columns) {
+            RegionSystem_js_1.RegionSystem.saveColumn(swapFile, column[0], column[1]);
+        }
+    }
+    getColumnTimestamp() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
+        if (!file)
             return false;
-        }
-        else {
-            sectorIndex = new Uint16Array(sectorIndexData)[0];
-        }
-        var columnLengthData = file.read(getTagIndex("#dved-column-legnth-index", this.location), 2);
-        var columnLength = 0;
-        if (!columnLengthData) {
-            return false;
-        }
-        else {
-            columnLength = new Uint16Array(columnLengthData)[0];
-        }
-        var data = file.read(DVED_constants_js_1.SecotrData.getSectorByteIndex(sectorIndex), columnLength);
+        const timeStamp = RegionSystem_js_1.RegionSystem.timeStamp.get(file, RegionSystem_js_1.RegionSystem._getIndex(this.location));
         file.close();
-        return data;
-    };
-    RegionTool.prototype._processInput = function (buffer) {
-        if (buffer instanceof ArrayBuffer)
-            return buffer;
-        if (ArrayBuffer.isView(buffer))
-            return buffer.buffer;
-        var newBuf = new ArrayBuffer(buffer.length);
-        var array = new Uint8Array(newBuf);
-        var i = newBuf.byteLength;
-        while (i--) {
-            array[i] = buffer.charCodeAt(i);
-        }
-        return newBuf;
-    };
-    RegionTool.prototype.getHeader = function () {
+        return !timeStamp ? 0 : timeStamp;
+    }
+    getSectorIndex() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
+        if (!file)
+            return false;
+        const index = RegionSystem_js_1.RegionSystem.sectorIndex.get(file, RegionSystem_js_1.RegionSystem._getIndex(this.location));
+        file.close();
+        return !index ? 0 : index;
+    }
+    getColumnDataLength() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
+        if (!file)
+            return false;
+        const length = RegionSystem_js_1.RegionSystem.columnLength.get(file, RegionSystem_js_1.RegionSystem._getIndex(this.location));
+        file.close();
+        return !length ? 0 : length;
+    }
+    getHeader() {
         if (!this.regionExists()) {
             this.createRegion();
         }
-        var file = System_js_1.System.openFile(this.getCurrentPath());
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
         if (!file)
-            return;
-        var buffer = file.read(0, DivineVoxelEngineData_js_1.DVED.regionTags.tagSize);
+            return false;
+        const buffer = RegionSystem_js_1.RegionSystem.getHeader(file);
         file.close();
         return buffer;
-    };
-    RegionTool.prototype.saveColumn = function (buffer) {
+    }
+    loadColumn() {
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
+        if (!file)
+            return false;
+        const data = RegionSystem_js_1.RegionSystem.loadColumn(file, this.location);
+        file.close();
+        return data;
+    }
+    saveColumn(buffer) {
         if (!this.regionExists()) {
             this.createRegion();
         }
-        var file = System_js_1.System.openFile(this.getCurrentPath());
+        const file = System_js_1.System.sync.openFile(this.getCurrentPath());
         if (!file)
-            return;
-        var currentSize = file.getSize();
-        buffer = this._processInput(buffer);
-        var columnSectorIndex = getTagIndex("#dved-column-sector-index", this.location);
-        var sectorIndexData = file.read(columnSectorIndex, 2);
-        var sectorIndex = 0;
-        if (!sectorIndexData) {
-        }
-        else {
-            sectorIndex = new Uint16Array(sectorIndexData)[0];
-        }
-        if (!sectorIndex) {
-            sectorIndex = DVED_constants_js_1.SecotrData.getTotalSectorsInFile(currentSize);
-            file.write(columnSectorIndex, new Uint16Array([sectorIndex]).buffer);
-        }
-        var sectorByteIndex = DVED_constants_js_1.SecotrData.getSectorByteIndex(sectorIndex);
-        file.clear(sectorByteIndex, DVED_constants_js_1.SecotrData.getTotalBytesNeeded(buffer.byteLength));
-        file.write(sectorByteIndex, buffer);
-        file.write(getTagIndex("#dved-column-legnth-index", this.location), new Uint16Array([buffer.byteLength]).buffer);
-        file.write(getTagIndex("#dved-column-save-timestamp", this.location), new Uint32Array([Date.now()]).buffer);
+            return false;
+        RegionSystem_js_1.RegionSystem.saveColumn(file, this.location, buffer);
         file.close();
-    };
-    return RegionTool;
-}());
+        return true;
+    }
+}
 exports.RegionTool = RegionTool;

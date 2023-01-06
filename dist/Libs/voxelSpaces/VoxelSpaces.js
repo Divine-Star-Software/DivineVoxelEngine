@@ -10,6 +10,9 @@ export const VoxelSpaces = {
         getIndex() {
             return 0;
         },
+        getPostionFromIndex(space, index) {
+            return space._position;
+        },
     }),
     getVoxelSpaces() {
         const regionSpace = merge(new VoxelSpace({
@@ -19,6 +22,9 @@ export const VoxelSpaces = {
             getIndex(space) {
                 return -Infinity;
             },
+            getPostionFromIndex(space, index) {
+                return space._position;
+            },
         }), {
             chunkBounds: { x: 0, y: 0, z: 0 },
             columnBounds: { x: 0, y: 0, z: 0 },
@@ -26,7 +32,7 @@ export const VoxelSpaces = {
                 return this.chunkBounds.x * this.chunkBounds.y * this.chunkBounds.z;
             },
             getColumnVolume() {
-                return this.columnBounds.x * this.columnBounds.y * this.columnBounds.z;
+                return (this.columnBounds.x * this.columnBounds.y * this.columnBounds.z);
             },
         });
         const columnSpace = new VoxelSpace({
@@ -36,6 +42,9 @@ export const VoxelSpaces = {
             getIndex(space) {
                 return VoxelSpace.getIndex(VoxelSpace.spatialHash(space, regionSpace, space._bounds), regionSpace.columnBounds);
             },
+            getPostionFromIndex(space, index) {
+                return VoxelSpace.getPositionFromIndex(space._position, regionSpace.columnBounds, index).multiply(space._bounds);
+            },
         });
         const chunkSpace = merge(new VoxelSpace({
             getPosition(space) {
@@ -44,8 +53,12 @@ export const VoxelSpaces = {
             getIndex(space) {
                 const ry = (space._position.y >> regionSpace._boundsPower2.y) <<
                     regionSpace._boundsPower2.y;
-                const cy = (space._position.y >> space._boundsPower2.y) << space._boundsPower2.y;
+                const cy = (space._position.y >> space._boundsPower2.y) <<
+                    space._boundsPower2.y;
                 return (cy - ry) / space._bounds.y;
+            },
+            getPostionFromIndex(space, index) {
+                return VoxelSpace.getPositionFromIndex(space._position, regionSpace.chunkBounds, index).multiply(space._bounds);
             },
         }), {
             _regionPosition: { x: 0, y: 0, z: 0 },
@@ -75,6 +88,9 @@ export const VoxelSpaces = {
             getIndex(space) {
                 return VoxelSpace.getIndex(space._hashedPosition, space._bounds);
             },
+            getPostionFromIndex(space, index) {
+                return VoxelSpace.getPositionFromIndex(space._position, chunkSpace._bounds, index);
+            },
         });
         return {
             region: regionSpace,
@@ -86,12 +102,18 @@ export const VoxelSpaces = {
                 columnSpace.setCubeBounds(data.columns);
                 chunkSpace.setCubeBounds(data.chunks);
                 voxelSpace.setCubeBounds(data.chunks);
-                regionSpace.chunkBounds.x = regionSpace._bounds.x / chunkSpace._bounds.x;
-                regionSpace.chunkBounds.y = regionSpace._bounds.y / chunkSpace._bounds.y;
-                regionSpace.chunkBounds.z = regionSpace._bounds.z / chunkSpace._bounds.z;
-                regionSpace.columnBounds.x = regionSpace._bounds.x / columnSpace._bounds.x;
-                regionSpace.columnBounds.y = regionSpace._bounds.y / columnSpace._bounds.y;
-                regionSpace.columnBounds.z = regionSpace._bounds.z / columnSpace._bounds.z;
+                regionSpace.chunkBounds.x =
+                    regionSpace._bounds.x / chunkSpace._bounds.x;
+                regionSpace.chunkBounds.y =
+                    regionSpace._bounds.y / chunkSpace._bounds.y;
+                regionSpace.chunkBounds.z =
+                    regionSpace._bounds.z / chunkSpace._bounds.z;
+                regionSpace.columnBounds.x =
+                    regionSpace._bounds.x / columnSpace._bounds.x;
+                regionSpace.columnBounds.y =
+                    regionSpace._bounds.y / columnSpace._bounds.y;
+                regionSpace.columnBounds.z =
+                    regionSpace._bounds.z / columnSpace._bounds.z;
             },
         };
     },
@@ -106,6 +128,9 @@ export const VoxelSpaces = {
             },
             getIndex(space) {
                 return VoxelSpace.getIndex(space._hashedPosition, space._bounds);
+            },
+            getPostionFromIndex(space, index) {
+                return space._position;
             },
         });
         space.setBounds(dimensions);

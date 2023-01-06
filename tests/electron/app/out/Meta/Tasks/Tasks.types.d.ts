@@ -1,57 +1,38 @@
-import { LocationData } from "Meta/Data/CommonTypes";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 import { RawVoxelData } from "Meta/index";
+export declare type Priorities = 0 | 1 | 2 | 3;
+export declare type PriorityTask<T> = {
+    data: T;
+    priority: Priorities;
+};
 export declare type LightUpdateTask = [number, number, number];
-export declare type WorldSunTask = [
-    dimension: string,
-    x: number,
-    z: number,
-    y: number,
-    originThread: string
-];
-export declare type UpdateTasksO = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
+export declare type WorldSunTask = [location: LocationData, originThread: string];
+export declare type UpdateTasks = [
+    location: LocationData,
     buildQueue: string,
     originThread: string
 ];
 export declare type PaintTasks = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
+    location: LocationData,
     raw: RawVoxelData,
     buildQueue: string,
     originThread: string
 ];
-export declare type ReBuildTasks = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
-    buildQueue: string
+export declare type UpdateTasksO = [
+    location: LocationData,
+    buildQueue: string,
+    originThread: string
+];
+export declare type AddToRebuildQueue = [
+    location: LocationData,
+    buildQueue: string,
+    priority: Priorities
 ];
 export declare type RunRebuildTasks = [buildQueue: string];
-export declare type BuildTasks = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
-    LOD: number
-];
-export declare type GenerateTasks = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
-    data: any
-];
+export declare type BuildTasks = [location: LocationData, LOD: number];
+export declare type GenerateTasks = [location: LocationData, data: any];
 export declare type ExplosionTasks = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
+    location: LocationData,
     radius: number,
     buildQueue: string,
     originThread: string

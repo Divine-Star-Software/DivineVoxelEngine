@@ -1,18 +1,13 @@
 import type { RemoteTagManager } from "Libs/DivineBinaryTags/RemoteTagManager";
 import type { LocationData } from "Meta/Data/CommonTypes";
-export declare class DataToolWorldBound {
-    dimension: string;
-    position: {
-        x: number;
-        y: number;
-        z: number;
-    };
+export declare class LocationBoundTool {
+    location: LocationData;
     setDimension(dimensionId: string): this;
     getLocation(): LocationData;
     setPosition(x: number, y: number, z: number): this;
     setLocation(location: LocationData): this;
 }
-export declare class DataToolBase extends DataToolWorldBound {
+export declare class DataToolBase extends LocationBoundTool {
     tags: RemoteTagManager;
     _c: ArrayBuffer | SharedArrayBuffer | DataView;
     constructor();
@@ -26,6 +21,11 @@ export declare class DataToolBase extends DataToolWorldBound {
     getBufferSize(): number;
 }
 export declare class PositionBoundDataTool extends DataToolBase {
+    position: {
+        x: number;
+        y: number;
+        z: number;
+    };
     constructor();
     getPositionData(): {
         x: number;

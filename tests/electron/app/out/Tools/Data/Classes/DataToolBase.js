@@ -1,35 +1,29 @@
 import { Util } from "../../../Global/Util.helper.js";
 import { DimensionsRegister } from "../../../Data/World/Dimensions/DimensionsRegister.js";
-export class DataToolWorldBound {
-    dimension = "main";
-    position = {
-        x: 0,
-        y: 0,
-        z: 0,
-    };
+export class LocationBoundTool {
+    location = ["main", 0, 0, 0];
     setDimension(dimensionId) {
-        this.dimension = dimensionId;
+        this.location[0] = dimensionId;
         return this;
     }
     getLocation() {
-        const pos = this.position;
-        return [this.dimension, pos.x, pos.y, pos.z];
+        return this.location;
     }
     setPosition(x, y, z) {
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
+        this.location[1] = x;
+        this.location[2] = y;
+        this.location[3] = z;
         return this;
     }
     setLocation(location) {
-        this.dimension = location[0];
-        this.position.x = location[1];
-        this.position.y = location[2];
-        this.position.z = location[3];
+        this.location[0] = location[0];
+        this.location[1] = location[1];
+        this.location[2] = location[2];
+        this.location[3] = location[3];
         return this;
     }
 }
-export class DataToolBase extends DataToolWorldBound {
+export class DataToolBase extends LocationBoundTool {
     tags;
     _c;
     constructor() {
@@ -68,6 +62,7 @@ export class DataToolBase extends DataToolWorldBound {
     }
 }
 export class PositionBoundDataTool extends DataToolBase {
+    position = { x: 0, y: 0, z: 0 };
     constructor() {
         super();
     }
