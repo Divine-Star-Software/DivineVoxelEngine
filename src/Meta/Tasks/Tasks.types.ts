@@ -52,3 +52,28 @@ export type LoadRegionHeadertasks = [
  location: LocationData,
  data: SharedArrayBuffer
 ];
+
+export type RequestLightUpdateQueueData = {
+ rgb: {
+  update: number[][];
+  rmeove: number[][];
+ };
+ sun: {
+  update: number[][];
+  rmeove: number[][];
+ };
+};
+
+export type RequestFlowUpdateQueueData = {
+ flow: {
+  update: number[][];
+  rmeove: number[][];
+ };
+} & RequestLightUpdateQueueData;
+
+export type RequestsVoxelUpdateQueuesData = {
+ flow: {
+  update: number[][];
+  rmeove: number[][];
+ };
+} & RequestLightUpdateQueueData;

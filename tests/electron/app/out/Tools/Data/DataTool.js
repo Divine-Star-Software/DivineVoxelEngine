@@ -29,8 +29,7 @@ export class DataTool extends DataToolBase {
     __secondary = false;
     tags = VoxelTags;
     setDimension(dimensionId) {
-        this.location[0] =
-            DimensionsRegister.getDimensionStringId(dimensionId);
+        this.location[0] = DimensionsRegister.getDimensionStringId(dimensionId);
         return this;
     }
     setSecondary(enable) {
@@ -69,6 +68,7 @@ export class DataTool extends DataToolBase {
         VoxelTags.setVoxel(this.data.baseId);
     }
     loadIn() {
+        this._c = this.tags.data;
         if (this._mode == "World") {
             if (!DataTool._chunkTool.setLocation(this.location).loadIn())
                 return false;
@@ -85,7 +85,6 @@ export class DataTool extends DataToolBase {
         }
     }
     loadInAt(x, y, z) {
-        this._c = this.tags.data;
         this.setXYZ(x, y, z);
         return this.loadIn();
     }

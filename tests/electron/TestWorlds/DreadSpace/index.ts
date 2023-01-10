@@ -42,7 +42,7 @@ await DVER.$INIT({
   maxY: 100,
  },
 });
-SyncWithGraphicsSettings(DVER);
+
 
 DVER.renderManager.updateFogOptions({
  color: new BABYLON.Vector3(0.1, 0.1, 0.1),

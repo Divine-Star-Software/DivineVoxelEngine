@@ -29,7 +29,7 @@ await DVER.$INIT({
   autoSunLight: false,
  },
 });
-SyncWithGraphicsSettings(DVER);
+
 const setUpLightAndShadows = (scene: BABYLON.Scene) => {
  const light = new BABYLON.DirectionalLight(
   "light",

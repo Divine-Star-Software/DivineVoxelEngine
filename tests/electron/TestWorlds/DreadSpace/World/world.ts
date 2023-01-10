@@ -28,5 +28,5 @@ for (let x = startX; x < endX; x += 16) {
 
 await tasks.light.rgb.update.runAndAwait();
 await tasks.build.chunk.runAndAwait();
-await tasks.flow.update.runAndAwait();
+//await tasks.flow.update.runAndAwait();
 (self as any).DVEW = DVEW;

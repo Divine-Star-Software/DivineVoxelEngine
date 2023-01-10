@@ -38,8 +38,7 @@ export class DataTool extends DataToolBase {
  tags = VoxelTags;
 
  setDimension(dimensionId: string | number) {
-  this.location[0] =
-   DimensionsRegister.getDimensionStringId(dimensionId);
+  this.location[0] = DimensionsRegister.getDimensionStringId(dimensionId);
   return this;
  }
 
@@ -81,6 +80,7 @@ export class DataTool extends DataToolBase {
  }
 
  loadIn() {
+  this._c = this.tags.data;
   if (this._mode == "World") {
    if (!DataTool._chunkTool.setLocation(this.location).loadIn()) return false;
 
@@ -114,8 +114,7 @@ export class DataTool extends DataToolBase {
  }
 
  loadInAt(x: number, y: number, z: number) {
-  this._c = this.tags.data;
-  this.setXYZ(x,y,z);
+  this.setXYZ(x, y, z);
   return this.loadIn();
  }
  commit(heightMapUpdate = 0) {
@@ -165,8 +164,8 @@ export class DataTool extends DataToolBase {
       "add",
       substance,
       this.location[1],
-     this.location[2],
-     this.location[3]
+      this.location[2],
+      this.location[3]
      );
     }
     //on remove

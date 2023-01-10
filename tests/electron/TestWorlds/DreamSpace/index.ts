@@ -47,7 +47,7 @@ await DVER.$INIT({
  },
 });
 
-SyncWithGraphicsSettings(DVER);
+
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);

@@ -41,7 +41,6 @@ await DVER.$INIT({
  },
 });
 
-SyncWithGraphicsSettings(DVER);
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
@@ -63,6 +62,7 @@ const init = async () => {
  await InitalizeAudio();
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
+ SyncWithGraphicsSettings(DVER);
  DVER.renderManager.setBaseLevel(1);
 
  const hemLight = new BABYLON.HemisphericLight(
@@ -100,8 +100,7 @@ const init = async () => {
  const debugCube = GetAnalyzerCubeRender(DVER, camera);
  (window as any).debugCube = debugCube;
 
- 
- runRenderLoop(engine, scene, {position : truePosition}, DVER);
+ runRenderLoop(engine, scene, { position: truePosition }, DVER);
 };
 (window as any).DVER = DVER;
 RunInit(init);

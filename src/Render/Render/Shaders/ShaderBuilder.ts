@@ -14,6 +14,8 @@ import { VoxelShaders } from "./Code/Voxel/VoxelShader.js";
  * Helps construct raw text shaders.
  */
 export const ShaderBuilder = {
+
+  voxelShaders : VoxelShaders,
  buildVertexShader(
   data: VertexShaderCreateData,
   setPosition: string,

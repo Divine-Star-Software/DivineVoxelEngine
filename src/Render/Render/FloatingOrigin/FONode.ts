@@ -11,7 +11,7 @@ export class FONode extends BABYLON.TransformNode {
     }
 
     // This is called automatically by OriginCamera
-    public update(cam: FOCamera): void {
-        this.position = this.doublepos.subtract(cam.doublepos);
+    public update(vec3 : BABYLON.Vector3): void {
+        this.position = this.doublepos.subtract(vec3);
     }
 }

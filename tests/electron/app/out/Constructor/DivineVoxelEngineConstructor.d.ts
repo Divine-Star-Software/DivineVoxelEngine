@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -47,166 +47,393 @@ export declare const DVEC: {
         saveWorldData(): boolean;
     };
     propagation: {
-        illumination: {
-            lightData: {
-                SRS: number;
-                _lightValues: [s: number, r: number, g: number, b: number];
-                getS(value: number): number;
-                getR(value: number): number;
-                getG(value: number): number;
-                getB(value: number): number;
-                setS(value: number, sl: number): number;
-                setR(value: number, sl: number): number;
-                setG(value: number, sl: number): number;
-                setB(value: number, sl: number): number;
-                removeS(sl: number): number;
-                hasRGBLight(sl: number): boolean;
-                getRGB(sl: number): number;
-                setRGB(value: number, sl: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                setLightValues(values: number[]): number;
-                getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                getMinusOneForRGB(sl: number, nl: number): number;
-                removeRGBLight(sl: number): number;
-                getFullSunLight(sl: number): number;
-                isLessThanForSunAdd(n1: number, n2: number): boolean;
-                isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                getSunLightForUnderVoxel(sl: number, nl: number): number;
-                getMinusOneForSun(sl: number, nl: number): number;
-                isLessThanForSunRemove(n1: number, sl: number): boolean;
-                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                removeSunLight(sl: number): number;
-                minusOneForAll(sl: number): number;
-            };
-            runSunLightUpdateAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdateAt;
-            runSunLightUpdate: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightUpdate;
-            runSunLightRemove: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemove;
-            runSunLightRemoveAt: typeof import("./Propagation/Illumanation/Functions/SunLight.js").runSunLightRemoveAt;
-            _sunLightUpdate: import("../Global/Util/Queue.js").Queue<number[]>;
-            _sunLightRemove: number[][];
-            runWorldSun: typeof import("./Propagation/Illumanation/Functions/WorldSun.js").RunWorldSun;
-            _worldSunQueue: number[][];
-            runRGBUpdateAt: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBUpdateAt;
-            runRGBUpdate: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBUpdate;
-            runRGBRemoveAt: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBRemoveAt;
-            runRGBRemove: typeof import("./Propagation/Illumanation/Functions/RGBLight.js").runRGBRemove;
-            _RGBlightUpdateQ: number[][];
-            _RGBlightRemovalQ: number[][];
-            _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
-            _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
-            addToRebuildQue(x: number, y: number, z: number): void;
+        $INIT(): void;
+        expolosion: {
+            run(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: number;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    flow: {
+                        update: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                        rmeove: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                            noRemoveMap: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                    };
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    queue: [x: number, y: number, z: number][];
+                    map: {
+                        _map: Map<string, boolean>;
+                        _getKey(x: number, y: number, z: number): string;
+                        inMap(x: number, y: number, z: number): boolean;
+                        add(x: number, y: number, z: number): void;
+                        clear(): void;
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): number;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
         };
         flow: {
-            lightData: {
-                SRS: number;
-                _lightValues: [s: number, r: number, g: number, b: number];
-                getS(value: number): number;
-                getR(value: number): number;
-                getG(value: number): number;
-                getB(value: number): number;
-                setS(value: number, sl: number): number;
-                setR(value: number, sl: number): number;
-                setG(value: number, sl: number): number;
-                setB(value: number, sl: number): number;
-                removeS(sl: number): number;
-                hasRGBLight(sl: number): boolean;
-                getRGB(sl: number): number;
-                setRGB(value: number, sl: number): number;
-                decodeLightFromVoxelData(voxelData: number): number;
-                encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                setLightValues(values: number[]): number;
-                getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                getMinusOneForRGB(sl: number, nl: number): number;
-                removeRGBLight(sl: number): number;
-                getFullSunLight(sl: number): number;
-                isLessThanForSunAdd(n1: number, n2: number): boolean;
-                isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                getSunLightForUnderVoxel(sl: number, nl: number): number;
-                getMinusOneForSun(sl: number, nl: number): number;
-                isLessThanForSunRemove(n1: number, sl: number): boolean;
-                isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                removeSunLight(sl: number): number;
-                minusOneForAll(sl: number): number;
-            };
-            dimension: string;
-            currentVoxel: number;
-            _visitedMap: Map<string, boolean>;
-            _removeMap: Map<string, boolean>;
-            _flowQue: number[][];
-            _flowRemoveQue: number[][];
-            _brush: import("../Tools/Brush/Brush.js").BrushTool;
-            _sDataTool: import("../Tools/Data/DataTool.js").DataTool;
-            _nDataTool: import("../Tools/Data/DataTool.js").DataTool;
-            runRemovePropagation: typeof import("./Propagation/Flow/Functions/RunFlowRemove.js").RunRemovePropagation;
-            runFlowReduce: typeof import("./Propagation/Flow/Functions/RunFlowRemove.js").RunFlowReduce;
-            runFlowRemove: typeof import("./Propagation/Flow/Functions/RunFlowRemove.js").RunFlowRemove;
-            runFlow: typeof import("./Propagation/Flow/Functions/RunFlow.js").RunFlow;
-            runFlowNoChunkRebuild: typeof import("./Propagation/Flow/Functions/RunFlowNoChunkBuild.js").RunFlowNoChunkBuild;
-            runFlowIncrease: typeof import("./Propagation/Flow/Functions/RunFlow.js").RunFlowIncrease;
-            runFlowPropagation: typeof import("./Propagation/Flow/Functions/RunFlow.js").RunFlowPropagation;
-            rebuildQue: number[][];
-            rebuildMap: Record<string, boolean>;
-            addToMap(x: number, y: number, z: number): void;
-            inMap(x: number, y: number, z: number): boolean;
-            addToRemoveMap(x: number, y: number, z: number): void;
-            inRemoveMap(x: number, y: number, z: number): boolean;
-            removeFromRemoveMap(x: number, y: number, z: number): boolean;
-            setVoxel(level: number, levelState: number, x: number, y: number, z: number): void;
-            removeVoxel(x: number, y: number, z: number): void;
-            flowOutCheck(l: number, nl: number, ns: number, x: number, y: number, z: number): void;
-            runRemoveCheck(x: number, y: number, z: number): void;
-            setCurrentVoxel(x: number, y: number, z: number): boolean;
-            runRebuildQue(): void;
-            __addToRebuildQue(x: number, y: number, z: number): void;
-            resetRebuildQue(): void;
-            addToRebuildQue(x: number, y: number, z: number, sync?: boolean): void;
-            setLevel(level: number, x: number, y: number, z: number): void;
-            getLevel(x: number, y: number, z: number): number;
-            getLevelState(x: number, y: number, z: number): number;
-            canFlowOutwardTest(x: number, y: number, z: number): boolean;
-            flowDownTest(x: number, y: number, z: number): boolean;
-            wait(ms: number): Promise<unknown>;
-            _lightValues: [s: number, r: number, g: number, b: number];
-            getAbsorbLight(x: number, y: number, z: number): number;
-            sunCheck(x: number, y: number, z: number): void;
+            update(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: null;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    flow: {
+                        update: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                        rmeove: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                            noRemoveMap: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                    };
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): null;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
+            remove(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: null;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    flow: {
+                        update: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                        rmeove: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                            noRemoveMap: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                    };
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): null;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
         };
-        explosion: {
-            _queue: number[][];
-            _visitedMap: Map<string, boolean>;
-            addToMap(x: number, y: number, z: number): void;
-            inMap(x: number, y: number, z: number): boolean;
-            runExplosion(dimension: string, sx: number, sy: number, sz: number, radius: number): void;
+        worldSun: {
+            run(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: null;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    sun: [x: number, y: number, z: number][];
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): null;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
         };
-        rebuildQueMap: Map<string, Map<string, boolean>>;
-        $INIT(): void;
-        _dimension: string;
-        _buildQueue: string;
-        _priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
-        setPriority(priority?: import("../Meta/Tasks/Tasks.types.js").Priorities): void;
-        addToRebuildQue(x: number, y: number, z: number, substance: import("Meta/index.js").VoxelSubstanceType | "all"): void;
-        setBuildData(dimension: string, buildQueue: string): void;
-        _process(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
-        resetRebuildQue(): void;
-        runRebuildQue(): void;
-        runRGBUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
-        runRGBRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
-        runSunLightUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
-        runSunLightRemove(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): void;
-        updateFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
-        removeFlowAt(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
-        runExplosion(data: import("../Meta/Tasks/Tasks.types.js").ExplosionTasks): void;
-        runWorldSun(data: import("../Meta/Tasks/Tasks.types.js").WorldSunTask): void;
+        rgb: {
+            update(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: any;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): any;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
+            remove(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: any;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): any;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
+        };
+        sun: {
+            update(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: any;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): any;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
+            remove(tasks: {
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: any;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): any;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
+            }): void;
+        };
     };
     worldGen: {
         worldGen: import("../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
@@ -450,8 +677,18 @@ export declare const DVEC: {
         dimension: number;
         $INIT(): Promise<void>;
         syncSettings(settings: EngineSettingsData): void;
-        buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
+        buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): true | undefined;
         constructEntity(): void;
+    };
+    analyzer: {
+        processor: {
+            anaylzeColumn(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, options: {
+                light?: boolean | undefined;
+            }): {
+                light: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO[];
+            } | undefined;
+        };
+        findAndRunLightUpdates(data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
     };
     dataSyncNode: {
         _states: Record<string, boolean>;
@@ -720,7 +957,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

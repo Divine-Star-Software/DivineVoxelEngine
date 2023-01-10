@@ -7,7 +7,7 @@ export class FONode extends BABYLON.TransformNode {
         super(name, scene);
     }
     // This is called automatically by OriginCamera
-    update(cam) {
-        this.position = this.doublepos.subtract(cam.doublepos);
+    update(vec3) {
+        this.position = this.doublepos.subtract(vec3);
     }
 }

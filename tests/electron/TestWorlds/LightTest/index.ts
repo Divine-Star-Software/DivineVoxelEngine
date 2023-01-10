@@ -32,7 +32,7 @@ await DVER.$INIT({
   chunkYPow2: 4,
  },
 });
-SyncWithGraphicsSettings(DVER);
+
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);

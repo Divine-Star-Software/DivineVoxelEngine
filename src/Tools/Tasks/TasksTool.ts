@@ -35,6 +35,7 @@ class TasksBase {
   this.voxelUpdate.paint._s = this;
   this.generate.deferred._s = this;
   this.generate.async._s = this;
+  this._thread = ThreadComm.threadName;
  }
 
  setPriority(priority: Priorities) {

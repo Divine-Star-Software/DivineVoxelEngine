@@ -1,8 +1,4 @@
-import type { Queue } from "Global/Util/Queue.js";
-import { runRGBUpdateAt, runRGBRemove, runRGBRemoveAt, runRGBUpdate } from "./Functions/RGBLight.js";
-import { runSunLightRemove, runSunLightRemoveAt, runSunLightUpdate, runSunLightUpdateAt } from "./Functions/SunLight.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { RunWorldSun } from "./Functions/WorldSun.js";
 export declare const IlluminationManager: {
     lightData: {
         SRS: number;
@@ -40,21 +36,6 @@ export declare const IlluminationManager: {
         removeSunLight(sl: number): number;
         minusOneForAll(sl: number): number;
     };
-    runSunLightUpdateAt: typeof runSunLightUpdateAt;
-    runSunLightUpdate: typeof runSunLightUpdate;
-    runSunLightRemove: typeof runSunLightRemove;
-    runSunLightRemoveAt: typeof runSunLightRemoveAt;
-    _sunLightUpdate: Queue<number[]>;
-    _sunLightRemove: number[][];
-    runWorldSun: typeof RunWorldSun;
-    _worldSunQueue: number[][];
-    runRGBUpdateAt: typeof runRGBUpdateAt;
-    runRGBUpdate: typeof runRGBUpdate;
-    runRGBRemoveAt: typeof runRGBRemoveAt;
-    runRGBRemove: typeof runRGBRemove;
-    _RGBlightUpdateQ: number[][];
-    _RGBlightRemovalQ: number[][];
     _sDataTool: DataTool;
     _nDataTool: DataTool;
-    addToRebuildQue(x: number, y: number, z: number): void;
 };

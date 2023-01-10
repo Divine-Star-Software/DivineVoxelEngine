@@ -210,6 +210,6 @@ export declare const Builder: {
     dimension: number;
     $INIT(): Promise<void>;
     syncSettings(settings: EngineSettingsData): void;
-    buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): Promise<true | undefined>;
+    buildChunk(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): true | undefined;
     constructEntity(): void;
 };

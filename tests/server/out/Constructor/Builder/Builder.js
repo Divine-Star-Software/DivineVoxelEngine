@@ -26,7 +26,7 @@ export const Builder = {
     syncSettings(settings) {
         this.processor.syncSettings(settings);
     },
-    async buildChunk(dimension, chunkX, chunkY, chunkZ, LOD = 1) {
+    buildChunk(dimension, chunkX, chunkY, chunkZ, LOD = 1) {
         let chunk = DVEC.data.worldRegister.chunk.get([
             dimension,
             chunkX,

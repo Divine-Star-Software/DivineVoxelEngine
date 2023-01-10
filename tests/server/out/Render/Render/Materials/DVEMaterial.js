@@ -115,11 +115,10 @@ export class DVEMaterial {
         this.material = shaderMaterial;
         this.material.fogEnabled = true;
         if (this.options.alphaBlending) {
-            shaderMaterial.separateCullingPass = true;
+            //shaderMaterial.separateCullingPass = fals;
             shaderMaterial.backFaceCulling = false;
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
-            shaderMaterial.alpha = 0.6;
         }
         shaderMaterial.setTextureArray("arrayTex", data.texture);
         shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);

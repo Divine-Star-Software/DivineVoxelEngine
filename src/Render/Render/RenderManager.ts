@@ -8,6 +8,7 @@ import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
+import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
@@ -20,7 +21,6 @@ import {
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
-
 
 const solidMaterial = new DVEMaterial("solid", {
  alphaBlending: false,
@@ -59,8 +59,8 @@ export const RenderManager = {
  },
 
  meshRegister: MeshRegister,
- meshManager : MeshManager,
- meshCuller : MeshCuller,
+ meshManager: MeshManager,
+ meshCuller: MeshCuller,
 
  fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
 
@@ -150,6 +150,11 @@ export const RenderManager = {
   if (options.liquidEffects !== undefined) {
    this.effectOptions.liquidEffects = options.liquidEffects;
   }
+
+  this.solidMaterial.updateMaterialSettings(EngineSettings.settings);
+  this.floraMaterial.updateMaterialSettings(EngineSettings.settings);
+  this.magmaMaterial.updateMaterialSettings(EngineSettings.settings);
+  this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
  },
 
  syncSettings(settings: EngineSettingsData) {
@@ -158,6 +163,7 @@ export const RenderManager = {
   this.liquidMesh.syncSettings(settings);
   this.magmaMesh.syncSettings(settings);
   this.itemMesh.syncSettings(settings);
+
   this.textureCreator.defineTextureDimensions(
    settings.textures.width,
    settings.textures.height
@@ -166,6 +172,25 @@ export const RenderManager = {
 
  getScene() {
   return this.scene;
+ },
+
+ getDefaultCamera(scene: BABYLON.Scene) {
+  const camera = new BABYLON.UniversalCamera("", BABYLON.Vector3.Zero(), scene);
+  camera.touchAngularSensibility = 10000;
+  camera.speed = 1;
+  camera.keysUp.push(87); // W
+  camera.keysDown.push(83); // D
+  camera.keysLeft.push(65); // A
+  camera.keysRight.push(68); // S
+  camera.keysUpward.push(69); // E
+  camera.keysDownward.push(81); // Q
+  camera.minZ = 0.01;
+  camera.maxZ = 1000;
+  camera.fov = 1.2;
+  camera.attachControl(scene.getEngine().getRenderingCanvas(), true);
+  scene.activeCamera = camera;
+  scene.collisionsEnabled = false;
+  return camera;
  },
 
  createSkyBoxMaterial(scene?: BABYLON.Scene) {

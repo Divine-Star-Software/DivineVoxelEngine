@@ -40,7 +40,6 @@ await DVER.$INIT({
   autoSunLight: false,
  },
 });
-SyncWithGraphicsSettings(DVER);
 
 const init = async () => {
  const canvas = SetUpCanvas();
@@ -62,6 +61,7 @@ const init = async () => {
 
  // CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
+ 
 
  const hemLight = new BABYLON.HemisphericLight(
   "",

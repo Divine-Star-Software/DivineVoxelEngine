@@ -132,6 +132,25 @@ vec4 getBaseAnimated(sampler2DArray[4] tex, vec2 UV, float index) {
    }
    return rgb;
 }
+vec3 doLightFog(vec4 base) {
+   vec3 fogC = vFogColor;
+   if(worldPOS.y < 60.) {
+      fogC -= .5;
+   }
+   if(fogOptions.x == 0.) {
+      float fog = CalcFogFactor();
+      return fog * base.rgb + (1.0 - fog) * fogC * sunLColor.rgb * sunLightLevel;
+   }
+   if(fogOptions.x == 1.) {
+      float fogFactor = CalcVFogFactor();
+      return mix( base.rgb, fogC * sunLColor.rgb * sunLightLevel, fogFactor );
+   }
+   if(fogOptions.x == 2.) {
+      float fogFactor = CalcVFogFactorAnimated();
+      return mix( base.rgb, fogC * sunLColor.rgb  * sunLightLevel, fogFactor );
+   }
+   return base.rgb;
+}
  `,
  useTime: `
 varying float vTime;
@@ -169,6 +188,7 @@ vec3 doFog(vec4 base) {
    }
    return base.rgb;
 }
+
     `,
 
  doVFog: `

@@ -153,3 +153,5 @@ DVEW.voxelManager.onRegister((voxel) => {
  VoxelDataGenerator.palette.registerVoxel(voxel);
  // DVEW.worldGeneration.voxelPalette.registerVoxel(voxel);
 });
+
+DVEW.TC.threadName = "world";

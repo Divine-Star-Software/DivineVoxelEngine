@@ -32,7 +32,7 @@ export const Builder = {
   this.processor.syncSettings(settings);
  },
 
- async buildChunk(
+ buildChunk(
   dimension: string,
   chunkX: number,
   chunkY: number,

@@ -21,7 +21,6 @@ await DVER.$INIT({
         enable: true,
     },
 });
-SyncWithGraphicsSettings(DVER);
 const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
@@ -36,6 +35,7 @@ const init = async () => {
     await InitalizeAudio();
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
+    SyncWithGraphicsSettings(DVER);
     DVER.renderManager.setBaseLevel(1);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     /*

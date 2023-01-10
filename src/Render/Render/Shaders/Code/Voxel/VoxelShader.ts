@@ -13,8 +13,8 @@ gl_FragColor = vec4(finalColor.rgb , rgb.w ); `,
  },
  flora: {
   setPosition: `
-vec4 posWorld = world * vec4(position, 1.0);
-vec3 p = position + worldOrigin;
+vec4 posWorld = world * vec4(position + worldOrigin, 1.0);
+vec3 p = position;
 int animationType = getAnimationType();
 if(doEffects == 1.){
   if(vDistance < 50.) {
@@ -30,7 +30,7 @@ if(doEffects == 1.){
   }
 }
 
-vec4 worldPosition = world * vec4(p, 1.0);
+vec4 worldPosition = world * vec4(p +worldOrigin , 1.0);
 gl_Position = viewProjection * worldPosition; `,
   fragMain: `
 vec4 rgb = getBaseColor();
@@ -56,7 +56,7 @@ if(animationTest == 1.) {
 if(animationTest == 2.) {
   vFlow = -1.;
 }
-vec4 posWorld = world * vec4(position, 1.0);
+vec4 posWorld = world * vec4(position + worldOrigin, 1.0);
 vec3 p = position;
 if(doEffects == 1.){
 float height = fbm(posWorld.xz * 0.08 + time);
@@ -73,7 +73,8 @@ vec4 rgb = getAnimatedBaseColor(vec2(vUV.x,y));
 rgb = getColor(rgb);
 vec4 mixLight = getLight(rgb);
 vec3 finalColor = doFog(mixLight);
-gl_FragColor = vec4(finalColor.rgb , .6 );`,
+gl_FragColor = vec4(finalColor.rgb , .6 );
+`,
  },
 
  item: {

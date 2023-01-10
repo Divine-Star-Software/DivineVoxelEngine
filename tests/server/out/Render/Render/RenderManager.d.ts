@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
@@ -54,8 +53,29 @@ export declare const RenderManager: {
         activeNode: import("./FloatingOrigin/FONode.js").FONode | null;
         getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement | undefined): import("./FloatingOrigin/FOCamera.js").FOCamera;
         getNode(scene: BABYLON.Scene, name: string): import("./FloatingOrigin/FONode.js").FONode;
+        setOriginCenter(scene: BABYLON.Scene, object: {
+            position: BABYLON.Vector3;
+        }): void;
     };
     shaderBuilder: {
+        voxelShaders: {
+            solid: {
+                fragMain: string;
+            };
+            flora: {
+                setPosition: string;
+                fragMain: string;
+            };
+            liquid: {
+                vertexVars: string;
+                vertexWave: string;
+                fragVars: string;
+                fragMain: string;
+            };
+            item: {
+                fragMain: string;
+            };
+        };
         buildVertexShader(data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
         buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
         getDefaultVertexShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
@@ -76,7 +96,7 @@ export declare const RenderManager: {
         _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
     };
     animationManager: {
-        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+        animatedMaterials: Record<"Item" | import("Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
         animCount: number;
         animations: {
             uniformShaderId: string;
@@ -84,10 +104,10 @@ export declare const RenderManager: {
             currentFrame: number;
             currentCount: number;
             keyCounts: number[];
-            substance: import("Meta/index.js").VoxelSubstanceType | "Item";
+            substance: "Item" | import("Meta/index.js").VoxelSubstanceType;
         }[];
-        registerAnimations(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
+        registerAnimations(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+        registerMaterial(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
     solidMaterial: DVEMaterial;
@@ -133,6 +153,7 @@ export declare const RenderManager: {
     updateShaderEffectOptions(options: RecursivePartial<RenderEffectsOptions>): void;
     syncSettings(settings: EngineSettingsData): void;
     getScene(): BABYLON.Scene | null;
+    getDefaultCamera(scene: BABYLON.Scene): BABYLON.UniversalCamera;
     createSkyBoxMaterial(scene?: BABYLON.Scene): BABYLON.ShaderMaterial | null;
     setSunLevel(level: number): void;
     setBaseLevel(level: number): void;

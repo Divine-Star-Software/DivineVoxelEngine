@@ -1,24 +1,18 @@
 import { Propagation } from "../../Propagation/Propagation.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { $3dCardinalNeighbors, $3dMooreNeighborhood, } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
+import { TasksRequest } from "../TasksRequest.js";
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
-const addToRebuildQue = (dimension, rebuildQueue, x, y, z, comm) => {
-    for (let i = 0; i < $3dMooreNeighborhood.length; i++) {
-        const n = $3dMooreNeighborhood[i];
-        const chunkPOS = WorldSpaces.chunk.getPositionXYZ(n[0] + x, n[1] + y, n[2] + z);
-        Propagation.addToRebuildQue(chunkPOS.x, chunkPOS.y, chunkPOS.z, "all");
-    }
-};
-const updateLight = (x, y, z) => {
+const updateLightTask = (tasks) => {
     let doRGB = ES.doRGBPropagation();
     let doSun = ES.doSunPropagation();
+    const [dimension, x, y, z] = tasks.origin;
+    nDataTool.setDimension(dimension);
     for (const n of $3dCardinalNeighbors) {
         const nx = n[0] + x;
         const ny = n[1] + y;
@@ -30,113 +24,109 @@ const updateLight = (x, y, z) => {
             continue;
         if (doRGB) {
             if (LightData.hasRGBLight(l)) {
-                Propagation.illumination._RGBlightUpdateQ.push([nx, ny, nz]);
+                tasks.queues.rgb.update.push([nx, ny, nz]);
             }
         }
         if (doSun) {
             if (LightData.getS(l) > 0) {
-                Propagation.illumination._sunLightUpdate.enqueue([nx, ny, nz]);
+                tasks.queues.sun.update.push([nx, ny, nz]);
             }
         }
     }
 };
 export async function EreaseAndUpdate(data) {
-    const [dimension, x, y, z] = data[0];
-    const rebuildQueueId = data[1];
-    const threadId = data[2];
-    const thread = ThreadComm.getComm(threadId);
-    const rebuildqQueue = ThreadComm.getSyncedQueue(threadId, "build-chunk-" + rebuildQueueId);
-    if (!rebuildqQueue)
+    if (!dataTool.setLocation(data[0]).loadIn())
         return false;
-    dataTool.setDimension(dimension).loadInAt(x, y, z);
-    Propagation.setBuildData(dimension, rebuildQueueId);
-    Propagation.setPriority(0);
+    const [dimension, x, y, z] = data[0];
+    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
+    tasks
+        .setPriority(0)
+        .start()
+        .setBuldMode("sync")
+        .addNeighborsToRebuildQueue(x, y, z)
+        .syncQueue.reverse();
+    tasks.setBuldMode("async");
     if (ES.doFlow()) {
         const substance = dataTool.getSubstance();
         if (substance == "liquid" || substance == "magma") {
-            await Propagation.removeFlowAt(data);
+            await Propagation.flow.remove(tasks);
             return true;
         }
     }
     const light = dataTool.getLight();
-    if (light > 0) {
-        dataTool.setLight(light);
-    }
-    dataTool.setAir().commit(2);
+    dataTool
+        .setLight(light > 0 ? light : 0)
+        .setAir()
+        .commit(2);
     if (ES.doLight()) {
-        let doRGB = ES.doRGBPropagation();
-        let doSun = ES.doSunPropagation();
-        const sl = dataTool.getLight();
-        if (doRGB) {
-            if (sl >= 0) {
-                Propagation.runRGBRemove(data);
-            }
+        if (ES.doRGBPropagation()) {
+            tasks.queues.rgb.rmeove.push([x, y, z]);
+            Propagation.rgb.remove(tasks);
         }
-        updateLight(x, y, z);
-        if (sl >= 0) {
-            if (doRGB) {
-                Propagation.runRGBUpdate(data);
-            }
-            if (doSun) {
-                Propagation.runSunLightUpdate(data);
-            }
+        updateLightTask(tasks);
+        if (ES.doRGBPropagation()) {
+            Propagation.rgb.update(tasks);
+        }
+        if (ES.doSunPropagation()) {
+            Propagation.sun.update(tasks);
         }
     }
-    addToRebuildQue(dimension, rebuildQueueId, x, y, z, thread);
-    Propagation.runRebuildQue();
-    Propagation.setPriority(2);
-    //await rebuildqQueue.wait();
+    tasks.runRebuildQueue();
+    tasks.stop();
     return true;
 }
 export async function PaintAndUpdate(data) {
+    if (!dataTool.setLocation(data[0]).loadIn())
+        return false;
     const [dimension, x, y, z] = data[0];
     const raw = data[1];
-    const rebuildQueueId = data[2];
-    const threadId = data[3];
-    const thread = ThreadComm.getComm(threadId);
-    const rebuildqQueue = ThreadComm.getSyncedQueue(threadId, "build-chunk-" + rebuildQueueId);
-    if (!rebuildqQueue)
-        return false;
-    const tasks = [[dimension, x, y, z], rebuildQueueId, threadId];
-    brushTool.setDimension(dimension).setXYZ(x, y, z).setRaw(raw);
-    dataTool.setDimension(dimension).loadInAt(x, y, z);
-    Propagation.setBuildData(dimension, rebuildQueueId);
-    Propagation.setPriority(0);
+    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
+    tasks
+        .start()
+        .setPriority(0)
+        .setBuldMode("sync")
+        .addNeighborsToRebuildQueue(x, y, z)
+        .syncQueue.reverse();
+    tasks.setBuldMode("async");
+    brushTool.setLocation(data[0]).setRaw(raw);
     let doRGB = ES.doRGBPropagation();
     let doSun = ES.doSunPropagation();
     lighttest: if (ES.doLight()) {
+        nDataTool.setLocation(data[0]).loadIn();
         const light = dataTool.getLight();
         if (light <= 0)
             break lighttest;
         if (doSun) {
             if (LightData.getS(light) > 0) {
-                Propagation.runSunLightRemove(tasks);
+                tasks.queues.sun.rmeove.push([x, y, z]);
+                Propagation.sun.remove(tasks);
             }
         }
         if (doRGB) {
             if (LightData.hasRGBLight(light)) {
-                Propagation.runRGBRemove(tasks);
+                tasks.queues.rgb.rmeove.push([x, y, z]);
+                Propagation.rgb.remove(tasks);
             }
         }
     }
     brushTool.paint();
     if (ES.doLight()) {
-        updateLight(x, y, z);
+        updateLightTask(tasks);
         if (doRGB) {
-            Propagation.runRGBUpdate(tasks);
+            tasks.queues.rgb.update.push([x, y, z]);
+            Propagation.rgb.update(tasks);
         }
         if (doSun) {
-            Propagation.runSunLightUpdate(tasks);
+            Propagation.sun.update(tasks);
         }
     }
-    addToRebuildQue(dimension, rebuildQueueId, x, y, z, thread);
-    Propagation.runRebuildQue();
-    Propagation.setPriority(2);
     if (ES.doFlow()) {
         const substance = brushTool._dt.getSubstance();
         if (substance == "liquid" || substance == "magma") {
-            Propagation.updateFlowAt(tasks);
+            Propagation.flow.update(tasks);
         }
     }
+    tasks.runRebuildQueue();
+    tasks.stop();
     return;
 }

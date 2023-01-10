@@ -6,6 +6,7 @@ import { AnimationManager } from "./Animations/AnimationManager.js";
 import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
+import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.js";
@@ -125,6 +126,10 @@ export const RenderManager = {
         if (options.liquidEffects !== undefined) {
             this.effectOptions.liquidEffects = options.liquidEffects;
         }
+        this.solidMaterial.updateMaterialSettings(EngineSettings.settings);
+        this.floraMaterial.updateMaterialSettings(EngineSettings.settings);
+        this.magmaMaterial.updateMaterialSettings(EngineSettings.settings);
+        this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
     },
     syncSettings(settings) {
         this.solidMesh.syncSettings(settings);
@@ -136,6 +141,24 @@ export const RenderManager = {
     },
     getScene() {
         return this.scene;
+    },
+    getDefaultCamera(scene) {
+        const camera = new BABYLON.UniversalCamera("", BABYLON.Vector3.Zero(), scene);
+        camera.touchAngularSensibility = 10000;
+        camera.speed = 1;
+        camera.keysUp.push(87); // W
+        camera.keysDown.push(83); // D
+        camera.keysLeft.push(65); // A
+        camera.keysRight.push(68); // S
+        camera.keysUpward.push(69); // E
+        camera.keysDownward.push(81); // Q
+        camera.minZ = 0.01;
+        camera.maxZ = 1000;
+        camera.fov = 1.2;
+        camera.attachControl(scene.getEngine().getRenderingCanvas(), true);
+        scene.activeCamera = camera;
+        scene.collisionsEnabled = false;
+        return camera;
     },
     createSkyBoxMaterial(scene) {
         if (!this.scene && !scene) {

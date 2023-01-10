@@ -27,4 +27,12 @@ export const FOManager = {
     getNode(scene, name) {
         return new FONode(name, scene);
     },
+    setOriginCenter(scene, object) {
+        const doublePosition = new BABYLON.Vector3();
+        this.activeNode = this.getNode(scene, "world-origin");
+        scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
+            doublePosition.addInPlace(object.position);
+            object.position.set(0, 0, 0);
+        });
+    },
 };

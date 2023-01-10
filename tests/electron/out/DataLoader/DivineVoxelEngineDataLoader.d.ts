@@ -1,7 +1,7 @@
 import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEDL: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -11,7 +11,7 @@ export declare const DVEDL: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -313,11 +313,11 @@ export declare const DVEDL: {
         serializeRegion(location: import("../Meta/Data/CommonTypes.js").LocationData): false | [location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("../Meta/Data/CommonTypes.js").LocationData): false | Uint8Array;
         deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
+        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
         handler: DataHandler;

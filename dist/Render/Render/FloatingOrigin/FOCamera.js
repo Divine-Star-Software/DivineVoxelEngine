@@ -3,12 +3,18 @@ export class FOCamera extends BABYLON.UniversalCamera {
     // double precision position
     // you must use the doublepos to change its position, instead of position directly.
     _doublepos = new BABYLON.Vector3();
-    get doublepos() { return this._doublepos; }
-    set doublepos(pos) { this._doublepos.copyFrom(pos); }
+    get doublepos() {
+        return this._doublepos;
+    }
+    set doublepos(pos) {
+        this._doublepos.copyFrom(pos);
+    }
     // double precision target
     // you must use the doubletgt to change it, instead of setTarget() directly.
     _doubletgt = new BABYLON.Vector3();
-    get doubletgt() { return this._doubletgt; }
+    get doubletgt() {
+        return this._doubletgt;
+    }
     set doubletgt(tgt) {
         this._doubletgt.copyFrom(tgt);
         this.setTarget(this._doubletgt.subtract(this._doublepos));
@@ -31,7 +37,7 @@ export class FOCamera extends BABYLON.UniversalCamera {
             // iterate through all registered Entities
             for (let i = 0; i < this._list.length; i++) {
                 // update the Entity
-                this._list[i].update(this);
+                this._list[i].update(this.doublepos);
             }
         });
     }

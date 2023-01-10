@@ -45,7 +45,7 @@ await DVER.$INIT({
   autoSunLight: false,
  },
 });
-SyncWithGraphicsSettings(DVER);
+
 
 DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
 const init = async () => {

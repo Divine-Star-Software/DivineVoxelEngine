@@ -7,6 +7,7 @@ import { Builder } from "./Builder/Builder.js";
 import { Propagation } from "./Propagation/Propagation.js";
 import { WorldGeneration } from "./WorldGeneration/WorldGeneration.js";
 import { TasksQueue } from "./Tasks/TasksQueue.js";
+import { Analyzer } from "./Analyzer/Analyzer.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
@@ -19,8 +20,8 @@ import { WorldComm } from "./Threads/World/WorldComm.js";
 import { Tasks } from "./Tasks/Tasks.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
-
 import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
+
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
@@ -32,6 +33,7 @@ export const DVEC = {
  propagation: Propagation,
  worldGen: WorldGeneration,
  builder: Builder,
+ analyzer : Analyzer,
 
  dataSyncNode: DataSyncNode,
  data: DataManager,

@@ -11,14 +11,14 @@ import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -55,7 +55,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -477,14 +477,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
+            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Vector3;
         };

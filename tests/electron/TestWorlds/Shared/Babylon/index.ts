@@ -157,7 +157,7 @@ export const GetPlayerModel = (scene: BABYLON.Scene): Promise<BABYLON.Mesh> => {
    "assets/player/",
    "chartest.babylon",
    scene,
-   (assets) => {
+   (assets : any) => {
     const mesh = assets[0];
     const texture = new BABYLON.Texture("assets/player/playertexture.png");
     texture.onLoadObservable.add(() => {

@@ -5,6 +5,7 @@ import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { TasksRequest } from "./TasksRequest.js";
 const chunkTool = new ChunkDataTool();
 export const Tasks = {
     build: {
@@ -48,11 +49,11 @@ export const Tasks = {
         }),
     },
     explosion: ThreadComm.registerTasks(ConstructorTasks.explosion, async (data) => {
-        await DVEC.propagation.runExplosion(data);
+        await DVEC.propagation.expolosion.run(TasksRequest.getExplosionRequests(data[0], data[1], data[2], data[3]));
     }),
     worldSun: ThreadComm.registerTasks(ConstructorTasks.worldSun, (data, onDone) => {
         DVEC.tasksQueue.addTasks(2, data, () => {
-            DVEC.propagation.runWorldSun(data);
+            DVEC.propagation.worldSun.run(TasksRequest.getWorldSunRequests(data[0], data[1]));
             if (onDone)
                 onDone();
         });
@@ -68,26 +69,38 @@ export const Tasks = {
     },
     flow: {
         update: ThreadComm.registerTasks(ConstructorTasks.flowUpdate, async (data) => {
-            await DVEC.propagation.updateFlowAt(data);
+            await DVEC.propagation.flow.update(TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]));
         }),
-        remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, (data) => {
-            DVEC.propagation.removeFlowAt(data);
+        remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, async (data) => {
+            await DVEC.propagation.flow.remove(TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]));
         }),
     },
     rgb: {
         update: ThreadComm.registerTasks(ConstructorTasks.RGBlightUpdate, (data) => {
-            DVEC.propagation.runRGBUpdate(data);
+            const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
+            const [dimension, x, y, z] = data[0];
+            tasks.queues.rgb.update.push([x, y, z]);
+            DVEC.propagation.rgb.update(tasks);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.RGBlightRemove, (data) => {
-            DVEC.propagation.runRGBRemove(data);
+            const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
+            const [dimension, x, y, z] = data[0];
+            tasks.queues.rgb.rmeove.push([x, y, z]);
+            DVEC.propagation.rgb.remove(tasks);
         }),
     },
     sun: {
         update: ThreadComm.registerTasks(ConstructorTasks.sunLightUpdate, (data) => {
-            DVEC.propagation.runSunLightUpdate(data);
+            const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
+            const [dimension, x, y, z] = data[0];
+            tasks.queues.sun.update.push([x, y, z]);
+            DVEC.propagation.sun.update(tasks);
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.sunLightRemove, (data) => {
-            DVEC.propagation.runSunLightRemove(data);
+            const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
+            const [dimension, x, y, z] = data[0];
+            tasks.queues.sun.rmeove.push([x, y, z]);
+            DVEC.propagation.sun.remove(tasks);
         }),
     },
 };
