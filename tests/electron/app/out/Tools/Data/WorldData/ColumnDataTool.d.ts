@@ -11,6 +11,10 @@ export declare class ColumnDataTool extends PositionBoundDataTool {
     getNumChunks(): number;
     getBufferSizeForWholeColumn(): number;
     isStored(): boolean;
-    markAsNotStored(): boolean;
-    markAsStored(): boolean;
+    markAsNotStored(): this;
+    markAsStored(): this;
+    isPersistent(): boolean;
+    setPersistence(value: boolean): void;
+    isDirty(): boolean;
+    setDirty(value: boolean): void;
 }

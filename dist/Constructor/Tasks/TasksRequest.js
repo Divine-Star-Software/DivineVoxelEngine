@@ -1,7 +1,7 @@
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { $3dCardinalNeighbors } from "../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { Builder } from "../../Constructor/Builder/Builder.js";
@@ -88,7 +88,7 @@ class Request {
         return true;
     }
     addNeighborsToRebuildQueue(x, y, z) {
-        for (const n of $3dCardinalNeighbors) {
+        for (const n of $3dMooreNeighborhood) {
             this.addToRebuildQueue(x + n[0], y + n[1], z + n[2]);
         }
         return this;
@@ -152,7 +152,12 @@ const getVoxelUpdateQueueData = () => {
     return { ...getLightQueues(), flow: getFlowQueues() };
 };
 const getExplosionQueuesData = () => {
-    return { queue: [], map: new VisitedMap(), ...getLightQueues(), flow: getFlowQueues() };
+    return {
+        queue: [],
+        map: new VisitedMap(),
+        ...getLightQueues(),
+        flow: getFlowQueues(),
+    };
 };
 export const TasksRequest = {
     getLightUpdateRequest(origin, buildQueue = "none", originThread = "self") {

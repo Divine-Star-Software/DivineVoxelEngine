@@ -1,5 +1,4 @@
 export declare const Propagation: {
-    $INIT(): void;
     expolosion: {
         run(tasks: {
             rebuildQueMap: Map<string, boolean>;
@@ -7,7 +6,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: number;
@@ -69,7 +68,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
@@ -82,7 +81,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: null;
@@ -136,18 +135,18 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
-        }): void;
+        }): Promise<void>;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
             comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: null;
@@ -201,11 +200,11 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
-        }): void;
+        }): Promise<void>;
     };
     worldSun: {
         run(tasks: {
@@ -214,7 +213,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: null;
@@ -232,7 +231,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
@@ -245,7 +244,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: any;
@@ -270,7 +269,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
@@ -281,7 +280,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: any;
@@ -306,7 +305,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
@@ -319,7 +318,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: any;
@@ -344,7 +343,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;
@@ -355,7 +354,7 @@ export declare const Propagation: {
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-            buildMode: "sync" | "async";
+            buildMode: "async" | "sync";
             tasksType: string;
             origin: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             data: any;
@@ -380,7 +379,7 @@ export declare const Propagation: {
             getOrigin(): import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
             needsRebuild(): boolean;
             needsToUpdateOriginThread(): boolean;
-            setBuldMode(mode: "sync" | "async"): any;
+            setBuldMode(mode: "async" | "sync"): any;
             addToRebuildQueue(x: number, y: number, z: number): boolean;
             addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
             runRebuildQueue(): any;

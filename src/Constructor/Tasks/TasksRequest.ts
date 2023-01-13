@@ -7,7 +7,7 @@ import type {
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { $3dCardinalNeighbors } from "../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors, $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
@@ -97,7 +97,7 @@ class Request<T, Q> {
  }
 
  addNeighborsToRebuildQueue(x: number, y: number, z: number) {
-  for (const n of $3dCardinalNeighbors) {
+  for (const n of $3dMooreNeighborhood) {
    this.addToRebuildQueue(x + n[0], y + n[1], z + n[2]);
   }
   return this;
@@ -116,7 +116,6 @@ class Request<T, Q> {
    const z = node[2];
    Builder.buildChunk(this.origin[0], x, y, z);
   }
-
   this.rebuildQueMap.clear();
   return this;
  }
@@ -173,7 +172,12 @@ const getVoxelUpdateQueueData = () => {
 };
 
 const getExplosionQueuesData = () => {
- return { queue : <Vec3Array>[],map: new VisitedMap(), ...getLightQueues(), flow: getFlowQueues() };
+ return {
+  queue: <Vec3Array>[],
+  map: new VisitedMap(),
+  ...getLightQueues(),
+  flow: getFlowQueues(),
+ };
 };
 
 export const TasksRequest = {

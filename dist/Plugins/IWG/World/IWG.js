@@ -24,8 +24,11 @@ export class IWG {
     _generateMap = new Map();
     _existsCheckMap = new Map();
     _sunMap = new Map();
+    _propagationMap = new Map();
     constructor(data) {
         this.data = data;
+        if (!data.maxDistance)
+            data.maxDistance = data.generateDistance;
         if (!DataLoaderTool.isEnabled()) {
             throw new Error("Data Loader must be enabled.");
         }
@@ -69,6 +72,9 @@ export class IWG {
                     continue;
                 this._activeColumns.delete(key);
             }
+            this.dataLoader
+                .setXYZ(worldColumnPOS.x, worldColumnPOS.y, worldColumnPOS.z)
+                .unLoadAllOutsideRadius(this.data.maxDistance);
         }
         this._generateQueue.push([
             worldColumnPOS.x,
@@ -86,7 +92,8 @@ export class IWG {
             if (this._visitedMap.has(columnKey) ||
                 this._existsCheckMap.has(columnKey) ||
                 this._generateMap.has(columnKey) ||
-                this._sunMap.has(columnKey))
+                this._sunMap.has(columnKey) ||
+                this._propagationMap.has(columnKey))
                 continue;
             this._visitedMap.set(columnKey, true);
             const distance = Distance3D(worldColumnPOS.x, 0, worldColumnPOS.z, cx, 0, cz);
@@ -113,6 +120,7 @@ export class IWG {
             }
             let nWorldGenAllDone = true;
             let nSunAllDone = true;
+            let nPropagtionAllDone = true;
             if (!this.columnTool.getTagValue("#dve_is_world_sun_done")) {
                 nSunAllDone = false;
             }
@@ -134,6 +142,9 @@ export class IWG {
                 if (!this.nColumnTool.getTagValue("#dve_is_world_sun_done")) {
                     nSunAllDone = false;
                 }
+                if (!this.nColumnTool.getTagValue("#dve_is_world_propagation_done")) {
+                    nPropagtionAllDone = false;
+                }
             }
             if (nWorldGenAllDone &&
                 !this._sunMap.has(columnKey) &&
@@ -145,17 +156,29 @@ export class IWG {
                         this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
                     }
                 });
+                continue;
+            }
+            if (nSunAllDone &&
+                !this._propagationMap.has(columnKey) &&
+                !this.columnTool.getTagValue("#dve_is_world_propagation_done")) {
+                this._sunMap.set(columnKey, true);
+                this.tasks.worldPropagation.run(cx, cy, cz, () => {
+                    if (this.columnTool.loadIn(cx, cy, cz)) {
+                        this._sunMap.delete(columnKey);
+                        this.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
+                    }
+                });
+                continue;
             }
             if (distance > this.data.renderDistance)
                 continue;
             if (nWorldGenAllDone &&
                 nSunAllDone &&
+                nPropagtionAllDone &&
                 distance < this.data.renderDistance &&
                 !this._activeColumns.has(columnKey)) {
                 this._activeColumns.set(columnKey, [cx, cy, cz]);
-                setTimeout(() => {
-                    this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).buildColumn();
-                }, 1000);
+                this.builder.setDimension(this.dimension).setXYZ(cx, cy, cz).buildColumn();
                 this.dataLoader
                     .setLocation([this.dimension, cx, cy, cz])
                     .saveColumnIfNotStored();

@@ -5,7 +5,7 @@ import {
  GenerateTasks,
  LightUpdateTask,
  PaintTasks,
- UpdateTasksO,
+ UpdateTasks,
  PriorityTask,
 } from "Meta/Tasks/Tasks.types.js";
 //objects
@@ -81,19 +81,19 @@ const QMBase = {
   });
  },
  rgb: {
-  update: CCM.addQueue<UpdateTasksO>(
+  update: CCM.addQueue<UpdateTasks>(
    "rgb-update",
    ConstructorTasks.RGBlightUpdate,
    null
   ),
-  remove: CCM.addQueue<UpdateTasksO>(
+  remove: CCM.addQueue<UpdateTasks>(
    "rgb-remove",
    ConstructorTasks.RGBlightRemove
   ),
  },
- worldSun: CCM.addQueue<UpdateTasksO>("world-sun", ConstructorTasks.worldSun),
+ worldSun: CCM.addQueue<UpdateTasks>("world-sun", ConstructorTasks.worldSun),
  voxelUpdate: {
-  erase: CCM.addQueue<UpdateTasksO>(
+  erase: CCM.addQueue<UpdateTasks>(
    "voxel-update-erase",
    ConstructorTasks.voxelErease
   ),
@@ -103,11 +103,11 @@ const QMBase = {
   ),
  },
  sun: {
-  update: CCM.addQueue<UpdateTasksO>(
+  update: CCM.addQueue<UpdateTasks>(
    "sun-update",
    ConstructorTasks.sunLightUpdate
   ),
-  remove: CCM.addQueue<UpdateTasksO>(
+  remove: CCM.addQueue<UpdateTasks>(
    "sun-remove",
    ConstructorTasks.sunLightRemove
   ),
@@ -116,11 +116,11 @@ const QMBase = {
   run: CCM.addQueue<ExplosionTasks>("explosion", ConstructorTasks.explosion),
  },
  flow: {
-  update: CCM.addQueue<UpdateTasksO>(
+  update: CCM.addQueue<UpdateTasks>(
    "flow-update",
    ConstructorTasks.flowUpdate
   ),
-  remove: CCM.addQueue<UpdateTasksO>(
+  remove: CCM.addQueue<UpdateTasks>(
    "flow-remove",
    ConstructorTasks.flowRemove
   ),

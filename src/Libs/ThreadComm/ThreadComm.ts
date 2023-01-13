@@ -181,6 +181,7 @@ export const ThreadComm = {
 		//remove tasks id
 		const dataTypeId = data.shift();
 		const dataSync = this._onDataSync[dataTypeId];
+	
 		//get the sync data
 		const syncData = data.shift();
 		if (action == TCDataSyncMessages.SyncData) {
@@ -191,7 +192,7 @@ export const ThreadComm = {
 		}
 	},
 	__isDataSync(data: any[]) {
-		return data[0] == TCMessageHeaders.dataSync;
+		return data[0] == TCMessageHeaders.dataSync
 	},
 
 	onDataSync<T, K>(

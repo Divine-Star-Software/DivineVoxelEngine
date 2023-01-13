@@ -11,6 +11,8 @@ export const IlluminationManager = {
  _sDataTool: new DataTool(),
  _nDataTool: new DataTool(),
 
-
-
+ setDimension(dimension: string) {
+  this._sDataTool.setDimension(dimension);
+  this._nDataTool.setDimension(dimension);
+ },
 };

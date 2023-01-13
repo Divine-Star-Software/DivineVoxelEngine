@@ -4,6 +4,7 @@ import { RawVoxelData } from "Meta/index.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export declare class BrushTool extends LocationBoundTool {
     data: AddVoxelData;
+    _update: boolean;
     _dt: DataTool;
     setId(id: string, state?: number, shapeState?: number): this;
     setDimension(dimensionId: string): this;

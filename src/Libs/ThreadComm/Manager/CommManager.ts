@@ -230,6 +230,7 @@ export class CommManager {
 	}
 
 	unSyncData<T>(dataType: string | number, data: T) {
+
 		for (const comm of this.__comms) {
 			comm.unSyncData(dataType, data);
 		}

@@ -22,10 +22,13 @@ class TasksBase {
         this.flow.update._s = this;
         this.flow.remove._s = this;
         this.explosion.run._s = this;
-        this.voxelUpdate.erase._s = this;
-        this.voxelUpdate.paint._s = this;
+        this.voxelUpdate.erase.async._s = this;
+        this.voxelUpdate.erase.deferred._s = this;
+        this.voxelUpdate.paint.async._s = this;
+        this.voxelUpdate.paint.deferred._s = this;
         this.generate.deferred._s = this;
         this.generate.async._s = this;
+        this.worldPropagation._s = this;
         this._thread = ThreadComm.threadName;
     }
     setPriority(priority) {
@@ -64,34 +67,61 @@ class TasksBase {
     };
     voxelUpdate = {
         erase: {
-            _s: {},
-            add(x, y, z) {
-                CQ.voxelUpdate.erase.add([[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread], this._s._data.queue);
+            deferred: {
+                _s: {},
+                run(x, y, z, onDone) {
+                    const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+                    CCM.runPromiseTasks(ConstructorTasks.voxelErease, requestsKey, onDone, [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread]);
+                },
             },
-            run(onDone) {
-                CQ.voxelUpdate.erase.run(this._s._data.queue);
-                CQ.voxelUpdate.erase.onDone(this._s._data.queue, onDone);
-            },
-            async runAndAwait() {
-                await CQ.voxelUpdate.erase.runAndAwait(this._s._data.queue);
+            async: {
+                _s: {},
+                add(x, y, z) {
+                    CQ.voxelUpdate.erase.add([
+                        [this._s._data.dimension, x, y, z],
+                        this._s._data.queue,
+                        this._s._thread,
+                    ], this._s._data.queue);
+                },
+                run(onDone) {
+                    CQ.voxelUpdate.erase.run(this._s._data.queue);
+                    CQ.voxelUpdate.erase.onDone(this._s._data.queue, onDone);
+                },
+                async runAndAwait() {
+                    await CQ.voxelUpdate.erase.runAndAwait(this._s._data.queue);
+                },
             },
         },
         paint: {
-            _s: {},
-            add(x, y, z, raw) {
-                CQ.voxelUpdate.paint.add([
-                    [this._s._data.dimension, x, y, z],
-                    raw,
-                    this._s._data.queue,
-                    this._s._thread,
-                ], this._s._data.queue);
+            deferred: {
+                _s: {},
+                run(x, y, z, raw, onDone) {
+                    const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+                    CCM.runPromiseTasks(ConstructorTasks.voxelPaint, requestsKey, onDone, [
+                        [this._s._data.dimension, x, y, z],
+                        raw,
+                        this._s._data.queue,
+                        this._s._thread,
+                    ]);
+                },
             },
-            run(onDone) {
-                CQ.voxelUpdate.paint.run(this._s._data.queue);
-                CQ.voxelUpdate.paint.onDone(this._s._data.queue, onDone);
-            },
-            async runAndAwait() {
-                await CQ.voxelUpdate.paint.runAndAwait(this._s._data.queue);
+            async: {
+                _s: {},
+                add(x, y, z, raw) {
+                    CQ.voxelUpdate.paint.add([
+                        [this._s._data.dimension, x, y, z],
+                        raw,
+                        this._s._data.queue,
+                        this._s._thread,
+                    ], this._s._data.queue);
+                },
+                run(onDone) {
+                    CQ.voxelUpdate.paint.run(this._s._data.queue);
+                    CQ.voxelUpdate.paint.onDone(this._s._data.queue, onDone);
+                },
+                async runAndAwait() {
+                    await CQ.voxelUpdate.paint.runAndAwait(this._s._data.queue);
+                },
             },
         },
     };
@@ -159,6 +189,13 @@ class TasksBase {
             async runAndAwait() {
                 await CQ.flow.remove.runAndAwait(this._s._data.queue);
             },
+        },
+    };
+    worldPropagation = {
+        _s: {},
+        run(x, y, z, onDone) {
+            const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+            CCM.runPromiseTasks(ConstructorTasks.worldPropagation, requestsKey, onDone, [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread]);
         },
     };
     light = {

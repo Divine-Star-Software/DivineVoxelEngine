@@ -45,6 +45,8 @@ export declare const EntityConstructor: {
         setB(value: number, sl: number): number;
         removeS(sl: number): number;
         hasRGBLight(sl: number): boolean;
+        hasSunLight(sl: number): boolean;
+        mixLight(l1: number, l2: number): number;
         getRGB(sl: number): number;
         setRGB(value: number, sl: number): number;
         decodeLightFromVoxelData(voxelData: number): number;

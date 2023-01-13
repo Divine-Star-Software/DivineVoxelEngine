@@ -47,9 +47,23 @@ export class ColumnDataTool extends PositionBoundDataTool {
         return this.getTagValue("#dve_is_stored") == 1;
     }
     markAsNotStored() {
-        return this.setTagValue("#dve_is_stored", 0);
+        this.setTagValue("#dve_is_stored", 0);
+        return this;
     }
     markAsStored() {
-        return this.setTagValue("#dve_is_stored", 1);
+        this.setTagValue("#dve_is_stored", 1);
+        return this;
+    }
+    isPersistent() {
+        return this.getTagValue("#dve_persistent") == 1;
+    }
+    setPersistence(value) {
+        this.setTagValue("#dve_persistent", value ? 1 : 0);
+    }
+    isDirty() {
+        return this.getTagValue("#dve_is_dirty") == 1;
+    }
+    setDirty(value) {
+        this.setTagValue("#dve_is_dirty", value ? 1 : 0);
     }
 }

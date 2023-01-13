@@ -1,9 +1,8 @@
-import type { PaintTasks, UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
+import type { PaintTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 import { Propagation } from "../../Propagation/Propagation.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
-import { LightData } from "../../../Data/Light/LightByte.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 
 import { LightTaskRequest, TasksRequest } from "../TasksRequest.js";
@@ -11,6 +10,7 @@ import { LightTaskRequest, TasksRequest } from "../TasksRequest.js";
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
+brushTool._update = false;
 
 const updateLightTask = (tasks: LightTaskRequest) => {
  let doRGB = ES.doRGBPropagation();
@@ -22,22 +22,20 @@ const updateLightTask = (tasks: LightTaskRequest) => {
   const ny = n[1] + y;
   const nz = n[2] + z;
   if (!nDataTool.loadInAt(nx, ny, nz)) continue;
-  const l = nDataTool.getLight();
-  if (l <= 0) continue;
   if (doRGB) {
-   if (LightData.hasRGBLight(l)) {
+   if (nDataTool.hasRGBLight()) {
     tasks.queues.rgb.update.push([nx, ny, nz]);
    }
   }
   if (doSun) {
-   if (LightData.getS(l) > 0) {
+   if (nDataTool.hasSunLight()) {
     tasks.queues.sun.update.push([nx, ny, nz]);
    }
   }
  }
 };
 
-export async function EreaseAndUpdate(data: UpdateTasksO) {
+export async function EreaseAndUpdate(data: UpdateTasks) {
  if (!dataTool.setLocation(data[0]).loadIn()) return false;
  const [dimension, x, y, z] = data[0];
  const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
@@ -57,12 +55,13 @@ export async function EreaseAndUpdate(data: UpdateTasksO) {
  }
 
  const light = dataTool.getLight();
+ const isLightSource = dataTool.isLightSource();
  dataTool
   .setLight(light > 0 ? light : 0)
   .setAir()
   .commit(2);
  if (ES.doLight()) {
-  if (ES.doRGBPropagation()) {
+  if (ES.doRGBPropagation() && isLightSource) {
    tasks.queues.rgb.rmeove.push([x, y, z]);
    Propagation.rgb.remove(tasks);
   }
@@ -93,22 +92,22 @@ export async function PaintAndUpdate(data: PaintTasks) {
   .syncQueue.reverse();
  tasks.setBuldMode("async");
  brushTool.setLocation(data[0]).setRaw(raw);
-
+ nDataTool.loadInRaw(raw);
+ const isOpaque = nDataTool.isOpaque();
  let doRGB = ES.doRGBPropagation();
  let doSun = ES.doSunPropagation();
 
  lighttest: if (ES.doLight()) {
-  nDataTool.setLocation(data[0]).loadIn();
   const light = dataTool.getLight();
   if (light <= 0) break lighttest;
   if (doSun) {
-   if (LightData.getS(light) > 0) {
+   if (dataTool.hasSunLight()) {
     tasks.queues.sun.rmeove.push([x, y, z]);
     Propagation.sun.remove(tasks);
    }
   }
   if (doRGB) {
-   if (LightData.hasRGBLight(light)) {
+   if (dataTool.hasRGBLight() && isOpaque) {
     tasks.queues.rgb.rmeove.push([x, y, z]);
     Propagation.rgb.remove(tasks);
    }

@@ -20,7 +20,6 @@ import { VoxelTags } from "./Voxel/VoxelTags.js";
 import { Register } from "./Register/Register.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
 
-
 export const DataSyncNode = {
  _states: <Record<string, boolean>>{
   voxelData: false,

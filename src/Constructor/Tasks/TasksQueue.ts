@@ -24,6 +24,6 @@ export const TasksQueue = {
      break;
     }
    }
-  }, 150);
+  }, 100);
  },
 };

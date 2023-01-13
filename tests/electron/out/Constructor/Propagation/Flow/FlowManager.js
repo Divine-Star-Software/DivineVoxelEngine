@@ -4,25 +4,27 @@ import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
+import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 export const FlowManager = {
-    //voxelByte : Util.
     lightData: LightData,
-    dimension: "main",
-    currentVoxel: 0,
     _brush: new BrushTool(),
     _sDataTool: new DataTool(),
     _nDataTool: new DataTool(),
-    rebuildQue: [],
-    rebuildMap: {},
-    setVoxel(tasks, level, levelState, x, y, z) {
+    setVoxel(tasks, vox, level, levelState, x, y, z) {
         this.sunCheck(tasks, x, y, z);
-        this._brush.setXYZ(x, y, z).paint();
+        this._brush.setId(vox).setXYZ(x, y, z).paint();
         this._sDataTool.loadInAt(x, y, z);
         this._sDataTool
             .setLevel(level)
             .setLevelState(levelState)
             .setLight(this.getAbsorbLight(x, y, z))
             .commit();
+    },
+    setDimension(dimension) {
+        this._sDataTool.setDimension(dimension);
+        this._nDataTool.setDimension(dimension);
+        this._brush.setDimension(dimension);
+        IlluminationManager.setDimension(dimension);
     },
     removeVoxel(tasks, x, y, z) {
         for (const n of $3dCardinalNeighbors) {
@@ -45,40 +47,37 @@ export const FlowManager = {
         SunUpdate(tasks);
         RGBUpdate(tasks);
     },
-    setCurrentVoxel(x, y, z) {
+    getVoxel(x, y, z) {
         if (!this._sDataTool.loadInAt(x, y, z))
-            return false;
-        if (!this._sDataTool.isRenderable()) {
-            return false;
-        }
+            return "";
+        if (!this._sDataTool.isRenderable())
+            return "";
         const substance = this._sDataTool.getSubstance();
         if (substance != "liquid" && substance != "magma")
-            return false;
-        this.currentVoxel = this._sDataTool.getId();
-        this._brush.setId(this._sDataTool.getStringId());
-        return true;
+            return "";
+        return this._sDataTool.getStringId();
     },
     setLevel(level, x, y, z) {
         this._nDataTool.loadInAt(x, y, z);
         this._nDataTool.setLevel(level).commit();
     },
-    getLevel(x, y, z) {
+    getLevel(vox, x, y, z) {
         if (!this._nDataTool.loadInAt(x, y, z))
             return -2;
-        const voxel = this._nDataTool.data.baseId;
+        const voxel = this._nDataTool.getStringId();
         if (this._nDataTool.isAir()) {
             return 0;
         }
-        if (voxel == this.currentVoxel) {
+        if (voxel == vox) {
             return this._nDataTool.getLevel();
         }
         return -1;
     },
-    getLevelState(x, y, z) {
+    getLevelState(vox, x, y, z) {
         if (!this._nDataTool.loadInAt(x, y, z))
             return -2;
-        const voxel = this._nDataTool.data.baseId;
-        if (voxel == this.currentVoxel) {
+        const voxel = this._nDataTool.getStringId();
+        if (voxel == vox) {
             return this._nDataTool.getLevelState();
         }
         if (this._nDataTool.isAir()) {
@@ -86,15 +85,15 @@ export const FlowManager = {
         }
         return -3;
     },
-    canFlowOutwardTest(x, y, z) {
-        const level = this.getLevel(x, y - 1, z);
+    canFlowOutwardTest(vox, x, y, z) {
+        const level = this.getLevel(vox, x, y - 1, z);
         if (level == -1) {
             return true;
         }
         return false;
     },
-    flowDownTest(x, y, z) {
-        const level = this.getLevel(x, y - 1, z);
+    flowDownTest(vox, x, y, z) {
+        const level = this.getLevel(vox, x, y - 1, z);
         if (level >= 0) {
             return true;
         }

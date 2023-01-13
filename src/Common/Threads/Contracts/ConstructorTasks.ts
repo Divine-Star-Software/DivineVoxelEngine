@@ -7,6 +7,7 @@ export const ConstructorTasks = {
  worldSun: 0,
  sunLightUpdate: 0,
  sunLightRemove: 0,
+ worldPropagation: 0,
  flowUpdate: 0,
  flowRemove: 0,
  constructEntity: 0,

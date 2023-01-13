@@ -41,12 +41,16 @@ export const Tasks = {
         }),
     },
     voxelUpdate: {
-        erase: ThreadComm.registerTasks(ConstructorTasks.voxelErease, async (data) => {
+        erase: ThreadComm.registerTasks(ConstructorTasks.voxelErease, async (data, onDone) => {
             await EreaseAndUpdate(data);
-        }),
-        paint: ThreadComm.registerTasks(ConstructorTasks.voxelPaint, async (data) => {
+            if (onDone)
+                onDone();
+        }, "deffered"),
+        paint: ThreadComm.registerTasks(ConstructorTasks.voxelPaint, async (data, onDone) => {
             await PaintAndUpdate(data);
-        }),
+            if (onDone)
+                onDone();
+        }, "deffered"),
     },
     explosion: ThreadComm.registerTasks(ConstructorTasks.explosion, async (data) => {
         await DVEC.propagation.expolosion.run(TasksRequest.getExplosionRequests(data[0], data[1], data[2], data[3]));
@@ -67,12 +71,23 @@ export const Tasks = {
             });
         }, "deffered"),
     },
+    worldPropagation: ThreadComm.registerTasks(ConstructorTasks.worldPropagation, async (data, onDone) => {
+        await DVEC.analyzer.runWorldPropagation(data);
+        if (onDone)
+            onDone();
+    }, "deffered"),
     flow: {
         update: ThreadComm.registerTasks(ConstructorTasks.flowUpdate, async (data) => {
-            await DVEC.propagation.flow.update(TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]));
+            const tasks = TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]);
+            tasks.start();
+            await DVEC.propagation.flow.update(tasks);
+            tasks.stop();
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.flowRemove, async (data) => {
-            await DVEC.propagation.flow.remove(TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]));
+            const tasks = TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]);
+            tasks.start();
+            await DVEC.propagation.flow.remove(tasks);
+            tasks.stop();
         }),
     },
     rgb: {
@@ -80,13 +95,17 @@ export const Tasks = {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
             tasks.queues.rgb.update.push([x, y, z]);
+            tasks.start();
             DVEC.propagation.rgb.update(tasks);
+            tasks.stop();
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.RGBlightRemove, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
             tasks.queues.rgb.rmeove.push([x, y, z]);
+            tasks.start();
             DVEC.propagation.rgb.remove(tasks);
+            tasks.stop();
         }),
     },
     sun: {
@@ -94,13 +113,17 @@ export const Tasks = {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
             tasks.queues.sun.update.push([x, y, z]);
+            tasks.start();
             DVEC.propagation.sun.update(tasks);
+            tasks.stop();
         }),
         remove: ThreadComm.registerTasks(ConstructorTasks.sunLightRemove, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
             tasks.queues.sun.rmeove.push([x, y, z]);
+            tasks.start();
             DVEC.propagation.sun.remove(tasks);
+            tasks.stop();
         }),
     },
 };

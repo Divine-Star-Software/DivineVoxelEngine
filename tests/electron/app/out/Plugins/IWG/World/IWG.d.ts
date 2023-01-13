@@ -34,16 +34,28 @@ export declare class IWG {
         };
         voxelUpdate: {
             erase: {
-                _s: any;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
             paint: {
-                _s: any;
-                add(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
         };
         build: {
@@ -75,6 +87,10 @@ export declare class IWG {
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
+        };
+        worldPropagation: {
+            _s: any;
+            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
         };
         light: {
             rgb: {
@@ -126,6 +142,7 @@ export declare class IWG {
     _generateMap: Map<string, boolean>;
     _existsCheckMap: Map<string, boolean>;
     _sunMap: Map<string, boolean>;
+    _propagationMap: Map<string, boolean>;
     constructor(data: IWGData);
     setDimension(id: string): void;
     _generate(columnKey: string, x: number, y: number, z: number, onDone?: Function): void;

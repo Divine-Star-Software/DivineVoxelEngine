@@ -11,14 +11,14 @@ import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -55,7 +55,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -93,6 +93,9 @@ export declare const DVEW: {
     };
     worldTasks: {
         addChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
+        unLoad: {
+            unLoadColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
+        };
         load: {
             loadRegino: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
             loadReginoHeader: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").LoadRegionHeadertasks>;
@@ -509,6 +512,8 @@ export declare const DVEW: {
             setB(value: number, sl: number): number;
             removeS(sl: number): number;
             hasRGBLight(sl: number): boolean;
+            hasSunLight(sl: number): boolean;
+            mixLight(l1: number, l2: number): number;
             getRGB(sl: number): number;
             setRGB(value: number, sl: number): number;
             decodeLightFromVoxelData(voxelData: number): number;
@@ -569,24 +574,24 @@ export declare const DVEW: {
         filterQueues(filter: (queueKey: string | number) => boolean): void;
         filterOldQueues(maxTime?: number): void;
         rgb: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
-        worldSun: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        worldSun: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         voxelUpdate: {
-            erase: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            erase: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
             paint: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").PaintTasks>;
         };
         sun: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         explosion: {
             run: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").ExplosionTasks>;
         };
         flow: {
-            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
-            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            update: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
+            remove: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").UpdateTasks>;
         };
         build: {
             chunk: import("../Libs/ThreadComm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").PriorityTask<import("../Meta/Tasks/Tasks.types.js").BuildTasks>>;
@@ -691,16 +696,28 @@ export declare const DVEW: {
             };
             voxelUpdate: {
                 erase: {
-                    _s: any;
-                    add(x: number, y: number, z: number): void;
-                    run(onDone: Function): void;
-                    runAndAwait(): Promise<void>;
+                    deferred: {
+                        _s: any;
+                        run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                    };
+                    async: {
+                        _s: any;
+                        add(x: number, y: number, z: number): void;
+                        run(onDone: Function): void;
+                        runAndAwait(): Promise<void>;
+                    };
                 };
                 paint: {
-                    _s: any;
-                    add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
-                    run(onDone: Function): void;
-                    runAndAwait(): Promise<void>;
+                    deferred: {
+                        _s: any;
+                        run(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData, onDone: (data: any) => void): void;
+                    };
+                    async: {
+                        _s: any;
+                        add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
+                        run(onDone: Function): void;
+                        runAndAwait(): Promise<void>;
+                    };
                 };
             };
             build: {
@@ -732,6 +749,10 @@ export declare const DVEW: {
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
+            };
+            worldPropagation: {
+                _s: any;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
             };
             light: {
                 rgb: {
@@ -811,16 +832,28 @@ export declare const DVEW: {
         };
         voxelUpdate: {
             erase: {
-                _s: any;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
             paint: {
-                _s: any;
-                add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
         };
         build: {
@@ -852,6 +885,10 @@ export declare const DVEW: {
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
+        };
+        worldPropagation: {
+            _s: any;
+            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
         };
         light: {
             rgb: {

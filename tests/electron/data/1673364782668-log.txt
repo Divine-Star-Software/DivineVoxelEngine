@@ -1,0 +1,2149 @@
+loading column at main,0,0,0size: 3577
+3577 : 2376899675 : 1
+loading column at main,16,0,0size: 3008
+3008 : 2376899676 : 2
+loading column at main,0,0,16size: 3071
+3071 : 2376899681 : 12
+loading column at main,32,0,0size: 4041
+4041 : 2376899676 : 3
+loading column at main,16,0,16size: 3345
+3345 : 2376899681 : 13
+loading column at main,32,0,16size: 4369
+4369 : 2376899681 : 14
+loading column at main,0,0,32size: 4071
+4071 : 2376899685 : 24
+loading column at main,48,0,0size: 3374
+3374 : 2376899677 : 4
+loading column at main,-16,0,0size: 3632
+3632 : 2376906152 : 6
+loading column at main,16,0,32size: 4164
+4164 : 2376899686 : 25
+loading column at main,48,0,16size: 3376
+3376 : 2376899682 : 16
+loading column at main,16,0,-16size: 3560
+3560 : 2376900234 : 44
+loading column at main,0,0,-16size: 3898
+3898 : 2376900234 : 43
+loading column at main,-16,0,16size: 2589
+2589 : 2376906155 : 12
+loading column at main,32,0,32size: 4084
+4084 : 2376899686 : 27
+loading column at main,0,0,48size: 4947
+4947 : 2376899690 : 36
+loading column at main,32,0,-16size: 4421
+4421 : 2376900234 : 45
+loading column at main,64,0,0size: 3643
+3643 : 2376899677 : 5
+loading column at main,-16,0,32size: 2932
+2932 : 2376906158 : 18
+loading column at main,-32,0,0size: 3869
+3869 : 2376906152 : 5
+loading column at main,48,0,-16size: 3524
+3524 : 2376900235 : 47
+loading column at main,48,0,32size: 3539
+3539 : 2376899686 : 28
+loading column at main,16,0,48size: 4426
+4426 : 2376899690 : 38
+loading column at main,64,0,16size: 3423
+3423 : 2376899682 : 17
+set path: DreamSpaceInfinite
+loading column at main,16,0,-32size: 3350
+3350 : 2303617771 : 94
+loading column at main,80,0,0size: 3328
+3328 : 2303722122 : 7
+loading column at main,-16,0,-16size: 3893
+3893 : 2272984846 : 110
+loading column at main,-32,0,16size: 3110
+3110 : 2303613965 : 61
+loading column at main,-32,0,-16size: 4196
+4196 : 2272984846 : 108
+loading column at main,0,0,-32size: 4186
+4186 : 2303617771 : 92
+loading column at main,32,0,-32size: 3445
+3445 : 2303617772 : 95
+loading column at main,-16,0,48size: 3019
+3019 : 2303631487 : 130
+loading column at main,32,0,48size: 3849
+3849 : 2303722136 : 52
+loading column at main,64,0,-16size: 4647
+4647 : 2303617779 : 112
+loading column at main,64,0,32size: 2718
+2718 : 2303722130 : 38
+loading column at main,0,0,64size: 4695
+4695 : 2303722139 : 64
+loading column at main,80,0,16size: 3182
+3182 : 2303722126 : 22
+loading column at main,-32,0,32size: 2977
+2977 : 2303613681 : 94
+loading column at main,-48,0,0size: 2630
+2630 : 2303613640 : 28
+loading column at main,-16,0,-32size: 2589
+2589 : 2272984837 : 83
+loading column at main,48,0,-32size: 4129
+4129 : 2303617798 : 96
+loading column at main,48,0,48size: 3484
+3484 : 2303722136 : 53
+loading column at main,16,0,-48size: 2550
+2550 : 2303617767 : 80
+loading column at main,16,0,64size: 4883
+4883 : 2303722140 : 66
+loading column at main,96,0,0size: 3249
+3249 : 2303722122 : 8
+loading column at main,-32,0,48size: 4168
+4168 : 2303613701 : 128
+loading column at main,-48,0,-16size: 3924
+3924 : 2272984845 : 107
+loading column at main,-48,0,16size: 3261
+3261 : 2303613660 : 60
+loading column at main,80,0,-16size: 3316
+3316 : 2303626107 : 114
+loading column at main,80,0,32size: 2671
+2671 : 2303722131 : 39
+loading column at main,-32,0,-32size: 3440
+3440 : 2272984836 : 82
+loading column at main,0,0,-48size: 3395
+3395 : 2303617767 : 79
+loading column at main,32,0,-48size: 3929
+3929 : 2303617767 : 81
+loading column at main,64,0,-32size: 3130
+3130 : 2303617857 : 98
+loading column at main,64,0,48size: 2425
+2425 : 2303722136 : 54
+loading column at main,-16,0,64size: 4038
+4038 : 2303613720 : 165
+loading column at main,32,0,64size: 4887
+4887 : 2303722140 : 68
+loading column at main,0,0,80size: 5118
+5118 : 2303722143 : 81
+loading column at main,96,0,16size: 3191
+3191 : 2303722126 : 23
+loading column at main,-48,0,32size: 2996
+2996 : 2303613680 : 93
+loading column at main,-64,0,0size: 2929
+2929 : 2303613640 : 27
+loading column at main,-48,0,-32size: 3687
+3687 : 2272984836 : 81
+loading column at main,-16,0,-48size: 2311
+2311 : 2272984826 : 58
+loading column at main,48,0,-48size: 4550
+4550 : 2303617768 : 82
+loading column at main,-48,0,48size: 3410
+3410 : 2303613700 : 127
+loading column at main,-32,0,64size: 4649
+4649 : 2303613720 : 163
+loading column at main,48,0,64size: 4284
+4284 : 2303722140 : 70
+loading column at main,16,0,-64size: 3217
+3217 : 2303617762 : 67
+loading column at main,80,0,-32size: 2646
+2646 : 2303617773 : 99
+loading column at main,80,0,48size: 1478
+1478 : 2303722137 : 55
+loading column at main,16,0,80size: 4476
+4476 : 2303722144 : 83
+loading column at main,96,0,-16size: 3912
+3912 : 2303617780 : 115
+loading column at main,96,0,32size: 2215
+2215 : 2303722132 : 40
+loading column at main,112,0,0size: 2331
+2331 : 2303722122 : 9
+loading column at main,-64,0,-16size: 3031
+3031 : 2272984845 : 106
+loading column at main,-64,0,16size: 3930
+3930 : 2303613660 : 59
+loading column at main,-32,0,-48size: 2279
+2279 : 2272984826 : 57
+loading column at main,64,0,-48size: 1972
+1972 : 2303617768 : 84
+loading column at main,-48,0,64size: 3921
+3921 : 2303613719 : 162
+loading column at main,64,0,64size: 1548
+1548 : 2303722140 : 72
+loading column at main,-64,0,32size: 4754
+4754 : 2303613680 : 91
+loading column at main,0,0,-64size: 2728
+2728 : 2303617761 : 66
+loading column at main,32,0,-64size: 3636
+3636 : 2303617762 : 68
+loading column at main,-16,0,80size: 4551
+4551 : 2303613755 : 200
+loading column at main,32,0,80size: 4600
+4600 : 2303722144 : 85
+loading column at main,112,0,16size: 2173
+2173 : 2303722127 : 24
+loading column at main,-48,0,-48size: 3689
+3689 : 2272984826 : 56
+loading column at main,-64,0,-32size: 3660
+3660 : 2272984835 : 80
+loading column at main,-80,0,0size: 2937
+2937 : 2303613639 : 26
+loading column at main,96,0,-32size: 2986
+2986 : 2303617774 : 100
+loading column at main,96,0,48size: 1776
+1776 : 2303722137 : 56
+loading column at main,0,0,96size: 4003
+4003 : 2303722149 : 97
+loading column at main,-64,0,48size: 4609
+4609 : 2303613700 : 125
+loading column at main,-16,0,-64size: 3198
+3198 : 2272984817 : 35
+loading column at main,48,0,-64size: 4278
+4278 : 2303617763 : 69
+loading column at main,80,0,-48size: 1919
+1919 : 2303617768 : 85
+loading column at main,80,0,64size: 1475
+1475 : 2303722141 : 73
+loading column at main,-32,0,80size: 4810
+4810 : 2303613754 : 198
+loading column at main,48,0,80size: 3643
+3643 : 2303722144 : 87
+loading column at main,16,0,-80size: 4454
+4454 : 2303617754 : 53
+loading column at main,112,0,-16size: 2854
+2854 : 2303617780 : 116
+loading column at main,112,0,32size: 3468
+3468 : 2303722132 : 41
+loading column at main,-64,0,-48size: 3093
+3093 : 2272984825 : 55
+loading column at main,-32,0,-64size: 3444
+3444 : 2272984817 : 34
+loading column at main,-64,0,64size: 3985
+3985 : 2303613719 : 161
+loading column at main,-80,0,-16size: 2837
+2837 : 2272984845 : 105
+loading column at main,-80,0,16size: 2850
+2850 : 2303613659 : 58
+loading column at main,16,0,96size: 4133
+4133 : 2303722150 : 98
+loading column at main,128,0,0size: 1809
+1809 : 2303722519 : 10
+loading column at main,-48,0,-64size: 2816
+2816 : 2272984816 : 33
+loading column at main,64,0,-64size: 1932
+1932 : 2303617763 : 71
+loading column at main,-48,0,80size: 3758
+3758 : 2303613754 : 197
+loading column at main,64,0,80size: 1979
+1979 : 2303722144 : 88
+loading column at main,-80,0,32size: 4027
+4027 : 2303613679 : 90
+loading column at main,0,0,-80size: 2512
+2512 : 2303617754 : 52
+loading column at main,32,0,-80size: 5316
+5316 : 2303617754 : 55
+loading column at main,96,0,-48size: 2216
+2216 : 2303617768 : 86
+loading column at main,96,0,64size: 2203
+2203 : 2303722141 : 74
+loading column at main,-16,0,96size: 4177
+4177 : 2303613776 : 234
+loading column at main,32,0,96size: 4145
+4145 : 2303722150 : 100
+loading column at main,112,0,-32size: 3408
+3408 : 2303617774 : 101
+loading column at main,112,0,48size: 2500
+2500 : 2303722137 : 57
+loading column at main,128,0,16size: 1773
+1773 : 2303722215 : 25
+loading column at main,-64,0,-64size: 3188
+3188 : 2272984816 : 32
+loading column at main,-80,0,-32size: 3206
+3206 : 2272984835 : 79
+loading column at main,-80,0,48size: 4151
+4151 : 2303613699 : 123
+loading column at main,-96,0,0size: 3459
+3459 : 2303613639 : 25
+loading column at main,0,0,112size: 3071
+3071 : 2303722155 : 112
+loading column at main,80,0,-64size: 2199
+2199 : 2303617763 : 72
+loading column at main,-64,0,80size: 4150
+4150 : 2303613753 : 195
+loading column at main,80,0,80size: 2092
+2092 : 2303722145 : 89
+loading column at main,-80,0,-48size: 4017
+4017 : 2272984825 : 54
+loading column at main,-16,0,-80size: 2966
+2966 : 2272984811 : 18
+loading column at main,-32,0,-80size: 2772
+2772 : 2272984811 : 17
+loading column at main,48,0,-80size: 2777
+2777 : 2303617755 : 57
+loading column at main,-32,0,96size: 4924
+4924 : 2303613775 : 232
+loading column at main,48,0,96size: 4361
+4361 : 2303722150 : 102
+loading column at main,16,0,-96size: 5351
+5351 : 2303617751 : 40
+loading column at main,112,0,-48size: 2437
+2437 : 2303617769 : 87
+loading column at main,112,0,64size: 2434
+2434 : 2303722141 : 75
+loading column at main,128,0,-16size: 1805
+1805 : 2303617780 : 117
+loading column at main,128,0,32size: 3487
+3487 : 2303722133 : 42
+loading column at main,-80,0,64size: 4727
+4727 : 2303613718 : 159
+loading column at main,-48,0,-80size: 2432
+2432 : 2272984810 : 16
+loading column at main,-96,0,-16size: 3951
+3951 : 2272984844 : 104
+loading column at main,-96,0,16size: 2830
+2830 : 2303613659 : 57
+loading column at main,16,0,112size: 3304
+3304 : 2303722155 : 113
+loading column at main,144,0,0size: 2077
+2077 : 2303722123 : 11
+loading column at main,64,0,-80size: 1964
+1964 : 2303617756 : 58
+loading column at main,96,0,-64size: 1897
+1897 : 2303617764 : 73
+loading column at main,96,0,80size: 2969
+2969 : 2303722145 : 90
+loading column at main,-48,0,96size: 2137
+2137 : 2303613774 : 231
+loading column at main,64,0,96size: 2756
+2756 : 2303722151 : 104
+loading column at main,0,0,-96size: 4489
+4489 : 2303617750 : 38
+loading column at main,32,0,-96size: 4372
+4372 : 2303617751 : 42
+loading column at main,-16,0,112size: 2938
+2938 : 2303613800 : 267
+loading column at main,32,0,112size: 3898
+3898 : 2303722155 : 114
+loading column at main,128,0,-32size: 2519
+2519 : 2303617775 : 102
+loading column at main,128,0,48size: 3184
+3184 : 2303722137 : 58
+loading column at main,144,0,16size: 2433
+2433 : 2303722127 : 26
+loading column at main,80,0,-80size: 2480
+2480 : 2303617756 : 59
+loading column at main,0,0,128size: 2072
+2072 : 2303722159 : 123
+loading column at main,96,0,-80size: 2139
+2139 : 2303617757 : 60
+loading column at main,-64,0,96size: 2287
+2287 : 2303613773 : 230
+loading column at main,80,0,96size: 3198
+3198 : 2303722151 : 105
+loading column at main,-16,0,-96size: 4081
+4081 : 2272984807 : 10
+loading column at main,48,0,-96size: 2672
+2672 : 2303617751 : 44
+loading column at main,112,0,-64size: 2125
+2125 : 2303617764 : 74
+loading column at main,112,0,80size: 2853
+2853 : 2303722145 : 91
+loading column at main,-32,0,112size: 2821
+2821 : 2303613799 : 266
+loading column at main,48,0,112size: 4084
+4084 : 2303722156 : 115
+loading column at main,128,0,-48size: 3066
+3066 : 2303617769 : 88
+loading column at main,128,0,64size: 3044
+3044 : 2303722141 : 76
+loading column at main,144,0,-16size: 1902
+1902 : 2303617781 : 118
+loading column at main,144,0,32size: 2770
+2770 : 2303722133 : 43
+loading column at main,64,0,-96size: 1842
+1842 : 2303617751 : 45
+loading column at main,16,0,128size: 3077
+3077 : 2303722159 : 124
+loading column at main,160,0,0size: 1824
+1824 : 2303722123 : 12
+loading column at main,96,0,96size: 2237
+2237 : 2303722151 : 106
+loading column at main,80,0,-96size: 1906
+1906 : 2303617752 : 46
+loading column at main,112,0,-80size: 2367
+2367 : 2303617757 : 61
+loading column at main,-48,0,112size: 1924
+1924 : 2303613799 : 265
+loading column at main,64,0,112size: 3527
+3527 : 2303722156 : 116
+loading column at main,128,0,-64size: 2036
+2036 : 2303617764 : 75
+loading column at main,128,0,80size: 3238
+3238 : 2303722145 : 92
+loading column at main,-16,0,128size: 1857
+1857 : 2303613820 : 299
+loading column at main,32,0,128size: 4161
+4161 : 2303722160 : 125
+loading column at main,144,0,-32size: 2193
+2193 : 2303617775 : 103
+loading column at main,144,0,48size: 2891
+2891 : 2303722138 : 59
+loading column at main,160,0,16size: 2268
+2268 : 2303722127 : 27
+loading column at main,48,0,-112size: 2476
+2476 : 2303617747 : 30
+loading column at main,0,0,144size: 2354
+2354 : 2573134728 : 133
+loading column at main,96,0,-96size: 1743
+1743 : 2303617752 : 47
+loading column at main,112,0,96size: 2897
+2897 : 2303722152 : 107
+loading column at main,80,0,112size: 2449
+2449 : 2303722156 : 117
+loading column at main,64,0,-112size: 1708
+1708 : 2303617748 : 31
+loading column at main,128,0,-80size: 2954
+2954 : 2303617758 : 62
+loading column at main,-32,0,128size: 2190
+2190 : 2303613819 : 298
+loading column at main,48,0,128size: 3446
+3446 : 2303722224 : 132
+loading column at main,144,0,-48size: 2188
+2188 : 2303617769 : 89
+loading column at main,144,0,64size: 2978
+2978 : 2303722142 : 77
+loading column at main,160,0,-16size: 1618
+1618 : 2303617781 : 119
+loading column at main,160,0,32size: 1721
+1721 : 2303722133 : 44
+loading column at main,16,0,144size: 2940
+2940 : 2573140729 : 135
+loading column at main,176,0,0size: 1781
+1781 : 2303722123 : 13
+loading column at main,112,0,-96size: 2771
+2771 : 2303617752 : 48
+loading column at main,96,0,112size: 2682
+2682 : 2303722156 : 118
+loading column at main,80,0,-112size: 2174
+2174 : 2303617748 : 32
+loading column at main,128,0,96size: 3573
+3573 : 2303722152 : 108
+loading column at main,64,0,128size: 2219
+2219 : 2573152634 : 150
+loading column at main,144,0,-64size: 2269
+2269 : 2303617765 : 76
+loading column at main,144,0,80size: 2592
+2592 : 2303722146 : 93
+loading column at main,-16,0,144size: 2011
+2011 : 2303613842 : 331
+loading column at main,32,0,144size: 5449
+5449 : 2573146664 : 137
+loading column at main,160,0,-32size: 1960
+1960 : 2303617776 : 104
+loading column at main,160,0,48size: 2003
+2003 : 2303722138 : 60
+loading column at main,176,0,16size: 2461
+2461 : 2303722128 : 28
+loading column at main,0,0,160size: 2119
+2119 : 2573140717 : 134
+loading column at main,112,0,112size: 2645
+2645 : 2303722157 : 119
+loading column at main,96,0,-112size: 1451
+1451 : 2303617748 : 33
+loading column at main,128,0,-96size: 3886
+3886 : 2303617752 : 49
+loading column at main,80,0,128size: 2085
+2085 : 2303722173 : 127
+loading column at main,144,0,-80size: 2618
+2618 : 2303617759 : 63
+loading column at main,144,0,96size: 2387
+2387 : 2303722152 : 109
+loading column at main,48,0,144size: 5048
+5048 : 2573152608 : 145
+loading column at main,160,0,-48size: 2298
+2298 : 2303617769 : 90
+loading column at main,160,0,64size: 2547
+2547 : 2303722142 : 78
+loading column at main,176,0,-16size: 1649
+1649 : 2303617781 : 120
+loading column at main,176,0,32size: 1512
+1512 : 2303722133 : 45
+loading column at main,16,0,160size: 2435
+2435 : 2573146654 : 136
+loading column at main,192,0,0size: 2317
+2317 : 2303722123 : 14
+loading column at main,128,0,112size: 3421
+3421 : 2303722157 : 120
+loading column at main,96,0,128size: 2863
+2863 : 2303722174 : 128
+loading column at main,64,0,144size: 2129
+2129 : 2573156318 : 155
+loading column at main,160,0,-64size: 2625
+2625 : 2303617765 : 77
+loading column at main,160,0,80size: 2272
+2272 : 2303722146 : 94
+loading column at main,32,0,160size: 4468
+4468 : 2573147938 : 141
+loading column at main,176,0,-32size: 2278
+2278 : 2303617776 : 105
+loading column at main,176,0,48size: 1496
+1496 : 2303722138 : 61
+loading column at main,192,0,16size: 2863
+2863 : 2303722128 : 29
+loading column at main,112,0,128size: 3921
+3921 : 2303722174 : 129
+loading column at main,144,0,112size: 3338
+3338 : 2303722157 : 121
+loading column at main,80,0,144size: 2210
+2210 : 2573156991 : 160
+loading column at main,160,0,96size: 3146
+3146 : 2303722153 : 110
+loading column at main,48,0,160size: 4376
+4376 : 2573152617 : 147
+loading column at main,176,0,64size: 2028
+2028 : 2303722142 : 79
+loading column at main,192,0,32size: 2009
+2009 : 2303722134 : 46
+loading column at main,32,0,176size: 1977
+1977 : 2573152599 : 144
+loading column at main,128,0,128size: 4801
+4801 : 2303722175 : 130
+loading column at main,96,0,144size: 1966
+1966 : 2573161070 : 172
+loading column at main,160,0,112size: 2985
+2985 : 2303722158 : 122
+loading column at main,64,0,160size: 2040
+2040 : 2573156962 : 157
+loading column at main,176,0,80size: 3239
+3239 : 2303722147 : 95
+loading column at main,48,0,176size: 1955
+1955 : 2573156271 : 152
+loading column at main,192,0,48size: 2183
+2183 : 2303722138 : 62
+loading column at main,144,0,128size: 0
+0 : 0 : 1
+column at main,144,0,128 could not be loaded
+false265
+false
+loading column at main,112,0,144size: 2016
+2016 : 2573166734 : 186
+loading column at main,80,0,160size: 2288
+2288 : 2573159719 : 166
+loading column at main,64,0,176size: 2925
+2925 : 2573156971 : 158
+loading column at main,128,0,144size: 0
+0 : 0 : 1
+column at main,128,0,144 could not be loaded
+false296
+false
+loading column at main,96,0,160size: 2084
+2084 : 2573161081 : 173
+loading column at main,80,0,176size: 3586
+3586 : 2573161042 : 169
+loading column at main,112,0,160size: 2516
+2516 : 2573166724 : 185
+loading column at main,96,0,176size: 2263
+2263 : 2573164244 : 179
+loading column at main,128,0,160size: 0
+0 : 0 : 1
+column at main,128,0,160 could not be loaded
+false328
+false
+loading column at main,176,0,96size: 3479
+3479 : 2303722153 : 111
+loading column at main,192,0,64size: 1569
+1569 : 2303722143 : 80
+loading column at main,112,0,176size: 2223
+2223 : 2573168654 : 190
+==========================================
+saving column at main,-96,0,32size: 1937
+saving over column at : main,-96,0,32
+[object ArrayBuffer]
+1937 : 2627670883 : 89
+set path: DreamSpaceInfinite
+==========================================
+saving column at main,0,0,0size: 3337
+3337 : 2627718516 : 1
+==========================================
+saving column at main,16,0,0size: 3774
+3774 : 2627719589 : 2
+==========================================
+saving column at main,0,0,16size: 3396
+3396 : 2627719754 : 3
+==========================================
+saving column at main,16,0,16size: 3304
+3304 : 2627719767 : 4
+==========================================
+saving column at main,-16,0,0size: 3650
+3650 : 2627720133 : 1
+==========================================
+saving column at main,32,0,0size: 4150
+4150 : 2627720504 : 5
+==========================================
+saving column at main,-16,0,-16size: 3464
+3464 : 2627720619 : 1
+==========================================
+saving column at main,32,0,16size: 3929
+3929 : 2627721157 : 7
+==========================================
+saving column at main,-16,0,16size: 3099
+3099 : 2627721411 : 2
+==========================================
+saving column at main,0,0,-16size: 3979
+3979 : 2627721602 : 1
+==========================================
+saving column at main,16,0,-16size: 3807
+3807 : 2627721614 : 2
+==========================================
+saving column at main,32,0,-16size: 4646
+4646 : 2627721675 : 3
+==========================================
+saving column at main,32,0,32size: 4694
+4694 : 2627722192 : 8
+==========================================
+saving column at main,-32,0,16size: 2558
+2558 : 2627722708 : 3
+==========================================
+saving column at main,-32,0,0size: 4313
+4313 : 2627723041 : 4
+==========================================
+saving column at main,-32,0,-16size: 4274
+4274 : 2627723051 : 2
+==========================================
+saving column at main,48,0,16size: 3378
+3378 : 2627723185 : 10
+==========================================
+saving column at main,48,0,32size: 3771
+3771 : 2627723562 : 11
+==========================================
+saving column at main,48,0,48size: 3407
+3407 : 2627723572 : 12
+==========================================
+saving column at main,-32,0,32size: 2577
+2577 : 2627723637 : 6
+==========================================
+saving column at main,0,0,32size: 3616
+3616 : 2627723785 : 13
+==========================================
+saving column at main,16,0,32size: 4813
+4813 : 2627723795 : 14
+==========================================
+saving column at main,-16,0,32size: 2807
+2807 : 2627723813 : 7
+==========================================
+saving column at main,16,0,-32size: 2995
+2995 : 2627724219 : 5
+==========================================
+saving column at main,32,0,-32size: 4459
+4459 : 2627724230 : 6
+==========================================
+saving column at main,48,0,0size: 3327
+3327 : 2627724240 : 16
+==========================================
+saving column at main,48,0,-16size: 3963
+3963 : 2627724248 : 8
+==========================================
+saving column at main,48,0,-32size: 3998
+3998 : 2627724258 : 9
+==========================================
+saving column at main,64,0,0size: 4192
+4192 : 2627724269 : 17
+==========================================
+saving column at main,64,0,-16size: 4439
+4439 : 2627724480 : 10
+==========================================
+saving column at main,0,0,-32size: 4080
+4080 : 2627724555 : 12
+==========================================
+saving column at main,-16,0,-32size: 3002
+3002 : 2627724564 : 4
+==========================================
+saving column at main,-32,0,-32size: 2631
+2631 : 2627724575 : 5
+==========================================
+saving column at main,0,0,48size: 5252
+5252 : 2627725071 : 19
+==========================================
+saving column at main,16,0,48size: 4489
+4489 : 2627725082 : 21
+==========================================
+saving column at main,32,0,48size: 3875
+3875 : 2627725092 : 23
+==========================================
+saving column at main,64,0,16size: 3167
+3167 : 2627725706 : 24
+==========================================
+saving column at main,64,0,32size: 3022
+3022 : 2627725716 : 25
+==========================================
+saving column at main,64,0,48size: 2524
+2524 : 2627725726 : 26
+==========================================
+saving column at main,32,0,64size: 4790
+4790 : 2627726139 : 27
+==========================================
+saving column at main,-48,0,-16size: 3558
+3558 : 2627726456 : 6
+==========================================
+saving column at main,-48,0,-32size: 3312
+3312 : 2627726467 : 7
+==========================================
+saving column at main,16,0,-48size: 2675
+2675 : 2627726858 : 13
+==========================================
+saving column at main,80,0,0size: 3544
+3544 : 2627727206 : 29
+==========================================
+saving column at main,-16,0,48size: 3173
+3173 : 2627727529 : 8
+==========================================
+saving column at main,-32,0,48size: 4070
+4070 : 2627727541 : 9
+==========================================
+saving column at main,-48,0,0size: 3194
+3194 : 2627727745 : 10
+==========================================
+saving column at main,-48,0,16size: 3785
+3785 : 2627727756 : 11
+==========================================
+saving column at main,-48,0,32size: 2167
+2167 : 2627727766 : 12
+==========================================
+saving column at main,0,0,-48size: 3372
+3372 : 2627727913 : 14
+==========================================
+saving column at main,80,0,16size: 3139
+3139 : 2627728178 : 30
+==========================================
+saving column at main,32,0,-48size: 3492
+3492 : 2627728465 : 15
+==========================================
+saving column at main,48,0,-48size: 4223
+4223 : 2627728476 : 16
+==========================================
+saving column at main,16,0,-64size: 2505
+2505 : 2627728625 : 18
+==========================================
+saving column at main,32,0,-64size: 3190
+3190 : 2627728633 : 19
+==========================================
+saving column at main,-16,0,-48size: 3213
+3213 : 2627728789 : 8
+==========================================
+saving column at main,-32,0,-48size: 2505
+2505 : 2627728799 : 9
+==========================================
+saving column at main,-48,0,-48size: 3331
+3331 : 2627728815 : 10
+==========================================
+saving column at main,16,0,64size: 3940
+3940 : 2627729067 : 31
+==========================================
+saving column at main,64,0,-32size: 3199
+3199 : 2627729308 : 20
+==========================================
+saving column at main,0,0,-64size: 3526
+3526 : 2627729391 : 21
+==========================================
+saving column at main,48,0,64size: 4342
+4342 : 2627730052 : 32
+==========================================
+saving column at main,96,0,0size: 3277
+3277 : 2627731587 : 34
+==========================================
+saving column at main,-16,0,-64size: 3201
+3201 : 2627731694 : 11
+==========================================
+saving column at main,-32,0,-64size: 3303
+3303 : 2627731706 : 12
+==========================================
+saving column at main,-48,0,48size: 3552
+3552 : 2627732088 : 13
+==========================================
+saving column at main,80,0,-16size: 3523
+3523 : 2627733579 : 22
+==========================================
+saving column at main,96,0,-16size: 3942
+3942 : 2627733595 : 23
+==========================================
+saving column at main,-64,0,-32size: 3403
+3403 : 2627733880 : 13
+==========================================
+saving column at main,80,0,32size: 2739
+2739 : 2627734214 : 35
+==========================================
+saving column at main,64,0,-48size: 1914
+1914 : 2627734439 : 24
+==========================================
+saving column at main,0,0,64size: 4074
+4074 : 2627734526 : 36
+==========================================
+saving column at main,-64,0,0size: 2801
+2801 : 2627734813 : 14
+==========================================
+saving column at main,-64,0,-16size: 3097
+3097 : 2627734823 : 14
+==========================================
+saving column at main,-16,0,64size: 4040
+4040 : 2627735041 : 15
+==========================================
+saving column at main,80,0,48size: 1520
+1520 : 2627735233 : 37
+==========================================
+saving column at main,-64,0,16size: 4698
+4698 : 2627735305 : 16
+==========================================
+saving column at main,-64,0,32size: 4994
+4994 : 2627735313 : 18
+==========================================
+saving column at main,-64,0,48size: 4548
+4548 : 2627735322 : 20
+==========================================
+saving column at main,-32,0,64size: 4264
+4264 : 2627735605 : 22
+==========================================
+saving column at main,64,0,64size: 1571
+1571 : 2627735895 : 38
+==========================================
+saving column at main,-64,0,-48size: 3015
+3015 : 2627736074 : 15
+==========================================
+saving column at main,48,0,-64size: 4468
+4468 : 2627736973 : 25
+==========================================
+saving column at main,48,0,80size: 3627
+3627 : 2627737215 : 39
+==========================================
+saving column at main,-48,0,-64size: 2703
+2703 : 2627737429 : 16
+==========================================
+saving column at main,0,0,-80size: 3299
+3299 : 2627737975 : 27
+==========================================
+saving column at main,16,0,-80size: 3922
+3922 : 2627737992 : 28
+==========================================
+saving column at main,32,0,-80size: 4737
+4737 : 2627738003 : 29
+==========================================
+saving column at main,-48,0,64size: 3644
+3644 : 2627738022 : 24
+==========================================
+saving column at main,64,0,-64size: 1951
+1951 : 2627738031 : 31
+==========================================
+saving column at main,80,0,-32size: 2655
+2655 : 2627738245 : 32
+==========================================
+saving column at main,-16,0,-80size: 3866
+3866 : 2627738260 : 17
+==========================================
+saving column at main,-32,0,-80size: 2774
+2774 : 2627738268 : 18
+==========================================
+saving column at main,-80,0,-32size: 3196
+3196 : 2627738749 : 19
+==========================================
+saving column at main,-80,0,-48size: 4061
+4061 : 2627739397 : 20
+==========================================
+saving column at main,-64,0,64size: 3954
+3954 : 2627739484 : 25
+==========================================
+saving column at main,-80,0,0size: 2924
+2924 : 2627739628 : 26
+==========================================
+saving column at main,-80,0,-16size: 2886
+2886 : 2627739637 : 21
+==========================================
+saving column at main,-80,0,16size: 2897
+2897 : 2627739646 : 27
+==========================================
+saving column at main,80,0,-48size: 1937
+1937 : 2627739925 : 33
+==========================================
+saving column at main,-48,0,-80size: 2419
+2419 : 2627742123 : 22
+==========================================
+saving column at main,16,0,80size: 4551
+4551 : 2627742954 : 40
+==========================================
+saving column at main,32,0,80size: 4381
+4381 : 2627742963 : 42
+==========================================
+saving column at main,96,0,16size: 3218
+3218 : 2627743166 : 44
+==========================================
+saving column at main,-80,0,32size: 4035
+4035 : 2627743506 : 28
+==========================================
+saving column at main,0,0,80size: 5579
+5579 : 2627743566 : 45
+==========================================
+saving column at main,48,0,-80size: 2789
+2789 : 2627743625 : 34
+==========================================
+saving column at main,16,0,-96size: 4887
+4887 : 2627744500 : 35
+==========================================
+saving column at main,-96,0,0size: 3430
+3430 : 2627744666 : 29
+==========================================
+saving column at main,-96,0,-16size: 3921
+3921 : 2627744677 : 23
+==========================================
+saving column at main,-80,0,48size: 4065
+4065 : 2627745002 : 30
+==========================================
+saving column at main,-96,0,16size: 2836
+2836 : 2627745314 : 31
+==========================================
+saving column at main,-64,0,-64size: 3217
+3217 : 2627746142 : 24
+==========================================
+saving column at main,0,0,-96size: 4502
+4502 : 2627750941 : 37
+==========================================
+saving column at main,80,0,64size: 1476
+1476 : 2627751730 : 47
+==========================================
+saving column at main,80,0,-64size: 2207
+2207 : 2627751742 : 39
+==========================================
+saving column at main,96,0,32size: 2226
+2226 : 2627751752 : 48
+==========================================
+saving column at main,96,0,-32size: 2988
+2988 : 2627751766 : 40
+==========================================
+saving column at main,96,0,48size: 1727
+1727 : 2627751780 : 49
+==========================================
+saving column at main,96,0,-48size: 2261
+2261 : 2627751790 : 41
+==========================================
+saving column at main,112,0,0size: 2295
+2295 : 2627751801 : 50
+==========================================
+saving column at main,64,0,80size: 2003
+2003 : 2627751811 : 51
+==========================================
+saving column at main,112,0,16size: 2185
+2185 : 2627751821 : 52
+==========================================
+saving column at main,112,0,-16size: 2848
+2848 : 2627751830 : 42
+==========================================
+saving column at main,32,0,-96size: 4365
+4365 : 2627751841 : 43
+==========================================
+saving column at main,-16,0,80size: 4360
+4360 : 2627752385 : 32
+==========================================
+saving column at main,32,0,96size: 4166
+4166 : 2627753526 : 53
+==========================================
+saving column at main,96,0,64size: 2200
+2200 : 2627753918 : 55
+==========================================
+saving column at main,48,0,96size: 4431
+4431 : 2627753927 : 56
+==========================================
+saving column at main,64,0,96size: 2777
+2777 : 2627753937 : 58
+==========================================
+saving column at main,-32,0,80size: 4241
+4241 : 2627755206 : 34
+==========================================
+saving column at main,-48,0,80size: 4082
+4082 : 2627755215 : 36
+==========================================
+saving column at main,16,0,96size: 4098
+4098 : 2627755580 : 59
+==========================================
+saving column at main,0,0,96size: 4961
+4961 : 2627756717 : 61
+==========================================
+saving column at main,32,0,112size: 3885
+3885 : 2627757925 : 63
+==========================================
+saving column at main,16,0,112size: 3292
+3292 : 2627760294 : 64
+==========================================
+saving column at main,0,0,112size: 3608
+3608 : 2627760304 : 65
+==========================================
+saving column at main,-16,0,96size: 4609
+4609 : 2627760916 : 37
+==========================================
+saving column at main,80,0,80size: 2124
+2124 : 2627761873 : 66
+==========================================
+saving column at main,112,0,32size: 3453
+3453 : 2627762559 : 67
+==========================================
+saving column at main,-32,0,96size: 4838
+4838 : 2627762957 : 39
+==========================================
+saving column at main,112,0,48size: 2477
+2477 : 2627767190 : 68
+==========================================
+saving column at main,112,0,-32size: 3451
+3451 : 2627767199 : 45
+==========================================
+saving column at main,80,0,96size: 3227
+3227 : 2627767209 : 69
+==========================================
+saving column at main,128,0,16size: 1755
+1755 : 2627767220 : 70
+==========================================
+saving column at main,128,0,32size: 3474
+3474 : 2627767231 : 71
+==========================================
+saving column at main,128,0,0size: 1785
+1785 : 2627767241 : 72
+==========================================
+saving column at main,48,0,112size: 4093
+4093 : 2627767250 : 73
+==========================================
+saving column at main,112,0,64size: 2450
+2450 : 2627776995 : 74
+==========================================
+saving column at main,96,0,80size: 2924
+2924 : 2627777884 : 75
+==========================================
+saving column at main,112,0,80size: 2889
+2889 : 2627781267 : 76
+==========================================
+saving column at main,112,0,-48size: 2438
+2438 : 2627781277 : 46
+==========================================
+saving column at main,128,0,48size: 3142
+3142 : 2627781286 : 77
+==========================================
+saving column at main,128,0,-16size: 1808
+1808 : 2627781305 : 47
+==========================================
+saving column at main,128,0,64size: 3006
+3006 : 2627781315 : 78
+==========================================
+saving column at main,128,0,-32size: 2568
+2568 : 2627781326 : 48
+==========================================
+saving column at main,96,0,96size: 2282
+2282 : 2627781336 : 79
+==========================================
+saving column at main,96,0,-64size: 1856
+1856 : 2627781347 : 49
+==========================================
+saving column at main,144,0,16size: 2451
+2451 : 2627781357 : 80
+==========================================
+saving column at main,144,0,0size: 2136
+2136 : 2627781367 : 81
+==========================================
+saving column at main,64,0,112size: 3465
+3465 : 2627781377 : 82
+==========================================
+saving column at main,64,0,-80size: 1913
+1913 : 2627781389 : 50
+==========================================
+saving column at main,144,0,32size: 2821
+2821 : 2627781397 : 83
+==========================================
+saving column at main,128,0,80size: 3263
+3263 : 2627794195 : 84
+==========================================
+saving column at main,128,0,-48size: 3072
+3072 : 2627794213 : 51
+==========================================
+saving column at main,144,0,48size: 2844
+2844 : 2627794224 : 85
+==========================================
+saving column at main,144,0,-16size: 1892
+1892 : 2627794235 : 52
+==========================================
+saving column at main,144,0,64size: 2940
+2940 : 2627794244 : 86
+==========================================
+saving column at main,112,0,-64size: 2138
+2138 : 2627794256 : 53
+==========================================
+saving column at main,160,0,16size: 2232
+2232 : 2627794267 : 87
+==========================================
+saving column at main,112,0,96size: 2898
+2898 : 2627794276 : 88
+==========================================
+saving column at main,160,0,32size: 1733
+1733 : 2627794286 : 89
+==========================================
+saving column at main,80,0,112size: 2457
+2457 : 2627794295 : 90
+==========================================
+saving column at main,160,0,0size: 1827
+1827 : 2627794307 : 91
+==========================================
+saving column at main,80,0,-80size: 2515
+2515 : 2627794316 : 54
+==========================================
+saving column at main,144,0,-32size: 2194
+2194 : 2627799171 : 55
+==========================================
+saving column at main,144,0,80size: 2565
+2565 : 2627807906 : 92
+==========================================
+saving column at main,144,0,-48size: 2147
+2147 : 2627807916 : 56
+==========================================
+saving column at main,160,0,48size: 1974
+1974 : 2627807925 : 93
+==========================================
+saving column at main,160,0,-16size: 1614
+1614 : 2627807939 : 57
+==========================================
+saving column at main,160,0,64size: 2586
+2586 : 2627807948 : 94
+==========================================
+saving column at main,128,0,96size: 3590
+3590 : 2627807959 : 95
+==========================================
+saving column at main,160,0,-32size: 1976
+1976 : 2627807970 : 58
+==========================================
+saving column at main,128,0,-64size: 1969
+1969 : 2627807979 : 59
+==========================================
+saving column at main,176,0,16size: 2495
+2495 : 2627807989 : 96
+==========================================
+saving column at main,176,0,32size: 1511
+1511 : 2627807999 : 97
+==========================================
+saving column at main,176,0,0size: 1816
+1816 : 2627808009 : 98
+==========================================
+saving column at main,96,0,-80size: 2145
+2145 : 2627808019 : 60
+==========================================
+saving column at main,96,0,112size: 2649
+2649 : 2627808031 : 99
+==========================================
+saving column at main,144,0,96size: 2392
+2392 : 2627811782 : 100
+==========================================
+saving column at main,160,0,80size: 2302
+2302 : 2627811791 : 101
+==========================================
+saving column at main,112,0,112size: 2619
+2619 : 2627811801 : 102
+==========================================
+saving column at main,128,0,112size: 3459
+3459 : 2627811809 : 103
+==========================================
+saving column at main,176,0,48size: 1503
+1503 : 2627811818 : 104
+==========================================
+saving column at main,80,0,128size: 2064
+2064 : 2627811827 : 105
+==========================================
+saving column at main,96,0,128size: 2864
+2864 : 2627811836 : 106
+==========================================
+saving column at main,64,0,128size: 2205
+2205 : 2627811844 : 107
+==========================================
+saving column at main,160,0,96size: 3077
+3077 : 2627813905 : 108
+==========================================
+saving column at main,176,0,64size: 2002
+2002 : 2627813919 : 109
+==========================================
+saving column at main,176,0,80size: 3205
+3205 : 2627813928 : 110
+==========================================
+saving column at main,176,0,-16size: 1659
+1659 : 2627813939 : 61
+==========================================
+saving column at main,144,0,112size: 3258
+3258 : 2627813949 : 111
+==========================================
+saving column at main,192,0,32size: 2051
+2051 : 2627813958 : 112
+==========================================
+saving column at main,192,0,48size: 2157
+2157 : 2627813969 : 113
+==========================================
+saving column at main,192,0,16size: 2843
+2843 : 2627813978 : 114
+==========================================
+saving column at main,112,0,128size: 3889
+3889 : 2627813988 : 115
+==========================================
+saving column at main,160,0,-48size: 2301
+2301 : 2627821467 : 62
+==========================================
+saving column at main,176,0,-32size: 2253
+2253 : 2627821478 : 63
+==========================================
+saving column at main,144,0,-64size: 2266
+2266 : 2627821487 : 64
+==========================================
+saving column at main,192,0,0size: 2323
+2323 : 2627821501 : 116
+==========================================
+saving column at main,112,0,-80size: 2355
+2355 : 2627821509 : 65
+==========================================
+saving column at main,176,0,-48size: 3390
+3390 : 2627824225 : 66
+==========================================
+saving column at main,192,0,-16size: 2660
+2660 : 2627824235 : 67
+==========================================
+saving column at main,192,0,64size: 1572
+1572 : 2627824243 : 117
+==========================================
+saving column at main,192,0,-32size: 2348
+2348 : 2627824252 : 68
+==========================================
+saving column at main,160,0,-64size: 2594
+2594 : 2627824262 : 69
+==========================================
+saving column at main,208,0,16size: 2476
+2476 : 2627824274 : 118
+==========================================
+saving column at main,208,0,32size: 1610
+1610 : 2627824283 : 119
+==========================================
+saving column at main,128,0,-80size: 2908
+2908 : 2627824291 : 70
+==========================================
+saving column at main,208,0,0size: 2370
+2370 : 2627824303 : 120
+==========================================
+saving column at main,192,0,80size: 1794
+1794 : 2627828523 : 121
+==========================================
+saving column at main,192,0,-48size: 1786
+1786 : 2627828550 : 71
+==========================================
+saving column at main,208,0,48size: 2479
+2479 : 2627828561 : 122
+==========================================
+saving column at main,208,0,-16size: 2207
+2207 : 2627828571 : 72
+==========================================
+saving column at main,208,0,64size: 2329
+2329 : 2627828581 : 123
+==========================================
+saving column at main,208,0,-32size: 1940
+1940 : 2627828592 : 73
+==========================================
+saving column at main,176,0,96size: 3473
+3473 : 2627828604 : 124
+==========================================
+saving column at main,176,0,-64size: 2809
+2809 : 2627828615 : 74
+==========================================
+saving column at main,224,0,16size: 2271
+2271 : 2627828628 : 125
+==========================================
+saving column at main,224,0,0size: 2733
+2733 : 2627828638 : 126
+==========================================
+saving column at main,144,0,-80size: 2629
+2629 : 2627828648 : 75
+==========================================
+saving column at main,224,0,32size: 1651
+1651 : 2627828658 : 127
+==========================================
+saving column at main,208,0,80size: 1859
+1859 : 2627837484 : 128
+==========================================
+saving column at main,208,0,-48size: 2352
+2352 : 2627837494 : 76
+==========================================
+saving column at main,224,0,-16size: 3018
+3018 : 2627837506 : 77
+==========================================
+saving column at main,224,0,48size: 1881
+1881 : 2627837516 : 129
+==========================================
+saving column at main,224,0,64size: 2214
+2214 : 2627837524 : 130
+==========================================
+saving column at main,224,0,-32size: 2172
+2172 : 2627837532 : 78
+==========================================
+saving column at main,192,0,96size: 2527
+2527 : 2627837542 : 131
+==========================================
+saving column at main,192,0,-64size: 1995
+1995 : 2627837551 : 79
+==========================================
+saving column at main,240,0,16size: 3035
+3035 : 2627837561 : 132
+==========================================
+saving column at main,240,0,32size: 2076
+2076 : 2627837570 : 133
+==========================================
+saving column at main,240,0,0size: 2884
+2884 : 2627837578 : 134
+==========================================
+saving column at main,160,0,-80size: 2990
+2990 : 2627837590 : 80
+==========================================
+saving column at main,160,0,112size: 3002
+3002 : 2627837601 : 135
+==========================================
+saving column at main,208,0,-64size: 2660
+2660 : 2627838353 : 81
+==========================================
+saving column at main,224,0,-48size: 2859
+2859 : 2627838366 : 82
+==========================================
+saving column at main,176,0,-80size: 2636
+2636 : 2627838376 : 83
+==========================================
+saving column at main,192,0,-80size: 2493
+2493 : 2627838386 : 84
+==========================================
+saving column at main,240,0,-16size: 2425
+2425 : 2627838397 : 85
+==========================================
+saving column at main,144,0,-96size: 2338
+2338 : 2627838407 : 86
+==========================================
+saving column at main,128,0,-96size: 3855
+3855 : 2627838419 : 87
+==========================================
+saving column at main,160,0,-96size: 2867
+2867 : 2627838433 : 88
+==========================================
+saving column at main,208,0,-80size: 2878
+2878 : 2627853892 : 89
+==========================================
+saving column at main,224,0,-64size: 2443
+2443 : 2627853903 : 90
+==========================================
+saving column at main,112,0,-96size: 2792
+2792 : 2627853913 : 91
+==========================================
+saving column at main,176,0,-96size: 2295
+2295 : 2627853922 : 92
+==========================================
+saving column at main,96,0,-96size: 1695
+1695 : 2627853932 : 93
+==========================================
+saving column at main,192,0,-96size: 3495
+3495 : 2627853945 : 94
+==========================================
+saving column at main,240,0,-32size: 3059
+3059 : 2627853960 : 95
+==========================================
+saving column at main,144,0,-112size: 2798
+2798 : 2627853972 : 96
+==========================================
+saving column at main,128,0,-112size: 3418
+3418 : 2627853981 : 97
+==========================================
+saving column at main,160,0,-112size: 3422
+3422 : 2627853990 : 98
+==========================================
+saving column at main,224,0,-80size: 2486
+2486 : 2627854032 : 99
+==========================================
+saving column at main,240,0,-48size: 1943
+1943 : 2627854043 : 100
+==========================================
+saving column at main,240,0,-64size: 2197
+2197 : 2627854053 : 101
+==========================================
+saving column at main,208,0,-96size: 3627
+3627 : 2627854065 : 102
+==========================================
+saving column at main,256,0,-16size: 2207
+2207 : 2627854075 : 103
+==========================================
+saving column at main,256,0,0size: 2102
+2102 : 2627854085 : 136
+==========================================
+saving column at main,256,0,-32size: 1857
+1857 : 2627854094 : 104
+==========================================
+saving column at main,176,0,-112size: 3421
+3421 : 2627854110 : 105
+==========================================
+saving column at main,240,0,48size: 1558
+1558 : 2627860039 : 137
+==========================================
+saving column at main,240,0,-80size: 2282
+2282 : 2627860050 : 106
+==========================================
+saving column at main,256,0,16size: 2649
+2649 : 2627860065 : 138
+==========================================
+saving column at main,256,0,-48size: 1466
+1466 : 2627860076 : 107
+==========================================
+saving column at main,256,0,32size: 1630
+1630 : 2627860089 : 139
+==========================================
+saving column at main,256,0,-64size: 2652
+2652 : 2627860099 : 108
+==========================================
+saving column at main,272,0,-16size: 3353
+3353 : 2627860115 : 109
+==========================================
+saving column at main,272,0,0size: 3027
+3027 : 2627860129 : 140
+==========================================
+saving column at main,272,0,-32size: 1651
+1651 : 2627860137 : 110
+==========================================
+saving column at main,224,0,-96size: 2560
+2560 : 2627860151 : 111
+==========================================
+saving column at main,192,0,-112size: 4734
+4734 : 2627860161 : 112
+==========================================
+saving column at main,240,0,-96size: 1977
+1977 : 2627861739 : 114
+==========================================
+saving column at main,256,0,-80size: 1858
+1858 : 2627861748 : 115
+==========================================
+saving column at main,208,0,-112size: 3116
+3116 : 2627861759 : 116
+==========================================
+saving column at main,224,0,-112size: 2395
+2395 : 2627861769 : 117
+==========================================
+saving column at main,272,0,-48size: 2454
+2454 : 2627861779 : 118
+==========================================
+saving column at main,176,0,-128size: 6717
+6717 : 2627861790 : 119
+==========================================
+saving column at main,160,0,-128size: 3193
+3193 : 2627861798 : 121
+==========================================
+saving column at main,192,0,-128size: 4945
+4945 : 2627861807 : 122
+==========================================
+saving column at main,256,0,-96size: 1948
+1948 : 2627863609 : 124
+==========================================
+saving column at main,272,0,-64size: 4226
+4226 : 2627863620 : 125
+==========================================
+saving column at main,272,0,16size: 2762
+2762 : 2627863651 : 141
+==========================================
+saving column at main,272,0,-80size: 3215
+3215 : 2627863664 : 127
+==========================================
+saving column at main,240,0,-112size: 1962
+1962 : 2627863673 : 128
+==========================================
+saving column at main,288,0,-32size: 2124
+2124 : 2627863681 : 129
+==========================================
+saving column at main,288,0,-16size: 1972
+1972 : 2627863691 : 130
+==========================================
+saving column at main,288,0,-48size: 2681
+2681 : 2627863699 : 131
+==========================================
+saving column at main,208,0,-128size: 2879
+2879 : 2627863714 : 132
+==========================================
+saving column at main,256,0,-112size: 2811
+2811 : 2627866145 : 133
+==========================================
+saving column at main,272,0,-96size: 3044
+3044 : 2627866153 : 134
+==========================================
+saving column at main,224,0,-128size: 2563
+2563 : 2627866163 : 135
+==========================================
+saving column at main,144,0,-128size: 2588
+2588 : 2627866173 : 136
+==========================================
+saving column at main,240,0,-128size: 2208
+2208 : 2627866183 : 137
+==========================================
+saving column at main,288,0,-64size: 2905
+2905 : 2627866193 : 138
+==========================================
+saving column at main,192,0,-144size: 4910
+4910 : 2627866203 : 139
+==========================================
+saving column at main,176,0,-144size: 4757
+4757 : 2627866214 : 141
+==========================================
+saving column at main,208,0,-144size: 2785
+2785 : 2627866224 : 143
+==========================================
+saving column at main,272,0,-112size: 3588
+3588 : 2627867693 : 144
+==========================================
+saving column at main,288,0,-80size: 3590
+3590 : 2627867702 : 145
+==========================================
+saving column at main,288,0,0size: 2758
+2758 : 2627867711 : 142
+==========================================
+saving column at main,288,0,-96size: 2708
+2708 : 2627867719 : 146
+==========================================
+saving column at main,256,0,-128size: 2416
+2416 : 2627867728 : 147
+==========================================
+saving column at main,304,0,-48size: 2371
+2371 : 2627867736 : 148
+==========================================
+saving column at main,304,0,-32size: 2514
+2514 : 2627867746 : 149
+==========================================
+saving column at main,304,0,-64size: 2449
+2449 : 2627867754 : 150
+==========================================
+saving column at main,224,0,-144size: 2523
+2523 : 2627867762 : 151
+==========================================
+saving column at main,272,0,-128size: 2471
+2471 : 2627870366 : 152
+==========================================
+saving column at main,240,0,-144size: 1923
+1923 : 2627870374 : 153
+==========================================
+saving column at main,160,0,-144size: 2348
+2348 : 2627870383 : 154
+==========================================
+saving column at main,256,0,-144size: 2419
+2419 : 2627870392 : 155
+==========================================
+saving column at main,304,0,-80size: 3585
+3585 : 2627870400 : 156
+==========================================
+saving column at main,208,0,-160size: 3828
+3828 : 2627870409 : 157
+==========================================
+saving column at main,192,0,-160size: 2803
+2803 : 2627870418 : 158
+==========================================
+saving column at main,224,0,-160size: 2814
+2814 : 2627870426 : 159
+==========================================
+saving column at main,288,0,-112size: 3487
+3487 : 2627870619 : 160
+==========================================
+saving column at main,304,0,-96size: 3584
+3584 : 2627871772 : 161
+==========================================
+saving column at main,304,0,-16size: 1994
+1994 : 2627871794 : 162
+==========================================
+saving column at main,320,0,-64size: 2884
+2884 : 2627871832 : 163
+==========================================
+saving column at main,320,0,-48size: 2176
+2176 : 2627871841 : 164
+==========================================
+saving column at main,240,0,-160size: 2032
+2032 : 2627872035 : 165
+==========================================
+saving column at main,288,0,-128size: 2645
+2645 : 2627872641 : 166
+==========================================
+saving column at main,304,0,-112size: 2862
+2862 : 2627872911 : 167
+==========================================
+saving column at main,272,0,-144size: 1652
+1652 : 2627873618 : 168
+==========================================
+saving column at main,320,0,-80size: 3173
+3173 : 2627884779 : 169
+==========================================
+saving column at main,304,0,0size: 1719
+1719 : 2627896478 : 143
+==========================================
+saving column at main,304,0,-128size: 2019
+2019 : 2627896486 : 170
+==========================================
+saving column at main,320,0,-32size: 2276
+2276 : 2627896496 : 171
+==========================================
+saving column at main,320,0,-96size: 3636
+3636 : 2627896505 : 172
+==========================================
+saving column at main,320,0,-16size: 2023
+2023 : 2627896513 : 173
+==========================================
+saving column at main,320,0,-112size: 2841
+2841 : 2627896523 : 174
+==========================================
+saving column at main,288,0,16size: 3388
+3388 : 2627896531 : 144
+==========================================
+saving column at main,288,0,-144size: 2612
+2612 : 2627896539 : 175
+==========================================
+saving column at main,336,0,-64size: 2723
+2723 : 2627896548 : 176
+==========================================
+saving column at main,336,0,-48size: 3078
+3078 : 2627896558 : 177
+==========================================
+saving column at main,336,0,-80size: 3457
+3457 : 2627896566 : 178
+==========================================
+saving column at main,256,0,-160size: 2433
+2433 : 2627896576 : 179
+==========================================
+saving column at main,304,0,-144size: 1804
+1804 : 2627896814 : 180
+==========================================
+saving column at main,320,0,-128size: 2229
+2229 : 2627896827 : 181
+==========================================
+saving column at main,272,0,-160size: 1562
+1562 : 2627896837 : 182
+==========================================
+saving column at main,288,0,-160size: 1905
+1905 : 2627896846 : 183
+==========================================
+saving column at main,336,0,-96size: 2662
+2662 : 2627896856 : 184
+==========================================
+saving column at main,240,0,-176size: 3106
+3106 : 2627896871 : 185
+==========================================
+saving column at main,224,0,-176size: 2895
+2895 : 2627896884 : 186
+==========================================
+saving column at main,256,0,-176size: 2747
+2747 : 2627896899 : 187
+loading column at main,0,0,0size: 3337
+3337 : 2627718516 : 1
+loading column at main,16,0,0size: 3774
+3774 : 2627719589 : 2
+loading column at main,0,0,16size: 3396
+3396 : 2627719754 : 3
+loading column at main,32,0,0size: 4150
+4150 : 2627720504 : 5
+loading column at main,16,0,16size: 3304
+3304 : 2627719767 : 4
+loading column at main,48,0,0size: 3327
+3327 : 2627724240 : 16
+loading column at main,32,0,16size: 3929
+3929 : 2627721157 : 7
+loading column at main,0,0,32size: 3616
+3616 : 2627723785 : 13
+loading column at main,64,0,0size: 4192
+4192 : 2627724269 : 17
+loading column at main,-16,0,0size: 3650
+3650 : 2627720133 : 1
+loading column at main,16,0,32size: 4813
+4813 : 2627723795 : 14
+loading column at main,48,0,16size: 3378
+3378 : 2627723185 : 10
+loading column at main,16,0,-16size: 3807
+3807 : 2627721614 : 2
+loading column at main,0,0,-16size: 3979
+3979 : 2627721602 : 1
+loading column at main,-16,0,16size: 3099
+3099 : 2627721411 : 2
+loading column at main,32,0,32size: 4694
+4694 : 2627722192 : 8
+loading column at main,32,0,-16size: 4646
+4646 : 2627721675 : 3
+loading column at main,0,0,48size: 5252
+5252 : 2627725071 : 19
+loading column at main,80,0,0size: 3544
+3544 : 2627727206 : 29
+loading column at main,64,0,16size: 3167
+3167 : 2627725706 : 24
+loading column at main,-16,0,-16size: 3464
+3464 : 2627720619 : 1
+loading column at main,-16,0,32size: 2807
+2807 : 2627723813 : 7
+loading column at main,-32,0,0size: 4313
+4313 : 2627723041 : 4
+loading column at main,48,0,32size: 3771
+3771 : 2627723562 : 11
+loading column at main,16,0,48size: 4489
+4489 : 2627725082 : 21
+set path: DreamSpaceInfinite
+loading column at main,48,0,-16size: 3963
+3963 : 2627724248 : 8
+loading column at main,16,0,-32size: 2995
+2995 : 2627724219 : 5
+loading column at main,80,0,16size: 3139
+3139 : 2627728178 : 30
+loading column at main,-32,0,-16size: 4274
+4274 : 2627723051 : 2
+loading column at main,0,0,-32size: 4080
+4080 : 2627724555 : 12
+loading column at main,-32,0,16size: 2558
+2558 : 2627722708 : 3
+loading column at main,32,0,-32size: 4459
+4459 : 2627724230 : 6
+loading column at main,-16,0,48size: 3173
+3173 : 2627727529 : 8
+loading column at main,32,0,48size: 3875
+3875 : 2627725092 : 23
+loading column at main,64,0,32size: 3022
+3022 : 2627725716 : 25
+loading column at main,64,0,-16size: 4439
+4439 : 2627724480 : 10
+loading column at main,0,0,64size: 4074
+4074 : 2627734526 : 36
+loading column at main,96,0,0size: 3277
+3277 : 2627731587 : 34
+loading column at main,-16,0,-32size: 3002
+3002 : 2627724564 : 4
+loading column at main,-32,0,32size: 2577
+2577 : 2627723637 : 6
+loading column at main,48,0,-32size: 3998
+3998 : 2627724258 : 9
+loading column at main,48,0,48size: 3407
+3407 : 2627723572 : 12
+loading column at main,-48,0,0size: 3194
+3194 : 2627727745 : 10
+loading column at main,16,0,-48size: 2675
+2675 : 2627726858 : 13
+loading column at main,16,0,64size: 3940
+3940 : 2627729067 : 31
+loading column at main,80,0,-16size: 3523
+3523 : 2627733579 : 22
+loading column at main,80,0,32size: 2739
+2739 : 2627734214 : 35
+loading column at main,-48,0,-16size: 3558
+3558 : 2627726456 : 6
+loading column at main,96,0,16size: 3218
+3218 : 2627743166 : 44
+loading column at main,-32,0,-32size: 2631
+2631 : 2627724575 : 5
+loading column at main,-32,0,48size: 4070
+4070 : 2627727541 : 9
+loading column at main,-48,0,16size: 3785
+3785 : 2627727756 : 11
+loading column at main,0,0,-48size: 3372
+3372 : 2627727913 : 14
+loading column at main,32,0,-48size: 3492
+3492 : 2627728465 : 15
+loading column at main,64,0,-32size: 3199
+3199 : 2627729308 : 20
+loading column at main,64,0,48size: 2524
+2524 : 2627725726 : 26
+loading column at main,-16,0,64size: 4040
+4040 : 2627735041 : 15
+loading column at main,32,0,64size: 4790
+4790 : 2627726139 : 27
+loading column at main,0,0,80size: 5579
+5579 : 2627743566 : 45
+loading column at main,96,0,-16size: 3942
+3942 : 2627733595 : 23
+loading column at main,96,0,32size: 2226
+2226 : 2627751752 : 48
+loading column at main,112,0,0size: 2295
+2295 : 2627751801 : 50
+loading column at main,-48,0,-32size: 3312
+3312 : 2627726467 : 7
+loading column at main,-48,0,32size: 2167
+2167 : 2627727766 : 12
+loading column at main,-16,0,-48size: 3213
+3213 : 2627728789 : 8
+loading column at main,48,0,-48size: 4223
+4223 : 2627728476 : 16
+loading column at main,-32,0,64size: 4264
+4264 : 2627735605 : 22
+loading column at main,48,0,64size: 4342
+4342 : 2627730052 : 32
+loading column at main,-64,0,0size: 2801
+2801 : 2627734813 : 14
+loading column at main,-64,0,-16size: 3097
+3097 : 2627734823 : 14
+loading column at main,16,0,-64size: 2505
+2505 : 2627728625 : 18
+loading column at main,80,0,-32size: 2655
+2655 : 2627738245 : 32
+loading column at main,80,0,48size: 1520
+1520 : 2627735233 : 37
+loading column at main,16,0,80size: 4551
+4551 : 2627742954 : 40
+loading column at main,112,0,16size: 2185
+2185 : 2627751821 : 52
+loading column at main,-32,0,-48size: 2505
+2505 : 2627728799 : 9
+loading column at main,-48,0,48size: 3552
+3552 : 2627732088 : 13
+loading column at main,64,0,-48size: 1914
+1914 : 2627734439 : 24
+loading column at main,64,0,64size: 1571
+1571 : 2627735895 : 38
+loading column at main,-64,0,16size: 4698
+4698 : 2627735305 : 16
+loading column at main,-64,0,-32size: 3403
+3403 : 2627733880 : 13
+loading column at main,0,0,-64size: 3526
+3526 : 2627729391 : 21
+loading column at main,32,0,-64size: 3190
+3190 : 2627728633 : 19
+loading column at main,-16,0,80size: 4360
+4360 : 2627752385 : 32
+loading column at main,32,0,80size: 4381
+4381 : 2627742963 : 42
+loading column at main,96,0,-32size: 2988
+2988 : 2627751766 : 40
+loading column at main,96,0,48size: 1727
+1727 : 2627751780 : 49
+loading column at main,0,0,96size: 4961
+4961 : 2627756717 : 61
+loading column at main,112,0,-16size: 2848
+2848 : 2627751830 : 42
+loading column at main,112,0,32size: 3453
+3453 : 2627762559 : 67
+loading column at main,-32,0,80size: 4241
+4241 : 2627755206 : 34
+loading column at main,-80,0,-16size: 2886
+2886 : 2627739637 : 21
+loading column at main,128,0,0size: 1785
+1785 : 2627767241 : 72
+loading column at main,128,0,16size: 1755
+1755 : 2627767220 : 70
+loading column at main,-48,0,-48size: 3331
+3331 : 2627728815 : 10
+loading column at main,-48,0,64size: 3644
+3644 : 2627738022 : 24
+loading column at main,-64,0,32size: 4994
+4994 : 2627735313 : 18
+loading column at main,-16,0,-64size: 3201
+3201 : 2627731694 : 11
+loading column at main,48,0,-64size: 4468
+4468 : 2627736973 : 25
+loading column at main,80,0,-48size: 1937
+1937 : 2627739925 : 33
+loading column at main,80,0,64size: 1476
+1476 : 2627751730 : 47
+loading column at main,48,0,80size: 3627
+3627 : 2627737215 : 39
+loading column at main,-80,0,0size: 2924
+2924 : 2627739628 : 26
+loading column at main,16,0,-80size: 3922
+3922 : 2627737992 : 28
+loading column at main,16,0,96size: 4098
+4098 : 2627755580 : 59
+loading column at main,-64,0,-48size: 3015
+3015 : 2627736074 : 15
+loading column at main,-64,0,48size: 4548
+4548 : 2627735322 : 20
+loading column at main,-32,0,-64size: 3303
+3303 : 2627731706 : 12
+loading column at main,-48,0,80size: 4082
+4082 : 2627755215 : 36
+loading column at main,-80,0,-32size: 3196
+3196 : 2627738749 : 19
+loading column at main,112,0,-32size: 3451
+3451 : 2627767199 : 45
+loading column at main,112,0,48size: 2477
+2477 : 2627767190 : 68
+loading column at main,128,0,-16size: 1808
+1808 : 2627781305 : 47
+loading column at main,128,0,32size: 3474
+3474 : 2627767231 : 71
+loading column at main,64,0,-64size: 1951
+1951 : 2627738031 : 31
+loading column at main,64,0,80size: 2003
+2003 : 2627751811 : 51
+loading column at main,-80,0,16size: 2897
+2897 : 2627739646 : 27
+loading column at main,0,0,-80size: 3299
+3299 : 2627737975 : 27
+loading column at main,32,0,-80size: 4737
+4737 : 2627738003 : 29
+loading column at main,96,0,-48size: 2261
+2261 : 2627751790 : 41
+loading column at main,96,0,64size: 2200
+2200 : 2627753918 : 55
+loading column at main,-16,0,96size: 4609
+4609 : 2627760916 : 37
+loading column at main,32,0,96size: 4166
+4166 : 2627753526 : 53
+loading column at main,-48,0,-64size: 2703
+2703 : 2627737429 : 16
+loading column at main,-64,0,64size: 3954
+3954 : 2627739484 : 25
+loading column at main,80,0,-64size: 2207
+2207 : 2627751742 : 39
+loading column at main,-80,0,-48size: 4061
+4061 : 2627739397 : 20
+loading column at main,-80,0,32size: 4035
+4035 : 2627743506 : 28
+loading column at main,-16,0,-80size: 3866
+3866 : 2627738260 : 17
+loading column at main,48,0,-80size: 2789
+2789 : 2627743625 : 34
+loading column at main,-32,0,96size: 4838
+4838 : 2627762957 : 39
+loading column at main,-96,0,-16size: 3921
+3921 : 2627744677 : 23
+loading column at main,0,0,112size: 3608
+3608 : 2627760304 : 65
+loading column at main,128,0,-32size: 2568
+2568 : 2627781326 : 48
+loading column at main,128,0,48size: 3142
+3142 : 2627781286 : 77
+loading column at main,144,0,0size: 2136
+2136 : 2627781367 : 81
+loading column at main,144,0,16size: 2451
+2451 : 2627781357 : 80
+loading column at main,-64,0,-64size: 3217
+3217 : 2627746142 : 24
+loading column at main,80,0,80size: 2124
+2124 : 2627761873 : 66
+loading column at main,48,0,96size: 4431
+4431 : 2627753927 : 56
+loading column at main,-96,0,0size: 3430
+3430 : 2627744666 : 29
+loading column at main,16,0,-96size: 4887
+4887 : 2627744500 : 35
+loading column at main,112,0,-48size: 2438
+2438 : 2627781277 : 46
+loading column at main,112,0,64size: 2450
+2450 : 2627776995 : 74
+loading column at main,16,0,112size: 3292
+3292 : 2627760294 : 64
+loading column at main,-80,0,48size: 4065
+4065 : 2627745002 : 30
+loading column at main,-32,0,-80size: 2774
+2774 : 2627738268 : 18
+loading column at main,64,0,-80size: 1913
+1913 : 2627781389 : 50
+loading column at main,96,0,-64size: 1856
+1856 : 2627781347 : 49
+loading column at main,144,0,-16size: 1892
+1892 : 2627794235 : 52
+loading column at main,144,0,32size: 2821
+2821 : 2627781397 : 83
+loading column at main,-48,0,-80size: 2419
+2419 : 2627742123 : 22
+loading column at main,96,0,80size: 2924
+2924 : 2627777884 : 75
+loading column at main,64,0,96size: 2777
+2777 : 2627753937 : 58
+loading column at main,-96,0,16size: 2836
+2836 : 2627745314 : 31
+loading column at main,0,0,-96size: 4502
+4502 : 2627750941 : 37
+loading column at main,32,0,-96size: 4365
+4365 : 2627751841 : 43
+loading column at main,32,0,112size: 3885
+3885 : 2627757925 : 63
+loading column at main,128,0,-48size: 3072
+3072 : 2627794213 : 51
+loading column at main,128,0,64size: 3006
+3006 : 2627781315 : 78
+loading column at main,80,0,-80size: 2515
+2515 : 2627794316 : 54
+loading column at main,112,0,-64size: 2138
+2138 : 2627794256 : 53
+loading column at main,144,0,-32size: 2194
+2194 : 2627799171 : 55
+loading column at main,144,0,48size: 2844
+2844 : 2627794224 : 85
+loading column at main,160,0,0size: 1827
+1827 : 2627794307 : 91
+loading column at main,160,0,16size: 2232
+2232 : 2627794267 : 87
+loading column at main,96,0,-80size: 2145
+2145 : 2627808019 : 60
+loading column at main,80,0,96size: 3227
+3227 : 2627767209 : 69
+loading column at main,112,0,80size: 2889
+2889 : 2627781267 : 76
+loading column at main,48,0,112size: 4093
+4093 : 2627767250 : 73
+loading column at main,128,0,-64size: 1969
+1969 : 2627807979 : 59
+loading column at main,144,0,-48size: 2147
+2147 : 2627807916 : 56
+loading column at main,144,0,64size: 2940
+2940 : 2627794244 : 86
+loading column at main,160,0,-16size: 1614
+1614 : 2627807939 : 57
+loading column at main,160,0,32size: 1733
+1733 : 2627794286 : 89
+loading column at main,96,0,96size: 2282
+2282 : 2627781336 : 79
+loading column at main,96,0,-96size: 1695
+1695 : 2627853932 : 93
+loading column at main,112,0,-80size: 2355
+2355 : 2627821509 : 65
+loading column at main,64,0,112size: 3465
+3465 : 2627781377 : 82
+loading column at main,128,0,80size: 3263
+3263 : 2627794195 : 84
+loading column at main,112,0,96size: 2898
+2898 : 2627794276 : 88
+loading column at main,144,0,-64size: 2266
+2266 : 2627821487 : 64
+loading column at main,160,0,-32size: 1976
+1976 : 2627807970 : 58
+loading column at main,160,0,48size: 1974
+1974 : 2627807925 : 93
+loading column at main,176,0,0size: 1816
+1816 : 2627808009 : 98
+loading column at main,176,0,16size: 2495
+2495 : 2627807989 : 96
+loading column at main,112,0,-96size: 2792
+2792 : 2627853913 : 91
+loading column at main,80,0,112size: 2457
+2457 : 2627794295 : 90
+loading column at main,128,0,-80size: 2908
+2908 : 2627824291 : 70
+loading column at main,64,0,128size: 2205
+2205 : 2627811844 : 107
+loading column at main,144,0,80size: 2565
+2565 : 2627807906 : 92
+loading column at main,96,0,112size: 2649
+2649 : 2627808031 : 99
+loading column at main,128,0,96size: 3590
+3590 : 2627807959 : 95
+loading column at main,160,0,-48size: 2301
+2301 : 2627821467 : 62
+loading column at main,160,0,64size: 2586
+2586 : 2627807948 : 94
+loading column at main,176,0,-16size: 1659
+1659 : 2627813939 : 61
+loading column at main,176,0,32size: 1511
+1511 : 2627807999 : 97
+loading column at main,128,0,-96size: 3855
+3855 : 2627838419 : 87
+loading column at main,80,0,128size: 2064
+2064 : 2627811827 : 105
+loading column at main,144,0,-80size: 2629
+2629 : 2627828648 : 75
+loading column at main,112,0,112size: 2619
+2619 : 2627811801 : 102
+loading column at main,144,0,96size: 2392
+2392 : 2627811782 : 100
+loading column at main,160,0,-64size: 2594
+2594 : 2627824262 : 69
+loading column at main,160,0,80size: 2302
+2302 : 2627811791 : 101
+loading column at main,176,0,-32size: 2253
+2253 : 2627821478 : 63
+loading column at main,176,0,48size: 1503
+1503 : 2627811818 : 104
+loading column at main,192,0,0size: 2323
+2323 : 2627821501 : 116
+loading column at main,192,0,16size: 2843
+2843 : 2627813978 : 114
+loading column at main,128,0,-112size: 3418
+3418 : 2627853981 : 97
+loading column at main,96,0,128size: 2864
+2864 : 2627811836 : 106
+loading column at main,144,0,-96size: 2338
+2338 : 2627838407 : 86
+loading column at main,128,0,112size: 3459
+3459 : 2627811809 : 103
+loading column at main,160,0,-80size: 2990
+2990 : 2627837590 : 80
+loading column at main,160,0,96size: 3077
+3077 : 2627813905 : 108
+loading column at main,176,0,-48size: 3390
+3390 : 2627824225 : 66
+loading column at main,176,0,64size: 2002
+2002 : 2627813919 : 109
+loading column at main,192,0,-16size: 2660
+2660 : 2627824235 : 67
+loading column at main,192,0,32size: 2051
+2051 : 2627813958 : 112
+loading column at main,112,0,128size: 3889
+3889 : 2627813988 : 115
+loading column at main,144,0,-112size: 2798
+2798 : 2627853972 : 96
+loading column at main,144,0,112size: 3258
+3258 : 2627813949 : 111
+loading column at main,160,0,-96size: 2867
+2867 : 2627838433 : 88
+loading column at main,176,0,-64size: 2809
+2809 : 2627828615 : 74
+loading column at main,176,0,80size: 3205
+3205 : 2627813928 : 110
+loading column at main,192,0,-32size: 2348
+2348 : 2627824252 : 68
+loading column at main,192,0,48size: 2157
+2157 : 2627813969 : 113
+loading column at main,160,0,112size: 3002
+3002 : 2627837601 : 135
+loading column at main,160,0,-112size: 3422
+3422 : 2627853990 : 98
+loading column at main,176,0,-80size: 2636
+2636 : 2627838376 : 83
+loading column at main,192,0,-48size: 1786
+1786 : 2627828550 : 71
+loading column at main,144,0,-128size: 2588
+2588 : 2627866173 : 136
+==========================================
+saving column at main,-16,0,-96size: 3432
+3432 : 2627935692 : 25
+loading column at main,160,0,-128size: 3193
+3193 : 2627861798 : 121
+loading column at main,176,0,96size: 3473
+3473 : 2627828604 : 124
+loading column at main,176,0,-96size: 2295
+2295 : 2627853922 : 92
+loading column at main,176,0,-112size: 3421
+3421 : 2627854110 : 105
+loading column at main,192,0,64size: 1572
+1572 : 2627824243 : 117
+loading column at main,192,0,-64size: 1995
+1995 : 2627837551 : 79
+loading column at main,192,0,80size: 1794
+1794 : 2627828523 : 121
+loading column at main,192,0,-80size: 2493
+2493 : 2627838386 : 84
+loading column at main,208,0,0size: 2370
+2370 : 2627824303 : 120
+loading column at main,208,0,16size: 2476
+2476 : 2627824274 : 118
+loading column at main,208,0,-16size: 2207
+2207 : 2627828571 : 72
+loading column at main,208,0,32size: 1610
+1610 : 2627824283 : 119
+loading column at main,208,0,48size: 2479
+2479 : 2627828561 : 122
+loading column at main,208,0,-32size: 1940
+1940 : 2627828592 : 73
+loading column at main,208,0,-48size: 2352
+2352 : 2627837494 : 76
+loading column at main,192,0,96size: 2527
+2527 : 2627837542 : 131
+loading column at main,208,0,64size: 2329
+2329 : 2627828581 : 123
+loading column at main,192,0,-96size: 3495
+3495 : 2627853945 : 94
+loading column at main,208,0,80size: 1859
+1859 : 2627837484 : 128
+loading column at main,208,0,-64size: 2660
+2660 : 2627838353 : 81
+loading column at main,224,0,16size: 2271
+2271 : 2627828628 : 125
+loading column at main,224,0,32size: 1651
+1651 : 2627828658 : 127
+loading column at main,224,0,0size: 2733
+2733 : 2627828638 : 126
+loading column at main,224,0,48size: 1881
+1881 : 2627837516 : 129
+loading column at main,224,0,-16size: 3018
+3018 : 2627837506 : 77
+loading column at main,224,0,64size: 2214
+2214 : 2627837524 : 130
+loading column at main,224,0,-32size: 2172
+2172 : 2627837532 : 78
+==========================================
+saving column at main,-16,0,112size: 2711
+2711 : 2628016116 : 41
+==========================================
+saving column at main,32,0,128size: 4147
+4147 : 2628016126 : 145
+==========================================
+saving column at main,48,0,128size: 3376
+3376 : 2628016135 : 147
+==========================================
+saving column at main,16,0,128size: 2991
+2991 : 2628016143 : 148

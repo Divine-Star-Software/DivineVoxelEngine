@@ -5,37 +5,39 @@ import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import type { FlowTaskRequests } from "Constructor/Tasks/TasksRequest.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
+import { IlluminationManager } from "../Illumanation/IlluminationManager.js";
 
 export const FlowManager = {
- //voxelByte : Util.
-
  lightData: LightData,
- dimension: "main",
- currentVoxel: 0,
 
  _brush: new BrushTool(),
  _sDataTool: new DataTool(),
  _nDataTool: new DataTool(),
 
- rebuildQue: <number[][]>[],
- rebuildMap: <Record<string, boolean>>{},
-
  setVoxel(
   tasks: FlowTaskRequests,
+  vox: string,
   level: number,
   levelState: number,
   x: number,
   y: number,
   z: number
  ) {
-  this.sunCheck(tasks,x, y, z);
-  this._brush.setXYZ(x, y, z).paint();
+  this.sunCheck(tasks, x, y, z);
+  this._brush.setId(vox).setXYZ(x, y, z).paint();
   this._sDataTool.loadInAt(x, y, z);
   this._sDataTool
    .setLevel(level)
    .setLevelState(levelState)
    .setLight(this.getAbsorbLight(x, y, z))
    .commit();
+ },
+
+ setDimension(dimension: string) {
+  this._sDataTool.setDimension(dimension);
+  this._nDataTool.setDimension(dimension);
+  this._brush.setDimension(dimension);
+  IlluminationManager.setDimension(dimension);
  },
 
  removeVoxel(tasks: FlowTaskRequests, x: number, y: number, z: number) {
@@ -64,16 +66,12 @@ export const FlowManager = {
   RGBUpdate(tasks);
  },
 
- setCurrentVoxel(x: number, y: number, z: number) {
-  if (!this._sDataTool.loadInAt(x, y, z)) return false;
-  if (!this._sDataTool.isRenderable()) {
-   return false;
-  }
+ getVoxel(x: number, y: number, z: number) {
+  if (!this._sDataTool.loadInAt(x, y, z)) return "";
+  if (!this._sDataTool.isRenderable()) return "";
   const substance = this._sDataTool.getSubstance();
-  if (substance != "liquid" && substance != "magma") return false;
-  this.currentVoxel = this._sDataTool.getId();
-  this._brush.setId(this._sDataTool.getStringId());
-  return true;
+  if (substance != "liquid" && substance != "magma") return "";
+  return this._sDataTool.getStringId();
  },
 
  setLevel(level: number, x: number, y: number, z: number) {
@@ -81,22 +79,22 @@ export const FlowManager = {
   this._nDataTool.setLevel(level).commit();
  },
 
- getLevel(x: number, y: number, z: number) {
+ getLevel(vox: string, x: number, y: number, z: number) {
   if (!this._nDataTool.loadInAt(x, y, z)) return -2;
-  const voxel = this._nDataTool.data.baseId;
+  const voxel = this._nDataTool.getStringId();
   if (this._nDataTool.isAir()) {
    return 0;
   }
-  if (voxel == this.currentVoxel) {
+  if (voxel == vox) {
    return this._nDataTool.getLevel();
   }
   return -1;
  },
 
- getLevelState(x: number, y: number, z: number) {
+ getLevelState(vox: string, x: number, y: number, z: number) {
   if (!this._nDataTool.loadInAt(x, y, z)) return -2;
-  const voxel = this._nDataTool.data.baseId;
-  if (voxel == this.currentVoxel) {
+  const voxel = this._nDataTool.getStringId();
+  if (voxel == vox) {
    return this._nDataTool.getLevelState();
   }
   if (this._nDataTool.isAir()) {
@@ -105,16 +103,16 @@ export const FlowManager = {
   return -3;
  },
 
- canFlowOutwardTest(x: number, y: number, z: number) {
-  const level = this.getLevel(x, y - 1, z);
+ canFlowOutwardTest(vox: string, x: number, y: number, z: number) {
+  const level = this.getLevel(vox, x, y - 1, z);
   if (level == -1) {
    return true;
   }
   return false;
  },
 
- flowDownTest(x: number, y: number, z: number) {
-  const level = this.getLevel(x, y - 1, z);
+ flowDownTest(vox: string, x: number, y: number, z: number) {
+  const level = this.getLevel(vox, x, y - 1, z);
   if (level >= 0) {
    return true;
   }

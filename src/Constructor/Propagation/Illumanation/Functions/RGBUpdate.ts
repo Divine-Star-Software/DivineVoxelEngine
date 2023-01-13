@@ -2,6 +2,7 @@ import type { LightTaskRequest } from "Constructor/Tasks/TasksRequest";
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 
 export function RGBUpdate(tasks: LightTaskRequest) {
+ IM.setDimension(tasks.origin[0]);
  const queue = tasks.queues.rgb.update;
  while (queue.length != 0) {
   const node = queue.shift();
@@ -63,6 +64,7 @@ export function RGBUpdate(tasks: LightTaskRequest) {
 }
 
 export function RGBRemove(tasks: LightTaskRequest) {
+ IM.setDimension(tasks.origin[0]);
  const remove = tasks.queues.rgb.rmeove;
  const update = tasks.queues.rgb.update;
  while (remove.length != 0) {

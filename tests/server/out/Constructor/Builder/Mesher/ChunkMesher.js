@@ -10,29 +10,23 @@ export const ChunkMesher = {
     ],
     buildChunkMesh(dimension, chunkX, chunkY, chunkZ, template, LOD = 1) {
         let i = this.voxelBuildOrder.length;
+        const chunks = [dimension, chunkX, chunkY, chunkZ, []];
+        const trasnfers = [];
         while (i--) {
             const type = this.voxelBuildOrder[i];
             const baseTemplate = template[type];
             if (baseTemplate.positionTemplate.length == 0) {
-                DVEC.parentComm.runTasks("remove-chunk", [
-                    dimension,
-                    type,
-                    chunkX,
-                    chunkY,
-                    chunkZ,
-                ]);
+                chunks[4].push([type, false]);
                 continue;
             }
             const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD, chunkX, chunkY, chunkZ);
-            DVEC.parentComm.runTasks("set-chunk", [
-                dimension,
+            chunks[4].push([
                 type,
-                chunkX,
-                chunkY,
-                chunkZ,
                 //@ts-ignore
                 ...meshData[0],
-            ], meshData[1]);
+            ]);
+            trasnfers.push(...meshData[1]);
         }
+        DVEC.parentComm.runTasks("set-chunk", chunks, trasnfers);
     },
 };

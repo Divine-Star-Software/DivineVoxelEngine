@@ -7,6 +7,7 @@ export declare const ConstructorTasks: {
     worldSun: number;
     sunLightUpdate: number;
     sunLightRemove: number;
+    worldPropagation: number;
     flowUpdate: number;
     flowRemove: number;
     constructEntity: number;

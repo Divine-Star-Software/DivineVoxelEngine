@@ -9,7 +9,16 @@ export const WorldGen = {
                 for (let y = 0; y < 18; y++) {
                     brush.setXYZ(x, y, z);
                     if (y == 5 && Math.random() > 0.98) {
-                        brush.setId("dve_dreamgrass").setShapeState(0).paint();
+                        brush.setId("dve_dreamgrass").paint();
+                        continue;
+                    }
+                    if (y == 5 && Math.random() > 0.98) {
+                        brush.setId("dve_dreamlamp").paint();
+                        continue;
+                    }
+                    if (y == 5 && Math.random() > 0.98) {
+                        brush.setId("dve_liquiddreamether").paint();
+                        continue;
                     }
                     if (y < 5) {
                         brush.setId("dve_dreamstone").paint();

@@ -22,7 +22,16 @@ export const DataLoaderTasks = {
         await DataHanlderWrapper.loadColumn(data);
         const inte = setInterval(() => {
             if (DVEDL.data.worldRegister.column.get(data)) {
-                console.log("now it is done");
+                onDone ? onDone() : false;
+                clearInterval(inte);
+            }
+        }, 1);
+    }, "deffered"),
+    unLoadColumn: ThreadComm.registerTasks("unload-column", async (data, onDone) => {
+        await DataHanlderWrapper.saveColumn(data);
+        DVEDL.worldComm.runTasks("unload-column", data);
+        const inte = setInterval(() => {
+            if (!DVEDL.data.worldRegister.column.get(data)) {
                 onDone ? onDone() : false;
                 clearInterval(inte);
             }

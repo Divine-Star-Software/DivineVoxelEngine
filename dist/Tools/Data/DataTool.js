@@ -7,6 +7,7 @@ import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
+import { LightData } from "../../Data/Light/LightByte.js";
 export class DataTool extends DataToolBase {
     static _dtutil = new DataTool();
     static _chunkTool = new ChunkDataTool();
@@ -110,19 +111,25 @@ export class DataTool extends DataToolBase {
                     DataTool._heightMapTool.chunk.update("remove", substance, this.location[1], this.location[2], this.location[3]);
                 }
             }
-            /*    if (
-             DataTool._columntool.loadIn(
-              this.position.x,
-              this.position.y,
-              this.position.z
-             )
-            ) {
-             DataTool._columntool.markAsNotStored();
-            } */
+            if (DataTool._columntool.loadIn(this.location[1], this.location[2], this.location[3])) {
+                DataTool._columntool.markAsNotStored();
+            }
         }
         if (this._mode == "Entity") {
         }
         return this;
+    }
+    hasRGBLight() {
+        const light = this.getLight();
+        if (light <= 0)
+            false;
+        return LightData.hasRGBLight(light);
+    }
+    hasSunLight() {
+        const light = this.getLight();
+        if (light <= 0)
+            false;
+        return LightData.hasSunLight(light);
     }
     getLight() {
         const vID = this.getId(true);
@@ -132,17 +139,27 @@ export class DataTool extends DataToolBase {
         if (vID < 2)
             return -1;
         const lightValue = this.getTagValue("#dve_light_value");
-        if (this.getTagValue("#dve_is_light_source") && lightValue) {
-            return lightValue;
-        }
         if (VoxelTags.getTrueSubstance(vID) == "solid") {
-            return -1;
+            if (this.getTagValue("#dve_is_light_source") && lightValue) {
+                return lightValue;
+            }
+            else {
+                return -1;
+            }
+        }
+        if (this.getTagValue("#dve_is_light_source") && lightValue) {
+            return LightData.mixLight(this.data.raw[1], lightValue);
         }
         return this.data.raw[1];
     }
     setLight(light) {
         this.data.raw[1] = light;
         return this;
+    }
+    isOpaque() {
+        const substance = this.getSubstance();
+        if (substance == "solid")
+            return true;
     }
     getLevel() {
         return VoxelReader.getLevel(this.data.raw[2]);

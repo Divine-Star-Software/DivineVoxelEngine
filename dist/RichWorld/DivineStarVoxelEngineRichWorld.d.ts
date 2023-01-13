@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVERW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     worldBounds: {
         bounds: {
@@ -21,7 +21,7 @@ export declare const DVERW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;

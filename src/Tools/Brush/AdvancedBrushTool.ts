@@ -27,14 +27,16 @@ export const GetAdvancedBrushTool = () => {
   paintAndUpdate(onDone?: Function) {
    tasks.setFocalPoint(brush.location);
    const [dimesnion, x, y, z] = brush.location;
-   tasks.voxelUpdate.paint.add(x, y, z, brush.getRaw());
-   tasks.voxelUpdate.paint.run(() => (onDone ? onDone() : false));
+   tasks.voxelUpdate.paint.deferred.run(x, y, z, brush.getRaw(), () => {
+    if (onDone) onDone();
+   });
   },
   eraseAndUpdate(onDone?: Function) {
    tasks.setFocalPoint(brush.location);
    const [dimesnion, x, y, z] = brush.location;
-   tasks.voxelUpdate.erase.add(x, y, z);
-   tasks.voxelUpdate.erase.run(() => (onDone ? onDone() : false));
+   tasks.voxelUpdate.erase.deferred.run(x, y, z, () => {
+    if (onDone) onDone();
+   });
   },
   explode(radius = 6, onDone?: Function) {
    tasks.setFocalPoint(brush.location);

@@ -44,15 +44,15 @@ ColumnDataTags.registerTag({
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve_is_rgb_done",
+    id: "#dve_is_world_propagation_done",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve_is_liquid_flow_donw",
+    id: "#dve_is_dirty",
     type: "boolean",
 });
 ColumnDataTags.registerTag({
-    id: "#dve_is_magma_flow_donw",
+    id: "#dve_persistent",
     type: "boolean",
 });
 export function InitalizeColumnTags() {

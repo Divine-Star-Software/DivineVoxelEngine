@@ -40,15 +40,16 @@ const WP = {
                     this._dt.setSecondary(false);
                 }
             }
-            this._dt.commit(1);
-            if (update) {
-                if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
+            if (this._dt.isLightSource() && this._dt.getLightSourceValue()) {
+                this._dt.setLight(this._dt.getLightSourceValue());
+                if (update) {
                     DataHooks.paint.onAddToRGBUpdate.run(location);
                 }
             }
             if (this._dt.isRich()) {
                 DataHooks.paint.onRichVoxelPaint.run([this._dt.getStringId(), location]);
             }
+            this._dt.commit(1);
         },
         erase(location) {
             this._dt.setLocation(location);

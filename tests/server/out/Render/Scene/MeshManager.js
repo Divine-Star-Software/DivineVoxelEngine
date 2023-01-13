@@ -34,20 +34,28 @@ export const MeshManager = {
         if (!this.scene)
             return;
         const dimension = data[0];
-        const substance = data[1];
-        const chunkX = data[2];
-        const chunkY = data[3];
-        const chunkZ = data[4];
-        let chunk = MeshRegister.chunk.get(dimension, chunkX, chunkY, chunkZ, substance);
-        let mesh;
-        if (!chunk) {
-            mesh = this.meshMakers[substance].createTemplateMesh(this.scene);
-            MeshRegister.chunk.add(dimension, chunkX, chunkY, chunkZ, mesh, substance);
-            this.meshMakers[substance].setMeshData(mesh, data);
-        }
-        else {
-            mesh = chunk.mesh;
-            this.meshMakers[substance].setMeshData(mesh, data);
+        const chunkX = data[1];
+        const chunkY = data[2];
+        const chunkZ = data[3];
+        const chunks = data[4];
+        for (const chunkData of chunks) {
+            const substance = chunkData[0];
+            const remove = !chunkData[1];
+            if (remove) {
+                MeshRegister.chunk.remove(dimension, chunkX, chunkY, chunkZ, substance);
+                continue;
+            }
+            let chunk = MeshRegister.chunk.get(dimension, chunkX, chunkY, chunkZ, substance);
+            let mesh;
+            if (!chunk) {
+                mesh = this.meshMakers[substance].createTemplateMesh(this.scene);
+                MeshRegister.chunk.add(dimension, chunkX, chunkY, chunkZ, mesh, substance);
+                this.meshMakers[substance].setMeshData(mesh, chunkX, chunkY, chunkZ, chunkData);
+            }
+            else {
+                mesh = chunk.mesh;
+                this.meshMakers[substance].setMeshData(mesh, chunkX, chunkY, chunkZ, chunkData);
+            }
         }
     },
     removeColumn(data) {

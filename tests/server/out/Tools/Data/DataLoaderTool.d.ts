@@ -17,6 +17,7 @@ export declare class DataLoaderTool extends LocationBoundTool {
     saveColumnAsync(): Promise<unknown>;
     loadColumn(onDone?: Function): void;
     loadColumnAsync(): Promise<unknown>;
+    unLoadColumn(onDone: (done: boolean) => void): void;
     _runTask(id: string, location: LocationData, onDone?: Function): void;
     columnExists(onDone?: (exists: boolean) => void): void;
     loadRegionHeader(onDone: (success: boolean) => void): void;
@@ -24,4 +25,5 @@ export declare class DataLoaderTool extends LocationBoundTool {
     columnExistsAsync(): Promise<boolean>;
     columnTimestamp(onDone?: (timestamp: number) => void): void;
     columnTimestampAsync(): Promise<number>;
+    unLoadAllOutsideRadius(radius: number, onDone?: Function): void;
 }

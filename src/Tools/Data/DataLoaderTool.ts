@@ -5,6 +5,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
+import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
 
 export class DataLoaderTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();
@@ -110,17 +111,11 @@ export class DataLoaderTool extends LocationBoundTool {
 
  loadColumn(onDone?: Function) {
   const location = this.getLocation();
-  const cache  : LocationData= [...location];
   this.dataComm.runPromiseTasks(
    "load-column",
    location.toString(),
    () => {
-    const inte = setInterval(() => {
-     if (WorldRegister.column.get(cache)) {
-      clearInterval(inte);
-      onDone ? onDone(true) : false
-     }
-    }, 1);
+    onDone ? onDone(true) : false;
    },
    location
   );
@@ -132,6 +127,18 @@ export class DataLoaderTool extends LocationBoundTool {
     resolve(true);
    });
   });
+ }
+
+ unLoadColumn(onDone: (done: boolean) => void) {
+  const location = this.getLocation();
+  this.dataComm.runPromiseTasks(
+   "unload-column",
+   location.toString(),
+   () => {
+    onDone ? onDone(true) : false;
+   },
+   location
+  );
  }
 
  _runTask(id: string, location: LocationData, onDone?: Function) {
@@ -203,5 +210,33 @@ export class DataLoaderTool extends LocationBoundTool {
     resolve(timeStamp);
    });
   });
+ }
+
+ unLoadAllOutsideRadius(radius: number, onDone?: Function) {
+  const [dimension, sx, sy, sz] = this.location;
+  const regions = WorldRegister.dimensions.get(dimension);
+  if (!regions) return;
+  let totalColumns = 0;
+  for (const [key, region] of regions) {
+   for (const [ckey, column] of region.columns) {
+    DataLoaderTool.columnDataTool.setColumn(column);
+    if(DataLoaderTool.columnDataTool.isPersistent()) continue;
+    const [dimension, cx, cy, cz] =
+     DataLoaderTool.columnDataTool.getLocationData();
+    const d = Distance3D(sx, sy, sz, cx, cy, cz);
+    if (d > radius) {
+     totalColumns++;
+     this.setXYZ(cx, cy, cz).unLoadColumn(() => {
+      totalColumns--;
+     });
+    }
+   }
+  }
+  const inte = setInterval(() => {
+   if (totalColumns == 0) {
+    clearInterval(inte);
+    if (onDone) onDone();
+   }
+  }, 1);
  }
 }

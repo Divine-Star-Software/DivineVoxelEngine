@@ -8,6 +8,7 @@ import { LightData } from "../../../Data/Light/LightByte.js";
 import { Distance3D } from "../../../Libs/Math/Functions/Distance3d.js";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
+import { FlowManager } from "../Flow/FlowManager.js";
 
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
@@ -15,6 +16,7 @@ export const ExplosionManager = {
  runExplosion(tasks: ExplosionTaskRequests) {
   tasks.start();
   const [dimension, sx, sy, sz] = tasks.origin;
+  FlowManager.setDimension(dimension);
   tasks.setPriority(0);
   const queue = tasks.queues.queue;
   const map = tasks.queues.map;

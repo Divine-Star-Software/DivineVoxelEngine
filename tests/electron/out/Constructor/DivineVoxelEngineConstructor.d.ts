@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -47,7 +47,6 @@ export declare const DVEC: {
         saveWorldData(): boolean;
     };
     propagation: {
-        $INIT(): void;
         expolosion: {
             run(tasks: {
                 rebuildQueMap: Map<string, boolean>;
@@ -188,7 +187,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
                 runRebuildQueue(): any;
-            }): void;
+            }): Promise<void>;
             remove(tasks: {
                 rebuildQueMap: Map<string, boolean>;
                 comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -253,7 +252,7 @@ export declare const DVEC: {
                 addToRebuildQueue(x: number, y: number, z: number): boolean;
                 addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
                 runRebuildQueue(): any;
-            }): void;
+            }): Promise<void>;
         };
         worldSun: {
             run(tasks: {
@@ -529,6 +528,8 @@ export declare const DVEC: {
                 setB(value: number, sl: number): number;
                 removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
+                hasSunLight(sl: number): boolean;
+                mixLight(l1: number, l2: number): number;
                 getRGB(sl: number): number;
                 setRGB(value: number, sl: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
@@ -602,14 +603,14 @@ export declare const DVEC: {
                     z: number;
                 };
                 setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-                getValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
-                setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-                setValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-                deleteUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): void;
+                getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+                getValueUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): number;
+                getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): number;
+                setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+                setValueUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[], value: number): void;
+                setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: Uint32Array | number[], value: number): void;
+                deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+                deleteUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("Meta/index.js").Vector3;
             };
@@ -634,6 +635,8 @@ export declare const DVEC: {
                 setB(value: number, sl: number): number;
                 removeS(sl: number): number;
                 hasRGBLight(sl: number): boolean;
+                hasSunLight(sl: number): boolean;
+                mixLight(l1: number, l2: number): number;
                 getRGB(sl: number): number;
                 setRGB(value: number, sl: number): number;
                 decodeLightFromVoxelData(voxelData: number): number;
@@ -682,13 +685,77 @@ export declare const DVEC: {
     };
     analyzer: {
         processor: {
+            _flowChecnks: number[][];
             anaylzeColumn(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, options: {
                 light?: boolean | undefined;
+                flow?: boolean | undefined;
             }): {
-                light: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO[];
+                rebuildQueMap: Map<string, boolean>;
+                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
+                LOD: number;
+                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+                buildMode: "async" | "sync";
+                tasksType: string;
+                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                data: null;
+                buildQueue: string;
+                originThread: string;
+                queues: {
+                    flow: {
+                        update: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                        rmeove: {
+                            queue: number[][];
+                            map: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                            noRemoveMap: {
+                                _map: Map<string, boolean>;
+                                _getKey(x: number, y: number, z: number): string;
+                                inMap(x: number, y: number, z: number): boolean;
+                                add(x: number, y: number, z: number): void;
+                                clear(): void;
+                            };
+                        };
+                    };
+                    rgb: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                    sun: {
+                        update: [x: number, y: number, z: number][];
+                        rmeove: [x: number, y: number, z: number][];
+                    };
+                };
+                start(): any;
+                stop(): any;
+                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
+                getData(): null;
+                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                getBuildQueue(): string;
+                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
+                needsRebuild(): boolean;
+                needsToUpdateOriginThread(): boolean;
+                setBuldMode(mode: "async" | "sync"): any;
+                addToRebuildQueue(x: number, y: number, z: number): boolean;
+                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+                runRebuildQueue(): any;
             } | undefined;
         };
-        findAndRunLightUpdates(data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+        runWorldPropagation(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<false | undefined>;
     };
     dataSyncNode: {
         _states: Record<string, boolean>;
@@ -957,7 +1024,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -1005,6 +1072,7 @@ export declare const DVEC: {
         worldGen: {
             generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").GenerateTasks>;
         };
+        worldPropagation: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
         flow: {
             update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
             remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;

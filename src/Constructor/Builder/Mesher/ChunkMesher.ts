@@ -27,18 +27,15 @@ export const ChunkMesher = {
  ) {
   let i = this.voxelBuildOrder.length;
 
+  const chunks: SetChunkMeshTask = [dimension, chunkX, chunkY, chunkZ, []];
+  const trasnfers: any[] = [];
+
   while (i--) {
    const type = this.voxelBuildOrder[i];
    const baseTemplate = template[type];
 
    if (baseTemplate.positionTemplate.length == 0) {
-    DVEC.parentComm.runTasks<RemoveChunkMeshTasks>("remove-chunk", [
-     dimension,
-     type,
-     chunkX,
-     chunkY,
-     chunkZ,
-    ]);
+    chunks[4].push([type, false]);
     continue;
    }
 
@@ -51,19 +48,14 @@ export const ChunkMesher = {
     chunkZ
    );
 
-   DVEC.parentComm.runTasks<SetChunkMeshTask>(
-    "set-chunk",
-    [
-     dimension,
-     type,
-     chunkX,
-     chunkY,
-     chunkZ,
-     //@ts-ignore
-     ...meshData[0],
-    ],
-    meshData[1]
-   );
+   chunks[4].push([
+    type,
+    //@ts-ignore
+    ...meshData[0],
+   ]);
+   trasnfers.push(...meshData[1]);
   }
+
+  DVEC.parentComm.runTasks<SetChunkMeshTask>("set-chunk", chunks, trasnfers);
  },
 };

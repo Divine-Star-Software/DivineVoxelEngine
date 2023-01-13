@@ -74,16 +74,20 @@ export const Tasks = {
  voxelUpdate: {
   erase: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.voxelErease,
-   async (data) => {
+   async (data, onDone) => {
     await EreaseAndUpdate(data);
-   }
+    if (onDone) onDone();
+   },
+   "deffered"
   ),
 
   paint: ThreadComm.registerTasks<PaintTasks>(
    ConstructorTasks.voxelPaint,
-   async (data) => {
+   async (data, onDone) => {
     await PaintAndUpdate(data);
-   }
+    if (onDone) onDone();
+   },
+   "deffered"
   ),
  },
  explosion: ThreadComm.registerTasks<ExplosionTasks>(
@@ -119,22 +123,31 @@ export const Tasks = {
    "deffered"
   ),
  },
-
+ worldPropagation: ThreadComm.registerTasks<UpdateTasksO>(
+  ConstructorTasks.worldPropagation,
+  async (data, onDone) => {
+   await DVEC.analyzer.runWorldPropagation(data);
+   if (onDone) onDone();
+  },
+  "deffered"
+ ),
  flow: {
   update: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.flowUpdate,
    async (data) => {
-    await DVEC.propagation.flow.update(
-     TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2])
-    );
+    const tasks = TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]);
+    tasks.start();
+    await DVEC.propagation.flow.update(tasks);
+    tasks.stop();
    }
   ),
   remove: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.flowRemove,
    async (data) => {
-    await DVEC.propagation.flow.remove(
-     TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2])
-    );
+    const tasks = TasksRequest.getFlowUpdateRequest(data[0], data[1], data[2]);
+    tasks.start();
+    await DVEC.propagation.flow.remove(tasks);
+    tasks.stop();
    }
   ),
  },
@@ -145,7 +158,9 @@ export const Tasks = {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
     tasks.queues.rgb.update.push([x, y, z]);
+    tasks.start();
     DVEC.propagation.rgb.update(tasks);
+    tasks.stop();
    }
   ),
   remove: ThreadComm.registerTasks<UpdateTasksO>(
@@ -154,7 +169,9 @@ export const Tasks = {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
     tasks.queues.rgb.rmeove.push([x, y, z]);
+    tasks.start();
     DVEC.propagation.rgb.remove(tasks);
+    tasks.stop();
    }
   ),
  },
@@ -165,7 +182,9 @@ export const Tasks = {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
     tasks.queues.sun.update.push([x, y, z]);
+    tasks.start();
     DVEC.propagation.sun.update(tasks);
+    tasks.stop();
    }
   ),
   remove: ThreadComm.registerTasks<UpdateTasksO>(
@@ -174,7 +193,9 @@ export const Tasks = {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
     tasks.queues.sun.rmeove.push([x, y, z]);
+    tasks.start();
     DVEC.propagation.sun.remove(tasks);
+    tasks.stop();
    }
   ),
  },

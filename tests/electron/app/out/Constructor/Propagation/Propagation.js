@@ -5,18 +5,17 @@ import { FlowUpdate } from "./Flow/Functions/FlowUpdate.js";
 import { FlowRemove } from "./Flow/Functions/FlowRemove.js";
 import { ExplosionManager } from "./Explosion/ExplosionManager.js";
 export const Propagation = {
-    $INIT() { },
     expolosion: {
         run(tasks) {
             ExplosionManager.runExplosion(tasks);
         },
     },
     flow: {
-        update(tasks) {
-            FlowUpdate(tasks);
+        async update(tasks) {
+            await FlowUpdate(tasks);
         },
-        remove(tasks) {
-            FlowRemove(tasks);
+        async remove(tasks) {
+            await FlowRemove(tasks);
         },
     },
     worldSun: {

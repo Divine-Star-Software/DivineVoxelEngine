@@ -15,7 +15,9 @@ export class BrushTool extends LocationBoundTool {
   secondaryVoxelId: "dve_air",
   level: 0,
   levelState: 0,
- };
+ }; 
+
+ _update = true;
 
  _dt = new DataTool();
  setId(id: string, state = 0, shapeState = 0) {
@@ -97,7 +99,7 @@ export class BrushTool extends LocationBoundTool {
  }
 
  paint() {
-  WorldPainter.paint.voxel(this.location, this.data);
+  WorldPainter.paint.voxel(this.location, this.data,this._update);
   return this;
  }
 

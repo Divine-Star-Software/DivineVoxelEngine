@@ -1,7 +1,7 @@
 import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEDL: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -11,7 +11,7 @@ export declare const DVEDL: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -302,6 +302,7 @@ export declare const DVEDL: {
         loadRegionHeader: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
         saveColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
         loadColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
+        unLoadColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
         setPath: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<[id: string]>;
         columnExists: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
         columnTimestamp: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
@@ -313,11 +314,11 @@ export declare const DVEDL: {
         serializeRegion(location: import("../Meta/Data/CommonTypes.js").LocationData): false | [location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("../Meta/Data/CommonTypes.js").LocationData): false | Uint8Array;
         deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
+        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
         handler: DataHandler;

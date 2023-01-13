@@ -82,8 +82,11 @@ export declare class DataTool extends DataToolBase {
     loadIn(): boolean | undefined;
     loadInAt(x: number, y: number, z: number): boolean | undefined;
     commit(heightMapUpdate?: number): false | this;
+    hasRGBLight(): boolean;
+    hasSunLight(): boolean;
     getLight(): number;
     setLight(light: number): this;
+    isOpaque(): true | undefined;
     getLevel(): number;
     setLevel(level: number): this;
     getLevelState(): number;

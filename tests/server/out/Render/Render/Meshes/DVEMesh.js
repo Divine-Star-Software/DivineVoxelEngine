@@ -50,21 +50,21 @@ export class DVEMesh {
             this.seralize = true;
         }
     }
-    _applyVertexData(mesh, data) {
+    async setMeshData(mesh, chunkX, chunkY, chunkZ, data) {
         mesh.unfreezeWorldMatrix();
+        mesh.position.x = chunkX;
+        mesh.position.y = chunkY;
+        mesh.position.z = chunkZ;
         const chunkVertexData = mesh.vertexData;
-        mesh.position.x = data[2];
-        mesh.position.y = data[3];
-        mesh.position.z = data[4];
-        chunkVertexData.positions = data[5];
-        chunkVertexData.normals = data[6];
-        chunkVertexData.indices = data[7];
-        mesh.setVerticesData("faceData", data[8], false, 1);
-        mesh.setVerticesData("aoColors", data[9], false, 1);
-        mesh.setVerticesData("lightColors", data[10], false, 4);
-        mesh.setVerticesData("colors", data[11], false, 4);
-        mesh.setVerticesData("cuv3", data[12], false, 3);
-        mesh.setVerticesData("ocuv3", data[13], false, 4);
+        chunkVertexData.positions = data[1];
+        chunkVertexData.normals = data[2];
+        chunkVertexData.indices = data[3];
+        mesh.setVerticesData("faceData", data[4], false, 1);
+        mesh.setVerticesData("aoColors", data[5], false, 1);
+        mesh.setVerticesData("lightColors", data[6], false, 4);
+        mesh.setVerticesData("colors", data[7], false, 4);
+        mesh.setVerticesData("cuv3", data[8], false, 3);
+        mesh.setVerticesData("ocuv3", data[9], false, 4);
         chunkVertexData.applyToMesh(mesh, false);
         if (this.clearCachedGeometry) {
             if (mesh.subMeshes) {
@@ -75,9 +75,6 @@ export class DVEMesh {
             mesh.geometry?.clearCachedData();
         }
         mesh.freezeWorldMatrix();
-    }
-    async setMeshData(mesh, data) {
-        this._applyVertexData(mesh, data);
         return mesh;
     }
 }

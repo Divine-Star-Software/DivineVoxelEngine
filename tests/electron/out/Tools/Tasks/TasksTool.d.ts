@@ -25,16 +25,28 @@ declare class TasksBase {
     };
     voxelUpdate: {
         erase: {
-            _s: TasksBase;
-            add(x: number, y: number, z: number): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
+            deferred: {
+                _s: TasksBase;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
+            async: {
+                _s: TasksBase;
+                add(x: number, y: number, z: number): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
         };
         paint: {
-            _s: TasksBase;
-            add(x: number, y: number, z: number, raw: RawVoxelData): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
+            deferred: {
+                _s: TasksBase;
+                run(x: number, y: number, z: number, raw: RawVoxelData, onDone: (data: any) => void): void;
+            };
+            async: {
+                _s: TasksBase;
+                add(x: number, y: number, z: number, raw: RawVoxelData): void;
+                run(onDone: Function): void;
+                runAndAwait(): Promise<void>;
+            };
         };
     };
     build: {
@@ -66,6 +78,10 @@ declare class TasksBase {
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;
         };
+    };
+    worldPropagation: {
+        _s: TasksBase;
+        run(x: number, y: number, z: number, onDone: (data: any) => void): void;
     };
     light: {
         rgb: {

@@ -33,7 +33,7 @@ export const LightData = {
         return this.setS(0, sl);
     },
     hasRGBLight(sl) {
-        if (sl < 0)
+        if (sl <= 0)
             return false;
         if (this.getR(sl) > 0)
             return true;
@@ -42,6 +42,32 @@ export const LightData = {
         if (this.getB(sl) > 0)
             return true;
         return false;
+    },
+    hasSunLight(sl) {
+        if (sl <= 0)
+            return false;
+        if (this.getS(sl) > 0)
+            return true;
+        return false;
+    },
+    mixLight(l1, l2) {
+        const s1 = this.getS(l1);
+        const s2 = this.getS(l2);
+        const s = s1 < s2 ? s2 : s1;
+        const r1 = this.getR(l1);
+        const r2 = this.getR(l2);
+        const r = r1 < r2 ? r2 : r1;
+        const g1 = this.getG(l1);
+        const g2 = this.getG(l2);
+        const g = g1 < g2 ? g2 : g1;
+        const b1 = this.getB(l1);
+        const b2 = this.getB(l2);
+        const b = b1 < b2 ? b2 : b1;
+        let nl = this.setS(s, 0);
+        nl = this.setR(r, nl);
+        nl = this.setG(g, nl);
+        nl = this.setB(b, nl);
+        return nl;
     },
     getRGB(sl) {
         if (sl < 0)

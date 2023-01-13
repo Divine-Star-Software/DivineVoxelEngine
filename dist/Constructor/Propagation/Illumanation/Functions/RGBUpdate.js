@@ -1,5 +1,6 @@
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 export function RGBUpdate(tasks) {
+    IM.setDimension(tasks.origin[0]);
     const queue = tasks.queues.rgb.update;
     while (queue.length != 0) {
         const node = queue.shift();
@@ -62,6 +63,7 @@ export function RGBUpdate(tasks) {
     }
 }
 export function RGBRemove(tasks) {
+    IM.setDimension(tasks.origin[0]);
     const remove = tasks.queues.rgb.rmeove;
     const update = tasks.queues.rgb.update;
     while (remove.length != 0) {

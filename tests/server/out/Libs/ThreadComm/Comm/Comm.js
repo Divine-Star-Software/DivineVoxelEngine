@@ -153,7 +153,7 @@ export class CommBase {
         this.sendMessage(TCMessageHeaders.dataSync, [TCDataSyncMessages.SyncData, dataType, data], transfers);
     }
     unSyncData(dataType, data, transfers) {
-        this.sendMessage(TCMessageHeaders.dataSync, [TCDataSyncMessages.SyncData, dataType, data], transfers);
+        this.sendMessage(TCMessageHeaders.dataSync, [TCDataSyncMessages.UnSyncData, dataType, data], transfers);
     }
     waitTillReady() {
         const self = this;

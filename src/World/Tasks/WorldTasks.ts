@@ -27,6 +27,15 @@ export const WorldTasks = {
    DataSync.chunk.sync(data);
   }
  }),
+ unLoad: {
+  unLoadColumn: ThreadComm.registerTasks<LocationData>(
+   "unload-column",
+   (data) => {
+    DataSync.column.unSync(data);
+    WorldRegister.column.remove(data);
+   }
+  ),
+ },
  load: {
   loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
    "load-region",

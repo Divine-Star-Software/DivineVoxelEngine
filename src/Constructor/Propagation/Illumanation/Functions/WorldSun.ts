@@ -19,6 +19,8 @@ const inColumnBounds = (cx: number, cz: number, x: number, z: number) => {
 };
 
 export function RunWorldSun(tasks: WorldSunTaskRequest) {
+ IM.setDimension(tasks.origin[0]);
+ tasks.start();
  if (!WorldRegister.column.get(tasks.origin)) return false;
  const [dimension, cx, cy, cz] = tasks.origin;
 
@@ -66,6 +68,8 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   }
  }
 
+
+ 
  //flood
  while (queue.length) {
   const node = queue.shift();
@@ -141,4 +145,6 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
    }
   }
  }
+
+ tasks.stop();
 }

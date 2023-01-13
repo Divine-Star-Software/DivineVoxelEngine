@@ -211,7 +211,7 @@ export class CommBase {
 	unSyncData<T>(dataType: string | number, data: T, transfers?: any[]) {
 		this.sendMessage(
 			TCMessageHeaders.dataSync,
-			[TCDataSyncMessages.SyncData, dataType, data],
+			[TCDataSyncMessages.UnSyncData, dataType, data],
 			transfers
 		);
 	}

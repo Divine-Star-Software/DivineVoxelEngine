@@ -12,9 +12,9 @@ export class ColumnDataTool extends PositionBoundDataTool {
  _column = <Column>{};
 
  loadIn(x: number, y: number, z: number) {
-    this.location[1] = x;
-    this.location[2] = y;
-    this.location[3] = z;
+  this.location[1] = x;
+  this.location[2] = y;
+  this.location[3] = z;
   const column = WorldRegister.column.get(this.location);
   if (!column) return false;
   this.tags.setBuffer(column.data);
@@ -25,9 +25,7 @@ export class ColumnDataTool extends PositionBoundDataTool {
 
  loadInAt(location: LocationData) {
   this.setLocation(location);
-  const column = WorldRegister.column.get(
-   this.location
-  );
+  const column = WorldRegister.column.get(this.location);
   if (!column) return false;
   this.tags.setBuffer(column.data);
   this._c = column.data;
@@ -59,10 +57,28 @@ export class ColumnDataTool extends PositionBoundDataTool {
  }
 
  markAsNotStored() {
-  return this.setTagValue("#dve_is_stored", 0);
+  this.setTagValue("#dve_is_stored", 0);
+  return this;
  }
 
  markAsStored() {
-  return this.setTagValue("#dve_is_stored", 1);
+  this.setTagValue("#dve_is_stored", 1);
+  return this;
+ }
+
+ isPersistent() {
+  return this.getTagValue("#dve_persistent") == 1;
+ }
+
+ setPersistence(value: boolean) {
+  this.setTagValue("#dve_persistent", value ? 1 : 0);
+ }
+
+ isDirty() {
+  return this.getTagValue("#dve_is_dirty") == 1;
+ }
+
+ setDirty(value: boolean) {
+  this.setTagValue("#dve_is_dirty", value ? 1 : 0);
  }
 }

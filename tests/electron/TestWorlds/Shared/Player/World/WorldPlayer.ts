@@ -39,8 +39,8 @@ export const WorldPlayer = async (DVEW: DivineVoxelEngineWorld) => {
   let z = PlayerData.pick.position.z + PlayerData.pick.normal.z;
   if (!dataTool.loadInAt(x, y, z)) return;
   if (dataTool.isRenderable()) return;
-  DVEW.parentComm.runTasks("play-sound", ["voxel-place", data[1], x, y, z]);
   await brush.setId(data[1]).setXYZ(x, y, z).paintAndAwaitUpdate();
+  DVEW.parentComm.runTasks("play-sound", ["voxel-place", data[1], x, y, z]);
   const raw = brush.getRaw();
   worldPlayerObject.onAdd.forEach((_) => _(raw, x, y, z));
  });

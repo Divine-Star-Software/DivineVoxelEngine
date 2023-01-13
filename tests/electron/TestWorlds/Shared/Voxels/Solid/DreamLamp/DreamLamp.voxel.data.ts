@@ -4,7 +4,7 @@ export const DreamLampVoxelData: VoxelData = {
  name: "Dream Lamp",
  shapeId: "Box",
  id: "dve_dreamlamp",
- substance: "solid",
+ substance: "transparent",
  lightSource: true,
  lightValue: 0b1111_0000_1111_0000,
  material : "stone",

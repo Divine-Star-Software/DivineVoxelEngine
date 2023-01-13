@@ -1,5 +1,5 @@
 import { EngineSettingsData } from "Meta/index.js";
-import { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types";
+import { ChunkMeshData, SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types";
 import { DVEMaterial } from "../Materials/DVEMaterial.js";
 
 export class DVEMesh {
@@ -59,38 +59,36 @@ export class DVEMesh {
   }
  }
 
- _applyVertexData(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
-  mesh.unfreezeWorldMatrix();
 
-  const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
-  mesh.position.x = data[2];
-  mesh.position.y = data[3];
-  mesh.position.z = data[4];
-  chunkVertexData.positions = data[5];
-  chunkVertexData.normals = data[6];
-  chunkVertexData.indices = data[7];
-  mesh.setVerticesData("faceData", data[8], false, 1);
-  mesh.setVerticesData("aoColors", data[9], false, 1);
-  mesh.setVerticesData("lightColors", data[10], false, 4);
-  mesh.setVerticesData("colors", data[11], false, 4);
-  mesh.setVerticesData("cuv3", data[12], false, 3);
-  mesh.setVerticesData("ocuv3", data[13], false, 4);
-  chunkVertexData.applyToMesh(mesh, false);
 
-  if (this.clearCachedGeometry) {
-   if (mesh.subMeshes) {
-    for (const sm of mesh.subMeshes) {
-     sm.setBoundingInfo(this.defaultBb);
+ async setMeshData(mesh: BABYLON.Mesh,chunkX : number,chunkY:number,chunkZ:number, data: ChunkMeshData) {
+    mesh.unfreezeWorldMatrix();
+    mesh.position.x = chunkX;
+    mesh.position.y = chunkY;
+    mesh.position.z = chunkZ;
+
+    const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
+    chunkVertexData.positions = data[1];
+    chunkVertexData.normals = data[2];
+    chunkVertexData.indices = data[3];
+    mesh.setVerticesData("faceData", data[4], false, 1);
+    mesh.setVerticesData("aoColors", data[5], false, 1);
+    mesh.setVerticesData("lightColors", data[6], false, 4);
+    mesh.setVerticesData("colors", data[7], false, 4);
+    mesh.setVerticesData("cuv3", data[8], false, 3);
+    mesh.setVerticesData("ocuv3", data[9], false, 4);
+    chunkVertexData.applyToMesh(mesh, false);
+  
+    if (this.clearCachedGeometry) {
+     if (mesh.subMeshes) {
+      for (const sm of mesh.subMeshes) {
+       sm.setBoundingInfo(this.defaultBb);
+      }
+     }
+     mesh.geometry?.clearCachedData();
     }
-   }
-   mesh.geometry?.clearCachedData();
-  }
-
-  mesh.freezeWorldMatrix();
- }
-
- async setMeshData(mesh: BABYLON.Mesh, data: SetChunkMeshTask) {
-  this._applyVertexData(mesh, data);
+  
+    mesh.freezeWorldMatrix();
   return mesh;
  }
 }

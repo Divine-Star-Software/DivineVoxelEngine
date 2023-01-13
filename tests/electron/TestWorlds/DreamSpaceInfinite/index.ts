@@ -58,7 +58,7 @@ const init = async () => {
   box.material = bmat;
  }
  (window as any).DVER = DVER;
-
+ $INITDataLoader(DVER);
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
  DVER.renderManager.setBaseLevel(0);
@@ -73,7 +73,7 @@ const init = async () => {
  const debugCube = GetAnalyzerCubeRender(DVER, player);
  (window as any).debugCube = debugCube;
 
- $INITDataLoader(DVER);
+
 
  runRenderLoop(engine, scene, player, DVER);
 };

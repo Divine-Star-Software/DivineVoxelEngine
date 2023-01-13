@@ -5,7 +5,7 @@ export declare const ExplosionManager: {
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-        buildMode: "sync" | "async";
+        buildMode: "async" | "sync";
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
         data: number;
@@ -67,7 +67,7 @@ export declare const ExplosionManager: {
         getOrigin(): import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
         needsRebuild(): boolean;
         needsToUpdateOriginThread(): boolean;
-        setBuldMode(mode: "sync" | "async"): any;
+        setBuldMode(mode: "async" | "sync"): any;
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
         runRebuildQueue(): any;
