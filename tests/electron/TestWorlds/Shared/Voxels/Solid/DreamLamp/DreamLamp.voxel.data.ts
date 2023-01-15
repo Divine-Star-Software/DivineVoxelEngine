@@ -6,9 +6,9 @@ export const DreamLampVoxelData: VoxelData = {
  id: "dve_dreamlamp",
  substance: "transparent",
  lightSource: true,
- lightValue: 0b1111_0000_1111_0000,
- material : "stone",
- hardnress : 1000,
+ lightValue: 0b0011_0011_0011_0000,
+ material: "stone",
+ hardnress: 1000,
  physics: {
   collider: "Box",
   checkCollisions: true,

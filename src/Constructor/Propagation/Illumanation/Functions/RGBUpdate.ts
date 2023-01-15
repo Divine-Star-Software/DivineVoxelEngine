@@ -81,7 +81,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x - 1, y, z]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
@@ -93,7 +97,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x + 1, y, z]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
@@ -105,7 +113,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x, y, z - 1]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
@@ -117,7 +129,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x, y, z + 1]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
@@ -128,7 +144,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y - 1, z)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x, y - 1, z]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
@@ -139,7 +159,11 @@ export function RGBRemove(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y + 1, z)) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
-   if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
+   if (
+    n1HasRGB &&
+    IM.lightData.isLessThanForRGBRemove(nl, sl) &&
+    !IM._nDataTool.isLightSource()
+   ) {
     remove.push([x, y + 1, z]);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
