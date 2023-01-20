@@ -38,6 +38,14 @@ export class DataToolBase extends LocationBoundTool {
     getBufferSize() {
         return this.tags.tagSize;
     }
+    loadInAt(x, y, z) {
+        this.setXYZ(x, y, z);
+        return this.loadIn();
+    }
+    loadInAtLocation(location) {
+        this.setLocation(location);
+        return this.loadIn();
+    }
 }
 export class PositionBoundDataTool extends DataToolBase {
     position = { x: 0, y: 0, z: 0 };

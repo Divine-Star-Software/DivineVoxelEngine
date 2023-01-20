@@ -14,11 +14,13 @@ import { ParentComm } from "./Threads/Parent/ParentComm.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { DataLoaderTasks } from "./Tasks/DataLoaderTasks.js";
 import { DataHanlderWrapper } from "./DataHandler/DataHandlerWrapper.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 
 export const DVEDL = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
 
+ TC : ThreadComm,
  UTIL: Util,
  settings: EngineSettings,
 

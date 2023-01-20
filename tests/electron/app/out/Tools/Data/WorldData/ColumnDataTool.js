@@ -6,20 +6,7 @@ import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 export class ColumnDataTool extends PositionBoundDataTool {
     tags = ColumnTags;
     _column = {};
-    loadIn(x, y, z) {
-        this.location[1] = x;
-        this.location[2] = y;
-        this.location[3] = z;
-        const column = WorldRegister.column.get(this.location);
-        if (!column)
-            return false;
-        this.tags.setBuffer(column.data);
-        this._c = column.data;
-        this._column = column;
-        return true;
-    }
-    loadInAt(location) {
-        this.setLocation(location);
+    loadIn() {
         const column = WorldRegister.column.get(this.location);
         if (!column)
             return false;
@@ -65,5 +52,17 @@ export class ColumnDataTool extends PositionBoundDataTool {
     }
     setDirty(value) {
         this.setTagValue("#dve_is_dirty", value ? 1 : 0);
+    }
+    getLastSaveTimestamp() {
+        return this.getTagValue("#dve_last_save_timestamp");
+    }
+    setLastSaveTimestamp() {
+        return this.setTagValue("#dve_last_save_timestamp", Date.now());
+    }
+    getLastAnalyzerUpdateTimestamp() {
+        return this.getTagValue("#dve_last_analyzer_update_timestamp");
+    }
+    setLastAnalyzerUpdateTimestamp() {
+        return this.setTagValue("#dve_last_analyzer_update_timestamp", Date.now());
     }
 }

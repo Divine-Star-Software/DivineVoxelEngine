@@ -15,6 +15,7 @@ import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
 import { GetAnalyzerCubeRender } from "../Shared/Debug/Anaylzer/Cube.js";
+import { PlayerData } from "../Shared/Player/Shared/PlayerData.js";
 
 RegisterTexutres(DVER);
 
@@ -66,7 +67,8 @@ const init = async () => {
  const debugCube = GetAnalyzerCubeRender(DVER, player);
  (window as any).debugCube = debugCube;
 
- runRenderLoop(engine, scene, player, DVER);
+ //@ts-ignore
+ runRenderLoop(engine, scene, PlayerData, DVER);
 };
 
 RunInit(init);

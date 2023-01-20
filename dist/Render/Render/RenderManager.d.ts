@@ -52,6 +52,8 @@ export declare const RenderManager: {
     fo: {
         activeCamera: import("./FloatingOrigin/FOCamera.js").FOCamera | null;
         activeNode: import("./FloatingOrigin/FONode.js").FONode | null;
+        onOriginSet: Function[];
+        registerOnOriginSet(run: (node: import("./FloatingOrigin/FONode.js").FONode) => void): void;
         getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement | undefined): import("./FloatingOrigin/FOCamera.js").FOCamera;
         getNode(scene: BABYLON.Scene, name: string): import("./FloatingOrigin/FONode.js").FONode;
         setOriginCenter(scene: BABYLON.Scene, object: {

@@ -10,8 +10,7 @@ PICK CUBE
 export const GetPlayerPickCube = (
  DVER: DivineVoxelEngineRender,
  camera: BABYLON.UniversalCamera,
- scene: BABYLON.Scene,
- model: BABYLON.Mesh
+ scene: BABYLON.Scene
 ) => {
  const cubeMaterial = new BABYLON.StandardMaterial("block");
  cubeMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
@@ -19,6 +18,7 @@ export const GetPlayerPickCube = (
  const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
   size: 1.1,
  });
+ cube.parent = DVER.renderManager.fo.activeNode;
  cube.isPickable = true;
  cube.material = cubeMaterial;
 
@@ -41,9 +41,9 @@ export const GetPlayerPickCube = (
    return;
   }
   if (event.button == 2) {
-   cameraPickPostion.x = model.position.x;
-   cameraPickPostion.y = model.position.y + PlayerData.eyeLevel;
-   cameraPickPostion.z = model.position.z;
+   cameraPickPostion.x = 0;
+   cameraPickPostion.y = PlayerData.eyeLevel;
+   cameraPickPostion.z = 0;
    const camPick = scene.pickWithRay(
     camera.getForwardRay(10, undefined, cameraPickPostion)
    );
@@ -55,6 +55,7 @@ export const GetPlayerPickCube = (
       PlayerData.pick.normal.x = normal.x;
       PlayerData.pick.normal.y = normal.y;
       PlayerData.pick.normal.z = normal.z;
+      const { x, y, z } = PlayerData.pick.normal;
      }
     }
    }
@@ -127,8 +128,16 @@ export const GetRenderPlayer = async (
  playerCamera.parent = camNode;
  camNode.parent = playerModel;
 
+ const oriign = new BABYLON.Vector3();
+ scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
+  oriign.x = PlayerData.position.x;
+  oriign.y = PlayerData.position.y;
+  oriign.z = PlayerData.position.z;
+ });
+ DVER.renderManager.fo.setOriginCenter(scene, { position: oriign });
+
  if (enablePicking) {
-  GetPlayerPickCube(DVER, playerCamera, scene, playerModel);
+  GetPlayerPickCube(DVER, playerCamera, scene);
  }
 
  PlayerData.states.movement = PlayerStatesValues.still;
@@ -208,11 +217,8 @@ export const GetRenderPlayer = async (
  const cameraRotation = new BABYLON.Vector3(0, 0, 0);
  scene.registerBeforeRender(() => {
   let et = performance.now();
-
-  const position = playerModel.position;
-  position.x = PlayerData.position.x;
-  position.y = PlayerData.position.y;
-  position.z = PlayerData.position.z;
+  playerModel.position.setAll(0);
+  const position = PlayerData.position;
 
   const camera = <BABYLON.UniversalCamera>scene.activeCamera;
   if (!camera) return;
@@ -228,7 +234,11 @@ export const GetRenderPlayer = async (
   PlayerData.rotation.set(rotation.x, rotation.y, rotation.z);
 
   DAE.space.setListenerPosition(position.x, position.y, position.z);
-  DAE.space.setListenerDirection(direction.x * -1, direction.y, direction.z * -1);
+  DAE.space.setListenerDirection(
+   direction.x * -1,
+   direction.y,
+   direction.z * -1
+  );
 
   xzd.x = direction.x;
   xzd.z = direction.z;
@@ -260,7 +270,6 @@ export const GetRenderPlayer = async (
  let lastSFX = "";
  let t = performance.now();
 
-
  setInterval(() => {
   const maxDelta = PlayerData.is.running ? 400 : 800;
   if (PlayerData.is.walking && PlayerData.is.onGround) {
@@ -281,7 +290,6 @@ export const GetRenderPlayer = async (
    DAE.sfx.stopSpecific(`walking-${currentMaterial}`, lastSFX);
   }
  }, 100);
-
 
  //DAE.music.play("dream-ambience");
  return playerModel;

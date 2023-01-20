@@ -87,6 +87,13 @@ export declare const FlowManager: {
             rgb: {
                 update: [x: number, y: number, z: number][];
                 rmeove: [x: number, y: number, z: number][];
+                map: {
+                    _map: Map<string, boolean>;
+                    _getKey(x: number, y: number, z: number): string;
+                    inMap(x: number, y: number, z: number): boolean;
+                    add(x: number, y: number, z: number): void;
+                    clear(): void;
+                };
             };
             sun: {
                 update: [x: number, y: number, z: number][];
@@ -153,6 +160,13 @@ export declare const FlowManager: {
             rgb: {
                 update: [x: number, y: number, z: number][];
                 rmeove: [x: number, y: number, z: number][];
+                map: {
+                    _map: Map<string, boolean>;
+                    _getKey(x: number, y: number, z: number): string;
+                    inMap(x: number, y: number, z: number): boolean;
+                    add(x: number, y: number, z: number): void;
+                    clear(): void;
+                };
             };
             sun: {
                 update: [x: number, y: number, z: number][];
@@ -227,6 +241,13 @@ export declare const FlowManager: {
             rgb: {
                 update: [x: number, y: number, z: number][];
                 rmeove: [x: number, y: number, z: number][];
+                map: {
+                    _map: Map<string, boolean>;
+                    _getKey(x: number, y: number, z: number): string;
+                    inMap(x: number, y: number, z: number): boolean;
+                    add(x: number, y: number, z: number): void;
+                    clear(): void;
+                };
             };
             sun: {
                 update: [x: number, y: number, z: number][];

@@ -11,7 +11,10 @@ const runIWG = () => {
         generateDistance: 150,
     });
     setInterval(() => {
-        generator.update();
+        generator.searchUpdate();
+    }, 20);
+    setInterval(() => {
+        generator.tasksUpdate();
     }, 100);
     self.generator = generator;
 };

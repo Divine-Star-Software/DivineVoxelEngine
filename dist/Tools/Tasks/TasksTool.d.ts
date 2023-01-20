@@ -56,6 +56,13 @@ declare class TasksBase {
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;
         };
+        column: {
+            async: {};
+            deferred: {
+                _s: TasksBase;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
+        };
     };
     explosion: {
         run: {
@@ -79,9 +86,15 @@ declare class TasksBase {
             runAndAwait(): Promise<void>;
         };
     };
-    worldPropagation: {
-        _s: TasksBase;
-        run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+    anaylzer: {
+        propagation: {
+            _s: TasksBase;
+            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+        };
+        update: {
+            _s: TasksBase;
+            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+        };
     };
     light: {
         rgb: {

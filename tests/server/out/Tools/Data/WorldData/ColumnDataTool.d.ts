@@ -1,11 +1,9 @@
 import type { Column } from "Meta/Data/WorldData.types.js";
 import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
-import { LocationData } from "Meta/Data/CommonTypes.js";
 export declare class ColumnDataTool extends PositionBoundDataTool {
     tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
     _column: Column;
-    loadIn(x: number, y: number, z: number): boolean;
-    loadInAt(location: LocationData): boolean;
+    loadIn(): boolean;
     setColumn(column: Column): this;
     getColumn(): Column;
     getNumChunks(): number;
@@ -17,4 +15,8 @@ export declare class ColumnDataTool extends PositionBoundDataTool {
     setPersistence(value: boolean): void;
     isDirty(): boolean;
     setDirty(value: boolean): void;
+    getLastSaveTimestamp(): number;
+    setLastSaveTimestamp(): boolean;
+    getLastAnalyzerUpdateTimestamp(): number;
+    setLastAnalyzerUpdateTimestamp(): boolean;
 }

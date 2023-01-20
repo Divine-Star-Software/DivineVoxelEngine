@@ -1,6 +1,4 @@
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
-WorldBounds;
 export const MeshRegister = {
     _dimensions: new Map(),
     $INIT() {

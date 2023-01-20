@@ -71,6 +71,7 @@ export declare const DVER: {
         syncSettings(data: any): void;
     };
     settings: {
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -97,6 +98,8 @@ export declare const DVER: {
         doLight(): boolean;
         doFlow(): boolean;
         saveWorldData(): boolean;
+        isServer(): boolean;
+        isClient(): boolean;
     };
     renderManager: {
         fogOptions: import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions;
@@ -147,6 +150,8 @@ export declare const DVER: {
         fo: {
             activeCamera: import("./Render/FloatingOrigin/FOCamera.js").FOCamera | null;
             activeNode: import("./Render/FloatingOrigin/FONode.js").FONode | null;
+            onOriginSet: Function[];
+            registerOnOriginSet(run: (node: import("./Render/FloatingOrigin/FONode.js").FONode) => void): void;
             getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement | undefined): import("./Render/FloatingOrigin/FOCamera.js").FOCamera;
             getNode(scene: BABYLON.Scene, name: string): import("./Render/FloatingOrigin/FONode.js").FONode;
             setOriginCenter(scene: BABYLON.Scene, object: {
@@ -174,8 +179,8 @@ export declare const DVER: {
             };
             buildVertexShader(data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
             buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-            getDefaultVertexShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType, data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-            getDefaultFragmentShader(voxelSubstance: "Item" | import("../Meta/index.js").VoxelTemplateSubstanceType): string;
+            getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
+            getDefaultFragmentShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
             getSkyBoxVertexShader(): string;
             getSkyBoxFragmentShader(): string;
         };

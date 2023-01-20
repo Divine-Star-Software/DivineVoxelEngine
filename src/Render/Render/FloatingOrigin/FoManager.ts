@@ -5,6 +5,13 @@ import { FONode } from "./FONode.js";
 export const FOManager = {
  activeCamera: <FOCamera | null>null,
  activeNode: <FONode | null>null,
+
+ onOriginSet: <Function[]>[],
+
+ registerOnOriginSet(run: (node: FONode) => void) {
+  this.onOriginSet.push(run);
+ },
+
  getCamera(
   scene: BABYLON.Scene,
   name: string,
@@ -36,11 +43,13 @@ export const FOManager = {
  },
 
  setOriginCenter(scene: BABYLON.Scene, object: { position: BABYLON.Vector3 }) {
-  const doublePosition = new BABYLON.Vector3();
   this.activeNode = this.getNode(scene, "world-origin");
+
+  this.onOriginSet.forEach((_) => _(this.activeCamera));
   scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
-   doublePosition.addInPlace(object.position);
-   object.position.set(0, 0, 0);
+   this.activeNode!.update(object.position);
+   const node = this.activeNode!;
+ //  object.position.set(0, 0, 0);
   });
  },
 };

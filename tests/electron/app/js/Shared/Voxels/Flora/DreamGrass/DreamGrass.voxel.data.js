@@ -6,7 +6,7 @@ export const DreamGrassVoxelData = {
     material: "grass",
     hardnress: 1000,
     lightSource: true,
-    lightValue: 0b1111_1111_0000_0000,
+    lightValue: 0b0000_1111_0000_0000,
     physics: {
         collider: "",
         checkCollisions: false,

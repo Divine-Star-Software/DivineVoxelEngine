@@ -12,11 +12,13 @@ import { InitWorker } from "./Init/InitWorker.js";
 import { RichData } from "./RichData/RichData.js";
 import { VoxelManager } from "../World/Data/Managers/VoxelManager.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 
 export const DVERW = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
 
+ TC : ThreadComm,
  worldBounds: WorldBounds,
  UTIL: Util,
  settings: EngineSettings,

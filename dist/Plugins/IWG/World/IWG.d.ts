@@ -2,11 +2,26 @@ import type { IWGData } from "./Types/IWG.types";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
 import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
+import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
+declare class IWGTasks {
+    run: (x: number, y: number, z: number) => void;
+    iwg: IWG;
+    queue: number[][];
+    map: Map<string, boolean>;
+    waitingFor: number;
+    constructor(run: (x: number, y: number, z: number) => void, iwg: IWG);
+    add(x: number, y: number, z: number): void;
+    substact(): void;
+    cancelAll(): void;
+    runTasks(max?: number): void;
+}
 /**# Infinite World Generator
  *
  */
 export declare class IWG {
     data: IWGData;
+    _anaylzerDone: boolean;
+    anaylzer: AnaylzerTool;
     columnTool: ColumnDataTool;
     nColumnTool: ColumnDataTool;
     builder: BuilderTool;
@@ -65,6 +80,13 @@ export declare class IWG {
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
+            column: {
+                async: {};
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
+            };
         };
         explosion: {
             run: {
@@ -88,9 +110,15 @@ export declare class IWG {
                 runAndAwait(): Promise<void>;
             };
         };
-        worldPropagation: {
-            _s: any;
-            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+        anaylzer: {
+            propagation: {
+                _s: any;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
+            update: {
+                _s: any;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
         };
         light: {
             rgb: {
@@ -135,16 +163,23 @@ export declare class IWG {
     };
     dimension: string;
     _cachedPosition: number[];
-    _columnQueue: number[][];
-    _generateQueue: number[][];
+    _inProgressMap: Map<string, boolean>;
+    _searchQueue: number[][];
     _visitedMap: Map<string, boolean>;
     _activeColumns: Map<string, number[]>;
-    _generateMap: Map<string, boolean>;
-    _existsCheckMap: Map<string, boolean>;
-    _sunMap: Map<string, boolean>;
-    _propagationMap: Map<string, boolean>;
+    _loadTaskss: IWGTasks;
+    _generateTasks: IWGTasks;
+    _worldSunTasks: IWGTasks;
+    _propagationTasks: IWGTasks;
+    _buildTasks: IWGTasks;
+    _saveTasks: IWGTasks;
+    _saveAndUnloadTasks: IWGTasks;
     constructor(data: IWGData);
     setDimension(id: string): void;
-    _generate(columnKey: string, x: number, y: number, z: number, onDone?: Function): void;
-    update(): void;
+    saveUpdate(): void;
+    _logTasks(): string;
+    anaylzerUpdate(): void;
+    tasksUpdate(): void;
+    searchUpdate(): void;
 }
+export {};

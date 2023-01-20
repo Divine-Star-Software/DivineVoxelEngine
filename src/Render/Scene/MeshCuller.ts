@@ -42,6 +42,7 @@ export const MeshCuller = {
   const fallbackNode = new BABYLON.TransformNode("", scene);
   const min = new BABYLON.Vector3();
   const max = new BABYLON.Vector3();
+  const world = new BABYLON.Vector4(0,0,0,0);
   scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
    const cam = scene.activeCamera;
    if (!cam) return;
@@ -51,6 +52,14 @@ export const MeshCuller = {
     const mesh = scene.meshes[i];
     if ((mesh as any).type == "chunk") {
      const position = mesh.position;
+     mesh._worldMatrix.setRow(3,
+      world.set(
+        mesh.position.x + node.position.x,
+        mesh.position.y + node.position.y,
+        mesh.position.z + node.position.z,
+        1
+      )
+      )
      min.set(
       node.position.x + position.x,
       node.position.y + position.y,

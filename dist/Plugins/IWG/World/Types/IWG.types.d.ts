@@ -3,4 +3,5 @@ export declare type IWGData = {
     renderDistance: number;
     generateDistance: number;
     maxDistance?: number;
+    anaylzerDistance?: number;
 };

@@ -4,7 +4,7 @@ import type { LocationData } from "Meta/Data/CommonTypes";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
 
-export class DataToolBase extends LocationBoundTool {
+export abstract class DataToolBase extends LocationBoundTool {
  tags: RemoteTagManager;
  _c: ArrayBuffer | SharedArrayBuffer | DataView;
 
@@ -47,9 +47,21 @@ export class DataToolBase extends LocationBoundTool {
  getBufferSize() {
   return this.tags.tagSize;
  }
+
+ abstract loadIn(): boolean;
+
+ loadInAt(x: number, y: number, z: number) {
+  this.setXYZ(x, y, z);
+  return this.loadIn();
+ }
+
+ loadInAtLocation(location: LocationData) {
+  this.setLocation(location);
+  return this.loadIn();
+ }
 }
 
-export class PositionBoundDataTool extends DataToolBase {
+export abstract class PositionBoundDataTool extends DataToolBase {
  position = { x: 0, y: 0, z: 0 };
  constructor() {
   super();

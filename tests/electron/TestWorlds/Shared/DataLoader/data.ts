@@ -6,7 +6,7 @@ import { DataHanlder } from "./DataHandler.js";
 
 await DVEDL.$INIT(DataHanlder);
 
-
+(self as any).DVEDL = DVEDL;
 
 
 

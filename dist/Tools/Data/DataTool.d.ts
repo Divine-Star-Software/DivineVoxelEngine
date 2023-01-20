@@ -8,6 +8,8 @@ export declare class DataTool extends DataToolBase {
     static _chunkTool: ChunkDataTool;
     static _heightMapTool: HeightMapTool;
     static _columntool: ColumnDataTool;
+    _locationKey: string;
+    _loadedIn: boolean;
     _mode: "World" | "Entity";
     data: {
         raw: RawVoxelData;
@@ -79,8 +81,7 @@ export declare class DataTool extends DataToolBase {
     _getBaseId(id: number): number;
     loadInRaw(rawData: RawVoxelData): void;
     __process(): void;
-    loadIn(): boolean | undefined;
-    loadInAt(x: number, y: number, z: number): boolean | undefined;
+    loadIn(): boolean;
     commit(heightMapUpdate?: number): false | this;
     hasRGBLight(): boolean;
     hasSunLight(): boolean;

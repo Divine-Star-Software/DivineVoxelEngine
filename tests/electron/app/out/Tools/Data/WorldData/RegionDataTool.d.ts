@@ -3,7 +3,7 @@ import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
 export declare class RegionDataTool extends PositionBoundDataTool {
     tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
     _region: Region;
-    loadIn(x: number, y: number, z: number): boolean;
+    loadIn(): boolean;
     setRegion(region: Region): this;
     getRegion(): Region;
     getRegionDataCount(): {

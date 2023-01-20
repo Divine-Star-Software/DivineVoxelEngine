@@ -26,6 +26,7 @@ export const MeshManager = {
 
  $INIT(scene: BABYLON.Scene) {
   this.scene = scene;
+  scene.freeActiveMeshes();
   //@ts-ignore
   this.meshMakers = {
    solid: DVER.renderManager.solidMesh,
@@ -64,15 +65,28 @@ export const MeshManager = {
     chunkY,
     chunkZ,
     substance
+    
    );
    let mesh: BABYLON.Mesh;
    if (!chunk) {
     mesh = this.meshMakers[substance].createTemplateMesh(this.scene);
     MeshRegister.chunk.add(dimension, chunkX, chunkY, chunkZ, mesh, substance);
-    this.meshMakers[substance].setMeshData(mesh, chunkX, chunkY, chunkZ, chunkData);
+    this.meshMakers[substance].setMeshData(
+     mesh,
+     chunkX,
+     chunkY,
+     chunkZ,
+     chunkData
+    );
    } else {
     mesh = chunk.mesh;
-    this.meshMakers[substance].setMeshData(mesh, chunkX, chunkY, chunkZ, chunkData);
+    this.meshMakers[substance].setMeshData(
+     mesh,
+     chunkX,
+     chunkY,
+     chunkZ,
+     chunkData
+    );
    }
   }
  },

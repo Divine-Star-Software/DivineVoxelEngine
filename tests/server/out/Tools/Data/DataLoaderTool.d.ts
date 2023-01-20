@@ -12,7 +12,7 @@ export declare class DataLoaderTool extends LocationBoundTool {
     loadRegion(onDone?: Function): void;
     loadRegionAsync(): Promise<unknown>;
     saveColumn(onDone?: Function): void;
-    saveColumnIfNotStored(onDone?: (saved: boolean) => void): boolean;
+    saveColumnIfNotStored(onDone?: (saved: boolean) => void): boolean | void;
     loadIfExists(onDone?: (loaded: boolean) => void): void;
     saveColumnAsync(): Promise<unknown>;
     loadColumn(onDone?: Function): void;
@@ -26,4 +26,5 @@ export declare class DataLoaderTool extends LocationBoundTool {
     columnTimestamp(onDone?: (timestamp: number) => void): void;
     columnTimestampAsync(): Promise<number>;
     unLoadAllOutsideRadius(radius: number, onDone?: Function): void;
+    getAllUnStoredColumns(run: (dimension: string, x: number, y: number, z: number) => void): void;
 }

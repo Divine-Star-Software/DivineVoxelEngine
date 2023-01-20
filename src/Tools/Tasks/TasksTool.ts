@@ -4,6 +4,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import {
+ BuildTasks,
  GenerateTasks,
  PaintTasks,
  Priorities,
@@ -25,6 +26,7 @@ class TasksBase {
  _priority: Priorities = 0;
  constructor() {
   this.build.chunk._s = this;
+  this.build.column.deferred._s = this;
   this.light.rgb.update._s = this;
   this.light.rgb.remove._s = this;
   this.light.sun.update._s = this;
@@ -40,7 +42,8 @@ class TasksBase {
   this.voxelUpdate.paint.deferred._s = this;
   this.generate.deferred._s = this;
   this.generate.async._s = this;
-  this.worldPropagation._s = this;
+  this.anaylzer.propagation._s = this;
+  this.anaylzer.update._s = this;
   this._thread = ThreadComm.threadName;
  }
 
@@ -99,12 +102,7 @@ class TasksBase {
   erase: {
    deferred: {
     _s: <TasksBase>{},
-    run(
-     x: number,
-     y: number,
-     z: number,
-     onDone: (data: any) => void
-    ) {
+    run(x: number, y: number, z: number, onDone: (data: any) => void) {
      const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
      CCM.runPromiseTasks<UpdateTasks>(
       ConstructorTasks.voxelErease,
@@ -202,6 +200,21 @@ class TasksBase {
     await CQ.build.chunk.runAndAwait(this._s._data.queue);
    },
   },
+  column: {
+   async: {},
+   deferred: {
+    _s: <TasksBase>{},
+    run(x: number, y: number, z: number, onDone: (data: any) => void) {
+     const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+     CCM.runPromiseTasks<BuildTasks>(
+      ConstructorTasks.buildColumn,
+      requestsKey,
+      onDone,
+      [[this._s._data.dimension, x, y, z], 1]
+     );
+    },
+   },
+  },
  };
  explosion = {
   run: {
@@ -260,16 +273,30 @@ class TasksBase {
    },
   },
  };
- worldPropagation = {
-  _s: <TasksBase>{},
-  run(x: number, y: number, z: number, onDone: (data: any) => void) {
-   const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
-   CCM.runPromiseTasks<UpdateTasksO>(
-    ConstructorTasks.worldPropagation,
-    requestsKey,
-    onDone,
-    [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread]
-   );
+ anaylzer = {
+  propagation: {
+   _s: <TasksBase>{},
+   run(x: number, y: number, z: number, onDone: (data: any) => void) {
+    const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+    CCM.runPromiseTasks<UpdateTasksO>(
+     ConstructorTasks.analyzerPropagation,
+     requestsKey,
+     onDone,
+     [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread]
+    );
+   },
+  },
+  update: {
+   _s: <TasksBase>{},
+   run(x: number, y: number, z: number, onDone: (data: any) => void) {
+    const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
+    CCM.runPromiseTasks<UpdateTasksO>(
+     ConstructorTasks.analyzerUpdate,
+     requestsKey,
+     onDone,
+     [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread]
+    );
+   },
   },
  };
  light = {

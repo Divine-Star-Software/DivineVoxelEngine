@@ -32,6 +32,16 @@ ColumnDataTags.registerTag({
     numberType: "32i",
 });
 ColumnDataTags.registerTag({
+    id: "#dve_last_save_timestamp",
+    type: "typed-number",
+    numberType: "32ui",
+});
+ColumnDataTags.registerTag({
+    id: "#dve_last_analyzer_update_timestamp",
+    type: "typed-number",
+    numberType: "32ui",
+});
+ColumnDataTags.registerTag({
     id: "#dve_is_stored",
     type: "boolean",
 });

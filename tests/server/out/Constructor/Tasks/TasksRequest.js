@@ -1,10 +1,12 @@
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dMooreNeighborhood, } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { Builder } from "../../Constructor/Builder/Builder.js";
+import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+const chunkTool = new ChunkDataTool();
 class Request {
     tasksType;
     origin;
@@ -65,9 +67,11 @@ class Request {
         return this;
     }
     addToRebuildQueue(x, y, z) {
-        if (EngineSettings.settings.server.enabled)
+        if (EngineSettings.isServer())
             return false;
         if (!this.needsRebuild())
+            return false;
+        if (!chunkTool.setDimension(this.origin[0]).loadInAt(x, y, z))
             return false;
         const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
         const chunkKey = WorldSpaces.chunk.getKey();
@@ -128,6 +132,7 @@ const getLightQueues = () => {
         rgb: {
             update: [],
             rmeove: [],
+            map: new VisitedMap(),
         },
         sun: {
             update: [],

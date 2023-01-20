@@ -64,6 +64,7 @@ export declare const DVEW: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -90,6 +91,8 @@ export declare const DVEW: {
         doLight(): boolean;
         doFlow(): boolean;
         saveWorldData(): boolean;
+        isServer(): boolean;
+        isClient(): boolean;
     };
     worldTasks: {
         addChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
@@ -194,6 +197,7 @@ export declare const DVEW: {
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
             $INIT(): void;
+            getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
                 disable(): void;
@@ -480,14 +484,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Vector3;
         };
@@ -727,6 +731,13 @@ export declare const DVEW: {
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };
+                column: {
+                    async: {};
+                    deferred: {
+                        _s: any;
+                        run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                    };
+                };
             };
             explosion: {
                 run: {
@@ -750,9 +761,15 @@ export declare const DVEW: {
                     runAndAwait(): Promise<void>;
                 };
             };
-            worldPropagation: {
-                _s: any;
-                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            anaylzer: {
+                propagation: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
+                update: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
             };
             light: {
                 rgb: {
@@ -863,6 +880,13 @@ export declare const DVEW: {
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
+            column: {
+                async: {};
+                deferred: {
+                    _s: any;
+                    run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                };
+            };
         };
         explosion: {
             run: {
@@ -886,9 +910,15 @@ export declare const DVEW: {
                 runAndAwait(): Promise<void>;
             };
         };
-        worldPropagation: {
-            _s: any;
-            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+        anaylzer: {
+            propagation: {
+                _s: any;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
+            update: {
+                _s: any;
+                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            };
         };
         light: {
             rgb: {

@@ -33,6 +33,11 @@ export const WorldTasks = {
    (data) => {
     DataSync.column.unSync(data);
     WorldRegister.column.remove(data);
+    const region = WorldRegister.region.get(data);
+    if (region && region.columns.size == 0) {
+     WorldRegister.region.remove(data);
+     DataSync.region.unSync(data);
+    }
    }
   ),
  },

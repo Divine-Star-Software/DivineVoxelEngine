@@ -5,26 +5,12 @@ import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
 import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
-import { LocationData } from "Meta/Data/CommonTypes.js";
 
 export class ColumnDataTool extends PositionBoundDataTool {
  tags = ColumnTags;
  _column = <Column>{};
 
- loadIn(x: number, y: number, z: number) {
-  this.location[1] = x;
-  this.location[2] = y;
-  this.location[3] = z;
-  const column = WorldRegister.column.get(this.location);
-  if (!column) return false;
-  this.tags.setBuffer(column.data);
-  this._c = column.data;
-  this._column = column;
-  return true;
- }
-
- loadInAt(location: LocationData) {
-  this.setLocation(location);
+ loadIn() {
   const column = WorldRegister.column.get(this.location);
   if (!column) return false;
   this.tags.setBuffer(column.data);
@@ -80,5 +66,21 @@ export class ColumnDataTool extends PositionBoundDataTool {
 
  setDirty(value: boolean) {
   this.setTagValue("#dve_is_dirty", value ? 1 : 0);
+ }
+
+ getLastSaveTimestamp() {
+  return this.getTagValue("#dve_last_save_timestamp");
+ }
+
+ setLastSaveTimestamp() {
+  return this.setTagValue("#dve_last_save_timestamp", Date.now());
+ }
+
+ getLastAnalyzerUpdateTimestamp() {
+  return this.getTagValue("#dve_last_analyzer_update_timestamp");
+ }
+
+ setLastAnalyzerUpdateTimestamp() {
+  return this.setTagValue("#dve_last_analyzer_update_timestamp", Date.now());
  }
 }

@@ -4,20 +4,16 @@ export const SharedVertexShader = {
   precision highp float;
   `,
     standardPositionMain: `
-  vec4 worldPosition = world * vec4(position, 1.0);
-  gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
-  `,
-    standardPositioFOnMain: `
-  vec4 worldPosition = world * vec4(position, 1.0);
-  gl_Position =  worldViewProjection * vec4(position + worldOrigin, 1.0) ;
+ vec4 worldPosition = world * vec4(position, 1.0);
+ gl_Position = viewProjection * world * vec4(position, 1.0); 
   `,
     uniforams: `
 uniform mat4 worldViewProjection;
 uniform mat4 world;      
-uniform vec3 worldMatrix;       
+uniform mat4 viewProjection;    
 uniform vec3 cameraPosition;         
+
 uniform mat4 view;                    
-uniform mat4 viewProjection;       
 uniform float doEffects;      
 uniform vec4 fogOptions;      
 uniform vec3 worldOrigin;
@@ -46,6 +42,7 @@ uniform vec3 worldOrigin;
  //for fog 
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
+ varying vec3 worldPOSNoOrigin;
  varying float vDistance;
  varying float mipMapLevel;
  `,
@@ -166,7 +163,7 @@ uniform vec3 worldOrigin;
  cameraPOS = cameraPosition;
  vec4 temp =  world * vec4(position, 1.0);
  worldPOS = vec3(temp.x,temp.y,temp.z);
- vDistance = distance(worldPOS, cameraPOS);
+ vDistance = distance(cameraPOS , worldPOS );
  mipMapLevel = 0.;
  if(vDistance <= 30.) {
   mipMapLevel = 0.;
@@ -180,7 +177,13 @@ uniform vec3 worldOrigin;
  if(vDistance >= 50.) {
   mipMapLevel = 3.;
   }
-
+  mat4 a;
+  a[0] = world[0];
+  a[1] = world[1];
+  a[2] = world[2];
+  a[3] = vec4(world[3].xyz - worldOrigin.xyz, 1.);
+  temp =  a * vec4(position , 1.0);
+  worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);
  `,
     getAnimationType: `
  int getAnimationType() {

@@ -6,6 +6,7 @@ export declare const WorldRegister: {
     _chunkCache: Map<string, ChunkData>;
     _columnCache: Map<string, Column>;
     $INIT(): void;
+    getTotalLoadedChunks(): number;
     cache: {
         enable(): void;
         disable(): void;

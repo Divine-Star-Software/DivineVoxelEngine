@@ -16,7 +16,10 @@ const runIWG = () => {
   generateDistance: 150,
  });
  setInterval(() => {
-  generator.update();
+  generator.searchUpdate();
+ }, 20);
+ setInterval(() => {
+  generator.tasksUpdate();
  }, 100);
  (self as any).generator = generator;
 };
@@ -26,7 +29,5 @@ DVEW.parentComm.listenForMessage("set-position", (data) => {
 });
 
 DVEW.parentComm.sendMessage("get-position");
-
-
 
 (self as any).DVEW = DVEW;

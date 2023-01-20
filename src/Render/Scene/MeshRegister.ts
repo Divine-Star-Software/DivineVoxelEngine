@@ -6,9 +6,6 @@ import type {
 } from "Meta/Render/Scene/MeshRegister.types.js";
 import { VoxelTemplateSubstanceType } from "Meta/index.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import { WorldBounds } from "../../Data/World/WorldBounds.js";
-
-WorldBounds;
 export const MeshRegister = {
  _dimensions: <MeshRegisterDimensions>new Map(),
 
@@ -133,7 +130,7 @@ export const MeshRegister = {
    if (!column) {
     column = MeshRegister.column.add(dimensionId, x, z, y);
    }
-   const index = WorldSpaces.chunk.getIndexXYZ(x,y,z);
+   const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
    let chunk = column.chunks.get(index);
    if (!chunk) {
     chunk = new Map();
@@ -156,7 +153,7 @@ export const MeshRegister = {
   ) {
    const column = MeshRegister.column.get(dimensionId, x, z, y);
    if (!column) return false;
-   const index =  WorldSpaces.chunk.getIndexXYZ(x,y,z);
+   const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
    const chunk = column.chunks.get(index);
    if (!chunk) return false;
    const chunkMesh = chunk.get(substance);
@@ -166,7 +163,7 @@ export const MeshRegister = {
    if (chunk.size == 0) {
     column.chunks.delete(index);
    }
-   return true; 
+   return true;
   },
   get(
    dimensionId: string,
@@ -177,7 +174,7 @@ export const MeshRegister = {
   ) {
    const column = MeshRegister.column.get(dimensionId, x, z, y);
    if (!column) return false;
-   const chunk = column.chunks.get(WorldSpaces.chunk.getIndexXYZ(x,y,z));
+   const chunk = column.chunks.get(WorldSpaces.chunk.getIndexXYZ(x, y, z));
    if (!chunk) return false;
    const chunkMesh = chunk.get(substance);
    if (!chunkMesh) return false;

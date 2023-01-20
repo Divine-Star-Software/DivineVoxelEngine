@@ -1,12 +1,13 @@
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-import { CCM } from "../../Common/Threads/Constructor/ConstructorComm.js";
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
+import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
 const parentComm = ThreadComm.parent;
 export class BuilderTool extends LocationBoundTool {
     static _chunkTool = new ChunkDataTool();
+    tasks = TasksTool();
     data = {
         LOD: 1,
     };
@@ -15,11 +16,15 @@ export class BuilderTool extends LocationBoundTool {
         return this;
     }
     buildChunk() {
-        CCM.tasks.build.chunk([this.location, this.data.LOD]);
+        const [dimension, x, y, z] = this.location;
+        this.tasks.build.chunk.add(x, y, z);
+        this.tasks.build.chunk.run(() => { });
         return this;
     }
-    buildColumn() {
-        CCM.tasks.build.column([this.location, this.data.LOD]);
+    buildColumn(onDone) {
+        const [dimension, x, y, z] = this.location;
+        this.tasks.setFocalPoint(this.location);
+        this.tasks.build.column.deferred.run(x, y, z, onDone ? onDone : (data) => { });
         return this;
     }
     removeColumn() {

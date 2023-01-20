@@ -19,6 +19,7 @@ export declare const DVEFX: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -45,6 +46,8 @@ export declare const DVEFX: {
         doLight(): boolean;
         doFlow(): boolean;
         saveWorldData(): boolean;
+        isServer(): boolean;
+        isClient(): boolean;
     };
     dataSyncNode: {
         _states: Record<string, boolean>;
@@ -140,6 +143,7 @@ export declare const DVEFX: {
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
             $INIT(): void;
+            getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
                 disable(): void;

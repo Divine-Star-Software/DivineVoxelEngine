@@ -38,6 +38,13 @@ export class HeightMapTool {
             this._p.z = z;
             return this;
         },
+        getMinMax() {
+            HeightMapTool._chunkTool._c = this._c;
+            return [
+                HeightMapTool._chunkTool.getTagValue("#dve_min_height"),
+                HeightMapTool._chunkTool.getTagValue("#dve_max_height")
+            ];
+        },
         getMin(substance = "all") {
             HeightMapTool._chunkTool._c = this._c;
             if (substance == "all") {

@@ -6,13 +6,14 @@ import { PlayerTags } from "../Shared/PlayerTags.js";
 /*
 PICK CUBE
 */
-export const GetPlayerPickCube = (DVER, camera, scene, model) => {
+export const GetPlayerPickCube = (DVER, camera, scene) => {
     const cubeMaterial = new BABYLON.StandardMaterial("block");
     cubeMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
     cubeMaterial.alpha = 0.3;
     const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
         size: 1.1,
     });
+    cube.parent = DVER.renderManager.fo.activeNode;
     cube.isPickable = true;
     cube.material = cubeMaterial;
     cube.enableEdgesRendering();
@@ -32,9 +33,9 @@ export const GetPlayerPickCube = (DVER, camera, scene, model) => {
             return;
         }
         if (event.button == 2) {
-            cameraPickPostion.x = model.position.x;
-            cameraPickPostion.y = model.position.y + PlayerData.eyeLevel;
-            cameraPickPostion.z = model.position.z;
+            cameraPickPostion.x = 0;
+            cameraPickPostion.y = PlayerData.eyeLevel;
+            cameraPickPostion.z = 0;
             const camPick = scene.pickWithRay(camera.getForwardRay(10, undefined, cameraPickPostion));
             if (camPick) {
                 if (camPick.hit) {
@@ -43,6 +44,7 @@ export const GetPlayerPickCube = (DVER, camera, scene, model) => {
                         PlayerData.pick.normal.x = normal.x;
                         PlayerData.pick.normal.y = normal.y;
                         PlayerData.pick.normal.z = normal.z;
+                        const { x, y, z } = PlayerData.pick.normal;
                     }
                 }
             }
@@ -92,8 +94,15 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
     const camNode = new BABYLON.TransformNode("camnode", scene);
     playerCamera.parent = camNode;
     camNode.parent = playerModel;
+    const oriign = new BABYLON.Vector3();
+    scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
+        oriign.x = PlayerData.position.x;
+        oriign.y = PlayerData.position.y;
+        oriign.z = PlayerData.position.z;
+    });
+    DVER.renderManager.fo.setOriginCenter(scene, { position: oriign });
     if (enablePicking) {
-        GetPlayerPickCube(DVER, playerCamera, scene, playerModel);
+        GetPlayerPickCube(DVER, playerCamera, scene);
     }
     PlayerData.states.movement = PlayerStatesValues.still;
     PlayerData.states.secondaryMovement = PlayerStatesValues.secondaryStill;
@@ -163,10 +172,8 @@ export const GetRenderPlayer = async (enablePicking, scene, canvas, DVER) => {
     const cameraRotation = new BABYLON.Vector3(0, 0, 0);
     scene.registerBeforeRender(() => {
         let et = performance.now();
-        const position = playerModel.position;
-        position.x = PlayerData.position.x;
-        position.y = PlayerData.position.y;
-        position.z = PlayerData.position.z;
+        playerModel.position.setAll(0);
+        const position = PlayerData.position;
         const camera = scene.activeCamera;
         if (!camera)
             return;

@@ -13,6 +13,8 @@ export class DataTool extends DataToolBase {
     static _chunkTool = new ChunkDataTool();
     static _heightMapTool = new HeightMapTool();
     static _columntool = new ColumnDataTool();
+    _locationKey = "";
+    _loadedIn = false;
     _mode = "World";
     data = {
         raw: [0, 0, 0, 0],
@@ -73,28 +75,27 @@ export class DataTool extends DataToolBase {
         if (this._mode == "World") {
             if (!DataTool._chunkTool.setLocation(this.location).loadIn())
                 return false;
-            const index = WorldSpaces.voxel.getIndexXYZ(this.location[1], this.location[2], this.location[3]);
+            const index = WorldSpaces.voxel.getIndexLocation(this.location);
             this.data.raw[0] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_id", index);
             this.data.raw[1] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_light", index);
             this.data.raw[2] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_state", index);
             this.data.raw[3] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_secondary_id", index);
             this.__process();
+            this._loadedIn = true;
             return true;
         }
         if (this._mode == "Entity") {
             return false;
         }
-    }
-    loadInAt(x, y, z) {
-        this.setXYZ(x, y, z);
-        return this.loadIn();
+        return false;
     }
     commit(heightMapUpdate = 0) {
+        if (!this._loadedIn)
+            return false;
         if (this._mode == "World") {
-            DataTool._chunkTool.setDimension(this.location[0]);
-            if (!DataTool._chunkTool.loadInAt(this.location[1], this.location[2], this.location[3]))
+            if (!DataTool._chunkTool.loadInAtLocation(this.location))
                 return false;
-            const index = WorldSpaces.voxel.getIndexXYZ(this.location[1], this.location[2], this.location[3]);
+            const index = WorldSpaces.voxel.getIndexLocation(this.location);
             DataTool._chunkTool.setArrayTagValue("#dve_voxel_id", index, this.data.raw[0]);
             DataTool._chunkTool.setArrayTagValue("#dve_voxel_light", index, this.data.raw[1]);
             DataTool._chunkTool.setArrayTagValue("#dve_voxel_state", index, this.data.raw[2]);
@@ -111,9 +112,10 @@ export class DataTool extends DataToolBase {
                     DataTool._heightMapTool.chunk.update("remove", substance, this.location[1], this.location[2], this.location[3]);
                 }
             }
-            if (DataTool._columntool.loadIn(this.location[1], this.location[2], this.location[3])) {
+            if (DataTool._columntool.setLocation(this.location).loadIn()) {
                 DataTool._columntool.markAsNotStored();
             }
+            this._loadedIn = false;
         }
         if (this._mode == "Entity") {
         }

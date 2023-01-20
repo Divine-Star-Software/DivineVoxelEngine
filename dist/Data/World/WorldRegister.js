@@ -17,6 +17,19 @@ export const WorldRegister = {
     $INIT() {
         this._dimensions.set("main", new Map());
     },
+    getTotalLoadedChunks() {
+        let chunks = 0;
+        for (const [key, dim] of this._dimensions) {
+            for (const [rkey, region] of dim) {
+                for (const [clkey, column] of region.columns) {
+                    for (const [ckey, chunk] of column.chunks) {
+                        chunks++;
+                    }
+                }
+            }
+        }
+        return chunks;
+    },
     cache: {
         enable() {
             WorldRegister._cacheOn = true;

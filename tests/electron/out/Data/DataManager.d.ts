@@ -76,6 +76,7 @@ export declare const DataManager: {
         _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
         _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
         $INIT(): void;
+        getTotalLoadedChunks(): number;
         cache: {
             enable(): void;
             disable(): void;

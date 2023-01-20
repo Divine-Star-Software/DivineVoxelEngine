@@ -12,9 +12,7 @@ import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { WorldSpaces } from "./WorldSpaces.js";
-import type {
- LocationData,
-} from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 
 const chunkTool = new ChunkDataTool();
 const columnTool = new ColumnDataTool();
@@ -30,6 +28,19 @@ export const WorldRegister = {
   this._dimensions.set("main", new Map());
  },
 
+ getTotalLoadedChunks() {
+  let chunks = 0;
+  for (const [key, dim] of this._dimensions) {
+   for (const [rkey, region] of dim) {
+    for (const [clkey, column] of region.columns) {
+     for (const [ckey, chunk] of column.chunks) {
+      chunks++;
+     }
+    }
+   }
+  }
+  return chunks;
+ },
  cache: {
   enable() {
    WorldRegister._cacheOn = true;

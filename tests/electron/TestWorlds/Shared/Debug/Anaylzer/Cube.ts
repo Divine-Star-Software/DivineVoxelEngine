@@ -11,7 +11,7 @@ export const GetAnalyzerCubeRender = (
  const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
   size: 1.1,
  });
-
+ cube.parent = DVER.renderManager.fo.activeNode;
  //\cube.parent = DVER.renderManager.worldOrigin;
  cube.material = cubeMaterial;
 

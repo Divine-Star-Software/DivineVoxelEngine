@@ -61,6 +61,7 @@ const init = async () => {
  $INITDataLoader(DVER);
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
+ SyncWithGraphicsSettings(DVER);
  DVER.renderManager.setBaseLevel(0);
  DVER.renderManager.setSunLevel(0.8);
  const hemLight = new BABYLON.HemisphericLight(

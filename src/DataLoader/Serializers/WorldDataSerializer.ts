@@ -17,7 +17,7 @@ export const WorldDataSerialize = {
   if (
    !this.regions
     .setDimension(location[0])
-    .loadIn(location[1], location[2], location[3])
+    .loadInAt(location[1], location[2], location[3])
   )
    return false;
   const region = this.regions.getRegion();
@@ -32,12 +32,7 @@ export const WorldDataSerialize = {
  },
 
  serializeColumn(location: LocationData) {
-  if (
-   !this.columns
-    .setDimension(location[0])
-    .loadIn(location[1], location[2], location[3])
-  )
-   return false;
+  if (!this.columns.setLocation(location).loadIn()) return false;
   const columnSize = this.columns.getBufferSizeForWholeColumn();
   const columnBuffer = new ArrayBuffer(columnSize);
   const columnArray = new Uint8Array(columnBuffer);

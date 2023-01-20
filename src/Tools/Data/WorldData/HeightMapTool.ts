@@ -6,9 +6,6 @@ import type { VoxelTemplateSubstanceType } from "Meta/index";
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 
-
-
-
 export class HeightMapTool {
  static _chunkTool = new ChunkDataTool();
  _data = {
@@ -17,7 +14,7 @@ export class HeightMapTool {
 
  constructor() {
   this.chunk._s = this;
-//  this.column._s = this;
+  //  this.column._s = this;
  }
 
  setDimension(dimensionId: string) {
@@ -46,6 +43,13 @@ export class HeightMapTool {
    this._p.z = z;
    return this;
   },
+  getMinMax() {
+   HeightMapTool._chunkTool._c = this._c;
+  return [
+    HeightMapTool._chunkTool.getTagValue("#dve_min_height"),
+    HeightMapTool._chunkTool.getTagValue("#dve_max_height")
+   ];
+  },
   getMin(substance: VoxelTemplateSubstanceType | "all" = "all") {
    HeightMapTool._chunkTool._c = this._c;
    if (substance == "all") {
@@ -54,7 +58,7 @@ export class HeightMapTool {
    return 0;
   },
   getMax(substance: VoxelTemplateSubstanceType | "all" = "all") {
-    HeightMapTool._chunkTool._c = this._c;
+   HeightMapTool._chunkTool._c = this._c;
    if (substance == "all") {
     return HeightMapTool._chunkTool.getTagValue("#dve_max_height");
    }
@@ -71,7 +75,7 @@ export class HeightMapTool {
     HeightMapTool._chunkTool._c = this._c;
     const minY = HeightMapTool._chunkTool.getTagValue("#dve_min_height");
     const maxY = HeightMapTool._chunkTool.getTagValue("#dve_max_height");
-    const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x,y,z);
+    const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x, y, z);
     if (minY > voxelPOS.y) {
      HeightMapTool._chunkTool.setTagValue("#dve_min_height", voxelPOS.y);
     }
@@ -81,7 +85,7 @@ export class HeightMapTool {
    }
   },
  };
-/*  column = {
+ /*  column = {
   _c: <Column>{},
   _p: {
    x: 0,

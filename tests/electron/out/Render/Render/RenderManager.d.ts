@@ -52,6 +52,8 @@ export declare const RenderManager: {
     fo: {
         activeCamera: import("./FloatingOrigin/FOCamera.js").FOCamera | null;
         activeNode: import("./FloatingOrigin/FONode.js").FONode | null;
+        onOriginSet: Function[];
+        registerOnOriginSet(run: (node: import("./FloatingOrigin/FONode.js").FONode) => void): void;
         getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement | undefined): import("./FloatingOrigin/FOCamera.js").FOCamera;
         getNode(scene: BABYLON.Scene, name: string): import("./FloatingOrigin/FONode.js").FONode;
         setOriginCenter(scene: BABYLON.Scene, object: {
@@ -79,8 +81,8 @@ export declare const RenderManager: {
         };
         buildVertexShader(data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
         buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-        getDefaultVertexShader(voxelSubstance: "Item" | import("Meta/index.js").VoxelTemplateSubstanceType, data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-        getDefaultFragmentShader(voxelSubstance: "Item" | import("Meta/index.js").VoxelTemplateSubstanceType): string;
+        getDefaultVertexShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
+        getDefaultFragmentShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
         getSkyBoxVertexShader(): string;
         getSkyBoxFragmentShader(): string;
     };

@@ -44,6 +44,7 @@ export declare const TasksRequest: {
         rgb: {
             update: Vec3Array;
             rmeove: Vec3Array;
+            map: VisitedMap;
         };
         sun: {
             update: Vec3Array;
@@ -65,6 +66,7 @@ export declare const TasksRequest: {
         rgb: {
             update: Vec3Array;
             rmeove: Vec3Array;
+            map: VisitedMap;
         };
         sun: {
             update: Vec3Array;
@@ -86,6 +88,7 @@ export declare const TasksRequest: {
         rgb: {
             update: Vec3Array;
             rmeove: Vec3Array;
+            map: VisitedMap;
         };
         sun: {
             update: Vec3Array;
@@ -110,6 +113,7 @@ export declare const TasksRequest: {
         rgb: {
             update: Vec3Array;
             rmeove: Vec3Array;
+            map: VisitedMap;
         };
         sun: {
             update: Vec3Array;

@@ -10,8 +10,10 @@ import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
 import { WorldPainter } from "../Data/World/WorldPainter.js";
+import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 export const DVEN = {
     environment: "browser",
+    TC: ThreadComm,
     UTIL: Util,
     settings: EngineSettings,
     dataSyncNode: DataSyncNode,

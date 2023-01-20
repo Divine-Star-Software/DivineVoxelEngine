@@ -50,10 +50,11 @@ export const Tasks = {
   },
   column: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildColumn,
-   async (data) => {
+   async (data, onDone) => {
     const column = WorldRegister.column.get(data[0]);
     if (!column) return false;
     if (column.chunks.size == 0) return false;
+    let totalChunks = 0;
     const location = data[0];
     for (const [key, chunk] of column.chunks) {
      chunkTool.setChunk(chunk);
@@ -61,14 +62,21 @@ export const Tasks = {
      location[1] = chunkPOS.x;
      location[2] = chunkPOS.y;
      location[3] = chunkPOS.z;
-
+     totalChunks++;
      DVEC.tasksQueue.addTasks(
       2,
       <BuildTasks>[[...location], data[1]],
-      Tasks.build.chunk.run
+      async (data) => {
+       await Tasks.build.chunk.run(data);
+       totalChunks--;
+       if (totalChunks == 0) {
+        if (onDone) onDone(true);
+       }
+      }
      );
     }
-   }
+   },
+   "deffered"
   ),
  },
  voxelUpdate: {
@@ -123,14 +131,24 @@ export const Tasks = {
    "deffered"
   ),
  },
- worldPropagation: ThreadComm.registerTasks<UpdateTasksO>(
-  ConstructorTasks.worldPropagation,
-  async (data, onDone) => {
-   await DVEC.analyzer.runWorldPropagation(data);
-   if (onDone) onDone();
-  },
-  "deffered"
- ),
+ anaylzer: {
+  propagation: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.analyzerPropagation,
+   async (data, onDone) => {
+    await DVEC.analyzer.runPropagation(data);
+    if (onDone) onDone();
+   },
+   "deffered"
+  ),
+  update :  ThreadComm.registerTasks<UpdateTasksO>(
+    ConstructorTasks.analyzerUpdate,
+    async (data, onDone) => {
+     await DVEC.analyzer.runUpdate(data);
+     if (onDone) onDone();
+    },
+    "deffered"
+   ),
+ },
  flow: {
   update: ThreadComm.registerTasks<UpdateTasksO>(
    ConstructorTasks.flowUpdate,

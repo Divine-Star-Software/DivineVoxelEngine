@@ -6,16 +6,19 @@ ColumnDataTags.registerTag({
  type: "header",
  numberType: "16ui",
 });
+
 ColumnDataTags.registerTag({
  id: "#dve_data_type",
  type: "header",
  numberType: "16ui",
 });
+
 ColumnDataTags.registerTag({
  id: "#dve_dimension_id",
  type: "typed-number",
  numberType: "16ui",
 });
+
 ColumnDataTags.registerTag({
  id: "#dve_p_x",
  type: "typed-number",
@@ -31,6 +34,19 @@ ColumnDataTags.registerTag({
  type: "typed-number",
  numberType: "32i",
 });
+
+ColumnDataTags.registerTag({
+ id: "#dve_last_save_timestamp",
+ type: "typed-number",
+ numberType: "32ui",
+});
+
+ColumnDataTags.registerTag({
+ id: "#dve_last_analyzer_update_timestamp",
+ type: "typed-number",
+ numberType: "32ui",
+});
+
 ColumnDataTags.registerTag({
  id: "#dve_is_stored",
  type: "boolean",

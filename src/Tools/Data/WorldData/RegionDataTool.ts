@@ -9,10 +9,7 @@ export class RegionDataTool extends PositionBoundDataTool {
  tags = RegionTags;
  _region = <Region>{};
 
- loadIn(x: number, y: number, z: number) {
-  this.location[1] = x;
-  this.location[2] = y;
-  this.location[3] = z;
+ loadIn() {
   const reigon = WorldRegister.region.get(this.location);
   if (!reigon) return false;
   this.tags.setBuffer(reigon.data);

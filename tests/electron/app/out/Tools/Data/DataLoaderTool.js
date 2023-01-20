@@ -47,11 +47,14 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     saveColumnIfNotStored(onDone) {
         const location = this.getLocation();
-        if (!DataLoaderTool.columnDataTool.loadInAt(location))
-            return false;
+        if (!DataLoaderTool.columnDataTool.setLocation(location).loadIn())
+            return onDone ? onDone(false) : false;
         if (DataLoaderTool.columnDataTool.isStored())
-            return false;
-        this.dataComm.runPromiseTasks("save-column", location.toString(), () => (onDone ? onDone(true) : false), location);
+            return onDone ? onDone(false) : false;
+        this.dataComm.runPromiseTasks("save-column", location.toString(), () => {
+            if (onDone)
+                onDone(true);
+        }, location);
         return true;
     }
     loadIfExists(onDone) {
@@ -170,5 +173,20 @@ export class DataLoaderTool extends LocationBoundTool {
                     onDone();
             }
         }, 1);
+    }
+    getAllUnStoredColumns(run) {
+        const [dimension, sx, sy, sz] = this.location;
+        const regions = WorldRegister.dimensions.get(dimension);
+        if (!regions)
+            return;
+        for (const [key, region] of regions) {
+            for (const [ckey, column] of region.columns) {
+                DataLoaderTool.columnDataTool.setColumn(column);
+                if (DataLoaderTool.columnDataTool.isStored())
+                    continue;
+                const [dimension, cx, cy, cz] = DataLoaderTool.columnDataTool.getLocationData();
+                run(dimension, cx, cy, cz);
+            }
+        }
     }
 }

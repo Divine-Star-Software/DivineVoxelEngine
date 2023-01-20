@@ -19,6 +19,7 @@ export declare const DVEC: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -45,6 +46,8 @@ export declare const DVEC: {
         doLight(): boolean;
         doFlow(): boolean;
         saveWorldData(): boolean;
+        isServer(): boolean;
+        isClient(): boolean;
     };
     propagation: {
         expolosion: {
@@ -93,6 +96,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -168,6 +178,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -233,6 +250,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -302,6 +326,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -338,6 +369,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -376,6 +414,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -412,6 +457,13 @@ export declare const DVEC: {
                     rgb: {
                         update: [x: number, y: number, z: number][];
                         rmeove: [x: number, y: number, z: number][];
+                        map: {
+                            _map: Map<string, boolean>;
+                            _getKey(x: number, y: number, z: number): string;
+                            inMap(x: number, y: number, z: number): boolean;
+                            add(x: number, y: number, z: number): void;
+                            clear(): void;
+                        };
                     };
                     sun: {
                         update: [x: number, y: number, z: number][];
@@ -603,14 +655,14 @@ export declare const DVEC: {
                     z: number;
                 };
                 setBounds(x: number, y: number, z: number): void;
-                getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-                getValueUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): number;
-                getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): number;
-                setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-                setValueUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[], value: number): void;
-                setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: Uint32Array | number[], value: number): void;
-                deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-                deleteUseObj(position: import("Meta/index.js").Vector3, array: Uint32Array | number[]): void;
+                getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+                getValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+                getValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): number;
+                setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+                setValueUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+                setValueUseObjSafe(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array, value: number): void;
+                deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+                deleteUseObj(position: import("Meta/index.js").Vector3, array: number[] | Uint32Array): void;
                 getIndex(x: number, y: number, z: number): number;
                 getXYZ(index: number): import("Meta/index.js").Vector3;
             };
@@ -684,78 +736,19 @@ export declare const DVEC: {
         constructEntity(): void;
     };
     analyzer: {
-        processor: {
-            _flowChecnks: number[][];
-            anaylzeColumn(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, options: {
-                light?: boolean | undefined;
-                flow?: boolean | undefined;
-            }): {
-                rebuildQueMap: Map<string, boolean>;
-                comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                priority: import("../Meta/Tasks/Tasks.types.js").Priorities;
-                LOD: number;
-                syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
-                buildMode: "async" | "sync";
-                tasksType: string;
-                origin: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
-                data: null;
-                buildQueue: string;
-                originThread: string;
-                queues: {
-                    flow: {
-                        update: {
-                            queue: number[][];
-                            map: {
-                                _map: Map<string, boolean>;
-                                _getKey(x: number, y: number, z: number): string;
-                                inMap(x: number, y: number, z: number): boolean;
-                                add(x: number, y: number, z: number): void;
-                                clear(): void;
-                            };
-                        };
-                        rmeove: {
-                            queue: number[][];
-                            map: {
-                                _map: Map<string, boolean>;
-                                _getKey(x: number, y: number, z: number): string;
-                                inMap(x: number, y: number, z: number): boolean;
-                                add(x: number, y: number, z: number): void;
-                                clear(): void;
-                            };
-                            noRemoveMap: {
-                                _map: Map<string, boolean>;
-                                _getKey(x: number, y: number, z: number): string;
-                                inMap(x: number, y: number, z: number): boolean;
-                                add(x: number, y: number, z: number): void;
-                                clear(): void;
-                            };
-                        };
-                    };
-                    rgb: {
-                        update: [x: number, y: number, z: number][];
-                        rmeove: [x: number, y: number, z: number][];
-                    };
-                    sun: {
-                        update: [x: number, y: number, z: number][];
-                        rmeove: [x: number, y: number, z: number][];
-                    };
-                };
-                start(): any;
-                stop(): any;
-                setPriority(priority: import("../Meta/Tasks/Tasks.types.js").Priorities): any;
-                getData(): null;
-                getOriginThread(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
-                getBuildQueue(): string;
-                getOrigin(): import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
-                needsRebuild(): boolean;
-                needsToUpdateOriginThread(): boolean;
-                setBuldMode(mode: "async" | "sync"): any;
-                addToRebuildQueue(x: number, y: number, z: number): boolean;
-                addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
-                runRebuildQueue(): any;
-            } | undefined;
+        updater: {
+            _voxels: Map<string, (locaton: import("../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: any) => void>;
+            registerVoxel(id: string, run: (locaton: import("../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: any) => void): void;
+            getVoxel(id: string): false | ((locaton: import("../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: any) => void);
         };
-        runWorldPropagation(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<false | undefined>;
+        processor: {
+            columnTool: import("../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool;
+            chunkTool: import("../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
+            goThroughColumn<T_2>(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, run: (x: number, y: number, z: number, column: import("../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool) => void): void;
+        };
+        _flowChecks: number[][];
+        runPropagation(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
+        runUpdate(data: import("../Meta/Tasks/Tasks.types.js").UpdateTasksO): Promise<void>;
     };
     dataSyncNode: {
         _states: Record<string, boolean>;
@@ -851,6 +844,7 @@ export declare const DVEC: {
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
             $INIT(): void;
+            getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
                 disable(): void;
@@ -1037,7 +1031,7 @@ export declare const DVEC: {
         $INIT(threadName: string): Promise<void>;
         getSyncedQueue(threadId: string, queueId: string): import("../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
         addComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
-        createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+        createComm<T_3>(name: string, mergeObject?: T_3): T_3 & import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
         createCommManager(data: import("../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
         getComm(id: string): import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
         getCommManager(id: string): import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
@@ -1048,10 +1042,10 @@ export declare const DVEC: {
         __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
         __handleTasksMessage(data: any[]): Promise<void>;
         __isTasks(data: any[]): boolean;
-        registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+        registerTasks<T_4>(id: string | number, run: (data: T_4, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../Libs/ThreadComm/Tasks/Tasks.js").Task<T_4>;
         __hanldeDataSyncMessage(data: any[]): Promise<void>;
         __isDataSync(data: any[]): boolean;
-        onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
+        onDataSync<T_5, K_1>(dataType: string | number, onSync?: ((data: T_5) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../Libs/ThreadComm/Data/DataSync.js").DataSync<T_5, K_1>;
     };
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -1072,7 +1066,10 @@ export declare const DVEC: {
         worldGen: {
             generate: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").GenerateTasks>;
         };
-        worldPropagation: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        anaylzer: {
+            propagation: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+            update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
+        };
         flow: {
             update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;
             remove: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").UpdateTasksO>;

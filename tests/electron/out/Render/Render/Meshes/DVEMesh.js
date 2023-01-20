@@ -37,6 +37,8 @@ export class DVEMesh {
         mesh.setVerticesData("ocuv3", [0], false, 4);
         chunkVertexData.applyToMesh(mesh, false);
         mesh.vertexData = chunkVertexData;
+        mesh.isVisible = false;
+        mesh.setEnabled(false);
         return mesh;
     }
     syncSettings(settings) {

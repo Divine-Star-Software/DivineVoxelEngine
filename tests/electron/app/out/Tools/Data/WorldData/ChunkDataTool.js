@@ -12,12 +12,6 @@ export class ChunkDataTool extends PositionBoundDataTool {
         this._c = chunk.data;
         return true;
     }
-    loadInAt(x, y, z) {
-        this.location[1] = x;
-        this.location[2] = y;
-        this.location[3] = z;
-        return this.loadIn();
-    }
     setChunk(chunk) {
         this.tags.setBuffer(chunk.data);
         this._c = chunk.data;

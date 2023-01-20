@@ -13,6 +13,7 @@ export const MeshManager = {
     meshMakers: {},
     $INIT(scene) {
         this.scene = scene;
+        scene.freeActiveMeshes();
         //@ts-ignore
         this.meshMakers = {
             solid: DVER.renderManager.solidMesh,

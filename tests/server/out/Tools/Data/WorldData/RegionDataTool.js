@@ -5,10 +5,7 @@ import { RegionTags } from "../../../Data/World/Region/RegionTags.js";
 export class RegionDataTool extends PositionBoundDataTool {
     tags = RegionTags;
     _region = {};
-    loadIn(x, y, z) {
-        this.location[1] = x;
-        this.location[2] = y;
-        this.location[3] = z;
+    loadIn() {
         const reigon = WorldRegister.region.get(this.location);
         if (!reigon)
             return false;

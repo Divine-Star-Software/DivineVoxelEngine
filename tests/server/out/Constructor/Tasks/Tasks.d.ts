@@ -16,7 +16,10 @@ export declare const Tasks: {
     worldGen: {
         generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<GenerateTasks>;
     };
-    worldPropagation: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+    anaylzer: {
+        propagation: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+        update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+    };
     flow: {
         update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
         remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;

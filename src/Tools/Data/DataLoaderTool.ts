@@ -74,12 +74,16 @@ export class DataLoaderTool extends LocationBoundTool {
  saveColumnIfNotStored(onDone?: (saved: boolean) => void) {
   const location = this.getLocation();
 
-  if (!DataLoaderTool.columnDataTool.loadInAt(location)) return false;
-  if (DataLoaderTool.columnDataTool.isStored()) return false;
+  if (!DataLoaderTool.columnDataTool.setLocation(location).loadIn())
+   return onDone ? onDone(false) : false;
+  if (DataLoaderTool.columnDataTool.isStored())
+   return onDone ? onDone(false) : false;
   this.dataComm.runPromiseTasks(
    "save-column",
    location.toString(),
-   () => (onDone ? onDone(true) : false),
+   () => {
+    if (onDone) onDone(true);
+   },
    location
   );
 
@@ -220,7 +224,7 @@ export class DataLoaderTool extends LocationBoundTool {
   for (const [key, region] of regions) {
    for (const [ckey, column] of region.columns) {
     DataLoaderTool.columnDataTool.setColumn(column);
-    if(DataLoaderTool.columnDataTool.isPersistent()) continue;
+    if (DataLoaderTool.columnDataTool.isPersistent()) continue;
     const [dimension, cx, cy, cz] =
      DataLoaderTool.columnDataTool.getLocationData();
     const d = Distance3D(sx, sy, sz, cx, cy, cz);
@@ -238,5 +242,22 @@ export class DataLoaderTool extends LocationBoundTool {
     if (onDone) onDone();
    }
   }, 1);
+ }
+
+ getAllUnStoredColumns(
+  run: (dimension: string, x: number, y: number, z: number) => void
+ ) {
+  const [dimension, sx, sy, sz] = this.location;
+  const regions = WorldRegister.dimensions.get(dimension);
+  if (!regions) return;
+  for (const [key, region] of regions) {
+   for (const [ckey, column] of region.columns) {
+    DataLoaderTool.columnDataTool.setColumn(column);
+    if (DataLoaderTool.columnDataTool.isStored()) continue;
+    const [dimension, cx, cy, cz] =
+     DataLoaderTool.columnDataTool.getLocationData();
+    run(dimension, cx, cy, cz);
+   }
+  }
  }
 }

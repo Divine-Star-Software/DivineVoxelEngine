@@ -13,12 +13,16 @@ import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LightData } from "../../Data/Light/LightByte.js";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 
 export class DataTool extends DataToolBase {
  static _dtutil = new DataTool();
  static _chunkTool = new ChunkDataTool();
  static _heightMapTool = new HeightMapTool();
  static _columntool = new ColumnDataTool();
+
+ _locationKey = "";
+ _loadedIn = false;
 
  _mode: "World" | "Entity" = "World";
  data = {
@@ -85,11 +89,7 @@ export class DataTool extends DataToolBase {
   if (this._mode == "World") {
    if (!DataTool._chunkTool.setLocation(this.location).loadIn()) return false;
 
-   const index = WorldSpaces.voxel.getIndexXYZ(
-    this.location[1],
-    this.location[2],
-    this.location[3]
-   );
+   const index = WorldSpaces.voxel.getIndexLocation(this.location);
    this.data.raw[0] = DataTool._chunkTool.getArrayTagValue(
     "#dve_voxel_id",
     index
@@ -107,35 +107,22 @@ export class DataTool extends DataToolBase {
     index
    );
    this.__process();
+   this._loadedIn = true;
    return true;
   }
   if (this._mode == "Entity") {
    return false;
   }
+
+  return false;
  }
 
- loadInAt(x: number, y: number, z: number) {
-  this.setXYZ(x, y, z);
-  return this.loadIn();
- }
  commit(heightMapUpdate = 0) {
+  if (!this._loadedIn) return false;
   if (this._mode == "World") {
-   DataTool._chunkTool.setDimension(this.location[0]);
+   if (!DataTool._chunkTool.loadInAtLocation(this.location)) return false;
+   const index = WorldSpaces.voxel.getIndexLocation(this.location);
 
-   if (
-    !DataTool._chunkTool.loadInAt(
-     this.location[1],
-     this.location[2],
-     this.location[3]
-    )
-   )
-    return false;
-
-   const index = WorldSpaces.voxel.getIndexXYZ(
-    this.location[1],
-    this.location[2],
-    this.location[3]
-   );
    DataTool._chunkTool.setArrayTagValue(
     "#dve_voxel_id",
     index,
@@ -180,15 +167,10 @@ export class DataTool extends DataToolBase {
      );
     }
    }
-   if (
-    DataTool._columntool.loadIn(
-     this.location[1],
-     this.location[2],
-     this.location[3]
-    )
-   ) {
+   if (DataTool._columntool.setLocation(this.location).loadIn()) {
     DataTool._columntool.markAsNotStored();
    }
+   this._loadedIn = false;
   }
   if (this._mode == "Entity") {
   }

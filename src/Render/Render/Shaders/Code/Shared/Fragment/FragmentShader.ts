@@ -55,6 +55,7 @@ ${SharedFragmentShader.defaultVarying}
  //for fog
  varying vec3 cameraPOS;
  varying vec3 worldPOS;
+ varying vec3 worldPOSNoOrigin;
  varying float vDistance;
  `,
  getBase: `

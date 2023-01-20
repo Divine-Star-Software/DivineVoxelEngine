@@ -43,7 +43,11 @@ export class DVEMesh {
   mesh.setVerticesData("cuv3", [0], false, 3);
   mesh.setVerticesData("ocuv3", [0], false, 4);
   chunkVertexData.applyToMesh(mesh, false);
+
   (mesh as any).vertexData = chunkVertexData;
+
+  mesh.isVisible = false;
+  mesh.setEnabled(false);
   return mesh;
  }
 
@@ -59,36 +63,39 @@ export class DVEMesh {
   }
  }
 
+ async setMeshData(
+  mesh: BABYLON.Mesh,
+  chunkX: number,
+  chunkY: number,
+  chunkZ: number,
+  data: ChunkMeshData
+ ) {
+  mesh.unfreezeWorldMatrix();
+  mesh.position.x = chunkX;
+  mesh.position.y = chunkY;
+  mesh.position.z = chunkZ;
 
-
- async setMeshData(mesh: BABYLON.Mesh,chunkX : number,chunkY:number,chunkZ:number, data: ChunkMeshData) {
-    mesh.unfreezeWorldMatrix();
-    mesh.position.x = chunkX;
-    mesh.position.y = chunkY;
-    mesh.position.z = chunkZ;
-
-    const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
-    chunkVertexData.positions = data[1];
-    chunkVertexData.normals = data[2];
-    chunkVertexData.indices = data[3];
-    mesh.setVerticesData("faceData", data[4], false, 1);
-    mesh.setVerticesData("aoColors", data[5], false, 1);
-    mesh.setVerticesData("lightColors", data[6], false, 4);
-    mesh.setVerticesData("colors", data[7], false, 4);
-    mesh.setVerticesData("cuv3", data[8], false, 3);
-    mesh.setVerticesData("ocuv3", data[9], false, 4);
-    chunkVertexData.applyToMesh(mesh, false);
-  
-    if (this.clearCachedGeometry) {
-     if (mesh.subMeshes) {
-      for (const sm of mesh.subMeshes) {
-       sm.setBoundingInfo(this.defaultBb);
-      }
-     }
-     mesh.geometry?.clearCachedData();
+  const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
+  chunkVertexData.positions = data[1];
+  chunkVertexData.normals = data[2];
+  chunkVertexData.indices = data[3];
+  mesh.setVerticesData("faceData", data[4], false, 1);
+  mesh.setVerticesData("aoColors", data[5], false, 1);
+  mesh.setVerticesData("lightColors", data[6], false, 4);
+  mesh.setVerticesData("colors", data[7], false, 4);
+  mesh.setVerticesData("cuv3", data[8], false, 3);
+  mesh.setVerticesData("ocuv3", data[9], false, 4);
+  chunkVertexData.applyToMesh(mesh, false);
+  if (this.clearCachedGeometry) {
+   if (mesh.subMeshes) {
+    for (const sm of mesh.subMeshes) {
+     sm.setBoundingInfo(this.defaultBb);
     }
-  
-    mesh.freezeWorldMatrix();
+   }
+   mesh.geometry?.clearCachedData();
+  }
+
+  mesh.freezeWorldMatrix();
   return mesh;
  }
 }

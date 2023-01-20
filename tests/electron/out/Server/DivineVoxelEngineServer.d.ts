@@ -2,6 +2,7 @@ import type { DVESInitData } from "Meta/Server/DVES";
 import { EngineSettingsData } from "Meta/index.js";
 export declare const DVES: {
     settings: {
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -28,6 +29,8 @@ export declare const DVES: {
         doLight(): boolean;
         doFlow(): boolean;
         saveWorldData(): boolean;
+        isServer(): boolean;
+        isClient(): boolean;
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {

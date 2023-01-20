@@ -18,6 +18,14 @@ player.onUpdate.push(() => {
     position[0] = PlayerData.position.x;
     position[1] = PlayerData.position.y;
     position[2] = PlayerData.position.z;
-    generator.update();
+    generator.searchUpdate();
 });
+setInterval(() => {
+    //console.log(generator._logTasks());
+    generator.tasksUpdate();
+}, 100);
+setInterval(() => {
+    generator.saveUpdate();
+}, 1000);
 self.DVEW = DVEW;
+self.IWG = generator;
