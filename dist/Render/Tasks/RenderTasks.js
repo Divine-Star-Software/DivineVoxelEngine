@@ -1,6 +1,7 @@
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
+import { MeshManager } from "../Scene/MeshManager.js";
 export const RenderTasks = {
     setChunk: ThreadComm.registerTasks("set-chunk", (data) => {
         DVER.meshManager.updateChunk(data);
@@ -26,7 +27,7 @@ export const RenderTasks = {
                 const pos = column.position;
                 const distnace = Distance3D(pos[0], 0, pos[2], x, 0, z);
                 if (distnace > maxRadius) {
-                    register.column.remove(dimesnionId, pos[0], pos[2], pos[1]);
+                    MeshManager.removeColumn([dimesnionId, pos[0], pos[1], pos[2]]);
                 }
             });
         });

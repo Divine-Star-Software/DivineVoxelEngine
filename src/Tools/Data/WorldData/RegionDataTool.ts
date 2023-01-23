@@ -2,10 +2,10 @@
 import type { Region } from "Meta/Data/WorldData.types.js";
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
+import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 import { RegionTags } from "../../../Data/World/Region/RegionTags.js";
 
-export class RegionDataTool extends PositionBoundDataTool {
+export class RegionDataTool extends EncodedPositionDataTool {
  tags = RegionTags;
  _region = <Region>{};
 

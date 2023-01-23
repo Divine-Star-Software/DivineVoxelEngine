@@ -37,7 +37,7 @@ export const WorldGeneration = {
     onDone();
     clearInterval(inte);
    }
-  }, 1);
+  }, 100);
  },
 
  getBrush() {
@@ -47,4 +47,4 @@ export const WorldGeneration = {
  },
 };
 
-export type DivineVoxelEngineWorldGeneration = typeof WorldGeneration;
+

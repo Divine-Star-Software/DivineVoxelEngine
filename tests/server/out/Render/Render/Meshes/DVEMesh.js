@@ -1,6 +1,7 @@
 export class DVEMesh {
     name;
     dveMat;
+    meshes = [];
     pickable = false;
     checkCollisions = false;
     seralize = false;
@@ -11,7 +12,14 @@ export class DVEMesh {
         this.dveMat = dveMat;
     }
     createTemplateMesh(scene) {
-        const mesh = new BABYLON.Mesh(this.name, scene);
+        let mesh = this.meshes.shift();
+        if (!mesh) {
+            mesh = new BABYLON.Mesh(this.name, scene);
+            this._setEmptyData(mesh);
+        }
+        else {
+            mesh.setEnabled(true);
+        }
         mesh.isPickable = this.pickable;
         mesh.checkCollisions = this.checkCollisions;
         mesh.type = "chunk";
@@ -22,21 +30,6 @@ export class DVEMesh {
         mesh.doNotSerialize = this.seralize;
         mesh.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_STANDARD;
         mesh.material = this.dveMat.getMaterial();
-        const chunkVertexData = new BABYLON.VertexData();
-        mesh.position.x = 0;
-        mesh.position.y = 0;
-        mesh.position.z = 0;
-        chunkVertexData.positions = [0];
-        chunkVertexData.normals = [0];
-        chunkVertexData.indices = [0];
-        mesh.setVerticesData("faceData", [0], false, 1);
-        mesh.setVerticesData("aoColors", [0], false, 1);
-        mesh.setVerticesData("lightColors", [0], false, 4);
-        mesh.setVerticesData("colors", [9], false, 4);
-        mesh.setVerticesData("cuv3", [0], false, 3);
-        mesh.setVerticesData("ocuv3", [0], false, 4);
-        chunkVertexData.applyToMesh(mesh, false);
-        mesh.vertexData = chunkVertexData;
         mesh.isVisible = false;
         mesh.setEnabled(false);
         return mesh;
@@ -51,6 +44,41 @@ export class DVEMesh {
         if (settings.meshes.seralize) {
             this.seralize = true;
         }
+    }
+    _setEmptyData(mesh) {
+        let chunkVertexData = mesh.vertexData;
+        if (!chunkVertexData) {
+            chunkVertexData = new BABYLON.VertexData();
+            mesh.vertexData = chunkVertexData;
+        }
+        mesh.position.x = 0;
+        mesh.position.y = 0;
+        mesh.position.z = 0;
+        chunkVertexData.positions = [0];
+        chunkVertexData.normals = [0];
+        chunkVertexData.indices = [0];
+        mesh.setVerticesData("faceData", [0], false, 1);
+        mesh.setVerticesData("aoColors", [0], false, 1);
+        mesh.setVerticesData("lightColors", [0], false, 4);
+        mesh.setVerticesData("colors", [9], false, 4);
+        mesh.setVerticesData("cuv3", [0], false, 3);
+        mesh.setVerticesData("ocuv3", [0], false, 4);
+        chunkVertexData.applyToMesh(mesh, false);
+    }
+    _clearCached(mesh) {
+        if (this.clearCachedGeometry) {
+            if (mesh.subMeshes) {
+                for (const sm of mesh.subMeshes) {
+                    sm.setBoundingInfo(this.defaultBb);
+                }
+            }
+            mesh.geometry?.clearCachedData();
+        }
+    }
+    removeMesh(mesh) {
+        this._clearCached(mesh);
+        this._setEmptyData(mesh);
+        this.meshes.push(mesh);
     }
     async setMeshData(mesh, chunkX, chunkY, chunkZ, data) {
         mesh.unfreezeWorldMatrix();
@@ -68,14 +96,7 @@ export class DVEMesh {
         mesh.setVerticesData("cuv3", data[8], false, 3);
         mesh.setVerticesData("ocuv3", data[9], false, 4);
         chunkVertexData.applyToMesh(mesh, false);
-        if (this.clearCachedGeometry) {
-            if (mesh.subMeshes) {
-                for (const sm of mesh.subMeshes) {
-                    sm.setBoundingInfo(this.defaultBb);
-                }
-            }
-            mesh.geometry?.clearCachedData();
-        }
+        this._clearCached(mesh);
         mesh.freezeWorldMatrix();
         return mesh;
     }

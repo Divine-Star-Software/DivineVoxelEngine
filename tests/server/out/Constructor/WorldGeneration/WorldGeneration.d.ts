@@ -3,13 +3,15 @@ import type { GenerateTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const WorldGeneration: {
     worldGen: WorldGenInterface | null;
     register: {
+        MAX_ATTEMPTS: number;
         _requests: Map<string, {
+            attempts: number;
             dimension: string;
             chunks: Map<string, [x: number, y: number, z: number]>;
             voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
         }>;
         registerRequest(dimension: string, x: number, y: number, z: number): string;
-        addToRequest(registerId: string, x: number, y: number, z: number, rawData: import("../../Meta/index.js").RawVoxelData): void;
+        addToRequest(registerId: string, location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
         attemptRequestFullFill(registerId: string): boolean;
     };
     worldBounds: {
@@ -31,4 +33,3 @@ export declare const WorldGeneration: {
         paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
     };
 };
-export declare type DivineVoxelEngineWorldGeneration = typeof WorldGeneration;

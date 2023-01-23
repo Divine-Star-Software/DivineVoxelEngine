@@ -175,7 +175,6 @@ export declare const DVEDL: {
             _cacheOn: boolean;
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
-            $INIT(): void;
             getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
@@ -327,7 +326,7 @@ export declare const DVEDL: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
         };
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -349,12 +348,12 @@ export declare const DVEDL: {
         chunks: import("../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
         serializeRegion(location: import("../Meta/Data/CommonTypes.js").LocationData): false | [location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("../Meta/Data/CommonTypes.js").LocationData): false | Uint8Array;
-        deSerializeRegion(regionBuffers: SharedArrayBuffer[] | ArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
+        deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
+        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
         handler: DataHandler;

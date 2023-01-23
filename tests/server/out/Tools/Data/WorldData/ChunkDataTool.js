@@ -1,8 +1,8 @@
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
-import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
-export class ChunkDataTool extends PositionBoundDataTool {
+import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
+export class ChunkDataTool extends EncodedPositionDataTool {
     tags = ChunkTags;
     loadIn() {
         const chunk = WorldRegister.chunk.get(this.location);

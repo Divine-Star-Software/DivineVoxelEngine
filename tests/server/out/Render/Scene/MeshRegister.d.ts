@@ -17,14 +17,14 @@ export declare const MeshRegister: {
     };
     column: {
         add(dimensionId: string, x: number, z: number, y?: number): MeshRegisterColumn;
-        remove(dimensionId: string, x: number, z: number, y?: number): boolean;
+        remove(dimensionId: string, x: number, z: number, y?: number): false | MeshRegisterColumn;
         _getColumnData(position: [x: number, y: number, z: number]): MeshRegisterColumn;
         get(dimensionId: string, x: number, z: number, y?: number): false | MeshRegisterColumn | undefined;
     };
     chunk: {
         add(dimensionId: string, x: number, y: number, z: number, mesh: BABYLON.Mesh, substance: VoxelTemplateSubstanceType): Map<VoxelTemplateSubstanceType, MeshRegisterChunk>;
         _getChunkData(mesh: BABYLON.Mesh): MeshRegisterChunk;
-        remove(dimensionId: string, x: number, y: number, z: number, substance: VoxelTemplateSubstanceType): boolean;
+        remove(dimensionId: string, x: number, y: number, z: number, substance: VoxelTemplateSubstanceType): false | BABYLON.Mesh;
         get(dimensionId: string, x: number, y: number, z: number, substance: VoxelTemplateSubstanceType): false | MeshRegisterChunk;
     };
 };

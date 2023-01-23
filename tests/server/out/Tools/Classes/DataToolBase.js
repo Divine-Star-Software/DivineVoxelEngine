@@ -47,7 +47,7 @@ export class DataToolBase extends LocationBoundTool {
         return this.loadIn();
     }
 }
-export class PositionBoundDataTool extends DataToolBase {
+export class EncodedPositionDataTool extends DataToolBase {
     position = { x: 0, y: 0, z: 0 };
     constructor() {
         super();

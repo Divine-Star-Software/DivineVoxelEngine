@@ -1,6 +1,6 @@
 import type { Column } from "Meta/Data/WorldData.types.js";
-import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
-export declare class ColumnDataTool extends PositionBoundDataTool {
+import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
+export declare class ColumnDataTool extends EncodedPositionDataTool {
     tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
     _column: Column;
     loadIn(): boolean;

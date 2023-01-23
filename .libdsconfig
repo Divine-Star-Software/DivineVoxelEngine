@@ -15,6 +15,13 @@
    "id": "dbt"
   },
   {
+   "dir": "D:/DSSoftware/DSLIBS/divineBinaryObject/src",
+   "fileExtensions": [
+    "ts"
+   ],
+   "id": "dbo"
+  },
+  {
    "dir": "D:/DSSoftware/DSLIBS/divineRNG/src",
    "fileExtensions": [
     "ts"
@@ -42,6 +49,12 @@
    "codeSection": "all",
    "keepComments": true
   },
+  {
+    "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/DivineBinaryObject",
+    "sourceID": "dbo",
+    "codeSection": "all",
+    "keepComments": true
+   },
   {
    "dir": "D:/DSSoftware/APPS/divinevoxelengine/src/Libs/divineRNG",
    "sourceID": "drng",

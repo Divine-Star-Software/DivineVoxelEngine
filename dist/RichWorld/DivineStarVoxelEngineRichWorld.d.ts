@@ -96,18 +96,28 @@ export declare const DVERW: {
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     richData: {
         _dimensions: import("../Meta/Data/RichWorldData.types.js").RichWorldDimensions;
-        initalData: Record<string, any>;
-        getRegion(x: number, y: number, z: number): false | import("../Meta/Data/RichWorldData.types.js").RichRegion;
-        getDimension(dimension: string): Record<string, import("../Meta/Data/RichWorldData.types.js").RichRegion>;
-        getChunk(x: number, y: number, z: number): false | import("../Meta/Data/RichWorldData.types.js").RichChunk;
-        addRegion(x: number, y: number, z: number): false | import("../Meta/Data/RichWorldData.types.js").RichRegion;
-        addChunk(x: number, y: number, z: number): import("../Meta/Data/RichWorldData.types.js").RichChunk;
-        setData(x: number, y: number, z: number, data: any): void;
-        getData<T_5>(x: number, y: number, z: number): false | T_5;
-        removeData(x: number, y: number, z: number): void;
-        registerInitalDataForVoxel(voxelId: string, data: any): void;
-        hasInitalData(voxelId: string): boolean;
-        setInitalData(voxelId: string, x: number, y: number, z: number): void;
+        dimensions: {
+            get(dimensionId: string): false | Map<string, import("../Meta/Data/RichWorldData.types.js").RichRegion>;
+            add(dimensionId: string): Map<any, any>;
+        };
+        region: {
+            _getRegionData(): import("../Meta/Data/RichWorldData.types.js").RichRegion;
+            add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../Meta/Data/RichWorldData.types.js").RichRegion;
+            get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/RichWorldData.types.js").RichRegion;
+            remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/RichWorldData.types.js").RichRegion;
+        };
+        column: {
+            _getColumnData(): import("../Meta/Data/RichWorldData.types.js").RichColumn;
+            add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../Meta/Data/RichWorldData.types.js").RichColumn;
+            get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/RichWorldData.types.js").RichColumn;
+            remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/RichWorldData.types.js").RichColumn;
+        };
+        chunk: {
+            _getChunkData(): import("../Meta/Data/RichWorldData.types.js").RichDataSchema;
+            add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<{}>;
+            get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<import("../Meta/Data/RichWorldData.types.js").RichDataSchema>;
+            remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<import("../Meta/Data/RichWorldData.types.js").RichDataSchema>;
+        };
     };
     voxelManager: {
         voxelData: Record<string, import("Meta/index.js").VoxelData>;
@@ -115,10 +125,6 @@ export declare const DVERW: {
         getVoxelData(id: string): import("Meta/index.js").VoxelData;
         registerVoxelData(data: import("Meta/index.js").VoxelData): void;
         onRegister(func: (data: import("Meta/index.js").VoxelData) => void): void;
-    };
-    takss: {
-        setVoxel: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/RichWorldData.types.js").SetRichVoxel>;
-        removeVoxel: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Data/CommonTypes.js").LocationData>;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

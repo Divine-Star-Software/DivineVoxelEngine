@@ -24,10 +24,6 @@ export const WorldRegister = {
  _chunkCache: <Map<string, ChunkData>>new Map(),
  _columnCache: <Map<string, Column>>new Map(),
 
- $INIT() {
-  this._dimensions.set("main", new Map());
- },
-
  getTotalLoadedChunks() {
   let chunks = 0;
   for (const [key, dim] of this._dimensions) {
@@ -263,7 +259,7 @@ export const WorldRegister = {
    if (!column) return;
 
    column.chunks.set(
-    WorldSpaces.chunk.getIndexXYZ(chunkPOS.x, chunkPOS.z, chunkPOS.y),
+    WorldSpaces.chunk.getIndexXYZ(chunkPOS.x, chunkPOS.y, chunkPOS.z),
     chunk
    );
    DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);

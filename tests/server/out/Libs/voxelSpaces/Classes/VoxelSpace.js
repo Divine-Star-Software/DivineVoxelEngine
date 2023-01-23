@@ -104,7 +104,7 @@ export class VoxelSpace {
     }
     setLocation(location) {
         this.setXYZ(location[1], location[2], location[3]);
-        return this._location;
+        return this;
     }
     setCubeBounds(bounds) {
         if (this._boundsSet)
@@ -134,7 +134,7 @@ export class VoxelSpace {
         return this.setXYZ(x, y, z).data.getPosition(this);
     }
     getPositionLocation(location) {
-        return this.setXYZ(location[1], location[2], location[3]).data.getPosition(this);
+        return this.setLocation(location).data.getPosition(this);
     }
     getIndex() {
         return this.data.getIndex(this);
@@ -143,7 +143,7 @@ export class VoxelSpace {
         return this.setXYZ(x, y, z).data.getIndex(this);
     }
     getIndexLocation(location) {
-        return this.setXYZ(location[1], location[2], location[3]).data.getIndex(this);
+        return this.setLocation(location).data.getIndex(this);
     }
     getPositionFromIndex(index) {
         return this.data.getPostionFromIndex(this, index);
@@ -155,6 +155,6 @@ export class VoxelSpace {
         return this.setXYZ(x, y, z).getKey();
     }
     getKeyLocation(location) {
-        return this.setXYZ(location[1], location[2], location[3]).getKey();
+        return this.setLocation(location).getKey();
     }
 }

@@ -22,6 +22,6 @@ export declare const RegionHeaderRegister: {
      * Returns -1 if region header is not loaded
      *
      */
-    isStored(location: LocationData): 0 | 1 | -1;
+    isStored(location: LocationData): 1 | -1 | 0;
 };
 export {};

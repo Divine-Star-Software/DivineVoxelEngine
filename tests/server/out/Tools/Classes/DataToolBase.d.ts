@@ -17,7 +17,7 @@ export declare abstract class DataToolBase extends LocationBoundTool {
     loadInAt(x: number, y: number, z: number): boolean;
     loadInAtLocation(location: LocationData): boolean;
 }
-export declare abstract class PositionBoundDataTool extends DataToolBase {
+export declare abstract class EncodedPositionDataTool extends DataToolBase {
     position: {
         x: number;
         y: number;

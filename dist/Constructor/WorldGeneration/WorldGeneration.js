@@ -26,7 +26,7 @@ export const WorldGeneration = {
                 onDone();
                 clearInterval(inte);
             }
-        }, 1);
+        }, 100);
     },
     getBrush() {
         const brush = GetConstructorBrush();

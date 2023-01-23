@@ -22,7 +22,7 @@ export const DataLoaderTasks = {
         await DataHanlderWrapper.loadColumn(data);
         const inte = setInterval(() => {
             if (DVEDL.data.worldRegister.column.get(data)) {
-                onDone ? onDone() : false;
+                onDone ? onDone(true) : false;
                 clearInterval(inte);
             }
         }, 1);

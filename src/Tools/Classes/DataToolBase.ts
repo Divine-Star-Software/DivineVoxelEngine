@@ -61,11 +61,13 @@ export abstract class DataToolBase extends LocationBoundTool {
  }
 }
 
-export abstract class PositionBoundDataTool extends DataToolBase {
+export abstract class EncodedPositionDataTool extends DataToolBase {
  position = { x: 0, y: 0, z: 0 };
+
  constructor() {
   super();
  }
+
  getPositionData() {
   this.position.x = this.getTagValue("#dve_p_x");
   this.position.y = this.getTagValue("#dve_p_y");
@@ -86,6 +88,7 @@ export abstract class PositionBoundDataTool extends DataToolBase {
    DimensionsRegister.getDimensionNumericId(dimensionId)
   );
  }
+
  getDimensionId() {
   return DimensionsRegister.getDimensionStringId(
    this.getTagValue("#dve_dimension_id")
@@ -96,4 +99,5 @@ export abstract class PositionBoundDataTool extends DataToolBase {
   const pos = this.getPositionData();
   return [this.getDimensionId(), pos.x, pos.y, pos.z];
  }
+
 }

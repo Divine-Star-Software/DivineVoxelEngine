@@ -1,4 +1,4 @@
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import { LoadRegionHeadertasks, LoadWorldDataTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const WorldTasks: {
     addChunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;

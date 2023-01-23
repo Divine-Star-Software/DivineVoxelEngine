@@ -93,15 +93,10 @@ export const MeshRegister = {
    const column = region.columns.get(index);
    if (!column) return false;
    region.columns.delete(index);
-   column.chunks.forEach((chunk) => {
-    chunk.forEach((chunkMeshes) => {
-     chunkMeshes.mesh.dispose();
-    });
-   });
    if (region.columns.size == 0) {
     MeshRegister.region.remove(dimensionId, x, y, z);
    }
-   return true;
+   return column;
   },
   _getColumnData(
    position: [x: number, y: number, z: number]
@@ -158,12 +153,11 @@ export const MeshRegister = {
    if (!chunk) return false;
    const chunkMesh = chunk.get(substance);
    if (!chunkMesh) return false;
-   chunkMesh.mesh.dispose();
    chunk.delete(substance);
    if (chunk.size == 0) {
     column.chunks.delete(index);
    }
-   return true;
+   return chunkMesh.mesh;
   },
   get(
    dimensionId: string,

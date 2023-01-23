@@ -176,13 +176,13 @@ uniform vec3 worldOrigin;
  if(vDistance <= 30.) {
   mipMapLevel = 0.;
  }
- if(vDistance > 30. &&  vDistance <= 40.) {
+ if(vDistance > 50. &&  vDistance <= 70.) {
   mipMapLevel = 1.;
  }
- if(vDistance > 40. && vDistance < 50.) {
+ if(vDistance > 70. && vDistance < 90.) {
    mipMapLevel = 2.;
  }
- if(vDistance >= 50.) {
+ if(vDistance >= 90.) {
   mipMapLevel = 3.;
   }
   mat4 a;

@@ -5,6 +5,7 @@ import { DVEMaterial } from "../Materials/DVEMaterial.js";
 export declare class DVEMesh {
     name: string;
     dveMat: DVEMaterial;
+    meshes: BABYLON.Mesh[];
     pickable: boolean;
     checkCollisions: boolean;
     seralize: boolean;
@@ -13,5 +14,8 @@ export declare class DVEMesh {
     constructor(name: string, dveMat: DVEMaterial);
     createTemplateMesh(scene: BABYLON.Scene): BABYLON.Mesh;
     syncSettings(settings: EngineSettingsData): void;
+    _setEmptyData(mesh: BABYLON.Mesh): void;
+    _clearCached(mesh: BABYLON.Mesh): void;
+    removeMesh(mesh: BABYLON.Mesh): void;
     setMeshData(mesh: BABYLON.Mesh, chunkX: number, chunkY: number, chunkZ: number, data: ChunkMeshData): Promise<BABYLON.Mesh>;
 }

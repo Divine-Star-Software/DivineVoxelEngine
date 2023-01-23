@@ -10,14 +10,19 @@ export class DataLoaderTool extends LocationBoundTool {
         const comm = ThreadComm.getComm("data-loader");
         return Boolean(comm);
     }
+    _enabled = true;
     dataComm;
     constructor() {
         super();
         const comm = ThreadComm.getComm("data-loader");
         if (!comm) {
-            throw new Error("Data Loader comm must be set.");
+            this._enabled = false;
+            console.error("Data Loader comm must be set.");
         }
         this.dataComm = comm;
+    }
+    isEnabled() {
+        return this._enabled;
     }
     saveRegion(onDone) {
         const location = this.getLocation();
@@ -145,7 +150,7 @@ export class DataLoaderTool extends LocationBoundTool {
             });
         });
     }
-    unLoadAllOutsideRadius(radius, onDone) {
+    unLoadAllOutsideRadius(radius, run = (columntool) => true, onDone) {
         const [dimension, sx, sy, sz] = this.location;
         const regions = WorldRegister.dimensions.get(dimension);
         if (!regions)
@@ -157,6 +162,8 @@ export class DataLoaderTool extends LocationBoundTool {
                 if (DataLoaderTool.columnDataTool.isPersistent())
                     continue;
                 const [dimension, cx, cy, cz] = DataLoaderTool.columnDataTool.getLocationData();
+                if (!run(DataLoaderTool.columnDataTool))
+                    continue;
                 const d = Distance3D(sx, sy, sz, cx, cy, cz);
                 if (d > radius) {
                     totalColumns++;

@@ -492,13 +492,15 @@ export declare const Analyzer: {
             worldGen: {
                 worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
                 register: {
+                    MAX_ATTEMPTS: number;
                     _requests: Map<string, {
+                        attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, x: number, y: number, z: number, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -658,14 +660,14 @@ export declare const Analyzer: {
                             z: number;
                         };
                         setBounds(x: number, y: number, z: number): void;
-                        getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
+                        getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
                         getIndex(x: number, y: number, z: number): number;
                         getXYZ(index: number): import("../../Meta/Util.types.js").Vector3;
                     };
@@ -832,7 +834,6 @@ export declare const Analyzer: {
                     _cacheOn: boolean;
                     _chunkCache: Map<string, import("../../Meta/Data/WorldData.types.js").ChunkData>;
                     _columnCache: Map<string, import("../../Meta/Data/WorldData.types.js").Column>;
-                    $INIT(): void;
                     getTotalLoadedChunks(): number;
                     cache: {
                         enable(): void;
@@ -984,7 +985,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
                 };
             };
             itemManager: {
@@ -1573,13 +1574,15 @@ export declare const Analyzer: {
             worldGen: {
                 worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
                 register: {
+                    MAX_ATTEMPTS: number;
                     _requests: Map<string, {
+                        attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, x: number, y: number, z: number, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -1739,14 +1742,14 @@ export declare const Analyzer: {
                             z: number;
                         };
                         setBounds(x: number, y: number, z: number): void;
-                        getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
+                        getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
                         getIndex(x: number, y: number, z: number): number;
                         getXYZ(index: number): import("../../Meta/Util.types.js").Vector3;
                     };
@@ -1913,7 +1916,6 @@ export declare const Analyzer: {
                     _cacheOn: boolean;
                     _chunkCache: Map<string, import("../../Meta/Data/WorldData.types.js").ChunkData>;
                     _columnCache: Map<string, import("../../Meta/Data/WorldData.types.js").Column>;
-                    $INIT(): void;
                     getTotalLoadedChunks(): number;
                     cache: {
                         enable(): void;
@@ -2065,7 +2067,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
                 };
             };
             itemManager: {
@@ -2654,13 +2656,15 @@ export declare const Analyzer: {
             worldGen: {
                 worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
                 register: {
+                    MAX_ATTEMPTS: number;
                     _requests: Map<string, {
+                        attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, x: number, y: number, z: number, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -2820,14 +2824,14 @@ export declare const Analyzer: {
                             z: number;
                         };
                         setBounds(x: number, y: number, z: number): void;
-                        getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-                        setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-                        deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
+                        getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
+                        getValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        getValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
+                        setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
+                        setValueUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        setValueUseObjSafe(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
+                        deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
+                        deleteUseObj(position: import("../../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
                         getIndex(x: number, y: number, z: number): number;
                         getXYZ(index: number): import("../../Meta/Util.types.js").Vector3;
                     };
@@ -2994,7 +2998,6 @@ export declare const Analyzer: {
                     _cacheOn: boolean;
                     _chunkCache: Map<string, import("../../Meta/Data/WorldData.types.js").ChunkData>;
                     _columnCache: Map<string, import("../../Meta/Data/WorldData.types.js").Column>;
-                    $INIT(): void;
                     getTotalLoadedChunks(): number;
                     cache: {
                         enable(): void;
@@ -3146,7 +3149,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
                 };
             };
             itemManager: {

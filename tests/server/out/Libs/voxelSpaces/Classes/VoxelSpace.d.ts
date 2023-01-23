@@ -43,7 +43,7 @@ export declare class VoxelSpace {
     setXZ(x: number, z: number): this;
     getLocation(): LocationData;
     getLocationXYZ(x: number, y: number, z: number): LocationData;
-    setLocation(location: LocationData): LocationData;
+    setLocation(location: LocationData): this;
     setCubeBounds(bounds: Vector3): this | undefined;
     setBounds(bounds: Vector3): this | undefined;
     getPosition(): VSVec3;

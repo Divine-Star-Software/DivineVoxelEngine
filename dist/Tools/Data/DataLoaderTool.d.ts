@@ -5,8 +5,10 @@ import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export declare class DataLoaderTool extends LocationBoundTool {
     static columnDataTool: ColumnDataTool;
     static isEnabled(): boolean;
+    _enabled: boolean;
     dataComm: CommBase;
     constructor();
+    isEnabled(): boolean;
     saveRegion(onDone?: Function): void;
     saveRegionAsync(): Promise<unknown>;
     loadRegion(onDone?: Function): void;
@@ -20,11 +22,11 @@ export declare class DataLoaderTool extends LocationBoundTool {
     unLoadColumn(onDone: (done: boolean) => void): void;
     _runTask(id: string, location: LocationData, onDone?: Function): void;
     columnExists(onDone?: (exists: boolean) => void): void;
-    loadRegionHeader(onDone: (success: boolean) => void): void;
+    loadRegionHeader(onDone?: (success: boolean) => void): void;
     loadRegionHeaderAsync(): Promise<unknown>;
     columnExistsAsync(): Promise<boolean>;
     columnTimestamp(onDone?: (timestamp: number) => void): void;
     columnTimestampAsync(): Promise<number>;
-    unLoadAllOutsideRadius(radius: number, onDone?: Function): void;
+    unLoadAllOutsideRadius(radius: number, run?: (column: ColumnDataTool) => boolean, onDone?: Function): void;
     getAllUnStoredColumns(run: (dimension: string, x: number, y: number, z: number) => void): void;
 }

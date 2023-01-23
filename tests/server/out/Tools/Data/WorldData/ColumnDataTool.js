@@ -1,9 +1,9 @@
 //objects
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
-import { PositionBoundDataTool } from "../../Classes/DataToolBase.js";
+import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
-export class ColumnDataTool extends PositionBoundDataTool {
+export class ColumnDataTool extends EncodedPositionDataTool {
     tags = ColumnTags;
     _column = {};
     loadIn() {

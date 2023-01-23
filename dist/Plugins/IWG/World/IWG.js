@@ -75,7 +75,7 @@ export class IWG {
     constructor(data) {
         this.data = data;
         if (!data.maxDistance)
-            data.maxDistance = data.generateDistance;
+            data.maxDistance = data.generateDistance + 100;
         if (!data.anaylzerDistance)
             data.anaylzerDistance = data.renderDistance;
         if (!DataLoaderTool.isEnabled()) {
@@ -99,31 +99,29 @@ export class IWG {
             this._inProgressMap.set(getKey(x, y, z), true);
             this.builder.setDimension(this.dimension).setXYZ(x, y, z).fillColumn();
             this.tasks.generate.deferred.run(x, y, z, [], () => {
-                if (this.columnTool.loadInAt(x, y, z)) {
-                    this._inProgressMap.delete(getKey(x, y, z));
-                    this._generateTasks.substact();
-                    this.columnTool.setTagValue("#dve_is_world_gen_done", 1);
-                }
+                this._inProgressMap.delete(getKey(x, y, z));
+                this._generateTasks.substact();
+                if (this.columnTool.loadInAt(x, y, z))
+                    return this.columnTool.setTagValue("#dve_is_world_gen_done", 1);
+                console.error(`${x} ${y} ${z} could not be loaded after generted`);
             });
         }, this);
         this._worldSunTasks = new IWGTasks((x, y, z) => {
             this._inProgressMap.set(getKey(x, y, z), true);
             this.tasks.light.worldSun.deferred.run(x, y, z, () => {
-                if (this.columnTool.loadInAt(x, y, z)) {
-                    this._inProgressMap.delete(getKey(x, y, z));
-                    this._worldSunTasks.substact();
-                    this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
-                }
+                this._inProgressMap.delete(getKey(x, y, z));
+                this._worldSunTasks.substact();
+                if (this.columnTool.loadInAt(x, y, z))
+                    return this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
             });
         }, this);
         this._propagationTasks = new IWGTasks((x, y, z) => {
             this._inProgressMap.set(getKey(x, y, z), true);
             this.tasks.anaylzer.propagation.run(x, y, z, () => {
-                if (this.columnTool.loadInAt(x, y, z)) {
-                    this._inProgressMap.delete(getKey(x, y, z));
-                    this._propagationTasks.substact();
-                    this.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
-                }
+                this._inProgressMap.delete(getKey(x, y, z));
+                this._propagationTasks.substact();
+                if (this.columnTool.loadInAt(x, y, z))
+                    return this.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
             });
         }, this);
         this._buildTasks = new IWGTasks((x, y, z) => {
@@ -218,10 +216,15 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
                     continue;
                 this._activeColumns.delete(key);
             }
-            this.dataLoader
+            /*
+               this.dataLoader
                 .setDimension(this.dimension)
                 .setXYZ(worldColumnPOS.x, worldColumnPOS.y, worldColumnPOS.z)
-                .unLoadAllOutsideRadius(this.data.maxDistance);
+                .unLoadAllOutsideRadius(this.data.maxDistance!, (column) => {
+                 const key = WorldSpaces.column.getKeyLocation(column.getLocationData());
+                 if (this._inProgressMap.has(key)) return false;
+                 return true;
+                }); */
         }
         this._searchQueue.push([
             worldColumnPOS.x,

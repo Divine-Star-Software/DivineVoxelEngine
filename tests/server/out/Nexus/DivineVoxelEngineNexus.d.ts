@@ -173,7 +173,6 @@ export declare const DVEN: {
             _cacheOn: boolean;
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
-            $INIT(): void;
             getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
@@ -325,7 +324,7 @@ export declare const DVEN: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
         };
     };
     worldData: {

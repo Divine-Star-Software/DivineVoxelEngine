@@ -14,15 +14,21 @@ export class DataLoaderTool extends LocationBoundTool {
   return Boolean(comm);
  }
 
+ _enabled = true;
  dataComm: CommBase;
 
  constructor() {
   super();
   const comm = ThreadComm.getComm("data-loader");
   if (!comm) {
-   throw new Error("Data Loader comm must be set.");
+   this._enabled = false;
+   console.error("Data Loader comm must be set.");
   }
   this.dataComm = comm;
+ }
+
+ isEnabled() {
+  return this._enabled;
  }
 
  saveRegion(onDone?: Function) {
@@ -168,7 +174,7 @@ export class DataLoaderTool extends LocationBoundTool {
   onDone ? onDone(exists >= 1 ? true : false) : false;
  }
 
- loadRegionHeader(onDone: (success: boolean) => void) {
+ loadRegionHeader(onDone?: (success: boolean) => void) {
   const location = this.getLocation();
   this.dataComm.runPromiseTasks(
    "load-region-header",
@@ -216,7 +222,11 @@ export class DataLoaderTool extends LocationBoundTool {
   });
  }
 
- unLoadAllOutsideRadius(radius: number, onDone?: Function) {
+ unLoadAllOutsideRadius(
+  radius: number,
+  run: (column: ColumnDataTool) => boolean = (columntool) => true,
+  onDone?: Function
+ ) {
   const [dimension, sx, sy, sz] = this.location;
   const regions = WorldRegister.dimensions.get(dimension);
   if (!regions) return;
@@ -227,6 +237,7 @@ export class DataLoaderTool extends LocationBoundTool {
     if (DataLoaderTool.columnDataTool.isPersistent()) continue;
     const [dimension, cx, cy, cz] =
      DataLoaderTool.columnDataTool.getLocationData();
+    if (!run(DataLoaderTool.columnDataTool)) continue;
     const d = Distance3D(sx, sy, sz, cx, cy, cz);
     if (d > radius) {
      totalColumns++;

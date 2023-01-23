@@ -29,7 +29,10 @@ export const MeshManager = {
         const chunkX = data[2];
         const chunkY = data[3];
         const chunkZ = data[4];
-        MeshRegister.chunk.remove(dimension, chunkX, chunkY, chunkZ, substance);
+        const mesh = MeshRegister.chunk.remove(dimension, chunkX, chunkY, chunkZ, substance);
+        if (!mesh)
+            return false;
+        this.meshMakers[substance].removeMesh(mesh);
     },
     updateChunk(data) {
         if (!this.scene)
@@ -43,7 +46,10 @@ export const MeshManager = {
             const substance = chunkData[0];
             const remove = !chunkData[1];
             if (remove) {
-                MeshRegister.chunk.remove(dimension, chunkX, chunkY, chunkZ, substance);
+                const mesh = MeshRegister.chunk.remove(dimension, chunkX, chunkY, chunkZ, substance);
+                if (mesh) {
+                    this.meshMakers[substance].removeMesh(mesh);
+                }
                 continue;
             }
             let chunk = MeshRegister.chunk.get(dimension, chunkX, chunkY, chunkZ, substance);
@@ -64,7 +70,14 @@ export const MeshManager = {
         const chunkX = data[1];
         const chunkY = data[2];
         const chunkZ = data[3];
-        MeshRegister.column.remove(dimension, chunkX, chunkZ, chunkY);
+        const column = MeshRegister.column.remove(dimension, chunkX, chunkZ, chunkY);
+        if (!column)
+            return false;
+        for (const [key, chunk] of column.chunks) {
+            for (const [substance, mesh] of chunk) {
+                this.meshMakers[substance].removeMesh(mesh.mesh);
+            }
+        }
     },
     handleItemUpdate(x, y, z, data) {
         /*   const meshData: ItemMeshSetData = {
