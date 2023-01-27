@@ -30,23 +30,23 @@ export const MeshRegister = {
         },
     },
     region: {
-        add(dimensionId, x, y, z) {
-            let dimension = MeshRegister.dimensions.get(dimensionId);
+        add(location) {
+            let dimension = MeshRegister.dimensions.get(location[0]);
             if (!dimension) {
-                dimension = MeshRegister.dimensions.add(dimensionId);
+                dimension = MeshRegister.dimensions.add(location[0]);
             }
             const region = this._getRegionData();
-            dimension.set(WorldSpaces.region.getKeyXYZ(x, y, z), region);
+            dimension.set(WorldSpaces.region.getKeyLocation(location), region);
             return region;
         },
-        remove(dimensionId, x, z, y = 0) {
-            let dimension = MeshRegister.dimensions.get(dimensionId);
-            if (!dimension)
-                return false;
-            let region = MeshRegister.region.get(dimensionId, x, y, z);
+        remove(location) {
+            const region = MeshRegister.region.get(location);
             if (!region)
                 return false;
-            dimension.delete(WorldSpaces.region.getKeyXYZ(x, y, z));
+            const dimension = MeshRegister.dimensions.get(location[0]);
+            if (!dimension)
+                return false;
+            dimension.delete(WorldSpaces.region.getKeyLocation(location));
             region.columns.forEach((column) => {
                 column.chunks.forEach((chunk) => {
                     chunk.forEach((chunkMeshes) => {
@@ -61,60 +61,60 @@ export const MeshRegister = {
                 columns: new Map(),
             };
         },
-        get(dimensionId, x, y, z) {
-            const dimension = MeshRegister.dimensions.get(dimensionId);
+        get(location) {
+            const dimension = MeshRegister.dimensions.get(location[0]);
             if (!dimension)
                 return false;
-            const region = dimension.get(WorldSpaces.region.getKeyXYZ(x, y, z));
+            const region = dimension.get(WorldSpaces.region.getKeyLocation(location));
             if (!region)
                 return false;
             return region;
         },
     },
     column: {
-        add(dimensionId, x, z, y = 0) {
-            let region = MeshRegister.region.get(dimensionId, x, y, z);
+        add(location) {
+            let region = MeshRegister.region.get(location);
             if (!region) {
-                region = MeshRegister.region.add(dimensionId, x, y, z);
+                region = MeshRegister.region.add(location);
             }
-            const column = this._getColumnData([x, y, z]);
-            region.columns.set(WorldSpaces.column.getIndexXYZ(x, y, z), column);
+            const column = this._getColumnData(location);
+            region.columns.set(WorldSpaces.column.getIndexLocation(location), column);
             return column;
         },
-        remove(dimensionId, x, z, y = 0) {
-            let region = MeshRegister.region.get(dimensionId, x, y, z);
+        remove(location) {
+            let region = MeshRegister.region.get(location);
             if (!region)
                 return false;
-            const index = WorldSpaces.column.getIndexXYZ(x, y, z);
+            const index = WorldSpaces.column.getIndexLocation(location);
             const column = region.columns.get(index);
             if (!column)
                 return false;
             region.columns.delete(index);
             if (region.columns.size == 0) {
-                MeshRegister.region.remove(dimensionId, x, y, z);
+                MeshRegister.region.remove(location);
             }
             return column;
         },
-        _getColumnData(position) {
+        _getColumnData(location) {
             return {
-                position: position,
+                location: location,
                 chunks: new Map(),
             };
         },
-        get(dimensionId, x, z, y = 0) {
-            const region = MeshRegister.region.get(dimensionId, x, y, z);
+        get(location) {
+            const region = MeshRegister.region.get(location);
             if (!region)
                 return false;
-            return region.columns.get(WorldSpaces.column.getIndexXYZ(x, y, z));
+            return region.columns.get(WorldSpaces.column.getIndexLocation(location));
         },
     },
     chunk: {
-        add(dimensionId, x, y, z, mesh, substance) {
-            let column = MeshRegister.column.get(dimensionId, x, z, y);
+        add(location, mesh, substance) {
+            let column = MeshRegister.column.get(location);
             if (!column) {
-                column = MeshRegister.column.add(dimensionId, x, z, y);
+                column = MeshRegister.column.add(location);
             }
-            const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
+            const index = WorldSpaces.chunk.getIndexLocation(location);
             let chunk = column.chunks.get(index);
             if (!chunk) {
                 chunk = new Map();
@@ -128,11 +128,11 @@ export const MeshRegister = {
                 mesh: mesh,
             };
         },
-        remove(dimensionId, x, y, z, substance) {
-            const column = MeshRegister.column.get(dimensionId, x, z, y);
+        remove(location, substance) {
+            const column = MeshRegister.column.get(location);
             if (!column)
                 return false;
-            const index = WorldSpaces.chunk.getIndexXYZ(x, y, z);
+            const index = WorldSpaces.chunk.getIndexLocation(location);
             const chunk = column.chunks.get(index);
             if (!chunk)
                 return false;
@@ -145,11 +145,11 @@ export const MeshRegister = {
             }
             return chunkMesh.mesh;
         },
-        get(dimensionId, x, y, z, substance) {
-            const column = MeshRegister.column.get(dimensionId, x, z, y);
+        get(location, substance) {
+            const column = MeshRegister.column.get(location);
             if (!column)
                 return false;
-            const chunk = column.chunks.get(WorldSpaces.chunk.getIndexXYZ(x, y, z));
+            const chunk = column.chunks.get(WorldSpaces.chunk.getIndexLocation(location));
             if (!chunk)
                 return false;
             const chunkMesh = chunk.get(substance);

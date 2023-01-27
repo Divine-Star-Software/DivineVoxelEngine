@@ -3,7 +3,6 @@ import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 //objects
 import { Util } from "../Global/Util.helper.js";
-import { RenderedEntitesManager } from "./RenderedEntites/RenderedEntites.manager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { MeshManager } from "./Scene/MeshManager.js";
@@ -22,6 +21,7 @@ import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { WorldSpaces } from "../Data/World/WorldSpaces.js";
+import { SceneTool } from "./Tools/SceneTool.js";
 
 export const DVER = {
  UTIL: Util,
@@ -35,16 +35,15 @@ export const DVER = {
  constructorCommManager: ConstructorCommManager,
 
  settings: EngineSettings,
- renderManager: RenderManager,
+ render: RenderManager,
  meshManager: MeshManager,
 
  data: {
   worldBounds: WorldBounds,
-  spaces : WorldSpaces
+  spaces: WorldSpaces,
  },
 
  textureManager: TextureManager,
- renderedEntites: RenderedEntitesManager,
 
  tasks: RenderTasks,
 
@@ -52,7 +51,7 @@ export const DVER = {
   const data = this.settings.settings;
   if (data.textures) {
    if (data.textures.width && data.textures.height) {
-    this.renderManager.textureCreator.defineTextureDimensions(
+    this.render.textureCreator.defineTextureDimensions(
      data.textures.width,
      data.textures.height
     );
@@ -64,7 +63,7 @@ export const DVER = {
   this.settings.syncSettings(data);
   const copy = this.settings.getSettingsCopy();
 
-  this.renderManager.syncSettings(copy);
+  this.render.syncSettings(copy);
   this.worldComm.sendMessage("sync-settings", [copy]);
   if (this.nexusComm.port) {
    this.nexusComm.sendMessage("sync-settings", [copy]);
@@ -92,9 +91,6 @@ export const DVER = {
 
  async $SCENEINIT(data: { scene: BABYLON.Scene }) {
   await BuildInitalMeshes(this, data.scene);
-  if (this.settings.settings.nexus?.enabled) {
-   this.renderedEntites.setScene(data.scene);
-  }
   this.worldComm.sendMessage("start", []);
  },
 
@@ -103,6 +99,13 @@ export const DVER = {
    type: "module",
   });
  },
+
+
+
+ getSceneTool() {
+
+    return new SceneTool();
+ }
 };
 
 export type DivineVoxelEngineRender = typeof DVER;

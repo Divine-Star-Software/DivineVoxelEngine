@@ -8,19 +8,19 @@ export const ChunkMesher = {
         "liquid",
         "magma",
     ],
-    buildChunkMesh(dimension, chunkX, chunkY, chunkZ, template, LOD = 1) {
+    buildChunkMesh(location, template, LOD = 1) {
         let i = this.voxelBuildOrder.length;
-        const chunks = [dimension, chunkX, chunkY, chunkZ, []];
+        const chunks = [location, []];
         const trasnfers = [];
         while (i--) {
             const type = this.voxelBuildOrder[i];
             const baseTemplate = template[type];
             if (baseTemplate.positionTemplate.length == 0) {
-                chunks[4].push([type, false]);
+                chunks[1].push([type, false]);
                 continue;
             }
-            const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD, chunkX, chunkY, chunkZ);
-            chunks[4].push([
+            const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD, location);
+            chunks[1].push([
                 type,
                 //@ts-ignore
                 ...meshData[0],

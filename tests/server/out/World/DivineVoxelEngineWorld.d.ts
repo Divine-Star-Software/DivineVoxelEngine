@@ -136,31 +136,9 @@ export declare const DVEW: {
             substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
             materialMap: Record<number, string>;
             colliderMap: Record<number, string>;
-            voxelData: {
-                substance: import("../Meta/index.js").VoxelSubstanceType;
-                shapeId: number;
-                hardness: number;
-                material: string;
-                checkCollision: number;
-                colliderId: string;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            getVoxelData(id: number): {
-                substance: import("../Meta/index.js").VoxelSubstanceType;
-                shapeId: number;
-                hardness: number;
-                material: string;
-                checkCollision: number;
-                colliderId: string;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
             getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
             getMaterial(id: number): string;
             getCollider(id: number): string;
@@ -196,7 +174,6 @@ export declare const DVEW: {
             _cacheOn: boolean;
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
-            getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
                 disable(): void;
@@ -347,7 +324,7 @@ export declare const DVEW: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
+            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
         };
     };
     dataSync: {
@@ -361,14 +338,10 @@ export declare const DVEW: {
             setShapeMap(newShapeMap: Record<string, number>): void;
             palette: {
                 _count: number;
-                _palette: Record<number, string>;
+                _palette: import("../Meta/Data/WorldData.types.js").VoxelPalette;
                 _map: Record<string, number>;
                 registerVoxel(voxel: import("../Meta/index.js").VoxelData): void;
-                getVoxelBaseId(id: number): number;
-                getVoxelStateId(voxelId: string, voxelState: number): number;
-                getVoxelStringId(voxelId: number): string;
-                getVoxelState(voxelId: number): number;
-                get(): Record<number, string>;
+                get(): import("../Meta/Data/WorldData.types.js").VoxelPalette;
                 getMap(): Record<string, number>;
             };
         };
@@ -483,14 +456,14 @@ export declare const DVEW: {
                 z: number;
             };
             setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: Uint32Array | number[]): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): number;
-            setValue(x: number, y: number, z: number, array: Uint32Array | number[], value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[], value: number): void;
-            deleteValue(x: number, y: number, z: number, array: Uint32Array | number[]): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: Uint32Array | number[]): void;
+            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
+            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
+            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
+            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
+            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
+            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
+            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
             getIndex(x: number, y: number, z: number): number;
             getXYZ(index: number): import("../Meta/Util.types.js").Vector3;
         };

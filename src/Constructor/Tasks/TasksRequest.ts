@@ -24,7 +24,7 @@ class Request<T, Q> {
  comm: CommBase;
  priority: Priorities = 2;
  LOD = 0;
- syncQueue: [chunkX: number, chunkY: number, chunkZ: number][] = [];
+ syncQueue: LocationData[] = [];
  buildMode: RebuildModes = "sync";
  constructor(
   public tasksType: string,
@@ -98,7 +98,7 @@ class Request<T, Q> {
    return true;
   }
   if (this.buildMode == "sync") {
-   this.syncQueue.push([chunkPOS.x, chunkPOS.y, chunkPOS.z]);
+   this.syncQueue.push([this.origin[0], chunkPOS.x, chunkPOS.y, chunkPOS.z]);
   }
   return true;
  }
@@ -118,10 +118,7 @@ class Request<T, Q> {
   while (this.syncQueue.length !== 0) {
    const node = this.syncQueue.shift();
    if (!node) break;
-   const x = node[0];
-   const y = node[1];
-   const z = node[2];
-   Builder.buildChunk(this.origin[0], x, y, z);
+   Builder.buildChunk(node);
   }
   this.rebuildQueMap.clear();
   return this;

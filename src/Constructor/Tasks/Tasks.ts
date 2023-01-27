@@ -38,14 +38,7 @@ export const Tasks = {
    ),
    async run(data: BuildTasks) {
     const location = data[0];
-    const chunkPOS = WorldSpaces.chunk.getPositionLocation(location);
-    await DVEC.builder.buildChunk(
-     location[0],
-     chunkPOS.x,
-     chunkPOS.y,
-     chunkPOS.z,
-     data[1]
-    );
+    await DVEC.builder.buildChunk(location, data[1]);
    },
   },
   column: ThreadComm.registerTasks<BuildTasks>(
@@ -140,14 +133,14 @@ export const Tasks = {
    },
    "deffered"
   ),
-  update :  ThreadComm.registerTasks<UpdateTasksO>(
-    ConstructorTasks.analyzerUpdate,
-    async (data, onDone) => {
-     await DVEC.analyzer.runUpdate(data);
-     if (onDone) onDone();
-    },
-    "deffered"
-   ),
+  update: ThreadComm.registerTasks<UpdateTasksO>(
+   ConstructorTasks.analyzerUpdate,
+   async (data, onDone) => {
+    await DVEC.analyzer.runUpdate(data);
+    if (onDone) onDone();
+   },
+   "deffered"
+  ),
  },
  flow: {
   update: ThreadComm.registerTasks<UpdateTasksO>(

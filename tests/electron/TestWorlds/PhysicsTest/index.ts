@@ -76,12 +76,12 @@ const init = async () => {
  const camera = SetUpDefaultCamera(scene, canvas);
  cameras.freeCam = camera;
  const skybox = SetUpDefaultSkybox(scene);
- skybox.material = DVER.renderManager.createSkyBoxMaterial(scene);
+ skybox.material = DVER.render.createSkyBoxMaterial(scene);
 
 
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+ DVER.render.setBaseLevel(1);
 
 
  GetRenderPlayer(true,scene,canvas,DVER);

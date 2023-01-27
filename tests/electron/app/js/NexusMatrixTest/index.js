@@ -24,7 +24,7 @@ await DVER.$INIT({
         autoSunLight: false,
     },
 });
-DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
+DVER.render.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
 const init = async () => {
     const canvas = SetUpCanvas();
     const engine = SetUpEngine(canvas);
@@ -34,7 +34,7 @@ const init = async () => {
     //need this for meshes that are not part of the engnie
     const light = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(0);
+    DVER.render.setBaseLevel(0);
     runRenderLoop(engine, scene, camera, DVER);
 };
 RunInit(init);

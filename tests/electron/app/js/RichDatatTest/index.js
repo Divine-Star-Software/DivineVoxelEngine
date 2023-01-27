@@ -33,7 +33,7 @@ const init = async () => {
     SetUpDefaultSkybox(scene);
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(1);
+    DVER.render.setBaseLevel(1);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     const mat = new BABYLON.StandardMaterial("");
     mat.diffuseColor = new BABYLON.Color3(1, 0, 1);

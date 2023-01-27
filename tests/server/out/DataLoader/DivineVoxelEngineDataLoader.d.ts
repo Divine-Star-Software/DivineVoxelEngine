@@ -115,31 +115,9 @@ export declare const DVEDL: {
             substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
             materialMap: Record<number, string>;
             colliderMap: Record<number, string>;
-            voxelData: {
-                substance: import("Meta/index.js").VoxelSubstanceType;
-                shapeId: number;
-                hardness: number;
-                material: string;
-                checkCollision: number;
-                colliderId: string;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            getVoxelData(id: number): {
-                substance: import("Meta/index.js").VoxelSubstanceType;
-                shapeId: number;
-                hardness: number;
-                material: string;
-                checkCollision: number;
-                colliderId: string;
-                lightSource: number;
-                lightValue: number;
-                isRich: number;
-            };
             getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
             getMaterial(id: number): string;
             getCollider(id: number): string;
@@ -175,7 +153,6 @@ export declare const DVEDL: {
             _cacheOn: boolean;
             _chunkCache: Map<string, import("../Meta/Data/WorldData.types.js").ChunkData>;
             _columnCache: Map<string, import("../Meta/Data/WorldData.types.js").Column>;
-            getTotalLoadedChunks(): number;
             cache: {
                 enable(): void;
                 disable(): void;
@@ -326,7 +303,7 @@ export declare const DVEDL: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 1 | -1 | 0;
+            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
         };
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
@@ -348,7 +325,7 @@ export declare const DVEDL: {
         chunks: import("../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
         serializeRegion(location: import("../Meta/Data/CommonTypes.js").LocationData): false | [location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("../Meta/Data/CommonTypes.js").LocationData): false | Uint8Array;
-        deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
+        deSerializeRegion(regionBuffers: SharedArrayBuffer[] | ArrayBuffer[]): void;
         deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];

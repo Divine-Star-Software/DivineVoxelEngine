@@ -5,7 +5,6 @@ export declare const WorldRegister: {
     _cacheOn: boolean;
     _chunkCache: Map<string, ChunkData>;
     _columnCache: Map<string, Column>;
-    getTotalLoadedChunks(): number;
     cache: {
         enable(): void;
         disable(): void;

@@ -54,7 +54,7 @@ const init = async () => {
  scene.collisionsEnabled = false;
  const box = SetUpDefaultSkybox(scene);
  box.checkCollisions = false;
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }
@@ -69,8 +69,8 @@ const init = async () => {
   scene
  );
 
- DVER.renderManager.setBaseLevel(0.8);
- DVER.renderManager.setSunLevel(0.8);
+ DVER.render.setBaseLevel(0.8);
+ DVER.render.setSunLevel(0.8);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

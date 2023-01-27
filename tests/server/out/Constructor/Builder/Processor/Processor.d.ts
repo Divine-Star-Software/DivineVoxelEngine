@@ -1,10 +1,11 @@
 import type { DirectionNames, EngineSettingsData, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
 import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
-import type { VoxelConstructor, VoxelProcessData } from "Meta/Constructor/Voxel.types.js";
+import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
+import { LocationData } from "Meta/Data/CommonTypes.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -71,6 +72,7 @@ export declare const Processor: {
     calculatFlow: typeof CalculateFlow;
     voxellightMixCalc: typeof VoxelLightMixCalc;
     doVoxelLight: typeof CalculateVoxelLight;
+    nLocation: LocationData;
     exposedFaces: number[];
     faceStates: number[];
     textureRotation: TextureRotations[];
@@ -82,18 +84,13 @@ export declare const Processor: {
         entity: boolean;
         composedEntity: number;
     };
-    voxelProcesseData: VoxelProcessData;
     faceDataOverride: FaceDataOverride;
-    aoOverRideData: any;
     template: FullChunkTemplate;
-    faceIndexMap: Record<DirectionNames, number>;
-    dimension: number;
     $INIT(): void;
-    cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, x: number, y: number, z: number, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
-    _process(template: FullChunkTemplate, x: number, y: number, z: number, doSecondCheck?: boolean): void;
-    constructEntity(composed?: number): FullChunkTemplate;
-    makeAllChunkTemplates(dimension: string, chunkX: number, chunkY: number, chunkZ: number, LOD?: number): FullChunkTemplate;
+    _process(location: LocationData, doSecondCheck?: boolean): void;
+    makeAllChunkTemplates(location: LocationData, LOD?: number): FullChunkTemplate;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;
 };

@@ -88,6 +88,14 @@ export const ExplosionManager = {
 
    if (dataTool.loadInAt(x, y, z)) {
     if (dataTool.isRenderable()) {
+     const substance = dataTool.getSubstance();
+     if (
+      dataTool.getHardness() > 10_000 ||
+      substance == "liquid" ||
+      substance == "magma"
+     ) {
+      continue;
+     }
      for (const n of $3dCardinalNeighbors) {
       const nx = x + n[0];
       const ny = y + n[1];

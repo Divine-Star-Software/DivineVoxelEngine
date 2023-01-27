@@ -47,7 +47,7 @@ await DVER.$INIT({
 });
 
 
-DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
+DVER.render.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
@@ -68,7 +68,7 @@ const init = async () => {
  );
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0);
+ DVER.render.setBaseLevel(0);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

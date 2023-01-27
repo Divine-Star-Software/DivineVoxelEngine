@@ -1,14 +1,15 @@
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { RegionHeaderTags, RegionTags } from "../../../Data/World/Region/RegionTags.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 export const RegionDataTags = new TagManager("region-tags");
 RegionDataTags.registerTag({
- id: "#dve_header",
+ id: WorldDataTagIDs.header,
  type: "header",
  numberType: "16ui",
 });
 RegionDataTags.registerTag({
- id: "#dve_data_type",
+ id: WorldDataTagIDs.dataType,
  type: "header",
  numberType: "16ui",
 });
@@ -18,22 +19,22 @@ RegionDataTags.registerTag({
  numberType: "16ui",
 });
 RegionDataTags.registerTag({
- id: "#dve_dimension_id",
+ id: WorldDataTagIDs.dimensionId,
  type: "typed-number",
  numberType: "16ui",
 });
 RegionDataTags.registerTag({
- id: "#dve_p_x",
+ id: WorldDataTagIDs.positionX,
  type: "typed-number",
  numberType: "32i",
 });
 RegionDataTags.registerTag({
- id: "#dve_p_y",
+ id: WorldDataTagIDs.positionY,
  type: "typed-number",
  numberType: "32i",
 });
 RegionDataTags.registerTag({
- id: "#dve_p_z",
+ id: WorldDataTagIDs.positionZ,
  type: "typed-number",
  numberType: "32i",
 });

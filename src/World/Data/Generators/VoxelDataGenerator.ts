@@ -2,6 +2,8 @@ import { VoxelData } from "Meta/index.js";
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
 import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 import { VoxelDataTags } from "../Tags/VoxelTags.js";
+import { VoxelPalette } from "Meta/Data/WorldData.types.js";
+import { VoxelPaletteReader } from "../../../Data/Voxel/VoxelPalette.js";
 
 let shapeMap: Record<string, number> | null = null;
 export const VoxelDataGenerator = {
@@ -27,6 +29,7 @@ export const VoxelDataGenerator = {
    numberOfIndexes: totalVoxels,
   });
 
+  VoxelPaletteReader.setVoxelPalette(this.palette.get(), this.palette.getMap());
   const buffer = new SharedArrayBuffer(initData.bufferSize);
   initData.buffer = buffer;
   const vp = this.palette;
@@ -44,12 +47,12 @@ export const VoxelDataGenerator = {
   const foundCollider: Record<string, number> = {};
   const colliderMap: Record<number, string> = {};
   for (let i = 2; i < voxelMap.length; i++) {
-   let newParent = vp.getVoxelBaseId(i);
+   let newParent = VoxelPaletteReader.id.baseNumeric(i);
    if (newParent != currentParent) {
     currentParent = newParent;
     voxelMap[i] = currentCount;
     const voxel = DVEW.voxelManager.getVoxelData(
-     vp.getVoxelStringId(newParent)
+     VoxelPaletteReader.id.stringFromNumber(newParent)
     );
 
     let materialId = foundMaterials[voxel.material];
@@ -112,13 +115,10 @@ export const VoxelDataGenerator = {
 
  palette: {
   _count: 2,
-  _palette: <Record<number, string>>{
-   0: "dve_air",
-   1: "dve_barrier",
-  },
+  _palette: <VoxelPalette>["dve_air", "dve_barrier"],
   _map: <Record<string, number>>{
-   "dve_air": 0,
-   "dve_barrier": 1,
+   dve_air: 0,
+   dve_barrier: 1,
   },
 
   registerVoxel(voxel: VoxelData) {
@@ -131,25 +131,6 @@ export const VoxelDataGenerator = {
     this._count += voxel.states;
    }
    this._count++;
-  },
-
-  getVoxelBaseId(id: number) {
-   const mainData = this.getVoxelStringId(id);
-   return this.getVoxelStateId(mainData, 0);
-  },
-
-  getVoxelStateId(voxelId: string, voxelState: number): number {
-   return this._map[voxelId] + voxelState;
-  },
-
-  getVoxelStringId(voxelId: number): string {
-   return this._palette[voxelId];
-  },
-
-  getVoxelState(voxelId: number) {
-   const trueId = this._palette[voxelId];
-   const mapId = this._map[trueId];
-   return voxelId - mapId;
   },
 
   get() {

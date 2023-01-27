@@ -42,7 +42,7 @@ export const CreateGUI = (DVER) => {
             if (!DVER)
                 return;
             //@ts-ignore
-            const scene = DVER.renderManager.getScene();
+            const scene = DVER.render.getScene();
             if (!scene.debugLayer.isVisible()) {
                 document.exitPointerLock();
                 guiState.noPointerLock = true;

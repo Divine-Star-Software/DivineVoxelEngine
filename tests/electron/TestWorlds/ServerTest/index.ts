@@ -44,7 +44,7 @@ const init = async () => {
  const scene = SetUpDefaultScene(engine);
 
  const box = SetUpDefaultSkybox(scene);
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }

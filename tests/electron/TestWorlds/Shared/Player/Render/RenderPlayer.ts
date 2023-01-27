@@ -18,7 +18,7 @@ export const GetPlayerPickCube = (
  const cube = BABYLON.MeshBuilder.CreateBox("playerblockdisplay", {
   size: 1.1,
  });
- cube.parent = DVER.renderManager.fo.activeNode;
+ cube.parent = DVER.render.fo.activeNode;
  cube.isPickable = true;
  cube.material = cubeMaterial;
 
@@ -134,7 +134,7 @@ export const GetRenderPlayer = async (
   oriign.y = PlayerData.position.y;
   oriign.z = PlayerData.position.z;
  });
- DVER.renderManager.fo.setOriginCenter(scene, { position: oriign });
+ DVER.render.fo.setOriginCenter(scene, { position: oriign });
 
  if (enablePicking) {
   GetPlayerPickCube(DVER, playerCamera, scene);
@@ -143,26 +143,20 @@ export const GetRenderPlayer = async (
  PlayerData.states.movement = PlayerStatesValues.still;
  PlayerData.states.secondaryMovement = PlayerStatesValues.secondaryStill;
 
+ const sceneTool = DVER.getSceneTool();
+
  window.addEventListener("keydown", (event) => {
   if (event.key == "Home") {
-   DVER.renderManager.setSunLevel(1);
-   DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(1, 1, 1) });
+   sceneTool.levels.setSun(1).fog.setColor(1);
   }
   if (event.key == "PageUp") {
-   DVER.renderManager.setSunLevel(0.8);
-   DVER.renderManager.updateFogOptions({
-    color: new BABYLON.Color3(0.8, 0.8, 0.8),
-   });
+   sceneTool.levels.setSun(0.8).fog.setColor(0.8);
   }
   if (event.key == "PageDown") {
-   DVER.renderManager.setSunLevel(0.2);
-   DVER.renderManager.updateFogOptions({
-    color: new BABYLON.Color3(0.2, 0.2, 0.2),
-   });
+   sceneTool.levels.setSun(0.2).fog.setColor(0.2);
   }
   if (event.key == "End") {
-   DVER.renderManager.setSunLevel(0);
-   DVER.renderManager.updateFogOptions({ color: new BABYLON.Color3(0, 0, 0) });
+   sceneTool.levels.setSun(0).fog.setColor(0);
   }
   if (event.key == "w" || event.key == "W") {
    PlayerData.states.movement = PlayerStatesValues.walkingForward;

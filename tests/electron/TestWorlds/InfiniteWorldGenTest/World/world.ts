@@ -12,8 +12,8 @@ let position = new Float64Array(3);
 const runIWG = () => {
  const generator = new IWG({
   positionWatch: position,
-  renderDistance: 100,
-  generateDistance: 150,
+  renderDistance: 200,
+  generateDistance: 300,
  });
  setInterval(() => {
   generator.searchUpdate();
@@ -21,6 +21,12 @@ const runIWG = () => {
  setInterval(() => {
   generator.tasksUpdate();
  }, 100);
+ setInterval(() => {
+  console.log(generator._logTasks());
+ }, 1000);
+ setInterval(() => {
+  generator.saveUpdate();
+ }, 10_0000);
  (self as any).generator = generator;
 };
 DVEW.parentComm.listenForMessage("set-position", (data) => {

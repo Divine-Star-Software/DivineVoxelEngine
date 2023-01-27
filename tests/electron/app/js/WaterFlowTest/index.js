@@ -40,7 +40,7 @@ const init = async () => {
     SetUpDefaultSkybox(scene);
     //CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(1);
+    DVER.render.setBaseLevel(1);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
     const mat = new BABYLON.StandardMaterial("");
     mat.diffuseColor = new BABYLON.Color3(1, 0, 1);
@@ -55,7 +55,7 @@ const init = async () => {
     chunkMarker.position.x = 8;
     chunkMarker.position.z = 8;
     chunkMarker.position.y = 128 / 2; */
-    //(DVER as any).renderManager.liquidMaterial.material.wireframe = true;
+    //(DVER as any).render.liquidMaterial.material.wireframe = true;
     runRenderLoop(engine, scene, camera, DVER);
 };
 window.DVER = DVER;

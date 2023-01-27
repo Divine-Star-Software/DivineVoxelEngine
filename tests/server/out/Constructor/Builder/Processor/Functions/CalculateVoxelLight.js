@@ -1,5 +1,4 @@
 import { Processor } from "../Processor.js";
-import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
@@ -228,34 +227,19 @@ const currentVoxelData = {
     light: 0,
     isLightSource: false,
     voxelSubstance: "solid",
-    voxelId: "",
-    voxelObject: false,
     shapeState: 0,
-    currentShape: false,
-    x: 0,
-    y: 0,
-    z: 0,
+    currentShape: {},
 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
 const nlValues = { s: 0, r: 0, g: 0, b: 0 };
 const AOValues = { a: 0 };
 export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2) {
+    currentVoxelData.voxelSubstance = this.mDataTool.getSubstance();
+    currentVoxelData.isLightSource = this.mDataTool.isLightSource();
+    currentVoxelData.currentShape = this.mDataTool.getVoxelShapeObj();
+    currentVoxelData.shapeState = this.mDataTool.getShapeState();
     if (this.settings.doAO && !ignoreAO) {
-        if (this.mDataTool.isRenderable()) {
-            const voxelId = this.mDataTool.getStringId();
-            const voxelObject = DVEC.voxelManager.getVoxel(voxelId);
-            currentVoxelData.voxelId = voxelId;
-            currentVoxelData.voxelObject = voxelObject;
-            currentVoxelData.voxelSubstance = this.mDataTool.getSubstance();
-            currentVoxelData.isLightSource = this.mDataTool.isLightSource();
-            const shapeId = this.mDataTool.getShapeId();
-            currentVoxelData.currentShape = DVEC.builder.shapeManager.getShape(shapeId);
-        }
-        currentVoxelData.shapeState = this.mDataTool.getShapeState();
-        currentVoxelData.x = tx;
-        currentVoxelData.y = ty;
-        currentVoxelData.z = tz;
         AOVerotexStates[1].value = 1;
         AOVerotexStates[2].value = 1;
         AOVerotexStates[3].value = 1;
@@ -264,16 +248,15 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
         AOVerotexStates[2].totalLight = true;
         AOVerotexStates[3].totalLight = true;
         AOVerotexStates[4].totalLight = true;
-    }
-    if (ignoreAO || !this.settings.doAO) {
-        states.ignoreAO = true;
-    }
-    else {
         states.ignoreAO = false;
     }
+    else {
+        states.ignoreAO = true;
+    }
     const currentLight = this.mDataTool.getLight();
-    let faceIndex = 0;
-    for (const point of $3dCardinalNeighbors) {
+    const max = $3dCardinalNeighbors.length;
+    for (let faceIndex = 0; faceIndex < max; faceIndex++) {
+        const point = $3dCardinalNeighbors[faceIndex];
         if (Processor.exposedFaces[faceIndex]) {
             this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
             currentVoxelData.light = this.nDataTool.getLight();
@@ -292,7 +275,6 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
             this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][4], 4, LOD);
             handleAdd(data, faceIndex, face);
         }
-        faceIndex++;
     }
 }
 const doRGB = (neighborLightValue) => {
@@ -363,15 +345,10 @@ const lightEnd = (vertex) => {
     zeroCheck.b = 0;
     zeroCheck.g = 0;
 };
-const doAO = (face, vertex, x, y, z) => {
-    if (!currentVoxelData.currentShape)
-        return false;
+const doAO = (face, vertex) => {
     if (!Processor.nDataTool.isRenderable())
         return;
     const neighborVoxelSubstance = Processor.nDataTool.getSubstance();
-    if (!currentVoxelData.voxelSubstance) {
-        return;
-    }
     let finalResult = false;
     let substanceRuleResult = true;
     const voxelSubstance = currentVoxelData.voxelSubstance;
@@ -447,7 +424,7 @@ export function VoxelLightMixCalc(face, x, y, z, checkSet, vertex, LOD = 1) {
             }
         }
         if (!states.ignoreAO) {
-            doAO(face, vertex, cx, cy, cz);
+            doAO(face, vertex);
         }
     }
     if (this.settings.doSun || this.settings.doRGB) {

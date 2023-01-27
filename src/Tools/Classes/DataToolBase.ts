@@ -3,6 +3,7 @@ import type { RemoteTagManager } from "Libs/DivineBinaryTags/RemoteTagManager";
 import type { LocationData } from "Meta/Data/CommonTypes";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
+import { WorldDataTagIDs } from "../../Data/Constants/Tags/WorldDataTagIds.js";
 
 export abstract class DataToolBase extends LocationBoundTool {
  tags: RemoteTagManager;
@@ -69,29 +70,29 @@ export abstract class EncodedPositionDataTool extends DataToolBase {
  }
 
  getPositionData() {
-  this.position.x = this.getTagValue("#dve_p_x");
-  this.position.y = this.getTagValue("#dve_p_y");
-  this.position.z = this.getTagValue("#dve_p_z");
+  this.position.x = this.getTagValue(WorldDataTagIDs.positionX);
+  this.position.y = this.getTagValue(WorldDataTagIDs.positionY);
+  this.position.z = this.getTagValue(WorldDataTagIDs.positionZ);
   return this.position;
  }
 
  setPositionData(x: number, y: number, z: number) {
-  this.setTagValue("#dve_p_x", x);
-  this.setTagValue("#dve_p_y", y);
-  this.setTagValue("#dve_p_z", z);
+  this.setTagValue(WorldDataTagIDs.positionX, x);
+  this.setTagValue(WorldDataTagIDs.positionY, y);
+  this.setTagValue(WorldDataTagIDs.positionZ, z);
   return this.position;
  }
 
  setDimensionId(dimensionId: string) {
   this.setTagValue(
-   "#dve_dimension_id",
+    WorldDataTagIDs.dimensionId,
    DimensionsRegister.getDimensionNumericId(dimensionId)
   );
  }
 
  getDimensionId() {
   return DimensionsRegister.getDimensionStringId(
-   this.getTagValue("#dve_dimension_id")
+   this.getTagValue(WorldDataTagIDs.dimensionId)
   );
  }
 
@@ -99,5 +100,4 @@ export abstract class EncodedPositionDataTool extends DataToolBase {
   const pos = this.getPositionData();
   return [this.getDimensionId(), pos.x, pos.y, pos.z];
  }
-
 }

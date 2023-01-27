@@ -29,15 +29,15 @@ const init = async () => {
     scene.collisionsEnabled = false;
     const box = SetUpDefaultSkybox(scene);
     box.checkCollisions = false;
-    const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+    const bmat = DVER.render.createSkyBoxMaterial(scene);
     if (bmat) {
         box.material = bmat;
     }
     // CreateWorldAxis(scene, 36);
     await DVER.$SCENEINIT({ scene: scene });
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
-    DVER.renderManager.setBaseLevel(0.8);
-    DVER.renderManager.setSunLevel(0.8);
+    DVER.render.setBaseLevel(0.8);
+    DVER.render.setSunLevel(0.8);
     runRenderLoop(engine, scene, camera, DVER);
 };
 window.DVER = DVER;

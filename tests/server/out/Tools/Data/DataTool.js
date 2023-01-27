@@ -8,9 +8,10 @@ import { DataToolBase } from "../Classes/DataToolBase.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LightData } from "../../Data/Light/LightByte.js";
+import { VoxelTagIDs } from "../../Data/Constants/Tags/VoxelTagIds.js";
 export class DataTool extends DataToolBase {
     static _dtutil = new DataTool();
-    static _chunkTool = new ChunkDataTool();
+    _chunkTool = new ChunkDataTool();
     static _heightMapTool = new HeightMapTool();
     static _columntool = new ColumnDataTool();
     _locationKey = "";
@@ -22,12 +23,6 @@ export class DataTool extends DataToolBase {
         baseId: 0,
         secondaryId: 0,
         secondaryBaseId: 0,
-    };
-    _cached = {
-        id: 0,
-        secondaryId: 0,
-        substance: "solid",
-        secondarySubstance: "solid",
     };
     __secondary = false;
     tags = VoxelTags;
@@ -54,9 +49,7 @@ export class DataTool extends DataToolBase {
     }
     __process() {
         this.data.id = this.data.raw[0];
-        this._cached.id = this.data.id;
         this.data.secondaryId = this.data.raw[3];
-        this._cached.secondaryId = this.data.secondaryId;
         this.data.baseId = this._getBaseId(this.data.id);
         if (this.data.secondaryId > 1) {
             this.data.secondaryBaseId = this._getBaseId(this.data.secondaryId);
@@ -64,22 +57,18 @@ export class DataTool extends DataToolBase {
         else {
             this.data.secondaryBaseId = 0;
         }
-        this._cached.substance = this.getSubstance();
-        this.setSecondary(true);
-        this._cached.secondarySubstance = this.getSubstance();
-        this.setSecondary(false);
         VoxelTags.setVoxel(this.data.baseId);
     }
     loadIn() {
         this._c = this.tags.data;
         if (this._mode == "World") {
-            if (!DataTool._chunkTool.setLocation(this.location).loadIn())
+            if (!this._chunkTool.setLocation(this.location).loadIn())
                 return false;
             const index = WorldSpaces.voxel.getIndexLocation(this.location);
-            this.data.raw[0] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_id", index);
-            this.data.raw[1] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_light", index);
-            this.data.raw[2] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_state", index);
-            this.data.raw[3] = DataTool._chunkTool.getArrayTagValue("#dve_voxel_secondary_id", index);
+            this.data.raw[0] = this._chunkTool.segments.id.get(index);
+            this.data.raw[1] = this._chunkTool.segments.light.get(index);
+            this.data.raw[2] = this._chunkTool.segments.state.get(index);
+            this.data.raw[3] = this._chunkTool.segments.secondaryId.get(index);
             this.__process();
             this._loadedIn = true;
             return true;
@@ -93,33 +82,32 @@ export class DataTool extends DataToolBase {
         if (!this._loadedIn)
             return false;
         if (this._mode == "World") {
-            if (!DataTool._chunkTool.loadInAtLocation(this.location))
-                return false;
             const index = WorldSpaces.voxel.getIndexLocation(this.location);
-            DataTool._chunkTool.setArrayTagValue("#dve_voxel_id", index, this.data.raw[0]);
-            DataTool._chunkTool.setArrayTagValue("#dve_voxel_light", index, this.data.raw[1]);
-            DataTool._chunkTool.setArrayTagValue("#dve_voxel_state", index, this.data.raw[2]);
-            DataTool._chunkTool.setArrayTagValue("#dve_voxel_secondary_id", index, this.data.raw[3]);
+            this._chunkTool.segments.id.set(index, this.data.raw[0]);
+            this._chunkTool.segments.light.set(index, this.data.raw[1]);
+            this._chunkTool.segments.state.set(index, this.data.raw[2]);
+            this._chunkTool.segments.secondaryId.set(index, this.data.raw[3]);
             if (heightMapUpdate) {
-                DataTool._heightMapTool.chunk._c = DataTool._chunkTool._c;
+                DataTool._heightMapTool.chunk._c = this._chunkTool._c;
                 const substance = this.getTemplateSubstance();
                 //on add
                 if (heightMapUpdate == 1) {
-                    DataTool._heightMapTool.chunk.update("add", substance, this.location[1], this.location[2], this.location[3]);
+                    DataTool._heightMapTool.chunk.update("add", substance, this.location);
                 }
                 //on remove
                 if (heightMapUpdate == 2) {
-                    DataTool._heightMapTool.chunk.update("remove", substance, this.location[1], this.location[2], this.location[3]);
+                    DataTool._heightMapTool.chunk.update("remove", substance, this.location);
                 }
             }
             if (DataTool._columntool.setLocation(this.location).loadIn()) {
                 DataTool._columntool.markAsNotStored();
             }
             this._loadedIn = false;
+            return true;
         }
         if (this._mode == "Entity") {
         }
-        return this;
+        return false;
     }
     hasRGBLight() {
         const light = this.getLight();
@@ -193,21 +181,21 @@ export class DataTool extends DataToolBase {
         if (vID < 2)
             return -1;
         VoxelTags.setVoxel(vID);
-        return VoxelTags.getTag("#dve_shape_id");
+        return VoxelTags.getTag(VoxelTagIDs.shapeID);
     }
     isLightSource() {
         const vID = this.getId(true);
         if (vID < 2)
             return false;
         VoxelTags.setVoxel(vID);
-        return VoxelTags.getTag("#dve_is_light_source") == 1;
+        return VoxelTags.getTag(VoxelTagIDs.isLightSource) == 1;
     }
     getLightSourceValue() {
         const vID = this.getId(true);
         if (vID < 2)
             return 0;
         VoxelTags.setVoxel(vID);
-        return VoxelTags.getTag("#dve_light_value");
+        return VoxelTags.getTag(VoxelTagIDs.lightValue);
     }
     getSubstance() {
         const vID = this.getId(true);
@@ -223,6 +211,13 @@ export class DataTool extends DataToolBase {
         VoxelTags.setVoxel(vID);
         return VoxelTags.getMaterial(vID);
     }
+    getHardness() {
+        const vID = this.getId(true);
+        if (vID < 2)
+            return 0;
+        VoxelTags.setVoxel(vID);
+        return VoxelTags.getTag(VoxelTagIDs.hardness);
+    }
     getCollider() {
         const vID = this.getId(true);
         if (vID < 2)
@@ -237,7 +232,7 @@ export class DataTool extends DataToolBase {
         if (vID == 1)
             return true;
         VoxelTags.setVoxel(vID);
-        return this.getTagValue("#dve_check_collisions") == 1;
+        return this.getTagValue(VoxelTagIDs.checkCollisions) == 1;
     }
     getTemplateSubstance() {
         let substance = this.getSubstance();
@@ -257,7 +252,7 @@ export class DataTool extends DataToolBase {
         if (vID < 2)
             return 0;
         VoxelTags.setVoxel(vID);
-        return VoxelTags.getTag("#dve_is_rich");
+        return VoxelTags.getTag(VoxelTagIDs.isLightSource);
     }
     //util
     setAir() {

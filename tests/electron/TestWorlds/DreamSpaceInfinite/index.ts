@@ -53,7 +53,7 @@ const init = async () => {
  const scene = SetUpDefaultScene(engine);
  const camera = SetUpDefaultCamera(scene, canvas, { x: 0, y: 0.01, z: 0 });
  const box = SetUpDefaultSkybox(scene);
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }
@@ -62,8 +62,8 @@ const init = async () => {
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
  SyncWithGraphicsSettings(DVER);
- DVER.renderManager.setBaseLevel(0);
- DVER.renderManager.setSunLevel(0.8);
+ DVER.render.setBaseLevel(0);
+ DVER.render.setSunLevel(0.8);
  const hemLight = new BABYLON.HemisphericLight(
   "",
   new BABYLON.Vector3(0, 1, 0),

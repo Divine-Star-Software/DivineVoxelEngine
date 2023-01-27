@@ -22,7 +22,7 @@ const init = async () => {
     const engine = SetUpEngine(canvas);
     const scene = SetUpDefaultScene(engine);
     new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);
-    const camera = DVER.renderManager.fo.getCamera(scene, "", new BABYLON.Vector3(2_000_000, 64, 2_000_000), canvas);
+    const camera = DVER.render.fo.getCamera(scene, "", new BABYLON.Vector3(0, 64, 0), canvas);
     /*  const camera = SetUpDefaultCamera(
      scene,
      canvas,
@@ -30,7 +30,7 @@ const init = async () => {
      { x: 7, y: 30, z: 7 }
     ); */
     const box = SetUpDefaultSkybox(scene);
-    const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+    const bmat = DVER.render.createSkyBoxMaterial(scene);
     if (bmat) {
         box.material = bmat;
     }
@@ -53,9 +53,9 @@ const init = async () => {
     };
     await DVER.$SCENEINIT({ scene: scene });
     SyncWithGraphicsSettings(DVER);
-    DVER.renderManager.setSunLevel(0.8);
-    DVER.renderManager.setBaseLevel(0.0);
-    DVER.renderManager.updateFogOptions({
+    DVER.render.setSunLevel(0.8);
+    DVER.render.setBaseLevel(0.0);
+    DVER.render.updateFogOptions({
         density: 0.000000005,
         color: new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255),
     });

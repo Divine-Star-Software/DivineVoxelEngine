@@ -1,74 +1,76 @@
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
+import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
+import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";
 export const ChunkDataTags = new TagManager("chunk-tags");
 ChunkDataTags.registerTag({
-    id: "#dve_header",
+    id: WorldDataTagIDs.header,
     type: "header",
     numberType: "16ui",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_data_type",
+    id: WorldDataTagIDs.dataType,
     type: "header",
     numberType: "16ui",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_dimension_id",
+    id: WorldDataTagIDs.dimensionId,
     type: "typed-number",
     numberType: "16ui",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_p_x",
+    id: WorldDataTagIDs.positionX,
     type: "typed-number",
     numberType: "32i",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_p_y",
+    id: WorldDataTagIDs.positionY,
     type: "typed-number",
     numberType: "32i",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_p_z",
+    id: WorldDataTagIDs.positionZ,
     type: "typed-number",
     numberType: "32i",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_min_height",
+    id: ChunkTagIDs.minHeight,
     type: "typed-number",
     numberType: "8ui",
 });
 ChunkDataTags.registerTag({
-    id: "#dve_max_height",
+    id: ChunkTagIDs.maxHeight,
     type: "typed-number",
     numberType: "8ui",
 });
 export function InitalizeChunkTags() {
     ChunkDataTags.registerTag({
-        id: "#dve_height_map",
+        id: ChunkTagIDs.heightMap,
         type: "typed-number-array",
         numberType: "32ui",
         length: WorldSpaces.chunk.getArea() * 2,
     });
     ChunkDataTags.registerTag({
-        id: "#dve_voxel_id",
+        id: ChunkTagIDs.voxelIDSegment,
         type: "typed-number-array",
         numberType: "16ui",
         length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
-        id: "#dve_voxel_light",
+        id: ChunkTagIDs.voxelLightSegment,
         type: "typed-number-array",
         numberType: "16ui",
         length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
-        id: "#dve_voxel_state",
+        id: ChunkTagIDs.voxelStateSegment,
         type: "typed-number-array",
         numberType: "16ui",
         length: WorldSpaces.chunk.getVolume(),
     });
     ChunkDataTags.registerTag({
-        id: "#dve_voxel_secondary_id",
+        id: ChunkTagIDs.voxelSecondaryIDSegment,
         type: "typed-number-array",
         numberType: "16ui",
         length: WorldSpaces.chunk.getVolume(),

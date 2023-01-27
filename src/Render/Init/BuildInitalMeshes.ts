@@ -16,7 +16,7 @@ const setUpMaterial = async (
  const animationTimes =
   DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
  const materialTextures =
-  await DVER.renderManager.textureCreator.createMaterialTexture(
+  await DVER.render.textureCreator.createMaterialTexture(
    `${substance}-diffuse`,
    scene,
    textures
@@ -31,7 +31,7 @@ const setUpMaterial = async (
    substance
   ];
  const Overlay2dTextureArray =
-  await DVER.renderManager.textureCreator.createMaterialTexture(
+  await DVER.render.textureCreator.createMaterialTexture(
    `${substance}-overlay`,
    scene,
    overlayTextures
@@ -39,11 +39,11 @@ const setUpMaterial = async (
  /* 
  if (DVER.settings.getSettings().materials.mode == "standard") {
   if (substance == "solid") {
-   DVER.renderManager.solidStandardMaterial.$INIT(materialTextures, scene);
+   DVER.render.solidStandardMaterial.$INIT(materialTextures, scene);
   }
 
   if (substance == "liquid") {
-   DVER.renderManager.liquidStandardMaterial.$INIT(materialTextures, scene);
+   DVER.render.liquidStandardMaterial.$INIT(materialTextures, scene);
   }
  } */
 
@@ -68,29 +68,29 @@ export async function BuildInitalMeshes(
   throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
  }
 
- DVER.renderManager.$INIT(scene);
+ DVER.render.$INIT(scene);
 
 
- await DVER.renderManager.textureCreator.setUpImageCreation();
+ await DVER.render.textureCreator.setUpImageCreation();
 
 
- await setUpMaterial(DVER, scene, "solid", DVER.renderManager.solidMaterial);
- await setUpMaterial(DVER, scene, "flora", DVER.renderManager.floraMaterial);
- await setUpMaterial(DVER, scene, "liquid", DVER.renderManager.liquidMaterial);
- await setUpMaterial(DVER, scene, "magma", DVER.renderManager.magmaMaterial);
- await setUpMaterial(DVER, scene, "Item", DVER.renderManager.itemMaterial);
+ await setUpMaterial(DVER, scene, "solid", DVER.render.solidMaterial);
+ await setUpMaterial(DVER, scene, "flora", DVER.render.floraMaterial);
+ await setUpMaterial(DVER, scene, "liquid", DVER.render.liquidMaterial);
+ await setUpMaterial(DVER, scene, "magma", DVER.render.magmaMaterial);
+ await setUpMaterial(DVER, scene, "Item", DVER.render.itemMaterial);
 
- DVER.renderManager.animationManager.startAnimations();
+ DVER.render.animationManager.startAnimations();
 
  DVER.textureManager.releaseTextureData();
 
  scene.registerBeforeRender(() => {
-  DVER.renderManager.solidMaterial.runEffects();
-  DVER.renderManager.floraMaterial.runEffects();
-  DVER.renderManager.liquidMaterial.runEffects();
-  DVER.renderManager.magmaMaterial.runEffects();
-  DVER.renderManager.itemMaterial.runEffects();
-  DVER.renderManager.skyBoxMaterial.runEffects();
+  DVER.render.solidMaterial.runEffects();
+  DVER.render.floraMaterial.runEffects();
+  DVER.render.liquidMaterial.runEffects();
+  DVER.render.magmaMaterial.runEffects();
+  DVER.render.itemMaterial.runEffects();
+  DVER.render.skyBoxMaterial.runEffects();
  });
 
 

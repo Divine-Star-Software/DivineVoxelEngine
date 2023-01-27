@@ -1,3 +1,4 @@
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import { EngineSettingsData } from "Meta/index.js";
 import { ChunkMeshData, SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types";
 import { DVEMaterial } from "../Materials/DVEMaterial.js";
@@ -95,15 +96,13 @@ export class DVEMesh {
 
  async setMeshData(
   mesh: BABYLON.Mesh,
-  chunkX: number,
-  chunkY: number,
-  chunkZ: number,
+   location : LocationData,
   data: ChunkMeshData
  ) {
   mesh.unfreezeWorldMatrix();
-  mesh.position.x = chunkX;
-  mesh.position.y = chunkY;
-  mesh.position.z = chunkZ;
+  mesh.position.x = location[1];
+  mesh.position.y = location[2];
+  mesh.position.z = location[3];
 
   const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
   chunkVertexData.positions = data[1];

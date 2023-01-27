@@ -246,7 +246,7 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
     if (distance <= this.data.renderDistance) continue;
     this._activeColumns.delete(key);
    }
-/* 
+
    this.dataLoader
     .setDimension(this.dimension)
     .setXYZ(worldColumnPOS.x, worldColumnPOS.y, worldColumnPOS.z)
@@ -254,8 +254,7 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
      const key = WorldSpaces.column.getKeyLocation(column.getLocationData());
      if (this._inProgressMap.has(key)) return false;
      return true;
-    }); */
-
+    });
   }
 
   this._searchQueue.push([

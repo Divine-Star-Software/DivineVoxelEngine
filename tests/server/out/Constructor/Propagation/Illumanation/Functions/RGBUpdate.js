@@ -67,9 +67,6 @@ export function RGBRemove(tasks) {
     const remove = tasks.queues.rgb.rmeove;
     const update = tasks.queues.rgb.update;
     const map = tasks.queues.rgb.map;
-    /*
-   @TODO make light update take into account light sources that hold light values
-    */
     while (remove.length != 0) {
         const node = remove.shift();
         if (!node) {

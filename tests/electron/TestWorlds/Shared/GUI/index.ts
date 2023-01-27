@@ -39,7 +39,7 @@ export const CreateGUI = (DVER?: DivineVoxelEngineRender) => {
   if (event.key == "F7") {
    if (!DVER) return;
    //@ts-ignore
-   const scene: BABYLON.Scene = DVER.renderManager.getScene();
+   const scene: BABYLON.Scene = DVER.render.getScene();
    if (!scene.debugLayer.isVisible()) {
     document.exitPointerLock();
     guiState.noPointerLock = true;

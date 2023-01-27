@@ -48,10 +48,10 @@ const init = async () => {
 
  await DVER.$SCENEINIT({ scene: scene });
 
- DVER.renderManager.setBaseLevel(0.0);
- DVER.renderManager.setSunLevel(1);
- //DVER.renderManager.setSunLevel(0.01);
- DVER.renderManager.setBaseLevel(0.05);
+ DVER.render.setBaseLevel(0.0);
+ DVER.render.setSunLevel(1);
+ //DVER.render.setSunLevel(0.01);
+ DVER.render.setBaseLevel(0.05);
  const dayNightCyle = {
   tick: 0,
   value: 0,
@@ -69,7 +69,7 @@ const init = async () => {
     scene.fogColor.r += 0.01;
     scene.fogColor.g += 0.01;
     scene.fogColor.b += 0.015;
-    DVER.renderManager.setSunLevel(dayNightCyle.value);
+    DVER.render.setSunLevel(dayNightCyle.value);
    }
    if (dayNightCyle.tick == dayNightCyle.max) {
     dayNightCyle.direction = "down";
@@ -82,7 +82,7 @@ const init = async () => {
     scene.fogColor.r -= 0.01;
     scene.fogColor.g -= 0.01;
     scene.fogColor.b -= 0.015;
-    DVER.renderManager.setSunLevel(dayNightCyle.value);
+    DVER.render.setSunLevel(dayNightCyle.value);
    }
    if (dayNightCyle.tick == 0) {
     dayNightCyle.direction = "up";

@@ -25,10 +25,10 @@ export function InitalizeCommands() {
   ],
   run(done, io, args) {
    if (args.base_level) {
-    DVER.renderManager.setBaseLevel(args.base_level);
+    DVER.render.setBaseLevel(args.base_level);
    }
    if (args.sun_level) {
-    DVER.renderManager.setSunLevel(args.sun_level);
+    DVER.render.setSunLevel(args.sun_level);
    }
    done();
   },

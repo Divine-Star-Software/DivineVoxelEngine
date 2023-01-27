@@ -21,12 +21,12 @@ player.onUpdate.push(() => {
     generator.searchUpdate();
 });
 setInterval(() => {
-    console.log(generator._logTasks());
+    //console.log(generator._logTasks());
     generator.tasksUpdate();
 }, 100);
 setInterval(() => {
     generator.saveUpdate();
-}, 1000);
+}, 10_000);
 self.DVEW = DVEW;
 self.IWG = generator;
 ``;

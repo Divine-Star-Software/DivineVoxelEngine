@@ -80,11 +80,11 @@ export class DVEMesh {
         this._setEmptyData(mesh);
         this.meshes.push(mesh);
     }
-    async setMeshData(mesh, chunkX, chunkY, chunkZ, data) {
+    async setMeshData(mesh, location, data) {
         mesh.unfreezeWorldMatrix();
-        mesh.position.x = chunkX;
-        mesh.position.y = chunkY;
-        mesh.position.z = chunkZ;
+        mesh.position.x = location[1];
+        mesh.position.y = location[2];
+        mesh.position.z = location[3];
         const chunkVertexData = mesh.vertexData;
         chunkVertexData.positions = data[1];
         chunkVertexData.normals = data[2];

@@ -1,9 +1,7 @@
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 import type { VoxelTemplateSubstanceType } from "Meta/index";
 export declare type SetChunkMeshTask = [
-    dimension: string,
-    chunkX: number,
-    chunkY: number,
-    chunkZ: number,
+    location: LocationData,
     meshes: (ChunkMeshData | RemoveChunkTasks)[]
 ];
 export declare type ChunkMeshData = [
@@ -23,17 +21,11 @@ declare type RemoveChunkTasks = [
     removeFlag: false
 ];
 export declare type RemoveChunkMeshTasks = [
-    dimension: string,
-    substanceType: VoxelTemplateSubstanceType,
-    chunkX: number,
-    chunkY: number,
-    chunkZ: number
+    location: LocationData,
+    substanceType: VoxelTemplateSubstanceType
 ];
 export declare type RemoveChunksOutsideDistance = [
-    dimension: string,
-    x: number,
-    y: number,
-    z: number,
+    location: LocationData,
     distance: number
 ];
 export {};

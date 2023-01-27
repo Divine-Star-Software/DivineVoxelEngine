@@ -46,7 +46,7 @@ const init = async () => {
  const engine = SetUpEngine(canvas);
 
  const scene = SetUpDefaultScene(engine);
- const camera = DVER.renderManager.fo.getCamera(
+ const camera = DVER.render.fo.getCamera(
   scene,
   "",
   new BABYLON.Vector3(0, 10, 0),
@@ -55,7 +55,7 @@ const init = async () => {
 
  (window as any).scene = scene;
  const box = SetUpDefaultSkybox(scene);
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }
@@ -63,7 +63,7 @@ const init = async () => {
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
  SyncWithGraphicsSettings(DVER);
- DVER.renderManager.setBaseLevel(1);
+ DVER.render.setBaseLevel(1);
 
  const hemLight = new BABYLON.HemisphericLight(
   "",

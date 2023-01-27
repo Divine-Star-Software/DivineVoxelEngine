@@ -67,8 +67,8 @@ const init = async () => {
 
  GetAnalyzerCubeRender(DVER,camera);
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.1);
- DVER.renderManager.setSunLevel(1);
+ DVER.render.setBaseLevel(0.1);
+ DVER.render.setSunLevel(1);
 
  runRenderLoop(engine, scene, camera, DVER);
 };

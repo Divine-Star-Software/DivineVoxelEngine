@@ -22,5 +22,5 @@ export declare type AddVoxelData = {
     secondaryVoxelId: string;
     secondaryState: number;
 };
-export declare type VoxelPalette = Record<number, string>;
+export declare type VoxelPalette = string[];
 export declare type VoxelPaletteMap = Record<string, number>;

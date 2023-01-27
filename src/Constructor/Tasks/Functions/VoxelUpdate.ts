@@ -43,8 +43,9 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
   .setPriority(0)
   .start()
   .setBuldMode("sync")
-  .addNeighborsToRebuildQueue(x, y, z)
-  .syncQueue.reverse();
+  .addNeighborsToRebuildQueue(x, y, z);
+//reverse build order so  chunks clsoe by get rebuilt first 
+ tasks.syncQueue.reverse();
  tasks.setBuldMode("async");
  if (ES.doFlow()) {
   const substance = dataTool.getSubstance();
@@ -88,8 +89,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
   .start()
   .setPriority(0)
   .setBuldMode("sync")
-  .addNeighborsToRebuildQueue(x, y, z)
-  .syncQueue.reverse();
+  .addNeighborsToRebuildQueue(x, y, z);
  tasks.setBuldMode("async");
  brushTool.setLocation(data[0]).setRaw(raw);
  nDataTool.loadInRaw(raw);

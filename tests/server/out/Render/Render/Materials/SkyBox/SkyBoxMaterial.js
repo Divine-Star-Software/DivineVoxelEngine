@@ -53,9 +53,9 @@ export const SkyBoxMaterial = {
     },
     createMaterial(scene) {
         BABYLON.Effect.ShadersStore["skyboxVertexShader"] =
-            DVER.renderManager.shaderBuilder.getSkyBoxVertexShader();
+            DVER.render.shaderBuilder.getSkyBoxVertexShader();
         BABYLON.Effect.ShadersStore["skyboxFragmentShader"] =
-            DVER.renderManager.shaderBuilder.getSkyBoxFragmentShader();
+            DVER.render.shaderBuilder.getSkyBoxFragmentShader();
         const shaderMaterial = new BABYLON.ShaderMaterial("skybox", scene, "skybox", {
             attributes: ["position", "normal"],
             uniforms: [
@@ -95,7 +95,7 @@ export const SkyBoxMaterial = {
         this.material = material;
     },
     runEffects() {
-        if (DVER.renderManager.fogOptions.mode != "animated-volumetric")
+        if (DVER.render.fogOptions.mode != "animated-volumetric")
             return;
         if (!this.material)
             return;

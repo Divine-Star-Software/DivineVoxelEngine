@@ -14,19 +14,6 @@ export const WorldRegister = {
     _cacheOn: false,
     _chunkCache: new Map(),
     _columnCache: new Map(),
-    getTotalLoadedChunks() {
-        let chunks = 0;
-        for (const [key, dim] of this._dimensions) {
-            for (const [rkey, region] of dim) {
-                for (const [clkey, column] of region.columns) {
-                    for (const [ckey, chunk] of column.chunks) {
-                        chunks++;
-                    }
-                }
-            }
-        }
-        return chunks;
-    },
     cache: {
         enable() {
             WorldRegister._cacheOn = true;
@@ -247,17 +234,12 @@ export const WorldRegister = {
             temp2.set(temp, 0);
             const chunk = this._getChunkData(sab);
             chunkTool.setChunk(chunk);
-            const chunkPOS = chunkTool.getPositionData();
-            let column = WorldRegister.column.get([
-                "main",
-                chunkPOS.x,
-                chunkPOS.z,
-                chunkPOS.y,
-            ]);
+            const location = chunkTool.getLocationData();
+            let column = WorldRegister.column.get(location);
             if (!column)
                 return;
-            column.chunks.set(WorldSpaces.chunk.getIndexXYZ(chunkPOS.x, chunkPOS.y, chunkPOS.z), chunk);
-            DataHooks.chunk.onNew.run(["main", chunkPOS.x, chunkPOS.y, chunkPOS.z]);
+            column.chunks.set(WorldSpaces.chunk.getIndexLocation(location), chunk);
+            DataHooks.chunk.onNew.run(location);
             return chunk;
         },
         get(location) {

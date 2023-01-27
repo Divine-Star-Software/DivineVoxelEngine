@@ -6,6 +6,7 @@ import { LocationData } from "Meta/Data/CommonTypes.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
+import { RemoveChunksOutsideDistance } from "Meta/Tasks/RenderTasks.types.js";
 
 const parentComm = ThreadComm.parent;
 export class BuilderTool extends LocationBoundTool {
@@ -29,20 +30,14 @@ export class BuilderTool extends LocationBoundTool {
   const [dimension, x, y, z] = this.location;
   this.tasks.setFocalPoint(this.location);
   this.tasks.build.column.deferred.run(x, y, z, onDone ? onDone : (data) => {});
-
   return this;
  }
  removeColumn() {
   const column = WorldRegister.column.get(this.location);
   if (!column) return false;
   if (column.chunks.size == 0) return false;
-  const columnPOS = WorldSpaces.column.getPositionLocation(this.location);
-  parentComm.runTasks<LocationData>("remove-column", [
-   this.location[0],
-   columnPOS.x,
-   columnPOS.y,
-   columnPOS.z,
-  ]);
+
+  parentComm.runTasks<LocationData>("remove-column", this.location);
   return this;
  }
  fillColumn() {
@@ -50,13 +45,9 @@ export class BuilderTool extends LocationBoundTool {
   return this;
  }
  removeColumnsOutsideRadius(radius: number) {
-  const columnPOS = WorldSpaces.column.getPositionLocation(this.location);
-  parentComm.runTasks("remove-column-outside-radius", [
-   this.location[0],
-   columnPOS.x,
-   columnPOS.y,
-   columnPOS.z,
-   radius,
-  ]);
+  parentComm.runTasks<RemoveChunksOutsideDistance>(
+   "remove-column-outside-radius",
+   [this.location, radius]
+  );
  }
 }

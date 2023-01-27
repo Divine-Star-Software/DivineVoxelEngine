@@ -94,19 +94,19 @@ const setUpLightAndShadows = (scene: BABYLON.Scene) => {
   for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
    const mesh = DVER.meshManager.meshes.solid[0][meshKey];
    mesh.receiveShadows = true;
-   mesh.material = DVER.renderManager.solidStandardMaterial.getMaterial();
-   DVER.renderManager.liquidStandardMaterial.addToRenderList(mesh);
+   mesh.material = DVER.render.solidStandardMaterial.getMaterial();
+   DVER.render.liquidStandardMaterial.addToRenderList(mesh);
    shadowGenerator.addShadowCaster(mesh);
   }
 
   for (const meshKey of Object.keys(DVER.meshManager.meshes.solid)) {
    const mesh = DVER.meshManager.meshes.solid[0][meshKey];
-   DVER.renderManager.liquidStandardMaterial.addToRenderList(mesh);
+   DVER.render.liquidStandardMaterial.addToRenderList(mesh);
   }
   for (const meshKey of Object.keys(DVER.meshManager.meshes.liquid)) {
    const mesh = DVER.meshManager.meshes.liquid[0][meshKey];
    mesh.receiveShadows = true;
-   mesh.material = DVER.renderManager.liquidStandardMaterial.getMaterial();
+   mesh.material = DVER.render.liquidStandardMaterial.getMaterial();
   }
  }, 5000);
 };
@@ -125,7 +125,7 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+ DVER.render.setBaseLevel(1);
 
 /*  var pipeline = new BABYLON.DefaultRenderingPipeline(
   "defaultPipeline",

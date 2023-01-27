@@ -1,5 +1,6 @@
+export type DVEFogTypes =  "exponential" | "volumetric" | "animated-volumetric";
 export type RenderFogOptions = {
- mode: "exponential" | "volumetric" | "animated-volumetric";
+ mode: DVEFogTypes;
  color: BABYLON.Color3;
  density: number;
  volumetricOptions: {
@@ -7,7 +8,7 @@ export type RenderFogOptions = {
  };
 };
 
-export type RenderEffectsOptions = {
+export type DVERenderEffectsOptions = {
  floraEffects: boolean;
  liquidEffects: boolean;
 };

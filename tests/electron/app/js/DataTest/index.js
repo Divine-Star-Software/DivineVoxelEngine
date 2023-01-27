@@ -28,7 +28,7 @@ const init = async () => {
     const camera = SetUpDefaultCamera(scene, canvas, { x: 15, y: 36, z: 7 }, { x: 7, y: 30, z: 7 });
     SetUpDefaultSkybox(scene);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(1);
+    DVER.render.setBaseLevel(1);
     $INITDataLoader(DVER);
     runRenderLoop(engine, scene, camera, DVER);
 };

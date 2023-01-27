@@ -2,6 +2,7 @@ import type { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types";
 import type { VoxelShapeAddData, VoxelTemplateSubstanceType } from "Meta/index";
 import type { DirectionNames } from "Meta/Util.types";
 import { QuadVertexes, TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
+import { LocationData } from "Meta/Data/CommonTypes.js";
 declare type CumstonVertexData = [number, number, number, number] | [number];
 /**# Voxel Mesher Tool
  * ---
@@ -12,7 +13,7 @@ export declare const VoxelMesher: {
     _template: ChunkTemplate;
     templateIncrement: boolean;
     setTemplateIncrement(onOff: boolean): any;
-    $buildMesh(type: VoxelTemplateSubstanceType, template: ChunkTemplate, LOD?: number, chunkX?: number, chunkY?: number, chunkZ?: number): ArrayBufferLike[][];
+    $buildMesh(type: VoxelTemplateSubstanceType, template: ChunkTemplate, LOD: number | undefined, location: LocationData): ArrayBufferLike[][];
     data: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
     quad: {
         _direction: DirectionNames;

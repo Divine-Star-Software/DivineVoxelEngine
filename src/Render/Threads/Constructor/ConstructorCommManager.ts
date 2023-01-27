@@ -2,22 +2,10 @@
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
-//functions
-import { ConstructorToRenderMessages } from "../../../Common/Threads/Contracts/ConstructorToRender.js";
 
 const CCMBase = ThreadComm.createCommManager({
  name: "constructor",
  onPortSet(port, commName) {},
-});
-
-CCMBase.listenForMessage(
- ConstructorToRenderMessages.constructEntity,
- (data) => {
-  DVER.meshManager.handleEntityUpdate(data[1], data[2], data[3], data);
- }
-);
-CCMBase.listenForMessage(ConstructorToRenderMessages.constructItem, (data) => {
- DVER.meshManager.handleItemUpdate(data[1], data[2], data[3], data);
 });
 
 const CCM = Object.assign(CCMBase, {

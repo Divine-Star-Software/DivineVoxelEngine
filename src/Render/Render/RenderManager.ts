@@ -16,7 +16,7 @@ import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.
 import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsmp.js";
 import {
  RenderFogOptions,
- RenderEffectsOptions,
+ DVERenderEffectsOptions,
 } from "Meta/Render/Render/Render.options.types.js";
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
@@ -64,7 +64,7 @@ export const RenderManager = {
 
  fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
 
- effectOptions: <RenderEffectsOptions>{
+ effectOptions: <DVERenderEffectsOptions>{
   floraEffects: false,
   liquidEffects: false,
  },
@@ -143,7 +143,7 @@ export const RenderManager = {
   this.meshCuller.$INIT(scene);
  },
 
- updateShaderEffectOptions(options: RecursivePartial<RenderEffectsOptions>) {
+ updateShaderEffectOptions(options: RecursivePartial<DVERenderEffectsOptions>) {
   if (options.floraEffects !== undefined) {
    this.effectOptions.floraEffects = options.floraEffects;
   }

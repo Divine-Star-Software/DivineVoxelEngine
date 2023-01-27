@@ -26,7 +26,7 @@ const init = async () => {
     SetUpDefaultSkybox(scene);
     CreateWorldAxis(scene, 20);
     await DVER.$SCENEINIT({ scene: scene });
-    DVER.renderManager.setBaseLevel(.2);
+    DVER.render.setBaseLevel(.2);
     runRenderLoop(engine, scene, camera, DVER);
 };
 window.DVER = DVER;

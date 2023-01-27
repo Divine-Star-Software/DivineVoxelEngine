@@ -216,15 +216,15 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
                     continue;
                 this._activeColumns.delete(key);
             }
-            /*
-               this.dataLoader
+            this.dataLoader
                 .setDimension(this.dimension)
                 .setXYZ(worldColumnPOS.x, worldColumnPOS.y, worldColumnPOS.z)
-                .unLoadAllOutsideRadius(this.data.maxDistance!, (column) => {
-                 const key = WorldSpaces.column.getKeyLocation(column.getLocationData());
-                 if (this._inProgressMap.has(key)) return false;
-                 return true;
-                }); */
+                .unLoadAllOutsideRadius(this.data.maxDistance, (column) => {
+                const key = WorldSpaces.column.getKeyLocation(column.getLocationData());
+                if (this._inProgressMap.has(key))
+                    return false;
+                return true;
+            });
         }
         this._searchQueue.push([
             worldColumnPOS.x,

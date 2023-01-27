@@ -56,8 +56,8 @@ export class DVEMaterial {
         else {
             this.material.setFloat("doColor", 0.0);
         }
-        if (DVER.renderManager.effectOptions.liquidEffects ||
-            DVER.renderManager.effectOptions.floraEffects) {
+        if (DVER.render.effectOptions.liquidEffects ||
+            DVER.render.effectOptions.floraEffects) {
             this.material.setFloat("doEffects", 1);
         }
         else {
@@ -65,15 +65,15 @@ export class DVEMaterial {
         }
     }
     createMaterial(data) {
-        const animData = DVER.renderManager.animationManager.registerAnimations(this.type, data.animations, data.animationTimes);
-        const overlayAnimData = DVER.renderManager.animationManager.registerAnimations(this.type, data.overlayAnimations, data.overlayAnimationTimes, true);
+        const animData = DVER.render.animationManager.registerAnimations(this.type, data.animations, data.animationTimes);
+        const overlayAnimData = DVER.render.animationManager.registerAnimations(this.type, data.overlayAnimations, data.overlayAnimationTimes, true);
         BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
-            DVER.renderManager.shaderBuilder.getDefaultVertexShader(this.type, {
+            DVER.render.shaderBuilder.getDefaultVertexShader(this.type, {
                 uvs: animData,
                 overlayUVs: overlayAnimData,
             });
         BABYLON.Effect.ShadersStore[`${this.type}FragmentShader`] =
-            DVER.renderManager.shaderBuilder.getDefaultFragmentShader(this.type);
+            DVER.render.shaderBuilder.getDefaultFragmentShader(this.type);
         const shaderMaterial = new BABYLON.ShaderMaterial(this.type, data.scene, this.type, {
             attributes: [
                 "position",
@@ -136,20 +136,20 @@ export class DVEMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
         };
         this.updateMaterialSettings(data.settings);
-        DVER.renderManager.animationManager.registerMaterial(this.type, this.material);
+        DVER.render.animationManager.registerMaterial(this.type, this.material);
         return this.material;
     }
     overrideMaterial(material) {
         this.material = material;
     }
     runEffects() {
-        // if (DVER.renderManager.fogOptions.mode != "animated-volumetric") return;
+        // if (DVER.render.fogOptions.mode != "animated-volumetric") return;
         if (!this.material)
             return;
         this.time += 0.005;
         this.material.setFloat("time", this.time);
-        if (DVER.renderManager.fo.activeNode) {
-            this.material.setVector3("worldOrigin", DVER.renderManager.fo.activeNode.position);
+        if (DVER.render.fo.activeNode) {
+            this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
         }
     }
 }

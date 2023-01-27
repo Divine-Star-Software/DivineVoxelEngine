@@ -1,3 +1,4 @@
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 import { VoxelTemplateSubstanceType } from "Meta/index";
 
 export type MeshRegisterChunk = {
@@ -5,7 +6,7 @@ export type MeshRegisterChunk = {
 };
 
 export type MeshRegisterColumn = {
-    position: [x: number, y: number, z: number];
+location: LocationData,
  chunks: Map<number, Map<VoxelTemplateSubstanceType, MeshRegisterChunk>>;
 };
 

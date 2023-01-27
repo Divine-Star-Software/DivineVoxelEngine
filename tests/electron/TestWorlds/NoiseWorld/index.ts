@@ -51,18 +51,18 @@ const init = async () => {
   { x: 7, y: 30, z: 7 }
  );
  const box = SetUpDefaultSkybox(scene);
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }
 
- DVER.renderManager.updateFogOptions({
+ DVER.render.updateFogOptions({
   color: new BABYLON.Color3(99 / 255, 157 / 255, 216 / 255),
  });
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setSunLevel(0.8);
- DVER.renderManager.setBaseLevel(0.0);
+ DVER.render.setSunLevel(0.8);
+ DVER.render.setBaseLevel(0.0);
  runRenderLoop(engine, scene, camera, DVER);
 };
 

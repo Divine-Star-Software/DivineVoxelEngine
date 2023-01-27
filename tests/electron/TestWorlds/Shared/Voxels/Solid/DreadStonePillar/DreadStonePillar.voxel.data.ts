@@ -6,7 +6,7 @@ export const DreadStonePillarVoxelData: VoxelData = {
  id: "dve_dreadstonepillar",
  substance: "solid",
  material : "stone",
- hardnress : 1000,
+ hardnress : 60_000,
  physics : {
     collider : "Box",
     checkCollisions : true

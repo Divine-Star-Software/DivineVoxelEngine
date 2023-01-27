@@ -49,14 +49,14 @@ const init = async () => {
  );
  camera.speed = 0.5;
  const box = SetUpDefaultSkybox(scene);
- const bmat = DVER.renderManager.createSkyBoxMaterial(scene);
+ const bmat = DVER.render.createSkyBoxMaterial(scene);
  if (bmat) {
   box.material = bmat;
  }
  await InitalizeAudio();
  //CreateWorldAxis(scene, 36);
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(1);
+ DVER.render.setBaseLevel(1);
 
  const hemLight = new BABYLON.HemisphericLight(
   "",

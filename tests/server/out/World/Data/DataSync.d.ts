@@ -22,14 +22,10 @@ export declare const DataSync: {
         setShapeMap(newShapeMap: Record<string, number>): void;
         palette: {
             _count: number;
-            _palette: Record<number, string>;
+            _palette: import("../../Meta/Data/WorldData.types.js").VoxelPalette;
             _map: Record<string, number>;
             registerVoxel(voxel: import("../../Meta/index.js").VoxelData): void;
-            getVoxelBaseId(id: number): number;
-            getVoxelStateId(voxelId: string, voxelState: number): number;
-            getVoxelStringId(voxelId: number): string;
-            getVoxelState(voxelId: number): number;
-            get(): Record<number, string>;
+            get(): import("../../Meta/Data/WorldData.types.js").VoxelPalette;
             getMap(): Record<string, number>;
         };
     };

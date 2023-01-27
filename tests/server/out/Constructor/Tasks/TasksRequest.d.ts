@@ -13,7 +13,7 @@ declare class Request<T, Q> {
     comm: CommBase;
     priority: Priorities;
     LOD: number;
-    syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+    syncQueue: LocationData[];
     buildMode: RebuildModes;
     constructor(tasksType: string, origin: LocationData, data: T, buildQueue: string, originThread: string, queues: Q);
     start(): this;

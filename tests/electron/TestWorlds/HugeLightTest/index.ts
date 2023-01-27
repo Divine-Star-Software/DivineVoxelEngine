@@ -39,7 +39,7 @@ const init = async () => {
  SetUpDefaultSkybox(scene);
 
  await DVER.$SCENEINIT({ scene: scene });
- DVER.renderManager.setBaseLevel(0.5);
+ DVER.render.setBaseLevel(0.5);
 
 
 

@@ -4,7 +4,6 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
-import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { TasksRequest } from "./TasksRequest.js";
 const chunkTool = new ChunkDataTool();
 export const Tasks = {
@@ -19,8 +18,7 @@ export const Tasks = {
             }),
             async run(data) {
                 const location = data[0];
-                const chunkPOS = WorldSpaces.chunk.getPositionLocation(location);
-                await DVEC.builder.buildChunk(location[0], chunkPOS.x, chunkPOS.y, chunkPOS.z, data[1]);
+                await DVEC.builder.buildChunk(location, data[1]);
             },
         },
         column: ThreadComm.registerTasks(ConstructorTasks.buildColumn, async (data, onDone) => {

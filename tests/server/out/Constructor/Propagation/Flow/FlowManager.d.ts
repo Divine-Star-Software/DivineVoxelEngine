@@ -47,7 +47,7 @@ export declare const FlowManager: {
         comm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
-        syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+        syncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
         buildMode: "async" | "sync";
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
@@ -120,7 +120,7 @@ export declare const FlowManager: {
         comm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
-        syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+        syncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
         buildMode: "async" | "sync";
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
@@ -201,7 +201,7 @@ export declare const FlowManager: {
         comm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
-        syncQueue: [chunkX: number, chunkY: number, chunkZ: number][];
+        syncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
         buildMode: "async" | "sync";
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;

@@ -1,11 +1,11 @@
-import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { RawVoxelData, VoxelTemplateSubstanceType } from "Meta/index.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 export declare class DataTool extends DataToolBase {
     static _dtutil: DataTool;
-    static _chunkTool: ChunkDataTool;
+    _chunkTool: ChunkDataTool;
     static _heightMapTool: HeightMapTool;
     static _columntool: ColumnDataTool;
     _locationKey: string;
@@ -18,44 +18,16 @@ export declare class DataTool extends DataToolBase {
         secondaryId: number;
         secondaryBaseId: number;
     };
-    _cached: {
-        id: number;
-        secondaryId: number;
-        substance: VoxelSubstanceType;
-        secondarySubstance: VoxelSubstanceType;
-    };
     __secondary: boolean;
     tags: {
         voxelMap: Uint16Array;
-        substanceRecord: Record<number, VoxelSubstanceType>;
+        substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
         materialMap: Record<number, string>;
         colliderMap: Record<number, string>;
-        voxelData: {
-            substance: VoxelSubstanceType;
-            shapeId: number;
-            hardness: number;
-            material: string;
-            checkCollision: number;
-            colliderId: string;
-            lightSource: number;
-            lightValue: number;
-            isRich: number;
-        };
         id: string;
         sync(voxelMap: Uint16Array): void;
         setVoxel(id: number): void;
-        getVoxelData(id: number): {
-            substance: VoxelSubstanceType;
-            shapeId: number;
-            hardness: number;
-            material: string;
-            checkCollision: number;
-            colliderId: string;
-            lightSource: number;
-            lightValue: number;
-            isRich: number;
-        };
-        getTrueSubstance(id: number): VoxelSubstanceType;
+        getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
         getMaterial(id: number): string;
         getCollider(id: number): string;
         $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
@@ -82,7 +54,7 @@ export declare class DataTool extends DataToolBase {
     loadInRaw(rawData: RawVoxelData): void;
     __process(): void;
     loadIn(): boolean;
-    commit(heightMapUpdate?: number): false | this;
+    commit(heightMapUpdate?: number): boolean;
     hasRGBLight(): boolean;
     hasSunLight(): boolean;
     getLight(): number;
@@ -98,8 +70,9 @@ export declare class DataTool extends DataToolBase {
     getShapeId(): number;
     isLightSource(): boolean;
     getLightSourceValue(): number;
-    getSubstance(): VoxelSubstanceType;
+    getSubstance(): import("Meta/index.js").VoxelSubstanceType;
     getMaterial(): string;
+    getHardness(): number;
     getCollider(): string;
     checkCollisions(): boolean;
     getTemplateSubstance(): VoxelTemplateSubstanceType;

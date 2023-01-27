@@ -66,8 +66,8 @@ export class DVEMaterial {
    this.material.setFloat("doColor", 0.0);
   }
   if (
-   DVER.renderManager.effectOptions.liquidEffects ||
-   DVER.renderManager.effectOptions.floraEffects
+   DVER.render.effectOptions.liquidEffects ||
+   DVER.render.effectOptions.floraEffects
   ) {
    this.material.setFloat("doEffects", 1);
   } else {
@@ -76,13 +76,13 @@ export class DVEMaterial {
  }
 
  createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
-  const animData = DVER.renderManager.animationManager.registerAnimations(
+  const animData = DVER.render.animationManager.registerAnimations(
    this.type,
    data.animations,
    data.animationTimes
   );
   const overlayAnimData =
-   DVER.renderManager.animationManager.registerAnimations(
+   DVER.render.animationManager.registerAnimations(
     this.type,
     data.overlayAnimations,
     data.overlayAnimationTimes,
@@ -90,13 +90,13 @@ export class DVEMaterial {
    );
 
   BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
-   DVER.renderManager.shaderBuilder.getDefaultVertexShader(this.type, {
+   DVER.render.shaderBuilder.getDefaultVertexShader(this.type, {
     uvs: animData,
     overlayUVs: overlayAnimData,
    });
 
   BABYLON.Effect.ShadersStore[`${this.type}FragmentShader`] =
-   DVER.renderManager.shaderBuilder.getDefaultFragmentShader(this.type);
+   DVER.render.shaderBuilder.getDefaultFragmentShader(this.type);
 
   const shaderMaterial = new BABYLON.ShaderMaterial(
    this.type,
@@ -180,7 +180,7 @@ export class DVEMaterial {
 
   this.updateMaterialSettings(data.settings);
 
-  DVER.renderManager.animationManager.registerMaterial(
+  DVER.render.animationManager.registerMaterial(
    this.type,
    this.material
   );
@@ -193,14 +193,14 @@ export class DVEMaterial {
  }
 
  runEffects() {
-  // if (DVER.renderManager.fogOptions.mode != "animated-volumetric") return;
+  // if (DVER.render.fogOptions.mode != "animated-volumetric") return;
   if (!this.material) return;
   this.time += 0.005;
   this.material.setFloat("time", this.time);
-  if (DVER.renderManager.fo.activeNode) {
+  if (DVER.render.fo.activeNode) {
    this.material.setVector3(
     "worldOrigin",
-    DVER.renderManager.fo.activeNode.position
+    DVER.render.fo.activeNode.position
    );
   }
  }

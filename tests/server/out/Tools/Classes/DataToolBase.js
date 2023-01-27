@@ -1,6 +1,7 @@
 import { Util } from "../../Global/Util.helper.js";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
+import { WorldDataTagIDs } from "../../Data/Constants/Tags/WorldDataTagIds.js";
 export class DataToolBase extends LocationBoundTool {
     tags;
     _c;
@@ -53,22 +54,22 @@ export class EncodedPositionDataTool extends DataToolBase {
         super();
     }
     getPositionData() {
-        this.position.x = this.getTagValue("#dve_p_x");
-        this.position.y = this.getTagValue("#dve_p_y");
-        this.position.z = this.getTagValue("#dve_p_z");
+        this.position.x = this.getTagValue(WorldDataTagIDs.positionX);
+        this.position.y = this.getTagValue(WorldDataTagIDs.positionY);
+        this.position.z = this.getTagValue(WorldDataTagIDs.positionZ);
         return this.position;
     }
     setPositionData(x, y, z) {
-        this.setTagValue("#dve_p_x", x);
-        this.setTagValue("#dve_p_y", y);
-        this.setTagValue("#dve_p_z", z);
+        this.setTagValue(WorldDataTagIDs.positionX, x);
+        this.setTagValue(WorldDataTagIDs.positionY, y);
+        this.setTagValue(WorldDataTagIDs.positionZ, z);
         return this.position;
     }
     setDimensionId(dimensionId) {
-        this.setTagValue("#dve_dimension_id", DimensionsRegister.getDimensionNumericId(dimensionId));
+        this.setTagValue(WorldDataTagIDs.dimensionId, DimensionsRegister.getDimensionNumericId(dimensionId));
     }
     getDimensionId() {
-        return DimensionsRegister.getDimensionStringId(this.getTagValue("#dve_dimension_id"));
+        return DimensionsRegister.getDimensionStringId(this.getTagValue(WorldDataTagIDs.dimensionId));
     }
     getLocationData() {
         const pos = this.getPositionData();

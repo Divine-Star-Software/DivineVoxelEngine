@@ -1,4 +1,5 @@
 /// <reference types="babylonjs" />
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import { EngineSettingsData } from "Meta/index.js";
 import { ChunkMeshData } from "Meta/Tasks/RenderTasks.types";
 import { DVEMaterial } from "../Materials/DVEMaterial.js";
@@ -17,5 +18,5 @@ export declare class DVEMesh {
     _setEmptyData(mesh: BABYLON.Mesh): void;
     _clearCached(mesh: BABYLON.Mesh): void;
     removeMesh(mesh: BABYLON.Mesh): void;
-    setMeshData(mesh: BABYLON.Mesh, chunkX: number, chunkY: number, chunkZ: number, data: ChunkMeshData): Promise<BABYLON.Mesh>;
+    setMeshData(mesh: BABYLON.Mesh, location: LocationData, data: ChunkMeshData): Promise<BABYLON.Mesh>;
 }

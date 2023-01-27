@@ -1,4 +1,4 @@
-import { TextureTypes } from "Meta/index";
+import type { TextureTypes } from "Meta/Render/Textures/Texture.types";
 export declare const TextureManager: {
     textureDataHasBeenSet: boolean;
     uvTextureMap: Record<TextureTypes, Record<string, number>>;

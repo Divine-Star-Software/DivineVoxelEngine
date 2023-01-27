@@ -6,17 +6,6 @@ class VDTags extends RemoteTagManager {
     substanceRecord = Register.voxels.substanceRecord;
     materialMap = Register.voxels.materialMap;
     colliderMap = Register.voxels.colliderMap;
-    voxelData = {
-        substance: "solid",
-        shapeId: 0,
-        hardness: 0,
-        material: "none",
-        checkCollision: 0,
-        colliderId: "none",
-        lightSource: 0,
-        lightValue: 0,
-        isRich: 0,
-    };
     constructor(id) {
         super(id);
         this.id = id;
@@ -27,18 +16,6 @@ class VDTags extends RemoteTagManager {
     setVoxel(id) {
         const index = this.voxelMap[id];
         this.setTagIndex(index);
-    }
-    getVoxelData(id) {
-        this.setVoxel(id);
-        this.voxelData.substance = this.getTrueSubstance(id);
-        this.voxelData.shapeId = this.getTag("#dve_shape_id");
-        this.voxelData.hardness = this.getTag("#dve_hardness");
-        this.voxelData.material = this.getMaterial(id);
-        this.voxelData.checkCollision = this.getTag("#dve_check_collisions");
-        this.voxelData.colliderId = this.getCollider(id);
-        this.voxelData.lightSource = this.getTag("#dve_is_light_source");
-        this.voxelData.lightValue = this.getTag("#dve_light_value");
-        return this.voxelData;
     }
     getTrueSubstance(id) {
         this.setVoxel(id);

@@ -1,6 +1,7 @@
 import type { ChunkData } from "Meta/Data/WorldData.types";
 import type { VoxelTemplateSubstanceType } from "Meta/index";
 import { ChunkDataTool } from "./ChunkDataTool.js";
+import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 export declare class HeightMapTool {
     static _chunkTool: ChunkDataTool;
     _data: {
@@ -15,12 +16,13 @@ export declare class HeightMapTool {
         };
         _c: DataView;
         _s: HeightMapTool;
-        loadIn(x: number, y: number, z: number): false | undefined;
+        loadInAt(x: number, y: number, z: number): false | undefined;
+        loadInAtLocation(location: LocationData): false | undefined;
         setChunk(chunk: ChunkData): void;
         setXZ(x: number, z: number): any;
         getMinMax(): number[];
         getMin(substance?: VoxelTemplateSubstanceType | "all"): number;
         getMax(substance?: VoxelTemplateSubstanceType | "all"): number;
-        update(mode: "remove" | "add", substance: VoxelTemplateSubstanceType | "all" | undefined, x: number, y: number, z: number): void;
+        update(mode: "remove" | "add", substance: VoxelTemplateSubstanceType | "all" | undefined, location: LocationData): void;
     };
 }

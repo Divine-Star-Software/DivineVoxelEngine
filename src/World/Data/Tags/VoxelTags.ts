@@ -1,45 +1,46 @@
+import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
 import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
 export const VoxelDataTags = new TagManager("voxel-tags");
 
 VoxelDataTags.registerTag({
- id: "#dve_substance",
+ id: VoxelTagIDs.substance,
  type: "typed-number",
  numberType: "8ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_shape_id",
+ id: VoxelTagIDs.shapeID,
  type: "typed-number",
  numberType: "16ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_material",
+ id: VoxelTagIDs.material,
  type: "typed-number",
  numberType: "16ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_hardness",
+ id: VoxelTagIDs.hardness,
  type: "typed-number",
  numberType: "16ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_collider_id",
+ id: VoxelTagIDs.colliderID,
  type: "typed-number",
  numberType: "16ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_is_light_source",
+ id: VoxelTagIDs.isLightSource,
  type: "boolean",
 });
 VoxelDataTags.registerTag({
- id: "#dve_light_value",
+ id: VoxelTagIDs.lightValue,
  type: "typed-number",
  numberType: "16ui",
 });
 VoxelDataTags.registerTag({
- id: "#dve_is_rich",
+ id: VoxelTagIDs.isRich,
  type: "boolean",
 });
 VoxelDataTags.registerTag({
- id: "#dve_check_collisions",
+ id: VoxelTagIDs.checkCollisions,
  type: "boolean",
 });
