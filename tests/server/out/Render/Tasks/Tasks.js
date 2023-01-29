@@ -1,6 +1,6 @@
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { DVER } from "../DivineVoxelEngineRender.js";
-import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../Math/Functions/Distance3d.js";
 export const RenderTasks = {
     setChunk: ThreadComm.registerTasks("set-chunk", (data) => {
         DVER.meshManager.updateChunk(data);

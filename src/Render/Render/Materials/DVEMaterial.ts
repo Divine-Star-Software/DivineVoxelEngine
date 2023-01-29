@@ -81,13 +81,12 @@ export class DVEMaterial {
    data.animations,
    data.animationTimes
   );
-  const overlayAnimData =
-   DVER.render.animationManager.registerAnimations(
-    this.type,
-    data.overlayAnimations,
-    data.overlayAnimationTimes,
-    true
-   );
+  const overlayAnimData = DVER.render.animationManager.registerAnimations(
+   this.type,
+   data.overlayAnimations,
+   data.overlayAnimationTimes,
+   true
+  );
 
   BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
    DVER.render.shaderBuilder.getDefaultVertexShader(this.type, {
@@ -151,7 +150,6 @@ export class DVEMaterial {
    shaderMaterial.backFaceCulling = false;
    shaderMaterial.forceDepthWrite = true;
    shaderMaterial.needDepthPrePass = true;
-
   }
 
   shaderMaterial.setTextureArray("arrayTex", data.texture);
@@ -180,10 +178,7 @@ export class DVEMaterial {
 
   this.updateMaterialSettings(data.settings);
 
-  DVER.render.animationManager.registerMaterial(
-   this.type,
-   this.material
-  );
+  DVER.render.animationManager.registerMaterial(this.type, this.material);
 
   return this.material;
  }
@@ -198,10 +193,7 @@ export class DVEMaterial {
   this.time += 0.005;
   this.material.setFloat("time", this.time);
   if (DVER.render.fo.activeNode) {
-   this.material.setVector3(
-    "worldOrigin",
-    DVER.render.fo.activeNode.position
-   );
+   this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
   }
  }
 }

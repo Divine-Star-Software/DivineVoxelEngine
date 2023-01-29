@@ -6,3 +6,7 @@ export type ConstructorDataTool = DataTool & {
  getVoxelShapeObj(): VoxelShape;
  getVoxelObj(): VoxelConstructor;
 };
+
+
+
+export type ConstructorTextureData = [type : string, id : string, varation ?: string];

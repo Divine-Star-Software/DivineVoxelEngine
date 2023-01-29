@@ -4,11 +4,12 @@ export declare const DataSyncTypes: {
     region: number;
     regionHeader: number;
     voxelPalette: number;
-    voxelData: number;
+    voxelTags: number;
     materials: number;
     colliders: number;
     dimesnion: number;
     chunkTags: number;
     columnTags: number;
     regionTags: number;
+    registerStringMap: number;
 };

@@ -14,12 +14,22 @@ import {
 import { EreaseAndUpdate, PaintAndUpdate } from "./Functions/VoxelUpdate.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
-import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { TasksRequest } from "./TasksRequest.js";
 
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
+ data: {
+  syncTextures: ThreadComm.registerTasks(
+   "sync-uv-texuture-data",
+   (data: any) => {
+
+    DVEC.builder.textureManager.setUVTextureMap(data[0]);
+    DVEC.builder.textureManager.setOverlayUVTextureMap(data[1]);
+    DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
+   }
+  ),
+ },
  build: {
   chunk: {
    tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(

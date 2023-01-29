@@ -5,7 +5,7 @@ import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
-import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../Math/Functions/Distance3d.js";
 
 export class DataLoaderTool extends LocationBoundTool {
  static columnDataTool = new ColumnDataTool();

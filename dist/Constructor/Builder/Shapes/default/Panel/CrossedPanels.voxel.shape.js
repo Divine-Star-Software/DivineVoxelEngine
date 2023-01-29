@@ -1,5 +1,5 @@
 export const CrossedPanels = {
-    id: "CrossedPanels",
+    id: "#dve_crossed_panels",
     build(mesher) {
         let animationState = 1;
         if (mesher.data.getSubstance() == "flora") {

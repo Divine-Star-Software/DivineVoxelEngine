@@ -46,6 +46,7 @@ const init = async () => {
     const player = await GetRenderPlayer(true, scene, canvas, DVER);
     const debugCube = GetAnalyzerCubeRender(DVER, player);
     window.debugCube = debugCube;
+    window.DVER = DVER;
     runRenderLoop(engine, scene, player, DVER);
 };
 RunInit(init);

@@ -1,4 +1,4 @@
-import { VoxelMath } from "../../../../out/Libs/Math/VoxelMath.js";
+import { VoxelMath } from "../../../../out/Math/VoxelMath.js";
 import { DVEW } from "../../../../out/World/DivineVoxelEngineWorld.js";
 import { GenerateTemple } from "./Functions/GenerateTemple.js";
 import { GenerateStairChunk } from "./Functions/StairChunks.js";

@@ -15,14 +15,8 @@ parentComm.listenForMessage("re-start", (data, event) => {
  DVEC.reStart();
 });
 parentComm.listenForMessage("sync-uv-texuture-data", (data, event) => {
- const uvTextureMap = data[1];
- const overlayUVTextureMap = data[2];
- DVEC.builder.textureManager.setUVTextureMap(uvTextureMap);
- DVEC.builder.textureManager.setOverlayUVTextureMap(overlayUVTextureMap);
- DVEC.voxelManager.runVoxelHookForAll("texturesRegistered");
- DVEC.itemManager.runItemHookForAll("texturesRegistered");
- DVEC.builder.textureManager.releaseTextureData();
- DVEC.voxelManager.removeVoxelHookForAll("texturesRegistered");
- DVEC.itemManager.removeItemHookForAll("texturesRegistered");
+
 });
+
+
 export const ParentComm = parentComm;

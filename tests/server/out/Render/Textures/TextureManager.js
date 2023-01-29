@@ -210,12 +210,22 @@ export const TextureManager = {
         }
         return this.uvTextureMap[textureType][id];
     },
-    registerTexture(textureType, textureData) {
-        if (!textureData.overlay) {
-            this.textures[textureType].push(textureData);
+    registerTexture(textureData) {
+        if (Array.isArray(textureData)) {
+            for (const texture of textureData) {
+                if (texture.overlay) {
+                    this.overylayTextures[texture.type].push(texture);
+                    continue;
+                }
+                this.textures[texture.type].push(texture);
+            }
             return;
         }
-        this.overylayTextures[textureType].push(textureData);
+        if (textureData.overlay) {
+            this.overylayTextures[textureData.type].push(textureData);
+            return;
+        }
+        this.textures[textureData.type].push(textureData);
     },
     releaseTextureData() {
         this.overlayUVTextureMap = null;

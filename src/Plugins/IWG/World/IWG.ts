@@ -1,18 +1,21 @@
 import type { IWGData } from "./Types/IWG.types";
+import type { Vec3Array } from "Math/Types/Math.types";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { $2dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
 import { TasksTool } from "../../../Tools/Tasks/TasksTool.js";
-import { Distance3D } from "../../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../../Math/Functions/Distance3d.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
 import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
+import { VisitedMap } from "../../../Global/Util/VisistedMap.js";
+import { Vec3ArrayDistanceSort } from "../../../Math/Functions/DistnaceSort.js";
 const getKey = (x: number, y: number, z: number) => {
  return WorldSpaces.column.getKeyXYZ(x, y, z);
 };
 class IWGTasks {
- queue: number[][] = [];
- map: Map<string, boolean> = new Map();
+ queue: [x: number, y: number, z: number][] = [];
+ map = new VisitedMap();
  waitingFor = 0;
  constructor(
   public run: (x: number, y: number, z: number) => void,
@@ -20,9 +23,9 @@ class IWGTasks {
  ) {}
 
  add(x: number, y: number, z: number) {
-  if (this.map.has(getKey(x, y, z))) return;
+  if (this.map.inMap(x, y, z)) return;
   this.queue.push([x, y, z]);
-  this.map.set(getKey(x, y, z), true);
+  this.map.add(x, y, z);
  }
 
  substact() {
@@ -37,14 +40,14 @@ class IWGTasks {
  runTasks(max = 5) {
   if (this.waitingFor != 0) return;
   let i = max;
-
+  Vec3ArrayDistanceSort(this.iwg._cachedPosition, this.queue);
   while (i--) {
    const node = this.queue.shift();
    if (!node) break;
    this.waitingFor++;
    const [x, y, z] = node;
    this.run(x, y, z);
-   this.map.delete(getKey(x, y, z));
+   this.map.remove(x, y, z);
   }
  }
 }
@@ -61,7 +64,7 @@ export class IWG {
  dataLoader: DataLoaderTool;
  tasks = TasksTool();
  dimension: string = "main";
- _cachedPosition = [-Infinity, -Infinity, -Infinity];
+ _cachedPosition: Vec3Array = [-Infinity, -Infinity, -Infinity];
 
  _inProgressMap: Map<string, boolean> = new Map();
  _searchQueue: number[][] = [];

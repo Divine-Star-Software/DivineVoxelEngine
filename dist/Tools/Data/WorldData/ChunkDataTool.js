@@ -3,6 +3,7 @@ import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";
+import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 export class ChunkDataTool extends EncodedPositionDataTool {
     tags = ChunkTags;
     constructor() {
@@ -13,6 +14,7 @@ export class ChunkDataTool extends EncodedPositionDataTool {
         this.segments.secondaryId._s = this;
     }
     loadIn() {
+        WorldSpaces.chunk.updateLoaction(this.location);
         const chunk = WorldRegister.chunk.get(this.location);
         if (!chunk)
             return false;

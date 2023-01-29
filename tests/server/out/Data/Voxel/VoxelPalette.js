@@ -28,8 +28,7 @@ export const VoxelPaletteReader = {
         baseNumeric(id) {
             if (id < 2)
                 return id;
-            const paletteId = VoxelPaletteReader._palette[id];
-            const vid = VoxelPaletteReader._map.get(paletteId);
+            const vid = this.numberFromString(this.stringFromNumber(id));
             if (!vid)
                 return -1;
             return vid;

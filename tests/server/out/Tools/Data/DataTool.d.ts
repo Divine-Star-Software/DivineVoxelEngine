@@ -1,4 +1,4 @@
-import type { RawVoxelData, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
@@ -20,16 +20,11 @@ export declare class DataTool extends DataToolBase {
     };
     __secondary: boolean;
     tags: {
-        voxelMap: Uint16Array;
-        substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
-        materialMap: Record<number, string>;
-        colliderMap: Record<number, string>;
+        voxelIndex: Uint16Array;
         id: string;
         sync(voxelMap: Uint16Array): void;
         setVoxel(id: number): void;
-        getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
-        getMaterial(id: number): string;
-        getCollider(id: number): string;
+        initData: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
         $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
         byteOffSet: number;
         tagSize: number;
@@ -38,6 +33,7 @@ export declare class DataTool extends DataToolBase {
         indexMap: Map<string, number>;
         index: DataView;
         setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+        getBuffer(): ArrayBuffer;
         setTagIndex(index: number): void;
         getTag(id: string): number;
         setTag(id: string, value: number): boolean;
@@ -67,10 +63,10 @@ export declare class DataTool extends DataToolBase {
     getShapeState(): number;
     setShapeState(state: number): this;
     hasSecondaryVoxel(): boolean;
-    getShapeId(): number;
+    getShapeId(): string;
     isLightSource(): boolean;
     getLightSourceValue(): number;
-    getSubstance(): import("Meta/index.js").VoxelSubstanceType;
+    getSubstance(): VoxelSubstanceType;
     getMaterial(): string;
     getHardness(): number;
     getCollider(): string;

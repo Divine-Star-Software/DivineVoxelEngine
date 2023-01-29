@@ -2,7 +2,6 @@
 import { CalculateVoxelLight, VoxelLightMixCalc, } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 //objects
-import { Builder } from "../Builder.js";
 //data
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
@@ -12,9 +11,10 @@ import { FaceMap, FaceRecord } from "../../../Data/Constants/Util/Faces.js";
 //tools
 import { GetConstructorDataTool } from "../../../Constructor/Tools/Data/ConstructorDataTool.js";
 import { HeightMapTool } from "../../../Tools/Data/WorldData/HeightMapTool.js";
-import { OverrideManager } from "../Overrides/OverridesManager.js";
+import { OverrideManager } from "../Rules/Overrides/OverridesManager.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { VoxelTemplater } from "../Tools/VoxelTemplater.js";
+import { SubstanceRules } from "../Rules/SubstanceRules.js";
 const mDT = GetConstructorDataTool();
 const nDT = GetConstructorDataTool();
 const heightMapTool = new HeightMapTool();
@@ -56,7 +56,6 @@ export const Processor = {
             faceTemplate: [],
             uvTemplate: [],
             overlayUVTemplate: [],
-            shapeTemplate: [],
             shapeStateTemplate: [],
             colorTemplate: [],
             lightTemplate: [],
@@ -67,7 +66,6 @@ export const Processor = {
             faceTemplate: [],
             uvTemplate: [],
             overlayUVTemplate: [],
-            shapeTemplate: [],
             shapeStateTemplate: [],
             colorTemplate: [],
             lightTemplate: [],
@@ -78,7 +76,6 @@ export const Processor = {
             faceTemplate: [],
             uvTemplate: [],
             overlayUVTemplate: [],
-            shapeTemplate: [],
             shapeStateTemplate: [],
             colorTemplate: [],
             lightTemplate: [],
@@ -90,7 +87,6 @@ export const Processor = {
             faceTemplate: [],
             uvTemplate: [],
             overlayUVTemplate: [],
-            shapeTemplate: [],
             shapeStateTemplate: [],
             colorTemplate: [],
             lightTemplate: [],
@@ -99,6 +95,7 @@ export const Processor = {
         },
     },
     $INIT() {
+        SubstanceRules.$INIT();
         VoxelTemplater.currentVoxel = mDT;
         VoxelTemplater.utilDataTool = nDT;
     },
@@ -106,7 +103,7 @@ export const Processor = {
         const voxelExists = this.nDataTool.loadIn();
         let finalResult = false;
         if (voxelExists && this.nDataTool.isRenderable()) {
-            let substanceRuleResult = Builder.voxelHelper.substanceRuleCheck(voxelSubstance, this.nDataTool.getSubstance());
+            let substanceRuleResult = SubstanceRules.exposedCheck(voxelSubstance, this.nDataTool.getSubstance());
             this.faceDataOverride.face = face;
             this.faceDataOverride.default = substanceRuleResult;
             finalResult = substanceRuleResult;
@@ -142,14 +139,14 @@ export const Processor = {
         }
         return faceBit;
     },
-    _process(location, doSecondCheck = false) {
-        if (!this.mDataTool.loadInAtLocation(location))
+    _process(doSecondCheck = false) {
+        if (!this.mDataTool.loadInAtLocation(this.nLocation))
             return;
         if (!this.mDataTool.isRenderable())
             return;
         if (!doSecondCheck) {
             if (this.mDataTool.hasSecondaryVoxel()) {
-                this._process(location, true);
+                this._process(true);
             }
         }
         this.mDataTool.setSecondary(doSecondCheck);
@@ -157,13 +154,12 @@ export const Processor = {
         if (!voxelObject)
             return;
         const voxelShape = this.mDataTool.getVoxelShapeObj();
-        const voxelShapeState = this.mDataTool.getShapeState();
         const voxelSubstance = this.mDataTool.getSubstance();
         let faceBit = 0;
         let i = $3dCardinalNeighbors.length;
         while (i--) {
             const point = $3dCardinalNeighbors[i];
-            this.nDataTool.setXYZ(location[1] + point[0] * this.LOD, location[2] + point[1] * this.LOD, location[3] + point[2] * this.LOD);
+            this.nDataTool.setXYZ(this.nLocation[1] + point[0] * this.LOD, this.nLocation[2] + point[1] * this.LOD, this.nLocation[3] + point[2] * this.LOD);
             faceBit = this.cullCheck(FaceMap[i], voxelObject, voxelShape, voxelSubstance, faceBit);
         }
         if (faceBit == 0)
@@ -176,10 +172,8 @@ export const Processor = {
             baseTemplate = this.template[voxelSubstance];
         }
         VoxelTemplater._template = baseTemplate;
-        baseTemplate.shapeStateTemplate.push(voxelShapeState);
         voxelObject.process(VoxelTemplater);
-        baseTemplate.shapeTemplate.push(this.mDataTool.getShapeId());
-        const voxelPOS = WorldSpaces.voxel.getPositionLocation(location);
+        const voxelPOS = WorldSpaces.voxel.getPositionLocation(this.nLocation);
         baseTemplate.positionTemplate.push(voxelPOS.x, voxelPOS.y, voxelPOS.z);
         i = FaceMap.length;
         while (i--) {
@@ -188,7 +182,7 @@ export const Processor = {
         baseTemplate.faceTemplate.push(faceBit);
         if (this.exposedFaces[0] &&
             (voxelSubstance == "liquid" || voxelSubstance == "magma")) {
-            this.calculatFlow(this.faceStates[0] == 1, location[1], location[2], location[3], baseTemplate.flowTemplate);
+            this.calculatFlow(this.faceStates[0] == 1, this.nLocation[1], this.nLocation[2], this.nLocation[3], baseTemplate.flowTemplate);
         }
     },
     makeAllChunkTemplates(location, LOD = 1) {
@@ -210,7 +204,7 @@ export const Processor = {
                     this.nLocation[1] = x;
                     this.nLocation[2] = y;
                     this.nLocation[3] = z;
-                    this._process(this.nLocation);
+                    this._process();
                 }
             }
         }

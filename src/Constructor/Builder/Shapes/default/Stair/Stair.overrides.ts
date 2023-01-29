@@ -1,5 +1,5 @@
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
-import { OverrideManager } from "../../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { StairStates } from "../../../../../Data/Shapes/StairStates.js";
 import { FaceRecord } from "../../../../../Data/Constants/Util/Faces.js";
 type SideReocrd = Record<number, boolean>;
@@ -72,23 +72,23 @@ const boxCull = (data: FaceDataOverride) => {
 export const StairCullFace = (data: FaceDataOverride) => {
  const id = data.neighborVoxel.getVoxelShapeObj().id;
 
- if (id == "Box") {
+ if (id == "#dve_box") {
   return boxCull(data);
  }
- if (id == "HalfBox") {
+ if (id == "#dve_half_box") {
   return halfBoxCull(data);
  }
- if (id == "Stair") {
+ if (id == "#dve_stair") {
   return stairCull(data);
  }
  return true;
 };
 
 export function SetUpStairOverrides() {
- OverrideManager.registerOverride("CullFace", "Stair", "Any", (data) => {
+ OverrideManager.registerOverride("CullFace", "#dve_stair", "Any", (data) => {
   return StairCullFace(data);
  });
- OverrideManager.registerOverride("AOFlip", "Stair", "Any", (data) => {
+ OverrideManager.registerOverride("AOFlip", "#dve_stair", "Any", (data) => {
   if (data.face == "top" || data.face == "bottom") return true;
   return false;
  });

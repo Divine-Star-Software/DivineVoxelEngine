@@ -1,15 +1,12 @@
+import { ConstructorTextureData } from "Meta/Constructor/Constructor.types";
 import type { TextureTypes } from "Meta/Render/Textures/Texture.types";
 
 export const TextureManager = {
  textureDataHasBeenSet: false,
- uvTextureMap: <Record<TextureTypes, Record<string, number>>>{},
- overlayUVTextureMap: <Record<TextureTypes, Record<string, number>>>{},
- getTextureUV(
-  textureType: TextureTypes,
-  textureId: string,
-  varation: string | false | null = false,
-  overlay: boolean = false
- ): number {
+ uvTextureMap: <Record<string, Record<string, number>>>{},
+ overlayUVTextureMap: <Record<string, Record<string, number>>>{},
+ getTextureUV(data: ConstructorTextureData, overlay: boolean = false): number {
+  const [textureType, textureId, varation] = data;
   let id = textureId;
   if (varation) {
    id = `${textureId}:${varation}`;

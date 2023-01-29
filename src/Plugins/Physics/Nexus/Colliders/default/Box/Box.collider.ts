@@ -13,7 +13,7 @@ const collisionReturn : ColliderReturnData = [
 ];
 
 export const BoxCollider: ColliderObject = {
- id: "Box",
+ id: "#dve_box",
  getColliderData(x, y, z) {
   collisionReturn[0].position[0] = x;
   collisionReturn[0].position[1] = y;

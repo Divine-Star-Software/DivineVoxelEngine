@@ -1,7 +1,7 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
 import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/WorldTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { CCM } from "../Threads/Constructor/ConstructorComm.js";
+import { CCM } from "../../World/Threads/Threads.js";
 import { AddToRebuildQueue, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
 
 export const ConstructorTasks = {

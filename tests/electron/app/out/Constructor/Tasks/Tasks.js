@@ -7,6 +7,13 @@ import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { TasksRequest } from "./TasksRequest.js";
 const chunkTool = new ChunkDataTool();
 export const Tasks = {
+    data: {
+        syncTextures: ThreadComm.registerTasks("sync-uv-texuture-data", (data) => {
+            DVEC.builder.textureManager.setUVTextureMap(data[0]);
+            DVEC.builder.textureManager.setOverlayUVTextureMap(data[1]);
+            DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
+        }),
+    },
     build: {
         chunk: {
             tasks: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (buildData) => {

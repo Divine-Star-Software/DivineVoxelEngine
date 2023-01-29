@@ -29,6 +29,12 @@ export class TagManagerBase {
         }
         this.data = new DataView(data);
     }
+    getBuffer() {
+        if (this.data instanceof DataView) {
+            return this.data.buffer;
+        }
+        return this.data;
+    }
     setTagIndex(index) {
         this.byteOffSet = index * this.tagSize;
     }

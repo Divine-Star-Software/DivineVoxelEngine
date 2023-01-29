@@ -27,12 +27,32 @@ export const GetPlayerPickCube = (DVER, camera, scene) => {
     BABYLON.VertexData.ComputeNormals(positions, indicies, calculatedNormals);
     cube.setVerticesData(BABYLON.VertexBuffer.NormalKind, calculatedNormals);
     const cameraPickPostion = new BABYLON.Vector3();
-    window.addEventListener("click", (event) => {
+    const states = {
+        place: false,
+        break: false,
+    };
+    window.addEventListener("mousedown", (event) => {
         if (event.button == 2 && event.shiftKey) {
             DVER.worldComm.sendMessage("explode");
             return;
         }
         if (event.button == 2) {
+            states.place = true;
+        }
+        if (event.button == 0) {
+            states.break = true;
+        }
+    });
+    window.addEventListener("mouseup", (event) => {
+        if (event.button == 2) {
+            states.place = false;
+        }
+        if (event.button == 0) {
+            states.break = false;
+        }
+    });
+    setInterval(() => {
+        if (states.place) {
             cameraPickPostion.x = 0;
             cameraPickPostion.y = PlayerData.eyeLevel;
             cameraPickPostion.z = 0;
@@ -53,10 +73,10 @@ export const GetPlayerPickCube = (DVER, camera, scene) => {
             DVER.worldComm.sendMessage("voxel-add", [voxel]);
             cameraPickPostion.setAll(0);
         }
-        if (event.button == 0) {
+        if (states.break) {
             DVER.worldComm.sendMessage("voxel-remove");
         }
-    });
+    }, 100);
     scene.registerBeforeRender(() => {
         cube.position.x = PlayerData.pick.position.x + 0.5;
         cube.position.y = PlayerData.pick.position.y + 0.5;

@@ -1,5 +1,5 @@
 import { SetUpEngine, SetUpCanvas, SetUpDefaultCamera, SetUpDefaultSkybox, runRenderLoop, SetUpDefaultScene, } from "../Shared/Babylon/index.js";
-import { RunInit, SetUpWorkers, } from "../Shared/Create/index.js";
+import { RunInit, SetUpWorkers, SyncWithGraphicsSettings, } from "../Shared/Create/index.js";
 import { DVER } from "../../out/Render/DivineVoxelEngineRender.js";
 import { RegisterTexutres } from "../Shared/Functions/RegisterTextures.js";
 import { GetRenderPlayer } from "../Shared/Player/Render/RenderPlayer.js";
@@ -33,6 +33,7 @@ const init = async () => {
     window.DVER = DVER;
     scene.fogDensity = 0.005;
     await DVER.$SCENEINIT({ scene: scene });
+    SyncWithGraphicsSettings(DVER);
     DVER.render.setBaseLevel(0.1);
     DVER.render.setSunLevel(0.8);
     const hemLight = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0, 1, 0), scene);

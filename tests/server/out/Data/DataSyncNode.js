@@ -8,6 +8,7 @@ import { ChunkTags } from "./World/Chunk/ChunkTags.js";
 import { RegionHeaderTags, RegionTags } from "./World/Region/RegionTags.js";
 import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
+import { Register } from "./Register/Register.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
 export const DataSyncNode = {
     _states: {
@@ -22,10 +23,14 @@ export const DataSyncNode = {
         }
         return true;
     },
-    voxelPalette: ThreadComm.onDataSync(DataSyncTypes.voxelPalette),
-    voxelData: ThreadComm.onDataSync(DataSyncTypes.voxelData),
-    materialMap: ThreadComm.onDataSync(DataSyncTypes.materials),
-    colliderMap: ThreadComm.onDataSync(DataSyncTypes.colliders),
+    voxelPalette: ThreadComm.onDataSync(DataSyncTypes.voxelPalette, (data) => {
+        VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
+    }),
+    voxelData: ThreadComm.onDataSync(DataSyncTypes.voxelTags, (data) => {
+        VoxelTags.$INIT(data[0]);
+        VoxelTags.sync(new Uint16Array(data[1]));
+        DataSyncNode._states.voxelData = true;
+    }),
     dimension: ThreadComm.onDataSync(DataSyncTypes.dimesnion),
     chunk: ThreadComm.onDataSync(DataSyncTypes.chunk),
     column: ThreadComm.onDataSync(DataSyncTypes.column),
@@ -34,21 +39,10 @@ export const DataSyncNode = {
     chunkTags: ThreadComm.onDataSync(DataSyncTypes.chunkTags),
     columnTags: ThreadComm.onDataSync(DataSyncTypes.columnTags),
     regionTags: ThreadComm.onDataSync(DataSyncTypes.regionTags),
+    stringMap: ThreadComm.onDataSync(DataSyncTypes.registerStringMap, (data) => {
+        Register.stringMaps.syncStringMap(data);
+    }),
 };
-DataSyncNode.voxelPalette.addOnSync((data) => {
-    VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
-});
-DataSyncNode.colliderMap.addOnSync((data) => {
-    VoxelTags.colliderMap = data[0];
-});
-DataSyncNode.materialMap.addOnSync((data) => {
-    VoxelTags.materialMap = data[0];
-});
-DataSyncNode.voxelData.addOnSync((data) => {
-    VoxelTags.$INIT(data[0]);
-    VoxelTags.sync(new Uint16Array(data[1]));
-    DataSyncNode._states.voxelData = true;
-});
 DataSyncNode.dimension.addOnSync((data) => {
     DimensionsRegister.registerDimension(data.id, data.options);
 });

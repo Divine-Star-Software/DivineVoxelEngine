@@ -1,4 +1,4 @@
-import { Distance3D } from "../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";

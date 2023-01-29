@@ -36,16 +36,8 @@ export const DVER = {
         worldBounds: WorldBounds,
         spaces: WorldSpaces,
     },
-    textureManager: TextureManager,
+    textures: TextureManager,
     tasks: RenderTasks,
-    _handleOptions() {
-        const data = this.settings.settings;
-        if (data.textures) {
-            if (data.textures.width && data.textures.height) {
-                this.render.textureCreator.defineTextureDimensions(data.textures.width, data.textures.height);
-            }
-        }
-    },
     syncSettingsWithWorkers(data) {
         this.settings.syncSettings(data);
         const copy = this.settings.getSettingsCopy();
@@ -65,10 +57,6 @@ export const DVER = {
         }
         this.constructorCommManager.syncSettings(copy);
     },
-    async reStart(data) {
-        this.syncSettingsWithWorkers(data);
-        this._handleOptions();
-    },
     async $INIT(initData) {
         await InitWorkers(this, initData);
     },
@@ -83,5 +71,5 @@ export const DVER = {
     },
     getSceneTool() {
         return new SceneTool();
-    }
+    },
 };

@@ -9,9 +9,8 @@ import {
  PriorityTask,
 } from "Meta/Tasks/Tasks.types.js";
 //objects
-import { CCM } from "../Threads/Constructor/ConstructorComm.js";
+import { CCM } from "../../World/Threads/Threads.js";
 import { ConstructorTasks } from "../Threads/Contracts/ConstructorTasks.js";
-import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 const QMBase = {
  $INIT() {
@@ -116,17 +115,14 @@ const QMBase = {
   run: CCM.addQueue<ExplosionTasks>("explosion", ConstructorTasks.explosion),
  },
  flow: {
-  update: CCM.addQueue<UpdateTasks>(
-   "flow-update",
-   ConstructorTasks.flowUpdate
-  ),
-  remove: CCM.addQueue<UpdateTasks>(
-   "flow-remove",
-   ConstructorTasks.flowRemove
-  ),
+  update: CCM.addQueue<UpdateTasks>("flow-update", ConstructorTasks.flowUpdate),
+  remove: CCM.addQueue<UpdateTasks>("flow-remove", ConstructorTasks.flowRemove),
  },
  build: {
-  chunk: CCM.addQueue<PriorityTask<BuildTasks>>("build-chunk", ConstructorTasks.buildChunk),
+  chunk: CCM.addQueue<PriorityTask<BuildTasks>>(
+   "build-chunk",
+   ConstructorTasks.buildChunk
+  ),
  },
  generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.generate),
 };

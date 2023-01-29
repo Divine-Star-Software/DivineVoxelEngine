@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
@@ -188,8 +189,8 @@ export declare const DVER: {
             context: CanvasRenderingContext2D | null;
             imgWidth: number;
             imgHeight: number;
-            _mipMapSizes: number[][];
-            defineTextureDimensions(width: number, height: number): void;
+            _mipMapSizes: number[];
+            defineTextureDimensions(textureSize: number, mipMapSizes: number[]): void;
             setUpImageCreation(): void;
             createMaterialTexture(name: string, scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray[]>;
             _createTextures(name: string, scene: BABYLON.Scene, images: string[], width: number, height: number): Promise<BABYLON.RawTexture2DArray>;
@@ -364,7 +365,7 @@ export declare const DVER: {
             $INIT(settings: EngineSettingsData): void;
         };
     };
-    textureManager: {
+    textures: {
         defaultTexturePath: string;
         processedTextureData: import("../Meta/index.js").TextureProccesedData;
         overlayProcessedTextureData: import("../Meta/index.js").TextureProccesedData;
@@ -382,7 +383,7 @@ export declare const DVER: {
         defineDefaultTexturePath(path: string): void;
         defineDefaultTextureExtension(textureType: import("../Meta/index.js").TextureTypes, ext: string): void;
         getTextureUV(textureType: import("../Meta/index.js").TextureTypes, textureId: string, varation?: string | undefined): number;
-        registerTexture(textureType: import("../Meta/index.js").TextureTypes, textureData: import("../Meta/index.js").TextureData): void;
+        registerTexture(textureData: import("../Meta/index.js").TextureData | import("../Meta/index.js").TextureData[]): void;
         releaseTextureData(): void;
     };
     tasks: {
@@ -391,9 +392,7 @@ export declare const DVER: {
         removeColumn: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
         removeColumnsOutsideRadius: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunksOutsideDistance>;
     };
-    _handleOptions(): void;
     syncSettingsWithWorkers(data: EngineSettingsData): void;
-    reStart(data: EngineSettingsData): Promise<void>;
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
         scene: BABYLON.Scene;

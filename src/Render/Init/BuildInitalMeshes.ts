@@ -10,11 +10,11 @@ const setUpMaterial = async (
  material: DVEMaterial
 ) => {
  const textures =
-  DVER.textureManager.processedTextureData.texturePaths[substance];
+  DVER.textures.processedTextureData.texturePaths[substance];
  const animations =
-  DVER.textureManager.processedTextureData.textureAnimations[substance];
+  DVER.textures.processedTextureData.textureAnimations[substance];
  const animationTimes =
-  DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
+  DVER.textures.processedTextureData.textureAnimationTimes[substance];
  const materialTextures =
   await DVER.render.textureCreator.createMaterialTexture(
    `${substance}-diffuse`,
@@ -23,11 +23,11 @@ const setUpMaterial = async (
   );
 
  const overlayTextures =
-  DVER.textureManager.overlayProcessedTextureData.texturePaths[substance];
+  DVER.textures.overlayProcessedTextureData.texturePaths[substance];
  const overlayAimations =
-  DVER.textureManager.overlayProcessedTextureData.textureAnimations[substance];
+  DVER.textures.overlayProcessedTextureData.textureAnimations[substance];
  const overlayAnimationTimes =
-  DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[
+  DVER.textures.overlayProcessedTextureData.textureAnimationTimes[
    substance
   ];
  const Overlay2dTextureArray =
@@ -64,7 +64,7 @@ export async function BuildInitalMeshes(
  DVER: DivineVoxelEngineRender,
  scene: BABYLON.Scene
 ) {
- if (!DVER.textureManager.processedTextureData) {
+ if (!DVER.textures.processedTextureData) {
   throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
  }
 
@@ -82,7 +82,7 @@ export async function BuildInitalMeshes(
 
  DVER.render.animationManager.startAnimations();
 
- DVER.textureManager.releaseTextureData();
+ DVER.textures.releaseTextureData();
 
  scene.registerBeforeRender(() => {
   DVER.render.solidMaterial.runEffects();

@@ -1,6 +1,6 @@
 //types
 import type { VoxelTemplateSubstanceType } from "Meta/index";
-import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+import type { FullVoxelSubstanceTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
@@ -15,7 +15,11 @@ export const ChunkMesher = {
   "magma",
  ],
 
- buildChunkMesh(location: LocationData, template: FullChunkTemplate, LOD = 1) {
+ buildChunkMesh(
+  location: LocationData,
+  template: FullVoxelSubstanceTemplate,
+  LOD = 1
+ ) {
   let i = this.voxelBuildOrder.length;
 
   const chunks: SetChunkMeshTask = [location, []];
@@ -31,7 +35,7 @@ export const ChunkMesher = {
    }
 
    const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD, location);
-
+   if (!meshData) return;
    chunks[1].push([
     type,
     //@ts-ignore

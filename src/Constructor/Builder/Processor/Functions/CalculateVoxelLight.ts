@@ -1,15 +1,12 @@
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { Processor } from "../Processor.js";
-import { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import { DirectionNames } from "Meta/Util.types.js";
-import { DVEC } from "../../../DivineVoxelEngineConstructor.js";
 import { VoxelShape } from "Meta/index.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
-import { OverrideManager } from "../../Overrides/OverridesManager.js";
-import { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
-type Nullable<T> = T | false | null;
+import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
+import { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 const LD = LightData;
 type Vertexes = 1 | 2 | 3 | 4;
 const RGBvertexStates = {
@@ -212,7 +209,7 @@ const flipCheck = (face: DirectionNames) => {
 };
 
 const handleAdd = (
- data: ChunkTemplate,
+ data: VoxelTemplate,
  face: number,
  direction: DirectionNames
 ) => {
@@ -314,7 +311,7 @@ const AOValues = { a: 0 };
 
 export function CalculateVoxelLight(
  this: typeof Processor,
- data: ChunkTemplate,
+ data: VoxelTemplate,
  tx: number,
  ty: number,
  tz: number,

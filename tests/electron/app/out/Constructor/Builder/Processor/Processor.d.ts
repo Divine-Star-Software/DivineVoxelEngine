@@ -1,11 +1,11 @@
 import type { DirectionNames, EngineSettingsData, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
-import type { FullChunkTemplate } from "Meta/Constructor/ChunkTemplate.types.js";
+import type { FullVoxelSubstanceTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
-import { LocationData } from "Meta/Data/CommonTypes.js";
 /**# Chunk Processor
  * ---
  * Takes the given world data and generates templates
@@ -85,12 +85,12 @@ export declare const Processor: {
         composedEntity: number;
     };
     faceDataOverride: FaceDataOverride;
-    template: FullChunkTemplate;
+    template: FullVoxelSubstanceTemplate;
     $INIT(): void;
     cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
-    _process(location: LocationData, doSecondCheck?: boolean): void;
-    makeAllChunkTemplates(location: LocationData, LOD?: number): FullChunkTemplate;
+    _process(doSecondCheck?: boolean): void;
+    makeAllChunkTemplates(location: LocationData, LOD?: number): FullVoxelSubstanceTemplate;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;
 };

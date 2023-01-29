@@ -37,10 +37,7 @@ export declare type TextureAnimationData = {
     animKeyFrameTimes?: number[];
 };
 export declare type TextureData = {
-    /**# Name
-     * The name of the texutre.
-     */
-    name: string;
+    type: TextureTypes;
     /**# ID
      * The id of the texture.
      * This will be used to locate the file.

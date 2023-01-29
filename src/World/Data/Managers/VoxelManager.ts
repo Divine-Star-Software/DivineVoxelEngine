@@ -1,22 +1,21 @@
 import { VoxelData } from "Meta/index";
 
 export const VoxelManager = {
- voxelData: <Record<string, VoxelData>>{},
- _onRegister: (data: VoxelData) => {},
+ voxelData: <Map<string, VoxelData>>new Map(),
  getVoxelData(id: string) {
-  const voxelData = this.voxelData[id];
+  const voxelData = this.voxelData.get(id);
   if (!voxelData) {
    throw new Error(`Voxel with ${id} does not exists.`);
   }
   return voxelData;
  },
-
- registerVoxelData(data: VoxelData) {
-  this.voxelData[data.id] = data;
-  this._onRegister(data);
- },
-
- onRegister(func: (data: VoxelData) => void) {
-  this._onRegister = func;
+ registerVoxelData(data: VoxelData | VoxelData[]) {
+  if (Array.isArray(data)) {
+   for (const voxel of data) {
+    this.voxelData.set(voxel.id, voxel);
+   }
+   return;
+  }
+  this.voxelData.set(data.id, data);
  },
 };

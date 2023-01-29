@@ -22,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.11.7",
-    "babylonjs": "^5.8.2",
+    "babylonjs": "^5.44.0",
     "esbuild": "^0.14.14",
     "rollup": "^2.66.1",
     "rollup-plugin-dts": "^4.1.0",

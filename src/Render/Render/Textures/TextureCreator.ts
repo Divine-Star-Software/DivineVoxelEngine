@@ -4,16 +4,12 @@ export const TextureCreator = {
  imgWidth: 16,
  imgHeight: 16,
 
- _mipMapSizes: [
-  [16, 16],
-  [12, 12],
-  [8, 8],
-  [4, 4],
- ],
+ _mipMapSizes: [16, 12, 8, 4],
 
- defineTextureDimensions(width: number, height: number) {
-  this.imgWidth = width;
-  this.imgHeight = height;
+ defineTextureDimensions(textureSize : number,mipMapSizes : number[]) {
+  this.imgWidth = textureSize;
+  this.imgHeight = textureSize;
+  this._mipMapSizes = mipMapSizes;
  },
 
  setUpImageCreation() {
@@ -41,13 +37,7 @@ export const TextureCreator = {
 
   const textures: BABYLON.RawTexture2DArray[] = [];
   for (const size of this._mipMapSizes) {
-   const texture = await this._createTextures(
-    name,
-    scene,
-    images,
-    size[0],
-    size[1]
-   );
+   const texture = await this._createTextures(name, scene, images, size, size);
 
    textures.push(texture);
   }

@@ -2,10 +2,12 @@ import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js"
 import { $2dMooreNeighborhood } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
 import { TasksTool } from "../../../Tools/Tasks/TasksTool.js";
-import { Distance3D } from "../../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../../Math/Functions/Distance3d.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
 import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
+import { VisitedMap } from "../../../Global/Util/VisistedMap.js";
+import { Vec3ArrayDistanceSort } from "../../../Math/Functions/DistnaceSort.js";
 const getKey = (x, y, z) => {
     return WorldSpaces.column.getKeyXYZ(x, y, z);
 };
@@ -13,17 +15,17 @@ class IWGTasks {
     run;
     iwg;
     queue = [];
-    map = new Map();
+    map = new VisitedMap();
     waitingFor = 0;
     constructor(run, iwg) {
         this.run = run;
         this.iwg = iwg;
     }
     add(x, y, z) {
-        if (this.map.has(getKey(x, y, z)))
+        if (this.map.inMap(x, y, z))
             return;
         this.queue.push([x, y, z]);
-        this.map.set(getKey(x, y, z), true);
+        this.map.add(x, y, z);
     }
     substact() {
         this.waitingFor--;
@@ -36,6 +38,7 @@ class IWGTasks {
         if (this.waitingFor != 0)
             return;
         let i = max;
+        Vec3ArrayDistanceSort(this.iwg._cachedPosition, this.queue);
         while (i--) {
             const node = this.queue.shift();
             if (!node)
@@ -43,7 +46,7 @@ class IWGTasks {
             this.waitingFor++;
             const [x, y, z] = node;
             this.run(x, y, z);
-            this.map.delete(getKey(x, y, z));
+            this.map.remove(x, y, z);
         }
     }
 }

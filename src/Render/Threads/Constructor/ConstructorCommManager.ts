@@ -13,9 +13,9 @@ const CCM = Object.assign(CCMBase, {
   const worldComm = ThreadComm.getComm("world");
   for (const constructor of CCM.__comms) {
    worldComm.connectToComm(constructor);
-   constructor.sendMessage("sync-uv-texuture-data", [
-    DVER.textureManager.uvTextureMap,
-    DVER.textureManager.overlayUVTextureMap,
+   constructor.runTasks("sync-uv-texuture-data", [
+    DVER.textures.uvTextureMap,
+    DVER.textures.overlayUVTextureMap,
    ]);
   }
  },

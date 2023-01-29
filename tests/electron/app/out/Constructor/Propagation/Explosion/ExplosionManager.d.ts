@@ -6,6 +6,7 @@ export declare const ExplosionManager: {
         LOD: number;
         syncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
         buildMode: "async" | "sync";
+        rebuildTasks: import("../../../Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
         data: number;
@@ -15,55 +16,25 @@ export declare const ExplosionManager: {
             flow: {
                 update: {
                     queue: number[][];
-                    map: {
-                        _map: Map<string, boolean>;
-                        _getKey(x: number, y: number, z: number): string;
-                        inMap(x: number, y: number, z: number): boolean;
-                        add(x: number, y: number, z: number): void;
-                        clear(): void;
-                    };
+                    map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 rmeove: {
                     queue: number[][];
-                    map: {
-                        _map: Map<string, boolean>;
-                        _getKey(x: number, y: number, z: number): string;
-                        inMap(x: number, y: number, z: number): boolean;
-                        add(x: number, y: number, z: number): void;
-                        clear(): void;
-                    };
-                    noRemoveMap: {
-                        _map: Map<string, boolean>;
-                        _getKey(x: number, y: number, z: number): string;
-                        inMap(x: number, y: number, z: number): boolean;
-                        add(x: number, y: number, z: number): void;
-                        clear(): void;
-                    };
+                    map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
+                    noRemoveMap: import("../../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             rgb: {
                 update: [x: number, y: number, z: number][];
                 rmeove: [x: number, y: number, z: number][];
-                map: {
-                    _map: Map<string, boolean>;
-                    _getKey(x: number, y: number, z: number): string;
-                    inMap(x: number, y: number, z: number): boolean;
-                    add(x: number, y: number, z: number): void;
-                    clear(): void;
-                };
+                map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
             };
             sun: {
                 update: [x: number, y: number, z: number][];
                 rmeove: [x: number, y: number, z: number][];
             };
             queue: [x: number, y: number, z: number][];
-            map: {
-                _map: Map<string, boolean>;
-                _getKey(x: number, y: number, z: number): string;
-                inMap(x: number, y: number, z: number): boolean;
-                add(x: number, y: number, z: number): void;
-                clear(): void;
-            };
+            map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
         };
         start(): any;
         stop(): any;
@@ -76,7 +47,7 @@ export declare const ExplosionManager: {
         needsToUpdateOriginThread(): boolean;
         setBuldMode(mode: "async" | "sync"): any;
         addToRebuildQueue(x: number, y: number, z: number): boolean;
-        addNeighborsToRebuildQueue(x: number, y: number, z: number): any;
+        addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;
     }): void;
 };

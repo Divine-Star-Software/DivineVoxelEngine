@@ -1,6 +1,6 @@
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { ShapeManager } from "../../Managers/Shapes/ShapeManager.js";
-import { VoxelManager } from "../../Managers/Voxels/VoxelManager.js";
+import { ShapeManager } from "../../Builder/Shapes/ShapeManager.js";
+import { VoxelConstructors } from "../../Builder/Constructors/Voxel/VoxelConstructors.js";
 import { Util } from "../../../Global/Util.helper.js";
 export function GetConstructorDataTool() {
     const dataTool = new DataTool();
@@ -9,7 +9,7 @@ export function GetConstructorDataTool() {
             return ShapeManager.getShape(dataTool.getShapeId());
         },
         getVoxelObj() {
-            return VoxelManager.getVoxel(dataTool.getStringId());
+            return VoxelConstructors.getVoxel(dataTool.getStringId());
         },
     };
     return Util.merge(dataTool, mergeObj);

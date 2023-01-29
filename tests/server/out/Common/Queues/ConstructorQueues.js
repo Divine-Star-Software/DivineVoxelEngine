@@ -1,5 +1,5 @@
 //objects
-import { CCM } from "../Threads/Constructor/ConstructorComm.js";
+import { CCM } from "../../World/Threads/Threads.js";
 import { ConstructorTasks } from "../Threads/Contracts/ConstructorTasks.js";
 const QMBase = {
     $INIT() {

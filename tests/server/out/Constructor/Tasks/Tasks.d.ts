@@ -1,5 +1,8 @@
 import { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, PriorityTask, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
+    data: {
+        syncTextures: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+    };
     build: {
         chunk: {
             tasks: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<PriorityTask<BuildTasks>>;

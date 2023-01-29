@@ -106,6 +106,13 @@ export class VoxelSpace {
         this.setXYZ(location[1], location[2], location[3]);
         return this;
     }
+    updateLoaction(location) {
+        this.setXYZ(location[1], location[2], location[3]);
+        location[1] = this._location[1];
+        location[2] = this._location[2];
+        location[3] = this._location[3];
+        return this;
+    }
     setCubeBounds(bounds) {
         if (this._boundsSet)
             return;

@@ -33,8 +33,8 @@ export const EngineSettings = {
         },
         textures: {
             animationTime: 20,
-            width: 16,
-            height: 16,
+            textureSize: 16,
+            mipMapSizes: [16, 12, 8, 4],
         },
         updating: {
             autoRebuild: true,

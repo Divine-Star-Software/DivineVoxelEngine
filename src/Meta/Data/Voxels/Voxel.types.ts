@@ -1,7 +1,3 @@
-import type { Builder as DVEBuilswe } from "Constructor/Builder/Builder";
-import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
-import type { VoxelProcessData } from "Meta/Constructor/Voxel.types";
-
 /**# Voxel Substance Type
  * ---
  * All solid and transparent voxels are grouped together in the same mesh per chunk.
@@ -19,43 +15,25 @@ export type VoxelSubstanceType =
  * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
  */
 export type VoxelTemplateSubstanceType = "solid" | "flora" | "liquid" | "magma";
-
-export type VoxelHooks =
- | "texturesRegistered"
- | "beforeAdd"
- | "afterAdd"
- | "beforeRemove"
- | "afterAfter"
- | any;
-
-export type VoxelConstructorThreadHooks = "texturesRegistered" | any;
-
-export type VoxelWorldThreadHooks =
- | "beforeAdd"
- | "afterAdd"
- | "beforeRemove"
- | "afterAfter"
- | any;
-
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.
  */
 export type VoxelData = {
- name: string;
- shapeId: string;
  id: string;
- substance: VoxelSubstanceType;
- material: string;
- hardnress: number;
- isRich?: boolean;
- physics?: {
-  collider: string;
-  checkCollisions: boolean;
- };
  states?: number;
- lightSource?: boolean;
- lightValue?: number;
+ tags: (
+  | [id: string, value: string | number | boolean | number[]]
+  | [id: "#dve_substance", value: VoxelSubstanceType]
+  | [id: "#dve_shape_id", value: string]
+  | [id: "#dve_is_light_source", value: boolean]
+  | [id: "#dve_light_value", value: [r:number,g:number,z:number]]
+  | [id: "#dve_collider_id", value: string]
+  | [id: "#dve_check_collisions", value: boolean]
+  | [id: "#dve_material", value: string]
+  | [id: "#dve_hardness", value: number]
+  | [id: "#dve_is_rich", value: boolean]
+ )[];
 };
 
 export type RawVoxelData = [
@@ -64,15 +42,3 @@ export type RawVoxelData = [
  state: number,
  secondaryId: number
 ];
-
-export type VoxelConstructorObject = {
- id: string;
- hooks: Record<VoxelConstructorThreadHooks, (DVEB: typeof DVEBuilswe) => any>;
-
- cullFace?: {
-  (data: FaceDataOverride): boolean;
- };
-
- aoOverRide?: { (data: FaceDataOverride): boolean };
- process(data: VoxelProcessData, builder: typeof DVEBuilswe): void;
-};

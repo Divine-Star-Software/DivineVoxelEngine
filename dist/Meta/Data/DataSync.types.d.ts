@@ -11,4 +11,9 @@ export declare type VoxelDataSync = [
     initData: RemoteTagManagerInitData,
     voxelMapData: SharedArrayBuffer
 ];
-export declare type VoxelMapSyncData = [data: Record<number, string>];
+export declare type RegisterStringMapSync = [
+    segment: string,
+    id: string,
+    map: string[]
+];
+export declare type VoxelMapSyncData = string[];

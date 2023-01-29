@@ -100,8 +100,8 @@ export const TextureManager = {
    map = this.overlayUVTextureMap;
   }
   if (normalMap) {
-    map = this.overlayUVTextureMap;
-   }
+   map = this.overlayUVTextureMap;
+  }
 
   if (!texture.variations) return count;
   for (const varation of Object.keys(texture.variations)) {
@@ -279,12 +279,22 @@ export const TextureManager = {
   return this.uvTextureMap[textureType][id];
  },
 
- registerTexture(textureType: TextureTypes, textureData: TextureData) {
-  if (!textureData.overlay) {
-   this.textures[textureType].push(textureData);
+ registerTexture(textureData: TextureData | TextureData[]) {
+  if (Array.isArray(textureData)) {
+   for (const texture of textureData) {
+    if (texture.overlay) {
+     this.overylayTextures[texture.type].push(texture);
+     continue;
+    }
+    this.textures[texture.type].push(texture);
+   }
    return;
   }
-  this.overylayTextures[textureType].push(textureData);
+  if (textureData.overlay) {
+   this.overylayTextures[textureData.type].push(textureData);
+   return;
+  }
+  this.textures[textureData.type].push(textureData);
  },
 
  releaseTextureData() {

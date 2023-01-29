@@ -1,58 +1,228 @@
 //types
 import type { DivineVoxelEngineWorld } from "out/World/DivineVoxelEngineWorld.js"; //voxels
-//voxels
-import { DebugBoxVoxelData } from "../Voxels/Solid/DebugBox/DebugBox.voxel.data.js";
-import { LightDebugBoxVoxelData } from "../Voxels/Solid/LightDebugBox/LightDebugBox.voxel.data.js";
-import { DreamStoneVoxelData } from "../Voxels/Solid/DreamStone/DreamStone.voxel.data.js";
-import { DreamStonePillarVoxelData } from "../Voxels/Solid/DreamStonePillar/DreamStonePillar.voxel.data.js";
-import { DreamGrassBlockVoxelData } from "../Voxels/Solid/DreamGrass/DreamGrassBlock.voxel.data.js";
-import { DreamLampVoxelData } from "../Voxels/Solid/DreamLamp/DreamLamp.voxel.data.js";
-import { DreamGrassVoxelData } from "../Voxels/Flora/DreamGrass/DreamGrass.voxel.data.js";
-import { LiquidDreamEtherVoxelData } from "../Voxels/Liquid/LiquidDreamEther/LiquidDreamEther.voxel.data.js";
-import { DreamStoneSlabVoxelData } from "../Voxels/Solid/DreamStoneSlab/DreamStoneSlab.voxel.data.js";
-import { DreamVineVoxelData } from "../Voxels/Flora/DreamVine/DreamVine.voxel.data.js";
-import { DreamLeafsVoxelData } from "../Voxels/Flora/DreamLeafs/DreamLeafs.voxel.data.js";
-import { DreamLogVoxelData } from "../Voxels/Solid/DreamLog/DreamLog.voxel.data.js";
-import { DreamStoneStairVoxelData } from "../Voxels/Solid/DreamStoneStair/DreamStoneStair.voxel.data.js";
-import { DataHolderVoxelData } from "../Voxels/Solid/DataHolder/DataHolder.voxel.data.js";
-import { MarkerBoxVoxelData } from "../Voxels/Solid/MarkerBox/MarkerBox.voxel.data.js";
-import { DreadStoneVoxelData } from "../Voxels/Solid/DreadStone/DreadStone.voxel.data.js";
-import { DreadGrassBlockVoxelData } from "../Voxels/Solid/DreadGrass/DreadGrassBlock.voxel.data.js";
-import { DreadGrassVoxelData } from "../Voxels/Flora/DreadGrass/DreadGrass.voxel.data.js";
-import { LiquidDreadEtherVoxelData } from "../Voxels/Liquid/LiquidDreadEther/LiquidDreadEther.voxel.data.js";
-import { DreadLampVoxelData } from "../Voxels/Solid/DreadLamp/DreadLamp.voxel.data.js";
-import { DreadStonePillarVoxelData } from "../Voxels/Solid/DreadStonePillar/DreadStonePillar.voxel.data.js";
-
 export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
- const voxelData = [];
- voxelData.push(
+ DVEW.voxelManager.registerVoxelData([
   //util
-  DebugBoxVoxelData,
-  LightDebugBoxVoxelData,
-  DataHolderVoxelData,
-  MarkerBoxVoxelData,
+  {
+   id: "dve_debug#dve_box",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_#dve_box"],
+    ["#dve_is_light_source", true],
+    ["#dve_light_value", [15, 15, 15]],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_lightdebug",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dataholder",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_is_rich", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_markerbox",
+   states: 15,
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
   //dream
-  DreamStoneVoxelData,
-  DreamStonePillarVoxelData,
-  DreamGrassBlockVoxelData,
-  DreamLampVoxelData,
-  DreamStoneSlabVoxelData,
-  DreamLogVoxelData,
-  DreamStoneStairVoxelData,
-  DreamGrassVoxelData,
-  DreamVineVoxelData,
-  DreamLeafsVoxelData,
-  LiquidDreamEtherVoxelData,
+  {
+   id: "dve_dreamstone",
+   states: 1,
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "grassy-stone"],
+   ],
+  },
+  {
+   id: "dve_dreamstonepillar",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dreamgrassblock",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dreamlamp",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_is_light_source", true],
+    ["#dve_light_value", [15, 0, 15]],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dreamstoneslab",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_halfbox"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "grassy-stone"],
+   ],
+  },
+  {
+   id: "dve_dream-log",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "wood"],
+   ],
+  },
+  {
+   id: "dve_dreamstone-stair",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_stair"],
+    ["#dve_collider_id", "#dve_stair"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dreamgrass",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_crossed_panels"],
+    ["#dve_check_collisions", false],
+    ["#dve_material", "grass"],
+   ],
+  },
+  {
+   id: "dve_dreamvine",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_panel"],
+    ["#dve_check_collisions", false],
+    ["#dve_material", "grass"],
+   ],
+  },
+  {
+   id: "dve_dream-leafs",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "grass"],
+   ],
+  },
+  {
+   id: "dve_liquiddreamether",
+   tags: [
+    ["#dve_substance", "liquid"],
+    ["#dve_shape_id", "#dve_liquid"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "water"],
+   ],
+  },
   //dread
-  DreadStoneVoxelData,
-  DreadGrassBlockVoxelData,
-  DreadGrassVoxelData,
-  DreadLampVoxelData,
-  DreadStonePillarVoxelData,
-  LiquidDreadEtherVoxelData
- );
+  {
+   id: "dve_dreadstone",
+   states: 1,
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "grassy-stone"],
+   ],
+  },
+  {
+   id: "dve_dreadgrassblock",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+  {
+   id: "dve_dreadgrass",
+   tags: [
+    ["#dve_substance", "flora"],
+    ["#dve_shape_id", "#dve_crossed_panels"],
+    ["#dve_check_collisions", false],
+    ["#dve_material", "grass"],
+   ],
+  },
+  {
+   id: "dve_dreadlamp",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_is_light_source", true],
+    ["#dve_light_value", [15, 0, 0]],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
 
- for (const voxel of voxelData) {
-  DVEW.voxelManager.registerVoxelData(voxel);
- }
+  {
+   id: "dve_dreadstonepillar",
+   tags: [
+    ["#dve_substance", "solid"],
+    ["#dve_shape_id", "#dve_box"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "stone"],
+   ],
+  },
+
+  {
+   id: "dve_liquiddreadether",
+   tags: [
+    ["#dve_substance", "liquid"],
+    ["#dve_shape_id", "#dve_liquid"],
+    ["#dve_collider_id", "#dve_box"],
+    ["#dve_check_collisions", true],
+    ["#dve_material", "water"],
+   ],
+  },
+ ]);
 }

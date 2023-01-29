@@ -3,26 +3,23 @@ import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 export declare const Builder: {
     textureManager: {
         textureDataHasBeenSet: boolean;
-        uvTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
-        overlayUVTextureMap: Record<import("Meta/index.js").TextureTypes, Record<string, number>>;
-        getTextureUV(textureType: import("Meta/index.js").TextureTypes, textureId: string, varation?: string | false | null, overlay?: boolean): number;
+        uvTextureMap: Record<string, Record<string, number>>;
+        overlayUVTextureMap: Record<string, Record<string, number>>;
+        getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
         setUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
         setOverlayUVTextureMap(data: Record<import("Meta/index.js").TextureTypes, Record<string, number>>): void;
         releaseTextureData(): void;
         isReady(): boolean;
     };
     shapeManager: {
-        shapes: Record<number, import("Meta/index.js").VoxelShape>;
-        shapeMap: Record<string, number>;
+        shapes: Map<string, import("Meta/index.js").VoxelShape>;
         shapeCount: number;
         registerShape(shapeObject: import("Meta/index.js").VoxelShape): void;
-        getShape(shapeId: number): import("Meta/index.js").VoxelShape;
-        getShapeId(shapeId: string): number;
-        getShapeMap(): Record<string, number>;
+        getShape(shapeId: string): import("Meta/index.js").VoxelShape;
     };
     chunkMesher: {
         voxelBuildOrder: import("Meta/index.js").VoxelTemplateSubstanceType[];
-        buildChunkMesh(location: LocationData, template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate, LOD?: number): void;
+        buildChunkMesh(location: LocationData, template: import("../../Meta/Constructor/VoxelTemplate.types.js").FullVoxelSubstanceTemplate, LOD?: number): void;
     };
     processor: {
         LOD: number;
@@ -85,7 +82,7 @@ export declare const Builder: {
         calculatFlow: typeof import("./Processor/Functions/CalculateFlow.js").CalculateFlow;
         voxellightMixCalc: typeof import("./Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
         doVoxelLight: typeof import("./Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
-        nLocation: import("../../Meta/Data/CommonTypes.js").LocationData;
+        nLocation: LocationData;
         exposedFaces: number[];
         faceStates: number[];
         textureRotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations[];
@@ -98,21 +95,20 @@ export declare const Builder: {
             composedEntity: number;
         };
         faceDataOverride: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride;
-        template: import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        template: import("../../Meta/Constructor/VoxelTemplate.types.js").FullVoxelSubstanceTemplate;
         $INIT(): void;
         cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("Meta/index.js").VoxelShape, voxelSubstance: import("Meta/index.js").VoxelSubstanceType, faceBit: number): number;
         faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
-        _process(location: import("../../Meta/Data/CommonTypes.js").LocationData, doSecondCheck?: boolean): void;
-        makeAllChunkTemplates(location: import("../../Meta/Data/CommonTypes.js").LocationData, LOD?: number): import("../../Meta/Constructor/ChunkTemplate.types.js").FullChunkTemplate;
+        _process(doSecondCheck?: boolean): void;
+        makeAllChunkTemplates(location: LocationData, LOD?: number): import("../../Meta/Constructor/VoxelTemplate.types.js").FullVoxelSubstanceTemplate;
         syncSettings(settings: EngineSettingsData): void;
         flush(): void;
     };
-    voxelHelper: {
-        substanceMap: Record<import("Meta/index.js").VoxelSubstanceType, number>;
-        substanceRules: Record<string, boolean>;
-        ruleMap: Record<number, boolean>;
+    substanceRules: {
+        rules: Map<string, Map<string, boolean>>;
+        registerSubstance(id: string, substanceCulls?: string[] | undefined): void;
         $INIT(): void;
-        substanceRuleCheck(voxel: import("Meta/index.js").VoxelSubstanceType, neightborVoxel: import("Meta/index.js").VoxelSubstanceType): boolean;
+        exposedCheck(subject: import("Meta/index.js").VoxelSubstanceType, neightborVoxel: import("Meta/index.js").VoxelSubstanceType): boolean;
     };
     dimension: number;
     $INIT(): Promise<void>;

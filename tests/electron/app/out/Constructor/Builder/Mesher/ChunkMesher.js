@@ -20,6 +20,8 @@ export const ChunkMesher = {
                 continue;
             }
             const meshData = VoxelMesher.$buildMesh(type, baseTemplate, LOD, location);
+            if (!meshData)
+                return;
             chunks[1].push([
                 type,
                 //@ts-ignore

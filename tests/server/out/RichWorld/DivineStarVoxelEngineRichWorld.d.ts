@@ -120,11 +120,9 @@ export declare const DVERW: {
         };
     };
     voxelManager: {
-        voxelData: Record<string, import("Meta/index.js").VoxelData>;
-        _onRegister: (data: import("Meta/index.js").VoxelData) => void;
+        voxelData: Map<string, import("Meta/index.js").VoxelData>;
         getVoxelData(id: string): import("Meta/index.js").VoxelData;
-        registerVoxelData(data: import("Meta/index.js").VoxelData): void;
-        onRegister(func: (data: import("Meta/index.js").VoxelData) => void): void;
+        registerVoxelData(data: import("Meta/index.js").VoxelData | import("Meta/index.js").VoxelData[]): void;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

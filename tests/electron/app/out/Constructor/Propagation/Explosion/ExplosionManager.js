@@ -4,7 +4,7 @@ import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeigh
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 //functions
-import { Distance3D } from "../../../Libs/Math/Functions/Distance3d.js";
+import { Distance3D } from "../../../Math/Functions/Distance3d.js";
 import { RGBRemove, RGBUpdate } from "../Illumanation/Functions/RGBUpdate.js";
 import { SunRemove, SunUpdate } from "../Illumanation/Functions/SunUpdate.js";
 import { FlowManager } from "../Flow/FlowManager.js";
@@ -86,11 +86,6 @@ export const ExplosionManager = {
             if (dataTool.loadInAt(x, y, z)) {
                 if (dataTool.isRenderable()) {
                     const substance = dataTool.getSubstance();
-                    if (dataTool.getHardness() > 10_000 ||
-                        substance == "liquid" ||
-                        substance == "magma") {
-                        continue;
-                    }
                     for (const n of $3dCardinalNeighbors) {
                         const nx = x + n[0];
                         const ny = y + n[1];
@@ -107,8 +102,13 @@ export const ExplosionManager = {
                             }
                         }
                     }
-                    dataTool.setAir().commit(2);
                     tasks.addNeighborsToRebuildQueue(x, y, z);
+                    if (dataTool.getHardness() > 10_000 ||
+                        substance == "liquid" ||
+                        substance == "magma") {
+                        continue;
+                    }
+                    dataTool.setAir().commit(2);
                 }
             }
         }

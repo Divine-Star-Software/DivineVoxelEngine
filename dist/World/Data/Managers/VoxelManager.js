@@ -1,18 +1,19 @@
 export const VoxelManager = {
-    voxelData: {},
-    _onRegister: (data) => { },
+    voxelData: new Map(),
     getVoxelData(id) {
-        const voxelData = this.voxelData[id];
+        const voxelData = this.voxelData.get(id);
         if (!voxelData) {
             throw new Error(`Voxel with ${id} does not exists.`);
         }
         return voxelData;
     },
     registerVoxelData(data) {
-        this.voxelData[data.id] = data;
-        this._onRegister(data);
-    },
-    onRegister(func) {
-        this._onRegister = func;
+        if (Array.isArray(data)) {
+            for (const voxel of data) {
+                this.voxelData.set(voxel.id, voxel);
+            }
+            return;
+        }
+        this.voxelData.set(data.id, data);
     },
 };

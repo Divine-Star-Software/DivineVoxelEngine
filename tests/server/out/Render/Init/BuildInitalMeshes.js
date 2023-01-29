@@ -1,11 +1,11 @@
 const setUpMaterial = async (DVER, scene, substance, material) => {
-    const textures = DVER.textureManager.processedTextureData.texturePaths[substance];
-    const animations = DVER.textureManager.processedTextureData.textureAnimations[substance];
-    const animationTimes = DVER.textureManager.processedTextureData.textureAnimationTimes[substance];
+    const textures = DVER.textures.processedTextureData.texturePaths[substance];
+    const animations = DVER.textures.processedTextureData.textureAnimations[substance];
+    const animationTimes = DVER.textures.processedTextureData.textureAnimationTimes[substance];
     const materialTextures = await DVER.render.textureCreator.createMaterialTexture(`${substance}-diffuse`, scene, textures);
-    const overlayTextures = DVER.textureManager.overlayProcessedTextureData.texturePaths[substance];
-    const overlayAimations = DVER.textureManager.overlayProcessedTextureData.textureAnimations[substance];
-    const overlayAnimationTimes = DVER.textureManager.overlayProcessedTextureData.textureAnimationTimes[substance];
+    const overlayTextures = DVER.textures.overlayProcessedTextureData.texturePaths[substance];
+    const overlayAimations = DVER.textures.overlayProcessedTextureData.textureAnimations[substance];
+    const overlayAnimationTimes = DVER.textures.overlayProcessedTextureData.textureAnimationTimes[substance];
     const Overlay2dTextureArray = await DVER.render.textureCreator.createMaterialTexture(`${substance}-overlay`, scene, overlayTextures);
     /*
     if (DVER.settings.getSettings().materials.mode == "standard") {
@@ -30,7 +30,7 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
     material.createMaterial(materialCreateData);
 };
 export async function BuildInitalMeshes(DVER, scene) {
-    if (!DVER.textureManager.processedTextureData) {
+    if (!DVER.textures.processedTextureData) {
         throw new Error("World base data was not set. Call $INIT before $SCENEINIT");
     }
     DVER.render.$INIT(scene);
@@ -41,7 +41,7 @@ export async function BuildInitalMeshes(DVER, scene) {
     await setUpMaterial(DVER, scene, "magma", DVER.render.magmaMaterial);
     await setUpMaterial(DVER, scene, "Item", DVER.render.itemMaterial);
     DVER.render.animationManager.startAnimations();
-    DVER.textureManager.releaseTextureData();
+    DVER.textures.releaseTextureData();
     scene.registerBeforeRender(() => {
         DVER.render.solidMaterial.runEffects();
         DVER.render.floraMaterial.runEffects();

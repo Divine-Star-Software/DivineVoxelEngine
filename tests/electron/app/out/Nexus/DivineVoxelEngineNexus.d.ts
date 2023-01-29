@@ -85,8 +85,6 @@ export declare const DVEN: {
         isReady(): boolean;
         voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
         voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-        materialMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
-        colliderMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelMapSyncData, any>;
         dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
         chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
         column: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
@@ -95,6 +93,7 @@ export declare const DVEN: {
         chunkTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
         columnTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
         regionTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData[], void>;
+        stringMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
     };
     data: {
         dimensions: {
@@ -109,16 +108,11 @@ export declare const DVEN: {
             getDimensionNumericId(id: string | number): number;
         };
         voxelTags: {
-            voxelMap: Uint16Array;
-            substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
-            materialMap: Record<number, string>;
-            colliderMap: Record<number, string>;
+            voxelIndex: Uint16Array;
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            getTrueSubstance(id: number): import("Meta/index.js").VoxelSubstanceType;
-            getMaterial(id: number): string;
-            getCollider(id: number): string;
+            initData: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
             $INIT(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
             byteOffSet: number;
             tagSize: number;
@@ -127,6 +121,7 @@ export declare const DVEN: {
             indexMap: Map<string, number>;
             index: DataView;
             setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+            getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
             setTag(id: string, value: number): boolean;
@@ -281,11 +276,10 @@ export declare const DVEN: {
             $INIT(settings: EngineSettingsData): void;
         };
         register: {
-            voxels: {
-                substanceMap: Record<import("Meta/index.js").VoxelSubstanceType, number>;
-                substanceRecord: Record<number, import("Meta/index.js").VoxelSubstanceType>;
-                materialMap: Record<number, string>;
-                colliderMap: Record<number, string>;
+            stringMaps: {
+                segments: Map<string, Map<string, string[]>>;
+                syncStringMap(data: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync): void;
+                getStringMapValue(segment: string, id: string, index: number): string;
             };
         };
         chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;

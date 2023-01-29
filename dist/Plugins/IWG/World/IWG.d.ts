@@ -1,13 +1,15 @@
 import type { IWGData } from "./Types/IWG.types";
+import type { Vec3Array } from "Math/Types/Math.types";
 import { ColumnDataTool } from "../../../Tools/Data/WorldData/ColumnDataTool.js";
 import { BuilderTool } from "../../../Tools/Build/BuilderTool.js";
 import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
 import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
+import { VisitedMap } from "../../../Global/Util/VisistedMap.js";
 declare class IWGTasks {
     run: (x: number, y: number, z: number) => void;
     iwg: IWG;
-    queue: number[][];
-    map: Map<string, boolean>;
+    queue: [x: number, y: number, z: number][];
+    map: VisitedMap;
     waitingFor: number;
     constructor(run: (x: number, y: number, z: number) => void, iwg: IWG);
     add(x: number, y: number, z: number): void;
@@ -162,7 +164,7 @@ export declare class IWG {
         };
     };
     dimension: string;
-    _cachedPosition: number[];
+    _cachedPosition: Vec3Array;
     _inProgressMap: Map<string, boolean>;
     _searchQueue: number[][];
     _visitedMap: Map<string, boolean>;

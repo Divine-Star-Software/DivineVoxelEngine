@@ -2,8 +2,6 @@
 import { MeshFaceDataByte } from "../../../Data/Meshing/MeshFaceDataBytes.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
-//managers
-import { ShapeManager } from "../../Managers/Shapes/ShapeManager.js";
 import { GetConstructorDataTool } from "../../Tools/Data/ConstructorDataTool.js";
 import { GeometryBuilder } from "../Geometry/GeometryBuilder.js";
 const dataTool = GetConstructorDataTool();
@@ -60,11 +58,16 @@ export const VoxelMesher = {
             data.position.x = template.positionTemplate[positionIndex];
             data.position.y = template.positionTemplate[positionIndex + 1];
             data.position.z = template.positionTemplate[positionIndex + 2];
-            this.data.loadInAt(location[1] + data.position.x, location[2] + data.position.y, location[3] + data.position.z);
+            if (!this.data.loadInAt(location[1] + data.position.x, location[2] + data.position.y, location[3] + data.position.z)) {
+                return false;
+            }
+            if (!this.data.isRenderable()) {
+                return false;
+            }
             this.quad.setPosition(data.position.x, data.position.y, data.position.z);
             data.face = template.faceTemplate[i];
-            data.shapeState = template.shapeStateTemplate[i];
-            ShapeManager.getShape(template.shapeTemplate[i]).build(this);
+            data.shapeState = this.data.getShapeState();
+            this.data.getVoxelShapeObj().build(this);
             if (data.flowTemplate) {
                 if (this.templateData.loadIn("top").isExposed()) {
                     data.flowTemplateIndex += 4;

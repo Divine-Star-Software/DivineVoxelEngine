@@ -1,4 +1,4 @@
-import { OverrideManager } from "../../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 let animationState = 0;
 const shapeStates = {
     0: (mesher) => {
@@ -87,7 +87,7 @@ const shapeStates = {
     },
 };
 export const PanelVoxelShape = {
-    id: "Panel",
+    id: "#dve_panel",
     build(mesher) {
         animationState = 0;
         if (mesher.data.getSubstance() == "flora") {

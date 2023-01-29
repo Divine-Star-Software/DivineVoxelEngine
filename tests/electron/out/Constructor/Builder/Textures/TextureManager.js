@@ -2,7 +2,8 @@ export const TextureManager = {
     textureDataHasBeenSet: false,
     uvTextureMap: {},
     overlayUVTextureMap: {},
-    getTextureUV(textureType, textureId, varation = false, overlay = false) {
+    getTextureUV(data, overlay = false) {
+        const [textureType, textureId, varation] = data;
         let id = textureId;
         if (varation) {
             id = `${textureId}:${varation}`;

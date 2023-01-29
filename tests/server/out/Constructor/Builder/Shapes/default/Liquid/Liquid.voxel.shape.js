@@ -1,7 +1,7 @@
 //objects
-import { OverrideManager } from "../../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 export const LiquidVoxelShape = {
-    id: "Liquid",
+    id: "#dve_liquid",
     build(mesher) {
         const data = mesher._data;
         mesher.quad.setDimensions(1, 1);

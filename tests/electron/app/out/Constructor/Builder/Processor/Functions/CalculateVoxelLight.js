@@ -2,7 +2,7 @@ import { Processor } from "../Processor.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
-import { OverrideManager } from "../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 const LD = LightData;
 const RGBvertexStates = {
     1: {

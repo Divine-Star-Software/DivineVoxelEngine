@@ -1,11 +1,11 @@
 import { type EngineSettingsData } from "Meta/index.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { ShapeManager } from "../Managers/Shapes/ShapeManager.js";
+import { ShapeManager } from "./Shapes/ShapeManager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 import { Processor } from "./Processor/Processor.js";
 import { ChunkMesher } from "./Mesher/ChunkMesher.js";
-import { VoxelHelper } from "./Processor/VoxelHelper.js";
+import { SubstanceRules } from "./Rules/SubstanceRules.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
 import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
@@ -15,7 +15,7 @@ export const Builder = {
  shapeManager: ShapeManager,
  chunkMesher: ChunkMesher,
  processor: Processor,
- voxelHelper: VoxelHelper,
+ substanceRules: SubstanceRules,
 
  dimension: 0,
 

@@ -3,6 +3,7 @@ import type {
  VoxelDataSync,
  VoxelPaletteSyncData,
  WorldDataSync,
+ RegisterStringMapSync,
 } from "Meta/Data/DataSync.types.js";
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
@@ -31,17 +32,22 @@ export const DataSyncNode = {
     done = false;
    }
   }
+
   return true;
  },
  voxelPalette: ThreadComm.onDataSync<VoxelPaletteSyncData, any>(
-  DataSyncTypes.voxelPalette
+  DataSyncTypes.voxelPalette,
+  (data) => {
+   VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
+  }
  ),
- voxelData: ThreadComm.onDataSync<VoxelDataSync, any>(DataSyncTypes.voxelData),
- materialMap: ThreadComm.onDataSync<VoxelMapSyncData, any>(
-  DataSyncTypes.materials
- ),
- colliderMap: ThreadComm.onDataSync<VoxelMapSyncData, any>(
-  DataSyncTypes.colliders
+ voxelData: ThreadComm.onDataSync<VoxelDataSync, any>(
+  DataSyncTypes.voxelTags,
+  (data) => {
+   VoxelTags.$INIT(data[0]);
+   VoxelTags.sync(new Uint16Array(data[1]));
+   DataSyncNode._states.voxelData = true;
+  }
  ),
  dimension: ThreadComm.onDataSync<DimensionData, void>(DataSyncTypes.dimesnion),
  chunk: ThreadComm.onDataSync<WorldDataSync, LocationData>(DataSyncTypes.chunk),
@@ -63,26 +69,13 @@ export const DataSyncNode = {
  regionTags: ThreadComm.onDataSync<RemoteTagManagerInitData[], void>(
   DataSyncTypes.regionTags
  ),
+ stringMap: ThreadComm.onDataSync<RegisterStringMapSync, void>(
+  DataSyncTypes.registerStringMap,
+  (data) => {
+   Register.stringMaps.syncStringMap(data);
+  }
+ ),
 };
-
-DataSyncNode.voxelPalette.addOnSync((data) => {
- VoxelPaletteReader.setVoxelPalette(data[0], data[1]);
-});
-
-DataSyncNode.colliderMap.addOnSync((data) => {
- VoxelTags.colliderMap = data[0];
-});
-
-DataSyncNode.materialMap.addOnSync((data) => {
- VoxelTags.materialMap = data[0];
-});
-
-DataSyncNode.voxelData.addOnSync((data) => {
- VoxelTags.$INIT(data[0]);
- VoxelTags.sync(new Uint16Array(data[1]));
-
- DataSyncNode._states.voxelData = true;
-});
 
 DataSyncNode.dimension.addOnSync((data) => {
  DimensionsRegister.registerDimension(data.id, data.options);

@@ -6,7 +6,7 @@ import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
 
 RegisterVoxels(DVEW);
 
-
+(self as any).DVEW = DVEW;
 
 await DVEW.$INIT();
 
@@ -40,4 +40,3 @@ await WorldPlayer(DVEW);
 (self as any).builder = DVEW.getBuilder();
 (self as any).dt = DVEW.getDataTool();
 
-(self as any).DVEW = DVEW;

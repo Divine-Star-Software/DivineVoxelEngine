@@ -1,5 +1,5 @@
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
-import { VoxelMath } from "../../../out/Libs/Math/VoxelMath.js";
+import { VoxelMath } from "../../../out/Math/VoxelMath.js";
 import { PerlinNoise3d } from "../../Shared/Noise/Perlin.js";
 const perlin = new PerlinNoise3d();
 const perlin2 = new PerlinNoise3d();

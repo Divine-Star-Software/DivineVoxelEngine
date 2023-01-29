@@ -1,4 +1,4 @@
-import type { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types";
 import type { VoxelShapeAddData, VoxelTemplateSubstanceType } from "Meta/index";
 import type { DirectionNames } from "Meta/Util.types";
 //data
@@ -6,7 +6,7 @@ import { MeshFaceDataByte } from "../../../Data/Meshing/MeshFaceDataBytes.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { FaceByte } from "../../../Data/Meshing/FaceByte.js";
 //managers
-import { ShapeManager } from "../../Managers/Shapes/ShapeManager.js";
+import { ShapeManager } from "../Shapes/ShapeManager.js";
 import { GetConstructorDataTool } from "../../Tools/Data/ConstructorDataTool.js";
 import { GeometryBuilder } from "../Geometry/GeometryBuilder.js";
 import {
@@ -24,7 +24,7 @@ const dataTool = GetConstructorDataTool();
  */
 export const VoxelMesher = {
  _data: <VoxelShapeAddData>{},
- _template: <ChunkTemplate>{},
+ _template: <VoxelTemplate>{},
 
  templateIncrement: true,
 
@@ -34,7 +34,7 @@ export const VoxelMesher = {
  },
  $buildMesh(
   type: VoxelTemplateSubstanceType,
-  template: ChunkTemplate,
+  template: VoxelTemplate,
   LOD = 1,
   location: LocationData
  ) {
@@ -84,15 +84,23 @@ export const VoxelMesher = {
    data.position.x = template.positionTemplate[positionIndex];
    data.position.y = template.positionTemplate[positionIndex + 1];
    data.position.z = template.positionTemplate[positionIndex + 2];
-   this.data.loadInAt(
-    location[1] + data.position.x,
-    location[2] + data.position.y,
-    location[3] + data.position.z
-   );
+   if (
+    !this.data.loadInAt(
+     location[1] + data.position.x,
+     location[2] + data.position.y,
+     location[3] + data.position.z
+    )
+   ) {
+    return false;
+   }
+   if (!this.data.isRenderable()) {
+    return false;
+   }
    this.quad.setPosition(data.position.x, data.position.y, data.position.z);
    data.face = template.faceTemplate[i];
-   data.shapeState = template.shapeStateTemplate[i];
-   ShapeManager.getShape(template.shapeTemplate[i]).build(this);
+   data.shapeState = this.data.getShapeState();
+
+   this.data.getVoxelShapeObj().build(this);
 
    if (data.flowTemplate) {
     if (this.templateData.loadIn("top").isExposed()) {

@@ -22,8 +22,8 @@ export type EngineSettingsData = {
   enabled: boolean;
  };
  textures: {
-  width: number;
-  height: number;
+  textureSize : number;
+  mipMapSizes : number[];
   animationTime: number;
  };
  floatingOrigin : {

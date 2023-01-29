@@ -5,3 +5,4 @@ export declare type ConstructorDataTool = DataTool & {
     getVoxelShapeObj(): VoxelShape;
     getVoxelObj(): VoxelConstructor;
 };
+export declare type ConstructorTextureData = [type: string, id: string, varation?: string];

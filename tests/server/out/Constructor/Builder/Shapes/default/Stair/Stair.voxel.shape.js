@@ -4,7 +4,7 @@ import { SetUpStairOverrides } from "./Stair.overrides.js";
 import { StairBuilderData } from "./StairData.js";
 import { FaceMap } from "../../../../../Data/Constants/Util/Faces.js";
 export const StairVoxelShape = {
-    id: "Stair",
+    id: "#dve_stair",
     build(mesher) {
         const data = StairBuilderData[mesher.data.getShapeState()];
         if (!data)

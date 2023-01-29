@@ -3,18 +3,18 @@ import { Vector3 } from "Meta/Util.types.js";
 export declare class EntityBase {
     dataTool: DataTool;
     active: boolean;
-    position: import("../../../../Libs/Math/Classes/Vector3.js").Vector3;
-    direction: import("../../../../Libs/Math/Classes/Vector3.js").Vector3;
-    previousPosiiton: import("../../../../Libs/Math/Classes/Vector3.js").Vector3;
+    position: import("../../../../Math/Classes/Vector3.js").Vector3;
+    direction: import("../../../../Math/Classes/Vector3.js").Vector3;
+    previousPosiiton: import("../../../../Math/Classes/Vector3.js").Vector3;
     hitBox: {
         w: number;
         h: number;
         d: number;
     };
     speed: number;
-    velocity: import("../../../../Libs/Math/Classes/Vector3.js").Vector3;
+    velocity: import("../../../../Math/Classes/Vector3.js").Vector3;
     onGround: boolean;
-    veloctiy: import("../../../../Libs/Math/Classes/Vector3.js").Vector3;
+    veloctiy: import("../../../../Math/Classes/Vector3.js").Vector3;
     boundingBox: {
         w: number;
         h: number;

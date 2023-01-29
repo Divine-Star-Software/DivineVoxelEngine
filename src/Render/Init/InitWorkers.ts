@@ -6,7 +6,7 @@ export async function InitWorkers(
  initData: DVERInitData
 ) {
  DVER.settings.syncSettings(<any>initData);
- DVER._handleOptions();
+
 
  await DVER.TC.$INIT("render");
 
@@ -92,20 +92,10 @@ export async function InitWorkers(
 
  DVER.syncSettingsWithWorkers(<any>initData);
 
- DVER.textureManager.generateTexturesData();
- DVER.textureManager.generateTexturesData(true);
+ DVER.textures.generateTexturesData();
+ DVER.textures.generateTexturesData(true);
  DVER.constructorCommManager.$INIT();
 
-/*  DVER.worldComm.onMessage = () => {
-  console.log("world");
- };
- DVER.constructorCommManager.__comms.forEach((com) => {
-  com.onMessage = () => {
-   console.log(com.name);
-  };
- }); */
-
- //terminate all workers
  window.addEventListener("beforeunload", () => {
   DVER.constructorCommManager.destroyAll();
   DVER.worldComm.destroy();

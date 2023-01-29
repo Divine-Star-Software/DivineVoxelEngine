@@ -1,6 +1,7 @@
 import { TagManagerBase } from "./Classes/TagManagerBase.js";
 export class RemoteTagManager extends TagManagerBase {
     id;
+    initData;
     constructor(id) {
         super(id);
         this.id = id;
@@ -11,5 +12,6 @@ export class RemoteTagManager extends TagManagerBase {
         this.indexMap = data.indexMap;
         this.tagIndexes = data.totalIndexes;
         this.tagSize = data.tagSize;
+        this.initData = data;
     }
 }

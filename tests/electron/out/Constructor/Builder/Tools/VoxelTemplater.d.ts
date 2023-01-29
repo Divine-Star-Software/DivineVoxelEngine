@@ -1,9 +1,9 @@
-import type { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types";
 import type { DirectionNames } from "Meta/Util.types";
 import type { DataTool } from "Tools/Data/DataTool";
 declare class VoxelTemplaterBase {
-    _template: ChunkTemplate;
+    _template: VoxelTemplate;
     _faces: number;
     currentVoxel: DataTool;
     utilDataTool: DataTool;

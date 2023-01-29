@@ -141,6 +141,10 @@ export const RenderManager = {
   this.scene = scene;
   this.meshManager.$INIT(scene);
   this.meshCuller.$INIT(scene);
+  this.textureCreator.defineTextureDimensions(
+   EngineSettings.settings.textures.textureSize,
+   EngineSettings.settings.textures.mipMapSizes
+  );
  },
 
  updateShaderEffectOptions(options: RecursivePartial<DVERenderEffectsOptions>) {
@@ -165,8 +169,8 @@ export const RenderManager = {
   this.itemMesh.syncSettings(settings);
 
   this.textureCreator.defineTextureDimensions(
-   settings.textures.width,
-   settings.textures.height
+   settings.textures.textureSize,
+   settings.textures.mipMapSizes
   );
  },
 

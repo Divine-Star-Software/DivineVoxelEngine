@@ -132,16 +132,11 @@ export declare const DVEW: {
             getDimensionNumericId(id: string | number): number;
         };
         voxelTags: {
-            voxelMap: Uint16Array;
-            substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
-            materialMap: Record<number, string>;
-            colliderMap: Record<number, string>;
+            voxelIndex: Uint16Array;
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            getTrueSubstance(id: number): import("../Meta/index.js").VoxelSubstanceType;
-            getMaterial(id: number): string;
-            getCollider(id: number): string;
+            initData: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
             $INIT(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
             byteOffSet: number;
             tagSize: number;
@@ -150,6 +145,7 @@ export declare const DVEW: {
             indexMap: Map<string, number>;
             index: DataView;
             setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+            getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
             setTag(id: string, value: number): boolean;
@@ -304,11 +300,10 @@ export declare const DVEW: {
             $INIT(settings: EngineSettingsData): void;
         };
         register: {
-            voxels: {
-                substanceMap: Record<import("../Meta/index.js").VoxelSubstanceType, number>;
-                substanceRecord: Record<number, import("../Meta/index.js").VoxelSubstanceType>;
-                materialMap: Record<number, string>;
-                colliderMap: Record<number, string>;
+            stringMaps: {
+                segments: Map<string, Map<string, string[]>>;
+                syncStringMap(data: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync): void;
+                getStringMapValue(segment: string, id: string, index: number): string;
             };
         };
         chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
@@ -329,13 +324,7 @@ export declare const DVEW: {
     };
     dataSync: {
         voxelDataCreator: {
-            voxelBuffer: SharedArrayBuffer;
-            voxelMapBuffer: SharedArrayBuffer;
-            initData: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-            __shapeMapSet: boolean;
-            isReady(): boolean;
             $generateVoxelData(): void;
-            setShapeMap(newShapeMap: Record<string, number>): void;
             palette: {
                 _count: number;
                 _palette: import("../Meta/Data/WorldData.types.js").VoxelPalette;
@@ -354,7 +343,8 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>;
-        $INIT(): Promise<unknown>;
+        _ready: boolean;
+        $INIT(): void;
         isReady(): boolean;
         registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, data?: Partial<{
             worldData: boolean;
@@ -364,176 +354,267 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
+        loopThroughComms(func: (comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, options: {
+            worldData: boolean;
+            worldDataTags: boolean;
+            voxelPalette: boolean;
+            voxelTags: boolean;
+            materials: boolean;
+            colliders: boolean;
+        }) => void): void;
         dimesnion: {
-            unSync(id: string | number): void;
-            unSyncInThread(commName: string, id: string | number): void;
-            sync(data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
-            syncInThread(commName: string, data: import("../Meta/Data/DimensionData.types.js").DimensionData): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: string | number, threadId?: string | undefined) => false | import("../Meta/Data/DimensionData.types.js").DimensionData;
+                getUnSyncData: (data: string | number, threadId?: string | undefined) => boolean;
+            };
+            unSync(input: string | number): false | undefined;
+            unSyncInThread(commName: string, input: string | number): false | undefined;
+            sync(input: string | number): false | undefined;
+            syncInThread(commName: string, input: string | number): false | undefined;
         };
         chunk: {
-            unSync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            unSyncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            sync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            syncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
+                getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
+            };
+            unSync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            unSyncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            sync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            syncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
         };
         column: {
-            unSync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            unSyncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            sync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            syncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-        };
-        regionHeader: {
-            unSync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            unSyncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            sync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            syncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
+                getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
+            };
+            unSync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            unSyncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            sync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            syncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
         };
         region: {
-            unSync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            unSyncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            sync(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
-            syncInThread(commName: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
+                getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
+            };
+            unSync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            unSyncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            sync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            syncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+        };
+        regionHeader: {
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
+                getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
+            };
+            unSync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            unSyncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            sync(input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            syncInThread(commName: string, input: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
         };
         voxelTags: {
-            sync(): void;
-            syncInThread(commName: string): void;
-        };
-        materials: {
-            sync(): void;
-            syncInThread(commName: string): void;
-        };
-        colliders: {
-            sync(): void;
-            syncInThread(commName: string): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, SharedArrayBuffer];
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: void): false | undefined;
+            syncInThread(commName: string, input: void): false | undefined;
         };
         chunkTags: {
-            sync(): void;
-            syncInThread(commName: string): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: void, threadId?: string | undefined) => false | import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: void): false | undefined;
+            syncInThread(commName: string, input: void): false | undefined;
         };
         columnTags: {
-            sync(): void;
-            syncInThread(commName: string): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: void, threadId?: string | undefined) => false | import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: void): false | undefined;
+            syncInThread(commName: string, input: void): false | undefined;
         };
         regionTags: {
-            sync(): void;
-            syncInThread(commName: string): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData];
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: void): false | undefined;
+            syncInThread(commName: string, input: void): false | undefined;
         };
         voxelPalette: {
-            sync(): void;
-            syncInThread(commName: string): void;
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Meta/Data/WorldData.types.js").VoxelPalette, import("../Meta/Data/WorldData.types.js").VoxelPaletteMap];
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: void): false | undefined;
+            syncInThread(commName: string, input: void): false | undefined;
+        };
+        stringMap: {
+            data: {
+                dataSyncType: string | number;
+                commCheck: (options: {
+                    worldData: boolean;
+                    worldDataTags: boolean;
+                    voxelPalette: boolean;
+                    voxelTags: boolean;
+                    materials: boolean;
+                    colliders: boolean;
+                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
+                 * ---
+                 * This handles everything in the world worker context.
+                 */
+                getSyncData: (data: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").RegisterStringMapSync;
+                getUnSyncData: (data: void, threadId?: string | undefined) => false;
+            };
+            unSync(input: void): false | undefined;
+            unSyncInThread(commName: string, input: void): false | undefined;
+            sync(input: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync): false | undefined;
+            syncInThread(commName: string, input: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync): false | undefined;
         };
     };
     fxComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     dataComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     nexusComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
-    ccm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
-        tasks: {
-            build: {
-                chunk: (data: import("../Meta/Tasks/Tasks.types.js").BuildTasks) => number;
-                column: (data: import("../Meta/Tasks/Tasks.types.js").BuildTasks) => number;
-                entity: (x: number, y: number, z: number, width: number, depth: number, height: number, composed: number, voxelData: Uint32Array[], voxelStateData: Uint32Array[]) => number;
-                item: (data: any) => number;
-            };
-        };
-    };
-    richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase & {
-        setInitalData(data: import("../Meta/Data/RichWorldData.types.js").SetRichVoxel): void;
-        removeRichData(data: import("../Meta/Data/CommonTypes.js").LocationData): void;
-    };
-    entityConstructor: {
-        voxelData: Uint32Array[] | null;
-        voxelStateData: Uint32Array[] | null;
-        _3dArray: {
-            bounds: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            _position: {
-                x: number;
-                y: number;
-                z: number;
-            };
-            setBounds(x: number, y: number, z: number): void;
-            getValue(x: number, y: number, z: number, array: number[] | Uint32Array): number;
-            getValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-            getValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): number;
-            setValue(x: number, y: number, z: number, array: number[] | Uint32Array, value: number): void;
-            setValueUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-            setValueUseObjSafe(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array, value: number): void;
-            deleteValue(x: number, y: number, z: number, array: number[] | Uint32Array): void;
-            deleteUseObj(position: import("../Meta/Util.types.js").Vector3, array: number[] | Uint32Array): void;
-            getIndex(x: number, y: number, z: number): number;
-            getXYZ(index: number): import("../Meta/Util.types.js").Vector3;
-        };
-        voxelByte: {
-            getLevel(stateData: number): number;
-            setLevel(stateData: number, level: number): number;
-            getLevelState(stateData: number): number;
-            setLevelState(stateData: number, levelState: number): number;
-            getShapeState(voxelData: number): number;
-            setShapeState(voxelData: number, shapeState: number): number;
-        };
-        lightByte: {
-            SRS: number;
-            _lightValues: [s: number, r: number, g: number, b: number];
-            getS(value: number): number;
-            getR(value: number): number;
-            getG(value: number): number;
-            getB(value: number): number;
-            setS(value: number, sl: number): number;
-            setR(value: number, sl: number): number;
-            setG(value: number, sl: number): number;
-            setB(value: number, sl: number): number;
-            removeS(sl: number): number;
-            hasRGBLight(sl: number): boolean;
-            hasSunLight(sl: number): boolean;
-            mixLight(l1: number, l2: number): number;
-            getRGB(sl: number): number;
-            setRGB(value: number, sl: number): number;
-            decodeLightFromVoxelData(voxelData: number): number;
-            encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-            setLightValues(values: number[]): number;
-            getLightValues(value: number): [s: number, r: number, g: number, b: number];
-            isLessThanForRGBRemove(n1: number, n2: number): boolean;
-            isLessThanForRGBAdd(n1: number, n2: number): boolean;
-            isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-            getMinusOneForRGB(sl: number, nl: number): number;
-            removeRGBLight(sl: number): number;
-            getFullSunLight(sl: number): number;
-            isLessThanForSunAdd(n1: number, n2: number): boolean;
-            isLessThanForSunAddDown(n1: number, n2: number): boolean;
-            isLessThanForSunAddUp(n1: number, n2: number): boolean;
-            getSunLightForUnderVoxel(sl: number, nl: number): number;
-            getMinusOneForSun(sl: number, nl: number): number;
-            isLessThanForSunRemove(n1: number, sl: number): boolean;
-            isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-            sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-            removeSunLight(sl: number): number;
-            minusOneForAll(sl: number): number;
-        };
-        pos: {
-            x: number;
-            y: number;
-            z: number;
-        };
-        composed: number;
-        width: number;
-        depth: number;
-        height: number;
-        begin(width: number, height: number, depth: number, composed?: number): void;
-        setLight(s: number, r: number, g: number, b: number, x: number, y: number, z: number, composed?: number): void;
-        fillLight(s: number, r: number, g: number, b: number, composed?: number): void;
-        addVoxel(voxelId: string, voxelStateId: number, shapeState: number, x: number, y: number, z: number, composed?: number): void;
-        build(x: number, y: number, z: number): void;
-    };
+    ccm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+    richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     voxelManager: {
-        voxelData: Record<string, import("../Meta/index.js").VoxelData>;
-        _onRegister: (data: import("../Meta/index.js").VoxelData) => void;
+        voxelData: Map<string, import("../Meta/index.js").VoxelData>;
         getVoxelData(id: string): import("../Meta/index.js").VoxelData;
-        registerVoxelData(data: import("../Meta/index.js").VoxelData): void;
-        onRegister(func: (data: import("../Meta/index.js").VoxelData) => void): void;
+        registerVoxelData(data: import("../Meta/index.js").VoxelData | import("../Meta/index.js").VoxelData[]): void;
     };
     itemManager: {
         itemData: Record<string, import("../Meta/Data/Items/Item.types.js").ItemData>;
@@ -627,13 +708,26 @@ export declare const DVEW: {
         };
     };
     tags: {
-        voxels: import("../Libs/DivineBinaryTags/TagManager.js").TagManager;
+        voxels: {
+            _nodeMap: Map<string, import("../Meta/Data/Tags/TagBuilder.types.js").TagBuilderNodes>;
+            _stringMaps: Map<string, {
+                count: number;
+                found: Record<string, number>;
+                map: string[];
+                allowedComms: string[];
+            }>;
+            _defaults: Map<string, number>;
+            addNode(node: import("../Meta/Data/Tags/TagBuilder.types.js").TagBuilderNodes | import("../Meta/Data/Tags/TagBuilder.types.js").TagBuilderNodes[]): void;
+            getNode(id: string): import("../Meta/Data/Tags/TagBuilder.types.js").TagBuilderNodes | undefined;
+            setDefaults(tagManager: import("../Libs/DivineBinaryTags/Classes/TagManagerBase.js").TagManagerBase): void;
+            setNode(id: string, value: string | number | boolean | number[], tagManager: import("../Libs/DivineBinaryTags/Classes/TagManagerBase.js").TagManagerBase): false | undefined;
+            $INIT(totalVoxels: number): import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
+            $SYNC(): void;
+        };
         chunks: import("../Libs/DivineBinaryTags/TagManager.js").TagManager;
     };
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;
-    generate(x: number, z: number, data?: any): void;
-    createItem(itemId: string, x: number, y: number, z: number): void;
     $INIT(): Promise<void>;
     getAllTools(): {
         brush: import("../Tools/Brush/Brush.js").BrushTool & {

@@ -23,7 +23,7 @@ const workers = SetUpWorkers(
  import.meta.url,
  "./World/world.js",
  "../Shared/Constructor/constructor.js",
- "../Shared/Nexus/nexus-with-player.js",
+ "../Shared/Nexus/nexus-with-player.js"
 );
 
 await DVER.$INIT({
@@ -40,7 +40,6 @@ await DVER.$INIT({
  },
 });
 
-
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
@@ -55,6 +54,7 @@ const init = async () => {
 
  scene.fogDensity = 0.005;
  await DVER.$SCENEINIT({ scene: scene });
+ SyncWithGraphicsSettings(DVER);
  DVER.render.setBaseLevel(0.1);
  DVER.render.setSunLevel(0.8);
  const hemLight = new BABYLON.HemisphericLight(

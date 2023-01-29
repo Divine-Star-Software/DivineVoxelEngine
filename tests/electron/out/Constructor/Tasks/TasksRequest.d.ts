@@ -1,6 +1,7 @@
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
-import type { Priorities } from "Meta/Tasks/Tasks.types";
+import type { AddToRebuildQueue, Priorities } from "Meta/Tasks/Tasks.types";
 import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
+import { VisitedMap } from "../../Global/Util/VisistedMap.js";
 declare type RebuildModes = "sync" | "async";
 declare class Request<T, Q> {
     tasksType: string;
@@ -15,6 +16,7 @@ declare class Request<T, Q> {
     LOD: number;
     syncQueue: LocationData[];
     buildMode: RebuildModes;
+    rebuildTasks: AddToRebuildQueue;
     constructor(tasksType: string, origin: LocationData, data: T, buildQueue: string, originThread: string, queues: Q);
     start(): this;
     stop(): this;
@@ -27,15 +29,8 @@ declare class Request<T, Q> {
     needsToUpdateOriginThread(): boolean;
     setBuldMode(mode: RebuildModes): this;
     addToRebuildQueue(x: number, y: number, z: number): boolean;
-    addNeighborsToRebuildQueue(x: number, y: number, z: number): this;
+    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | this | undefined;
     runRebuildQueue(): this;
-}
-declare class VisitedMap {
-    _map: Map<string, boolean>;
-    _getKey(x: number, y: number, z: number): string;
-    inMap(x: number, y: number, z: number): boolean;
-    add(x: number, y: number, z: number): void;
-    clear(): void;
 }
 declare type Vec3Array = [x: number, y: number, z: number][];
 declare type FlowVec3Array = number[][];

@@ -46,7 +46,6 @@ await DVER.$INIT({
  },
 });
 
-
 const init = async () => {
  const canvas = SetUpCanvas();
  const engine = SetUpEngine(canvas);
@@ -74,8 +73,7 @@ const init = async () => {
  const debugCube = GetAnalyzerCubeRender(DVER, player);
  (window as any).debugCube = debugCube;
 
-
-
+ (window as any).DVER = DVER;
  runRenderLoop(engine, scene, player, DVER);
 };
 

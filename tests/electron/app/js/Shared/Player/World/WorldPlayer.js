@@ -1,4 +1,4 @@
-import { VoxelMath } from "../../../../out/Libs/Math/VoxelMath.js";
+import { VoxelMath } from "../../../../out/Math/VoxelMath.js";
 import { PlayerData } from "../Shared/PlayerData.js";
 import { PlayerTags } from "../Shared/PlayerTags.js";
 export const WorldPlayer = async (DVEW) => {

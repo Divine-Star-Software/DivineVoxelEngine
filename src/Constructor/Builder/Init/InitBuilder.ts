@@ -1,8 +1,8 @@
-import type { Builder as DVEBuilder} from "../Builder";
-import { RegisterDefaultShapes } from "../Shapes/RegisterDefaultShapes.js";
+import type { Builder as DVEBuilder } from "../Builder";
+import { RegisterDefaultShapes } from "../Shapes/default/RegisterDefaultShapes.js";
 
-export function InitBuilder(DVEB: typeof DVEBuilder ) {
+export function InitBuilder(DVEB: typeof DVEBuilder) {
  DVEB.processor.$INIT();
- DVEB.voxelHelper.$INIT();
+ DVEB.substanceRules.$INIT();
  RegisterDefaultShapes(DVEB);
 }

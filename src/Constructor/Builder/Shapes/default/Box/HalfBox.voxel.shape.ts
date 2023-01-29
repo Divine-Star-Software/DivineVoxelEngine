@@ -1,7 +1,7 @@
 import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
-import { OverrideManager } from "../../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 export const HalfBoxVoxelShape: VoxelShape = {
- id: "HalfBox",
+  id: "#dve_half_box",
  build(mesher) {
   mesher.quad.setDimensions(1, 1);
   let animationState = 0;

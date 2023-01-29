@@ -4,6 +4,7 @@ import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { TasksRequest } from "../TasksRequest.js";
+import { LocationDataDistanceSort } from "../../../Math/Functions/DistnaceSort.js";
 const dataTool = new DataTool();
 const nDataTool = new DataTool();
 const brushTool = new BrushTool();
@@ -41,13 +42,12 @@ export async function EreaseAndUpdate(data) {
         .start()
         .setBuldMode("sync")
         .addNeighborsToRebuildQueue(x, y, z);
-    //reverse build order so  chunks clsoe by get rebuilt first 
-    tasks.syncQueue.reverse();
     tasks.setBuldMode("async");
     if (ES.doFlow()) {
         const substance = dataTool.getSubstance();
         if (substance == "liquid" || substance == "magma") {
             await Propagation.flow.remove(tasks);
+            tasks.stop();
             return true;
         }
     }
@@ -70,6 +70,7 @@ export async function EreaseAndUpdate(data) {
             Propagation.sun.update(tasks);
         }
     }
+    LocationDataDistanceSort(tasks.origin, tasks.syncQueue);
     tasks.runRebuildQueue();
     tasks.stop();
     return true;

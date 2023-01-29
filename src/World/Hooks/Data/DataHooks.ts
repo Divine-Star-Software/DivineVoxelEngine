@@ -54,6 +54,7 @@ export const RegisterDataHooks = () => {
  );
  DataHooks.region.onGetSync.addToRun(() => WorldDataGenerator.region.create());
  DataHooks.region.onNew.addToRun(async (data) => {
+ 
   DataSync.region.sync(data);
  });
  DataHooks.region.onRemove.addToRun((data) => {
@@ -79,6 +80,6 @@ export const RegisterDataHooks = () => {
 */
  DataHooks.dimension.onRegisterDimension.addToRun((data) => {
   DVEW.cQueues.addQueue(data.id);
-  DataSync.dimesnion.sync(data);
+  DataSync.dimesnion.sync(data.id);
  });
 };

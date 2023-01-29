@@ -1,5 +1,5 @@
 //types
-import type { ChunkTemplate } from "Meta/Constructor/ChunkTemplate.types";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types";
 import type { DirectionNames } from "Meta/Util.types";
 import type { DataTool } from "Tools/Data/DataTool";
@@ -8,7 +8,7 @@ import { Processor } from "../Processor/Processor.js";
 import { FaceRecord } from "../../../Data/Constants/Util/Faces.js";
 
 class VoxelTemplaterBase {
- _template = <ChunkTemplate>{};
+ _template = <VoxelTemplate>{};
  _faces = 0;
 
  currentVoxel = <DataTool>{};

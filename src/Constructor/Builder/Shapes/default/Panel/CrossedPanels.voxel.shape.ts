@@ -1,7 +1,7 @@
 import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
 
 export const CrossedPanels: VoxelShape = {
- id: "CrossedPanels",
+ id: "#dve_crossed_panels",
 
  build(mesher) {
   let animationState = 1;

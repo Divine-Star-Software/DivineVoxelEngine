@@ -1,7 +1,7 @@
 //types
 import type { ColliderObject } from "Plugins/Physics/Types/Physics/Collider.type.js";
 //objects
-import { VoxelMath } from "../../../Libs/Math/VoxelMath.js";
+import { VoxelMath } from "../../../Math/VoxelMath.js";
 import { CollisionsHanlder } from "./Collisions/CollisionsHandler.js";
 import { EntityBase } from "./Entities/Entity.base.js";
 import { ColliderManager } from "./Colliders/ColliderManager.js";

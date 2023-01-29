@@ -1,5 +1,5 @@
-import { Vector3 } from "Libs/Math/Classes/Vector3";
-import { DimensionsVector3 } from "Libs/Math/Types/Math.types";
+import { Vector3 } from "Math/Classes/Vector3";
+import { DimensionsVector3 } from "Math/Types/Math.types";
 
 export type EntityObject = {
  boundingBox: DimensionsVector3;

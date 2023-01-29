@@ -7,15 +7,13 @@ import type {
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import {
- $3dCardinalNeighbors,
- $3dMooreNeighborhood,
-} from "../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { Builder } from "../../Constructor/Builder/Builder.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
+import { VisitedMap } from "../../Global/Util/VisistedMap.js";
 
 const chunkTool = new ChunkDataTool();
 type RebuildModes = "sync" | "async";
@@ -26,6 +24,8 @@ class Request<T, Q> {
  LOD = 0;
  syncQueue: LocationData[] = [];
  buildMode: RebuildModes = "sync";
+
+ rebuildTasks: AddToRebuildQueue;
  constructor(
   public tasksType: string,
   public origin: LocationData,
@@ -37,6 +37,8 @@ class Request<T, Q> {
   if (originThread != "self") {
    this.comm = ThreadComm.getComm(originThread);
   }
+
+  this.rebuildTasks = [this.origin, this.buildQueue, this.priority];
   return this;
  }
 
@@ -82,31 +84,43 @@ class Request<T, Q> {
   if (EngineSettings.isServer()) return false;
   if (!this.needsRebuild()) return false;
   if (!chunkTool.setDimension(this.origin[0]).loadInAt(x, y, z)) return false;
-  const chunkPOS = WorldSpaces.chunk.getPositionXYZ(x, y, z);
-  const chunkKey = WorldSpaces.chunk.getKey();
+  const chunkKey = WorldSpaces.chunk.getKeyLocation(chunkTool.location);
   if (this.rebuildQueMap.has(chunkKey)) return false;
   this.rebuildQueMap.set(chunkKey, true);
   if (this.buildMode == "async") {
+   this.rebuildTasks[0] = [...chunkTool.location];
    this.comm.runTasks<AddToRebuildQueue>(
     ConstructorRemoteThreadTasks.addToRebuildQue,
-    [
-     [this.origin[0], chunkPOS.x, chunkPOS.y, chunkPOS.z],
-     this.buildQueue,
-     this.priority,
-    ]
+    this.rebuildTasks
    );
    return true;
   }
-  if (this.buildMode == "sync") {
-   this.syncQueue.push([this.origin[0], chunkPOS.x, chunkPOS.y, chunkPOS.z]);
-  }
+  this.syncQueue.push([...chunkTool.location]);
   return true;
  }
 
  addNeighborsToRebuildQueue(x: number, y: number, z: number) {
-  for (const n of $3dMooreNeighborhood) {
-   this.addToRebuildQueue(x + n[0], y + n[1], z + n[2]);
+  if (!this.needsRebuild()) return false;
+  const voxelPOS = WorldSpaces.voxel.getPositionXYZ(x, y, z);
+  if (
+   voxelPOS.x == 0 ||
+   voxelPOS.x == WorldSpaces.chunk._bounds.x - 1 ||
+   voxelPOS.y == 0 ||
+   voxelPOS.y == WorldSpaces.chunk._bounds.y - 1 ||
+   voxelPOS.z == 0 ||
+   voxelPOS.z == WorldSpaces.chunk._bounds.z - 1
+  ) {
+   let i = $3dMooreNeighborhood.length;
+   while (i--) {
+    this.addToRebuildQueue(
+     x + $3dMooreNeighborhood[i][0],
+     y + $3dMooreNeighborhood[i][1],
+     z + $3dMooreNeighborhood[i][2]
+    );
+   }
+   return;
   }
+  this.addToRebuildQueue(x, y, z);
   return this;
  }
 
@@ -122,22 +136,6 @@ class Request<T, Q> {
   }
   this.rebuildQueMap.clear();
   return this;
- }
-}
-
-class VisitedMap {
- _map: Map<string, boolean> = new Map();
- _getKey(x: number, y: number, z: number) {
-  return `${x}_${y}_${z}`;
- }
- inMap(x: number, y: number, z: number) {
-  return this._map.has(this._getKey(x, y, z));
- }
- add(x: number, y: number, z: number) {
-  this._map.set(this._getKey(x, y, z), true);
- }
- clear() {
-  this._map.clear();
  }
 }
 
@@ -233,7 +231,7 @@ export const TasksRequest = {
   buildQueue = "none",
   originThread = "self"
  ) {
-  return new Request("world-sun", origin, null, "none", originThread, {
+  return new Request("world-sun", origin, null, buildQueue, originThread, {
    sun: <Vec3Array>[],
   });
  },

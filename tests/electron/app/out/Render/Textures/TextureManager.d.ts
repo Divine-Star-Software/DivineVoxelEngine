@@ -18,6 +18,6 @@ export declare const TextureManager: {
     defineDefaultTexturePath(path: string): void;
     defineDefaultTextureExtension(textureType: TextureTypes, ext: string): void;
     getTextureUV(textureType: TextureTypes, textureId: string, varation?: string): number;
-    registerTexture(textureType: TextureTypes, textureData: TextureData): void;
+    registerTexture(textureData: TextureData | TextureData[]): void;
     releaseTextureData(): void;
 };

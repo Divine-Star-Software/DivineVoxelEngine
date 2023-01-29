@@ -1,10 +1,10 @@
 import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
 import type { DirectionNames } from "Meta/Util.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types.js";
-import { OverrideManager } from "../../../Overrides/OverridesManager.js";
+import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 
 export const BoxVoxelShape: VoxelShape = {
- id: "Box",
+ id: "#dve_box",
  build(mesher) {
   mesher.quad.setDimensions(1, 1);
   let animationState = 0;

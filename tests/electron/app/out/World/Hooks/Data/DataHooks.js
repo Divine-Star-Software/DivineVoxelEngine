@@ -71,6 +71,6 @@ export const RegisterDataHooks = () => {
    */
     DataHooks.dimension.onRegisterDimension.addToRun((data) => {
         DVEW.cQueues.addQueue(data.id);
-        DataSync.dimesnion.sync(data);
+        DataSync.dimesnion.sync(data.id);
     });
 };

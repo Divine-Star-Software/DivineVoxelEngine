@@ -3,7 +3,7 @@ import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterItemData } from "../../Shared/Functions/RegisterItemData.js";
-import { VoxelMath } from "../../../out/Libs/Math/VoxelMath.js";
+import { VoxelMath } from "../../../out/Math/VoxelMath.js";
 
 RegisterVoxels(DVEW);
 RegisterItemData(DVEW);

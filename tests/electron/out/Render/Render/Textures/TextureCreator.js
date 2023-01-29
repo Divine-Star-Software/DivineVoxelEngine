@@ -2,15 +2,11 @@ export const TextureCreator = {
     context: null,
     imgWidth: 16,
     imgHeight: 16,
-    _mipMapSizes: [
-        [16, 16],
-        [12, 12],
-        [8, 8],
-        [4, 4],
-    ],
-    defineTextureDimensions(width, height) {
-        this.imgWidth = width;
-        this.imgHeight = height;
+    _mipMapSizes: [16, 12, 8, 4],
+    defineTextureDimensions(textureSize, mipMapSizes) {
+        this.imgWidth = textureSize;
+        this.imgHeight = textureSize;
+        this._mipMapSizes = mipMapSizes;
     },
     setUpImageCreation() {
         const _2dCanvas = document.createElement("canvas");
@@ -30,7 +26,7 @@ export const TextureCreator = {
             height = this.imgHeight;
         const textures = [];
         for (const size of this._mipMapSizes) {
-            const texture = await this._createTextures(name, scene, images, size[0], size[1]);
+            const texture = await this._createTextures(name, scene, images, size, size);
             textures.push(texture);
         }
         return textures;

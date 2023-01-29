@@ -25,7 +25,7 @@ const collisionReturn: ColliderReturnData = [
 ];
 
 export const StairCollider: ColliderObject = {
- id: "Stair",
+ id: "#dve_stair",
  getColliderData(x, y, z) {
   collisionReturn[0].position[0] = x;
   collisionReturn[0].position[1] = y;

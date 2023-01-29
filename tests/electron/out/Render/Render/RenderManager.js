@@ -118,6 +118,7 @@ export const RenderManager = {
         this.scene = scene;
         this.meshManager.$INIT(scene);
         this.meshCuller.$INIT(scene);
+        this.textureCreator.defineTextureDimensions(EngineSettings.settings.textures.textureSize, EngineSettings.settings.textures.mipMapSizes);
     },
     updateShaderEffectOptions(options) {
         if (options.floraEffects !== undefined) {
@@ -137,7 +138,7 @@ export const RenderManager = {
         this.liquidMesh.syncSettings(settings);
         this.magmaMesh.syncSettings(settings);
         this.itemMesh.syncSettings(settings);
-        this.textureCreator.defineTextureDimensions(settings.textures.width, settings.textures.height);
+        this.textureCreator.defineTextureDimensions(settings.textures.textureSize, settings.textures.mipMapSizes);
     },
     getScene() {
         return this.scene;

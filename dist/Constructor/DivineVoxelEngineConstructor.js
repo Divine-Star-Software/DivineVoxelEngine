@@ -9,8 +9,7 @@ import { Analyzer } from "./Analyzer/Analyzer.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
-import { ItemManager } from "./Managers/Items/ItemManager.js";
-import { VoxelManager } from "./Managers/Voxels/VoxelManager.js";
+import { VoxelConstructors } from "./Builder/Constructors/Voxel/VoxelConstructors.js";
 //threadcomm
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
@@ -19,6 +18,7 @@ import { Tasks } from "./Tasks/Tasks.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
+import { ConstructorHooks } from "./Hooks/ConstructorHooks.js";
 export const DVEC = {
     environment: "browser",
     __settingsHaveBeenSynced: false,
@@ -30,13 +30,13 @@ export const DVEC = {
     analyzer: Analyzer,
     dataSyncNode: DataSyncNode,
     data: DataManager,
-    itemManager: ItemManager,
-    voxelManager: VoxelManager,
+    voxelManager: VoxelConstructors,
     TC: ThreadComm,
     parentComm: ParentComm,
     worldComm: WorldComm,
     tasks: Tasks,
     tasksQueue: TasksQueue,
+    hooks: ConstructorHooks,
     syncSettings(data) {
         this.settings.syncSettings(data);
         Builder.syncSettings(data);
