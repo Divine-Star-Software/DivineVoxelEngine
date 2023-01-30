@@ -10,4 +10,5 @@ export declare const DVEShaders: {
     _defaultShader: DVEShader;
     $INIT(): void;
     createVoxelShader(id: string): DVEShader;
+    createSkyBoxShader(id: string): DVEShader;
 };

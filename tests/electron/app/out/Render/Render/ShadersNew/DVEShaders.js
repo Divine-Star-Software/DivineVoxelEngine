@@ -3,8 +3,9 @@ import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
 import { RegisterVertexSnippets } from "./Code/Snippets/VertexSnippets.js";
 import { RegisterFragmentSnippets } from "./Code/Snippets/FragmentSnippets.js";
-import { RegisterFogShaders } from "./Code/FogShaders.js";
-import { RegisterNoiseFunctions } from "./Code/UtilShaders.js";
+import { RegisterFogShaders } from "./Code/Functions/FogShaders.js";
+import { RegisterNoiseFunctions } from "./Code/Functions/UtilShaders.js";
+import { RegisterVoxelSnippets } from "./Code/Snippets/VoxelSnippets.js";
 export const DVEShaders = {
     voxelAttributes: [
         ["position", "vec3"],
@@ -18,7 +19,7 @@ export const DVEShaders = {
         ["lightColors", "vec4"],
     ],
     voxelSharedUniforms: [
-        ["fogOptions", "vec3"],
+        ["fogOptions", "vec4"],
         ["vFogColor", "vec3"],
         ["sunLightLevel", "float"],
         ["baseLevel", "float"],
@@ -225,11 +226,26 @@ aoColor = vec4(1.0,1.0,1.0,1.0);
 }`,
             },
         ],
+        [
+            "vFlow",
+            "float",
+            {
+                GLSL: `
+vFlow = 0.;
+if(vAnimation == 1.) {
+vFlow = 1.;
+}
+if(vAnimation == 2.) {
+vFlow = -1.;
+}`,
+            },
+        ],
     ],
     voxelFragFunctions: [],
     voxelVertexFunctions: [],
     _defaultShader: {},
     $INIT() {
+        RegisterVoxelSnippets(DVEShaderBuilder);
         RegisterVertexSnippets(DVEShaderBuilder);
         RegisterFragmentSnippets(DVEShaderBuilder);
         const noiseFunctions = RegisterNoiseFunctions(DVEShaderBuilder);
@@ -251,17 +267,91 @@ aoColor = vec4(1.0,1.0,1.0,1.0);
         shader.loadInFunctions(this.voxelVertexFunctions, "vertex");
         shader.addTextures([
             ["arrayTex", { type: "sampler2DArray", isArray: true, arrayLength: 4 }],
-            ["overlayTex", { type: "sampler2DArray", isArray: true, arrayLength: 4 }],
+            ["voxelOverlayTexture", { type: "sampler2DArray", isArray: true, arrayLength: 4 }],
         ]);
         shader.setCodeBody("vertex", `@standard_position`);
         shader.setCodeBody("frag", `@standard_color`);
-        shader.compile();
-        console.log(shader.data);
-        console.log(shader.compiled.fragment);
         this._defaultShader = shader;
     },
     createVoxelShader(id) {
         const shader = this._defaultShader.clone(id);
+        return shader;
+    },
+    createSkyBoxShader(id) {
+        const shader = DVEShaderBuilder.createShader(id);
+        shader.addAttributes([
+            ["position", "vec3"],
+            ["normal", "vec3"],
+        ]);
+        shader.loadInFunctions([
+            "hash",
+            "noise",
+            "fbm",
+            "mod289",
+            "permute",
+            "taylorInvSqrt",
+            "snoise",
+            "fbm3",
+            "ExponentialFog",
+            "VolumetricFog",
+            "AnimatedVolumetricFog",
+            "doFog",
+        ]);
+        shader.addUniform([
+            ["fogOptions", "vec4"],
+            ["vFogInfos", "vec4"],
+            ["vFogColor", "vec3"],
+            ["time", "float"],
+            ["cameraPosition", "vec3"],
+            ["cameraDirection", "vec3"],
+        ], "shared");
+        shader.addVarying([
+            [
+                "cameraPOS",
+                "vec3",
+                {
+                    GLSL: "cameraPOS = cameraPosition;\n",
+                },
+            ],
+            [
+                "worldPOS",
+                "vec3",
+                {
+                    GLSL: `vec4 worldPOSTemp =  world * vec4(position, 1.0);
+worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
+                },
+            ],
+            [
+                "vDistance",
+                "float",
+                {
+                    GLSL: " vDistance = distance(cameraPOS , worldPOS );\n",
+                },
+            ],
+            [
+                "vTime",
+                "float",
+                {
+                    GLSL: "vTime = time;\n",
+                },
+            ],
+        ]);
+        shader.addUniform([
+            ["world", "mat4"],
+            ["view", "mat4"],
+            ["viewProjection", "mat4"],
+            ["worldView", "mat4"],
+            ["worldViewProjection", "mat4"],
+            ["projection", "mat4"],
+        ], "vertex");
+        shader.setCodeBody("vertex", `@standard_position`);
+        shader.setCodeBody("frag", `vec3 c = vFogColor.rgb;
+c.r -= .2;
+c.g -= .2;
+c.b -= .2;
+vec4 skyboxColor = vec4(c.rgb,1);
+vec3 finalColor = doFog(skyboxColor);
+gl_FragColor = vec4(finalColor.rgb,1);`);
         return shader;
     },
 };

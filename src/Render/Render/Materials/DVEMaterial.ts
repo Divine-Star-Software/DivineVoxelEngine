@@ -76,66 +76,49 @@ export class DVEMaterial {
  }
 
  createMaterial(data: MaterialCreateData): BABYLON.ShaderMaterial {
-  const animData = DVER.render.animationManager.registerAnimations(
+  const shader = DVER.render.shaders.createVoxelShader("solid");
+  const animData = DVER.render.animationManager.registerAnimationsN(
    this.type,
    data.animations,
    data.animationTimes
   );
-  const overlayAnimData = DVER.render.animationManager.registerAnimations(
+  shader.addUniform(animData.uniforms);
+  shader.addFunction("getUVFace", "vertex", {
+   inputs: [["uv", "float"]],
+   output: "float",
+   body: {
+    GLSL: animData.animationFunctionBody,
+   },
+  });
+  const overlayAnimData = DVER.render.animationManager.registerAnimationsN(
    this.type,
    data.overlayAnimations,
    data.overlayAnimationTimes,
    true
   );
-
+  shader.setCodeBody("vertex", `@#dve_${this.type}_vertex`);
+  shader.setCodeBody("frag", `@#dve_${this.type}_frag`);
+  shader.addUniform(overlayAnimData.uniforms);
+  shader.addFunction("getOverlayUVFace", "vertex", {
+   inputs: [["uv", "float"]],
+   output: "float",
+   body: {
+    GLSL: overlayAnimData.animationFunctionBody,
+   },
+  });
+  shader.compile();
   BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
-   DVER.render.shaderBuilder.getDefaultVertexShader(this.type, {
-    uvs: animData,
-    overlayUVs: overlayAnimData,
-   });
+   shader.compiled.vertex;
 
   BABYLON.Effect.ShadersStore[`${this.type}FragmentShader`] =
-   DVER.render.shaderBuilder.getDefaultFragmentShader(this.type);
-
+   shader.compiled.fragment;
   const shaderMaterial = new BABYLON.ShaderMaterial(
    this.type,
    data.scene,
    this.type,
    {
-    attributes: [
-     "position",
-     "normal",
-     "ocuv3",
-     "cuv3",
-     "faceData",
-     "colors",
-     "aoColors",
-     "lightColors",
-    ],
-    uniforms: [
-     "world",
-     "worldOrigin",
-     "view",
-     "cameraPosition",
-     "viewProjection",
-     "worldView",
-     "worldViewProjection",
-     "vFogInfos",
-     "vFogColor",
-     "sunLightLevel",
-     "baseLevel",
-     "projection",
-     "arrayTex",
-     "doAO",
-     "doSun",
-     "doRGB",
-     "doColor",
-     "time",
-     "doEffects",
-     "fogOptions",
-     ...animData.uniforms,
-     ...overlayAnimData.uniforms,
-    ],
+    attributes: shader.getAttributeList(),
+    uniforms: shader.getUniformList(),
     needAlphaBlending: this.options.alphaBlending,
     needAlphaTesting: this.options.alphaTesting,
    }
@@ -152,9 +135,9 @@ export class DVEMaterial {
    shaderMaterial.needDepthPrePass = true;
   }
 
-  shaderMaterial.setTextureArray("arrayTex", data.texture);
+  shaderMaterial.setTextureArray("voxelTexture", data.texture);
 
-  shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);
+  shaderMaterial.setTextureArray("voxelOverlayTexture", data.overlayTexture);
 
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);

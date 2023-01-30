@@ -1,8 +1,7 @@
 import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 import { DVEMesh } from "./Meshes/DVEMesh.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { RenderFogOptions, DVERenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
-import { DVEMaterialN } from "./Materials/DVEMaterialN.js";
+import { DVEMaterial } from "./Materials/DVEMaterial.js";
 export declare const RenderManager: {
     fogOptions: RenderFogOptions;
     meshRegister: {
@@ -70,32 +69,7 @@ export declare const RenderManager: {
         _defaultShader: import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
         $INIT(): void;
         createVoxelShader(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
-    };
-    shaderBuilder: {
-        voxelShaders: {
-            solid: {
-                fragMain: string;
-            };
-            flora: {
-                setPosition: string;
-                fragMain: string;
-            };
-            liquid: {
-                vertexVars: string;
-                vertexWave: string;
-                fragVars: string;
-                fragMain: string;
-            };
-            item: {
-                fragMain: string;
-            };
-        };
-        buildVertexShader(data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
-        buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-        getDefaultVertexShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-        getDefaultFragmentShader(voxelSubstance: import("Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
-        getSkyBoxVertexShader(): string;
-        getSkyBoxFragmentShader(): string;
+        createSkyBoxShader(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
     };
     textureCreator: {
         context: CanvasRenderingContext2D | null;
@@ -128,16 +102,14 @@ export declare const RenderManager: {
         registerMaterial(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
-    solidMaterial: DVEMaterialN;
+    solidMaterial: DVEMaterial;
     floraMaterial: DVEMaterial;
     liquidMaterial: DVEMaterial;
     magmaMaterial: DVEMaterial;
-    itemMaterial: DVEMaterial;
     solidMesh: DVEMesh;
     floraMesh: DVEMesh;
     liquidMesh: DVEMesh;
     magmaMesh: DVEMesh;
-    itemMesh: DVEMesh;
     solidStandardMaterial: {
         material: BABYLON.StandardMaterial | null;
         plugin: import("./Materials/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;

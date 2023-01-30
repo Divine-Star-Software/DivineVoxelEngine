@@ -3,18 +3,14 @@ export function RegisterFragFunctions(builder) {
         inputs: [["base", "vec4"]],
         output: "vec4",
         body: {
-            GLSL: `
-return base * vColors;     
-      `,
+            GLSL: `return base * vColors;`,
         },
     });
     builder.createFunction("getAO", {
         inputs: [["base", "vec4"]],
         output: "vec4",
         body: {
-            GLSL: `
-return  base * mix(base, aoColor , 1.0);
-        `,
+            GLSL: `return  base * mix(base, aoColor , 1.0);`,
         },
     });
     builder.createFunction("getLight", {
@@ -23,8 +19,7 @@ return  base * mix(base, aoColor , 1.0);
         body: {
             GLSL: `
 vec4 final = ( ((rgbLColor * vDoRGB)  +  ((sunLColor * vDoSun  * sunLightLevel * vNColor))  ) + baseLevel) ;
-return base * final; 
-          `,
+return base * final; `,
         },
     });
     builder.createFunction("doFog", {
@@ -32,16 +27,17 @@ return base * final;
         output: "vec3",
         body: {
             GLSL: `
+  
    if(fogOptions.x == 0.) {
-       float fog = ExponentialFog();
+    float fog = ExponentialFog();
    return fog * base.rgb + (1.0 - fog) * vFogColor;
    }
    if(fogOptions.x == 1.) {
-       float fogFactor = VolumetricFog();
-   return mix( base.rgb, vFogColor, fogFactor );
+     float fogFactor = VolumetricFog();
+     return mix( base.rgb, vFogColor, fogFactor );
    }
    if(fogOptions.x == 2.) {
-       float fogFactor = AnimatedVolumetricFog();
+ float fogFactor = AnimatedVolumetricFog();
    return mix( base.rgb, vFogColor, fogFactor );
    }
    return base.rgb;`,
@@ -98,10 +94,10 @@ return  vec4(0.,0.,0.,0.);
         body: {
             GLSL: `
 vec4 rgb = getBase(arrayTex, animIndex);
-vec4 oRGB1 =  getBase(overlayTex, vOVUV.x);
-vec4 oRGB2 =  getBase(overlayTex, vOVUV.y);
-vec4 oRGB3 =  getBase(overlayTex, vOVUV.z);
-vec4 oRGB4 =  getBase(overlayTex, vOVUV.w);
+vec4 oRGB1 =  getBase(voxelOverlayTexture, vOVUV.x);
+vec4 oRGB2 =  getBase(voxelOverlayTexture, vOVUV.y);
+vec4 oRGB3 =  getBase(voxelOverlayTexture, vOVUV.z);
+vec4 oRGB4 =  getBase(voxelOverlayTexture, vOVUV.w);
 
 if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
     return vec4(0.,0.,0.,0.);
@@ -128,10 +124,10 @@ return rgb;
         body: {
             GLSL: `
    vec4 rgb = getBaseAnimated(arrayTex,UV ,animIndex);
-   vec4 oRGB1 =  getBase(overlayTex, vOVUV.x);
-   vec4 oRGB2 =  getBase(overlayTex, vOVUV.y);
-   vec4 oRGB3 =  getBase(overlayTex, vOVUV.z);
-   vec4 oRGB4 =  getBase(overlayTex, vOVUV.w);
+   vec4 oRGB1 =  getBase(voxelOverlayTexture, vOVUV.x);
+   vec4 oRGB2 =  getBase(voxelOverlayTexture, vOVUV.y);
+   vec4 oRGB3 =  getBase(voxelOverlayTexture, vOVUV.z);
+   vec4 oRGB4 =  getBase(voxelOverlayTexture, vOVUV.w);
 
    if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
       return vec4(0.,0.,0.,0.);

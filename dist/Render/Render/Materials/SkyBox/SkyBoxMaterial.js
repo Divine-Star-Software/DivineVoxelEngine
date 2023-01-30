@@ -1,3 +1,4 @@
+import { DVEShaders } from "../../Shaders/DVEShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 export const SkyBoxMaterial = {
     material: null,
@@ -52,26 +53,14 @@ export const SkyBoxMaterial = {
         }
     },
     createMaterial(scene) {
-        BABYLON.Effect.ShadersStore["skyboxVertexShader"] =
-            DVER.render.shaderBuilder.getSkyBoxVertexShader();
+        const shader = DVEShaders.createSkyBoxShader("skybox");
+        shader.compile();
+        BABYLON.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
         BABYLON.Effect.ShadersStore["skyboxFragmentShader"] =
-            DVER.render.shaderBuilder.getSkyBoxFragmentShader();
+            shader.compiled.fragment;
         const shaderMaterial = new BABYLON.ShaderMaterial("skybox", scene, "skybox", {
-            attributes: ["position", "normal"],
-            uniforms: [
-                "world",
-                "view",
-                "cameraPosition",
-                "cameraDirection",
-                "viewProjection",
-                "worldView",
-                "worldViewProjection",
-                "vFogInfos",
-                "vFogColor",
-                "projection",
-                "time",
-                "fogOptions"
-            ],
+            attributes: shader.getAttributeList(),
+            uniforms: shader.getUniformList(),
             needAlphaBlending: false,
             needAlphaTesting: true,
         });

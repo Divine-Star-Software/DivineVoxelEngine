@@ -9,8 +9,7 @@ const setUpMaterial = async (
  substance: VoxelSubstanceType | "Item",
  material: DVEMaterial
 ) => {
- const textures =
-  DVER.textures.processedTextureData.texturePaths[substance];
+ const textures = DVER.textures.processedTextureData.texturePaths[substance];
  const animations =
   DVER.textures.processedTextureData.textureAnimations[substance];
  const animationTimes =
@@ -27,9 +26,7 @@ const setUpMaterial = async (
  const overlayAimations =
   DVER.textures.overlayProcessedTextureData.textureAnimations[substance];
  const overlayAnimationTimes =
-  DVER.textures.overlayProcessedTextureData.textureAnimationTimes[
-   substance
-  ];
+  DVER.textures.overlayProcessedTextureData.textureAnimationTimes[substance];
  const Overlay2dTextureArray =
   await DVER.render.textureCreator.createMaterialTexture(
    `${substance}-overlay`,
@@ -70,15 +67,12 @@ export async function BuildInitalMeshes(
 
  DVER.render.$INIT(scene);
 
-
  await DVER.render.textureCreator.setUpImageCreation();
-
 
  await setUpMaterial(DVER, scene, "solid", DVER.render.solidMaterial);
  await setUpMaterial(DVER, scene, "flora", DVER.render.floraMaterial);
  await setUpMaterial(DVER, scene, "liquid", DVER.render.liquidMaterial);
  await setUpMaterial(DVER, scene, "magma", DVER.render.magmaMaterial);
- await setUpMaterial(DVER, scene, "Item", DVER.render.itemMaterial);
 
  DVER.render.animationManager.startAnimations();
 
@@ -89,9 +83,6 @@ export async function BuildInitalMeshes(
   DVER.render.floraMaterial.runEffects();
   DVER.render.liquidMaterial.runEffects();
   DVER.render.magmaMaterial.runEffects();
-  DVER.render.itemMaterial.runEffects();
   DVER.render.skyBoxMaterial.runEffects();
  });
-
-
 }

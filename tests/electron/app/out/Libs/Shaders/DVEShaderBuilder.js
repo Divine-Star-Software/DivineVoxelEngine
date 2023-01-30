@@ -4,8 +4,9 @@ export const DVEShaderBuilder = {
     functions: new Map(),
     snippets: new Map(),
     buildShader(id) { },
-    _replaceSnippets(text) {
+    _process(text) {
         const lines = text.split("\n");
+        let foundSnippet = false;
         const newShader = [];
         for (const line of lines) {
             const l = line.trim();
@@ -16,19 +17,28 @@ export const DVEShaderBuilder = {
             let id = "";
             for (let i = 0; i < l.length; i++) {
                 const char = l[i];
-                if (char == "@")
+                if (char == "@") {
+                    foundSnippet = true;
                     continue;
+                }
                 if (!char || char == " " || char == "\n" || char == "\r")
                     break;
                 id += char;
             }
             newShader.push(this.buildSnippet(id));
         }
-        let returnString = "";
-        for (const line of newShader) {
-            returnString += `${line}\n`;
+        let newBody = newShader.join("\n");
+        return { newBody, foundSnippet };
+    },
+    _replaceSnippets(text) {
+        let done = false;
+        let finalBody = text;
+        while (!done) {
+            const { newBody, foundSnippet } = this._process(finalBody);
+            done = !foundSnippet;
+            finalBody = newBody;
         }
-        return returnString;
+        return finalBody;
     },
     _buildFunction(id, data) {
         let paramters = "";
@@ -36,7 +46,6 @@ export const DVEShaderBuilder = {
         for (const [key, type] of data.inputs) {
             count++;
             if (Array.isArray(type)) {
-                console.log(type);
                 paramters += `${type[0]}[${type[1]}] ${key}${count != data.inputs.length ? "," : ""}`;
                 continue;
             }

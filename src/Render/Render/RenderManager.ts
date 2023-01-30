@@ -2,10 +2,8 @@
 import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 //built in
 import { DVEMesh } from "./Meshes/DVEMesh.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
 //objects
 import { AnimationManager } from "./Animations/AnimationManager.js";
-import { ShaderBuilder } from "./Shaders/ShaderBuilder.js";
 import { TextureCreator } from "./Textures/TextureCreator.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
@@ -21,10 +19,10 @@ import {
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
-import { DVEShaders } from "./ShadersNew/DVEShaders.js";
-import { DVEMaterialN } from "./Materials/DVEMaterialN.js";
+import { DVEShaders } from "./Shaders/DVEShaders.js";
+import { DVEMaterial } from "./Materials/DVEMaterial.js";
 
-const solidMaterial = new DVEMaterialN("solid", {
+const solidMaterial = new DVEMaterial("solid", {
  alphaBlending: false,
  alphaTesting: true,
 });
@@ -44,11 +42,6 @@ const liquidMat = new DVEMaterial("liquid", {
  alphaTesting: false,
 });
 const liquidMesh = new DVEMesh("liquid", liquidMat);
-const itemMat = new DVEMaterial("Item", {
- alphaBlending: false,
- alphaTesting: true,
-});
-const itemMesh = new DVEMesh("Item", itemMat);
 
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{
@@ -75,7 +68,6 @@ export const RenderManager = {
 
  shaders: DVEShaders,
 
- shaderBuilder: ShaderBuilder,
  textureCreator: TextureCreator,
  animationManager: AnimationManager,
 
@@ -83,13 +75,11 @@ export const RenderManager = {
  floraMaterial: floraMat,
  liquidMaterial: liquidMat,
  magmaMaterial: magmaMat,
- itemMaterial: itemMat,
 
  solidMesh: solidMesh,
  floraMesh: floraMesh,
  liquidMesh: liquidMesh,
  magmaMesh: magmaMesh,
- itemMesh: itemMesh,
 
  solidStandardMaterial: StandardSolidMaterial,
  liquidStandardMaterial: StandardLiquidMaterial,
@@ -135,7 +125,6 @@ export const RenderManager = {
   this.liquidMaterial.updateFogOptions(fogData);
   this.floraMaterial.updateFogOptions(fogData);
   this.magmaMaterial.updateFogOptions(fogData);
-  this.itemMaterial.updateFogOptions(fogData);
   this.skyBoxMaterial.updateFogOptions(fogData);
  },
 
@@ -170,7 +159,6 @@ export const RenderManager = {
   this.floraMesh.syncSettings(settings);
   this.liquidMesh.syncSettings(settings);
   this.magmaMesh.syncSettings(settings);
-  this.itemMesh.syncSettings(settings);
 
   this.textureCreator.defineTextureDimensions(
    settings.textures.textureSize,
@@ -218,12 +206,10 @@ export const RenderManager = {
   this.solidMaterial.setSunLightLevel(level);
   this.liquidMaterial.setSunLightLevel(level);
   this.floraMaterial.setSunLightLevel(level);
-  this.itemMaterial.setSunLightLevel(level);
  },
  setBaseLevel(level: number) {
   this.solidMaterial.setBaseLevel(level);
   this.liquidMaterial.setBaseLevel(level);
   this.floraMaterial.setBaseLevel(level);
-  this.itemMaterial.setBaseLevel(level);
  },
 };

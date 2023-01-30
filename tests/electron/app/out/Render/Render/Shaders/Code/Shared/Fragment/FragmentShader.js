@@ -23,7 +23,7 @@ varying float vDoAO;
         let varying = `
 //textures
 uniform sampler2DArray arrayTex[4];
-uniform sampler2DArray overlayTex[4];
+uniform sampler2DArray voxelOverlayTexture[4];
 varying float mipMapLevel;
 //uvs
 varying vec3 vUV;
@@ -85,10 +85,10 @@ vec4 getBaseAnimated(sampler2DArray[4] tex, vec2 UV, float index) {
 }
  vec4 getBaseColor() {
    vec4 rgb = getBase(arrayTex, animIndex);
-   vec4 oRGB1 =  getBase(overlayTex, vOVUV.x);
-   vec4 oRGB2 =  getBase(overlayTex, vOVUV.y);
-   vec4 oRGB3 =  getBase(overlayTex, vOVUV.z);
-   vec4 oRGB4 =  getBase(overlayTex, vOVUV.w);
+   vec4 oRGB1 =  getBase(voxelOverlayTexture, vOVUV.x);
+   vec4 oRGB2 =  getBase(voxelOverlayTexture, vOVUV.y);
+   vec4 oRGB3 =  getBase(voxelOverlayTexture, vOVUV.z);
+   vec4 oRGB4 =  getBase(voxelOverlayTexture, vOVUV.w);
 
    if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
       return vec4(0.,0.,0.,0.);
@@ -109,10 +109,10 @@ vec4 getBaseAnimated(sampler2DArray[4] tex, vec2 UV, float index) {
  }
  vec4 getAnimatedBaseColor(vec2 UV) {
    vec4 rgb = getBaseAnimated(arrayTex,UV ,animIndex);
-   vec4 oRGB1 =  getBase(overlayTex, vOVUV.x);
-   vec4 oRGB2 =  getBase(overlayTex, vOVUV.y);
-   vec4 oRGB3 =  getBase(overlayTex, vOVUV.z);
-   vec4 oRGB4 =  getBase(overlayTex, vOVUV.w);
+   vec4 oRGB1 =  getBase(voxelOverlayTexture, vOVUV.x);
+   vec4 oRGB2 =  getBase(voxelOverlayTexture, vOVUV.y);
+   vec4 oRGB3 =  getBase(voxelOverlayTexture, vOVUV.z);
+   vec4 oRGB4 =  getBase(voxelOverlayTexture, vOVUV.w);
 
    if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
       return vec4(0.,0.,0.,0.);

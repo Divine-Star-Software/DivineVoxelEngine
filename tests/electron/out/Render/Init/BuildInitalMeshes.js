@@ -39,7 +39,6 @@ export async function BuildInitalMeshes(DVER, scene) {
     await setUpMaterial(DVER, scene, "flora", DVER.render.floraMaterial);
     await setUpMaterial(DVER, scene, "liquid", DVER.render.liquidMaterial);
     await setUpMaterial(DVER, scene, "magma", DVER.render.magmaMaterial);
-    await setUpMaterial(DVER, scene, "Item", DVER.render.itemMaterial);
     DVER.render.animationManager.startAnimations();
     DVER.textures.releaseTextureData();
     scene.registerBeforeRender(() => {
@@ -47,7 +46,6 @@ export async function BuildInitalMeshes(DVER, scene) {
         DVER.render.floraMaterial.runEffects();
         DVER.render.liquidMaterial.runEffects();
         DVER.render.magmaMaterial.runEffects();
-        DVER.render.itemMaterial.runEffects();
         DVER.render.skyBoxMaterial.runEffects();
     });
 }

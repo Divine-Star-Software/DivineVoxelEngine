@@ -168,32 +168,7 @@ export declare const DVER: {
             _defaultShader: import("../Libs/Shaders/Classes/DVEShader.js").DVEShader;
             $INIT(): void;
             createVoxelShader(id: string): import("../Libs/Shaders/Classes/DVEShader.js").DVEShader;
-        };
-        shaderBuilder: {
-            voxelShaders: {
-                solid: {
-                    fragMain: string;
-                };
-                flora: {
-                    setPosition: string;
-                    fragMain: string;
-                };
-                liquid: {
-                    vertexVars: string;
-                    vertexWave: string;
-                    fragVars: string;
-                    fragMain: string;
-                };
-                item: {
-                    fragMain: string;
-                };
-            };
-            buildVertexShader(data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData, setPosition: string, doAO?: boolean, vars?: string): string;
-            buildFragmentShader(fragMain: string, doAO?: boolean, vars?: string): string;
-            getDefaultVertexShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item", data: import("../Meta/Render/Shaders/Shader.types.js").VertexShaderCreateData): string;
-            getDefaultFragmentShader(voxelSubstance: import("../Meta/index.js").VoxelTemplateSubstanceType | "Item"): string;
-            getSkyBoxVertexShader(): string;
-            getSkyBoxFragmentShader(): string;
+            createSkyBoxShader(id: string): import("../Libs/Shaders/Classes/DVEShader.js").DVEShader;
         };
         textureCreator: {
             context: CanvasRenderingContext2D | null;
@@ -226,16 +201,14 @@ export declare const DVER: {
             registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
-        solidMaterial: import("./Render/Materials/DVEMaterialN.js").DVEMaterialN;
+        solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         floraMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         liquidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         magmaMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
-        itemMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         solidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         floraMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         liquidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         magmaMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
-        itemMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         solidStandardMaterial: {
             material: BABYLON.StandardMaterial | null;
             plugin: import("./Render/Materials/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;

@@ -9,7 +9,6 @@ export function RegisterFragmentSnippets(builder) {
   rgb = getAO(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  gl_FragColor = vec4(finalColor.rgb , rgb.w ); 
-    `,
+  gl_FragColor = vec4(finalColor.rgb , rgb.w ); `,
     });
 }

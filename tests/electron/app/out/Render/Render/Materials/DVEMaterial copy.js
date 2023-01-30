@@ -121,7 +121,7 @@ export class DVEMaterial {
             shaderMaterial.needDepthPrePass = true;
         }
         shaderMaterial.setTextureArray("arrayTex", data.texture);
-        shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);
+        shaderMaterial.setTextureArray("voxelOverlayTexture", data.overlayTexture);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());

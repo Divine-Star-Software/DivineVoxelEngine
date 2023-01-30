@@ -76,6 +76,8 @@ export class DVEMaterialN {
             },
         });
         const overlayAnimData = DVER.render.animationManager.registerAnimationsN(this.type, data.overlayAnimations, data.overlayAnimationTimes, true);
+        shader.setCodeBody("vertex", `@#dve_${this.type}_vertex`);
+        shader.setCodeBody("frag", `@#dve_${this.type}_frag`);
         shader.addUniform(overlayAnimData.uniforms);
         shader.addFunction("getOverlayUVFace", "vertex", {
             inputs: [["uv", "float"]],
@@ -104,7 +106,7 @@ export class DVEMaterialN {
             shaderMaterial.needDepthPrePass = true;
         }
         shaderMaterial.setTextureArray("arrayTex", data.texture);
-        shaderMaterial.setTextureArray("overlayTex", data.overlayTexture);
+        shaderMaterial.setTextureArray("voxelOverlayTexture", data.overlayTexture);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());

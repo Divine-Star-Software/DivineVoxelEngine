@@ -5,6 +5,10 @@ export declare const DVEShaderBuilder: {
     functions: Map<string, ShaderFunctionData>;
     snippets: Map<string, ShaderCodeBody>;
     buildShader(id: string): void;
+    _process(text: string): {
+        newBody: string;
+        foundSnippet: boolean;
+    };
     _replaceSnippets(text: string): string;
     _buildFunction(id: string, data: ShaderFunctionData): string;
     buildFunction(id: string, data?: ShaderFunctionData): string;
