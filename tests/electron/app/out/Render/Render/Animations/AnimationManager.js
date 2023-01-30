@@ -66,6 +66,54 @@ export const AnimationManager = {
             animationFunctionCode: animationFunctionCode,
         };
     },
+    registerAnimationsN(voxelSubstanceType, animations, animationTimes, overlay = false) {
+        const returnUniforms = [];
+        let uniformRegisterCode = `//animations\n`;
+        let animationFunctionCode = ``;
+        if (overlay) {
+            animationFunctionCode = ``;
+        }
+        let i = 0;
+        for (const anim of animations) {
+            let shaderId = `anim${i}`;
+            if (overlay) {
+                shaderId = "o" + shaderId;
+            }
+            let keyCounts = [];
+            const animTime = animationTimes[i];
+            if (animTime.length == 1) {
+                for (let k = 0; k < anim.length; k++) {
+                    keyCounts.push(animTime[0]);
+                }
+            }
+            else {
+                keyCounts = animationTimes[i];
+            }
+            this.animations.push({
+                uniformShaderId: shaderId,
+                keys: anim,
+                currentFrame: 0,
+                currentCount: 0,
+                keyCounts: keyCounts,
+                substance: voxelSubstanceType,
+            });
+            returnUniforms.push([shaderId, "float"]);
+            uniformRegisterCode += `uniform float ${shaderId};
+     `;
+            animationFunctionCode += `if(uv == ${anim[0]}.0) {
+     return ${shaderId};
+    }`;
+            i++;
+        }
+        animationFunctionCode += `
+    return uv;
+    `;
+        this.animCount = this.animations.length;
+        return {
+            uniforms: returnUniforms,
+            animationFunctionBody: animationFunctionCode,
+        };
+    },
     registerMaterial(voxelSubstanceType, material) {
         this.animatedMaterials[voxelSubstanceType] = material;
     },

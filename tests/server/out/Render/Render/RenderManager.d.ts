@@ -1,8 +1,8 @@
-/// <reference types="babylonjs" />
 import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { RenderFogOptions, DVERenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
+import { DVEMaterialN } from "./Materials/DVEMaterialN.js";
 export declare const RenderManager: {
     fogOptions: RenderFogOptions;
     meshRegister: {
@@ -60,6 +60,17 @@ export declare const RenderManager: {
             position: BABYLON.Vector3;
         }): void;
     };
+    shaders: {
+        voxelAttributes: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
+        voxelSharedUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
+        voxelVertexUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
+        voxelVarying: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes, set: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody][];
+        voxelFragFunctions: string[];
+        voxelVertexFunctions: string[];
+        _defaultShader: import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
+        $INIT(): void;
+        createVoxelShader(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
+    };
     shaderBuilder: {
         voxelShaders: {
             solid: {
@@ -99,7 +110,7 @@ export declare const RenderManager: {
         _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
     };
     animationManager: {
-        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+        animatedMaterials: Record<"Item" | import("Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
         animCount: number;
         animations: {
             uniformShaderId: string;
@@ -107,13 +118,17 @@ export declare const RenderManager: {
             currentFrame: number;
             currentCount: number;
             keyCounts: number[];
-            substance: import("Meta/index.js").VoxelSubstanceType | "Item";
+            substance: "Item" | import("Meta/index.js").VoxelSubstanceType;
         }[];
-        registerAnimations(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
+        registerAnimations(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
+        registerAnimationsN(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): {
+            uniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
+            animationFunctionBody: string;
+        };
+        registerMaterial(voxelSubstanceType: "Item" | import("Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
-    solidMaterial: DVEMaterial;
+    solidMaterial: DVEMaterialN;
     floraMaterial: DVEMaterial;
     liquidMaterial: DVEMaterial;
     magmaMaterial: DVEMaterial;

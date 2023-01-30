@@ -14,7 +14,9 @@ import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsm
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
-const solidMaterial = new DVEMaterial("solid", {
+import { DVEShaders } from "./ShadersNew/DVEShaders.js";
+import { DVEMaterialN } from "./Materials/DVEMaterialN.js";
+const solidMaterial = new DVEMaterialN("solid", {
     alphaBlending: false,
     alphaTesting: true,
 });
@@ -57,6 +59,7 @@ export const RenderManager = {
         liquidEffects: false,
     },
     fo: FOManager,
+    shaders: DVEShaders,
     shaderBuilder: ShaderBuilder,
     textureCreator: TextureCreator,
     animationManager: AnimationManager,

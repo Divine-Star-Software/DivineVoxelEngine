@@ -1,4 +1,3 @@
-/// <reference types="babylonjs" />
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { RemoveChunkMeshTasks, SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 import { DVEMesh } from "Render/Render/Meshes/DVEMesh.js";

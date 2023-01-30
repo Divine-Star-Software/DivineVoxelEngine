@@ -21,8 +21,10 @@ import {
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
+import { DVEShaders } from "./ShadersNew/DVEShaders.js";
+import { DVEMaterialN } from "./Materials/DVEMaterialN.js";
 
-const solidMaterial = new DVEMaterial("solid", {
+const solidMaterial = new DVEMaterialN("solid", {
  alphaBlending: false,
  alphaTesting: true,
 });
@@ -70,6 +72,8 @@ export const RenderManager = {
  },
 
  fo: FOManager,
+
+ shaders: DVEShaders,
 
  shaderBuilder: ShaderBuilder,
  textureCreator: TextureCreator,

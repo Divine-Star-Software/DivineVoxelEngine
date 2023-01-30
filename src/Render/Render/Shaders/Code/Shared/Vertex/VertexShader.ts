@@ -51,7 +51,7 @@ uniform vec3 worldOrigin;
   let varying = `
   varying vec3 vUV;
   varying vec4 vOVUV;
-  varying float vFaceData;
+
   varying vec3 vNormal;
 
   
@@ -63,7 +63,7 @@ uniform vec3 worldOrigin;
   varying vec4 vColors;
   //texture animations
   varying float animIndex;
-  varying float overlayAnimIndex;
+
   //animation States
   varying float vAnimation;
  ${SharedVertexShader.defaultVarying}
@@ -111,7 +111,6 @@ uniform vec3 worldOrigin;
     vOVUV.y = getOverlayUVFace(ocuv3.y);
     vOVUV.z = getOverlayUVFace(ocuv3.z);
     vOVUV.w = getOverlayUVFace(ocuv3.w);
-
     `,
 
  passTime: `

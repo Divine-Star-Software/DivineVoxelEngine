@@ -23,7 +23,9 @@ float fbm(vec2 x) {
     frequency *= 2.0;
   }
   return height;
-}`,
+}
+
+`,
 
  fbm3: `
 //
@@ -120,5 +122,7 @@ float fbm3(vec3 p) {
     amplitude *= 0.5;
   }
   return value;
-}`,
+}
+
+`,
 };

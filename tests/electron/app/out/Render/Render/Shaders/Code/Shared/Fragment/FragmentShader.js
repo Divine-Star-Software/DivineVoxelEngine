@@ -28,7 +28,6 @@ varying float mipMapLevel;
 //uvs
 varying vec3 vUV;
 varying vec4 vOVUV;
-varying float vFaceData;
 //colors
 varying vec4 rgbLColor;
 varying vec4 sunLColor;
@@ -38,7 +37,7 @@ varying vec3 vNormal;
 varying float vNColor;
 //texture animations
 varying float animIndex;
-varying float overlayAnimIndex;
+
 //animation States
 varying float vAnimation;
 ${SharedFragmentShader.defaultVarying}
@@ -168,7 +167,6 @@ vec4 getAO(vec4 base) {
     getLight: `
 vec4 getLight(vec4 base) {
    vec4 final = ( ((rgbLColor * vDoRGB)  +  ((sunLColor * vDoSun  * sunLightLevel * vNColor))  ) + baseLevel) ;
-   // final = clamp(final,0.,1.1);
    return base * final; 
 }
     `,
