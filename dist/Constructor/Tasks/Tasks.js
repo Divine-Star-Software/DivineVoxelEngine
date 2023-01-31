@@ -115,7 +115,7 @@ export const Tasks = {
         update: ThreadComm.registerTasks(ConstructorTasks.RGBlightUpdate, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
-            tasks.queues.rgb.update.push([x, y, z]);
+            tasks.queues.rgb.update.push(x, y, z);
             tasks.start();
             DVEC.propagation.rgb.update(tasks);
             tasks.stop();
@@ -123,7 +123,7 @@ export const Tasks = {
         remove: ThreadComm.registerTasks(ConstructorTasks.RGBlightRemove, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
-            tasks.queues.rgb.rmeove.push([x, y, z]);
+            tasks.queues.rgb.rmeove.push(x, y, z);
             tasks.start();
             DVEC.propagation.rgb.remove(tasks);
             tasks.stop();
@@ -133,7 +133,7 @@ export const Tasks = {
         update: ThreadComm.registerTasks(ConstructorTasks.sunLightUpdate, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
-            tasks.queues.sun.update.push([x, y, z]);
+            tasks.queues.sun.update.push(x, y, z);
             tasks.start();
             DVEC.propagation.sun.update(tasks);
             tasks.stop();
@@ -141,7 +141,7 @@ export const Tasks = {
         remove: ThreadComm.registerTasks(ConstructorTasks.sunLightRemove, (data) => {
             const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
             const [dimension, x, y, z] = data[0];
-            tasks.queues.sun.rmeove.push([x, y, z]);
+            tasks.queues.sun.rmeove.push(x, y, z);
             tasks.start();
             DVEC.propagation.sun.remove(tasks);
             tasks.stop();

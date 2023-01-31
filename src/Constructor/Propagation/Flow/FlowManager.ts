@@ -52,11 +52,11 @@ export const FlowManager = {
    if (l <= 0) continue;
 
    if (this.lightData.getS(l) > 0) {
-    tasks.queues.sun.update.push([nx, ny, nz]);
+    tasks.queues.sun.update.push(nx, ny, nz);
    }
 
    if (this.lightData.hasRGBLight(l)) {
-    tasks.queues.rgb.update.push([nx, ny, nz]);
+    tasks.queues.rgb.update.push(nx, ny, nz);
    }
   }
 
@@ -148,7 +148,7 @@ export const FlowManager = {
   if (!this._nDataTool.isAir()) return;
   const l = this._nDataTool.getLight();
   if (this.lightData.getS(l) == 0xf) {
-   tasks.queues.sun.rmeove.push([x, y - 1, z]);
+   tasks.queues.sun.rmeove.push(x, y - 1, z);
    SunRemove(tasks);
   }
  },

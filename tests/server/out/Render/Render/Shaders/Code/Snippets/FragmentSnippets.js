@@ -1,5 +1,5 @@
 export function RegisterFragmentSnippets(builder) {
-    builder.createSnippet("standard_color", {
+    builder.snippets.create("standard_color", {
         GLSL: `
   vec4 rgb = getBaseColor(vec2( vUV.x,vUV.y));
   if (rgb.a < 0.5) { 

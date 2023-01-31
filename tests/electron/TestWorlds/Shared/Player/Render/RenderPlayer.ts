@@ -47,10 +47,12 @@ export const GetPlayerPickCube = (
   }
   if (event.button == 2) {
    states.place = true;
+   addV();
   }
 
   if (event.button == 0) {
    states.break = true;
+   breakV();
   }
  });
 
@@ -63,35 +65,34 @@ export const GetPlayerPickCube = (
   }
  });
 
- setInterval(() => {
-  if (states.place) {
-   cameraPickPostion.x = 0;
-   cameraPickPostion.y = PlayerData.eyeLevel;
-   cameraPickPostion.z = 0;
-   const camPick = scene.pickWithRay(
-    camera.getForwardRay(10, undefined, cameraPickPostion)
-   );
+ const addV = () => {
+  cameraPickPostion.x = 0;
+  cameraPickPostion.y = PlayerData.eyeLevel;
+  cameraPickPostion.z = 0;
+  const camPick = scene.pickWithRay(
+   camera.getForwardRay(10, undefined, cameraPickPostion)
+  );
 
-   if (camPick) {
-    if (camPick.hit) {
-     if (camPick.pickedMesh && camPick.faceId !== undefined) {
-      let normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
-      PlayerData.pick.normal.x = normal.x;
-      PlayerData.pick.normal.y = normal.y;
-      PlayerData.pick.normal.z = normal.z;
-      const { x, y, z } = PlayerData.pick.normal;
-     }
+  if (camPick) {
+   if (camPick.hit) {
+    if (camPick.pickedMesh && camPick.faceId !== undefined) {
+     let normal = camPick.pickedMesh.getFacetNormal(camPick.faceId);
+     PlayerData.pick.normal.x = normal.x;
+     PlayerData.pick.normal.y = normal.y;
+     PlayerData.pick.normal.z = normal.z;
     }
    }
-   let voxel = localStorage.getItem("voxel");
-   voxel = voxel ? voxel : "dve_dreamstone";
-   DVER.worldComm.sendMessage("voxel-add", [voxel]);
-   cameraPickPostion.setAll(0);
   }
-  if (states.break) {
-   DVER.worldComm.sendMessage("voxel-remove");
-  }
- }, 100);
+  let voxel = localStorage.getItem("voxel");
+  voxel = voxel ? voxel : "dve_dreamstone";
+  DVER.worldComm.sendMessage("voxel-add", [voxel]);
+  cameraPickPostion.setAll(0);
+ };
+ const breakV = () => {
+  DVER.worldComm.sendMessage("voxel-remove");
+ };
+
+ setInterval(() => {}, 100);
 
  scene.registerBeforeRender(() => {
   cube.position.x = PlayerData.pick.position.x + 0.5;

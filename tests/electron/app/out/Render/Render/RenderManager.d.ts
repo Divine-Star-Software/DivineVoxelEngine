@@ -60,6 +60,31 @@ export declare const RenderManager: {
         }): void;
     };
     shaders: {
+        builder: {
+            buildShader(id: string): void;
+            shaders: {
+                _shaders: Map<string, import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader>;
+                create(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
+            };
+            functions: {
+                _functions: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData>;
+                _functionSets: Map<string, string[]>;
+                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): void;
+                _processFunctinos(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): string;
+                build(id: string, data?: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData | undefined): string;
+            };
+            snippets: {
+                _snippets: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody>;
+                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): void;
+                override(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): boolean;
+                get(id: string): string;
+                _process(text: string): {
+                    newBody: string;
+                    foundSnippet: boolean;
+                };
+                build(text: string): string;
+            };
+        };
         voxelAttributes: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
         voxelSharedUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
         voxelVertexUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];

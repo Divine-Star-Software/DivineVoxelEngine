@@ -23,7 +23,6 @@ export const Tasks = {
   syncTextures: ThreadComm.registerTasks(
    "sync-uv-texuture-data",
    (data: any) => {
-
     DVEC.builder.textureManager.setUVTextureMap(data[0]);
     DVEC.builder.textureManager.setOverlayUVTextureMap(data[1]);
     DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
@@ -178,7 +177,7 @@ export const Tasks = {
    (data) => {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
-    tasks.queues.rgb.update.push([x, y, z]);
+    tasks.queues.rgb.update.push(x, y, z);
     tasks.start();
     DVEC.propagation.rgb.update(tasks);
     tasks.stop();
@@ -189,7 +188,7 @@ export const Tasks = {
    (data) => {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
-    tasks.queues.rgb.rmeove.push([x, y, z]);
+    tasks.queues.rgb.rmeove.push(x, y, z);
     tasks.start();
     DVEC.propagation.rgb.remove(tasks);
     tasks.stop();
@@ -202,7 +201,7 @@ export const Tasks = {
    (data) => {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
-    tasks.queues.sun.update.push([x, y, z]);
+    tasks.queues.sun.update.push(x, y, z);
     tasks.start();
     DVEC.propagation.sun.update(tasks);
     tasks.stop();
@@ -213,7 +212,7 @@ export const Tasks = {
    (data) => {
     const tasks = TasksRequest.getLightUpdateRequest(data[0], data[1], data[2]);
     const [dimension, x, y, z] = data[0];
-    tasks.queues.sun.rmeove.push([x, y, z]);
+    tasks.queues.sun.rmeove.push(x, y, z);
     tasks.start();
     DVEC.propagation.sun.remove(tasks);
     tasks.stop();

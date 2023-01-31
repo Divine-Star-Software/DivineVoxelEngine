@@ -1,7 +1,8 @@
 import type { DVEShaderBuilder } from "../../../../../Libs/Shaders/DVEShaderBuilder.js";
 
-export function RegisterFogShaders(builder : typeof DVEShaderBuilder ) {
- builder.createFunction("ExponentialFog", {
+export function RegisterFogShaders(builder: typeof DVEShaderBuilder) {
+ builder.functions.create("ExponentialFog", {
+  setID: "#dve_fog",
   inputs: [],
   output: "float",
   body: {
@@ -12,7 +13,8 @@ export function RegisterFogShaders(builder : typeof DVEShaderBuilder ) {
    return clamp(fogCoeff, 0.0, 1.0);`,
   },
  });
- builder.createFunction("VolumetricFog", {
+ builder.functions.create("VolumetricFog", {
+  setID: "#dve_fog",
   inputs: [],
   output: "float",
   body: {
@@ -30,7 +32,8 @@ export function RegisterFogShaders(builder : typeof DVEShaderBuilder ) {
    return fogFactor;`,
   },
  });
- builder.createFunction("AnimatedVolumetricFog", {
+ builder.functions.create("AnimatedVolumetricFog", {
+  setID: "#dve_fog",
   inputs: [],
   output: "float",
   body: {
@@ -53,5 +56,5 @@ export function RegisterFogShaders(builder : typeof DVEShaderBuilder ) {
   },
  });
 
- return ["ExponentialFog", "VolumetricFog", "AnimatedVolumetricFog"];
+
 }

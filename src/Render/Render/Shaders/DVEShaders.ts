@@ -12,6 +12,7 @@ import { RegisterFogShaders } from "./Code/Functions/FogShaders.js";
 import { RegisterNoiseFunctions } from "./Code/Functions/UtilShaders.js";
 import { RegisterVoxelSnippets } from "./Code/Snippets/VoxelSnippets.js";
 export const DVEShaders = {
+ builder: DVEShaderBuilder,
  voxelAttributes: <[id: string, type: ShaderDataTypes][]>[
   ["position", "vec3"],
   ["normal", "vec3"],
@@ -36,10 +37,6 @@ export const DVEShaders = {
  ],
  voxelVertexUniforms: <[id: string, type: ShaderDataTypes][]>[
   ["world", "mat4"],
-  ["view", "mat4"],
-  ["worldView", "vec4"],
-  ["worldViewProjection", "mat4"],
-  ["projection", "mat4"],
   ["viewProjection", "mat4"],
 
   ["worldOrigin", "vec3"],
@@ -47,6 +44,7 @@ export const DVEShaders = {
 
   ["doEffects", "float"],
  ],
+
  voxelVarying: <[id: string, type: ShaderDataTypes, set: ShaderCodeBody][]>[
   [
    "cameraPOS",
@@ -148,7 +146,7 @@ vOVUV.w = getOverlayUVFace(ocuv3.w);`,
    "vNColor",
    "float",
    {
-    GLSL: ` if(normal.y == 1.) {
+    GLSL: `if(normal.y == 1.) {
      vNColor = 1.2;
 }
 if(normal.y == -1.) {
@@ -228,18 +226,14 @@ vFlow = -1.;
   RegisterVoxelSnippets(DVEShaderBuilder);
   RegisterVertexSnippets(DVEShaderBuilder);
   RegisterFragmentSnippets(DVEShaderBuilder);
-  const noiseFunctions = RegisterNoiseFunctions(DVEShaderBuilder);
-  this.voxelFragFunctions = [
-   ...noiseFunctions,
-   ...RegisterFogShaders(DVEShaderBuilder),
-   ...RegisterFragFunctions(DVEShaderBuilder),
-  ];
-  this.voxelVertexFunctions = [
-   ...noiseFunctions,
-   ...RegisterVertexFunctions(DVEShaderBuilder),
-  ];
+  RegisterNoiseFunctions(DVEShaderBuilder);
+  RegisterFogShaders(DVEShaderBuilder);
+  RegisterVertexFunctions(DVEShaderBuilder);
+  RegisterFragFunctions(DVEShaderBuilder);
+  this.voxelFragFunctions = ["#dve_fmb2", "#dve_fmb3", "#dve_fog", "#dve_frag"];
+  this.voxelVertexFunctions = ["#dve_fmb2", "#dve_fmb3", "#dve_vertex"];
 
-  const shader = DVEShaderBuilder.createShader("default");
+  const shader = DVEShaderBuilder.shaders.create("default");
   shader.addAttributes(this.voxelAttributes);
   shader.addUniform(this.voxelSharedUniforms, "shared");
   shader.addUniform(this.voxelVertexUniforms, "vertex");
@@ -248,7 +242,10 @@ vFlow = -1.;
   shader.loadInFunctions(this.voxelVertexFunctions, "vertex");
   shader.addTextures([
    ["voxelTexture", { type: "sampler2DArray", isArray: true, arrayLength: 4 }],
-   ["voxelOverlayTexture", { type: "sampler2DArray", isArray: true, arrayLength: 4 }],
+   [
+    "voxelOverlayTexture",
+    { type: "sampler2DArray", isArray: true, arrayLength: 4 },
+   ],
   ]);
   shader.setCodeBody("vertex", `@standard_position`);
   shader.setCodeBody("frag", `@standard_color`);
@@ -259,25 +256,12 @@ vFlow = -1.;
   return shader;
  },
  createSkyBoxShader(id: string) {
-  const shader = DVEShaderBuilder.createShader(id);
+  const shader = DVEShaderBuilder.shaders.create(id);
   shader.addAttributes([
    ["position", "vec3"],
    ["normal", "vec3"],
   ]);
-  shader.loadInFunctions([
-   "hash",
-   "noise",
-   "fbm",
-   "mod289",
-   "permute",
-   "taylorInvSqrt",
-   "snoise",
-   "fbm3",
-   "ExponentialFog",
-   "VolumetricFog",
-   "AnimatedVolumetricFog",
-   "doFog",
-  ]);
+  shader.loadInFunctions(["#dve_fmb2", "#dve_fmb3", "#dve_fog", "doFog"]);
   shader.addUniform(
    [
     ["fogOptions", "vec4"],
@@ -316,11 +300,7 @@ worldPOS = vec3(worldPOSTemp.x,worldPOSTemp.y,worldPOSTemp.z);`,
   shader.addUniform(
    [
     ["world", "mat4"],
-    ["view", "mat4"],
     ["viewProjection", "mat4"],
-    ["worldView", "mat4"],
-    ["worldViewProjection", "mat4"],
-    ["projection", "mat4"],
    ],
    "vertex"
   );

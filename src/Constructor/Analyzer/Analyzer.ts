@@ -37,7 +37,7 @@ export const Analyzer = {
    const substance = mainDT.getSubstance();
    if (options.light) {
     if (mainDT.isLightSource()) {
-     tasks.queues.rgb.update.push([x, y, z]);
+     tasks.queues.rgb.update.push(x, y, z);
     }
    }
    if (options.flow) {

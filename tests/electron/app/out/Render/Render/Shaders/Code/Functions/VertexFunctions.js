@@ -1,5 +1,6 @@
 export function RegisterVertexFunctions(builder) {
-    builder.createFunction("getAnimationType", {
+    builder.functions.create("getAnimationType", {
+        setID: "#dve_vertex",
         inputs: [],
         output: "int",
         body: {
@@ -8,7 +9,8 @@ int index = int(faceData);
 return  index & 0xff;`,
         },
     });
-    builder.createFunction("animType1", {
+    builder.functions.create("animType1", {
+        setID: "#dve_vertex",
         inputs: [
             ["posWorld", "vec4"],
             ["p", "vec3"],
@@ -31,7 +33,8 @@ if(normal.y == 1. ) {
 return p;`,
         },
     });
-    builder.createFunction("animType2", {
+    builder.functions.create("animType2", {
+        setID: "#dve_vertex",
         inputs: [
             ["posWorld", "vec4"],
             ["p", "vec3"],
@@ -59,7 +62,8 @@ if(normal.x == -1.) {
 return p;`,
         },
     });
-    builder.createFunction("animType3", {
+    builder.functions.create("animType3", {
+        setID: "#dve_vertex",
         inputs: [
             ["posWorld", "vec4"],
             ["p", "vec3"],
@@ -72,5 +76,4 @@ p.xz += height * 0.05;
 return p;`,
         },
     });
-    return ["getAnimationType", "animType1", "animType2", "animType3"];
 }

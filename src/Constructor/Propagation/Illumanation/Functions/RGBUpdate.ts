@@ -5,13 +5,9 @@ export function RGBUpdate(tasks: LightTaskRequest) {
  IM.setDimension(tasks.origin[0]);
  const queue = tasks.queues.rgb.update;
  while (queue.length != 0) {
-  const node = queue.shift();
-  if (!node) {
-   break;
-  }
-  const x = node[0];
-  const y = node[1];
-  const z = node[2];
+  const x = queue.shift()!;
+  const y = queue.shift()!;
+  const z = queue.shift()!;
   if (!IM._sDataTool.loadInAt(x, y, z)) continue;
   if (IM._sDataTool.isBarrier()) continue;
   const sl = IM._sDataTool.getLight();
@@ -19,42 +15,42 @@ export function RGBUpdate(tasks: LightTaskRequest) {
   if (IM._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x - 1, y, z]);
+    queue.push(x - 1, y, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
   if (IM._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x + 1, y, z]);
+    queue.push(x + 1, y, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
   if (IM._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x, y, z - 1]);
+    queue.push(x, y, z - 1);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
   if (IM._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x, y, z + 1]);
+    queue.push(x, y, z + 1);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
   if (IM._nDataTool.loadInAt(x, y - 1, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x, y - 1, z]);
+    queue.push(x, y - 1, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
   if (IM._nDataTool.loadInAt(x, y + 1, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForRGBAdd(nl, sl)) {
-    queue.push([x, y + 1, z]);
+    queue.push(x, y + 1, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForRGB(sl, nl)).commit();
    }
   }
@@ -69,13 +65,9 @@ export function RGBRemove(tasks: LightTaskRequest) {
  const update = tasks.queues.rgb.update;
  const map = tasks.queues.rgb.map;
  while (remove.length != 0) {
-  const node = remove.shift();
-  if (!node) {
-   break;
-  }
-  const x = node[0];
-  const y = node[1];
-  const z = node[2];
+  const x = remove.shift()!;
+  const y = remove.shift()!;
+  const z = remove.shift()!;
   if (map.inMap(x, y, z)) continue;
   map.add(x, y, z);
   if (!IM._sDataTool.loadInAt(x, y, z)) continue;
@@ -85,13 +77,13 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x - 1, y, z]);
+    remove.push(x - 1, y, z);
     if (IM._nDataTool.isLightSource()) {
-     update.push([x - 1, y, z]);
+     update.push(x - 1, y, z);
     }
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x - 1, y, z]);
+     update.push(x - 1, y, z);
     }
    }
   }
@@ -100,13 +92,13 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x + 1, y, z]);
+    remove.push(x + 1, y, z);
     if (IM._nDataTool.isLightSource()) {
-     update.push([x + 1, y, z]);
+     update.push(x + 1, y, z);
     }
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x + 1, y, z]);
+     update.push(x + 1, y, z);
     }
    }
   }
@@ -115,10 +107,10 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x, y, z - 1]);
+    remove.push(x, y, z - 1);
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x, y, z - 1]);
+     update.push(x, y, z - 1);
     }
    }
   }
@@ -127,13 +119,13 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x, y, z + 1]);
+    remove.push(x, y, z + 1);
     if (IM._nDataTool.isLightSource()) {
-     update.push([x, y, z + 1]);
+     update.push(x, y, z + 1);
     }
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x, y, z + 1]);
+     update.push(x, y, z + 1);
     }
    }
   }
@@ -141,13 +133,13 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x, y - 1, z]);
+    remove.push(x, y - 1, z);
     if (IM._nDataTool.isLightSource()) {
-     update.push([x, y - 1, z]);
+     update.push(x, y - 1, z);
     }
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x, y - 1, z]);
+     update.push(x, y - 1, z);
     }
    }
   }
@@ -155,13 +147,13 @@ export function RGBRemove(tasks: LightTaskRequest) {
    const nl = IM._nDataTool.getLight();
    const n1HasRGB = IM.lightData.hasRGBLight(nl);
    if (n1HasRGB && IM.lightData.isLessThanForRGBRemove(nl, sl)) {
-    remove.push([x, y + 1, z]);
+    remove.push(x, y + 1, z);
     if (IM._nDataTool.isLightSource()) {
-     update.push([x, y + 1, z]);
+     update.push(x, y + 1, z);
     }
    } else {
     if (n1HasRGB && IM.lightData.isGreaterOrEqualThanForRGBRemove(nl, sl)) {
-     update.push([x, y + 1, z]);
+     update.push(x, y + 1, z);
     }
    }
   }

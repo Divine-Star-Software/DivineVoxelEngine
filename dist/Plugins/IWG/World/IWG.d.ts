@@ -77,10 +77,16 @@ export declare class IWG {
         };
         build: {
             chunk: {
-                _s: any;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(buildTasks: import("../../../Meta/Tasks/Tasks.types").BuildTasks, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
             column: {
                 async: {};

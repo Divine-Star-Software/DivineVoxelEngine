@@ -1,28 +1,17 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
-import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/ConstructorRemoteThreadTasks.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
-import { CCM } from "../../World/Threads/Threads.js";
-import { AddToRebuildQueue, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
+import {
+ AddToRebuildQueue,
+ BuildTasks,
+ PriorityTask,
+ RunRebuildTasks,
+} from "Meta/Tasks/Tasks.types.js";
+import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
 
+const tasks = TasksTool();
 export const ConstructorTasks = {
  runQueue: {
-  rgb: {
-   update: null,
-   remove: null,
-  },
-  worldSun: {
-   fill: null,
-   columnFill: null,
-   flood: null,
-  },
-  sun: {
-   update: null,
-   remove: null,
-  },
-  flow: {
-   update: null,
-   remove: null,
-  },
   build: {
    chunk: ThreadComm.registerTasks<RunRebuildTasks>(
     ConstructorRemoteThreadTasks.runRebuildQue,
@@ -30,9 +19,6 @@ export const ConstructorTasks = {
      ConstructorQueues.build.chunk.run(data[0]);
     }
    ),
-  },
-  generate: {
-   chunk: null,
   },
  },
  addToQueue: {
@@ -43,19 +29,6 @@ export const ConstructorTasks = {
      ConstructorQueues.rgb.update.add(data);
     }
    ),
-   remove: null,
-  },
-  worldSun: {
-   fill: null,
-   columnFill: null,
-   flood: null,
-  },
-  sun: {
-   update: null,
-   remove: null,
-  },
-  flow: {
-   update: null,
    remove: null,
   },
   build: {
@@ -72,8 +45,13 @@ export const ConstructorTasks = {
     }
    ),
   },
-  generate: {
-   chunk: null,
-  },
+
+  buildChunk: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
+   ConstructorRemoteThreadTasks.buildChunk,
+   (data) => {
+    tasks.setPriority(data.priority);
+    tasks.build.chunk.deferred.run(data.data, () => {});
+   }
+  ),
  },
 };

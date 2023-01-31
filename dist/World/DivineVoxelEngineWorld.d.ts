@@ -657,28 +657,8 @@ export declare const DVEW: {
     };
     cTasks: {
         runQueue: {
-            rgb: {
-                update: null;
-                remove: null;
-            };
-            worldSun: {
-                fill: null;
-                columnFill: null;
-                flood: null;
-            };
-            sun: {
-                update: null;
-                remove: null;
-            };
-            flow: {
-                update: null;
-                remove: null;
-            };
             build: {
                 chunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").RunRebuildTasks>;
-            };
-            generate: {
-                chunk: null;
             };
         };
         addToQueue: {
@@ -686,25 +666,10 @@ export declare const DVEW: {
                 update: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
                 remove: null;
             };
-            worldSun: {
-                fill: null;
-                columnFill: null;
-                flood: null;
-            };
-            sun: {
-                update: null;
-                remove: null;
-            };
-            flow: {
-                update: null;
-                remove: null;
-            };
             build: {
                 addToRebuildQueue: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").AddToRebuildQueue>;
             };
-            generate: {
-                chunk: null;
-            };
+            buildChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/Tasks.types.js").PriorityTask<import("../Meta/Tasks/Tasks.types.js").BuildTasks>>;
         };
     };
     tags: {
@@ -792,10 +757,16 @@ export declare const DVEW: {
             };
             build: {
                 chunk: {
-                    _s: any;
-                    add(x: number, y: number, z: number): void;
-                    run(onDone: Function): void;
-                    runAndAwait(): Promise<void>;
+                    deferred: {
+                        _s: any;
+                        run(buildTasks: import("../Meta/Tasks/Tasks.types.js").BuildTasks, onDone: (data: any) => void): void;
+                    };
+                    async: {
+                        _s: any;
+                        add(x: number, y: number, z: number): void;
+                        run(onDone: Function): void;
+                        runAndAwait(): Promise<void>;
+                    };
                 };
                 column: {
                     async: {};
@@ -941,10 +912,16 @@ export declare const DVEW: {
         };
         build: {
             chunk: {
-                _s: any;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
+                deferred: {
+                    _s: any;
+                    run(buildTasks: import("../Meta/Tasks/Tasks.types.js").BuildTasks, onDone: (data: any) => void): void;
+                };
+                async: {
+                    _s: any;
+                    add(x: number, y: number, z: number): void;
+                    run(onDone: Function): void;
+                    runAndAwait(): Promise<void>;
+                };
             };
             column: {
                 async: {};

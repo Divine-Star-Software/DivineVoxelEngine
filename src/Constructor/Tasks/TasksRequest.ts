@@ -1,10 +1,12 @@
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
 import type {
  AddToRebuildQueue,
+ BuildTasks,
  Priorities,
+ PriorityTask,
  RunRebuildTasks,
 } from "Meta/Tasks/Tasks.types";
-import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/ConstructorRemoteThreadTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
@@ -23,7 +25,13 @@ class Request<T, Q> {
  priority: Priorities = 2;
  LOD = 0;
  syncQueue: LocationData[] = [];
+ aSyncQueue: LocationData[] = [];
  buildMode: RebuildModes = "sync";
+
+ buildTasks: PriorityTask<BuildTasks> = {
+  data: [["main", 0, 0, 0], 1],
+  priority: 0,
+ };
 
  rebuildTasks: AddToRebuildQueue;
  constructor(
@@ -88,11 +96,7 @@ class Request<T, Q> {
   if (this.rebuildQueMap.has(chunkKey)) return false;
   this.rebuildQueMap.set(chunkKey, true);
   if (this.buildMode == "async") {
-   this.rebuildTasks[0] = [...chunkTool.location];
-   this.comm.runTasks<AddToRebuildQueue>(
-    ConstructorRemoteThreadTasks.addToRebuildQue,
-    this.rebuildTasks
-   );
+   this.aSyncQueue.push([...chunkTool.location]);
    return true;
   }
   this.syncQueue.push([...chunkTool.location]);
@@ -125,10 +129,16 @@ class Request<T, Q> {
  }
 
  runRebuildQueue() {
-  this.comm.runTasks<RunRebuildTasks>(
-   ConstructorRemoteThreadTasks.runRebuildQue,
-   [this.buildQueue]
-  );
+  while (this.aSyncQueue.length !== 0) {
+   const node = this.aSyncQueue.shift();
+   this.buildTasks.priority = this.priority;
+   if (!node) break;
+   this.buildTasks.data[0] = node;
+   this.comm.runTasks<PriorityTask<BuildTasks>>(
+    ConstructorRemoteThreadTasks.buildChunk,
+    this.buildTasks
+   );
+  }
   while (this.syncQueue.length !== 0) {
    const node = this.syncQueue.shift();
    if (!node) break;
@@ -145,13 +155,13 @@ type FlowVec3Array = number[][];
 const getLightQueues = () => {
  return {
   rgb: {
-   update: <Vec3Array>[],
-   rmeove: <Vec3Array>[],
+   update: <number[]>[],
+   rmeove: <number[]>[],
    map: new VisitedMap(),
   },
   sun: {
-   update: <Vec3Array>[],
-   rmeove: <Vec3Array>[],
+   update: <number[]>[],
+   rmeove: <number[]>[],
   },
  };
 };
@@ -232,7 +242,7 @@ export const TasksRequest = {
   originThread = "self"
  ) {
   return new Request("world-sun", origin, null, buildQueue, originThread, {
-   sun: <Vec3Array>[],
+   sun: <number[]>[],
   });
  },
  getExplosionRequests(

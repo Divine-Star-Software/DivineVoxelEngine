@@ -62,24 +62,17 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
      }
     }
     if (add) {
-     queue.push([ix, iy, iz]);
+     queue.push(ix, iy, iz);
     }
    }
   }
  }
 
-
- 
  //flood
  while (queue.length) {
-  const node = queue.shift();
-  if (!node) {
-   break;
-  }
-  const x = node[0];
-  const y = node[1];
-  const z = node[2];
-
+  const x = queue.shift()!;
+  const y = queue.shift()!;
+  const z = queue.shift()!;
   if (!IM._sDataTool.loadInAt(x, y, z)) continue;
   const sl = IM._sDataTool.getLight();
   if (sl <= 0) continue;
@@ -89,7 +82,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (IM._nDataTool.loadInAt(x - 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-    queue.push([x - 1, y, z]);
+    queue.push(x - 1, y, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
    }
   }
@@ -97,7 +90,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (IM._nDataTool.loadInAt(x + 1, y, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-    queue.push([x + 1, y, z]);
+    queue.push(x + 1, y, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
    }
   }
@@ -105,7 +98,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y, z - 1)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-    queue.push([x, y, z - 1]);
+    queue.push(x, y, z - 1);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
    }
   }
@@ -113,7 +106,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y, z + 1)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-    queue.push([x, y, z + 1]);
+    queue.push(x, y, z + 1);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
    }
   }
@@ -123,14 +116,14 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
 
    if (nl > -1 && IM.lightData.isLessThanForSunAddDown(nl, sl)) {
     if (IM._nDataTool.isAir()) {
-     queue.push([x, y - 1, z]);
+     queue.push(x, y - 1, z);
      IM._nDataTool
       .setLight(IM.lightData.getSunLightForUnderVoxel(sl, nl))
       .commit();
     } else {
      const substance = IM._nDataTool.getSubstance();
      if (substance != "magma" && substance != "solid") {
-      queue.push([x, y - 1, z]);
+      queue.push(x, y - 1, z);
       IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
      }
     }
@@ -140,7 +133,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
   if (IM._nDataTool.loadInAt(x, y + 1, z)) {
    const nl = IM._nDataTool.getLight();
    if (nl > -1 && IM.lightData.isLessThanForSunAdd(nl, sl)) {
-    queue.push([x, y + 1, z]);
+    queue.push(x, y + 1, z);
     IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
    }
   }

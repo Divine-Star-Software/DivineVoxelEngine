@@ -36,8 +36,6 @@ export const FOManager = {
         this.onOriginSet.forEach((_) => _(this.activeCamera));
         scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
             this.activeNode.update(object.position);
-            const node = this.activeNode;
-            //  object.position.set(0, 0, 0);
         });
     },
 };

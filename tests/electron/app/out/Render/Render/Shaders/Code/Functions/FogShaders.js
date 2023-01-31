@@ -1,5 +1,6 @@
 export function RegisterFogShaders(builder) {
-    builder.createFunction("ExponentialFog", {
+    builder.functions.create("ExponentialFog", {
+        setID: "#dve_fog",
         inputs: [],
         output: "float",
         body: {
@@ -10,7 +11,8 @@ export function RegisterFogShaders(builder) {
    return clamp(fogCoeff, 0.0, 1.0);`,
         },
     });
-    builder.createFunction("VolumetricFog", {
+    builder.functions.create("VolumetricFog", {
+        setID: "#dve_fog",
         inputs: [],
         output: "float",
         body: {
@@ -28,7 +30,8 @@ export function RegisterFogShaders(builder) {
    return fogFactor;`,
         },
     });
-    builder.createFunction("AnimatedVolumetricFog", {
+    builder.functions.create("AnimatedVolumetricFog", {
+        setID: "#dve_fog",
         inputs: [],
         output: "float",
         body: {
@@ -50,5 +53,4 @@ export function RegisterFogShaders(builder) {
    return fogFactor;`,
         },
     });
-    return ["ExponentialFog", "VolumetricFog", "AnimatedVolumetricFog"];
 }

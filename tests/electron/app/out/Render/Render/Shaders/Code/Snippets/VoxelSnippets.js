@@ -1,11 +1,11 @@
 export function RegisterVoxelSnippets(builder) {
-    builder.createSnippet("#dve_solid_vertex", {
+    builder.snippets.create("#dve_solid_vertex", {
         GLSL: `@standard_position`,
     });
-    builder.createSnippet("#dve_solid_frag", {
+    builder.snippets.create("#dve_solid_frag", {
         GLSL: `@standard_color`,
     });
-    builder.createSnippet("#dve_flora_vertex", {
+    builder.snippets.create("#dve_flora_vertex", {
         GLSL: `vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
   int animationType = getAnimationType();
@@ -24,10 +24,10 @@ export function RegisterVoxelSnippets(builder) {
   }
   gl_Position = viewProjection * world * vec4(p, 1.0); `,
     });
-    builder.createSnippet("#dve_flora_frag", {
+    builder.snippets.create("#dve_flora_frag", {
         GLSL: `@standard_color`,
     });
-    builder.createSnippet("#dve_liquid_vertex", {
+    builder.snippets.create("#dve_liquid_vertex", {
         GLSL: `float animationTest = float(getAnimationType());
   vFlow = 0.;
   if(animationTest == 1.) {
@@ -46,7 +46,7 @@ export function RegisterVoxelSnippets(builder) {
   
   gl_Position = viewProjection * world * vec4(p, 1.0); `,
     });
-    builder.createSnippet("#dve_liquid_frag", {
+    builder.snippets.create("#dve_liquid_frag", {
         GLSL: `float y = vUV.y - time * 4. * vFlow;
   vec4 rgb = getBaseColor(vec2(vUV.x,y));
   rgb = getColor(rgb);
@@ -54,10 +54,10 @@ export function RegisterVoxelSnippets(builder) {
   vec3 finalColor = doFog(mixLight);
   gl_FragColor = vec4(finalColor.rgb , .6 );`,
     });
-    builder.createSnippet("#dve_magma_vertex", {
+    builder.snippets.create("#dve_magma_vertex", {
         GLSL: `@standard_position`,
     });
-    builder.createSnippet("#dve_magma_frag", {
+    builder.snippets.create("#dve_magma_frag", {
         GLSL: `"@#dve_liquid_frag`,
     });
 }

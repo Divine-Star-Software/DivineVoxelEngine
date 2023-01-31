@@ -1,13 +1,15 @@
 export function RegisterNoiseFunctions(builder) {
     //VEC2 fbm
-    builder.createFunction("hash", {
+    builder.functions.create("hash", {
+        setID: "#dve_fmb2",
         inputs: [["p", "vec2"]],
         output: "float",
         body: {
             GLSL: `return fract(sin(dot(p * 5.5, vec2(14.91, 67.31))) * 4791.9511);`,
         },
     });
-    builder.createFunction("noise", {
+    builder.functions.create("noise", {
+        setID: "#dve_fmb2",
         inputs: [["x", "vec2"]],
         output: "float",
         body: {
@@ -20,7 +22,8 @@ return mix(mix(hash(p + a.yy), hash(p + a.xy), f.x),
 mix(hash(p + a.yx), hash(p + a.xx), f.x), f.y);`,
         },
     });
-    builder.createFunction("fbm", {
+    builder.functions.create("fbm", {
+        setID: "#dve_fmb2",
         inputs: [["x", "vec2"]],
         output: "float",
         body: {
@@ -49,7 +52,8 @@ return height;`,
    //               https://github.com/stegu/webgl-noise
    //
    */
-    builder.createFunction("mod289", {
+    builder.functions.create("mod289", {
+        setID: "#dve_fmb3",
         inputs: [["x", "vec3"]],
         output: "vec3",
         body: {
@@ -65,21 +69,24 @@ return height;`,
             },
         ],
     });
-    builder.createFunction("permute", {
+    builder.functions.create("permute", {
+        setID: "#dve_fmb3",
         inputs: [["x", "vec4"]],
         output: "vec4",
         body: {
             GLSL: `return mod289(((x*34.0)+1.0)*x);`,
         },
     });
-    builder.createFunction("taylorInvSqrt", {
+    builder.functions.create("taylorInvSqrt", {
+        setID: "#dve_fmb3",
         inputs: [["r", "vec4"]],
         output: "vec4",
         body: {
             GLSL: `return 1.79284291400159 - 0.85373472095314 * r;`,
         },
     });
-    builder.createFunction("snoise", {
+    builder.functions.create("snoise", {
+        setID: "#dve_fmb3",
         inputs: [["v", "vec3"]],
         output: "float",
         body: {
@@ -141,7 +148,8 @@ m = m * m;
 return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) ); `,
         },
     });
-    builder.createFunction("fbm3", {
+    builder.functions.create("fbm3", {
+        setID: "#dve_fmb3",
         inputs: [["p", "vec3"]],
         output: "float",
         body: {
@@ -164,14 +172,4 @@ return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) )
        return c.z * mix( vec3(1.0), rgb, c.y);
     }
     */
-    return [
-        "hash",
-        "noise",
-        "fbm",
-        "mod289",
-        "permute",
-        "taylorInvSqrt",
-        "snoise",
-        "fbm3",
-    ];
 }

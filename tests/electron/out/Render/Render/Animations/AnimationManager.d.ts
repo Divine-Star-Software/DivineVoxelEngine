@@ -1,9 +1,8 @@
-/// <reference types="babylonjs" />
 import { ShaderDataTypes } from "Libs/Shaders/Types/ShaderData.types";
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import { ShaderAnimationData } from "Meta/Render/Animations/Animation.types";
 export declare const AnimationManager: {
-    animatedMaterials: Record<VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+    animatedMaterials: Record<"Item" | VoxelSubstanceType, BABYLON.ShaderMaterial>;
     animCount: number;
     animations: {
         uniformShaderId: string;

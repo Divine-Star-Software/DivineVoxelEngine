@@ -12,7 +12,8 @@ class TasksBase {
     _thread = "";
     _priority = 0;
     constructor() {
-        this.build.chunk._s = this;
+        this.build.chunk.async._s = this;
+        this.build.chunk.deferred._s = this;
         this.build.column.deferred._s = this;
         this.light.rgb.update._s = this;
         this.light.rgb.remove._s = this;
@@ -129,19 +130,31 @@ class TasksBase {
     };
     build = {
         chunk: {
-            _s: {},
-            add(x, y, z) {
-                CQ.build.chunk.add({
-                    data: [[this._s._data.dimension, x, y, z], 1],
-                    priority: this._s._priority,
-                }, this._s._data.queue);
+            deferred: {
+                _s: {},
+                run(buildTasks, onDone) {
+                    const requestsKey = buildTasks.toString();
+                    CCM.runPromiseTasks(ConstructorTasks.buildChunk, requestsKey, onDone, {
+                        data: buildTasks,
+                        priority: this._s._priority,
+                    });
+                },
             },
-            run(onDone) {
-                CQ.build.chunk.run(this._s._data.queue);
-                CQ.build.chunk.onDone(this._s._data.queue, onDone);
-            },
-            async runAndAwait() {
-                await CQ.build.chunk.runAndAwait(this._s._data.queue);
+            async: {
+                _s: {},
+                add(x, y, z) {
+                    CQ.build.chunk.add({
+                        data: [[this._s._data.dimension, x, y, z], 1],
+                        priority: this._s._priority,
+                    }, this._s._data.queue);
+                },
+                run(onDone) {
+                    CQ.build.chunk.run(this._s._data.queue);
+                    CQ.build.chunk.onDone(this._s._data.queue, onDone);
+                },
+                async runAndAwait() {
+                    await CQ.build.chunk.runAndAwait(this._s._data.queue);
+                },
             },
         },
         column: {

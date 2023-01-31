@@ -36,5 +36,6 @@ declare type ShaderFuncitonBase = {
     ][];
     output: ShaderDataTypes;
     body: ShaderCodeBody;
+    setID?: string;
 };
 export {};

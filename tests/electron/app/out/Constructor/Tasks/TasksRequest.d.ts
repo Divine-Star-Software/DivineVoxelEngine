@@ -1,5 +1,5 @@
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
-import type { AddToRebuildQueue, Priorities } from "Meta/Tasks/Tasks.types";
+import type { AddToRebuildQueue, BuildTasks, Priorities, PriorityTask } from "Meta/Tasks/Tasks.types";
 import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
 import { VisitedMap } from "../../Global/Util/VisistedMap.js";
 declare type RebuildModes = "sync" | "async";
@@ -15,7 +15,9 @@ declare class Request<T, Q> {
     priority: Priorities;
     LOD: number;
     syncQueue: LocationData[];
+    aSyncQueue: LocationData[];
     buildMode: RebuildModes;
+    buildTasks: PriorityTask<BuildTasks>;
     rebuildTasks: AddToRebuildQueue;
     constructor(tasksType: string, origin: LocationData, data: T, buildQueue: string, originThread: string, queues: Q);
     start(): this;
@@ -37,13 +39,13 @@ declare type FlowVec3Array = number[][];
 export declare const TasksRequest: {
     getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): Request<any, {
         rgb: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
             map: VisitedMap;
         };
         sun: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
         };
     }>;
     getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
@@ -59,13 +61,13 @@ export declare const TasksRequest: {
             };
         };
         rgb: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
             map: VisitedMap;
         };
         sun: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
         };
     }>;
     getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
@@ -81,17 +83,17 @@ export declare const TasksRequest: {
             };
         };
         rgb: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
             map: VisitedMap;
         };
         sun: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
         };
     }>;
     getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
-        sun: Vec3Array;
+        sun: number[];
     }>;
     getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): Request<number, {
         flow: {
@@ -106,13 +108,13 @@ export declare const TasksRequest: {
             };
         };
         rgb: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
             map: VisitedMap;
         };
         sun: {
-            update: Vec3Array;
-            rmeove: Vec3Array;
+            update: number[];
+            rmeove: number[];
         };
         queue: Vec3Array;
         map: VisitedMap;

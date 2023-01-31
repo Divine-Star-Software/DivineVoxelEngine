@@ -16,8 +16,8 @@ export class BuilderTool extends LocationBoundTool {
     }
     buildChunk() {
         const [dimension, x, y, z] = this.location;
-        this.tasks.build.chunk.add(x, y, z);
-        this.tasks.build.chunk.run(() => { });
+        this.tasks.build.chunk.async.add(x, y, z);
+        this.tasks.build.chunk.async.run(() => { });
         return this;
     }
     buildColumn(onDone) {

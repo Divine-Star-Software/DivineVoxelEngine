@@ -5,7 +5,9 @@ export declare const ExplosionManager: {
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
-        buildMode: "async" | "sync";
+        aSyncQueue: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData[];
+        buildMode: "sync" | "async";
+        buildTasks: import("../../../Meta/Tasks/Tasks.types.js").PriorityTask<import("../../../Meta/Tasks/Tasks.types.js").BuildTasks>;
         rebuildTasks: import("../../../Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
         tasksType: string;
         origin: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
@@ -25,13 +27,13 @@ export declare const ExplosionManager: {
                 };
             };
             rgb: {
-                update: [x: number, y: number, z: number][];
-                rmeove: [x: number, y: number, z: number][];
+                update: number[];
+                rmeove: number[];
                 map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
             };
             sun: {
-                update: [x: number, y: number, z: number][];
-                rmeove: [x: number, y: number, z: number][];
+                update: number[];
+                rmeove: number[];
             };
             queue: [x: number, y: number, z: number][];
             map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
@@ -45,7 +47,7 @@ export declare const ExplosionManager: {
         getOrigin(): import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData;
         needsRebuild(): boolean;
         needsToUpdateOriginThread(): boolean;
-        setBuldMode(mode: "async" | "sync"): any;
+        setBuldMode(mode: "sync" | "async"): any;
         addToRebuildQueue(x: number, y: number, z: number): boolean;
         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
         runRebuildQueue(): any;

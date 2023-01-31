@@ -146,23 +146,23 @@ export class DVEShader {
         }
         let functions = ``;
         for (const id of data.sharedFunctions) {
-            functions += `${DVEShaderBuilder.buildFunction(id)}\n`;
+            functions += `${DVEShaderBuilder.functions.build(id)}\n`;
         }
         let vertexFunctions = ``;
         for (const id of data.vertexFunctions) {
-            vertexFunctions += `${DVEShaderBuilder.buildFunction(id)}\n`;
+            vertexFunctions += `${DVEShaderBuilder.functions.build(id)}\n`;
         }
         for (const [key, fd] of data.localVertexFunctions) {
-            vertexFunctions += `${DVEShaderBuilder.buildFunction(key, fd)}\n`;
+            vertexFunctions += `${DVEShaderBuilder.functions.build(key, fd)}\n`;
         }
         let fragFunctions = ``;
         for (const id of data.fragFunctions) {
-            fragFunctions += `${DVEShaderBuilder.buildFunction(id)}\n`;
+            fragFunctions += `${DVEShaderBuilder.functions.build(id)}\n`;
         }
         for (const [key, fd] of data.localFragFunctions) {
-            fragFunctions += `${DVEShaderBuilder.buildFunction(key, fd)}\n`;
+            fragFunctions += `${DVEShaderBuilder.functions.build(key, fd)}\n`;
         }
-        this.compiled.vertex = DVEShaderBuilder._replaceSnippets(`
+        this.compiled.vertex = DVEShaderBuilder.snippets.build(`
 precision highp float;
 //uniforms
 ${uniforms}
@@ -178,7 +178,7 @@ void main(void) {
 ${vertexVarying}
 ${data.vertexMain.GLSL}
 }`);
-        this.compiled.fragment = DVEShaderBuilder._replaceSnippets(`
+        this.compiled.fragment = DVEShaderBuilder.snippets.build(`
 precision highp float;
 precision highp sampler2DArray;
 //uniforms
@@ -197,7 +197,7 @@ ${data.fragMain.GLSL}
         return this.compiled;
     }
     clone(newID) {
-        const shader = DVEShaderBuilder.createShader(newID);
+        const shader = DVEShaderBuilder.shaders.create(newID);
         shader.data = structuredClone(this.data);
         return shader;
     }

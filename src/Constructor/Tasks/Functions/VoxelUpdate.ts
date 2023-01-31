@@ -25,12 +25,12 @@ const updateLightTask = (tasks: LightTaskRequest) => {
   if (!nDataTool.loadInAt(nx, ny, nz)) continue;
   if (doRGB) {
    if (nDataTool.hasRGBLight()) {
-    tasks.queues.rgb.update.push([nx, ny, nz]);
+    tasks.queues.rgb.update.push(nx, ny, nz);
    }
   }
   if (doSun) {
    if (nDataTool.hasSunLight()) {
-    tasks.queues.sun.update.push([nx, ny, nz]);
+    tasks.queues.sun.update.push(nx, ny, nz);
    }
   }
  }
@@ -48,7 +48,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
 
  tasks.setBuldMode("async");
  if (ES.doFlow()) {
-  const substance = dataTool.getSubstance();
+const substance = dataTool.getSubstance();
   if (substance == "liquid" || substance == "magma") {
    await Propagation.flow.remove(tasks);
    tasks.stop();
@@ -64,7 +64,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
   .commit(2);
  if (ES.doLight()) {
   if (ES.doRGBPropagation() && isLightSource) {
-   tasks.queues.rgb.rmeove.push([x, y, z]);
+   tasks.queues.rgb.rmeove.push(x, y, z);
    Propagation.rgb.remove(tasks);
   }
   updateLightTask(tasks);
@@ -104,13 +104,13 @@ export async function PaintAndUpdate(data: PaintTasks) {
   if (light <= 0) break lighttest;
   if (doSun) {
    if (dataTool.hasSunLight()) {
-    tasks.queues.sun.rmeove.push([x, y, z]);
+    tasks.queues.sun.rmeove.push(x, y, z);
     Propagation.sun.remove(tasks);
    }
   }
   if (doRGB) {
    if (dataTool.hasRGBLight() && isOpaque) {
-    tasks.queues.rgb.rmeove.push([x, y, z]);
+    tasks.queues.rgb.rmeove.push(x, y, z);
     Propagation.rgb.remove(tasks);
    }
   }
@@ -121,7 +121,7 @@ export async function PaintAndUpdate(data: PaintTasks) {
  if (ES.doLight()) {
   updateLightTask(tasks);
   if (doRGB) {
-   tasks.queues.rgb.update.push([x, y, z]);
+   tasks.queues.rgb.update.push(x, y, z);
    Propagation.rgb.update(tasks);
   }
   if (doSun) {

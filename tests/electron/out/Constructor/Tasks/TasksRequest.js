@@ -1,4 +1,4 @@
-import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/WorldTasks.js";
+import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/ConstructorRemoteThreadTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
 import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
@@ -20,7 +20,12 @@ class Request {
     priority = 2;
     LOD = 0;
     syncQueue = [];
+    aSyncQueue = [];
     buildMode = "sync";
+    buildTasks = {
+        data: [["main", 0, 0, 0], 1],
+        priority: 0,
+    };
     rebuildTasks;
     constructor(tasksType, origin, data, buildQueue = "none", originThread = "self", queues) {
         this.tasksType = tasksType;
@@ -81,8 +86,7 @@ class Request {
             return false;
         this.rebuildQueMap.set(chunkKey, true);
         if (this.buildMode == "async") {
-            this.rebuildTasks[0] = [...chunkTool.location];
-            this.comm.runTasks(ConstructorRemoteThreadTasks.addToRebuildQue, this.rebuildTasks);
+            this.aSyncQueue.push([...chunkTool.location]);
             return true;
         }
         this.syncQueue.push([...chunkTool.location]);
@@ -108,7 +112,14 @@ class Request {
         return this;
     }
     runRebuildQueue() {
-        this.comm.runTasks(ConstructorRemoteThreadTasks.runRebuildQue, [this.buildQueue]);
+        while (this.aSyncQueue.length !== 0) {
+            const node = this.aSyncQueue.shift();
+            this.buildTasks.priority = this.priority;
+            if (!node)
+                break;
+            this.buildTasks.data[0] = node;
+            this.comm.runTasks(ConstructorRemoteThreadTasks.buildChunk, this.buildTasks);
+        }
         while (this.syncQueue.length !== 0) {
             const node = this.syncQueue.shift();
             if (!node)

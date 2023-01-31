@@ -43,7 +43,7 @@ export const GetAdvancedBrushTool = () => {
    const [dimesnion, x, y, z] = brush.location;
    tasks.explosion.run.add(x, y, z, radius);
    tasks.explosion.run.run(() => {
-    tasks.build.chunk.run(() => (onDone ? onDone() : 0));
+    tasks.build.chunk.async.run(() => (onDone ? onDone() : 0));
    });
   },
  });

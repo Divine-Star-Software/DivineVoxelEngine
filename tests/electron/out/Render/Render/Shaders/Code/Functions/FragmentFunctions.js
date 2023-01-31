@@ -1,19 +1,22 @@
 export function RegisterFragFunctions(builder) {
-    builder.createFunction("getColor", {
+    builder.functions.create("getColor", {
+        setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
         body: {
             GLSL: `return base * vColors;`,
         },
     });
-    builder.createFunction("getAO", {
+    builder.functions.create("getAO", {
+        setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
         body: {
             GLSL: `return  base * mix(base, aoColor , 1.0);`,
         },
     });
-    builder.createFunction("getLight", {
+    builder.functions.create("getLight", {
+        setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
         body: {
@@ -22,7 +25,8 @@ vec4 final = ( ((rgbLColor * doRGB)  +  ((sunLColor * doSun  * sunLightLevel * v
 return base * final; `,
         },
     });
-    builder.createFunction("doFog", {
+    builder.functions.create("doFog", {
+        setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec3",
         body: {
@@ -43,7 +47,8 @@ return base * final; `,
    return base.rgb;`,
         },
     });
-    builder.createFunction("getBase", {
+    builder.functions.create("getBase", {
+        setID: "#dve_frag",
         inputs: [
             ["tex", ["sampler2DArray", 4]],
             ["UV", "vec2"],
@@ -66,7 +71,8 @@ return  vec4(0.,0.,0.,0.);
   `,
         },
     });
-    builder.createFunction("getBaseColor", {
+    builder.functions.create("getBaseColor", {
+        setID: "#dve_frag",
         inputs: [["UV", "vec2"]],
         output: "vec4",
         body: {

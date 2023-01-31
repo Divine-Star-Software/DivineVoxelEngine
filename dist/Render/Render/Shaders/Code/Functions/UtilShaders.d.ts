@@ -1,2 +1,2 @@
 import type { DVEShaderBuilder } from "../../../../../Libs/Shaders/DVEShaderBuilder.js";
-export declare function RegisterNoiseFunctions(builder: typeof DVEShaderBuilder): string[];
+export declare function RegisterNoiseFunctions(builder: typeof DVEShaderBuilder): void;
