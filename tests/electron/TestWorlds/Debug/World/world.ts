@@ -60,4 +60,3 @@ GetAnalyzerCubeWorld(DVEW);
 
 (self as any).DVEW = DVEW;
 (self as any).dataTool = dataTool;
-

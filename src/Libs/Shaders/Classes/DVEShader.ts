@@ -5,12 +5,36 @@ import {
  ShaderDataTypes,
  ShaderFunctionData,
  ShaderTextureData,
+ ShaderUniformData,
 } from "../Types/ShaderData.types";
 
 type ShaderTypes = "shared" | "vertex" | "frag";
 
 export class DVEShader {
- constructor(public id: string, public data: ShaderData) {}
+ data: ShaderData = {
+  sharedDefines: new Map(),
+  fragDefines: new Map(),
+  vertexDefines: new Map(),
+  attributes: new Map(),
+  sharedUniforms: new Map(),
+  vertexUniforms: new Map(),
+  fragxUniforms: new Map(),
+  textures: new Map(),
+  varying: new Map(),
+  localFragFunctions: new Map(),
+  localVertexFunctions: new Map(),
+  sharedFunctions: [],
+  fragFunctions: [],
+  vertexFunctions: [],
+  fragMain: {
+   GLSL: "",
+  },
+  vertexMain: {
+   GLSL: "",
+  },
+ };
+
+ constructor(public id: string) {}
 
  compiled = {
   vertex: "",
@@ -42,25 +66,22 @@ export class DVEShader {
   return [...this.data.attributes.keys()];
  }
 
- addUniform(
-  data: [id: string, type: ShaderDataTypes][],
-  forSharer: ShaderTypes = "shared"
- ) {
+ addUniform(data: ShaderUniformData[], forSharer: ShaderTypes = "shared") {
   if (forSharer == "shared") {
    for (const uniform of data) {
-    this.data.sharedUniforms.set(uniform[0], uniform[1]);
+    this.data.sharedUniforms.set(uniform[0], uniform);
    }
    return this;
   }
   if (forSharer == "vertex") {
    for (const uniform of data) {
-    this.data.vertexUniforms.set(uniform[0], uniform[1]);
+    this.data.vertexUniforms.set(uniform[0], uniform);
    }
    return this;
   }
   if (forSharer == "frag") {
    for (const uniform of data) {
-    this.data.fragxUniforms.set(uniform[0], uniform[1]);
+    this.data.fragxUniforms.set(uniform[0], uniform);
    }
    return this;
   }
@@ -132,18 +153,13 @@ export class DVEShader {
 
  compile() {
   const data = this.data;
-  let uniforms = ``;
-  for (const [key, type] of data.sharedUniforms) {
-   uniforms += `uniform ${type} ${key};\n`;
-  }
-  let vertexUniforms = ``;
-  for (const [key, type] of data.vertexUniforms) {
-   vertexUniforms += `uniform ${type} ${key};\n`;
-  }
-  let fragUniforms = ``;
-  for (const [key, type] of data.fragxUniforms) {
-   fragUniforms += `uniform ${type} ${key};\n`;
-  }
+  const defines = DVEShaderBuilder.define.build(data.sharedDefines);
+  const vertexDefines = DVEShaderBuilder.define.build(data.vertexDefines);
+  const fragDefines = DVEShaderBuilder.define.build(data.fragDefines);
+
+  const uniforms = DVEShaderBuilder.uniforms.build(data.sharedUniforms);
+  const vertexUniforms = DVEShaderBuilder.uniforms.build(data.vertexUniforms);
+  const fragUniforms = DVEShaderBuilder.uniforms.build(data.fragxUniforms);
   let attributes = ``;
   for (const [key, type] of data.attributes) {
    attributes += `attribute ${type} ${key};\n`;
@@ -183,16 +199,24 @@ export class DVEShader {
 
   this.compiled.vertex = DVEShaderBuilder.snippets.build(`
 precision highp float;
+//defines 
+${defines}
+${vertexDefines}
+
 //uniforms
 ${uniforms}
 ${vertexUniforms}
+
 //attributes
 ${attributes}
+
 //varying
 ${varying}
+
 //functions
 ${functions}
 ${vertexFunctions}
+
 void main(void) {
 ${vertexVarying}
 ${data.vertexMain.GLSL}
@@ -200,16 +224,24 @@ ${data.vertexMain.GLSL}
   this.compiled.fragment = DVEShaderBuilder.snippets.build(`
 precision highp float;
 precision highp sampler2DArray;
+//defines 
+${defines}
+${fragDefines}
+
 //uniforms
 ${uniforms}
 ${fragUniforms}
+
 //textures
 ${textures}
+
 //varying
 ${varying}
+
 //functions
 ${functions}
 ${fragFunctions}
+
 void main(void) {
 ${data.fragMain.GLSL}
 }`);

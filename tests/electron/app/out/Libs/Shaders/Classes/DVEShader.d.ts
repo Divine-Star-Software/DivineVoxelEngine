@@ -1,9 +1,9 @@
-import { ShaderCodeBody, ShaderData, ShaderDataTypes, ShaderFunctionData, ShaderTextureData } from "../Types/ShaderData.types";
+import { ShaderCodeBody, ShaderData, ShaderDataTypes, ShaderFunctionData, ShaderTextureData, ShaderUniformData } from "../Types/ShaderData.types";
 declare type ShaderTypes = "shared" | "vertex" | "frag";
 export declare class DVEShader {
     id: string;
     data: ShaderData;
-    constructor(id: string, data: ShaderData);
+    constructor(id: string);
     compiled: {
         vertex: string;
         fragment: string;
@@ -11,7 +11,7 @@ export declare class DVEShader {
     setCodeBody(forSharer: ShaderTypes | undefined, text: string): this;
     getUniformList(): string[];
     getAttributeList(): string[];
-    addUniform(data: [id: string, type: ShaderDataTypes][], forSharer?: ShaderTypes): this;
+    addUniform(data: ShaderUniformData[], forSharer?: ShaderTypes): this;
     addVarying(data: [id: string, type: ShaderDataTypes, set: ShaderCodeBody][]): this;
     addAttributes(data: [id: string, type: ShaderDataTypes][]): this;
     addTextures(data: [id: string, data: ShaderTextureData][]): this;

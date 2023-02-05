@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
@@ -172,6 +173,14 @@ export declare const DVER: {
                     _processFunctinos(id: string, data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): string;
                     build(id: string, data?: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData | undefined): string;
                 };
+                define: {
+                    _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[]): string;
+                };
+                uniforms: {
+                    _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[]): string;
+                };
                 snippets: {
                     _snippets: Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody>;
                     create(id: string, data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): void;
@@ -208,22 +217,21 @@ export declare const DVER: {
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         };
         animationManager: {
-            animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
+            animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
             animCount: number;
+            animationUniforms: Map<string, Float32Array>;
+            overlayAnimationUniforms: Map<string, Float32Array>;
             animations: {
-                uniformShaderId: string;
+                uniformIndex: number;
+                overlay?: boolean | undefined;
                 keys: number[];
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
-                substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
+                substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
             }[];
-            registerAnimations(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-            registerAnimationsN(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): {
-                uniforms: [id: string, type: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-                animationFunctionBody: string;
-            };
-            registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
+            registerAnimationsN(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", shader: import("../Libs/Shaders/Classes/DVEShader.js").DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
+            registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;

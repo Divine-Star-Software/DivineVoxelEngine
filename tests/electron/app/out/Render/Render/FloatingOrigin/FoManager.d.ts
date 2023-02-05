@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import { Vector3 } from "Meta/Util.types.js";
 import { FOCamera } from "./FOCamera.js";
 import { FONode } from "./FONode.js";

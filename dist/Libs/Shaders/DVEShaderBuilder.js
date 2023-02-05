@@ -4,27 +4,7 @@ export const DVEShaderBuilder = {
     shaders: {
         _shaders: new Map(),
         create(id) {
-            const shader = new DVEShader(id, {
-                fragDefines: new Map(),
-                vertexDefines: new Map(),
-                attributes: new Map(),
-                sharedUniforms: new Map(),
-                vertexUniforms: new Map(),
-                fragxUniforms: new Map(),
-                textures: new Map(),
-                varying: new Map(),
-                localFragFunctions: new Map(),
-                localVertexFunctions: new Map(),
-                sharedFunctions: [],
-                fragFunctions: [],
-                vertexFunctions: [],
-                fragMain: {
-                    GLSL: "",
-                },
-                vertexMain: {
-                    GLSL: "",
-                },
-            });
+            const shader = new DVEShader(id);
             this._shaders.set(id, shader);
             return shader;
         },
@@ -90,6 +70,52 @@ ${data.output} ${id}(${paramters}){
                 }
             }
             return functions;
+        },
+    },
+    define: {
+        _process(data) {
+            return `#define ${data[0]} ${data[1]}`;
+        },
+        build(data) {
+            let output = "";
+            if (data instanceof Map) {
+                for (const [key, define] of data) {
+                    output += this._process(define);
+                }
+                return output;
+            }
+            if (Array.isArray(data)) {
+                for (const define of data) {
+                    output += this._process(define);
+                }
+                return output;
+            }
+            return this._process(data);
+        },
+    },
+    uniforms: {
+        _process(data) {
+            let [name, type, length] = data;
+            if (length) {
+                name += `[${Number(length)}]`;
+            }
+            return `uniform ${type} ${name};\n`;
+        },
+        build(data) {
+            let output = "";
+            if (data instanceof Map) {
+                for (const [key, unfirom] of data) {
+                    output += this._process(unfirom);
+                }
+                return output;
+            }
+            if (Array.isArray(data)) {
+                for (const unfirom of data) {
+                    output += this._process(unfirom);
+                }
+                return output;
+            }
+            return this._process(data);
         },
     },
     snippets: {

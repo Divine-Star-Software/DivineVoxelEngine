@@ -10,6 +10,7 @@ export const TextureCreator = {
   this.imgWidth = textureSize;
   this.imgHeight = textureSize;
   this._mipMapSizes = mipMapSizes;
+  console.log("create",mipMapSizes);
  },
 
  setUpImageCreation() {

@@ -63,10 +63,10 @@ export const HalfBoxVoxelShape: VoxelShape = {
 };
 
 //cullface
-OverrideManager.registerOverride("CullFace", "HalfBox", "Panel", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_panel", (data) => {
  return false;
 });
-OverrideManager.registerOverride("CullFace", "HalfBox", "Box", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_box", (data) => {
  if (data.face == "bottom") {
   if (data.currentVoxel.getShapeState() == 0) {
    return false;
@@ -80,14 +80,14 @@ OverrideManager.registerOverride("CullFace", "HalfBox", "Box", (data) => {
 
  return true;
 });
-OverrideManager.registerOverride("CullFace", "HalfBox", "Stair", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_stair", (data) => {
  return data.default;
 });
 //AO
-OverrideManager.registerOverride("AO", "HalfBox", "Panel", (data) => {
+OverrideManager.registerOverride("AO", "#dve_half_box", "#dve_panel", (data) => {
  return false;
 });
-OverrideManager.registerOverride("AO", "HalfBox", "Box", (data) => {
+OverrideManager.registerOverride("AO", "#dve_half_box", "#dve_box", (data) => {
  const shapeState = data.currentVoxel.getShapeState();
  if (shapeState == 1) {
   if (data.face == "top") {

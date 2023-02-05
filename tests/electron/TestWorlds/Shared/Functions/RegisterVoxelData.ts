@@ -4,10 +4,10 @@ export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
  DVEW.voxelManager.registerVoxelData([
   //util
   {
-   id: "dve_debug#dve_box",
+   id: "dve_debugbox",
    tags: [
     ["#dve_substance", "solid"],
-    ["#dve_shape_id", "#dve_#dve_box"],
+    ["#dve_shape_id", "#dve_box"],
     ["#dve_is_light_source", true],
     ["#dve_light_value", [15, 15, 15]],
     ["#dve_collider_id", "#dve_box"],
@@ -114,7 +114,7 @@ export function RegisterVoxels(DVEW: DivineVoxelEngineWorld) {
   {
    id: "dve_dreamstone-stair",
    tags: [
-    ["#dve_substance", "solid"],
+    ["#dve_substance", "transparent"],
     ["#dve_shape_id", "#dve_stair"],
     ["#dve_collider_id", "#dve_stair"],
     ["#dve_check_collisions", true],

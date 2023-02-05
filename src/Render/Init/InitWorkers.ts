@@ -7,7 +7,7 @@ export async function InitWorkers(
 ) {
  DVER.settings.syncSettings(<any>initData);
 
-
+console.log(initData.textures)
  await DVER.TC.$INIT("render");
 
  if (typeof initData.worldWorker == "string") {

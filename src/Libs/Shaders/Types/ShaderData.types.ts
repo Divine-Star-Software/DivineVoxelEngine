@@ -12,12 +12,14 @@ export type ShaderDataTypes =
  | "mat4"
  | "int";
 export type ShaderData = {
- fragDefines: Map<string, number>;
- vertexDefines: Map<string, number>;
+
  attributes: Map<string, ShaderDataTypes>;
- sharedUniforms: Map<string, ShaderDataTypes>;
- vertexUniforms: Map<string, ShaderDataTypes>;
- fragxUniforms: Map<string, ShaderDataTypes>;
+ sharedUniforms: Map<string, ShaderUniformData>;
+ vertexUniforms: Map<string, ShaderUniformData>;
+ fragxUniforms: Map<string, ShaderUniformData>;
+ sharedDefines: Map<string, ShaderDefinesData>;
+ vertexDefines: Map<string, ShaderDefinesData>;
+ fragDefines: Map<string, ShaderDefinesData>;
  localVertexFunctions: Map<string, ShaderFunctionData>;
  localFragFunctions: Map<string, ShaderFunctionData>;
  textures: Map<string, ShaderTextureData>;
@@ -25,6 +27,7 @@ export type ShaderData = {
  sharedFunctions: string[];
  fragFunctions: string[];
  vertexFunctions: string[];
+
  fragMain: ShaderCodeBody;
  vertexMain: ShaderCodeBody;
 };
@@ -46,5 +49,12 @@ type ShaderFuncitonBase = {
  ][];
  output: ShaderDataTypes;
  body: ShaderCodeBody;
- setID ?: string;
+ setID?: string;
 };
+
+export type ShaderDefinesData= [name : string, value : number]
+export type ShaderUniformData =
+ | [name: string, type: ShaderDataTypes]
+ | [name: string, type: ShaderDataTypes, arrayLength: number];
+export type ShaderAttributeData = [name: string, type: ShaderDataTypes];
+export type ShaderVaryingData = [name: string, type: ShaderDataTypes];

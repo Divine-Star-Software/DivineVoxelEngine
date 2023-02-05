@@ -14,6 +14,14 @@ export declare const DVEShaders: {
             _processFunctinos(id: string, data: import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData): string;
             build(id: string, data?: import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData | undefined): string;
         };
+        define: {
+            _process(data: import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData): string;
+            build(data: import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData | Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData> | import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData[]): string;
+        };
+        uniforms: {
+            _process(data: import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData): string;
+            build(data: import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData | Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData> | import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData[]): string;
+        };
         snippets: {
             _snippets: Map<string, ShaderCodeBody>;
             create(id: string, data: ShaderCodeBody): void;

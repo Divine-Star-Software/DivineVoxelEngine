@@ -126,7 +126,7 @@ export const LiquidVoxelShape: VoxelShape = {
 
 OverrideManager.registerOverride(
  "CullFace",
- "Liquid",
+ "#dve_liquid",
  "Any",
  (data) => {
   if (

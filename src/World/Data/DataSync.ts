@@ -132,7 +132,7 @@ export const DataSync = {
   string | number,
   boolean
  >({
-  dataSyncType: DataSyncTypes.chunk,
+  dataSyncType: DataSyncTypes.dimesnion,
   commCheck: (options) => options.worldData,
   getSyncData: (input) => {
    const dimensionData = DimensionsRegister.getDimension(input);

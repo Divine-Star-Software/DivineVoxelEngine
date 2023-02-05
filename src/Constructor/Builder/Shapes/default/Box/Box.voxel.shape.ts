@@ -57,7 +57,7 @@ export const BoxVoxelShape: VoxelShape = {
 };
 
 //cull leaf faces
-const boxCullFunctions: Record<
+const BoxCullFunctions: Record<
  DirectionNames,
  (data: FaceDataOverride) => boolean
 > = {
@@ -172,31 +172,40 @@ const boxCullFunctions: Record<
 };
 
 //cullface
-OverrideManager.registerOverride("CullFace", "Box", "Box", (data) => {
-
- return boxCullFunctions[data.face](data);
+OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_box", (data) => {
+ return BoxCullFunctions[data.face](data);
 });
-OverrideManager.registerOverride("CullFace", "Box", "Panel", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_box", "Panel", (data) => {
  return true;
 });
-OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
- if (data.face == "top") {
-  if (data.neighborVoxel.getShapeState() == 0) {
-   return true;
+OverrideManager.registerOverride(
+ "CullFace",
+ "#dve_box",
+ "#dve_halfbox",
+ (data) => {
+  if (data.face == "top") {
+   if (data.neighborVoxel.getShapeState() == 0) {
+    return true;
+   }
+   return false;
   }
-  return false;
+  return true;
  }
- return true;
-});
-OverrideManager.registerOverride("CullFace", "Box", "Stair", (data) => {
- stairCullFunctions[data.face](data);
- return true;
-});
+);
+OverrideManager.registerOverride(
+ "CullFace",
+ "#dve_box",
+ "#dve_stair",
+ (data) => {
+  StairCullFunctions[data.face](data);
+  return true;
+ }
+);
 //ao
-OverrideManager.registerOverride("AO", "Box", "Panel", (data) => {
+OverrideManager.registerOverride("AO", "#dve_box", "Panel", (data) => {
  return false;
 });
-OverrideManager.registerOverride("AO", "Box", "HalfBox", (data) => {
+OverrideManager.registerOverride("AO", "#dve_box", "#dve_half_box", (data) => {
  if (data.face == "top") {
   if (data.neighborVoxel.getShapeState() == 0) {
    return true;
@@ -206,7 +215,7 @@ OverrideManager.registerOverride("AO", "Box", "HalfBox", (data) => {
  return true;
 });
 
-const stairCullFunctions: Record<
+const StairCullFunctions: Record<
  DirectionNames,
  (data: FaceDataOverride) => boolean
 > = {

@@ -32,7 +32,7 @@ const getHalfHeight = (
  const quad = getQuad(direction, position);
  quad[1][1] = 0.5;
  quad[3] = AO;
- quad[4] = [-5];
+ quad[4] = [-5, -5, -5, -5];
  quad[5] = [0, 0, 1, uvs[0], uvs[1]];
 
  return quad;
@@ -46,7 +46,7 @@ const getHalfWidth = (
  const quad = getHalfHeight(direction, position, AO, uvs);
  quad[1][0] = 0.5;
  quad[1][1] = 1;
- quad[4] = [-5];
+ quad[4] = [-5, -5, -5, -5];
  quad[5] = [0, uvs[0], uvs[1], 0, 1];
  return quad;
 };
@@ -60,7 +60,7 @@ const getQuater = (
  quad[1][0] = 0.5;
  quad[1][1] = 0.5;
  quad[3] = AO;
- quad[4] = [-5];
+ quad[4] = [-5, -5, -5, -5];
  quad[5] = uvs;
  return quad;
 };
@@ -210,8 +210,8 @@ StairBuilderData[StairStates.normal.top.south] = [
  ],
  [fullQuads.south],
  [
-  getHalfHeight("north", [0.5, 0.25, 0.5], [a, a, 1, 1], [0, 0.5]),
-  getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0.5, 1]),
+  getHalfHeight("north", [0.5, 0.25, 0.5], [a, a, 1, 1], [0.5, 1]),
+  getHalfHeight("north", [0.5, 0.75, 1], [-1, -2, 1, 1], [0, 0.5]),
  ],
 ];
 StairBuilderData[StairStates.normal.top.east] = [

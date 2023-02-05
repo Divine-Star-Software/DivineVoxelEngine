@@ -1,6 +1,5 @@
-import { ShaderDataTypes } from "Libs/Shaders/Types/ShaderData.types";
+import { DVEShader } from "Libs/Shaders/Classes/DVEShader";
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
-import { ShaderAnimationData } from "Meta/Render/Animations/Animation.types";
 
 export const AnimationManager = {
  //@ts-ignore
@@ -9,15 +8,16 @@ export const AnimationManager = {
  >{},
 
  animCount: 0,
-
+ animationUniforms: <Map<string, Float32Array>>new Map(),
+ overlayAnimationUniforms: <Map<string, Float32Array>>new Map(),
  animations: <
   {
-   uniformShaderId: string;
+   uniformIndex: number;
+   overlay?: boolean;
    keys: number[];
    currentFrame: number;
    currentCount: number;
    keyCounts: number[];
-
    substance: VoxelSubstanceType | "Item";
   }[]
  >[],
@@ -31,91 +31,18 @@ export const AnimationManager = {
   * @param animations
   * @returns
   */
- registerAnimations(
-  voxelSubstanceType: VoxelSubstanceType | "Item",
-  animations: number[][],
-  animationTimes: number[][],
-  overlay = false
- ): ShaderAnimationData {
-  const returnUniforms: string[] = [];
-  let uniformRegisterCode = `//animations\n`;
-
-  let animationFunctionCode = `
-  float getUVFace(float uv) {
-  `;
-  if (overlay) {
-   animationFunctionCode = `
-  float getOverlayUVFace(float uv) {
-  `;
-  }
-  let i = 0;
-  for (const anim of animations) {
-   let shaderId = `anim${i}`;
-   if (overlay) {
-    shaderId = "o" + shaderId;
-   }
-   let keyCounts: number[] = [];
-
-   const animTime = animationTimes[i];
-   if (animTime.length == 1) {
-    for (let k = 0; k < anim.length; k++) {
-     keyCounts.push(animTime[0]);
-    }
-   } else {
-    keyCounts = animationTimes[i];
-   }
-   this.animations.push({
-    uniformShaderId: shaderId,
-    keys: anim,
-    currentFrame: 0,
-    currentCount: 0,
-    keyCounts: keyCounts,
-    substance: voxelSubstanceType,
-   });
-   returnUniforms.push(shaderId);
-   uniformRegisterCode += `uniform float ${shaderId};
-   `;
-   animationFunctionCode += `if(uv == ${anim[0]}.0) {
-   return ${shaderId};
-  }`;
-   i++;
-  }
-
-  animationFunctionCode += `
-  return uv;
-   }
-  `;
-
-  this.animCount = this.animations.length;
-
-  return {
-   uniforms: returnUniforms,
-   uniformRegisterCode: uniformRegisterCode,
-   animationFunctionCode: animationFunctionCode,
-  };
- },
-
  registerAnimationsN(
   voxelSubstanceType: VoxelSubstanceType | "Item",
+  shader: DVEShader,
   animations: number[][],
   animationTimes: number[][],
   overlay = false
  ) {
-  const returnUniforms: [id : string, type : ShaderDataTypes][] = [];
-  let uniformRegisterCode = `//animations\n`;
-
-  let animationFunctionCode = ``;
-  if (overlay) {
-   animationFunctionCode = ``;
-  }
+  const animaitonUniform: number[] = [];
   let i = 0;
   for (const anim of animations) {
-   let shaderId = `anim${i}`;
-   if (overlay) {
-    shaderId = "o" + shaderId;
-   }
+   animaitonUniform[anim[0]] = anim[0];
    let keyCounts: number[] = [];
-
    const animTime = animationTimes[i];
    if (animTime.length == 1) {
     for (let k = 0; k < anim.length; k++) {
@@ -125,32 +52,55 @@ export const AnimationManager = {
     keyCounts = animationTimes[i];
    }
    this.animations.push({
-    uniformShaderId: shaderId,
+    uniformIndex: anim[0],
     keys: anim,
+    overlay: overlay,
     currentFrame: 0,
     currentCount: 0,
     keyCounts: keyCounts,
     substance: voxelSubstanceType,
    });
-   returnUniforms.push([shaderId,"float"]);
-   uniformRegisterCode += `uniform float ${shaderId};
-     `;
-   animationFunctionCode += `if(uv == ${anim[0]}.0) {
-     return ${shaderId};
-    }`;
    i++;
   }
 
-  animationFunctionCode += `
-    return uv;
-    `;
-
   this.animCount = this.animations.length;
 
-  return {
-   uniforms: returnUniforms,
-   animationFunctionBody: animationFunctionCode,
-  };
+  let uniformName = "animationIndexArray";
+  let functionName = "getUVFace";
+  if (overlay) {
+   uniformName += "O";
+   functionName = "getOverlayUVFace";
+  }
+
+  shader.addUniform([[uniformName, "float", animaitonUniform.length + 1]]);
+  shader.addFunction(functionName, "vertex", {
+   inputs: [["uv", "float"]],
+   output: "float",
+   body: {
+    GLSL: `
+int index =  int(uv); 
+float aUV = ${uniformName}[index];
+if(aUV != 0.){
+  return aUV;
+}
+return uv;`,
+   },
+  });
+
+  for (let i = 0; i < animaitonUniform.length; i++) {
+   if (!animaitonUniform[i]) {
+    animaitonUniform[i] = 0;
+   }
+  }
+
+  const unfirms = new Float32Array(animaitonUniform);
+  if (overlay) {
+   this.overlayAnimationUniforms.set(voxelSubstanceType, unfirms);
+  } else {
+   this.animationUniforms.set(voxelSubstanceType, unfirms);
+  }
+
+  return unfirms;
  },
 
  registerMaterial(
@@ -172,10 +122,21 @@ export const AnimationManager = {
      } else {
       anim.currentFrame = 0;
      }
-     this.animatedMaterials[anim.substance].setFloat(
-      anim.uniformShaderId,
-      anim.keys[anim.currentFrame]
-     );
+
+     const material = this.animatedMaterials[anim.substance];
+     if (anim.overlay) {
+      const uniformArray = this.overlayAnimationUniforms.get(anim.substance)!;
+      uniformArray[anim.uniformIndex] = anim.keys[anim.currentFrame];
+      //@ts-ignore
+      material.setFloats("animationIndexArrayO", uniformArray);
+      return;
+     }
+
+     const uniformArray = this.animationUniforms.get(anim.substance)!;
+     uniformArray[anim.uniformIndex] = anim.keys[anim.currentFrame];
+
+     //@ts-ignore
+     material.setFloats("animationIndexArray", uniformArray);
     } else {
      anim.currentCount++;
     }

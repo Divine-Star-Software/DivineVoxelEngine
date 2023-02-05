@@ -1,5 +1,5 @@
 import { DVEShader } from "./Classes/DVEShader.js";
-import type { ShaderCodeBody, ShaderFunctionData } from "./Types/ShaderData.types";
+import type { ShaderCodeBody, ShaderDefinesData, ShaderFunctionData, ShaderUniformData } from "./Types/ShaderData.types";
 export declare const DVEShaderBuilder: {
     buildShader(id: string): void;
     shaders: {
@@ -12,6 +12,14 @@ export declare const DVEShaderBuilder: {
         create(id: string, data: ShaderFunctionData): void;
         _processFunctinos(id: string, data: ShaderFunctionData): string;
         build(id: string, data?: ShaderFunctionData): string;
+    };
+    define: {
+        _process(data: ShaderDefinesData): string;
+        build(data: ShaderDefinesData | ShaderDefinesData[] | Map<string, ShaderDefinesData>): string;
+    };
+    uniforms: {
+        _process(data: ShaderUniformData): string;
+        build(data: ShaderUniformData | ShaderUniformData[] | Map<string, ShaderUniformData>): string;
     };
     snippets: {
         _snippets: Map<string, ShaderCodeBody>;

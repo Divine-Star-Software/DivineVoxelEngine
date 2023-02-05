@@ -172,6 +172,14 @@ export declare const DVER: {
                     _processFunctinos(id: string, data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): string;
                     build(id: string, data?: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData | undefined): string;
                 };
+                define: {
+                    _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[]): string;
+                };
+                uniforms: {
+                    _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[]): string;
+                };
                 snippets: {
                     _snippets: Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody>;
                     create(id: string, data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): void;
@@ -210,19 +218,18 @@ export declare const DVER: {
         animationManager: {
             animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
             animCount: number;
+            animationUniforms: Map<string, Float32Array>;
+            overlayAnimationUniforms: Map<string, Float32Array>;
             animations: {
-                uniformShaderId: string;
+                uniformIndex: number;
+                overlay?: boolean | undefined;
                 keys: number[];
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
                 substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
             }[];
-            registerAnimations(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): import("../Meta/Render/Animations/Animation.types.js").ShaderAnimationData;
-            registerAnimationsN(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, animations: number[][], animationTimes: number[][], overlay?: boolean): {
-                uniforms: [id: string, type: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-                animationFunctionBody: string;
-            };
+            registerAnimationsN(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, shader: import("../Libs/Shaders/Classes/DVEShader.js").DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
             registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };

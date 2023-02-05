@@ -73,8 +73,8 @@ export function RegisterVoxelsForConstructor(DVEC) {
         }),
         vm.defaults.box.simple("dve_dreadlamp", ["solid", "dreadlamp"]),
         vm.defaults.liquid.simple("dve_liquiddreadether", [
-            ["liquid", "liquid-dread-ether"],
-            ["liquid", "liquid-dread-ether"],
+            ["liquid", "liquid-dread-ether", "still-1"],
+            ["liquid", "liquid-dread-ether", "still-1"],
         ]),
         vm.defaults.panel.simple("dve_dreadgrass", ["flora", "dreadgrass"]),
     ]);

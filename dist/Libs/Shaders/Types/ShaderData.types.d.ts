@@ -6,12 +6,13 @@ export declare type ShaderTextureData = {
 };
 export declare type ShaderDataTypes = "vec4" | "vec3" | "vec2" | "float" | "mat4" | "int";
 export declare type ShaderData = {
-    fragDefines: Map<string, number>;
-    vertexDefines: Map<string, number>;
     attributes: Map<string, ShaderDataTypes>;
-    sharedUniforms: Map<string, ShaderDataTypes>;
-    vertexUniforms: Map<string, ShaderDataTypes>;
-    fragxUniforms: Map<string, ShaderDataTypes>;
+    sharedUniforms: Map<string, ShaderUniformData>;
+    vertexUniforms: Map<string, ShaderUniformData>;
+    fragxUniforms: Map<string, ShaderUniformData>;
+    sharedDefines: Map<string, ShaderDefinesData>;
+    vertexDefines: Map<string, ShaderDefinesData>;
+    fragDefines: Map<string, ShaderDefinesData>;
     localVertexFunctions: Map<string, ShaderFunctionData>;
     localFragFunctions: Map<string, ShaderFunctionData>;
     textures: Map<string, ShaderTextureData>;
@@ -38,4 +39,8 @@ declare type ShaderFuncitonBase = {
     body: ShaderCodeBody;
     setID?: string;
 };
+export declare type ShaderDefinesData = [name: string, value: number];
+export declare type ShaderUniformData = [name: string, type: ShaderDataTypes] | [name: string, type: ShaderDataTypes, arrayLength: number];
+export declare type ShaderAttributeData = [name: string, type: ShaderDataTypes];
+export declare type ShaderVaryingData = [name: string, type: ShaderDataTypes];
 export {};

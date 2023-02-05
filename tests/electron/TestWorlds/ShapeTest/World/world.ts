@@ -2,6 +2,7 @@ import { GetAnalyzerCubeWorld } from "../../Shared/Debug/Anaylzer/Cube.js";
 import { DVEW } from "../../../out/World/DivineVoxelEngineWorld.js";
 import { RegisterVoxels } from "../../Shared/Functions/RegisterVoxelData.js";
 import { WorldGen } from "./WorldGen/WorldGen.js";
+import { GenerateStairPillar } from "./Functions/StairPillar.js";
 RegisterVoxels(DVEW);
 
 await DVEW.$INIT();
@@ -300,30 +301,42 @@ doStairTest(0, 25, 16, 12);
 doStairTest(1, 25, 16, 4);
 doStairTest(2, 25, 16, -4);
 doStairTest(3, 25, 16, -12);
+
+for (let z = -20; z < 100; z += 16) {
+ GenerateStairPillar(
+  brush,
+  35,
+  16,
+  z,
+  10,
+  "dve_dreamstone-stair",
+  "dve_dreamstone"
+ );
+}
+
 //-1 10 0
 //0 10 -1
 
-brush.setId("dve_debugbox");
-brush.setXYZ(30, 26, 107).paint();
-brush.setXYZ(30, 26, 99).paint();
-brush.setXYZ(30, 26, 91).paint();
-brush.setXYZ(30, 26, 83).paint();
-brush.setXYZ(30, 26, 75).paint();
-brush.setXYZ(30, 20, 68).paint();
-brush.setXYZ(30, 20, 69).paint();
-brush.setXYZ(30, 20, 52).paint();
-brush.setXYZ(30, 20, 44).paint();
-brush.setXYZ(30, 20, 36).paint();
-brush.setXYZ(30, 20, 28).paint();
-brush.setXYZ(30, 20, 20).paint();
-brush.setXYZ(30, 20, 12).paint();
-brush.setXYZ(30, 20, 4).paint();
-brush.setXYZ(30, 20, -4).paint();
-brush.setXYZ(30, 20, -12).paint();
-
 await tasks.light.worldSun.runAndAwait();
-await tasks.light.rgb.update.runAndAwait();
-
+console.log("go");
+//await tasks.light.rgb.update.runAndAwait();
+brush.setId("dve_debugbox");
+brush.setXYZ(30, 26, 107).paintAndUpdate();
+brush.setXYZ(30, 26, 99).paintAndUpdate();
+brush.setXYZ(30, 26, 91).paintAndUpdate();
+brush.setXYZ(30, 26, 83).paintAndUpdate();
+brush.setXYZ(30, 26, 75).paintAndUpdate();
+brush.setXYZ(30, 20, 68).paintAndUpdate();
+brush.setXYZ(30, 20, 69).paintAndUpdate();
+brush.setXYZ(30, 20, 52).paintAndUpdate();
+brush.setXYZ(30, 20, 44).paintAndUpdate();
+brush.setXYZ(30, 20, 36).paintAndUpdate();
+brush.setXYZ(30, 20, 28).paintAndUpdate();
+brush.setXYZ(30, 20, 20).paintAndUpdate();
+brush.setXYZ(30, 20, 12).paintAndUpdate();
+brush.setXYZ(30, 20, 4).paintAndUpdate();
+brush.setXYZ(30, 20, -4).paintAndUpdate();
+brush.setXYZ(30, 20, -12).paintAndUpdate();
 buildAll();
 
 (self as any).DVEW = DVEW;

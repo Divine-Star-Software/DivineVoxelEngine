@@ -117,7 +117,7 @@ export const LiquidVoxelShape = {
         clearVertexLevels(data);
     },
 };
-OverrideManager.registerOverride("CullFace", "Liquid", "Any", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_liquid", "Any", (data) => {
     if (data.face == "top" &&
         data.neighborVoxel.getSubstance() != "liquid" &&
         data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()) {

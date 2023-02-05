@@ -66,26 +66,10 @@ export class DVEMaterial {
     }
     createMaterial(data) {
         const shader = DVER.render.shaders.createVoxelShader("solid");
-        const animData = DVER.render.animationManager.registerAnimationsN(this.type, data.animations, data.animationTimes);
-        shader.addUniform(animData.uniforms);
-        shader.addFunction("getUVFace", "vertex", {
-            inputs: [["uv", "float"]],
-            output: "float",
-            body: {
-                GLSL: animData.animationFunctionBody,
-            },
-        });
-        const overlayAnimData = DVER.render.animationManager.registerAnimationsN(this.type, data.overlayAnimations, data.overlayAnimationTimes, true);
+        const animData = DVER.render.animationManager.registerAnimationsN(this.type, shader, data.animations, data.animationTimes);
+        const overlayAnimData = DVER.render.animationManager.registerAnimationsN(this.type, shader, data.overlayAnimations, data.overlayAnimationTimes, true);
         shader.setCodeBody("vertex", `@#dve_${this.type}_vertex`);
         shader.setCodeBody("frag", `@#dve_${this.type}_frag`);
-        shader.addUniform(overlayAnimData.uniforms);
-        shader.addFunction("getOverlayUVFace", "vertex", {
-            inputs: [["uv", "float"]],
-            output: "float",
-            body: {
-                GLSL: overlayAnimData.animationFunctionBody,
-            },
-        });
         shader.compile();
         BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
             shader.compiled.vertex;
@@ -100,13 +84,15 @@ export class DVEMaterial {
         this.material = shaderMaterial;
         this.material.fogEnabled = true;
         if (this.options.alphaBlending) {
-            //shaderMaterial.separateCullingPass = fals;
+            shaderMaterial.separateCullingPass = true;
             shaderMaterial.backFaceCulling = false;
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
         }
         shaderMaterial.setTextureArray("voxelTexture", data.texture);
         shaderMaterial.setTextureArray("voxelOverlayTexture", data.overlayTexture);
+        shaderMaterial.setFloats("animationIndexArray", animData);
+        shaderMaterial.setFloats("animationIndexArrayO", overlayAnimData);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());

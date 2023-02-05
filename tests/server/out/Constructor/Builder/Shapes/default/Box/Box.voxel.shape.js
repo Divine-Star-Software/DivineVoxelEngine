@@ -52,7 +52,7 @@ export const BoxVoxelShape = {
     },
 };
 //cull leaf faces
-const boxCullFunctions = {
+const BoxCullFunctions = {
     top: (data) => {
         if (data.currentVoxel.getSubstance() == "flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] + 1, data.currentVoxel.location[3]) &&
@@ -103,13 +103,13 @@ const boxCullFunctions = {
     },
 };
 //cullface
-OverrideManager.registerOverride("CullFace", "Box", "Box", (data) => {
-    return boxCullFunctions[data.face](data);
+OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_box", (data) => {
+    return BoxCullFunctions[data.face](data);
 });
-OverrideManager.registerOverride("CullFace", "Box", "Panel", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_box", "Panel", (data) => {
     return true;
 });
-OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
+OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_halfbox", (data) => {
     if (data.face == "top") {
         if (data.neighborVoxel.getShapeState() == 0) {
             return true;
@@ -118,15 +118,15 @@ OverrideManager.registerOverride("CullFace", "Box", "HalfBox", (data) => {
     }
     return true;
 });
-OverrideManager.registerOverride("CullFace", "Box", "Stair", (data) => {
-    stairCullFunctions[data.face](data);
+OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_stair", (data) => {
+    StairCullFunctions[data.face](data);
     return true;
 });
 //ao
-OverrideManager.registerOverride("AO", "Box", "Panel", (data) => {
+OverrideManager.registerOverride("AO", "#dve_box", "Panel", (data) => {
     return false;
 });
-OverrideManager.registerOverride("AO", "Box", "HalfBox", (data) => {
+OverrideManager.registerOverride("AO", "#dve_box", "#dve_half_box", (data) => {
     if (data.face == "top") {
         if (data.neighborVoxel.getShapeState() == 0) {
             return true;
@@ -135,7 +135,7 @@ OverrideManager.registerOverride("AO", "Box", "HalfBox", (data) => {
     }
     return true;
 });
-const stairCullFunctions = {
+const StairCullFunctions = {
     top: (data) => {
         const neighborVoxelShapeState = data.neighborVoxel.getShapeState();
         if ((neighborVoxelShapeState >= 0 && neighborVoxelShapeState <= 3) ||
