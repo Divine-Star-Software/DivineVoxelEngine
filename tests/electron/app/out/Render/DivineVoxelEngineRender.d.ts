@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
@@ -216,7 +217,7 @@ export declare const DVER: {
             _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
         };
         animationManager: {
-            animatedMaterials: Record<"Item" | import("../Meta/index.js").VoxelSubstanceType, BABYLON.ShaderMaterial>;
+            animatedMaterials: Record<import("../Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
             animCount: number;
             animationUniforms: Map<string, Float32Array>;
             overlayAnimationUniforms: Map<string, Float32Array>;
@@ -227,10 +228,10 @@ export declare const DVER: {
                 currentFrame: number;
                 currentCount: number;
                 keyCounts: number[];
-                substance: "Item" | import("../Meta/index.js").VoxelSubstanceType;
+                substance: import("../Meta/index.js").VoxelSubstanceType | "Item";
             }[];
-            registerAnimationsN(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, shader: import("../Libs/Shaders/Classes/DVEShader.js").DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
-            registerMaterial(voxelSubstanceType: "Item" | import("../Meta/index.js").VoxelSubstanceType, material: BABYLON.ShaderMaterial): void;
+            registerAnimationsN(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", shader: import("../Libs/Shaders/Classes/DVEShader.js").DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
+            registerMaterial(voxelSubstanceType: import("../Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
             startAnimations(): void;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
