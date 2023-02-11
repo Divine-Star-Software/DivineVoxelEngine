@@ -18,7 +18,7 @@ export const SubstanceRules = {
     $INIT() {
         SubstanceRules.registerSubstance("#dve_solid", ["#dve_solid"]);
         SubstanceRules.registerSubstance("#dve_flora");
-        SubstanceRules.registerSubstance("#dve_transparent", ["#dve_transparent"]);
+        SubstanceRules.registerSubstance("#dve_transparent", ["#dve_transparent"], "#dve_solid");
         SubstanceRules.registerSubstance("#dve_liquid", [
             "#dve_solid",
             "#dve_liquid",

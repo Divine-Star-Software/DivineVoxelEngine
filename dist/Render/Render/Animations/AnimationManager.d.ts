@@ -1,3 +1,4 @@
+/// <reference types="babylonjs" />
 import { DivineShader } from "Libs/Shaders/Classes/DivineShader";
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 export declare const AnimationManager: {

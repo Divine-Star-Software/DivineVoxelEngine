@@ -18,7 +18,7 @@
     "dsst-main",
     "dsst-libs",
     "screens-compile",
-    "dsst-screens",
+    "dsst-screens"
    ],
    // Mark as the default build task so cmd/ctrl+shift+b will create them
    "group": {
@@ -31,51 +31,16 @@
    }
   },
   {
-   "label": "electron",
-   "type": "shell",
-   "command": "cd tests/electron; npm run start",
-   "isBackground": true
-  },
-  {
    "label": "src-compile",
    "type": "shell",
    "command": "cd src; tsc --watch",
    "isBackground": true
   },
+
   {
-   "label": "testworlds-compile",
+   "label": "dsst-libs",
    "type": "shell",
-   "command": "cd tests/electron/TestWorlds; tsc --watch",
-   "isBackground": true
-  },
-  {
-   "label": "server-compile",
-   "type": "shell",
-   "command": "cd tests/server/src; tsc --watch",
-   "isBackground": true
-  },
-  {
-   "label": "dsst-main",
-   "type": "shell",
-   "command": "dsst -a",
-   "isBackground": true
-  },
-  {
-    "label": "dsst-libs",
-    "type": "shell",
-    "command": "dsst -a -c .libdsconfig",
-    "isBackground": true
-   },
-  {
-   "label": "screens-compile",
-   "type": "shell",
-   "command": "cd tests/electron/screens; tsc --watch",
-   "isBackground": true
-  },
-  {
-   "label": "dsst-screens",
-   "type": "shell",
-   "command": "cd tests/electron/screens; dsst -a",
+   "command": "dsst -a -c .libdsconfig",
    "isBackground": true
   }
  ]

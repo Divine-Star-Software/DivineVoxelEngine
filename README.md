@@ -16,7 +16,7 @@ Use a stable release for development.
 
 A truly multi-threaded JavaScript voxel game engine written in TypeScript that uses Babylon.Js.
 
-Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki) to get started.
+Check out the [Wiki](https://github.com/Divine-Star-Software/DivineVoxelEngine/wiki) and visit the [DVE Testing](https://github.com/Divine-Star-Software/DVETesting) repo to get started.
 
 Need help or want to share your creations? Join the [discord](https://discord.gg/98xEVU7TKn).
 

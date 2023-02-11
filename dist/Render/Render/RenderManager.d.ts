@@ -75,11 +75,11 @@ export declare const RenderManager: {
             };
             define: {
                 _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData>): string;
+                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData> | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[]): string;
             };
             uniforms: {
                 _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData>): string;
+                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData> | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[]): string;
             };
             snippets: {
                 _snippets: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>>;
