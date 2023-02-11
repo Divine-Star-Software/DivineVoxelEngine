@@ -1,11 +1,5 @@
 src
-FileTesting
-app
-tests
-electron
+.vscode
 TestWorlds
-textures
-.dsconfig
+.libdsconfig
 .prettierrc.json
-out
-rollup.config.js
