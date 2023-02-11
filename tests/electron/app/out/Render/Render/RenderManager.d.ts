@@ -26,17 +26,17 @@ export declare const RenderManager: {
             get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn | undefined;
         };
         chunk: {
-            add(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, mesh: BABYLON.Mesh, substance: import("Meta/index.js").VoxelTemplateSubstanceType): Map<import("Meta/index.js").VoxelTemplateSubstanceType, import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
+            add(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, mesh: BABYLON.Mesh, substance: string): Map<string, import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
             _getChunkData(mesh: BABYLON.Mesh): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
-            remove(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: import("Meta/index.js").VoxelTemplateSubstanceType): false | BABYLON.Mesh;
-            get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: import("Meta/index.js").VoxelTemplateSubstanceType): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
+            remove(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | BABYLON.Mesh;
+            get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
         };
     };
     meshManager: {
         scene: BABYLON.Scene;
         runningUpdate: boolean;
-        meshes: Record<import("Meta/index.js").VoxelSubstanceType, Record<string, Record<string, BABYLON.Mesh>>>;
-        meshMakers: Record<import("Meta/index.js").VoxelSubstanceType, DVEMesh>;
+        meshes: Record<string, Record<string, Record<string, BABYLON.Mesh>>>;
+        meshMakers: Record<string, DVEMesh>;
         $INIT(scene: BABYLON.Scene): void;
         chunks: {
             remove(data: import("../../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
@@ -62,63 +62,50 @@ export declare const RenderManager: {
     };
     shaders: {
         builder: {
-            buildShader(id: string): void;
             shaders: {
-                _shaders: Map<string, import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader>;
-                create(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
+                _shaders: Map<string, import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader>;
+                create(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
             };
             functions: {
-                _functions: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData>;
+                _functions: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>>;
                 _functionSets: Map<string, string[]>;
-                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): void;
-                _processFunctinos(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData): string;
-                build(id: string, data?: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData | undefined): string;
+                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>): void;
+                _processFunctinos(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | null): string;
+                build(id: string, data?: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any> | null, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | null): string;
             };
             define: {
                 _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData> | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[]): string;
+                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData>): string;
             };
             uniforms: {
                 _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData> | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[]): string;
+                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData>): string;
             };
             snippets: {
-                _snippets: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody>;
-                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): void;
-                override(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody): boolean;
-                get(id: string): string;
-                _process(text: string): {
+                _snippets: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>>;
+                create(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>): void;
+                override(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>): boolean;
+                get(id: string, args?: any): string;
+                _process(text: string, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | undefined): {
                     newBody: string;
                     foundSnippet: boolean;
                 };
-                build(text: string): string;
+                build(text: string, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | undefined): string;
             };
         };
         voxelAttributes: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
         voxelSharedUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
         voxelVertexUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-        voxelVarying: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes, set: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderCodeBody][];
+        voxelVarying: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderVaryingData<any>[];
         voxelFragFunctions: string[];
         voxelVertexFunctions: string[];
-        _defaultShader: import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
+        _defaultShader: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
         $INIT(): void;
-        createVoxelShader(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
-        createSkyBoxShader(id: string): import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader;
-    };
-    textureCreator: {
-        context: CanvasRenderingContext2D | null;
-        imgWidth: number;
-        imgHeight: number;
-        _mipMapSizes: number[];
-        defineTextureDimensions(textureSize: number, mipMapSizes: number[]): void;
-        setUpImageCreation(): void;
-        createMaterialTexture(name: string, scene: BABYLON.Scene, images: string[], width?: number, height?: number): Promise<BABYLON.RawTexture2DArray[]>;
-        _createTextures(name: string, scene: BABYLON.Scene, images: string[], width: number, height: number): Promise<BABYLON.RawTexture2DArray>;
-        _loadImages(imgPath: string, width: number, height: number): Promise<Uint8ClampedArray>;
-        _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
+        createVoxelShader(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
+        createSkyBoxShader(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
     };
     animationManager: {
-        animatedMaterials: Record<import("Meta/index.js").VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+        animatedMaterials: Record<string, BABYLON.ShaderMaterial>;
         animCount: number;
         animationUniforms: Map<string, Float32Array>;
         overlayAnimationUniforms: Map<string, Float32Array>;
@@ -129,20 +116,18 @@ export declare const RenderManager: {
             currentFrame: number;
             currentCount: number;
             keyCounts: number[];
-            substance: import("Meta/index.js").VoxelSubstanceType | "Item";
+            substance: string;
         }[];
-        registerAnimationsN(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", shader: import("../../Libs/Shaders/Classes/DVEShader.js").DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
-        registerMaterial(voxelSubstanceType: import("Meta/index.js").VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
+        registerAnimations(voxelSubstanceType: string, shader: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
+        registerMaterial(voxelSubstanceType: string, material: BABYLON.ShaderMaterial): void;
         startAnimations(): void;
     };
     solidMaterial: DVEMaterial;
     floraMaterial: DVEMaterial;
     liquidMaterial: DVEMaterial;
-    magmaMaterial: DVEMaterial;
     solidMesh: DVEMesh;
     floraMesh: DVEMesh;
     liquidMesh: DVEMesh;
-    magmaMesh: DVEMesh;
     solidStandardMaterial: {
         material: BABYLON.StandardMaterial | null;
         plugin: import("./Materials/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;

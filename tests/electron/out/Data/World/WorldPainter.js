@@ -29,7 +29,7 @@ const WP = {
             this._dt.setId(id);
             this._dt.setShapeState(data.shapeState ? data.shapeState : 0);
             const substance = this._dt.getSubstance();
-            if (substance == "liquid" || substance == "magma") {
+            if (substance == "#dve_liquid" || substance == "#dve_magma") {
                 this._dt.setLevel(15);
             }
             if (data.secondaryVoxelId && data.secondaryVoxelId != "dve_air") {

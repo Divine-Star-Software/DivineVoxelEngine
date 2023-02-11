@@ -4,7 +4,7 @@ export const DebugBoxVoxelData: VoxelData = {
  name: "Debug Box",
  shapeId: "Box",
  id: "dve_debugbox",
- substance: "solid",
+ substance: "#dve_solid",
  material: "stone",
  hardnress: 1000,
  lightSource: true,

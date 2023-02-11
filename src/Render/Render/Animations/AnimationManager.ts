@@ -1,4 +1,4 @@
-import { DVEShader } from "Libs/Shaders/Classes/DVEShader";
+import { DivineShader } from "Libs/Shaders/Classes/DivineShader";
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 
 export const AnimationManager = {
@@ -31,9 +31,9 @@ export const AnimationManager = {
   * @param animations
   * @returns
   */
- registerAnimationsN(
+ registerAnimations(
   voxelSubstanceType: VoxelSubstanceType | "Item",
-  shader: DVEShader,
+  shader: DivineShader,
   animations: number[][],
   animationTimes: number[][],
   overlay = false
@@ -76,8 +76,9 @@ export const AnimationManager = {
   shader.addFunction(functionName, "vertex", {
    inputs: [["uv", "float"]],
    output: "float",
+   arguments: {},
    body: {
-    GLSL: `
+    GLSL: (d) => `
 int index =  int(uv); 
 float aUV = ${uniformName}[index];
 if(aUV != 0.){

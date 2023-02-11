@@ -300,7 +300,7 @@ const currentVoxelData = <
 >{
  light: 0,
  isLightSource: false,
- voxelSubstance: "solid",
+ voxelSubstance: "#dve_solid",
  shapeState: 0,
  currentShape: {},
 };
@@ -434,10 +434,10 @@ const doAO = (face: DirectionNames, vertex: Vertexes) => {
  let finalResult = false;
  let substanceRuleResult = true;
  const voxelSubstance = currentVoxelData.voxelSubstance;
- if (voxelSubstance == "transparent" || voxelSubstance == "solid") {
+ if (voxelSubstance == "#dve_transparent" || voxelSubstance == "#dve_solid") {
   if (
-   neighborVoxelSubstance != "solid" &&
-   neighborVoxelSubstance != "transparent"
+   neighborVoxelSubstance != "#dve_solid" &&
+   neighborVoxelSubstance != "#dve_transparent"
   ) {
    substanceRuleResult = false;
   }

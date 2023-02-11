@@ -2,18 +2,18 @@ const setUpMaterial = async (DVER, scene, substance, material) => {
     const textures = DVER.textures.processedTextureData.texturePaths[substance];
     const animations = DVER.textures.processedTextureData.textureAnimations[substance];
     const animationTimes = DVER.textures.processedTextureData.textureAnimationTimes[substance];
-    const materialTextures = await DVER.render.textureCreator.createMaterialTexture(`${substance}-diffuse`, scene, textures);
+    const materialTextures = await DVER.render.textureCreator.createMaterialTexture(`${substance}-diffuse`, textures);
     const overlayTextures = DVER.textures.overlayProcessedTextureData.texturePaths[substance];
     const overlayAimations = DVER.textures.overlayProcessedTextureData.textureAnimations[substance];
     const overlayAnimationTimes = DVER.textures.overlayProcessedTextureData.textureAnimationTimes[substance];
-    const Overlay2dTextureArray = await DVER.render.textureCreator.createMaterialTexture(`${substance}-overlay`, scene, overlayTextures);
+    const Overlay2dTextureArray = await DVER.render.textureCreator.createMaterialTexture(`${substance}-overlay`, overlayTextures);
     /*
     if (DVER.settings.getSettings().materials.mode == "standard") {
-     if (substance == "solid") {
+     if (substance == "#dve_solid") {
       DVER.render.solidStandardMaterial.$INIT(materialTextures, scene);
      }
    
-     if (substance == "liquid") {
+     if (substance == "#dve_liquid") {
       DVER.render.liquidStandardMaterial.$INIT(materialTextures, scene);
      }
     } */
@@ -35,10 +35,10 @@ export async function BuildInitalMeshes(DVER, scene) {
     }
     DVER.render.$INIT(scene);
     await DVER.render.textureCreator.setUpImageCreation();
-    await setUpMaterial(DVER, scene, "solid", DVER.render.solidMaterial);
-    await setUpMaterial(DVER, scene, "flora", DVER.render.floraMaterial);
-    await setUpMaterial(DVER, scene, "liquid", DVER.render.liquidMaterial);
-    await setUpMaterial(DVER, scene, "magma", DVER.render.magmaMaterial);
+    await setUpMaterial(DVER, scene, "#dve_solid", DVER.render.solidMaterial);
+    await setUpMaterial(DVER, scene, "#dve_flora", DVER.render.floraMaterial);
+    await setUpMaterial(DVER, scene, "#dve_liquid", DVER.render.liquidMaterial);
+    await setUpMaterial(DVER, scene, "#dve_magma", DVER.render.magmaMaterial);
     DVER.render.animationManager.startAnimations();
     DVER.textures.releaseTextureData();
     scene.registerBeforeRender(() => {

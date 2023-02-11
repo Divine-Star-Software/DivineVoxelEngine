@@ -104,8 +104,8 @@ export const ExplosionManager = {
                     }
                     tasks.addNeighborsToRebuildQueue(x, y, z);
                     if (dataTool.getHardness() > 10_000 ||
-                        substance == "liquid" ||
-                        substance == "magma") {
+                        substance == "#dve_liquid" ||
+                        substance == "#dve_magma") {
                         continue;
                     }
                     dataTool.setAir().commit(2);

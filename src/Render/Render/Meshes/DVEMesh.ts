@@ -34,10 +34,10 @@ export class DVEMesh {
    mesh.doNotSyncBoundingInfo = true;
   }
 
+
   mesh.doNotSerialize = this.seralize;
   mesh.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_STANDARD;
   mesh.material = this.dveMat.getMaterial();
-
   mesh.isVisible = false;
   mesh.setEnabled(false);
   return mesh;
@@ -96,7 +96,7 @@ export class DVEMesh {
 
  async setMeshData(
   mesh: BABYLON.Mesh,
-   location : LocationData,
+  location: LocationData,
   data: ChunkMeshData
  ) {
   mesh.unfreezeWorldMatrix();

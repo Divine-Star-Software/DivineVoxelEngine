@@ -4,7 +4,7 @@ export class DVEMaterialN {
     options;
     material = null;
     time = 0;
-    constructor(type = "solid", options) {
+    constructor(type = "#dve_solid", options) {
         this.type = type;
         this.options = options;
     }
@@ -65,7 +65,7 @@ export class DVEMaterialN {
         }
     }
     createMaterial(data) {
-        const shader = DVER.render.shaders.createVoxelShader("solid");
+        const shader = DVER.render.shaders.createVoxelShader("#dve_solid");
         const animData = DVER.render.animationManager.registerAnimationsN(this.type, data.animations, data.animationTimes);
         shader.addUniform(animData.uniforms);
         shader.addFunction("getUVFace", "vertex", {

@@ -61,7 +61,9 @@ const init = async () => {
  }
  await InitalizeAudio();
  //CreateWorldAxis(scene, 36);
+
  await DVER.$SCENEINIT({ scene: scene });
+
  SyncWithGraphicsSettings(DVER);
  DVER.render.setBaseLevel(1);
 

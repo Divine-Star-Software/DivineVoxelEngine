@@ -2,7 +2,7 @@ export function RegisterTexutres(DVER) {
     DVER.textures.defineDefaultTexturePath("assets/textures");
     DVER.textures.registerTexture([
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "debug",
             frames: 0,
             variations: {
@@ -25,7 +25,7 @@ export function RegisterTexutres(DVER) {
             frames: 0,
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "light-debug",
             frames: 0,
             variations: {
@@ -48,7 +48,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreamstone",
             frames: 0,
             variations: {
@@ -57,7 +57,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreadstone",
             frames: 0,
             variations: {
@@ -66,7 +66,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "data-holder",
             frames: 0,
             variations: {
@@ -74,7 +74,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "flora",
+            type: "#dve_flora",
             id: "dreamgrassblock",
             frames: 0,
             variations: {
@@ -82,7 +82,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreamstone-pillar",
             frames: 0,
             variations: {
@@ -92,7 +92,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreadstone-pillar",
             frames: 0,
             variations: {
@@ -102,42 +102,42 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreamlamp",
             frames: 0,
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dreadlamp",
             frames: 0,
         },
         {
-            type: "solid",
+            type: "#dve_solid",
             id: "dream-log",
             frames: 0,
         },
         {
-            type: "flora",
+            type: "#dve_flora",
             id: "dreamgrass",
             frames: 0,
         },
         {
-            type: "flora",
+            type: "#dve_flora",
             id: "dreadgrass",
             frames: 0,
         },
         {
-            type: "flora",
+            type: "#dve_flora",
             id: "dream-vine",
             frames: 0,
         },
         {
-            type: "flora",
+            type: "#dve_flora",
             id: "dream-leafs",
             frames: 0,
         },
         {
-            type: "liquid",
+            type: "#dve_liquid",
             id: "liquid-dream-ether",
             frames: 0,
             variations: {
@@ -149,7 +149,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "liquid",
+            type: "#dve_liquid",
             id: "liquid-dread-ether",
             frames: 0,
             variations: {
@@ -161,7 +161,7 @@ export function RegisterTexutres(DVER) {
             },
         },
         {
-            type: "liquid",
+            type: "#dve_liquid",
             id: "foam",
             frames: 0,
             variations: {
@@ -194,7 +194,7 @@ export function RegisterTexutres(DVER) {
                 rtb: { frames: 0 },
                 tb: { frames: 0 },
             },
-            overlay: true,
+            segment: "overlay",
         },
     ]);
 }

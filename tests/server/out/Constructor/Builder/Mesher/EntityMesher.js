@@ -1,6 +1,6 @@
 export const EntityMesher = {
 /*  buildEntityMesh(x: number, y: number, z: number, template: ChunkTemplate) {
-  const meshData = VoxelMesher.$buildMesh("solid", template);
+  const meshData = VoxelMesher.$buildMesh("#dve_solid", template);
 
   DVEC.parentComm.sendMessage(
    ConstructorToRenderMessages.constructEntity,

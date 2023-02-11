@@ -90,7 +90,7 @@ export const PanelVoxelShape = {
     id: "#dve_panel",
     build(mesher) {
         animationState = 0;
-        if (mesher.data.getSubstance() == "flora") {
+        if (mesher.data.getSubstance() == "#dve_flora") {
             animationState = 2;
         }
         mesher.quad.setDimensions(1, 1);
@@ -99,7 +99,7 @@ export const PanelVoxelShape = {
     },
 };
 OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
-    if (data.currentVoxel.getSubstance() == "flora") {
+    if (data.currentVoxel.getSubstance() == "#dve_flora") {
         return false;
     }
     return data.default;

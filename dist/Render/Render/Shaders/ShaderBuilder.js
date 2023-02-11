@@ -67,16 +67,16 @@ ${SharedVertexShader.updateVarying}
   `)}`;
     },
     getDefaultVertexShader(voxelSubstance, data) {
-        if (voxelSubstance == "magma") {
+        if (voxelSubstance == "#dve_magma") {
             return this.buildVertexShader(data, VoxelShaders.liquid.vertexWave, false, VoxelShaders.liquid.vertexVars);
         }
-        if (voxelSubstance == "flora") {
+        if (voxelSubstance == "#dve_flora") {
             return this.buildVertexShader(data, VoxelShaders.flora.setPosition);
         }
-        if (voxelSubstance == "liquid") {
+        if (voxelSubstance == "#dve_liquid") {
             return this.buildVertexShader(data, VoxelShaders.liquid.vertexWave, false, VoxelShaders.liquid.vertexVars);
         }
-        if (voxelSubstance == "solid") {
+        if (voxelSubstance == "#dve_solid") {
             return this.buildVertexShader(data, SharedVertexShader.standardPositionMain);
         }
         if (voxelSubstance == "Item") {
@@ -85,16 +85,16 @@ ${SharedVertexShader.updateVarying}
         return "";
     },
     getDefaultFragmentShader(voxelSubstance) {
-        if (voxelSubstance == "solid") {
+        if (voxelSubstance == "#dve_solid") {
             return this.buildFragmentShader(VoxelShaders.solid.fragMain);
         }
-        if (voxelSubstance == "magma") {
+        if (voxelSubstance == "#dve_magma") {
             return this.buildFragmentShader(VoxelShaders.liquid.fragMain, false, VoxelShaders.liquid.fragVars);
         }
-        if (voxelSubstance == "liquid") {
+        if (voxelSubstance == "#dve_liquid") {
             return this.buildFragmentShader(VoxelShaders.liquid.fragMain, false, VoxelShaders.liquid.fragVars);
         }
-        if (voxelSubstance == "flora") {
+        if (voxelSubstance == "#dve_flora") {
             return this.buildFragmentShader(VoxelShaders.flora.fragMain);
         }
         if (voxelSubstance == "Item") {

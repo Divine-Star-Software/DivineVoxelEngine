@@ -75,9 +75,6 @@ export async function InitWorkers(DVER, initData) {
         DVER.richWorldComm.$INIT();
     }
     DVER.syncSettingsWithWorkers(initData);
-    DVER.textures.generateTexturesData();
-    DVER.textures.generateTexturesData(true);
-    DVER.constructorCommManager.$INIT();
     window.addEventListener("beforeunload", () => {
         DVER.constructorCommManager.destroyAll();
         DVER.worldComm.destroy();

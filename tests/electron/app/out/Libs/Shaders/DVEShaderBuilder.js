@@ -36,7 +36,7 @@ export const DVEShaderBuilder = {
             }
             return `
 ${data.output} ${id}(${paramters}){
-  ${data.body.GLSL} 
+  ${data.body.GLSL(data.arguments)} 
 }
 `;
         },

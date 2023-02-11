@@ -5,7 +5,7 @@ export const CrossedPanels: VoxelShape = {
 
  build(mesher) {
   let animationState = 1;
-  if (mesher.data.getSubstance() == "flora") {
+  if (mesher.data.getSubstance() == "#dve_flora") {
    animationState = 1;
   }
   mesher.quad.setDimensions(1, 1);

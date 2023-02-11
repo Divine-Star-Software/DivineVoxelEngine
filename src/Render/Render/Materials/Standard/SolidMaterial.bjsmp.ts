@@ -126,7 +126,7 @@ export const StandardSolidMaterial = {
 
  $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene) {
 
-  this.material = new BABYLON.StandardMaterial("solid", scnee);
+  this.material = new BABYLON.StandardMaterial("#dve_solid", scnee);
   this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
   this.material.diffuseTexture = new BABYLON.Texture(
    "assets/textures/debug/default.png",

@@ -15,7 +15,7 @@ export declare class DVEShader {
     addVarying(data: [id: string, type: ShaderDataTypes, set: ShaderCodeBody][]): this;
     addAttributes(data: [id: string, type: ShaderDataTypes][]): this;
     addTextures(data: [id: string, data: ShaderTextureData][]): this;
-    addFunction(id: string, forSharer: ShaderTypes, data: ShaderFunctionData): this;
+    addFunction<T = void>(id: string, forSharer: ShaderTypes, data: ShaderFunctionData<T>): this;
     loadInFunctions(id: string | string[], forSharer?: ShaderTypes): this;
     compile(): {
         vertex: string;

@@ -4,7 +4,7 @@ export const DreamGrassBlockVoxelData: VoxelData = {
     name: "Dream Grass Block",
     shapeId: "Box",
     id: "dve_dreamgrassblock",
-    substance: "flora",
+    substance: "#dve_flora",
     material : "stone",
     hardnress : 1000,
     physics : {

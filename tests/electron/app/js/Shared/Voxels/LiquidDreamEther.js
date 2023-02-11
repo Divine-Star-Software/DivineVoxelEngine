@@ -68,8 +68,8 @@ const getUV = (direction, x, y, z, data) => {
 let uv = 0;
 export function GetDreamEther(DVEC) {
     DVEC.hooks.texturesRegistered.addToRun((textureManager) => {
-        uv = textureManager.getTextureUV(["liquid", "liquid-dream-ether", "still-1"]);
-        overlayTextures.push(textureManager.getTextureUV(["liquid", "foam", "top"], true), textureManager.getTextureUV(["liquid", "foam", "ctr"], true), textureManager.getTextureUV(["liquid", "foam", "ctl"], true), textureManager.getTextureUV(["liquid", "foam", "ctltr"], true), textureManager.getTextureUV(["liquid", "foam", "bottom"], true), textureManager.getTextureUV(["liquid", "foam", "cbr"], true), textureManager.getTextureUV(["liquid", "foam", "cbl"], true), textureManager.getTextureUV(["liquid", "foam", "cblbr"], true), textureManager.getTextureUV(["liquid", "foam", "right"], true), textureManager.getTextureUV(["liquid", "foam", "left"], true));
+        uv = textureManager.getTextureUV(["#dve_liquid", "liquid-dream-ether", "still-1"]);
+        overlayTextures.push(textureManager.getTextureUV(["#dve_liquid", "foam", "top"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "ctr"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "ctl"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "ctltr"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "bottom"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "cbr"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "cbl"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "cblbr"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "right"], true), textureManager.getTextureUV(["#dve_liquid", "foam", "left"], true));
     });
     DVEC.voxelManager.registerVoxel({
         id: "dve_liquiddreamether",

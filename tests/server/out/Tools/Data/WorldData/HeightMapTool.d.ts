@@ -23,6 +23,6 @@ export declare class HeightMapTool {
         getMinMax(): number[];
         getMin(substance?: VoxelTemplateSubstanceType | "all"): number;
         getMax(substance?: VoxelTemplateSubstanceType | "all"): number;
-        update(mode: "remove" | "add", substance: VoxelTemplateSubstanceType | "all" | undefined, location: LocationData): void;
+        update(mode: "remove" | "add", substance: string | undefined, location: LocationData): void;
     };
 }

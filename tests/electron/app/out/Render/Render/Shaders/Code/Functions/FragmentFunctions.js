@@ -3,24 +3,27 @@ export function RegisterFragFunctions(builder) {
         setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
+        arguments: {},
         body: {
-            GLSL: `return base * vColors;`,
+            GLSL: () => `return base * vColors;`,
         },
     });
     builder.functions.create("getAO", {
         setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
+        arguments: {},
         body: {
-            GLSL: `return  base * mix(base, aoColor , 1.0);`,
+            GLSL: () => `return  base * mix(base, aoColor , 1.0);`,
         },
     });
     builder.functions.create("getLight", {
         setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec4",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 vec4 final = ( ((rgbLColor * doRGB)  +  ((sunLColor * doSun  * sunLightLevel * vNColor))  ) + baseLevel) ;
 return base * final; `,
         },
@@ -29,8 +32,9 @@ return base * final; `,
         setID: "#dve_frag",
         inputs: [["base", "vec4"]],
         output: "vec3",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
   
    if(fogOptions.x == 0.) {
     float fog = ExponentialFog();
@@ -55,8 +59,9 @@ return base * final; `,
             ["index", "float"],
         ],
         output: "vec4",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 switch (int(mipMapLevel)) {
     case 0:
         return texture(tex[0], vec3(UV.x,UV.y,index));
@@ -75,13 +80,20 @@ return  vec4(0.,0.,0.,0.);
         setID: "#dve_frag",
         inputs: [["UV", "vec2"]],
         output: "vec4",
+        arguments: {
+            textureID: "voxelTexture",
+            overlayTextureID: "voxelOverlayTexture",
+            mainVarying: "vUV",
+            overlayVarying: "vOVUV",
+        },
         body: {
-            GLSL: `
-   vec4 rgb = getBase(voxelTexture,UV,animIndex);
-   vec4 oRGB1 =  getBase(voxelOverlayTexture,UV, vOVUV.x);
-   vec4 oRGB2 =  getBase(voxelOverlayTexture,UV,vOVUV.y);
-   vec4 oRGB3 =  getBase(voxelOverlayTexture,UV,vOVUV.z);
-   vec4 oRGB4 =  getBase(voxelOverlayTexture,UV,vOVUV.w);
+            GLSL: (args) => `
+   UV.xy += ${args.mainVarying}.xy;
+   vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z);
+   vec4 oRGB1 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.x);
+   vec4 oRGB2 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.y);
+   vec4 oRGB3 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.z);
+   vec4 oRGB4 =  getBase(${args.overlayTextureID},UV.xy,${args.overlayVarying}.w);
 
    if (rgb.a < 0.85 && oRGB1.a < 0.85 && oRGB2.a < 0.85 && oRGB3.a < 0.85 && oRGB4.a < 0.85) { 
       return vec4(0.,0.,0.,0.);

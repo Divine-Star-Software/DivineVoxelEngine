@@ -4,7 +4,7 @@ export const DreamVineVoxelData: VoxelData = {
  name: "Dream Vine",
  shapeId: "Panel",
  id: "dve_dreamvine",
- substance: "flora",
+ substance: "#dve_flora",
  material : "grass",
  hardnress : 1000,
  physics : {

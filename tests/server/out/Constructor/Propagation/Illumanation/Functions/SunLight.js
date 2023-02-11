@@ -177,7 +177,7 @@ export function runSunLightUpdate() {
                 }
                 else {
                     const substance = this._nDataTool.getSubstance();
-                    if (substance != "magma" && substance != "solid") {
+                    if (substance != "#dve_magma" && substance != "#dve_solid") {
                         queue.enqueue([x, y - 1, z]);
                         this._nDataTool
                             .setLight(this.lightData.getMinusOneForSun(sl, nl))

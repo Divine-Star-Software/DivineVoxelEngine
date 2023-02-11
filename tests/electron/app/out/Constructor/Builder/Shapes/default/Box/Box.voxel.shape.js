@@ -4,7 +4,7 @@ export const BoxVoxelShape = {
     build(mesher) {
         mesher.quad.setDimensions(1, 1);
         let animationState = 0;
-        if (mesher.data.getSubstance() == "flora") {
+        if (mesher.data.getSubstance() == "#dve_flora") {
             animationState = 3;
         }
         if (mesher.templateData.loadIn("top").isExposed()) {
@@ -54,7 +54,7 @@ export const BoxVoxelShape = {
 //cull leaf faces
 const BoxCullFunctions = {
     top: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] + 1, data.currentVoxel.location[3]) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] + 2, data.currentVoxel.location[3])) {
             return false;
@@ -62,7 +62,7 @@ const BoxCullFunctions = {
         return data.default;
     },
     bottom: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] - 1, data.currentVoxel.location[3]) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2] - 2, data.currentVoxel.location[3])) {
             return false;
@@ -70,7 +70,7 @@ const BoxCullFunctions = {
         return data.default;
     },
     east: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] + 1, data.currentVoxel.location[2], data.currentVoxel.location[3]) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] + 2, data.currentVoxel.location[2], data.currentVoxel.location[3])) {
             return false;
@@ -78,7 +78,7 @@ const BoxCullFunctions = {
         return data.default;
     },
     west: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] - 1, data.currentVoxel.location[2], data.currentVoxel.location[3]) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1] - 2, data.currentVoxel.location[2], data.currentVoxel.location[3])) {
             return false;
@@ -86,7 +86,7 @@ const BoxCullFunctions = {
         return data.default;
     },
     north: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] + 1) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] + 2)) {
             return false;
@@ -94,7 +94,7 @@ const BoxCullFunctions = {
         return data.default;
     },
     south: (data) => {
-        if (data.currentVoxel.getSubstance() == "flora" &&
+        if (data.currentVoxel.getSubstance() == "#dve_flora" &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] - 1) &&
             data.currentVoxel.isSameVoxel(data.currentVoxel.location[1], data.currentVoxel.location[2], data.currentVoxel.location[3] - 2)) {
             return false;

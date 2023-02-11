@@ -1,2 +1,2 @@
-import type { DVEShaderBuilder } from "Libs/Shaders/DVEShaderBuilder";
-export declare function RegisterVertexSnippets(builder: typeof DVEShaderBuilder): void;
+import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+export declare function RegisterVertexSnippets(builder: typeof DivineShaderBuilder): void;

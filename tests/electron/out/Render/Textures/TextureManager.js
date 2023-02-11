@@ -1,86 +1,17 @@
+import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { TextureCreator } from "./TextureCreator.js";
+import { TextureType } from "./TextureType.js";
+import { TextureAnimationCreator } from "./TextureAnimations.js";
 export const TextureManager = {
     defaultTexturePath: "",
-    processedTextureData: {},
-    overlayProcessedTextureData: {},
-    textureData: {},
-    textureExtension: {
-        solid: "png",
-        transparent: "png",
-        liquid: "png",
-        magma: "png",
-        flora: "png",
-        Item: "png",
-    },
-    textures: {
-        solid: [],
-        transparent: [],
-        liquid: [],
-        magma: [],
-        flora: [],
-        Item: [],
-    },
-    uvTextureMap: {
-        solid: {},
-        transparent: {},
-        liquid: {},
-        magma: {},
-        flora: {},
-        Item: {},
-    },
-    overylayTextures: {
-        solid: [],
-        transparent: [],
-        liquid: [],
-        magma: [],
-        flora: [],
-        Item: [],
-    },
-    overlayUVTextureMap: {
-        solid: {},
-        transparent: {},
-        liquid: {},
-        magma: {},
-        flora: {},
-        Item: {},
-    },
-    normalMapTextures: {
-        solid: [],
-        transparent: [],
-        liquid: [],
-        magma: [],
-        flora: [],
-        Item: [],
-    },
-    noramlMapUVTexturesMap: {
-        solid: {},
-        transparent: {},
-        liquid: {},
-        magma: {},
-        flora: {},
-        Item: {},
-    },
-    textureTypes: [
-        "transparent",
-        "liquid",
-        "solid",
-        "magma",
-        "flora",
-        "Item",
-    ],
-    _processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay = false, normalMap = false) {
-        let map = this.uvTextureMap;
-        if (overlay) {
-            map = this.overlayUVTextureMap;
-        }
-        if (normalMap) {
-            map = this.overlayUVTextureMap;
-        }
+    textureTypes: new Map(),
+    _processVariations(texture, texturePaths, map, animations, textureAnimatioTimes, extension, count, path) {
         if (!texture.variations)
             return count;
         for (const varation of Object.keys(texture.variations)) {
             const data = texture.variations[varation];
             if (data.frames == 0) {
-                map[textureType][`${texture.id}:${varation}`] = count;
+                map[`${texture.id}:${varation}`] = count;
                 texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
                 count++;
             }
@@ -88,149 +19,128 @@ export const TextureManager = {
                 if (!data.animKeys)
                     throw new Error("Texture Varation must have supplied animKeys if frames are greater than 0.");
                 for (let i = 1; i <= data.frames; i++) {
-                    map[textureType][`${texture.id}:${varation}-${i}`] = count;
+                    map[`${texture.id}:${varation}-${i}`] = count;
                     texturePaths.push(`${path}/${texture.id}/${varation}-${i}.${extension}`);
                     count++;
                 }
                 const trueKeys = [];
                 for (let i = 0; i < data.animKeys.length; i++) {
-                    trueKeys.push(map[textureType][`${texture.id}:${varation}-${data.animKeys[i]}`]);
+                    trueKeys.push(map[`${texture.id}:${varation}-${data.animKeys[i]}`]);
                 }
                 if (data.animKeyFrameTimes) {
-                    textureAnimatioTimes[textureType].push(data.animKeyFrameTimes);
+                    textureAnimatioTimes.push(data.animKeyFrameTimes);
                 }
                 if (data.globalFrameTime) {
-                    textureAnimatioTimes[textureType].push([data.globalFrameTime]);
+                    textureAnimatioTimes.push([data.globalFrameTime]);
                 }
-                animations[textureType].push(trueKeys);
+                animations.push(trueKeys);
             }
         }
         return count;
     },
-    generateTexturesData(overlay = false, normalMap = false) {
-        const returnTexturePaths = {
-            solid: [],
-            transparent: [],
-            magma: [],
-            liquid: [],
-            flora: [],
-            Item: [],
-        };
-        const textureAnimatioTimes = {
-            solid: [],
-            transparent: [],
-            magma: [],
-            liquid: [],
-            flora: [],
-            Item: [],
-        };
-        const animations = {
-            solid: [],
-            transparent: [],
-            magma: [],
-            liquid: [],
-            flora: [],
-            Item: [],
-        };
-        let textures = this.textures;
-        if (overlay) {
-            textures = this.overylayTextures;
-        }
-        if (normalMap) {
-            textures = this.normalMapTextures;
-        }
-        let map = this.uvTextureMap;
-        if (overlay) {
-            map = this.overlayUVTextureMap;
-        }
-        if (normalMap) {
-            map = this.noramlMapUVTexturesMap;
-        }
-        for (const textureType of this.textureTypes) {
-            let texturePaths = [];
-            let count = 1;
-            const extension = this.textureExtension[textureType];
-            for (const texture of textures[textureType]) {
-                let path = texture.path ? texture.path : this.defaultTexturePath;
-                if (texture.frames == 0) {
-                    map[textureType][`${texture.id}`] = count;
-                    texturePaths.push(`${path}/${texture.id}/default.${extension}`);
+    generateTexturesData(id) {
+        const texture = this.textureTypes.get(id);
+        if (!texture)
+            return false;
+        let count = 1;
+        const extension = texture.extension;
+        for (const [key, segment] of texture.textureSegments) {
+            const map = segment.textureMap;
+            const paths = segment.paths;
+            const animationTimes = segment.animationTimes;
+            const animations = segment.animationsMap;
+            for (const textureData of segment.textures) {
+                let path = textureData.path
+                    ? textureData.path
+                    : this.defaultTexturePath;
+                if (textureData.frames == 0) {
+                    segment.textureMap[`${textureData.id}`] = count;
+                    paths.push(`${path}/${textureData.id}/default.${extension}`);
                     count++;
-                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType, overlay);
+                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count, path);
                 }
                 else {
-                    if (!texture.animKeys)
+                    if (!textureData.animKeys)
                         throw new Error("Texture must have supplied animKeys if frames are greater than 0.");
-                    map[textureType][`${texture.id}`] = count;
-                    for (let i = 1; i < texture.frames; i++) {
-                        texturePaths.push(`${path}/${texture.id}/default-${i}.${extension}`);
+                    map[`${texture.id}`] = count;
+                    for (let i = 1; i < textureData.frames; i++) {
+                        paths.push(`${path}/${textureData.id}/default-${i}.${extension}`);
                         count++;
                     }
                     const trueKeys = [];
-                    for (let i = 0; i < texture.animKeys.length; i++) {
-                        trueKeys.push(map[textureType][`${texture.id}:default-${texture.animKeys[i]}`]);
+                    for (let i = 0; i < textureData.animKeys.length; i++) {
+                        trueKeys.push(map[`${textureData.id}:default-${textureData.animKeys[i]}`]);
                     }
-                    if (texture.animKeyFrameTimes) {
-                        textureAnimatioTimes[textureType].push(texture.animKeyFrameTimes);
+                    if (textureData.animKeyFrameTimes) {
+                        animationTimes.push(textureData.animKeyFrameTimes);
                     }
-                    if (texture.globalFrameTime) {
-                        textureAnimatioTimes[textureType].push([texture.globalFrameTime]);
+                    if (textureData.globalFrameTime) {
+                        animationTimes.push([textureData.globalFrameTime]);
                     }
-                    animations[textureType].push(trueKeys);
-                    count = this._processVariations(texture, texturePaths, animations, textureAnimatioTimes, extension, count, path, textureType);
+                    animations.push(trueKeys);
+                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count, path);
                 }
             }
-            returnTexturePaths[textureType] = texturePaths;
         }
-        if (!overlay) {
-            this.processedTextureData = {
-                textureAnimationTimes: textureAnimatioTimes,
-                textureAnimations: animations,
-                texturePaths: returnTexturePaths,
-            };
+    },
+    _ready: false,
+    isReady() {
+        return this._ready;
+    },
+    async $INIT() {
+        TextureCreator.defineTextureDimensions(EngineSettings.settings.textures.textureSize, EngineSettings.settings.textures.mipMapSizes);
+        for (const [key, type] of this.textureTypes) {
+            this.generateTexturesData(key);
+            for (const [skey, segment] of type.textureSegments) {
+                segment.texture = await TextureCreator.createMaterialTexture(skey, segment.paths);
+            }
+            TextureAnimationCreator.createAnimations(type);
         }
-        else {
-            this.overlayProcessedTextureData = {
-                textureAnimationTimes: textureAnimatioTimes,
-                textureAnimations: animations,
-                texturePaths: returnTexturePaths,
-            };
+        this._ready = true;
+    },
+    $START_ANIMATIONS() {
+        setInterval(() => {
+            for (const [key, type] of this.textureTypes) {
+                type.runAnimations();
+            }
+        }, 50);
+    },
+    getTextureUVMap() {
+        const uvMap = {};
+        for (const [key, type] of this.textureTypes) {
+            uvMap[key] = type.getTextureUVMap();
         }
+        return uvMap;
     },
     defineDefaultTexturePath(path) {
         this.defaultTexturePath = path;
     },
-    defineDefaultTextureExtension(textureType, ext) {
-        this.textureExtension[textureType] = ext;
+    getTextureType(id) {
+        const texture = this.textureTypes.get(id);
+        if (!texture)
+            return false;
+        return texture;
     },
-    getTextureUV(textureType, textureId, varation) {
-        let id = textureId;
-        if (varation) {
-            id = `${textureId}:${varation}`;
-        }
-        return this.uvTextureMap[textureType][id];
+    addTextureType(id) {
+        this.textureTypes.set(id, new TextureType(id));
     },
     registerTexture(textureData) {
         if (Array.isArray(textureData)) {
             for (const texture of textureData) {
-                if (texture.overlay) {
-                    this.overylayTextures[texture.type].push(texture);
+                const type = this.getTextureType(texture.type);
+                if (!type)
                     continue;
-                }
-                this.textures[texture.type].push(texture);
+                type.addTexture(texture);
+                continue;
             }
             return;
         }
-        if (textureData.overlay) {
-            this.overylayTextures[textureData.type].push(textureData);
+        const type = this.getTextureType(textureData.type);
+        if (!type)
             return;
-        }
-        this.textures[textureData.type].push(textureData);
-    },
-    releaseTextureData() {
-        this.overlayUVTextureMap = null;
-        this.uvTextureMap = null;
-        delete this.overlayUVTextureMap;
-        delete this.uvTextureMap;
+        type.addTexture(textureData);
     },
 };
+TextureManager.addTextureType("#dve_solid");
+TextureManager.addTextureType("#dve_flora");
+TextureManager.addTextureType("#dve_liquid");

@@ -4,8 +4,8 @@ export const DataHolderVoxelBuilderThread = {
     id: "dve_dataholder",
     hooks: {
         texturesRegistered: (DVEB) => {
-            frontUV = DVEB.textureManager.getTextureUV("solid", "data-holder", "front");
-            sideUV = DVEB.textureManager.getTextureUV("solid", "data-holder");
+            frontUV = DVEB.textureManager.getTextureUV("#dve_solid", "data-holder", "front");
+            sideUV = DVEB.textureManager.getTextureUV("#dve_solid", "data-holder");
         },
     },
     process: function (data, DVEB) {

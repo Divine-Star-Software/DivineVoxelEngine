@@ -122,7 +122,7 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
       .commit();
     } else {
      const substance = IM._nDataTool.getSubstance();
-     if (substance != "magma" && substance != "solid") {
+     if (substance != "#dve_magma" && substance != "#dve_solid") {
       queue.push(x, y - 1, z);
       IM._nDataTool.setLight(IM.lightData.getMinusOneForSun(sl, nl)).commit();
      }

@@ -131,7 +131,7 @@ OverrideManager.registerOverride(
  (data) => {
   if (
    data.face == "top" &&
-   data.neighborVoxel.getSubstance() != "liquid" &&
+   data.neighborVoxel.getSubstance() != "#dve_liquid" &&
    data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()
   ) {
    return true;

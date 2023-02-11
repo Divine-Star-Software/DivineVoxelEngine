@@ -1,27 +1,27 @@
-import { DVEShader } from "./Classes/DVEShader.js";
+import { DivineShader } from "./Classes/DivineShader.js";
 import type {
+ GeneratedShaderCodeBody,
  ShaderCodeBody,
  ShaderDefinesData,
  ShaderFunctionData,
+ ShaderSnippetData,
  ShaderUniformData,
 } from "./Types/ShaderData.types";
 
-export const DVEShaderBuilder = {
- buildShader(id: string) {},
-
+export const DivineShaderBuilder = {
  shaders: {
-  _shaders: <Map<string, DVEShader>>new Map(),
+  _shaders: <Map<string, DivineShader>>new Map(),
   create(id: string) {
-   const shader = new DVEShader(id);
+   const shader = new DivineShader(id);
    this._shaders.set(id, shader);
    return shader;
   },
  },
 
  functions: {
-  _functions: <Map<string, ShaderFunctionData>>new Map(),
+  _functions: <Map<string, ShaderFunctionData<any>>>new Map(),
   _functionSets: <Map<string, string[]>>new Map(),
-  create(id: string, data: ShaderFunctionData) {
+  create(id: string, data: ShaderFunctionData<any>) {
    this._functions.set(id, data);
    if (data.setID) {
     let set = this._functionSets.get(data.setID);
@@ -33,7 +33,11 @@ export const DVEShaderBuilder = {
    }
   },
 
-  _processFunctinos(id: string, data: ShaderFunctionData) {
+  _processFunctinos(
+   id: string,
+   data: ShaderFunctionData<any>,
+   shader: DivineShader | null = null
+  ) {
    let paramters = "";
    let count = 0;
    for (const [key, type] of data.inputs) {
@@ -46,24 +50,33 @@ export const DVEShaderBuilder = {
     }
     paramters += `${type} ${key}${count != data.inputs.length ? "," : ""}`;
    }
+   let trueArgs = data.arguments;
+   if (shader) {
+    trueArgs = shader.data.functionArgumentOverrides.get(id) || data.arguments;
+   }
+
    return `
 ${data.output} ${id}(${paramters}){
-  ${data.body.GLSL} 
+  ${data.body.GLSL(trueArgs)} 
 }
 `;
   },
 
-  build(id: string, data?: ShaderFunctionData) {
+  build(
+   id: string,
+   data: ShaderFunctionData<any> | null = null,
+   shader: DivineShader | null = null
+  ) {
    const set = this._functionSets.get(id);
    if (set) {
     let functions = "";
     for (const key of set) {
      const data = this._functions.get(key);
      if (!data) continue;
-     functions += this._processFunctinos(key, data);
+     functions += this._processFunctinos(key, data, shader);
      if (data.overrides) {
       for (const func of data.overrides) {
-       functions += this._processFunctinos(key, func);
+       functions += this._processFunctinos(key, func, shader);
       }
      }
     }
@@ -75,10 +88,10 @@ ${data.output} ${id}(${paramters}){
    }
    if (!data) return "";
    let functions = "";
-   functions += this._processFunctinos(id, data);
+   functions += this._processFunctinos(id, data, shader);
    if (data.overrides) {
     for (const func of data.overrides) {
-     functions += this._processFunctinos(id, func);
+     functions += this._processFunctinos(id, func, shader);
     }
    }
    return functions;
@@ -144,22 +157,22 @@ ${data.output} ${id}(${paramters}){
  },
 
  snippets: {
-  _snippets: <Map<string, ShaderCodeBody>>new Map(),
-  create(id: string, data: ShaderCodeBody) {
-   this._snippets.set(id, data);
+  _snippets: <Map<string, ShaderSnippetData<any>>>new Map(),
+  create(data: ShaderSnippetData<any>) {
+   this._snippets.set(data.id, data);
   },
-  override(id: string, data: ShaderCodeBody) {
+  override(id: string, data: ShaderSnippetData<any>) {
    const old = this._snippets.get(id);
    if (!old) return false;
    this._snippets.set(id, data);
    return true;
   },
-  get(id: string) {
+  get(id: string, args?: any) {
    const data = this._snippets.get(id);
    if (!data) return "";
-   return data.GLSL;
+   return data.body.GLSL(args ? args : data.arguments);
   },
-  _process(text: string) {
+  _process(text: string, shader?: DivineShader) {
    const lines = text.split("\n");
    let foundSnippet = false;
    const newShader: string[] = [];
@@ -180,17 +193,21 @@ ${data.output} ${id}(${paramters}){
      if (!char || char == " " || char == "\n" || char == "\r") break;
      id += char;
     }
-    newShader.push(this.get(id));
+    let args;
+    if (shader) {
+     args = shader.data.snippetArgumentOverrides.get(id);
+    }
+    newShader.push(this.get(id, args));
    }
    let newBody = newShader.join("\n");
    return { newBody, foundSnippet };
   },
 
-  build(text: string) {
+  build(text: string, shader?: DivineShader) {
    let done = false;
    let finalBody = text;
    while (!done) {
-    const { newBody, foundSnippet } = this._process(finalBody);
+    const { newBody, foundSnippet } = this._process(finalBody, shader);
     done = !foundSnippet;
     finalBody = newBody;
    }

@@ -103,7 +103,7 @@ const calculateFlowV = (
    if (!loadedIn) continue;
    const level = getLevel(process);
    const hasVoxel = process.nDataTool.isRenderable();
-   if (hasVoxel && process.nDataTool.getSubstance() == "solid") {
+   if (hasVoxel && process.nDataTool.getSubstance() == "#dve_solid") {
     voxelCount++;
    }
    if (iy == 1) {

@@ -1,2 +1,2 @@
-import type { DVEShaderBuilder } from "../../../../../Libs/Shaders/DVEShaderBuilder.js";
-export declare function RegisterFogShaders(builder: typeof DVEShaderBuilder): void;
+import type { DivineShaderBuilder } from "../../../../../Libs/Shaders/DivineShaderBuilder.js";
+export declare function RegisterFogShaders(builder: typeof DivineShaderBuilder): void;

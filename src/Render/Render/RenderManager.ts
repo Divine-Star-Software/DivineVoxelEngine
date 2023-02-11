@@ -4,7 +4,6 @@ import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 //objects
 import { AnimationManager } from "./Animations/AnimationManager.js";
-import { TextureCreator } from "./Textures/TextureCreator.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 
@@ -22,26 +21,26 @@ import { MeshCuller } from "../Scene/MeshCuller.js";
 import { DVEShaders } from "./Shaders/DVEShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
 
-const solidMaterial = new DVEMaterial("solid", {
+const solidMaterial = new DVEMaterial("#dve_solid", {
  alphaBlending: false,
  alphaTesting: true,
 });
-const solidMesh = new DVEMesh("solid", solidMaterial);
-const floraMat = new DVEMaterial("flora", {
+const solidMesh = new DVEMesh("#dve_solid", solidMaterial);
+const floraMat = new DVEMaterial("#dve_flora", {
  alphaBlending: false,
  alphaTesting: true,
 });
-const floraMesh = new DVEMesh("flora", floraMat);
-const magmaMat = new DVEMaterial("magma", {
+const floraMesh = new DVEMesh("#dve_flora", floraMat);
+/* const magmaMat = new DVEMaterial("#dve_magma", {
  alphaBlending: false,
  alphaTesting: true,
 });
-const magmaMesh = new DVEMesh("magma", magmaMat);
-const liquidMat = new DVEMaterial("liquid", {
+const magmaMesh = new DVEMesh("#dve_magma", magmaMat); */
+const liquidMat = new DVEMaterial("#dve_liquid", {
  alphaBlending: true,
  alphaTesting: false,
 });
-const liquidMesh = new DVEMesh("liquid", liquidMat);
+const liquidMesh = new DVEMesh("#dve_liquid", liquidMat);
 
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{
@@ -68,18 +67,15 @@ export const RenderManager = {
 
  shaders: DVEShaders,
 
- textureCreator: TextureCreator,
  animationManager: AnimationManager,
 
  solidMaterial: solidMaterial,
  floraMaterial: floraMat,
  liquidMaterial: liquidMat,
- magmaMaterial: magmaMat,
 
  solidMesh: solidMesh,
  floraMesh: floraMesh,
  liquidMesh: liquidMesh,
- magmaMesh: magmaMesh,
 
  solidStandardMaterial: StandardSolidMaterial,
  liquidStandardMaterial: StandardLiquidMaterial,
@@ -124,7 +120,7 @@ export const RenderManager = {
   this.solidMaterial.updateFogOptions(fogData);
   this.liquidMaterial.updateFogOptions(fogData);
   this.floraMaterial.updateFogOptions(fogData);
-  this.magmaMaterial.updateFogOptions(fogData);
+
   this.skyBoxMaterial.updateFogOptions(fogData);
  },
 
@@ -134,10 +130,6 @@ export const RenderManager = {
   this.scene = scene;
   this.meshManager.$INIT(scene);
   this.meshCuller.$INIT(scene);
-  this.textureCreator.defineTextureDimensions(
-   EngineSettings.settings.textures.textureSize,
-   EngineSettings.settings.textures.mipMapSizes
-  );
  },
 
  updateShaderEffectOptions(options: RecursivePartial<DVERenderEffectsOptions>) {
@@ -150,7 +142,7 @@ export const RenderManager = {
 
   this.solidMaterial.updateMaterialSettings(EngineSettings.settings);
   this.floraMaterial.updateMaterialSettings(EngineSettings.settings);
-  this.magmaMaterial.updateMaterialSettings(EngineSettings.settings);
+
   this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
  },
 
@@ -158,12 +150,7 @@ export const RenderManager = {
   this.solidMesh.syncSettings(settings);
   this.floraMesh.syncSettings(settings);
   this.liquidMesh.syncSettings(settings);
-  this.magmaMesh.syncSettings(settings);
-
-  this.textureCreator.defineTextureDimensions(
-   settings.textures.textureSize,
-   settings.textures.mipMapSizes
-  );
+  //this.magmaMesh.syncSettings(settings);
  },
 
  getScene() {

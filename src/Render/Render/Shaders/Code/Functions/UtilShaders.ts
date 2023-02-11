@@ -1,20 +1,23 @@
-import type { DVEShaderBuilder } from "../../../../../Libs/Shaders/DVEShaderBuilder.js";
-export function RegisterNoiseFunctions(builder: typeof DVEShaderBuilder) {
+import type { DivineShaderBuilder } from "../../../../../Libs/Shaders/DivineShaderBuilder.js";
+export function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder) {
  //VEC2 fbm
  builder.functions.create("hash", {
   setID: "#dve_fmb2",
   inputs: [["p", "vec2"]],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `return fract(sin(dot(p * 5.5, vec2(14.91, 67.31))) * 4791.9511);`,
+   GLSL: () =>
+    `return fract(sin(dot(p * 5.5, vec2(14.91, 67.31))) * 4791.9511);`,
   },
  });
  builder.functions.create("noise", {
   setID: "#dve_fmb2",
   inputs: [["x", "vec2"]],
   output: "float",
+  arguments: [],
   body: {
-   GLSL: `
+   GLSL: () => `
 vec2 p = floor(x);
 vec2 f = fract(x);
 f = f * f * (3.0 - 2.0 * f);
@@ -27,8 +30,9 @@ mix(hash(p + a.yx), hash(p + a.xx), f.x), f.y);`,
   setID: "#dve_fmb2",
   inputs: [["x", "vec2"]],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `
+   GLSL: () => `
 float height = 0.0;
 float amplitude = 3.0;
 float frequency = 3.0;
@@ -58,15 +62,17 @@ return height;`,
   setID: "#dve_fmb3",
   inputs: [["x", "vec3"]],
   output: "vec3",
+  arguments: {},
   body: {
-   GLSL: `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
+   GLSL: () => `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
   },
   overrides: [
    {
     inputs: [["x", "vec4"]],
     output: "vec4",
+    arguments: {},
     body: {
-     GLSL: `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
+     GLSL: () => `return x - floor(x * (1.0 / 289.0)) * 289.0;`,
     },
    },
   ],
@@ -75,24 +81,27 @@ return height;`,
   setID: "#dve_fmb3",
   inputs: [["x", "vec4"]],
   output: "vec4",
+  arguments: {},
   body: {
-   GLSL: `return mod289(((x*34.0)+1.0)*x);`,
+   GLSL: () => `return mod289(((x*34.0)+1.0)*x);`,
   },
  });
  builder.functions.create("taylorInvSqrt", {
   setID: "#dve_fmb3",
   inputs: [["r", "vec4"]],
   output: "vec4",
+  arguments: {},
   body: {
-   GLSL: `return 1.79284291400159 - 0.85373472095314 * r;`,
+   GLSL: () => `return 1.79284291400159 - 0.85373472095314 * r;`,
   },
  });
  builder.functions.create("snoise", {
   setID: "#dve_fmb3",
   inputs: [["v", "vec3"]],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+   GLSL: () => `const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
 const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
 // First corner
 vec3 i  = floor(v + dot(v, C.yyy) );
@@ -154,8 +163,9 @@ return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) )
   setID: "#dve_fmb3",
   inputs: [["p", "vec3"]],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `
+   GLSL: () => `
    float value = 0.0;
    float amplitude = 0.5;
    float frequency = 0.0;
@@ -167,7 +177,7 @@ return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) )
    return value;`,
   },
  });
-/*
+ /*
 vec3 hsv2rgbSmooth( in vec3 c ) {
    vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
    rgb = rgb*rgb*(3.0-2.0*rgb); 

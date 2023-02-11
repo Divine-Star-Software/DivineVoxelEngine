@@ -3,24 +3,17 @@ import { MeshRegister } from "./MeshRegister.js";
 export const MeshManager = {
     scene: {},
     runningUpdate: false,
-    meshes: {
-        solid: {},
-        transparent: {},
-        flora: {},
-        liquid: {},
-        magma: {},
-    },
+    meshes: {},
     meshMakers: {},
     $INIT(scene) {
         this.scene = scene;
         scene.freeActiveMeshes();
-        //@ts-ignore
         this.meshMakers = {
-            solid: DVER.render.solidMesh,
-            transparent: DVER.render.solidMesh,
-            liquid: DVER.render.liquidMesh,
-            flora: DVER.render.floraMesh,
-            magma: DVER.render.magmaMesh,
+            "#dve_solid": DVER.render.solidMesh,
+            "#dve_transparent": DVER.render.solidMesh,
+            "#dve_liquid": DVER.render.liquidMesh,
+            "#dve_flora": DVER.render.floraMesh,
+            "#dve_magma": DVER.render.liquidMesh,
         };
     },
     chunks: {

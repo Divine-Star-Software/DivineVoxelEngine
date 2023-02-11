@@ -23,7 +23,7 @@ export declare const MeshRegister: {
         get(location: LocationData): false | MeshRegisterColumn | undefined;
     };
     chunk: {
-        add(location: LocationData, mesh: BABYLON.Mesh, substance: VoxelTemplateSubstanceType): Map<VoxelTemplateSubstanceType, MeshRegisterChunk>;
+        add(location: LocationData, mesh: BABYLON.Mesh, substance: VoxelTemplateSubstanceType): Map<string, MeshRegisterChunk>;
         _getChunkData(mesh: BABYLON.Mesh): MeshRegisterChunk;
         remove(location: LocationData, substance: VoxelTemplateSubstanceType): false | BABYLON.Mesh;
         get(location: LocationData, substance: VoxelTemplateSubstanceType): false | MeshRegisterChunk;

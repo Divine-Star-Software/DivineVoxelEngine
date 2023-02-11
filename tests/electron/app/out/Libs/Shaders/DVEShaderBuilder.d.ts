@@ -7,11 +7,11 @@ export declare const DVEShaderBuilder: {
         create(id: string): DVEShader;
     };
     functions: {
-        _functions: Map<string, ShaderFunctionData>;
+        _functions: Map<string, ShaderFunctionData<any>>;
         _functionSets: Map<string, string[]>;
-        create(id: string, data: ShaderFunctionData): void;
-        _processFunctinos(id: string, data: ShaderFunctionData): string;
-        build(id: string, data?: ShaderFunctionData): string;
+        create(id: string, data: ShaderFunctionData<any>): void;
+        _processFunctinos(id: string, data: ShaderFunctionData<any>): string;
+        build(id: string, data?: ShaderFunctionData<any>): string;
     };
     define: {
         _process(data: ShaderDefinesData): string;

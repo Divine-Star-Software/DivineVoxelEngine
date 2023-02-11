@@ -1,8 +1,7 @@
-/// <reference types="babylonjs" />
-import { DVEShader } from "Libs/Shaders/Classes/DVEShader";
+import { DivineShader } from "Libs/Shaders/Classes/DivineShader";
 import { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 export declare const AnimationManager: {
-    animatedMaterials: Record<VoxelSubstanceType | "Item", BABYLON.ShaderMaterial>;
+    animatedMaterials: Record<string, BABYLON.ShaderMaterial>;
     animCount: number;
     animationUniforms: Map<string, Float32Array>;
     overlayAnimationUniforms: Map<string, Float32Array>;
@@ -24,7 +23,7 @@ export declare const AnimationManager: {
      * @param animations
      * @returns
      */
-    registerAnimationsN(voxelSubstanceType: VoxelSubstanceType | "Item", shader: DVEShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
+    registerAnimations(voxelSubstanceType: VoxelSubstanceType | "Item", shader: DivineShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
     registerMaterial(voxelSubstanceType: VoxelSubstanceType | "Item", material: BABYLON.ShaderMaterial): void;
     startAnimations(): void;
 };

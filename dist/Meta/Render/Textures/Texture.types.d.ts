@@ -5,6 +5,7 @@ export declare type TextureProccesedData = {
     textureAnimationTimes: Record<TextureTypes, number[][]>;
     texturePaths: Record<TextureTypes, string[]>;
 };
+export declare type TextureTypeUVMap = Record<string, Record<string, Record<string, number>>>;
 export declare type TextureAnimationData = {
     /**# Frames
      * If the texture has animation frames the number of frames must be set to the number
@@ -47,10 +48,10 @@ export declare type TextureData = {
      * If the texture is not in the default path specify it here.
      */
     path?: string;
-    /**# Overlay
-     * If the texture is an overlay specify it here.
+    /**# Segment
+     * Define the segmetn of the texutre. By default it is main.
      */
-    overlay?: boolean;
+    segment?: string;
     /**# normalMap
      * If the texture is an overlay specify it here.
      */

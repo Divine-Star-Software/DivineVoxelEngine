@@ -4,7 +4,7 @@ export class DVEMaterial {
     options;
     material = null;
     time = 0;
-    constructor(type = "solid", options) {
+    constructor(type = "#dve_solid", options) {
         this.type = type;
         this.options = options;
     }

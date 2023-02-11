@@ -1,3 +1,5 @@
+import { RenderManager } from "../Render/RenderManager.js";
+
 export const TextureCreator = {
  context: <CanvasRenderingContext2D | null>null,
 
@@ -6,11 +8,10 @@ export const TextureCreator = {
 
  _mipMapSizes: [16, 12, 8, 4],
 
- defineTextureDimensions(textureSize : number,mipMapSizes : number[]) {
+ defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
   this.imgWidth = textureSize;
   this.imgHeight = textureSize;
   this._mipMapSizes = mipMapSizes;
-  console.log("create",mipMapSizes);
  },
 
  setUpImageCreation() {
@@ -28,7 +29,6 @@ export const TextureCreator = {
 
  async createMaterialTexture(
   name: string,
-  scene: BABYLON.Scene,
   images: string[],
   width: number = -1,
   height: number = -1
@@ -38,7 +38,7 @@ export const TextureCreator = {
 
   const textures: BABYLON.RawTexture2DArray[] = [];
   for (const size of this._mipMapSizes) {
-   const texture = await this._createTextures(name, scene, images, size, size);
+   const texture = await this._createTextures(name, images, size, size);
 
    textures.push(texture);
   }
@@ -47,11 +47,11 @@ export const TextureCreator = {
 
  async _createTextures(
   name: string,
-  scene: BABYLON.Scene,
   images: string[],
   width: number,
   height: number
  ) {
+  const scene = RenderManager.scene!;
   const resolvedImages: Uint8ClampedArray[] = [];
   //create blank fill to pad image array buffer
   let index = 0;

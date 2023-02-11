@@ -1,7 +1,9 @@
 export function RegisterFragmentSnippets(builder) {
-    builder.snippets.create("standard_color", {
-        GLSL: `
-  vec4 rgb = getBaseColor(vec2( vUV.x,vUV.y));
+    builder.snippets.create({
+        id: "standard_color",
+        body: {
+            GLSL: () => `
+  vec4 rgb = getBaseColor(vec2(0.,0.));
   if (rgb.a < 0.5) { 
     discard;
   }
@@ -9,6 +11,9 @@ export function RegisterFragmentSnippets(builder) {
   rgb = getAO(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
-  gl_FragColor = vec4(finalColor.rgb , rgb.w ); `,
+  gl_FragColor = vec4(finalColor.rgb , rgb.w );
+ 
+  `,
+        },
     });
 }

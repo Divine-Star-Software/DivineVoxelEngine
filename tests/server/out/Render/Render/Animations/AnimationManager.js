@@ -14,7 +14,7 @@ export const AnimationManager = {
      * @param animations
      * @returns
      */
-    registerAnimationsN(voxelSubstanceType, shader, animations, animationTimes, overlay = false) {
+    registerAnimations(voxelSubstanceType, shader, animations, animationTimes, overlay = false) {
         const animaitonUniform = [];
         let i = 0;
         for (const anim of animations) {
@@ -51,8 +51,9 @@ export const AnimationManager = {
         shader.addFunction(functionName, "vertex", {
             inputs: [["uv", "float"]],
             output: "float",
+            arguments: {},
             body: {
-                GLSL: `
+                GLSL: (d) => `
 int index =  int(uv); 
 float aUV = ${uniformName}[index];
 if(aUV != 0.){

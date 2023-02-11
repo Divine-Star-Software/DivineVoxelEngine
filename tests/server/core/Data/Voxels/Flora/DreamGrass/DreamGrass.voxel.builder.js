@@ -3,7 +3,7 @@ export const DreamGrassVoxelBuilderThread = {
     id: "dve_dreamgrass",
     hooks: {
         texturesRegistered: (DVEB) => {
-            uv = DVEB.textureManager.getTextureUV("flora", "dreamgrass");
+            uv = DVEB.textureManager.getTextureUV("#dve_flora", "dreamgrass");
         },
     },
     process: function (data, DVEB) {

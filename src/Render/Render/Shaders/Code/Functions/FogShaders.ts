@@ -1,12 +1,13 @@
-import type { DVEShaderBuilder } from "../../../../../Libs/Shaders/DVEShaderBuilder.js";
+import type { DivineShaderBuilder } from "../../../../../Libs/Shaders/DivineShaderBuilder.js";
 
-export function RegisterFogShaders(builder: typeof DVEShaderBuilder) {
+export function RegisterFogShaders(builder: typeof DivineShaderBuilder) {
  builder.functions.create("ExponentialFog", {
   setID: "#dve_fog",
   inputs: [],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `
+   GLSL: () => `
    float fogCoeff = 1.0;
    //float fogDensity = fogOptions.y;
    //fogCoeff = 1.0 / pow(E, fFogDistance * fogDensity);
@@ -17,8 +18,9 @@ export function RegisterFogShaders(builder: typeof DVEShaderBuilder) {
   setID: "#dve_fog",
   inputs: [],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `
+   GLSL: () => `
    float fogDensity = fogOptions.y;
    vec3 fogOrigin = cameraPOS;
    vec3 fogDirection = normalize(worldPOS - fogOrigin);
@@ -36,8 +38,9 @@ export function RegisterFogShaders(builder: typeof DVEShaderBuilder) {
   setID: "#dve_fog",
   inputs: [],
   output: "float",
+  arguments: {},
   body: {
-   GLSL: `
+   GLSL: () => `
    float fogDensity = fogOptions.y;
    float fogTime = time * .5;
    vec3 fogOrigin = cameraPOS;
@@ -55,6 +58,4 @@ export function RegisterFogShaders(builder: typeof DVEShaderBuilder) {
    return fogFactor;`,
   },
  });
-
-
 }

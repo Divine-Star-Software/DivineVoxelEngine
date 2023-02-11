@@ -45,7 +45,7 @@ export async function EreaseAndUpdate(data) {
     tasks.setBuldMode("async");
     if (ES.doFlow()) {
         const substance = dataTool.getSubstance();
-        if (substance == "liquid" || substance == "magma") {
+        if (substance == "#dve_liquid" || substance == "#dve_magma") {
             await Propagation.flow.remove(tasks);
             tasks.stop();
             return true;
@@ -122,7 +122,7 @@ export async function PaintAndUpdate(data) {
     }
     if (ES.doFlow()) {
         const substance = brushTool._dt.getSubstance();
-        if (substance == "liquid" || substance == "magma") {
+        if (substance == "#dve_liquid" || substance == "#dve_magma") {
             Propagation.flow.update(tasks);
         }
     }

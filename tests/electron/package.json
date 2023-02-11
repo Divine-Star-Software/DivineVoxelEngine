@@ -11,10 +11,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^17.0.23",
-    "@types/ws": "^8.5.3",
-    "babylonjs": "^5.8.2"
+    "@types/ws": "^8.5.3"
   },
   "dependencies": {
+    "babylonjs": "^5.46.0",
     "divine-binary-tags": "^0.0.41",
     "ds-element-tree": "0.0.7",
     "electron": "^21.2.1",

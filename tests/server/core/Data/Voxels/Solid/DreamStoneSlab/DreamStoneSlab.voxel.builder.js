@@ -5,9 +5,9 @@ export const DreamStoneSlabVoxelBuilderThread = {
     id: "dve_dreamstoneslab",
     hooks: {
         texturesRegistered: (DVEB) => {
-            topUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-top");
-            bottomUV = DVEB.textureManager.getTextureUV("solid", "dreamstone");
-            sideUV = DVEB.textureManager.getTextureUV("solid", "dreamstone", "grassy-side");
+            topUV = DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone", "grassy-top");
+            bottomUV = DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone");
+            sideUV = DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone", "grassy-side");
         },
     },
     process: function (data, DVEB) {

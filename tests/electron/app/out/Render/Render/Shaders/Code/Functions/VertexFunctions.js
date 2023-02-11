@@ -3,8 +3,9 @@ export function RegisterVertexFunctions(builder) {
         setID: "#dve_vertex",
         inputs: [],
         output: "int",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 int index = int(faceData);
 return  index & 0xff;`,
         },
@@ -16,8 +17,9 @@ return  index & 0xff;`,
             ["p", "vec3"],
         ],
         output: "vec3",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
     float heightX = fbm(posWorld.xz * 0.15 + time);
     p.xz += heightX * 0.05;
@@ -40,8 +42,9 @@ return p;`,
             ["p", "vec3"],
         ],
         output: "vec3",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 float height = fbm(posWorld.xz * 0.08 + time );
 if(normal.z == 1.) {
     p.z += height * 0.05;
@@ -69,8 +72,9 @@ return p;`,
             ["p", "vec3"],
         ],
         output: "vec3",
+        arguments: {},
         body: {
-            GLSL: `
+            GLSL: () => `
 float height = fbm(posWorld.xz * 0.08 + time );
 p.xz += height * 0.05;
 return p;`,

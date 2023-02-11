@@ -13,7 +13,7 @@ import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommMan
 import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
-import { BuildInitalMeshes } from "./Init/BuildInitalMeshes.js";
+import { $INITFunction } from "./Init/InitRender.js";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
@@ -61,7 +61,7 @@ export const DVER = {
         await InitWorkers(this, initData);
     },
     async $SCENEINIT(data) {
-        await BuildInitalMeshes(this, data.scene);
+        await $INITFunction(this, data.scene);
         this.worldComm.sendMessage("start", []);
     },
     __createWorker(path) {

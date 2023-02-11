@@ -127,7 +127,7 @@ export const GetNexusPlayer = async (DVEN, DVP, waitForMessageFromWorld = false)
                 for (let x = player.position.x - 1; x <= player.position.x + 1; x++) {
                     for (let z = player.position.z - 1; z <= player.position.z + 1; z++) {
                         if (player.dataTool.loadInAt(x >> 0, y >> 0, z >> 0)) {
-                            if (player.dataTool.getSubstance() == "liquid") {
+                            if (player.dataTool.getSubstance() == "#dve_liquid") {
                                 player.states.inWater = true;
                                 break;
                             }

@@ -4,7 +4,7 @@ export const DreamLogVoxelData: VoxelData ={
     name: "Dream Log",
     shapeId: "Box",
     id: "dve_dream-log",
-    substance: "solid",
+    substance: "#dve_solid",
     material : "stone",
     hardnress : 1000,
     physics : {

@@ -3,7 +3,7 @@ export const DreamLampVoxelBuilderThread = {
     id: "dve_dreamlamp",
     hooks: {
         texturesRegistered: (DVEB) => {
-            uv = DVEB.textureManager.getTextureUV("solid", "dreamlamp");
+            uv = DVEB.textureManager.getTextureUV("#dve_solid", "dreamlamp");
         },
     },
     process: function (data, DVEB) {

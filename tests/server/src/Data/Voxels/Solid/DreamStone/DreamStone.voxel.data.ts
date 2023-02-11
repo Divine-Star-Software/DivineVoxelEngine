@@ -4,7 +4,7 @@ export const DreamStoneVoxelData: VoxelData = {
  name: "Dream Stone",
  shapeId: "Box",
  id: "dve_dreamstone",
- substance: "solid",
+ substance: "#dve_solid",
  states: 1,
  material : "grassy stone",
  hardnress : 1000,

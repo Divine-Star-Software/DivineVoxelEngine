@@ -8,7 +8,7 @@ export const BoxVoxelShape: VoxelShape = {
  build(mesher) {
   mesher.quad.setDimensions(1, 1);
   let animationState = 0;
-  if (mesher.data.getSubstance() == "flora") {
+  if (mesher.data.getSubstance() == "#dve_flora") {
    animationState = 3;
   }
   if (mesher.templateData.loadIn("top").isExposed()) {
@@ -63,7 +63,7 @@ const BoxCullFunctions: Record<
 > = {
  top: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1],
     data.currentVoxel.location[2] + 1,
@@ -81,7 +81,7 @@ const BoxCullFunctions: Record<
  },
  bottom: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1],
     data.currentVoxel.location[2] - 1,
@@ -99,7 +99,7 @@ const BoxCullFunctions: Record<
  },
  east: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1] + 1,
     data.currentVoxel.location[2],
@@ -117,7 +117,7 @@ const BoxCullFunctions: Record<
  },
  west: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1] - 1,
     data.currentVoxel.location[2],
@@ -135,7 +135,7 @@ const BoxCullFunctions: Record<
  },
  north: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1],
     data.currentVoxel.location[2],
@@ -153,7 +153,7 @@ const BoxCullFunctions: Record<
  },
  south: (data) => {
   if (
-   data.currentVoxel.getSubstance() == "flora" &&
+   data.currentVoxel.getSubstance() == "#dve_flora" &&
    data.currentVoxel.isSameVoxel(
     data.currentVoxel.location[1],
     data.currentVoxel.location[2],

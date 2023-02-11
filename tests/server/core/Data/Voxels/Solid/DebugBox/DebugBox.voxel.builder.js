@@ -8,12 +8,12 @@ export const DebugBoxVoxelBuilderThread = {
     id: "dve_debugbox",
     hooks: {
         texturesRegistered: (DVEB) => {
-            topUV = DVEB.textureManager.getTextureUV("solid", "debug", "top");
-            bottomUV = DVEB.textureManager.getTextureUV("solid", "debug", "bottom");
-            northUV = DVEB.textureManager.getTextureUV("solid", "debug", "north");
-            southUV = DVEB.textureManager.getTextureUV("solid", "debug", "south");
-            eastUV = DVEB.textureManager.getTextureUV("solid", "debug", "east");
-            westUV = DVEB.textureManager.getTextureUV("solid", "debug", "west");
+            topUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "top");
+            bottomUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "bottom");
+            northUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "north");
+            southUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "south");
+            eastUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "east");
+            westUV = DVEB.textureManager.getTextureUV("#dve_solid", "debug", "west");
         },
     },
     process(data, DVEB) {

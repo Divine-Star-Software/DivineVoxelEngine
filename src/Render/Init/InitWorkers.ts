@@ -7,7 +7,7 @@ export async function InitWorkers(
 ) {
  DVER.settings.syncSettings(<any>initData);
 
-console.log(initData.textures)
+ console.log(initData.textures);
  await DVER.TC.$INIT("render");
 
  if (typeof initData.worldWorker == "string") {
@@ -92,9 +92,7 @@ console.log(initData.textures)
 
  DVER.syncSettingsWithWorkers(<any>initData);
 
- DVER.textures.generateTexturesData();
- DVER.textures.generateTexturesData(true);
- DVER.constructorCommManager.$INIT();
+
 
  window.addEventListener("beforeunload", () => {
   DVER.constructorCommManager.destroyAll();

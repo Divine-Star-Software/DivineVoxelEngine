@@ -2,7 +2,7 @@ export const DreadStoneVoxelData = {
     name: "Dread Stone",
     shapeId: "Box",
     id: "dve_dreadstone",
-    substance: "solid",
+    substance: "#dve_solid",
     states: 1,
     material: "grassy-stone",
     hardnress: 1000,

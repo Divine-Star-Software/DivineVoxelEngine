@@ -128,7 +128,7 @@ export const StandardLiquidMaterial = {
     reflectionprobe: null,
     plugin: null,
     $INIT(texture, scene) {
-        this.material = new BABYLON.StandardMaterial("liquid", scene);
+        this.material = new BABYLON.StandardMaterial("#dve_liquid", scene);
         this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
         /*   this.material.diffuseTexture = new BABYLON.Texture(
          "assets/textures/debug/default.png",

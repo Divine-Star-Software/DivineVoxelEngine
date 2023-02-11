@@ -1,15 +1,15 @@
 /**# Voxel Substance Type
  * ---
- * All solid and transparent voxels are grouped together in the same mesh per chunk.
+ * All solid and "#dve_transparent" voxels are grouped together in the same mesh per chunk.
  * While the the liquid and magma will chunks will have their own seperate meshes per chunk.
  * Transparent voxels will not cause the faces of solid voxels next to them to be culled they also have double sided rendering.
  */
-export declare type VoxelSubstanceType = "solid" | "transparent" | "flora" | "liquid" | "magma";
+export declare type VoxelSubstanceType = "#dve_solid" | "#dve_transparent" | "#dve_flora" | "#dve_liquid" | "#dve_magma" | string;
 /**VoxelT emplateS ubstance Type
  * ---
  * Basically same as Voxel Substance Type but only has the substances which have their own generated mesh.
  */
-export declare type VoxelTemplateSubstanceType = "solid" | "flora" | "liquid" | "magma";
+export declare type VoxelTemplateSubstanceType = "#dve_solid" | "#dve_flora" | "#dve_liquid" | "#dve_magma" | string;
 /**# Voxel Data
  * ---
  * This the needed information for each voxel.

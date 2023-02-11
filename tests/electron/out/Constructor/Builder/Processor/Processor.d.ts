@@ -1,5 +1,5 @@
 import type { DirectionNames, EngineSettingsData, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
-import type { FullVoxelSubstanceTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
@@ -85,12 +85,13 @@ export declare const Processor: {
         composedEntity: number;
     };
     faceDataOverride: FaceDataOverride;
-    template: FullVoxelSubstanceTemplate;
+    template: Record<string, VoxelTemplate>;
+    getVoxelTemplate(): VoxelTemplate;
     $INIT(): void;
     cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(doSecondCheck?: boolean): void;
-    makeAllChunkTemplates(location: LocationData, LOD?: number): FullVoxelSubstanceTemplate;
+    makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, VoxelTemplate>;
     syncSettings(settings: EngineSettingsData): void;
     flush(): void;
 };

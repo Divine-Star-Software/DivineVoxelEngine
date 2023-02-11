@@ -16,7 +16,7 @@ export const DVP = {
             return false;
         if (!this._dataTool.checkCollisions())
             return false;
-        if (this._dataTool.getSubstance() == "liquid")
+        if (this._dataTool.getSubstance() == "#dve_liquid")
             return false;
         let collider = this._dataTool.getCollider();
         return this.colliders.getCollider(collider != "none" ? collider : "Box");

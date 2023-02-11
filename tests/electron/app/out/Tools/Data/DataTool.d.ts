@@ -1,4 +1,4 @@
-import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { RawVoxelData, VoxelTemplateSubstanceType } from "Meta/index.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";
@@ -66,7 +66,7 @@ export declare class DataTool extends DataToolBase {
     getShapeId(): string;
     isLightSource(): boolean;
     getLightSourceValue(): number;
-    getSubstance(): VoxelSubstanceType;
+    getSubstance(): string;
     getMaterial(): string;
     getHardness(): number;
     getCollider(): string;

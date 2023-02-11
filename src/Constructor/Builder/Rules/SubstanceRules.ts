@@ -3,8 +3,9 @@ import type { VoxelSubstanceType } from "Meta/index";
 
 export const SubstanceRules = {
  rules: <Map<string, Map<string, boolean>>>new Map(),
+ parents: <Map<string, string>>new Map(),
 
- registerSubstance(id: string, substanceCulls?: string[]) {
+ registerSubstance(id: string, substanceCulls?: string[], parentId?: string) {
   const map = new Map();
   this.rules.set(id, map);
   if (substanceCulls) {
@@ -12,26 +13,32 @@ export const SubstanceRules = {
     map.set(culls, true);
    }
   }
+  if (parentId) {
+   this.parents.set(id, parentId);
+   return;
+  }
+  this.parents.set(id, id);
  },
-
-
 
  $INIT() {
-  SubstanceRules.registerSubstance("solid", ["solid"]);
-  SubstanceRules.registerSubstance("flora");
-  SubstanceRules.registerSubstance("transparent", ["transparent"]);
-  SubstanceRules.registerSubstance("liquid", ["solid", "liquid"]);
-  SubstanceRules.registerSubstance("magma", ["solid", "magma"]);
-
+  SubstanceRules.registerSubstance("#dve_solid", ["#dve_solid"]);
+  SubstanceRules.registerSubstance("#dve_flora");
+  SubstanceRules.registerSubstance("#dve_transparent", ["#dve_transparent"]);
+  SubstanceRules.registerSubstance("#dve_liquid", [
+   "#dve_solid",
+   "#dve_liquid",
+  ]);
+  SubstanceRules.registerSubstance("#dve_magma", ["#dve_solid", "#dve_magma"]);
  },
 
- exposedCheck(
-  subject: VoxelSubstanceType,
-  neightborVoxel: VoxelSubstanceType
- ) {
+ exposedCheck(subject: VoxelSubstanceType, neightborVoxel: VoxelSubstanceType) {
   const rules = this.rules.get(subject);
   if (!rules) return true;
   if (rules.has(neightborVoxel)) return false;
   return true;
+ },
+
+ getSubstanceParent(id: string) {
+  return this.parents.get(id)!;
  },
 };

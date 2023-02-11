@@ -1,11 +1,13 @@
+import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
+import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 export class DVEMaterial {
-    type;
+    id;
     options;
     material = null;
     time = 0;
-    constructor(type = "solid", options) {
-        this.type = type;
+    constructor(id = "#dve_solid", options) {
+        this.id = id;
         this.options = options;
     }
     getMaterial() {
@@ -64,18 +66,22 @@ export class DVEMaterial {
             this.material.setFloat("doEffects", 0);
         }
     }
-    createMaterial(data) {
-        const shader = DVER.render.shaders.createVoxelShader("solid");
-        const animData = DVER.render.animationManager.registerAnimationsN(this.type, shader, data.animations, data.animationTimes);
-        const overlayAnimData = DVER.render.animationManager.registerAnimationsN(this.type, shader, data.overlayAnimations, data.overlayAnimationTimes, true);
-        shader.setCodeBody("vertex", `@#dve_${this.type}_vertex`);
-        shader.setCodeBody("frag", `@#dve_${this.type}_frag`);
+    createMaterial() {
+        const type = TextureManager.getTextureType(this.id);
+        if (!type) {
+            throw new Error(`${this.id} is not a valid texture type`);
+        }
+        const scene = DVER.render.scene;
+        const shader = DVER.render.shaders.createVoxelShader(this.id);
+        type.addToShader(shader);
+        shader.setCodeBody("vertex", `@${this.id}_vertex`);
+        shader.setCodeBody("frag", `@${this.id}_frag`);
         shader.compile();
-        BABYLON.Effect.ShadersStore[`${this.type}VertexShader`] =
+        BABYLON.Effect.ShadersStore[`${this.id}VertexShader`] =
             shader.compiled.vertex;
-        BABYLON.Effect.ShadersStore[`${this.type}FragmentShader`] =
+        BABYLON.Effect.ShadersStore[`${this.id}FragmentShader`] =
             shader.compiled.fragment;
-        const shaderMaterial = new BABYLON.ShaderMaterial(this.type, data.scene, this.type, {
+        const shaderMaterial = new BABYLON.ShaderMaterial(this.id, scene, this.id, {
             attributes: shader.getAttributeList(),
             uniforms: shader.getUniformList(),
             needAlphaBlending: this.options.alphaBlending,
@@ -89,10 +95,7 @@ export class DVEMaterial {
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
         }
-        shaderMaterial.setTextureArray("voxelTexture", data.texture);
-        shaderMaterial.setTextureArray("voxelOverlayTexture", data.overlayTexture);
-        shaderMaterial.setFloats("animationIndexArray", animData);
-        shaderMaterial.setFloats("animationIndexArrayO", overlayAnimData);
+        type.addToMaterial(this);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());
@@ -106,8 +109,8 @@ export class DVEMaterial {
             effect.setFloat4("vFogInfos", scene.fogMode, scene.fogStart, scene.fogEnd, scene.fogDensity);
             effect.setColor3("vFogColor", scene.fogColor);
         };
-        this.updateMaterialSettings(data.settings);
-        DVER.render.animationManager.registerMaterial(this.type, this.material);
+        this.updateMaterialSettings(EngineSettings.getSettings());
+        DVER.render.animationManager.registerMaterial(this.id, this.material);
         return this.material;
     }
     overrideMaterial(material) {

@@ -50,49 +50,18 @@ export const Processor = {
         currentVoxel: mDT,
         neighborVoxel: nDT,
     },
-    template: {
-        solid: {
-            positionTemplate: [],
-            faceTemplate: [],
-            uvTemplate: [],
-            overlayUVTemplate: [],
-            shapeStateTemplate: [],
-            colorTemplate: [],
-            lightTemplate: [],
+    template: {},
+    getVoxelTemplate() {
+        return {
             aoTemplate: [],
-        },
-        flora: {
-            positionTemplate: [],
-            faceTemplate: [],
-            uvTemplate: [],
-            overlayUVTemplate: [],
-            shapeStateTemplate: [],
             colorTemplate: [],
-            lightTemplate: [],
-            aoTemplate: [],
-        },
-        liquid: {
-            positionTemplate: [],
             faceTemplate: [],
-            uvTemplate: [],
-            overlayUVTemplate: [],
-            shapeStateTemplate: [],
-            colorTemplate: [],
-            lightTemplate: [],
-            aoTemplate: [],
             flowTemplate: [],
-        },
-        magma: {
-            positionTemplate: [],
-            faceTemplate: [],
-            uvTemplate: [],
-            overlayUVTemplate: [],
-            shapeStateTemplate: [],
-            colorTemplate: [],
             lightTemplate: [],
-            aoTemplate: [],
-            flowTemplate: [],
-        },
+            overlayUVTemplate: [],
+            positionTemplate: [],
+            uvTemplate: [],
+        };
     },
     $INIT() {
         SubstanceRules.$INIT();
@@ -164,12 +133,11 @@ export const Processor = {
         }
         if (faceBit == 0)
             return;
-        let baseTemplate;
-        if (voxelSubstance == "transparent") {
-            baseTemplate = this.template["solid"];
-        }
-        else {
-            baseTemplate = this.template[voxelSubstance];
+        let baseTemplate = this.template[SubstanceRules.getSubstanceParent(voxelSubstance)];
+        if (!baseTemplate) {
+            baseTemplate = this.getVoxelTemplate();
+            this.template[SubstanceRules.getSubstanceParent(voxelSubstance)] =
+                baseTemplate;
         }
         VoxelTemplater._template = baseTemplate;
         voxelObject.process(VoxelTemplater);
@@ -181,7 +149,7 @@ export const Processor = {
         }
         baseTemplate.faceTemplate.push(faceBit);
         if (this.exposedFaces[0] &&
-            (voxelSubstance == "liquid" || voxelSubstance == "magma")) {
+            (voxelSubstance == "#dve_liquid" || voxelSubstance == "#dve_magma")) {
             this.calculatFlow(this.faceStates[0] == 1, this.nLocation[1], this.nLocation[2], this.nLocation[3], baseTemplate.flowTemplate);
         }
     },
@@ -223,11 +191,6 @@ export const Processor = {
         }
     },
     flush() {
-        for (const substance of Object.keys(this.template)) {
-            //@ts-ignore
-            for (const templateKey of Object.keys(this.template[substance])) {
-                this.template[substance][templateKey] = [];
-            }
-        }
+        this.template = {};
     },
 };

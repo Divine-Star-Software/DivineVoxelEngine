@@ -1,10 +1,10 @@
 import { ConstructorTextureData } from "Meta/Constructor/Constructor.types";
-import type { TextureTypes } from "Meta/Render/Textures/Texture.types";
+import type { TextureTypeUVMap } from "Meta/Render/Textures/Texture.types";
 
 export const TextureManager = {
  textureDataHasBeenSet: false,
- uvTextureMap: <Record<string, Record<string, number>>>{},
- overlayUVTextureMap: <Record<string, Record<string, number>>>{},
+
+ data: <TextureTypeUVMap>{},
  getTextureUV(data: ConstructorTextureData, overlay: boolean = false): number {
   const [textureType, textureId, varation] = data;
   let id = textureId;
@@ -13,9 +13,9 @@ export const TextureManager = {
   }
   let uv = -1;
   if (!overlay) {
-   uv = this.uvTextureMap[textureType][id];
+   uv = this.data[textureType]["main"][id];
   } else {
-   uv = this.overlayUVTextureMap[textureType][id];
+   uv = this.data[textureType]["overlay"][id];
   }
   if (uv == -1) {
    throw new Error(
@@ -25,21 +25,14 @@ export const TextureManager = {
   return uv;
  },
 
- setUVTextureMap(data: Record<TextureTypes, Record<string, number>>) {
+ setUVTextureMap(data: TextureTypeUVMap) {
   this.textureDataHasBeenSet = true;
-  this.uvTextureMap = data;
- },
-
- setOverlayUVTextureMap(data: Record<TextureTypes, Record<string, number>>) {
-  this.textureDataHasBeenSet = true;
-  this.overlayUVTextureMap = data;
+  this.data = data;
  },
 
  releaseTextureData() {
-  (this as any).uvTextureMap = null;
-  (this as any).overlayUVTextureMap = null;
-  delete (this as any)["uvTextureMap"];
-  delete (this as any)["overlayUVTextureMap"];
+  (this as any).data = null;
+  delete (this as any)["data"];
  },
 
  isReady() {

@@ -3,7 +3,7 @@ export const DreamLogVoxelBuilderThread = {
     id: "dve_dream-log",
     hooks: {
         texturesRegistered: (DVEB) => {
-            uv = DVEB.textureManager.getTextureUV("solid", "dream-log");
+            uv = DVEB.textureManager.getTextureUV("#dve_solid", "dream-log");
         },
     },
     process: function (data, DVEB) {

@@ -1,20 +1,14 @@
-//types
 import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-//objects
-import { DVER } from "../../DivineVoxelEngineRender.js";
 const CCMBase = ThreadComm.createCommManager({
     name: "constructor",
     onPortSet(port, commName) { },
 });
 const CCM = Object.assign(CCMBase, {
-    $INIT() {
+    $INIT(dasta) {
         const worldComm = ThreadComm.getComm("world");
         for (const constructor of CCM.__comms) {
             worldComm.connectToComm(constructor);
-            constructor.runTasks("sync-uv-texuture-data", [
-                DVER.textures.uvTextureMap,
-                DVER.textures.overlayUVTextureMap,
-            ]);
+            constructor.runTasks("sync-uv-texuture-data", dasta);
         }
     },
     createConstructors(path, numBuilders = 4) {

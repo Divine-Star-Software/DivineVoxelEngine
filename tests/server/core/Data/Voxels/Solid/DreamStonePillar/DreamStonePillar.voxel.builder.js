@@ -3,7 +3,7 @@ export const DreamStonePillarVoxelBuilderThread = {
     id: "dve_dreamstonepillar",
     hooks: {
         texturesRegistered: (DVEB) => {
-            uvs.push(DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "top"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar"), DVEB.textureManager.getTextureUV("solid", "dreamstone-pillar", "side-top"));
+            uvs.push(DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone-pillar", "top"), DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone-pillar"), DVEB.textureManager.getTextureUV("#dve_solid", "dreamstone-pillar", "side-top"));
         },
     },
     process: function (data, DVEB) {

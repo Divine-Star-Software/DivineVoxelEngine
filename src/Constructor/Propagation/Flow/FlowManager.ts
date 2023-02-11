@@ -70,7 +70,7 @@ export const FlowManager = {
   if (!this._sDataTool.loadInAt(x, y, z)) return "";
   if (!this._sDataTool.isRenderable()) return "";
   const substance = this._sDataTool.getSubstance();
-  if (substance != "liquid" && substance != "magma") return "";
+  if (substance != "#dve_liquid" && substance != "#dve_magma") return "";
   return this._sDataTool.getStringId();
  },
 

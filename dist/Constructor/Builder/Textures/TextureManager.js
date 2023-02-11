@@ -1,7 +1,6 @@
 export const TextureManager = {
     textureDataHasBeenSet: false,
-    uvTextureMap: {},
-    overlayUVTextureMap: {},
+    data: {},
     getTextureUV(data, overlay = false) {
         const [textureType, textureId, varation] = data;
         let id = textureId;
@@ -10,10 +9,10 @@ export const TextureManager = {
         }
         let uv = -1;
         if (!overlay) {
-            uv = this.uvTextureMap[textureType][id];
+            uv = this.data[textureType]["main"][id];
         }
         else {
-            uv = this.overlayUVTextureMap[textureType][id];
+            uv = this.data[textureType]["overlay"][id];
         }
         if (uv == -1) {
             throw new Error(`Texture with id: ${id} does not exists. Overlay : ${overlay}`);
@@ -22,17 +21,11 @@ export const TextureManager = {
     },
     setUVTextureMap(data) {
         this.textureDataHasBeenSet = true;
-        this.uvTextureMap = data;
-    },
-    setOverlayUVTextureMap(data) {
-        this.textureDataHasBeenSet = true;
-        this.overlayUVTextureMap = data;
+        this.data = data;
     },
     releaseTextureData() {
-        this.uvTextureMap = null;
-        this.overlayUVTextureMap = null;
-        delete this["uvTextureMap"];
-        delete this["overlayUVTextureMap"];
+        this.data = null;
+        delete this["data"];
     },
     isReady() {
         return this.textureDataHasBeenSet;

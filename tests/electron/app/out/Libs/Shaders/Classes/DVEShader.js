@@ -1,4 +1,4 @@
-import { DVEShaderBuilder } from "../DVEShaderBuilder.js";
+import { DVEShaderBuilder } from "../DivineShaderBuilder.js";
 export class DVEShader {
     id;
     data = {

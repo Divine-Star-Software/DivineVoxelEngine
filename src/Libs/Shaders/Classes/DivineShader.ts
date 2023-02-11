@@ -1,4 +1,4 @@
-import { DVEShaderBuilder } from "../DVEShaderBuilder.js";
+import { DivineShaderBuilder } from "../DivineShaderBuilder.js";
 import {
  ShaderCodeBody,
  ShaderData,
@@ -6,26 +6,31 @@ import {
  ShaderFunctionData,
  ShaderTextureData,
  ShaderUniformData,
+ ShaderVaryingData,
 } from "../Types/ShaderData.types";
+import { DivineMesh } from "./DivineMesh.js";
 
 type ShaderTypes = "shared" | "vertex" | "frag";
 
-export class DVEShader {
+export class DivineShader {
  data: ShaderData = {
+  mesh: new DivineMesh(""),
+  snippetArgumentOverrides: new Map(),
   sharedDefines: new Map(),
   fragDefines: new Map(),
   vertexDefines: new Map(),
-  attributes: new Map(),
   sharedUniforms: new Map(),
   vertexUniforms: new Map(),
   fragxUniforms: new Map(),
   textures: new Map(),
   varying: new Map(),
+  varyingArgumentOverrides: new Map(),
   localFragFunctions: new Map(),
   localVertexFunctions: new Map(),
   sharedFunctions: [],
   fragFunctions: [],
   vertexFunctions: [],
+  functionArgumentOverrides: new Map(),
   fragMain: {
    GLSL: "",
   },
@@ -33,13 +38,14 @@ export class DVEShader {
    GLSL: "",
   },
  };
-
- constructor(public id: string) {}
-
  compiled = {
   vertex: "",
   fragment: "",
  };
+
+ constructor(public id: string) {
+  this.data.mesh.id = id;
+ }
 
  setCodeBody(forSharer: ShaderTypes = "shared", text: string) {
   if (forSharer == "vertex") {
@@ -63,7 +69,28 @@ export class DVEShader {
  }
 
  getAttributeList() {
-  return [...this.data.attributes.keys()];
+  return this.data.mesh.getAttributeList();
+ }
+
+ addAttributes(data: [id: string, type: ShaderDataTypes][]) {
+  this.data.mesh.addAttributes(data);
+  return this;
+ }
+
+ setArgumentOverride(
+  type: "function" | "varying" | "snippet",
+  id: string,
+  data: any
+ ) {
+  if (type == "function") {
+   return this.data.functionArgumentOverrides.set(id, data);
+  }
+  if (type == "varying") {
+   return this.data.varyingArgumentOverrides.set(id, data);
+  }
+  if (type == "snippet") {
+   return this.data.snippetArgumentOverrides.set(id, data);
+  }
  }
 
  addUniform(data: ShaderUniformData[], forSharer: ShaderTypes = "shared") {
@@ -87,16 +114,10 @@ export class DVEShader {
   }
   return this;
  }
- addVarying(data: [id: string, type: ShaderDataTypes, set: ShaderCodeBody][]) {
-  for (const varying of data) {
-   this.data.varying.set(varying[0], [varying[1], varying[2]]);
-  }
-  return this;
- }
 
- addAttributes(data: [id: string, type: ShaderDataTypes][]) {
-  for (const attributes of data) {
-   this.data.attributes.set(attributes[0], attributes[1]);
+ addVarying(data: ShaderVaryingData<any>[]) {
+  for (const varying of data) {
+   this.data.varying.set(varying.id, varying);
   }
   return this;
  }
@@ -108,7 +129,11 @@ export class DVEShader {
   return this;
  }
 
- addFunction(id: string, forSharer: ShaderTypes, data: ShaderFunctionData) {
+ addFunction<T = void>(
+  id: string,
+  forSharer: ShaderTypes,
+  data: ShaderFunctionData<T>
+ ) {
   if (forSharer == "shared") {
    return this;
   }
@@ -153,15 +178,17 @@ export class DVEShader {
 
  compile() {
   const data = this.data;
-  const defines = DVEShaderBuilder.define.build(data.sharedDefines);
-  const vertexDefines = DVEShaderBuilder.define.build(data.vertexDefines);
-  const fragDefines = DVEShaderBuilder.define.build(data.fragDefines);
+  const defines = DivineShaderBuilder.define.build(data.sharedDefines);
+  const vertexDefines = DivineShaderBuilder.define.build(data.vertexDefines);
+  const fragDefines = DivineShaderBuilder.define.build(data.fragDefines);
 
-  const uniforms = DVEShaderBuilder.uniforms.build(data.sharedUniforms);
-  const vertexUniforms = DVEShaderBuilder.uniforms.build(data.vertexUniforms);
-  const fragUniforms = DVEShaderBuilder.uniforms.build(data.fragxUniforms);
+  const uniforms = DivineShaderBuilder.uniforms.build(data.sharedUniforms);
+  const vertexUniforms = DivineShaderBuilder.uniforms.build(
+   data.vertexUniforms
+  );
+  const fragUniforms = DivineShaderBuilder.uniforms.build(data.fragxUniforms);
   let attributes = ``;
-  for (const [key, type] of data.attributes) {
+  for (const [key, type] of data.mesh.data.attributes) {
    attributes += `attribute ${type} ${key};\n`;
   }
   let textures = "";
@@ -174,30 +201,40 @@ export class DVEShader {
   }
   let varying = "";
   let vertexVarying = "";
-  for (const [key, [type, set]] of data.varying) {
-   varying += `varying ${type} ${key};\n`;
-   vertexVarying += `${set.GLSL}\n`;
+  for (const [id, varyingData] of data.varying) {
+   const args = this.data.varyingArgumentOverrides.get(id);
+   varying += `varying ${varyingData.type} ${id};\n`;
+   vertexVarying += `${varyingData.body.GLSL(
+    args ? args : varyingData.arguments
+   )}\n`;
   }
   let functions = ``;
-  for (const id of data.sharedFunctions) {
-   functions += `${DVEShaderBuilder.functions.build(id)}\n`;
-  }
   let vertexFunctions = ``;
-  for (const id of data.vertexFunctions) {
-   vertexFunctions += `${DVEShaderBuilder.functions.build(id)}\n`;
-  }
-  for (const [key, fd] of data.localVertexFunctions) {
-   vertexFunctions += `${DVEShaderBuilder.functions.build(key, fd)}\n`;
-  }
   let fragFunctions = ``;
-  for (const id of data.fragFunctions) {
-   fragFunctions += `${DVEShaderBuilder.functions.build(id)}\n`;
+  //global functions
+  for (const id of data.sharedFunctions) {
+   functions += `${DivineShaderBuilder.functions.build(id, null, this)}\n`;
   }
-  for (const [key, fd] of data.localFragFunctions) {
-   fragFunctions += `${DVEShaderBuilder.functions.build(key, fd)}\n`;
+  for (const id of data.vertexFunctions) {
+   vertexFunctions += `${DivineShaderBuilder.functions.build(
+    id,
+    null,
+    this
+   )}\n`;
+  }
+  for (const id of data.fragFunctions) {
+   fragFunctions += `${DivineShaderBuilder.functions.build(id, null, this)}\n`;
+  }
+  //local functions
+  for (const [id, fd] of data.localVertexFunctions) {
+   vertexFunctions += `${DivineShaderBuilder.functions.build(id, fd, this)}\n`;
+  }
+  for (const [id, fd] of data.localFragFunctions) {
+   fragFunctions += `${DivineShaderBuilder.functions.build(id, fd, this)}\n`;
   }
 
-  this.compiled.vertex = DVEShaderBuilder.snippets.build(`
+  this.compiled.vertex = DivineShaderBuilder.snippets.build(
+   `
 precision highp float;
 //defines 
 ${defines}
@@ -220,8 +257,11 @@ ${vertexFunctions}
 void main(void) {
 ${vertexVarying}
 ${data.vertexMain.GLSL}
-}`);
-  this.compiled.fragment = DVEShaderBuilder.snippets.build(`
+}`,
+   this
+  );
+  this.compiled.fragment = DivineShaderBuilder.snippets.build(
+   `
 precision highp float;
 precision highp sampler2DArray;
 //defines 
@@ -244,12 +284,36 @@ ${fragFunctions}
 
 void main(void) {
 ${data.fragMain.GLSL}
-}`);
+}`,
+   this
+  );
   return this.compiled;
  }
+
  clone(newID: string) {
-  const shader = DVEShaderBuilder.shaders.create(newID);
-  shader.data = structuredClone(this.data);
+  return this.merge(DivineShaderBuilder.shaders.create(newID));
+ }
+
+ merge(shader: DivineShader, overrideMesh = true) {
+  if (overrideMesh) {
+   shader.data.mesh = this.data.mesh.clone(shader.id);
+  }
+  for (const dataKey in this.data) {
+   const data = (this as any).data[dataKey];
+   if (data instanceof Map) {
+    for (const [key, value] of data) {
+     (shader as any).data[dataKey].set(key, value);
+    }
+    continue;
+   }
+   if (Array.isArray(data)) {
+    for (const node of data) {
+     if (!(shader as any).data[dataKey].includes(node)) {
+      (shader as any).data[dataKey].push(node);
+     }
+    }
+   }
+  }
   return shader;
  }
 }

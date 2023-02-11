@@ -3,7 +3,7 @@ export const DreamLeafVoxelBuilderThread = {
     id: "dve_dream-leafs",
     hooks: {
         texturesRegistered: (DVEB) => {
-            uv = DVEB.textureManager.getTextureUV("flora", "dream-leafs");
+            uv = DVEB.textureManager.getTextureUV("#dve_flora", "dream-leafs");
         },
     },
     process: function (data, DVEB) {

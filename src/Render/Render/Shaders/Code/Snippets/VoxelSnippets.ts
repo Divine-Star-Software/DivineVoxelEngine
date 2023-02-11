@@ -1,13 +1,21 @@
-import type { DVEShaderBuilder } from "Libs/Shaders/DVEShaderBuilder";
-export function RegisterVoxelSnippets(builder: typeof DVEShaderBuilder) {
- builder.snippets.create("#dve_solid_vertex", {
-  GLSL: `@standard_position`,
+import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
+ builder.snippets.create( {
+  id: "#dve_solid_vertex",
+  body: {
+   GLSL: () => `@standard_position`,
+  },
  });
- builder.snippets.create("#dve_solid_frag", {
-  GLSL: `@standard_color`,
+ builder.snippets.create( {
+  id: "#dve_solid_frag",
+  body: {
+   GLSL: () => `@standard_color`,
+  },
  });
- builder.snippets.create("#dve_flora_vertex", {
-  GLSL: `vec3 p = position;
+ builder.snippets.create( {
+  id: "#dve_flora_vertex",
+  body: {
+   GLSL: () => `vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
   int animationType = getAnimationType();
   if(doEffects == 1.){
@@ -24,12 +32,18 @@ export function RegisterVoxelSnippets(builder: typeof DVEShaderBuilder) {
     }
   }
   gl_Position = viewProjection * world * vec4(p, 1.0); `,
+  },
  });
- builder.snippets.create("#dve_flora_frag", {
-  GLSL: `@standard_color`,
+ builder.snippets.create({
+  id: "#dve_flora_frag",
+  body: {
+   GLSL: () => `@standard_color`,
+  },
  });
- builder.snippets.create("#dve_liquid_vertex", {
-  GLSL: `float animationTest = float(getAnimationType());
+ builder.snippets.create( {
+  id: "#dve_liquid_vertex",
+  body: {
+   GLSL: () => `float animationTest = float(getAnimationType());
   vFlow = 0.;
   if(animationTest == 1.) {
     vFlow = 1.;
@@ -46,19 +60,29 @@ export function RegisterVoxelSnippets(builder: typeof DVEShaderBuilder) {
    }
   
   gl_Position = viewProjection * world * vec4(p, 1.0); `,
+  },
  });
- builder.snippets.create("#dve_liquid_frag", {
-  GLSL: `float y = vUV.y - time * 4. * vFlow;
-  vec4 rgb = getBaseColor(vec2(vUV.x,y));
+ builder.snippets.create( {
+  id: "#dve_liquid_frag",
+  body: {
+   GLSL: () => `
+  vec4 rgb = getBaseColor(vec2(0.,time * -4. * vFlow));
   rgb = getColor(rgb);
   vec4 mixLight = getLight(rgb);
   vec3 finalColor = doFog(mixLight);
   gl_FragColor = vec4(finalColor.rgb , .6 );`,
+  },
  });
- builder.snippets.create("#dve_magma_vertex", {
-  GLSL: `@standard_position`,
+ builder.snippets.create({
+  id: "#dve_magma_vertex",
+  body: {
+   GLSL: () => `@standard_position`,
+  },
  });
- builder.snippets.create("#dve_magma_frag", {
-  GLSL: `"@#dve_liquid_frag`,
+ builder.snippets.create({
+  id: "#dve_magma_frag",
+  body: {
+   GLSL: () => `"@#dve_liquid_frag`,
+  },
  });
 }

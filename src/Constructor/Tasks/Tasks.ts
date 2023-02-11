@@ -19,12 +19,11 @@ import { TasksRequest } from "./TasksRequest.js";
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
- data: {
+ data: { 
   syncTextures: ThreadComm.registerTasks(
    "sync-uv-texuture-data",
    (data: any) => {
-    DVEC.builder.textureManager.setUVTextureMap(data[0]);
-    DVEC.builder.textureManager.setOverlayUVTextureMap(data[1]);
+    DVEC.builder.textureManager.setUVTextureMap(data);
     DVEC.hooks.texturesRegistered.run(DVEC.builder.textureManager);
    }
   ),

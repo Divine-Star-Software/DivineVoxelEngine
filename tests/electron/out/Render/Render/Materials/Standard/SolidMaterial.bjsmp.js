@@ -114,7 +114,7 @@ export const StandardSolidMaterial = {
     material: null,
     plugin: null,
     $INIT(texture, scnee) {
-        this.material = new BABYLON.StandardMaterial("solid", scnee);
+        this.material = new BABYLON.StandardMaterial("#dve_solid", scnee);
         this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
         this.material.diffuseTexture = new BABYLON.Texture("assets/textures/debug/default.png", scnee);
         const bump = new BABYLON.Texture("assets/textures/normalmaps/dreamstone/default.png", scnee);

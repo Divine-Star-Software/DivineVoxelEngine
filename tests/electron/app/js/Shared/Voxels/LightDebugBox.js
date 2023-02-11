@@ -9,7 +9,7 @@ export function GetLightDebugBox(DVEC) {
     const textures = [];
     DVEC.hooks.texturesRegistered.addToRun((textureMangager) => {
         for (let i = 0; i < 16; i++) {
-            textures.push(textureMangager.getTextureUV(["solid", "light-debug", `light-level-${i}`]));
+            textures.push(textureMangager.getTextureUV(["#dve_solid", "light-debug", `light-level-${i}`]));
         }
     });
     return DVEC.voxelManager.registerVoxel({

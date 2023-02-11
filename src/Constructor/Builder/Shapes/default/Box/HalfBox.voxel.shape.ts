@@ -5,7 +5,7 @@ export const HalfBoxVoxelShape: VoxelShape = {
  build(mesher) {
   mesher.quad.setDimensions(1, 1);
   let animationState = 0;
-  if (mesher.data.getSubstance() == "flora") {
+  if (mesher.data.getSubstance() == "#dve_flora") {
    animationState = 3;
   }
   const shapeState = mesher.data.getShapeState();
