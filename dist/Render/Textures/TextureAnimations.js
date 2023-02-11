@@ -70,25 +70,25 @@ export const TextureAnimationCreator = {
 
         int index =  int(${args.attributeID}.x); 
         frames.x = ${segment.animationUniforID}[index];
-        if(frames.x != 0.){
+        if(frames.x == 0.){
             frames.x = ${segment.attributeID}.x;
         }
 
         index =  int(${args.attributeID}.y); 
         frames.y = ${segment.animationUniforID}[index];
-        if(frames.y != 0.){
+        if(frames.y == 0.){
             frames.y = ${segment.attributeID}.y;
         }
 
         index =  int(${args.attributeID}.z); 
         frames.z = ${segment.animationUniforID}[index];
-        if(frames.z != 0.){
+        if(frames.z == 0.){
             frames.z = ${args.attributeID}.z;
         }
 
         index =  int(${args.attributeID}.w); 
         frames.w = ${segment.animationUniforID}[index];
-        if(frames.w != 0.){
+        if(frames.w == 0.){
             frames.w = ${args.attributeID}.w;
         }
 

@@ -1,8 +1,8 @@
-/// <reference types="babylonjs" />
 export declare const TextureCreator: {
     context: CanvasRenderingContext2D | null;
     imgWidth: number;
     imgHeight: number;
+    _canvas: HTMLCanvasElement;
     _mipMapSizes: number[];
     defineTextureDimensions(textureSize: number, mipMapSizes: number[]): void;
     setUpImageCreation(): void;

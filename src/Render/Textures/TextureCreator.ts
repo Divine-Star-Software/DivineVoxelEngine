@@ -5,7 +5,7 @@ export const TextureCreator = {
 
  imgWidth: 16,
  imgHeight: 16,
-
+ _canvas: <HTMLCanvasElement>document.createElement("canvas"),
  _mipMapSizes: [16, 12, 8, 4],
 
  defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
@@ -15,10 +15,9 @@ export const TextureCreator = {
  },
 
  setUpImageCreation() {
-  const _2dCanvas = document.createElement("canvas");
-  _2dCanvas.width = this.imgWidth;
-  _2dCanvas.height = this.imgHeight;
-  const context = _2dCanvas.getContext("2d", { willReadFrequently: true });
+  this._canvas.width = this.imgWidth;
+  this._canvas.height = this.imgHeight;
+  const context = this._canvas.getContext("2d", { willReadFrequently: true });
   if (!context) {
    throw new Error("Context did not load for texture creation.");
   }
@@ -35,7 +34,8 @@ export const TextureCreator = {
  ): Promise<BABYLON.RawTexture2DArray[]> {
   if (width == -1) width = this.imgWidth;
   if (height == -1) height = this.imgHeight;
-
+  this._canvas.width = this.imgWidth;
+  this._canvas.height = this.imgHeight;
   const textures: BABYLON.RawTexture2DArray[] = [];
   for (const size of this._mipMapSizes) {
    const texture = await this._createTextures(name, images, size, size);
@@ -75,6 +75,7 @@ export const TextureCreator = {
   resolvedImages.push(new Uint8ClampedArray(data));
 
   let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
+
   const combinedImages = this._combineImageData(totalLength, resolvedImages);
   const _2DTextureArray = new BABYLON.RawTexture2DArray(
    combinedImages,
@@ -101,6 +102,7 @@ export const TextureCreator = {
   if (!this.context) {
    throw new Error("Context is not set for texture creation.");
   }
+
   const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
    const image = new Image();
    image.src = imgPath;

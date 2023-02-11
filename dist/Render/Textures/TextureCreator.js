@@ -3,6 +3,7 @@ export const TextureCreator = {
     context: null,
     imgWidth: 16,
     imgHeight: 16,
+    _canvas: document.createElement("canvas"),
     _mipMapSizes: [16, 12, 8, 4],
     defineTextureDimensions(textureSize, mipMapSizes) {
         this.imgWidth = textureSize;
@@ -10,10 +11,9 @@ export const TextureCreator = {
         this._mipMapSizes = mipMapSizes;
     },
     setUpImageCreation() {
-        const _2dCanvas = document.createElement("canvas");
-        _2dCanvas.width = this.imgWidth;
-        _2dCanvas.height = this.imgHeight;
-        const context = _2dCanvas.getContext("2d", { willReadFrequently: true });
+        this._canvas.width = this.imgWidth;
+        this._canvas.height = this.imgHeight;
+        const context = this._canvas.getContext("2d", { willReadFrequently: true });
         if (!context) {
             throw new Error("Context did not load for texture creation.");
         }
@@ -25,6 +25,8 @@ export const TextureCreator = {
             width = this.imgWidth;
         if (height == -1)
             height = this.imgHeight;
+        this._canvas.width = this.imgWidth;
+        this._canvas.height = this.imgHeight;
         const textures = [];
         for (const size of this._mipMapSizes) {
             const texture = await this._createTextures(name, images, size, size);
