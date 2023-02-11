@@ -37,7 +37,7 @@ const HomeScreen = (): ElementTreeData => {
       attrs: {
        className: "dve-version",
       },
-      text: "Alpha 1.3",
+      text: "Alpha 1.3.1",
      },
      {
       type: "h6",
