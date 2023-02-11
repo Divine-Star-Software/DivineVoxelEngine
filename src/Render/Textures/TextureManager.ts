@@ -60,10 +60,10 @@ export const TextureManager = {
   const texture = this.textureTypes.get(id);
   if (!texture) return false;
 
-  let count = 1;
   const extension = texture.extension;
 
   for (const [key, segment] of texture.textureSegments) {
+   let count = 1;
    const map = segment.textureMap;
    const paths: string[] = segment.paths;
    const animationTimes: number[][] = segment.animationTimes;
