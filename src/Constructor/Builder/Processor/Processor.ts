@@ -1,14 +1,8 @@
 //types
-import type {
- DirectionNames,
- EngineSettingsData,
- VoxelShape,
- VoxelSubstanceType,
-} from "Meta/index.js";
-import type {
- FullVoxelSubstanceTemplate,
- VoxelTemplate,
-} from "Meta/Constructor/VoxelTemplate.types.js";
+import type { DirectionNames } from "Meta/Util.types.js";
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
@@ -98,7 +92,7 @@ export const Processor = {
   face: DirectionNames,
   voxelObject: VoxelConstructor,
   voxelShape: VoxelShape,
-  voxelSubstance: VoxelSubstanceType,
+  voxelSubstance: string,
   faceBit: number
  ) {
   const voxelExists = this.nDataTool.loadIn();

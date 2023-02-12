@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEC: {
     environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
@@ -416,10 +416,10 @@ export declare const DVEC: {
                 attempts: number;
                 dimension: string;
                 chunks: Map<string, [x: number, y: number, z: number]>;
-                voxels: [x: number, y: number, z: number, data: import("Meta/index.js").RawVoxelData][];
+                voxels: [x: number, y: number, z: number, data: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
             }>;
             registerRequest(dimension: string, x: number, y: number, z: number): string;
-            addToRequest(registerId: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, rawData: import("Meta/index.js").RawVoxelData): void;
+            addToRequest(registerId: string, location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, rawData: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
             attemptRequestFullFill(registerId: string): boolean;
         };
         worldBounds: {
@@ -444,17 +444,17 @@ export declare const DVEC: {
     builder: {
         textureManager: {
             textureDataHasBeenSet: boolean;
-            data: import("Meta/index.js").TextureTypeUVMap;
+            data: import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
             getTextureUV(data: import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-            setUVTextureMap(data: import("Meta/index.js").TextureTypeUVMap): void;
+            setUVTextureMap(data: import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
             releaseTextureData(): void;
             isReady(): boolean;
         };
         shapeManager: {
-            shapes: Map<string, import("Meta/index.js").VoxelShape>;
+            shapes: Map<string, import("../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
             shapeCount: number;
-            registerShape(shapeObject: import("Meta/index.js").VoxelShape): void;
-            getShape(shapeId: string): import("Meta/index.js").VoxelShape;
+            registerShape(shapeObject: import("../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
+            getShape(shapeId: string): import("../Meta/Constructor/VoxelShape.types.js").VoxelShape;
         };
         chunkMesher: {
             voxelBuildOrder: string[];
@@ -467,18 +467,18 @@ export declare const DVEC: {
             faceByte: {
                 _rotationMap: Record<import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
                 _rotationReverseMap: Record<number, import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                _setFaceTextureState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                _getFaceTextureState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _setFaceRotateState: Record<import("Meta/index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                _getFaceRotateState: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _markExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => number>;
-                _checkExposedFace: Record<import("Meta/index.js").DirectionNames, (faceBit: number) => boolean>;
-                markFaceAsExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                isFaceExposed(direction: import("Meta/index.js").DirectionNames, rawData: number): boolean;
-                setFaceRotateState(direction: import("Meta/index.js").DirectionNames, state: number, rawData: number): number;
-                getFaceRotateState(direction: import("Meta/index.js").DirectionNames, rawData: number): number;
-                setFaceTextureState(direction: import("Meta/index.js").DirectionNames, rotation: import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                getFaceTextureState(direction: import("Meta/index.js").DirectionNames, rawData: number): import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                _setFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+                _getFaceTextureState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+                _setFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
+                _getFaceRotateState: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+                _markExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
+                _checkExposedFace: Record<import("../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
+                markFaceAsExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+                isFaceExposed(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
+                setFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
+                getFaceRotateState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): number;
+                setFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rotation: import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
+                getFaceTextureState(direction: import("../Meta/Util.types.js").DirectionNames, rawData: number): import("../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
             };
             lightData: {
                 SRS: number;
@@ -537,8 +537,8 @@ export declare const DVEC: {
             template: Record<string, import("../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
             getVoxelTemplate(): import("../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
             $INIT(): void;
-            cullCheck(face: import("Meta/index.js").DirectionNames, voxelObject: import("../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("Meta/index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-            faceStateCheck(face: import("Meta/index.js").DirectionNames, faceBit: number): number;
+            cullCheck(face: import("../Meta/Util.types.js").DirectionNames, voxelObject: import("../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+            faceStateCheck(face: import("../Meta/Util.types.js").DirectionNames, faceBit: number): number;
             _process(doSecondCheck?: boolean): void;
             makeAllChunkTemplates(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, LOD?: number): Record<string, import("../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
             syncSettings(settings: EngineSettingsData): void;
@@ -797,7 +797,7 @@ export declare const DVEC: {
         registerVoxel(voxel: import("../Meta/Constructor/Voxel.types.js").VoxelConstructor | import("../Meta/Constructor/Voxel.types.js").VoxelConstructor[]): void;
         defaults: {
             box: {
-                simple(id: string, textures: import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData | Record<import("Meta/index.js").DirectionNames, import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData>): import("./Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
+                simple(id: string, textures: import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData | Record<import("../Meta/Util.types.js").DirectionNames, import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData>): import("./Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
                 pillar(id: string, textures: import("./Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("./Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
             };
             panel: {
@@ -887,9 +887,9 @@ export declare const DVEC: {
     hooks: {
         texturesRegistered: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
             textureDataHasBeenSet: boolean;
-            data: import("Meta/index.js").TextureTypeUVMap;
+            data: import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
             getTextureUV(data: import("../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-            setUVTextureMap(data: import("Meta/index.js").TextureTypeUVMap): void;
+            setUVTextureMap(data: import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
             releaseTextureData(): void;
             isReady(): boolean;
         }, void>;

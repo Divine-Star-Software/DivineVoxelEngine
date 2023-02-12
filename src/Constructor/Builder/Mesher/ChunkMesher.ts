@@ -1,5 +1,5 @@
 //types
-import type { VoxelTemplateSubstanceType } from "Meta/index";
+
 import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 //objects
@@ -8,7 +8,7 @@ import { VoxelMesher } from "../Tools/VoxelMesher.js";
 import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 
 export const ChunkMesher = {
- voxelBuildOrder: <VoxelTemplateSubstanceType[]>[
+ voxelBuildOrder: <string[]>[
   "#dve_solid",
   "#dve_flora",
   "#dve_liquid",

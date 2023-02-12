@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEFX: {
     environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;

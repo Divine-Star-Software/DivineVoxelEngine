@@ -176,7 +176,7 @@ export declare const DataManager: {
             };
         }): void;
     } & {
-        $INIT(settings: import("../Meta/index.js").EngineSettingsData): void;
+        $INIT(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
     };
     register: {
         stringMaps: {

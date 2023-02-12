@@ -5,8 +5,8 @@ import type {
  MeshRegisterColumn,
 } from "Meta/Render/Scene/MeshRegister.types.js";
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
-
-import { VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { Mesh } from "babylonjs";
+import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 export const MeshRegister = {
  _dimensions: <MeshRegisterDimensions>new Map(),
@@ -115,7 +115,7 @@ export const MeshRegister = {
  chunk: {
   add(
    location: LocationData,
-   mesh: BABYLON.Mesh,
+   mesh: Mesh,
    substance: VoxelTemplateSubstanceType
   ) {
    let column = MeshRegister.column.get(location);
@@ -131,7 +131,7 @@ export const MeshRegister = {
    chunk.set(substance, this._getChunkData(mesh));
    return chunk;
   },
-  _getChunkData(mesh: BABYLON.Mesh): MeshRegisterChunk {
+  _getChunkData(mesh: Mesh): MeshRegisterChunk {
    return {
     mesh: mesh,
    };

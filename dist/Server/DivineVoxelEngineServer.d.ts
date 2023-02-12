@@ -1,8 +1,8 @@
 import type { DVESInitData } from "Meta/Server/DVES";
-import { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVES: {
     settings: {
-        enviorment: "node" | "browser";
+        enviorment: "browser" | "node";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -58,7 +58,7 @@ export declare const DVES: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;

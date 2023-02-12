@@ -13,9 +13,10 @@ import {
  UpdateTasksO,
  WorldSunTask,
 } from "Meta/Tasks/Tasks.types.js";
-import { RawVoxelData } from "Meta/index.js";
+
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 
 class TasksBase {
  _data = {

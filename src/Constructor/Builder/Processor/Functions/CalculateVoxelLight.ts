@@ -1,7 +1,7 @@
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types.js";
 import { Processor } from "../Processor.js";
 import { DirectionNames } from "Meta/Util.types.js";
-import { VoxelShape } from "Meta/index.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
 import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";

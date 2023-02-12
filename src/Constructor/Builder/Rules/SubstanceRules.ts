@@ -1,5 +1,4 @@
 //types
-import type { VoxelSubstanceType } from "Meta/index";
 
 export const SubstanceRules = {
  rules: <Map<string, Map<string, boolean>>>new Map(),
@@ -35,7 +34,7 @@ export const SubstanceRules = {
   SubstanceRules.registerSubstance("#dve_magma", ["#dve_solid", "#dve_magma"]);
  },
 
- exposedCheck(subject: VoxelSubstanceType, neightborVoxel: VoxelSubstanceType) {
+ exposedCheck(subject: string, neightborVoxel: string) {
   const rules = this.rules.get(subject);
   if (!rules) return true;
   if (rules.has(neightborVoxel)) return false;

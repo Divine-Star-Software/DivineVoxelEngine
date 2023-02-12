@@ -1,4 +1,3 @@
-import type { VoxelData } from "Meta/index";
 import type { Processor } from "../Processor.js";
 
 const checkSets = {

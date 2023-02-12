@@ -1,3 +1,4 @@
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 export const TextureCreator = {
     context: null,
@@ -59,7 +60,7 @@ export const TextureCreator = {
         resolvedImages.push(new Uint8ClampedArray(data));
         let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
         const combinedImages = this._combineImageData(totalLength, resolvedImages);
-        const _2DTextureArray = new BABYLON.RawTexture2DArray(combinedImages, width, height, images.length + 2, BABYLON.Engine.TEXTUREFORMAT_RGBA, scene, false, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(combinedImages, width, height, images.length + 2, DVEBabylon.system.Engine.TEXTUREFORMAT_RGBA, scene, false, false, DVEBabylon.system.Texture.NEAREST_SAMPLINGMODE);
         _2DTextureArray.name = name;
         return _2DTextureArray;
     },

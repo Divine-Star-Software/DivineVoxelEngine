@@ -1,4 +1,4 @@
-export class SolidMaterialPlugin extends BABYLON.MaterialPluginBase {
+export class SolidMaterialPlugin extends MaterialPluginBase {
     onUBSet;
     _texArray;
     _textureSet = false;
@@ -114,10 +114,10 @@ export const StandardSolidMaterial = {
     material: null,
     plugin: null,
     $INIT(texture, scnee) {
-        this.material = new BABYLON.StandardMaterial("#dve_solid", scnee);
-        this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-        this.material.diffuseTexture = new BABYLON.Texture("assets/textures/debug/default.png", scnee);
-        const bump = new BABYLON.Texture("assets/textures/normalmaps/dreamstone/default.png", scnee);
+        this.material = new.StandardMaterial("#dve_solid", scnee);
+        this.material.emissiveColor = new.Color3(0.2, 0.2, 0.2);
+        this.material.diffuseTexture = new.Texture("assets/textures/debug/default.png", scnee);
+        const bump = new.Texture("assets/textures/normalmaps/dreamstone/default.png", scnee);
         bump.onLoadObservable.addOnce((txt) => {
             txt.updateSamplingMode(1);
         });
@@ -129,9 +129,9 @@ export const StandardSolidMaterial = {
         this.material.useParallaxOcclusion = true;
         this.material.parallaxScaleBias = 0.2;
         this.material.specularPower = 1000.0;
-        this.material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+        this.material.specularColor = new.Color3(0.5, 0.5, 0.5);
         this.plugin = new SolidMaterialPlugin(this.material, texture, (ubo) => {
-            ubo.updateColor3("myColor", new BABYLON.Color3(1, 1, 1));
+            ubo.updateColor3("myColor", new.Color3(1, 1, 1));
         });
     },
     getMaterial() {

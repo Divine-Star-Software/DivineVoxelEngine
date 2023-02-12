@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/index";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const WorldSpaces: {
     region: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
         chunkBounds: {

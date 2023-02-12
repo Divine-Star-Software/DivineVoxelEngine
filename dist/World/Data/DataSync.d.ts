@@ -38,7 +38,7 @@ export declare const DataSync: {
             _count: number;
             _palette: VoxelPalette;
             _map: Record<string, number>;
-            registerVoxel(voxel: import("../../Meta/index.js").VoxelData): void;
+            registerVoxel(voxel: import("../../Meta/Data/Voxels/Voxel.types.js").VoxelData): void;
             get(): VoxelPalette;
             getMap(): Record<string, number>;
         };

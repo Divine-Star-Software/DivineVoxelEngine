@@ -1,4 +1,4 @@
-import type { RawVoxelData, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { RawVoxelData, VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { ChunkDataTool } from "./WorldData/ChunkDataTool.js";
 import { HeightMapTool } from "./WorldData/HeightMapTool.js";
 import { DataToolBase } from "../Classes/DataToolBase.js";

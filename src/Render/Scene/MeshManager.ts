@@ -1,4 +1,6 @@
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import type { Mesh, Scene } from "babylonjs";
+
 import { DVER } from "../DivineVoxelEngineRender.js";
 import {
  RemoveChunkMeshTasks,
@@ -9,16 +11,12 @@ import { MeshRegister } from "./MeshRegister.js";
 import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 
 export const MeshManager = {
- scene: <BABYLON.Scene>{},
+ scene: <Scene>{},
  runningUpdate: false,
-
- meshes: <
-  Record<VoxelSubstanceType, Record<string, Record<string, BABYLON.Mesh>>>
- >{},
 
  meshMakers: <Record<VoxelSubstanceType, DVEMesh>>{},
 
- $INIT(scene: BABYLON.Scene) {
+ $INIT(scene: Scene) {
   this.scene = scene;
   scene.freeActiveMeshes();
 
@@ -53,7 +51,7 @@ export const MeshManager = {
      continue;
     }
     let chunk = MeshRegister.chunk.get(location, substance);
-    let mesh: BABYLON.Mesh;
+    let mesh: Mesh;
     if (!chunk) {
      mesh = MeshManager.meshMakers[substance].createTemplateMesh(
       MeshManager.scene

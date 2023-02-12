@@ -1,5 +1,5 @@
 //types
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
@@ -20,7 +20,6 @@ export const DVEFX = {
  dataSyncNode: DataSyncNode,
  data: DataManager,
 
- 
  worldComm: WorldComm,
  parentComm: ParentComm,
 
@@ -34,8 +33,8 @@ export const DVEFX = {
  },
 
  async $INIT() {
-  await InitWorker(this)
- }
+  await InitWorker(this);
+ },
 };
 
 export type DivineVoxelEngineFX = typeof DVEFX;

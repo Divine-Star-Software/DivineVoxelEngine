@@ -1,12 +1,11 @@
 import type { VoxelMesher } from "Constructor/Builder/Tools/VoxelMesher";
-import type { VoxelSubstanceType } from "Meta/index";
 import type { GeometryBuildData } from "./Geometry/Geometry.types";
 /** # Voxel Shape Add DAta
 ---
 */
 export declare type VoxelShapeAddData = {
     LOD: number;
-    substance: VoxelSubstanceType;
+    substance: string;
     face: number;
     shapeState: number;
     flowTemplateIndex?: number;

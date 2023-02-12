@@ -1,5 +1,4 @@
 import type { EntityTypes } from "Meta/Data/Entity/Entity.types";
-import type { NexusEntity, NexusEntityData, NexusEntityInterface } from "Meta/Interfaces/Entity/NexusEntity.types";
 import { Vector3 } from "Meta/Util.types";
 export declare const NexusEntites: {
     entityTemplate: Record<string, {

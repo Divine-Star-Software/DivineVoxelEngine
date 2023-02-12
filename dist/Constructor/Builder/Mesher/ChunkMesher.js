@@ -1,3 +1,4 @@
+//types
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { VoxelMesher } from "../Tools/VoxelMesher.js";

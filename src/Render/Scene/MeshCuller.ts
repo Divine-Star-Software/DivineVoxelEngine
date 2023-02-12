@@ -1,6 +1,8 @@
+import { Scene } from "babylonjs";
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { FOManager } from "../Render/FloatingOrigin/FoManager.js";
 import { MeshRegister } from "./MeshRegister.js";
-   /*    
+/*    
      const dimensions = MeshRegister._dimensions;
    dimensions.forEach((dimensions) => {
     dimensions.forEach((region) => {
@@ -33,16 +35,17 @@ import { MeshRegister } from "./MeshRegister.js";
      });
     });
    }); */
-const box = new BABYLON.BoundingBox(
- BABYLON.Vector3.Zero(),
- BABYLON.Vector3.Zero()
-);
+
 export const MeshCuller = {
- $INIT(scene: BABYLON.Scene) {
-  const fallbackNode = new BABYLON.TransformNode("", scene);
-  const min = new BABYLON.Vector3();
-  const max = new BABYLON.Vector3();
-  const world = new BABYLON.Vector4(0,0,0,0);
+ $INIT(scene: Scene) {
+  const box = new DVEBabylon.system.BoundingBox(
+   DVEBabylon.system.Vector3.Zero(),
+   DVEBabylon.system.Vector3.Zero()
+  );
+  const fallbackNode = new DVEBabylon.system.TransformNode("", scene);
+  const min = new DVEBabylon.system.Vector3();
+  const max = new DVEBabylon.system.Vector3();
+  const world = new DVEBabylon.system.Vector4(0, 0, 0, 0);
   scene.onBeforeActiveMeshesEvaluationObservable.add(() => {
    const cam = scene.activeCamera;
    if (!cam) return;
@@ -52,14 +55,15 @@ export const MeshCuller = {
     const mesh = scene.meshes[i];
     if ((mesh as any).type == "chunk") {
      const position = mesh.position;
-     mesh._worldMatrix.setRow(3,
+     mesh._worldMatrix.setRow(
+      3,
       world.set(
-        mesh.position.x + node.position.x,
-        mesh.position.y + node.position.y,
-        mesh.position.z + node.position.z,
-        1
+       mesh.position.x + node.position.x,
+       mesh.position.y + node.position.y,
+       mesh.position.z + node.position.z,
+       1
       )
-      )
+     );
      min.set(
       node.position.x + position.x,
       node.position.y + position.y,

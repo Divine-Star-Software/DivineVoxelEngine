@@ -1,4 +1,4 @@
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVERW: {
     environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
@@ -120,9 +120,9 @@ export declare const DVERW: {
         };
     };
     voxelManager: {
-        voxelData: Map<string, import("Meta/index.js").VoxelData>;
-        getVoxelData(id: string): import("Meta/index.js").VoxelData;
-        registerVoxelData(data: import("Meta/index.js").VoxelData | import("Meta/index.js").VoxelData[]): void;
+        voxelData: Map<string, import("../Meta/Data/Voxels/Voxel.types.js").VoxelData>;
+        getVoxelData(id: string): import("../Meta/Data/Voxels/Voxel.types.js").VoxelData;
+        registerVoxelData(data: import("../Meta/Data/Voxels/Voxel.types.js").VoxelData | import("../Meta/Data/Voxels/Voxel.types.js").VoxelData[]): void;
     };
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;

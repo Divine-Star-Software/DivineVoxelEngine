@@ -1,16 +1,13 @@
 //types
-import type { EngineSettingsData, RecursivePartial } from "Meta/index.js";
+import type { RecursivePartial } from "Meta/Util.types.js";
 //built in
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 //objects
-import { AnimationManager } from "./Animations/AnimationManager.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
-import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.js";
-import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsmp.js";
 import {
  RenderFogOptions,
  DVERenderEffectsOptions,
@@ -20,43 +17,16 @@ import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
 import { DVEShaders } from "./Shaders/DVEShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
-
-const solidMaterial = new DVEMaterial("#dve_solid", {
- alphaBlending: false,
- alphaTesting: true,
-});
-const solidMesh = new DVEMesh("#dve_solid", solidMaterial);
-const floraMat = new DVEMaterial("#dve_flora", {
- alphaBlending: false,
- alphaTesting: true,
-});
-const floraMesh = new DVEMesh("#dve_flora", floraMat);
-/* const magmaMat = new DVEMaterial("#dve_magma", {
- alphaBlending: false,
- alphaTesting: true,
-});
-const magmaMesh = new DVEMesh("#dve_magma", magmaMat); */
-const liquidMat = new DVEMaterial("#dve_liquid", {
- alphaBlending: true,
- alphaTesting: false,
-});
-const liquidMesh = new DVEMesh("#dve_liquid", liquidMat);
+import { Scene, Vector4 } from "babylonjs";
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 
 export const RenderManager = {
- fogOptions: <RenderFogOptions>{
-  mode: "volumetric",
-  density: 0.0005,
-  color: new BABYLON.Color3(1, 1, 1),
-  volumetricOptions: {
-   heightFactor: 0.25,
-  },
- },
-
+ fogOptions: <RenderFogOptions>{},
  meshRegister: MeshRegister,
  meshManager: MeshManager,
  meshCuller: MeshCuller,
 
- fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
+ fogData: <Vector4>{},
 
  effectOptions: <DVERenderEffectsOptions>{
   floraEffects: false,
@@ -67,22 +37,17 @@ export const RenderManager = {
 
  shaders: DVEShaders,
 
- animationManager: AnimationManager,
+ solidMaterial: <DVEMaterial>{},
+ floraMaterial: <DVEMaterial>{},
+ liquidMaterial: <DVEMaterial>{},
 
- solidMaterial: solidMaterial,
- floraMaterial: floraMat,
- liquidMaterial: liquidMat,
-
- solidMesh: solidMesh,
- floraMesh: floraMesh,
- liquidMesh: liquidMesh,
-
- solidStandardMaterial: StandardSolidMaterial,
- liquidStandardMaterial: StandardLiquidMaterial,
+ solidMesh: <DVEMesh>{},
+ floraMesh: <DVEMesh>{},
+ liquidMesh: <DVEMesh>{},
 
  skyBoxMaterial: SkyBoxMaterial,
 
- scene: <BABYLON.Scene | null>null,
+ scene: <Scene | null>null,
 
  updateFogOptions(options: RecursivePartial<RenderFogOptions>) {
   for (const key of Object.keys(options)) {
@@ -124,12 +89,39 @@ export const RenderManager = {
   this.skyBoxMaterial.updateFogOptions(fogData);
  },
 
- $INIT(scene: BABYLON.Scene) {
-  this.updateFogOptions(this.fogOptions);
+ $INIT(scene: Scene) {
+  this.solidMaterial = new DVEMaterial("#dve_solid", {
+   alphaBlending: false,
+   alphaTesting: true,
+  });
+  this.solidMesh = new DVEMesh("#dve_solid", this.solidMaterial);
+  this.floraMaterial = new DVEMaterial("#dve_flora", {
+   alphaBlending: false,
+   alphaTesting: true,
+  });
+  this.floraMesh = new DVEMesh("#dve_flora", this.floraMaterial);
+  this.liquidMaterial = new DVEMaterial("#dve_liquid", {
+   alphaBlending: true,
+   alphaTesting: false,
+  });
+  this.liquidMesh = new DVEMesh("#dve_liquid", this.liquidMaterial);
+
+  this.fogData = new DVEBabylon.system.Vector4();
+  (this.fogOptions = {
+   mode: "volumetric",
+   density: 0.0005,
+   color: new DVEBabylon.system.Color3(1, 1, 1),
+   volumetricOptions: {
+    heightFactor: 0.25,
+   },
+  }),
+   this.updateFogOptions(this.fogOptions);
   this._setFogData();
   this.scene = scene;
+
   this.meshManager.$INIT(scene);
   this.meshCuller.$INIT(scene);
+  this.syncSettings();
  },
 
  updateShaderEffectOptions(options: RecursivePartial<DVERenderEffectsOptions>) {
@@ -146,10 +138,10 @@ export const RenderManager = {
   this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
  },
 
- syncSettings(settings: EngineSettingsData) {
-  this.solidMesh.syncSettings(settings);
-  this.floraMesh.syncSettings(settings);
-  this.liquidMesh.syncSettings(settings);
+ syncSettings() {
+  this.solidMesh.syncSettings(EngineSettings.getSettings());
+  this.floraMesh.syncSettings(EngineSettings.getSettings());
+  this.liquidMesh.syncSettings(EngineSettings.getSettings());
   //this.magmaMesh.syncSettings(settings);
  },
 
@@ -157,8 +149,12 @@ export const RenderManager = {
   return this.scene;
  },
 
- getDefaultCamera(scene: BABYLON.Scene) {
-  const camera = new BABYLON.UniversalCamera("", BABYLON.Vector3.Zero(), scene);
+ getDefaultCamera(scene: Scene) {
+  const camera = new DVEBabylon.system.UniversalCamera(
+   "",
+   DVEBabylon.system.Vector3.Zero(),
+   scene
+  );
   camera.touchAngularSensibility = 10000;
   camera.speed = 1;
   camera.keysUp.push(87); // W
@@ -176,7 +172,7 @@ export const RenderManager = {
   return camera;
  },
 
- createSkyBoxMaterial(scene?: BABYLON.Scene) {
+ createSkyBoxMaterial(scene?: Scene) {
   if (!this.scene && !scene) {
    throw new Error(`Must set a scene first.`);
   }

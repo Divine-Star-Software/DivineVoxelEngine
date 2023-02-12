@@ -39,11 +39,11 @@ export declare class BuilderTool extends LocationBoundTool {
             paint: {
                 deferred: {
                     _s: any;
-                    run(x: number, y: number, z: number, raw: import("../../Meta/index.js").RawVoxelData, onDone: (data: any) => void): void;
+                    run(x: number, y: number, z: number, raw: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData, onDone: (data: any) => void): void;
                 };
                 async: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: import("../../Meta/index.js").RawVoxelData): void;
+                    add(x: number, y: number, z: number, raw: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };

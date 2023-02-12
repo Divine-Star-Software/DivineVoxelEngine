@@ -35,13 +35,13 @@ export const Builder = {
     },
     constructEntity() {
         /*   const template = this.processor.constructEntity();
-          this.entityMesher.buildEntityMesh(
-           this.entityConstructor.pos.x,
-           this.entityConstructor.pos.y,
-           this.entityConstructor.pos.z,
-           template.solid
-          );
-          this.entityConstructor.clearEntityData();
-          this.processor.flush(); */
+        this.entityMesher.buildEntityMesh(
+         this.entityConstructor.pos.x,
+         this.entityConstructor.pos.y,
+         this.entityConstructor.pos.z,
+         template.solid
+        );
+        this.entityConstructor.clearEntityData();
+        this.processor.flush(); */
     },
 };

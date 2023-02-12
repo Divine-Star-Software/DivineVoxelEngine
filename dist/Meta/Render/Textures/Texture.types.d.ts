@@ -1,10 +1,4 @@
-import { VoxelSubstanceType } from "Meta/index";
-export declare type TextureTypes = VoxelSubstanceType | "Item";
-export declare type TextureProccesedData = {
-    textureAnimations: Record<TextureTypes, number[][]>;
-    textureAnimationTimes: Record<TextureTypes, number[][]>;
-    texturePaths: Record<TextureTypes, string[]>;
-};
+export declare type TextureTypes = string;
 export declare type TextureTypeUVMap = Record<string, Record<string, Record<string, number>>>;
 export declare type TextureAnimationData = {
     /**# Frames

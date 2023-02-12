@@ -1,5 +1,5 @@
-/// <reference types="babylonjs" />
-import type { TextureData } from "Meta/index";
+import type { RawTexture2DArray } from "babylonjs";
+import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
 import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 import { DivineShader } from "../../Libs/Shaders/Classes/DivineShader.js";
 declare class TextureRecord {
@@ -23,7 +23,7 @@ declare class TextureRecord {
     animationUniforID: string;
     animationUniform: Float32Array;
     paths: string[];
-    texture: BABYLON.RawTexture2DArray[];
+    texture: RawTexture2DArray[];
     textureID: string;
     constructor(parentID: string, id: string, mode: "sampler" | "overlay", attributeID: string);
 }

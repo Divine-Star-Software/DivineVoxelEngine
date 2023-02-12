@@ -1,3 +1,4 @@
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 export class SceneTool {
     constructor() {
@@ -28,7 +29,7 @@ export class SceneTool {
             return this._s;
         },
         setColor(r, g = r, b = r) {
-            RenderManager.updateFogOptions({ color: new BABYLON.Color3(r, g, b) });
+            RenderManager.updateFogOptions({ color: new DVEBabylon.system.Color3(r, g, b) });
             return this._s;
         },
     };

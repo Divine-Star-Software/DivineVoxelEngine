@@ -1,15 +1,10 @@
-/// <reference types="babylonjs" />
-import { Vector3 } from "Meta/Util.types.js";
-import { FOCamera } from "./FOCamera.js";
-import { FONode } from "./FONode.js";
+import type { Scene, TransformNode, Vector3 } from "babylonjs";
 export declare const FOManager: {
-    activeCamera: FOCamera | null;
-    activeNode: FONode | null;
+    activeCamera: TransformNode | null;
+    activeNode: TransformNode | null;
     onOriginSet: Function[];
-    registerOnOriginSet(run: (node: FONode) => void): void;
-    getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement): FOCamera;
-    getNode(scene: BABYLON.Scene, name: string): FONode;
-    setOriginCenter(scene: BABYLON.Scene, object: {
-        position: BABYLON.Vector3;
+    registerOnOriginSet(run: (node: TransformNode) => void): void;
+    setOriginCenter(scene: Scene, object: {
+        position: Vector3;
     }): void;
 };

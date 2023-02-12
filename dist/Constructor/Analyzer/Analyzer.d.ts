@@ -23,9 +23,9 @@ export declare const Analyzer: {
             };
             settings: {
                 enviorment: "browser" | "node";
-                settings: import("../../Meta/index.js").EngineSettingsData;
-                getSettings(): import("../../Meta/index.js").EngineSettingsData;
-                syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+                settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 __syncWithObjects(): void;
                 syncWithWorldBounds(worldBounds: {
                     bounds: {
@@ -419,10 +419,10 @@ export declare const Analyzer: {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -447,17 +447,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/index.js").VoxelShape>;
+                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/index.js").VoxelShape;
+                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -540,11 +540,11 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
                     faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                     flush(): void;
                 };
                 substanceRules: {
@@ -557,7 +557,7 @@ export declare const Analyzer: {
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 buildChunk(location: LocationData, LOD?: number): true | undefined;
                 constructEntity(): void;
             };
@@ -755,7 +755,7 @@ export declare const Analyzer: {
                         };
                     }): void;
                 } & {
-                    $INIT(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    $INIT(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 };
                 register: {
                     stringMaps: {
@@ -876,14 +876,14 @@ export declare const Analyzer: {
             hooks: {
                 texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
             };
-            syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;
@@ -910,9 +910,9 @@ export declare const Analyzer: {
             };
             settings: {
                 enviorment: "browser" | "node";
-                settings: import("../../Meta/index.js").EngineSettingsData;
-                getSettings(): import("../../Meta/index.js").EngineSettingsData;
-                syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+                settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 __syncWithObjects(): void;
                 syncWithWorldBounds(worldBounds: {
                     bounds: {
@@ -1306,10 +1306,10 @@ export declare const Analyzer: {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -1334,17 +1334,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/index.js").VoxelShape>;
+                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/index.js").VoxelShape;
+                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -1427,11 +1427,11 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
                     faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                     flush(): void;
                 };
                 substanceRules: {
@@ -1444,7 +1444,7 @@ export declare const Analyzer: {
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 buildChunk(location: LocationData, LOD?: number): true | undefined;
                 constructEntity(): void;
             };
@@ -1642,7 +1642,7 @@ export declare const Analyzer: {
                         };
                     }): void;
                 } & {
-                    $INIT(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    $INIT(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 };
                 register: {
                     stringMaps: {
@@ -1763,14 +1763,14 @@ export declare const Analyzer: {
             hooks: {
                 texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
             };
-            syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;
@@ -1797,9 +1797,9 @@ export declare const Analyzer: {
             };
             settings: {
                 enviorment: "browser" | "node";
-                settings: import("../../Meta/index.js").EngineSettingsData;
-                getSettings(): import("../../Meta/index.js").EngineSettingsData;
-                syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+                settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+                syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 __syncWithObjects(): void;
                 syncWithWorldBounds(worldBounds: {
                     bounds: {
@@ -2193,10 +2193,10 @@ export declare const Analyzer: {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/index.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/index.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -2221,17 +2221,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/index.js").VoxelShape>;
+                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/index.js").VoxelShape;
+                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -2314,11 +2314,11 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
                     faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                     flush(): void;
                 };
                 substanceRules: {
@@ -2331,7 +2331,7 @@ export declare const Analyzer: {
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 buildChunk(location: LocationData, LOD?: number): true | undefined;
                 constructEntity(): void;
             };
@@ -2529,7 +2529,7 @@ export declare const Analyzer: {
                         };
                     }): void;
                 } & {
-                    $INIT(settings: import("../../Meta/index.js").EngineSettingsData): void;
+                    $INIT(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
                 };
                 register: {
                     stringMaps: {
@@ -2650,14 +2650,14 @@ export declare const Analyzer: {
             hooks: {
                 texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/index.js").TextureTypeUVMap;
+                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
                     getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/index.js").TextureTypeUVMap): void;
+                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
             };
-            syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
+            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;

@@ -1,10 +1,11 @@
+import type { Scene } from "babylonjs";
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 import { TextureCreator } from "../Textures/TextureCreator.js";
 import { TextureManager } from "../Textures/TextureManager.js";
 
 export async function $INITFunction(
  DVER: DivineVoxelEngineRender,
- scene: BABYLON.Scene
+ scene: Scene
 ) {
  DVER.render.$INIT(scene);
  await TextureCreator.setUpImageCreation();
@@ -14,8 +15,6 @@ export async function $INITFunction(
  DVER.render.solidMaterial.createMaterial();
  DVER.render.floraMaterial.createMaterial();
  DVER.render.liquidMaterial.createMaterial();
-
- DVER.render.animationManager.startAnimations();
 
  scene.registerBeforeRender(() => {
   DVER.render.solidMaterial.runEffects();

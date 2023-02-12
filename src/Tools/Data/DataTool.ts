@@ -1,4 +1,8 @@
-import type { RawVoxelData, VoxelSubstanceType, VoxelTemplateSubstanceType } from "Meta/index.js";
+import type {
+ RawVoxelData,
+ VoxelSubstanceType,
+ VoxelTemplateSubstanceType,
+} from "Meta/Data/Voxels/Voxel.types.js";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { VoxelReader } from "../../Data/Voxel/VoxelReader.js";
 import { VoxelTags } from "../../Data/Voxel/VoxelTags.js";
@@ -210,10 +214,12 @@ export class DataTool extends DataToolBase {
   const vID = this.getId(true);
   if (vID < 2) return "#dve_transparent";
   VoxelTags.setVoxel(vID);
-  const s =  <VoxelSubstanceType>Register.stringMaps.getStringMapValue(
-   "voxel",
-   VoxelTagIDs.substance,
-   VoxelTags.getTag(VoxelTagIDs.substance)
+  const s = <VoxelSubstanceType>(
+   Register.stringMaps.getStringMapValue(
+    "voxel",
+    VoxelTagIDs.substance,
+    VoxelTags.getTag(VoxelTagIDs.substance)
+   )
   );
   return s;
  }

@@ -1,3 +1,4 @@
+import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 export class DVEMesh {
     name;
     dveMat;
@@ -6,15 +7,16 @@ export class DVEMesh {
     checkCollisions = false;
     seralize = false;
     clearCachedGeometry = false;
-    defaultBb = new BABYLON.BoundingInfo(BABYLON.Vector3.Zero(), BABYLON.Vector3.Zero());
+    defaultBb;
     constructor(name, dveMat) {
         this.name = name;
         this.dveMat = dveMat;
+        this.defaultBb = new DVEBabylon.system.BoundingInfo(DVEBabylon.system.Vector3.Zero(), DVEBabylon.system.Vector3.Zero());
     }
     createTemplateMesh(scene) {
         let mesh = this.meshes.shift();
         if (!mesh) {
-            mesh = new BABYLON.Mesh(this.name, scene);
+            mesh = new DVEBabylon.system.Mesh(this.name, scene);
             this._setEmptyData(mesh);
         }
         else {
@@ -28,7 +30,7 @@ export class DVEMesh {
             mesh.doNotSyncBoundingInfo = true;
         }
         mesh.doNotSerialize = this.seralize;
-        mesh.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_STANDARD;
+        mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
         mesh.material = this.dveMat.getMaterial();
         mesh.isVisible = false;
         mesh.setEnabled(false);
@@ -48,7 +50,7 @@ export class DVEMesh {
     _setEmptyData(mesh) {
         let chunkVertexData = mesh.vertexData;
         if (!chunkVertexData) {
-            chunkVertexData = new BABYLON.VertexData();
+            chunkVertexData = new DVEBabylon.system.VertexData();
             mesh.vertexData = chunkVertexData;
         }
         mesh.position.x = 0;

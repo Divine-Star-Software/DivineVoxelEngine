@@ -3,7 +3,6 @@ import { MeshRegister } from "./MeshRegister.js";
 export const MeshManager = {
     scene: {},
     runningUpdate: false,
-    meshes: {},
     meshMakers: {},
     $INIT(scene) {
         this.scene = scene;

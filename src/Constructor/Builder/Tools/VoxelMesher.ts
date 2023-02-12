@@ -1,5 +1,5 @@
 import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types";
-import type { VoxelShapeAddData, VoxelTemplateSubstanceType } from "Meta/index";
+
 import type { DirectionNames } from "Meta/Util.types";
 //data
 import { MeshFaceDataByte } from "../../../Data/Meshing/MeshFaceDataBytes.js";
@@ -14,6 +14,7 @@ import {
  TextureRotations,
 } from "Meta/Constructor/Geometry/Geometry.types.js";
 import { LocationData } from "Meta/Data/CommonTypes.js";
+import { VoxelShapeAddData } from "Meta/Constructor/VoxelShape.types.js";
 
 type CumstonVertexData = [number, number, number, number] | [number];
 
@@ -33,7 +34,7 @@ export const VoxelMesher = {
   return this;
  },
  $buildMesh(
-  type: VoxelTemplateSubstanceType,
+  type: string,
   template: VoxelTemplate,
   LOD = 1,
   location: LocationData

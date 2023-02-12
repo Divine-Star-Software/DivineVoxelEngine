@@ -1,5 +1,6 @@
 import { DVEShaders } from "../../Shaders/DVEShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
+import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
 export const SkyBoxMaterial = {
     material: null,
     time: 0,
@@ -55,10 +56,10 @@ export const SkyBoxMaterial = {
     createMaterial(scene) {
         const shader = DVEShaders.createSkyBoxShader("skybox");
         shader.compile();
-        BABYLON.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
-        BABYLON.Effect.ShadersStore["skyboxFragmentShader"] =
+        DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
+        DVEBabylon.system.Effect.ShadersStore["skyboxFragmentShader"] =
             shader.compiled.fragment;
-        const shaderMaterial = new BABYLON.ShaderMaterial("skybox", scene, "skybox", {
+        const shaderMaterial = new DVEBabylon.system.ShaderMaterial("skybox", scene, "skybox", {
             attributes: shader.getAttributeList(),
             uniforms: shader.getUniformList(),
             needAlphaBlending: false,

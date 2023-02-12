@@ -19,6 +19,7 @@ import { WorldBounds } from "../Data/World/WorldBounds.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { WorldSpaces } from "../Data/World/WorldSpaces.js";
 import { SceneTool } from "./Tools/SceneTool.js";
+import { DVEBabylon } from "./Babylon/DVEBabylon.js";
 export const DVER = {
     UTIL: Util,
     TC: ThreadComm,
@@ -29,6 +30,7 @@ export const DVER = {
     fxComm: FXComm,
     richWorldComm: RichWorldComm,
     constructorCommManager: ConstructorCommManager,
+    babylon: DVEBabylon,
     settings: EngineSettings,
     render: RenderManager,
     meshManager: MeshManager,
@@ -41,7 +43,6 @@ export const DVER = {
     syncSettingsWithWorkers(data) {
         this.settings.syncSettings(data);
         const copy = this.settings.getSettingsCopy();
-        this.render.syncSettings(copy);
         this.worldComm.sendMessage("sync-settings", [copy]);
         if (this.nexusComm.port) {
             this.nexusComm.sendMessage("sync-settings", [copy]);
@@ -61,6 +62,7 @@ export const DVER = {
         await InitWorkers(this, initData);
     },
     async $SCENEINIT(data) {
+        this.babylon.$INIT(data.system);
         await $INITFunction(this, data.scene);
         this.worldComm.sendMessage("start", []);
     },

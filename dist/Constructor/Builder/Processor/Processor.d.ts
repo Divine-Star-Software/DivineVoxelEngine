@@ -1,4 +1,6 @@
-import type { DirectionNames, EngineSettingsData, VoxelShape, VoxelSubstanceType } from "Meta/index.js";
+import type { DirectionNames } from "Meta/Util.types.js";
+import type { VoxelShape } from "Meta/Constructor/VoxelShape.types.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
@@ -88,7 +90,7 @@ export declare const Processor: {
     template: Record<string, VoxelTemplate>;
     getVoxelTemplate(): VoxelTemplate;
     $INIT(): void;
-    cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: VoxelSubstanceType, faceBit: number): number;
+    cullCheck(face: DirectionNames, voxelObject: VoxelConstructor, voxelShape: VoxelShape, voxelSubstance: string, faceBit: number): number;
     faceStateCheck(face: DirectionNames, faceBit: number): number;
     _process(doSecondCheck?: boolean): void;
     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, VoxelTemplate>;

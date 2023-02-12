@@ -1,4 +1,4 @@
-import { type EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //objects
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ShapeManager } from "./Shapes/ShapeManager.js";
@@ -27,32 +27,22 @@ export const Builder = {
   this.processor.syncSettings(settings);
  },
 
- buildChunk(
-  location : LocationData,
-  LOD = 1
- ) {
+ buildChunk(location: LocationData, LOD = 1) {
   let chunk = DVEC.data.worldRegister.chunk.get(location);
   if (!chunk) {
-   console.warn(`${ location.toString()}could not be loaded`);
+   console.warn(`${location.toString()}could not be loaded`);
    return;
   }
   DVEC.data.worldRegister.cache.enable();
-  const template = this.processor.makeAllChunkTemplates(
-  location,
-   LOD
-  );
-  this.chunkMesher.buildChunkMesh(
-   location,
-   template,
-   LOD
-  );
+  const template = this.processor.makeAllChunkTemplates(location, LOD);
+  this.chunkMesher.buildChunkMesh(location, template, LOD);
   this.processor.flush();
   DVEC.data.worldRegister.cache.disable();
   return true;
  },
 
  constructEntity() {
-/*   const template = this.processor.constructEntity();
+  /*   const template = this.processor.constructEntity();
   this.entityMesher.buildEntityMesh(
    this.entityConstructor.pos.x,
    this.entityConstructor.pos.y,

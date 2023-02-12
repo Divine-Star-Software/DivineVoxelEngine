@@ -1,5 +1,5 @@
 //types
-import type { EngineSettingsData } from "Meta/index.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
@@ -18,7 +18,7 @@ export const DVERW = {
  environment: <"node" | "browser">"browser",
  __settingsHaveBeenSynced: false,
 
- TC : ThreadComm,
+ TC: ThreadComm,
  worldBounds: WorldBounds,
  UTIL: Util,
  settings: EngineSettings,

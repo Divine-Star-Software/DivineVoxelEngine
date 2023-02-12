@@ -65,11 +65,11 @@ export declare class IWG {
             paint: {
                 deferred: {
                     _s: any;
-                    run(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData, onDone: (data: any) => void): void;
+                    run(x: number, y: number, z: number, raw: import("../../../Meta/Data/Voxels/Voxel.types").RawVoxelData, onDone: (data: any) => void): void;
                 };
                 async: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: import("../../../Meta/index").RawVoxelData): void;
+                    add(x: number, y: number, z: number, raw: import("../../../Meta/Data/Voxels/Voxel.types").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };

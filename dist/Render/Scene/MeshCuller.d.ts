@@ -1,4 +1,4 @@
-/// <reference types="babylonjs" />
+import { Scene } from "babylonjs";
 export declare const MeshCuller: {
-    $INIT(scene: BABYLON.Scene): void;
+    $INIT(scene: Scene): void;
 };

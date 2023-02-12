@@ -1,5 +1,5 @@
 import type { VoxelMesher } from "Constructor/Builder/Tools/VoxelMesher";
-import type { VoxelSubstanceType } from "Meta/index";
+
 import type { GeometryBuildData } from "./Geometry/Geometry.types";
 
 /** # Voxel Shape Add DAta
@@ -7,7 +7,7 @@ import type { GeometryBuildData } from "./Geometry/Geometry.types";
 */
 export type VoxelShapeAddData = {
  LOD: number;
- substance: VoxelSubstanceType;
+ substance: string;
  //chunk template data
  face: number;
  shapeState: number;

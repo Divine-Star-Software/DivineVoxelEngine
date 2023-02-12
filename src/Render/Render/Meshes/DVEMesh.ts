@@ -1,25 +1,30 @@
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
-import { EngineSettingsData } from "Meta/index.js";
-import { ChunkMeshData, SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types";
+import type { BoundingInfo, Mesh, Scene, VertexData } from "babylonjs";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
+import { ChunkMeshData } from "Meta/Tasks/RenderTasks.types";
+import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 import { DVEMaterial } from "../Materials/DVEMaterial.js";
 
 export class DVEMesh {
- meshes: BABYLON.Mesh[] = [];
+ meshes: Mesh[] = [];
  pickable = false;
  checkCollisions = false;
  seralize = false;
  clearCachedGeometry = false;
- defaultBb = new BABYLON.BoundingInfo(
-  BABYLON.Vector3.Zero(),
-  BABYLON.Vector3.Zero()
- );
+ defaultBb: BoundingInfo;
 
- constructor(public name: string, public dveMat: DVEMaterial) {}
+ constructor(public name: string, public dveMat: DVEMaterial) {
 
- createTemplateMesh(scene: BABYLON.Scene) {
+  this.defaultBb = new DVEBabylon.system.BoundingInfo(
+   DVEBabylon.system.Vector3.Zero(),
+   DVEBabylon.system.Vector3.Zero()
+  );
+ }
+
+ createTemplateMesh(scene: Scene) {
   let mesh = this.meshes.shift();
   if (!mesh) {
-   mesh = new BABYLON.Mesh(this.name, scene);
+   mesh = new DVEBabylon.system.Mesh(this.name, scene);
    this._setEmptyData(mesh);
   } else {
    mesh.setEnabled(true);
@@ -34,9 +39,8 @@ export class DVEMesh {
    mesh.doNotSyncBoundingInfo = true;
   }
 
-
   mesh.doNotSerialize = this.seralize;
-  mesh.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_STANDARD;
+  mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
   mesh.material = this.dveMat.getMaterial();
   mesh.isVisible = false;
   mesh.setEnabled(false);
@@ -55,10 +59,10 @@ export class DVEMesh {
   }
  }
 
- _setEmptyData(mesh: BABYLON.Mesh) {
+ _setEmptyData(mesh: Mesh) {
   let chunkVertexData = (mesh as any).vertexData;
   if (!chunkVertexData) {
-   chunkVertexData = new BABYLON.VertexData();
+   chunkVertexData = new DVEBabylon.system.VertexData();
    (mesh as any).vertexData = chunkVertexData;
   }
 
@@ -77,7 +81,7 @@ export class DVEMesh {
   chunkVertexData.applyToMesh(mesh, false);
  }
 
- _clearCached(mesh: BABYLON.Mesh) {
+ _clearCached(mesh: Mesh) {
   if (this.clearCachedGeometry) {
    if (mesh.subMeshes) {
     for (const sm of mesh.subMeshes) {
@@ -88,23 +92,19 @@ export class DVEMesh {
   }
  }
 
- removeMesh(mesh: BABYLON.Mesh) {
+ removeMesh(mesh: Mesh) {
   this._clearCached(mesh);
   this._setEmptyData(mesh);
   this.meshes.push(mesh);
  }
 
- async setMeshData(
-  mesh: BABYLON.Mesh,
-  location: LocationData,
-  data: ChunkMeshData
- ) {
+ async setMeshData(mesh: Mesh, location: LocationData, data: ChunkMeshData) {
   mesh.unfreezeWorldMatrix();
   mesh.position.x = location[1];
   mesh.position.y = location[2];
   mesh.position.z = location[3];
 
-  const chunkVertexData: BABYLON.VertexData = (mesh as any).vertexData;
+  const chunkVertexData: VertexData = (mesh as any).vertexData;
   chunkVertexData.positions = data[1];
   chunkVertexData.normals = data[2];
   chunkVertexData.indices = data[3];

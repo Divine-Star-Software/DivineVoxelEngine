@@ -1,12 +1,12 @@
 //types
-import type { EngineSettingsData } from "Meta/index.js";
+import { EngineSettingsData } from "../Meta/Data/Settings/EngineSettings.types.js";
+
 //comms
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
 import { WorldComm } from "./Threads/World/WorldComm.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
-import { NexusEntites } from "./NexusEntities/NexusEntites.manager.js";
 //functions
 import { InitNexusWorker } from "./Init/InitNexusWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
@@ -17,7 +17,7 @@ import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 export const DVEN = {
  environment: <"node" | "browser">"browser",
 
- TC : ThreadComm,
+ TC: ThreadComm,
  UTIL: Util,
  settings: EngineSettings,
 
@@ -28,8 +28,6 @@ export const DVEN = {
 
  worldComm: WorldComm,
  parentComm: ParentComm,
-
- nexusEntites: NexusEntites,
 
  async $INIT() {
   await InitNexusWorker(this);

@@ -1,10 +1,10 @@
 import type { AddVoxelData } from "Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
+import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { WorldPainter } from "../../Data/World/WorldPainter.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { VoxelPaletteReader } from "../../Data/Voxel/VoxelPalette.js";
-import { RawVoxelData } from "Meta/index.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export class BrushTool extends LocationBoundTool {
  data: AddVoxelData = {

@@ -1,5 +1,5 @@
 //types
-import type { VoxelData } from "Meta/index.js";
+import type { VoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 import type { VoxelPalette } from "Meta/Data/WorldData.types.js";
 //objects
 import { DVEW } from "../../DivineVoxelEngineWorld.js";
@@ -8,6 +8,7 @@ import { VoxelTagBuilder } from "../TagBuilders/VoxelTagBuilder.js";
 import { VoxelTags } from "../../../Data/Voxel/VoxelTags.js";
 import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
+
 
 export const VoxelDataGenerator = {
  $generateVoxelData() {

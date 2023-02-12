@@ -1,6 +1,6 @@
 import type { AddVoxelData } from "Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import { RawVoxelData } from "Meta/index.js";
+import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export declare class BrushTool extends LocationBoundTool {
     data: AddVoxelData;

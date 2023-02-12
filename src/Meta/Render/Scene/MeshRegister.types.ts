@@ -1,13 +1,13 @@
+import type { Mesh } from "babylonjs";
 import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
-import { VoxelTemplateSubstanceType } from "Meta/index";
 
 export type MeshRegisterChunk = {
- mesh: BABYLON.Mesh;
+ mesh: Mesh;
 };
 
 export type MeshRegisterColumn = {
-location: LocationData,
- chunks: Map<number, Map<VoxelTemplateSubstanceType, MeshRegisterChunk>>;
+ location: LocationData;
+ chunks: Map<number, Map<string, MeshRegisterChunk>>;
 };
 
 export type MushRegisterRegion = {

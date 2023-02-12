@@ -1,4 +1,5 @@
-import { VoxelData } from "Meta/index";
+import type { VoxelData } from "../../../Meta/Data/Voxels/Voxel.types";
+
 
 export const VoxelManager = {
  voxelData: <Map<string, VoxelData>>new Map(),

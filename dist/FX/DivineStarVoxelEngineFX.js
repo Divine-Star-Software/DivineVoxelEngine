@@ -26,5 +26,5 @@ export const DVEFX = {
     },
     async $INIT() {
         await InitWorker(this);
-    }
+    },
 };

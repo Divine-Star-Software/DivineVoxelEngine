@@ -1,8 +1,10 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import { VoxelTemplateSubstanceType } from "Meta/index.js";
+import type { ShaderMaterial, Vector4 } from "babylonjs";
+
 import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
+import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 
 type DVEMaterialOptions = {
  alphaTesting: boolean;
@@ -11,12 +13,12 @@ type DVEMaterialOptions = {
 };
 
 export class DVEMaterial {
- material: BABYLON.ShaderMaterial | null = null;
+ material: ShaderMaterial | null = null;
 
  time = 0;
 
  constructor(
-  public id: VoxelTemplateSubstanceType | "Item" = "#dve_solid",
+  public id: string = "#dve_solid",
   public options: DVEMaterialOptions
  ) {}
 
@@ -24,7 +26,7 @@ export class DVEMaterial {
   return this.material;
  }
 
- updateFogOptions(data: BABYLON.Vector4) {
+ updateFogOptions(data: Vector4) {
   if (!this.material) return;
   this.material.setVector4("fogOptions", data);
  }
@@ -76,7 +78,7 @@ export class DVEMaterial {
   }
  }
 
- createMaterial(): BABYLON.ShaderMaterial {
+ createMaterial(): ShaderMaterial {
   const type = TextureManager.getTextureType(this.id);
   if (!type) {
    throw new Error(`${this.id} is not a valid texture type`);
@@ -88,17 +90,22 @@ export class DVEMaterial {
   shader.setCodeBody("frag", `@${this.id}_frag`);
   shader.compile();
 
-  BABYLON.Effect.ShadersStore[`${this.id}VertexShader`] =
+  DVEBabylon.system.Effect.ShadersStore[`${this.id}VertexShader`] =
    shader.compiled.vertex;
 
-  BABYLON.Effect.ShadersStore[`${this.id}FragmentShader`] =
+  DVEBabylon.system.Effect.ShadersStore[`${this.id}FragmentShader`] =
    shader.compiled.fragment;
-  const shaderMaterial = new BABYLON.ShaderMaterial(this.id, scene, this.id, {
-   attributes: shader.getAttributeList(),
-   uniforms: shader.getUniformList(),
-   needAlphaBlending: this.options.alphaBlending,
-   needAlphaTesting: this.options.alphaTesting,
-  });
+  const shaderMaterial = new DVEBabylon.system.ShaderMaterial(
+   this.id,
+   scene,
+   this.id,
+   {
+    attributes: shader.getAttributeList(),
+    uniforms: shader.getUniformList(),
+    needAlphaBlending: this.options.alphaBlending,
+    needAlphaTesting: this.options.alphaTesting,
+   }
+  );
 
   this.material = shaderMaterial;
 
@@ -115,7 +122,7 @@ export class DVEMaterial {
 
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
-  shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());
+  shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());
 
   this.material.onBind = (mesh) => {
    if (!this.material) return;
@@ -134,8 +141,6 @@ export class DVEMaterial {
   };
 
   this.updateMaterialSettings(EngineSettings.getSettings());
-
-  DVER.render.animationManager.registerMaterial(this.id, this.material);
 
   return this.material;
  }

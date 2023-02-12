@@ -3,7 +3,8 @@ import {
  AdvancedUVs,
  TextureRotations,
 } from "Meta/Constructor/Geometry/Geometry.types";
-import { VoxelShapeAddData } from "Meta/index";
+import { VoxelShapeAddData } from "Meta/Constructor/VoxelShape.types";
+
 import { DirectionNames } from "Meta/Util.types";
 
 type UVFaceTypes = "top" | "side" | "bottom";

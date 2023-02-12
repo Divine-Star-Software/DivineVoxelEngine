@@ -1,16 +1,18 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { DVEShaders } from "../../Shaders/DVEShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
+import { Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
 
 export const SkyBoxMaterial = {
- material: <BABYLON.ShaderMaterial | null>null,
+ material: <ShaderMaterial | null>null,
  time: 0,
 
  getMaterial() {
   return this.material;
  },
 
- updateFogOptions(data: BABYLON.Vector4) {
+ updateFogOptions(data: Vector4) {
   if (!this.material) return;
   this.material.setVector4("fogOptions", data);
  },
@@ -54,14 +56,14 @@ export const SkyBoxMaterial = {
   }
  },
 
- createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial {
+ createMaterial(scene: Scene): ShaderMaterial {
   const shader = DVEShaders.createSkyBoxShader("skybox");
   shader.compile();
-  BABYLON.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
-  BABYLON.Effect.ShadersStore["skyboxFragmentShader"] =
+  DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
+  DVEBabylon.system.Effect.ShadersStore["skyboxFragmentShader"] =
    shader.compiled.fragment;
 
-  const shaderMaterial = new BABYLON.ShaderMaterial("skybox", scene, "skybox", {
+  const shaderMaterial = new DVEBabylon.system.ShaderMaterial("skybox", scene, "skybox", {
    attributes: shader.getAttributeList(),
    uniforms: shader.getUniformList(),
    needAlphaBlending: false,

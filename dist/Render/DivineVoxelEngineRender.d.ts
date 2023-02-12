@@ -1,6 +1,8 @@
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
+import type { Scene } from "babylonjs";
+import { DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
 export declare const DVER: {
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +12,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -21,7 +23,7 @@ export declare const DVER: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -65,13 +67,17 @@ export declare const DVER: {
         $INIT(): void;
     };
     constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
-        $INIT(dasta: import("../Meta/index.js").TextureTypeUVMap): void;
+        $INIT(dasta: import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
         createConstructors(path: string, numBuilders?: number): void;
         setConstructors(constructors: Worker[]): void;
         syncSettings(data: any): void;
     };
+    babylon: {
+        system: DVEBabylonSystem;
+        $INIT(system: DVEBabylonSystem): void;
+    };
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -124,18 +130,17 @@ export declare const DVER: {
                 get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn | undefined;
             };
             chunk: {
-                add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, mesh: BABYLON.Mesh, substance: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
-                _getChunkData(mesh: BABYLON.Mesh): import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
-                remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | BABYLON.Mesh;
+                add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, mesh: import("babylonjs").Mesh, substance: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
+                _getChunkData(mesh: import("babylonjs").Mesh): import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
+                remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | import("babylonjs").Mesh;
                 get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
             };
         };
         meshManager: {
-            scene: BABYLON.Scene;
+            scene: Scene;
             runningUpdate: boolean;
-            meshes: Record<string, Record<string, Record<string, BABYLON.Mesh>>>;
             meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
-            $INIT(scene: BABYLON.Scene): void;
+            $INIT(scene: Scene): void;
             chunks: {
                 remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
                 update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
@@ -143,19 +148,17 @@ export declare const DVER: {
             };
         };
         meshCuller: {
-            $INIT(scene: BABYLON.Scene): void;
+            $INIT(scene: Scene): void;
         };
-        fogData: BABYLON.Vector4;
+        fogData: import("babylonjs").Vector4;
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions;
         fo: {
-            activeCamera: import("./Render/FloatingOrigin/FOCamera.js").FOCamera | null;
-            activeNode: import("./Render/FloatingOrigin/FONode.js").FONode | null;
+            activeCamera: import("babylonjs").TransformNode | null;
+            activeNode: import("babylonjs").TransformNode | null;
             onOriginSet: Function[];
-            registerOnOriginSet(run: (node: import("./Render/FloatingOrigin/FONode.js").FONode) => void): void;
-            getCamera(scene: BABYLON.Scene, name: string, position?: BABYLON.Vector3, canvas?: HTMLCanvasElement | undefined): import("./Render/FloatingOrigin/FOCamera.js").FOCamera;
-            getNode(scene: BABYLON.Scene, name: string): import("./Render/FloatingOrigin/FONode.js").FONode;
-            setOriginCenter(scene: BABYLON.Scene, object: {
-                position: BABYLON.Vector3;
+            registerOnOriginSet(run: (node: import("babylonjs").TransformNode) => void): void;
+            setOriginCenter(scene: Scene, object: {
+                position: import("babylonjs").Vector3;
             }): void;
         };
         shaders: {
@@ -202,74 +205,41 @@ export declare const DVER: {
             createVoxelShader(id: string): import("../Libs/Shaders/Classes/DivineShader.js").DivineShader;
             createSkyBoxShader(id: string): import("../Libs/Shaders/Classes/DivineShader.js").DivineShader;
         };
-        animationManager: {
-            animatedMaterials: Record<string, BABYLON.ShaderMaterial>;
-            animCount: number;
-            animationUniforms: Map<string, Float32Array>;
-            overlayAnimationUniforms: Map<string, Float32Array>;
-            animations: {
-                uniformIndex: number;
-                overlay?: boolean | undefined;
-                keys: number[];
-                currentFrame: number;
-                currentCount: number;
-                keyCounts: number[];
-                substance: string;
-            }[];
-            registerAnimations(voxelSubstanceType: string, shader: import("../Libs/Shaders/Classes/DivineShader.js").DivineShader, animations: number[][], animationTimes: number[][], overlay?: boolean): Float32Array;
-            registerMaterial(voxelSubstanceType: string, material: BABYLON.ShaderMaterial): void;
-            startAnimations(): void;
-        };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         floraMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         liquidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
         solidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         floraMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         liquidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
-        solidStandardMaterial: {
-            material: BABYLON.StandardMaterial | null;
-            plugin: import("./Render/Materials/Standard/SolidMaterial.bjsmp.js").SolidMaterialPlugin | null;
-            $INIT(texture: BABYLON.RawTexture2DArray, scnee: BABYLON.Scene): void;
-            getMaterial(): BABYLON.StandardMaterial;
-        };
-        liquidStandardMaterial: {
-            material: BABYLON.StandardMaterial | null;
-            reflectionprobe: BABYLON.RenderTargetTexture | null;
-            plugin: import("./Render/Materials/Standard/LiquidMaterial.bjsmp.js").LiquidMaterialPlugin | null;
-            $INIT(texture: BABYLON.RawTexture2DArray, scene: BABYLON.Scene): void;
-            getMaterial(): BABYLON.StandardMaterial;
-            addToRenderList(mesh: BABYLON.Mesh): void;
-        };
         skyBoxMaterial: {
-            material: BABYLON.ShaderMaterial | null;
+            material: import("babylonjs").ShaderMaterial | null;
             time: number;
-            getMaterial(): BABYLON.ShaderMaterial | null;
-            updateFogOptions(data: BABYLON.Vector4): void;
+            getMaterial(): import("babylonjs").ShaderMaterial | null;
+            updateFogOptions(data: import("babylonjs").Vector4): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(scene: BABYLON.Scene): BABYLON.ShaderMaterial;
+            createMaterial(scene: Scene): import("babylonjs").ShaderMaterial;
             overrideMaterial(material: any): void;
             runEffects(): void;
         };
-        scene: BABYLON.Scene | null;
+        scene: Scene | null;
         updateFogOptions(options: import("../Meta/Util.types.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions>): void;
         _setFogData(): void;
-        $INIT(scene: BABYLON.Scene): void;
+        $INIT(scene: Scene): void;
         updateShaderEffectOptions(options: import("../Meta/Util.types.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions>): void;
-        syncSettings(settings: EngineSettingsData): void;
-        getScene(): BABYLON.Scene | null;
-        getDefaultCamera(scene: BABYLON.Scene): BABYLON.UniversalCamera;
-        createSkyBoxMaterial(scene?: BABYLON.Scene | undefined): BABYLON.ShaderMaterial | null;
+        syncSettings(): void;
+        getScene(): Scene | null;
+        getDefaultCamera(scene: Scene): import("babylonjs").UniversalCamera;
+        createSkyBoxMaterial(scene?: Scene | undefined): import("babylonjs").ShaderMaterial | null;
         setSunLevel(level: number): void;
         setBaseLevel(level: number): void;
     };
     meshManager: {
-        scene: BABYLON.Scene;
+        scene: Scene;
         runningUpdate: boolean;
-        meshes: Record<string, Record<string, Record<string, BABYLON.Mesh>>>;
         meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
-        $INIT(scene: BABYLON.Scene): void;
+        $INIT(scene: Scene): void;
         chunks: {
             remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
             update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
@@ -372,17 +342,17 @@ export declare const DVER: {
     textures: {
         defaultTexturePath: string;
         textureTypes: Map<string, import("./Textures/TextureType.js").TextureType>;
-        _processVariations(texture: import("../Meta/index.js").TextureData, texturePaths: string[], map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number, path: string): number;
+        _processVariations(texture: import("../Meta/Render/Textures/Texture.types.js").TextureData, texturePaths: string[], map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number, path: string): number;
         generateTexturesData(id: string): false | undefined;
         _ready: boolean;
         isReady(): boolean;
         $INIT(): Promise<void>;
         $START_ANIMATIONS(): void;
-        getTextureUVMap(): import("../Meta/index.js").TextureTypeUVMap;
+        getTextureUVMap(): import("../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
         defineDefaultTexturePath(path: string): void;
         getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
         addTextureType(id: string): void;
-        registerTexture(textureData: import("../Meta/index.js").TextureData | import("../Meta/index.js").TextureData[]): void;
+        registerTexture(textureData: import("../Meta/Render/Textures/Texture.types.js").TextureData | import("../Meta/Render/Textures/Texture.types.js").TextureData[]): void;
     };
     tasks: {
         setChunk: import("../Libs/ThreadComm/Tasks/Tasks.js").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
@@ -393,7 +363,8 @@ export declare const DVER: {
     syncSettingsWithWorkers(data: EngineSettingsData): void;
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
-        scene: BABYLON.Scene;
+        scene: Scene;
+        system: DVEBabylonSystem;
     }): Promise<void>;
     __createWorker(path: string): Worker;
     getSceneTool(): SceneTool;

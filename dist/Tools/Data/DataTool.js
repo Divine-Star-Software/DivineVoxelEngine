@@ -203,7 +203,7 @@ export class DataTool extends DataToolBase {
         if (vID < 2)
             return "#dve_transparent";
         VoxelTags.setVoxel(vID);
-        const s = Register.stringMaps.getStringMapValue("voxel", VoxelTagIDs.substance, VoxelTags.getTag(VoxelTagIDs.substance));
+        const s = (Register.stringMaps.getStringMapValue("voxel", VoxelTagIDs.substance, VoxelTags.getTag(VoxelTagIDs.substance)));
         return s;
     }
     getMaterial() {

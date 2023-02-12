@@ -329,7 +329,7 @@ export declare const DVEW: {
                 _count: number;
                 _palette: import("../Meta/Data/WorldData.types.js").VoxelPalette;
                 _map: Record<string, number>;
-                registerVoxel(voxel: import("../Meta/index.js").VoxelData): void;
+                registerVoxel(voxel: import("../Meta/Data/Voxels/Voxel.types.js").VoxelData): void;
                 get(): import("../Meta/Data/WorldData.types.js").VoxelPalette;
                 getMap(): Record<string, number>;
             };
@@ -612,9 +612,9 @@ export declare const DVEW: {
     ccm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager;
     richWorldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     voxelManager: {
-        voxelData: Map<string, import("../Meta/index.js").VoxelData>;
-        getVoxelData(id: string): import("../Meta/index.js").VoxelData;
-        registerVoxelData(data: import("../Meta/index.js").VoxelData | import("../Meta/index.js").VoxelData[]): void;
+        voxelData: Map<string, import("../Meta/Data/Voxels/Voxel.types.js").VoxelData>;
+        getVoxelData(id: string): import("../Meta/Data/Voxels/Voxel.types.js").VoxelData;
+        registerVoxelData(data: import("../Meta/Data/Voxels/Voxel.types.js").VoxelData | import("../Meta/Data/Voxels/Voxel.types.js").VoxelData[]): void;
     };
     itemManager: {
         itemData: Record<string, import("../Meta/Data/Items/Item.types.js").ItemData>;
@@ -745,11 +745,11 @@ export declare const DVEW: {
                 paint: {
                     deferred: {
                         _s: any;
-                        run(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData, onDone: (data: any) => void): void;
+                        run(x: number, y: number, z: number, raw: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData, onDone: (data: any) => void): void;
                     };
                     async: {
                         _s: any;
-                        add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
+                        add(x: number, y: number, z: number, raw: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                         run(onDone: Function): void;
                         runAndAwait(): Promise<void>;
                     };
@@ -900,11 +900,11 @@ export declare const DVEW: {
             paint: {
                 deferred: {
                     _s: any;
-                    run(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData, onDone: (data: any) => void): void;
+                    run(x: number, y: number, z: number, raw: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData, onDone: (data: any) => void): void;
                 };
                 async: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: import("../Meta/index.js").RawVoxelData): void;
+                    add(x: number, y: number, z: number, raw: import("../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };

@@ -1,5 +1,6 @@
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
-import { RawVoxelData } from "Meta/index";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types";
+
 
 export type Priorities = 0 | 1 | 2 | 3;
 export type PriorityTask<T> = {

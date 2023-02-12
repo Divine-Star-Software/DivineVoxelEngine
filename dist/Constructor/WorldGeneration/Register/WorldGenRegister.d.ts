@@ -1,5 +1,5 @@
-import { RawVoxelData } from "Meta/index.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
+import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 export declare const WorldGenRegister: {
     MAX_ATTEMPTS: number;
     _requests: Map<string, {

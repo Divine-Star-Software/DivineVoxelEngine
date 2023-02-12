@@ -1,3 +1,5 @@
+import type { RawTexture2DArray } from "babylonjs";
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 
 export const TextureCreator = {
@@ -31,15 +33,14 @@ export const TextureCreator = {
   images: string[],
   width: number = -1,
   height: number = -1
- ): Promise<BABYLON.RawTexture2DArray[]> {
+ ): Promise<RawTexture2DArray[]> {
   if (width == -1) width = this.imgWidth;
   if (height == -1) height = this.imgHeight;
   this._canvas.width = this.imgWidth;
   this._canvas.height = this.imgHeight;
-  const textures: BABYLON.RawTexture2DArray[] = [];
+  const textures: RawTexture2DArray[] = [];
   for (const size of this._mipMapSizes) {
    const texture = await this._createTextures(name, images, size, size);
-
    textures.push(texture);
   }
   return textures;
@@ -77,16 +78,16 @@ export const TextureCreator = {
   let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
 
   const combinedImages = this._combineImageData(totalLength, resolvedImages);
-  const _2DTextureArray = new BABYLON.RawTexture2DArray(
+  const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(
    combinedImages,
    width,
    height,
    images.length + 2,
-   BABYLON.Engine.TEXTUREFORMAT_RGBA,
+   DVEBabylon.system.Engine.TEXTUREFORMAT_RGBA,
    scene,
    false,
    false,
-   BABYLON.Texture.NEAREST_SAMPLINGMODE
+   DVEBabylon.system.Texture.NEAREST_SAMPLINGMODE
   );
 
   _2DTextureArray.name = name;

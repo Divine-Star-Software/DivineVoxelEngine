@@ -1,6 +1,7 @@
 import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
+import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 export class DVEMaterial {
     id;
     options;
@@ -77,11 +78,11 @@ export class DVEMaterial {
         shader.setCodeBody("vertex", `@${this.id}_vertex`);
         shader.setCodeBody("frag", `@${this.id}_frag`);
         shader.compile();
-        BABYLON.Effect.ShadersStore[`${this.id}VertexShader`] =
+        DVEBabylon.system.Effect.ShadersStore[`${this.id}VertexShader`] =
             shader.compiled.vertex;
-        BABYLON.Effect.ShadersStore[`${this.id}FragmentShader`] =
+        DVEBabylon.system.Effect.ShadersStore[`${this.id}FragmentShader`] =
             shader.compiled.fragment;
-        const shaderMaterial = new BABYLON.ShaderMaterial(this.id, scene, this.id, {
+        const shaderMaterial = new DVEBabylon.system.ShaderMaterial(this.id, scene, this.id, {
             attributes: shader.getAttributeList(),
             uniforms: shader.getUniformList(),
             needAlphaBlending: this.options.alphaBlending,
@@ -98,7 +99,7 @@ export class DVEMaterial {
         type.addToMaterial(this);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
-        shaderMaterial.setVector3("worldOrigin", BABYLON.Vector3.Zero());
+        shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());
         this.material.onBind = (mesh) => {
             if (!this.material)
                 return;
@@ -110,7 +111,6 @@ export class DVEMaterial {
             effect.setColor3("vFogColor", scene.fogColor);
         };
         this.updateMaterialSettings(EngineSettings.getSettings());
-        DVER.render.animationManager.registerMaterial(this.id, this.material);
         return this.material;
     }
     overrideMaterial(material) {

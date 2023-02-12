@@ -1,10 +1,10 @@
-import type { EngineSettingsData } from "Meta/index.js";
+import { EngineSettingsData } from "../Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEN: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -41,7 +41,7 @@ export declare const DVEN: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -50,7 +50,7 @@ export declare const DVEN: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -309,19 +309,6 @@ export declare const DVEN: {
     };
     worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
     parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
-    nexusEntites: {
-        entityTemplate: Record<string, {
-            template: import("Meta/index.js").NexusEntity;
-            data: import("Meta/index.js").NexusEntityData;
-        }>;
-        loaedEntities: Record<import("Meta/index.js").EntityTypes, Record<string, import("Meta/index.js").NexusEntityInterface>>;
-        registerEntity(id: string, entityData: import("Meta/index.js").NexusEntityData, nexusEntity: import("Meta/index.js").NexusEntity): void;
-        _getID(): string;
-        _unqiueId(): string;
-        _generateUUI(): string;
-        spawnEntity(entityId: string, position: import("Meta/index.js").Vector3, otherData?: any, identiferId?: string | undefined): void;
-        ddSepawnEntity(entityId: string, identiferId: string): void;
-    };
     $INIT(): Promise<void>;
     isReady(): boolean;
     syncSettings(data: EngineSettingsData): void;

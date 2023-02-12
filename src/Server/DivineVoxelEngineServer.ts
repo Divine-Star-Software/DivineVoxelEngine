@@ -1,4 +1,5 @@
 import type { DVESInitData } from "Meta/Server/DVES";
+import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 
 //inter comms
 import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommManager.js";
@@ -7,7 +8,7 @@ import { WorldComm } from "./Threads/World/WorldComm.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 //functions
 import { InitWorkers } from "./Init/InitWorkers.js";
-import { EngineSettingsData } from "Meta/index.js";
+
 import { Util } from "../Global/Util.helper.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
 

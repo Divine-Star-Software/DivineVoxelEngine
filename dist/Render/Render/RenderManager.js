@@ -1,66 +1,34 @@
 //built in
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 //objects
-import { AnimationManager } from "./Animations/AnimationManager.js";
 import { FOManager } from "./FloatingOrigin/FoManager.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 //materials
 import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
-import { StandardSolidMaterial } from "./Materials/Standard/SolidMaterial.bjsmp.js";
-import { StandardLiquidMaterial } from "./Materials/Standard/LiquidMaterial.bjsmp.js";
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
 import { DVEShaders } from "./Shaders/DVEShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
-const solidMaterial = new DVEMaterial("#dve_solid", {
-    alphaBlending: false,
-    alphaTesting: true,
-});
-const solidMesh = new DVEMesh("#dve_solid", solidMaterial);
-const floraMat = new DVEMaterial("#dve_flora", {
-    alphaBlending: false,
-    alphaTesting: true,
-});
-const floraMesh = new DVEMesh("#dve_flora", floraMat);
-/* const magmaMat = new DVEMaterial("#dve_magma", {
- alphaBlending: false,
- alphaTesting: true,
-});
-const magmaMesh = new DVEMesh("#dve_magma", magmaMat); */
-const liquidMat = new DVEMaterial("#dve_liquid", {
-    alphaBlending: true,
-    alphaTesting: false,
-});
-const liquidMesh = new DVEMesh("#dve_liquid", liquidMat);
+import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 export const RenderManager = {
-    fogOptions: {
-        mode: "volumetric",
-        density: 0.0005,
-        color: new BABYLON.Color3(1, 1, 1),
-        volumetricOptions: {
-            heightFactor: 0.25,
-        },
-    },
+    fogOptions: {},
     meshRegister: MeshRegister,
     meshManager: MeshManager,
     meshCuller: MeshCuller,
-    fogData: new BABYLON.Vector4(1, 0.1, 0.5, 0),
+    fogData: {},
     effectOptions: {
         floraEffects: false,
         liquidEffects: false,
     },
     fo: FOManager,
     shaders: DVEShaders,
-    animationManager: AnimationManager,
-    solidMaterial: solidMaterial,
-    floraMaterial: floraMat,
-    liquidMaterial: liquidMat,
-    solidMesh: solidMesh,
-    floraMesh: floraMesh,
-    liquidMesh: liquidMesh,
-    solidStandardMaterial: StandardSolidMaterial,
-    liquidStandardMaterial: StandardLiquidMaterial,
+    solidMaterial: {},
+    floraMaterial: {},
+    liquidMaterial: {},
+    solidMesh: {},
+    floraMesh: {},
+    liquidMesh: {},
     skyBoxMaterial: SkyBoxMaterial,
     scene: null,
     updateFogOptions(options) {
@@ -100,11 +68,36 @@ export const RenderManager = {
         this.skyBoxMaterial.updateFogOptions(fogData);
     },
     $INIT(scene) {
-        this.updateFogOptions(this.fogOptions);
+        this.solidMaterial = new DVEMaterial("#dve_solid", {
+            alphaBlending: false,
+            alphaTesting: true,
+        });
+        this.solidMesh = new DVEMesh("#dve_solid", this.solidMaterial);
+        this.floraMaterial = new DVEMaterial("#dve_flora", {
+            alphaBlending: false,
+            alphaTesting: true,
+        });
+        this.floraMesh = new DVEMesh("#dve_flora", this.floraMaterial);
+        this.liquidMaterial = new DVEMaterial("#dve_liquid", {
+            alphaBlending: true,
+            alphaTesting: false,
+        });
+        this.liquidMesh = new DVEMesh("#dve_liquid", this.liquidMaterial);
+        this.fogData = new DVEBabylon.system.Vector4();
+        (this.fogOptions = {
+            mode: "volumetric",
+            density: 0.0005,
+            color: new DVEBabylon.system.Color3(1, 1, 1),
+            volumetricOptions: {
+                heightFactor: 0.25,
+            },
+        }),
+            this.updateFogOptions(this.fogOptions);
         this._setFogData();
         this.scene = scene;
         this.meshManager.$INIT(scene);
         this.meshCuller.$INIT(scene);
+        this.syncSettings();
     },
     updateShaderEffectOptions(options) {
         if (options.floraEffects !== undefined) {
@@ -117,17 +110,17 @@ export const RenderManager = {
         this.floraMaterial.updateMaterialSettings(EngineSettings.settings);
         this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
     },
-    syncSettings(settings) {
-        this.solidMesh.syncSettings(settings);
-        this.floraMesh.syncSettings(settings);
-        this.liquidMesh.syncSettings(settings);
+    syncSettings() {
+        this.solidMesh.syncSettings(EngineSettings.getSettings());
+        this.floraMesh.syncSettings(EngineSettings.getSettings());
+        this.liquidMesh.syncSettings(EngineSettings.getSettings());
         //this.magmaMesh.syncSettings(settings);
     },
     getScene() {
         return this.scene;
     },
     getDefaultCamera(scene) {
-        const camera = new BABYLON.UniversalCamera("", BABYLON.Vector3.Zero(), scene);
+        const camera = new DVEBabylon.system.UniversalCamera("", DVEBabylon.system.Vector3.Zero(), scene);
         camera.touchAngularSensibility = 10000;
         camera.speed = 1;
         camera.keysUp.push(87); // W

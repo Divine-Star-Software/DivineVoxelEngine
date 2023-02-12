@@ -1,4 +1,4 @@
-export class LiquidMaterialPlugin extends BABYLON.MaterialPluginBase {
+export class LiquidMaterialPlugin extends MaterialPluginBase {
     onUBSet;
     _texArray;
     _textureSet = false;
@@ -128,23 +128,23 @@ export const StandardLiquidMaterial = {
     reflectionprobe: null,
     plugin: null,
     $INIT(texture, scene) {
-        this.material = new BABYLON.StandardMaterial("#dve_liquid", scene);
-        this.material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-        /*   this.material.diffuseTexture = new BABYLON.Texture(
+        this.material = new.StandardMaterial("#dve_liquid", scene);
+        this.material.emissiveColor = new.Color3(0.2, 0.2, 0.2);
+        /*   this.material.diffuseTexture = new .Texture(
          "assets/textures/debug/default.png",
          scene
         );
       
       
         this.material.backFaceCulling = false;
-        this.material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+        this.material.specularColor = new .Color3(0.5, 0.5, 0.5);
         this.plugin = new LiquidMaterialPlugin(this.material, texture, (ubo) => {
-         ubo.updateColor3("myColor", new BABYLON.Color3(1, 1, 1));
+         ubo.updateColor3("myColor", new .Color3(1, 1, 1));
         });  */
         this.material.alpha = 0.7;
-        this.reflectionprobe = new BABYLON.RenderTargetTexture("_reflection", { width: 512, height: 512 }, scene, false, true);
-        this.reflectionprobe.wrapU = BABYLON.Constants.TEXTURE_MIRROR_ADDRESSMODE;
-        this.reflectionprobe.wrapV = BABYLON.Constants.TEXTURE_MIRROR_ADDRESSMODE;
+        this.reflectionprobe = new.RenderTargetTexture("_reflection", { width: 512, height: 512 }, scene, false, true);
+        this.reflectionprobe.wrapU = .Constants.TEXTURE_MIRROR_ADDRESSMODE;
+        this.reflectionprobe.wrapV = .Constants.TEXTURE_MIRROR_ADDRESSMODE;
         this.reflectionprobe.ignoreCameraViewport = true;
         this.reflectionprobe.coordinatesMode = 1;
         this.material.reflectionTexture = this.reflectionprobe;

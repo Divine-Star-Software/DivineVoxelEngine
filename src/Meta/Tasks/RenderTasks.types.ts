@@ -1,5 +1,6 @@
 import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
-import type { VoxelTemplateSubstanceType } from "Meta/index";
+import { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+
 
 export type SetChunkMeshTask = [
  location: LocationData,
