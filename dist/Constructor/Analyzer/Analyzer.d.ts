@@ -3,7 +3,7 @@ import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
 export declare const Analyzer: {
     updater: {
         _voxels: Map<string, (locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
@@ -13,7 +13,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -22,7 +22,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/index.js").EngineSettingsData;
                 getSettings(): import("../../Meta/index.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
@@ -800,7 +800,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
                 _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
                 _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -890,7 +890,7 @@ export declare const Analyzer: {
             getDataTool(): import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
@@ -900,7 +900,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -909,7 +909,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/index.js").EngineSettingsData;
                 getSettings(): import("../../Meta/index.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
@@ -1687,7 +1687,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
                 _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
                 _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -1777,7 +1777,7 @@ export declare const Analyzer: {
             getDataTool(): import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
@@ -1787,7 +1787,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -1796,7 +1796,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/index.js").EngineSettingsData;
                 getSettings(): import("../../Meta/index.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/index.js").EngineSettingsData): void;
@@ -2574,7 +2574,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
                 _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
                 _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;

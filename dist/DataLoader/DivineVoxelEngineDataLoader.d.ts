@@ -1,12 +1,12 @@
 import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type.js";
 import type { EngineSettingsData } from "Meta/index.js";
 export declare const DVEDL: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -43,7 +43,7 @@ export declare const DVEDL: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -52,7 +52,7 @@ export declare const DVEDL: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "node" | "browser";
+        enviorment: "browser" | "node";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -319,7 +319,7 @@ export declare const DVEDL: {
         chunks: import("../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
         serializeRegion(location: import("../Meta/Data/CommonTypes.js").LocationData): false | [location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("../Meta/Data/CommonTypes.js").LocationData): false | Uint8Array;
-        deSerializeRegion(regionBuffers: SharedArrayBuffer[] | ArrayBuffer[]): void;
+        deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
         deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];

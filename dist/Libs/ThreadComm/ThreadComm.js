@@ -163,8 +163,11 @@ export const ThreadComm = {
         return sync;
     },
 };
+if (
 //@ts-ignore
-if (typeof process !== "undefined" && typeof Worker === "undefined") {
+typeof process !== "undefined" &&
+    typeof Worker === "undefined" &&
+    typeof window === "undefined") {
     ThreadComm.environment = "node";
 }
 const internal = {};

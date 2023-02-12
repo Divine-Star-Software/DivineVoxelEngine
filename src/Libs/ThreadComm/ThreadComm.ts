@@ -181,7 +181,7 @@ export const ThreadComm = {
 		//remove tasks id
 		const dataTypeId = data.shift();
 		const dataSync = this._onDataSync[dataTypeId];
-	
+
 		//get the sync data
 		const syncData = data.shift();
 		if (action == TCDataSyncMessages.SyncData) {
@@ -192,7 +192,7 @@ export const ThreadComm = {
 		}
 	},
 	__isDataSync(data: any[]) {
-		return data[0] == TCMessageHeaders.dataSync
+		return data[0] == TCMessageHeaders.dataSync;
 	},
 
 	onDataSync<T, K>(
@@ -211,8 +211,12 @@ export const ThreadComm = {
 		return sync;
 	},
 };
-//@ts-ignore
-if (typeof process !== "undefined" && typeof Worker === "undefined") {
+if (
+	//@ts-ignore
+	typeof process !== "undefined" &&
+	typeof Worker === "undefined" &&
+	typeof window === "undefined"
+) {
 	ThreadComm.environment = "node";
 }
 
