@@ -36,6 +36,12 @@ export type TextureAnimationData = {
   */
  animKeyFrameTimes?: number[];
 };
+export type TextureDataBase = {
+ /**# rawData
+  * Provide a base64 encoded string to use instead of fetching it from a server
+  */
+ rawData?: string;
+};
 export type TextureData = {
  type: TextureTypes;
  /**# ID
@@ -47,10 +53,7 @@ export type TextureData = {
   * If the texture is not in the default path specify it here.
   */
  path?: string;
- /**# rawData
-  * Provide a base64 encoded string to use instead of fetching it from a server
-  */
- rawData?: string;
+
  /**# Segment
   * Define the segmetn of the texutre. By default it is main.
   */
@@ -70,5 +73,6 @@ export type TextureData = {
   * - dreamstone/default.png
   * - dreamstone/grassy-top.png
   */
- variations?: Record<string, TextureAnimationData>;
-} & TextureAnimationData;
+ variations?: Record<string, TextureAnimationData & TextureDataBase>;
+} & TextureAnimationData &
+ TextureDataBase;
