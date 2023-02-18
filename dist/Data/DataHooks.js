@@ -25,4 +25,5 @@ export const DataHooks = {
         onAddToRGBUpdate: Hooks.getSyncHook(),
         onRichVoxelPaint: Hooks.getSyncHook(),
     },
+    settingsSynced: Hooks.getSyncHook(),
 };

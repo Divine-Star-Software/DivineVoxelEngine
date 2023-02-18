@@ -35,7 +35,7 @@ export declare const DBO: {
                 [x: string]: import("./Classes/TypedNode.js").TypedNode<any>;
             };
         };
-        createObject<T_2>(schemaId: string, buffer: SharedArrayBuffer | DataView | ArrayBuffer): T_2;
+        createObject<T_2>(schemaId: string, buffer: SharedArrayBuffer | ArrayBuffer | DataView): T_2;
         createBuffer(schemaId: string, updatedValues?: any): ArrayBuffer;
     };
     nodeMaker: {

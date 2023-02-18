@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEFX: {
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEFX: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -19,7 +19,7 @@ export declare const DVEFX: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "node" | "browser";
+        enviorment: "browser" | "node";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -89,7 +89,7 @@ export declare const DVEFX: {
             data: DataView;
             indexMap: Map<string, number>;
             index: DataView;
-            setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+            setBuffer(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
             getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;

@@ -19,6 +19,7 @@ export const EngineSettings = {
   data: {
    enabled: false,
    autoSyncChunks: true,
+   mode: "server",
   },
   fx: {
    enabled: false,
@@ -35,8 +36,8 @@ export const EngineSettings = {
   },
   textures: {
    animationTime: 20,
-   textureSize : 16,
-   mipMapSizes : [16, 12, 8, 4],
+   textureSize: 16,
+   mipMapSizes: [16, 12, 8, 4],
   },
   updating: {
    autoRebuild: true,

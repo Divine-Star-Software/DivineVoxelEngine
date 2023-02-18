@@ -6,14 +6,15 @@ import { DataLoaderTool } from "../../../Tools/Data/DataLoaderTool.js";
 import { AnaylzerTool } from "../../../Tools/Anaylzer/AnaylzerTool.js";
 import { VisitedMap } from "../../../Global/Util/VisistedMap.js";
 declare class IWGTasks {
-    run: (x: number, y: number, z: number) => void;
+    tasksId: string;
+    run: (x: number, y: number, z: number, onDone: Function) => void;
     iwg: IWG;
+    propagationBlocking: boolean;
     queue: [x: number, y: number, z: number][];
     map: VisitedMap;
     waitingFor: number;
-    constructor(run: (x: number, y: number, z: number) => void, iwg: IWG);
+    constructor(tasksId: string, run: (x: number, y: number, z: number, onDone: Function) => void, iwg: IWG, propagationBlocking?: boolean);
     add(x: number, y: number, z: number): void;
-    substact(): void;
     cancelAll(): void;
     runTasks(max?: number): void;
 }
@@ -171,7 +172,12 @@ export declare class IWG {
     };
     dimension: string;
     _cachedPosition: Vec3Array;
-    _inProgressMap: Map<string, boolean>;
+    _inProgressMap: {
+        map: Map<string, string>;
+        add(x: number, y: number, z: number, tasks: string): void;
+        has(x: number, y: number, z: number): boolean;
+        remove(x: number, y: number, z: number): boolean;
+    };
     _searchQueue: number[][];
     _visitedMap: Map<string, boolean>;
     _activeColumns: Map<string, number[]>;

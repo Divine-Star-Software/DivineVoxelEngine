@@ -15,6 +15,14 @@ export class VisitedMap {
     remove(x, y, z) {
         this._map.delete(this._getKey(x, y, z));
     }
+    removeDiffernce(map) {
+        for (const [key] of map._map) {
+            if (this._map.has(key)) {
+                this._map.delete(key);
+            }
+        }
+        return map;
+    }
     clear() {
         this._map.clear();
     }

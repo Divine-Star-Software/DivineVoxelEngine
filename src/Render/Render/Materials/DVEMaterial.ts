@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import type { ShaderMaterial, Vector4 } from "babylonjs";
+import type { Engine, Scene, ShaderMaterial, Vector4 } from "babylonjs";
 
 import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
@@ -13,10 +13,10 @@ type DVEMaterialOptions = {
 };
 
 export class DVEMaterial {
- material: ShaderMaterial | null = null;
-
+ material: ShaderMaterial;
+ scene: Scene;
+ engine: Engine;
  time = 0;
-
  constructor(
   public id: string = "#dve_solid",
   public options: DVEMaterialOptions
@@ -79,6 +79,8 @@ export class DVEMaterial {
  }
 
  createMaterial(): ShaderMaterial {
+  this.scene = DVER.render.scene!;
+  this.engine = this.scene.getEngine();
   const type = TextureManager.getTextureType(this.id);
   if (!type) {
    throw new Error(`${this.id} is not a valid texture type`);
@@ -118,6 +120,8 @@ export class DVEMaterial {
    shaderMaterial.needDepthPrePass = true;
   }
 
+
+  (window as any).LIQUID = shaderMaterial;
   type.addToMaterial(this);
 
   shaderMaterial.setFloat("sunLightLevel", 1);
@@ -149,13 +153,16 @@ export class DVEMaterial {
   this.material = material;
  }
 
+ updateUniforms() {
+  if (DVER.render.fo.activeNode) {
+   this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
+  }
+ }
+
  runEffects() {
   // if (DVER.render.fogOptions.mode != "animated-volumetric") return;
   if (!this.material) return;
   this.time += 0.005;
   this.material.setFloat("time", this.time);
-  if (DVER.render.fo.activeNode) {
-   this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
-  }
  }
 }

@@ -100,4 +100,6 @@ export async function InitWorkers(
   DVER.fxComm.destroy();
   DVER.dataComm.destroy();
  });
+
+
 }

@@ -1,5 +1,7 @@
 //types
 import type { RecursivePartial } from "Meta/Util.types.js";
+import type { Scene, Vector4 } from "babylonjs";
+
 //built in
 import { DVEMesh } from "./Meshes/DVEMesh.js";
 //objects
@@ -17,7 +19,6 @@ import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
 import { DVEShaders } from "./Shaders/DVEShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
-import { Scene, Vector4 } from "babylonjs";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 
 export const RenderManager = {

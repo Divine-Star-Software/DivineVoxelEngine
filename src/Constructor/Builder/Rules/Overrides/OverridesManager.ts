@@ -10,8 +10,9 @@ export const OverrideManager = {
   Record<OverrideTypes, Map<string, Map<string, RunOverrideFunction>>>
  >{
   AO: new Map(),
-  AOFlip: new Map(),
+  AOFlipFace: new Map(),
   CullFace: new Map(),
+  FlipFace: new Map(),
  },
 
  registerOverride(

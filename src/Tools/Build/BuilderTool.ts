@@ -26,7 +26,7 @@ export class BuilderTool extends LocationBoundTool {
  }
  buildColumn(onDone?: (data: any) => void) {
   const [dimension, x, y, z] = this.location;
-  this.tasks.setFocalPoint(this.location);
+  this.tasks._data.dimension = dimension;       
   this.tasks.build.column.deferred.run(x, y, z, onDone ? onDone : (data) => {});
   return this;
  }

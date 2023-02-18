@@ -30,6 +30,7 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
+import { DataHooks } from "../Data/DataHooks.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -69,6 +70,7 @@ export const DVEW = {
     },
     syncSettings(data) {
         this.settings.syncSettings(data);
+        DataHooks.settingsSynced.run(data);
         this.__settingsHaveBeenSynced = true;
     },
     async $INIT() {

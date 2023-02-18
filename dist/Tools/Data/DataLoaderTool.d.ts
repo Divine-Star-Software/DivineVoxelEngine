@@ -5,6 +5,7 @@ import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export declare class DataLoaderTool extends LocationBoundTool {
     static columnDataTool: ColumnDataTool;
     static isEnabled(): boolean;
+    mode: "indexdb" | "server" | "both";
     _enabled: boolean;
     dataComm: CommBase;
     constructor();

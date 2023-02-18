@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import { Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import type { Scene, ShaderMaterial, Vector4 } from "babylonjs";
 export declare const SkyBoxMaterial: {
     material: ShaderMaterial | null;
     time: number;
@@ -10,5 +10,6 @@ export declare const SkyBoxMaterial: {
     updateMaterialSettings(settings: EngineSettingsData): void;
     createMaterial(scene: Scene): ShaderMaterial;
     overrideMaterial(material: any): void;
+    updateUniforms(): void;
     runEffects(): void;
 };

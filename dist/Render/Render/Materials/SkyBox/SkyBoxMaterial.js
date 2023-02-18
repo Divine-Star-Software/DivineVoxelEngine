@@ -56,7 +56,8 @@ export const SkyBoxMaterial = {
     createMaterial(scene) {
         const shader = DVEShaders.createSkyBoxShader("skybox");
         shader.compile();
-        DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
+        DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] =
+            shader.compiled.vertex;
         DVEBabylon.system.Effect.ShadersStore["skyboxFragmentShader"] =
             shader.compiled.fragment;
         const shaderMaterial = new DVEBabylon.system.ShaderMaterial("skybox", scene, "skybox", {
@@ -84,6 +85,7 @@ export const SkyBoxMaterial = {
     overrideMaterial(material) {
         this.material = material;
     },
+    updateUniforms() { },
     runEffects() {
         if (DVER.render.fogOptions.mode != "animated-volumetric")
             return;

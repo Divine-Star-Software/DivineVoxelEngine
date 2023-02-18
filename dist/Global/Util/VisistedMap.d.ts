@@ -5,5 +5,6 @@ export declare class VisitedMap {
     inMap(x: number, y: number, z: number): boolean;
     add(x: number, y: number, z: number): void;
     remove(x: number, y: number, z: number): void;
+    removeDiffernce(map: VisitedMap): VisitedMap;
     clear(): void;
 }

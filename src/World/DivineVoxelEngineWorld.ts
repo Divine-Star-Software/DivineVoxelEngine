@@ -39,6 +39,8 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
+import { DataHooks } from "../Data/DataHooks.js";
+
 
 /**# Divine Voxel Engine World
  * ---
@@ -59,6 +61,8 @@ export const DVEW = {
  },
  data: DataManager,
  dataSync: DataSync,
+
+
 
  fxComm: FXComm,
  dataComm: DataComm,
@@ -87,6 +91,7 @@ export const DVEW = {
 
  syncSettings(data: EngineSettingsData) {
   this.settings.syncSettings(data);
+  DataHooks.settingsSynced.run(data);
   this.__settingsHaveBeenSynced = true;
  },
 

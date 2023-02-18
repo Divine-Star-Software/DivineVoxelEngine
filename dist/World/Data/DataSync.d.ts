@@ -43,7 +43,7 @@ export declare const DataSync: {
             getMap(): Record<string, number>;
         };
     };
-    comms: Record<string, CommBase | CommManager>;
+    comms: Record<string, CommManager | CommBase>;
     commOptions: Record<string, CommSyncOptions>;
     _ready: boolean;
     $INIT(): void;

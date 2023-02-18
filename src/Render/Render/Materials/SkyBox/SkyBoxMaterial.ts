@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { DVEShaders } from "../../Shaders/DVEShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
-import { Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import type { Scene, ShaderMaterial, Vector4 } from "babylonjs";
 import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
 
 export const SkyBoxMaterial = {
@@ -59,16 +59,22 @@ export const SkyBoxMaterial = {
  createMaterial(scene: Scene): ShaderMaterial {
   const shader = DVEShaders.createSkyBoxShader("skybox");
   shader.compile();
-  DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] = shader.compiled.vertex;
+  DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] =
+   shader.compiled.vertex;
   DVEBabylon.system.Effect.ShadersStore["skyboxFragmentShader"] =
    shader.compiled.fragment;
 
-  const shaderMaterial = new DVEBabylon.system.ShaderMaterial("skybox", scene, "skybox", {
-   attributes: shader.getAttributeList(),
-   uniforms: shader.getUniformList(),
-   needAlphaBlending: false,
-   needAlphaTesting: true,
-  });
+  const shaderMaterial = new DVEBabylon.system.ShaderMaterial(
+   "skybox",
+   scene,
+   "skybox",
+   {
+    attributes: shader.getAttributeList(),
+    uniforms: shader.getUniformList(),
+    needAlphaBlending: false,
+    needAlphaTesting: true,
+   }
+  );
   shaderMaterial.backFaceCulling = false;
   this.material = shaderMaterial;
   //this.material.forceDepthWrite = true;
@@ -95,6 +101,8 @@ export const SkyBoxMaterial = {
  overrideMaterial(material: any) {
   this.material = material;
  },
+
+ updateUniforms() {},
 
  runEffects() {
   if (DVER.render.fogOptions.mode != "animated-volumetric") return;

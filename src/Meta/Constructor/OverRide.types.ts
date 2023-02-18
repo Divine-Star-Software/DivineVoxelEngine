@@ -10,4 +10,4 @@ export type FaceDataOverride = {
 
 
 
-export type OverrideTypes = "CullFace" | "AO" | "AOFlip";
+export type OverrideTypes = "CullFace" | "AO" | "AOFlipFace" | "FlipFace";

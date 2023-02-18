@@ -11,7 +11,7 @@ export class DVEMesh {
     constructor(name, dveMat) {
         this.name = name;
         this.dveMat = dveMat;
-        this.defaultBb = new DVEBabylon.system.BoundingInfo(DVEBabylon.system.Vector3.Zero(), DVEBabylon.system.Vector3.Zero());
+        this.defaultBb = new DVEBabylon.system.BoundingInfo(DVEBabylon.system.Vector3.Zero(), new DVEBabylon.system.Vector3(16, 16, 16));
     }
     createTemplateMesh(scene) {
         let mesh = this.meshes.shift();

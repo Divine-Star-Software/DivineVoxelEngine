@@ -18,8 +18,10 @@ class IWGTasks {
  map = new VisitedMap();
  waitingFor = 0;
  constructor(
-  public run: (x: number, y: number, z: number) => void,
-  public iwg: IWG
+  public tasksId: string,
+  public run: (x: number, y: number, z: number, onDone: Function) => void,
+  public iwg: IWG,
+  public propagationBlocking = true
  ) {}
 
  add(x: number, y: number, z: number) {
@@ -28,13 +30,9 @@ class IWGTasks {
   this.map.add(x, y, z);
  }
 
- substact() {
-  this.waitingFor--;
- }
-
  cancelAll() {
-  this.map.clear();
   this.queue = [];
+  this.map.clear();
  }
 
  runTasks(max = 5) {
@@ -46,11 +44,33 @@ class IWGTasks {
    if (!node) break;
    this.waitingFor++;
    const [x, y, z] = node;
-   this.run(x, y, z);
-   this.map.remove(x, y, z);
+   if (this.propagationBlocking) {
+    this.iwg._inProgressMap.add(x, y, z, this.tasksId);
+   }
+   this.run(x, y, z, () => {
+    this.map.remove(x, y, z);
+    if (this.propagationBlocking) {
+     this.iwg._inProgressMap.remove(x, y, z);
+    }
+    this.waitingFor--;
+   });
   }
  }
 }
+
+const inProgressMap = {
+ map: <Map<string, string>>new Map(),
+
+ add(x: number, y: number, z: number, tasks: string) {
+  this.map.set(getKey(x, y, z), tasks);
+ },
+ has(x: number, y: number, z: number) {
+  return this.map.has(getKey(x, y, z));
+ },
+ remove(x: number, y: number, z: number) {
+  return this.map.delete(getKey(x, y, z));
+ },
+};
 
 /**# Infinite World Generator
  *
@@ -66,7 +86,7 @@ export class IWG {
  dimension: string = "main";
  _cachedPosition: Vec3Array = [-Infinity, -Infinity, -Infinity];
 
- _inProgressMap: Map<string, boolean> = new Map();
+ _inProgressMap = inProgressMap;
  _searchQueue: number[][] = [];
 
  _visitedMap: Map<string, boolean> = new Map();
@@ -87,75 +107,100 @@ export class IWG {
    throw new Error("Data Loader must be enabled.");
   }
   this.dataLoader = new DataLoaderTool();
-  this._loadTaskss = new IWGTasks((x, y, z) => {
-   this._inProgressMap.set(getKey(x, y, z), true);
-   this.dataLoader
-    .setLocation([this.dimension, x, y, z])
-    .loadIfExists((exists) => {
-     this._loadTaskss.substact();
-     this._inProgressMap.delete(getKey(x, y, z));
-     if (!exists) {
-      this.builder.setXYZ(x, y, z).fillColumn();
-      return;
-     }
+
+  this._loadTaskss = new IWGTasks(
+   "#dve_iwg_load",
+   (x, y, z, onDone) => {
+    this.dataLoader
+     .setLocation([this.dimension, x, y, z])
+     .loadIfExists((exists) => {
+      onDone();
+      if (!exists) {
+       this.builder.setXYZ(x, y, z).fillColumn();
+       return;
+      }
+     });
+   },
+   this
+  );
+
+  this._generateTasks = new IWGTasks(
+   "#dve_iwg_generate",
+   (x, y, z, onDone) => {
+    this.builder.setDimension(this.dimension).setXYZ(x, y, z).fillColumn();
+    this.tasks.generate.deferred.run(x, y, z, [], () => {
+     onDone();
+     if (this.columnTool.loadInAt(x, y, z))
+      return this.columnTool.setTagValue("#dve_is_world_gen_done", 1);
+     console.error(`${x} ${y} ${z} could not be loaded after generted`);
     });
-  }, this);
+   },
+   this
+  );
 
-  this._generateTasks = new IWGTasks((x, y, z) => {
-   this._inProgressMap.set(getKey(x, y, z), true);
-   this.builder.setDimension(this.dimension).setXYZ(x, y, z).fillColumn();
-   this.tasks.generate.deferred.run(x, y, z, [], () => {
-    this._inProgressMap.delete(getKey(x, y, z));
-    this._generateTasks.substact();
-    if (this.columnTool.loadInAt(x, y, z))
-     return this.columnTool.setTagValue("#dve_is_world_gen_done", 1);
-    console.error(`${x} ${y} ${z} could not be loaded after generted`);
-   });
-  }, this);
-
-  this._worldSunTasks = new IWGTasks((x, y, z) => {
-   this._inProgressMap.set(getKey(x, y, z), true);
-   this.tasks.light.worldSun.deferred.run(x, y, z, () => {
-    this._inProgressMap.delete(getKey(x, y, z));
-    this._worldSunTasks.substact();
-    if (this.columnTool.loadInAt(x, y, z))
-     return this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
-   });
-  }, this);
-
-  this._propagationTasks = new IWGTasks((x, y, z) => {
-   this._inProgressMap.set(getKey(x, y, z), true);
-   this.tasks.anaylzer.propagation.run(x, y, z, () => {
-    this._inProgressMap.delete(getKey(x, y, z));
-    this._propagationTasks.substact();
-    if (this.columnTool.loadInAt(x, y, z))
-     return this.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
-   });
-  }, this);
-
-  this._buildTasks = new IWGTasks((x, y, z) => {
-   this._activeColumns.set(getKey(x, y, z), [x, y, z]);
-   this.builder
-    .setDimension(this.dimension)
-    .setXYZ(x, y, z)
-    .buildColumn((data) => {
-     this._buildTasks.substact();
+  this._worldSunTasks = new IWGTasks(
+   "#dve_iwg_world_sun",
+   (x, y, z, onDone) => {
+    this.tasks.light.worldSun.deferred.run(x, y, z, () => {
+     onDone();
+     if (this.columnTool.loadInAt(x, y, z))
+      return this.columnTool.setTagValue("#dve_is_world_sun_done", 1);
     });
-  }, this);
+   },
+   this
+  );
 
-  this._saveTasks = new IWGTasks((x, y, z) => {
-   this.dataLoader
-    .setLocation([this.dimension, x, y, z])
-    .saveColumnIfNotStored(() => {
-     this._saveTasks.substact();
+  this._propagationTasks = new IWGTasks(
+   "#dve_iwg_propagation",
+   (x, y, z, onDone) => {
+    this.tasks.anaylzer.propagation.run(x, y, z, () => {
+     onDone();
+     if (this.columnTool.loadInAt(x, y, z))
+      return this.columnTool.setTagValue("#dve_is_world_propagation_done", 1);
     });
-  }, this);
+   },
+   this
+  );
 
-  this._saveAndUnloadTasks = new IWGTasks((x, y, z) => {
-   this.dataLoader.setLocation([this.dimension, x, y, z]).unLoadColumn(() => {
-    this._saveAndUnloadTasks.substact();
-   });
-  }, this);
+  this._buildTasks = new IWGTasks(
+   "#dve_iwg_build",
+   (x, y, z, onDone) => {
+    this._activeColumns.set(getKey(x, y, z), [x, y, z]);
+    this.builder
+     .setDimension(this.dimension)
+     .setXYZ(x, y, z)
+     .buildColumn((data) => {
+      onDone();
+     });
+   },
+   this,
+   false
+  );
+
+  this._saveTasks = new IWGTasks(
+   "#dve_iwg_save",
+   (x, y, z, onDone) => {
+    this.dataLoader
+     .setLocation([this.dimension, x, y, z])
+     .saveColumnIfNotStored(() => {
+      onDone();
+     });
+   },
+   this,
+   false
+  );
+
+  this._saveAndUnloadTasks = new IWGTasks(
+   "#dve_iwg_save_unload",
+   (x, y, z, onDone) => {
+    onDone();
+    this.dataLoader
+     .setLocation([this.dimension, x, y, z])
+     .unLoadColumn(() => {});
+   },
+   this,
+   false
+  );
  }
 
  setDimension(id: string) {
@@ -254,8 +299,10 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
     .setDimension(this.dimension)
     .setXYZ(worldColumnPOS.x, worldColumnPOS.y, worldColumnPOS.z)
     .unLoadAllOutsideRadius(this.data.maxDistance!, (column) => {
-     const key = WorldSpaces.column.getKeyLocation(column.getLocationData());
-     if (this._inProgressMap.has(key)) return false;
+     const { x, y, z } = WorldSpaces.column.getPositionLocation(
+      column.getLocationData()
+     );
+     if (this._inProgressMap.has(x, y, z)) return false;
      return true;
     });
   }
@@ -275,7 +322,7 @@ save and unload | queue :${this._saveAndUnloadTasks.queue.length} waitng : ${thi
    const cz = node[2];
    const columnKey = WorldSpaces.column.getKeyXYZ(cx, 0, cz);
 
-   if (this._visitedMap.has(columnKey) || this._inProgressMap.has(columnKey))
+   if (this._visitedMap.has(columnKey) || this._inProgressMap.has(cx, 0, cz))
     continue;
    this._visitedMap.set(columnKey, true);
 

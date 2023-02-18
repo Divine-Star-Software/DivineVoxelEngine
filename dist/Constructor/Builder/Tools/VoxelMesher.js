@@ -116,7 +116,7 @@ export const VoxelMesher = {
     data: dataTool,
     quad: {
         _direction: "top",
-        _faceData: 0,
+        _faceData: [0, 0, 0, 0],
         _fliped: false,
         _cachedPosition: { x: 0, y: 0, z: 0 },
         _dimension: { height: 0, width: 0 },
@@ -127,8 +127,15 @@ export const VoxelMesher = {
             4: { x: 0, y: 0, z: 0 },
         },
         setAnimationState(type) {
-            this._faceData = type;
-            this._faceData = MeshFaceDataByte.setAnimationType(type, this._faceData);
+            if (Array.isArray(type)) {
+                for (let i = 0; i < this._faceData.length; i++) {
+                    this._faceData[i] = MeshFaceDataByte.setAnimationType(type[i], this._faceData[i]);
+                }
+                return this;
+            }
+            for (let i = 0; i < this._faceData.length; i++) {
+                this._faceData[i] = MeshFaceDataByte.setAnimationType(type, this._faceData[i]);
+            }
             return this;
         },
         setDimensions(width = 0, height = 0) {
@@ -182,13 +189,18 @@ export const VoxelMesher = {
         },
         create() {
             GeometryBuilder.createQuad(this._direction, this._dimension, VoxelMesher._data.position, this._fliped, this._transform);
-            const faceData = this._faceData;
-            VoxelMesher._data.faceData.push(faceData, faceData, faceData, faceData);
-            this._faceData = 0;
+            let i = 4;
+            while (i--) {
+                VoxelMesher._data.faceData.push(this._faceData[i]);
+                this._faceData[i] = 0;
+            }
             return VoxelMesher.quad;
         },
         addData(stride = 4, animationState = 0, doAO = true) {
-            this.setAnimationState(animationState).uvs.add().oUVS.add();
+            if (animationState) {
+                this.setAnimationState(animationState);
+            }
+            this.uvs.add().oUVS.add();
             if (doAO) {
                 this.AO.add(stride);
             }

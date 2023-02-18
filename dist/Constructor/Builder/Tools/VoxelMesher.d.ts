@@ -17,7 +17,7 @@ export declare const VoxelMesher: {
     data: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
     quad: {
         _direction: DirectionNames;
-        _faceData: number;
+        _faceData: [v1: number, v2: number, v3: number, v4: number];
         _fliped: boolean;
         _cachedPosition: {
             x: number;
@@ -50,9 +50,9 @@ export declare const VoxelMesher: {
                 z: number;
             };
         };
-        setAnimationState(type: number): {
+        setAnimationState(type: number | number[]): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -85,7 +85,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -260,33 +260,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         setDimensions(width?: number, height?: number): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -319,7 +305,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -494,33 +480,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         setPosition(x?: number, y?: number, z?: number): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -553,7 +525,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -728,33 +700,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         updatePosition(x?: number, y?: number, z?: number): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -787,7 +745,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -962,33 +920,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         updatePositionInPlace(x?: number, y?: number, z?: number): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -1021,7 +965,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -1196,33 +1140,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         setTransform(vertex: QuadVertexes, x?: number, y?: number, z?: number): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -1255,7 +1185,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -1430,33 +1360,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         clearTransform(): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -1489,7 +1405,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -1664,33 +1580,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         setFlipped(flipped: boolean): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -1723,7 +1625,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -1898,33 +1800,19 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
         };
         setDirection(direction: DirectionNames): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -1957,7 +1845,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -2132,26 +2020,12 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -2159,7 +2033,7 @@ export declare const VoxelMesher: {
         create(): any;
         addData(stride?: 1 | 4, animationState?: number, doAO?: boolean): {
             _direction: DirectionNames;
-            _faceData: number;
+            _faceData: [v1: number, v2: number, v3: number, v4: number];
             _fliped: boolean;
             _cachedPosition: {
                 x: number;
@@ -2192,7 +2066,7 @@ export declare const VoxelMesher: {
                     z: number;
                 };
             };
-            setAnimationState(type: number): any;
+            setAnimationState(type: number | number[]): any;
             setDimensions(width?: number, height?: number): any;
             setPosition(x?: number, y?: number, z?: number): any;
             updatePosition(x?: number, y?: number, z?: number): any;
@@ -2367,26 +2241,12 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [
-                    number,
-                    number,
-                    number,
-                    number
-                ] | [
-                    number
-                ]): any;
+                addCustom(data: [number, number, number, number] | [number]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -2555,26 +2415,12 @@ export declare const VoxelMesher: {
         };
         AO: {
             add(stride?: 1 | 4): any;
-            addCustom(data: [
-                number,
-                number,
-                number,
-                number
-            ] | [
-                number
-            ]): any;
+            addCustom(data: [number, number, number, number] | [number]): any;
         };
         light: {
             lightMap: number[];
             add(stride?: 1 | 4): any;
-            addCustom(data: [
-                number,
-                number,
-                number,
-                number
-            ] | [
-                number
-            ]): any;
+            addCustom(data: [number, number, number, number] | [number]): any;
             _getBrightestLight(): number;
             _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
         };

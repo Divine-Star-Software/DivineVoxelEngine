@@ -6,7 +6,7 @@ const brush = new BrushTool();
 const dataTool = brush._dt;
 const chunkTool = new ChunkDataTool();
 export const WorldGenRegister = {
-    MAX_ATTEMPTS: 5_000,
+    MAX_ATTEMPTS: 100,
     _requests: new Map(),
     registerRequest(dimension, x, y, z) {
         const id = `${dimension}-${x}-${y}-${z}`;

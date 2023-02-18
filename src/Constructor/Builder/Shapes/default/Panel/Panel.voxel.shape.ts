@@ -103,7 +103,13 @@ export const PanelVoxelShape: VoxelShape = {
   shapeStates[shapeState](mesher);
  },
 };
-
+OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
+  if (data.currentVoxel.getSubstance() == "#dve_flora") {
+   return false;
+  }
+  return data.default;
+ });
+ 
 OverrideManager.registerOverride("CullFace", "Panel", "Any", (data) => {
  if (data.currentVoxel.getSubstance() == "#dve_flora") {
   return false;

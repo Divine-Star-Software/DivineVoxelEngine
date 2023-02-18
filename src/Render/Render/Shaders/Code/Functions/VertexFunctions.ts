@@ -11,7 +11,7 @@ int index = int(faceData);
 return  index & 0xff;`,
   },
  });
- builder.functions.create("animType1", {
+ builder.functions.create("dve_crossed_panel_wind_anim", {
   setID: "#dve_vertex",
   inputs: [
    ["posWorld", "vec4"],
@@ -21,22 +21,16 @@ return  index & 0xff;`,
   arguments : {},
   body: {
    GLSL:()=> `
-if(cuv3.y == 0. && normal.y != 1. && normal.y != -1.)  {
-    float heightX = fbm(posWorld.xz * 0.15 + time);
-    p.xz += heightX * 0.05;
+if(normal.z == -1.)  {
+    p.xz -= fbm(posWorld.xz * 0.15 + time) * 0.05;
 }
-if( cuv3.z == 1. && normal.y != 1. && normal.y != -1.) {
-    float heightX = fbm(posWorld.xz * 0.15 + time);
-    p.xz -= heightX * 0.06;
-}
-if(normal.y == 1. ) {
-    float heightX = fbm(posWorld.xz * 0.15 + time);
-    p.xz += heightX * 0.05;
+if(normal.z == 1.) {
+    p.xz += fbm(posWorld.xz * 0.15 + time) * 0.05;
 }
 return p;`,
   },
  });
- builder.functions.create("animType2", {
+ builder.functions.create("dve_panel_wind_anim", {
   setID: "#dve_vertex",
   inputs: [
    ["posWorld", "vec4"],
@@ -66,7 +60,7 @@ if(normal.x == -1.) {
 return p;`,
   },
  });
- builder.functions.create("animType3", {
+ builder.functions.create("dve_box_wind_anim", {
   setID: "#dve_vertex",
   inputs: [
    ["posWorld", "vec4"],

@@ -10,7 +10,7 @@ const brush = new BrushTool();
 const dataTool = brush._dt;
 const chunkTool = new ChunkDataTool();
 export const WorldGenRegister = {
- MAX_ATTEMPTS: 5_000,
+ MAX_ATTEMPTS: 100,
  _requests: <
   Map<
    string,
@@ -73,6 +73,7 @@ export const WorldGenRegister = {
    }
   }
   if (!done) {
+ 
    requests.attempts++;
    if (requests.attempts >= this.MAX_ATTEMPTS) {
     console.error(`World gen requests cancled after max attempts`, requests);

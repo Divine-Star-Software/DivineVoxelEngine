@@ -4,12 +4,15 @@ import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
+import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { DataHooks } from "../../Data/DataHooks.js";
 export class DataLoaderTool extends LocationBoundTool {
     static columnDataTool = new ColumnDataTool();
     static isEnabled() {
         const comm = ThreadComm.getComm("data-loader");
         return Boolean(comm);
     }
+    mode = "server";
     _enabled = true;
     dataComm;
     constructor() {
@@ -20,13 +23,17 @@ export class DataLoaderTool extends LocationBoundTool {
             console.error("Data Loader comm must be set.");
         }
         this.dataComm = comm;
+        this.mode = EngineSettings.settings.data.mode;
+        DataHooks.settingsSynced.addToRun((data) => {
+            this.mode = data.data.mode;
+        });
     }
     isEnabled() {
         return this._enabled;
     }
     saveRegion(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("save-region", location.toString(), () => (onDone ? onDone() : false), location);
+        this.dataComm.runPromiseTasks("save-region", location.toString() + Date.now(), () => (onDone ? onDone() : false), location);
     }
     saveRegionAsync() {
         return new Promise((resolve) => {
@@ -37,7 +44,7 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     loadRegion(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("load-region", location.toString(), () => (onDone ? onDone() : false), location);
+        this.dataComm.runPromiseTasks("load-region", location.toString() + Date.now(), () => (onDone ? onDone() : false), location);
     }
     loadRegionAsync() {
         return new Promise((resolve) => {
@@ -48,7 +55,7 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     saveColumn(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("save-column", location.toString(), () => (onDone ? onDone() : false), location);
+        this.dataComm.runPromiseTasks("save-column", location.toString() + Date.now(), () => (onDone ? onDone() : false), location);
     }
     saveColumnIfNotStored(onDone) {
         const location = this.getLocation();
@@ -56,7 +63,7 @@ export class DataLoaderTool extends LocationBoundTool {
             return onDone ? onDone(false) : false;
         if (DataLoaderTool.columnDataTool.isStored())
             return onDone ? onDone(false) : false;
-        this.dataComm.runPromiseTasks("save-column", location.toString(), () => {
+        this.dataComm.runPromiseTasks("save-column", location.toString() + Date.now(), () => {
             if (onDone)
                 onDone(true);
         }, location);
@@ -66,8 +73,7 @@ export class DataLoaderTool extends LocationBoundTool {
         const location = [...this.getLocation()];
         this.columnExists((exists) => {
             if (exists) {
-                this.setLocation(location);
-                this.loadColumn(() => {
+                this.setLocation(location).loadColumn(() => {
                     onDone ? onDone(true) : false;
                 });
                 return;
@@ -84,7 +90,7 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     loadColumn(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("load-column", location.toString(), () => {
+        this.dataComm.runPromiseTasks("load-column", location.toString() + Date.now(), () => {
             onDone ? onDone(true) : false;
         }, location);
     }
@@ -97,29 +103,35 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     unLoadColumn(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("unload-column", location.toString(), () => {
+        this.dataComm.runPromiseTasks("unload-column", location.toString() + Date.now(), () => {
             onDone ? onDone(true) : false;
         }, location);
     }
     _runTask(id, location, onDone) {
-        this.dataComm.runPromiseTasks(id, location.toString(), (data) => {
+        this.dataComm.runPromiseTasks(id, location.toString() + Date.now(), (data) => {
             onDone ? onDone(data) : false;
         }, location);
     }
     columnExists(onDone) {
         const location = [...this.getLocation()];
-        if (!RegionHeaderRegister.get(location)) {
-            this.loadRegionHeader(() => {
-                this.setLocation(location).columnExists(onDone);
-            });
+        if (this.mode == "server") {
+            if (!RegionHeaderRegister.get(location)) {
+                this.loadRegionHeader(() => {
+                    this.setLocation(location).columnExists(onDone);
+                });
+                return;
+            }
+            const exists = RegionHeaderRegister.isStored(location);
+            onDone ? onDone(exists >= 1 ? true : false) : false;
             return;
         }
-        const exists = RegionHeaderRegister.isStored(location);
-        onDone ? onDone(exists >= 1 ? true : false) : false;
+        this.dataComm.runPromiseTasks("column-exists", location.toString() + Date.now(), (data) => {
+            onDone ? onDone(data) : false;
+        }, location);
     }
     loadRegionHeader(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("load-region-header", location.toString(), (data) => {
+        this.dataComm.runPromiseTasks("load-region-header", location.toString() + Date.now(), (data) => {
             onDone ? onDone(data) : false;
         }, location);
     }
@@ -139,7 +151,7 @@ export class DataLoaderTool extends LocationBoundTool {
     }
     columnTimestamp(onDone) {
         const location = this.getLocation();
-        this.dataComm.runPromiseTasks("column-timestamp", location.toString(), (data) => {
+        this.dataComm.runPromiseTasks("column-timestamp", location.toString() + Date.now(), (data) => {
             onDone ? onDone(data) : false;
         }, location);
     }

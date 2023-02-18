@@ -602,7 +602,7 @@ export declare const Analyzer: {
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;
@@ -1489,7 +1489,7 @@ export declare const Analyzer: {
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;
@@ -2376,7 +2376,7 @@ export declare const Analyzer: {
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;

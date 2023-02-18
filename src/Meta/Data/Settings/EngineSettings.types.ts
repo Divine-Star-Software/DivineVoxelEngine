@@ -7,6 +7,7 @@ export type EngineSettingsData = {
  data: {
   enabled: boolean;
   autoSyncChunks: boolean;
+  mode : "server" | "indexdb" | "both"
  };
  richWorld: {
   enabled: boolean;

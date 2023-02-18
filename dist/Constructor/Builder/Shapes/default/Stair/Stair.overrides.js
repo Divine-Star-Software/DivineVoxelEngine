@@ -66,7 +66,7 @@ export function SetUpStairOverrides() {
     OverrideManager.registerOverride("CullFace", "#dve_stair", "Any", (data) => {
         return StairCullFace(data);
     });
-    OverrideManager.registerOverride("AOFlip", "#dve_stair", "Any", (data) => {
+    OverrideManager.registerOverride("AOFlipFace", "#dve_stair", "Any", (data) => {
         if (data.face == "top" || data.face == "bottom")
             return true;
         return false;

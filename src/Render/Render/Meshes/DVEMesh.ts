@@ -14,10 +14,9 @@ export class DVEMesh {
  defaultBb: BoundingInfo;
 
  constructor(public name: string, public dveMat: DVEMaterial) {
-
   this.defaultBb = new DVEBabylon.system.BoundingInfo(
    DVEBabylon.system.Vector3.Zero(),
-   DVEBabylon.system.Vector3.Zero()
+   new DVEBabylon.system.Vector3(16, 16, 16)
   );
  }
 

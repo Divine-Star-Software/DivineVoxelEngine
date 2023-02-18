@@ -9,10 +9,12 @@ import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
 import { DataLoaderTool } from "../../Tools/Data/DataLoaderTool.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+import { BuilderTool } from "../../Tools/Build/BuilderTool.js";
 const regionTool = new RegionDataTool();
 const columnTool = new ColumnDataTool();
 const chunkTool = new ChunkDataTool();
 const dataLoaderTool = new DataLoaderTool();
+const builderTool = new BuilderTool();
 const loadInMap = new Map();
 export const WorldTasks = {
     addChunk: ThreadComm.registerTasks("add-chunk", (location) => {
@@ -23,19 +25,15 @@ export const WorldTasks = {
         }
         if (dataLoaderTool.isEnabled()) {
             WorldSpaces.column.getPositionLocation(location);
-            const columnLocation = WorldSpaces.column.getLocation();
+            const columnLocation = [...WorldSpaces.column.getLocation()];
             if (loadInMap.has(columnLocation.toString()))
                 return;
             loadInMap.set(columnLocation.toString(), true);
-            dataLoaderTool
-                .setLocation(columnLocation)
-                .loadIfExists((success) => {
+            dataLoaderTool.setLocation(columnLocation).loadIfExists((success) => {
                 loadInMap.delete(columnLocation.toString());
-                if (success) {
-                    DataSync.chunk.sync(location);
-                    return;
+                if (!success) {
+                    builderTool.setLocation(columnLocation).fillColumn();
                 }
-                WorldRegister.chunk.add(location, WorldDataGenerator.chunk.create());
             });
             return;
         }

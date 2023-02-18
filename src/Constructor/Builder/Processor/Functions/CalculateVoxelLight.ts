@@ -149,7 +149,7 @@ const shouldAOFlip = (face: DirectionNames) => {
  if (currentVoxelData.currentShape) {
   if (
    OverrideManager.runOverride(
-    "AOFlip",
+    "AOFlipFace",
     currentVoxelData.currentShape.id,
     "Any",
     Processor.faceDataOverride

@@ -1,8 +1,9 @@
 export const OverrideManager = {
     overrides: {
         AO: new Map(),
-        AOFlip: new Map(),
+        AOFlipFace: new Map(),
         CullFace: new Map(),
+        FlipFace: new Map(),
     },
     registerOverride(type, subjectId, neighborShapeId, run) {
         let map = this.overrides[type].get(subjectId);

@@ -12,7 +12,7 @@ export declare const DVER: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "node" | "browser";
+        getEnviorment(): "browser" | "node";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -23,7 +23,7 @@ export declare const DVER: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "node" | "browser";
+        environment: "browser" | "node";
         _comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         _commManageras: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         _tasks: Record<string, import("../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
@@ -77,7 +77,7 @@ export declare const DVER: {
         $INIT(system: DVEBabylonSystem): void;
     };
     settings: {
-        enviorment: "node" | "browser";
+        enviorment: "browser" | "node";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -176,11 +176,11 @@ export declare const DVER: {
                 };
                 define: {
                     _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
-                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[] | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData>): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[]): string;
                 };
                 uniforms: {
                     _process(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
-                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[] | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData>): string;
+                    build(data: import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData> | import("../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[]): string;
                 };
                 snippets: {
                     _snippets: Map<string, import("../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>>;
@@ -221,6 +221,7 @@ export declare const DVER: {
             updateMaterialSettings(settings: EngineSettingsData): void;
             createMaterial(scene: Scene): import("babylonjs").ShaderMaterial;
             overrideMaterial(material: any): void;
+            updateUniforms(): void;
             runEffects(): void;
         };
         scene: Scene | null;

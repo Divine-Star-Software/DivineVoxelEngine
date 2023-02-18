@@ -1,5 +1,6 @@
 import { LocationData } from "Meta/Data/CommonTypes.js";
 import { DimensionData } from "Meta/Data/DimensionData.types.js";
+import { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DataHooks: {
     dimension: {
         onRegisterDimension: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<DimensionData, void>;
@@ -26,4 +27,5 @@ export declare const DataHooks: {
         onAddToRGBUpdate: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, void>;
         onRichVoxelPaint: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<[id: string, location: LocationData], void>;
     };
+    settingsSynced: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<EngineSettingsData, void>;
 };

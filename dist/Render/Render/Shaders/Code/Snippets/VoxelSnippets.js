@@ -20,13 +20,13 @@ export function RegisterVoxelSnippets(builder) {
   if(doEffects == 1.){
     if(vDistance < 50.) {
       if(animationType == 1) {
-        p.xz = animType1(worldPosition, p).xz;
+        p.xz = dve_crossed_panel_wind_anim(worldPosition, p).xz;
       }
       if(animationType == 2) {
-        p.xz = animType2(worldPosition, p).xz;
+        p.xz = dve_panel_wind_anim(worldPosition, p).xz;
       }
       if(animationType == 3) {
-        p.xz = animType3(worldPosition, p).xz;
+        p.xz = dve_box_wind_anim(worldPosition, p).xz;
       }
     }
   }

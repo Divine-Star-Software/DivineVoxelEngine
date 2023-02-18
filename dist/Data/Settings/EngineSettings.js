@@ -17,6 +17,7 @@ export const EngineSettings = {
         data: {
             enabled: false,
             autoSyncChunks: true,
+            mode: "server",
         },
         fx: {
             enabled: false,

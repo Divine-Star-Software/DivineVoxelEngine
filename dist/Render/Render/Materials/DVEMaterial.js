@@ -5,7 +5,9 @@ import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 export class DVEMaterial {
     id;
     options;
-    material = null;
+    material;
+    scene;
+    engine;
     time = 0;
     constructor(id = "#dve_solid", options) {
         this.id = id;
@@ -68,6 +70,8 @@ export class DVEMaterial {
         }
     }
     createMaterial() {
+        this.scene = DVER.render.scene;
+        this.engine = this.scene.getEngine();
         const type = TextureManager.getTextureType(this.id);
         if (!type) {
             throw new Error(`${this.id} is not a valid texture type`);
@@ -96,6 +100,7 @@ export class DVEMaterial {
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
         }
+        window.LIQUID = shaderMaterial;
         type.addToMaterial(this);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
@@ -116,14 +121,16 @@ export class DVEMaterial {
     overrideMaterial(material) {
         this.material = material;
     }
+    updateUniforms() {
+        if (DVER.render.fo.activeNode) {
+            this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
+        }
+    }
     runEffects() {
         // if (DVER.render.fogOptions.mode != "animated-volumetric") return;
         if (!this.material)
             return;
         this.time += 0.005;
         this.material.setFloat("time", this.time);
-        if (DVER.render.fo.activeNode) {
-            this.material.setVector3("worldOrigin", DVER.render.fo.activeNode.position);
-        }
     }
 }

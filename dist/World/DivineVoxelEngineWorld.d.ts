@@ -144,7 +144,7 @@ export declare const DVEW: {
             data: DataView;
             indexMap: Map<string, number>;
             index: DataView;
-            setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+            setBuffer(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
             getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
@@ -334,7 +334,7 @@ export declare const DVEW: {
                 getMap(): Record<string, number>;
             };
         };
-        comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
+        comms: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
         commOptions: Record<string, {
             worldData: boolean;
             worldDataTags: boolean;
@@ -346,7 +346,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, data?: Partial<{
+        registerComm(comm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -354,7 +354,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, options: {
+        loopThroughComms(func: (comm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -372,10 +372,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: string | number, threadId?: string | undefined) => false | import("../Meta/Data/DimensionData.types.js").DimensionData;
                 getUnSyncData: (data: string | number, threadId?: string | undefined) => boolean;
             };
@@ -394,10 +391,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
                 getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
             };
@@ -416,10 +410,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
                 getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
             };
@@ -438,10 +429,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
                 getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
             };
@@ -460,10 +448,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").WorldDataSync;
                 getUnSyncData: (data: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, threadId?: string | undefined) => boolean;
             };
@@ -482,10 +467,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, SharedArrayBuffer];
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
@@ -504,10 +486,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: void, threadId?: string | undefined) => false | import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
@@ -526,10 +505,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: void, threadId?: string | undefined) => false | import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
@@ -548,10 +524,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData];
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
@@ -570,10 +543,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: void, threadId?: string | undefined) => false | [import("../Meta/Data/WorldData.types.js").VoxelPalette, import("../Meta/Data/WorldData.types.js").VoxelPaletteMap];
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
@@ -592,10 +562,7 @@ export declare const DVEW: {
                     voxelTags: boolean;
                     materials: boolean;
                     colliders: boolean;
-                }, threadId?: string | undefined) => boolean; /**# Divine Voxel Engine World
-                 * ---
-                 * This handles everything in the world worker context.
-                 */
+                }, threadId?: string | undefined) => boolean;
                 getSyncData: (data: import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, threadId?: string | undefined) => false | import("../Meta/Data/DataSync.types.js").RegisterStringMapSync;
                 getUnSyncData: (data: void, threadId?: string | undefined) => false;
             };
