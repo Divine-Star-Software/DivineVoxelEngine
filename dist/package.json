@@ -1,6 +1,6 @@
 {
  "name": "divine-voxel-engine",
- "version": "1.2.46",
+ "version": "1.2.47",
  "main": "index.js",
  "type": "module",
  "typings": "index.ts",

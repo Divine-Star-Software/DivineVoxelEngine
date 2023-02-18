@@ -144,7 +144,7 @@ export declare const DVEW: {
             data: DataView;
             indexMap: Map<string, number>;
             index: DataView;
-            setBuffer(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
+            setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
             getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
@@ -334,7 +334,7 @@ export declare const DVEW: {
                 getMap(): Record<string, number>;
             };
         };
-        comms: Record<string, import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase>;
+        comms: Record<string, import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
         commOptions: Record<string, {
             worldData: boolean;
             worldDataTags: boolean;
@@ -346,7 +346,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase, data?: Partial<{
+        registerComm(comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -354,7 +354,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager | import("../Libs/ThreadComm/Comm/Comm.js").CommBase, options: {
+        loopThroughComms(func: (comm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase | import("../Libs/ThreadComm/Manager/CommManager.js").CommManager, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;

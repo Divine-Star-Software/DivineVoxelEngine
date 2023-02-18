@@ -613,7 +613,7 @@ export declare const DVEC: {
             data: DataView;
             indexMap: Map<string, number>;
             index: DataView;
-            setBuffer(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
+            setBuffer(data: DataView | import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
             getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
