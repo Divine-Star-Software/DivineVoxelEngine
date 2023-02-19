@@ -1,2 +1,2 @@
-import { RemoteTagManager } from "../../../Libs/DivineBinaryTags/RemoteTagManager.js";
+import { RemoteTagManager } from "divine-binary-tags";
 export declare const ColumnTags: RemoteTagManager;

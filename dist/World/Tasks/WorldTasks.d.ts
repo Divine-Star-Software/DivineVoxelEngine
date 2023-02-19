@@ -1,14 +1,14 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import { LoadRegionHeadertasks, LoadWorldDataTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const WorldTasks: {
-    addChunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
+    addChunk: import("threadcomm").Task<LocationData>;
     unLoad: {
-        unLoadColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
+        unLoadColumn: import("threadcomm").Task<LocationData>;
     };
     load: {
-        loadRegino: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LoadWorldDataTasks>;
-        loadReginoHeader: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LoadRegionHeadertasks>;
-        loadColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LoadWorldDataTasks>;
-        loadChunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LoadWorldDataTasks>;
+        loadRegino: import("threadcomm").Task<LoadWorldDataTasks>;
+        loadReginoHeader: import("threadcomm").Task<LoadRegionHeadertasks>;
+        loadColumn: import("threadcomm").Task<LoadWorldDataTasks>;
+        loadChunk: import("threadcomm").Task<LoadWorldDataTasks>;
     };
 };

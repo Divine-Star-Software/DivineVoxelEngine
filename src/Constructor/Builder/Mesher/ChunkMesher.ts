@@ -5,7 +5,7 @@ import type { SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 //objects
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 import { VoxelMesher } from "../Tools/VoxelMesher.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 
 export const ChunkMesher = {
  voxelBuildOrder: <string[]>[

@@ -8,7 +8,8 @@ import { ChunkMesher } from "./Mesher/ChunkMesher.js";
 import { SubstanceRules } from "./Rules/SubstanceRules.js";
 //functions
 import { InitBuilder } from "./Init/InitBuilder.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
+import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
 
 export const Builder = {
  textureManager: TextureManager,
@@ -16,6 +17,8 @@ export const Builder = {
  chunkMesher: ChunkMesher,
  processor: Processor,
  substanceRules: SubstanceRules,
+
+ overrides : OverrideManager,
 
  dimension: 0,
 

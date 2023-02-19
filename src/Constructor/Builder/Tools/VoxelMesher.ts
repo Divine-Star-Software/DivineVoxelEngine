@@ -13,7 +13,7 @@ import {
  QuadVertexes,
  TextureRotations,
 } from "Meta/Constructor/Geometry/Geometry.types.js";
-import { LocationData } from "Meta/Data/CommonTypes.js";
+import type { LocationData } from "voxelspaces";
 import { VoxelShapeAddData } from "Meta/Constructor/VoxelShape.types.js";
 
 type CumstonVertexData = [number, number, number, number] | [number];

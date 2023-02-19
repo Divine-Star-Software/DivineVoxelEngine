@@ -1,5 +1,5 @@
-import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
-export declare const ConstructorCommManager: import("../../../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
+import { CommPortTypes } from "threadcomm";
+export declare const ConstructorCommManager: import("threadcomm").CommManager & {
     $INIT(): void;
     createConstructors(path: string, numBuilders?: number): void;
     setConstructors(constructors: CommPortTypes[]): void;

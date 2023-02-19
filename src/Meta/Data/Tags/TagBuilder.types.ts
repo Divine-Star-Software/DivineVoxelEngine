@@ -1,4 +1,4 @@
-import type { NumberTypes } from "Libs/DivineBinaryTags/Types/DBTSchema.tyeps";
+import type { NumberTypes } from "divine-binary-tags";
 type TagBuilderNodeBase = {
  id: string;
 };

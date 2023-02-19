@@ -1,1 +1,1 @@
-export declare const ParentComm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+export declare const ParentComm: import("threadcomm").CommBase;

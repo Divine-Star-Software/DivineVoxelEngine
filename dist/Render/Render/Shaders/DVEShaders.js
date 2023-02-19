@@ -1,4 +1,4 @@
-import { DivineShaderBuilder } from "../../../Libs/Shaders/DivineShaderBuilder.js";
+import { DivineShaderBuilder } from "divine-shaders";
 import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
 import { RegisterVertexSnippets } from "./Code/Snippets/VertexSnippets.js";

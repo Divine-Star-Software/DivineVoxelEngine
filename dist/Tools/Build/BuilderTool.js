@@ -1,6 +1,6 @@
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
 const parentComm = ThreadComm.parent;

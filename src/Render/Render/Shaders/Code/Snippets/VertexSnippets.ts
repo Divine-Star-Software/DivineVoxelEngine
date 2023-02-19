@@ -1,4 +1,4 @@
-import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+import type { DivineShaderBuilder } from "divine-shaders";
 export function RegisterVertexSnippets(builder: typeof DivineShaderBuilder) {
  builder.snippets.create({
   id: "standard_position",

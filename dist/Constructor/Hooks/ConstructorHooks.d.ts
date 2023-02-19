@@ -1,9 +1,9 @@
 export declare const ConstructorHooks: {
-    texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
+    texturesRegistered: import("divine-hooks/Classes/SyncHook").SyncHook<{
         textureDataHasBeenSet: boolean;
-        data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-        getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-        setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+        data: import("../..").TextureTypeUVMap;
+        getTextureUV(data: import("../..").ConstructorTextureData, overlay?: boolean): number;
+        setUVTextureMap(data: import("../..").TextureTypeUVMap): void;
         releaseTextureData(): void;
         isReady(): boolean;
     }, void>;

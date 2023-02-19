@@ -1,5 +1,5 @@
 import type { UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 //propagation
 import { FlowUpdate } from "../Propagation/Flow/Functions/FlowUpdate.js";
 import { Propagation } from "../Propagation/Propagation.js";

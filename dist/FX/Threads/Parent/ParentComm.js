@@ -1,5 +1,5 @@
 import { DVEFX } from "../../DivineStarVoxelEngineFX.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 const parentComm = ThreadComm.parent;
 parentComm.listenForMessage("connect-world", (data, event) => {
     if (!event)

@@ -1,5 +1,5 @@
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";

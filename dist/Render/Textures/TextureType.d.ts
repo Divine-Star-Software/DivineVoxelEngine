@@ -1,7 +1,7 @@
 import type { RawTexture2DArray } from "babylonjs";
 import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
 import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
-import { DivineShader } from "../../Libs/Shaders/Classes/DivineShader.js";
+import { DivineShader } from "divine-shaders";
 declare class TextureRecord {
     parentID: string;
     id: string;
@@ -22,7 +22,7 @@ declare class TextureRecord {
     varyingID: string;
     animationUniforID: string;
     animationUniform: Float32Array;
-    paths: string[];
+    paths: Map<string, false | Uint8ClampedArray>;
     texture: RawTexture2DArray[];
     textureID: string;
     constructor(parentID: string, id: string, mode: "sampler" | "overlay", attributeID: string);

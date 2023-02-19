@@ -14,22 +14,22 @@ export declare const RenderManager: {
             remove(id: string): boolean;
         };
         region: {
-            add(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion;
-            remove(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): boolean;
+            add(location: import("voxelspaces").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion;
+            remove(location: import("voxelspaces").LocationData): boolean;
             _getRegionData(): import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion;
-            get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion;
+            get(location: import("voxelspaces").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion;
         };
         column: {
-            add(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
-            remove(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
-            _getColumnData(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
-            get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn | undefined;
+            add(location: import("voxelspaces").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
+            remove(location: import("voxelspaces").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
+            _getColumnData(location: import("voxelspaces").LocationData): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn;
+            get(location: import("voxelspaces").LocationData): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn | undefined;
         };
         chunk: {
-            add(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, mesh: import("babylonjs").Mesh, substance: string): Map<string, import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
+            add(location: import("voxelspaces").LocationData, mesh: import("babylonjs").Mesh, substance: string): Map<string, import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
             _getChunkData(mesh: import("babylonjs").Mesh): import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
-            remove(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | import("babylonjs").Mesh;
-            get(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, substance: string): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
+            remove(location: import("voxelspaces").LocationData, substance: string): false | import("babylonjs").Mesh;
+            get(location: import("voxelspaces").LocationData, substance: string): false | import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
         };
     };
     meshManager: {
@@ -40,7 +40,7 @@ export declare const RenderManager: {
         chunks: {
             remove(data: import("../../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
             update(data: import("../../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
-            removeColumn(data: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | undefined;
+            removeColumn(data: import("voxelspaces").LocationData): false | undefined;
         };
     };
     meshCuller: {
@@ -60,46 +60,46 @@ export declare const RenderManager: {
     shaders: {
         builder: {
             shaders: {
-                _shaders: Map<string, import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader>;
-                create(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
+                _shaders: Map<string, import("divine-shaders").DivineShader>;
+                create(id: string): import("divine-shaders").DivineShader;
             };
             functions: {
-                _functions: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>>;
+                _functions: Map<string, import("divine-shaders").ShaderFunctionData<any>>;
                 _functionSets: Map<string, string[]>;
-                create(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>): void;
-                _processFunctinos(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any>, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | null): string;
-                build(id: string, data?: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderFunctionData<any> | null, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | null): string;
+                create(id: string, data: import("divine-shaders").ShaderFunctionData<any>): void;
+                _processFunctinos(id: string, data: import("divine-shaders").ShaderFunctionData<any>, shader?: import("divine-shaders").DivineShader | null | undefined): string;
+                build(id: string, data?: import("divine-shaders").ShaderFunctionData<any> | null | undefined, shader?: import("divine-shaders").DivineShader | null | undefined): string;
             };
             define: {
-                _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDefinesData>): string;
+                _process(data: import("divine-shaders").ShaderDefinesData): string;
+                build(data: import("divine-shaders").ShaderDefinesData | import("divine-shaders").ShaderDefinesData[] | Map<string, import("divine-shaders").ShaderDefinesData>): string;
             };
             uniforms: {
-                _process(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData): string;
-                build(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData | import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData[] | Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderUniformData>): string;
+                _process(data: import("divine-shaders").ShaderUniformData): string;
+                build(data: import("divine-shaders").ShaderUniformData | import("divine-shaders").ShaderUniformData[] | Map<string, import("divine-shaders").ShaderUniformData>): string;
             };
             snippets: {
-                _snippets: Map<string, import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>>;
-                create(data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>): void;
-                override(id: string, data: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderSnippetData<any>): boolean;
+                _snippets: Map<string, import("divine-shaders").ShaderSnippetData<any>>;
+                create(data: import("divine-shaders").ShaderSnippetData<any>): void;
+                override(id: string, data: import("divine-shaders").ShaderSnippetData<any>): boolean;
                 get(id: string, args?: any): string;
-                _process(text: string, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | undefined): {
+                _process(text: string, shader?: import("divine-shaders").DivineShader | undefined): {
                     newBody: string;
                     foundSnippet: boolean;
                 };
-                build(text: string, shader?: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader | undefined): string;
+                build(text: string, shader?: import("divine-shaders").DivineShader | undefined): string;
             };
         };
-        voxelAttributes: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-        voxelSharedUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-        voxelVertexUniforms: [id: string, type: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderDataTypes][];
-        voxelVarying: import("../../Libs/Shaders/Types/ShaderData.types.js").ShaderVaryingData<any>[];
+        voxelAttributes: [id: string, type: import("divine-shaders").ShaderDataTypes][];
+        voxelSharedUniforms: [id: string, type: import("divine-shaders").ShaderDataTypes][];
+        voxelVertexUniforms: [id: string, type: import("divine-shaders").ShaderDataTypes][];
+        voxelVarying: import("divine-shaders").ShaderVaryingData<any>[];
         voxelFragFunctions: string[];
         voxelVertexFunctions: string[];
-        _defaultShader: import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
+        _defaultShader: import("divine-shaders").DivineShader;
         $INIT(): void;
-        createVoxelShader(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
-        createSkyBoxShader(id: string): import("../../Libs/Shaders/Classes/DivineShader.js").DivineShader;
+        createVoxelShader(id: string): import("divine-shaders").DivineShader;
+        createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
     };
     solidMaterial: DVEMaterial;
     floraMaterial: DVEMaterial;

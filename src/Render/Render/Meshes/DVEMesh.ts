@@ -1,5 +1,5 @@
 import type { BoundingInfo, Mesh, Scene, VertexData } from "babylonjs";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { ChunkMeshData } from "Meta/Tasks/RenderTasks.types";
 import { DVEBabylon } from "../../Babylon/DVEBabylon.js";

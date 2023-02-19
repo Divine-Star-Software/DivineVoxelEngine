@@ -5,7 +5,7 @@ import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import { CalculateVoxelLight, VoxelLightMixCalc } from "./Functions/CalculateVoxelLight.js";
 import { CalculateFlow } from "./Functions/CalculateFlow.js";
 /**# Chunk Processor
@@ -15,8 +15,8 @@ import { CalculateFlow } from "./Functions/CalculateFlow.js";
  */
 export declare const Processor: {
     LOD: number;
-    mDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
-    nDataTool: import("../../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+    mDataTool: import("../../../index.js").ConstructorDataTool;
+    nDataTool: import("../../../index.js").ConstructorDataTool;
     faceByte: {
         _rotationMap: Record<TextureRotations, number>;
         _rotationReverseMap: Record<number, TextureRotations>;

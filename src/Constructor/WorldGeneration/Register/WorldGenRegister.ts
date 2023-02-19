@@ -1,8 +1,8 @@
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { ChunkDataTool } from "../../../Tools/Data/WorldData/ChunkDataTool.js";
 

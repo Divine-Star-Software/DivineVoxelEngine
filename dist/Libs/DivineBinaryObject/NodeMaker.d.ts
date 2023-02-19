@@ -1,4 +1,4 @@
-import { DBOPrimitive } from "./Types/DBO.types";
+import { DBOPrimitive, TypedArrays } from "./Types/DBO.types";
 import { TypedNode } from "./Classes/TypedNode.js";
 export declare const TNM: {
     json<T>(data: T): TypedNode<T>;
@@ -15,7 +15,7 @@ export declare const TNM: {
     _64f(value: number): TypedNode<number>;
     bigi(value: number): TypedNode<number>;
     bigui(value: number): TypedNode<number>;
-    typedArray(type: DBOPrimitive, value: number[]): TypedNode<number[]>;
+    typedArray(type: DBOPrimitive, value: number[]): TypedNode<TypedArrays>;
     stringArray(value: string[]): TypedNode<string[]>;
     string(value: string): TypedNode<string>;
     fixedString(value: string, length: number): TypedNode<string>;

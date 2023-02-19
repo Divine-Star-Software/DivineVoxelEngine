@@ -1,6 +1,6 @@
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
-import type { LocationData } from "Meta/Data/CommonTypes";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import type { LocationData } from "voxelspaces";
+import { ThreadComm } from "threadcomm"
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 
 export const DataLoaderTasks = {

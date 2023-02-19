@@ -1,4 +1,4 @@
-import { Hooks } from "../../Libs/Hooks/Hooks.js";
+import { Hooks } from "divine-hooks";
 export const ConstructorHooks = {
     texturesRegistered: Hooks.getSyncHook(),
 };

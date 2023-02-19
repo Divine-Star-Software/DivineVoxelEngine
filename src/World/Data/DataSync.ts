@@ -1,13 +1,13 @@
 //types
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
-import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
-import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
+import type { CommBase,CommManager } from "threadcomm";
+
 import type {
  RegisterStringMapSync,
  WorldDataSync,
 } from "Meta/Data/DataSync.types.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
+import type { RemoteTagManagerInitData } from "divine-binary-tags";
 //objects
 import { VoxelDataGenerator } from "./Generators/VoxelDataGenerator.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";

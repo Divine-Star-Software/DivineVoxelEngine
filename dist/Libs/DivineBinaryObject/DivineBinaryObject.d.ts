@@ -3,8 +3,6 @@ export declare const DBO: {
         toBuffer(data: import("./Classes/TypedNode.js").TypedNode<any>): ArrayBuffer;
         toObject<T>(buffer: ArrayBuffer, byteOffSet?: number): T;
         toMMD<T_1>(buffer: ArrayBuffer, byteOffSet?: number, byteOffSetEnd?: number): import("./Classes/TypedNode.js").TypedNode<T_1>;
-        toToekns(data: import("./Classes/TypedNode.js").TypedNode<any>): [([number, number] | [number, -1, string] | [number, -2, number[]] | [number, -3, string[]])[], number];
-        toeknsToBuffer(data: any, size: number, buffer: ArrayBuffer, byteOffSet?: number): void;
     };
     parser: {
         mmdTokens: any[];
@@ -35,7 +33,7 @@ export declare const DBO: {
                 [x: string]: import("./Classes/TypedNode.js").TypedNode<any>;
             };
         };
-        createObject<T_2>(schemaId: string, buffer: SharedArrayBuffer | ArrayBuffer | DataView): T_2;
+        createObject<T_2>(schemaId: string, buffer: ArrayBuffer | SharedArrayBuffer | DataView): T_2;
         createBuffer(schemaId: string, updatedValues?: any): ArrayBuffer;
     };
     nodeMaker: {
@@ -53,7 +51,7 @@ export declare const DBO: {
         _64f(value: number): import("./Classes/TypedNode.js").TypedNode<number>;
         bigi(value: number): import("./Classes/TypedNode.js").TypedNode<number>;
         bigui(value: number): import("./Classes/TypedNode.js").TypedNode<number>;
-        typedArray(type: import("./index.js").DBOPrimitive, value: number[]): import("./Classes/TypedNode.js").TypedNode<number[]>;
+        typedArray(type: import("./index.js").DBOPrimitive, value: number[]): import("./Classes/TypedNode.js").TypedNode<import("./index.js").TypedArrays>;
         stringArray(value: string[]): import("./Classes/TypedNode.js").TypedNode<string[]>;
         string(value: string): import("./Classes/TypedNode.js").TypedNode<string>;
         fixedString(value: string, length: number): import("./Classes/TypedNode.js").TypedNode<string>;

@@ -1,4 +1,4 @@
-import { TypedNode } from "Libs/DivineBinaryObject/Classes/TypedNode";
+import { TypedNode } from "divine-binary-object/Classes/TypedNode";
 
 export type RichDataSchema = Record<string, Record<string, TypedNode<any>>>;
 

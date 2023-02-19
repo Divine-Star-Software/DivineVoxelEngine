@@ -1,4 +1,4 @@
-import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { TagManager } from "divine-binary-tags";
 import { ColumnTags } from "../../../Data/World/Column/ColumnTags.js";
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 export const ColumnDataTags = new TagManager("column-tags");

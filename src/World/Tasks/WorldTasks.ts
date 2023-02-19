@@ -1,6 +1,6 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 //data
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldDataGenerator } from "../Data/Generators/WorldDataGenerator.js";

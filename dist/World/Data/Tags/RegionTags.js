@@ -1,6 +1,6 @@
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { RegionHeaderTags, RegionTags } from "../../../Data/World/Region/RegionTags.js";
-import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { TagManager } from "divine-binary-tags";
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 export const RegionDataTags = new TagManager("region-tags");
 RegionDataTags.registerTag({

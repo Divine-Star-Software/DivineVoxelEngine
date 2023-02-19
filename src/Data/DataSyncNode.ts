@@ -5,11 +5,10 @@ import type {
  WorldDataSync,
  RegisterStringMapSync,
 } from "Meta/Data/DataSync.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
 //objects
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldRegister } from "./World/WorldRegister.js";
 import { DataSyncTypes } from "../Common/Threads/Contracts/DataSync.js";
 import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";
@@ -20,6 +19,7 @@ import { ColumnTags } from "./World/Column/ColumnTags.js";
 import { VoxelTags } from "./Voxel/VoxelTags.js";
 import { Register } from "./Register/Register.js";
 import { RegionHeaderRegister } from "./World/Region/RegionHeaderRegister.js";
+import { RemoteTagManagerInitData } from "divine-binary-tags";
 
 export const DataSyncNode = {
  _states: <Record<string, boolean>>{

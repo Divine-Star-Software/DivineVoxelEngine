@@ -1,6 +1,5 @@
 import { ByteCounts, ByteDataGet, ByteDataSet } from "../Constants/ByteData.js";
 import { TypedNode } from "../Classes/TypedNode.js";
-import { MMDP } from "../MMD/MetaMarkedParser.js";
 import { MMD } from "../MetaMarkedData.js";
 import { MetaMapValues, MetaValues } from "../Constants/MetaValues.js";
 export const DBOP = {
@@ -110,10 +109,13 @@ export const DBOP = {
             const mmdData = DBOP.mmdTokens.shift();
             if (!mmdData)
                 return;
-            const length = mmdData[1];
+            const length = mmdData.byteLength;
             ByteDataSet["32ui"](dv, byteCount, length);
             byteCount += ByteCounts["32ui"];
-            MMDP.toeknsToBuffer(mmdData[0], mmdData[1], dv.buffer, byteCount);
+            const array = new Uint8Array(mmdData);
+            for (let i = byteCount; i < byteCount + length; i++) {
+                ByteDataSet["16ui"](dv, byteCount, array[i]);
+            }
             byteCount += length;
             return byteCount;
         },
@@ -289,9 +291,9 @@ export const DBOP = {
         for (const key of Object.keys(schema)) {
             const element = schema[key];
             if (element.typeName == "mmd") {
-                const mmdData = MMD.parser.toToekns(element.value);
+                const mmdData = MMD.parser.toBuffer(element.value);
                 this.mmdTokens.push(mmdData);
-                length += mmdData[1] + ByteCounts["32ui"];
+                length += mmdData.byteLength + ByteCounts["32ui"];
                 continue;
             }
             if (element.typeName == "json") {

@@ -1,9 +1,8 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
-import type { CommBase } from "Libs/ThreadComm/Comm/Comm.js";
-import type { CommManager } from "Libs/ThreadComm/Manager/CommManager.js";
+import type { CommBase, CommManager } from "threadcomm";
 import type { RegisterStringMapSync, WorldDataSync } from "Meta/Data/DataSync.types.js";
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types.js";
+import type { RemoteTagManagerInitData } from "divine-binary-tags";
 import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types.js";
 declare type CommSyncOptions = {
     worldData: boolean;
@@ -38,12 +37,12 @@ export declare const DataSync: {
             _count: number;
             _palette: VoxelPalette;
             _map: Record<string, number>;
-            registerVoxel(voxel: import("../../Meta/Data/Voxels/Voxel.types.js").VoxelData): void;
+            registerVoxel(voxel: import("../../index.js").VoxelData): void;
             get(): VoxelPalette;
             getMap(): Record<string, number>;
         };
     };
-    comms: Record<string, CommManager | CommBase>;
+    comms: Record<string, CommBase | CommManager>;
     commOptions: Record<string, CommSyncOptions>;
     _ready: boolean;
     $INIT(): void;

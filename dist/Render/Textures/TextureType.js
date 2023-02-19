@@ -1,4 +1,4 @@
-import { DivineShader } from "../../Libs/Shaders/Classes/DivineShader.js";
+import { DivineShader } from "divine-shaders";
 class TextureRecord {
     parentID;
     id;
@@ -12,7 +12,7 @@ class TextureRecord {
     varyingID = "";
     animationUniforID = "";
     animationUniform = new Float32Array();
-    paths = [];
+    paths = new Map();
     texture = [];
     textureID = "";
     constructor(parentID, id, mode, attributeID) {

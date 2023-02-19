@@ -1,7 +1,7 @@
 import type { ChunkData } from "Meta/Data/WorldData.types.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 export declare class ChunkDataTool extends EncodedPositionDataTool {
-    tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+    tags: import("divine-binary-tags").RemoteTagManager;
     constructor();
     loadIn(): boolean;
     setChunk(chunk: ChunkData): this;

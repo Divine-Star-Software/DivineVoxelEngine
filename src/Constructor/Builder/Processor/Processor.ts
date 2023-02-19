@@ -6,7 +6,7 @@ import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
 import type { VoxelConstructor } from "Meta/Constructor/Voxel.types.js";
 import type { FaceDataOverride } from "Meta/Constructor/OverRide.types";
 import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 
 //functions
 import {

@@ -1,5 +1,5 @@
-import { TNM } from "../../Libs/DivineBinaryObject/NodeMaker.js";
-import { DBO } from "../../Libs/DivineBinaryObject/DivineBinaryObject.js";
+import { TNM } from "divine-binary-object/NodeMaker";
+import { DBO } from "divine-binary-object";
 import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
 export class RichChunkDataTool extends RichDataToolBase {

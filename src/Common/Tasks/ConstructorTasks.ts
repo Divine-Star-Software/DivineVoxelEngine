@@ -1,6 +1,6 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
 import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/ConstructorRemoteThreadTasks.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm"
 import {
  AddToRebuildQueue,
  BuildTasks,

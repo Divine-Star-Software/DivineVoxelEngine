@@ -1,3 +1,3 @@
-export declare const FXComm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase & {
+export declare const FXComm: import("threadcomm").CommBase & {
     $INIT(): void;
 };

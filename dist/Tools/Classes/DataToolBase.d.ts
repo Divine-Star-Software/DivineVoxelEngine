@@ -1,5 +1,5 @@
-import type { RemoteTagManager } from "Libs/DivineBinaryTags/RemoteTagManager";
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { RemoteTagManager } from "divine-binary-tags";
+import type { LocationData } from "voxelspaces";
 import { LocationBoundTool } from "./LocationBoundTool.js";
 export declare abstract class DataToolBase extends LocationBoundTool {
     tags: RemoteTagManager;

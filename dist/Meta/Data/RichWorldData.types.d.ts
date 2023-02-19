@@ -1,4 +1,4 @@
-import { TypedNode } from "Libs/DivineBinaryObject/Classes/TypedNode";
+import { TypedNode } from "divine-binary-object/Classes/TypedNode";
 export declare type RichDataSchema = Record<string, Record<string, TypedNode<any>>>;
 export declare type RichChunk = RichDataSchema;
 export declare type RichColumn = TypedNode<{

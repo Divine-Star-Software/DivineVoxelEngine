@@ -1,7 +1,7 @@
-import type { TypedNode } from "Libs/DivineBinaryObject/Classes/TypedNode.js";
+import type { TypedNode } from "divine-binary-object/Classes/TypedNode";
 import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import { DBO } from "../../Libs/DivineBinaryObject/DivineBinaryObject.js";
+import { DBO } from "divine-binary-object";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
 import { RichChunkDataTool } from "./RichChunkDataTool.js";
 

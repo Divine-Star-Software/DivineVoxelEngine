@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { RegisterDataHooks } from "../Hooks/Data/DataHooks.js";
 
 export async function InitWorldWorker(

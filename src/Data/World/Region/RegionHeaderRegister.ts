@@ -1,4 +1,4 @@
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "voxelspaces";
 import { WorldSpaces } from "../WorldSpaces.js";
 import { RegionHeaderTags } from "./RegionTags.js";
 

@@ -1,2 +1,2 @@
-import type { DivineShaderBuilder } from "../../../../../Libs/Shaders/DivineShaderBuilder.js";
+import type { DivineShaderBuilder } from "divine-shaders";
 export declare function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder): void;

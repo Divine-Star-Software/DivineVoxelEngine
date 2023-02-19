@@ -2,6 +2,7 @@ import { MetaValues, MetaMapValues } from "../Constants/MetaValues.js";
 //import { MMDNode } from "../Classes/MMDNode.js";
 import { ByteCounts as BC, ByteDataGet } from "../Constants/ByteData.js";
 import { TypedNode } from "../Classes/TypedNode.js";
+import { TypedArrayCrete } from "../Constants/ByteData.js";
 export const BToMMD = {
     _mode: "object",
     _cobj: {},
@@ -16,7 +17,7 @@ export const BToMMD = {
         return new TypedNode(MetaValues[type], value, MetaValues[listType]);
     },
     _assign(value) {
-        if (this._mode == "object") {
+        if (BToMMD._mode == "object" || BToMMD._mode == "json") {
             if (Array.isArray(this._cobj)) {
                 this._cobj.push(value);
             }
@@ -25,7 +26,7 @@ export const BToMMD = {
             }
         }
         else {
-            if (Array.isArray(this._cobj.v)) {
+            if (Array.isArray(this._cobj.value)) {
                 this._cobj.value.push(value);
             }
             else {
@@ -99,7 +100,7 @@ export const BToMMD = {
         },
         "8i": (dv, index) => {
             const value = ByteDataGet["8i"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -109,7 +110,7 @@ export const BToMMD = {
         },
         "8ui": (dv, index) => {
             const value = ByteDataGet["8ui"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -119,7 +120,7 @@ export const BToMMD = {
         },
         "16i": (dv, index) => {
             const value = ByteDataGet["16i"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -129,7 +130,7 @@ export const BToMMD = {
         },
         "16ui": (dv, index) => {
             const value = ByteDataGet["16ui"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -139,7 +140,7 @@ export const BToMMD = {
         },
         "32f": (dv, index) => {
             const value = ByteDataGet["32f"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -149,7 +150,7 @@ export const BToMMD = {
         },
         "32i": (dv, index) => {
             const value = ByteDataGet["32i"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -159,7 +160,7 @@ export const BToMMD = {
         },
         "32ui": (dv, index) => {
             const value = ByteDataGet["32ui"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -169,7 +170,7 @@ export const BToMMD = {
         },
         "64f": (dv, index) => {
             const value = ByteDataGet["64f"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -179,7 +180,7 @@ export const BToMMD = {
         },
         bigi: (dv, index) => {
             const value = ByteDataGet["bigi"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -189,7 +190,7 @@ export const BToMMD = {
         },
         bigui: (dv, index) => {
             const value = ByteDataGet["bigui"](dv, index + 1);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(value);
             }
             else {
@@ -213,7 +214,7 @@ export const BToMMD = {
                 }
                 array.push(string);
             }
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(array);
             }
             else {
@@ -228,7 +229,7 @@ export const BToMMD = {
             for (let i = index; i < index + length * BC["16ui"]; i += 2) {
                 string += String.fromCharCode(ByteDataGet["16ui"](dv, i));
             }
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(string);
             }
             else {
@@ -240,13 +241,19 @@ export const BToMMD = {
             const type = MetaMapValues[ByteDataGet["8ui"](dv, index + 1)];
             const length = ByteDataGet["32ui"](dv, index + 2);
             index += BC["8ui"] * 2 + BC["32ui"];
-            let array = [];
+            let array;
+            if (BToMMD._mode == "json") {
+                array = [];
+            }
+            else {
+                array = TypedArrayCrete[type](length);
+            }
             const func = ByteDataGet[type];
             for (let i = 0; i < length; i++) {
-                array.push(func(dv, index));
+                array[i] = func(dv, index);
                 index += BC[type];
             }
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(array);
             }
             else {
@@ -262,7 +269,7 @@ export const BToMMD = {
                 jsonString += String.fromCharCode(ByteDataGet["16ui"](dv, i));
             }
             const result = JSON.parse(jsonString);
-            if (BToMMD._mode == "object") {
+            if (BToMMD._mode != "mmd") {
                 BToMMD._assign(result);
             }
             else {
@@ -274,7 +281,21 @@ export const BToMMD = {
     },
     toObject(buffer, byteOffSet = 0) {
         this._mode = "object";
-        console.log("hello");
+        let legnth = buffer.byteLength;
+        const dv = new DataView(buffer);
+        this._objCount = 0;
+        let index = byteOffSet;
+        let mark = "16i";
+        let markType = 0;
+        while (index < legnth) {
+            markType = ByteDataGet["8ui"](dv, index);
+            mark = MetaMapValues[markType];
+            index = this.markFunctions[mark](dv, index);
+        }
+        return this._cobj;
+    },
+    toJSON(buffer, byteOffSet = 0) {
+        this._mode = "json";
         let legnth = buffer.byteLength;
         const dv = new DataView(buffer);
         this._objCount = 0;

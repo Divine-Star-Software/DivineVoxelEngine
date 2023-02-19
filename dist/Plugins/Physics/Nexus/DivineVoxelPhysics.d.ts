@@ -3,11 +3,11 @@ import { EntityBase } from "./Entities/Entity.base.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 export declare const DVP: {
     math: {
-        visitAll: (startPoint: import("../../../Meta/Util.types.js").Vector3, endPoint: import("../../../Meta/Util.types.js").Vector3, visitor?: (x: number, y: number, z: number) => boolean) => number[];
-        getVector3(x: number, y: number, z: number): import("../../../Math/Classes/Vector3.js").Vector3;
-        getPlane(pv1: import("../../../Math/Classes/Vector3.js").Vector3, pv2: import("../../../Math/Classes/Vector3.js").Vector3, pv3: import("../../../Math/Classes/Vector3.js").Vector3, pv4: import("../../../Math/Classes/Vector3.js").Vector3): import("../../../Math/Classes/Plane.js").Plane;
-        getSimpleBoundingBox(origin: import("../../../Math/Classes/Vector3.js").Vector3, dimensions: import("../../../Math/Types/Math.types.js").DimensionsVector3): import("../../../Math/Classes/SimpleBoundingBox.js").SimpleBoundingBox;
-        getBoundingBox(data: import("../../../Math/Classes/BoundingBox.js").BoundingBoxData): import("../../../Math/Classes/BoundingBox.js").BoundingBox;
+        visitAll: (startPoint: import("../../../index.js").Vector3, endPoint: import("../../../index.js").Vector3, visitor?: (x: number, y: number, z: number) => boolean) => number[];
+        getVector3(x: number, y: number, z: number): import("../../../Math/index.js").Vector3;
+        getPlane(pv1: import("../../../Math/index.js").Vector3, pv2: import("../../../Math/index.js").Vector3, pv3: import("../../../Math/index.js").Vector3, pv4: import("../../../Math/index.js").Vector3): import("../../../Math/index.js").Plane;
+        getSimpleBoundingBox(origin: import("../../../Math/index.js").Vector3, dimensions: import("../../../Math/index.js").DimensionsVector3): import("../../../Math/index.js").SimpleBoundingBox;
+        getBoundingBox(data: import("../../../Math/index.js").BoundingBoxData): import("../../../Math/index.js").BoundingBox;
         convertToOriginGridSpace(position: number[]): number[];
         distance2D(x1: number, x2: number, y1: number, y2: number): number;
         distance3D(x1: number, y1: number, z1: number, x2: number, y2: number, z2: number): number;

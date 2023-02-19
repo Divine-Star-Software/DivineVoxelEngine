@@ -37,7 +37,7 @@ export declare class IWG {
         _thread: string;
         _priority: import("../../../Meta/Tasks/Tasks.types").Priorities;
         setPriority(priority: import("../../../Meta/Tasks/Tasks.types").Priorities): any;
-        setFocalPoint(location: import("../../../Libs/voxelSpaces/Types/VoxelSpaces.types").LocationData): any;
+        setFocalPoint(location: import("voxelspaces").LocationData): any;
         generate: {
             async: {
                 _s: any;
@@ -66,11 +66,11 @@ export declare class IWG {
             paint: {
                 deferred: {
                     _s: any;
-                    run(x: number, y: number, z: number, raw: import("../../../Meta/Data/Voxels/Voxel.types").RawVoxelData, onDone: (data: any) => void): void;
+                    run(x: number, y: number, z: number, raw: import("../../..").RawVoxelData, onDone: (data: any) => void): void;
                 };
                 async: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: import("../../../Meta/Data/Voxels/Voxel.types").RawVoxelData): void;
+                    add(x: number, y: number, z: number, raw: import("../../..").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };

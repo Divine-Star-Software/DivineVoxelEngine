@@ -1,5 +1,5 @@
 import type { ChunkData, Column, WorldDimensions, Region } from "Meta/Data/WorldData.types";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 export declare const WorldRegister: {
     _dimensions: WorldDimensions;
     _cacheOn: boolean;

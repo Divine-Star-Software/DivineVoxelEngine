@@ -1,4 +1,4 @@
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "voxelspaces";
 import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type";
 export declare const DataHanlderWrapper: {
     handler: DataHandler;

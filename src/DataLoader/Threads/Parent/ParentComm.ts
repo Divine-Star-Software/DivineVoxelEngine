@@ -1,5 +1,5 @@
 import { DVEDL } from "../../DivineVoxelEngineDataLoader.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 
 const parentComm = ThreadComm.parent;
 

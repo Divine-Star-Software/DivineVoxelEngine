@@ -1,7 +1,6 @@
-import type { MMDMarks } from "Types/MMD.types";
 import { TypedNode } from "../Classes/TypedNode.js";
 export declare const BToMMD: {
-    _mode: "object" | "mmd";
+    _mode: "object" | "json" | "mmd";
     _cobj: any;
     _parents: any[];
     _objArray: never[];
@@ -13,5 +12,6 @@ export declare const BToMMD: {
     _assign(value: any): void;
     markFunctions: Record<MMDMarks, (dv: DataView, index: number) => number>;
     toObject<T>(buffer: ArrayBuffer, byteOffSet?: number): T;
-    toMMD<T_1>(buffer: ArrayBuffer, byteOffSet?: number, byteOffSetEnd?: number): T_1;
+    toJSON<T_1>(buffer: ArrayBuffer, byteOffSet?: number): T_1;
+    toMMD<T_2>(buffer: ArrayBuffer, byteOffSet?: number, byteOffSetEnd?: number): T_2;
 };

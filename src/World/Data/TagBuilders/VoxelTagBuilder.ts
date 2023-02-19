@@ -1,7 +1,7 @@
 import type { TagBuilderNodes } from "Meta/Data/Tags/TagBuilder.types";
-import type { TagManagerBase } from "Libs/DivineBinaryTags/Classes/TagManagerBase.js";
+import type { TagManagerBase } from "divine-binary-tags"
 import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
-import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { TagManager } from "divine-binary-tags"
 import { DataSync } from "../DataSync.js";
 import { Register } from "../../../Data/Register/Register.js";
 import { RegisterStringMapSync } from "Meta/Data/DataSync.types.js";

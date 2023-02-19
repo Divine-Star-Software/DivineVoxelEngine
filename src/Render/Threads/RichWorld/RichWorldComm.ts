@@ -1,5 +1,5 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 
 
 ThreadComm

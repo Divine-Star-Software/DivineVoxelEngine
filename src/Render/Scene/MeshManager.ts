@@ -8,7 +8,7 @@ import {
 } from "Meta/Tasks/RenderTasks.types.js";
 import { DVEMesh } from "Render/Render/Meshes/DVEMesh.js";
 import { MeshRegister } from "./MeshRegister.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 
 export const MeshManager = {
  scene: <Scene>{},

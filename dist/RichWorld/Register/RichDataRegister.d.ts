@@ -1,5 +1,5 @@
 import type { RichChunk, RichColumn, RichRegion, RichWorldDimensions } from "Meta/Data/RichWorldData.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 export declare const RichDataRegister: {
     _dimensions: RichWorldDimensions;
     dimensions: {
@@ -20,8 +20,8 @@ export declare const RichDataRegister: {
     };
     chunk: {
         _getChunkData(): RichChunk;
-        add(location: LocationData): import("../../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<{}>;
-        get(location: LocationData): false | import("../../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<import("Meta/Data/RichWorldData.types.js").RichDataSchema>;
-        remove(location: LocationData): false | import("../../Libs/DivineBinaryObject/Classes/TypedNode.js").TypedNode<import("Meta/Data/RichWorldData.types.js").RichDataSchema>;
+        add(location: LocationData): import("divine-binary-object").TypedNode<{}>;
+        get(location: LocationData): false | import("divine-binary-object").TypedNode<import("Meta/Data/RichWorldData.types.js").RichDataSchema>;
+        remove(location: LocationData): false | import("divine-binary-object").TypedNode<import("Meta/Data/RichWorldData.types.js").RichDataSchema>;
     };
 };

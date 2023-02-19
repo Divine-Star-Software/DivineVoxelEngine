@@ -1,6 +1,6 @@
 import { ConstructorQueues } from "../Queues/ConstructorQueues.js";
 import { ConstructorRemoteThreadTasks } from "../Threads/Contracts/ConstructorRemoteThreadTasks.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
 const tasks = TasksTool();
 export const ConstructorTasks = {

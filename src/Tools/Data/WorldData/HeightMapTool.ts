@@ -4,7 +4,7 @@ import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js
 //Data
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 export class HeightMapTool {
  static _chunkTool = new ChunkDataTool();

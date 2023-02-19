@@ -1,5 +1,5 @@
 import { BuildTasks, Priorities } from "Meta/Tasks/Tasks.types.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 declare class TasksBase {
     _data: {

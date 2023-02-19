@@ -4,7 +4,7 @@ import { DataHooks } from "../DataHooks.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { VoxelPaletteReader } from "../Voxel/VoxelPalette.js";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 
 type ID = string | number;
 const WP = {

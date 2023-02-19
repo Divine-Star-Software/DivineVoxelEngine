@@ -1,10 +1,10 @@
-import { DivineShaderBuilder } from "../../../Libs/Shaders/DivineShaderBuilder.js";
+import { DivineShaderBuilder } from "divine-shaders";
 import type {
  ShaderCodeBody,
  ShaderDataTypes,
  ShaderVaryingData,
-} from "Libs/Shaders/Types/ShaderData.types";
-import type { DivineShader } from "Libs/Shaders/Classes/DivineShader.js";
+} from "divine-shaders";
+import type { DivineShader } from "divine-shaders";
 import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
 import { RegisterVertexSnippets } from "./Code/Snippets/VertexSnippets.js";
@@ -243,7 +243,6 @@ vFlow = -1.;
   shader.addVarying(this.voxelVarying);
   shader.loadInFunctions(this.voxelFragFunctions, "frag");
   shader.loadInFunctions(this.voxelVertexFunctions, "vertex");
-
 
   /*
   shader.addTextures([

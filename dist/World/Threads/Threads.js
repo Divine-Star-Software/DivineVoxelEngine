@@ -1,5 +1,5 @@
 import { DataSync } from "../Data/DataSync.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm/";
 import { DVEW } from "../DivineVoxelEngineWorld.js";
 export const CCM = ThreadComm.createCommManager({
     name: "constructor",

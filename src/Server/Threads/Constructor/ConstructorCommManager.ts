@@ -1,6 +1,6 @@
 //types
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
-import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types.js";
+import { ThreadComm } from "threadcomm";
+import { CommPortTypes } from "threadcomm";
 
 const CCMBase = ThreadComm.createCommManager({
  name: "constructor",

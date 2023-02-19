@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineConstructor } from "Constructor/DivineVoxelEngineConstructor";
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "voxelspaces";
 import type { Analyzer } from "./Analyzer";
 
 type RunFunction = (

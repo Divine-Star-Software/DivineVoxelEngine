@@ -1,7 +1,7 @@
+import type { LocationData } from "voxelspaces";
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
-import { LocationData } from "Meta/Data/CommonTypes.js";
-import { CommBase } from "../../Libs/ThreadComm/Comm/Comm.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+
+import { ThreadComm, CommBase } from "threadcomm";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
@@ -170,7 +170,7 @@ export class DataLoaderTool extends LocationBoundTool {
  }
 
  columnExists(onDone?: (exists: boolean) => void) {
-  const location: LocationData = [...this.getLocation()];
+  const location = <LocationData>[...this.getLocation()];
 
   if (this.mode == "server") {
    if (!RegionHeaderRegister.get(location)) {

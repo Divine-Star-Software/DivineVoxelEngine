@@ -1,4 +1,4 @@
-import { PerlinNoise3d } from "../../../Libs/divineRNG/perlin/index.js";
+/* import { PerlinNoise3d } from "../../../Libs/divineRNG/perlin/index.js";
 import { BiomeData, BiomeInitData } from "../Types/Biome.types.js";
 
 export const Biomes = {
@@ -50,3 +50,4 @@ export const Biomes = {
   this.biomes.set(data.name, data);
  },
 };
+ */

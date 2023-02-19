@@ -1,4 +1,4 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { HeightMapTool } from "../../Tools/Data/WorldData/HeightMapTool.js";

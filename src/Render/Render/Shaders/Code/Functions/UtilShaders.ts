@@ -1,4 +1,4 @@
-import type { DivineShaderBuilder } from "../../../../../Libs/Shaders/DivineShaderBuilder.js";
+import type { DivineShaderBuilder } from "divine-shaders";
 export function RegisterNoiseFunctions(builder: typeof DivineShaderBuilder) {
  //VEC2 fbm
  builder.functions.create("hash", {

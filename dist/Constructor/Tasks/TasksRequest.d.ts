@@ -1,6 +1,6 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 import type { AddToRebuildQueue, BuildTasks, Priorities, PriorityTask } from "Meta/Tasks/Tasks.types";
-import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
+import { CommBase } from "threadcomm";
 import { VisitedMap } from "../../Global/Util/VisistedMap.js";
 declare type RebuildModes = "sync" | "async";
 declare class Request<T, Q> {

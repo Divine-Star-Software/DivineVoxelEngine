@@ -1,6 +1,6 @@
 import type { AddVoxelData } from "../../Meta/Data/WorldData.types";
 import { DataTool } from "../../Tools/Data/DataTool.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 export declare const WorldPainter: {
     _currentionDimension: string;
     paint: {

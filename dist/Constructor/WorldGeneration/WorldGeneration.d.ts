@@ -8,10 +8,10 @@ export declare const WorldGeneration: {
             attempts: number;
             dimension: string;
             chunks: Map<string, [x: number, y: number, z: number]>;
-            voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
+            voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
         }>;
         registerRequest(dimension: string, x: number, y: number, z: number): string;
-        addToRequest(registerId: string, location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
+        addToRequest(registerId: string, location: import("voxelspaces").LocationData, rawData: import("../../index.js").RawVoxelData): void;
         attemptRequestFullFill(registerId: string): boolean;
     };
     worldBounds: {

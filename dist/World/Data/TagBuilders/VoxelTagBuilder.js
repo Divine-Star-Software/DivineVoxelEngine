@@ -1,5 +1,5 @@
 import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
-import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { TagManager } from "divine-binary-tags";
 import { DataSync } from "../DataSync.js";
 import { Register } from "../../../Data/Register/Register.js";
 export const VoxelTagBuilder = {

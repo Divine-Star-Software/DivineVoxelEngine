@@ -1,9 +1,9 @@
 {
  "name": "divine-voxel-engine",
- "version": "1.2.48",
+ "version": "1.2.51",
  "main": "index.js",
+ "typings": "index.d.ts",
  "type": "module",
- "typings": "index.ts",
  "description": "TypeScript Voxel Engine - Uses Babylon.js",
  "keywords": [
   "voxel",
@@ -23,6 +23,10 @@
   "@types/node": "^16.11.7"
  },
  "dependencies": {
-  "babylonjs": "^5.46.0"
+  "babylonjs": "^5.46.0",
+  "divine-binary-object": "^0.0.45",
+  "divine-binary-tags": "^0.0.5",
+  "threadcomm": "^0.0.9",
+  "voxelspaces": "^1.0.1"
  }
 }

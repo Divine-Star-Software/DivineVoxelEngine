@@ -1,5 +1,5 @@
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 
 const fxCommBase = ThreadComm.createComm("fx", {});
 const fxComm = Object.assign(fxCommBase, {

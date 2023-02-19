@@ -1,5 +1,5 @@
 import { ConstructorQueues as CQ } from "../../Common/Queues/ConstructorQueues.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../World/Threads/Threads.js";
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
@@ -15,7 +15,7 @@ import {
 } from "Meta/Tasks/Tasks.types.js";
 
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 
 class TasksBase {

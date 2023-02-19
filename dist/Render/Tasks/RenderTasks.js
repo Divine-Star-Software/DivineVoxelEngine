@@ -1,5 +1,5 @@
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshRegister } from "../../Render/Scene/MeshRegister.js";
 export const RenderTasks = {

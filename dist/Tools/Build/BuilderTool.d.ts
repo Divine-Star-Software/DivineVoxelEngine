@@ -1,4 +1,5 @@
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
+import type { LocationData } from "voxelspaces";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 export declare class BuilderTool extends LocationBoundTool {
     static _chunkTool: ChunkDataTool;
@@ -10,7 +11,7 @@ export declare class BuilderTool extends LocationBoundTool {
         _thread: string;
         _priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
         setPriority(priority: import("../../Meta/Tasks/Tasks.types.js").Priorities): any;
-        setFocalPoint(location: import("../../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): any;
+        setFocalPoint(location: LocationData): any;
         generate: {
             async: {
                 _s: any;
@@ -39,11 +40,11 @@ export declare class BuilderTool extends LocationBoundTool {
             paint: {
                 deferred: {
                     _s: any;
-                    run(x: number, y: number, z: number, raw: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData, onDone: (data: any) => void): void;
+                    run(x: number, y: number, z: number, raw: import("../../index.js").RawVoxelData, onDone: (data: any) => void): void;
                 };
                 async: {
                     _s: any;
-                    add(x: number, y: number, z: number, raw: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
+                    add(x: number, y: number, z: number, raw: import("../../index.js").RawVoxelData): void;
                     run(onDone: Function): void;
                     runAndAwait(): Promise<void>;
                 };

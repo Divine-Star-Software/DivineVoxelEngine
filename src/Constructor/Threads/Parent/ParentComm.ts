@@ -1,4 +1,4 @@
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { DVEC } from "../../DivineVoxelEngineConstructor.js";
 
 const parentComm = ThreadComm.parent;

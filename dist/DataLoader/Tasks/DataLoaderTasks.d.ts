@@ -1,12 +1,12 @@
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "voxelspaces";
 export declare const DataLoaderTasks: {
-    saveRegion: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    loadRegion: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    loadRegionHeader: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    saveColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    loadColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    unLoadColumn: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    setPath: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<[id: string]>;
-    columnExists: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
-    columnTimestamp: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<LocationData>;
+    saveRegion: import("threadcomm").Task<LocationData>;
+    loadRegion: import("threadcomm").Task<LocationData>;
+    loadRegionHeader: import("threadcomm").Task<LocationData>;
+    saveColumn: import("threadcomm").Task<LocationData>;
+    loadColumn: import("threadcomm").Task<LocationData>;
+    unLoadColumn: import("threadcomm").Task<LocationData>;
+    setPath: import("threadcomm").Task<[id: string]>;
+    columnExists: import("threadcomm").Task<LocationData>;
+    columnTimestamp: import("threadcomm").Task<LocationData>;
 };

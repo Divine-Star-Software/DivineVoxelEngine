@@ -1,4 +1,4 @@
-import type { TypedNode } from "Libs/DivineBinaryObject/Classes/TypedNode.js";
+import type { TypedNode } from "divine-binary-object/Classes/TypedNode";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
 import { RichChunkDataTool } from "./RichChunkDataTool.js";
 export declare class RichDataTool extends RichDataToolBase {

@@ -24,15 +24,15 @@ export declare class DataTool extends DataToolBase {
         id: string;
         sync(voxelMap: Uint16Array): void;
         setVoxel(id: number): void;
-        initData: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-        $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
+        initData: import("divine-binary-tags").RemoteTagManagerInitData;
+        $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
         byteOffSet: number;
         tagSize: number;
         tagIndexes: number;
         data: DataView;
         indexMap: Map<string, number>;
         index: DataView;
-        setBuffer(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
+        setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
         getBuffer(): ArrayBuffer;
         setTagIndex(index: number): void;
         getTag(id: string): number;

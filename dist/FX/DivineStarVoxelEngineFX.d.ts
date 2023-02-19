@@ -1,6 +1,6 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEFX: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     UTIL: {
         createPromiseCheck: (data: {
@@ -10,7 +10,7 @@ export declare const DVEFX: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -19,7 +19,7 @@ export declare const DVEFX: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -52,17 +52,17 @@ export declare const DVEFX: {
     dataSyncNode: {
         _states: Record<string, boolean>;
         isReady(): boolean;
-        voxelPalette: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
-        voxelData: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-        dimension: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
-        chunk: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
-        column: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
-        region: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
-        regionHeader: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData>;
-        chunkTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-        columnTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-        regionTags: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData[], void>;
-        stringMap: import("../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
+        voxelPalette: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+        voxelData: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+        dimension: import("threadcomm").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
+        chunk: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
+        column: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
+        region: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
+        regionHeader: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
+        chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+        columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+        regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+        stringMap: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
     };
     data: {
         dimensions: {
@@ -81,15 +81,15 @@ export declare const DVEFX: {
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            initData: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-            $INIT(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
+            initData: import("divine-binary-tags").RemoteTagManagerInitData;
+            $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
             byteOffSet: number;
             tagSize: number;
             tagIndexes: number;
             data: DataView;
             indexMap: Map<string, number>;
             index: DataView;
-            setBuffer(data: import("../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes | DataView): void;
+            setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
             getBuffer(): ArrayBuffer;
             setTagIndex(index: number): void;
             getTag(id: string): number;
@@ -105,9 +105,9 @@ export declare const DVEFX: {
             _currentionDimension: string;
             paint: {
                 _dt: import("../Tools/Data/DataTool.js").DataTool;
-                voxel(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
-                __paint(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
-                erase(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+                voxel(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
+                __paint(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
+                erase(location: import("voxelspaces").LocationData): void;
             };
         };
         worldRegister: {
@@ -128,31 +128,31 @@ export declare const DVEFX: {
                 get(id: string | number): Map<string, import("../Meta/Data/WorldData.types.js").Region> | undefined;
             };
             region: {
-                add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
+                add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
                 _getRegionData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Region;
-                get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/WorldData.types.js").Region;
-                remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): boolean;
+                get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Region;
+                remove(location: import("voxelspaces").LocationData): boolean;
             };
             column: {
-                add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column | undefined;
+                add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column | undefined;
                 _getColumnData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").Column;
-                get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
-                remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): boolean;
-                fill(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): void;
+                get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").Column;
+                remove(location: import("voxelspaces").LocationData): boolean;
+                fill(location: import("voxelspaces").LocationData): void;
                 height: {
-                    getRelative(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): number;
-                    getAbsolute(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): number;
+                    getRelative(location: import("voxelspaces").LocationData): number;
+                    getAbsolute(location: import("voxelspaces").LocationData): number;
                 };
             };
             chunk: {
-                add(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                add(location: import("voxelspaces").LocationData, sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
                 _getChunkData(sab: SharedArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData;
                 addFromServer(chunkBuffer: ArrayBuffer): import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
-                get(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
-                remove(location: import("../Libs/voxelSpaces/Types/VoxelSpaces.types.js").LocationData): boolean;
+                get(location: import("voxelspaces").LocationData): false | import("../Meta/Data/WorldData.types.js").ChunkData | undefined;
+                remove(location: import("voxelspaces").LocationData): boolean;
             };
         };
-        columnTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+        columnTags: import("divine-binary-tags").RemoteTagManager;
         worldBounds: {
             bounds: {
                 MinZ: number;
@@ -165,7 +165,7 @@ export declare const DVEFX: {
             setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
         };
         spaces: {
-            region: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+            region: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                 chunkBounds: {
                     x: number;
                     y: number;
@@ -179,8 +179,8 @@ export declare const DVEFX: {
                 getChunkVolume(): number;
                 getColumnVolume(): number;
             };
-            column: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
-            chunk: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+            column: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
+            chunk: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                 _regionPosition: {
                     x: number;
                     y: number;
@@ -223,7 +223,7 @@ export declare const DVEFX: {
                 getRegionIndex(): number;
                 getRegionIndexXYZ(x: number, y: number, z: number): number;
             };
-            voxel: import("../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+            voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
             setDimensions(data: {
                 regions: {
                     x: number;
@@ -251,24 +251,24 @@ export declare const DVEFX: {
                 getStringMapValue(segment: string, id: string, index: number): string;
             };
         };
-        chunkTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
-        regionTags: import("../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+        chunkTags: import("divine-binary-tags").RemoteTagManager;
+        regionTags: import("divine-binary-tags").RemoteTagManager;
         regionHeaderReigster: {
             _headers: Map<string, Map<string, {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             }>>;
-            remove(location: import("../Meta/Data/CommonTypes.js").LocationData): boolean;
-            add(location: import("../Meta/Data/CommonTypes.js").LocationData, buffer: SharedArrayBuffer): void;
-            get(location: import("../Meta/Data/CommonTypes.js").LocationData): false | {
+            remove(location: import("voxelspaces").LocationData): boolean;
+            add(location: import("voxelspaces").LocationData, buffer: SharedArrayBuffer): void;
+            get(location: import("voxelspaces").LocationData): false | {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+            isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
         };
     };
-    worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
-    parentComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
+    worldComm: import("threadcomm").CommBase;
+    parentComm: import("threadcomm").CommBase;
     syncSettings(data: EngineSettingsData): void;
     reStart(): void;
     isReady(): boolean;

@@ -14,7 +14,7 @@ import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { VoxelConstructors } from "./Builder/Constructors/Voxel/VoxelConstructors.js";
 //threadcomm
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { ParentComm } from "./Threads/Parent/ParentComm.js";
 import { WorldComm } from "./Threads/World/WorldComm.js";
 import { Tasks } from "./Tasks/Tasks.js";

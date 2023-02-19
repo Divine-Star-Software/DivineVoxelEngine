@@ -1,5 +1,5 @@
 //types
-import type { LocationData } from "Meta/Data/CommonTypes.js";
+import type { LocationData } from "voxelspaces";
 //objects
 import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";

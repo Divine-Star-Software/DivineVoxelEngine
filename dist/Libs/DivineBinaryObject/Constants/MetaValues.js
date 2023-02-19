@@ -10,6 +10,7 @@ const markers = [
     "name",
     "8i",
     "8ui",
+    "8uic",
     "16i",
     "16ui",
     "32f",

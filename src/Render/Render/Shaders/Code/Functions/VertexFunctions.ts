@@ -1,4 +1,4 @@
-import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+import type { DivineShaderBuilder } from "divine-shaders";
 export function RegisterVertexFunctions(builder: typeof DivineShaderBuilder) {
  builder.functions.create("getAnimationType", {
   setID: "#dve_vertex",

@@ -13,7 +13,7 @@ export declare const GeometryBuilder: {
             uvFunctions: Record<DirectionNames, (data: import("Meta/Constructor/Geometry/Geometry.types").AddQuadUVsData) => void>;
             addUVs(face: DirectionNames, data: import("Meta/Constructor/Geometry/Geometry.types").AddQuadUVsData): void;
             addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: import("Meta/Constructor/Geometry/Geometry.types").AdvancedUVs, flipped?: boolean): void;
-            processOverlayUVs(data: import("../../../Meta/Constructor/VoxelShape.types.js").VoxelShapeAddData): void;
+            processOverlayUVs(data: import("../../../index.js").VoxelShapeAddData): void;
         };
     };
     setData(data: GeometryBuildData): void;

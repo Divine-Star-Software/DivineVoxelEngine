@@ -1,5 +1,5 @@
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { ChunkDataTool } from "../../../Tools/Data/WorldData/ChunkDataTool.js";
 const brush = new BrushTool();

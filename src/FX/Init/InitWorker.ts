@@ -1,5 +1,5 @@
 import type { DivineVoxelEngineFX } from "FX/DivineStarVoxelEngineFX";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm"
 export async function InitWorker(
  DVEFX: DivineVoxelEngineFX
 ) {

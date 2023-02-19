@@ -16,7 +16,7 @@ import { InitWorkers } from "./Init/InitWorkers.js";
 import { $INITFunction } from "./Init/InitRender.js";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldSpaces } from "../Data/World/WorldSpaces.js";
 import { SceneTool } from "./Tools/SceneTool.js";
 import { DVEBabylon } from "./Babylon/DVEBabylon.js";

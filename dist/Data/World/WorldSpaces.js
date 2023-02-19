@@ -1,5 +1,5 @@
 //types
-import { VoxelSpaces } from "../../Libs/voxelSpaces/VoxelSpaces.js";
+import { VoxelSpaces } from "voxelspaces";
 //Objects
 import { Util } from "../../Global/Util.helper.js";
 export const WorldSpaces = Util.merge(VoxelSpaces.getVoxelSpaces(), {

@@ -1,3 +1,3 @@
-import { RemoteTagManager } from "../../../Libs/DivineBinaryTags/RemoteTagManager.js";
+import { RemoteTagManager } from "divine-binary-tags";
 
 export const ChunkTags = new RemoteTagManager("chunk-tags");

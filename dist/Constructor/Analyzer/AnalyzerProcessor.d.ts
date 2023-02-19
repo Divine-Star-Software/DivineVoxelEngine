@@ -1,4 +1,4 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 export declare const AnalyzerProcessor: {

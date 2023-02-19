@@ -5,7 +5,7 @@ import { WorldBounds } from "../World/WorldBounds.js";
  * Handles common settings for all contexts
  */
 export declare const EngineSettings: {
-    enviorment: "browser" | "node";
+    enviorment: "node" | "browser";
     settings: EngineSettingsData;
     getSettings(): EngineSettingsData;
     syncSettings(data: EngineSettingsData): void;

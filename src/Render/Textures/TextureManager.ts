@@ -13,8 +13,8 @@ export const TextureManager = {
  textureTypes: <Map<string, TextureType>>new Map(),
 
  _processVariations(
-  texture: TextureData,
-  texturePaths: string[],
+  textureData: TextureData,
+  paths: Map<string, Uint8ClampedArray | false>,
   map: Record<string, number>,
   animations: number[][],
   textureAnimatioTimes: number[][],
@@ -22,12 +22,17 @@ export const TextureManager = {
   count: number,
   path: string
  ) {
-  if (!texture.variations) return count;
-  for (const varation of Object.keys(texture.variations)) {
-   const data = texture.variations[varation];
+  if (!textureData.variations) return count;
+  for (const varation of Object.keys(textureData.variations)) {
+   const data = textureData.variations[varation];
    if (data.frames == 0) {
-    map[`${texture.id}:${varation}`] = count;
-    texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
+    map[`${textureData.id}:${varation}`] = count;
+    const assetPath = `${path}/${textureData.id}/${varation}.${extension}`;
+    let raw: Uint8ClampedArray | false = false;
+    if (data.rawData) {
+     raw = data.rawData;
+    }
+    paths.set(assetPath, raw);
     count++;
    } else {
     if (!data.animKeys)
@@ -35,14 +40,19 @@ export const TextureManager = {
       "Texture Varation must have supplied animKeys if frames are greater than 0."
      );
     for (let i = 1; i <= data.frames; i++) {
-     map[`${texture.id}:${varation}-${i}`] = count;
-     texturePaths.push(`${path}/${texture.id}/${varation}-${i}.${extension}`);
+     map[`${textureData.id}:${varation}-${i}`] = count;
+     const assetPath = `${path}/${textureData.id}/${varation}-${i}.${extension}`;
+     let raw: Uint8ClampedArray | false = false;
+     if (data.rawData) {
+      raw = data.rawData;
+     }
+     paths.set(assetPath, raw);
      count++;
     }
 
     const trueKeys: number[] = [];
     for (let i = 0; i < data.animKeys.length; i++) {
-     trueKeys.push(map[`${texture.id}:${varation}-${data.animKeys[i]}`]);
+     trueKeys.push(map[`${textureData.id}:${varation}-${data.animKeys[i]}`]);
     }
     if (data.animKeyFrameTimes) {
      textureAnimatioTimes.push(data.animKeyFrameTimes);
@@ -65,7 +75,7 @@ export const TextureManager = {
   for (const [key, segment] of texture.textureSegments) {
    let count = 1;
    const map = segment.textureMap;
-   const paths: string[] = segment.paths;
+   const paths = segment.paths;
    const animationTimes: number[][] = segment.animationTimes;
    const animations: number[][] = segment.animationsMap;
 
@@ -76,8 +86,13 @@ export const TextureManager = {
 
     if (textureData.frames == 0) {
      segment.textureMap[`${textureData.id}`] = count;
-     paths.push(`${path}/${textureData.id}/default.${extension}`);
-     count++;
+     const assetPath = `${path}/${textureData.id}/default.${extension}`;
+     let raw: Uint8ClampedArray | false = false;
+     if (textureData.rawData) {
+      raw = textureData.rawData;
+     }
+     paths.set(assetPath, raw);
+     count + count++;
      count = this._processVariations(
       textureData,
       paths,
@@ -95,7 +110,12 @@ export const TextureManager = {
       );
      map[`${texture.id}`] = count;
      for (let i = 1; i < textureData.frames; i++) {
-      paths.push(`${path}/${textureData.id}/default-${i}.${extension}`);
+      const assetPath = `${path}/${textureData.id}/default-${i}.${extension}`;
+      let raw: Uint8ClampedArray | false = false;
+      if (textureData.rawData) {
+       raw = textureData.rawData;
+      }
+      paths.set(assetPath, raw);
       count++;
      }
      const trueKeys: number[] = [];
@@ -147,6 +167,7 @@ export const TextureManager = {
    }
    TextureAnimationCreator.createAnimations(type);
   }
+
   this._ready = true;
  },
 

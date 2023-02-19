@@ -1,7 +1,7 @@
 import type { Column } from "Meta/Data/WorldData.types.js";
 import { EncodedPositionDataTool } from "../../Classes/DataToolBase.js";
 export declare class ColumnDataTool extends EncodedPositionDataTool {
-    tags: import("../../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+    tags: import("divine-binary-tags").RemoteTagManager;
     _column: Column;
     loadIn(): boolean;
     setColumn(column: Column): this;

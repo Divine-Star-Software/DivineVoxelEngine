@@ -1,4 +1,4 @@
-import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+import type { DivineShaderBuilder } from "divine-shaders";
 export function RegisterFragFunctions(builder: typeof DivineShaderBuilder) {
  builder.functions.create("getColor", {
   setID: "#dve_frag",

@@ -1,4 +1,4 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 import type {
  AddToRebuildQueue,
  BuildTasks,
@@ -8,10 +8,10 @@ import type {
 } from "Meta/Tasks/Tasks.types";
 import { ConstructorRemoteThreadTasks } from "../../Common/Threads/Contracts/ConstructorRemoteThreadTasks.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { CommBase, ThreadComm } from "threadcomm";
 import { $3dMooreNeighborhood } from "../../Data/Constants/Util/CardinalNeighbors.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-import type { CommBase } from "../../Libs/ThreadComm/Comm/Comm";
+
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { Builder } from "../../Constructor/Builder/Builder.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";

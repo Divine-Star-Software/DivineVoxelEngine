@@ -1,5 +1,5 @@
 //types
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 const CCMBase = ThreadComm.createCommManager({
     name: "constructor",
     onPortSet(port, commName) { },

@@ -1,31 +1,31 @@
-import { LocationData } from "Meta/Data/CommonTypes.js";
+import type { LocationData } from "voxelspaces";
 import { DimensionData } from "Meta/Data/DimensionData.types.js";
 import { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DataHooks: {
     dimension: {
-        onRegisterDimension: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<DimensionData, void>;
+        onRegisterDimension: import("divine-hooks/Classes/SyncHook").SyncHook<DimensionData, void>;
     };
     chunk: {
-        onGetAsync: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, SharedArrayBuffer>;
-        onGetSync: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, SharedArrayBuffer>;
-        onNew: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, void>;
-        onRemove: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, void>;
+        onGetAsync: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, SharedArrayBuffer>;
+        onGetSync: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, SharedArrayBuffer>;
+        onNew: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, void>;
+        onRemove: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, void>;
     };
     column: {
-        onGetAsync: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, SharedArrayBuffer>;
-        onGetSync: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, SharedArrayBuffer>;
-        onNew: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, void>;
-        onRemove: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, void>;
+        onGetAsync: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, SharedArrayBuffer>;
+        onGetSync: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, SharedArrayBuffer>;
+        onNew: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, void>;
+        onRemove: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, void>;
     };
     region: {
-        onGetAsync: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, SharedArrayBuffer>;
-        onGetSync: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, SharedArrayBuffer>;
-        onNew: import("../Libs/Hooks/Classes/AsyncHook.js").AsyncHook<LocationData, void>;
-        onRemove: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, void>;
+        onGetAsync: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, SharedArrayBuffer>;
+        onGetSync: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, SharedArrayBuffer>;
+        onNew: import("divine-hooks/Classes/AsyncHook").AsyncHook<LocationData, void>;
+        onRemove: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, void>;
     };
     paint: {
-        onAddToRGBUpdate: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<LocationData, void>;
-        onRichVoxelPaint: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<[id: string, location: LocationData], void>;
+        onAddToRGBUpdate: import("divine-hooks/Classes/SyncHook").SyncHook<LocationData, void>;
+        onRichVoxelPaint: import("divine-hooks/Classes/SyncHook").SyncHook<[id: string, location: LocationData], void>;
     };
-    settingsSynced: import("../Libs/Hooks/Classes/SyncHook.js").SyncHook<EngineSettingsData, void>;
+    settingsSynced: import("divine-hooks/Classes/SyncHook").SyncHook<EngineSettingsData, void>;
 };

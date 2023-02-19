@@ -5,6 +5,7 @@ import { RenderManager } from "../Render/RenderManager.js";
 export const TextureCreator = {
  context: <CanvasRenderingContext2D | null>null,
 
+ _textureSize: 16,
  imgWidth: 16,
  imgHeight: 16,
  _canvas: <HTMLCanvasElement>document.createElement("canvas"),
@@ -13,6 +14,7 @@ export const TextureCreator = {
  defineTextureDimensions(textureSize: number, mipMapSizes: number[]) {
   this.imgWidth = textureSize;
   this.imgHeight = textureSize;
+  this._textureSize = textureSize;
   this._mipMapSizes = mipMapSizes;
  },
 
@@ -30,7 +32,7 @@ export const TextureCreator = {
 
  async createMaterialTexture(
   name: string,
-  images: string[],
+  images: Map<string, Uint8ClampedArray | false>,
   width: number = -1,
   height: number = -1
  ): Promise<RawTexture2DArray[]> {
@@ -48,7 +50,7 @@ export const TextureCreator = {
 
  async _createTextures(
   name: string,
-  images: string[],
+  images: Map<string, Uint8ClampedArray | false>,
   width: number,
   height: number
  ) {
@@ -69,20 +71,20 @@ export const TextureCreator = {
   }
 
   resolvedImages.push(new Uint8ClampedArray(data));
-  for (const image of images) {
-   const data = await this._loadImages(image, width, height);
+  for (const [path, rawData] of images) {
+   const data = await this._loadImages(rawData ? rawData : path, width, height);
    resolvedImages.push(data);
   }
   resolvedImages.push(new Uint8ClampedArray(data));
 
-  let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
+  let totalLength = images.size * width * height * 4 + width * height * 4 * 2;
 
   const combinedImages = this._combineImageData(totalLength, resolvedImages);
   const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(
    combinedImages,
    width,
    height,
-   images.length + 2,
+   images.size + 2,
    DVEBabylon.system.Engine.TEXTUREFORMAT_RGBA,
    scene,
    false,
@@ -96,29 +98,55 @@ export const TextureCreator = {
  },
 
  _loadImages(
-  imgPath: string,
+  imgSrcData: string | Uint8ClampedArray,
   width: number,
   height: number
  ): Promise<Uint8ClampedArray> {
-  if (!this.context) {
+  const ctx = TextureCreator.context;
+
+  if (!ctx) {
    throw new Error("Context is not set for texture creation.");
   }
 
-  const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
-   const image = new Image();
-   image.src = imgPath;
-   image.onload = () => {
-    const ctx = TextureCreator.context;
-    if (!ctx) return;
+  if (typeof imgSrcData == "string") {
+   const prom: Promise<Uint8ClampedArray> = new Promise((resolve) => {
+    const image = new Image();
+    image.src = imgSrcData;
+    image.onload = () => {
+     const ctx = TextureCreator.context;
+     if (!ctx) return;
+     //clear the canvas before re-rendering another image
+     ctx.clearRect(0, 0, width, height);
+     ctx.drawImage(image, 0, 0, width, height);
+     const imgData = ctx.getImageData(0, 0, width, height);
+
+     resolve(imgData.data);
+    };
+   });
+
+   return prom;
+  }
+  if (imgSrcData instanceof Uint8ClampedArray) {
+   const prom: Promise<Uint8ClampedArray> = new Promise(async (resolve) => {
+    const bitmap = await createImageBitmap(
+     new ImageData(
+      imgSrcData,
+      Math.sqrt(imgSrcData.length / 4),
+      Math.sqrt(imgSrcData.length / 4)
+     )
+    );
+
     //clear the canvas before re-rendering another image
     ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(image, 0, 0, width, height);
+
+    ctx.drawImage(bitmap, 0, 0, width, height);
     const imgData = ctx.getImageData(0, 0, width, height);
     resolve(imgData.data);
-   };
-  });
+   });
+   return prom;
+  }
 
-  return prom;
+  throw new Error("Context is not set for texture creation.");
  },
 
  _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]) {

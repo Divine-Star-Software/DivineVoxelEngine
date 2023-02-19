@@ -1,5 +1,5 @@
 //types
-import { VoxelSpaces } from "../../Libs/voxelSpaces/VoxelSpaces.js";
+import { VoxelSpaces } from "voxelspaces";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //Objects
 import { Util } from "../../Global/Util.helper.js";

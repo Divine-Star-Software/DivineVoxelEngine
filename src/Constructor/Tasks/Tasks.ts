@@ -1,6 +1,6 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm"
 import {
  BuildTasks,
  ExplosionTasks,

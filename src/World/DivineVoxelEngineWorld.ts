@@ -36,7 +36,7 @@ import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
 import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
 import { DataHooks } from "../Data/DataHooks.js";

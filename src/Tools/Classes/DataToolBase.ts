@@ -1,6 +1,6 @@
 import { Util } from "../../Global/Util.helper.js";
-import type { RemoteTagManager } from "Libs/DivineBinaryTags/RemoteTagManager";
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { RemoteTagManager } from "divine-binary-tags";
+import type { LocationData } from "voxelspaces";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
 import { WorldDataTagIDs } from "../../Data/Constants/Tags/WorldDataTagIds.js";

@@ -4,8 +4,8 @@ import type {
  RichRegion,
  RichWorldDimensions,
 } from "Meta/Data/RichWorldData.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
-import { TNM } from "../../Libs/DivineBinaryObject/NodeMaker.js";
+import type { LocationData } from "voxelspaces";
+import { TNM } from "divine-binary-object";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 export const RichDataRegister = {

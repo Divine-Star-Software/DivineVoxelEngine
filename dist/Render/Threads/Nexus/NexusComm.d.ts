@@ -1,3 +1,3 @@
-export declare const NexusComm: import("../../../Libs/ThreadComm/Comm/Comm.js").CommBase & {
+export declare const NexusComm: import("threadcomm").CommBase & {
     $INIT(): void;
 };

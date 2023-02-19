@@ -1,4 +1,4 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types";
 
 

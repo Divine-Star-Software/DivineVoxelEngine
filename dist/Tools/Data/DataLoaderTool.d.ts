@@ -1,5 +1,5 @@
-import { LocationData } from "Meta/Data/CommonTypes.js";
-import { CommBase } from "../../Libs/ThreadComm/Comm/Comm.js";
+import type { LocationData } from "voxelspaces";
+import { CommBase } from "threadcomm";
 import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LocationBoundTool } from "../Classes/LocationBoundTool.js";
 export declare class DataLoaderTool extends LocationBoundTool {

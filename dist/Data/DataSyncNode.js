@@ -1,5 +1,5 @@
 //objects
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { WorldRegister } from "./World/WorldRegister.js";
 import { DataSyncTypes } from "../Common/Threads/Contracts/DataSync.js";
 import { VoxelPaletteReader } from "./Voxel/VoxelPalette.js";

@@ -1,4 +1,4 @@
-import { DBO } from "../../Libs/DivineBinaryObject/DivineBinaryObject.js";
+import { DBO } from "divine-binary-object";
 import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
 export class RichColumnDataTool extends RichDataToolBase {

@@ -1,7 +1,7 @@
 import type { RawTexture2DArray } from "babylonjs";
 import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
 import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
-import { DivineShader } from "../../Libs/Shaders/Classes/DivineShader.js";
+import { DivineShader } from "divine-shaders";
 
 class TextureRecord {
  textures: TextureData[] = [];
@@ -19,7 +19,7 @@ class TextureRecord {
  varyingID = "";
  animationUniforID = "";
  animationUniform: Float32Array = new Float32Array();
- paths: string[] = [];
+ paths: Map<string, false | Uint8ClampedArray> = new Map();
  texture: RawTexture2DArray[] = [];
  textureID = "";
  constructor(

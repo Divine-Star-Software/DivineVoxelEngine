@@ -2,6 +2,7 @@ import { MetaValues, MetaMapValues } from "../Constants/MetaValues.js";
 import { ByteCounts, ByteDataSet } from "../Constants/ByteData.js";
 export const MMDToBuffer = {
     _tokens: [],
+    _proto: [],
     metaValues: MetaValues,
     metaMapValues: MetaMapValues,
     _tokenizeString(string) {
@@ -166,7 +167,8 @@ export const MMDToBuffer = {
                 }
                 continue;
             }
-            if (token[1] == -2 && Array.isArray(token[2])) {
+            if ((token[1] == -2 && Array.isArray(token[2])) ||
+                ArrayBuffer.isView(token[2])) {
                 let array = token[2];
                 let type = MetaMapValues[token[0]];
                 let count = ByteCounts[type];

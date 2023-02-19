@@ -1,4 +1,4 @@
-import { LocationData } from "Meta/Data/CommonTypes";
+import { LocationData } from "voxelspaces";
 
 interface AnyData {
  [key: string]: any;

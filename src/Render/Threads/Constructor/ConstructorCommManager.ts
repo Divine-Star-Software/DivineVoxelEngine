@@ -2,7 +2,7 @@
 import type { TextureTypeUVMap } from "Meta/Render/Textures/Texture.types.js";
 //objects
 import { DVER } from "../../DivineVoxelEngineRender.js";
-import { ThreadComm } from "../../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 
 const CCMBase = ThreadComm.createCommManager({
  name: "constructor",

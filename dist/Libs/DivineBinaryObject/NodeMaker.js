@@ -1,5 +1,6 @@
 import { TypedNode } from "./Classes/TypedNode.js";
 import { MetaValues } from "./Constants/MetaValues.js";
+import { TypedArrayMap } from "./Constants/ByteData.js";
 export const TNM = {
     json(data) {
         return new TypedNode(MetaValues["json"], data);
@@ -46,7 +47,9 @@ export const TNM = {
         return new TypedNode(MetaValues["bigui"], value);
     },
     typedArray(type, value) {
-        return new TypedNode(MetaValues["typed-array"], value, MetaValues[type]);
+        return new TypedNode(MetaValues["typed-array"], 
+        //@ts-ignore
+        TypedArrayMap[type].from(value), MetaValues[type]);
     },
     stringArray(value) {
         return new TypedNode(MetaValues["string-array"], value);

@@ -1,4 +1,4 @@
-import type { DivineShaderBuilder } from "Libs/Shaders/DivineShaderBuilder";
+import type { DivineShaderBuilder } from "divine-shaders";
 export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
  builder.snippets.create( {
   id: "#dve_solid_vertex",

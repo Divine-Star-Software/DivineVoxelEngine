@@ -35,7 +35,7 @@ export declare type TextureDataBase = {
     /**# rawData
      * Provide a base64 encoded string to use instead of fetching it from a server
      */
-    rawData?: string;
+    rawData?: Uint8ClampedArray;
 };
 export declare type TextureData = {
     type: TextureTypes;

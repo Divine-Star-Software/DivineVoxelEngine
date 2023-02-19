@@ -2,7 +2,7 @@ import type {
  LoadRegionHeadertasks,
  LoadWorldDataTasks,
 } from "Meta/Tasks/Tasks.types.js";
-import type { LocationData } from "Meta/Data/CommonTypes";
+import type { LocationData } from "voxelspaces";
 import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type";
 //objects
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";

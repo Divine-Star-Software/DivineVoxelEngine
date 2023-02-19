@@ -1,5 +1,5 @@
-import type { ShaderDataTypes, ShaderVaryingData } from "Libs/Shaders/Types/ShaderData.types";
-import type { DivineShader } from "Libs/Shaders/Classes/DivineShader.js";
+import type { ShaderDataTypes, ShaderVaryingData } from "divine-shaders";
+import type { DivineShader } from "divine-shaders";
 export declare const DVEShaders: {
     builder: {
         shaders: {
@@ -7,24 +7,24 @@ export declare const DVEShaders: {
             create(id: string): DivineShader;
         };
         functions: {
-            _functions: Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData<any>>;
+            _functions: Map<string, import("divine-shaders").ShaderFunctionData<any>>;
             _functionSets: Map<string, string[]>;
-            create(id: string, data: import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData<any>): void;
-            _processFunctinos(id: string, data: import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData<any>, shader?: DivineShader | null): string;
-            build(id: string, data?: import("Libs/Shaders/Types/ShaderData.types").ShaderFunctionData<any> | null, shader?: DivineShader | null): string;
+            create(id: string, data: import("divine-shaders").ShaderFunctionData<any>): void;
+            _processFunctinos(id: string, data: import("divine-shaders").ShaderFunctionData<any>, shader?: DivineShader | null | undefined): string;
+            build(id: string, data?: import("divine-shaders").ShaderFunctionData<any> | null | undefined, shader?: DivineShader | null | undefined): string;
         };
         define: {
-            _process(data: import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData): string;
-            build(data: import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData | Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData> | import("Libs/Shaders/Types/ShaderData.types").ShaderDefinesData[]): string;
+            _process(data: import("divine-shaders").ShaderDefinesData): string;
+            build(data: import("divine-shaders").ShaderDefinesData | import("divine-shaders").ShaderDefinesData[] | Map<string, import("divine-shaders").ShaderDefinesData>): string;
         };
         uniforms: {
-            _process(data: import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData): string;
-            build(data: import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData | Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData> | import("Libs/Shaders/Types/ShaderData.types").ShaderUniformData[]): string;
+            _process(data: import("divine-shaders").ShaderUniformData): string;
+            build(data: import("divine-shaders").ShaderUniformData | import("divine-shaders").ShaderUniformData[] | Map<string, import("divine-shaders").ShaderUniformData>): string;
         };
         snippets: {
-            _snippets: Map<string, import("Libs/Shaders/Types/ShaderData.types").ShaderSnippetData<any>>;
-            create(data: import("Libs/Shaders/Types/ShaderData.types").ShaderSnippetData<any>): void;
-            override(id: string, data: import("Libs/Shaders/Types/ShaderData.types").ShaderSnippetData<any>): boolean;
+            _snippets: Map<string, import("divine-shaders").ShaderSnippetData<any>>;
+            create(data: import("divine-shaders").ShaderSnippetData<any>): void;
+            override(id: string, data: import("divine-shaders").ShaderSnippetData<any>): boolean;
             get(id: string, args?: any): string;
             _process(text: string, shader?: DivineShader | undefined): {
                 newBody: string;

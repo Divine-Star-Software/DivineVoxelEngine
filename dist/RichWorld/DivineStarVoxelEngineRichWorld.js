@@ -10,7 +10,7 @@ import { InitWorker } from "./Init/InitWorker.js";
 import { RichDataRegister } from "./Register/RichDataRegister.js";
 import { VoxelManager } from "../World/Data/Managers/VoxelManager.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
-import { ThreadComm } from "../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 export const DVERW = {
     environment: "browser",
     __settingsHaveBeenSynced: false,

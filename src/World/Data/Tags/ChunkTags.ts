@@ -1,5 +1,5 @@
 import { ChunkTags } from "../../../Data/World/Chunk/ChunkTags.js";
-import { TagManager } from "../../../Libs/DivineBinaryTags/TagManager.js";
+import { TagManager } from "divine-binary-tags"
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { WorldDataTagIDs } from "../../../Data/Constants/Tags/WorldDataTagIds.js";
 import { ChunkTagIDs } from "../../../Data/Constants/Tags/ChunkTagIds.js";

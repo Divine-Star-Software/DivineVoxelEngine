@@ -2,6 +2,7 @@ import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 export const TextureCreator = {
     context: null,
+    _textureSize: 16,
     imgWidth: 16,
     imgHeight: 16,
     _canvas: document.createElement("canvas"),
@@ -9,6 +10,7 @@ export const TextureCreator = {
     defineTextureDimensions(textureSize, mipMapSizes) {
         this.imgWidth = textureSize;
         this.imgHeight = textureSize;
+        this._textureSize = textureSize;
         this._mipMapSizes = mipMapSizes;
     },
     setUpImageCreation() {
@@ -53,36 +55,51 @@ export const TextureCreator = {
             }
         }
         resolvedImages.push(new Uint8ClampedArray(data));
-        for (const image of images) {
-            const data = await this._loadImages(image, width, height);
+        for (const [path, rawData] of images) {
+            const data = await this._loadImages(rawData ? rawData : path, width, height);
             resolvedImages.push(data);
         }
         resolvedImages.push(new Uint8ClampedArray(data));
-        let totalLength = images.length * width * height * 4 + width * height * 4 * 2;
+        let totalLength = images.size * width * height * 4 + width * height * 4 * 2;
         const combinedImages = this._combineImageData(totalLength, resolvedImages);
-        const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(combinedImages, width, height, images.length + 2, DVEBabylon.system.Engine.TEXTUREFORMAT_RGBA, scene, false, false, DVEBabylon.system.Texture.NEAREST_SAMPLINGMODE);
+        const _2DTextureArray = new DVEBabylon.system.RawTexture2DArray(combinedImages, width, height, images.size + 2, DVEBabylon.system.Engine.TEXTUREFORMAT_RGBA, scene, false, false, DVEBabylon.system.Texture.NEAREST_SAMPLINGMODE);
         _2DTextureArray.name = name;
         return _2DTextureArray;
     },
-    _loadImages(imgPath, width, height) {
-        if (!this.context) {
+    _loadImages(imgSrcData, width, height) {
+        const ctx = TextureCreator.context;
+        if (!ctx) {
             throw new Error("Context is not set for texture creation.");
         }
-        const prom = new Promise((resolve) => {
-            const image = new Image();
-            image.src = imgPath;
-            image.onload = () => {
-                const ctx = TextureCreator.context;
-                if (!ctx)
-                    return;
+        if (typeof imgSrcData == "string") {
+            const prom = new Promise((resolve) => {
+                const image = new Image();
+                image.src = imgSrcData;
+                image.onload = () => {
+                    const ctx = TextureCreator.context;
+                    if (!ctx)
+                        return;
+                    //clear the canvas before re-rendering another image
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.drawImage(image, 0, 0, width, height);
+                    const imgData = ctx.getImageData(0, 0, width, height);
+                    resolve(imgData.data);
+                };
+            });
+            return prom;
+        }
+        if (imgSrcData instanceof Uint8ClampedArray) {
+            const prom = new Promise(async (resolve) => {
+                const bitmap = await createImageBitmap(new ImageData(imgSrcData, Math.sqrt(imgSrcData.length / 4), Math.sqrt(imgSrcData.length / 4)));
                 //clear the canvas before re-rendering another image
                 ctx.clearRect(0, 0, width, height);
-                ctx.drawImage(image, 0, 0, width, height);
+                ctx.drawImage(bitmap, 0, 0, width, height);
                 const imgData = ctx.getImageData(0, 0, width, height);
                 resolve(imgData.data);
-            };
-        });
-        return prom;
+            });
+            return prom;
+        }
+        throw new Error("Context is not set for texture creation.");
     },
     _combineImageData(totalLength, arrays) {
         const combinedImagedata = new Uint8ClampedArray(totalLength);

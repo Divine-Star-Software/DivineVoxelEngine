@@ -1,4 +1,4 @@
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { LocationData } from "voxelspaces";
 
 export class LocationBoundTool {
  location: LocationData = ["main", 0, 0, 0];

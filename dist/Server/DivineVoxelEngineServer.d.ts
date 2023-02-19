@@ -2,7 +2,7 @@ import type { DVESInitData } from "Meta/Server/DVES";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVES: {
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -32,11 +32,11 @@ export declare const DVES: {
         isServer(): boolean;
         isClient(): boolean;
     };
-    worldComm: import("../Libs/ThreadComm/Comm/Comm.js").CommBase;
-    constructorCommManager: import("../Libs/ThreadComm/Manager/CommManager.js").CommManager & {
+    worldComm: import("threadcomm").CommBase;
+    constructorCommManager: import("threadcomm").CommManager & {
         $INIT(): void;
         createConstructors(path: string, numBuilders?: number): void;
-        setConstructors(constructors: import("../Libs/ThreadComm/Meta/Comm/Comm.types.js").CommPortTypes[]): void;
+        setConstructors(constructors: import("threadcomm").CommPortTypes[]): void;
         syncSettings(data: any): void;
     };
     worldBounds: {
@@ -58,7 +58,7 @@ export declare const DVES: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;

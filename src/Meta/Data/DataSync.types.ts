@@ -1,5 +1,5 @@
-import type { RemoteTagManagerInitData } from "Libs/DivineBinaryTags/Types/Util.types";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types";
+import type { RemoteTagManagerInitData } from "divine-binary-tags";
+import { LocationData } from "voxelspaces";
 import type { DimensionData } from "./DimensionData.types";
 import type { VoxelPalette, VoxelPaletteMap } from "./WorldData.types";
 

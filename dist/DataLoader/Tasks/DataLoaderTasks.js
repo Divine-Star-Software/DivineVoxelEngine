@@ -1,5 +1,5 @@
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 export const DataLoaderTasks = {
     saveRegion: ThreadComm.registerTasks("save-region", async (data, onDone) => {

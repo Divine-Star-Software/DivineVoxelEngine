@@ -1,4 +1,4 @@
-import { TNM } from "../../Libs/DivineBinaryObject/NodeMaker.js";
+import { TNM } from "divine-binary-object";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 export const RichDataRegister = {
     _dimensions: new Map(),

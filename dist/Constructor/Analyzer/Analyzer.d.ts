@@ -1,8 +1,8 @@
 import type { UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
-import type { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import type { LocationData } from "voxelspaces";
 export declare const Analyzer: {
     updater: {
-        _voxels: Map<string, (locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
+        _voxels: Map<string, (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
@@ -56,7 +56,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -111,7 +111,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -162,7 +162,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -215,7 +215,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -249,7 +249,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -289,7 +289,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -331,7 +331,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -371,7 +371,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -412,17 +412,17 @@ export declare const Analyzer: {
                 };
             };
             worldGen: {
-                worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
+                worldGen: import("../../index.js").WorldGenInterface | null;
                 register: {
                     MAX_ATTEMPTS: number;
                     _requests: Map<string, {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -437,7 +437,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 _brushes: any[];
-                setWorldGen(worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface): void;
+                setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
                 getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
                     requestsId: string;
@@ -447,17 +447,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
+                    shapes: Map<string, import("../../index.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
+                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../index.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -465,23 +465,23 @@ export declare const Analyzer: {
                 };
                 processor: {
                     LOD: number;
-                    mDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
-                    nDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+                    mDataTool: import("../../index.js").ConstructorDataTool;
+                    nDataTool: import("../../index.js").ConstructorDataTool;
                     faceByte: {
                         _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
                         _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
+                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
+                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
+                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
+                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
                     };
                     lightData: {
                         SRS: number;
@@ -540,8 +540,8 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
+                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -555,6 +555,12 @@ export declare const Analyzer: {
                     exposedCheck(subject: string, neightborVoxel: string): boolean;
                     getSubstanceParent(id: string): string;
                 };
+                overrides: {
+                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                };
                 dimension: number;
                 $INIT(): Promise<void>;
                 syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -565,17 +571,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
-                voxelData: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-                dimension: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
-                chunk: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                column: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                region: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                regionHeader: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                chunkTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                columnTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                regionTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData[], void>;
-                stringMap: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -594,15 +600,15 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
-                    initData: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-                    $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
                     byteOffSet: number;
                     tagSize: number;
                     tagIndexes: number;
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;
@@ -665,7 +671,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -678,7 +684,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 spaces: {
-                    region: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    region: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         chunkBounds: {
                             x: number;
                             y: number;
@@ -692,8 +698,8 @@ export declare const Analyzer: {
                         getChunkVolume(): number;
                         getColumnVolume(): number;
                     };
-                    column: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
-                    chunk: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    column: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
+                    chunk: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         _regionPosition: {
                             x: number;
                             y: number;
@@ -736,7 +742,7 @@ export declare const Analyzer: {
                         getRegionIndex(): number;
                         getRegionIndexXYZ(x: number, y: number, z: number): number;
                     };
-                    voxel: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+                    voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
                     setDimensions(data: {
                         regions: {
                             x: number;
@@ -764,36 +770,36 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
-                regionTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     }>>;
-                    remove(location: import("../../Meta/Data/CommonTypes.js").LocationData): boolean;
-                    add(location: import("../../Meta/Data/CommonTypes.js").LocationData, buffer: SharedArrayBuffer): void;
-                    get(location: import("../../Meta/Data/CommonTypes.js").LocationData): false | {
+                    remove(location: LocationData): boolean;
+                    add(location: LocationData, buffer: SharedArrayBuffer): void;
+                    get(location: LocationData): false | {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor | import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor[]): void;
+                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
+                getVoxel(id: string): import("../../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData | Record<import("../../Meta/Util.types.js").DirectionNames, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
                         pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
                     };
                 };
             };
@@ -801,22 +807,22 @@ export declare const Analyzer: {
                 threadNumber: number;
                 threadName: string;
                 environment: "browser" | "node";
-                _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
-                _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
-                _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
-                _queues: Map<string, Map<string, import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
-                parent: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
                 __internal: Record<number, Record<number, (data: any, event: any) => void>>;
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 $INIT(threadName: string): Promise<void>;
-                getSyncedQueue(threadId: string, queueId: string): import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
-                addComm(comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
-                createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                createCommManager(data: import("../../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
-                getComm(id: string): import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                getCommManager(id: string): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
                 __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
                 __handleInternalMessage(data: any[], event: any): void;
@@ -824,48 +830,48 @@ export declare const Analyzer: {
                 __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
                 __handleTasksMessage(data: any[]): Promise<void>;
                 __isTasks(data: any[]): boolean;
-                registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered" | undefined): import("threadcomm").Task<T_1>;
                 __hanldeDataSyncMessage(data: any[]): Promise<void>;
                 __isDataSync(data: any[]): boolean;
-                onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
-            parentComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-            worldComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    paint: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
                 flow: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 rgb: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 sun: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -874,11 +880,11 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
@@ -887,9 +893,9 @@ export declare const Analyzer: {
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;
-            getDataTool(): import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+            getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void>;
-        registerVoxel(id: string, run: (locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
+        registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
@@ -943,7 +949,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -998,7 +1004,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1049,7 +1055,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1102,7 +1108,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1136,7 +1142,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1176,7 +1182,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1218,7 +1224,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1258,7 +1264,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1299,17 +1305,17 @@ export declare const Analyzer: {
                 };
             };
             worldGen: {
-                worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
+                worldGen: import("../../index.js").WorldGenInterface | null;
                 register: {
                     MAX_ATTEMPTS: number;
                     _requests: Map<string, {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -1324,7 +1330,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 _brushes: any[];
-                setWorldGen(worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface): void;
+                setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
                 getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
                     requestsId: string;
@@ -1334,17 +1340,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
+                    shapes: Map<string, import("../../index.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
+                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../index.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -1352,23 +1358,23 @@ export declare const Analyzer: {
                 };
                 processor: {
                     LOD: number;
-                    mDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
-                    nDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+                    mDataTool: import("../../index.js").ConstructorDataTool;
+                    nDataTool: import("../../index.js").ConstructorDataTool;
                     faceByte: {
                         _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
                         _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
+                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
+                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
+                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
+                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
                     };
                     lightData: {
                         SRS: number;
@@ -1427,8 +1433,8 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
+                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -1442,6 +1448,12 @@ export declare const Analyzer: {
                     exposedCheck(subject: string, neightborVoxel: string): boolean;
                     getSubstanceParent(id: string): string;
                 };
+                overrides: {
+                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                };
                 dimension: number;
                 $INIT(): Promise<void>;
                 syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -1452,17 +1464,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
-                voxelData: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-                dimension: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
-                chunk: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                column: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                region: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                regionHeader: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                chunkTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                columnTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                regionTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData[], void>;
-                stringMap: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -1481,15 +1493,15 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
-                    initData: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-                    $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
                     byteOffSet: number;
                     tagSize: number;
                     tagIndexes: number;
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;
@@ -1552,7 +1564,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -1565,7 +1577,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 spaces: {
-                    region: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    region: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         chunkBounds: {
                             x: number;
                             y: number;
@@ -1579,8 +1591,8 @@ export declare const Analyzer: {
                         getChunkVolume(): number;
                         getColumnVolume(): number;
                     };
-                    column: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
-                    chunk: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    column: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
+                    chunk: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         _regionPosition: {
                             x: number;
                             y: number;
@@ -1623,7 +1635,7 @@ export declare const Analyzer: {
                         getRegionIndex(): number;
                         getRegionIndexXYZ(x: number, y: number, z: number): number;
                     };
-                    voxel: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+                    voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
                     setDimensions(data: {
                         regions: {
                             x: number;
@@ -1651,36 +1663,36 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
-                regionTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     }>>;
-                    remove(location: import("../../Meta/Data/CommonTypes.js").LocationData): boolean;
-                    add(location: import("../../Meta/Data/CommonTypes.js").LocationData, buffer: SharedArrayBuffer): void;
-                    get(location: import("../../Meta/Data/CommonTypes.js").LocationData): false | {
+                    remove(location: LocationData): boolean;
+                    add(location: LocationData, buffer: SharedArrayBuffer): void;
+                    get(location: LocationData): false | {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor | import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor[]): void;
+                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
+                getVoxel(id: string): import("../../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData | Record<import("../../Meta/Util.types.js").DirectionNames, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
                         pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
                     };
                 };
             };
@@ -1688,22 +1700,22 @@ export declare const Analyzer: {
                 threadNumber: number;
                 threadName: string;
                 environment: "browser" | "node";
-                _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
-                _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
-                _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
-                _queues: Map<string, Map<string, import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
-                parent: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
                 __internal: Record<number, Record<number, (data: any, event: any) => void>>;
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 $INIT(threadName: string): Promise<void>;
-                getSyncedQueue(threadId: string, queueId: string): import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
-                addComm(comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
-                createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                createCommManager(data: import("../../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
-                getComm(id: string): import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                getCommManager(id: string): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
                 __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
                 __handleInternalMessage(data: any[], event: any): void;
@@ -1711,48 +1723,48 @@ export declare const Analyzer: {
                 __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
                 __handleTasksMessage(data: any[]): Promise<void>;
                 __isTasks(data: any[]): boolean;
-                registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered" | undefined): import("threadcomm").Task<T_1>;
                 __hanldeDataSyncMessage(data: any[]): Promise<void>;
                 __isDataSync(data: any[]): boolean;
-                onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
-            parentComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-            worldComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    paint: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
                 flow: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 rgb: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 sun: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -1761,11 +1773,11 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
@@ -1774,9 +1786,9 @@ export declare const Analyzer: {
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;
-            getDataTool(): import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+            getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void): void;
-        getVoxel(id: string): false | ((locaton: import("../../Meta/Data/CommonTypes.js").LocationData, deltaTime: number, anayzer: any, DVEC: {
+        getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "browser" | "node";
             __settingsHaveBeenSynced: boolean;
             UTIL: {
@@ -1830,7 +1842,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1885,7 +1897,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1936,7 +1948,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1989,7 +2001,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2023,7 +2035,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2063,7 +2075,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2105,7 +2117,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2145,7 +2157,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2186,17 +2198,17 @@ export declare const Analyzer: {
                 };
             };
             worldGen: {
-                worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface | null;
+                worldGen: import("../../index.js").WorldGenInterface | null;
                 register: {
                     MAX_ATTEMPTS: number;
                     _requests: Map<string, {
                         attempts: number;
                         dimension: string;
                         chunks: Map<string, [x: number, y: number, z: number]>;
-                        voxels: [x: number, y: number, z: number, data: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData][];
+                        voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
                     registerRequest(dimension: string, x: number, y: number, z: number): string;
-                    addToRequest(registerId: string, location: LocationData, rawData: import("../../Meta/Data/Voxels/Voxel.types.js").RawVoxelData): void;
+                    addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
                 worldBounds: {
@@ -2211,7 +2223,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 _brushes: any[];
-                setWorldGen(worldGen: import("../../Meta/Interfaces/WorldGen/WorldGen.types.js").WorldGenInterface): void;
+                setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
                 getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
                     requestsId: string;
@@ -2221,17 +2233,17 @@ export declare const Analyzer: {
             builder: {
                 textureManager: {
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
                 shapeManager: {
-                    shapes: Map<string, import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape>;
+                    shapes: Map<string, import("../../index.js").VoxelShape>;
                     shapeCount: number;
-                    registerShape(shapeObject: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape;
+                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
+                    getShape(shapeId: string): import("../../index.js").VoxelShape;
                 };
                 chunkMesher: {
                     voxelBuildOrder: string[];
@@ -2239,23 +2251,23 @@ export declare const Analyzer: {
                 };
                 processor: {
                     LOD: number;
-                    mDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
-                    nDataTool: import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+                    mDataTool: import("../../index.js").ConstructorDataTool;
+                    nDataTool: import("../../index.js").ConstructorDataTool;
                     faceByte: {
                         _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
                         _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../Meta/Util.types.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../Meta/Util.types.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
+                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
+                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
+                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
+                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
+                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
+                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
+                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
                     };
                     lightData: {
                         SRS: number;
@@ -2314,8 +2326,8 @@ export declare const Analyzer: {
                     template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
                     $INIT(): void;
-                    cullCheck(face: import("../../Meta/Util.types.js").DirectionNames, voxelObject: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor, voxelShape: import("../../Meta/Constructor/VoxelShape.types.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../Meta/Util.types.js").DirectionNames, faceBit: number): number;
+                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
+                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
                     makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
                     syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -2329,6 +2341,12 @@ export declare const Analyzer: {
                     exposedCheck(subject: string, neightborVoxel: string): boolean;
                     getSubstanceParent(id: string): string;
                 };
+                overrides: {
+                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                };
                 dimension: number;
                 $INIT(): Promise<void>;
                 syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -2339,17 +2357,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
-                voxelData: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-                dimension: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
-                chunk: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                column: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                region: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                regionHeader: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
-                chunkTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                columnTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData, void>;
-                regionTags: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData[], void>;
-                stringMap: import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -2368,15 +2386,15 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
-                    initData: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData;
-                    $INIT(data: import("../../Libs/DivineBinaryTags/Types/Util.types.js").RemoteTagManagerInitData): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
                     byteOffSet: number;
                     tagSize: number;
                     tagIndexes: number;
                     data: DataView;
                     indexMap: Map<string, number>;
                     index: DataView;
-                    setBuffer(data: DataView | import("../../Libs/DivineBinaryTags/Types/Util.types.js").BufferTypes): void;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
                     getBuffer(): ArrayBuffer;
                     setTagIndex(index: number): void;
                     getTag(id: string): number;
@@ -2439,7 +2457,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -2452,7 +2470,7 @@ export declare const Analyzer: {
                     setWorldBounds(minX: number, maxX: number, minZ: number, maxZ: number, minY: number, maxY: number): void;
                 };
                 spaces: {
-                    region: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    region: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         chunkBounds: {
                             x: number;
                             y: number;
@@ -2466,8 +2484,8 @@ export declare const Analyzer: {
                         getChunkVolume(): number;
                         getColumnVolume(): number;
                     };
-                    column: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
-                    chunk: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace & {
+                    column: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
+                    chunk: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace & {
                         _regionPosition: {
                             x: number;
                             y: number;
@@ -2510,7 +2528,7 @@ export declare const Analyzer: {
                         getRegionIndex(): number;
                         getRegionIndexXYZ(x: number, y: number, z: number): number;
                     };
-                    voxel: import("../../Libs/voxelSpaces/Classes/VoxelSpace.js").VoxelSpace;
+                    voxel: import("voxelspaces/Classes/VoxelSpace.js").VoxelSpace;
                     setDimensions(data: {
                         regions: {
                             x: number;
@@ -2538,36 +2556,36 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
-                regionTags: import("../../Libs/DivineBinaryTags/RemoteTagManager.js").RemoteTagManager;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     }>>;
-                    remove(location: import("../../Meta/Data/CommonTypes.js").LocationData): boolean;
-                    add(location: import("../../Meta/Data/CommonTypes.js").LocationData, buffer: SharedArrayBuffer): void;
-                    get(location: import("../../Meta/Data/CommonTypes.js").LocationData): false | {
+                    remove(location: LocationData): boolean;
+                    add(location: LocationData, buffer: SharedArrayBuffer): void;
+                    get(location: LocationData): false | {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: import("../../Meta/Data/CommonTypes.js").LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor | import("../../Meta/Constructor/Voxel.types.js").VoxelConstructor[]): void;
+                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
+                getVoxel(id: string): import("../../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData | Record<import("../../Meta/Util.types.js").DirectionNames, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
                         pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
                     };
                 };
             };
@@ -2575,22 +2593,22 @@ export declare const Analyzer: {
                 threadNumber: number;
                 threadName: string;
                 environment: "browser" | "node";
-                _comms: Record<string, import("../../Libs/ThreadComm/Comm/Comm.js").CommBase>;
-                _commManageras: Record<string, import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager>;
-                _tasks: Record<string, import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>>;
-                _queues: Map<string, Map<string, import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<any, any>>;
-                parent: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
                 __internal: Record<number, Record<number, (data: any, event: any) => void>>;
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 $INIT(threadName: string): Promise<void>;
-                getSyncedQueue(threadId: string, queueId: string): import("../../Libs/ThreadComm/Queue/SyncedQueue.js").SyncedQueue | undefined;
-                addComm(comm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase): void;
-                createComm<T_2>(name: string, mergeObject?: T_2): T_2 & import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                createCommManager(data: import("../../Libs/ThreadComm/Meta/Manager/Manager.types.js").CommManagerData): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
-                getComm(id: string): import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-                getCommManager(id: string): import("../../Libs/ThreadComm/Manager/CommManager.js").CommManager;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
                 __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
                 __handleInternalMessage(data: any[], event: any): void;
@@ -2598,48 +2616,48 @@ export declare const Analyzer: {
                 __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
                 __handleTasksMessage(data: any[]): Promise<void>;
                 __isTasks(data: any[]): boolean;
-                registerTasks<T_3>(id: string | number, run: (data: T_3, onDone?: Function | undefined) => void, mode?: "async" | "deffered"): import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<T_3>;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered" | undefined): import("threadcomm").Task<T_1>;
                 __hanldeDataSyncMessage(data: any[]): Promise<void>;
                 __isDataSync(data: any[]): boolean;
-                onDataSync<T_4, K_1>(dataType: string | number, onSync?: ((data: T_4) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("../../Libs/ThreadComm/Data/DataSync.js").DataSync<T_4, K_1>;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
-            parentComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
-            worldComm: import("../../Libs/ThreadComm/Comm/Comm.js").CommBase;
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    paint: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
                 flow: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 rgb: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
                 sun: {
-                    update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
-                    remove: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    remove: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -2648,11 +2666,11 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: import("../../Libs/Hooks/Classes/SyncHook.js").SyncHook<{
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
                     textureDataHasBeenSet: boolean;
-                    data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap;
-                    getTextureUV(data: import("../../Meta/Constructor/Constructor.types.js").ConstructorTextureData, overlay?: boolean): number;
-                    setUVTextureMap(data: import("../../Meta/Render/Textures/Texture.types.js").TextureTypeUVMap): void;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
                     releaseTextureData(): void;
                     isReady(): boolean;
                 }, void>;
@@ -2661,13 +2679,13 @@ export declare const Analyzer: {
             reStart(): void;
             isReady(): boolean;
             $INIT(): Promise<void>;
-            getDataTool(): import("../../Meta/Constructor/Constructor.types.js").ConstructorDataTool;
+            getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void);
     };
     processor: {
         columnTool: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool;
         chunkTool: import("../../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
-        goThroughColumn<T_5>(location: LocationData, run: (x: number, y: number, z: number, column: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool) => void): void;
+        goThroughColumn<T_3>(location: LocationData, run: (x: number, y: number, z: number, column: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool) => void): void;
     };
     _flowChecks: number[][];
     runPropagation(data: UpdateTasksO): Promise<void>;

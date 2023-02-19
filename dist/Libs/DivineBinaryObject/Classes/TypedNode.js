@@ -10,6 +10,9 @@ export class TypedNode {
     get typeName() {
         return MetaMapValues[this.type];
     }
+    get primiteName() {
+        return MetaMapValues[this.type];
+    }
     get listType() {
         return this.data[1];
     }

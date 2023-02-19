@@ -5,27 +5,37 @@ import { TextureAnimationCreator } from "./TextureAnimations.js";
 export const TextureManager = {
     defaultTexturePath: "",
     textureTypes: new Map(),
-    _processVariations(texture, texturePaths, map, animations, textureAnimatioTimes, extension, count, path) {
-        if (!texture.variations)
+    _processVariations(textureData, paths, map, animations, textureAnimatioTimes, extension, count, path) {
+        if (!textureData.variations)
             return count;
-        for (const varation of Object.keys(texture.variations)) {
-            const data = texture.variations[varation];
+        for (const varation of Object.keys(textureData.variations)) {
+            const data = textureData.variations[varation];
             if (data.frames == 0) {
-                map[`${texture.id}:${varation}`] = count;
-                texturePaths.push(`${path}/${texture.id}/${varation}.${extension}`);
+                map[`${textureData.id}:${varation}`] = count;
+                const assetPath = `${path}/${textureData.id}/${varation}.${extension}`;
+                let raw = false;
+                if (data.rawData) {
+                    raw = data.rawData;
+                }
+                paths.set(assetPath, raw);
                 count++;
             }
             else {
                 if (!data.animKeys)
                     throw new Error("Texture Varation must have supplied animKeys if frames are greater than 0.");
                 for (let i = 1; i <= data.frames; i++) {
-                    map[`${texture.id}:${varation}-${i}`] = count;
-                    texturePaths.push(`${path}/${texture.id}/${varation}-${i}.${extension}`);
+                    map[`${textureData.id}:${varation}-${i}`] = count;
+                    const assetPath = `${path}/${textureData.id}/${varation}-${i}.${extension}`;
+                    let raw = false;
+                    if (data.rawData) {
+                        raw = data.rawData;
+                    }
+                    paths.set(assetPath, raw);
                     count++;
                 }
                 const trueKeys = [];
                 for (let i = 0; i < data.animKeys.length; i++) {
-                    trueKeys.push(map[`${texture.id}:${varation}-${data.animKeys[i]}`]);
+                    trueKeys.push(map[`${textureData.id}:${varation}-${data.animKeys[i]}`]);
                 }
                 if (data.animKeyFrameTimes) {
                     textureAnimatioTimes.push(data.animKeyFrameTimes);
@@ -55,8 +65,13 @@ export const TextureManager = {
                     : this.defaultTexturePath;
                 if (textureData.frames == 0) {
                     segment.textureMap[`${textureData.id}`] = count;
-                    paths.push(`${path}/${textureData.id}/default.${extension}`);
-                    count++;
+                    const assetPath = `${path}/${textureData.id}/default.${extension}`;
+                    let raw = false;
+                    if (textureData.rawData) {
+                        raw = textureData.rawData;
+                    }
+                    paths.set(assetPath, raw);
+                    count + count++;
                     count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count, path);
                 }
                 else {
@@ -64,7 +79,12 @@ export const TextureManager = {
                         throw new Error("Texture must have supplied animKeys if frames are greater than 0.");
                     map[`${texture.id}`] = count;
                     for (let i = 1; i < textureData.frames; i++) {
-                        paths.push(`${path}/${textureData.id}/default-${i}.${extension}`);
+                        const assetPath = `${path}/${textureData.id}/default-${i}.${extension}`;
+                        let raw = false;
+                        if (textureData.rawData) {
+                            raw = textureData.rawData;
+                        }
+                        paths.set(assetPath, raw);
                         count++;
                     }
                     const trueKeys = [];

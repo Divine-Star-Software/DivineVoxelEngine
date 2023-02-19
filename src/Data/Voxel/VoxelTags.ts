@@ -1,4 +1,4 @@
-import { RemoteTagManager } from "../../Libs/DivineBinaryTags/RemoteTagManager.js";
+import { RemoteTagManager } from "divine-binary-tags";
 
 class VDTags extends RemoteTagManager {
  voxelIndex = new Uint16Array();

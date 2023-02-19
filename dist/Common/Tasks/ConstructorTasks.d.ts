@@ -2,17 +2,17 @@ import { AddToRebuildQueue, BuildTasks, PriorityTask, RunRebuildTasks } from "Me
 export declare const ConstructorTasks: {
     runQueue: {
         build: {
-            chunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<RunRebuildTasks>;
+            chunk: import("threadcomm").Task<RunRebuildTasks>;
         };
     };
     addToQueue: {
         rgb: {
-            update: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<any>;
+            update: import("threadcomm").Task<any>;
             remove: null;
         };
         build: {
-            addToRebuildQueue: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<AddToRebuildQueue>;
+            addToRebuildQueue: import("threadcomm").Task<AddToRebuildQueue>;
         };
-        buildChunk: import("../../Libs/ThreadComm/Tasks/Tasks.js").Task<PriorityTask<BuildTasks>>;
+        buildChunk: import("threadcomm").Task<PriorityTask<BuildTasks>>;
     };
 };

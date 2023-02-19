@@ -1,5 +1,4 @@
-import { TNM } from "../../Libs/DivineBinaryObject/NodeMaker.js";
-import { DBO } from "../../Libs/DivineBinaryObject/DivineBinaryObject.js";
+import { DBO } from "divine-binary-object";
 import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
 import type { RichColumn } from "Meta/Data/RichWorldData.types.js";

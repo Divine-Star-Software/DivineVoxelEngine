@@ -1,4 +1,4 @@
-import { CommPortTypes } from "Libs/ThreadComm/Meta/Comm/Comm.types";
+import { CommPortTypes } from "threadcomm"
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import type { RecursivePartial } from "Meta/Util.types";
 

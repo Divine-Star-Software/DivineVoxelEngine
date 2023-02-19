@@ -1,4 +1,4 @@
-import { ThreadComm } from "../../Libs/ThreadComm/ThreadComm.js";
+import { ThreadComm } from "threadcomm";
 //data
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldDataGenerator } from "../Data/Generators/WorldDataGenerator.js";

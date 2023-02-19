@@ -1,7 +1,7 @@
 import type { ChunkData } from "Meta/Data/WorldData.types";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
-import { LocationData } from "Libs/voxelSpaces/Types/VoxelSpaces.types.js";
+import { LocationData } from "voxelspaces";
 export declare class HeightMapTool {
     static _chunkTool: ChunkDataTool;
     _data: {
