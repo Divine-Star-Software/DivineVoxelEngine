@@ -1,6 +1,6 @@
 {
  "name": "divine-voxel-engine",
- "version": "1.2.51",
+ "version": "1.2.53",
  "main": "index.js",
  "typings": "index.d.ts",
  "type": "module",
@@ -26,6 +26,8 @@
   "babylonjs": "^5.46.0",
   "divine-binary-object": "^0.0.45",
   "divine-binary-tags": "^0.0.5",
+  "divine-hooks": "^0.0.4",
+  "divine-shaders": "^0.0.0",
   "threadcomm": "^0.0.9",
   "voxelspaces": "^1.0.1"
  }

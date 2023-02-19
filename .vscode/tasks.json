@@ -11,14 +11,8 @@
   {
    "label": "Project Startup",
    "dependsOn": [
-    "electron",
     "src-compile",
-    "testworlds-compile",
-    "server-compile",
-    "dsst-main",
-    "dsst-libs",
-    "screens-compile",
-    "dsst-screens"
+
    ],
    // Mark as the default build task so cmd/ctrl+shift+b will create them
    "group": {

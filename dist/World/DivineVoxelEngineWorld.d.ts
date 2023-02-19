@@ -11,14 +11,14 @@ import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
  * This handles everything in the world worker context.
  */
 export declare const DVEW: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     __settingsHaveBeenSynced: boolean;
     __renderIsDone: boolean;
     __serverIsDone: boolean;
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
         _tasks: Record<string, import("threadcomm").Task<any>>;
@@ -55,7 +55,7 @@ export declare const DVEW: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
         merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
         degtoRad(degrees: number): number;
@@ -64,7 +64,7 @@ export declare const DVEW: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -334,7 +334,7 @@ export declare const DVEW: {
                 getMap(): Record<string, number>;
             };
         };
-        comms: Record<string, import("threadcomm").CommBase | import("threadcomm").CommManager>;
+        comms: Record<string, import("threadcomm").CommManager | import("threadcomm").CommBase>;
         commOptions: Record<string, {
             worldData: boolean;
             worldDataTags: boolean;
@@ -346,7 +346,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("threadcomm").CommBase | import("threadcomm").CommManager, data?: Partial<{
+        registerComm(comm: import("threadcomm").CommManager | import("threadcomm").CommBase, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -354,7 +354,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("threadcomm").CommBase | import("threadcomm").CommManager, options: {
+        loopThroughComms(func: (comm: import("threadcomm").CommManager | import("threadcomm").CommBase, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
