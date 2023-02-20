@@ -2,8 +2,8 @@
 import { Util } from "../../Global/Util.helper.js";
 //tools
 import { BrushTool } from "./Brush.js";
-import { TasksTool } from "../Tasks/TasksTool.js";
-const tasks = TasksTool();
+import { GetTasksTool } from "../Tasks/TasksTool.js";
+const tasks = GetTasksTool();
 export const GetAdvancedBrushTool = () => {
     let brush = Util.merge(new BrushTool(), {
         paintAndAwaitUpdate() {

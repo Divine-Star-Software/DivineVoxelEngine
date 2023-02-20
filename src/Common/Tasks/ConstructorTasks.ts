@@ -7,9 +7,9 @@ import {
  PriorityTask,
  RunRebuildTasks,
 } from "Meta/Tasks/Tasks.types.js";
-import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
+import { GetTasksTool } from "../../Tools/Tasks/TasksTool.js";
 
-const tasks = TasksTool();
+const tasks = GetTasksTool();
 export const ConstructorTasks = {
  runQueue: {
   build: {

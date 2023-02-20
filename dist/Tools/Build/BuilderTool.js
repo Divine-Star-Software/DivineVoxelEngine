@@ -2,11 +2,11 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "threadcomm";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
-import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
+import { GetTasksTool } from "../../Tools/Tasks/TasksTool.js";
 const parentComm = ThreadComm.parent;
 export class BuilderTool extends LocationBoundTool {
     static _chunkTool = new ChunkDataTool();
-    tasks = TasksTool();
+    tasks = GetTasksTool();
     data = {
         LOD: 1,
     };

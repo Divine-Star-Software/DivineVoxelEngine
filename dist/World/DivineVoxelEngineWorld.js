@@ -21,7 +21,7 @@ import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
-import { TasksTool } from "../Tools/Tasks/TasksTool.js";
+import { GetTasksTool } from "../Tools/Tasks/TasksTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
 import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
@@ -110,7 +110,7 @@ export const DVEW = {
         return new HeightMapTool();
     },
     getTasksTool() {
-        return TasksTool();
+        return GetTasksTool();
     },
     getDataLoaderTool() {
         return new DataLoaderTool();

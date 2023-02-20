@@ -18,7 +18,7 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 
-class TasksBase {
+export class TaskTool {
  _data = {
   dimension: "main",
   queue: "main",
@@ -66,7 +66,7 @@ class TasksBase {
 
  generate = {
   async: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    add(x: number, y: number, z: number, data: any = []) {
     CQ.generate.add(
      [[this._s._data.dimension, x, y, z], data],
@@ -82,7 +82,7 @@ class TasksBase {
    },
   },
   deferred: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    run(
     x: number,
     y: number,
@@ -104,7 +104,7 @@ class TasksBase {
  voxelUpdate = {
   erase: {
    deferred: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     run(x: number, y: number, z: number, onDone: (data: any) => void) {
      const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
      CCM.runPromiseTasks<UpdateTasks>(
@@ -116,7 +116,7 @@ class TasksBase {
     },
    },
    async: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number) {
      CQ.voxelUpdate.erase.add(
       [
@@ -138,7 +138,7 @@ class TasksBase {
   },
   paint: {
    deferred: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     run(
      x: number,
      y: number,
@@ -161,7 +161,7 @@ class TasksBase {
     },
    },
    async: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number, raw: RawVoxelData) {
      CQ.voxelUpdate.paint.add(
       [
@@ -186,7 +186,7 @@ class TasksBase {
  build = {
   chunk: {
    deferred: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     run(buildTasks: BuildTasks, onDone: (data: any) => void) {
      const requestsKey = buildTasks.toString();
      CCM.runPromiseTasks<PriorityTask<BuildTasks>>(
@@ -202,7 +202,7 @@ class TasksBase {
    },
 
    async: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number) {
      CQ.build.chunk.add(
       {
@@ -224,7 +224,7 @@ class TasksBase {
   column: {
    async: {},
    deferred: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     run(x: number, y: number, z: number, onDone: (data: any) => void) {
      const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
      CCM.runPromiseTasks<BuildTasks>(
@@ -239,7 +239,7 @@ class TasksBase {
  };
  explosion = {
   run: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    add(x: number, y: number, z: number, radius: number) {
     CQ.explosion.run.add(
      [
@@ -262,7 +262,7 @@ class TasksBase {
  };
  flow = {
   update: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    add(x: number, y: number, z: number) {
     CQ.flow.update.add(
      [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread],
@@ -278,7 +278,7 @@ class TasksBase {
    },
   },
   remove: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    add(x: number, y: number, z: number) {
     CQ.flow.remove.add(
      [[this._s._data.dimension, x, y, z], this._s._data.queue, this._s._thread],
@@ -296,7 +296,7 @@ class TasksBase {
  };
  anaylzer = {
   propagation: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    run(x: number, y: number, z: number, onDone: (data: any) => void) {
     const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
     CCM.runPromiseTasks<UpdateTasksO>(
@@ -308,7 +308,7 @@ class TasksBase {
    },
   },
   update: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    run(x: number, y: number, z: number, onDone: (data: any) => void) {
     const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
     CCM.runPromiseTasks<UpdateTasksO>(
@@ -323,7 +323,7 @@ class TasksBase {
  light = {
   rgb: {
    update: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number, queue: string | null = null) {
      queue = queue ? queue : this._s._data.queue;
      CQ.rgb.update.add(
@@ -340,7 +340,7 @@ class TasksBase {
     },
    },
    remove: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number, queue: string | null = null) {
      queue = queue ? queue : this._s._data.queue;
      CQ.rgb.remove.add(
@@ -359,7 +359,7 @@ class TasksBase {
   },
   sun: {
    update: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number) {
      CQ.sun.update.add(
       [
@@ -379,7 +379,7 @@ class TasksBase {
     },
    },
    remove: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     add(x: number, y: number, z: number) {
      CQ.sun.remove.add(
       [
@@ -400,9 +400,9 @@ class TasksBase {
    },
   },
   worldSun: {
-   _s: <TasksBase>{},
+   _s: <TaskTool>{},
    deferred: {
-    _s: <TasksBase>{},
+    _s: <TaskTool>{},
     run(x: number, y: number, z: number, onDone: (data: any) => void) {
      const requestsKey = `${this._s._data.dimension}-${x}-${y}-${z}}`;
      CCM.runPromiseTasks<WorldSunTask>(
@@ -432,6 +432,6 @@ class TasksBase {
  };
 }
 
-export const TasksTool = function () {
- return new TasksBase();
+export const GetTasksTool = function () {
+ return new TaskTool();
 };

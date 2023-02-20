@@ -4,7 +4,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { CCM } from "../../World/Threads/Threads.js";
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
-class TasksBase {
+export class TaskTool {
     _data = {
         dimension: "main",
         queue: "main",
@@ -326,6 +326,6 @@ class TasksBase {
         },
     };
 }
-export const TasksTool = function () {
-    return new TasksBase();
+export const GetTasksTool = function () {
+    return new TaskTool();
 };

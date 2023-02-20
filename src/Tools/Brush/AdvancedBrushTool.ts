@@ -2,9 +2,9 @@
 import { Util } from "../../Global/Util.helper.js";
 //tools
 import { BrushTool } from "./Brush.js";
-import { TasksTool } from "../Tasks/TasksTool.js";
+import { GetTasksTool } from "../Tasks/TasksTool.js";
 
-const tasks = TasksTool();
+const tasks = GetTasksTool();
 
 export const GetAdvancedBrushTool = () => {
  let brush = Util.merge(new BrushTool(), {

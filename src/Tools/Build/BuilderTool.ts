@@ -3,13 +3,13 @@ import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { ThreadComm } from "threadcomm";
 import type { LocationData } from "voxelspaces";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
-import { TasksTool } from "../../Tools/Tasks/TasksTool.js";
+import { GetTasksTool } from "../../Tools/Tasks/TasksTool.js";
 import { RemoveChunksOutsideDistance } from "Meta/Tasks/RenderTasks.types.js";
 
 const parentComm = ThreadComm.parent;
 export class BuilderTool extends LocationBoundTool {
  static _chunkTool = new ChunkDataTool();
- tasks = TasksTool();
+ tasks = GetTasksTool();
  data = {
   LOD: 1,
  };
