@@ -1,4 +1,4 @@
-import { Scene } from "babylonjs";
+import { Scene } from "@babylonjs/core";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { FOManager } from "../Render/FloatingOrigin/FoManager.js";
 import { MeshRegister } from "./MeshRegister.js";

@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import type { Engine, Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import type { Engine, Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 
 import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";

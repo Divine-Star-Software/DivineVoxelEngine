@@ -260,12 +260,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -480,12 +494,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -700,12 +728,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -920,12 +962,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -1140,12 +1196,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -1360,12 +1430,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -1580,12 +1664,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -1800,12 +1898,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -2020,12 +2132,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -2241,12 +2367,26 @@ export declare const VoxelMesher: {
             };
             AO: {
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
             };
             light: {
                 lightMap: number[];
                 add(stride?: 1 | 4): any;
-                addCustom(data: [number, number, number, number] | [number]): any;
+                addCustom(data: [
+                    number,
+                    number,
+                    number,
+                    number
+                ] | [
+                    number
+                ]): any;
                 _getBrightestLight(): number;
                 _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
             };
@@ -2415,12 +2555,26 @@ export declare const VoxelMesher: {
         };
         AO: {
             add(stride?: 1 | 4): any;
-            addCustom(data: [number, number, number, number] | [number]): any;
+            addCustom(data: [
+                number,
+                number,
+                number,
+                number
+            ] | [
+                number
+            ]): any;
         };
         light: {
             lightMap: number[];
             add(stride?: 1 | 4): any;
-            addCustom(data: [number, number, number, number] | [number]): any;
+            addCustom(data: [
+                number,
+                number,
+                number,
+                number
+            ] | [
+                number
+            ]): any;
             _getBrightestLight(): number;
             _getLight: Record<DirectionNames, (x: number, y: number, z: number) => number>;
         };

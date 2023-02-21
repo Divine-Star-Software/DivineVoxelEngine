@@ -1,18 +1,17 @@
-import { AddToRebuildQueue, BuildTasks, PriorityTask, RunRebuildTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorTasks: {
     runQueue: {
         build: {
-            chunk: import("threadcomm").Task<RunRebuildTasks>;
+            chunk: any;
         };
     };
     addToQueue: {
         rgb: {
-            update: import("threadcomm").Task<any>;
+            update: any;
             remove: null;
         };
         build: {
-            addToRebuildQueue: import("threadcomm").Task<AddToRebuildQueue>;
+            addToRebuildQueue: any;
         };
-        buildChunk: import("threadcomm").Task<PriorityTask<BuildTasks>>;
+        buildChunk: any;
     };
 };

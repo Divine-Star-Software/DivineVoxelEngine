@@ -1,5 +1,5 @@
 import type { VoxelSubstanceType } from "Meta/Data/Voxels/Voxel.types";
-import type { Mesh, Scene } from "babylonjs";
+import type { Mesh, Scene } from "@babylonjs/core";
 
 import { DVER } from "../DivineVoxelEngineRender.js";
 import {

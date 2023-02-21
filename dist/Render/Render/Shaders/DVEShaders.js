@@ -298,6 +298,7 @@ c.b -= .2;
 vec4 skyboxColor = vec4(c.rgb,1);
 vec3 finalColor = doFog(skyboxColor);
 gl_FragColor = vec4(finalColor.rgb,1);`);
+        shader.compile();
         return shader;
     },
 };

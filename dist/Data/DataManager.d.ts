@@ -15,25 +15,6 @@ export declare const DataManager: {
         id: string;
         sync(voxelMap: Uint16Array): void;
         setVoxel(id: number): void;
-        initData: import("divine-binary-tags").RemoteTagManagerInitData;
-        $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
-        byteOffSet: number;
-        tagSize: number;
-        tagIndexes: number;
-        data: DataView;
-        indexMap: Map<string, number>;
-        index: DataView;
-        setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
-        getBuffer(): ArrayBuffer;
-        setTagIndex(index: number): void;
-        getTag(id: string): number;
-        setTag(id: string, value: number): boolean;
-        getArrayTagValue(id: string, index: number): number;
-        getArrayTagByteIndex(id: string, index: number): number;
-        setArrayTagValue(id: string, index: number, value: number): number | void;
-        loopThroughTags(run: (id: string, value: number) => void): void;
-        loopThroughIndex(run: (data: number[]) => void): void;
-        loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
     };
     world: {
         _currentionDimension: string;
@@ -86,7 +67,7 @@ export declare const DataManager: {
             remove(location: import("voxelspaces").LocationData): boolean;
         };
     };
-    columnTags: import("divine-binary-tags").RemoteTagManager;
+    columnTags: any;
     worldBounds: {
         bounds: {
             MinZ: number;
@@ -185,8 +166,8 @@ export declare const DataManager: {
             getStringMapValue(segment: string, id: string, index: number): string;
         };
     };
-    chunkTags: import("divine-binary-tags").RemoteTagManager;
-    regionTags: import("divine-binary-tags").RemoteTagManager;
+    chunkTags: any;
+    regionTags: any;
     regionHeaderReigster: {
         _headers: Map<string, Map<string, {
             data: DataView;

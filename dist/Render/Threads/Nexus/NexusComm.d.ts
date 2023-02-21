@@ -1,3 +1,1 @@
-export declare const NexusComm: import("threadcomm").CommBase & {
-    $INIT(): void;
-};
+export declare const NexusComm: any;

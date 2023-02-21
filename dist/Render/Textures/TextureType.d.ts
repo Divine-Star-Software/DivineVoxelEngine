@@ -1,4 +1,4 @@
-import type { RawTexture2DArray } from "babylonjs";
+import type { RawTexture2DArray } from "@babylonjs/core";
 import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
 import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 import { DivineShader } from "divine-shaders";

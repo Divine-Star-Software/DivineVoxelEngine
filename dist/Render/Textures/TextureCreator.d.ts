@@ -1,4 +1,4 @@
-import type { RawTexture2DArray } from "babylonjs";
+import type { RawTexture2DArray } from "@babylonjs/core";
 export declare const TextureCreator: {
     context: CanvasRenderingContext2D | null;
     _textureSize: number;

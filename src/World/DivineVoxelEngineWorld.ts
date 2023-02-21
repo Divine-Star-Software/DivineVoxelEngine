@@ -145,3 +145,4 @@ export type DivineVoxelEngineWorld = typeof DVEW;
 DVEW.environment = Util.getEnviorment();
 
 DVEW.TC.threadName = "world";
+console.log("world")

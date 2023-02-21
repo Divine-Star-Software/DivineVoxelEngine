@@ -1,3 +1,1 @@
-export declare const FXComm: import("threadcomm").CommBase & {
-    $INIT(): void;
-};
+export declare const FXComm: any;

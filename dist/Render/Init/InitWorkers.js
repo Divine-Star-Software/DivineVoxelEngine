@@ -1,6 +1,6 @@
 export async function InitWorkers(DVER, initData) {
     DVER.settings.syncSettings(initData);
-    await DVER.TC.$INIT("render");
+    await DVER.TC.$INIT("render", "global");
     if (typeof initData.worldWorker == "string") {
         const worker = DVER.__createWorker(initData.worldWorker);
         DVER.worldComm.setPort(worker);

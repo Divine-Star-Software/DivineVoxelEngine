@@ -5,7 +5,7 @@ import type {
  MeshRegisterColumn,
 } from "Meta/Render/Scene/MeshRegister.types.js";
 import type { LocationData } from "voxelspaces";
-import type { Mesh } from "babylonjs";
+import type { Mesh } from "@babylonjs/core";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 export const MeshRegister = {

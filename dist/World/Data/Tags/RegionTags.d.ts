@@ -1,4 +1,3 @@
-import { TagManager } from "divine-binary-tags";
-export declare const RegionDataTags: TagManager;
-export declare const RegionHeaderTagManager: TagManager;
+export declare const RegionDataTags: any;
+export declare const RegionHeaderTagManager: any;
 export declare function InitalizeRegionTags(): void;

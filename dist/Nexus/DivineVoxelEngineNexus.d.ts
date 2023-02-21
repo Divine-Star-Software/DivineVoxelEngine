@@ -1,38 +1,7 @@
 import { EngineSettingsData } from "../Meta/Data/Settings/EngineSettings.types.js";
 export declare const DVEN: {
     environment: "node" | "browser";
-    TC: {
-        threadNumber: number;
-        threadName: string;
-        environment: "node" | "browser";
-        _comms: Record<string, import("threadcomm").CommBase>;
-        _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
-        _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
-        parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
-        __initalized: boolean;
-        __expectedPorts: Record<string, boolean>;
-        $INIT(threadName: string): Promise<void>;
-        getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
-        addComm(comm: import("threadcomm").CommBase): void;
-        createComm<T>(name: string, mergeObject?: T | undefined): T & import("threadcomm").CommBase;
-        createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
-        getComm(id: string): import("threadcomm").CommBase;
-        getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
-        getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
-        onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): import("threadcomm").DataSync<T_2, K>;
-    };
+    TC: any;
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -42,8 +11,8 @@ export declare const DVEN: {
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
         getEnviorment(): "node" | "browser";
-        getAQueue<T_3>(): import("../Global/Util/Queue.js").Queue<T_3>;
-        merge<T_4, K_1>(target: T_4, newObject: K_1): T_4 & K_1;
+        getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
+        merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
         radToDeg(radians: number): number;
         convertBufferToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
@@ -83,17 +52,17 @@ export declare const DVEN: {
     dataSyncNode: {
         _states: Record<string, boolean>;
         isReady(): boolean;
-        voxelPalette: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
-        voxelData: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
-        dimension: import("threadcomm").DataSync<import("../Meta/Data/DimensionData.types.js").DimensionData, void>;
-        chunk: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
-        column: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
-        region: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
-        regionHeader: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").WorldDataSync, import("voxelspaces").LocationData>;
-        chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
-        columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
-        regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
-        stringMap: import("threadcomm").DataSync<import("../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
+        voxelPalette: any;
+        voxelData: any;
+        dimension: any;
+        chunk: any;
+        column: any;
+        region: any;
+        regionHeader: any;
+        chunkTags: any;
+        columnTags: any;
+        regionTags: any;
+        stringMap: any;
     };
     data: {
         dimensions: {
@@ -112,25 +81,6 @@ export declare const DVEN: {
             id: string;
             sync(voxelMap: Uint16Array): void;
             setVoxel(id: number): void;
-            initData: import("divine-binary-tags").RemoteTagManagerInitData;
-            $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
-            byteOffSet: number;
-            tagSize: number;
-            tagIndexes: number;
-            data: DataView;
-            indexMap: Map<string, number>;
-            index: DataView;
-            setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
-            getBuffer(): ArrayBuffer;
-            setTagIndex(index: number): void;
-            getTag(id: string): number;
-            setTag(id: string, value: number): boolean;
-            getArrayTagValue(id: string, index: number): number;
-            getArrayTagByteIndex(id: string, index: number): number;
-            setArrayTagValue(id: string, index: number, value: number): number | void;
-            loopThroughTags(run: (id: string, value: number) => void): void;
-            loopThroughIndex(run: (data: number[]) => void): void;
-            loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
         };
         world: {
             _currentionDimension: string;
@@ -183,7 +133,7 @@ export declare const DVEN: {
                 remove(location: import("voxelspaces").LocationData): boolean;
             };
         };
-        columnTags: import("divine-binary-tags").RemoteTagManager;
+        columnTags: any;
         worldBounds: {
             bounds: {
                 MinZ: number;
@@ -282,8 +232,8 @@ export declare const DVEN: {
                 getStringMapValue(segment: string, id: string, index: number): string;
             };
         };
-        chunkTags: import("divine-binary-tags").RemoteTagManager;
-        regionTags: import("divine-binary-tags").RemoteTagManager;
+        chunkTags: any;
+        regionTags: any;
         regionHeaderReigster: {
             _headers: Map<string, Map<string, {
                 data: DataView;
@@ -307,10 +257,10 @@ export declare const DVEN: {
             erase(location: import("voxelspaces").LocationData): void;
         };
     };
-    worldComm: import("threadcomm").CommBase;
-    parentComm: import("threadcomm").CommBase;
+    worldComm: any;
+    parentComm: any;
     $INIT(): Promise<void>;
-    isReady(): boolean;
+    isReady(): any;
     syncSettings(data: EngineSettingsData): void;
 };
 export declare type DivineVoxelEngineNexus = typeof DVEN;

@@ -1,7 +1,7 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { DVEShaders } from "../../Shaders/DVEShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
-import type { Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
 
 export const SkyBoxMaterial = {

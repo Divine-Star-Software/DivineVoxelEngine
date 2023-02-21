@@ -7,7 +7,7 @@ export async function InitWorkers(
 ) {
  DVER.settings.syncSettings(<any>initData);
 
- await DVER.TC.$INIT("render");
+ await DVER.TC.$INIT("render","global");
 
  if (typeof initData.worldWorker == "string") {
   const worker = DVER.__createWorker(initData.worldWorker);

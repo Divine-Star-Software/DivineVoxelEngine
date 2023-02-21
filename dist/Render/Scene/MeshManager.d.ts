@@ -1,4 +1,4 @@
-import type { Scene } from "babylonjs";
+import type { Scene } from "@babylonjs/core";
 import { RemoveChunkMeshTasks, SetChunkMeshTask } from "Meta/Tasks/RenderTasks.types.js";
 import { DVEMesh } from "Render/Render/Meshes/DVEMesh.js";
 import { LocationData } from "voxelspaces";

@@ -1,4 +1,4 @@
-import type { Color3 } from "babylonjs";
+import type { Color3 } from "@babylonjs/core";
 export declare type DVEFogTypes = "exponential" | "volumetric" | "animated-volumetric";
 export declare type RenderFogOptions = {
     mode: DVEFogTypes;

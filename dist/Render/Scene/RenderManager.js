@@ -1,15 +1,15 @@
 //built in
-import { DVEMesh } from "./Meshes/DVEMesh.js";
+import { DVEMesh } from "../Render/Meshes/DVEMesh.js";
 //objects
-import { FOManager } from "./FloatingOrigin/FoManager.js";
+import { FOManager } from "../Render/FloatingOrigin/FoManager.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 //materials
-import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
-import { MeshRegister } from "../Scene/MeshRegister.js";
-import { MeshManager } from "../Scene/MeshManager.js";
-import { MeshCuller } from "../Scene/MeshCuller.js";
-import { DVEShaders } from "./Shaders/DVEShaders.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
+import { SkyBoxMaterial } from "../Render/Materials/SkyBox/SkyBoxMaterial.js";
+import { MeshRegister } from "./MeshRegister.js";
+import { MeshManager } from "./MeshManager.js";
+import { MeshCuller } from "./MeshCuller.js";
+import { DVEShaders } from "../Render/Shaders/DVEShaders.js";
+import { DVEMaterial } from "../Render/Materials/DVEMaterial.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 export const RenderManager = {
     fogOptions: {},

@@ -1,8 +1,8 @@
 import type { RecursivePartial } from "Meta/Util.types.js";
 import type { Scene, Vector4 } from "@babylonjs/core";
-import { DVEMesh } from "./Meshes/DVEMesh.js";
+import { DVEMesh } from "../Render/Meshes/DVEMesh.js";
 import { RenderFogOptions, DVERenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
+import { DVEMaterial } from "../Render/Materials/DVEMaterial.js";
 export declare const RenderManager: {
     fogOptions: RenderFogOptions;
     meshRegister: {

@@ -2,7 +2,7 @@ export declare const Propagation: {
     expolosion: {
         run(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -57,7 +57,7 @@ export declare const Propagation: {
     flow: {
         update(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -108,7 +108,7 @@ export declare const Propagation: {
         }): Promise<void>;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -161,7 +161,7 @@ export declare const Propagation: {
     worldSun: {
         run(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -195,7 +195,7 @@ export declare const Propagation: {
     rgb: {
         update(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -235,7 +235,7 @@ export declare const Propagation: {
         }): void;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -277,7 +277,7 @@ export declare const Propagation: {
     sun: {
         update(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];
@@ -317,7 +317,7 @@ export declare const Propagation: {
         }): void;
         remove(tasks: {
             rebuildQueMap: Map<string, boolean>;
-            comm: import("threadcomm").CommBase;
+            comm: CommBase;
             priority: import("../../Meta/Tasks/Tasks.types.js").Priorities;
             LOD: number;
             syncQueue: import("voxelspaces").LocationData[];

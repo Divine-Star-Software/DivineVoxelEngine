@@ -1,6 +1,10 @@
 import { ThreadComm } from "threadcomm";
 export async function InitWorker(DVEC) {
-    await ThreadComm.$INIT("constructor");
+    let parent = "render";
+    if (DVEC.environment == "node") {
+        parent = "server";
+    }
+    await ThreadComm.$INIT("constructor", parent);
     DVEC.builder.$INIT();
     DVEC.tasksQueue.$INIT();
     await DVEC.UTIL.createPromiseCheck({

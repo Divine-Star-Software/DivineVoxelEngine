@@ -1,6 +1,6 @@
 import type { MeshRegisterChunk, MeshRegisterDimensions, MushRegisterRegion, MeshRegisterColumn } from "Meta/Render/Scene/MeshRegister.types.js";
 import type { LocationData } from "voxelspaces";
-import type { Mesh } from "babylonjs";
+import type { Mesh } from "@babylonjs/core";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 export declare const MeshRegister: {
     _dimensions: MeshRegisterDimensions;

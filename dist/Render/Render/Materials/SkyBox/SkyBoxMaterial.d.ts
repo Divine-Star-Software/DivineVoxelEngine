@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import type { Scene, ShaderMaterial, Vector4 } from "babylonjs";
+import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 export declare const SkyBoxMaterial: {
     material: ShaderMaterial | null;
     time: number;

@@ -1,4 +1,3 @@
-import { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, UpdateTasks, PriorityTask } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
     _queueMap: Map<string | number, number>;
@@ -17,27 +16,27 @@ export declare const ConstructorQueues: {
      */
     filterOldQueues(maxTime?: number): void;
     rgb: {
-        update: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: any;
+        remove: any;
     };
-    worldSun: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+    worldSun: any;
     voxelUpdate: {
-        erase: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        paint: import("threadcomm/Queue/QueueManager.js").QueueManager<PaintTasks>;
+        erase: any;
+        paint: any;
     };
     sun: {
-        update: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: any;
+        remove: any;
     };
     explosion: {
-        run: import("threadcomm/Queue/QueueManager.js").QueueManager<ExplosionTasks>;
+        run: any;
     };
     flow: {
-        update: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
-        remove: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+        update: any;
+        remove: any;
     };
     build: {
-        chunk: import("threadcomm/Queue/QueueManager.js").QueueManager<PriorityTask<BuildTasks>>;
+        chunk: any;
     };
-    generate: import("threadcomm/Queue/QueueManager.js").QueueManager<GenerateTasks>;
+    generate: any;
 };

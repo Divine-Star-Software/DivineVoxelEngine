@@ -20,9 +20,9 @@ export declare class HeightMapTool {
         loadInAtLocation(location: LocationData): false | undefined;
         setChunk(chunk: ChunkData): void;
         setXZ(x: number, z: number): any;
-        getMinMax(): number[];
-        getMin(substance?: VoxelTemplateSubstanceType | "all"): number;
-        getMax(substance?: VoxelTemplateSubstanceType | "all"): number;
+        getMinMax(): any[];
+        getMin(substance?: VoxelTemplateSubstanceType | "all"): any;
+        getMax(substance?: VoxelTemplateSubstanceType | "all"): any;
         update(mode: "remove" | "add", substance: string | undefined, location: LocationData): void;
     };
 }

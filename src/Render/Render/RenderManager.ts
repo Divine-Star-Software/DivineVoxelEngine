@@ -1,6 +1,6 @@
 //types
 import type { RecursivePartial } from "Meta/Util.types.js";
-import type { Scene, Vector4 } from "babylonjs";
+import type { Scene, Vector4 } from "@babylonjs/core";
 
 //built in
 import { DVEMesh } from "./Meshes/DVEMesh.js";
@@ -20,6 +20,8 @@ import { MeshCuller } from "../Scene/MeshCuller.js";
 import { DVEShaders } from "./Shaders/DVEShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
+
+
 
 export const RenderManager = {
  fogOptions: <RenderFogOptions>{},
@@ -108,15 +110,15 @@ export const RenderManager = {
   this.liquidMesh = new DVEMesh("#dve_liquid", this.liquidMaterial);
 
   this.fogData = new DVEBabylon.system.Vector4();
-  (this.fogOptions = {
+  this.fogOptions = {
    mode: "volumetric",
    density: 0.0005,
    color: new DVEBabylon.system.Color3(1, 1, 1),
    volumetricOptions: {
     heightFactor: 0.25,
    },
-  }),
-   this.updateFogOptions(this.fogOptions);
+  };
+  this.updateFogOptions(this.fogOptions);
   this._setFogData();
   this.scene = scene;
 
@@ -151,6 +153,7 @@ export const RenderManager = {
  },
 
  getDefaultCamera(scene: Scene) {
+    console.log(scene,DVEBabylon)
   const camera = new DVEBabylon.system.UniversalCamera(
    "",
    DVEBabylon.system.Vector3.Zero(),

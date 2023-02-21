@@ -118,3 +118,4 @@ export const DVEW = {
 };
 DVEW.environment = Util.getEnviorment();
 DVEW.TC.threadName = "world";
+console.log("world");

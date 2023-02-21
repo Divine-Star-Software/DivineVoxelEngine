@@ -1,4 +1,4 @@
-import type { Scene, TransformNode, Vector3 } from "babylonjs";
+import type { Scene, TransformNode, Vector3 } from "@babylonjs/core";
 
 import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 

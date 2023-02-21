@@ -1,4 +1,4 @@
-import type { BoundingInfo, Mesh, Scene } from "babylonjs";
+import type { BoundingInfo, Mesh, Scene } from "@babylonjs/core";
 import type { LocationData } from "voxelspaces";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { ChunkMeshData } from "Meta/Tasks/RenderTasks.types";

@@ -1,4 +1,4 @@
-import type { Scene } from "babylonjs";
+import type { Scene } from "@babylonjs/core";
 import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 import { TextureCreator } from "../Textures/TextureCreator.js";
 import { TextureManager } from "../Textures/TextureManager.js";

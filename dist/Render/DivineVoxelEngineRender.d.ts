@@ -1,8 +1,8 @@
+import { DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
 import type { DVERInitData } from "Meta/Render/DVER";
+import type { Scene } from "@babylonjs/core";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
-import type { Scene } from "babylonjs";
-import { DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
 export declare const DVER: {
     UTIL: {
         createPromiseCheck: (data: {
@@ -20,58 +20,14 @@ export declare const DVER: {
         convertBufferToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
-    TC: {
-        threadNumber: number;
-        threadName: string;
-        environment: "node" | "browser";
-        _comms: Record<string, import("threadcomm").CommBase>;
-        _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
-        _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
-        parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
-        __initalized: boolean;
-        __expectedPorts: Record<string, boolean>;
-        $INIT(threadName: string): Promise<void>;
-        getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
-        addComm(comm: import("threadcomm").CommBase): void;
-        createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
-        createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
-        getComm(id: string): import("threadcomm").CommBase;
-        getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
-        getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deffered" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
-        onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
-    };
-    currentCom: import("threadcomm").CommBase;
-    worldComm: import("threadcomm").CommBase;
-    nexusComm: import("threadcomm").CommBase & {
-        $INIT(): void;
-    };
-    dataComm: import("threadcomm").CommBase & {
-        $INIT(): void;
-    };
-    fxComm: import("threadcomm").CommBase & {
-        $INIT(): void;
-    };
-    richWorldComm: import("threadcomm").CommBase & {
-        $INIT(): void;
-    };
-    constructorCommManager: import("threadcomm").CommManager & {
-        $INIT(dasta: import("../index.js").TextureTypeUVMap): void;
-        createConstructors(path: string, numBuilders?: number): void;
-        setConstructors(constructors: Worker[]): void;
-        syncSettings(data: any): void;
-    };
+    TC: any;
+    currentCom: any;
+    worldComm: any;
+    nexusComm: any;
+    dataComm: any;
+    fxComm: any;
+    richWorldComm: any;
+    constructorCommManager: any;
     babylon: {
         system: DVEBabylonSystem;
         $INIT(system: DVEBabylonSystem): void;
@@ -130,9 +86,9 @@ export declare const DVER: {
                 get(location: import("voxelspaces").LocationData): false | import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterColumn | undefined;
             };
             chunk: {
-                add(location: import("voxelspaces").LocationData, mesh: import("babylonjs").Mesh, substance: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
-                _getChunkData(mesh: import("babylonjs").Mesh): import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
-                remove(location: import("voxelspaces").LocationData, substance: string): false | import("babylonjs").Mesh;
+                add(location: import("voxelspaces").LocationData, mesh: import("@babylonjs/core").Mesh, substance: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk>;
+                _getChunkData(mesh: import("@babylonjs/core").Mesh): import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
+                remove(location: import("voxelspaces").LocationData, substance: string): false | import("@babylonjs/core").Mesh;
                 get(location: import("voxelspaces").LocationData, substance: string): false | import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterChunk;
             };
         };
@@ -150,15 +106,15 @@ export declare const DVER: {
         meshCuller: {
             $INIT(scene: Scene): void;
         };
-        fogData: import("babylonjs").Vector4;
+        fogData: import("@babylonjs/core").Vector4;
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions;
         fo: {
-            activeCamera: import("babylonjs").TransformNode | null;
-            activeNode: import("babylonjs").TransformNode | null;
+            activeCamera: import("@babylonjs/core").TransformNode | null;
+            activeNode: import("@babylonjs/core").TransformNode | null;
             onOriginSet: Function[];
-            registerOnOriginSet(run: (node: import("babylonjs").TransformNode) => void): void;
+            registerOnOriginSet(run: (node: import("@babylonjs/core").TransformNode) => void): void;
             setOriginCenter(scene: Scene, object: {
-                position: import("babylonjs").Vector3;
+                position: import("@babylonjs/core").Vector3;
             }): void;
         };
         shaders: {
@@ -212,14 +168,14 @@ export declare const DVER: {
         floraMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         liquidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
         skyBoxMaterial: {
-            material: import("babylonjs").ShaderMaterial | null;
+            material: import("@babylonjs/core").ShaderMaterial | null;
             time: number;
-            getMaterial(): import("babylonjs").ShaderMaterial | null;
-            updateFogOptions(data: import("babylonjs").Vector4): void;
+            getMaterial(): import("@babylonjs/core").ShaderMaterial | null;
+            updateFogOptions(data: import("@babylonjs/core").Vector4): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
             updateMaterialSettings(settings: EngineSettingsData): void;
-            createMaterial(scene: Scene): import("babylonjs").ShaderMaterial;
+            createMaterial(scene: Scene): import("@babylonjs/core").ShaderMaterial;
             overrideMaterial(material: any): void;
             updateUniforms(): void;
             runEffects(): void;
@@ -231,8 +187,8 @@ export declare const DVER: {
         updateShaderEffectOptions(options: import("../index.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions>): void;
         syncSettings(): void;
         getScene(): Scene | null;
-        getDefaultCamera(scene: Scene): import("babylonjs").UniversalCamera;
-        createSkyBoxMaterial(scene?: Scene | undefined): import("babylonjs").ShaderMaterial | null;
+        getDefaultCamera(scene: Scene): import("@babylonjs/core").UniversalCamera;
+        createSkyBoxMaterial(scene?: Scene | undefined): import("@babylonjs/core").ShaderMaterial | null;
         setSunLevel(level: number): void;
         setBaseLevel(level: number): void;
     };
@@ -356,10 +312,10 @@ export declare const DVER: {
         registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
     };
     tasks: {
-        setChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
-        removeChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks>;
-        removeColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        removeColumnsOutsideRadius: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunksOutsideDistance>;
+        setChunk: any;
+        removeChunk: any;
+        removeColumn: any;
+        removeColumnsOutsideRadius: any;
     };
     syncSettingsWithWorkers(data: EngineSettingsData): void;
     $INIT(initData: DVERInitData): Promise<void>;

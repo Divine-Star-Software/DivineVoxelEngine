@@ -1,3 +1,1 @@
-export declare const DataComm: import("threadcomm").CommBase & {
-    $INIT(): void;
-};
+export declare const DataComm: any;

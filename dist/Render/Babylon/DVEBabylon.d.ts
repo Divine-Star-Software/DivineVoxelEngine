@@ -1,4 +1,17 @@
-import type { BoundingBox, BoundingInfo, Color3, Effect, Engine, Mesh, RawTexture2DArray, Scene, ShaderMaterial, Texture, TransformNode, UniversalCamera, Vector3, Vector4, VertexData } from "babylonjs";
+import { RawTexture2DArray } from "@babylonjs/core/Materials/Textures/rawTexture2DArray.js";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture.js";
+import { Scene } from "@babylonjs/core/scene.js";
+import { Engine } from "@babylonjs/core/Engines/engine.js";
+import { Vector3, Vector4 } from "@babylonjs/core/Maths/math.vector.js";
+import { Color3 } from "@babylonjs/core/Maths/math.color.js";
+import { Effect } from "@babylonjs/core/Materials/effect.js";
+import { Mesh } from "@babylonjs/core/Meshes/mesh.js";
+import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera.js";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
+import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
+import { BoundingBox } from "@babylonjs/core/Culling/boundingBox.js";
+import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
+import { VertexData } from "@babylonjs/core/Meshes/mesh.vertexData.js";
 export declare type DVEBabylonSystem = {
     Scene: typeof Scene;
     Engine: typeof Engine;

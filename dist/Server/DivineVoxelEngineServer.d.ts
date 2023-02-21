@@ -32,13 +32,8 @@ export declare const DVES: {
         isServer(): boolean;
         isClient(): boolean;
     };
-    worldComm: import("threadcomm").CommBase;
-    constructorCommManager: import("threadcomm").CommManager & {
-        $INIT(): void;
-        createConstructors(path: string, numBuilders?: number): void;
-        setConstructors(constructors: import("threadcomm").CommPortTypes[]): void;
-        syncSettings(data: any): void;
-    };
+    worldComm: any;
+    constructorCommManager: any;
     worldBounds: {
         bounds: {
             MinZ: number;

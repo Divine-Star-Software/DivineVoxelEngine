@@ -1,3 +1,2 @@
-import { RemoteTagManager } from "divine-binary-tags";
-export declare const RegionTags: RemoteTagManager;
-export declare const RegionHeaderTags: RemoteTagManager;
+export declare const RegionTags: any;
+export declare const RegionHeaderTags: any;

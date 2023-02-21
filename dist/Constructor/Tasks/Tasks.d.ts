@@ -1,38 +1,38 @@
-import { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, PriorityTask, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
+import { BuildTasks } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     data: {
-        syncTextures: import("threadcomm").Task<any>;
+        syncTextures: any;
     };
     build: {
         chunk: {
-            tasks: import("threadcomm").Task<PriorityTask<BuildTasks>>;
+            tasks: any;
             run(data: BuildTasks): Promise<void>;
         };
-        column: import("threadcomm").Task<BuildTasks>;
+        column: any;
     };
     voxelUpdate: {
-        erase: import("threadcomm").Task<UpdateTasksO>;
-        paint: import("threadcomm").Task<PaintTasks>;
+        erase: any;
+        paint: any;
     };
-    explosion: import("threadcomm").Task<ExplosionTasks>;
-    worldSun: import("threadcomm").Task<WorldSunTask>;
+    explosion: any;
+    worldSun: any;
     worldGen: {
-        generate: import("threadcomm").Task<GenerateTasks>;
+        generate: any;
     };
     anaylzer: {
-        propagation: import("threadcomm").Task<UpdateTasksO>;
-        update: import("threadcomm").Task<UpdateTasksO>;
+        propagation: any;
+        update: any;
     };
     flow: {
-        update: import("threadcomm").Task<UpdateTasksO>;
-        remove: import("threadcomm").Task<UpdateTasksO>;
+        update: any;
+        remove: any;
     };
     rgb: {
-        update: import("threadcomm").Task<UpdateTasksO>;
-        remove: import("threadcomm").Task<UpdateTasksO>;
+        update: any;
+        remove: any;
     };
     sun: {
-        update: import("threadcomm").Task<UpdateTasksO>;
-        remove: import("threadcomm").Task<UpdateTasksO>;
+        update: any;
+        remove: any;
     };
 };

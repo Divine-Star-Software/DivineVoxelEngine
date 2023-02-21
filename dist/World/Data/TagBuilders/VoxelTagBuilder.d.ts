@@ -1,5 +1,4 @@
 import type { TagBuilderNodes } from "Meta/Data/Tags/TagBuilder.types";
-import type { TagManagerBase } from "divine-binary-tags";
 export declare const VoxelTagBuilder: {
     _nodeMap: Map<string, TagBuilderNodes>;
     _stringMaps: Map<string, {
@@ -13,6 +12,6 @@ export declare const VoxelTagBuilder: {
     getNode(id: string): TagBuilderNodes | undefined;
     setDefaults(tagManager: TagManagerBase): void;
     setNode(id: string, value: string | number | boolean | number[], tagManager: TagManagerBase): false | undefined;
-    $INIT(totalVoxels: number): import("divine-binary-tags").RemoteTagManagerInitData;
+    $INIT(totalVoxels: number): any;
     $SYNC(): void;
 };
