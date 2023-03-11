@@ -1,7 +1,8 @@
 import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 import type { LocationData } from "voxelspaces";
-import { ThreadComm } from "threadcomm"
+import { ThreadComm } from "threadcomm";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 export const DataLoaderTasks = {
  saveRegion: ThreadComm.registerTasks<LocationData>(
@@ -10,7 +11,7 @@ export const DataLoaderTasks = {
    await DataHanlderWrapper.saveRegion(data);
    return onDone ? onDone() : false;
   },
-  "deffered"
+  "deferred"
  ),
  loadRegion: ThreadComm.registerTasks<LocationData>(
   "load-region",
@@ -18,7 +19,7 @@ export const DataLoaderTasks = {
    await DataHanlderWrapper.loadRegion(data);
    return onDone ? onDone() : false;
   },
-  "deffered"
+  "deferred"
  ),
  loadRegionHeader: ThreadComm.registerTasks<LocationData>(
   "load-region-header",
@@ -26,7 +27,7 @@ export const DataLoaderTasks = {
    const success = await DataHanlderWrapper.loadRegionHeader(data);
    return onDone ? onDone(success) : false;
   },
-  "deffered"
+  "deferred"
  ),
  saveColumn: ThreadComm.registerTasks<LocationData>(
   "save-column",
@@ -34,34 +35,45 @@ export const DataLoaderTasks = {
    await DataHanlderWrapper.saveColumn(data);
    return onDone ? onDone() : false;
   },
-  "deffered"
+  "deferred"
  ),
  loadColumn: ThreadComm.registerTasks<LocationData>(
   "load-column",
   async (data, onDone) => {
+   if (WorldRegister.column.get(data)) {
+    if (onDone) {
+     onDone();
+    }
+    return;
+   }
    await DataHanlderWrapper.loadColumn(data);
    const inte = setInterval(() => {
-    if (DVEDL.data.worldRegister.column.get(data)) {
+    if (WorldRegister.column.get(data)) {
      onDone ? onDone(true) : false;
      clearInterval(inte);
     }
    }, 1);
   },
-  "deffered"
+  "deferred"
  ),
  unLoadColumn: ThreadComm.registerTasks<LocationData>(
   "unload-column",
   async (data, onDone) => {
+   if (!WorldRegister.column.get(data)) {
+    if (onDone) onDone();
+    return;
+   }
+   
    await DataHanlderWrapper.saveColumn(data);
    DVEDL.worldComm.runTasks("unload-column", data);
    const inte = setInterval(() => {
-    if (!DVEDL.data.worldRegister.column.get(data)) {
-     onDone ? onDone() : false;
+    if (!WorldRegister.column.get(data)) {
+     if (onDone) onDone();
      clearInterval(inte);
     }
    }, 1);
   },
-  "deffered"
+  "deferred"
  ),
  setPath: ThreadComm.registerTasks<[id: string]>(
   "set-path",
@@ -69,18 +81,24 @@ export const DataLoaderTasks = {
    await DataHanlderWrapper.setPath(data[0]);
    return onDone ? onDone() : false;
   },
-  "deffered"
+  "deferred"
  ),
  columnExists: ThreadComm.registerTasks<LocationData>(
   "column-exists",
   async (data, onDone) => {
+   if (WorldRegister.column.get(data)) {
+    if (onDone) {
+     onDone();
+    }
+    return;
+   }
    const exists = await DataHanlderWrapper.columnExists(data);
    if (onDone) {
     onDone(exists);
    }
    return false;
   },
-  "deffered"
+  "deferred"
  ),
  columnTimestamp: ThreadComm.registerTasks<LocationData>(
   "column-timestamp",
@@ -91,6 +109,6 @@ export const DataLoaderTasks = {
    }
    return 0;
   },
-  "deffered"
+  "deferred"
  ),
 };

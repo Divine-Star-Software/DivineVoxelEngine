@@ -1,16 +1,15 @@
-import type { TypedNode } from "divine-binary-object/Classes/TypedNode";
 import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { DBO } from "divine-binary-object";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
-import { RichChunkDataTool } from "./RichChunkDataTool.js";
+import { RichColumnDataTool } from "./RichColumnDataTool.js";
 
 export class RichDataTool extends RichDataToolBase {
- data: TypedNode<any>;
- static chunkTool = new RichChunkDataTool();
+ data: any;
+ static columnTool = new RichColumnDataTool();
  loadIn() {
-  if (RichDataTool.chunkTool.loadInAtLocation(this.location)) {
-   this.segment = RichDataTool.chunkTool.segment;
+  if (RichDataTool.columnTool.loadInAtLocation(this.location)) {
+   this.segment = RichDataTool.columnTool.segment;
    const segment = this.getSegment();
    if (!segment) return false;
    const key = WorldSpaces.voxel.getKeyLocation(this.location);
@@ -23,34 +22,32 @@ export class RichDataTool extends RichDataToolBase {
   return false;
  }
 
- create<T>(data: TypedNode<T>) {
+ create<T = any>(data: T) {
   this.data = data;
-  if (!RichDataRegister.chunk.get(this.location)) {
-   RichDataRegister.chunk.add(this.location);
+  if (!RichDataRegister.column.get(this.location)) {
+   RichDataRegister.column.add(this.location);
   }
   this.loadIn();
   this.commit();
  }
 
- setData(data: TypedNode<any>) {
+ setData<T = any>(data: T) {
   this.data = data;
  }
 
- getData<T>() : TypedNode<T> {
+ getData<T>(): T{
   return this.data;
  }
 
  commit() {
   const segment = this.getSegment();
   if (!segment) return false;
-  const key = WorldSpaces.voxel.getKeyLocation(this.location);
-  segment[key] = this.data;
+  segment[RichDataRegister.getKey(this.location)] = this.data;
   return true;
  }
 
  toBuffer() {
   if (!this.data) return false;
-  return DBO.metaMarkedParser.toBuffer(this.data);
+  return DBO.toBuffer(this.data);
  }
 }
-

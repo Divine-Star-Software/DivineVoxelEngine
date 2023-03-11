@@ -15,9 +15,8 @@ import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { VoxelConstructors } from "./Builder/Constructors/Voxel/VoxelConstructors.js";
 //threadcomm
 import { ThreadComm } from "threadcomm";
-import { ParentComm } from "./Threads/Parent/ParentComm.js";
-import { WorldComm } from "./Threads/World/WorldComm.js";
-import { Tasks } from "./Tasks/Tasks.js";
+import { WorldComm, ParentComm } from "./Threads/ConstrcutorTheads.js";
+import { Tasks } from "./Tasks/ConstructorTasks.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
 import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
@@ -25,7 +24,7 @@ import { ConstructorHooks } from "./Hooks/ConstructorHooks.js";
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
- __settingsHaveBeenSynced: false,
+
 
  UTIL: Util,
  settings: EngineSettings,
@@ -46,29 +45,7 @@ export const DVEC = {
  tasksQueue: TasksQueue,
  hooks: ConstructorHooks,
 
- syncSettings(data: EngineSettingsData) {
-  this.settings.syncSettings(data);
-  Builder.syncSettings(data);
-  this.__settingsHaveBeenSynced = true;
- },
- reStart() {},
 
- isReady() {
-  if (this.environment == "node") {
-   return (
-    DVEC.worldComm.isPortSet() &&
-    DVEC.__settingsHaveBeenSynced &&
-    DataSyncNode.isReady()
-   );
-  } else {
-   return (
-    DVEC.worldComm.isPortSet() &&
-    DVEC.__settingsHaveBeenSynced &&
-    Builder.textureManager.isReady() &&
-    DataSyncNode.isReady()
-   );
-  }
- },
 
  async $INIT() {
   await InitWorker(this);

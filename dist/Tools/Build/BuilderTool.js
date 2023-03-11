@@ -14,16 +14,14 @@ export class BuilderTool extends LocationBoundTool {
         this.data.LOD = lod;
         return this;
     }
-    buildChunk() {
-        const [dimension, x, y, z] = this.location;
-        this.tasks.build.chunk.async.add(x, y, z);
-        this.tasks.build.chunk.async.run(() => { });
+    buildChunk(runQueue = false) {
+        this.tasks.build.chunk.queued.add(this.location);
+        if (runQueue)
+            this.tasks.build.chunk.queued.run(() => { });
         return this;
     }
     buildColumn(onDone) {
-        const [dimension, x, y, z] = this.location;
-        this.tasks._data.dimension = dimension;
-        this.tasks.build.column.deferred.run(x, y, z, onDone ? onDone : (data) => { });
+        this.tasks.build.column.deferred.run(this.location, onDone ? onDone : (data) => { });
         return this;
     }
     removeColumn() {

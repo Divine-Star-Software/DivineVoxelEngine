@@ -1,3 +1,4 @@
+import { NexusThreadState } from "../Threads/NexusThreadState.js";
 import { ThreadComm } from "threadcomm";
 export async function InitNexusWorker(DVEN) {
     let parent = "render";
@@ -5,5 +6,7 @@ export async function InitNexusWorker(DVEN) {
         parent = "server";
     }
     await ThreadComm.$INIT("nexus", parent);
-    await DVEN.UTIL.createPromiseCheck({ check: DVEN.isReady, checkInterval: 1 });
+    await DVEN.UTIL.createPromiseCheck({ check: () => {
+            return NexusThreadState.isReady();
+        }, checkInterval: 1 });
 }

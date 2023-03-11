@@ -1,3 +1,4 @@
+import { BuildTasks, GenerateTasks, UpdateTasks, PriorityTask } from "Meta/Tasks/Tasks.types.js";
 export declare const ConstructorQueues: {
     $INIT(): void;
     _queueMap: Map<string | number, number>;
@@ -15,28 +16,10 @@ export declare const ConstructorQueues: {
      * @param maxTime Max time in miliseconds.
      */
     filterOldQueues(maxTime?: number): void;
-    rgb: {
-        update: any;
-        remove: any;
-    };
-    worldSun: any;
-    voxelUpdate: {
-        erase: any;
-        paint: any;
-    };
-    sun: {
-        update: any;
-        remove: any;
-    };
-    explosion: {
-        run: any;
-    };
-    flow: {
-        update: any;
-        remove: any;
-    };
+    worldSun: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
+    propagation: import("threadcomm/Queue/QueueManager.js").QueueManager<UpdateTasks>;
     build: {
-        chunk: any;
+        chunk: import("threadcomm/Queue/QueueManager.js").QueueManager<PriorityTask<BuildTasks>>;
     };
-    generate: any;
+    generate: import("threadcomm/Queue/QueueManager.js").QueueManager<GenerateTasks>;
 };

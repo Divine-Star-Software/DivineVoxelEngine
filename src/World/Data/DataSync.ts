@@ -1,7 +1,7 @@
 //types
 import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
-import type { CommBase,CommManager } from "threadcomm";
+import type { CommBase, CommManager } from "threadcomm";
 
 import type {
  RegisterStringMapSync,
@@ -142,7 +142,12 @@ export const DataSync = {
   getUnSyncData: () => true,
  }),
 
- chunk: new DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>({
+ chunk: new DataSyncNode<
+  LocationData,
+  WorldDataSync,
+  LocationData,
+  LocationData
+ >({
   dataSyncType: DataSyncTypes.chunk,
   commCheck: (options) => options.worldData,
   getSyncData: (input) => {
@@ -150,10 +155,15 @@ export const DataSync = {
    if (!chunk) return false;
    return [input, chunk.buffer];
   },
-  getUnSyncData: () => true,
+  getUnSyncData: (input) => input,
  }),
 
- column: new DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>({
+ column: new DataSyncNode<
+  LocationData,
+  WorldDataSync,
+  LocationData,
+  LocationData
+ >({
   dataSyncType: DataSyncTypes.column,
   commCheck: (options) => options.worldData,
   getSyncData: (input) => {
@@ -161,10 +171,15 @@ export const DataSync = {
    if (!column) return false;
    return [input, column.buffer];
   },
-  getUnSyncData: () => true,
+  getUnSyncData: (input) => input,
  }),
 
- region: new DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>({
+ region: new DataSyncNode<
+  LocationData,
+  WorldDataSync,
+  LocationData,
+  LocationData
+ >({
   dataSyncType: DataSyncTypes.region,
   commCheck: (options) => options.worldData,
   getSyncData: (input) => {
@@ -172,7 +187,7 @@ export const DataSync = {
    if (!region) return false;
    return [input, region.buffer];
   },
-  getUnSyncData: () => true,
+  getUnSyncData: (input) => input,
  }),
 
  regionHeader: new DataSyncNode<

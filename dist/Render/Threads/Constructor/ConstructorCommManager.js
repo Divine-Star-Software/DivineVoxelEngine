@@ -4,10 +4,14 @@ const CCMBase = ThreadComm.createCommManager({
     onPortSet(port, commName) { },
 });
 const CCM = Object.assign(CCMBase, {
-    $INIT(dasta) {
+    $INIT() {
         const worldComm = ThreadComm.getComm("world");
         for (const constructor of CCM.__comms) {
             worldComm.connectToComm(constructor);
+        }
+    },
+    syncTextureData(dasta) {
+        for (const constructor of CCM.__comms) {
             constructor.runTasks("sync-uv-texuture-data", dasta);
         }
     },

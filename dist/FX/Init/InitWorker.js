@@ -1,3 +1,4 @@
+import { FXThreadState } from "../Threads/FXThreadState.js";
 import { ThreadComm } from "threadcomm";
 export async function InitWorker(DVEFX) {
     let parent = "render";
@@ -7,7 +8,7 @@ export async function InitWorker(DVEFX) {
     await ThreadComm.$INIT("fx", parent);
     await DVEFX.UTIL.createPromiseCheck({
         check: () => {
-            return DVEFX.isReady();
+            return FXThreadState.isReady();
         },
         checkInterval: 1,
     });

@@ -1,4 +1,5 @@
 import type { DivineVoxelEngineData } from "DataLoader/DivineVoxelEngineDataLoader";
+import { DataLoaderThreadState } from "../Threads/DataLoaderThreadState.js";
 import { ThreadComm } from "threadcomm";
 export async function InitWorker(DVED: DivineVoxelEngineData) {
  let parent = "render";
@@ -9,7 +10,7 @@ export async function InitWorker(DVED: DivineVoxelEngineData) {
 
  await DVED.UTIL.createPromiseCheck({
   check: () => {
-   return DVED.isReady();
+   return DataLoaderThreadState.isReady();
   },
   checkInterval: 1,
  });

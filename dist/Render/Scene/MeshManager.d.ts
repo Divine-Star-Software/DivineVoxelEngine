@@ -7,6 +7,7 @@ export declare const MeshManager: {
     runningUpdate: boolean;
     meshMakers: Record<string, DVEMesh>;
     $INIT(scene: Scene): void;
+    removeColumnsOutsideRadius(origion: LocationData, radius: number): void;
     chunks: {
         remove(data: RemoveChunkMeshTasks): false | undefined;
         update(data: SetChunkMeshTask): void;

@@ -19,15 +19,15 @@ export const TextureManager = {
   animations: number[][],
   textureAnimatioTimes: number[][],
   extension: string,
-  count: number,
-  path: string
+  count: number
  ) {
   if (!textureData.variations) return count;
   for (const varation of Object.keys(textureData.variations)) {
    const data = textureData.variations[varation];
    if (data.frames == 0) {
     map[`${textureData.id}:${varation}`] = count;
-    const assetPath = `${path}/${textureData.id}/${varation}.${extension}`;
+
+    const assetPath = this._getPath(textureData, varation, extension);
     let raw: Uint8ClampedArray | false = false;
     if (data.rawData) {
      raw = data.rawData;
@@ -41,7 +41,11 @@ export const TextureManager = {
      );
     for (let i = 1; i <= data.frames; i++) {
      map[`${textureData.id}:${varation}-${i}`] = count;
-     const assetPath = `${path}/${textureData.id}/${varation}-${i}.${extension}`;
+     const assetPath = this._getPath(
+      textureData,
+      `${varation}-${i}`,
+      extension
+     );
      let raw: Uint8ClampedArray | false = false;
      if (data.rawData) {
       raw = data.rawData;
@@ -66,6 +70,11 @@ export const TextureManager = {
 
   return count;
  },
+ _getPath(textureData: TextureData, varation = "default", extension: string) {
+  return `${textureData.path ? textureData.path : this.defaultTexturePath}/${
+   textureData.id
+  }/${varation}.${extension}`;
+ },
  generateTexturesData(id: string) {
   const texture = this.textureTypes.get(id);
   if (!texture) return false;
@@ -80,13 +89,9 @@ export const TextureManager = {
    const animations: number[][] = segment.animationsMap;
 
    for (const textureData of segment.textures) {
-    let path: string = textureData.path
-     ? textureData.path
-     : this.defaultTexturePath;
-
     if (textureData.frames == 0) {
      segment.textureMap[`${textureData.id}`] = count;
-     const assetPath = `${path}/${textureData.id}/default.${extension}`;
+     const assetPath = this._getPath(textureData, "default", extension);
      let raw: Uint8ClampedArray | false = false;
      if (textureData.rawData) {
       raw = textureData.rawData;
@@ -100,8 +105,7 @@ export const TextureManager = {
       animations,
       animationTimes,
       extension,
-      count,
-      path
+      count
      );
     } else {
      if (!textureData.animKeys)
@@ -110,7 +114,7 @@ export const TextureManager = {
       );
      map[`${texture.id}`] = count;
      for (let i = 1; i < textureData.frames; i++) {
-      const assetPath = `${path}/${textureData.id}/default-${i}.${extension}`;
+      const assetPath = this._getPath(textureData, `default-${i}`, extension);
       let raw: Uint8ClampedArray | false = false;
       if (textureData.rawData) {
        raw = textureData.rawData;
@@ -139,8 +143,7 @@ export const TextureManager = {
       animations,
       animationTimes,
       extension,
-      count,
-      path
+      count
      );
     }
    }
@@ -214,6 +217,37 @@ export const TextureManager = {
   const type = this.getTextureType(textureData.type);
   if (!type) return;
   type.addTexture(textureData);
+ },
+
+ async createRawDataMap() {
+  const map: Map<string, Uint8ClampedArray> = new Map();
+  for (const [typeKey, type] of this.textureTypes) {
+   for (const [segKey, segment] of type.textureSegments) {
+    for (const data of segment.textures) {
+     if (!data.includeInRawDataMap) continue;
+     if (!data.path && !data.rawData) continue;
+     const key = `${type.id}|${data.id}|default`;
+     const rawData = await TextureCreator.loadImage(
+      data.rawData
+       ? data.rawData
+       : this._getPath(data, "default", type.extension)
+     );
+     map.set(key, rawData);
+     if (data.variations) {
+      for (const varId in data.variations) {
+       const varation = data.variations[varId];
+       if (!varation.includeInRawDataMap) continue;
+       const key = `${type.id}|${data.id}|${varId}`;
+       const rawData = await TextureCreator.loadImage(
+        data.rawData ? data.rawData : this._getPath(data, varId, type.extension)
+       );
+       map.set(key, rawData);
+      }
+     }
+    }
+   }
+  }
+  return map;
  },
 };
 

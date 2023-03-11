@@ -99,6 +99,8 @@ export class DVEMaterial {
             shaderMaterial.backFaceCulling = false;
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
+            //   shaderMaterial.stencil.enabled = true;
+            //  shaderMaterial.stencil.func = DVEBabylon.system.Engine.NOTEQUAL;
         }
         window.LIQUID = shaderMaterial;
         type.addToMaterial(this);

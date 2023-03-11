@@ -119,7 +119,7 @@ export const DataSync = {
                 return false;
             return [input, chunk.buffer];
         },
-        getUnSyncData: () => true,
+        getUnSyncData: (input) => input,
     }),
     column: new DataSyncNode({
         dataSyncType: DataSyncTypes.column,
@@ -130,7 +130,7 @@ export const DataSync = {
                 return false;
             return [input, column.buffer];
         },
-        getUnSyncData: () => true,
+        getUnSyncData: (input) => input,
     }),
     region: new DataSyncNode({
         dataSyncType: DataSyncTypes.region,
@@ -141,7 +141,7 @@ export const DataSync = {
                 return false;
             return [input, region.buffer];
         },
-        getUnSyncData: () => true,
+        getUnSyncData: (input) => input,
     }),
     regionHeader: new DataSyncNode({
         dataSyncType: DataSyncTypes.regionHeader,

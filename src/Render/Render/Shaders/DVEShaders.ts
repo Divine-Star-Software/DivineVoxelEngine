@@ -1,10 +1,6 @@
-import { DivineShaderBuilder } from "divine-shaders";
-import type {
- ShaderCodeBody,
- ShaderDataTypes,
- ShaderVaryingData,
-} from "divine-shaders";
+import type { ShaderDataTypes, ShaderVaryingData } from "divine-shaders";
 import type { DivineShader } from "divine-shaders";
+import { DivineShaderBuilder } from "divine-shaders/index.js";
 import { RegisterFragFunctions } from "./Code/Functions/FragmentFunctions.js";
 import { RegisterVertexFunctions } from "./Code/Functions/VertexFunctions.js";
 import { RegisterVertexSnippets } from "./Code/Snippets/VertexSnippets.js";

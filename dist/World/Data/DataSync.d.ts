@@ -2,6 +2,7 @@ import type { LocationData } from "voxelspaces";
 import type { DimensionData } from "Meta/Data/DimensionData.types.js";
 import type { CommBase, CommManager } from "threadcomm";
 import type { RegisterStringMapSync, WorldDataSync } from "Meta/Data/DataSync.types.js";
+import type { RemoteTagManagerInitData } from "divine-binary-tags";
 import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types.js";
 declare type CommSyncOptions = {
     worldData: boolean;
@@ -41,7 +42,7 @@ export declare const DataSync: {
             getMap(): Record<string, number>;
         };
     };
-    comms: Record<string, any>;
+    comms: Record<string, CommManager | CommBase>;
     commOptions: Record<string, CommSyncOptions>;
     _ready: boolean;
     $INIT(): void;
@@ -49,9 +50,9 @@ export declare const DataSync: {
     registerComm(comm: CommBase | CommManager, data?: Partial<CommSyncOptions>): void;
     loopThroughComms(func: (comm: CommBase | CommManager, options: CommSyncOptions) => void): void;
     dimesnion: DataSyncNode<string | number, DimensionData, string | number, boolean>;
-    chunk: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
-    column: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
-    region: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
+    chunk: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
+    column: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
+    region: DataSyncNode<LocationData, WorldDataSync, LocationData, LocationData>;
     regionHeader: DataSyncNode<LocationData, WorldDataSync, LocationData, boolean>;
     voxelTags: DataSyncNode<void, [RemoteTagManagerInitData, SharedArrayBuffer], void, false>;
     chunkTags: DataSyncNode<void, RemoteTagManagerInitData, void, false>;

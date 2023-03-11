@@ -10,6 +10,6 @@ export declare const TextureCreator: {
     setUpImageCreation(): void;
     createMaterialTexture(name: string, images: Map<string, Uint8ClampedArray | false>, width?: number, height?: number): Promise<RawTexture2DArray[]>;
     _createTextures(name: string, images: Map<string, Uint8ClampedArray | false>, width: number, height: number): Promise<RawTexture2DArray>;
-    _loadImages(imgSrcData: string | Uint8ClampedArray, width: number, height: number): Promise<Uint8ClampedArray>;
+    loadImage(imgSrcData: string | Uint8ClampedArray, width?: number, height?: number): Promise<Uint8ClampedArray>;
     _combineImageData(totalLength: number, arrays: Uint8ClampedArray[]): Uint8ClampedArray;
 };

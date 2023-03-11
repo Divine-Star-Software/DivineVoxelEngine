@@ -1,13 +1,12 @@
-import type { TypedNode } from "divine-binary-object/Classes/TypedNode";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
-import { RichChunkDataTool } from "./RichChunkDataTool.js";
+import { RichColumnDataTool } from "./RichColumnDataTool.js";
 export declare class RichDataTool extends RichDataToolBase {
-    data: TypedNode<any>;
-    static chunkTool: RichChunkDataTool;
+    data: any;
+    static columnTool: RichColumnDataTool;
     loadIn(): boolean;
-    create<T>(data: TypedNode<T>): void;
-    setData(data: TypedNode<any>): void;
-    getData<T>(): TypedNode<T>;
+    create<T = any>(data: T): void;
+    setData<T = any>(data: T): void;
+    getData<T>(): T;
     commit(): boolean;
     toBuffer(): false | ArrayBuffer;
 }

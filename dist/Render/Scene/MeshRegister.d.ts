@@ -5,6 +5,7 @@ import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js
 export declare const MeshRegister: {
     _dimensions: MeshRegisterDimensions;
     $INIT(): void;
+    clearAll(): void;
     dimensions: {
         add(id: string): Map<any, any>;
         get(id: string): Map<string, MushRegisterRegion> | undefined;

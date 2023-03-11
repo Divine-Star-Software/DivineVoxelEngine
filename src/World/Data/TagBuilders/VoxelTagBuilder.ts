@@ -1,7 +1,7 @@
 import type { TagBuilderNodes } from "Meta/Data/Tags/TagBuilder.types";
-import type { TagManagerBase } from "divine-binary-tags"
+import type { TagManagerBase } from "divine-binary-tags";
 import { VoxelTagIDs } from "../../../Data/Constants/Tags/VoxelTagIds.js";
-import { TagManager } from "divine-binary-tags"
+import { TagManager } from "divine-binary-tags";
 import { DataSync } from "../DataSync.js";
 import { Register } from "../../../Data/Register/Register.js";
 import { RegisterStringMapSync } from "Meta/Data/DataSync.types.js";
@@ -41,6 +41,10 @@ export const VoxelTagBuilder = {
    if (!defaultValue) continue;
    tagManager.setTag(key, Number(defaultValue));
   }
+ },
+
+ hasNode(id: string) {
+  return this._nodeMap.has(id);
  },
 
  setNode(
@@ -127,13 +131,13 @@ export const VoxelTagBuilder = {
 
  $SYNC() {
   for (const [key, map] of this._stringMaps) {
+   const data: RegisterStringMapSync = ["voxel", key, map.map];
+   if (map.allowedComms.includes("world")) {
+    Register.stringMaps.syncStringMap(data);
+   }
    DataSync.loopThroughComms((comm) => {
+    if (comm.name == "world") return;
     if (map.allowedComms.includes(comm.name)) {
-     const data: RegisterStringMapSync = ["voxel", key, map.map];
-     if (comm.name == "world") {
-      Register.stringMaps.syncStringMap(data);
-      return;
-     }
      DataSync.stringMap.syncInThread(comm.name, data);
     }
    });

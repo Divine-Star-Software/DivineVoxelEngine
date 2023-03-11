@@ -72,7 +72,7 @@ export const TextureCreator = {
 
   resolvedImages.push(new Uint8ClampedArray(data));
   for (const [path, rawData] of images) {
-   const data = await this._loadImages(rawData ? rawData : path, width, height);
+   const data = await this.loadImage(rawData ? rawData : path, width, height);
    resolvedImages.push(data);
   }
   resolvedImages.push(new Uint8ClampedArray(data));
@@ -97,11 +97,14 @@ export const TextureCreator = {
   return _2DTextureArray;
  },
 
- _loadImages(
+ loadImage(
   imgSrcData: string | Uint8ClampedArray,
-  width: number,
-  height: number
+  width?: number,
+  height?: number
  ): Promise<Uint8ClampedArray> {
+  if (!width) width = this.imgWidth;
+  if (!height) height = this.imgHeight;
+
   const ctx = TextureCreator.context;
 
   if (!ctx) {
@@ -116,9 +119,9 @@ export const TextureCreator = {
      const ctx = TextureCreator.context;
      if (!ctx) return;
      //clear the canvas before re-rendering another image
-     ctx.clearRect(0, 0, width, height);
-     ctx.drawImage(image, 0, 0, width, height);
-     const imgData = ctx.getImageData(0, 0, width, height);
+     ctx.clearRect(0, 0, width!, height!);
+     ctx.drawImage(image, 0, 0, width!, height!);
+     const imgData = ctx.getImageData(0, 0, width!, height!);
 
      resolve(imgData.data);
     };
@@ -133,14 +136,19 @@ export const TextureCreator = {
       imgSrcData,
       Math.sqrt(imgSrcData.length / 4),
       Math.sqrt(imgSrcData.length / 4)
-     )
+     ),
+     {
+      resizeWidth: width,
+      resizeHeight: height,
+      resizeQuality: "pixelated",
+     }
     );
 
     //clear the canvas before re-rendering another image
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width!, height!);
 
-    ctx.drawImage(bitmap, 0, 0, width, height);
-    const imgData = ctx.getImageData(0, 0, width, height);
+    ctx.drawImage(bitmap, 0, 0, width!, height!);
+    const imgData = ctx.getImageData(0, 0, width!, height!);
     resolve(imgData.data);
    });
    return prom;

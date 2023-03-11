@@ -10,7 +10,7 @@ export async function $INITFunction(
  DVER.render.$INIT(scene);
  await TextureCreator.setUpImageCreation();
  await TextureManager.$INIT();
- DVER.constructorCommManager.$INIT(TextureManager.getTextureUVMap());
+ DVER.constructorCommManager.syncTextureData(TextureManager.getTextureUVMap());
 
  DVER.render.solidMaterial.createMaterial();
  DVER.render.floraMaterial.createMaterial();

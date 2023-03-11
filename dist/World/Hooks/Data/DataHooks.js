@@ -60,9 +60,6 @@ export const RegisterDataHooks = () => {
     /*
    [paint]
    */
-    DataHooks.paint.onAddToRGBUpdate.addToRun((data) => {
-        tasks.light.rgb.update.add(data[1], data[2], data[3], "main");
-    });
     DataHooks.paint.onRichVoxelPaint.addToRun((data) => {
         // DVEW.richWorldComm.setInitalData(data);
     });

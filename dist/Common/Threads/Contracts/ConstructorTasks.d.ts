@@ -16,4 +16,5 @@ export declare const ConstructorTasks: {
     explosion: number;
     voxelErease: number;
     voxelPaint: number;
+    voxelUpdate: number;
 };

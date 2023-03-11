@@ -1,5 +1,6 @@
 import { ThreadComm } from "threadcomm";
 import { RegisterDataHooks } from "../Hooks/Data/DataHooks.js";
+import { WorldThreadState } from "../Threads/WorldThreadState.js";
 export async function InitWorldWorker(DVEW) {
     let parent = "render";
     if (DVEW.environment == "node") {
@@ -9,10 +10,8 @@ export async function InitWorldWorker(DVEW) {
     RegisterDataHooks();
     await DVEW.UTIL.createPromiseCheck({
         check: () => {
-            return DVEW.isReady();
+            return WorldThreadState.isReady();
         },
         checkInterval: 1,
     });
-    DVEW.dataSync.$INIT();
-    DVEW.cQueues.$INIT();
 }

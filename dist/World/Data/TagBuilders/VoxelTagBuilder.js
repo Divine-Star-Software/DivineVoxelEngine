@@ -26,6 +26,9 @@ export const VoxelTagBuilder = {
             tagManager.setTag(key, Number(defaultValue));
         }
     },
+    hasNode(id) {
+        return this._nodeMap.has(id);
+    },
     setNode(id, value, tagManager) {
         const node = this.getNode(id);
         if (!node)
@@ -107,13 +110,14 @@ export const VoxelTagBuilder = {
     },
     $SYNC() {
         for (const [key, map] of this._stringMaps) {
+            const data = ["voxel", key, map.map];
+            if (map.allowedComms.includes("world")) {
+                Register.stringMaps.syncStringMap(data);
+            }
             DataSync.loopThroughComms((comm) => {
+                if (comm.name == "world")
+                    return;
                 if (map.allowedComms.includes(comm.name)) {
-                    const data = ["voxel", key, map.map];
-                    if (comm.name == "world") {
-                        Register.stringMaps.syncStringMap(data);
-                        return;
-                    }
                     DataSync.stringMap.syncInThread(comm.name, data);
                 }
             });

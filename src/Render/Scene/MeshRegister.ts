@@ -8,12 +8,22 @@ import type { LocationData } from "voxelspaces";
 import type { Mesh } from "@babylonjs/core";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
+
+
 export const MeshRegister = {
  _dimensions: <MeshRegisterDimensions>new Map(),
 
  $INIT() {
   this._dimensions.set("main", new Map());
  },
+
+ clearAll() {
+  for (const [dkey, dim] of this._dimensions) {
+   this.dimensions.remove(dkey);
+  }
+  this._dimensions.set("main", new Map());
+ },
+
 
  dimensions: {
   add(id: string) {
@@ -36,6 +46,7 @@ export const MeshRegister = {
      });
     });
    });
+   MeshRegister._dimensions.delete(id);
    return true;
   },
  },

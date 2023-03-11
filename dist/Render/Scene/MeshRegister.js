@@ -4,6 +4,12 @@ export const MeshRegister = {
     $INIT() {
         this._dimensions.set("main", new Map());
     },
+    clearAll() {
+        for (const [dkey, dim] of this._dimensions) {
+            this.dimensions.remove(dkey);
+        }
+        this._dimensions.set("main", new Map());
+    },
     dimensions: {
         add(id) {
             const dimesnion = new Map();
@@ -26,6 +32,7 @@ export const MeshRegister = {
                     });
                 });
             });
+            MeshRegister._dimensions.delete(id);
             return true;
         },
     },

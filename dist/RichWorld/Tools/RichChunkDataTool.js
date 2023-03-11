@@ -12,7 +12,6 @@ export class RichChunkDataTool extends RichDataToolBase {
         return false;
     }
     toBuffer() {
-        //@ts-ignore
-        return DBO.metaMarkedParser.toBuffer(TNM.object(this.sceham));
+        return DBO.toBuffer(TNM.object(this.sceham));
     }
 }

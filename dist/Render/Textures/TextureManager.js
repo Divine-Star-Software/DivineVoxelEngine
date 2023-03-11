@@ -5,14 +5,14 @@ import { TextureAnimationCreator } from "./TextureAnimations.js";
 export const TextureManager = {
     defaultTexturePath: "",
     textureTypes: new Map(),
-    _processVariations(textureData, paths, map, animations, textureAnimatioTimes, extension, count, path) {
+    _processVariations(textureData, paths, map, animations, textureAnimatioTimes, extension, count) {
         if (!textureData.variations)
             return count;
         for (const varation of Object.keys(textureData.variations)) {
             const data = textureData.variations[varation];
             if (data.frames == 0) {
                 map[`${textureData.id}:${varation}`] = count;
-                const assetPath = `${path}/${textureData.id}/${varation}.${extension}`;
+                const assetPath = this._getPath(textureData, varation, extension);
                 let raw = false;
                 if (data.rawData) {
                     raw = data.rawData;
@@ -25,7 +25,7 @@ export const TextureManager = {
                     throw new Error("Texture Varation must have supplied animKeys if frames are greater than 0.");
                 for (let i = 1; i <= data.frames; i++) {
                     map[`${textureData.id}:${varation}-${i}`] = count;
-                    const assetPath = `${path}/${textureData.id}/${varation}-${i}.${extension}`;
+                    const assetPath = this._getPath(textureData, `${varation}-${i}`, extension);
                     let raw = false;
                     if (data.rawData) {
                         raw = data.rawData;
@@ -48,6 +48,9 @@ export const TextureManager = {
         }
         return count;
     },
+    _getPath(textureData, varation = "default", extension) {
+        return `${textureData.path ? textureData.path : this.defaultTexturePath}/${textureData.id}/${varation}.${extension}`;
+    },
     generateTexturesData(id) {
         const texture = this.textureTypes.get(id);
         if (!texture)
@@ -60,26 +63,23 @@ export const TextureManager = {
             const animationTimes = segment.animationTimes;
             const animations = segment.animationsMap;
             for (const textureData of segment.textures) {
-                let path = textureData.path
-                    ? textureData.path
-                    : this.defaultTexturePath;
                 if (textureData.frames == 0) {
                     segment.textureMap[`${textureData.id}`] = count;
-                    const assetPath = `${path}/${textureData.id}/default.${extension}`;
+                    const assetPath = this._getPath(textureData, "default", extension);
                     let raw = false;
                     if (textureData.rawData) {
                         raw = textureData.rawData;
                     }
                     paths.set(assetPath, raw);
                     count + count++;
-                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count, path);
+                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count);
                 }
                 else {
                     if (!textureData.animKeys)
                         throw new Error("Texture must have supplied animKeys if frames are greater than 0.");
                     map[`${texture.id}`] = count;
                     for (let i = 1; i < textureData.frames; i++) {
-                        const assetPath = `${path}/${textureData.id}/default-${i}.${extension}`;
+                        const assetPath = this._getPath(textureData, `default-${i}`, extension);
                         let raw = false;
                         if (textureData.rawData) {
                             raw = textureData.rawData;
@@ -98,7 +98,7 @@ export const TextureManager = {
                         animationTimes.push([textureData.globalFrameTime]);
                     }
                     animations.push(trueKeys);
-                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count, path);
+                    count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count);
                 }
             }
         }
@@ -159,6 +159,35 @@ export const TextureManager = {
         if (!type)
             return;
         type.addTexture(textureData);
+    },
+    async createRawDataMap() {
+        const map = new Map();
+        for (const [typeKey, type] of this.textureTypes) {
+            for (const [segKey, segment] of type.textureSegments) {
+                for (const data of segment.textures) {
+                    if (!data.includeInRawDataMap)
+                        continue;
+                    if (!data.path && !data.rawData)
+                        continue;
+                    const key = `${type.id}|${data.id}|default`;
+                    const rawData = await TextureCreator.loadImage(data.rawData
+                        ? data.rawData
+                        : this._getPath(data, "default", type.extension));
+                    map.set(key, rawData);
+                    if (data.variations) {
+                        for (const varId in data.variations) {
+                            const varation = data.variations[varId];
+                            if (!varation.includeInRawDataMap)
+                                continue;
+                            const key = `${type.id}|${data.id}|${varId}`;
+                            const rawData = await TextureCreator.loadImage(data.rawData ? data.rawData : this._getPath(data, varId, type.extension));
+                            map.set(key, rawData);
+                        }
+                    }
+                }
+            }
+        }
+        return map;
     },
 };
 TextureManager.addTextureType("#dve_solid");

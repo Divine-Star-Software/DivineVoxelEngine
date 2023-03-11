@@ -1,4 +1,3 @@
-import { TNM } from "divine-binary-object";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 export const RichDataRegister = {
     _dimensions: new Map(),
@@ -53,10 +52,9 @@ export const RichDataRegister = {
     },
     column: {
         _getColumnData() {
-            return TNM.object({
-                chunks: TNM.object({}),
-                data: TNM.object({}),
-            });
+            return {
+                data: {}
+            };
         },
         add(location) {
             let region = RichDataRegister.region.get(location);
@@ -88,39 +86,7 @@ export const RichDataRegister = {
             return column;
         },
     },
-    chunk: {
-        _getChunkData() {
-            return {};
-        },
-        add(location) {
-            let column = RichDataRegister.column.get(location);
-            if (!column) {
-                column = RichDataRegister.column.add(location);
-            }
-            const chunk = TNM.object({});
-            column.value.chunks[WorldSpaces.chunk.getIndexLocation(location)] =
-                TNM.object({});
-            return chunk;
-        },
-        get(location) {
-            let column = RichDataRegister.column.get(location);
-            if (!column)
-                return false;
-            const chunk = column.value.chunks[WorldSpaces.chunk.getIndexLocation(location)];
-            if (!chunk)
-                return false;
-            return chunk;
-        },
-        remove(location) {
-            let column = RichDataRegister.column.get(location);
-            if (!column)
-                return false;
-            const index = WorldSpaces.chunk.getIndexLocation(location);
-            const chunk = column.value.chunks[index];
-            if (!chunk)
-                return false;
-            delete column.value.chunks[index];
-            return chunk;
-        },
-    },
+    getKey(location) {
+        return `${WorldSpaces.chunk.getKeyLocation(location)}_${WorldSpaces.voxel.getKeyLocation(location)}`;
+    }
 };

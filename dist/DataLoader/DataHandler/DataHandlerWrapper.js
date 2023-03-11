@@ -3,6 +3,7 @@ import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { WorldDataSerialize } from "../Serializers/WorldDataSerializer.js";
 import { Util } from "../../Global/Util.helper.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
 const columnDatatool = new ColumnDataTool();
 export const DataHanlderWrapper = {
     handler: {},
@@ -30,6 +31,8 @@ export const DataHanlderWrapper = {
     async saveColumn(location) {
         if (columnDatatool.setLocation(location).loadIn()) {
             try {
+                if (columnDatatool.isStored())
+                    return true;
                 columnDatatool.markAsStored();
                 const column = WorldDataSerialize.serializeColumn(location);
                 if (!column)
@@ -48,6 +51,8 @@ export const DataHanlderWrapper = {
     },
     async loadColumn(location) {
         try {
+            if (WorldRegister.column.get(location))
+                return true;
             const column = await this.handler.getColumn(location);
             const data = WorldDataSerialize.deSerializeColumn(column);
             columnDatatool.setBuffer(data.column);
@@ -76,6 +81,8 @@ export const DataHanlderWrapper = {
     },
     async columnExists(location) {
         try {
+            if (WorldRegister.column.get(location))
+                return true;
             return await this.handler.columnExists(location);
         }
         catch (error) {

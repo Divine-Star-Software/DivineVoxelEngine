@@ -2,8 +2,7 @@
 import { EngineSettingsData } from "../Meta/Data/Settings/EngineSettings.types.js";
 
 //comms
-import { ParentComm } from "./Threads/Parent/ParentComm.js";
-import { WorldComm } from "./Threads/World/WorldComm.js";
+import { WorldComm, ParentComm } from "./Threads/NexusTheads.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
@@ -31,14 +30,6 @@ export const DVEN = {
 
  async $INIT() {
   await InitNexusWorker(this);
- },
-
- isReady() {
-  return DVEN.worldComm.isPortSet();
- },
-
- syncSettings(data: EngineSettingsData) {
-  this.settings.syncSettings(data);
  },
 };
 export type DivineVoxelEngineNexus = typeof DVEN;

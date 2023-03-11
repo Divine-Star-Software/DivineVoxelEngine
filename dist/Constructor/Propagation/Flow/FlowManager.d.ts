@@ -44,7 +44,7 @@ export declare const FlowManager: {
     _nDataTool: DataTool;
     setVoxel(tasks: {
         rebuildQueMap: Map<string, boolean>;
-        comm: CommBase;
+        comm: import("threadcomm").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: import("voxelspaces").LocationData[];
@@ -96,7 +96,7 @@ export declare const FlowManager: {
     setDimension(dimension: string): void;
     removeVoxel(tasks: {
         rebuildQueMap: Map<string, boolean>;
-        comm: CommBase;
+        comm: import("threadcomm").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: import("voxelspaces").LocationData[];
@@ -156,7 +156,7 @@ export declare const FlowManager: {
     getAbsorbLight(x: number, y: number, z: number): number;
     sunCheck(tasks: {
         rebuildQueMap: Map<string, boolean>;
-        comm: CommBase;
+        comm: import("threadcomm").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: import("voxelspaces").LocationData[];

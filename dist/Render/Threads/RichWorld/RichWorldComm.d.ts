@@ -1,1 +1,3 @@
-export declare const RichWorldComm: any;
+export declare const RichWorldComm: import("threadcomm").CommBase & {
+    $INIT(): void;
+};

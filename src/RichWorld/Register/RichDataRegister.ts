@@ -1,11 +1,10 @@
 import type {
- RichChunk,
+
  RichColumn,
  RichRegion,
  RichWorldDimensions,
 } from "Meta/Data/RichWorldData.types.js";
-import type { LocationData } from "voxelspaces";
-import { TNM } from "divine-binary-object";
+import type { LocationData, LocationNode } from "voxelspaces";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 export const RichDataRegister = {
@@ -58,10 +57,9 @@ export const RichDataRegister = {
  },
  column: {
   _getColumnData(): RichColumn {
-   return TNM.object<any>({
-    chunks: TNM.object({}),
-    data: TNM.object({}),
-   });
+   return {
+    data: {}
+   };
   },
   add(location: LocationData) {
    let region = RichDataRegister.region.get(location);
@@ -91,36 +89,9 @@ export const RichDataRegister = {
    return column;
   },
  },
- chunk: {
-  _getChunkData(): RichChunk {
-   return {};
-  },
-  add(location: LocationData) {
-   let column = RichDataRegister.column.get(location);
-   if (!column) {
-    column = RichDataRegister.column.add(location);
-   }
-   const chunk = TNM.object({});
-   column.value.chunks[WorldSpaces.chunk.getIndexLocation(location)] =
-    TNM.object({});
-   return chunk;
-  },
-  get(location: LocationData) {
-   let column = RichDataRegister.column.get(location);
-   if (!column) return false;
-   const chunk =
-    column.value.chunks[WorldSpaces.chunk.getIndexLocation(location)];
-   if (!chunk) return false;
-   return chunk;
-  },
-  remove(location: LocationData) {
-   let column = RichDataRegister.column.get(location);
-   if (!column) return false;
-   const index = WorldSpaces.chunk.getIndexLocation(location);
-   const chunk = column.value.chunks[index];
-   if (!chunk) return false;
-   delete column.value.chunks[index];
-   return chunk;
-  },
- },
+ getKey(location : LocationData) {
+    return `${WorldSpaces.chunk.getKeyLocation(
+        location
+       )}_${WorldSpaces.voxel.getKeyLocation(location)}`;
+ }
 };

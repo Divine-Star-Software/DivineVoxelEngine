@@ -29,5 +29,8 @@ export declare class DataLoaderTool extends LocationBoundTool {
     columnTimestamp(onDone?: (timestamp: number) => void): void;
     columnTimestampAsync(): Promise<number>;
     unLoadAllOutsideRadius(radius: number, run?: (column: ColumnDataTool) => boolean, onDone?: Function): void;
+    unLoadAllColumnsAsync(): Promise<unknown>;
+    unLoadAllColumns(onDone?: Function): void;
+    allColumns(run: (column: ColumnDataTool) => void): void;
     getAllUnStoredColumns(run: (dimension: string, x: number, y: number, z: number) => void): void;
 }

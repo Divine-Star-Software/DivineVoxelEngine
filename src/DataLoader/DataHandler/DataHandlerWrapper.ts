@@ -9,6 +9,7 @@ import { DVEDL } from "../DivineVoxelEngineDataLoader.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { WorldDataSerialize } from "../Serializers/WorldDataSerializer.js";
 import { Util } from "../../Global/Util.helper.js";
+import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 const columnDatatool = new ColumnDataTool();
 
@@ -37,6 +38,7 @@ export const DataHanlderWrapper = {
  async saveColumn(location: LocationData) {
   if (columnDatatool.setLocation(location).loadIn()) {
    try {
+    if(columnDatatool.isStored()) return true;
     columnDatatool.markAsStored();
     const column = WorldDataSerialize.serializeColumn(location);
     if (!column) return false;
@@ -54,6 +56,7 @@ export const DataHanlderWrapper = {
 
  async loadColumn(location: LocationData) {
   try {
+   if (WorldRegister.column.get(location)) return true;
    const column = await this.handler.getColumn(location);
    const data = WorldDataSerialize.deSerializeColumn(column);
    columnDatatool.setBuffer(data.column);
@@ -82,6 +85,7 @@ export const DataHanlderWrapper = {
 
  async columnExists(location: LocationData) {
   try {
+   if (WorldRegister.column.get(location)) return true;
    return await this.handler.columnExists(location);
   } catch (error: any) {
    console.error(`Problem checking if column exists at ${location.toString()}`);

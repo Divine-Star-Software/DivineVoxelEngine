@@ -1,4 +1,4 @@
-import { BuildTasks, Priorities } from "Meta/Tasks/Tasks.types.js";
+import { BuildTasks, GenerateTasks, Priorities } from "Meta/Tasks/Tasks.types.js";
 import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 export declare class TaskTool {
@@ -11,42 +11,18 @@ export declare class TaskTool {
     constructor();
     setPriority(priority: Priorities): this;
     setFocalPoint(location: LocationData): this;
-    generate: {
-        async: {
-            _s: TaskTool;
-            add(x: number, y: number, z: number, data?: any): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
-        };
-        deferred: {
-            _s: TaskTool;
-            run(x: number, y: number, z: number, data: any, onDone: (data: any) => void): void;
-        };
-    };
     voxelUpdate: {
+        update: {
+            _s: TaskTool;
+            run(location: LocationData, onDone: (data: any) => void): void;
+        };
         erase: {
-            deferred: {
-                _s: TaskTool;
-                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
-            };
-            async: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
+            _s: TaskTool;
+            run(location: LocationData, onDone: (data: any) => void): void;
         };
         paint: {
-            deferred: {
-                _s: TaskTool;
-                run(x: number, y: number, z: number, raw: RawVoxelData, onDone: (data: any) => void): void;
-            };
-            async: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number, raw: RawVoxelData): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
+            _s: TaskTool;
+            run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void): void;
         };
     };
     build: {
@@ -55,89 +31,63 @@ export declare class TaskTool {
                 _s: TaskTool;
                 run(buildTasks: BuildTasks, onDone: (data: any) => void): void;
             };
-            async: {
+            queued: {
                 _s: TaskTool;
-                add(x: number, y: number, z: number): void;
+                add(location: LocationData): void;
                 run(onDone: Function): void;
                 runAndAwait(): Promise<void>;
             };
         };
         column: {
-            async: {};
+            queued: {};
             deferred: {
                 _s: TaskTool;
-                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+                run(location: LocationData, onDone: (data: any) => void): void;
             };
         };
     };
     explosion: {
-        run: {
-            _s: TaskTool;
-            add(x: number, y: number, z: number, radius: number): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
-        };
-    };
-    flow: {
-        update: {
-            _s: TaskTool;
-            add(x: number, y: number, z: number): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
-        };
-        remove: {
-            _s: TaskTool;
-            add(x: number, y: number, z: number): void;
-            run(onDone: Function): void;
-            runAndAwait(): Promise<void>;
-        };
+        _s: TaskTool;
+        run(location: LocationData, radius: number, onDone: (data: any) => void): void;
     };
     anaylzer: {
-        propagation: {
-            _s: TaskTool;
-            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
-        };
         update: {
             _s: TaskTool;
-            run(x: number, y: number, z: number, onDone: (data: any) => void): void;
+            run(location: LocationData, onDone: (data: any) => void): void;
         };
     };
-    light: {
-        rgb: {
-            update: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number, queue?: string | null): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
-            remove: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number, queue?: string | null): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
-        };
-        sun: {
-            update: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
-            remove: {
-                _s: TaskTool;
-                add(x: number, y: number, z: number): void;
-                run(onDone: Function): void;
-                runAndAwait(): Promise<void>;
-            };
-        };
-        worldSun: {
+    propagation: {
+        deferred: {
             _s: TaskTool;
-            deferred: {
-                _s: TaskTool;
-                run(x: number, y: number, z: number, onDone: (data: any) => void): void;
-            };
-            add(x: number, z: number, y?: number): void;
+            run(location: LocationData, onDone: (data: any) => void): void;
+        };
+        queued: {
+            _s: TaskTool;
+            add(location: LocationData): void;
+            run(onDone: Function): void;
+            runAndAwait(): Promise<void>;
+        };
+    };
+    generate: {
+        deferred: {
+            _s: TaskTool;
+            run(location: LocationData, data: any, onDone: (data: any) => void): void;
+        };
+        queued: {
+            _s: TaskTool;
+            add(data: GenerateTasks): void;
+            run(onDone: Function): void;
+            runAndAwait(): Promise<void>;
+        };
+    };
+    worldSun: {
+        deferred: {
+            _s: TaskTool;
+            run(location: LocationData, onDone: (data: any) => void): void;
+        };
+        queued: {
+            _s: TaskTool;
+            add(location: LocationData): void;
             run(onDone: Function): void;
             runAndAwait(): Promise<void>;
         };

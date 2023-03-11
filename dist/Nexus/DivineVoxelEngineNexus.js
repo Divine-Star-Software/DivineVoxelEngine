@@ -1,6 +1,5 @@
 //comms
-import { ParentComm } from "./Threads/Parent/ParentComm.js";
-import { WorldComm } from "./Threads/World/WorldComm.js";
+import { WorldComm, ParentComm } from "./Threads/NexusTheads.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
@@ -22,12 +21,6 @@ export const DVEN = {
     parentComm: ParentComm,
     async $INIT() {
         await InitNexusWorker(this);
-    },
-    isReady() {
-        return DVEN.worldComm.isPortSet();
-    },
-    syncSettings(data) {
-        this.settings.syncSettings(data);
     },
 };
 DVEN.environment = Util.getEnviorment();

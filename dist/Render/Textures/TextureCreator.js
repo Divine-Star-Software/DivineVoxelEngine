@@ -56,7 +56,7 @@ export const TextureCreator = {
         }
         resolvedImages.push(new Uint8ClampedArray(data));
         for (const [path, rawData] of images) {
-            const data = await this._loadImages(rawData ? rawData : path, width, height);
+            const data = await this.loadImage(rawData ? rawData : path, width, height);
             resolvedImages.push(data);
         }
         resolvedImages.push(new Uint8ClampedArray(data));
@@ -66,7 +66,11 @@ export const TextureCreator = {
         _2DTextureArray.name = name;
         return _2DTextureArray;
     },
-    _loadImages(imgSrcData, width, height) {
+    loadImage(imgSrcData, width, height) {
+        if (!width)
+            width = this.imgWidth;
+        if (!height)
+            height = this.imgHeight;
         const ctx = TextureCreator.context;
         if (!ctx) {
             throw new Error("Context is not set for texture creation.");
@@ -90,7 +94,11 @@ export const TextureCreator = {
         }
         if (imgSrcData instanceof Uint8ClampedArray) {
             const prom = new Promise(async (resolve) => {
-                const bitmap = await createImageBitmap(new ImageData(imgSrcData, Math.sqrt(imgSrcData.length / 4), Math.sqrt(imgSrcData.length / 4)));
+                const bitmap = await createImageBitmap(new ImageData(imgSrcData, Math.sqrt(imgSrcData.length / 4), Math.sqrt(imgSrcData.length / 4)), {
+                    resizeWidth: width,
+                    resizeHeight: height,
+                    resizeQuality: "pixelated",
+                });
                 //clear the canvas before re-rendering another image
                 ctx.clearRect(0, 0, width, height);
                 ctx.drawImage(bitmap, 0, 0, width, height);

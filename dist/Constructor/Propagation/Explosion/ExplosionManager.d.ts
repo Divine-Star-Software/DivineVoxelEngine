@@ -1,7 +1,7 @@
 export declare const ExplosionManager: {
     runExplosion(tasks: {
         rebuildQueMap: Map<string, boolean>;
-        comm: CommBase;
+        comm: import("threadcomm").CommBase;
         priority: import("../../../Meta/Tasks/Tasks.types.js").Priorities;
         LOD: number;
         syncQueue: import("voxelspaces").LocationData[];

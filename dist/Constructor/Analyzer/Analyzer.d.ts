@@ -4,7 +4,6 @@ export declare const Analyzer: {
     updater: {
         _voxels: Map<string, (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "node" | "browser";
-            __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -56,7 +55,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -111,7 +110,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -162,7 +161,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -215,7 +214,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -249,7 +248,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -289,7 +288,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -331,7 +330,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -371,7 +370,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -571,17 +570,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: any;
-                voxelData: any;
-                dimension: any;
-                chunk: any;
-                column: any;
-                region: any;
-                regionHeader: any;
-                chunkTags: any;
-                columnTags: any;
-                regionTags: any;
-                stringMap: any;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -600,6 +599,25 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
+                    byteOffSet: number;
+                    tagSize: number;
+                    tagIndexes: number;
+                    data: DataView;
+                    indexMap: Map<string, number>;
+                    index: DataView;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
+                    getBuffer(): ArrayBuffer;
+                    setTagIndex(index: number): void;
+                    getTag(id: string): number;
+                    setTag(id: string, value: number): boolean;
+                    getArrayTagValue(id: string, index: number): number;
+                    getArrayTagByteIndex(id: string, index: number): number;
+                    setArrayTagValue(id: string, index: number, value: number): number | void;
+                    loopThroughTags(run: (id: string, value: number) => void): void;
+                    loopThroughIndex(run: (data: number[]) => void): void;
+                    loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
                 };
                 world: {
                     _currentionDimension: string;
@@ -652,7 +670,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: any;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -751,8 +769,8 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: any;
-                regionTags: any;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
@@ -784,44 +802,67 @@ export declare const Analyzer: {
                     };
                 };
             };
-            TC: any;
-            parentComm: any;
-            worldComm: any;
+            TC: {
+                threadNumber: number;
+                threadName: string;
+                environment: "node" | "browser";
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
+                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                __initalized: boolean;
+                __expectedPorts: Record<string, boolean>;
+                crypto: Crypto;
+                $INIT(threadName: string, threadParentName: string): Promise<void>;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
+                __throwError(message: string): never;
+                getWorkerPort(): Promise<any>;
+                __handleInternalMessage(data: any[], event: any): void;
+                __isInternalMessage(data: any[]): boolean;
+                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
+                __handleTasksMessage(data: any[]): Promise<void>;
+                __isTasks(data: any[]): boolean;
+                __handleTasksCheckMessage(data: any[]): Promise<void>;
+                __isTasksCheck(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
+                __hanldeDataSyncMessage(data: any[]): Promise<void>;
+                __isDataSync(data: any[]): boolean;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
+            };
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: any;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: any;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: any;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: any;
-                    paint: any;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: any;
-                worldSun: any;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: any;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: any;
-                    update: any;
-                };
-                flow: {
-                    update: any;
-                    remove: any;
-                };
-                rgb: {
-                    update: any;
-                    remove: any;
-                };
-                sun: {
-                    update: any;
-                    remove: any;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -830,17 +871,20 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: any;
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
+                    textureDataHasBeenSet: boolean;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
+                    releaseTextureData(): void;
+                    isReady(): boolean;
+                }, void>;
             };
-            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-            reStart(): void;
-            isReady(): any;
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "node" | "browser";
-            __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -892,7 +936,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -947,7 +991,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -998,7 +1042,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1051,7 +1095,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1085,7 +1129,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1125,7 +1169,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1167,7 +1211,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1207,7 +1251,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1407,17 +1451,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: any;
-                voxelData: any;
-                dimension: any;
-                chunk: any;
-                column: any;
-                region: any;
-                regionHeader: any;
-                chunkTags: any;
-                columnTags: any;
-                regionTags: any;
-                stringMap: any;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -1436,6 +1480,25 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
+                    byteOffSet: number;
+                    tagSize: number;
+                    tagIndexes: number;
+                    data: DataView;
+                    indexMap: Map<string, number>;
+                    index: DataView;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
+                    getBuffer(): ArrayBuffer;
+                    setTagIndex(index: number): void;
+                    getTag(id: string): number;
+                    setTag(id: string, value: number): boolean;
+                    getArrayTagValue(id: string, index: number): number;
+                    getArrayTagByteIndex(id: string, index: number): number;
+                    setArrayTagValue(id: string, index: number, value: number): number | void;
+                    loopThroughTags(run: (id: string, value: number) => void): void;
+                    loopThroughIndex(run: (data: number[]) => void): void;
+                    loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
                 };
                 world: {
                     _currentionDimension: string;
@@ -1488,7 +1551,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: any;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -1587,8 +1650,8 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: any;
-                regionTags: any;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
@@ -1620,44 +1683,67 @@ export declare const Analyzer: {
                     };
                 };
             };
-            TC: any;
-            parentComm: any;
-            worldComm: any;
+            TC: {
+                threadNumber: number;
+                threadName: string;
+                environment: "node" | "browser";
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
+                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                __initalized: boolean;
+                __expectedPorts: Record<string, boolean>;
+                crypto: Crypto;
+                $INIT(threadName: string, threadParentName: string): Promise<void>;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
+                __throwError(message: string): never;
+                getWorkerPort(): Promise<any>;
+                __handleInternalMessage(data: any[], event: any): void;
+                __isInternalMessage(data: any[]): boolean;
+                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
+                __handleTasksMessage(data: any[]): Promise<void>;
+                __isTasks(data: any[]): boolean;
+                __handleTasksCheckMessage(data: any[]): Promise<void>;
+                __isTasksCheck(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
+                __hanldeDataSyncMessage(data: any[]): Promise<void>;
+                __isDataSync(data: any[]): boolean;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
+            };
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: any;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: any;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: any;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: any;
-                    paint: any;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: any;
-                worldSun: any;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: any;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: any;
-                    update: any;
-                };
-                flow: {
-                    update: any;
-                    remove: any;
-                };
-                rgb: {
-                    update: any;
-                    remove: any;
-                };
-                sun: {
-                    update: any;
-                    remove: any;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -1666,17 +1752,20 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: any;
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
+                    textureDataHasBeenSet: boolean;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
+                    releaseTextureData(): void;
+                    isReady(): boolean;
+                }, void>;
             };
-            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-            reStart(): void;
-            isReady(): any;
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "node" | "browser";
-            __settingsHaveBeenSynced: boolean;
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -1728,7 +1817,7 @@ export declare const Analyzer: {
                 expolosion: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1783,7 +1872,7 @@ export declare const Analyzer: {
                 flow: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1834,7 +1923,7 @@ export declare const Analyzer: {
                     }): Promise<void>;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1887,7 +1976,7 @@ export declare const Analyzer: {
                 worldSun: {
                     run(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1921,7 +2010,7 @@ export declare const Analyzer: {
                 rgb: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -1961,7 +2050,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2003,7 +2092,7 @@ export declare const Analyzer: {
                 sun: {
                     update(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2043,7 +2132,7 @@ export declare const Analyzer: {
                     }): void;
                     remove(tasks: {
                         rebuildQueMap: Map<string, boolean>;
-                        comm: CommBase;
+                        comm: import("threadcomm").CommBase;
                         priority: import("Meta/Tasks/Tasks.types.js").Priorities;
                         LOD: number;
                         syncQueue: LocationData[];
@@ -2243,17 +2332,17 @@ export declare const Analyzer: {
             dataSyncNode: {
                 _states: Record<string, boolean>;
                 isReady(): boolean;
-                voxelPalette: any;
-                voxelData: any;
-                dimension: any;
-                chunk: any;
-                column: any;
-                region: any;
-                regionHeader: any;
-                chunkTags: any;
-                columnTags: any;
-                regionTags: any;
-                stringMap: any;
+                voxelPalette: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelPaletteSyncData, any>;
+                voxelData: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").VoxelDataSync, any>;
+                dimension: import("threadcomm").DataSync<import("../../Meta/Data/DimensionData.types.js").DimensionData, void>;
+                chunk: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                column: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                region: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                regionHeader: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").WorldDataSync, LocationData>;
+                chunkTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                columnTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData, void>;
+                regionTags: import("threadcomm").DataSync<import("divine-binary-tags").RemoteTagManagerInitData[], void>;
+                stringMap: import("threadcomm").DataSync<import("../../Meta/Data/DataSync.types.js").RegisterStringMapSync, void>;
             };
             data: {
                 dimensions: {
@@ -2272,6 +2361,25 @@ export declare const Analyzer: {
                     id: string;
                     sync(voxelMap: Uint16Array): void;
                     setVoxel(id: number): void;
+                    initData: import("divine-binary-tags").RemoteTagManagerInitData;
+                    $INIT(data: import("divine-binary-tags").RemoteTagManagerInitData): void;
+                    byteOffSet: number;
+                    tagSize: number;
+                    tagIndexes: number;
+                    data: DataView;
+                    indexMap: Map<string, number>;
+                    index: DataView;
+                    setBuffer(data: DataView | import("divine-binary-tags").BufferTypes): void;
+                    getBuffer(): ArrayBuffer;
+                    setTagIndex(index: number): void;
+                    getTag(id: string): number;
+                    setTag(id: string, value: number): boolean;
+                    getArrayTagValue(id: string, index: number): number;
+                    getArrayTagByteIndex(id: string, index: number): number;
+                    setArrayTagValue(id: string, index: number, value: number): number | void;
+                    loopThroughTags(run: (id: string, value: number) => void): void;
+                    loopThroughIndex(run: (data: number[]) => void): void;
+                    loopThroughAllIndexTags(run: (id: string, value: number, index: number) => void): void;
                 };
                 world: {
                     _currentionDimension: string;
@@ -2324,7 +2432,7 @@ export declare const Analyzer: {
                         remove(location: LocationData): boolean;
                     };
                 };
-                columnTags: any;
+                columnTags: import("divine-binary-tags").RemoteTagManager;
                 worldBounds: {
                     bounds: {
                         MinZ: number;
@@ -2423,8 +2531,8 @@ export declare const Analyzer: {
                         getStringMapValue(segment: string, id: string, index: number): string;
                     };
                 };
-                chunkTags: any;
-                regionTags: any;
+                chunkTags: import("divine-binary-tags").RemoteTagManager;
+                regionTags: import("divine-binary-tags").RemoteTagManager;
                 regionHeaderReigster: {
                     _headers: Map<string, Map<string, {
                         data: DataView;
@@ -2456,44 +2564,67 @@ export declare const Analyzer: {
                     };
                 };
             };
-            TC: any;
-            parentComm: any;
-            worldComm: any;
+            TC: {
+                threadNumber: number;
+                threadName: string;
+                environment: "node" | "browser";
+                _comms: Record<string, import("threadcomm").CommBase>;
+                _commManageras: Record<string, import("threadcomm").CommManager>;
+                _tasks: Record<string, import("threadcomm").Task<any>>;
+                _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+                parent: import("threadcomm").CommBase;
+                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                __initalized: boolean;
+                __expectedPorts: Record<string, boolean>;
+                crypto: Crypto;
+                $INIT(threadName: string, threadParentName: string): Promise<void>;
+                getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+                addComm(comm: import("threadcomm").CommBase): void;
+                createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+                createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+                getComm(id: string): import("threadcomm").CommBase;
+                getCommManager(id: string): import("threadcomm").CommManager;
+                __throwError(message: string): never;
+                getWorkerPort(): Promise<any>;
+                __handleInternalMessage(data: any[], event: any): void;
+                __isInternalMessage(data: any[]): boolean;
+                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
+                __handleTasksMessage(data: any[]): Promise<void>;
+                __isTasks(data: any[]): boolean;
+                __handleTasksCheckMessage(data: any[]): Promise<void>;
+                __isTasksCheck(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
+                __hanldeDataSyncMessage(data: any[]): Promise<void>;
+                __isDataSync(data: any[]): boolean;
+                onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
+            };
+            parentComm: import("threadcomm").CommBase;
+            worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: any;
+                    syncTextures: import("threadcomm").Task<any>;
                 };
                 build: {
                     chunk: {
-                        tasks: any;
+                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
                         run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
                     };
-                    column: any;
+                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                 };
                 voxelUpdate: {
-                    erase: any;
-                    paint: any;
+                    update: import("threadcomm").Task<UpdateTasksO>;
+                    erase: import("threadcomm").Task<UpdateTasksO>;
+                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
                 };
-                explosion: any;
-                worldSun: any;
+                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
+                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
                 worldGen: {
-                    generate: any;
+                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
                 };
                 anaylzer: {
-                    propagation: any;
-                    update: any;
-                };
-                flow: {
-                    update: any;
-                    remove: any;
-                };
-                rgb: {
-                    update: any;
-                    remove: any;
-                };
-                sun: {
-                    update: any;
-                    remove: any;
+                    propagation: import("threadcomm").Task<UpdateTasksO>;
+                    update: import("threadcomm").Task<UpdateTasksO>;
                 };
             };
             tasksQueue: {
@@ -2502,11 +2633,15 @@ export declare const Analyzer: {
                 $INIT(): void;
             };
             hooks: {
-                texturesRegistered: any;
+                texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
+                    textureDataHasBeenSet: boolean;
+                    data: import("../../index.js").TextureTypeUVMap;
+                    getTextureUV(data: import("../../index.js").ConstructorTextureData, overlay?: boolean): number;
+                    setUVTextureMap(data: import("../../index.js").TextureTypeUVMap): void;
+                    releaseTextureData(): void;
+                    isReady(): boolean;
+                }, void>;
             };
-            syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-            reStart(): void;
-            isReady(): any;
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
         }) => void);
@@ -2514,7 +2649,7 @@ export declare const Analyzer: {
     processor: {
         columnTool: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool;
         chunkTool: import("../../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
-        goThroughColumn<T_2>(location: LocationData, run: (x: number, y: number, z: number, column: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool) => void): void;
+        goThroughColumn<T_3>(location: LocationData, run: (x: number, y: number, z: number, column: import("../../Tools/Data/WorldData/ColumnDataTool.js").ColumnDataTool) => void): void;
     };
     _flowChecks: number[][];
     runPropagation(data: UpdateTasksO): Promise<void>;

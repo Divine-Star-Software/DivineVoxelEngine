@@ -1,5 +1,6 @@
 import { DVER } from "../DivineVoxelEngineRender.js";
 import { MeshRegister } from "./MeshRegister.js";
+import { Distance3D } from "../../Math/Functions/Distance3d.js";
 export const MeshManager = {
     scene: {},
     runningUpdate: false,
@@ -14,6 +15,21 @@ export const MeshManager = {
             "#dve_flora": DVER.render.floraMesh,
             "#dve_magma": DVER.render.liquidMesh,
         };
+    },
+    removeColumnsOutsideRadius(origion, radius) {
+        const [dimesnionId, x, y, z] = origion;
+        const dimension = MeshRegister.dimensions.get(dimesnionId);
+        if (!dimension)
+            return;
+        dimension.forEach((region) => {
+            region.columns.forEach((column) => {
+                const location = column.location;
+                const distnace = Distance3D(location[1], 0, location[3], x, 0, z);
+                if (distnace > radius) {
+                    this.chunks.removeColumn(location);
+                }
+            });
+        });
     },
     chunks: {
         remove(data) {

@@ -6,14 +6,14 @@ export class RichColumnDataTool extends RichDataToolBase {
     loadIn() {
         const column = RichDataRegister.column.get(this.location);
         if (column) {
-            this.sceham = column.value.data.value;
+            this.sceham = column.data;
             this.column = column;
             return true;
         }
         return false;
     }
     toBuffer() {
-        return DBO.metaMarkedParser.toBuffer(this.column);
+        return DBO.objectToBuffer(this.sceham);
     }
     create() {
         if (!RichDataRegister.column.get(this.location)) {

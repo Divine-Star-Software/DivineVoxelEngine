@@ -16,6 +16,7 @@ export const ConstructorTasks = {
     explosion: 0,
     voxelErease: 0,
     voxelPaint: 0,
+    voxelUpdate: 0,
 };
 let index = 0;
 for (const key of Object.keys(ConstructorTasks)) {

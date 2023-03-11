@@ -1,3 +1,4 @@
+import { RichWorldThreadState } from "../Threads/RichWorldThreadState.js";
 import { ThreadComm } from "threadcomm";
 export async function InitWorker(DVERW) {
     let parent = "render";
@@ -7,7 +8,7 @@ export async function InitWorker(DVERW) {
     await ThreadComm.$INIT("rich-world", parent);
     await DVERW.UTIL.createPromiseCheck({
         check: () => {
-            return DVERW.isReady();
+            return RichWorldThreadState.isReady();
         },
         checkInterval: 1,
     });

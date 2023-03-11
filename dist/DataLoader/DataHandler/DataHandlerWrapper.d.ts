@@ -4,7 +4,7 @@ export declare const DataHanlderWrapper: {
     handler: DataHandler;
     $INIT(handler: DataHandler): void;
     loadRegionHeader(location: LocationData): Promise<boolean>;
-    saveColumn(location: LocationData): Promise<false | undefined>;
+    saveColumn(location: LocationData): Promise<boolean | undefined>;
     loadColumn(location: LocationData): Promise<boolean>;
     setPath(id: string): Promise<boolean>;
     columnExists(location: LocationData): Promise<boolean>;

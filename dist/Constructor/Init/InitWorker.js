@@ -1,3 +1,4 @@
+import { ConstructorThreadState } from "../Threads/ConstructorThreadState.js";
 import { ThreadComm } from "threadcomm";
 export async function InitWorker(DVEC) {
     let parent = "render";
@@ -9,7 +10,7 @@ export async function InitWorker(DVEC) {
     DVEC.tasksQueue.$INIT();
     await DVEC.UTIL.createPromiseCheck({
         check: () => {
-            return DVEC.isReady();
+            return ConstructorThreadState.isReady();
         },
         onReady() { },
         checkInterval: 1,

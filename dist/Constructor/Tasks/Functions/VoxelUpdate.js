@@ -130,3 +130,36 @@ export async function PaintAndUpdate(data) {
     tasks.stop();
     return;
 }
+export async function VoxelUpdate(data) {
+    if (!dataTool.setLocation(data[0]).loadIn())
+        return false;
+    const [dimension, x, y, z] = data[0];
+    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
+    tasks
+        .setPriority(0)
+        .start()
+        .setBuldMode("sync")
+        .addNeighborsToRebuildQueue(x, y, z);
+    tasks.setBuldMode("async");
+    let doRGB = ES.doRGBPropagation();
+    let doSun = ES.doSunPropagation();
+    if (ES.doLight()) {
+        updateLightTask(tasks);
+        if (doRGB) {
+            tasks.queues.rgb.update.push(x, y, z);
+            Propagation.rgb.update(tasks);
+        }
+        if (doSun) {
+            Propagation.sun.update(tasks);
+        }
+    }
+    if (ES.doFlow()) {
+        const substance = brushTool._dt.getSubstance();
+        if (substance == "#dve_liquid" || substance == "#dve_magma") {
+            Propagation.flow.update(tasks);
+        }
+    }
+    tasks.runRebuildQueue();
+    tasks.stop();
+    return;
+}

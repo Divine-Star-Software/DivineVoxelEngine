@@ -1,6 +1,7 @@
 import type { DivineVoxelEngineWorld } from "../DivineVoxelEngineWorld.js";
 import { ThreadComm } from "threadcomm";
 import { RegisterDataHooks } from "../Hooks/Data/DataHooks.js";
+import { WorldThreadState } from "../Threads/WorldThreadState.js";
 
 export async function InitWorldWorker(
  DVEW: DivineVoxelEngineWorld
@@ -14,11 +15,10 @@ export async function InitWorldWorker(
 
  await DVEW.UTIL.createPromiseCheck({
   check: () => {
-   return DVEW.isReady();
+   return WorldThreadState.isReady();
   },
   checkInterval: 1,
  });
 
- DVEW.dataSync.$INIT();
- DVEW.cQueues.$INIT();
+
 }

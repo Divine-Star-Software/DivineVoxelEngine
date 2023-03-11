@@ -1,10 +1,7 @@
-import { TypedNode } from "divine-binary-object/Classes/TypedNode";
-export declare type RichDataSchema = Record<string, Record<string, TypedNode<any>>>;
-export declare type RichChunk = RichDataSchema;
-export declare type RichColumn = TypedNode<{
-    chunks: Record<number, TypedNode<RichChunk>>;
-    data: TypedNode<RichDataSchema>;
-}>;
+export declare type RichDataSchema = Record<string, Record<string, any>>;
+export declare type RichColumn = {
+    data: RichDataSchema;
+};
 export declare type RichRegion = {
     columns: Map<string, RichColumn>;
 };

@@ -40,6 +40,8 @@ export const VoxelDataGenerator = {
             VoxelTagBuilder.setDefaults(VoxelTags);
             for (const tag of voxel.tags) {
                 const [id, value] = tag;
+                if (!VoxelTagBuilder.hasNode(id))
+                    continue;
                 if (id == VoxelTagIDs.lightValue) {
                     const v = value;
                     let sl = 0;

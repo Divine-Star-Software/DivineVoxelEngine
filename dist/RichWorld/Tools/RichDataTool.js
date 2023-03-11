@@ -2,13 +2,13 @@ import { RichDataRegister } from "../Register/RichDataRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { DBO } from "divine-binary-object";
 import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
-import { RichChunkDataTool } from "./RichChunkDataTool.js";
+import { RichColumnDataTool } from "./RichColumnDataTool.js";
 export class RichDataTool extends RichDataToolBase {
     data;
-    static chunkTool = new RichChunkDataTool();
+    static columnTool = new RichColumnDataTool();
     loadIn() {
-        if (RichDataTool.chunkTool.loadInAtLocation(this.location)) {
-            this.segment = RichDataTool.chunkTool.segment;
+        if (RichDataTool.columnTool.loadInAtLocation(this.location)) {
+            this.segment = RichDataTool.columnTool.segment;
             const segment = this.getSegment();
             if (!segment)
                 return false;
@@ -23,8 +23,8 @@ export class RichDataTool extends RichDataToolBase {
     }
     create(data) {
         this.data = data;
-        if (!RichDataRegister.chunk.get(this.location)) {
-            RichDataRegister.chunk.add(this.location);
+        if (!RichDataRegister.column.get(this.location)) {
+            RichDataRegister.column.add(this.location);
         }
         this.loadIn();
         this.commit();
@@ -39,13 +39,12 @@ export class RichDataTool extends RichDataToolBase {
         const segment = this.getSegment();
         if (!segment)
             return false;
-        const key = WorldSpaces.voxel.getKeyLocation(this.location);
-        segment[key] = this.data;
+        segment[RichDataRegister.getKey(this.location)] = this.data;
         return true;
     }
     toBuffer() {
         if (!this.data)
             return false;
-        return DBO.metaMarkedParser.toBuffer(this.data);
+        return DBO.toBuffer(this.data);
     }
 }

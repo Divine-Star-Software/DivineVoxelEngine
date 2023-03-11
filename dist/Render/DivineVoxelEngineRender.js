@@ -19,7 +19,7 @@ import { WorldComm } from "./Threads/World/WorldComm.js";
 import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommManager.js";
 import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
 //functions
-import { InitWorkers } from "./Init/InitWorkers.js";
+import { InitWorkers } from "./Init/InitThreads.js";
 import { $INITFunction } from "./Init/InitRender.js";
 export const DVER = {
     UTIL: Util,
@@ -41,36 +41,12 @@ export const DVER = {
     },
     textures: TextureManager,
     tasks: RenderTasks,
-    syncSettingsWithWorkers(data) {
-        this.settings.syncSettings(data);
-        const copy = this.settings.getSettingsCopy();
-        this.worldComm.sendMessage("sync-settings", [copy]);
-        if (this.nexusComm.port) {
-            this.nexusComm.sendMessage("sync-settings", [copy]);
-        }
-        if (this.dataComm.port) {
-            this.dataComm.sendMessage("sync-settings", [copy]);
-        }
-        if (this.fxComm.port) {
-            this.fxComm.sendMessage("sync-settings", [copy]);
-        }
-        if (this.richWorldComm.port) {
-            this.richWorldComm.sendMessage("sync-settings", [copy]);
-        }
-        this.constructorCommManager.syncSettings(copy);
-    },
     async $INIT(initData) {
         await InitWorkers(this, initData);
     },
     async $SCENEINIT(data) {
         this.babylon.$INIT(data.system);
         await $INITFunction(this, data.scene);
-        this.worldComm.sendMessage("start", []);
-    },
-    __createWorker(path) {
-        return new Worker(new URL(path, import.meta.url), {
-            type: "module",
-        });
     },
     getSceneTool() {
         return new SceneTool();

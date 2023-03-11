@@ -1,1 +1,1 @@
-export declare const WorldComm: any;
+export declare const WorldComm: import("threadcomm").CommBase;

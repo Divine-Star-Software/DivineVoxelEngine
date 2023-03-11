@@ -20,14 +20,62 @@ export declare const DVER: {
         convertBufferToSAB(buffer: ArrayBuffer): SharedArrayBuffer;
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
-    TC: any;
-    currentCom: any;
-    worldComm: any;
-    nexusComm: any;
-    dataComm: any;
-    fxComm: any;
-    richWorldComm: any;
-    constructorCommManager: any;
+    TC: {
+        threadNumber: number;
+        threadName: string;
+        environment: "node" | "browser";
+        _comms: Record<string, import("threadcomm").CommBase>;
+        _commManageras: Record<string, import("threadcomm").CommManager>;
+        _tasks: Record<string, import("threadcomm").Task<any>>;
+        _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
+        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
+        parent: import("threadcomm").CommBase;
+        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        __initalized: boolean;
+        __expectedPorts: Record<string, boolean>;
+        crypto: Crypto;
+        $INIT(threadName: string, threadParentName: string): Promise<void>;
+        getSyncedQueue(threadId: string, queueId: string): import("threadcomm/Queue/SyncedQueue.js").SyncedQueue | undefined;
+        addComm(comm: import("threadcomm").CommBase): void;
+        createComm<T_2>(name: string, mergeObject?: T_2 | undefined): T_2 & import("threadcomm").CommBase;
+        createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
+        getComm(id: string): import("threadcomm").CommBase;
+        getCommManager(id: string): import("threadcomm").CommManager;
+        __throwError(message: string): never;
+        getWorkerPort(): Promise<any>;
+        __handleInternalMessage(data: any[], event: any): void;
+        __isInternalMessage(data: any[]): boolean;
+        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
+        __handleTasksMessage(data: any[]): Promise<void>;
+        __isTasks(data: any[]): boolean;
+        __handleTasksCheckMessage(data: any[]): Promise<void>;
+        __isTasksCheck(data: any[]): boolean;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
+        __hanldeDataSyncMessage(data: any[]): Promise<void>;
+        __isDataSync(data: any[]): boolean;
+        onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
+    };
+    currentCom: import("threadcomm").CommBase;
+    worldComm: import("threadcomm").CommBase;
+    nexusComm: import("threadcomm").CommBase & {
+        $INIT(): void;
+    };
+    dataComm: import("threadcomm").CommBase & {
+        $INIT(): void;
+    };
+    fxComm: import("threadcomm").CommBase & {
+        $INIT(): void;
+    };
+    richWorldComm: import("threadcomm").CommBase & {
+        $INIT(): void;
+    };
+    constructorCommManager: import("threadcomm").CommManager & {
+        $INIT(): void;
+        syncTextureData(dasta: import("../index.js").TextureTypeUVMap): void;
+        createConstructors(path: string, numBuilders?: number): void;
+        setConstructors(constructors: Worker[]): void;
+        syncSettings(data: any): void;
+    };
     babylon: {
         system: DVEBabylonSystem;
         $INIT(system: DVEBabylonSystem): void;
@@ -68,6 +116,7 @@ export declare const DVER: {
         meshRegister: {
             _dimensions: import("../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterDimensions;
             $INIT(): void;
+            clearAll(): void;
             dimensions: {
                 add(id: string): Map<any, any>;
                 get(id: string): Map<string, import("../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion> | undefined;
@@ -97,6 +146,7 @@ export declare const DVER: {
             runningUpdate: boolean;
             meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
             $INIT(scene: Scene): void;
+            removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
             chunks: {
                 remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
                 update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
@@ -197,6 +247,7 @@ export declare const DVER: {
         runningUpdate: boolean;
         meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
         $INIT(scene: Scene): void;
+        removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
         chunks: {
             remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
             update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
@@ -299,7 +350,8 @@ export declare const DVER: {
     textures: {
         defaultTexturePath: string;
         textureTypes: Map<string, import("./Textures/TextureType.js").TextureType>;
-        _processVariations(textureData: import("../index.js").TextureData, paths: Map<string, false | Uint8ClampedArray>, map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number, path: string): number;
+        _processVariations(textureData: import("../index.js").TextureData, paths: Map<string, false | Uint8ClampedArray>, map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number): number;
+        _getPath(textureData: import("../index.js").TextureData, varation: string | undefined, extension: string): string;
         generateTexturesData(id: string): false | undefined;
         _ready: boolean;
         isReady(): boolean;
@@ -310,20 +362,19 @@ export declare const DVER: {
         getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
         addTextureType(id: string): void;
         registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
+        createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
     };
     tasks: {
-        setChunk: any;
-        removeChunk: any;
-        removeColumn: any;
-        removeColumnsOutsideRadius: any;
+        setChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
+        removeChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks>;
+        removeColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
+        removeColumnsOutsideRadius: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunksOutsideDistance>;
     };
-    syncSettingsWithWorkers(data: EngineSettingsData): void;
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
         scene: Scene;
         system: DVEBabylonSystem;
     }): Promise<void>;
-    __createWorker(path: string): Worker;
     getSceneTool(): SceneTool;
 };
 export declare type DivineVoxelEngineRender = typeof DVER;

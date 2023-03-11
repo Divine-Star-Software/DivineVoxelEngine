@@ -1,15 +1,12 @@
 //types
 import {
  BuildTasks,
- ExplosionTasks,
  GenerateTasks,
- LightUpdateTask,
- PaintTasks,
  UpdateTasks,
  PriorityTask,
 } from "Meta/Tasks/Tasks.types.js";
 //objects
-import { CCM } from "../../World/Threads/Threads.js";
+import { CCM } from "../../World/Threads/WorldThreads.js";
 import { ConstructorTasks } from "../Threads/Contracts/ConstructorTasks.js";
 
 const QMBase = {
@@ -22,35 +19,19 @@ const QMBase = {
    this._queueMap.set(queueKey, Date.now());
    return false;
   }
-  this.rgb.update.addQueue(queueKey);
-  this.rgb.remove.addQueue(queueKey);
-  this.sun.update.addQueue(queueKey);
-  this.sun.remove.addQueue(queueKey);
   this.worldSun.addQueue(queueKey);
-  this.flow.update.addQueue(queueKey);
-  this.flow.remove.addQueue(queueKey);
+  this.propagation.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
   this.generate.addQueue(queueKey);
-  this.explosion.run.addQueue(queueKey);
-  this.voxelUpdate.erase.addQueue(queueKey);
-  this.voxelUpdate.paint.addQueue(queueKey);
   this._queueMap.set(queueKey, Date.now());
   return true;
  },
  removeQueue(queueKey: string | number) {
   if (!this._queueMap.has(queueKey)) return false;
-  this.rgb.update.removeQueue(queueKey);
-  this.rgb.remove.removeQueue(queueKey);
-  this.sun.update.removeQueue(queueKey);
-  this.sun.remove.removeQueue(queueKey);
   this.worldSun.removeQueue(queueKey);
-  this.flow.update.removeQueue(queueKey);
-  this.flow.remove.removeQueue(queueKey);
+  this.propagation.addQueue(queueKey);
   this.build.chunk.addQueue(queueKey);
   this.generate.removeQueue(queueKey);
-  this.explosion.run.removeQueue(queueKey);
-  this.voxelUpdate.erase.removeQueue(queueKey);
-  this.voxelUpdate.paint.removeQueue(queueKey);
   this._queueMap.delete(queueKey);
   return true;
  },
@@ -79,45 +60,11 @@ const QMBase = {
    }
   });
  },
- rgb: {
-  update: CCM.addQueue<UpdateTasks>(
-   "rgb-update",
-   ConstructorTasks.RGBlightUpdate,
-   null
-  ),
-  remove: CCM.addQueue<UpdateTasks>(
-   "rgb-remove",
-   ConstructorTasks.RGBlightRemove
-  ),
- },
  worldSun: CCM.addQueue<UpdateTasks>("world-sun", ConstructorTasks.worldSun),
- voxelUpdate: {
-  erase: CCM.addQueue<UpdateTasks>(
-   "voxel-update-erase",
-   ConstructorTasks.voxelErease
-  ),
-  paint: CCM.addQueue<PaintTasks>(
-   "voxel-update-paint",
-   ConstructorTasks.voxelPaint
-  ),
- },
- sun: {
-  update: CCM.addQueue<UpdateTasks>(
-   "sun-update",
-   ConstructorTasks.sunLightUpdate
-  ),
-  remove: CCM.addQueue<UpdateTasks>(
-   "sun-remove",
-   ConstructorTasks.sunLightRemove
-  ),
- },
- explosion: {
-  run: CCM.addQueue<ExplosionTasks>("explosion", ConstructorTasks.explosion),
- },
- flow: {
-  update: CCM.addQueue<UpdateTasks>("flow-update", ConstructorTasks.flowUpdate),
-  remove: CCM.addQueue<UpdateTasks>("flow-remove", ConstructorTasks.flowRemove),
- },
+ propagation: CCM.addQueue<UpdateTasks>(
+  "propagation",
+  ConstructorTasks.analyzerPropagation
+ ),
  build: {
   chunk: CCM.addQueue<PriorityTask<BuildTasks>>(
    "build-chunk",

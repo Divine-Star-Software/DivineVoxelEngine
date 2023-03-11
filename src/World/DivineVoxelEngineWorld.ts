@@ -8,7 +8,7 @@ import {
  DataComm,
  FXComm,
  CCM,
-} from "./Threads/Threads.js";
+} from "./Threads/WorldThreads.js";
 //queues
 import { ConstructorQueues } from "../Common/Queues/ConstructorQueues.js";
 //tasks
@@ -41,16 +41,12 @@ import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
 import { DataHooks } from "../Data/DataHooks.js";
 
-
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
  */
 export const DVEW = {
  environment: <"node" | "browser">"browser",
- __settingsHaveBeenSynced: false,
- __renderIsDone: false,
- __serverIsDone: false,
 
  TC: ThreadComm,
  UTIL: Util,
@@ -61,8 +57,6 @@ export const DVEW = {
  },
  data: DataManager,
  dataSync: DataSync,
-
-
 
  fxComm: FXComm,
  dataComm: DataComm,
@@ -81,19 +75,7 @@ export const DVEW = {
   chunks: ChunkDataTags,
  },
 
- isReady() {
-  return (
-   DVEW.ccm.isReady() &&
-   DVEW.__settingsHaveBeenSynced &&
-   (DVEW.__renderIsDone || DVEW.__serverIsDone)
-  );
- },
 
- syncSettings(data: EngineSettingsData) {
-  this.settings.syncSettings(data);
-  DataHooks.settingsSynced.run(data);
-  this.__settingsHaveBeenSynced = true;
- },
 
  async $INIT() {
   await InitWorldWorker(this);
@@ -143,6 +125,4 @@ export const DVEW = {
 
 export type DivineVoxelEngineWorld = typeof DVEW;
 DVEW.environment = Util.getEnviorment();
-
 DVEW.TC.threadName = "world";
-console.log("world")

@@ -8,6 +8,7 @@ export declare const RenderManager: {
     meshRegister: {
         _dimensions: import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterDimensions;
         $INIT(): void;
+        clearAll(): void;
         dimensions: {
             add(id: string): Map<any, any>;
             get(id: string): Map<string, import("../../Meta/Render/Scene/MeshRegister.types.js").MushRegisterRegion> | undefined;
@@ -37,6 +38,7 @@ export declare const RenderManager: {
         runningUpdate: boolean;
         meshMakers: Record<string, DVEMesh>;
         $INIT(scene: Scene): void;
+        removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
         chunks: {
             remove(data: import("../../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
             update(data: import("../../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
