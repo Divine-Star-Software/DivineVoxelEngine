@@ -7,7 +7,6 @@ import { Util } from "../Global/Util.helper.js";
 import { Builder } from "./Builder/Builder.js";
 import { Propagation } from "./Propagation/Propagation.js";
 import { WorldGeneration } from "./WorldGeneration/WorldGeneration.js";
-import { TasksQueue } from "./Tasks/TasksQueue.js";
 import { Analyzer } from "./Analyzer/Analyzer.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
@@ -21,6 +20,9 @@ import { Tasks } from "./Tasks/ConstructorTasks.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
 import { ConstructorHooks } from "./Hooks/ConstructorHooks.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { TasksRequest } from "./Tasks/TasksRequest.js";
+
 
 export const DVEC = {
  environment: <"node" | "browser">"browser",
@@ -42,8 +44,8 @@ export const DVEC = {
  parentComm: ParentComm,
  worldComm: WorldComm,
  tasks: Tasks,
- tasksQueue: TasksQueue,
  hooks: ConstructorHooks,
+ requests : TasksRequest,
 
 
 
@@ -53,6 +55,9 @@ export const DVEC = {
 
  getDataTool() {
   return GetConstructorDataTool();
+ },
+ getRichDataTool() {
+    return new RichDataTool();
  },
 };
 export type DivineVoxelEngineConstructor = typeof DVEC;

@@ -102,7 +102,6 @@ export class DVEMaterial {
             //   shaderMaterial.stencil.enabled = true;
             //  shaderMaterial.stencil.func = DVEBabylon.system.Engine.NOTEQUAL;
         }
-        window.LIQUID = shaderMaterial;
         type.addToMaterial(this);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);

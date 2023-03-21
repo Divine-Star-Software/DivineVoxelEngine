@@ -21,7 +21,7 @@ import { GetAdvancedBrushTool } from "../Tools/Brush/AdvancedBrushTool.js";
 import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
-import { GetTasksTool } from "../Tools/Tasks/TasksTool.js";
+import { TaskTool } from "../Tools/Tasks/TasksTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
 import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
@@ -30,6 +30,7 @@ import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "threadcomm";
 import { ChunkDataTags } from "./Data/Tags/ChunkTags.js";
 import { WorldTasks } from "./Tasks/WorldTasks.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -96,10 +97,13 @@ export const DVEW = {
         return new HeightMapTool();
     },
     getTasksTool() {
-        return GetTasksTool();
+        return new TaskTool();
     },
     getDataLoaderTool() {
         return new DataLoaderTool();
+    },
+    getRichDataTool() {
+        return new RichDataTool();
     },
 };
 DVEW.environment = Util.getEnviorment();

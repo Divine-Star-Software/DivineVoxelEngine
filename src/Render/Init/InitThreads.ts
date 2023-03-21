@@ -56,7 +56,7 @@ export async function InitWorkers(
   }
   DVER.fxComm.setPort(initData.fxWorker);
  }
- 
+
  if (initData.richWorldWorker && initData.richWorld?.enabled) {
   if (!(initData.richWorldWorker instanceof Worker)) {
    throw Error(
@@ -110,6 +110,11 @@ export async function InitWorkers(
   }
  }
 
+ const proms: Promise<any>[] = [];
+ for (const com of DVER.constructorCommManager.__comms) {
+  proms.push(com.waitTillTasksExist("ready"));
+ }
+ await Promise.all(proms);
  await DVER.worldComm.waitTillTasksExist("sync-all-data");
  DVER.worldComm.runTasks("sync-all-data", true);
 

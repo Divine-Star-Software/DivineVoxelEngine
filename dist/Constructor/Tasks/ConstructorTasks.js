@@ -15,17 +15,12 @@ export const Tasks = {
     },
     build: {
         chunk: {
-            tasks: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (buildData) => {
-                if (buildData.priority == 0) {
-                    Tasks.build.chunk.run(buildData.data);
-                    return;
-                }
-                DVEC.tasksQueue.addTasks(buildData.priority, buildData.data, Tasks.build.chunk.run);
+            tasks: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (buildData, onDone) => {
+                const location = buildData.data[0];
+                await DVEC.builder.buildChunk(location, buildData.data[1]);
+                if (onDone)
+                    (onDone());
             }),
-            async run(data) {
-                const location = data[0];
-                await DVEC.builder.buildChunk(location, data[1]);
-            },
         },
         column: ThreadComm.registerTasks(ConstructorTasks.buildColumn, async (data, onDone) => {
             const column = WorldRegister.column.get(data[0]);
@@ -42,15 +37,10 @@ export const Tasks = {
                 location[2] = chunkPOS.y;
                 location[3] = chunkPOS.z;
                 totalChunks++;
-                DVEC.tasksQueue.addTasks(2, [[...location], data[1]], async (data) => {
-                    await Tasks.build.chunk.run(data);
-                    totalChunks--;
-                    if (totalChunks == 0) {
-                        if (onDone)
-                            onDone(true);
-                    }
-                });
+                DVEC.builder.buildChunk([...location]);
             }
+            if (onDone)
+                (onDone());
         }, "deferred"),
     },
     voxelUpdate: {
@@ -74,19 +64,15 @@ export const Tasks = {
         await DVEC.propagation.expolosion.run(TasksRequest.getExplosionRequests(data[0], data[1], data[2], data[3]));
     }),
     worldSun: ThreadComm.registerTasks(ConstructorTasks.worldSun, (data, onDone) => {
-        DVEC.tasksQueue.addTasks(2, data, () => {
-            DVEC.propagation.worldSun.run(TasksRequest.getWorldSunRequests(data[0], data[1]));
-            if (onDone)
-                onDone();
-        });
+        DVEC.propagation.worldSun.run(TasksRequest.getWorldSunRequests(data[0], data[1]));
+        if (onDone)
+            onDone();
     }, "deferred"),
     worldGen: {
         generate: ThreadComm.registerTasks(ConstructorTasks.generate, (data, onDone) => {
             if (!onDone)
                 return;
-            DVEC.tasksQueue.addTasks(2, data, () => {
-                DVEC.worldGen.generate(data, onDone);
-            });
+            DVEC.worldGen.generate(data, onDone);
         }, "deferred"),
     },
     anaylzer: {

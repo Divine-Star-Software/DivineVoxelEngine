@@ -109,6 +109,9 @@ OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_box", (data) => {
 OverrideManager.registerOverride("CullFace", "#dve_box", "Panel", (data) => {
     return true;
 });
+OverrideManager.registerOverride("DarkenFaceUnderneath", "#dve_box", "All", (data) => {
+    return true;
+});
 OverrideManager.registerOverride("CullFace", "#dve_box", "#dve_halfbox", (data) => {
     if (data.face == "top") {
         if (data.neighborVoxel.getShapeState() == 0) {

@@ -4,6 +4,7 @@ class TextureRecord {
     id;
     mode;
     attributeID;
+    totalTextures = 0;
     textures = [];
     textureMap = {};
     animationsMap = [];

@@ -51,6 +51,8 @@ export class BoxVoxelConstructor implements VoxelConstructor {
  }
 }
 
+
+
 export type PillarBoxVoxelConstructorData = {
  top: ConstructorTextureData;
  bottom: ConstructorTextureData;

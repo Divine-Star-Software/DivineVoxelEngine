@@ -5,7 +5,7 @@ import {
  BuildTasks,
  ExplosionTasks,
  GenerateTasks,
- PaintTasks,
+ VoxelUpdateTasks as VoxelUpdateTasks,
  PriorityTask,
  UpdateTasksO,
  WorldSunTask,
@@ -36,22 +36,13 @@ export const Tasks = {
   chunk: {
    tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
     ConstructorTasks.buildChunk,
-    async (buildData) => {
-     if (buildData.priority == 0) {
-      Tasks.build.chunk.run(buildData.data);
-      return;
-     }
-     DVEC.tasksQueue.addTasks(
-      buildData.priority,
-      buildData.data,
-      Tasks.build.chunk.run
-     );
+    async (buildData,onDone) => {
+        const location = buildData.data[0];
+        await DVEC.builder.buildChunk(location, buildData.data[1]);
+        if(onDone) (onDone());
     }
    ),
-   async run(data: BuildTasks) {
-    const location = data[0];
-    await DVEC.builder.buildChunk(location, data[1]);
-   },
+
   },
   column: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildColumn,
@@ -68,24 +59,15 @@ export const Tasks = {
      location[2] = chunkPOS.y;
      location[3] = chunkPOS.z;
      totalChunks++;
-     DVEC.tasksQueue.addTasks(
-      2,
-      <BuildTasks>[[...location], data[1]],
-      async (data) => {
-       await Tasks.build.chunk.run(data);
-       totalChunks--;
-       if (totalChunks == 0) {
-        if (onDone) onDone(true);
-       }
-      }
-     );
+     DVEC.builder.buildChunk([...location]);
     }
+    if(onDone) (onDone());
    },
    "deferred"
   ),
  },
  voxelUpdate: {
-  update: ThreadComm.registerTasks<UpdateTasksO>(
+  update: ThreadComm.registerTasks<VoxelUpdateTasks>(
    ConstructorTasks.voxelUpdate,
    async (data, onDone) => {
     await VoxelUpdate(data);
@@ -102,7 +84,7 @@ export const Tasks = {
    "deferred"
   ),
 
-  paint: ThreadComm.registerTasks<PaintTasks>(
+  paint: ThreadComm.registerTasks<VoxelUpdateTasks>(
    ConstructorTasks.voxelPaint,
    async (data, onDone) => {
     await PaintAndUpdate(data);
@@ -123,12 +105,10 @@ export const Tasks = {
  worldSun: ThreadComm.registerTasks<WorldSunTask>(
   ConstructorTasks.worldSun,
   (data, onDone) => {
-   DVEC.tasksQueue.addTasks(2, data, () => {
-    DVEC.propagation.worldSun.run(
-     TasksRequest.getWorldSunRequests(data[0], data[1])
-    );
-    if (onDone) onDone();
-   });
+   DVEC.propagation.worldSun.run(
+    TasksRequest.getWorldSunRequests(data[0], data[1])
+   );
+   if (onDone) onDone();
   },
   "deferred"
  ),
@@ -137,9 +117,7 @@ export const Tasks = {
    ConstructorTasks.generate,
    (data, onDone) => {
     if (!onDone) return;
-    DVEC.tasksQueue.addTasks(2, data, () => {
-     DVEC.worldGen.generate(data, onDone);
-    });
+    DVEC.worldGen.generate(data, onDone);
    },
    "deferred"
   ),

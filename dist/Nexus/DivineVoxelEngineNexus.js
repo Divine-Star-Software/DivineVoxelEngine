@@ -9,6 +9,8 @@ import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
 import { WorldPainter } from "../Data/World/WorldPainter.js";
 import { ThreadComm } from "threadcomm";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 export const DVEN = {
     environment: "browser",
     TC: ThreadComm,
@@ -22,5 +24,11 @@ export const DVEN = {
     async $INIT() {
         await InitNexusWorker(this);
     },
+    getRichDataTool() {
+        return new RichDataTool();
+    },
+    getDataTool() {
+        return new DataTool();
+    }
 };
 DVEN.environment = Util.getEnviorment();

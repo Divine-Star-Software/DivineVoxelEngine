@@ -250,9 +250,9 @@ export const Processor = {
   let [minY, maxY] = heightMapTool.chunk.getMinMax();
   minY += cy;
   maxY += cy + 1;
-  for (let x = cx; x < maxX; x += LOD) {
+  for (let y = minY; y < maxY; y += LOD) {
    for (let z = cz; z < maxZ; z += LOD) {
-    for (let y = minY; y < maxY; y += LOD) {
+    for (let x = cx; x < maxX; x += LOD) {
      this.nLocation[1] = x;
      this.nLocation[2] = y;
      this.nLocation[3] = z;

@@ -24,6 +24,7 @@ DataSync.registerComm(NexusComm, {
 });
 
 export const RichWorldComm = ThreadComm.createComm("rich-world");
+DataSync.registerComm(RichWorldComm);
 
 export const ParentComm = ThreadComm.parent;
 
@@ -33,6 +34,3 @@ ThreadComm.registerTasks<EngineSettingsData>("sync-settings", (settings) => {
  DataHooks.settingsSynced.run(settings);
 });
 
-ThreadComm.registerTasks<EngineSettingsData>("sync-all-data", () => {
- DataSync.$INIT();
-});

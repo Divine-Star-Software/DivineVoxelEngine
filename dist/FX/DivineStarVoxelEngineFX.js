@@ -7,6 +7,8 @@ import { WorldComm, ParentComm } from "./Threads/FXThreads.js";
 import { InitWorker } from "./Init/InitWorker.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
 import { DataManager } from "../Data/DataManager.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 export const DVEFX = {
     environment: "browser",
     UTIL: Util,
@@ -18,4 +20,10 @@ export const DVEFX = {
     async $INIT() {
         await InitWorker(this);
     },
+    getRichDataTool() {
+        return new RichDataTool();
+    },
+    getDataTool() {
+        return new DataTool();
+    }
 };

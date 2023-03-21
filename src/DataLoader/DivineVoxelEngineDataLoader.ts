@@ -1,6 +1,3 @@
-//types
-import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type.js";
-import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 //objects
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
 import { Util } from "../Global/Util.helper.js";
@@ -14,6 +11,9 @@ import { InitWorker } from "./Init/InitWorker.js";
 import { DataLoaderTasks } from "./Tasks/DataLoaderTasks.js";
 import { DataHanlderWrapper } from "./DataHandler/DataHandlerWrapper.js";
 import { ThreadComm } from "threadcomm";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
+import { DataHandler } from "./DataHandler/DataHandlerBaes.js";
 
 export const DVEDL = {
  environment: <"node" | "browser">"browser",
@@ -37,6 +37,12 @@ export const DVEDL = {
  async $INIT(dataHanlder: DataHandler) {
   this.dataHandler.$INIT(dataHanlder);
   await InitWorker(this);
+ },
+ getRichDataTool() {
+  return new RichDataTool();
+ },
+ getDataTool() {
+  return new DataTool();
  },
 };
 

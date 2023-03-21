@@ -43,6 +43,14 @@ ColumnDataTags.registerTag({
     numberType: "32ui",
 });
 ColumnDataTags.registerTag({
+    id: "#dve_has_rich_data",
+    type: "boolean",
+});
+ColumnDataTags.registerTag({
+    id: "#dve_has_entity_data",
+    type: "boolean",
+});
+ColumnDataTags.registerTag({
     id: "#dve_is_stored",
     type: "boolean",
 });

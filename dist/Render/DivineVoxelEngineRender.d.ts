@@ -1,8 +1,8 @@
 import { DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { Scene } from "@babylonjs/core";
-import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import { SceneTool } from "./Tools/SceneTool.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 export declare const DVER: {
     UTIL: {
         createPromiseCheck: (data: {
@@ -26,11 +26,14 @@ export declare const DVER: {
         environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
         _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
         parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        internal: {
+            _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+            registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+            isInternal(data: any): boolean;
+            runInternal(data: any, event: any): false | undefined;
+        };
         __initalized: boolean;
         __expectedPorts: Record<string, boolean>;
         crypto: Crypto;
@@ -41,18 +44,8 @@ export declare const DVER: {
         createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
         getComm(id: string): import("threadcomm").CommBase;
         getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
         getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        __handleTasksCheckMessage(data: any[]): Promise<void>;
-        __isTasksCheck(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
         onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
     };
     currentCom: import("threadcomm").CommBase;
@@ -72,9 +65,7 @@ export declare const DVER: {
     constructorCommManager: import("threadcomm").CommManager & {
         $INIT(): void;
         syncTextureData(dasta: import("../index.js").TextureTypeUVMap): void;
-        createConstructors(path: string, numBuilders?: number): void;
         setConstructors(constructors: Worker[]): void;
-        syncSettings(data: any): void;
     };
     babylon: {
         system: DVEBabylonSystem;
@@ -82,9 +73,9 @@ export declare const DVER: {
     };
     settings: {
         enviorment: "node" | "browser";
-        settings: EngineSettingsData;
-        getSettings(): EngineSettingsData;
-        syncSettings(data: EngineSettingsData): void;
+        settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        getSettings(): import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        syncSettings(data: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
             bounds: {
@@ -224,7 +215,7 @@ export declare const DVER: {
             updateFogOptions(data: import("@babylonjs/core").Vector4): void;
             setSunLightLevel(level: number): void;
             setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: EngineSettingsData): void;
+            updateMaterialSettings(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
             createMaterial(scene: Scene): import("@babylonjs/core").ShaderMaterial;
             overrideMaterial(material: any): void;
             updateUniforms(): void;
@@ -344,7 +335,7 @@ export declare const DVER: {
                 };
             }): void;
         } & {
-            $INIT(settings: EngineSettingsData): void;
+            $INIT(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         };
     };
     textures: {
@@ -365,10 +356,10 @@ export declare const DVER: {
         createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
     };
     tasks: {
-        setChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask>;
-        removeChunk: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks>;
-        removeColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        removeColumnsOutsideRadius: import("threadcomm").Task<import("../Meta/Tasks/RenderTasks.types.js").RemoveChunksOutsideDistance>;
+        setChunk: void;
+        removeChunk: void;
+        removeColumn: void;
+        removeColumnsOutsideRadius: void;
     };
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
@@ -376,5 +367,6 @@ export declare const DVER: {
         system: DVEBabylonSystem;
     }): Promise<void>;
     getSceneTool(): SceneTool;
+    getRichDataTool(): RichDataTool;
 };
 export declare type DivineVoxelEngineRender = typeof DVER;

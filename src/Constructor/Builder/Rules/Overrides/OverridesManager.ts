@@ -13,6 +13,7 @@ export const OverrideManager = {
   AOFlipFace: new Map(),
   CullFace: new Map(),
   FlipFace: new Map(),
+  DarkenFaceUnderneath: new Map(),
  },
 
  registerOverride(
@@ -35,13 +36,13 @@ export const OverrideManager = {
  },
  runOverride(
   type: OverrideTypes,
-  shapeId: string,
-  neighborShapeId: string,
+  firstId: string,
+  secondOverride: string,
   data: FaceDataOverride
  ) {
-  let map = this.overrides[type].get(shapeId);
+  let map = this.overrides[type].get(firstId);
   if (!map) return data.default;
-  const run = map.get(neighborShapeId);
+  const run = map.get(secondOverride);
   if (!run) return data.default;
   return run(data);
  },

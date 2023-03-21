@@ -4,9 +4,9 @@ import {
  BuildTasks,
  PriorityTask,
 } from "Meta/Tasks/Tasks.types.js";
-import { GetTasksTool } from "../../Tools/Tasks/TasksTool.js";
+import { TaskTool } from "../../Tools/Tasks/TasksTool.js";
 
-const tasks = GetTasksTool();
+const tasks = new TaskTool();
 export const ConstructorTasks = {
   buildChunk: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
    ConstructorRemoteThreadTasks.buildChunk,

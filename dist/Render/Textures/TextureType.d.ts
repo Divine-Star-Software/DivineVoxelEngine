@@ -7,6 +7,7 @@ declare class TextureRecord {
     id: string;
     mode: "sampler" | "overlay";
     attributeID: string;
+    totalTextures: number;
     textures: TextureData[];
     textureMap: Record<string, number>;
     animationsMap: number[][];

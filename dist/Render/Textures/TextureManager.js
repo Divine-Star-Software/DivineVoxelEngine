@@ -14,7 +14,7 @@ export const TextureManager = {
                 map[`${textureData.id}:${varation}`] = count;
                 const assetPath = this._getPath(textureData, varation, extension);
                 let raw = false;
-                if (data.rawData) {
+                if (data.rawData && !Array.isArray(raw)) {
                     raw = data.rawData;
                 }
                 paths.set(assetPath, raw);
@@ -23,12 +23,13 @@ export const TextureManager = {
             else {
                 if (!data.animKeys)
                     throw new Error("Texture Varation must have supplied animKeys if frames are greater than 0.");
+                const rawData = data.rawData;
                 for (let i = 1; i <= data.frames; i++) {
                     map[`${textureData.id}:${varation}-${i}`] = count;
                     const assetPath = this._getPath(textureData, `${varation}-${i}`, extension);
                     let raw = false;
-                    if (data.rawData) {
-                        raw = data.rawData;
+                    if (rawData) {
+                        raw = rawData[i - 1];
                     }
                     paths.set(assetPath, raw);
                     count++;
@@ -67,22 +68,22 @@ export const TextureManager = {
                     segment.textureMap[`${textureData.id}`] = count;
                     const assetPath = this._getPath(textureData, "default", extension);
                     let raw = false;
-                    if (textureData.rawData) {
+                    if (textureData.rawData && !Array.isArray(raw)) {
                         raw = textureData.rawData;
                     }
                     paths.set(assetPath, raw);
-                    count + count++;
+                    count++;
                     count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count);
                 }
                 else {
                     if (!textureData.animKeys)
                         throw new Error("Texture must have supplied animKeys if frames are greater than 0.");
-                    map[`${texture.id}`] = count;
-                    for (let i = 1; i < textureData.frames; i++) {
+                    const rawData = textureData.rawData;
+                    for (let i = 1; i <= textureData.frames; i++) {
                         const assetPath = this._getPath(textureData, `default-${i}`, extension);
                         let raw = false;
-                        if (textureData.rawData) {
-                            raw = textureData.rawData;
+                        if (rawData) {
+                            raw = rawData[i - 1];
                         }
                         paths.set(assetPath, raw);
                         count++;
@@ -101,6 +102,7 @@ export const TextureManager = {
                     count = this._processVariations(textureData, paths, map, animations, animationTimes, extension, count);
                 }
             }
+            segment.totalTextures = count;
         }
     },
     _ready: false,
@@ -170,18 +172,40 @@ export const TextureManager = {
                     if (!data.path && !data.rawData)
                         continue;
                     const key = `${type.id}|${data.id}|default`;
-                    const rawData = await TextureCreator.loadImage(data.rawData
-                        ? data.rawData
-                        : this._getPath(data, "default", type.extension));
-                    map.set(key, rawData);
+                    if (data.frames) {
+                        for (let i = 1; i <= data.frames; i++) {
+                            const rawData = await TextureCreator.loadImage(data.rawData
+                                ? data.rawData[i - 1]
+                                : this._getPath(data, `${key}-${i}`, type.extension));
+                            map.set(`${key}-${i}`, rawData);
+                        }
+                    }
+                    else {
+                        const rawData = await TextureCreator.loadImage(data.rawData
+                            ? data.rawData
+                            : this._getPath(data, "default", type.extension));
+                        map.set(key, rawData);
+                    }
                     if (data.variations) {
                         for (const varId in data.variations) {
                             const varation = data.variations[varId];
                             if (!varation.includeInRawDataMap)
                                 continue;
                             const key = `${type.id}|${data.id}|${varId}`;
-                            const rawData = await TextureCreator.loadImage(data.rawData ? data.rawData : this._getPath(data, varId, type.extension));
-                            map.set(key, rawData);
+                            if (data.frames) {
+                                for (let i = 1; i <= data.frames; i++) {
+                                    const rawData = await TextureCreator.loadImage(data.rawData
+                                        ? data.rawData[i - 1]
+                                        : this._getPath(data, `${key}-${i}`, type.extension));
+                                    map.set(`${key}-${i}`, rawData);
+                                }
+                            }
+                            else {
+                                const rawData = await TextureCreator.loadImage(data.rawData
+                                    ? data.rawData
+                                    : this._getPath(data, varId, type.extension));
+                                map.set(key, rawData);
+                            }
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 import { BuildTasks, GenerateTasks, Priorities } from "Meta/Tasks/Tasks.types.js";
 import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
+export declare type TaskRunModes = "async" | "sync";
 export declare class TaskTool {
     _data: {
         dimension: string;
@@ -14,15 +15,15 @@ export declare class TaskTool {
     voxelUpdate: {
         update: {
             _s: TaskTool;
-            run(location: LocationData, onDone: (data: any) => void): void;
+            run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void, mode?: TaskRunModes): void;
         };
         erase: {
             _s: TaskTool;
-            run(location: LocationData, onDone: (data: any) => void): void;
+            run(location: LocationData, onDone: (data: any) => void, mode?: TaskRunModes): void;
         };
         paint: {
             _s: TaskTool;
-            run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void): void;
+            run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void, mode?: TaskRunModes): void;
         };
     };
     build: {
@@ -93,4 +94,3 @@ export declare class TaskTool {
         };
     };
 }
-export declare const GetTasksTool: () => TaskTool;

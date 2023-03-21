@@ -229,6 +229,7 @@ const currentVoxelData = {
     voxelSubstance: "#dve_solid",
     shapeState: 0,
     currentShape: {},
+    aoValue: -1,
 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
@@ -239,6 +240,7 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     currentVoxelData.isLightSource = this.mDataTool.isLightSource();
     currentVoxelData.currentShape = this.mDataTool.getVoxelShapeObj();
     currentVoxelData.shapeState = this.mDataTool.getShapeState();
+    currentVoxelData.aoValue = -1;
     if (this.settings.doAO && !ignoreAO) {
         AOVerotexStates[1].value = 1;
         AOVerotexStates[2].value = 1;
@@ -257,24 +259,31 @@ export function CalculateVoxelLight(data, tx, ty, tz, ignoreAO = false, LOD = 2)
     const max = $3dCardinalNeighbors.length;
     for (let faceIndex = 0; faceIndex < max; faceIndex++) {
         const point = $3dCardinalNeighbors[faceIndex];
-        if (Processor.exposedFaces[faceIndex]) {
-            this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
-            currentVoxelData.light = this.nDataTool.getLight();
-            if (currentVoxelData.light < 0) {
-                if (currentLight >= 0) {
-                    currentVoxelData.light = currentLight;
-                }
-                else {
-                    currentVoxelData.light = 0;
-                }
+        currentVoxelData.aoValue = -1;
+        if (!Processor.exposedFaces[faceIndex])
+            continue;
+        this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
+        currentVoxelData.light = this.nDataTool.getLight();
+        if (currentVoxelData.light < 0) {
+            if (currentLight >= 0) {
+                currentVoxelData.light = currentLight;
             }
-            const face = FaceMap[faceIndex];
-            this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][1], 1, LOD);
-            this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][2], 2, LOD);
-            this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][3], 3, LOD);
-            this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][4], 4, LOD);
-            handleAdd(data, faceIndex, face);
+            else {
+                currentVoxelData.light = 0;
+            }
         }
+        if (this.nDataTool.isRenderable()) {
+            Processor.faceDataOverride.default = false;
+            if (OverrideManager.runOverride("DarkenFaceUnderneath", this.nDataTool.getShapeId(), "All", Processor.faceDataOverride)) {
+                currentVoxelData.aoValue = 0.8;
+            }
+        }
+        const face = FaceMap[faceIndex];
+        this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][1], 1, LOD);
+        this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][2], 2, LOD);
+        this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][3], 3, LOD);
+        this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][4], 4, LOD);
+        handleAdd(data, faceIndex, face);
     }
 }
 const doRGB = (neighborLightValue) => {
@@ -346,6 +355,11 @@ const lightEnd = (vertex) => {
     zeroCheck.g = 0;
 };
 const doAO = (face, vertex) => {
+    if (currentVoxelData.aoValue > 0) {
+        AOVerotexStates[vertex].totalLight = false;
+        AOValues.a *= currentVoxelData.aoValue;
+        return;
+    }
     if (!Processor.nDataTool.isRenderable())
         return;
     const neighborVoxelSubstance = Processor.nDataTool.getSubstance();

@@ -60,7 +60,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -101,7 +101,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -115,7 +115,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -154,7 +154,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -166,7 +166,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -205,7 +205,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -219,7 +219,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -239,7 +239,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -253,7 +253,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -281,7 +281,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -293,7 +293,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -321,7 +321,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -335,7 +335,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -363,7 +363,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -375,7 +375,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -403,7 +403,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -558,7 +558,7 @@ export declare const Analyzer: {
                     overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
                     registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
                     hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
@@ -808,11 +808,14 @@ export declare const Analyzer: {
                 environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
-                _tasks: Record<string, import("threadcomm").Task<any>>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
                 parent: import("threadcomm").CommBase;
-                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                internal: {
+                    _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+                    registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+                    isInternal(data: any): boolean;
+                    runInternal(data: any, event: any): false | undefined;
+                };
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 crypto: Crypto;
@@ -823,52 +826,36 @@ export declare const Analyzer: {
                 createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
                 getComm(id: string): import("threadcomm").CommBase;
                 getCommManager(id: string): import("threadcomm").CommManager;
-                __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
-                __handleInternalMessage(data: any[], event: any): void;
-                __isInternalMessage(data: any[]): boolean;
-                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-                __handleTasksMessage(data: any[]): Promise<void>;
-                __isTasks(data: any[]): boolean;
-                __handleTasksCheckMessage(data: any[]): Promise<void>;
-                __isTasksCheck(data: any[]): boolean;
-                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-                __hanldeDataSyncMessage(data: any[]): Promise<void>;
-                __isDataSync(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
                 onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
             parentComm: import("threadcomm").CommBase;
             worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("threadcomm").Task<any>;
+                    syncTextures: void;
                 };
                 build: {
                     chunk: {
-                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
-                        run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
+                        tasks: void;
                     };
-                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: void;
                 };
                 voxelUpdate: {
-                    update: import("threadcomm").Task<UpdateTasksO>;
-                    erase: import("threadcomm").Task<UpdateTasksO>;
-                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    update: void;
+                    erase: void;
+                    paint: void;
                 };
-                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: void;
+                worldSun: void;
                 worldGen: {
-                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: void;
                 };
                 anaylzer: {
-                    propagation: import("threadcomm").Task<UpdateTasksO>;
-                    update: import("threadcomm").Task<UpdateTasksO>;
+                    propagation: void;
+                    update: void;
                 };
-            };
-            tasksQueue: {
-                tasks: Map<import("Meta/Tasks/Tasks.types.js").Priorities, [id: string, data: any][]>;
-                addTasks(priority: import("Meta/Tasks/Tasks.types.js").Priorities, data: any, run: (data: any) => void): void;
-                $INIT(): void;
             };
             hooks: {
                 texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
@@ -880,8 +867,238 @@ export declare const Analyzer: {
                     isReady(): boolean;
                 }, void>;
             };
+            requests: {
+                getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: any;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): any;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        sun: number[];
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: number;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                        queue: [x: number, y: number, z: number][];
+                        map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): number;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+            };
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
+            getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "node" | "browser";
@@ -941,7 +1158,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -982,7 +1199,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -996,7 +1213,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1035,7 +1252,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1047,7 +1264,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1086,7 +1303,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1100,7 +1317,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1120,7 +1337,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1134,7 +1351,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1162,7 +1379,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1174,7 +1391,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1202,7 +1419,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1216,7 +1433,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1244,7 +1461,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1256,7 +1473,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1284,7 +1501,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1439,7 +1656,7 @@ export declare const Analyzer: {
                     overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
                     registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
                     hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
@@ -1689,11 +1906,14 @@ export declare const Analyzer: {
                 environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
-                _tasks: Record<string, import("threadcomm").Task<any>>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
                 parent: import("threadcomm").CommBase;
-                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                internal: {
+                    _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+                    registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+                    isInternal(data: any): boolean;
+                    runInternal(data: any, event: any): false | undefined;
+                };
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 crypto: Crypto;
@@ -1704,52 +1924,36 @@ export declare const Analyzer: {
                 createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
                 getComm(id: string): import("threadcomm").CommBase;
                 getCommManager(id: string): import("threadcomm").CommManager;
-                __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
-                __handleInternalMessage(data: any[], event: any): void;
-                __isInternalMessage(data: any[]): boolean;
-                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-                __handleTasksMessage(data: any[]): Promise<void>;
-                __isTasks(data: any[]): boolean;
-                __handleTasksCheckMessage(data: any[]): Promise<void>;
-                __isTasksCheck(data: any[]): boolean;
-                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-                __hanldeDataSyncMessage(data: any[]): Promise<void>;
-                __isDataSync(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
                 onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
             parentComm: import("threadcomm").CommBase;
             worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("threadcomm").Task<any>;
+                    syncTextures: void;
                 };
                 build: {
                     chunk: {
-                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
-                        run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
+                        tasks: void;
                     };
-                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: void;
                 };
                 voxelUpdate: {
-                    update: import("threadcomm").Task<UpdateTasksO>;
-                    erase: import("threadcomm").Task<UpdateTasksO>;
-                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    update: void;
+                    erase: void;
+                    paint: void;
                 };
-                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: void;
+                worldSun: void;
                 worldGen: {
-                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: void;
                 };
                 anaylzer: {
-                    propagation: import("threadcomm").Task<UpdateTasksO>;
-                    update: import("threadcomm").Task<UpdateTasksO>;
+                    propagation: void;
+                    update: void;
                 };
-            };
-            tasksQueue: {
-                tasks: Map<import("Meta/Tasks/Tasks.types.js").Priorities, [id: string, data: any][]>;
-                addTasks(priority: import("Meta/Tasks/Tasks.types.js").Priorities, data: any, run: (data: any) => void): void;
-                $INIT(): void;
             };
             hooks: {
                 texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
@@ -1761,8 +1965,238 @@ export declare const Analyzer: {
                     isReady(): boolean;
                 }, void>;
             };
+            requests: {
+                getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: any;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): any;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        sun: number[];
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: number;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                        queue: [x: number, y: number, z: number][];
+                        map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): number;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+            };
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
+            getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
             environment: "node" | "browser";
@@ -1822,7 +2256,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1863,7 +2297,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1877,7 +2311,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1916,7 +2350,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1928,7 +2362,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1967,7 +2401,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1981,7 +2415,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2001,7 +2435,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2015,7 +2449,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2043,7 +2477,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2055,7 +2489,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2083,7 +2517,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2097,7 +2531,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2125,7 +2559,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2137,7 +2571,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2165,7 +2599,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2320,7 +2754,7 @@ export declare const Analyzer: {
                     overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
                     registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
                     hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
                 };
                 dimension: number;
                 $INIT(): Promise<void>;
@@ -2570,11 +3004,14 @@ export declare const Analyzer: {
                 environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
-                _tasks: Record<string, import("threadcomm").Task<any>>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-                _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
                 parent: import("threadcomm").CommBase;
-                __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+                internal: {
+                    _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+                    registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+                    isInternal(data: any): boolean;
+                    runInternal(data: any, event: any): false | undefined;
+                };
                 __initalized: boolean;
                 __expectedPorts: Record<string, boolean>;
                 crypto: Crypto;
@@ -2585,52 +3022,36 @@ export declare const Analyzer: {
                 createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
                 getComm(id: string): import("threadcomm").CommBase;
                 getCommManager(id: string): import("threadcomm").CommManager;
-                __throwError(message: string): never;
                 getWorkerPort(): Promise<any>;
-                __handleInternalMessage(data: any[], event: any): void;
-                __isInternalMessage(data: any[]): boolean;
-                __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-                __handleTasksMessage(data: any[]): Promise<void>;
-                __isTasks(data: any[]): boolean;
-                __handleTasksCheckMessage(data: any[]): Promise<void>;
-                __isTasksCheck(data: any[]): boolean;
-                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-                __hanldeDataSyncMessage(data: any[]): Promise<void>;
-                __isDataSync(data: any[]): boolean;
+                registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
                 onDataSync<T_2, K_1>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K_1) => void) | undefined): import("threadcomm").DataSync<T_2, K_1>;
             };
             parentComm: import("threadcomm").CommBase;
             worldComm: import("threadcomm").CommBase;
             tasks: {
                 data: {
-                    syncTextures: import("threadcomm").Task<any>;
+                    syncTextures: void;
                 };
                 build: {
                     chunk: {
-                        tasks: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>>;
-                        run(data: import("Meta/Tasks/Tasks.types.js").BuildTasks): Promise<void>;
+                        tasks: void;
                     };
-                    column: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    column: void;
                 };
                 voxelUpdate: {
-                    update: import("threadcomm").Task<UpdateTasksO>;
-                    erase: import("threadcomm").Task<UpdateTasksO>;
-                    paint: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").PaintTasks>;
+                    update: void;
+                    erase: void;
+                    paint: void;
                 };
-                explosion: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").ExplosionTasks>;
-                worldSun: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").WorldSunTask>;
+                explosion: void;
+                worldSun: void;
                 worldGen: {
-                    generate: import("threadcomm").Task<import("Meta/Tasks/Tasks.types.js").GenerateTasks>;
+                    generate: void;
                 };
                 anaylzer: {
-                    propagation: import("threadcomm").Task<UpdateTasksO>;
-                    update: import("threadcomm").Task<UpdateTasksO>;
+                    propagation: void;
+                    update: void;
                 };
-            };
-            tasksQueue: {
-                tasks: Map<import("Meta/Tasks/Tasks.types.js").Priorities, [id: string, data: any][]>;
-                addTasks(priority: import("Meta/Tasks/Tasks.types.js").Priorities, data: any, run: (data: any) => void): void;
-                $INIT(): void;
             };
             hooks: {
                 texturesRegistered: import("divine-hooks/Classes/SyncHook.js").SyncHook<{
@@ -2642,8 +3063,238 @@ export declare const Analyzer: {
                     isReady(): boolean;
                 }, void>;
             };
+            requests: {
+                getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: any;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): any;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: null;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        sun: number[];
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): null;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+                getExplosionRequests(origin: LocationData, radius: number, buildQueue?: string, originThread?: string): {
+                    rebuildQueMap: Map<string, boolean>;
+                    comm: import("threadcomm").CommBase;
+                    priority: import("Meta/Tasks/Tasks.types.js").Priorities;
+                    LOD: number;
+                    syncQueue: LocationData[];
+                    aSyncQueue: LocationData[];
+                    buildMode: "async" | "sync";
+                    buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
+                    rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
+                    tasksType: string;
+                    origin: LocationData;
+                    data: number;
+                    buildQueue: string;
+                    originThread: string;
+                    queues: {
+                        flow: {
+                            update: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                            rmeove: {
+                                queue: number[][];
+                                map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                                noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                            };
+                        };
+                        rgb: {
+                            update: number[];
+                            rmeove: number[];
+                            map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                        };
+                        sun: {
+                            update: number[];
+                            rmeove: number[];
+                        };
+                        queue: [x: number, y: number, z: number][];
+                        map: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    };
+                    start(): any;
+                    stop(): any;
+                    setPriority(priority: import("Meta/Tasks/Tasks.types.js").Priorities): any;
+                    getData(): number;
+                    getOriginThread(): LocationData;
+                    getBuildQueue(): string;
+                    getOrigin(): LocationData;
+                    needsRebuild(): boolean;
+                    needsToUpdateOriginThread(): boolean;
+                    setBuldMode(mode: "async" | "sync"): any;
+                    addToRebuildQueue(x: number, y: number, z: number): boolean;
+                    addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
+                    runRebuildQueue(): any;
+                };
+            };
             $INIT(): Promise<void>;
             getDataTool(): import("../../index.js").ConstructorDataTool;
+            getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void);
     };
     processor: {

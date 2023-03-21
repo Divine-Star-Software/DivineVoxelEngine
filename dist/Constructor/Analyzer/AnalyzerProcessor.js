@@ -23,9 +23,9 @@ export const AnalyzerProcessor = {
             let [minY, maxY] = heightMapTool.chunk.getMinMax();
             minY += cy;
             maxY += cy + 1;
-            for (let x = cx; x < maxX; x += 1) {
+            for (let y = minY; y < maxY; y += 1) {
                 for (let z = cz; z < maxZ; z += 1) {
-                    for (let y = minY; y < maxY; y += 1) {
+                    for (let x = cx; x < maxX; x += 1) {
                         run(x, y, z, columnTool);
                     }
                 }

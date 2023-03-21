@@ -134,13 +134,15 @@ export async function VoxelUpdate(data) {
     if (!dataTool.setLocation(data[0]).loadIn())
         return false;
     const [dimension, x, y, z] = data[0];
-    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
+    const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
     tasks
         .setPriority(0)
         .start()
         .setBuldMode("sync")
         .addNeighborsToRebuildQueue(x, y, z);
     tasks.setBuldMode("async");
+    dataTool.loadInRaw(data[1]);
+    dataTool.commit();
     let doRGB = ES.doRGBPropagation();
     let doSun = ES.doSunPropagation();
     if (ES.doLight()) {

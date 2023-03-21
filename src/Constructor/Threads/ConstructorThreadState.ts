@@ -7,14 +7,11 @@ export const ConstructorThreadState = {
  environment: Util.getEnviorment(),
  isReady() {
   if (this.environment == "node") {
-   return (
-    WorldComm.isPortSet() && DataSyncNode.isReady() && this._settingsSynced
-   );
+   return WorldComm.isPortSet() && this._settingsSynced;
   } else {
+
    return (
     WorldComm.isPortSet() &&
-    Builder.textureManager.isReady() &&
-    DataSyncNode.isReady() &&
     this._settingsSynced
    );
   }

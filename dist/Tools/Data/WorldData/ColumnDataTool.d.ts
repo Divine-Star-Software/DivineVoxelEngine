@@ -19,4 +19,8 @@ export declare class ColumnDataTool extends EncodedPositionDataTool {
     setLastSaveTimestamp(): boolean;
     getLastAnalyzerUpdateTimestamp(): number;
     setLastAnalyzerUpdateTimestamp(): boolean;
+    hasRichData(): boolean;
+    setRichData(value: boolean): void;
+    hasEntityData(): boolean;
+    setEntityData(value: boolean): void;
 }

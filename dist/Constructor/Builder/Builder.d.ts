@@ -115,7 +115,7 @@ export declare const Builder: {
         overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
         registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
         hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-        runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+        runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
     };
     dimension: number;
     $INIT(): Promise<void>;

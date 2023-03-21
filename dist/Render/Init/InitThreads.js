@@ -68,6 +68,11 @@ export async function InitWorkers(DVER, initData) {
             com.runTasks("sync-settings", EngineSettings.getSettingsCopy());
         }
     }
+    const proms = [];
+    for (const com of DVER.constructorCommManager.__comms) {
+        proms.push(com.waitTillTasksExist("ready"));
+    }
+    await Promise.all(proms);
     await DVER.worldComm.waitTillTasksExist("sync-all-data");
     DVER.worldComm.runTasks("sync-all-data", true);
     window.addEventListener("beforeunload", () => {

@@ -1,8 +1,9 @@
 import { ChunkDataTool } from "../Data/WorldData/ChunkDataTool.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
+import { TaskTool } from "../../Tools/Tasks/TasksTool.js";
 export declare class BuilderTool extends LocationBoundTool {
     static _chunkTool: ChunkDataTool;
-    tasks: import("../../Tools/Tasks/TasksTool.js").TaskTool;
+    tasks: TaskTool;
     data: {
         LOD: number;
     };

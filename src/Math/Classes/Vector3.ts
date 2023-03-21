@@ -1,3 +1,5 @@
+import { Position3Matrix } from "Math/Types/Math.types";
+
 export class Vector3 {
  x = 0;
  y = 0;
@@ -8,6 +10,12 @@ export class Vector3 {
   y: 0,
   z: 0,
  };
+
+ static NaNRestore(vec3: Position3Matrix) {
+  if (Number.isNaN(vec3.x)) vec3.x = 0;
+  if (Number.isNaN(vec3.y)) vec3.y = 0;
+  if (Number.isNaN(vec3.z)) vec3.z = 0;
+ }
  constructor(x: number, y: number, z: number) {
   this.x = x;
   this.y = y;
@@ -179,6 +187,7 @@ export class Vector3 {
   this.x = this.x / scalar;
   this.y = this.y / scalar;
   this.z = this.z / scalar;
+  Vector3.NaNRestore(this);
   return this;
  }
 
@@ -186,6 +195,7 @@ export class Vector3 {
   this._tv3.x = this.x / scalar;
   this._tv3.y = this.y / scalar;
   this._tv3.z = this.z / scalar;
+  Vector3.NaNRestore(this._tv3);
   return this._tv3;
  }
 

@@ -6,4 +6,4 @@ export declare type FaceDataOverride = {
     currentVoxel: ConstructorDataTool;
     neighborVoxel: ConstructorDataTool;
 };
-export declare type OverrideTypes = "CullFace" | "AO" | "AOFlipFace" | "FlipFace";
+export declare type OverrideTypes = "CullFace" | "AO" | "DarkenFaceUnderneath" | "AOFlipFace" | "FlipFace";

@@ -7,7 +7,7 @@ import {
  BuildTasks,
  ExplosionTasks,
  GenerateTasks,
- PaintTasks,
+ VoxelUpdateTasks,
  Priorities,
  PriorityTask,
  UpdateTasks,
@@ -19,6 +19,7 @@ import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 
+export type TaskRunModes = "async" | "sync";
 export class TaskTool {
  _data = {
   dimension: "main",
@@ -70,34 +71,37 @@ export class TaskTool {
  voxelUpdate = {
   update: {
    _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void) {
-    CCM.runPromiseTasks<UpdateTasks>(
+   run(location: LocationData, raw: RawVoxelData,onDone: (data: any) => void,mode :TaskRunModes ="sync") {
+    CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelUpdate,
-     [location, this._s._data.queue, this._s._thread],
+     [location, raw, this._s._data.queue, this._s._thread],
      [],
-     onDone
+     onDone,
+     mode == "sync" ? 0 : undefined
     );
    },
   },
   erase: {
    _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void) {
+   run(location: LocationData, onDone: (data: any) => void,mode :TaskRunModes ="sync") {
     CCM.runPromiseTasks<UpdateTasks>(
      ConstructorTasks.voxelErease,
      [location, this._s._data.queue, this._s._thread],
      [],
-     onDone
+     onDone,
+     mode == "sync" ? 0 : undefined
     );
    },
   },
   paint: {
    _s: <TaskTool>{},
-   run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void) {
-    CCM.runPromiseTasks<PaintTasks>(
+   run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void,mode :TaskRunModes ="sync") {
+    CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelPaint,
      [location, raw, this._s._data.queue, this._s._thread],
      [],
-     onDone
+     onDone,
+     mode == "sync" ? 0 : undefined
     );
    },
   },
@@ -114,7 +118,9 @@ export class TaskTool {
        priority: this._s._priority,
       },
       [],
-      onDone
+      onDone,
+      undefined,
+      0
      );
     },
    },
@@ -148,7 +154,9 @@ export class TaskTool {
       ConstructorTasks.buildColumn,
       [location, 1],
       [],
-      onDone
+      onDone,
+      undefined,
+      0
      );
     },
    },
@@ -161,7 +169,9 @@ export class TaskTool {
     ConstructorTasks.explosion,
     [location, radius, "", ""],
     [],
-    onDone
+    onDone,
+    undefined,
+    0
    );
   },
  };
@@ -174,7 +184,9 @@ export class TaskTool {
      ConstructorTasks.analyzerUpdate,
      [location, this._s._data.queue, this._s._thread],
      [],
-     onDone
+     onDone,
+     undefined,
+     0
     );
    },
   },
@@ -188,7 +200,9 @@ export class TaskTool {
      ConstructorTasks.analyzerPropagation,
      [location, this._s._data.queue, this._s._thread],
      [],
-     onDone
+     onDone,
+     undefined,
+     0
     );
    },
   },
@@ -215,7 +229,9 @@ export class TaskTool {
      ConstructorTasks.generate,
      [location, data],
      [],
-     onDone
+     onDone,
+     undefined,
+     0
     );
    },
   },
@@ -243,7 +259,9 @@ export class TaskTool {
      ConstructorTasks.worldSun,
      [location, this._s._thread],
      [],
-     onDone
+     onDone,
+     undefined,
+     0
     );
    },
   },
@@ -263,7 +281,3 @@ export class TaskTool {
   },
  };
 }
-
-export const GetTasksTool = function () {
- return new TaskTool();
-};

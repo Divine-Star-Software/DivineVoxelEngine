@@ -3,14 +3,6 @@ import { ThreadComm } from "threadcomm";
 import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrapper.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 export const DataLoaderTasks = {
-    saveRegion: ThreadComm.registerTasks("save-region", async (data, onDone) => {
-        await DataHanlderWrapper.saveRegion(data);
-        return onDone ? onDone() : false;
-    }, "deferred"),
-    loadRegion: ThreadComm.registerTasks("load-region", async (data, onDone) => {
-        await DataHanlderWrapper.loadRegion(data);
-        return onDone ? onDone() : false;
-    }, "deferred"),
     loadRegionHeader: ThreadComm.registerTasks("load-region-header", async (data, onDone) => {
         const success = await DataHanlderWrapper.loadRegionHeader(data);
         return onDone ? onDone(success) : false;
@@ -40,7 +32,7 @@ export const DataLoaderTasks = {
                 onDone();
             return;
         }
-        await DataHanlderWrapper.saveColumn(data);
+        await DataHanlderWrapper.unLoadColumn(data);
         DVEDL.worldComm.runTasks("unload-column", data);
         const inte = setInterval(() => {
             if (!WorldRegister.column.get(data)) {

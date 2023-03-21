@@ -3,9 +3,11 @@ import { BuilderTool } from "../Tools/Build/BuilderTool.js";
 import { ChunkDataTool } from "../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../Tools/Data/WorldData/ColumnDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
+import { TaskTool } from "../Tools/Tasks/TasksTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
 import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 /**# Divine Voxel Engine World
  * ---
  * This handles everything in the world worker context.
@@ -18,11 +20,14 @@ export declare const DVEW: {
         environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
         _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
         parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        internal: {
+            _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+            registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+            isInternal(data: any): boolean;
+            runInternal(data: any, event: any): false | undefined;
+        };
         __initalized: boolean;
         __expectedPorts: Record<string, boolean>;
         crypto: Crypto;
@@ -33,18 +38,8 @@ export declare const DVEW: {
         createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
         getComm(id: string): import("threadcomm").CommBase;
         getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
         getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        __handleTasksCheckMessage(data: any[]): Promise<void>;
-        __isTasksCheck(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
         onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): import("threadcomm").DataSync<T_2, K>;
     };
     UTIL: {
@@ -95,15 +90,15 @@ export declare const DVEW: {
         isClient(): boolean;
     };
     worldTasks: {
-        addChunk: import("threadcomm").Task<import("voxelspaces").LocationData>;
+        addChunk: void;
         unLoad: {
-            unLoadColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
+            unLoadColumn: void;
         };
         load: {
-            loadRegino: import("threadcomm").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
-            loadReginoHeader: import("threadcomm").Task<import("../Meta/Tasks/Tasks.types.js").LoadRegionHeadertasks>;
-            loadColumn: import("threadcomm").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
-            loadChunk: import("threadcomm").Task<import("../Meta/Tasks/Tasks.types.js").LoadWorldDataTasks>;
+            loadRegino: void;
+            loadReginoHeader: void;
+            loadColumn: void;
+            loadChunk: void;
         };
     };
     generators: {
@@ -334,7 +329,7 @@ export declare const DVEW: {
                 getMap(): Record<string, number>;
             };
         };
-        comms: Record<string, import("threadcomm").CommManager | import("threadcomm").CommBase>;
+        comms: Record<string, import("threadcomm").CommBase | import("threadcomm").CommManager>;
         commOptions: Record<string, {
             worldData: boolean;
             worldDataTags: boolean;
@@ -346,7 +341,7 @@ export declare const DVEW: {
         _ready: boolean;
         $INIT(): void;
         isReady(): boolean;
-        registerComm(comm: import("threadcomm").CommManager | import("threadcomm").CommBase, data?: Partial<{
+        registerComm(comm: import("threadcomm").CommBase | import("threadcomm").CommManager, data?: Partial<{
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -354,7 +349,7 @@ export declare const DVEW: {
             materials: boolean;
             colliders: boolean;
         }>): void;
-        loopThroughComms(func: (comm: import("threadcomm").CommManager | import("threadcomm").CommBase, options: {
+        loopThroughComms(func: (comm: import("threadcomm").CommBase | import("threadcomm").CommManager, options: {
             worldData: boolean;
             worldDataTags: boolean;
             voxelPalette: boolean;
@@ -605,7 +600,7 @@ export declare const DVEW: {
         generate: import("threadcomm/Queue/QueueManager.js").QueueManager<import("../Meta/Tasks/Tasks.types.js").GenerateTasks>;
     };
     cTasks: {
-        buildChunk: import("threadcomm").Task<import("../Meta/Tasks/Tasks.types.js").PriorityTask<import("../Meta/Tasks/Tasks.types.js").BuildTasks>>;
+        buildChunk: void;
     };
     tags: {
         voxels: {
@@ -630,11 +625,16 @@ export declare const DVEW: {
     $INIT(): Promise<void>;
     getAllTools(): {
         brush: import("../Tools/Brush/Brush.js").BrushTool & {
+            mode: import("../Tools/Tasks/TasksTool.js").TaskRunModes;
+            setMode(mode: import("../Tools/Tasks/TasksTool.js").TaskRunModes): any;
             paintAndAwaitUpdate(): Promise<unknown>;
             eraseAndAwaitUpdate(): Promise<unknown>;
             paintAndUpdate(onDone?: Function | undefined): void;
             eraseAndUpdate(onDone?: Function | undefined): void;
+            update(onDone?: Function | undefined): void;
+            updateAndAwait(): Promise<unknown>;
             explode(radius?: number, onDone?: Function | undefined): void;
+            explodeAwaitUpdate(radius?: number): Promise<unknown>;
         };
         builder: BuilderTool;
         data: DataTool;
@@ -642,14 +642,19 @@ export declare const DVEW: {
         columnData: ColumnDataTool;
         regonData: RegionDataTool;
         heightMap: HeightMapTool;
-        tasks: import("../Tools/Tasks/TasksTool.js").TaskTool;
+        tasks: TaskTool;
     };
     getBrush(): import("../Tools/Brush/Brush.js").BrushTool & {
+        mode: import("../Tools/Tasks/TasksTool.js").TaskRunModes;
+        setMode(mode: import("../Tools/Tasks/TasksTool.js").TaskRunModes): any;
         paintAndAwaitUpdate(): Promise<unknown>;
         eraseAndAwaitUpdate(): Promise<unknown>;
         paintAndUpdate(onDone?: Function | undefined): void;
         eraseAndUpdate(onDone?: Function | undefined): void;
+        update(onDone?: Function | undefined): void;
+        updateAndAwait(): Promise<unknown>;
         explode(radius?: number, onDone?: Function | undefined): void;
+        explodeAwaitUpdate(radius?: number): Promise<unknown>;
     };
     getBuilder(): BuilderTool;
     getDataTool(): DataTool;
@@ -657,7 +662,8 @@ export declare const DVEW: {
     getChunkDataTool(): ChunkDataTool;
     getColumnDataTool(): ColumnDataTool;
     getHeightMapTool(): HeightMapTool;
-    getTasksTool(): import("../Tools/Tasks/TasksTool.js").TaskTool;
+    getTasksTool(): TaskTool;
     getDataLoaderTool(): DataLoaderTool;
+    getRichDataTool(): RichDataTool;
 };
 export declare type DivineVoxelEngineWorld = typeof DVEW;

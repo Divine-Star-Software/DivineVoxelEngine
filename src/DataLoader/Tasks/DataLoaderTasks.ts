@@ -5,22 +5,6 @@ import { DataHanlderWrapper } from "../../DataLoader/DataHandler/DataHandlerWrap
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 
 export const DataLoaderTasks = {
- saveRegion: ThreadComm.registerTasks<LocationData>(
-  "save-region",
-  async (data, onDone) => {
-   await DataHanlderWrapper.saveRegion(data);
-   return onDone ? onDone() : false;
-  },
-  "deferred"
- ),
- loadRegion: ThreadComm.registerTasks<LocationData>(
-  "load-region",
-  async (data, onDone) => {
-   await DataHanlderWrapper.loadRegion(data);
-   return onDone ? onDone() : false;
-  },
-  "deferred"
- ),
  loadRegionHeader: ThreadComm.registerTasks<LocationData>(
   "load-region-header",
   async (data, onDone) => {
@@ -63,8 +47,8 @@ export const DataLoaderTasks = {
     if (onDone) onDone();
     return;
    }
-   
-   await DataHanlderWrapper.saveColumn(data);
+
+   await DataHanlderWrapper.unLoadColumn(data);
    DVEDL.worldComm.runTasks("unload-column", data);
    const inte = setInterval(() => {
     if (!WorldRegister.column.get(data)) {

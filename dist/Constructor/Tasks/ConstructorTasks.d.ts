@@ -1,27 +1,25 @@
-import { BuildTasks, ExplosionTasks, GenerateTasks, PaintTasks, PriorityTask, UpdateTasksO, WorldSunTask } from "Meta/Tasks/Tasks.types.js";
 export declare const Tasks: {
     data: {
-        syncTextures: import("threadcomm").Task<any>;
+        syncTextures: void;
     };
     build: {
         chunk: {
-            tasks: import("threadcomm").Task<PriorityTask<BuildTasks>>;
-            run(data: BuildTasks): Promise<void>;
+            tasks: void;
         };
-        column: import("threadcomm").Task<BuildTasks>;
+        column: void;
     };
     voxelUpdate: {
-        update: import("threadcomm").Task<UpdateTasksO>;
-        erase: import("threadcomm").Task<UpdateTasksO>;
-        paint: import("threadcomm").Task<PaintTasks>;
+        update: void;
+        erase: void;
+        paint: void;
     };
-    explosion: import("threadcomm").Task<ExplosionTasks>;
-    worldSun: import("threadcomm").Task<WorldSunTask>;
+    explosion: void;
+    worldSun: void;
     worldGen: {
-        generate: import("threadcomm").Task<GenerateTasks>;
+        generate: void;
     };
     anaylzer: {
-        propagation: import("threadcomm").Task<UpdateTasksO>;
-        update: import("threadcomm").Task<UpdateTasksO>;
+        propagation: void;
+        update: void;
     };
 };

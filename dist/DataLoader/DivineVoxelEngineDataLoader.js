@@ -11,6 +11,8 @@ import { InitWorker } from "./Init/InitWorker.js";
 import { DataLoaderTasks } from "./Tasks/DataLoaderTasks.js";
 import { DataHanlderWrapper } from "./DataHandler/DataHandlerWrapper.js";
 import { ThreadComm } from "threadcomm";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 export const DVEDL = {
     environment: "browser",
     TC: ThreadComm,
@@ -26,5 +28,11 @@ export const DVEDL = {
     async $INIT(dataHanlder) {
         this.dataHandler.$INIT(dataHanlder);
         await InitWorker(this);
+    },
+    getRichDataTool() {
+        return new RichDataTool();
+    },
+    getDataTool() {
+        return new DataTool();
     },
 };

@@ -120,7 +120,6 @@ export const RenderManager = {
         return this.scene;
     },
     getDefaultCamera(scene) {
-        console.log(scene, DVEBabylon);
         const camera = new DVEBabylon.system.UniversalCamera("", DVEBabylon.system.Vector3.Zero(), scene);
         camera.touchAngularSensibility = 10000;
         camera.speed = 1;

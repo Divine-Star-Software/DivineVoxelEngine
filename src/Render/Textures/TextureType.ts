@@ -4,6 +4,7 @@ import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 import { DivineShader } from "divine-shaders";
 
 class TextureRecord {
+ totalTextures = 0;
  textures: TextureData[] = [];
  textureMap: Record<string, number> = {};
  animationsMap: number[][] = [];
@@ -38,6 +39,7 @@ export class TextureType {
  materials: Map<string, DVEMaterial> = new Map();
  shader: DivineShader;
  constructor(public id: string) {
+    
   const main = new TextureRecord(id, "main", "sampler", "cuv3");
   const overlay = new TextureRecord(id, "overlay", "overlay", "ocuv3");
   this.textureSegments = new Map([
@@ -88,7 +90,9 @@ export class TextureType {
  }
 
  runAnimations() {
+
   for (const [key, segment] of this.textureSegments) {
+
    for (let i = 0; i < segment.animations.length; i++) {
     const anim = segment.animations[i];
     if (anim.currentCount <= anim.keyCounts[anim.currentFrame]) {

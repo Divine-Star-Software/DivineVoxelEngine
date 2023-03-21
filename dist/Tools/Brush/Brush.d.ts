@@ -6,11 +6,14 @@ export declare class BrushTool extends LocationBoundTool {
     data: AddVoxelData;
     _update: boolean;
     _dt: DataTool;
+    setData(data: Partial<AddVoxelData>): this;
     setId(id: string, state?: number, shapeState?: number): this;
     setDimension(dimensionId: string): this;
     setSecondaryId(id: string, state?: number): this;
     setState(state: number): this;
     setShapeState(state: number): this;
+    setLevel(level: number): this;
+    setLevelState(levelState: number): this;
     clear(): void;
     setRaw(data: RawVoxelData): this;
     getRaw(): RawVoxelData;

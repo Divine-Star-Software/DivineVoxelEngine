@@ -1,4 +1,5 @@
-import { EngineSettingsData } from "../Meta/Data/Settings/EngineSettings.types.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 export declare const DVEN: {
     environment: "node" | "browser";
     TC: {
@@ -7,11 +8,14 @@ export declare const DVEN: {
         environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
         _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
         parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        internal: {
+            _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+            registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+            isInternal(data: any): boolean;
+            runInternal(data: any, event: any): false | undefined;
+        };
         __initalized: boolean;
         __expectedPorts: Record<string, boolean>;
         crypto: Crypto;
@@ -22,18 +26,8 @@ export declare const DVEN: {
         createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
         getComm(id: string): import("threadcomm").CommBase;
         getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
         getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        __handleTasksCheckMessage(data: any[]): Promise<void>;
-        __isTasksCheck(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
         onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): import("threadcomm").DataSync<T_2, K>;
     };
     UTIL: {
@@ -54,9 +48,9 @@ export declare const DVEN: {
     };
     settings: {
         enviorment: "node" | "browser";
-        settings: EngineSettingsData;
-        getSettings(): EngineSettingsData;
-        syncSettings(data: EngineSettingsData): void;
+        settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        getSettings(): import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        syncSettings(data: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
             bounds: {
@@ -138,7 +132,7 @@ export declare const DVEN: {
         world: {
             _currentionDimension: string;
             paint: {
-                _dt: import("../Tools/Data/DataTool.js").DataTool;
+                _dt: DataTool;
                 voxel(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 __paint(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erase(location: import("voxelspaces").LocationData): void;
@@ -276,7 +270,7 @@ export declare const DVEN: {
                 };
             }): void;
         } & {
-            $INIT(settings: EngineSettingsData): void;
+            $INIT(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         };
         register: {
             stringMaps: {
@@ -304,7 +298,7 @@ export declare const DVEN: {
     worldData: {
         _currentionDimension: string;
         paint: {
-            _dt: import("../Tools/Data/DataTool.js").DataTool;
+            _dt: DataTool;
             voxel(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
             __paint(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
             erase(location: import("voxelspaces").LocationData): void;
@@ -313,5 +307,7 @@ export declare const DVEN: {
     worldComm: import("threadcomm").CommBase;
     parentComm: import("threadcomm").CommBase;
     $INIT(): Promise<void>;
+    getRichDataTool(): RichDataTool;
+    getDataTool(): DataTool;
 };
 export declare type DivineVoxelEngineNexus = typeof DVEN;

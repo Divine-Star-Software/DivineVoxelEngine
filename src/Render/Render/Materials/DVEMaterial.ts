@@ -92,6 +92,7 @@ export class DVEMaterial {
   shader.setCodeBody("frag", `@${this.id}_frag`);
   shader.compile();
 
+
   DVEBabylon.system.Effect.ShadersStore[`${this.id}VertexShader`] =
    shader.compiled.vertex;
 
@@ -123,7 +124,6 @@ export class DVEMaterial {
   }
 
 
-  (window as any).LIQUID = shaderMaterial;
   type.addToMaterial(this);
 
   shaderMaterial.setFloat("sunLightLevel", 1);

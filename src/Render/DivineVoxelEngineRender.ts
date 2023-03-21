@@ -2,7 +2,6 @@
 import { DVEBabylon, DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { Scene } from "@babylonjs/core";
-import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { TextureManager } from "./Textures/TextureManager.js";
@@ -17,15 +16,18 @@ import { WorldSpaces } from "../Data/World/WorldSpaces.js";
 import { SceneTool } from "./Tools/SceneTool.js";
 
 //inter comms
-import { DataComm } from "./Threads/Data/DataComm.js";
-import { FXComm } from "./Threads/FX/FXComm.js";
-import { NexusComm } from "./Threads/Nexus/NexusComm.js";
-import { WorldComm } from "./Threads/World/WorldComm.js";
-import { ConstructorCommManager } from "./Threads/Constructor/ConstructorCommManager.js";
-import { RichWorldComm } from "./Threads/RichWorld/RichWorldComm.js";
+import {
+ DataComm,
+ FXComm,
+ NexusComm,
+ WorldComm,
+ ConstructorCommManager,
+ RichWorldComm,
+} from "./Threads/RenderThreads.js";
 //functions
 import { InitWorkers } from "./Init/InitThreads.js";
 import { $INITFunction } from "./Init/InitRender.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 
 export const DVER = {
  UTIL: Util,
@@ -64,6 +66,9 @@ export const DVER = {
  getSceneTool() {
   return new SceneTool();
  },
+ getRichDataTool() {
+  return new RichDataTool();
+ }
 };
 
 export type DivineVoxelEngineRender = typeof DVER;

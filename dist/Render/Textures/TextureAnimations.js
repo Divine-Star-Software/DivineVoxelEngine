@@ -24,6 +24,11 @@ export const TextureAnimationCreator = {
                 });
                 i++;
             }
+            for (let i = 0; i < segment.totalTextures; i++) {
+                if (!animaitonUniform[i]) {
+                    animaitonUniform[i] = 0;
+                }
+            }
             segment.animationUniforID =
                 `${texture.id}_${key}_texture_animations`.replace("#", "");
             segment.varyingID = `${texture.id}_${key}_texture_varying`.replace("#", "");
@@ -37,12 +42,18 @@ export const TextureAnimationCreator = {
                     output: "float",
                     arguments: {},
                     body: {
-                        GLSL: () => `    int index =  int(uv); 
+                        GLSL: () => `    
+      int index =  int(uv); 
         float aUV = ${segment.animationUniforID}[index];
+        if(aUV == 0.){
+            return uv;
+        }
         if(aUV != 0.){
             return aUV;
         }
-        return uv;`,
+        return uv;
+        
+        `,
                     },
                 });
                 texture.shader.addVarying([
@@ -104,11 +115,6 @@ export const TextureAnimationCreator = {
                         },
                     },
                 ]);
-            }
-            for (let i = 0; i < animaitonUniform.length; i++) {
-                if (!animaitonUniform[i]) {
-                    animaitonUniform[i] = 0;
-                }
             }
             segment.animationUniform = new Float32Array(animaitonUniform);
         }

@@ -18,12 +18,10 @@ DataSync.registerComm(NexusComm, {
     colliders: true,
 });
 export const RichWorldComm = ThreadComm.createComm("rich-world");
+DataSync.registerComm(RichWorldComm);
 export const ParentComm = ThreadComm.parent;
 ThreadComm.registerTasks("sync-settings", (settings) => {
     EngineSettings.syncSettings(settings);
     WorldThreadState._settingsSynced = true;
     DataHooks.settingsSynced.run(settings);
-});
-ThreadComm.registerTasks("sync-all-data", () => {
-    DataSync.$INIT();
 });

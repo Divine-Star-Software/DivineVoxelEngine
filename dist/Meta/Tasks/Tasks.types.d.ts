@@ -12,7 +12,7 @@ export declare type UpdateTasks = [
     buildQueue: string,
     originThread: string
 ];
-export declare type PaintTasks = [
+export declare type VoxelUpdateTasks = [
     location: LocationData,
     raw: RawVoxelData,
     buildQueue: string,
@@ -41,6 +41,19 @@ export declare type LoadWorldDataTasks = [data: SharedArrayBuffer];
 export declare type LoadRegionHeadertasks = [
     location: LocationData,
     data: SharedArrayBuffer
+];
+export declare type GetRichDataTasks = [
+    location: LocationData,
+    segment: string
+];
+export declare type SetRichDataTasks = [
+    location: LocationData,
+    segment: string,
+    objectBuffer: ArrayBuffer
+];
+export declare type SetRichColumnTasks = [
+    location: LocationData,
+    objectBuffer: ArrayBuffer
 ];
 export declare type RequestLightUpdateQueueData = {
     rgb: {

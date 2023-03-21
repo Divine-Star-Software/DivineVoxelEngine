@@ -1,12 +1,14 @@
-import { RichDataToolBase } from "./Classes/RichDataToolBase.js";
+import { RichDataSegmentTool } from "../../Tools/Classes/RichDataToolBase.js";
 import { RichColumnDataTool } from "./RichColumnDataTool.js";
-export declare class RichDataTool extends RichDataToolBase {
+import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
+export declare class RichDataTool extends RichDataSegmentTool {
     data: any;
-    static columnTool: RichColumnDataTool;
+    static richColumn: RichColumnDataTool;
+    static columnTool: ColumnDataTool;
     loadIn(): boolean;
-    create<T = any>(data: T): void;
-    setData<T = any>(data: T): void;
+    setData<T = any>(data: T): this;
     getData<T>(): T;
+    delete(): boolean | undefined;
     commit(): boolean;
     toBuffer(): false | ArrayBuffer;
 }

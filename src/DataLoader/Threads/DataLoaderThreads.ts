@@ -2,14 +2,14 @@ import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { ThreadComm } from "threadcomm";
 import { DataLoaderThreadState } from "./DataLoaderThreadState.js";
+import { DataHooks } from "../../Data/DataHooks.js";
 
-const parentComm = ThreadComm.parent;
-export const ParentComm = parentComm;
-
-const worldComm = ThreadComm.createComm("world");
-export const WorldComm = worldComm;
+export const ParentComm = ThreadComm.parent;
+export const RichWorldComm = ThreadComm.createComm("rich-world");
+export const WorldComm = ThreadComm.createComm("world");
 
 ThreadComm.registerTasks<EngineSettingsData>("sync-settings", (settings) => {
-  DataLoaderThreadState._settingsSynced = true;
+ DataLoaderThreadState._settingsSynced = true;
  EngineSettings.syncSettings(settings);
+ DataHooks.settingsSynced.run(settings);
 });

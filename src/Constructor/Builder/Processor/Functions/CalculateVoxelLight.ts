@@ -3,10 +3,11 @@ import type { VoxelShape } from "Meta/Constructor/VoxelShape.types.js";
 import { Processor } from "../Processor.js";
 import { DirectionNames } from "Meta/Util.types.js";
 import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
-import { FaceMap } from "../../../../Data/Constants/Util/Faces.js";
+import { FaceMap, FaceNormals } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
-import { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
+import type { VoxelTemplate } from "Meta/Constructor/VoxelTemplate.types.js";
+
 const LD = LightData;
 type Vertexes = 1 | 2 | 3 | 4;
 const RGBvertexStates = {
@@ -289,20 +290,13 @@ const checkSets: Record<DirectionNames, Record<Vertexes, number[]>> = {
 const states = { ignoreAO: false };
 const newRGBValues: number[] = [];
 const zeroCheck = { s: 0, r: 0, g: 0, b: 0 };
-const currentVoxelData = <
- {
-  light: number;
-  isLightSource: boolean;
-  voxelSubstance: VoxelSubstanceType;
-  shapeState: number;
-  currentShape: VoxelShape;
- }
->{
+const currentVoxelData = {
  light: 0,
  isLightSource: false,
- voxelSubstance: "#dve_solid",
+ voxelSubstance: <VoxelSubstanceType>"#dve_solid",
  shapeState: 0,
- currentShape: {},
+ currentShape: <VoxelShape>{},
+ aoValue: -1,
 };
 const RGBValues = { r: 0, g: 0, b: 0 };
 const sunValues = { s: 0 };
@@ -322,6 +316,7 @@ export function CalculateVoxelLight(
  currentVoxelData.isLightSource = this.mDataTool.isLightSource();
  currentVoxelData.currentShape = this.mDataTool.getVoxelShapeObj();
  currentVoxelData.shapeState = this.mDataTool.getShapeState();
+ currentVoxelData.aoValue = -1;
  if (this.settings.doAO && !ignoreAO) {
   AOVerotexStates[1].value = 1;
   AOVerotexStates[2].value = 1;
@@ -340,23 +335,39 @@ export function CalculateVoxelLight(
  const max = $3dCardinalNeighbors.length;
  for (let faceIndex = 0; faceIndex < max; faceIndex++) {
   const point = $3dCardinalNeighbors[faceIndex];
-  if (Processor.exposedFaces[faceIndex]) {
-   this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
-   currentVoxelData.light = this.nDataTool.getLight();
-   if (currentVoxelData.light < 0) {
-    if (currentLight >= 0) {
-     currentVoxelData.light = currentLight;
-    } else {
-     currentVoxelData.light = 0;
-    }
+  currentVoxelData.aoValue = -1;
+  if (!Processor.exposedFaces[faceIndex]) continue;
+
+  this.nDataTool.loadInAt(point[0] + tx, point[1] + ty, point[2] + tz);
+  currentVoxelData.light = this.nDataTool.getLight();
+  if (currentVoxelData.light < 0) {
+   if (currentLight >= 0) {
+    currentVoxelData.light = currentLight;
+   } else {
+    currentVoxelData.light = 0;
    }
-   const face = FaceMap[faceIndex];
-   this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][1], 1, LOD);
-   this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][2], 2, LOD);
-   this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][3], 3, LOD);
-   this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][4], 4, LOD);
-   handleAdd(data, faceIndex, face);
   }
+  if (this.nDataTool.isRenderable()) {
+   Processor.faceDataOverride.default = false;
+   if (
+    OverrideManager.runOverride(
+     "DarkenFaceUnderneath",
+     this.nDataTool.getShapeId(),
+     "All",
+     Processor.faceDataOverride
+    )
+   ) {
+    currentVoxelData.aoValue = 0.8;
+   }
+  }
+  const face = FaceMap[faceIndex];
+  this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][1], 1, LOD);
+
+  this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][2], 2, LOD);
+  this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][3], 3, LOD);
+  this.voxellightMixCalc(face, tx, ty, tz, checkSets[face][4], 4, LOD);
+
+  handleAdd(data, faceIndex, face);
  }
 }
 
@@ -428,6 +439,12 @@ const lightEnd = (vertex: Vertexes) => {
 };
 
 const doAO = (face: DirectionNames, vertex: Vertexes) => {
+ if (currentVoxelData.aoValue > 0) {
+  AOVerotexStates[vertex].totalLight = false;
+  AOValues.a *= currentVoxelData.aoValue;
+  return;
+ }
+
  if (!Processor.nDataTool.isRenderable()) return;
  const neighborVoxelSubstance = Processor.nDataTool.getSubstance();
 

@@ -43,20 +43,20 @@ export class TaskTool {
     voxelUpdate = {
         update: {
             _s: {},
-            run(location, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.voxelUpdate, [location, this._s._data.queue, this._s._thread], [], onDone);
+            run(location, raw, onDone, mode = "sync") {
+                CCM.runPromiseTasks(ConstructorTasks.voxelUpdate, [location, raw, this._s._data.queue, this._s._thread], [], onDone, mode == "sync" ? 0 : undefined);
             },
         },
         erase: {
             _s: {},
-            run(location, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.voxelErease, [location, this._s._data.queue, this._s._thread], [], onDone);
+            run(location, onDone, mode = "sync") {
+                CCM.runPromiseTasks(ConstructorTasks.voxelErease, [location, this._s._data.queue, this._s._thread], [], onDone, mode == "sync" ? 0 : undefined);
             },
         },
         paint: {
             _s: {},
-            run(location, raw, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.voxelPaint, [location, raw, this._s._data.queue, this._s._thread], [], onDone);
+            run(location, raw, onDone, mode = "sync") {
+                CCM.runPromiseTasks(ConstructorTasks.voxelPaint, [location, raw, this._s._data.queue, this._s._thread], [], onDone, mode == "sync" ? 0 : undefined);
             },
         },
     };
@@ -68,7 +68,7 @@ export class TaskTool {
                     CCM.runPromiseTasks(ConstructorTasks.buildChunk, {
                         data: buildTasks,
                         priority: this._s._priority,
-                    }, [], onDone);
+                    }, [], onDone, undefined, 0);
                 },
             },
             queued: {
@@ -93,7 +93,7 @@ export class TaskTool {
             deferred: {
                 _s: {},
                 run(location, onDone) {
-                    CCM.runPromiseTasks(ConstructorTasks.buildColumn, [location, 1], [], onDone);
+                    CCM.runPromiseTasks(ConstructorTasks.buildColumn, [location, 1], [], onDone, undefined, 0);
                 },
             },
         },
@@ -101,14 +101,14 @@ export class TaskTool {
     explosion = {
         _s: {},
         run(location, radius, onDone) {
-            CCM.runPromiseTasks(ConstructorTasks.explosion, [location, radius, "", ""], [], onDone);
+            CCM.runPromiseTasks(ConstructorTasks.explosion, [location, radius, "", ""], [], onDone, undefined, 0);
         },
     };
     anaylzer = {
         update: {
             _s: {},
             run(location, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.analyzerUpdate, [location, this._s._data.queue, this._s._thread], [], onDone);
+                CCM.runPromiseTasks(ConstructorTasks.analyzerUpdate, [location, this._s._data.queue, this._s._thread], [], onDone, undefined, 0);
             },
         },
     };
@@ -116,7 +116,7 @@ export class TaskTool {
         deferred: {
             _s: {},
             run(location, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.analyzerPropagation, [location, this._s._data.queue, this._s._thread], [], onDone);
+                CCM.runPromiseTasks(ConstructorTasks.analyzerPropagation, [location, this._s._data.queue, this._s._thread], [], onDone, undefined, 0);
             },
         },
         queued: {
@@ -137,7 +137,7 @@ export class TaskTool {
         deferred: {
             _s: {},
             run(location, data, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.generate, [location, data], [], onDone);
+                CCM.runPromiseTasks(ConstructorTasks.generate, [location, data], [], onDone, undefined, 0);
             },
         },
         queued: {
@@ -158,7 +158,7 @@ export class TaskTool {
         deferred: {
             _s: {},
             run(location, onDone) {
-                CCM.runPromiseTasks(ConstructorTasks.worldSun, [location, this._s._thread], [], onDone);
+                CCM.runPromiseTasks(ConstructorTasks.worldSun, [location, this._s._thread], [], onDone, undefined, 0);
             },
         },
         queued: {
@@ -177,6 +177,3 @@ export class TaskTool {
         },
     };
 }
-export const GetTasksTool = function () {
-    return new TaskTool();
-};

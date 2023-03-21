@@ -153,7 +153,7 @@ export const RenderManager = {
  },
 
  getDefaultCamera(scene: Scene) {
-    console.log(scene,DVEBabylon)
+
   const camera = new DVEBabylon.system.UniversalCamera(
    "",
    DVEBabylon.system.Vector3.Zero(),

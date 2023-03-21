@@ -15,11 +15,21 @@ export class BrushTool extends LocationBoundTool {
   secondaryVoxelId: "dve_air",
   level: 0,
   levelState: 0,
- }; 
+ };
 
  _update = true;
 
  _dt = new DataTool();
+
+ setData(data: Partial<AddVoxelData>) {
+  for (const key in data) {
+   if (typeof (data as any)[key] !== undefined) {
+    (this as any).data[key] = (data as any)[key];
+   }
+  }
+  return this;
+ }
+
  setId(id: string, state = 0, shapeState = 0) {
   this.data.id = id;
   this.data.state = state;
@@ -49,6 +59,15 @@ export class BrushTool extends LocationBoundTool {
   return this;
  }
 
+ setLevel(level: number) {
+  this.data.level = level;
+  return this;
+ }
+
+ setLevelState(levelState: number) {
+  this.data.levelState = levelState;
+  return this;
+ }
  clear() {
   this.data.id = "dve_air";
   this.data.secondaryVoxelId = "dve_air";
@@ -56,6 +75,7 @@ export class BrushTool extends LocationBoundTool {
   this.data.levelState = 0;
   this.data.state = 0;
   this.data.secondaryState = 0;
+  this.data.shapeState = 0;
   this.location[1] = 0;
   this.location[2] = 0;
   this.location[3] = 0;
@@ -88,9 +108,11 @@ export class BrushTool extends LocationBoundTool {
     )
    )
    .setSecondary(false);
-  this._dt.setLevel(this.data.state);
+
+  this._dt.setLevel(this.data.level);
   this._dt.setLevelState(this.data.levelState);
   this._dt.setShapeState(this.data.shapeState);
+  this._dt.data.raw[3] == -1 ? (this._dt.data.raw[3] = 0) : false;
   return this._dt.data.raw;
  }
 
@@ -99,7 +121,7 @@ export class BrushTool extends LocationBoundTool {
  }
 
  paint() {
-  WorldPainter.paint.voxel(this.location, this.data,this._update);
+  WorldPainter.paint.voxel(this.location, this.data, this._update);
   return this;
  }
 

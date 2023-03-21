@@ -4,12 +4,15 @@ import { ThreadComm } from "threadcomm";
 import { RichWorldThreadState } from "./RichWorldThreadState.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 
-
-const parentComm = ThreadComm.parent;
-export const ParentComm = parentComm;
-
-const worldComm = ThreadComm.createComm("world");
-export const WorldComm = worldComm;
+export const ParentComm = ThreadComm.parent;
+export const WorldComm = ThreadComm.createComm("world");
+export const NexusComm = ThreadComm.createComm("nexus");
+export const FXComm = ThreadComm.createComm("fx");
+export const DataComm = ThreadComm.createComm("data-loader");
+export const ConstructorComm = ThreadComm.createCommManager({
+ name: "constructor",
+ onPortSet() {},
+});
 
 ThreadComm.registerTasks<EngineSettingsData>("sync-settings", (settings) => {
  EngineSettings.syncSettings(settings);

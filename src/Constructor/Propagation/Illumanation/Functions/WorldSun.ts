@@ -30,9 +30,9 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
  const AmaxY = WorldRegister.column.height.getAbsolute(tasks.origin);
 
  //fill
- for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
+ for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
-   for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
+   for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
     if (!IM._sDataTool.loadInAt(ix, iy, iz)) continue;
     const l = IM._sDataTool.getLight();
     if (l < 0) continue;
@@ -42,9 +42,9 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
  }
 
  //accumulate
- for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
+ for (let iy = AmaxY; iy <= RmaxY; iy++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {
-   for (let iy = AmaxY; iy <= RmaxY; iy++) {
+   for (let ix = cx; ix < cx + WorldSpaces.chunk._bounds.x; ix++) {
     if (!IM._sDataTool.loadInAt(ix, iy, iz)) continue;
     const l = IM._sDataTool.getLight();
     if (l < 0 && IM.lightData.getS(l) != 0xf) continue;

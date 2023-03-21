@@ -1,14 +1,18 @@
 import type {
-
  RichColumn,
  RichRegion,
  RichWorldDimensions,
 } from "Meta/Data/RichWorldData.types.js";
-import type { LocationData, LocationNode } from "voxelspaces";
+import type { LocationData } from "voxelspaces";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 
 export const RichDataRegister = {
- _dimensions: <RichWorldDimensions>new Map(),
+ _dimensions: <RichWorldDimensions>new Map([["main", new Map()]]),
+
+ releaeeAll() {
+  this._dimensions.clear();
+  this._dimensions = new Map([["main", new Map()]]);
+ },
 
  dimensions: {
   get(dimensionId: string) {
@@ -17,6 +21,7 @@ export const RichDataRegister = {
    return dimension;
   },
   add(dimensionId: string) {
+
    const newdimension = new Map();
    RichDataRegister._dimensions.set(dimensionId, newdimension);
    return newdimension;
@@ -30,6 +35,7 @@ export const RichDataRegister = {
    };
   },
   add(location: LocationData) {
+
    let dimension = RichDataRegister.dimensions.get(location[0]);
    if (!dimension) {
     dimension = RichDataRegister.dimensions.add(location[0]);
@@ -58,14 +64,18 @@ export const RichDataRegister = {
  column: {
   _getColumnData(): RichColumn {
    return {
-    data: {}
+    data: {
+     voxels: {},
+    },
    };
   },
   add(location: LocationData) {
+    
    let region = RichDataRegister.region.get(location);
    if (!region) {
     region = RichDataRegister.region.add(location);
    }
+
    const column = this._getColumnData();
    region.columns.set(WorldSpaces.column.getKeyLocation(location), column);
    return column;
@@ -79,6 +89,15 @@ export const RichDataRegister = {
    if (!column) return false;
    return column;
   },
+  update(location: LocationData, data: any) {
+   const region = RichDataRegister.region.get(location);
+   if (!region) return false;
+   const column = region.columns.get(
+    WorldSpaces.column.getKeyLocation(location)
+   );
+   if (!column) return false;
+   column.data = data;
+  },
   remove(location: LocationData) {
    const region = RichDataRegister.region.get(location);
    if (!region) return false;
@@ -86,12 +105,15 @@ export const RichDataRegister = {
    const column = region.columns.get(key);
    if (!column) return false;
    region.columns.delete(key);
+   if (region.columns.size == 0) {
+    RichDataRegister.region.remove(location);
+   }
    return column;
   },
  },
- getKey(location : LocationData) {
-    return `${WorldSpaces.chunk.getKeyLocation(
-        location
-       )}_${WorldSpaces.voxel.getKeyLocation(location)}`;
- }
+ getKey(location: LocationData) {
+  return `${WorldSpaces.chunk.getKeyLocation(
+   location
+  )}_${WorldSpaces.voxel.getKeyLocation(location)}`;
+ },
 };

@@ -1,4 +1,6 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 export declare const DVEFX: {
     environment: "node" | "browser";
     UTIL: {
@@ -103,7 +105,7 @@ export declare const DVEFX: {
         world: {
             _currentionDimension: string;
             paint: {
-                _dt: import("../Tools/Data/DataTool.js").DataTool;
+                _dt: DataTool;
                 voxel(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 __paint(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erase(location: import("voxelspaces").LocationData): void;
@@ -269,5 +271,7 @@ export declare const DVEFX: {
     worldComm: import("threadcomm").CommBase;
     parentComm: import("threadcomm").CommBase;
     $INIT(): Promise<void>;
+    getRichDataTool(): RichDataTool;
+    getDataTool(): DataTool;
 };
 export declare type DivineVoxelEngineFX = typeof DVEFX;

@@ -40,7 +40,7 @@ export type TextureDataBase = {
  /**# rawData
   * Provide a base64 encoded string to use instead of fetching it from a server
   */
- rawData?: Uint8ClampedArray;
+ rawData?: Uint8ClampedArray | Uint8ClampedArray[];
  includeInRawDataMap ?: boolean;
 };
 export type TextureData = {

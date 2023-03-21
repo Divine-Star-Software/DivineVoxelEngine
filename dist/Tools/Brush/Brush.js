@@ -15,6 +15,14 @@ export class BrushTool extends LocationBoundTool {
     };
     _update = true;
     _dt = new DataTool();
+    setData(data) {
+        for (const key in data) {
+            if (typeof data[key] !== undefined) {
+                this.data[key] = data[key];
+            }
+        }
+        return this;
+    }
     setId(id, state = 0, shapeState = 0) {
         this.data.id = id;
         this.data.state = state;
@@ -39,6 +47,14 @@ export class BrushTool extends LocationBoundTool {
         this.data.shapeState = state;
         return this;
     }
+    setLevel(level) {
+        this.data.level = level;
+        return this;
+    }
+    setLevelState(levelState) {
+        this.data.levelState = levelState;
+        return this;
+    }
     clear() {
         this.data.id = "dve_air";
         this.data.secondaryVoxelId = "dve_air";
@@ -46,6 +62,7 @@ export class BrushTool extends LocationBoundTool {
         this.data.levelState = 0;
         this.data.state = 0;
         this.data.secondaryState = 0;
+        this.data.shapeState = 0;
         this.location[1] = 0;
         this.location[2] = 0;
         this.location[3] = 0;
@@ -69,9 +86,10 @@ export class BrushTool extends LocationBoundTool {
             .setSecondary(true)
             .setId(VoxelPaletteReader.id.getPaletteId(this.data.secondaryVoxelId, this.data.secondaryState))
             .setSecondary(false);
-        this._dt.setLevel(this.data.state);
+        this._dt.setLevel(this.data.level);
         this._dt.setLevelState(this.data.levelState);
         this._dt.setShapeState(this.data.shapeState);
+        this._dt.data.raw[3] == -1 ? (this._dt.data.raw[3] = 0) : false;
         return this._dt.data.raw;
     }
     getData() {

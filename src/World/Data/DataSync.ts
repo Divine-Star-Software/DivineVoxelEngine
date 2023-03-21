@@ -87,6 +87,8 @@ export const DataSync = {
  commOptions: <Record<string, CommSyncOptions>>{},
  _ready: false,
  $INIT() {
+
+
   this.voxelDataCreator.$generateVoxelData();
   VoxelTagBuilder.$SYNC();
   InitalizeChunkTags();
@@ -119,9 +121,12 @@ export const DataSync = {
  loopThroughComms(
   func: (comm: CommBase | CommManager, options: CommSyncOptions) => void
  ) {
+
   for (const commKey of Object.keys(DataSync.comms)) {
    const comm = DataSync.comms[commKey];
+
    const options = DataSync.commOptions[commKey];
+
    if (!comm.isReady()) continue;
    func(comm, options);
   }

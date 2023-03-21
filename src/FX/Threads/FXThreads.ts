@@ -4,11 +4,9 @@ import { ThreadComm } from "threadcomm";
 import { FXThreadState } from "./FXThreadState.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 
-const parentComm = ThreadComm.parent;
-export const ParentComm = parentComm;
-
-const worldComm = ThreadComm.createComm("world");
-export const WorldComm = worldComm;
+export const ParentComm = ThreadComm.parent;
+export const RichWorldComm = ThreadComm.createComm("rich-world");
+export const WorldComm = ThreadComm.createComm("world");
 
 ThreadComm.registerTasks<EngineSettingsData>("sync-settings", (settings) => {
  EngineSettings.syncSettings(settings);

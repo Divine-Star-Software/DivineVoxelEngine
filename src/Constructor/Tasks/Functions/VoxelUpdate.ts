@@ -1,4 +1,4 @@
-import type { PaintTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
+import type { VoxelUpdateTasks, UpdateTasks } from "Meta/Tasks/Tasks.types.js";
 import { Propagation } from "../../Propagation/Propagation.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
@@ -82,7 +82,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
  return true;
 }
 
-export async function PaintAndUpdate(data: PaintTasks) {
+export async function PaintAndUpdate(data: VoxelUpdateTasks) {
  if (!dataTool.setLocation(data[0]).loadIn()) return false;
  const [dimension, x, y, z] = data[0];
  const raw = data[1];
@@ -141,16 +141,19 @@ export async function PaintAndUpdate(data: PaintTasks) {
  return;
 }
 
-export async function VoxelUpdate(data: UpdateTasks) {
+export async function VoxelUpdate(data: VoxelUpdateTasks) {
  if (!dataTool.setLocation(data[0]).loadIn()) return false;
  const [dimension, x, y, z] = data[0];
- const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[1], data[2]);
+ const tasks = TasksRequest.getVoxelUpdateRequests(data[0], data[2], data[3]);
  tasks
   .setPriority(0)
   .start()
   .setBuldMode("sync")
   .addNeighborsToRebuildQueue(x, y, z);
  tasks.setBuldMode("async");
+
+ dataTool.loadInRaw(data[1])
+ dataTool.commit();
 
  let doRGB = ES.doRGBPropagation();
  let doSun = ES.doSunPropagation();

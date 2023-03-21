@@ -1,5 +1,6 @@
-import type { DataHandler } from "Meta/Interfaces/DataLoader/DataHandler.type.js";
-import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
+import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
+import { DataHandler } from "./DataHandler/DataHandlerBaes.js";
 export declare const DVEDL: {
     environment: "node" | "browser";
     TC: {
@@ -8,11 +9,14 @@ export declare const DVEDL: {
         environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
-        _tasks: Record<string, import("threadcomm").Task<any>>;
         _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
-        _onDataSync: Record<string, import("threadcomm").DataSync<any, any>>;
         parent: import("threadcomm").CommBase;
-        __internal: Record<number, Record<number, (data: any, event: any) => void>>;
+        internal: {
+            _tasks: Map<number, Map<number, import("threadcomm/Meta/Util.types.js").MessageFunction>>;
+            registerTasks(headID: number, taskId: number, run: import("threadcomm/Meta/Util.types.js").MessageFunction): void;
+            isInternal(data: any): boolean;
+            runInternal(data: any, event: any): false | undefined;
+        };
         __initalized: boolean;
         __expectedPorts: Record<string, boolean>;
         crypto: Crypto;
@@ -23,18 +27,8 @@ export declare const DVEDL: {
         createCommManager(data: import("threadcomm/Meta/Manager/Manager.types.js").CommManagerData): import("threadcomm").CommManager;
         getComm(id: string): import("threadcomm").CommBase;
         getCommManager(id: string): import("threadcomm").CommManager;
-        __throwError(message: string): never;
         getWorkerPort(): Promise<any>;
-        __handleInternalMessage(data: any[], event: any): void;
-        __isInternalMessage(data: any[]): boolean;
-        __handleTasksDone(tasksId: string, mode: number, threadId: string, tid: string, tasksData: any): void;
-        __handleTasksMessage(data: any[]): Promise<void>;
-        __isTasks(data: any[]): boolean;
-        __handleTasksCheckMessage(data: any[]): Promise<void>;
-        __isTasksCheck(data: any[]): boolean;
-        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: Function | undefined) => void, mode?: "async" | "deferred" | undefined): import("threadcomm").Task<T_1>;
-        __hanldeDataSyncMessage(data: any[]): Promise<void>;
-        __isDataSync(data: any[]): boolean;
+        registerTasks<T_1>(id: string | number, run: (data: T_1, onDone?: ((data?: any, transfers?: any) => void) | undefined) => void, mode?: "async" | "deferred" | undefined): void;
         onDataSync<T_2, K>(dataType: string | number, onSync?: ((data: T_2) => void) | undefined, onUnSync?: ((data: K) => void) | undefined): import("threadcomm").DataSync<T_2, K>;
     };
     UTIL: {
@@ -55,9 +49,9 @@ export declare const DVEDL: {
     };
     settings: {
         enviorment: "node" | "browser";
-        settings: EngineSettingsData;
-        getSettings(): EngineSettingsData;
-        syncSettings(data: EngineSettingsData): void;
+        settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        getSettings(): import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
+        syncSettings(data: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         __syncWithObjects(): void;
         syncWithWorldBounds(worldBounds: {
             bounds: {
@@ -139,7 +133,7 @@ export declare const DVEDL: {
         world: {
             _currentionDimension: string;
             paint: {
-                _dt: import("../Tools/Data/DataTool.js").DataTool;
+                _dt: DataTool;
                 voxel(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                 __paint(location: import("voxelspaces").LocationData, data: import("../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                 erase(location: import("voxelspaces").LocationData): void;
@@ -277,7 +271,7 @@ export declare const DVEDL: {
                 };
             }): void;
         } & {
-            $INIT(settings: EngineSettingsData): void;
+            $INIT(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         };
         register: {
             stringMaps: {
@@ -305,15 +299,13 @@ export declare const DVEDL: {
     worldComm: import("threadcomm").CommBase;
     parentComm: import("threadcomm").CommBase;
     tasks: {
-        saveRegion: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        loadRegion: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        loadRegionHeader: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        saveColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        loadColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        unLoadColumn: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        setPath: import("threadcomm").Task<[id: string]>;
-        columnExists: import("threadcomm").Task<import("voxelspaces").LocationData>;
-        columnTimestamp: import("threadcomm").Task<import("voxelspaces").LocationData>;
+        loadRegionHeader: void;
+        saveColumn: void;
+        loadColumn: void;
+        unLoadColumn: void;
+        setPath: void;
+        columnExists: void;
+        columnTimestamp: void;
     };
     serializer: {
         regions: import("../Tools/Data/WorldData/RegionDataTool.js").RegionDataTool;
@@ -322,24 +314,27 @@ export declare const DVEDL: {
         serializeRegion(location: import("voxelspaces").LocationData): false | [location: import("voxelspaces").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("voxelspaces").LocationData): false | Uint8Array;
         deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
-        deSerializeColumn(columnBuffer: ArrayBuffer | SharedArrayBuffer): {
+        deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];
         };
-        _readDataIntoBuffer(offset: number, target: Uint8Array, source: ArrayBuffer | SharedArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
+        _readDataIntoBuffer(offset: number, target: Uint8Array, source: SharedArrayBuffer | ArrayBuffer, sourceOffset?: number, sourceLength?: number): number;
     };
     dataHandler: {
+        mode: import("./DataHandler/DataHandlerBaes.js").DataLoaderModes;
         handler: DataHandler;
+        richData: RichDataTool;
         $INIT(handler: DataHandler): void;
         loadRegionHeader(location: import("voxelspaces").LocationData): Promise<boolean>;
         saveColumn(location: import("voxelspaces").LocationData): Promise<boolean | undefined>;
         loadColumn(location: import("voxelspaces").LocationData): Promise<boolean>;
+        unLoadColumn(location: import("voxelspaces").LocationData): Promise<true | undefined>;
         setPath(id: string): Promise<boolean>;
         columnExists(location: import("voxelspaces").LocationData): Promise<boolean>;
         columnTimestamp(location: import("voxelspaces").LocationData): Promise<number>;
-        saveRegion(location: import("voxelspaces").LocationData): Promise<boolean>;
-        loadRegion(location: import("voxelspaces").LocationData): Promise<boolean>;
     };
     $INIT(dataHanlder: DataHandler): Promise<void>;
+    getRichDataTool(): RichDataTool;
+    getDataTool(): DataTool;
 };
 export declare type DivineVoxelEngineData = typeof DVEDL;
