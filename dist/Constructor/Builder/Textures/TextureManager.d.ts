@@ -1,4 +1,4 @@
-import { ConstructorTextureData } from "Meta/Constructor/Constructor.types";
+import type { ConstructorTextureData } from "Meta/Constructor/Constructor.types";
 import type { TextureTypeUVMap } from "Meta/Render/Textures/Texture.types";
 export declare const TextureManager: {
     textureDataHasBeenSet: boolean;

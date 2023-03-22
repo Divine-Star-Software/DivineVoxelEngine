@@ -101,33 +101,6 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
                 GLSL: () => " vAnimation = float(getAnimationType());\n",
             },
         },
-        /*
-        {
-         id: "animIndex",
-         type: "float",
-         body: {
-          GLSL: () => " animIndex = getUVFace(cuv3.z);\n",
-         },
-        },
-        
-        {
-         id: "vUV",
-         type: "vec3",
-         body: {
-          GLSL: () => "vUV = cuv3;;\n",
-         },
-        },
-        {
-         id: "vOVUV",
-         type: "vec4",
-         body: {
-          GLSL: () => `vOVUV.x = getOverlayUVFace(ocuv3.x);
-      vOVUV.y = getOverlayUVFace(ocuv3.y);
-      vOVUV.z = getOverlayUVFace(ocuv3.z);
-      vOVUV.w = getOverlayUVFace(ocuv3.w);`,
-         },
-        },
-        */
         {
             id: "vNormal",
             type: "vec3",

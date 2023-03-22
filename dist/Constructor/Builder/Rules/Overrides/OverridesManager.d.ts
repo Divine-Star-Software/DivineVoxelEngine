@@ -1,4 +1,4 @@
-import { FaceDataOverride, OverrideTypes } from "Meta/Constructor/OverRide.types";
+import { FaceDataOverride, OverrideTypes } from "../../Types/Override.types";
 declare type RunOverrideFunction = (data: FaceDataOverride) => boolean;
 export declare const OverrideManager: {
     overrides: Record<OverrideTypes, Map<string, Map<string, RunOverrideFunction>>>;

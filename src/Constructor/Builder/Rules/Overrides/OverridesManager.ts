@@ -1,7 +1,7 @@
 import {
- FaceDataOverride,
+    FaceDataOverride,
  OverrideTypes,
-} from "Meta/Constructor/OverRide.types";
+} from "../../Types/Override.types";
 
 type RunOverrideFunction = (data: FaceDataOverride) => boolean;
 

@@ -1,2 +1,11 @@
-import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
-export declare const BoxVoxelShape: VoxelShape;
+export declare const BoxVoxelShape: {
+    _createFace(): void;
+    add: {
+        top(): void;
+        bottom(): void;
+        north(): void;
+        south(): void;
+        east(): void;
+        west(): void;
+    };
+};

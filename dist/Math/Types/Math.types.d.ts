@@ -15,6 +15,15 @@ export declare type Position2Matrix = {
     x: number;
     z: number;
 };
+export declare type Dimension2Matrix = {
+    width: number;
+    height: number;
+};
+export declare type Dimension3Matrix = {
+    width: number;
+    height: number;
+    depth: number;
+};
 export declare type DimensionsVector3 = {
     w: number;
     h: number;

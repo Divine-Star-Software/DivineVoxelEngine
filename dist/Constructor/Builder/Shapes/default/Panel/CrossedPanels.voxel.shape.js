@@ -1,12 +1,20 @@
+import { ShapeTool } from "../../ShapeTool.js";
 let topANIM = 0;
 let bottomANIM = 0;
+const addData = () => {
+    return ShapeTool.builder.quad.light
+        .add(ShapeTool.data.getLight())
+        .AO.add(ShapeTool.data.getAO())
+        .uvs.add(ShapeTool.data.getUV()[0])
+        .overlayUVs.add(ShapeTool.data.getOverlayUV());
+};
 export const CrossedPanels = {
     id: "#dve_crossed_panels",
-    build(mesher) {
+    build() {
         topANIM = 0;
         bottomANIM = 0;
-        if (mesher.data.getSubstance() == "#dve_flora") {
-            if (mesher.data.isSameVoxel(mesher.data.x, mesher.data.y + 1, mesher.data.z)) {
+        if (ShapeTool.data.voxel.getSubstance() == "#dve_flora") {
+            if (ShapeTool.data.voxel.isSameVoxel(ShapeTool.data.voxel.x, ShapeTool.data.voxel.y + 1, ShapeTool.data.voxel.z)) {
                 topANIM = 3;
                 bottomANIM = 3;
             }
@@ -14,46 +22,38 @@ export const CrossedPanels = {
                 topANIM = 1;
             }
         }
-        mesher.quad.setDimensions(1, 1);
-        mesher.setTemplateIncrement(false).templateData.loadIn("top");
-        mesher.quad
+        ShapeTool.builder.quad.setDimensions(1, 1);
+        addData()
             .setDirection("north")
             .setFlipped(false)
-            .addData(1)
-            .setAnimationState([bottomANIM, bottomANIM, topANIM, topANIM])
+            .faceData.add(topANIM, topANIM, bottomANIM, bottomANIM)
             .updatePosition(0.5, 0.5, 1)
             .setTransform(1, 0, 0, -1)
             .setTransform(4, 0, 0, -1)
             .create()
             .clearTransform();
-        mesher.setTemplateIncrement(true).templateData.loadIn("top");
-        mesher.quad
+        addData()
             .setDirection("north")
             .setFlipped(false)
-            .addData(1)
-            .setAnimationState([bottomANIM, bottomANIM, topANIM, topANIM])
+            .faceData.add(topANIM, topANIM, bottomANIM, bottomANIM)
             .updatePosition(0.5, 0.5, 0)
             .setTransform(1, 0, 0, 1)
             .setTransform(4, 0, 0, 1)
             .create()
             .clearTransform();
-        mesher.setTemplateIncrement(false).templateData.loadIn("bottom");
-        mesher.quad
+        addData()
             .setDirection("south")
             .setFlipped(false)
-            .addData(1)
-            .setAnimationState([bottomANIM, bottomANIM, topANIM, topANIM])
+            .faceData.add(topANIM, topANIM, bottomANIM, bottomANIM)
             .updatePosition(0.5, 0.5, 0)
             .setTransform(1, 0, 0, 1)
             .setTransform(4, 0, 0, 1)
             .create()
             .clearTransform();
-        mesher.setTemplateIncrement(true).templateData.loadIn("bottom");
-        mesher.quad
+        addData()
             .setDirection("south")
             .setFlipped(false)
-            .addData(1)
-            .setAnimationState([bottomANIM, bottomANIM, topANIM, topANIM])
+            .faceData.add(topANIM, topANIM, bottomANIM, bottomANIM)
             .updatePosition(0.5, 0.5, 1)
             .setTransform(1, 0, 0, -1)
             .setTransform(4, 0, 0, -1)

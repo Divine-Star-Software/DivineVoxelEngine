@@ -31,7 +31,6 @@ export const SubstanceRules = {
    "#dve_solid",
    "#dve_liquid",
   ]);
-  SubstanceRules.registerSubstance("#dve_magma", ["#dve_solid", "#dve_magma"]);
  },
 
  exposedCheck(subject: string, neightborVoxel: string) {

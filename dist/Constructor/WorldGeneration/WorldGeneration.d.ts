@@ -1,5 +1,6 @@
 import type { WorldGenInterface } from "Meta/Interfaces/WorldGen/WorldGen.types";
 import type { GenerateTasks } from "Meta/Tasks/Tasks.types.js";
+import { WorldGenBrush } from "../Tools/WorldGenBrush.js";
 export declare const WorldGeneration: {
     worldGen: WorldGenInterface | null;
     register: {
@@ -28,8 +29,5 @@ export declare const WorldGeneration: {
     _brushes: any[];
     setWorldGen(worldGen: WorldGenInterface): void;
     generate(data: GenerateTasks, onDone: Function): void;
-    getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
-        requestsId: string;
-        paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
-    };
+    getBrush(): WorldGenBrush;
 };

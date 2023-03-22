@@ -4,6 +4,7 @@ import type { LocationData } from "voxelspaces";
 import { DimensionsRegister } from "../../Data/World/Dimensions/DimensionsRegister.js";
 import { LocationBoundTool } from "./LocationBoundTool.js";
 import { WorldDataTagIDs } from "../../Data/Constants/Tags/WorldDataTagIds.js";
+import { Position3Matrix, Vec3Array } from "Math/index.js";
 
 export abstract class DataToolBase extends LocationBoundTool {
  tags: RemoteTagManager;
@@ -55,7 +56,14 @@ export abstract class DataToolBase extends LocationBoundTool {
   this.setXYZ(x, y, z);
   return this.loadIn();
  }
-
+ loadInVec3Array(vec3: Vec3Array) {
+  this.setXYZ(vec3[0], vec3[1], vec3[2]);
+  return this.loadIn();
+ }
+ loadInVec3(vec3: Position3Matrix) {
+  this.setXYZ(vec3.x, vec3.y, vec3.z);
+  return this.loadIn();
+ }
  loadInAtLocation(location: LocationData) {
   this.setLocation(location);
   return this.loadIn();
@@ -85,7 +93,7 @@ export abstract class EncodedPositionDataTool extends DataToolBase {
 
  setDimensionId(dimensionId: string) {
   this.setTagValue(
-    WorldDataTagIDs.dimensionId,
+   WorldDataTagIDs.dimensionId,
    DimensionsRegister.getDimensionNumericId(dimensionId)
   );
  }

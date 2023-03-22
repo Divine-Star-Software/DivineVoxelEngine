@@ -1,92 +1,114 @@
-import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
-export const HalfBoxVoxelShape: VoxelShape = {
-  id: "#dve_half_box",
- build(mesher) {
-  mesher.quad.setDimensions(1, 1);
-  let animationState = 0;
-  if (mesher.data.getSubstance() == "#dve_flora") {
-   animationState = 3;
-  }
-  const shapeState = mesher.data.getShapeState();
-  let yAdd = 0;
-  if (shapeState == 1) {
-   yAdd = 0.5;
-  }
+import { ShapeTool } from "../../ShapeTool.js";
 
-  if (mesher.templateData.loadIn("top").isExposed()) {
-   mesher.quad
+export const HalfBoxVoxelShape = {
+ _createFace() {
+  ShapeTool.builder.quad
+   .setFlipped(ShapeTool.data.isFaceFlipped())
+   .AO.add(ShapeTool.data.getAO())
+   .light.add(ShapeTool.data.getLight())
+   .uvs.add(ShapeTool.data.getUV()[0])
+   .overlayUVs.add(ShapeTool.data.getOverlayUV())
+   .faceData.add(ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0)
+   .create()
+   .clear();
+ },
+ add: {
+  top() {
+   ShapeTool.builder.quad
     .setDirection("top")
-    .updatePosition(0.5, 0.5 + yAdd, 0.5)
-    .addData(4, animationState)
-    .create();
-  }
-  if (mesher.templateData.loadIn("bottom").isExposed()) {
-   mesher.quad
+    .setDimensions(1, 1)
+    .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 1, 0.5);
+   HalfBoxVoxelShape._createFace();
+  },
+  bottom() {
+   ShapeTool.builder.quad
     .setDirection("bottom")
-    .updatePosition(0.5, 0 + yAdd, 0.5)
-    .addData(4, animationState)
-    .create();
-  }
-
-  mesher.quad.setDimensions(1, 0.5).uvs.setWidth(0, 1).setHeight(0, 0.5);
-
-  if (mesher.templateData.loadIn("east").isExposed()) {
-   mesher.quad
-    .setDirection("east")
-    .updatePosition(1, 0.25 + yAdd, 0.5)
-    .addData(4, animationState)
-    .create();
-  }
-  if (mesher.templateData.loadIn("west").isExposed()) {
-   mesher.quad
-    .setDirection("west")
-    .updatePosition(0, 0.25 + yAdd, 0.5)
-    .addData(4, animationState)
-    .create();
-  }
-  if (mesher.templateData.loadIn("south").isExposed()) {
-   mesher.quad
-    .setDirection("south")
-    .updatePosition(0.5, 0.25 + yAdd, 0)
-    .addData(4, animationState)
-    .create();
-  }
-  if (mesher.templateData.loadIn("north").isExposed()) {
-   mesher.quad
+    .setDimensions(1, 1)
+    .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0 : 0.5, 0.5);
+   HalfBoxVoxelShape._createFace();
+  },
+  north() {
+   ShapeTool.builder.quad
     .setDirection("north")
-    .updatePosition(0.5, 0.25 + yAdd, 1)
-    .addData(4, animationState)
-    .create();
-  }
+    .setDimensions(1, 0.5)
+    .uvs.setHeight(0.5, 1)
+    .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 1);
+   HalfBoxVoxelShape._createFace();
+  },
+  south() {
+   ShapeTool.builder.quad
+    .setDirection("south")
+    .setDimensions(1, 0.5)
+    .uvs.setHeight(0.5, 1)
+    .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0);
+   HalfBoxVoxelShape._createFace();
+  },
+  east() {
+   ShapeTool.builder.quad
+    .setDirection("east")
+    .setDimensions(1, 0.5)
+    .uvs.setHeight(0.5, 1)
+    .updatePosition(1, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
+   HalfBoxVoxelShape._createFace();
+  },
+  west() {
+   ShapeTool.builder.quad
+    .setDirection("west")
+    .setDimensions(1, 0.5)
+    .uvs.setWidth(0, 1)
+    .uvs.setHeight(0.5, 1)
+    .updatePosition(0, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
+   HalfBoxVoxelShape._createFace();
+  },
  },
 };
 
 //cullface
-OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_panel", (data) => {
- return false;
-});
-OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_box", (data) => {
- if (data.face == "bottom") {
-  if (data.currentVoxel.getShapeState() == 0) {
-   return false;
-  }
+OverrideManager.registerOverride(
+ "CullFace",
+ "#dve_half_box",
+ "#dve_panel",
+ (data) => {
+  return false;
  }
- if (data.face == "top") {
-  if (data.currentVoxel.getShapeState() == 1) {
-   return false;
+);
+OverrideManager.registerOverride(
+ "CullFace",
+ "#dve_half_box",
+ "#dve_box",
+ (data) => {
+  if (data.face == "bottom") {
+   if (data.currentVoxel.getShapeState() == 0) {
+    return false;
+   }
   }
- }
+  if (data.face == "top") {
+   if (data.currentVoxel.getShapeState() == 1) {
+    return false;
+   }
+  }
 
- return true;
-});
-OverrideManager.registerOverride("CullFace", "#dve_half_box", "#dve_stair", (data) => {
- return data.default;
-});
+  return true;
+ }
+);
+OverrideManager.registerOverride(
+ "CullFace",
+ "#dve_half_box",
+ "#dve_stair",
+ (data) => {
+  return data.default;
+ }
+);
 //AO
-OverrideManager.registerOverride("AO", "#dve_half_box", "#dve_panel", (data) => {
- return false;
-});
+OverrideManager.registerOverride(
+ "AO",
+ "#dve_half_box",
+ "#dve_panel",
+ (data) => {
+  return false;
+ }
+);
 OverrideManager.registerOverride("AO", "#dve_half_box", "#dve_box", (data) => {
  const shapeState = data.currentVoxel.getShapeState();
  if (shapeState == 1) {

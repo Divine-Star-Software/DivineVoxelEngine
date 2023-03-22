@@ -1,146 +1,161 @@
 //types
-import type {
- VoxelShapeAddData,
- VoxelShape,
-} from "Meta/Constructor/VoxelShape.types";
-import type { TextureRotations } from "Meta/Constructor/Geometry/Geometry.types.js";
-//objects
+import { TextureRotations } from "../../../Types/Geometry.types.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
-export const LiquidVoxelShape: VoxelShape = {
+import { ShapeTool } from "../../ShapeTool.js";
+//objects
+const addData = () => {
+ return ShapeTool.builder.quad
+  .setFlipped(ShapeTool.data.isFaceFlipped())
+  .light.add(ShapeTool.data.getLight())
+  .uvs.add(ShapeTool.data.getUV()[0])
+  .overlayUVs.add(ShapeTool.data.getOverlayUV())
+  .faceData.add(flowAnimationState);
+};
+let flowTemplate: number[] = [];
+let topFaceExposed = false;
+let flowAnimationState = 0;
+export const LiquidVoxelShape = {
  id: "#dve_liquid",
- build(mesher) {
-  const data = mesher._data;
-  mesher.quad.setDimensions(1, 1);
+
+ start() {
+  vertexLevels.v1l = 0;
+  vertexLevels.v2l = 0;
+  vertexLevels.v3l = 0;
+  vertexLevels.v4l = 0;
+  vertexLevels.v1v = 0;
+  vertexLevels.v2v = 0;
+  vertexLevels.v3v = 0;
+  vertexLevels.v4v = 0;
+  topFaceExposed = false;
+
+  ShapeTool.builder.quad.setDimensions(1, 1).uvs.setRoation(0);
   flowAnimationState = 0;
-  let topFaceExposed = false;
-  if (mesher.templateData.loadIn("top").isExposed()) {
-   calculateVertexLevels(data);
+  flowTemplate = [15,15,15,15];
+ },
+
+ add: {
+  top() {
    topFaceExposed = true;
-   const angle = getAngle(data);
-   mesher.quad
+   
+   ShapeTool.data.calculateFlow();
+   flowTemplate = ShapeTool.data.getLevel();
+   calculateVertexLevels();
+
+   ShapeTool.builder.quad
     .setTransform(1, 0, vertexLevels.v1v, 0)
     .setTransform(2, 0, vertexLevels.v2v, 0)
     .setTransform(3, 0, vertexLevels.v3v, 0)
     .setTransform(4, 0, vertexLevels.v4v, 0)
-    .uvs.setRoation(angle);
+    .uvs.setRoation(getAngle());
 
-   mesher.quad
+   addData()
     .setDirection("top")
     .updatePosition(0.5, 1, 0.5)
-    .addData(4, flowAnimationState, false)
     .create()
     .clearTransform()
-    .uvs.setRoation(0);
-  }
+    .uvs.clear();
+  },
 
-  if (mesher.templateData.loadIn("bottom").isExposed()) {
-   mesher.quad
+  bottom() {
+   flowAnimationState = 0;
+   addData()
     .setDirection("bottom")
     .updatePosition(0.5, 0, 0.5)
-    .addData(4, flowAnimationState, false)
-    .create();
-  }
+    .create()
+    .clearTransform()
+    .uvs.clear();
+  },
 
-  flowAnimationState = 1;
-  mesher.quad.uvs.setRoation(0);
-  if (mesher.templateData.loadIn("east").isExposed()) {
-   mesher.quad
-    .setDirection("east")
-    .updatePosition(1, 0.5, 0.5)
-    .setTransform(1, 0, vertexLevels.v4v, 0)
-    .setTransform(2, 0, vertexLevels.v3v, 0)
-    .light.add()
-    .oUVS.add()
-    .setAnimationState(flowAnimationState)
-    .create()
-    .clearTransform();
-   if (topFaceExposed) {
-    mesher.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v4v);
-    mesher.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v3v);
-    mesher.quad.uvs.addAdvancedUVs().resetAdvancedUVs();
-   } else {
-    mesher.quad.uvs.add();
-   }
-  }
-  if (mesher.templateData.loadIn("west").isExposed()) {
-   mesher.quad
-    .setDirection("west")
-    .updatePosition(0, 0.5, 0.5)
-    .setTransform(1, 0, vertexLevels.v2v, 0)
-    .setTransform(2, 0, vertexLevels.v1v, 0)
-    .light.add()
-    .oUVS.add()
-    .setAnimationState(flowAnimationState)
-    .create()
-    .clearTransform();
-   if (topFaceExposed) {
-    mesher.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v2v);
-    mesher.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v1v);
-    mesher.quad.uvs.addAdvancedUVs().resetAdvancedUVs();
-   } else {
-    mesher.quad.uvs.add();
-   }
-  }
-  if (mesher.templateData.loadIn("south").isExposed()) {
-   mesher.quad
-    .setDirection("south")
-    .updatePosition(0.5, 0.5, 0)
-    .setTransform(1, 0, vertexLevels.v1v, 0)
-    .setTransform(2, 0, vertexLevels.v4v, 0)
-    .light.add()
-    .oUVS.add()
-    .setAnimationState(flowAnimationState)
-    .create()
-    .clearTransform();
-   if (topFaceExposed) {
-    mesher.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v1v);
-    mesher.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v4v);
-    mesher.quad.uvs.addAdvancedUVs().resetAdvancedUVs();
-   } else {
-    mesher.quad.uvs.add();
-   }
-  }
-  if (mesher.templateData.loadIn("north").isExposed()) {
-   mesher.quad
+  north() {
+   ShapeTool.builder.quad
     .setDirection("north")
     .updatePosition(0.5, 0.5, 1)
     .setTransform(1, 0, vertexLevels.v3v, 0)
     .setTransform(2, 0, vertexLevels.v2v, 0)
-    .light.add()
-    .oUVS.add()
-    .setAnimationState(flowAnimationState)
-    .create()
-    .clearTransform();
+    .light.add(ShapeTool.data.getLight())
+    .overlayUVs.add(ShapeTool.data.getOverlayUV())
+    .faceData.add(1);
    if (topFaceExposed) {
-    mesher.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v3v);
-    mesher.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v2v);
-    mesher.quad.uvs.addAdvancedUVs().resetAdvancedUVs();
+    ShapeTool.builder.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v3v);
+    ShapeTool.builder.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v2v);
+    ShapeTool.builder.quad.uvs.addAdvancedUVs(ShapeTool.data.getUV()[0]);
    } else {
-    mesher.quad.uvs.add();
+    ShapeTool.builder.quad.uvs.add(ShapeTool.data.getUV()[0]);
    }
-  }
+   ShapeTool.builder.quad.create().clearTransform().uvs.clear();
+  },
 
-  clearVertexLevels(data);
+  south() {
+   ShapeTool.builder.quad
+    .setDirection("south")
+    .updatePosition(0.5, 0.5, 0)
+    .setTransform(1, 0, vertexLevels.v1v, 0)
+    .setTransform(2, 0, vertexLevels.v4v, 0)
+    .light.add(ShapeTool.data.getLight())
+    .overlayUVs.add(ShapeTool.data.getOverlayUV())
+    .faceData.add(1);
+   if (topFaceExposed) {
+    ShapeTool.builder.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v1v);
+    ShapeTool.builder.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v4v);
+    ShapeTool.builder.quad.uvs.addAdvancedUVs(ShapeTool.data.getUV()[0]);
+   } else {
+    ShapeTool.builder.quad.uvs.add(ShapeTool.data.getUV()[0]);
+   }
+   ShapeTool.builder.quad.create().clearTransform().uvs.clear();
+  },
+
+  east() {
+    ShapeTool.builder.quad
+    .setDirection("east")
+    .updatePosition(1, 0.5, 0.5)
+    .setTransform(1, 0, vertexLevels.v4v, 0)
+    .setTransform(2, 0, vertexLevels.v3v, 0)
+    .light.add(ShapeTool.data.getLight())
+    .overlayUVs.add(ShapeTool.data.getOverlayUV())
+    .faceData.add(1);
+   if (topFaceExposed) {
+    ShapeTool.builder.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v4v);
+    ShapeTool.builder.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v3v);
+    ShapeTool.builder.quad.uvs.addAdvancedUVs(ShapeTool.data.getUV()[0]);
+   } else {
+    ShapeTool.builder.quad.uvs.add(ShapeTool.data.getUV()[0]);
+   }
+   ShapeTool.builder.quad.create().clearTransform().uvs.clear();
+  },
+
+  west() {
+   ShapeTool.builder.quad
+    .setDirection("west")
+    .updatePosition(0, 0.5, 0.5)
+    .setTransform(1, 0, vertexLevels.v2v, 0)
+    .setTransform(2, 0, vertexLevels.v1v, 0)
+    .light.add(ShapeTool.data.getLight())
+    .overlayUVs.add(ShapeTool.data.getOverlayUV())
+    .faceData.add(1);
+   if (topFaceExposed) {
+    ShapeTool.builder.quad.uvs.advancedUVs.hs1 = Math.abs(vertexLevels.v2v);
+    ShapeTool.builder.quad.uvs.advancedUVs.hs2 = Math.abs(vertexLevels.v1v);
+    ShapeTool.builder.quad.uvs.addAdvancedUVs(ShapeTool.data.getUV()[0]);
+   } else {
+    ShapeTool.builder.quad.uvs.add(ShapeTool.data.getUV()[0]);
+   }
+   ShapeTool.builder.quad.create().clearTransform().uvs.clear();
+  },
  },
 };
 
-OverrideManager.registerOverride(
- "CullFace",
- "#dve_liquid",
- "Any",
- (data) => {
-  if (
-   data.face == "top" &&
-   data.neighborVoxel.getSubstance() != "#dve_liquid" &&
-   data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()
-  ) {
-   return true;
-  }
-
-  return data.default;
+OverrideManager.registerOverride("CullFace", "#dve_liquid", "Any", (data) => {
+ if (
+  data.face == "top" &&
+  data.neighborVoxel.getSubstance() != "#dve_liquid" &&
+  data.currentVoxel.getStringId() != data.neighborVoxel.getStringId()
+ ) {
+  return true;
  }
-);
-let flowAnimationState = 0;
+
+ return data.default;
+});
+
 const vertexLevels = {
  v1l: 0,
  v2l: 0,
@@ -153,8 +168,8 @@ const vertexLevels = {
  v4v: 0,
 };
 
-const getAngle = (data: VoxelShapeAddData): TextureRotations => {
- if (sourceBlockTest(data)) {
+const getAngle = (): TextureRotations => {
+ if (sourceBlockTest()) {
   flowAnimationState = 0;
   return 0;
  }
@@ -213,43 +228,26 @@ const getAngle = (data: VoxelShapeAddData): TextureRotations => {
  return 0;
 };
 
-const sourceBlockTest = (data: VoxelShapeAddData) => {
- if (data.flowTemplate && data.flowTemplateIndex != undefined) {
-  if (
-   data.flowTemplate[data.flowTemplateIndex] == 15 &&
-   data.flowTemplate[data.flowTemplateIndex + 1] == 15 &&
-   data.flowTemplate[data.flowTemplateIndex + 2] == 15 &&
-   data.flowTemplate[data.flowTemplateIndex + 3] == 15
-  ) {
-   return true;
-  }
+const sourceBlockTest = () => {
+ if (
+  flowTemplate[0] == 15 &&
+  flowTemplate[1] == 15 &&
+  flowTemplate[2] == 15 &&
+  flowTemplate[3] == 15
+ ) {
+  return true;
  }
 
  return false;
 };
 
-const calculateVertexLevels = (data: VoxelShapeAddData) => {
- if (data.flowTemplate && data.flowTemplateIndex != undefined) {
-  vertexLevels.v1l = data.flowTemplate[data.flowTemplateIndex];
-  vertexLevels.v2l = data.flowTemplate[data.flowTemplateIndex + 1];
-  vertexLevels.v3l = data.flowTemplate[data.flowTemplateIndex + 2];
-  vertexLevels.v4l = data.flowTemplate[data.flowTemplateIndex + 3];
-  vertexLevels.v1v = vertexLevels.v1l / 15 - 1;
-  vertexLevels.v2v = vertexLevels.v2l / 15 - 1;
-  vertexLevels.v3v = vertexLevels.v3l / 15 - 1;
-  vertexLevels.v4v = vertexLevels.v4l / 15 - 1;
- }
-};
-
-const clearVertexLevels = (data: VoxelShapeAddData) => {
- if (data.flowTemplate && data.flowTemplateIndex != undefined) {
-  vertexLevels.v1l = 0;
-  vertexLevels.v2l = 0;
-  vertexLevels.v3l = 0;
-  vertexLevels.v4l = 0;
-  vertexLevels.v1v = 0;
-  vertexLevels.v2v = 0;
-  vertexLevels.v3v = 0;
-  vertexLevels.v4v = 0;
- }
+const calculateVertexLevels = () => {
+ vertexLevels.v1l = flowTemplate[0];
+ vertexLevels.v2l = flowTemplate[1];
+ vertexLevels.v3l = flowTemplate[2];
+ vertexLevels.v4l = flowTemplate[3];
+ vertexLevels.v1v = vertexLevels.v1l / 15 - 1;
+ vertexLevels.v2v = vertexLevels.v2l / 15 - 1;
+ vertexLevels.v3v = vertexLevels.v3l / 15 - 1;
+ vertexLevels.v4v = vertexLevels.v4l / 15 - 1;
 };

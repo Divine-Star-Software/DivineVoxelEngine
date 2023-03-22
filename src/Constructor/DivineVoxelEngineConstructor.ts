@@ -11,17 +11,17 @@ import { Analyzer } from "./Analyzer/Analyzer.js";
 //data
 import { DataManager } from "../Data/DataManager.js";
 import { DataSyncNode } from "../Data/DataSyncNode.js";
-import { VoxelConstructors } from "./Builder/Constructors/Voxel/VoxelConstructors.js";
+import { VoxelConstructors } from "./Builder/Constructors/VoxelConstructors.js";
 //threadcomm
 import { ThreadComm } from "threadcomm";
 import { WorldComm, ParentComm } from "./Threads/ConstrcutorTheads.js";
 import { Tasks } from "./Tasks/ConstructorTasks.js";
 //functions
 import { InitWorker } from "./Init/InitWorker.js";
-import { GetConstructorDataTool } from "./Tools/Data/ConstructorDataTool.js";
 import { ConstructorHooks } from "./Hooks/ConstructorHooks.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { TasksRequest } from "./Tasks/TasksRequest.js";
+import { DataTool } from "../Tools/Data/DataTool.js";
 
 
 export const DVEC = {
@@ -54,7 +54,7 @@ export const DVEC = {
  },
 
  getDataTool() {
-  return GetConstructorDataTool();
+  return new DataTool();
  },
  getRichDataTool() {
     return new RichDataTool();

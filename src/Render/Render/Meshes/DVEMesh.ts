@@ -103,6 +103,7 @@ export class DVEMesh {
   mesh.position.y = location[2];
   mesh.position.z = location[3];
 
+
   const chunkVertexData: VertexData = (mesh as any).vertexData;
   chunkVertexData.positions = data[1];
   chunkVertexData.normals = data[2];

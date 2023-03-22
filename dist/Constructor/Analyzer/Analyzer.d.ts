@@ -1,5 +1,6 @@
 import type { UpdateTasksO } from "Meta/Tasks/Tasks.types.js";
 import type { LocationData } from "voxelspaces";
+import { DataTool } from "../../Tools/Data/DataTool.js";
 export declare const Analyzer: {
     updater: {
         _voxels: Map<string, (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
@@ -60,7 +61,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -101,7 +102,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -115,7 +116,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -154,7 +155,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -166,7 +167,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -205,7 +206,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -219,7 +220,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -239,7 +240,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -253,7 +254,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -281,7 +282,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -293,7 +294,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -321,7 +322,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -335,7 +336,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -363,7 +364,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -375,7 +376,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -403,7 +404,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -438,12 +439,32 @@ export declare const Analyzer: {
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
-                getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
-                    requestsId: string;
-                    paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
-                };
+                getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
+                constructors: {
+                    constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                    get(id: string): import("../index.js").VoxelConstructor;
+                    registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
+                    defaults: {
+                        box: {
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        };
+                        stair: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        };
+                        panel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        };
+                        crossedPanel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        };
+                        liquid: {
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        };
+                    };
+                };
                 textureManager: {
                     textureDataHasBeenSet: boolean;
                     data: import("../../index.js").TextureTypeUVMap;
@@ -452,119 +473,27 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                shapeManager: {
-                    shapes: Map<string, import("../../index.js").VoxelShape>;
-                    shapeCount: number;
-                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../index.js").VoxelShape;
-                };
-                chunkMesher: {
-                    voxelBuildOrder: string[];
-                    buildChunkMesh(location: LocationData, template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>, LOD?: number): void;
-                };
                 processor: {
-                    LOD: number;
-                    mDataTool: import("../../index.js").ConstructorDataTool;
-                    nDataTool: import("../../index.js").ConstructorDataTool;
-                    faceByte: {
-                        _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
-                        _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                    relative: {
+                        x: number;
+                        y: number;
+                        z: number;
                     };
-                    lightData: {
-                        SRS: number;
-                        _lightValues: [s: number, r: number, g: number, b: number];
-                        getS(value: number): number;
-                        getR(value: number): number;
-                        getG(value: number): number;
-                        getB(value: number): number;
-                        setS(value: number, sl: number): number;
-                        setR(value: number, sl: number): number;
-                        setG(value: number, sl: number): number;
-                        setB(value: number, sl: number): number;
-                        removeS(sl: number): number;
-                        hasRGBLight(sl: number): boolean;
-                        hasSunLight(sl: number): boolean;
-                        mixLight(l1: number, l2: number): number;
-                        getRGB(sl: number): number;
-                        setRGB(value: number, sl: number): number;
-                        decodeLightFromVoxelData(voxelData: number): number;
-                        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                        setLightValues(values: number[]): number;
-                        getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                        isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                        isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                        isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                        getMinusOneForRGB(sl: number, nl: number): number;
-                        removeRGBLight(sl: number): number;
-                        getFullSunLight(sl: number): number;
-                        isLessThanForSunAdd(n1: number, n2: number): boolean;
-                        isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                        isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                        getSunLightForUnderVoxel(sl: number, nl: number): number;
-                        getMinusOneForSun(sl: number, nl: number): number;
-                        isLessThanForSunRemove(n1: number, sl: number): boolean;
-                        isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                        sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                        removeSunLight(sl: number): number;
-                        minusOneForAll(sl: number): number;
-                    };
-                    calculatFlow: typeof import("../Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
-                    voxellightMixCalc: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
-                    doVoxelLight: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
                     nLocation: LocationData;
-                    exposedFaces: number[];
-                    faceStates: number[];
-                    textureRotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations[];
-                    settings: {
-                        doAO: boolean;
-                        doSun: boolean;
-                        doRGB: boolean;
-                        ignoreSun: boolean;
-                        entity: boolean;
-                        composedEntity: number;
-                    };
-                    faceDataOverride: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride;
-                    template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
-                    $INIT(): void;
-                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
-                    makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                    flush(): void;
-                };
-                substanceRules: {
-                    rules: Map<string, Map<string, boolean>>;
-                    parents: Map<string, string>;
-                    registerSubstance(id: string, substanceCulls?: string[] | undefined, parentId?: string | undefined): void;
-                    $INIT(): void;
-                    exposedCheck(subject: string, neightborVoxel: string): boolean;
-                    getSubstanceParent(id: string): string;
+                    build(location: LocationData): void;
                 };
                 overrides: {
-                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
-                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
-                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../index.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../index.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../index.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../index.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../index.js").FaceDataOverride): boolean;
                 };
-                dimension: number;
-                $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                buildChunk(location: LocationData, LOD?: number): true | undefined;
-                constructEntity(): void;
+                renderedSubstances: {
+                    meshers: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../Builder/Tools/VoxelMesherDataTool.js").VoxelMesherDataTool>;
+                };
+                $INIT(): void;
+                buildChunk(location: LocationData, LOD?: number): boolean;
             };
             analyzer: any;
             dataSyncNode: {
@@ -622,7 +551,7 @@ export declare const Analyzer: {
                 world: {
                     _currentionDimension: string;
                     paint: {
-                        _dt: import("../../Tools/Data/DataTool.js").DataTool;
+                        _dt: DataTool;
                         voxel(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                         __paint(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                         erase(location: LocationData): void;
@@ -782,23 +711,29 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../index.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
+                constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                get(id: string): import("../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                    };
+                    stair: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                    };
+                    crossedPanel: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -875,7 +810,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -903,7 +838,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -915,7 +850,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -954,7 +889,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -966,7 +901,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1005,7 +940,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1017,7 +952,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1037,7 +972,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1049,7 +984,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1090,14 +1025,14 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
                 };
             };
             $INIT(): Promise<void>;
-            getDataTool(): import("../../index.js").ConstructorDataTool;
+            getDataTool(): DataTool;
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
@@ -1158,7 +1093,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1199,7 +1134,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1213,7 +1148,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1252,7 +1187,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1264,7 +1199,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1303,7 +1238,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1317,7 +1252,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1337,7 +1272,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1351,7 +1286,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1379,7 +1314,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1391,7 +1326,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1419,7 +1354,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1433,7 +1368,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1461,7 +1396,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1473,7 +1408,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1501,7 +1436,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1536,12 +1471,32 @@ export declare const Analyzer: {
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
-                getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
-                    requestsId: string;
-                    paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
-                };
+                getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
+                constructors: {
+                    constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                    get(id: string): import("../index.js").VoxelConstructor;
+                    registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
+                    defaults: {
+                        box: {
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        };
+                        stair: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        };
+                        panel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        };
+                        crossedPanel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        };
+                        liquid: {
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        };
+                    };
+                };
                 textureManager: {
                     textureDataHasBeenSet: boolean;
                     data: import("../../index.js").TextureTypeUVMap;
@@ -1550,119 +1505,27 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                shapeManager: {
-                    shapes: Map<string, import("../../index.js").VoxelShape>;
-                    shapeCount: number;
-                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../index.js").VoxelShape;
-                };
-                chunkMesher: {
-                    voxelBuildOrder: string[];
-                    buildChunkMesh(location: LocationData, template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>, LOD?: number): void;
-                };
                 processor: {
-                    LOD: number;
-                    mDataTool: import("../../index.js").ConstructorDataTool;
-                    nDataTool: import("../../index.js").ConstructorDataTool;
-                    faceByte: {
-                        _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
-                        _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                    relative: {
+                        x: number;
+                        y: number;
+                        z: number;
                     };
-                    lightData: {
-                        SRS: number;
-                        _lightValues: [s: number, r: number, g: number, b: number];
-                        getS(value: number): number;
-                        getR(value: number): number;
-                        getG(value: number): number;
-                        getB(value: number): number;
-                        setS(value: number, sl: number): number;
-                        setR(value: number, sl: number): number;
-                        setG(value: number, sl: number): number;
-                        setB(value: number, sl: number): number;
-                        removeS(sl: number): number;
-                        hasRGBLight(sl: number): boolean;
-                        hasSunLight(sl: number): boolean;
-                        mixLight(l1: number, l2: number): number;
-                        getRGB(sl: number): number;
-                        setRGB(value: number, sl: number): number;
-                        decodeLightFromVoxelData(voxelData: number): number;
-                        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                        setLightValues(values: number[]): number;
-                        getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                        isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                        isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                        isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                        getMinusOneForRGB(sl: number, nl: number): number;
-                        removeRGBLight(sl: number): number;
-                        getFullSunLight(sl: number): number;
-                        isLessThanForSunAdd(n1: number, n2: number): boolean;
-                        isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                        isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                        getSunLightForUnderVoxel(sl: number, nl: number): number;
-                        getMinusOneForSun(sl: number, nl: number): number;
-                        isLessThanForSunRemove(n1: number, sl: number): boolean;
-                        isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                        sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                        removeSunLight(sl: number): number;
-                        minusOneForAll(sl: number): number;
-                    };
-                    calculatFlow: typeof import("../Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
-                    voxellightMixCalc: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
-                    doVoxelLight: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
                     nLocation: LocationData;
-                    exposedFaces: number[];
-                    faceStates: number[];
-                    textureRotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations[];
-                    settings: {
-                        doAO: boolean;
-                        doSun: boolean;
-                        doRGB: boolean;
-                        ignoreSun: boolean;
-                        entity: boolean;
-                        composedEntity: number;
-                    };
-                    faceDataOverride: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride;
-                    template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
-                    $INIT(): void;
-                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
-                    makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                    flush(): void;
-                };
-                substanceRules: {
-                    rules: Map<string, Map<string, boolean>>;
-                    parents: Map<string, string>;
-                    registerSubstance(id: string, substanceCulls?: string[] | undefined, parentId?: string | undefined): void;
-                    $INIT(): void;
-                    exposedCheck(subject: string, neightborVoxel: string): boolean;
-                    getSubstanceParent(id: string): string;
+                    build(location: LocationData): void;
                 };
                 overrides: {
-                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
-                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
-                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../index.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../index.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../index.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../index.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../index.js").FaceDataOverride): boolean;
                 };
-                dimension: number;
-                $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                buildChunk(location: LocationData, LOD?: number): true | undefined;
-                constructEntity(): void;
+                renderedSubstances: {
+                    meshers: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../Builder/Tools/VoxelMesherDataTool.js").VoxelMesherDataTool>;
+                };
+                $INIT(): void;
+                buildChunk(location: LocationData, LOD?: number): boolean;
             };
             analyzer: any;
             dataSyncNode: {
@@ -1720,7 +1583,7 @@ export declare const Analyzer: {
                 world: {
                     _currentionDimension: string;
                     paint: {
-                        _dt: import("../../Tools/Data/DataTool.js").DataTool;
+                        _dt: DataTool;
                         voxel(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                         __paint(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                         erase(location: LocationData): void;
@@ -1880,23 +1743,29 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../index.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
+                constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                get(id: string): import("../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                    };
+                    stair: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                    };
+                    crossedPanel: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -1973,7 +1842,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2001,7 +1870,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2013,7 +1882,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2052,7 +1921,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2064,7 +1933,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2103,7 +1972,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2115,7 +1984,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2135,7 +2004,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2147,7 +2016,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2188,14 +2057,14 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
                 };
             };
             $INIT(): Promise<void>;
-            getDataTool(): import("../../index.js").ConstructorDataTool;
+            getDataTool(): DataTool;
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
@@ -2256,7 +2125,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2297,7 +2166,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2311,7 +2180,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2350,7 +2219,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2362,7 +2231,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2401,7 +2270,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2415,7 +2284,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2435,7 +2304,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2449,7 +2318,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2477,7 +2346,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2489,7 +2358,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2517,7 +2386,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2531,7 +2400,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2559,7 +2428,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2571,7 +2440,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "async" | "sync";
+                        buildMode: "sync" | "async";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2599,7 +2468,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "async" | "sync"): any;
+                        setBuldMode(mode: "sync" | "async"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2634,12 +2503,32 @@ export declare const Analyzer: {
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
                 generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
-                getBrush(): import("../../Tools/Brush/Brush.js").BrushTool & {
-                    requestsId: string;
-                    paint(this: import("../../Tools/Brush/Brush.js").BrushTool): import("../../Tools/Brush/Brush.js").BrushTool;
-                };
+                getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
+                constructors: {
+                    constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                    get(id: string): import("../index.js").VoxelConstructor;
+                    registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
+                    defaults: {
+                        box: {
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        };
+                        stair: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        };
+                        panel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        };
+                        crossedPanel: {
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        };
+                        liquid: {
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        };
+                    };
+                };
                 textureManager: {
                     textureDataHasBeenSet: boolean;
                     data: import("../../index.js").TextureTypeUVMap;
@@ -2648,119 +2537,27 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                shapeManager: {
-                    shapes: Map<string, import("../../index.js").VoxelShape>;
-                    shapeCount: number;
-                    registerShape(shapeObject: import("../../index.js").VoxelShape): void;
-                    getShape(shapeId: string): import("../../index.js").VoxelShape;
-                };
-                chunkMesher: {
-                    voxelBuildOrder: string[];
-                    buildChunkMesh(location: LocationData, template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>, LOD?: number): void;
-                };
                 processor: {
-                    LOD: number;
-                    mDataTool: import("../../index.js").ConstructorDataTool;
-                    nDataTool: import("../../index.js").ConstructorDataTool;
-                    faceByte: {
-                        _rotationMap: Record<import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, number>;
-                        _rotationReverseMap: Record<number, import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations>;
-                        _setFaceTextureState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceTextureState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _setFaceRotateState: Record<import("../../index.js").DirectionNames, (state: number, faceBit: number) => number>;
-                        _getFaceRotateState: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _markExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => number>;
-                        _checkExposedFace: Record<import("../../index.js").DirectionNames, (faceBit: number) => boolean>;
-                        markFaceAsExposed(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        isFaceExposed(direction: import("../../index.js").DirectionNames, rawData: number): boolean;
-                        setFaceRotateState(direction: import("../../index.js").DirectionNames, state: number, rawData: number): number;
-                        getFaceRotateState(direction: import("../../index.js").DirectionNames, rawData: number): number;
-                        setFaceTextureState(direction: import("../../index.js").DirectionNames, rotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations, rawData: number): number;
-                        getFaceTextureState(direction: import("../../index.js").DirectionNames, rawData: number): import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations;
+                    relative: {
+                        x: number;
+                        y: number;
+                        z: number;
                     };
-                    lightData: {
-                        SRS: number;
-                        _lightValues: [s: number, r: number, g: number, b: number];
-                        getS(value: number): number;
-                        getR(value: number): number;
-                        getG(value: number): number;
-                        getB(value: number): number;
-                        setS(value: number, sl: number): number;
-                        setR(value: number, sl: number): number;
-                        setG(value: number, sl: number): number;
-                        setB(value: number, sl: number): number;
-                        removeS(sl: number): number;
-                        hasRGBLight(sl: number): boolean;
-                        hasSunLight(sl: number): boolean;
-                        mixLight(l1: number, l2: number): number;
-                        getRGB(sl: number): number;
-                        setRGB(value: number, sl: number): number;
-                        decodeLightFromVoxelData(voxelData: number): number;
-                        encodeLightIntoVoxelData(voxelData: number, encodedLight: number): number;
-                        setLightValues(values: number[]): number;
-                        getLightValues(value: number): [s: number, r: number, g: number, b: number];
-                        isLessThanForRGBRemove(n1: number, n2: number): boolean;
-                        isLessThanForRGBAdd(n1: number, n2: number): boolean;
-                        isGreaterOrEqualThanForRGBRemove(n1: number, n2: number): boolean;
-                        getMinusOneForRGB(sl: number, nl: number): number;
-                        removeRGBLight(sl: number): number;
-                        getFullSunLight(sl: number): number;
-                        isLessThanForSunAdd(n1: number, n2: number): boolean;
-                        isLessThanForSunAddDown(n1: number, n2: number): boolean;
-                        isLessThanForSunAddUp(n1: number, n2: number): boolean;
-                        getSunLightForUnderVoxel(sl: number, nl: number): number;
-                        getMinusOneForSun(sl: number, nl: number): number;
-                        isLessThanForSunRemove(n1: number, sl: number): boolean;
-                        isGreaterOrEqualThanForSunRemove(n1: number, sl: number): boolean;
-                        sunLightCompareForDownSunRemove(n1: number, sl: number): boolean;
-                        removeSunLight(sl: number): number;
-                        minusOneForAll(sl: number): number;
-                    };
-                    calculatFlow: typeof import("../Builder/Processor/Functions/CalculateFlow.js").CalculateFlow;
-                    voxellightMixCalc: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").VoxelLightMixCalc;
-                    doVoxelLight: typeof import("../Builder/Processor/Functions/CalculateVoxelLight.js").CalculateVoxelLight;
                     nLocation: LocationData;
-                    exposedFaces: number[];
-                    faceStates: number[];
-                    textureRotation: import("../../Meta/Constructor/Geometry/Geometry.types.js").TextureRotations[];
-                    settings: {
-                        doAO: boolean;
-                        doSun: boolean;
-                        doRGB: boolean;
-                        ignoreSun: boolean;
-                        entity: boolean;
-                        composedEntity: number;
-                    };
-                    faceDataOverride: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride;
-                    template: Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    getVoxelTemplate(): import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate;
-                    $INIT(): void;
-                    cullCheck(face: import("../../index.js").DirectionNames, voxelObject: import("../../index.js").VoxelConstructor, voxelShape: import("../../index.js").VoxelShape, voxelSubstance: string, faceBit: number): number;
-                    faceStateCheck(face: import("../../index.js").DirectionNames, faceBit: number): number;
                     _process(doSecondCheck?: boolean): void;
-                    makeAllChunkTemplates(location: LocationData, LOD?: number): Record<string, import("../../Meta/Constructor/VoxelTemplate.types.js").VoxelTemplate>;
-                    syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                    flush(): void;
-                };
-                substanceRules: {
-                    rules: Map<string, Map<string, boolean>>;
-                    parents: Map<string, string>;
-                    registerSubstance(id: string, substanceCulls?: string[] | undefined, parentId?: string | undefined): void;
-                    $INIT(): void;
-                    exposedCheck(subject: string, neightborVoxel: string): boolean;
-                    getSubstanceParent(id: string): string;
+                    build(location: LocationData): void;
                 };
                 overrides: {
-                    overrides: Record<import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, Map<string, Map<string, (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean>>>;
-                    registerOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride) => boolean): void;
-                    hasOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
-                    runOverride(type: import("../../Meta/Constructor/OverRide.types.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../../Meta/Constructor/OverRide.types.js").FaceDataOverride): boolean;
+                    overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
+                    registerOverride(type: import("../index.js").OverrideTypes, subjectId: string, neighborShapeId: string, run: (data: import("../index.js").FaceDataOverride) => boolean): void;
+                    hasOverride(type: import("../index.js").OverrideTypes, shapeId: string, neighborShapeId: string): boolean;
+                    runOverride(type: import("../index.js").OverrideTypes, firstId: string, secondOverride: string, data: import("../index.js").FaceDataOverride): boolean;
                 };
-                dimension: number;
-                $INIT(): Promise<void>;
-                syncSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-                buildChunk(location: LocationData, LOD?: number): true | undefined;
-                constructEntity(): void;
+                renderedSubstances: {
+                    meshers: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../Builder/Tools/VoxelMesherDataTool.js").VoxelMesherDataTool>;
+                };
+                $INIT(): void;
+                buildChunk(location: LocationData, LOD?: number): boolean;
             };
             analyzer: any;
             dataSyncNode: {
@@ -2818,7 +2615,7 @@ export declare const Analyzer: {
                 world: {
                     _currentionDimension: string;
                     paint: {
-                        _dt: import("../../Tools/Data/DataTool.js").DataTool;
+                        _dt: DataTool;
                         voxel(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): void;
                         __paint(location: LocationData, data: import("../../Meta/Data/WorldData.types.js").AddVoxelData, update?: boolean): false | undefined;
                         erase(location: LocationData): void;
@@ -2978,23 +2775,29 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
-                voxelObjects: Map<string, import("../../index.js").VoxelConstructor>;
-                getVoxel(id: string): import("../../index.js").VoxelConstructor;
-                registerVoxel(voxel: import("../../index.js").VoxelConstructor | import("../../index.js").VoxelConstructor[]): void;
+                constructors: import("../../Global/Util/UtilMap.js").UtilMap<string, import("../index.js").VoxelConstructor>;
+                get(id: string): import("../index.js").VoxelConstructor;
+                registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").BoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/classes/Box.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                    };
+                    stair: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/classes/Panel.constructor.js").PanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                    };
+                    crossedPanel: {
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/classes/Liquid.constructor.js").LiquidVoxelConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -3071,7 +2874,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3099,7 +2902,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3111,7 +2914,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3150,7 +2953,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3162,7 +2965,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3201,7 +3004,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3213,7 +3016,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3233,7 +3036,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3245,7 +3048,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "async" | "sync";
+                    buildMode: "sync" | "async";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3286,14 +3089,14 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "async" | "sync"): any;
+                    setBuldMode(mode: "sync" | "async"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
                 };
             };
             $INIT(): Promise<void>;
-            getDataTool(): import("../../index.js").ConstructorDataTool;
+            getDataTool(): DataTool;
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void);
     };

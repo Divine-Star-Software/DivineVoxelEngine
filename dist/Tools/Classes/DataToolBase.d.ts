@@ -1,6 +1,7 @@
 import type { RemoteTagManager } from "divine-binary-tags";
 import type { LocationData } from "voxelspaces";
 import { LocationBoundTool } from "./LocationBoundTool.js";
+import { Position3Matrix, Vec3Array } from "Math/index.js";
 export declare abstract class DataToolBase extends LocationBoundTool {
     tags: RemoteTagManager;
     _c: ArrayBuffer | SharedArrayBuffer | DataView;
@@ -15,6 +16,8 @@ export declare abstract class DataToolBase extends LocationBoundTool {
     getBufferSize(): number;
     abstract loadIn(): boolean;
     loadInAt(x: number, y: number, z: number): boolean;
+    loadInVec3Array(vec3: Vec3Array): boolean;
+    loadInVec3(vec3: Position3Matrix): boolean;
     loadInAtLocation(location: LocationData): boolean;
 }
 export declare abstract class EncodedPositionDataTool extends DataToolBase {

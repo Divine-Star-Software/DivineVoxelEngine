@@ -7,10 +7,10 @@ import { DVEC } from "../../Constructor/DivineVoxelEngineConstructor.js";
 import { AnalyzerProcessor } from "./AnalyzerProcessor.js";
 import { AnalyzerUpdater } from "./AnalyzerUpdater.js";
 import { TasksRequest } from "../Tasks/TasksRequest.js";
+import { DataTool } from "../../Tools/Data/DataTool.js";
 //tools
-import { GetConstructorDataTool } from "../Tools/Data/ConstructorDataTool.js";
-const mainDT = GetConstructorDataTool();
-const secondaryDT = GetConstructorDataTool();
+const mainDT = new DataTool();
+const secondaryDT = new DataTool();
 export const Analyzer = {
     updater: AnalyzerUpdater,
     processor: AnalyzerProcessor,

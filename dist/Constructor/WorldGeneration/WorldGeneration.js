@@ -1,7 +1,8 @@
 //objects
 import { WorldBounds } from "../../Data/World/WorldBounds.js";
-import { GetConstructorBrush } from "../../Constructor/Tools/Brush/ConstructorBrush.js";
 import { WorldGenRegister } from "./Register/WorldGenRegister.js";
+//tools
+import { WorldGenBrush } from "../Tools/WorldGenBrush.js";
 export const WorldGeneration = {
     worldGen: null,
     register: WorldGenRegister,
@@ -29,7 +30,7 @@ export const WorldGeneration = {
         }, 100);
     },
     getBrush() {
-        const brush = GetConstructorBrush();
+        const brush = new WorldGenBrush();
         this._brushes.push(brush);
         return brush;
     },

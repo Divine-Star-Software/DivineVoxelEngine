@@ -43,6 +43,14 @@ export class DataToolBase extends LocationBoundTool {
         this.setXYZ(x, y, z);
         return this.loadIn();
     }
+    loadInVec3Array(vec3) {
+        this.setXYZ(vec3[0], vec3[1], vec3[2]);
+        return this.loadIn();
+    }
+    loadInVec3(vec3) {
+        this.setXYZ(vec3.x, vec3.y, vec3.z);
+        return this.loadIn();
+    }
     loadInAtLocation(location) {
         this.setLocation(location);
         return this.loadIn();

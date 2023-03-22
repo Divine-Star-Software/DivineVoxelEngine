@@ -1,2 +1,4 @@
-import type { VoxelShape } from "Meta/Constructor/VoxelShape.types";
-export declare const CrossedPanels: VoxelShape;
+export declare const CrossedPanels: {
+    id: string;
+    build(): void;
+};
