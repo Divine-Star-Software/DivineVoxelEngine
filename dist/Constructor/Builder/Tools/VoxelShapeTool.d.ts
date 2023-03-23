@@ -1,33 +1,28 @@
-import type { CustomVertexData, TextureRotations } from "../Types/Geometry.types";
+import type { TextureRotations } from "../Types/Geometry.types";
 import { QuadBuilderTool } from "./MeshBuilderTool.js";
+import { QuadVertexData } from "../Classes/VertexData.js";
 declare class VoxelQuadBulder extends QuadBuilderTool {
     constructor();
+    _lightData: QuadVertexData;
+    _AOData: QuadVertexData;
+    _animationData: QuadVertexData;
     clear(): this;
+    create(): this;
     setFlipped(flipped: boolean): this;
+    animationState: {
+        _s: VoxelQuadBulder;
+        add(data: QuadVertexData): VoxelQuadBulder;
+    };
     light: {
         _s: VoxelQuadBulder;
         lightMap: number[];
-        add(data: [
-            number,
-            number,
-            number,
-            number
-        ] | [
-            number
-        ]): VoxelQuadBulder;
+        add(data: QuadVertexData): VoxelQuadBulder;
     };
     AO: {
         _s: VoxelQuadBulder;
-        add(data: [
-            number,
-            number,
-            number,
-            number
-        ] | [
-            number
-        ]): VoxelQuadBulder;
+        add(data: QuadVertexData): VoxelQuadBulder;
     };
-    uvs: {
+    textures: {
         _s: VoxelQuadBulder;
         _data: {
             width: number[];
@@ -45,22 +40,18 @@ declare class VoxelQuadBulder extends QuadBuilderTool {
             we2: number;
         };
         resetAdvancedUVs(): VoxelQuadBulder;
-        addAdvancedUVs(uv: number): VoxelQuadBulder;
+        addAdvancedUVs(textureId: number): VoxelQuadBulder;
         _rotation: TextureRotations;
         clear(): VoxelQuadBulder;
         setFlipped(flipped: boolean): VoxelQuadBulder;
         setWidth(start: number, end: number): VoxelQuadBulder;
         setHeight(start: number, end: number): VoxelQuadBulder;
         setRoation(rotation: TextureRotations): VoxelQuadBulder;
-        add(uv: number): VoxelQuadBulder;
+        add(textureId: number): VoxelQuadBulder;
     };
-    overlayUVs: {
+    overlayTexture: {
         _s: VoxelQuadBulder;
-        add(cumstomUVS: CustomVertexData): VoxelQuadBulder;
-    };
-    faceData: {
-        _s: VoxelQuadBulder;
-        add(v1: number, v2?: number, v3?: number, v4?: number): VoxelQuadBulder;
+        add(data: QuadVertexData): VoxelQuadBulder;
     };
 }
 export declare class VoxelShapeTool {

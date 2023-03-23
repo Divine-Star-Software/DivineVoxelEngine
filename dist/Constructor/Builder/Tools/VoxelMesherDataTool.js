@@ -8,6 +8,7 @@ import { BuilderDataTool } from "./BuilderDataTool.js";
 import { MesherDataTool } from "./MesherDataTools.js";
 //data
 import { FaceNormals } from "../../../Data/Constants/Util/Faces.js";
+import { QuadVertexData } from "../Classes/VertexData.js";
 export class VoxelMesherDataTool extends MesherDataTool {
     relativePosition = { x: 0, y: 0, z: 0 };
     voxel = new BuilderDataTool();
@@ -23,21 +24,25 @@ export class VoxelMesherDataTool extends MesherDataTool {
         this.faceDataOverride.currentVoxel = this.voxel;
         this.faceDataOverride.neighborVoxel = this.nVoxel;
         this.attributes.add([
-            ["faceData", [[], 1, "32f"]],
-            ["aoColors", [[], 1, "32f"]],
-            ["lightColors", [[], 4, "32f"]],
-            ["colors", [[], 3, "32f"]],
+            ["voxelData", [[], 1, "32f"]],
             ["cuv3", [[], 3, "32f"]],
             ["ocuv3", [[], 4, "32f"]],
+            ["colors", [[], 3, "32f"]],
         ]);
         this.segments.add([
-            ["light", []],
-            ["ao", []],
-            ["level", []],
             ["uvs", []],
             ["overlay-uvs", []],
         ]);
-        this.vars.add([["face-flipped", 0]]);
+        this.quadVertexData.add([
+            ["light", new QuadVertexData()],
+            ["ao", new QuadVertexData()],
+            ["level", new QuadVertexData()],
+            ["overlay-uvs", new QuadVertexData()],
+        ]);
+        this.vars.add([
+            ["face-flipped", 0],
+            ["uv", 0],
+        ]);
     }
     calculateLight(direction, ignoreAO = false) {
         LightGradient.calculate(direction, this, ignoreAO);
@@ -45,40 +50,24 @@ export class VoxelMesherDataTool extends MesherDataTool {
     calculateFlow() {
         FlowGradient.calculate(this);
     }
-    setLight(...light) {
-        this.segments.set("light", light);
-        return this;
+    getWorldLight() {
+        return this.quadVertexData.get("light");
     }
-    getLight() {
-        return this.segments.get("light");
+    getWorldAO() {
+        return this.quadVertexData.get("ao");
     }
-    setAO(...ao) {
-        this.segments.set("ao", ao);
-        return this;
+    getWorldLevel() {
+        return this.quadVertexData.get("level");
     }
-    getAO() {
-        return this.segments.get("ao");
+    getOverlayTextures() {
+        return this.quadVertexData.get("overlay-uvs");
     }
-    setLevel(...levels) {
-        this.segments.set("level", levels);
-        return this;
-    }
-    getLevel() {
-        return this.segments.get("level");
-    }
-    setUV(...uvs) {
-        this.segments.set("uvs", uvs);
+    setTexture(uv) {
+        this.vars.set("uv", uv);
         return this;
     }
     getUV() {
-        return this.segments.get("uvs");
-    }
-    setOverlayUV(...overlayUVs) {
-        this.segments.set("overlay-uvs", overlayUVs);
-        return this;
-    }
-    getOverlayUV() {
-        return this.segments.get("overlay-uvs");
+        return this.vars.get("uv");
     }
     setFaceFlipped(value) {
         this.vars.set("face-flipped", value ? 1 : 0);

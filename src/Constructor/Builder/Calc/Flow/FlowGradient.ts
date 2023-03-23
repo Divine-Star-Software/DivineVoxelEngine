@@ -1,5 +1,6 @@
-import type { Vertexes } from "../../Types/Builder.data.types";
 import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
+import { QuadVertexData } from "../../Classes/VertexData.js";
+import { QuadVertexes } from "Constructor/Builder/Types";
 
 const checkSets = {
  1: [
@@ -27,12 +28,7 @@ const checkSets = {
  ],
 };
 
-const flowStates: Record<Vertexes, number> = {
- 1: 0,
- 2: 0,
- 3: 0,
- 4: 0,
-};
+const flowStates = new QuadVertexData();
 
 export const FlowGradient = {
  getLevel(tool: VoxelMesherDataTool) {
@@ -47,11 +43,11 @@ export const FlowGradient = {
   const cl = tool.voxel.getLevel();
   const cs = tool.voxel.getLevelState();
 
-  for (let vertex: Vertexes = <Vertexes>1; vertex <= 4; vertex++) {
+  for (let vertex = <QuadVertexes>1; vertex <= 4; vertex++) {
    const checkSet = checkSets[vertex];
 
    if (cl == 15 && cs != 1) {
-    flowStates[vertex] = 15;
+    flowStates.vetexes[vertex] = 15;
     continue;
    }
 
@@ -117,9 +113,8 @@ export const FlowGradient = {
    if (finalLevel > 15) finalLevel = 15;
    if (finalLevel < 1) finalLevel = 1;
 
-   flowStates[vertex] = finalLevel;
+   flowStates.vetexes[vertex] = finalLevel;
   }
-
-  tool.setLevel(flowStates[1], flowStates[2], flowStates[3], flowStates[4]);
+  tool.getWorldLevel().setFromQuadData(flowStates);
  },
 };

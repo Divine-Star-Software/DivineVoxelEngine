@@ -11,6 +11,20 @@ export declare class MeshBuilderTool {
 }
 export declare class QuadBuilderTool {
     tool: MesherDataTool;
+    builder: {
+        defaultTransform: QuadTransforms;
+        width: number;
+        height: number;
+        faceFunctions: Record<DirectionNames, (origin: Position3Matrix, tool: MesherDataTool, transform: QuadTransforms, flip?: boolean | undefined) => void>;
+        create(tool: MesherDataTool, direction: DirectionNames, origin: Position3Matrix, dimensions: import("../Types/Geometry.types.js").QuadDimensions, flip?: boolean, transform?: QuadTransforms | undefined): void;
+    };
+    uvs: {
+        uvRotations: Record<"top" | "bottom" | "side", Record<import("../Types/Geometry.types.js").TextureRotations, (uv: number, ws: number, we: number, hs: number, he: number, flipped: boolean, uvs: number[]) => void>>;
+        advancedUVs: Record<"top" | "bottom" | "side", (uv: number, data: import("../Types/Geometry.types.js").AdvancedUVs, uvs: number[], flipped: boolean) => void>;
+        uvFunctions: Record<DirectionNames, (data: import("../Types/Geometry.types.js").AddQuadUVsData) => void>;
+        addUVs(data: import("../Types/Geometry.types.js").AddQuadUVsData): void;
+        addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: import("../Types/Geometry.types.js").AdvancedUVs, flipped?: boolean): void;
+    };
     setMesherTool(tool: MesherDataTool): this;
     _fliped: boolean;
     _direction: DirectionNames;

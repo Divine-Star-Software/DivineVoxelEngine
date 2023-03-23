@@ -1,6 +1,6 @@
 //types 
 import type { DirectionNames } from "Meta/Util.types";
-import type { QuadData, UVData } from "../../..//Types/ShapeBuilder.types.js";
+import type { QuadData, QuadVertexDataArray, UVData } from "../../..//Types/ShapeBuilder.types.js";
 import type { CustomVertexData,  } from "../../../Types/Geometry.types.js";
 
 
@@ -55,7 +55,7 @@ SetUpStairOverrides();
 const halfHeightQuad = (
   direction: DirectionNames,
   position: [x: number, y: number, z: number],
-  AO: CustomVertexData,
+  AO: QuadVertexDataArray,
   uvs: [number, number]
  ): QuadData => {
   const mewQuad = quad(direction, position);
@@ -69,7 +69,7 @@ const halfHeightQuad = (
  const halfWidthQuad = (
   direction: DirectionNames,
   position: [x: number, y: number, z: number],
-  AO: CustomVertexData,
+  AO: QuadVertexDataArray,
   uvs: [number, number]
  ): QuadData => {
   const quad = halfHeightQuad(direction, position, AO, uvs);
@@ -82,7 +82,7 @@ const halfHeightQuad = (
  const quaterQuad = (
   direction: DirectionNames,
   position: [x: number, y: number, z: number],
-  AO: CustomVertexData,
+  AO: QuadVertexDataArray,
   uvs: UVData
  ): QuadData => {
   const mewQuad = quad(direction, position);
@@ -96,7 +96,7 @@ const halfHeightQuad = (
  const quad = (
   direction: DirectionNames,
   position: [x: number, y: number, z: number],
-  AO: CustomVertexData = [-1, -2, -3, -4],
+  AO: QuadVertexDataArray = [-1, -2, -3, -4],
   flip = -1 | 0 | 1
  ): QuadData => {
   return [
@@ -119,7 +119,7 @@ const halfHeightQuad = (
   north: quad("north", [0.5, 0.5, 1]),
  };
  
- const a = 0.65;
+ const a = 3;
  export const StairBuilderData: Record<number, QuadData[][]> = {};
  //bottom
  StairBuilderData[StairStates.normal.bottom.north] = [

@@ -14,6 +14,7 @@ import { MesherDataTool } from "./MesherDataTools.js";
 
 //data
 import { FaceNormals } from "../../../Data/Constants/Util/Faces.js";
+import { QuadVertexData } from "../Classes/VertexData.js";
 
 export class VoxelMesherDataTool extends MesherDataTool {
  relativePosition = { x: 0, y: 0, z: 0 };
@@ -30,21 +31,26 @@ export class VoxelMesherDataTool extends MesherDataTool {
   this.faceDataOverride.currentVoxel = this.voxel;
   this.faceDataOverride.neighborVoxel = this.nVoxel;
   this.attributes.add([
-   ["faceData", [[], 1, "32f"]],
-   ["aoColors", [[], 1, "32f"]],
-   ["lightColors", [[], 4, "32f"]],
-   ["colors", [[], 3, "32f"]],
+   ["voxelData", [[], 1, "32f"]],
    ["cuv3", [[], 3, "32f"]],
    ["ocuv3", [[], 4, "32f"]],
+   ["colors", [[], 3, "32f"]],
   ]);
   this.segments.add([
-   ["light", []],
-   ["ao", []],
-   ["level", []],
    ["uvs", []],
    ["overlay-uvs", []],
   ]);
-  this.vars.add([["face-flipped", 0]]);
+  this.quadVertexData.add([
+   ["light", new QuadVertexData()],
+   ["ao", new QuadVertexData()],
+   ["level", new QuadVertexData()],
+   ["overlay-uvs", new QuadVertexData()],
+  ]);
+
+  this.vars.add([
+   ["face-flipped", 0],
+   ["uv", 0],
+  ]);
  }
  calculateLight(direction: DirectionNames, ignoreAO = false) {
   LightGradient.calculate(direction, this, ignoreAO);
@@ -52,48 +58,41 @@ export class VoxelMesherDataTool extends MesherDataTool {
  calculateFlow() {
   FlowGradient.calculate(this);
  }
- setLight(...light: number[]) {
-  this.segments.set("light", light);
+
+ getWorldLight() {
+  return this.quadVertexData.get("light")!;
+ }
+
+ getWorldAO() {
+  return this.quadVertexData.get("ao")!;
+ }
+
+ getWorldLevel() {
+  return this.quadVertexData.get("level")!;
+ }
+
+ getOverlayTextures() {
+  return this.quadVertexData.get("overlay-uvs")!;
+ }
+
+ setTexture(uv: number) {
+  this.vars.set("uv", uv)!;
   return this;
  }
- getLight() {
-  return <CustomVertexData>this.segments.get("light")!;
- }
- setAO(...ao: number[]) {
-  this.segments.set("ao", ao);
-  return this;
- }
- getAO() {
-  return <CustomVertexData>this.segments.get("ao")!;
- }
- setLevel(...levels: number[]) {
-  this.segments.set("level", levels)!;
-  return this;
- }
- getLevel() {
-  return <CustomVertexData>this.segments.get("level")!;
- }
- setUV(...uvs: number[]) {
-  this.segments.set("uvs", uvs)!;
-  return this;
- }
+
  getUV() {
-  return <[number]>this.segments.get("uvs")!;
+  return this.vars.get("uv")!;
  }
- setOverlayUV(...overlayUVs: number[]) {
-  this.segments.set("overlay-uvs", overlayUVs)!;
-  return this;
- }
- getOverlayUV() {
-  return <CustomVertexData>this.segments.get("overlay-uvs")!;
- }
+
  setFaceFlipped(value: boolean) {
   this.vars.set("face-flipped", value ? 1 : 0);
   return this;
  }
+
  isFaceFlipped() {
   return this.vars.get("face-flipped")! == 1;
  }
+
  isFaceExposed(face: DirectionNames) {
   const voxelExists = this.nVoxel.loadInAt(
    FaceNormals[face][0] + this.voxel.x,

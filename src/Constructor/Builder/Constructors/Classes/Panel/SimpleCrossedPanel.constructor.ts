@@ -1,8 +1,8 @@
 import type { ConstructorTextureData } from "Meta";
-import { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool.js";
-import { VoxelConstructor } from "./VoxelConstructor.js";
-import { TextureManager } from "../../Textures/TextureManager.js";
-import { CrossedPanels } from "../../Shapes/default/Panel/CrossedPanels.voxel.shape.js";
+import { VoxelMesherDataTool } from "../../../Tools/VoxelMesherDataTool.js";
+import { VoxelConstructor } from "../VoxelConstructor.js";
+import { TextureManager } from "../../../Textures/TextureManager.js";
+import { CrossedPanels } from "../../../Shapes/default/Panel/CrossedPanels.voxel.shape.js";
 
 export class SimpleCrossedPanelVoxelConstructor extends VoxelConstructor {
  texture = 0;
@@ -10,11 +10,10 @@ export class SimpleCrossedPanelVoxelConstructor extends VoxelConstructor {
   super();
  }
  process(tool: VoxelMesherDataTool) {
-  tool
-   .setAO(1)
-   .setLight(tool.voxel.getLight())
-   .setUV(this.texture)
-   .setOverlayUV(0);
+  tool.setTexture(this.texture);
+  tool.getOverlayTextures().setAll(0);
+  tool.getWorldAO().setAll(1);
+  tool.getWorldLight().setAll(tool.voxel.getLight());
   CrossedPanels.build();
  }
 

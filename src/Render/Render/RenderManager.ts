@@ -30,7 +30,10 @@ export const RenderManager = {
  meshCuller: MeshCuller,
 
  fogData: <Vector4>{},
-
+ lightMap: [
+    0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
+    0.85, 0.97, 1,
+   ],
  effectOptions: <DVERenderEffectsOptions>{
   floraEffects: false,
   liquidEffects: false,

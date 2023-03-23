@@ -1,122 +1,21 @@
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 import { FaceNormals } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
+import { QuadVertexData } from "../../Classes/VertexData.js";
 const LD = LightData;
-const RGBvertexStates = {
-    1: {
-        totalZero: false,
-        value: 0,
-    },
-    2: {
-        totalZero: false,
-        value: 0,
-    },
-    3: {
-        totalZero: false,
-        value: 0,
-    },
-    4: {
-        totalZero: false,
-        value: 0,
-    },
-};
-const sunVertexStates = {
-    1: {
-        totalZero: false,
-        value: 0,
-    },
-    2: {
-        totalZero: false,
-        value: 0,
-    },
-    3: {
-        totalZero: false,
-        value: 0,
-    },
-    4: {
-        totalZero: false,
-        value: 0,
-    },
-};
-const AOVerotexStates = {
-    1: {
-        totalLight: false,
-        value: 1,
-    },
-    2: {
-        totalLight: false,
-        value: 1,
-    },
-    3: {
-        totalLight: false,
-        value: 1,
-    },
-    4: {
-        totalLight: false,
-        value: 1,
-    },
-};
+const LightValue = new QuadVertexData();
+const RGBState = new QuadVertexData();
+const SunState = new QuadVertexData();
+const AOValue = new QuadVertexData();
+const AOState = new QuadVertexData();
 const swapSun = () => {
-    let v1 = LD.getS(RGBvertexStates[1].value);
-    let v2 = LD.getS(RGBvertexStates[2].value);
-    let v3 = LD.getS(RGBvertexStates[3].value);
-    let v4 = LD.getS(RGBvertexStates[4].value);
-    RGBvertexStates[1].value = LD.setS(v1, RGBvertexStates[1].value);
-    RGBvertexStates[2].value = LD.setS(v4, RGBvertexStates[2].value);
-    RGBvertexStates[3].value = LD.setS(v3, RGBvertexStates[3].value);
-    RGBvertexStates[4].value = LD.setS(v2, RGBvertexStates[4].value);
+    LightValue.set(LD.setS(LD.getS(LightValue.vetexes[4]), LightValue.vetexes[1]), LD.setS(LD.getS(LightValue.vetexes[1]), LightValue.vetexes[2]), LD.setS(LD.getS(LightValue.vetexes[2]), LightValue.vetexes[3]), LD.setS(LD.getS(LightValue.vetexes[3]), LightValue.vetexes[4]));
 };
 const swapRGB = () => {
-    let v1 = LD.getRGB(RGBvertexStates[1].value);
-    let v2 = LD.getRGB(RGBvertexStates[2].value);
-    let v3 = LD.getRGB(RGBvertexStates[3].value);
-    let v4 = LD.getRGB(RGBvertexStates[4].value);
-    RGBvertexStates[2].value = LD.setRGB(v4, RGBvertexStates[2].value);
-    RGBvertexStates[1].value = LD.setRGB(v1, RGBvertexStates[1].value);
-    RGBvertexStates[4].value = LD.setRGB(v2, RGBvertexStates[4].value);
-    RGBvertexStates[3].value = LD.setRGB(v3, RGBvertexStates[3].value);
+    LightValue.set(LD.setRGB(LD.getRGB(LightValue.vetexes[4]), LightValue.vetexes[1]), LD.setRGB(LD.getRGB(LightValue.vetexes[1]), LightValue.vetexes[2]), LD.setRGB(LD.getRGB(LightValue.vetexes[2]), LightValue.vetexes[3]), LD.setRGB(LD.getRGB(LightValue.vetexes[3]), LightValue.vetexes[4]));
 };
 const swapAO = () => {
-    let v1 = AOVerotexStates[1].value;
-    let v2 = AOVerotexStates[2].value;
-    let v3 = AOVerotexStates[3].value;
-    let v4 = AOVerotexStates[4].value;
-    AOVerotexStates[1].value = v1;
-    AOVerotexStates[2].value = v2;
-    AOVerotexStates[3].value = v3;
-    AOVerotexStates[4].value = v4;
-};
-const shouldRGBFlip = () => {
-    let t1 = !RGBvertexStates[1].totalZero &&
-        RGBvertexStates[2].totalZero &&
-        RGBvertexStates[3].totalZero &&
-        RGBvertexStates[4].totalZero;
-    let t2 = RGBvertexStates[1].totalZero &&
-        RGBvertexStates[2].totalZero &&
-        !RGBvertexStates[3].totalZero &&
-        RGBvertexStates[4].totalZero;
-    let t3 = !RGBvertexStates[1].totalZero &&
-        RGBvertexStates[2].totalZero &&
-        !RGBvertexStates[3].totalZero &&
-        RGBvertexStates[4].totalZero;
-    return t1 || t2 || t3;
-};
-const shouldSunFlip = () => {
-    if (LightGradient.settings.doSun)
-        return false;
-    let t1 = !sunVertexStates[1].totalZero &&
-        sunVertexStates[2].totalZero &&
-        sunVertexStates[3].totalZero &&
-        sunVertexStates[4].totalZero;
-    let t2 = sunVertexStates[1].totalZero &&
-        sunVertexStates[2].totalZero &&
-        !sunVertexStates[3].totalZero &&
-        sunVertexStates[4].totalZero;
-    let t3 = !sunVertexStates[1].totalZero &&
-        sunVertexStates[2].totalZero &&
-        !sunVertexStates[3].totalZero &&
-        sunVertexStates[4].totalZero;
-    return t1 || t2 || t3;
+    AOValue.set(AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3], AOValue.vetexes[4]);
 };
 const shouldAOFlip = (face) => {
     if (LightGradient.settings.doAO)
@@ -128,25 +27,18 @@ const shouldAOFlip = (face) => {
     }
     let check = false;
     if (!states.ignoreAO) {
-        let t1 = !AOVerotexStates[1].totalLight &&
-            AOVerotexStates[2].totalLight &&
-            AOVerotexStates[3].totalLight &&
-            AOVerotexStates[4].totalLight;
-        let t2 = AOVerotexStates[1].totalLight &&
-            AOVerotexStates[2].totalLight &&
-            !AOVerotexStates[3].totalLight &&
-            AOVerotexStates[4].totalLight;
-        let t3 = !AOVerotexStates[1].totalLight &&
-            AOVerotexStates[2].totalLight &&
-            !AOVerotexStates[3].totalLight &&
-            AOVerotexStates[4].totalLight;
-        check = t1 || t2 || t3;
+        check = AOState.isEqualTo(0, 1, 1, 1);
+        AOState.isEqualTo(1, 1, 0, 1) || AOState.isEqualTo(0, 1, 0, 1);
     }
     return check;
 };
 const flipCheck = (face) => {
-    const rgbFlip = shouldRGBFlip();
-    const sunFlip = shouldSunFlip();
+    const rgbFlip = RGBState.isEqualTo(0, 1, 1, 1) ||
+        RGBState.isEqualTo(1, 1, 0, 1) ||
+        RGBState.isEqualTo(0, 1, 0, 1);
+    const sunFlip = SunState.isEqualTo(0, 1, 1, 1) ||
+        SunState.isEqualTo(1, 1, 0, 1) ||
+        SunState.isEqualTo(0, 1, 0, 1);
     if (rgbFlip && !sunFlip) {
         swapSun();
     }
@@ -222,16 +114,10 @@ export const LightGradient = {
         const voxelSubstance = tool.voxel.getSubstance();
         const isLightSource = tool.voxel.isLightSource();
         let light = tool.voxel.getLight();
-        let aoValue = -1;
+        let aoOverRide = -1;
         if (this.settings.doAO && !ignoreAO) {
-            AOVerotexStates[1].value = 1;
-            AOVerotexStates[2].value = 1;
-            AOVerotexStates[3].value = 1;
-            AOVerotexStates[4].value = 1;
-            AOVerotexStates[1].totalLight = true;
-            AOVerotexStates[2].totalLight = true;
-            AOVerotexStates[3].totalLight = true;
-            AOVerotexStates[4].totalLight = true;
+            AOValue.setAll(1);
+            AOState.setAll(1);
             states.ignoreAO = false;
         }
         else {
@@ -248,22 +134,23 @@ export const LightGradient = {
                 light = 0;
             }
         }
-        if (tool.nVoxel.isRenderable()) {
+        if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
+            tool.faceDataOverride.face = face;
             tool.faceDataOverride.default = false;
             if (OverrideManager.runOverride("DarkenFaceUnderneath", tool.nVoxel.getShapeId(), "All", tool.faceDataOverride)) {
-                aoValue = 0.8;
+                aoOverRide = 2;
             }
         }
         for (let vertex = 1; vertex <= 4; vertex++) {
             const checkSet = checkSets[face][vertex];
-            if (LightGradient.settings.doRGB || LightGradient.settings.doSun) {
+            if (this.settings.doRGB || this.settings.doSun) {
                 const values = LD.getLightValues(light);
-                if (LightGradient.settings.doSun) {
+                if (this.settings.doSun) {
                     sunValues.s = values[0];
                     if (sunValues.s == 0)
                         zeroCheck.s++;
                 }
-                if (LightGradient.settings.doRGB) {
+                if (this.settings.doRGB) {
                     RGBValues.r = values[1];
                     if (RGBValues.r == 0)
                         zeroCheck.r++;
@@ -282,10 +169,10 @@ export const LightGradient = {
                 const cx = checkSet[i] + tool.voxel.x;
                 const cy = checkSet[i + 1] + tool.voxel.y;
                 const cz = checkSet[i + 2] + tool.voxel.z;
-                if (this.settings.doRGB || LightGradient.settings.doSun) {
-                    if (!this.tool.nVoxel.loadInAt(cx, cy, cz))
+                if (this.settings.doRGB || this.settings.doSun) {
+                    if (!tool.nVoxel.loadInAt(cx, cy, cz))
                         continue;
-                    const nl = this.tool.nVoxel.getLight();
+                    const nl = tool.nVoxel.getLight();
                     if (nl != -1) {
                         const values = LD.getLightValues(nl);
                         nlValues.s = values[0];
@@ -326,14 +213,14 @@ export const LightGradient = {
                 Do AO
                 */
                 doAO: if (!states.ignoreAO) {
-                    if (aoValue > 0) {
-                        AOVerotexStates[vertex].totalLight = false;
-                        AOValues.a *= aoValue;
+                    if (aoOverRide > 0) {
+                        AOState.setVertex(vertex, 0);
+                        AOValues.a = aoOverRide;
                         break doAO;
                     }
-                    if (!LightGradient.tool.nVoxel.isRenderable())
+                    if (!tool.nVoxel.isRenderable())
                         break doAO;
-                    const neighborVoxelSubstance = LightGradient.tool.nVoxel.getSubstance();
+                    const neighborVoxelSubstance = tool.nVoxel.getSubstance();
                     let finalResult = false;
                     let substanceRuleResult = true;
                     if (voxelSubstance == "#dve_transparent" ||
@@ -348,16 +235,16 @@ export const LightGradient = {
                             substanceRuleResult = false;
                         }
                     }
-                    const neightLightSource = LightGradient.tool.nVoxel.isLightSource();
+                    const neightLightSource = tool.nVoxel.isLightSource();
                     if (isLightSource || neightLightSource) {
                         substanceRuleResult = false;
                     }
-                    LightGradient.tool.faceDataOverride.face = face;
-                    LightGradient.tool.faceDataOverride.default = substanceRuleResult;
-                    finalResult = OverrideManager.runOverride("AO", LightGradient.tool.voxel.getShapeId(), LightGradient.tool.nVoxel.getShapeId(), LightGradient.tool.faceDataOverride);
+                    tool.faceDataOverride.face = face;
+                    tool.faceDataOverride.default = substanceRuleResult;
+                    finalResult = OverrideManager.runOverride("AO", tool.voxel.getShapeId(), tool.nVoxel.getShapeId(), tool.faceDataOverride);
                     if (finalResult) {
-                        AOVerotexStates[vertex].totalLight = false;
-                        AOValues.a *= 0.65;
+                        AOState.setVertex(vertex, 0);
+                        AOValues.a++;
                     }
                 }
             }
@@ -368,11 +255,11 @@ export const LightGradient = {
                 let zeroTolerance = 2;
                 let totalZero = true;
                 if (zeroCheck.s >= zeroTolerance) {
-                    sunVertexStates[vertex].totalZero = true;
+                    SunState.setVertex(vertex, 1);
                     newRGBValues[0] = 0;
                 }
                 else {
-                    sunVertexStates[vertex].totalZero = false;
+                    SunState.setVertex(vertex, 0);
                     newRGBValues[0] = sunValues.s;
                 }
                 if (zeroCheck.r >= zeroTolerance) {
@@ -396,9 +283,8 @@ export const LightGradient = {
                     totalZero = false;
                     newRGBValues[3] = RGBValues.b;
                 }
-                const returnValue = LD.setLightValues(newRGBValues);
-                RGBvertexStates[vertex].totalZero = totalZero;
-                RGBvertexStates[vertex].value = returnValue;
+                RGBState.setVertex(vertex, totalZero ? 1 : 0);
+                LightValue.setVertex(vertex, LD.setLightValues(newRGBValues));
                 zeroCheck.s = 0;
                 zeroCheck.r = 0;
                 zeroCheck.b = 0;
@@ -407,24 +293,30 @@ export const LightGradient = {
             /*
             AO End
             */
-            if (LightGradient.settings.doAO) {
-                AOVerotexStates[vertex].value = AOValues.a;
+            if (this.settings.doAO) {
+                AOValue.setVertex(vertex, AOValues.a);
             }
         }
         if (flipCheck(face)) {
-            LightGradient.tool
+            tool
                 .setFaceFlipped(true)
-                .setLight(RGBvertexStates[2].value, RGBvertexStates[1].value, RGBvertexStates[4].value, RGBvertexStates[3].value);
+                .getWorldLight()
+                .set(LightValue.vetexes[2], LightValue.vetexes[1], LightValue.vetexes[4], LightValue.vetexes[3]);
             if (!states.ignoreAO) {
-                LightGradient.tool.setAO(AOVerotexStates[4].value, AOVerotexStates[1].value, AOVerotexStates[2].value, AOVerotexStates[3].value);
+                tool
+                    .getWorldAO()
+                    .set(AOValue.vetexes[4], AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3]);
             }
         }
         else {
-            LightGradient.tool
+            tool
                 .setFaceFlipped(false)
-                .setLight(RGBvertexStates[1].value, RGBvertexStates[2].value, RGBvertexStates[3].value, RGBvertexStates[4].value);
+                .getWorldLight()
+                .set(LightValue.vetexes[1], LightValue.vetexes[2], LightValue.vetexes[3], LightValue.vetexes[4]);
             if (!states.ignoreAO) {
-                LightGradient.tool.setAO(AOVerotexStates[1].value, AOVerotexStates[2].value, AOVerotexStates[3].value, AOVerotexStates[4].value);
+                tool
+                    .getWorldAO()
+                    .set(AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3], AOValue.vetexes[4]);
             }
         }
     },

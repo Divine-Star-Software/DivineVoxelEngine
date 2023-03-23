@@ -73,7 +73,7 @@ const fullQuads = {
     south: quad("south", [0.5, 0.5, 0]),
     north: quad("north", [0.5, 0.5, 1]),
 };
-const a = 0.65;
+const a = 3;
 export const StairBuilderData = {};
 //bottom
 StairBuilderData[StairStates.normal.bottom.north] = [

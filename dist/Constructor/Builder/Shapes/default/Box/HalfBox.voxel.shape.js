@@ -1,14 +1,17 @@
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
+import { QuadVertexData } from "../../../Classes/VertexData.js";
+const animationState = new QuadVertexData();
 export const HalfBoxVoxelShape = {
     _createFace() {
+        animationState.setAll(ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0);
         ShapeTool.builder.quad
             .setFlipped(ShapeTool.data.isFaceFlipped())
-            .AO.add(ShapeTool.data.getAO())
-            .light.add(ShapeTool.data.getLight())
-            .uvs.add(ShapeTool.data.getUV()[0])
-            .overlayUVs.add(ShapeTool.data.getOverlayUV())
-            .faceData.add(ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0)
+            .AO.add(ShapeTool.data.getWorldAO())
+            .light.add(ShapeTool.data.getWorldLight())
+            .textures.add(ShapeTool.data.getUV())
+            .overlayTexture.add(ShapeTool.data.getOverlayTextures())
+            .animationState.add(animationState)
             .create()
             .clear();
     },
@@ -31,7 +34,7 @@ export const HalfBoxVoxelShape = {
             ShapeTool.builder.quad
                 .setDirection("north")
                 .setDimensions(1, 0.5)
-                .uvs.setHeight(0.5, 1)
+                .textures.setHeight(0.5, 1)
                 .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 1);
             HalfBoxVoxelShape._createFace();
         },
@@ -39,7 +42,7 @@ export const HalfBoxVoxelShape = {
             ShapeTool.builder.quad
                 .setDirection("south")
                 .setDimensions(1, 0.5)
-                .uvs.setHeight(0.5, 1)
+                .textures.setHeight(0.5, 1)
                 .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0);
             HalfBoxVoxelShape._createFace();
         },
@@ -47,7 +50,7 @@ export const HalfBoxVoxelShape = {
             ShapeTool.builder.quad
                 .setDirection("east")
                 .setDimensions(1, 0.5)
-                .uvs.setHeight(0.5, 1)
+                .textures.setHeight(0.5, 1)
                 .updatePosition(1, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
             HalfBoxVoxelShape._createFace();
         },
@@ -55,8 +58,8 @@ export const HalfBoxVoxelShape = {
             ShapeTool.builder.quad
                 .setDirection("west")
                 .setDimensions(1, 0.5)
-                .uvs.setWidth(0, 1)
-                .uvs.setHeight(0.5, 1)
+                .textures.setWidth(0, 1)
+                .textures.setHeight(0.5, 1)
                 .updatePosition(0, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
             HalfBoxVoxelShape._createFace();
         },

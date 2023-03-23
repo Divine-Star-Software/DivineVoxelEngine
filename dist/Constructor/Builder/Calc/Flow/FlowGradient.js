@@ -1,3 +1,4 @@
+import { QuadVertexData } from "../../Classes/VertexData.js";
 const checkSets = {
     1: [
         -1, 0, 0, -1,
@@ -20,12 +21,7 @@ const checkSets = {
         1, -1,
     ],
 };
-const flowStates = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-};
+const flowStates = new QuadVertexData();
 export const FlowGradient = {
     getLevel(tool) {
         if (!tool.nVoxel.isRenderable())
@@ -41,7 +37,7 @@ export const FlowGradient = {
         for (let vertex = 1; vertex <= 4; vertex++) {
             const checkSet = checkSets[vertex];
             if (cl == 15 && cs != 1) {
-                flowStates[vertex] = 15;
+                flowStates.vetexes[vertex] = 15;
                 continue;
             }
             let finalLevel = cl;
@@ -103,8 +99,8 @@ export const FlowGradient = {
                 finalLevel = 15;
             if (finalLevel < 1)
                 finalLevel = 1;
-            flowStates[vertex] = finalLevel;
+            flowStates.vetexes[vertex] = finalLevel;
         }
-        tool.setLevel(flowStates[1], flowStates[2], flowStates[3], flowStates[4]);
+        tool.getWorldLevel().setFromQuadData(flowStates);
     },
 };

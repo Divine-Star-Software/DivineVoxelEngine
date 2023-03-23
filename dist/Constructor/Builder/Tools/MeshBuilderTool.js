@@ -1,4 +1,5 @@
 import { QuadBuilder } from "../Geometry/QuadBuilder.js";
+import { QuadUVs } from "../Geometry/QuadUVs.js";
 export class MeshBuilderTool {
     direction = "top";
     tool;
@@ -12,6 +13,8 @@ export class MeshBuilderTool {
 }
 export class QuadBuilderTool {
     tool;
+    builder = QuadBuilder;
+    uvs = QuadUVs;
     setMesherTool(tool) {
         this.tool = tool;
         return this;
@@ -76,7 +79,7 @@ export class QuadBuilderTool {
         return this;
     }
     create() {
-        QuadBuilder.create(this.tool, this._direction, this._position, this._dimension, this._fliped, this._transform);
+        this.builder.create(this.tool, this._direction, this._position, this._dimension, this._fliped, this._transform);
         return this;
     }
     clear() {

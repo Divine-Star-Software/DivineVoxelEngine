@@ -1,15 +1,16 @@
+import { QuadVertexData } from "../../../Classes/VertexData.js";
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
+const animationState = new QuadVertexData();
 const addData = () => {
     return ShapeTool.builder.quad
         .setDimensions(1, 1)
-        .faceData.add(animationState)
-        .light.add(ShapeTool.data.getLight())
-        .AO.add(ShapeTool.data.getAO())
-        .uvs.add(ShapeTool.data.getUV()[0])
-        .overlayUVs.add(ShapeTool.data.getOverlayUV());
+        .animationState.add(animationState)
+        .light.add(ShapeTool.data.getWorldLight())
+        .AO.add(ShapeTool.data.getWorldAO())
+        .textures.add(ShapeTool.data.getUV())
+        .overlayTexture.add(ShapeTool.data.getOverlayTextures());
 };
-let animationState = 0;
 const shapeStates = {
     0: () => {
         addData().updatePosition(0.5, 0.5, 0.05).setDirection("south").create();
@@ -39,9 +40,9 @@ const shapeStates = {
 export const PanelVoxelShape = {
     id: "#dve_panel",
     build() {
-        animationState = 0;
+        animationState.setAll(0);
         if (ShapeTool.data.voxel.getSubstance() == "#dve_flora") {
-            animationState = 2;
+            animationState.setAll(2);
         }
         shapeStates[ShapeTool.data.voxel.getShapeState()]();
     },

@@ -17,16 +17,16 @@ export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
   body: {
    GLSL: () => `vec3 p = position;
   vec4 worldPosition = world * vec4(p , 1.0);
-  int animationType = getAnimationType();
+
   if(doEffects == 1.){
     if(vDistance < 50.) {
-      if(animationType == 1) {
+      if(VOXEL[1].y == 1.) {
         p.xz = dve_crossed_panel_wind_anim(worldPosition, p).xz;
       }
-      if(animationType == 2) {
+      if(VOXEL[1].y == 2.) {
         p.xz = dve_panel_wind_anim(worldPosition, p).xz;
       }
-      if(animationType == 3) {
+      if(VOXEL[1].y == 3.) {
         p.xz = dve_box_wind_anim(worldPosition, p).xz;
       }
     }
@@ -43,12 +43,12 @@ export function RegisterVoxelSnippets(builder: typeof DivineShaderBuilder) {
  builder.snippets.create( {
   id: "#dve_liquid_vertex",
   body: {
-   GLSL: () => `float animationTest = float(getAnimationType());
+   GLSL: () => `
   vFlow = 0.;
-  if(animationTest == 1.) {
+  if(VOXEL[1].y == 1.) {
     vFlow = 1.;
   }
-  if(animationTest == 2.) {
+  if(VOXEL[1].y == 2.) {
     vFlow = -1.;
   }
   

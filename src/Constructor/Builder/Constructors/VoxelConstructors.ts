@@ -4,16 +4,16 @@ import type { DirectionNames } from "Meta/Util.types.js";
 //utils
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
 //constructors
-import { SimpleBoxVoxelConstructor } from "./Classes/SimpleBox.constructor.js";
+import { SimpleBoxVoxelConstructor } from "./Classes/Box/SimpleBox.constructor.js";
 import {
  PillarBoxVoxelConstructor,
  PillarBoxVoxelConstructorData,
-} from "./Classes/PillarBox.constructor.js";
-import { SimpleLiquidConstructor } from "./Classes/SimpleLiquid.constructor.js";
-import { SimplePanelVoxelConstructor } from "./Classes/SimplePanel.constructor.js";
-import { SimpleStairVoxelConstructor } from "./Classes/SimpleStair.constructor.js";
+} from "./Classes/Box/PillarBox.constructor.js";
+import { SimpleLiquidConstructor } from "./Classes/Liquid/SimpleLiquid.constructor.js";
+import { SimplePanelVoxelConstructor } from "./Classes/Panel/SimplePanel.constructor.js";
+import { SimpleStairVoxelConstructor } from "./Classes/Stair/SimpleStair.constructor.js";
 import { VoxelConstructor } from "./Classes/VoxelConstructor.js";
-import { SimpleCrossedPanelVoxelConstructor } from "./Classes/SimpleCrossedPanel.constructor.js";
+import { SimpleCrossedPanelVoxelConstructor } from "./Classes/Panel/SimpleCrossedPanel.constructor.js";
 
 export const VoxelConstructors = {
  constructors: new UtilMap<string, VoxelConstructor>(),

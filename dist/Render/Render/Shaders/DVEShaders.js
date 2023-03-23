@@ -13,11 +13,10 @@ export const DVEShaders = {
         ["normal", "vec3"],
         ["indices", "float"],
         ["faceData", "float"],
+        ["voxelData", "float"],
         ["ocuv3", "vec4"],
         ["cuv3", "vec3"],
         ["colors", "vec4"],
-        ["aoColors", "float"],
-        ["lightColors", "vec4"],
     ],
     voxelSharedUniforms: [
         ["time", "float"],
@@ -36,8 +35,48 @@ export const DVEShaders = {
         ["worldOrigin", "vec3"],
         ["cameraPosition", "vec3"],
         ["doEffects", "float"],
+        ["lightGradient", "float", 16],
     ],
     voxelVarying: [
+        {
+            id: "VOXEL",
+            type: "mat4",
+            body: {
+                GLSL: () => `
+mat4 vData;
+
+uint vUID = uint(voxelData);
+uint lightMask = uint(${0xf});
+uint aoMask = uint(${0b11});
+uint animMask = uint(${0b1111_1111_1111_11});
+
+uint index = uint(0);
+float sVL =lightGradient[int(((lightMask << index) & vUID) >> index)];
+
+index = uint(4);
+float rVL = lightGradient[int(((lightMask << index) & vUID) >> index)];
+
+index = uint(8);
+float gVL = lightGradient[int(((lightMask << index) & vUID) >> index)];
+
+index = uint(12);
+float bVL = lightGradient[int(((lightMask << index) & vUID) >> index)];
+
+index = uint(16);
+float AOVL = float(((aoMask << index) & vUID) >> index);
+if(AOVL > 1.) {
+     AOVL = pow( pow(.65, AOVL - 1. ), 2.2);
+}
+
+index = uint(18);
+float animVL = float(((animMask << index) & vUID) >> index);
+
+vData[0] = vec4(rVL,gVL,bVL,sVL);     
+vData[1] = vec4(AOVL,animVL,0.,0.);     
+VOXEL = vData;
+`,
+            },
+        },
         {
             id: "cameraPOS",
             type: "vec3",
@@ -95,13 +134,6 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
             },
         },
         {
-            id: "vAnimation",
-            type: "float",
-            body: {
-                GLSL: () => " vAnimation = float(getAnimationType());\n",
-            },
-        },
-        {
             id: "vNormal",
             type: "vec3",
             body: {
@@ -124,40 +156,6 @@ if(abs(normal.x) == 1. || abs(normal.z)  == 1. ) {
             },
         },
         {
-            id: "rgbLColor",
-            type: "vec4",
-            body: {
-                GLSL: () => `if(doRGB == 1.0){
-     rgbLColor = vec4(lightColors.rgb,1.);
-} else {
-     rgbLColor = vec4(1.,1.,1.,1.);
-}`,
-            },
-        },
-        {
-            id: "sunLColor",
-            type: "vec4",
-            body: {
-                GLSL: () => `   if(doSun == 1.0){
-     float s = lightColors.a;
-     sunLColor = vec4(s,s,s,1.);
-  } else {
-     sunLColor = vec4(1.,1.,1.,1.);
-  }`,
-            },
-        },
-        {
-            id: "aoColor",
-            type: "vec4",
-            body: {
-                GLSL: () => `if(doAO == 1.0){
-aoColor = vec4(aoColors,aoColors,aoColors,1.);
-} else {
-aoColor = vec4(1.0,1.0,1.0,1.0); 
-}`,
-            },
-        },
-        {
             id: "vColors",
             type: "vec4",
             body: {
@@ -172,14 +170,7 @@ aoColor = vec4(1.0,1.0,1.0,1.0);
             id: "vFlow",
             type: "float",
             body: {
-                GLSL: () => `
-vFlow = 0.;
-if(vAnimation == 1.) {
-vFlow = 1.;
-}
-if(vAnimation == 2.) {
-vFlow = -1.;
-}`,
+                GLSL: () => ``,
             },
         },
     ],

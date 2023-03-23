@@ -49,6 +49,7 @@ export declare const RenderManager: {
         $INIT(scene: Scene): void;
     };
     fogData: Vector4;
+    lightMap: number[];
     effectOptions: DVERenderEffectsOptions;
     fo: {
         activeCamera: import("@babylonjs/core").TransformNode | null;

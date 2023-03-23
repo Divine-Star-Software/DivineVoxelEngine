@@ -59,12 +59,10 @@ export class DVEMesh {
         chunkVertexData.positions = [0];
         chunkVertexData.normals = [0];
         chunkVertexData.indices = [0];
-        mesh.setVerticesData("faceData", [0], false, 1);
-        mesh.setVerticesData("aoColors", [0], false, 1);
-        mesh.setVerticesData("lightColors", [0], false, 4);
-        mesh.setVerticesData("colors", [9], false, 4);
+        mesh.setVerticesData("voxelData", [0], false, 1);
         mesh.setVerticesData("cuv3", [0], false, 3);
         mesh.setVerticesData("ocuv3", [0], false, 4);
+        mesh.setVerticesData("colors", [0], false, 4);
         chunkVertexData.applyToMesh(mesh, false);
     }
     _clearCached(mesh) {
@@ -91,12 +89,10 @@ export class DVEMesh {
         chunkVertexData.positions = data[1];
         chunkVertexData.normals = data[2];
         chunkVertexData.indices = data[3];
-        mesh.setVerticesData("faceData", data[4], false, 1);
-        mesh.setVerticesData("aoColors", data[5], false, 1);
-        mesh.setVerticesData("lightColors", data[6], false, 4);
+        mesh.setVerticesData("voxelData", data[4], false, 1);
+        mesh.setVerticesData("cuv3", data[5], false, 3);
+        mesh.setVerticesData("ocuv3", data[6], false, 4);
         mesh.setVerticesData("colors", data[7], false, 4);
-        mesh.setVerticesData("cuv3", data[8], false, 3);
-        mesh.setVerticesData("ocuv3", data[9], false, 4);
         chunkVertexData.applyToMesh(mesh, false);
         this._clearCached(mesh);
         mesh.freezeWorldMatrix();

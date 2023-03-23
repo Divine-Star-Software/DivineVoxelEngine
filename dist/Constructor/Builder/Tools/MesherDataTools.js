@@ -4,6 +4,7 @@ export class MesherDataTool {
     indicieIndex = 0;
     vars = new UtilMap();
     segments = new UtilMap();
+    quadVertexData = new UtilMap();
     attributes = new UtilMap([
         ["position", [[], 3, "32f"]],
         ["normal", [[], 3, "32f"]],

@@ -1,8 +1,8 @@
 import type { ConstructorTextureData } from "Meta";
-import { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool.js";
-import { VoxelConstructor } from "./VoxelConstructor.js";
-import { TextureManager } from "../../Textures/TextureManager.js";
-import { StairVoxelShape } from "../..//Shapes/default/Stairs/Stair.voxel.shape.js";
+import { VoxelMesherDataTool } from "../../../Tools/VoxelMesherDataTool.js";
+import { VoxelConstructor } from "../VoxelConstructor.js";
+import { TextureManager } from "../../../Textures/TextureManager.js";
+import { StairVoxelShape } from "../../../Shapes/default/Stairs/Stair.voxel.shape.js";
 
 export class SimpleStairVoxelConstructor extends VoxelConstructor {
  texture: number = 0;
@@ -10,7 +10,8 @@ export class SimpleStairVoxelConstructor extends VoxelConstructor {
   super();
  }
  process(tool: VoxelMesherDataTool) {
-  tool.setUV(this.texture).setOverlayUV(0);
+  tool.setTexture(this.texture);
+  tool.getOverlayTextures().setAll(0);
   if (tool.isFaceExposed("top")) {
    tool.calculateLight("top");
    StairVoxelShape.add.top();

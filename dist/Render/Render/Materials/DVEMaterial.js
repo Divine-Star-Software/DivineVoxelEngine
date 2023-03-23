@@ -2,6 +2,7 @@ import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { RenderManager } from "../RenderManager.js";
 export class DVEMaterial {
     id;
     options;
@@ -103,6 +104,7 @@ export class DVEMaterial {
             //  shaderMaterial.stencil.func = DVEBabylon.system.Engine.NOTEQUAL;
         }
         type.addToMaterial(this);
+        shaderMaterial.setFloats("lightGradient", RenderManager.lightMap);
         shaderMaterial.setFloat("sunLightLevel", 1);
         shaderMaterial.setFloat("baseLevel", 0.1);
         shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());

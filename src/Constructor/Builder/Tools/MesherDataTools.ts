@@ -5,11 +5,13 @@ import type {
 
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
 import { TypedArrayMap } from "divine-binary-object/Constants/ByteData.js";
+import { QuadVertexData } from "../Classes/VertexData.js";
 
 export class MesherDataTool {
  indicieIndex = 0;
  vars = new UtilMap<string, number>();
  segments = new UtilMap<string, number[]>();
+ quadVertexData = new UtilMap<string, QuadVertexData>();
  attributes = new UtilMap<
   string,
   [

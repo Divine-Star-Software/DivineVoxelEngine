@@ -3,6 +3,7 @@ import type { DirectionNames } from "Meta";
 
 
 import { QuadBuilder } from "../Geometry/QuadBuilder.js";
+import { QuadUVs } from "../Geometry/QuadUVs.js";
 import { QuadTransforms, QuadVertexes } from "../Types/Geometry.types.js";
 import { MesherDataTool } from "./MesherDataTools.js";
 
@@ -22,6 +23,8 @@ export class MeshBuilderTool {
 
 export class QuadBuilderTool {
  tool: MesherDataTool;
+ builder = QuadBuilder;
+ uvs = QuadUVs;
 
  setMesherTool(tool: MesherDataTool) {
   this.tool = tool;
@@ -87,7 +90,7 @@ export class QuadBuilderTool {
   return this;
  }
  create() {
-  QuadBuilder.create(
+  this.builder.create(
    this.tool,
    this._direction,
    this._position,

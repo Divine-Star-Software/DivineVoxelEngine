@@ -43,8 +43,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
  tasks
   .setPriority(0)
   .start()
-  .setBuldMode("sync")
-  .addNeighborsToRebuildQueue(x, y, z);
+  .setBuldMode("sync").addToRebuildQueue(x,y,z);
 
  tasks.setBuldMode("async");
  if (ES.doFlow()) {
@@ -76,7 +75,7 @@ export async function EreaseAndUpdate(data: UpdateTasks) {
   }
  }
 
- LocationDataDistanceSort(tasks.origin, tasks.syncQueue);
+// LocationDataDistanceSort(tasks.origin, tasks.syncQueue);
  tasks.runRebuildQueue();
  tasks.stop();
  return true;
@@ -90,8 +89,7 @@ export async function PaintAndUpdate(data: VoxelUpdateTasks) {
  tasks
   .start()
   .setPriority(0)
-  .setBuldMode("sync")
-  .addNeighborsToRebuildQueue(x, y, z);
+  .setBuldMode("sync").addToRebuildQueue(x,y,z);
  tasks.setBuldMode("async");
  brushTool.setLocation(data[0]).setRaw(raw);
  nDataTool.loadInRaw(raw);
@@ -149,7 +147,7 @@ export async function VoxelUpdate(data: VoxelUpdateTasks) {
   .setPriority(0)
   .start()
   .setBuldMode("sync")
-  .addNeighborsToRebuildQueue(x, y, z);
+  .addToRebuildQueue(x, y, z);
  tasks.setBuldMode("async");
 
  dataTool.loadInRaw(data[1])

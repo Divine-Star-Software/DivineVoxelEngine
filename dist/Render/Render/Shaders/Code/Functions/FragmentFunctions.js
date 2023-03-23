@@ -14,7 +14,8 @@ export function RegisterFragFunctions(builder) {
         output: "vec4",
         arguments: {},
         body: {
-            GLSL: () => `return  base * mix(base, aoColor , 1.0);`,
+            GLSL: () => `
+   return  base * mix(base, vec4(VOXEL[1].r,VOXEL[1].r,VOXEL[1].r,1.) , 1.0);`,
         },
     });
     builder.functions.create("getLight", {
@@ -24,7 +25,12 @@ export function RegisterFragFunctions(builder) {
         arguments: {},
         body: {
             GLSL: () => `
-vec4 final = ( ((rgbLColor * doRGB)  +  ((sunLColor * doSun  * sunLightLevel * vNColor))  ) + baseLevel) ;
+vec4 final =
+vec4(( (
+   (VOXEL[0].rgb * doRGB) 
+ +  ((VOXEL[0].a * doSun  * sunLightLevel * vNColor))  ) 
+ + baseLevel).rgb,
+ 1.) ;
 return base * final; `,
         },
     });

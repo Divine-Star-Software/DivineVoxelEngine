@@ -61,7 +61,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -102,7 +102,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -116,7 +116,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -155,7 +155,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -167,7 +167,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -206,7 +206,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -220,7 +220,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -240,7 +240,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -254,7 +254,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -282,7 +282,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -294,7 +294,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -322,7 +322,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -336,7 +336,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -364,7 +364,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -376,7 +376,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -404,7 +404,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -448,20 +448,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -711,7 +711,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -720,20 +720,20 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -810,7 +810,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -838,7 +838,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -850,7 +850,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -889,7 +889,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -901,7 +901,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -940,7 +940,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -952,7 +952,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -972,7 +972,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -984,7 +984,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1025,7 +1025,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1093,7 +1093,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1134,7 +1134,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1148,7 +1148,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1187,7 +1187,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1199,7 +1199,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1238,7 +1238,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1252,7 +1252,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1272,7 +1272,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1286,7 +1286,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1314,7 +1314,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1326,7 +1326,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1354,7 +1354,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1368,7 +1368,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1396,7 +1396,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1408,7 +1408,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -1436,7 +1436,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -1480,20 +1480,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -1743,7 +1743,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -1752,20 +1752,20 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -1842,7 +1842,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1870,7 +1870,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1882,7 +1882,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1921,7 +1921,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1933,7 +1933,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -1972,7 +1972,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -1984,7 +1984,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2004,7 +2004,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2016,7 +2016,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2057,7 +2057,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2125,7 +2125,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2166,7 +2166,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2180,7 +2180,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2219,7 +2219,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2231,7 +2231,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2270,7 +2270,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2284,7 +2284,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2304,7 +2304,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2318,7 +2318,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2346,7 +2346,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2358,7 +2358,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2386,7 +2386,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2400,7 +2400,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2428,7 +2428,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2440,7 +2440,7 @@ export declare const Analyzer: {
                         LOD: number;
                         syncQueue: LocationData[];
                         aSyncQueue: LocationData[];
-                        buildMode: "sync" | "async";
+                        buildMode: "async" | "sync";
                         buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                         rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                         tasksType: string;
@@ -2468,7 +2468,7 @@ export declare const Analyzer: {
                         getOrigin(): LocationData;
                         needsRebuild(): boolean;
                         needsToUpdateOriginThread(): boolean;
-                        setBuldMode(mode: "sync" | "async"): any;
+                        setBuldMode(mode: "async" | "sync"): any;
                         addToRebuildQueue(x: number, y: number, z: number): boolean;
                         addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                         runRebuildQueue(): any;
@@ -2512,20 +2512,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -2775,7 +2775,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -2784,20 +2784,20 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
@@ -2874,7 +2874,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2902,7 +2902,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2914,7 +2914,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -2953,7 +2953,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -2965,7 +2965,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3004,7 +3004,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3016,7 +3016,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3036,7 +3036,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;
@@ -3048,7 +3048,7 @@ export declare const Analyzer: {
                     LOD: number;
                     syncQueue: LocationData[];
                     aSyncQueue: LocationData[];
-                    buildMode: "sync" | "async";
+                    buildMode: "async" | "sync";
                     buildTasks: import("Meta/Tasks/Tasks.types.js").PriorityTask<import("Meta/Tasks/Tasks.types.js").BuildTasks>;
                     rebuildTasks: import("Meta/Tasks/Tasks.types.js").AddToRebuildQueue;
                     tasksType: string;
@@ -3089,7 +3089,7 @@ export declare const Analyzer: {
                     getOrigin(): LocationData;
                     needsRebuild(): boolean;
                     needsToUpdateOriginThread(): boolean;
-                    setBuldMode(mode: "sync" | "async"): any;
+                    setBuldMode(mode: "async" | "sync"): any;
                     addToRebuildQueue(x: number, y: number, z: number): boolean;
                     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | any | undefined;
                     runRebuildQueue(): any;

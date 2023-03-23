@@ -5,6 +5,7 @@ import { TextureManager } from "../../Textures/TextureManager.js";
 import { DVER } from "../../DivineVoxelEngineRender.js";
 import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { RenderManager } from "../RenderManager.js";
 
 type DVEMaterialOptions = {
  alphaTesting: boolean;
@@ -92,7 +93,6 @@ export class DVEMaterial {
   shader.setCodeBody("frag", `@${this.id}_frag`);
   shader.compile();
 
-
   DVEBabylon.system.Effect.ShadersStore[`${this.id}VertexShader`] =
    shader.compiled.vertex;
 
@@ -119,13 +119,13 @@ export class DVEMaterial {
    shaderMaterial.backFaceCulling = false;
    shaderMaterial.forceDepthWrite = true;
    shaderMaterial.needDepthPrePass = true;
-//   shaderMaterial.stencil.enabled = true;
- //  shaderMaterial.stencil.func = DVEBabylon.system.Engine.NOTEQUAL;
+   //   shaderMaterial.stencil.enabled = true;
+   //  shaderMaterial.stencil.func = DVEBabylon.system.Engine.NOTEQUAL;
   }
-
 
   type.addToMaterial(this);
 
+  shaderMaterial.setFloats("lightGradient", RenderManager.lightMap);
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
   shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());

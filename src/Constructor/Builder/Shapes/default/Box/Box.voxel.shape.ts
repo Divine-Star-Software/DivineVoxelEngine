@@ -3,17 +3,23 @@ import type { DirectionNames } from "Meta/Util.types.js";
 
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
+import { QuadVertexData } from "../../../Classes/VertexData.js";
+
+const animationState = new QuadVertexData();
 
 export const BoxVoxelShape = {
  _createFace() {
+  animationState.setAll(
+    ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0
+  )
   ShapeTool.builder.quad
    .setDimensions(1, 1)
    .setFlipped(ShapeTool.data.isFaceFlipped())
-   .AO.add(ShapeTool.data.getAO())
-   .light.add(ShapeTool.data.getLight())
-   .uvs.add(ShapeTool.data.getUV()[0])
-   .overlayUVs.add(ShapeTool.data.getOverlayUV())
-   .faceData.add(ShapeTool.data.voxel.getSubstance() == "#dve_flora" ? 3 : 0)
+   .AO.add(ShapeTool.data.getWorldAO())
+   .light.add(ShapeTool.data.getWorldLight())
+   .textures.add(ShapeTool.data.getUV())
+   .overlayTexture.add(ShapeTool.data.getOverlayTextures())
+   .animationState.add(animationState)
    .create();
  },
  add: {

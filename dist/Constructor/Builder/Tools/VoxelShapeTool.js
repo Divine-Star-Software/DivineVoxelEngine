@@ -1,15 +1,58 @@
-import { QuadUVs } from "../Geometry/QuadUVs.js";
 import { LightData } from "../../../Data/Light/LightByte.js";
 import { QuadBuilderTool } from "./MeshBuilderTool.js";
+import { QuadVertexData } from "../Classes/VertexData.js";
+const faceData = {
+    _v: 0,
+    _lightMask: 0xf,
+    _aoMask: 0b11,
+    _animationMask: 0b1111_1111_1111_11,
+    _setLight(index, value) {
+        return ((this._v & ~(this._lightMask << index)) |
+            ((value & this._lightMask) << index));
+    },
+    _setAO(value) {
+        const index = 16;
+        return ((this._v & ~(this._aoMask << index)) | ((value & this._aoMask) << index));
+    },
+    _setAnimation(value) {
+        const index = 18;
+        return ((this._v & ~(this._animationMask << index)) |
+            ((value & this._animationMask) << index));
+    },
+    setLight(values) {
+        this._v = this._setLight(0, values[0]);
+        this._v = this._setLight(4, values[1]);
+        this._v = this._setLight(8, values[2]);
+        this._v = this._setLight(12, values[3]);
+        return this;
+    },
+    setAO(value) {
+        this._v = this._setAO(value);
+        return this;
+    },
+    setAnimation(value) {
+        this._v = this._setAnimation(value);
+        return this;
+    },
+    getValue() {
+        return this._v;
+    },
+    reset() {
+        this._v = 0;
+    },
+};
 class VoxelQuadBulder extends QuadBuilderTool {
     constructor() {
         super();
         this.light._s = this;
         this.AO._s = this;
-        this.uvs._s = this;
-        this.overlayUVs._s = this;
-        this.faceData._s = this;
+        this.textures._s = this;
+        this.overlayTexture._s = this;
+        this.animationState._s = this;
     }
+    _lightData = new QuadVertexData();
+    _AOData = new QuadVertexData();
+    _animationData = new QuadVertexData();
     clear() {
         this._cachedPosition.x = 0;
         this._cachedPosition.y = 0;
@@ -17,7 +60,7 @@ class VoxelQuadBulder extends QuadBuilderTool {
         this._fliped = false;
         this._dimension.width = 1;
         this._dimension.height = 1;
-        this.uvs.clear();
+        this.textures.clear();
         for (let i = 1; i < 5; i++) {
             this._transform[i].x = 0;
             this._transform[i].y = 0;
@@ -25,11 +68,31 @@ class VoxelQuadBulder extends QuadBuilderTool {
         }
         return this;
     }
-    setFlipped(flipped) {
-        this._fliped = flipped;
-        this.uvs.setFlipped(flipped);
+    create() {
+        this.builder.create(this.tool, this._direction, this._position, this._dimension, this._fliped, this._transform);
+        const attribute = this.tool.getAttribute("voxelData");
+        for (let i = 1; i <= 4; i++) {
+            attribute.push(faceData
+                .setLight(LightData.getLightValues(this._lightData.getVertex(i)))
+                .setAO(this._AOData.getVertex(i))
+                .setAnimation(this._animationData.getVertex(i))
+                .getValue());
+            faceData.reset();
+        }
         return this;
     }
+    setFlipped(flipped) {
+        this._fliped = flipped;
+        this.textures.setFlipped(flipped);
+        return this;
+    }
+    animationState = {
+        _s: {},
+        add(data) {
+            this._s._animationData.setFromQuadData(data);
+            return this._s;
+        },
+    };
     light = {
         _s: {},
         lightMap: [
@@ -37,35 +100,18 @@ class VoxelQuadBulder extends QuadBuilderTool {
             0.85, 0.97, 1,
         ],
         add(data) {
-            const colors = this._s.tool.getAttribute("lightColors");
-            if (data.length == 4) {
-                for (let v = 0; v < 4; v++) {
-                    const values = LightData.getLightValues(data[v]);
-                    colors.push(this.lightMap[values[1]], this.lightMap[values[2]], this.lightMap[values[3]], this.lightMap[values[0]]);
-                }
-                return this._s;
-            }
-            if (data.length == 1) {
-                const values = LightData.getLightValues(data[0]);
-                for (let v = 0; v < 4; v++) {
-                    colors.push(this.lightMap[values[1]], this.lightMap[values[2]], this.lightMap[values[3]], this.lightMap[values[0]]);
-                }
-            }
+            this._s._lightData.setFromQuadData(data);
             return this._s;
         },
     };
     AO = {
         _s: {},
         add(data) {
-            if (data.length == 4) {
-                this._s.tool.addToAttribute("aoColors", data[0] ** 2.2, data[1] ** 2.2, data[2] ** 2.2, data[3] ** 2.2);
-                return this._s;
-            }
-            this._s.tool.addToAttribute("aoColors", data[0] ** 2.2, data[0] ** 2.2, data[0] ** 2.2, data[0] ** 2.2);
+            this._s._AOData.setFromQuadData(data);
             return this._s;
         },
     };
-    uvs = {
+    textures = {
         _s: {},
         _data: {
             width: [0, 1],
@@ -93,8 +139,8 @@ class VoxelQuadBulder extends QuadBuilderTool {
             this.advancedUVs.we2 = 1;
             return this._s;
         },
-        addAdvancedUVs(uv) {
-            QuadUVs.addAdvancedUVs(this._s._direction, uv, this._s.tool.getAttribute("cuv3"), this.advancedUVs, this._fliped);
+        addAdvancedUVs(textureId) {
+            this._s.uvs.addAdvancedUVs(this._s._direction, textureId, this._s.tool.getAttribute("cuv3"), this.advancedUVs, this._fliped);
             return this._s;
         },
         _rotation: 0,
@@ -126,11 +172,11 @@ class VoxelQuadBulder extends QuadBuilderTool {
             this._rotation = rotation;
             return this._s;
         },
-        add(uv) {
-            QuadUVs.addUVs({
+        add(textureId) {
+            this._s.uvs.addUVs({
                 direction: this._s._direction,
                 uvs: this._s.tool.getAttribute("cuv3"),
-                uv: uv,
+                uv: textureId,
                 width: { start: this._data.width[0], end: this._data.width[1] },
                 height: { start: this._data.height[0], end: this._data.height[1] },
                 flipped: this._fliped,
@@ -139,26 +185,14 @@ class VoxelQuadBulder extends QuadBuilderTool {
             return this._s;
         },
     };
-    overlayUVs = {
+    overlayTexture = {
         _s: {},
-        add(cumstomUVS) {
+        add(data) {
             let i = 4;
-            if (cumstomUVS.length == 1) {
-                while (i--) {
-                    this._s.tool.addToAttribute("ocuv3", cumstomUVS[0], cumstomUVS[0], cumstomUVS[0], cumstomUVS[0]);
-                }
-                return this._s;
-            }
+            const attribute = this._s.tool.getAttribute("ocuv3");
             while (i--) {
-                this._s.tool.addToAttribute("ocuv3", cumstomUVS[0], cumstomUVS[1], cumstomUVS[2], cumstomUVS[3]);
+                attribute.push(data.vetexes[1], data.vetexes[2], data.vetexes[3], data.vetexes[4]);
             }
-            return this._s;
-        },
-    };
-    faceData = {
-        _s: {},
-        add(v1, v2 = v1, v3 = v1, v4 = v1) {
-            this._s.tool.addToAttribute("faceData", v1, v2, v3, v4);
             return this._s;
         },
     };

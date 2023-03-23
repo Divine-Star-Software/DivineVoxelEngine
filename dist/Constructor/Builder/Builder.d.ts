@@ -6,20 +6,20 @@ export declare const Builder: {
         registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
         defaults: {
             box: {
-                simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("./Constructors/Classes/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                pillar(id: string, textures: import("./Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("./Constructors/Classes/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("./Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                pillar(id: string, textures: import("./Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("./Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
             };
             stair: {
-                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
             };
             panel: {
-                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
             };
             crossedPanel: {
-                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("./Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
             };
             liquid: {
-                simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("./Constructors/Classes/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("./Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
             };
         };
     };

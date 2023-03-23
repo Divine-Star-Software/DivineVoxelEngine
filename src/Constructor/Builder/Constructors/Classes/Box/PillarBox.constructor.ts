@@ -1,8 +1,8 @@
 import type { ConstructorTextureData } from "Meta";
-import { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool.js";
-import { BoxVoxelShape } from "../../Shapes/default/Box/Box.voxel.shape.js";
-import { VoxelConstructor } from "./VoxelConstructor.js";
-import { TextureManager } from "../../Textures/TextureManager.js";
+import { VoxelMesherDataTool } from "../../../Tools/VoxelMesherDataTool.js";
+import { BoxVoxelShape } from "../../../Shapes/default/Box/Box.voxel.shape.js";
+import { VoxelConstructor } from "../VoxelConstructor.js";
+import { TextureManager } from "../../../Textures/TextureManager.js";
 
 export type PillarBoxVoxelConstructorData = {
  top: ConstructorTextureData;
@@ -59,28 +59,29 @@ export class PillarBoxVoxelConstructor extends VoxelConstructor {
    }
    side = 0;
   }
+  tool.getOverlayTextures().setAll(0);
   if (tool.isFaceExposed("top")) {
-   tool.setUV(this.textures[0]).setOverlayUV(0).calculateLight("top");
+   tool.setTexture(this.textures[0]).calculateLight("top");
    BoxVoxelShape.add.top();
   }
   if (tool.isFaceExposed("bottom")) {
-   tool.setUV(this.textures[1]).setOverlayUV(0).calculateLight("bottom");
+   tool.setTexture(this.textures[1]).calculateLight("bottom");
    BoxVoxelShape.add.bottom();
   }
   if (tool.isFaceExposed("east")) {
-   tool.setUV(side).setOverlayUV(0).calculateLight("east");
+   tool.setTexture(side).calculateLight("east");
    BoxVoxelShape.add.east();
   }
   if (tool.isFaceExposed("west")) {
-   tool.setUV(side).setOverlayUV(0).calculateLight("west");
+   tool.setTexture(side).calculateLight("west");
    BoxVoxelShape.add.west();
   }
   if (tool.isFaceExposed("south")) {
-   tool.setUV(side).setOverlayUV(0).calculateLight("south");
+   tool.setTexture(side).calculateLight("south");
    BoxVoxelShape.add.south();
   }
   if (tool.isFaceExposed("north")) {
-   tool.setUV(side).setOverlayUV(0).calculateLight("north");
+   tool.setTexture(side).calculateLight("north");
    BoxVoxelShape.add.north();
   }
  }

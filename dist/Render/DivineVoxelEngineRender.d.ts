@@ -148,6 +148,7 @@ export declare const DVER: {
             $INIT(scene: Scene): void;
         };
         fogData: import("@babylonjs/core").Vector4;
+        lightMap: number[];
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions;
         fo: {
             activeCamera: import("@babylonjs/core").TransformNode | null;

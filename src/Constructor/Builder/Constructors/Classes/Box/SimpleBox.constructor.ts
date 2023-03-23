@@ -2,10 +2,10 @@ import type {
  ConstructorTextureData,
  DirectionNames,
 } from "Meta";
-import { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool.js";
-import { BoxVoxelShape } from "../../Shapes/default/Box/Box.voxel.shape.js";
-import { VoxelConstructor } from "./VoxelConstructor.js";
-import { TextureManager } from "../../Textures/TextureManager.js";
+import { VoxelMesherDataTool } from "../../../Tools/VoxelMesherDataTool.js";
+import { BoxVoxelShape } from "../../../Shapes/default/Box/Box.voxel.shape.js";
+import { VoxelConstructor } from "../VoxelConstructor.js";
+import { TextureManager } from "../../../Textures/TextureManager.js";
 
 export class SimpleBoxVoxelConstructor extends VoxelConstructor {
  textures: number[] = [];
@@ -18,29 +18,29 @@ export class SimpleBoxVoxelConstructor extends VoxelConstructor {
   super();
  }
  process(tool: VoxelMesherDataTool) {
-  tool.setOverlayUV(0);
+  tool.getOverlayTextures().setAll(0);
   if (tool.isFaceExposed("top")) {
-   tool.setUV(this.textures[0]).calculateLight("top");
+   tool.setTexture(this.textures[0]).calculateLight("top");
    BoxVoxelShape.add.top();
   }
   if (tool.isFaceExposed("bottom")) {
-   tool.setUV(this.textures[1]).calculateLight("bottom");
+   tool.setTexture(this.textures[1]).calculateLight("bottom");
    BoxVoxelShape.add.bottom();
   }
   if (tool.isFaceExposed("east")) {
-   tool.setUV(this.textures[2]).calculateLight("east");
+   tool.setTexture(this.textures[2]).calculateLight("east");
    BoxVoxelShape.add.east();
   }
   if (tool.isFaceExposed("west")) {
-   tool.setUV(this.textures[3]).calculateLight("west");
+   tool.setTexture(this.textures[3]).calculateLight("west");
    BoxVoxelShape.add.west();
   }
   if (tool.isFaceExposed("south")) {
-   tool.setUV(this.textures[4]).calculateLight("south");
+   tool.setTexture(this.textures[4]).calculateLight("south");
    BoxVoxelShape.add.south();
   }
   if (tool.isFaceExposed("north")) {
-   tool.setUV(this.textures[5]).calculateLight("north");
+   tool.setTexture(this.textures[5]).calculateLight("north");
    BoxVoxelShape.add.north();
   }
  }
