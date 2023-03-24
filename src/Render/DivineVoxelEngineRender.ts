@@ -28,6 +28,7 @@ import {
 import { InitWorkers } from "./Init/InitThreads.js";
 import { $INITFunction } from "./Init/InitRender.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
 
 export const DVER = {
  UTIL: Util,
@@ -68,7 +69,10 @@ export const DVER = {
  },
  getRichDataTool() {
   return new RichDataTool();
- }
+ },
+ getNodeMeshTool() {
+  return new NodeMeshTool();
+ },
 };
 
 export type DivineVoxelEngineRender = typeof DVER;

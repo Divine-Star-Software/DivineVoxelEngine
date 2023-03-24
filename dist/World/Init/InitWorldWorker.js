@@ -17,6 +17,5 @@ export async function InitWorldWorker(DVEW) {
     });
     ThreadComm.registerTasks("sync-all-data", () => {
         DataSync.$INIT();
-        console.log("sync all the data");
     });
 }

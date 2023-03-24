@@ -2,6 +2,7 @@ import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
 import { FaceNormals } from "../../../../Data/Constants/Util/Faces.js";
 import { LightData } from "../../../../Data/Light/LightByte.js";
 import { QuadVertexData } from "../../Classes/VertexData.js";
+import { SubstanceRules } from "../../Rules/SubstanceRules.js";
 const LD = LightData;
 const LightValue = new QuadVertexData();
 const RGBState = new QuadVertexData();
@@ -111,7 +112,7 @@ export const LightGradient = {
     },
     calculate(face, tool, ignoreAO) {
         this.tool = tool;
-        const voxelSubstance = tool.voxel.getSubstance();
+        const voxelSubstance = SubstanceRules.getSubstanceParent(tool.voxel.getSubstance());
         const isLightSource = tool.voxel.isLightSource();
         let light = tool.voxel.getLight();
         let aoOverRide = -1;
@@ -166,14 +167,11 @@ export const LightGradient = {
                 AOValues.a = 1;
             }
             for (let i = 0; i < 9; i += 3) {
-                const cx = checkSet[i] + tool.voxel.x;
-                const cy = checkSet[i + 1] + tool.voxel.y;
-                const cz = checkSet[i + 2] + tool.voxel.z;
                 if (this.settings.doRGB || this.settings.doSun) {
-                    if (!tool.nVoxel.loadInAt(cx, cy, cz))
+                    if (!tool.nVoxel.loadInAt(checkSet[i] + tool.voxel.x, checkSet[i + 1] + tool.voxel.y, checkSet[i + 2] + tool.voxel.z))
                         continue;
                     const nl = tool.nVoxel.getLight();
-                    if (nl != -1) {
+                    if (nl >= 0) {
                         const values = LD.getLightValues(nl);
                         nlValues.s = values[0];
                         nlValues.r = values[1];
@@ -220,32 +218,22 @@ export const LightGradient = {
                     }
                     if (!tool.nVoxel.isRenderable())
                         break doAO;
-                    const neighborVoxelSubstance = tool.nVoxel.getSubstance();
-                    let finalResult = false;
-                    let substanceRuleResult = true;
-                    if (voxelSubstance == "#dve_transparent" ||
-                        voxelSubstance == "#dve_solid") {
-                        if (neighborVoxelSubstance != "#dve_solid" &&
-                            neighborVoxelSubstance != "#dve_transparent") {
-                            substanceRuleResult = false;
-                        }
-                    }
-                    else {
-                        if (neighborVoxelSubstance !== voxelSubstance) {
-                            substanceRuleResult = false;
-                        }
-                    }
+                    const neighborVoxelSubstance = SubstanceRules.getSubstanceParent(tool.nVoxel.getSubstance());
                     const neightLightSource = tool.nVoxel.isLightSource();
+                    let finalResult = true;
+                    if (neighborVoxelSubstance != voxelSubstance) {
+                        finalResult = false;
+                    }
                     if (isLightSource || neightLightSource) {
-                        substanceRuleResult = false;
+                        finalResult = false;
                     }
                     tool.faceDataOverride.face = face;
-                    tool.faceDataOverride.default = substanceRuleResult;
+                    tool.faceDataOverride.default = finalResult;
                     finalResult = OverrideManager.runOverride("AO", tool.voxel.getShapeId(), tool.nVoxel.getShapeId(), tool.faceDataOverride);
-                    if (finalResult) {
-                        AOState.setVertex(vertex, 0);
-                        AOValues.a++;
-                    }
+                    if (!finalResult)
+                        break doAO;
+                    AOState.setVertex(vertex, 0);
+                    AOValues.a++;
                 }
             }
             /*
@@ -307,17 +295,16 @@ export const LightGradient = {
                     .getWorldAO()
                     .set(AOValue.vetexes[4], AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3]);
             }
+            return;
         }
-        else {
+        tool
+            .setFaceFlipped(false)
+            .getWorldLight()
+            .set(LightValue.vetexes[1], LightValue.vetexes[2], LightValue.vetexes[3], LightValue.vetexes[4]);
+        if (!states.ignoreAO) {
             tool
-                .setFaceFlipped(false)
-                .getWorldLight()
-                .set(LightValue.vetexes[1], LightValue.vetexes[2], LightValue.vetexes[3], LightValue.vetexes[4]);
-            if (!states.ignoreAO) {
-                tool
-                    .getWorldAO()
-                    .set(AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3], AOValue.vetexes[4]);
-            }
+                .getWorldAO()
+                .set(AOValue.vetexes[1], AOValue.vetexes[2], AOValue.vetexes[3], AOValue.vetexes[4]);
         }
     },
 };

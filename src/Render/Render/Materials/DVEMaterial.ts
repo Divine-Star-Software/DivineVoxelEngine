@@ -125,7 +125,8 @@ export class DVEMaterial {
 
   type.addToMaterial(this);
 
-  shaderMaterial.setFloats("lightGradient", RenderManager.lightMap);
+  shaderMaterial.setFloats("lightGradient", RenderManager.lightGradient);
+  shaderMaterial.setFloats("mipMapLevels", RenderManager.mipMapLevels);
   shaderMaterial.setFloat("sunLightLevel", 1);
   shaderMaterial.setFloat("baseLevel", 0.1);
   shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());

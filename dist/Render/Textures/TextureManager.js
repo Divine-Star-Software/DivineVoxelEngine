@@ -5,6 +5,25 @@ import { TextureAnimationCreator } from "./TextureAnimations.js";
 export const TextureManager = {
     defaultTexturePath: "",
     textureTypes: new Map(),
+    uvMap: {},
+    getTextureUV(data, overlay = false) {
+        const [textureType, textureId, varation] = data;
+        let id = textureId;
+        if (varation) {
+            id = `${textureId}:${varation}`;
+        }
+        let uv = -1;
+        if (!overlay) {
+            uv = this.uvMap[textureType]["main"][id];
+        }
+        else {
+            uv = this.uvMap[textureType]["overlay"][id];
+        }
+        if (uv == -1) {
+            throw new Error(`Texture with id: ${id} does not exists. Overlay : ${overlay}`);
+        }
+        return uv;
+    },
     _processVariations(textureData, paths, map, animations, textureAnimatioTimes, extension, count) {
         if (!textureData.variations)
             return count;
@@ -127,11 +146,12 @@ export const TextureManager = {
             }
         }, 50);
     },
-    getTextureUVMap() {
+    generateTextureUVMap() {
         const uvMap = {};
         for (const [key, type] of this.textureTypes) {
             uvMap[key] = type.getTextureUVMap();
         }
+        this.uvMap = uvMap;
         return uvMap;
     },
     defineDefaultTexturePath(path) {
@@ -145,6 +165,9 @@ export const TextureManager = {
     },
     addTextureType(id) {
         this.textureTypes.set(id, new TextureType(id));
+    },
+    clearTextureData() {
+        this.textureTypes.forEach((_) => _.clearSegmentData());
     },
     registerTexture(textureData) {
         if (Array.isArray(textureData)) {

@@ -2,6 +2,7 @@ import type {
  RemoveChunkMeshTasks,
  RemoveChunksOutsideDistance,
  SetChunkMeshTask,
+ SetNodeMesh,
 } from "Meta/Tasks/RenderTasks.types";
 import type { LocationData } from "voxelspaces";
 import { Distance3D } from "../../Math/Functions/Distance3d.js";
@@ -32,4 +33,10 @@ export const RenderTasks = {
     MeshManager.removeColumnsOutsideRadius(data[0], data[1]);
    }
   ),
+  setNodeMesh: ThreadComm.registerTasks<SetNodeMesh>(
+    "set-node-mesh",
+    (data) => {
+    
+    }
+   ),
 };

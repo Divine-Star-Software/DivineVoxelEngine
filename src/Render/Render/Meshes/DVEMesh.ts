@@ -107,6 +107,7 @@ export class DVEMesh {
   chunkVertexData.indices = data[3];
   mesh.setVerticesData("voxelData", data[4], false, 1);
   mesh.setVerticesData("cuv3", data[5], false, 3);
+
   mesh.setVerticesData("ocuv3", data[6], false, 4);
   mesh.setVerticesData("colors", data[7], false, 4);
 

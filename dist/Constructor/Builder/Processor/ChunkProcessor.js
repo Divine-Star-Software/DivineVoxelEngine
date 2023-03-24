@@ -29,9 +29,6 @@ export const ChunkProcessor = {
         if (!mesher || !constructor)
             return;
         const voxelPOS = WorldSpaces.voxel.setLocation(this.nLocation).getPosition();
-        mesher.relativePosition.x = voxelPOS.x;
-        mesher.relativePosition.y = voxelPOS.y;
-        mesher.relativePosition.z = voxelPOS.z;
         mesher.voxel.loadInAtLocation(this.nLocation);
         mesher.nVoxel.loadInAtLocation(this.nLocation);
         ShapeTool.setMesher(mesher);
@@ -63,6 +60,7 @@ export const ChunkProcessor = {
                 }
             }
         }
+        WorldRegister.cache.disable();
         const chunks = [location, []];
         const trasnfers = [];
         for (const [substance, mesher] of RenderedSubstances.meshers._map) {
@@ -81,6 +79,5 @@ export const ChunkProcessor = {
             mesher.resetAll();
         }
         DVEC.parentComm.runTasks("set-chunk", chunks, trasnfers);
-        WorldRegister.cache.disable();
     },
 };

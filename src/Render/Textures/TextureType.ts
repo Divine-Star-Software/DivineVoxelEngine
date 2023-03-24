@@ -31,6 +31,14 @@ class TextureRecord {
  ) {
   this.textureID = `${parentID}_${id}`.replace("#", "");
  }
+
+ clearData() {
+  this.paths.clear();
+  this.textureMap = {};
+  this.texture = [];
+  this.animationsMap = [];
+  this.animationTimes = [];
+ }
 }
 
 export class TextureType {
@@ -39,7 +47,6 @@ export class TextureType {
  materials: Map<string, DVEMaterial> = new Map();
  shader: DivineShader;
  constructor(public id: string) {
-    
   const main = new TextureRecord(id, "main", "sampler", "cuv3");
   const overlay = new TextureRecord(id, "overlay", "overlay", "ocuv3");
   this.textureSegments = new Map([
@@ -54,6 +61,10 @@ export class TextureType {
     { arrayLength: 4, isArray: true, type: "sampler2DArray" },
    ],
   ]);
+ }
+
+ clearSegmentData() {
+  this.textureSegments.forEach((_) => _.clearData());
  }
 
  addTexture(data: TextureData) {
@@ -73,7 +84,10 @@ export class TextureType {
    mainVarying: main.varyingID,
    overlayVarying: overlay.varyingID,
   });
-
+  shader.setArgumentOverride("function", "getMainColor", {
+   textureID: main.textureID,
+   mainVarying: main.varyingID,
+  });
   return this.shader.merge(shader, false);
  }
 
@@ -90,9 +104,7 @@ export class TextureType {
  }
 
  runAnimations() {
-
   for (const [key, segment] of this.textureSegments) {
-
    for (let i = 0; i < segment.animations.length; i++) {
     const anim = segment.animations[i];
     if (anim.currentCount <= anim.keyCounts[anim.currentFrame]) {

@@ -1,4 +1,5 @@
 import type { DVEFogTypes } from "Meta/Render/Render/Render.options.types";
+import { NodeManager } from "../Nodes/NodeManager.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 
@@ -24,14 +25,19 @@ export class SceneTool {
   },
   setDensity(v: number) {
    RenderManager.updateFogOptions({ density: v });
+   NodeManager.materials.updateFogOptions(RenderManager.fogData);
    return this._s;
   },
   setMode(mode: DVEFogTypes) {
    RenderManager.updateFogOptions({ mode: mode });
+   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+
    return this._s;
   },
   setColor(r: number, g: number = r, b: number = r) {
    RenderManager.updateFogOptions({ color: new DVEBabylon.system.Color3(r, g, b) });
+   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+
    return this._s;
   },
  };
@@ -50,10 +56,12 @@ export class SceneTool {
   _s: <SceneTool>{},
   setBase(v: number) {
    RenderManager.setBaseLevel(v);
+   NodeManager.materials.setBaseLevel(v);
    return this._s;
   },
   setSun(v: number) {
    RenderManager.setSunLevel(v);
+   NodeManager.materials.setSunLevel(v);
    return this._s;
   },
  };

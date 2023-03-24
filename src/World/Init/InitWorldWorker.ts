@@ -23,7 +23,7 @@ export async function InitWorldWorker(
 
  ThreadComm.registerTasks("sync-all-data", () => {
     DataSync.$INIT();
-    console.log("sync all the data")
+
    });
    
 }

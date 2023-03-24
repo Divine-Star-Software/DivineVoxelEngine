@@ -10,7 +10,6 @@ import { MesherDataTool } from "./MesherDataTools.js";
 import { FaceNormals } from "../../../Data/Constants/Util/Faces.js";
 import { QuadVertexData } from "../Classes/VertexData.js";
 export class VoxelMesherDataTool extends MesherDataTool {
-    relativePosition = { x: 0, y: 0, z: 0 };
     voxel = new BuilderDataTool();
     nVoxel = new BuilderDataTool();
     faceDataOverride = {

@@ -1,4 +1,4 @@
-import { DVEShaders } from "../../Shaders/DVEShaders.js";
+import { NodeShaders } from "../../../Shaders/NodeShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
 export const SkyBoxMaterial = {
@@ -54,7 +54,7 @@ export const SkyBoxMaterial = {
         }
     },
     createMaterial(scene) {
-        const shader = DVEShaders.createSkyBoxShader("skybox");
+        const shader = NodeShaders.createSkyBoxShader("skybox");
         shader.compile();
         DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] =
             shader.compiled.vertex;

@@ -7,7 +7,8 @@ export class ShapeToolType {
 
  setMesher(dataTool: VoxelMesherDataTool) {
   this.data = dataTool;
-  this.builder.quad.tool = dataTool;
+  
+  this.builder.quad.setMesherTool(dataTool);
  }
 }
 

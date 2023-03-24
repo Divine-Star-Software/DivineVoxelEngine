@@ -27,6 +27,7 @@ declare class TextureRecord {
     texture: RawTexture2DArray[];
     textureID: string;
     constructor(parentID: string, id: string, mode: "sampler" | "overlay", attributeID: string);
+    clearData(): void;
 }
 export declare class TextureType {
     id: string;
@@ -35,6 +36,7 @@ export declare class TextureType {
     materials: Map<string, DVEMaterial>;
     shader: DivineShader;
     constructor(id: string);
+    clearSegmentData(): void;
     addTexture(data: TextureData): false | undefined;
     addToShader(shader: DivineShader): DivineShader;
     addToMaterial(material: DVEMaterial): void;

@@ -1,16 +1,18 @@
 import { ConstructorHooks } from "../Hooks/ConstructorHooks.js";
 import { LocationData } from "voxelspaces";
-import { VoxelConstructors } from "./Constructors/VoxelConstructors.js";
-import { ChunkProcessor } from "./Processor/ChunkProcessor.js";
+import { VoxelConstructors } from "./Constructors/Voxel/VoxelConstructors.js";
+import { ChunkProcessor } from "./Processors/ChunkProcessor.js";
 import { OverrideManager } from "./Rules/Overrides/OverridesManager.js";
 import { SubstanceRules } from "./Rules/SubstanceRules.js";
 import { RenderedSubstances } from "./Substances/RenderedSubstances.js";
 import { TextureManager } from "./Textures/TextureManager.js";
+import { TextureProcessor } from "./Processors/TextureProcessor.js";
 
 export const Builder = {
  constructors: VoxelConstructors,
  textureManager: TextureManager,
- processor: ChunkProcessor,
+ chunkProcessor: ChunkProcessor,
+ textureProcessor: TextureProcessor,
  overrides: OverrideManager,
  renderedSubstances: RenderedSubstances,
 
@@ -23,7 +25,7 @@ export const Builder = {
   });
  },
  buildChunk(location: LocationData, LOD = 1) {
-  this.processor.build(location);
+  this.chunkProcessor.build(location);
   return true;
  },
 };

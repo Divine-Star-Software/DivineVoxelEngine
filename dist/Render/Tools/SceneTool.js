@@ -1,3 +1,4 @@
+import { NodeManager } from "../Nodes/NodeManager.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 export class SceneTool {
@@ -22,14 +23,17 @@ export class SceneTool {
         },
         setDensity(v) {
             RenderManager.updateFogOptions({ density: v });
+            NodeManager.materials.updateFogOptions(RenderManager.fogData);
             return this._s;
         },
         setMode(mode) {
             RenderManager.updateFogOptions({ mode: mode });
+            NodeManager.materials.updateFogOptions(RenderManager.fogData);
             return this._s;
         },
         setColor(r, g = r, b = r) {
             RenderManager.updateFogOptions({ color: new DVEBabylon.system.Color3(r, g, b) });
+            NodeManager.materials.updateFogOptions(RenderManager.fogData);
             return this._s;
         },
     };
@@ -48,10 +52,12 @@ export class SceneTool {
         _s: {},
         setBase(v) {
             RenderManager.setBaseLevel(v);
+            NodeManager.materials.setBaseLevel(v);
             return this._s;
         },
         setSun(v) {
             RenderManager.setSunLevel(v);
+            NodeManager.materials.setSunLevel(v);
             return this._s;
         },
     };

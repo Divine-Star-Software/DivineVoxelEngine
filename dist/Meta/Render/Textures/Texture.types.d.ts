@@ -37,6 +37,7 @@ export declare type TextureDataBase = {
      */
     rawData?: Uint8ClampedArray | Uint8ClampedArray[];
     includeInRawDataMap?: boolean;
+    meshable?: boolean;
 };
 export declare type TextureData = {
     type: TextureTypes;

@@ -19,9 +19,9 @@ export const ShapeBuilder = {
                 .setDirection(quad[0])
                 .updatePosition(quad[2][0], quad[2][1], quad[2][2])
                 .textures.setRoation(quad[5][0])
-                .textures.setWidth(quad[5][1], quad[5][2])
-                .textures.setHeight(quad[5][3], quad[5][4])
-                .textures.add(ShapeTool.data.getUV())
+                .setWidth(quad[5][1], quad[5][2])
+                .setHeight(quad[5][3], quad[5][4])
+                .add(ShapeTool.data.getUV())
                 .overlayTexture.add(ShapeTool.data.getOverlayTextures());
             AOValue.setAll(0);
             AOValue.set(quad[3][0] < 0 ? aoData.vetexes[getIndex(quad[3][0])] : quad[3][0], quad[3][1] < 0 ? aoData.vetexes[getIndex(quad[3][1])] : quad[3][1], quad[3][2] < 0 ? aoData.vetexes[getIndex(quad[3][2])] : quad[3][2], quad[3][3] < 0 ? aoData.vetexes[getIndex(quad[3][3])] : quad[3][3]);

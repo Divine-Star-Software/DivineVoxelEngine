@@ -1,5 +1,5 @@
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
-import { DVEShaders } from "../../Shaders/DVEShaders.js";
+import { NodeShaders } from "../../../Shaders/NodeShaders.js";
 import { DVER } from "../../../DivineVoxelEngineRender.js";
 import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 import { DVEBabylon } from "../../../Babylon/DVEBabylon.js";
@@ -57,7 +57,7 @@ export const SkyBoxMaterial = {
  },
 
  createMaterial(scene: Scene): ShaderMaterial {
-  const shader = DVEShaders.createSkyBoxShader("skybox");
+  const shader = NodeShaders.createSkyBoxShader("skybox");
   shader.compile();
   DVEBabylon.system.Effect.ShadersStore["skyboxVertexShader"] =
    shader.compiled.vertex;

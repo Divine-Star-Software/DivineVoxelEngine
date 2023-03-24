@@ -1,7 +1,9 @@
 import { ConstructorTasks } from "../../Common/Threads/Contracts/ConstructorTasks.js";
 import { DVEC } from "../DivineVoxelEngineConstructor.js";
 import { ThreadComm } from "threadcomm";
-import {
+import type { BuildNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
+
+import type {
  BuildTasks,
  ExplosionTasks,
  GenerateTasks,
@@ -20,6 +22,7 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { TasksRequest } from "./TasksRequest.js";
 
+
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
@@ -33,16 +36,26 @@ export const Tasks = {
   ),
  },
  build: {
+  nodeMesh: ThreadComm.registerTasks<BuildNodeMesh>(
+   "build-node-mesh",
+   (data, onDone) => {
+    if (data[1] == "#dve_node_texture") {
+      const [returnData,transfers] =  DVEC.builder.textureProcessor.processTexture(data);
+     if (onDone) onDone(returnData,transfers);
+    }
+    if (onDone) onDone(false);
+   },
+   "deferred"
+  ),
   chunk: {
    tasks: ThreadComm.registerTasks<PriorityTask<BuildTasks>>(
     ConstructorTasks.buildChunk,
-    async (buildData,onDone) => {
-        const location = buildData.data[0];
-        await DVEC.builder.buildChunk(location, buildData.data[1]);
-        if(onDone) (onDone());
+    async (buildData, onDone) => {
+     const location = buildData.data[0];
+     await DVEC.builder.buildChunk(location, buildData.data[1]);
+     if (onDone) onDone();
     }
    ),
-
   },
   column: ThreadComm.registerTasks<BuildTasks>(
    ConstructorTasks.buildColumn,
@@ -61,7 +74,7 @@ export const Tasks = {
      totalChunks++;
      DVEC.builder.buildChunk([...location]);
     }
-    if(onDone) (onDone());
+    if (onDone) onDone();
    },
    "deferred"
   ),

@@ -3,6 +3,7 @@ export declare const Tasks: {
         syncTextures: void;
     };
     build: {
+        nodeMesh: void;
         chunk: {
             tasks: void;
         };

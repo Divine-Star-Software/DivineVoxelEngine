@@ -18,8 +18,8 @@ export class MesherDataTool {
         this.attributes.get("normal")[0].push(...normals);
         return this;
     }
-    addIndices(...indicies) {
-        this.attributes.get("indices")[0].push(...indicies);
+    addIndices(...indices) {
+        this.attributes.get("indices")[0].push(...indices);
         return this;
     }
     addToAttribute(id, ...data) {
@@ -43,6 +43,10 @@ export class MesherDataTool {
         if (this.vars.has(id)) {
             this.vars.set(id, value);
         }
+        return this;
+    }
+    getVar(id) {
+        return this.vars.get(id);
     }
     resetAll() {
         this.resetSegments();
@@ -71,13 +75,26 @@ export class MesherDataTool {
     }
     getMeshData() {
         const arrays = [];
+        const strides = [];
         const trasnfers = [];
         for (const [key, [value, stride, type]] of this.attributes._map) {
             //@ts-ignore
             const newArray = TypedArrayMap[type].from(value);
             arrays.push(newArray);
+            strides.push(stride);
             trasnfers.push(newArray.buffer);
         }
-        return [arrays, trasnfers];
+        return [arrays, trasnfers, strides];
+    }
+    getAllAttributes() {
+        const data = [];
+        const trasnfers = [];
+        for (const [key, [value, stride, type]] of this.attributes._map) {
+            //@ts-ignore
+            const newArray = TypedArrayMap[type].from(value);
+            trasnfers.push(newArray.buffer);
+            data.push([key, newArray, stride]);
+        }
+        return [data, trasnfers];
     }
 }

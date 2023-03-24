@@ -17,10 +17,9 @@ import {
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
-import { DVEShaders } from "./Shaders/DVEShaders.js";
+import { NodeShaders } from "../Shaders/NodeShaders.js";
 import { DVEMaterial } from "./Materials/DVEMaterial.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
-
 
 
 export const RenderManager = {
@@ -30,10 +29,11 @@ export const RenderManager = {
  meshCuller: MeshCuller,
 
  fogData: <Vector4>{},
- lightMap: [
-    0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
-    0.85, 0.97, 1,
-   ],
+ lightGradient: [
+  0.06, 0.1, 0.11, 0.14, 0.17, 0.21, 0.26, 0.31, 0.38, 0.45, 0.54, 0.64, 0.74,
+  0.85, 0.97, 1,
+ ],
+ mipMapLevels: [0, 1, 2, 3],
  effectOptions: <DVERenderEffectsOptions>{
   floraEffects: false,
   liquidEffects: false,
@@ -41,7 +41,7 @@ export const RenderManager = {
 
  fo: FOManager,
 
- shaders: DVEShaders,
+ shaders: NodeShaders,
 
  solidMaterial: <DVEMaterial>{},
  floraMaterial: <DVEMaterial>{},
@@ -93,6 +93,7 @@ export const RenderManager = {
   this.floraMaterial.updateFogOptions(fogData);
 
   this.skyBoxMaterial.updateFogOptions(fogData);
+
  },
 
  $INIT(scene: Scene) {
@@ -156,7 +157,6 @@ export const RenderManager = {
  },
 
  getDefaultCamera(scene: Scene) {
-
   const camera = new DVEBabylon.system.UniversalCamera(
    "",
    DVEBabylon.system.Vector3.Zero(),
@@ -196,10 +196,12 @@ export const RenderManager = {
   this.solidMaterial.setSunLightLevel(level);
   this.liquidMaterial.setSunLightLevel(level);
   this.floraMaterial.setSunLightLevel(level);
+
  },
  setBaseLevel(level: number) {
   this.solidMaterial.setBaseLevel(level);
   this.liquidMaterial.setBaseLevel(level);
   this.floraMaterial.setBaseLevel(level);
+
  },
 };

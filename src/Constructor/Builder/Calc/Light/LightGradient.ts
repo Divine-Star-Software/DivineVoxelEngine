@@ -7,6 +7,7 @@ import { LightData } from "../../../../Data/Light/LightByte.js";
 
 import { QuadVertexData } from "../../Classes/VertexData.js";
 import { QuadVertexes } from "Constructor/Builder/Types";
+import { SubstanceRules } from "../../Rules/SubstanceRules.js";
 
 const LD = LightData;
 const LightValue = new QuadVertexData();
@@ -158,7 +159,9 @@ export const LightGradient = {
   ignoreAO?: boolean
  ) {
   this.tool = tool;
-  const voxelSubstance = tool.voxel.getSubstance();
+  const voxelSubstance = SubstanceRules.getSubstanceParent(
+   tool.voxel.getSubstance()
+  );
   const isLightSource = tool.voxel.isLightSource();
 
   let light = tool.voxel.getLight();
@@ -188,7 +191,7 @@ export const LightGradient = {
    }
   }
   if (tool.nVoxel.isRenderable() && !tool.nVoxel.isLightSource()) {
-    tool.faceDataOverride.face = face;
+   tool.faceDataOverride.face = face;
    tool.faceDataOverride.default = false;
    if (
     OverrideManager.runOverride(
@@ -226,15 +229,18 @@ export const LightGradient = {
    }
 
    for (let i = 0; i < 9; i += 3) {
-    const cx = checkSet[i] + tool.voxel.x;
-    const cy = checkSet[i + 1] + tool.voxel.y;
-    const cz = checkSet[i + 2] + tool.voxel.z;
-
     if (this.settings.doRGB || this.settings.doSun) {
-     if (!tool.nVoxel.loadInAt(cx, cy, cz)) continue;
+     if (
+      !tool.nVoxel.loadInAt(
+       checkSet[i] + tool.voxel.x,
+       checkSet[i + 1] + tool.voxel.y,
+       checkSet[i + 2] + tool.voxel.z
+      )
+     )
+      continue;
 
      const nl = tool.nVoxel.getLight();
-     if (nl != -1) {
+     if (nl >= 0) {
       const values = LD.getLightValues(nl);
       nlValues.s = values[0];
       nlValues.r = values[1];
@@ -278,34 +284,23 @@ export const LightGradient = {
      }
 
      if (!tool.nVoxel.isRenderable()) break doAO;
-     const neighborVoxelSubstance = tool.nVoxel.getSubstance();
+     const neighborVoxelSubstance = SubstanceRules.getSubstanceParent(
+      tool.nVoxel.getSubstance()
+     );
+     const neightLightSource = tool.nVoxel.isLightSource();
 
-     let finalResult = false;
-     let substanceRuleResult = true;
+     let finalResult = true;
 
-     if (
-      voxelSubstance == "#dve_transparent" ||
-      voxelSubstance == "#dve_solid"
-     ) {
-      if (
-       neighborVoxelSubstance != "#dve_solid" &&
-       neighborVoxelSubstance != "#dve_transparent"
-      ) {
-       substanceRuleResult = false;
-      }
-     } else {
-      if (neighborVoxelSubstance !== voxelSubstance) {
-       substanceRuleResult = false;
-      }
+     if (neighborVoxelSubstance != voxelSubstance) {
+      finalResult = false;
      }
 
-     const neightLightSource = tool.nVoxel.isLightSource();
      if (isLightSource || neightLightSource) {
-      substanceRuleResult = false;
+      finalResult = false;
      }
 
      tool.faceDataOverride.face = face;
-     tool.faceDataOverride.default = substanceRuleResult;
+     tool.faceDataOverride.default = finalResult;
 
      finalResult = OverrideManager.runOverride(
       "AO",
@@ -314,10 +309,9 @@ export const LightGradient = {
       tool.faceDataOverride
      );
 
-     if (finalResult) {
-      AOState.setVertex(vertex, 0);
-      AOValues.a++;
-     }
+     if (!finalResult) break doAO;
+     AOState.setVertex(vertex, 0);
+     AOValues.a++;
     }
    }
 
@@ -389,26 +383,26 @@ export const LightGradient = {
       AOValue.vetexes[3]
      );
    }
-  } else {
+   return;
+  }
+  tool
+   .setFaceFlipped(false)
+   .getWorldLight()
+   .set(
+    LightValue.vetexes[1],
+    LightValue.vetexes[2],
+    LightValue.vetexes[3],
+    LightValue.vetexes[4]
+   );
+  if (!states.ignoreAO) {
    tool
-    .setFaceFlipped(false)
-    .getWorldLight()
+    .getWorldAO()
     .set(
-     LightValue.vetexes[1],
-     LightValue.vetexes[2],
-     LightValue.vetexes[3],
-     LightValue.vetexes[4]
+     AOValue.vetexes[1],
+     AOValue.vetexes[2],
+     AOValue.vetexes[3],
+     AOValue.vetexes[4]
     );
-   if (!states.ignoreAO) {
-    tool
-     .getWorldAO()
-     .set(
-      AOValue.vetexes[1],
-      AOValue.vetexes[2],
-      AOValue.vetexes[3],
-      AOValue.vetexes[4]
-     );
-   }
   }
  },
 };

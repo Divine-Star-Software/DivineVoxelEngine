@@ -49,7 +49,8 @@ export declare const RenderManager: {
         $INIT(scene: Scene): void;
     };
     fogData: Vector4;
-    lightMap: number[];
+    lightGradient: number[];
+    mipMapLevels: number[];
     effectOptions: DVERenderEffectsOptions;
     fo: {
         activeCamera: import("@babylonjs/core").TransformNode | null;
@@ -102,6 +103,7 @@ export declare const RenderManager: {
         _defaultShader: import("divine-shaders").DivineShader;
         $INIT(): void;
         createVoxelShader(id: string): import("divine-shaders").DivineShader;
+        createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
         createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
     };
     solidMaterial: DVEMaterial;

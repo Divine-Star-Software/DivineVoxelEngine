@@ -4,11 +4,6 @@ import { BuilderDataTool } from "./BuilderDataTool.js";
 import { MesherDataTool } from "./MesherDataTools.js";
 import { QuadVertexData } from "../Classes/VertexData.js";
 export declare class VoxelMesherDataTool extends MesherDataTool {
-    relativePosition: {
-        x: number;
-        y: number;
-        z: number;
-    };
     voxel: BuilderDataTool;
     nVoxel: BuilderDataTool;
     faceDataOverride: FaceDataOverride;

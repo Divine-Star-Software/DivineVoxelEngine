@@ -23,6 +23,13 @@ class TextureRecord {
         this.attributeID = attributeID;
         this.textureID = `${parentID}_${id}`.replace("#", "");
     }
+    clearData() {
+        this.paths.clear();
+        this.textureMap = {};
+        this.texture = [];
+        this.animationsMap = [];
+        this.animationTimes = [];
+    }
 }
 export class TextureType {
     id;
@@ -47,6 +54,9 @@ export class TextureType {
             ],
         ]);
     }
+    clearSegmentData() {
+        this.textureSegments.forEach((_) => _.clearData());
+    }
     addTexture(data) {
         const segment = this.textureSegments.get(data.segment ? data.segment : "main");
         if (!segment)
@@ -61,6 +71,10 @@ export class TextureType {
             overlayTextureID: overlay.textureID,
             mainVarying: main.varyingID,
             overlayVarying: overlay.varyingID,
+        });
+        shader.setArgumentOverride("function", "getMainColor", {
+            textureID: main.textureID,
+            mainVarying: main.varyingID,
         });
         return this.shader.merge(shader, false);
     }

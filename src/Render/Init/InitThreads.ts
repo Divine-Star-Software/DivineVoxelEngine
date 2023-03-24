@@ -4,13 +4,17 @@ import { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { CommBase } from "threadcomm";
 
+
 export async function InitWorkers(
  DVER: DivineVoxelEngineRender,
  initData: DVERInitData
 ) {
  DVER.settings.syncSettings(<any>initData);
 
+
  await DVER.TC.$INIT("render", "global");
+
+
 
  if (!(initData.worldWorker instanceof Worker)) {
   throw Error(

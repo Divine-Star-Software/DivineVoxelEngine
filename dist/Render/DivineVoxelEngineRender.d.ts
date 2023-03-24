@@ -3,6 +3,7 @@ import type { DVERInitData } from "Meta/Render/DVER";
 import type { Scene } from "@babylonjs/core";
 import { SceneTool } from "./Tools/SceneTool.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
+import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
 export declare const DVER: {
     UTIL: {
         createPromiseCheck: (data: {
@@ -148,7 +149,8 @@ export declare const DVER: {
             $INIT(scene: Scene): void;
         };
         fogData: import("@babylonjs/core").Vector4;
-        lightMap: number[];
+        lightGradient: number[];
+        mipMapLevels: number[];
         effectOptions: import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions;
         fo: {
             activeCamera: import("@babylonjs/core").TransformNode | null;
@@ -201,6 +203,7 @@ export declare const DVER: {
             _defaultShader: import("divine-shaders").DivineShader;
             $INIT(): void;
             createVoxelShader(id: string): import("divine-shaders").DivineShader;
+            createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
             createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
         };
         solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
@@ -342,6 +345,8 @@ export declare const DVER: {
     textures: {
         defaultTexturePath: string;
         textureTypes: Map<string, import("./Textures/TextureType.js").TextureType>;
+        uvMap: import("../index.js").TextureTypeUVMap;
+        getTextureUV(data: import("../index.js").ConstructorTextureData, overlay?: boolean): number;
         _processVariations(textureData: import("../index.js").TextureData, paths: Map<string, false | Uint8ClampedArray>, map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number): number;
         _getPath(textureData: import("../index.js").TextureData, varation: string | undefined, extension: string): string;
         generateTexturesData(id: string): false | undefined;
@@ -349,10 +354,11 @@ export declare const DVER: {
         isReady(): boolean;
         $INIT(): Promise<void>;
         $START_ANIMATIONS(): void;
-        getTextureUVMap(): import("../index.js").TextureTypeUVMap;
+        generateTextureUVMap(): import("../index.js").TextureTypeUVMap;
         defineDefaultTexturePath(path: string): void;
         getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
         addTextureType(id: string): void;
+        clearTextureData(): void;
         registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
         createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
     };
@@ -361,6 +367,7 @@ export declare const DVER: {
         removeChunk: void;
         removeColumn: void;
         removeColumnsOutsideRadius: void;
+        setNodeMesh: void;
     };
     $INIT(initData: DVERInitData): Promise<void>;
     $SCENEINIT(data: {
@@ -369,5 +376,6 @@ export declare const DVER: {
     }): Promise<void>;
     getSceneTool(): SceneTool;
     getRichDataTool(): RichDataTool;
+    getNodeMeshTool(): NodeMeshTool;
 };
 export declare type DivineVoxelEngineRender = typeof DVER;

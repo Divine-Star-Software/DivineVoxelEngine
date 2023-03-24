@@ -14,12 +14,21 @@ export const Tasks = {
         }),
     },
     build: {
+        nodeMesh: ThreadComm.registerTasks("build-node-mesh", (data, onDone) => {
+            if (data[1] == "#dve_node_texture") {
+                const [returnData, transfers] = DVEC.builder.textureProcessor.processTexture(data);
+                if (onDone)
+                    onDone(returnData, transfers);
+            }
+            if (onDone)
+                onDone(false);
+        }, "deferred"),
         chunk: {
             tasks: ThreadComm.registerTasks(ConstructorTasks.buildChunk, async (buildData, onDone) => {
                 const location = buildData.data[0];
                 await DVEC.builder.buildChunk(location, buildData.data[1]);
                 if (onDone)
-                    (onDone());
+                    onDone();
             }),
         },
         column: ThreadComm.registerTasks(ConstructorTasks.buildColumn, async (data, onDone) => {
@@ -40,7 +49,7 @@ export const Tasks = {
                 DVEC.builder.buildChunk([...location]);
             }
             if (onDone)
-                (onDone());
+                onDone();
         }, "deferred"),
     },
     voxelUpdate: {

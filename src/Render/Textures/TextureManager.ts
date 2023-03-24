@@ -6,11 +6,33 @@ import type {
 import { TextureCreator } from "./TextureCreator.js";
 import { TextureType } from "./TextureType.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
+import { ConstructorTextureData } from "Meta/index.js";
 
 export const TextureManager = {
  defaultTexturePath: "",
 
  textureTypes: <Map<string, TextureType>>new Map(),
+
+ uvMap: <TextureTypeUVMap>{},
+ getTextureUV(data: ConstructorTextureData, overlay: boolean = false): number {
+  const [textureType, textureId, varation] = data;
+  let id = textureId;
+  if (varation) {
+   id = `${textureId}:${varation}`;
+  }
+  let uv = -1;
+  if (!overlay) {
+   uv = this.uvMap[textureType]["main"][id];
+  } else {
+   uv = this.uvMap[textureType]["overlay"][id];
+  }
+  if (uv == -1) {
+   throw new Error(
+    `Texture with id: ${id} does not exists. Overlay : ${overlay}`
+   );
+  }
+  return uv;
+ },
 
  _processVariations(
   textureData: TextureData,
@@ -35,7 +57,6 @@ export const TextureManager = {
     paths.set(assetPath, raw);
     count++;
    } else {
-    
     if (!data.animKeys)
      throw new Error(
       "Texture Varation must have supplied animKeys if frames are greater than 0."
@@ -152,12 +173,8 @@ export const TextureManager = {
     }
    }
 
-
    segment.totalTextures = count;
   }
-
-
-  
  },
 
  _ready: false,
@@ -192,11 +209,12 @@ export const TextureManager = {
   }, 50);
  },
 
- getTextureUVMap() {
+ generateTextureUVMap() {
   const uvMap: TextureTypeUVMap = {};
   for (const [key, type] of this.textureTypes) {
    uvMap[key] = type.getTextureUVMap();
   }
+  this.uvMap = uvMap;
   return uvMap;
  },
 
@@ -212,6 +230,10 @@ export const TextureManager = {
 
  addTextureType(id: string) {
   this.textureTypes.set(id, new TextureType(id));
+ },
+
+ clearTextureData() {
+  this.textureTypes.forEach((_) => _.clearSegmentData());
  },
 
  registerTexture(textureData: TextureData | TextureData[]) {

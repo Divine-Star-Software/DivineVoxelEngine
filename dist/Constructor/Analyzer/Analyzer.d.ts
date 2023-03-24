@@ -4,7 +4,7 @@ import { DataTool } from "../../Tools/Data/DataTool.js";
 export declare const Analyzer: {
     updater: {
         _voxels: Map<string, (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -13,7 +13,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -22,7 +22,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -448,20 +448,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -473,7 +473,7 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                processor: {
+                chunkProcessor: {
                     relative: {
                         x: number;
                         y: number;
@@ -482,6 +482,98 @@ export declare const Analyzer: {
                     nLocation: LocationData;
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
+                };
+                textureProcessor: {
+                    visitedMap: Record<"top" | "bottom" | "west" | "east", Record<string, boolean>>;
+                    _resetVisitedMap(): void;
+                    faceMap: Record<import("../../index.js").DirectionNames, number>;
+                    height: number;
+                    width: number;
+                    depth: number;
+                    getPosition: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number, number]>;
+                    getDimensions: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number]>;
+                    getTruePosition(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                    };
+                    processTexture(buildTask: import("../../Meta/Tasks/RenderTasks.types.js").BuildNodeMesh): readonly [import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh, ArrayBuffer[]];
+                    _process(data: number[][], x: number, y: number): {
+                        w: boolean;
+                        e: boolean;
+                        t: boolean;
+                        b: boolean;
+                    };
+                    gettopFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getbottomFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getwestFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    geteastFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getBlankFace(x: number, y: number, face: "top" | "bottom" | "west" | "east"): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    visit(x: number, y: number, face: "top" | "bottom" | "west" | "east"): void;
+                    visited(x: number, y: number, face: "top" | "bottom" | "west" | "east"): boolean;
+                    calculateUV(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): [number, number, number, number];
+                    buildFace(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): void;
                 };
                 overrides: {
                     overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
@@ -711,7 +803,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
@@ -720,27 +812,27 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -772,6 +864,7 @@ export declare const Analyzer: {
                     syncTextures: void;
                 };
                 build: {
+                    nodeMesh: void;
                     chunk: {
                         tasks: void;
                     };
@@ -1036,7 +1129,7 @@ export declare const Analyzer: {
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -1045,7 +1138,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -1054,7 +1147,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -1480,20 +1573,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -1505,7 +1598,7 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                processor: {
+                chunkProcessor: {
                     relative: {
                         x: number;
                         y: number;
@@ -1514,6 +1607,98 @@ export declare const Analyzer: {
                     nLocation: LocationData;
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
+                };
+                textureProcessor: {
+                    visitedMap: Record<"top" | "bottom" | "west" | "east", Record<string, boolean>>;
+                    _resetVisitedMap(): void;
+                    faceMap: Record<import("../../index.js").DirectionNames, number>;
+                    height: number;
+                    width: number;
+                    depth: number;
+                    getPosition: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number, number]>;
+                    getDimensions: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number]>;
+                    getTruePosition(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                    };
+                    processTexture(buildTask: import("../../Meta/Tasks/RenderTasks.types.js").BuildNodeMesh): readonly [import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh, ArrayBuffer[]];
+                    _process(data: number[][], x: number, y: number): {
+                        w: boolean;
+                        e: boolean;
+                        t: boolean;
+                        b: boolean;
+                    };
+                    gettopFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getbottomFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getwestFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    geteastFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getBlankFace(x: number, y: number, face: "top" | "bottom" | "west" | "east"): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    visit(x: number, y: number, face: "top" | "bottom" | "west" | "east"): void;
+                    visited(x: number, y: number, face: "top" | "bottom" | "west" | "east"): boolean;
+                    calculateUV(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): [number, number, number, number];
+                    buildFace(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): void;
                 };
                 overrides: {
                     overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
@@ -1743,7 +1928,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
@@ -1752,27 +1937,27 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -1804,6 +1989,7 @@ export declare const Analyzer: {
                     syncTextures: void;
                 };
                 build: {
+                    nodeMesh: void;
                     chunk: {
                         tasks: void;
                     };
@@ -2068,7 +2254,7 @@ export declare const Analyzer: {
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "node" | "browser";
+            environment: "browser" | "node";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -2077,7 +2263,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "node" | "browser";
+                getEnviorment(): "browser" | "node";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -2086,7 +2272,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "node" | "browser";
+                enviorment: "browser" | "node";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -2512,20 +2698,20 @@ export declare const Analyzer: {
                     registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                     defaults: {
                         box: {
-                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                            pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                            simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                            pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                         };
                         stair: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                         };
                         panel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                         };
                         crossedPanel: {
-                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                            simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                         };
                         liquid: {
-                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                            simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                         };
                     };
                 };
@@ -2537,7 +2723,7 @@ export declare const Analyzer: {
                     releaseTextureData(): void;
                     isReady(): boolean;
                 };
-                processor: {
+                chunkProcessor: {
                     relative: {
                         x: number;
                         y: number;
@@ -2546,6 +2732,98 @@ export declare const Analyzer: {
                     nLocation: LocationData;
                     _process(doSecondCheck?: boolean): void;
                     build(location: LocationData): void;
+                };
+                textureProcessor: {
+                    visitedMap: Record<"top" | "bottom" | "west" | "east", Record<string, boolean>>;
+                    _resetVisitedMap(): void;
+                    faceMap: Record<import("../../index.js").DirectionNames, number>;
+                    height: number;
+                    width: number;
+                    depth: number;
+                    getPosition: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number, number]>;
+                    getDimensions: Record<"top" | "bottom" | "west" | "east", (face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }) => [number, number]>;
+                    getTruePosition(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                    };
+                    processTexture(buildTask: import("../../Meta/Tasks/RenderTasks.types.js").BuildNodeMesh): readonly [import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh, ArrayBuffer[]];
+                    _process(data: number[][], x: number, y: number): {
+                        w: boolean;
+                        e: boolean;
+                        t: boolean;
+                        b: boolean;
+                    };
+                    gettopFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getbottomFace(data: number[][], sx: number, y: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getwestFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    geteastFace(data: number[][], x: number, sy: number): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    getBlankFace(x: number, y: number, face: "top" | "bottom" | "west" | "east"): {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    };
+                    visit(x: number, y: number, face: "top" | "bottom" | "west" | "east"): void;
+                    visited(x: number, y: number, face: "top" | "bottom" | "west" | "east"): boolean;
+                    calculateUV(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): [number, number, number, number];
+                    buildFace(face: {
+                        xStart: number;
+                        xEnd: number;
+                        yStart: number;
+                        yEnd: number;
+                        type: "top" | "bottom" | "west" | "east";
+                    }): void;
                 };
                 overrides: {
                     overrides: Record<import("../index.js").OverrideTypes, Map<string, Map<string, (data: import("../index.js").FaceDataOverride) => boolean>>>;
@@ -2775,7 +3053,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 0 | 1 | -1;
+                    isStored(location: LocationData): 1 | 0 | -1;
                 };
             };
             voxelManager: {
@@ -2784,27 +3062,27 @@ export declare const Analyzer: {
                 registerVoxel(voxel: import("../index.js").VoxelConstructor | import("../index.js").VoxelConstructor[]): void;
                 defaults: {
                     box: {
-                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
-                        pillar(id: string, textures: import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
+                        simple(id: string, textures: import("../../index.js").ConstructorTextureData | Record<import("../../index.js").DirectionNames, import("../../index.js").ConstructorTextureData>): import("../Builder/Constructors/Voxel/Classes/Box/SimpleBox.constructor.js").SimpleBoxVoxelConstructor;
+                        pillar(id: string, textures: import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructorData): import("../Builder/Constructors/Voxel/Classes/Box/PillarBox.constructor.js").PillarBoxVoxelConstructor;
                     };
                     stair: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Stair/SimpleStair.constructor.js").SimpleStairVoxelConstructor;
                     };
                     panel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimplePanel.constructor.js").SimplePanelVoxelConstructor;
                     };
                     crossedPanel: {
-                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
+                        simple(id: string, texture: import("../../index.js").ConstructorTextureData): import("../Builder/Constructors/Voxel/Classes/Panel/SimpleCrossedPanel.constructor.js").SimpleCrossedPanelVoxelConstructor;
                     };
                     liquid: {
-                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
+                        simple(id: string, textures: [import("../../index.js").ConstructorTextureData, import("../../index.js").ConstructorTextureData]): import("../Builder/Constructors/Voxel/Classes/Liquid/SimpleLiquid.constructor.js").SimpleLiquidConstructor;
                     };
                 };
             };
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "node" | "browser";
+                environment: "browser" | "node";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -2836,6 +3114,7 @@ export declare const Analyzer: {
                     syncTextures: void;
                 };
                 build: {
+                    nodeMesh: void;
                     chunk: {
                         tasks: void;
                     };

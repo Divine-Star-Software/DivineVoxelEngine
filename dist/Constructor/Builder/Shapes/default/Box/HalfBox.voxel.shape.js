@@ -35,7 +35,7 @@ export const HalfBoxVoxelShape = {
                 .setDirection("north")
                 .setDimensions(1, 0.5)
                 .textures.setHeight(0.5, 1)
-                .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 1);
+                .quad.updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 1);
             HalfBoxVoxelShape._createFace();
         },
         south() {
@@ -43,7 +43,7 @@ export const HalfBoxVoxelShape = {
                 .setDirection("south")
                 .setDimensions(1, 0.5)
                 .textures.setHeight(0.5, 1)
-                .updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0);
+                .quad.updatePosition(0.5, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0);
             HalfBoxVoxelShape._createFace();
         },
         east() {
@@ -51,16 +51,15 @@ export const HalfBoxVoxelShape = {
                 .setDirection("east")
                 .setDimensions(1, 0.5)
                 .textures.setHeight(0.5, 1)
-                .updatePosition(1, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
+                .quad.updatePosition(1, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
             HalfBoxVoxelShape._createFace();
         },
         west() {
             ShapeTool.builder.quad
                 .setDirection("west")
                 .setDimensions(1, 0.5)
-                .textures.setWidth(0, 1)
                 .textures.setHeight(0.5, 1)
-                .updatePosition(0, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
+                .quad.updatePosition(0, ShapeTool.data.voxel.getState() == 0 ? 0.5 : 0.75, 0.5);
             HalfBoxVoxelShape._createFace();
         },
     },

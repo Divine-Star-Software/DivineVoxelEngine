@@ -13,4 +13,6 @@ export const RenderTasks = {
     removeColumnsOutsideRadius: ThreadComm.registerTasks("remove-column-outside-radius", (data) => {
         MeshManager.removeColumnsOutsideRadius(data[0], data[1]);
     }),
+    setNodeMesh: ThreadComm.registerTasks("set-node-mesh", (data) => {
+    }),
 };

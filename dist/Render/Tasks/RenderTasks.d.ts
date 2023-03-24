@@ -3,4 +3,5 @@ export declare const RenderTasks: {
     removeChunk: void;
     removeColumn: void;
     removeColumnsOutsideRadius: void;
+    setNodeMesh: void;
 };

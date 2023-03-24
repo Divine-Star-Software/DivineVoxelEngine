@@ -1,5 +1,5 @@
 export declare const ConstructorThreadState: {
     _settingsSynced: boolean;
-    environment: "node" | "browser";
+    environment: "browser" | "node";
     isReady(): boolean;
 };
