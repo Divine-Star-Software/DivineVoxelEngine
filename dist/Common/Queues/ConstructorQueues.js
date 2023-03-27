@@ -59,5 +59,6 @@ const QMBase = {
         chunk: CCM.addQueue("build-chunk", ConstructorTasks.buildChunk),
     },
     generate: CCM.addQueue("generatek", ConstructorTasks.generate),
+    decorate: CCM.addQueue("decorate", ConstructorTasks.decorate),
 };
 export const ConstructorQueues = QMBase;

@@ -51,6 +51,9 @@ export class TaskTool {
   this.propagation.deferred._s = this;
   this.propagation.queued._s = this;
 
+  this.decorate.deferred._s = this;
+  this.decorate.queued._s = this;
+
   this._thread = ThreadComm.threadName;
  }
 
@@ -71,7 +74,12 @@ export class TaskTool {
  voxelUpdate = {
   update: {
    _s: <TaskTool>{},
-   run(location: LocationData, raw: RawVoxelData,onDone: (data: any) => void,mode :TaskRunModes ="sync") {
+   run(
+    location: LocationData,
+    raw: RawVoxelData,
+    onDone: (data: any) => void,
+    mode: TaskRunModes = "sync"
+   ) {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelUpdate,
      [location, raw, this._s._data.queue, this._s._thread],
@@ -83,7 +91,11 @@ export class TaskTool {
   },
   erase: {
    _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void,mode :TaskRunModes ="sync") {
+   run(
+    location: LocationData,
+    onDone: (data: any) => void,
+    mode: TaskRunModes = "sync"
+   ) {
     CCM.runPromiseTasks<UpdateTasks>(
      ConstructorTasks.voxelErease,
      [location, this._s._data.queue, this._s._thread],
@@ -95,7 +107,12 @@ export class TaskTool {
   },
   paint: {
    _s: <TaskTool>{},
-   run(location: LocationData, raw: RawVoxelData, onDone: (data: any) => void,mode :TaskRunModes ="sync") {
+   run(
+    location: LocationData,
+    raw: RawVoxelData,
+    onDone: (data: any) => void,
+    mode: TaskRunModes = "sync"
+   ) {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelPaint,
      [location, raw, this._s._data.queue, this._s._thread],
@@ -250,6 +267,39 @@ export class TaskTool {
    },
   },
  };
+
+ decorate = {
+  deferred: {
+   _s: <TaskTool>{},
+   run(location: LocationData, data: any, onDone: (data: any) => void) {
+    CCM.runPromiseTasks<GenerateTasks>(
+     ConstructorTasks.decorate,
+     [location, data],
+     [],
+     onDone,
+     undefined,
+     0
+    );
+   },
+  },
+
+  queued: {
+   _s: <TaskTool>{},
+   add(data: GenerateTasks) {
+    CQ.decorate.add(data);
+   },
+   run(onDone: Function) {
+    CQ.decorate.run(this._s._data.queue);
+    CQ.decorate.onDone(this._s._data.queue, onDone);
+   },
+   async runAndAwait() {
+    await CQ.decorate.runAndAwait();
+   },
+  },
+ };
+
+
+
 
  worldSun = {
   deferred: {

@@ -2,9 +2,10 @@ import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types.js";
 import type { LocationData } from "voxelspaces";
 
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
-import { ThreadComm } from "threadcomm";
+
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
 import { ChunkDataTool } from "../../../Tools/Data/WorldData/ChunkDataTool.js";
+import { WorldComm } from "../../Threads/ConstrcutorTheads.js";
 
 const brush = new BrushTool();
 const dataTool = brush._dt;
@@ -23,12 +24,12 @@ export const WorldGenRegister = {
   >
  >new Map(),
 
- registerRequest(dimension: string, x: number, y: number, z: number) {
-  const id = `${dimension}-${x}-${y}-${z}`;
+ registerRequest(location : LocationData) {
+  const id = location.toString();
   this._requests.set(id, {
    attempts: 0,
    chunks: new Map(),
-   dimension: dimension,
+   dimension: location[0],
    voxels: [],
   });
   return id;
@@ -45,9 +46,8 @@ export const WorldGenRegister = {
   const chunkKey = WorldSpaces.chunk.getKeyLocation(location);
   if (!chunkTool.loadInAtLocation(location)) {
    if (!requests.chunks.has(chunkKey)) {
-    const world = ThreadComm.getComm("world");
 
-    world.runTasks("add-chunk", [
+    WorldComm.runTasks("add-chunk", [
      requests.dimension,
      chunkPOS.x,
      chunkPOS.y,
@@ -64,12 +64,12 @@ export const WorldGenRegister = {
   const requests = this._requests.get(registerId);
   if (!requests) return true;
   chunkTool.setDimension(requests.dimension);
-  const world = ThreadComm.getComm("world");
+
   let done = true;
   for (const [key, pos] of requests.chunks) {
    if (!chunkTool.loadInAt(pos[0], pos[1], pos[2])) {
     done = false;
-    world.runTasks("add-chunk", [requests.dimension, pos[0], pos[1], pos[2]]);
+    WorldComm.runTasks("add-chunk", [requests.dimension, pos[0], pos[1], pos[2]]);
    }
   }
   if (!done) {

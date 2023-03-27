@@ -11,7 +11,7 @@ export declare const WorldGeneration: {
             chunks: Map<string, [x: number, y: number, z: number]>;
             voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
         }>;
-        registerRequest(dimension: string, x: number, y: number, z: number): string;
+        registerRequest(location: import("voxelspaces").LocationData): string;
         addToRequest(registerId: string, location: import("voxelspaces").LocationData, rawData: import("../../index.js").RawVoxelData): void;
         attemptRequestFullFill(registerId: string): boolean;
     };
@@ -28,6 +28,6 @@ export declare const WorldGeneration: {
     };
     _brushes: any[];
     setWorldGen(worldGen: WorldGenInterface): void;
-    generate(data: GenerateTasks, onDone: Function): void;
+    generate(data: GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
     getBrush(): WorldGenBrush;
 };

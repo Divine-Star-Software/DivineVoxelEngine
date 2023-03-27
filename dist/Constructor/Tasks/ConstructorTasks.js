@@ -81,7 +81,12 @@ export const Tasks = {
         generate: ThreadComm.registerTasks(ConstructorTasks.generate, (data, onDone) => {
             if (!onDone)
                 return;
-            DVEC.worldGen.generate(data, onDone);
+            DVEC.worldGen.generate(data, "generate", onDone);
+        }, "deferred"),
+        decorate: ThreadComm.registerTasks(ConstructorTasks.decorate, (data, onDone) => {
+            if (!onDone)
+                return;
+            DVEC.worldGen.generate(data, "decorate", onDone);
         }, "deferred"),
     },
     anaylzer: {

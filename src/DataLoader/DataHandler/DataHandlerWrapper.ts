@@ -24,6 +24,7 @@ export const DataHanlderWrapper = {
  },
 
  async loadRegionHeader(location: LocationData) {
+    this.handler.setDataType("world-data");
   try {
    const headerBuffer = await this.handler.getRegionHeader(location);
    if (!headerBuffer) return false;
@@ -40,6 +41,7 @@ export const DataHanlderWrapper = {
   }
  },
  async saveColumn(location: LocationData) {
+    this.handler.setDataType("world-data");
   if (columnDatatool.setLocation(location).loadIn()) {
    try {
     if (columnDatatool.isStored()) return true;
@@ -77,6 +79,7 @@ export const DataHanlderWrapper = {
  },
 
  async loadColumn(location: LocationData) {
+    this.handler.setDataType("world-data");
   try {
    if (WorldRegister.column.get(location)) return true;
    this.handler.setDataType("world-data");
@@ -107,6 +110,7 @@ export const DataHanlderWrapper = {
  },
 
  async unLoadColumn(location: LocationData) {
+    this.handler.setDataType("world-data");
   if (columnDatatool.setLocation(location).loadIn()) {
    try {
     if (!columnDatatool.isStored()) {
@@ -129,6 +133,7 @@ export const DataHanlderWrapper = {
  },
 
  async setPath(id: string) {
+    this.handler.setDataType("world-data");
   try {
    await this.handler.setPath(id);
    return true;
@@ -140,6 +145,7 @@ export const DataHanlderWrapper = {
  },
 
  async columnExists(location: LocationData) {
+    this.handler.setDataType("world-data");
   try {
    if (WorldRegister.column.get(location)) return true;
    return await this.handler.columnExists(location);
@@ -151,6 +157,7 @@ export const DataHanlderWrapper = {
  },
 
  async columnTimestamp(location: LocationData) {
+    this.handler.setDataType("world-data");
   try {
    return await this.handler.columnTimestamp(location);
   } catch (error: any) {

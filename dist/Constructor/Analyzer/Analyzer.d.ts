@@ -4,7 +4,7 @@ import { DataTool } from "../../Tools/Data/DataTool.js";
 export declare const Analyzer: {
     updater: {
         _voxels: Map<string, (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "browser" | "node";
+            environment: "node" | "browser";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -13,7 +13,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "browser" | "node";
+                getEnviorment(): "node" | "browser";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -22,7 +22,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "browser" | "node";
+                enviorment: "node" | "browser";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -421,7 +421,7 @@ export declare const Analyzer: {
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
-                    registerRequest(dimension: string, x: number, y: number, z: number): string;
+                    registerRequest(location: LocationData): string;
                     addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
@@ -438,7 +438,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -803,7 +803,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -832,7 +832,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "browser" | "node";
+                environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -879,6 +879,7 @@ export declare const Analyzer: {
                 worldSun: void;
                 worldGen: {
                     generate: void;
+                    decorate: void;
                 };
                 anaylzer: {
                     propagation: void;
@@ -1129,7 +1130,7 @@ export declare const Analyzer: {
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void>;
         registerVoxel(id: string, run: (locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "browser" | "node";
+            environment: "node" | "browser";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -1138,7 +1139,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "browser" | "node";
+                getEnviorment(): "node" | "browser";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -1147,7 +1148,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "browser" | "node";
+                enviorment: "node" | "browser";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -1546,7 +1547,7 @@ export declare const Analyzer: {
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
-                    registerRequest(dimension: string, x: number, y: number, z: number): string;
+                    registerRequest(location: LocationData): string;
                     addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
@@ -1563,7 +1564,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -1928,7 +1929,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -1957,7 +1958,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "browser" | "node";
+                environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -2004,6 +2005,7 @@ export declare const Analyzer: {
                 worldSun: void;
                 worldGen: {
                     generate: void;
+                    decorate: void;
                 };
                 anaylzer: {
                     propagation: void;
@@ -2254,7 +2256,7 @@ export declare const Analyzer: {
             getRichDataTool(): import("../../Tools/Data/RichDataTool.js").RichDataTool;
         }) => void): void;
         getVoxel(id: string): false | ((locaton: LocationData, deltaTime: number, anayzer: any, DVEC: {
-            environment: "browser" | "node";
+            environment: "node" | "browser";
             UTIL: {
                 createPromiseCheck: (data: {
                     check: () => boolean;
@@ -2263,7 +2265,7 @@ export declare const Analyzer: {
                     failTimeOut?: number | undefined;
                     onFail?: (() => any) | undefined;
                 }) => Promise<boolean>;
-                getEnviorment(): "browser" | "node";
+                getEnviorment(): "node" | "browser";
                 getAQueue<T>(): import("../../Global/Util/Queue.js").Queue<T>;
                 merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
                 degtoRad(degrees: number): number;
@@ -2272,7 +2274,7 @@ export declare const Analyzer: {
                 converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
             };
             settings: {
-                enviorment: "browser" | "node";
+                enviorment: "node" | "browser";
                 settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 getSettings(): import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData;
                 syncSettings(data: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
@@ -2671,7 +2673,7 @@ export declare const Analyzer: {
                         chunks: Map<string, [x: number, y: number, z: number]>;
                         voxels: [x: number, y: number, z: number, data: import("../../index.js").RawVoxelData][];
                     }>;
-                    registerRequest(dimension: string, x: number, y: number, z: number): string;
+                    registerRequest(location: LocationData): string;
                     addToRequest(registerId: string, location: LocationData, rawData: import("../../index.js").RawVoxelData): void;
                     attemptRequestFullFill(registerId: string): boolean;
                 };
@@ -2688,7 +2690,7 @@ export declare const Analyzer: {
                 };
                 _brushes: any[];
                 setWorldGen(worldGen: import("../../index.js").WorldGenInterface): void;
-                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
+                generate(data: import("Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
                 getBrush(): import("../index.js").WorldGenBrush;
             };
             builder: {
@@ -3053,7 +3055,7 @@ export declare const Analyzer: {
                         data: DataView;
                         buffer: SharedArrayBuffer;
                     } | undefined;
-                    isStored(location: LocationData): 1 | 0 | -1;
+                    isStored(location: LocationData): 0 | 1 | -1;
                 };
             };
             voxelManager: {
@@ -3082,7 +3084,7 @@ export declare const Analyzer: {
             TC: {
                 threadNumber: number;
                 threadName: string;
-                environment: "browser" | "node";
+                environment: "node" | "browser";
                 _comms: Record<string, import("threadcomm").CommBase>;
                 _commManageras: Record<string, import("threadcomm").CommManager>;
                 _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -3129,6 +3131,7 @@ export declare const Analyzer: {
                 worldSun: void;
                 worldGen: {
                     generate: void;
+                    decorate: void;
                 };
                 anaylzer: {
                     propagation: void;

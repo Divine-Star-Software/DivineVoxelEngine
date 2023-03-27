@@ -90,6 +90,7 @@ export class QuadBuilderTool {
  }
  setDirection(direction: DirectionNames) {
   this._direction = direction;
+
   return this;
  }
  create() {

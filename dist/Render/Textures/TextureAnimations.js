@@ -34,7 +34,7 @@ export const TextureAnimationCreator = {
             segment.varyingID = `${texture.id}_${key}_texture_varying`.replace("#", "");
             const functionName = `get_${texture.id}_${key}_texture_animation_frame`.replace("#", "");
             texture.shader.addUniform([
-                [segment.animationUniforID, "float", animaitonUniform.length + 1],
+                [segment.animationUniforID, "float", animaitonUniform.length],
             ]);
             if (segment.mode == "sampler") {
                 texture.shader.addFunction(functionName, "vertex", {

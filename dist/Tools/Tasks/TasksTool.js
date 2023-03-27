@@ -26,6 +26,8 @@ export class TaskTool {
         this.generate.queued._s = this;
         this.propagation.deferred._s = this;
         this.propagation.queued._s = this;
+        this.decorate.deferred._s = this;
+        this.decorate.queued._s = this;
         this._thread = ThreadComm.threadName;
     }
     setPriority(priority) {
@@ -151,6 +153,27 @@ export class TaskTool {
             },
             async runAndAwait() {
                 await CQ.generate.runAndAwait();
+            },
+        },
+    };
+    decorate = {
+        deferred: {
+            _s: {},
+            run(location, data, onDone) {
+                CCM.runPromiseTasks(ConstructorTasks.decorate, [location, data], [], onDone, undefined, 0);
+            },
+        },
+        queued: {
+            _s: {},
+            add(data) {
+                CQ.decorate.add(data);
+            },
+            run(onDone) {
+                CQ.decorate.run(this._s._data.queue);
+                CQ.decorate.onDone(this._s._data.queue, onDone);
+            },
+            async runAndAwait() {
+                await CQ.decorate.runAndAwait();
             },
         },
     };

@@ -22,4 +22,5 @@ export declare const ConstructorQueues: {
         chunk: import("threadcomm/Queue/QueueManager.js").QueueManager<PriorityTask<BuildTasks>>;
     };
     generate: import("threadcomm/Queue/QueueManager.js").QueueManager<GenerateTasks>;
+    decorate: import("threadcomm/Queue/QueueManager.js").QueueManager<GenerateTasks>;
 };

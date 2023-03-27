@@ -22,7 +22,6 @@ import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { TasksRequest } from "./TasksRequest.js";
 
-
 const chunkTool = new ChunkDataTool();
 
 export const Tasks = {
@@ -40,8 +39,9 @@ export const Tasks = {
    "build-node-mesh",
    (data, onDone) => {
     if (data[1] == "#dve_node_texture") {
-      const [returnData,transfers] =  DVEC.builder.textureProcessor.processTexture(data);
-     if (onDone) onDone(returnData,transfers);
+     const [returnData, transfers] =
+      DVEC.builder.textureProcessor.processTexture(data);
+     if (onDone) onDone(returnData, transfers);
     }
     if (onDone) onDone(false);
    },
@@ -130,7 +130,15 @@ export const Tasks = {
    ConstructorTasks.generate,
    (data, onDone) => {
     if (!onDone) return;
-    DVEC.worldGen.generate(data, onDone);
+    DVEC.worldGen.generate(data, "generate", onDone);
+   },
+   "deferred"
+  ),
+  decorate: ThreadComm.registerTasks<GenerateTasks>(
+   ConstructorTasks.decorate,
+   (data, onDone) => {
+    if (!onDone) return;
+    DVEC.worldGen.generate(data, "decorate", onDone);
    },
    "deferred"
   ),

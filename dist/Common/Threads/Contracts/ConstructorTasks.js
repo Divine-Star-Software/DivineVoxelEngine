@@ -2,6 +2,7 @@ export const ConstructorTasks = {
     buildChunk: 0,
     buildColumn: 0,
     generate: 0,
+    decorate: 0,
     RGBlightUpdate: 0,
     RGBlightRemove: 0,
     worldSun: 0,

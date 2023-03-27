@@ -64,6 +64,10 @@ ColumnDataTags.registerTag({
  type: "boolean",
 });
 ColumnDataTags.registerTag({
+ id: "#dve_is_world_decor_done",
+ type: "boolean",
+});
+ColumnDataTags.registerTag({
  id: "#dve_is_world_sun_done",
  type: "boolean",
 });

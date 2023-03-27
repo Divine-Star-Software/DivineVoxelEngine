@@ -21,14 +21,6 @@ export class NodeMesh {
             this.defaultBb = new DVEBabylon.system.BoundingInfo(DVEBabylon.system.Vector3.Zero(), new DVEBabylon.system.Vector3(16, 16, 16));
         }
         let mesh = new DVEBabylon.system.Mesh(this.data.id, scene);
-        mesh.isPickable = this.pickable;
-        mesh.checkCollisions = this.checkCollisions;
-        mesh.type = "node";
-        if (!this.checkCollisions) {
-            mesh.doNotSyncBoundingInfo = true;
-        }
-        mesh.doNotSerialize = this.seralize;
-        mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
         const mat = NodeManager.materials.get(this.data.materialId);
         if (!mat) {
             throw new Error(`Material: ${this.data.materialId} does not exist`);
@@ -41,6 +33,7 @@ export class NodeMesh {
         for (const [id, stride] of atrs) {
             mesh.setVerticesData(id, [0], false, stride);
         }
+        window.requestIdleCallback;
         mesh.position.x = data[0][1];
         mesh.position.y = data[0][2];
         mesh.position.z = data[0][3];
@@ -61,6 +54,14 @@ export class NodeMesh {
             mesh.setVerticesData(id, attribute, false, stride);
         }
         vertexData.applyToMesh(mesh, false);
+        if (!this.checkCollisions) {
+            mesh.doNotSyncBoundingInfo = true;
+        }
+        mesh.isPickable = this.pickable;
+        mesh.type = "node";
+        mesh.checkCollisions = this.checkCollisions;
+        mesh.doNotSerialize = this.seralize;
+        mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
         mesh.isVisible = true;
         mesh.setEnabled(true);
         return mesh;

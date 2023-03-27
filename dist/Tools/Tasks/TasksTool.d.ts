@@ -81,6 +81,18 @@ export declare class TaskTool {
             runAndAwait(): Promise<void>;
         };
     };
+    decorate: {
+        deferred: {
+            _s: TaskTool;
+            run(location: LocationData, data: any, onDone: (data: any) => void): void;
+        };
+        queued: {
+            _s: TaskTool;
+            add(data: GenerateTasks): void;
+            run(onDone: Function): void;
+            runAndAwait(): Promise<void>;
+        };
+    };
     worldSun: {
         deferred: {
             _s: TaskTool;

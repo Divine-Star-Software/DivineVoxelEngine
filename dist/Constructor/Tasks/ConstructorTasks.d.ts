@@ -18,6 +18,7 @@ export declare const Tasks: {
     worldSun: void;
     worldGen: {
         generate: void;
+        decorate: void;
     };
     anaylzer: {
         propagation: void;

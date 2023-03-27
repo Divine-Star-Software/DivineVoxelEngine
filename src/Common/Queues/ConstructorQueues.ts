@@ -72,6 +72,7 @@ const QMBase = {
   ),
  },
  generate: CCM.addQueue<GenerateTasks>("generatek", ConstructorTasks.generate),
+ decorate: CCM.addQueue<GenerateTasks>("decorate", ConstructorTasks.decorate),
 };
 
 export const ConstructorQueues = QMBase;

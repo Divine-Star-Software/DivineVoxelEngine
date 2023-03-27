@@ -88,6 +88,9 @@ export class DataTool extends DataToolBase {
             this._chunkTool.segments.light.set(index, this.data.raw[1]);
             this._chunkTool.segments.state.set(index, this.data.raw[2]);
             this._chunkTool.segments.secondaryId.set(index, this.data.raw[3]);
+            if (DataTool._columntool.loadInAtLocation(this.location)) {
+                DataTool._columntool.markAsNotStored();
+            }
             if (heightMapUpdate) {
                 DataTool._heightMapTool.chunk._c = this._chunkTool._c;
                 const substance = this.getTemplateSubstance();
@@ -99,9 +102,6 @@ export class DataTool extends DataToolBase {
                 if (heightMapUpdate == 2) {
                     DataTool._heightMapTool.chunk.update("remove", substance, this.location);
                 }
-            }
-            if (DataTool._columntool.setLocation(this.location).loadIn()) {
-                DataTool._columntool.markAsNotStored();
             }
             this._loadedIn = false;
             return true;

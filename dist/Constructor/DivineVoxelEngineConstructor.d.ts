@@ -2,7 +2,7 @@ import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { DataTool } from "../Tools/Data/DataTool.js";
 export declare const DVEC: {
-    environment: "browser" | "node";
+    environment: "node" | "browser";
     UTIL: {
         createPromiseCheck: (data: {
             check: () => boolean;
@@ -11,7 +11,7 @@ export declare const DVEC: {
             failTimeOut?: number | undefined;
             onFail?: (() => any) | undefined;
         }) => Promise<boolean>;
-        getEnviorment(): "browser" | "node";
+        getEnviorment(): "node" | "browser";
         getAQueue<T>(): import("../Global/Util/Queue.js").Queue<T>;
         merge<T_1, K>(target: T_1, newObject: K): T_1 & K;
         degtoRad(degrees: number): number;
@@ -20,7 +20,7 @@ export declare const DVEC: {
         converSABToBuffer(buffer: SharedArrayBuffer): ArrayBuffer;
     };
     settings: {
-        enviorment: "browser" | "node";
+        enviorment: "node" | "browser";
         settings: EngineSettingsData;
         getSettings(): EngineSettingsData;
         syncSettings(data: EngineSettingsData): void;
@@ -419,7 +419,7 @@ export declare const DVEC: {
                 chunks: Map<string, [x: number, y: number, z: number]>;
                 voxels: [x: number, y: number, z: number, data: import("../index.js").RawVoxelData][];
             }>;
-            registerRequest(dimension: string, x: number, y: number, z: number): string;
+            registerRequest(location: import("voxelspaces").LocationData): string;
             addToRequest(registerId: string, location: import("voxelspaces").LocationData, rawData: import("../index.js").RawVoxelData): void;
             attemptRequestFullFill(registerId: string): boolean;
         };
@@ -436,7 +436,7 @@ export declare const DVEC: {
         };
         _brushes: any[];
         setWorldGen(worldGen: import("../index.js").WorldGenInterface): void;
-        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, onDone: Function): void;
+        generate(data: import("../Meta/Tasks/Tasks.types.js").GenerateTasks, mode: "generate" | "decorate", onDone: Function): Promise<void>;
         getBrush(): import("./index.js").WorldGenBrush;
     };
     builder: {
@@ -815,7 +815,7 @@ export declare const DVEC: {
                 data: DataView;
                 buffer: SharedArrayBuffer;
             } | undefined;
-            isStored(location: import("voxelspaces").LocationData): 1 | 0 | -1;
+            isStored(location: import("voxelspaces").LocationData): 0 | 1 | -1;
         };
     };
     voxelManager: {
@@ -844,7 +844,7 @@ export declare const DVEC: {
     TC: {
         threadNumber: number;
         threadName: string;
-        environment: "browser" | "node";
+        environment: "node" | "browser";
         _comms: Record<string, import("threadcomm").CommBase>;
         _commManageras: Record<string, import("threadcomm").CommManager>;
         _queues: Map<string, Map<string, import("threadcomm/Queue/SyncedQueue.js").SyncedQueue>>;
@@ -891,6 +891,7 @@ export declare const DVEC: {
         worldSun: void;
         worldGen: {
             generate: void;
+            decorate: void;
         };
         anaylzer: {
             propagation: void;

@@ -20,18 +20,27 @@ export const WorldGeneration = {
   this.worldGen = worldGen;
  },
 
- generate(data: GenerateTasks, onDone: Function) {
+ async generate(
+  data: GenerateTasks,
+  mode: "generate" | "decorate",
+  onDone: Function
+ ) {
   if (!this.worldGen) {
    throw new Error(`A World Generator must be set.`);
   }
-  const [dimension, x, y, z] = data[0];
-  const genData = data[1];
-  const requestsId = WorldGenRegister.registerRequest(dimension, x, y, z);
+
+
+  const requestsId = WorldGenRegister.registerRequest(data[0]);
   for (const brush of this._brushes) {
    brush.requestsId = requestsId;
   }
 
-  this.worldGen.generate(dimension, x, y, z, genData);
+  if (mode == "generate") {
+   await this.worldGen.generate(data);
+  }
+  if (mode == "decorate") {
+   await this.worldGen.decorate(data);
+  }
 
   const inte = setInterval(() => {
    if (WorldGenRegister.attemptRequestFullFill(requestsId)) {

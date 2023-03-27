@@ -199,11 +199,16 @@ export const TextureProcessor = {
 
   const [attributes, transfers] = mesherData.getAllAttributes();
 
+  mesher.quad.clear();
+  mesherData.resetAll();
+
   const returnData: SetNodeMesh = [
    location,
    //@ts-ignore
    attributes,
   ];
+
+  
   return [returnData, transfers] as const;
  },
 

@@ -20,12 +20,7 @@ return  index & 0xff;`,
         arguments: {},
         body: {
             GLSL: () => `
-if(normal.z == -1.)  {
-    p.xz -= fbm(posWorld.xz * 0.15 + time) * 0.05;
-}
-if(normal.z == 1.) {
-    p.xz += fbm(posWorld.xz * 0.15 + time) * 0.05;
-}
+ p.xz += fbm(posWorld.xz * 0.15 + time) * 0.05;
 return p;`,
         },
     });

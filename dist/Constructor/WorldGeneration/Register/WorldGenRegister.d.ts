@@ -8,7 +8,7 @@ export declare const WorldGenRegister: {
         chunks: Map<string, [x: number, y: number, z: number]>;
         voxels: [x: number, y: number, z: number, data: RawVoxelData][];
     }>;
-    registerRequest(dimension: string, x: number, y: number, z: number): string;
+    registerRequest(location: LocationData): string;
     addToRequest(registerId: string, location: LocationData, rawData: RawVoxelData): void;
     attemptRequestFullFill(registerId: string): boolean;
 };

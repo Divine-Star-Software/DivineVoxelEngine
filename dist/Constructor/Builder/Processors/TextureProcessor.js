@@ -152,6 +152,8 @@ export const TextureProcessor = {
         }
         this._resetVisitedMap();
         const [attributes, transfers] = mesherData.getAllAttributes();
+        mesher.quad.clear();
+        mesherData.resetAll();
         const returnData = [
             location,
             //@ts-ignore
