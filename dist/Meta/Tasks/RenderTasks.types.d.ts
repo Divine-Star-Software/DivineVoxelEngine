@@ -1,5 +1,6 @@
 import type { LocationData } from "voxelspaces";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types";
+import type { MeshAttributes } from "../../Constructor/Builder/Types/MeshData.types";
 export declare type SetChunkMeshTask = [
     location: LocationData,
     meshes: (ChunkMeshData | RemoveChunkTasks)[]
@@ -16,7 +17,7 @@ export declare type ChunkMeshData = [
 ];
 export declare type SetNodeMesh = [
     location: LocationData,
-    others: [id: string, data: any[], stride: number][]
+    attributes: MeshAttributes
 ];
 export declare type BuildNodeMesh = [location: LocationData, type: string, data: any];
 declare type RemoveChunkTasks = [

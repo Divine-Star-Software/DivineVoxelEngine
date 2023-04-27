@@ -14,167 +14,20 @@ export const TextureManager = {
  textureTypes: <Map<string, TextureType>>new Map(),
 
  uvMap: <TextureTypeUVMap>{},
- getTextureUV(data: ConstructorTextureData, overlay: boolean = false): number {
+ getTextureIndex(
+  data: ConstructorTextureData,
+  overlay: boolean = false
+ ): number {
   const [textureType, textureId, varation] = data;
-  let id = textureId;
-  if (varation) {
-   id = `${textureId}:${varation}`;
-  }
-  let uv = -1;
-  if (!overlay) {
-   uv = this.uvMap[textureType]["main"][id];
-  } else {
-   uv = this.uvMap[textureType]["overlay"][id];
-  }
-  if (uv == -1) {
-   throw new Error(
-    `Texture with id: ${id} does not exists. Overlay : ${overlay}`
-   );
-  }
-  return uv;
- },
 
- _processVariations(
-  textureData: TextureData,
-  paths: Map<string, Uint8ClampedArray | false>,
-  map: Record<string, number>,
-  animations: number[][],
-  textureAnimatioTimes: number[][],
-  extension: string,
-  count: number
- ) {
-  if (!textureData.variations) return count;
-  for (const varation of Object.keys(textureData.variations)) {
-   const data = textureData.variations[varation];
-   if (data.frames == 0) {
-    map[`${textureData.id}:${varation}`] = count;
+  const type = this.getTextureType(textureType);
+  if (!type) return NaN;
 
-    const assetPath = this._getPath(textureData, varation, extension);
-    let raw: Uint8ClampedArray | false = false;
-    if (data.rawData && !Array.isArray(raw)) {
-     raw = <Uint8ClampedArray>data.rawData;
-    }
-    paths.set(assetPath, raw);
-    count++;
-   } else {
-    if (!data.animKeys)
-     throw new Error(
-      "Texture Varation must have supplied animKeys if frames are greater than 0."
-     );
-    const rawData = data.rawData;
-    for (let i = 1; i <= data.frames; i++) {
-     map[`${textureData.id}:${varation}-${i}`] = count;
-     const assetPath = this._getPath(
-      textureData,
-      `${varation}-${i}`,
-      extension
-     );
-     let raw: Uint8ClampedArray | false = false;
-     if (rawData) {
-      raw = <Uint8ClampedArray>rawData[i - 1];
-     }
-     paths.set(assetPath, raw);
-     count++;
-    }
-
-    const trueKeys: number[] = [];
-    for (let i = 0; i < data.animKeys.length; i++) {
-     trueKeys.push(map[`${textureData.id}:${varation}-${data.animKeys[i]}`]);
-    }
-    if (data.animKeyFrameTimes) {
-     textureAnimatioTimes.push(data.animKeyFrameTimes);
-    }
-    if (data.globalFrameTime) {
-     textureAnimatioTimes.push([data.globalFrameTime]);
-    }
-
-    animations.push(trueKeys);
-   }
-  }
-
-  return count;
- },
- _getPath(textureData: TextureData, varation = "default", extension: string) {
-  return `${textureData.path ? textureData.path : this.defaultTexturePath}/${
-   textureData.id
-  }/${varation}.${extension}`;
- },
- generateTexturesData(id: string) {
-  const texture = this.textureTypes.get(id);
-  if (!texture) return false;
-
-  const extension = texture.extension;
-
-  for (const [key, segment] of texture.textureSegments) {
-   let count = 1;
-   const map = segment.textureMap;
-   const paths = segment.paths;
-   const animationTimes: number[][] = segment.animationTimes;
-   const animations: number[][] = segment.animationsMap;
-
-   for (const textureData of segment.textures) {
-    if (textureData.frames == 0) {
-     segment.textureMap[`${textureData.id}`] = count;
-     const assetPath = this._getPath(textureData, "default", extension);
-     let raw: Uint8ClampedArray | false = false;
-     if (textureData.rawData && !Array.isArray(raw)) {
-      raw = <Uint8ClampedArray>textureData.rawData;
-     }
-     paths.set(assetPath, raw);
-     count++;
-     count = this._processVariations(
-      textureData,
-      paths,
-      map,
-      animations,
-      animationTimes,
-      extension,
-      count
-     );
-    } else {
-     if (!textureData.animKeys)
-      throw new Error(
-       "Texture must have supplied animKeys if frames are greater than 0."
-      );
-
-     const rawData = textureData.rawData;
-     for (let i = 1; i <= textureData.frames; i++) {
-      const assetPath = this._getPath(textureData, `default-${i}`, extension);
-      let raw: Uint8ClampedArray | false = false;
-      if (rawData) {
-       raw = <Uint8ClampedArray>rawData[i - 1];
-      }
-      paths.set(assetPath, raw);
-      count++;
-     }
-     const trueKeys: number[] = [];
-     for (let i = 0; i < textureData.animKeys.length; i++) {
-      trueKeys.push(
-       map[`${textureData.id}:default-${textureData.animKeys[i]}`]
-      );
-     }
-
-     if (textureData.animKeyFrameTimes) {
-      animationTimes.push(textureData.animKeyFrameTimes);
-     }
-     if (textureData.globalFrameTime) {
-      animationTimes.push([textureData.globalFrameTime]);
-     }
-     animations.push(trueKeys);
-     count = this._processVariations(
-      textureData,
-      paths,
-      map,
-      animations,
-      animationTimes,
-      extension,
-      count
-     );
-    }
-   }
-
-   segment.totalTextures = count;
-  }
+  return type.getTextureIndex(
+   textureId,
+   varation,
+   overlay ? "overlay" : "main"
+  );
  },
 
  _ready: false,
@@ -188,14 +41,7 @@ export const TextureManager = {
    EngineSettings.settings.textures.mipMapSizes
   );
   for (const [key, type] of this.textureTypes) {
-   this.generateTexturesData(key);
-   for (const [skey, segment] of type.textureSegments) {
-    segment.texture = await TextureCreator.createMaterialTexture(
-     skey,
-     segment.paths
-    );
-   }
-   TextureAnimationCreator.createAnimations(type);
+   await type.build();
   }
 
   this._ready = true;
@@ -212,7 +58,7 @@ export const TextureManager = {
  generateTextureUVMap() {
   const uvMap: TextureTypeUVMap = {};
   for (const [key, type] of this.textureTypes) {
-   uvMap[key] = type.getTextureUVMap();
+   uvMap[key] = type.getTextureIndexMap();
   }
   this.uvMap = uvMap;
   return uvMap;
@@ -229,7 +75,9 @@ export const TextureManager = {
  },
 
  addTextureType(id: string) {
-  this.textureTypes.set(id, new TextureType(id));
+  const newType = new TextureType(id);
+  this.textureTypes.set(id, newType);
+  return newType;
  },
 
  clearTextureData() {
@@ -254,7 +102,7 @@ export const TextureManager = {
  async createRawDataMap() {
   const map: Map<string, Uint8ClampedArray> = new Map();
   for (const [typeKey, type] of this.textureTypes) {
-   for (const [segKey, segment] of type.textureSegments) {
+   for (const [segKey, segment] of type.segments) {
     for (const data of segment.textures) {
      if (!data.includeInRawDataMap) continue;
      if (!data.path && !data.rawData) continue;
@@ -264,7 +112,7 @@ export const TextureManager = {
        const rawData = await TextureCreator.loadImage(
         data.rawData
          ? <Uint8ClampedArray>data.rawData[i - 1]
-         : this._getPath(data, `${key}-${i}`, type.extension)
+         : type._getPath(data, `${key}-${i}`, type.extension)
        );
 
        map.set(`${key}-${i}`, rawData);
@@ -273,7 +121,7 @@ export const TextureManager = {
       const rawData = await TextureCreator.loadImage(
        data.rawData
         ? <Uint8ClampedArray>data.rawData
-        : this._getPath(data, "default", type.extension)
+        : type._getPath(data, "default", type.extension)
       );
 
       map.set(key, rawData);
@@ -288,7 +136,7 @@ export const TextureManager = {
          const rawData = await TextureCreator.loadImage(
           data.rawData
            ? <Uint8ClampedArray>data.rawData[i - 1]
-           : this._getPath(data, `${key}-${i}`, type.extension)
+           : type._getPath(data, `${key}-${i}`, type.extension)
          );
 
          map.set(`${key}-${i}`, rawData);
@@ -297,7 +145,7 @@ export const TextureManager = {
         const rawData = await TextureCreator.loadImage(
          data.rawData
           ? <Uint8ClampedArray>data.rawData
-          : this._getPath(data, varId, type.extension)
+          : type._getPath(data, varId, type.extension)
         );
         map.set(key, rawData);
        }

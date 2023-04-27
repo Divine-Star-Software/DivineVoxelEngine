@@ -24,7 +24,7 @@ export const WorldGenRegister = {
   >
  >new Map(),
 
- registerRequest(location : LocationData) {
+ registerRequest(location: LocationData) {
   const id = location.toString();
   this._requests.set(id, {
    attempts: 0,
@@ -46,7 +46,6 @@ export const WorldGenRegister = {
   const chunkKey = WorldSpaces.chunk.getKeyLocation(location);
   if (!chunkTool.loadInAtLocation(location)) {
    if (!requests.chunks.has(chunkKey)) {
-
     WorldComm.runTasks("add-chunk", [
      requests.dimension,
      chunkPOS.x,
@@ -62,18 +61,22 @@ export const WorldGenRegister = {
 
  attemptRequestFullFill(registerId: string) {
   const requests = this._requests.get(registerId);
-  if (!requests) return true;
+  if (!requests || !requests.voxels.length) return true;
   chunkTool.setDimension(requests.dimension);
 
   let done = true;
   for (const [key, pos] of requests.chunks) {
    if (!chunkTool.loadInAt(pos[0], pos[1], pos[2])) {
     done = false;
-    WorldComm.runTasks("add-chunk", [requests.dimension, pos[0], pos[1], pos[2]]);
+    WorldComm.runTasks("add-chunk", [
+     requests.dimension,
+     pos[0],
+     pos[1],
+     pos[2],
+    ]);
    }
   }
   if (!done) {
- 
    requests.attempts++;
    if (requests.attempts >= this.MAX_ATTEMPTS) {
     console.error(`World gen requests cancled after max attempts`, requests);
@@ -83,11 +86,13 @@ export const WorldGenRegister = {
    return false;
   }
   brush.setDimension(requests.dimension);
+  dataTool.setDimension(requests.dimension);
   const voxels = requests.voxels;
   brush.start();
   while (voxels.length) {
    const data = voxels.shift();
    if (!data) break;
+   dataTool.loadInAt(data[0], data[1], data[2]);
    brush.setXYZ(data[0], data[1], data[2]).setRaw(data[3]).paint();
   }
   brush.stop();

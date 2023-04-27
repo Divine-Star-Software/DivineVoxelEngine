@@ -18,6 +18,7 @@ import { InitWorkers } from "./Init/InitThreads.js";
 import { $INITFunction } from "./Init/InitRender.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 import { NodeMeshTool } from "./Tools/NodeMeshTool.js";
+import { NodeManager } from "./Nodes/NodeManager.js";
 export const DVER = {
     UTIL: Util,
     TC: ThreadComm,
@@ -36,6 +37,7 @@ export const DVER = {
         worldBounds: WorldBounds,
         spaces: WorldSpaces,
     },
+    nodes: NodeManager,
     textures: TextureManager,
     tasks: RenderTasks,
     async $INIT(initData) {

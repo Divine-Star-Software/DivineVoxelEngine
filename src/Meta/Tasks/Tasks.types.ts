@@ -1,12 +1,21 @@
 import type { LocationData } from "voxelspaces";
 import type { RawVoxelData } from "Meta/Data/Voxels/Voxel.types";
-
+import { Vec3Array } from "Math";
 
 export type Priorities = 0 | 1 | 2 | 3;
 export type PriorityTask<T> = {
  data: T;
  priority: Priorities;
 };
+
+
+export type WorldLockTasks = [
+  dimension : string,
+  start : Vec3Array,
+  end : Vec3Array
+];
+
+
 
 export type LightUpdateTask = [number, number, number];
 export type WorldSunTask = [location: LocationData, originThread: string];
@@ -54,20 +63,17 @@ export type LoadRegionHeadertasks = [
  data: SharedArrayBuffer
 ];
 
-export type GetRichDataTasks = [
-  location : LocationData,
-  segment : string
-]
+export type GetRichDataTasks = [location: LocationData, segment: string];
 export type SetRichDataTasks = [
-    location : LocationData,
-    segment : string,
-    objectBuffer : ArrayBuffer
-  ]
+ location: LocationData,
+ segment: string,
+ objectBuffer: ArrayBuffer
+];
 
-  export type SetRichColumnTasks = [
-    location : LocationData,
-    objectBuffer : ArrayBuffer
-  ]
+export type SetRichColumnTasks = [
+ location: LocationData,
+ objectBuffer: ArrayBuffer
+];
 
 export type RequestLightUpdateQueueData = {
  rgb: {

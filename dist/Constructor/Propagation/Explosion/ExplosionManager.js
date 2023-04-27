@@ -94,10 +94,10 @@ export const ExplosionManager = {
                             const l = nDataTool.getLight();
                             if (l > 0) {
                                 if (LightData.getS(l) > 0) {
-                                    tasks.queues.sun.rmeove.push(nx, ny, nz);
+                                    tasks.queues.sun.remove.push(nx, ny, nz);
                                 }
                                 if (LightData.hasRGBLight(l)) {
-                                    tasks.queues.rgb.rmeove.push(nx, ny, nz);
+                                    tasks.queues.rgb.remove.push(nx, ny, nz);
                                 }
                             }
                         }

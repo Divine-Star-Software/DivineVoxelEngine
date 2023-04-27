@@ -18,4 +18,7 @@ export class UtilMap {
     has(id) {
         return this._map.has(id);
     }
+    remove(id) {
+        this._map.delete(id);
+    }
 }

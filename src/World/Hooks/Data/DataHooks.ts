@@ -1,4 +1,4 @@
-import type { DataLoaderTool } from "Tools/Data/DataLoaderTool.js";
+import type { DataLoaderTool } from "Tools/Loader/DataLoaderTool.js";
 import { DataHooks } from "../../../Data/DataHooks.js";
 import { WorldDataGenerator } from "../../Data/Generators/WorldDataGenerator.js";
 import { DataSync } from "../../Data/DataSync.js";

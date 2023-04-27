@@ -1,6 +1,6 @@
 export const TextureAnimationCreator = {
     createAnimations(texture) {
-        for (const [key, segment] of texture.textureSegments) {
+        for (const [key, segment] of texture.segments) {
             const animaitonUniform = [];
             let i = 0;
             for (const anim of segment.animationsMap) {

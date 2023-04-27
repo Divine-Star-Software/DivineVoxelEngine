@@ -33,14 +33,10 @@ export const DataLoaderTasks = {
             return;
         }
         await DataHanlderWrapper.unLoadColumn(data);
-        DVEDL.worldComm.runTasks("unload-column", data);
-        const inte = setInterval(() => {
-            if (!WorldRegister.column.get(data)) {
-                if (onDone)
-                    onDone();
-                clearInterval(inte);
-            }
-        }, 1);
+        DVEDL.worldComm.runPromiseTasks("unload-column", data, [], () => {
+            if (onDone)
+                onDone();
+        });
     }, "deferred"),
     setPath: ThreadComm.registerTasks("set-path", async (data, onDone) => {
         await DataHanlderWrapper.setPath(data[0]);

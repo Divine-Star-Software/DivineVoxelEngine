@@ -21,7 +21,7 @@ export declare const Propagation: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
@@ -29,12 +29,14 @@ export declare const Propagation: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 queue: [x: number, y: number, z: number][];
                 map: import("../../Global/Util/VisistedMap.js").VisitedMap;
@@ -76,7 +78,7 @@ export declare const Propagation: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
@@ -84,12 +86,14 @@ export declare const Propagation: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -127,7 +131,7 @@ export declare const Propagation: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
@@ -135,12 +139,14 @@ export declare const Propagation: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -211,12 +217,14 @@ export declare const Propagation: {
             queues: {
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -251,12 +259,14 @@ export declare const Propagation: {
             queues: {
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -293,12 +303,14 @@ export declare const Propagation: {
             queues: {
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -333,12 +345,14 @@ export declare const Propagation: {
             queues: {
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;

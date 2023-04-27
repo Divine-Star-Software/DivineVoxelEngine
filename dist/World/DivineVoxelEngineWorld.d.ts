@@ -6,7 +6,7 @@ import { DataTool } from "../Tools/Data/DataTool.js";
 import { TaskTool } from "../Tools/Tasks/TasksTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
-import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
+import { DataLoaderTool } from "../Tools/Loader/DataLoaderTool.js";
 import { RichDataTool } from "../Tools/Data/RichDataTool.js";
 /**# Divine Voxel Engine World
  * ---
@@ -91,6 +91,8 @@ export declare const DVEW: {
     };
     worldTasks: {
         addChunk: void;
+        worldAlloc: void;
+        worldDealloc: void;
         unLoad: {
             unLoadColumn: void;
         };

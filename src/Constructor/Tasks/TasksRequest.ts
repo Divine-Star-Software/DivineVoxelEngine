@@ -156,12 +156,14 @@ const getLightQueues = () => {
  return {
   rgb: {
    update: <number[]>[],
-   rmeove: <number[]>[],
+   remove: <number[]>[],
    map: new VisitedMap(),
   },
   sun: {
    update: <number[]>[],
-   rmeove: <number[]>[],
+   remove: <number[]>[],
+   updateMap: new VisitedMap(),
+   remvoeMap: new VisitedMap(),
   },
  };
 };
@@ -172,7 +174,7 @@ const getFlowQueues = () => {
    queue: <FlowVec3Array>[],
    map: new VisitedMap(),
   },
-  rmeove: {
+  remove: {
    queue: <FlowVec3Array>[],
    map: new VisitedMap(),
    noRemoveMap: new VisitedMap(),

@@ -1,5 +1,7 @@
 export declare const WorldTasks: {
     addChunk: void;
+    worldAlloc: void;
+    worldDealloc: void;
     unLoad: {
         unLoadColumn: void;
     };

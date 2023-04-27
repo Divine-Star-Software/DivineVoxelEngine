@@ -213,6 +213,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   shader.addAttributes([
    ["position", "vec3"],
    ["normal", "vec3"],
+   ["indices", "float"],
    ["cuv3", "vec3"],
    ["ocuv3", "vec4"],
   ]);
@@ -302,6 +303,7 @@ worldPOSNoOrigin =  vec3(temp.x,temp.y,temp.z);`,
   const shader = DivineShaderBuilder.shaders.create(id);
   shader.addAttributes([
    ["position", "vec3"],
+   ["indices", "float"],
    ["normal", "vec3"],
   ]);
   shader.loadInFunctions(["#dve_fmb2", "#dve_fmb3", "#dve_fog", "doFog"]);

@@ -33,7 +33,6 @@ export class NodeMesh {
         for (const [id, stride] of atrs) {
             mesh.setVerticesData(id, [0], false, stride);
         }
-        window.requestIdleCallback;
         mesh.position.x = data[0][1];
         mesh.position.y = data[0][2];
         mesh.position.z = data[0][3];

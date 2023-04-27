@@ -9,12 +9,14 @@ export class LocationBoundTool {
  set dimension(dimension: string) {
   this.location[0] = dimension;
  }
+ 
  get x() {
   return this.location[1];
  }
  set x(value: number) {
   this.location[1] = value;
  }
+
  get y() {
   return this.location[2];
  }
@@ -39,9 +41,9 @@ export class LocationBoundTool {
  }
 
  setXYZ(x: number, y: number, z: number) {
-  this.location[1] = x;
-  this.location[2] = y;
-  this.location[3] = z;
+  this.x = x;
+  this.y = y;
+  this.z = z;
   return this;
  }
 
@@ -51,10 +53,10 @@ export class LocationBoundTool {
  }
 
  setLocation(location: LocationData) {
-  this.location[0] = location[0];
-  this.location[1] = location[1];
-  this.location[2] = location[2];
-  this.location[3] = location[3];
+  this.dimension = location[0];
+  this.x = location[1];
+  this.y = location[2];
+  this.z = location[3];
   return this;
  }
 }

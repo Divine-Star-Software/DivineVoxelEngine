@@ -112,7 +112,7 @@ builder.functions.create("getBaseColor", {
   },
  });
  builder.functions.create("getMainColor", {
-   inputs: [["UV", "vec2"]],
+   inputs: [],
    output: "vec4",
    arguments: {
     textureID: "voxelTexture",
@@ -120,8 +120,8 @@ builder.functions.create("getBaseColor", {
    },
    body: {
     GLSL: (args) => `
-    UV.xy += ${args.mainVarying}.xy;
-    vec4 rgb = getBase(${args.textureID},UV.xy,${args.mainVarying}.z);
+ 
+    vec4 rgb = getBase(${args.textureID},${args.mainVarying}.xy,${args.mainVarying}.z);
     if (rgb.a < 0.85) { 
       return vec4(0.,0.,0.,0.);
    }

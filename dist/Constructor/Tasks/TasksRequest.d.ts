@@ -40,12 +40,14 @@ export declare const TasksRequest: {
     getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): Request<any, {
         rgb: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
             map: VisitedMap;
         };
         sun: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
+            updateMap: VisitedMap;
+            remvoeMap: VisitedMap;
         };
     }>;
     getFlowUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
@@ -54,7 +56,7 @@ export declare const TasksRequest: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
             };
-            rmeove: {
+            remove: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
                 noRemoveMap: VisitedMap;
@@ -62,12 +64,14 @@ export declare const TasksRequest: {
         };
         rgb: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
             map: VisitedMap;
         };
         sun: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
+            updateMap: VisitedMap;
+            remvoeMap: VisitedMap;
         };
     }>;
     getVoxelUpdateRequests(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
@@ -76,7 +80,7 @@ export declare const TasksRequest: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
             };
-            rmeove: {
+            remove: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
                 noRemoveMap: VisitedMap;
@@ -84,12 +88,14 @@ export declare const TasksRequest: {
         };
         rgb: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
             map: VisitedMap;
         };
         sun: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
+            updateMap: VisitedMap;
+            remvoeMap: VisitedMap;
         };
     }>;
     getWorldSunRequests(origin: LocationData, buildQueue?: string, originThread?: string): Request<null, {
@@ -101,7 +107,7 @@ export declare const TasksRequest: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
             };
-            rmeove: {
+            remove: {
                 queue: FlowVec3Array;
                 map: VisitedMap;
                 noRemoveMap: VisitedMap;
@@ -109,12 +115,14 @@ export declare const TasksRequest: {
         };
         rgb: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
             map: VisitedMap;
         };
         sun: {
             update: number[];
-            rmeove: number[];
+            remove: number[];
+            updateMap: VisitedMap;
+            remvoeMap: VisitedMap;
         };
         queue: Vec3Array;
         map: VisitedMap;

@@ -33,6 +33,7 @@ export const DataHanlderWrapper = {
     location,
     sab,
    ]);
+   this.handler.setDataType("world-data");
    return true;
   } catch (error: any) {
    console.error(`Problem getting region header at ${location.toString()}`);
@@ -71,6 +72,9 @@ export const DataHanlderWrapper = {
       }
      }
     }
+
+
+    this.handler.setDataType("world-data");
    } catch (error: any) {
     console.error(`Problem storing column at ${location.toString()}`);
     console.error(error);
@@ -94,13 +98,13 @@ export const DataHanlderWrapper = {
     this.richData._enabled &&
     columnDatatool.hasRichData()
    ) {
- 
     this.handler.setDataType("rich-data");
     const richColumn = await this.handler.getColumn(location);
     if (!richColumn) return false;
     await this.richData.setLocation(location).setColumnAsync(richColumn);
    }
 
+   this.handler.setDataType("world-data");
    return true;
   } catch (error: any) {
    console.error(`Problem loading column at ${location.toString()}`);
@@ -123,6 +127,8 @@ export const DataHanlderWrapper = {
     ) {
      await this.richData.removeColumnAsync();
     }
+
+    this.handler.setDataType("world-data");
    } catch (error: any) {
     console.error(`Problem storing column at ${location.toString()}`);
     console.error(error);

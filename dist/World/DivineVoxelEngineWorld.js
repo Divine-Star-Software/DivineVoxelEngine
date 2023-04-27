@@ -24,7 +24,7 @@ import { DataTool } from "../Tools/Data/DataTool.js";
 import { TaskTool } from "../Tools/Tasks/TasksTool.js";
 import { HeightMapTool } from "../Tools/Data/WorldData/HeightMapTool.js";
 import { RegionDataTool } from "../Tools/Data/WorldData/RegionDataTool.js";
-import { DataLoaderTool } from "../Tools/Data/DataLoaderTool.js";
+import { DataLoaderTool } from "../Tools/Loader/DataLoaderTool.js";
 //functions
 import { InitWorldWorker } from "./Init/InitWorldWorker.js";
 import { ThreadComm } from "threadcomm";

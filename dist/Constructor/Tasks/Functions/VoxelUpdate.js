@@ -57,7 +57,7 @@ export async function EreaseAndUpdate(data) {
         .commit(2);
     if (ES.doLight()) {
         if (ES.doRGBPropagation() && isLightSource) {
-            tasks.queues.rgb.rmeove.push(x, y, z);
+            tasks.queues.rgb.remove.push(x, y, z);
             Propagation.rgb.remove(tasks);
         }
         updateLightTask(tasks);
@@ -95,13 +95,13 @@ export async function PaintAndUpdate(data) {
             break lighttest;
         if (doSun) {
             if (dataTool.hasSunLight()) {
-                tasks.queues.sun.rmeove.push(x, y, z);
+                tasks.queues.sun.remove.push(x, y, z);
                 Propagation.sun.remove(tasks);
             }
         }
         if (doRGB) {
             if (dataTool.hasRGBLight() && isOpaque) {
-                tasks.queues.rgb.rmeove.push(x, y, z);
+                tasks.queues.rgb.remove.push(x, y, z);
                 Propagation.rgb.remove(tasks);
             }
         }

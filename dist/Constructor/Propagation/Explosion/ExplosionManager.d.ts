@@ -20,7 +20,7 @@ export declare const ExplosionManager: {
                     queue: number[][];
                     map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
                 };
-                rmeove: {
+                remove: {
                     queue: number[][];
                     map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
                     noRemoveMap: import("../../../Global/Util/VisistedMap.js").VisitedMap;
@@ -28,12 +28,14 @@ export declare const ExplosionManager: {
             };
             rgb: {
                 update: number[];
-                rmeove: number[];
+                remove: number[];
                 map: import("../../../Global/Util/VisistedMap.js").VisitedMap;
             };
             sun: {
                 update: number[];
-                rmeove: number[];
+                remove: number[];
+                updateMap: import("../../../Global/Util/VisistedMap.js").VisitedMap;
+                remvoeMap: import("../../../Global/Util/VisistedMap.js").VisitedMap;
             };
             queue: [x: number, y: number, z: number][];
             map: import("../../../Global/Util/VisistedMap.js").VisitedMap;

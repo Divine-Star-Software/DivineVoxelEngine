@@ -2,7 +2,7 @@ import { FlowManager as FM } from "../FlowManager.js";
 import { FlowUpdate } from "./FlowUpdate.js";
 function RunRemoveCheck(tasks, vox) {
     const [dimension, x, y, z] = tasks.origin;
-    const queue = tasks.queues.flow.rmeove.queue;
+    const queue = tasks.queues.flow.remove.queue;
     const cl = FM.getLevel(vox, x, y, z);
     queue.push([x, y, z]);
     const n1 = FM.getLevel(vox, x + 1, y, z);
@@ -32,8 +32,8 @@ export async function FlowRemove(tasks) {
     if (!vox)
         return;
     RunRemoveCheck(tasks, vox);
-    const noRemoveMap = tasks.queues.flow.rmeove.noRemoveMap;
-    while (tasks.queues.flow.rmeove.queue.length != 0) {
+    const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
+    while (tasks.queues.flow.remove.queue.length != 0) {
         FM.setDimension(dimension);
         RunRemovePropagation(tasks, vox);
         RunFlowReduce(tasks, vox);
@@ -44,10 +44,10 @@ export async function FlowRemove(tasks) {
     }
 }
 function RunRemovePropagation(tasks, vox) {
-    const removeQ = tasks.queues.flow.rmeove.queue;
+    const removeQ = tasks.queues.flow.remove.queue;
     const updateQ = tasks.queues.flow.update.queue;
     const map = tasks.queues.flow.update.map;
-    const noRemoveMap = tasks.queues.flow.rmeove.noRemoveMap;
+    const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
     for (let i = 0; i < removeQ.length; i++) {
         const node = removeQ[i];
         const x = node[0];
@@ -128,8 +128,8 @@ function RunRemovePropagation(tasks, vox) {
     map.clear();
 }
 function RunFlowReduce(tasks, vox) {
-    const queue = tasks.queues.flow.rmeove.queue;
-    const map = tasks.queues.flow.rmeove.map;
+    const queue = tasks.queues.flow.remove.queue;
+    const map = tasks.queues.flow.remove.map;
     const reque = [];
     while (queue.length != 0) {
         const node = queue.shift();
@@ -156,6 +156,6 @@ function RunFlowReduce(tasks, vox) {
         }
         tasks.setBuldMode(syncRebuild ? "sync" : "async").addToRebuildQueue(x, y, z);
     }
-    tasks.queues.flow.rmeove.queue = reque;
+    tasks.queues.flow.remove.queue = reque;
     map.clear();
 }

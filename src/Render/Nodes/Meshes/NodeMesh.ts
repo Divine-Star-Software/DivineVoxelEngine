@@ -1,4 +1,10 @@
-import { BoundingInfo, Mesh, Scene, VertexData } from "@babylonjs/core";
+import {
+ BoundingInfo,
+ FloatArray,
+ Mesh,
+ Scene,
+ VertexData,
+} from "@babylonjs/core";
 import type { LocationData } from "voxelspaces";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { ChunkMeshData, SetNodeMesh } from "Meta/Tasks/RenderTasks.types";
@@ -42,7 +48,7 @@ export class NodeMesh {
   for (const [id, stride] of atrs) {
    mesh.setVerticesData(id, [0], false, stride);
   }
-  window.requestIdleCallback;
+
   mesh.position.x = data[0][1];
   mesh.position.y = data[0][2];
   mesh.position.z = data[0][3];
@@ -50,19 +56,18 @@ export class NodeMesh {
   const vertexData = new DVEBabylon.system.VertexData();
   for (const [id, attribute, stride] of data[1]) {
    if (id == "position") {
-    vertexData.positions = attribute;
+    vertexData.positions = attribute as FloatArray;
     continue;
    }
    if (id == "normal") {
-    vertexData.normals = attribute;
+    vertexData.normals = attribute as FloatArray;
     continue;
    }
    if (id == "indices") {
-    vertexData.indices = attribute;
-
+    vertexData.indices = attribute as any;
     continue;
    }
-   mesh.setVerticesData(id, attribute, false, stride);
+   mesh.setVerticesData(id, attribute as FloatArray, false, stride);
   }
   vertexData.applyToMesh(mesh, false);
 

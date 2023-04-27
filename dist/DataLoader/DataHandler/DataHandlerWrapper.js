@@ -26,6 +26,7 @@ export const DataHanlderWrapper = {
                 location,
                 sab,
             ]);
+            this.handler.setDataType("world-data");
             return true;
         }
         catch (error) {
@@ -63,6 +64,7 @@ export const DataHanlderWrapper = {
                         }
                     }
                 }
+                this.handler.setDataType("world-data");
             }
             catch (error) {
                 console.error(`Problem storing column at ${location.toString()}`);
@@ -91,6 +93,7 @@ export const DataHanlderWrapper = {
                     return false;
                 await this.richData.setLocation(location).setColumnAsync(richColumn);
             }
+            this.handler.setDataType("world-data");
             return true;
         }
         catch (error) {
@@ -110,6 +113,7 @@ export const DataHanlderWrapper = {
                     (await this.richData.setLocation(location).columnHasDataAsync())) {
                     await this.richData.removeColumnAsync();
                 }
+                this.handler.setDataType("world-data");
             }
             catch (error) {
                 console.error(`Problem storing column at ${location.toString()}`);

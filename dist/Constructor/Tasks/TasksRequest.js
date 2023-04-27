@@ -134,12 +134,14 @@ const getLightQueues = () => {
     return {
         rgb: {
             update: [],
-            rmeove: [],
+            remove: [],
             map: new VisitedMap(),
         },
         sun: {
             update: [],
-            rmeove: [],
+            remove: [],
+            updateMap: new VisitedMap(),
+            remvoeMap: new VisitedMap(),
         },
     };
 };
@@ -149,7 +151,7 @@ const getFlowQueues = () => {
             queue: [],
             map: new VisitedMap(),
         },
-        rmeove: {
+        remove: {
             queue: [],
             map: new VisitedMap(),
             noRemoveMap: new VisitedMap(),

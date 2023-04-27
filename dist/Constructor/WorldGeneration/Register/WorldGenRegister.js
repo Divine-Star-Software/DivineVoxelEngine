@@ -40,14 +40,19 @@ export const WorldGenRegister = {
     },
     attemptRequestFullFill(registerId) {
         const requests = this._requests.get(registerId);
-        if (!requests)
+        if (!requests || !requests.voxels.length)
             return true;
         chunkTool.setDimension(requests.dimension);
         let done = true;
         for (const [key, pos] of requests.chunks) {
             if (!chunkTool.loadInAt(pos[0], pos[1], pos[2])) {
                 done = false;
-                WorldComm.runTasks("add-chunk", [requests.dimension, pos[0], pos[1], pos[2]]);
+                WorldComm.runTasks("add-chunk", [
+                    requests.dimension,
+                    pos[0],
+                    pos[1],
+                    pos[2],
+                ]);
             }
         }
         if (!done) {
@@ -60,12 +65,14 @@ export const WorldGenRegister = {
             return false;
         }
         brush.setDimension(requests.dimension);
+        dataTool.setDimension(requests.dimension);
         const voxels = requests.voxels;
         brush.start();
         while (voxels.length) {
             const data = voxels.shift();
             if (!data)
                 break;
+            dataTool.loadInAt(data[0], data[1], data[2]);
             brush.setXYZ(data[0], data[1], data[2]).setRaw(data[3]).paint();
         }
         brush.stop();

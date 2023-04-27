@@ -32,9 +32,9 @@ export class LocationBoundTool {
         return this.location;
     }
     setXYZ(x, y, z) {
-        this.location[1] = x;
-        this.location[2] = y;
-        this.location[3] = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         return this;
     }
     setXZ(x, z) {
@@ -42,10 +42,10 @@ export class LocationBoundTool {
         return this;
     }
     setLocation(location) {
-        this.location[0] = location[0];
-        this.location[1] = location[1];
-        this.location[2] = location[2];
-        this.location[3] = location[3];
+        this.dimension = location[0];
+        this.x = location[1];
+        this.y = location[2];
+        this.z = location[3];
         return this;
     }
 }

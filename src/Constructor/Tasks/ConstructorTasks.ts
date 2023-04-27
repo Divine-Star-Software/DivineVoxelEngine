@@ -118,6 +118,7 @@ export const Tasks = {
  worldSun: ThreadComm.registerTasks<WorldSunTask>(
   ConstructorTasks.worldSun,
   (data, onDone) => {
+
    DVEC.propagation.worldSun.run(
     TasksRequest.getWorldSunRequests(data[0], data[1])
    );

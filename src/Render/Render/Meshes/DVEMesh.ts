@@ -38,6 +38,16 @@ export class DVEMesh {
    mesh.doNotSyncBoundingInfo = true;
   }
 
+  mesh.buildBoundingInfo = () => {
+   return this.defaultBb;
+  };
+
+  mesh._updateBoundingInfo = () => {
+   return mesh!;
+  };
+  mesh._refreshBoundingInfo = () => {
+   return mesh;
+  };
   mesh.doNotSerialize = this.seralize;
   mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
   mesh.material = this.dveMat.getMaterial();
@@ -112,6 +122,8 @@ export class DVEMesh {
   mesh.setVerticesData("colors", data[7], false, 4);
 
   chunkVertexData.applyToMesh(mesh, false);
+
+
 
   this._clearCached(mesh);
 

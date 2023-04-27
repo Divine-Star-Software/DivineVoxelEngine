@@ -150,7 +150,7 @@ export const FlowManager = {
   if (!this._nDataTool.isAir()) return;
   const l = this._nDataTool.getLight();
   if (this.lightData.getS(l) == 0xf) {
-   tasks.queues.sun.rmeove.push(x, y - 1, z);
+   tasks.queues.sun.remove.push(x, y - 1, z);
   }
  },
 };

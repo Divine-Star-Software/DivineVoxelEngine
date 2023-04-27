@@ -61,7 +61,7 @@ export function RGBUpdate(tasks: LightTaskRequest) {
 
 export function RGBRemove(tasks: LightTaskRequest) {
  IM.setDimension(tasks.origin[0]);
- const remove = tasks.queues.rgb.rmeove;
+ const remove = tasks.queues.rgb.remove;
  const update = tasks.queues.rgb.update;
  const map = tasks.queues.rgb.map;
  while (remove.length != 0) {

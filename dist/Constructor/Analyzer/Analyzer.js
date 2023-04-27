@@ -29,6 +29,7 @@ export const Analyzer = {
         mainDT.setDimension(data[0][0]);
         secondaryDT.setDimension(data[0][0]);
         const tasks = TasksRequest.getVoxelUpdateRequests(data[0], "none", "self");
+        tasks.start();
         this.processor.goThroughColumn(data[0], (x, y, z) => {
             if (!mainDT.loadInAt(x, y, z))
                 return;
@@ -55,7 +56,6 @@ export const Analyzer = {
                 }
             }
         });
-        tasks.start();
         Propagation.rgb.update(tasks);
         const dimension = data[0][0];
         for (const flowUpdate of tasks.queues.flow.update.queue) {

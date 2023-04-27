@@ -74,13 +74,18 @@ export function SunUpdate(tasks: LightTaskRequest) {
  }
 }
 
-export function SunRemove(tasks: LightTaskRequest) {
- const remove = tasks.queues.sun.rmeove;
+export function SunRemove(tasks: LightTaskRequest, clearUpdateMap = true) {
+ const remove = tasks.queues.sun.remove;
  const update = tasks.queues.sun.update;
+ const removeMap = tasks.queues.sun.remvoeMap;
+ const updateMap = tasks.queues.sun.updateMap;
  while (remove.length != 0) {
   const x = remove.shift()!;
   const y = remove.shift()!;
   const z = remove.shift()!;
+  if (removeMap.inMap(x, y, z)) continue;
+  removeMap.add(x, y, z);
+
   if (!IM._sDataTool.loadInAt(x, y, z)) continue;
   const sl = IM._sDataTool.getLight();
   if (sl <= 0) continue;
@@ -92,8 +97,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.isLessThanForSunRemove(nl, sl)) {
      remove.push(x - 1, y, z);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
+     if (
+      !updateMap.inMap(x - 1, y, z) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)
+     ) {
       update.push(x - 1, y, z);
+      updateMap.add(x - 1, y, z);
      }
     }
    }
@@ -104,8 +113,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.isLessThanForSunRemove(nl, sl)) {
      remove.push(x + 1, y, z);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
+     if (
+      !updateMap.inMap(x + 1, y, z) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)
+     ) {
       update.push(x + 1, y, z);
+      updateMap.add(x + 1, y, z);
      }
     }
    }
@@ -117,8 +130,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.isLessThanForSunRemove(nl, sl)) {
      remove.push(x, y, z - 1);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
+     if (
+      !updateMap.inMap(x, y, z - 1) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)
+     ) {
       update.push(x, y, z - 1);
+      updateMap.add(x, y, z - 1);
      }
     }
    }
@@ -130,8 +147,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.isLessThanForSunRemove(nl, sl)) {
      remove.push(x, y, z + 1);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
+     if (
+      !updateMap.inMap(x, y, z + 1) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)
+     ) {
       update.push(x, y, z + 1);
+      updateMap.add(x, y, z + 1);
      }
     }
    }
@@ -143,8 +164,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.sunLightCompareForDownSunRemove(nl, sl)) {
      remove.push(x, y - 1, z);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)) {
+     if (
+      !updateMap.inMap(x, y - 1, z) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(nl, sl)
+     ) {
       update.push(x, y - 1, z);
+      updateMap.add(x, y - 1, z);
      }
     }
    }
@@ -156,8 +181,12 @@ export function SunRemove(tasks: LightTaskRequest) {
     if (IM.lightData.isLessThanForSunRemove(n6, sl)) {
      remove.push(x, y + 1, z);
     } else {
-     if (IM.lightData.isGreaterOrEqualThanForSunRemove(n6, sl)) {
+     if (
+      !updateMap.inMap(x, y - 1, z) &&
+      IM.lightData.isGreaterOrEqualThanForSunRemove(n6, sl)
+     ) {
       update.push(x, y + 1, z);
+      updateMap.add(x, y + 1, z);
      }
     }
    }
@@ -165,4 +194,6 @@ export function SunRemove(tasks: LightTaskRequest) {
   tasks.addNeighborsToRebuildQueue(x, y, z);
   IM._sDataTool.setLight(IM.lightData.removeSunLight(sl)).commit();
  }
+ if(clearUpdateMap) updateMap.clear();
+ removeMap.clear();
 }

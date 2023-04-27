@@ -73,7 +73,7 @@ export declare const DVEC: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         };
-                        rmeove: {
+                        remove: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                             noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -81,12 +81,14 @@ export declare const DVEC: {
                     };
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     queue: [x: number, y: number, z: number][];
                     map: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -128,7 +130,7 @@ export declare const DVEC: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         };
-                        rmeove: {
+                        remove: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                             noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -136,12 +138,14 @@ export declare const DVEC: {
                     };
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -179,7 +183,7 @@ export declare const DVEC: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         };
-                        rmeove: {
+                        remove: {
                             queue: number[][];
                             map: import("../Global/Util/VisistedMap.js").VisitedMap;
                             noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -187,12 +191,14 @@ export declare const DVEC: {
                     };
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -263,12 +269,14 @@ export declare const DVEC: {
                 queues: {
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -303,12 +311,14 @@ export declare const DVEC: {
                 queues: {
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -345,12 +355,14 @@ export declare const DVEC: {
                 queues: {
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -385,12 +397,14 @@ export declare const DVEC: {
                 queues: {
                     rgb: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                     sun: {
                         update: number[];
-                        rmeove: number[];
+                        remove: number[];
+                        updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                        remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
                 };
                 start(): any;
@@ -927,12 +941,14 @@ export declare const DVEC: {
             queues: {
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -970,7 +986,7 @@ export declare const DVEC: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -978,12 +994,14 @@ export declare const DVEC: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -1021,7 +1039,7 @@ export declare const DVEC: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -1029,12 +1047,14 @@ export declare const DVEC: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
             };
             start(): any;
@@ -1104,7 +1124,7 @@ export declare const DVEC: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                     };
-                    rmeove: {
+                    remove: {
                         queue: number[][];
                         map: import("../Global/Util/VisistedMap.js").VisitedMap;
                         noRemoveMap: import("../Global/Util/VisistedMap.js").VisitedMap;
@@ -1112,12 +1132,14 @@ export declare const DVEC: {
                 };
                 rgb: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
                     map: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 sun: {
                     update: number[];
-                    rmeove: number[];
+                    remove: number[];
+                    updateMap: import("../Global/Util/VisistedMap.js").VisitedMap;
+                    remvoeMap: import("../Global/Util/VisistedMap.js").VisitedMap;
                 };
                 queue: [x: number, y: number, z: number][];
                 map: import("../Global/Util/VisistedMap.js").VisitedMap;

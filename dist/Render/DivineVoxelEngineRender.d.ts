@@ -342,14 +342,32 @@ export declare const DVER: {
             $INIT(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
         };
     };
+    nodes: {
+        shaders: {
+            shaders: import("../Global/Util/UtilMap.js").UtilMap<string, import("divine-shaders").DivineShader>;
+            create(shaders: import("divine-shaders").DivineShader[]): void;
+            get(id: string): import("divine-shaders").DivineShader | undefined;
+        };
+        meshes: {
+            meshes: import("../Global/Util/UtilMap.js").UtilMap<string, import("./Nodes/Meshes/NodeMesh.js").NodeMesh>;
+            add(meshes: import("./Nodes/types/RenderNode.types.js").NodeMeshData[]): void;
+            create(id: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetNodeMesh): false | import("@babylonjs/core").Mesh;
+        };
+        materials: {
+            materials: import("../Global/Util/UtilMap.js").UtilMap<string, import("./Nodes/Materials/NodeMaterial.js").NodeMaterial>;
+            get(id: string): import("./Nodes/Materials/NodeMaterial.js").NodeMaterial | null;
+            create(materials: import("./Nodes/types/RenderNode.types.js").NodeMaterialData[]): void;
+            updateFogOptions(data: import("@babylonjs/core").Vector4): void;
+            setSunLevel(level: number): void;
+            setBaseLevel(level: number): void;
+        };
+        $INIT(): void;
+    };
     textures: {
         defaultTexturePath: string;
         textureTypes: Map<string, import("./Textures/TextureType.js").TextureType>;
         uvMap: import("../index.js").TextureTypeUVMap;
-        getTextureUV(data: import("../index.js").ConstructorTextureData, overlay?: boolean): number;
-        _processVariations(textureData: import("../index.js").TextureData, paths: Map<string, false | Uint8ClampedArray>, map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number): number;
-        _getPath(textureData: import("../index.js").TextureData, varation: string | undefined, extension: string): string;
-        generateTexturesData(id: string): false | undefined;
+        getTextureIndex(data: import("../index.js").ConstructorTextureData, overlay?: boolean): number;
         _ready: boolean;
         isReady(): boolean;
         $INIT(): Promise<void>;
@@ -357,7 +375,7 @@ export declare const DVER: {
         generateTextureUVMap(): import("../index.js").TextureTypeUVMap;
         defineDefaultTexturePath(path: string): void;
         getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
-        addTextureType(id: string): void;
+        addTextureType(id: string): import("./Textures/TextureType.js").TextureType;
         clearTextureData(): void;
         registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
         createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;

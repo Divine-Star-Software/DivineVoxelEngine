@@ -21,7 +21,7 @@ export async function FlowUpdate(tasks, rebuild = true, vox = "") {
 }
 function RunFlowPropagation(tasks, vox) {
     const que = tasks.queues.flow.update.queue;
-    const noRemoveMap = tasks.queues.flow.rmeove.noRemoveMap;
+    const noRemoveMap = tasks.queues.flow.remove.noRemoveMap;
     for (let i = 0; i < que.length; i++) {
         const node = que[i];
         const x = node[0];

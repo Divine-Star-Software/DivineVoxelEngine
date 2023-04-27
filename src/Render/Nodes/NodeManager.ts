@@ -10,7 +10,7 @@ export const NodeManager = {
  $INIT() {
   const scene = RenderManager.scene;
   if (!scene) return;
-  this.materials.materials._map.forEach((_) => _.createMaterial());
+  this.materials.materials._map.forEach((_) => _.createMaterial(scene));
  },
 };
 InitDefaultNodes(NodeManager);

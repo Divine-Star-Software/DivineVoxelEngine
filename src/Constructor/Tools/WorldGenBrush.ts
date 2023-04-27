@@ -10,6 +10,11 @@ import { WorldComm } from "../Threads/ConstrcutorTheads.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { RichDataTool } from "../../Tools/Data/RichDataTool.js";
+import { WorldLockTasks } from "Meta/Tasks/Tasks.types.js";
+import {
+ SunRemove,
+ SunUpdate,
+} from "../Propagation/Illumanation/Functions/SunUpdate.js";
 
 export class WorldGenBrush extends BrushTool {
  constructor() {
@@ -31,55 +36,69 @@ export class WorldGenBrush extends BrushTool {
   const sl = this._dt.getLight();
 
   if (LightData.hasRGBLight(sl)) {
-   this.tasks.queues.rgb.rmeove.push(this.x, this.y, this.z);
+   this.tasks.queues.rgb.remove.push(this.x, this.y, this.z);
    Propagation.rgb.remove(this.tasks);
   }
 
   if (LightData.hasSunLight(sl)) {
-   this.tasks.queues.sun.rmeove.push(this.x, this.y, this.z);
-   Propagation.sun.remove(this.tasks);
+   this.tasks.queues.sun.remove.push(this.x, this.y, this.z);
+   SunRemove(this.tasks, false);
   }
 
   WorldPainter.paint.voxel(this.location, this.data);
 
-  if (LightData.hasRGBLight(sl)) {
-   Propagation.rgb.update(this.tasks);
-  }
-
-  if (LightData.hasSunLight(sl)) {
-   Propagation.sun.update(this.tasks);
-  }
-
   return this;
  }
 
+ erease() {
+  const sl = this._dt.getLight();
+  this._dt
+   .setAir()
+   .setLight(sl > 0 ? sl : 0)
+   .commit(2);
+
+  if (LightData.hasRGBLight(sl)) {
+   this.tasks.queues.rgb.remove.push(this.x, this.y, this.z);
+   Propagation.rgb.remove(this.tasks);
+  }
+
+  if (LightData.hasSunLight(sl)) {
+   this.tasks.queues.sun.remove.push(this.x, this.y, this.z);
+   SunRemove(this.tasks, false);
+  }
+
+  WorldPainter.paint.erase(this.location);
+ }
+
+ runUpdates() {
+  Propagation.rgb.update(this.tasks);
+  SunUpdate(this.tasks);
+  this.tasks.queues.sun.updateMap.clear();
+ }
+
  worldAlloc(start: Vec3Array, end: Vec3Array) {
-  const [sx, sy, sz] = start;
-  const [ex, ey, ez] = end;
   return new Promise<boolean>((resolve) => {
-   let attempts = 0;
-   const inte = setInterval(() => {
-    let done = true;
-    for (let y = sy; y < ey; y += WorldSpaces.chunk._bounds.y) {
-     for (let x = sx; x < ex; x += WorldSpaces.chunk._bounds.x) {
-      for (let z = sz; z < ez; z += WorldSpaces.chunk._bounds.z) {
-       if (!WorldRegister.chunk.get(this.setXYZ(x, y, z).location)) {
-        WorldComm.runTasks("add-chunk", this.location);
-        done = false;
-       }
-      }
-     }
-    }
-    if (done) {
-     clearInterval(inte);
+   WorldComm.runPromiseTasks<WorldLockTasks>(
+    "world-alloc",
+    [this.dimension, start, end],
+    [],
+    () => {
      resolve(true);
     }
-    attempts++;
-    if (attempts > 1_000) {
-     clearInterval(inte);
-     resolve(false);
+   );
+  });
+ }
+
+ worldDealloc(start: Vec3Array, end: Vec3Array) {
+  return new Promise<boolean>((resolve) => {
+   WorldComm.runPromiseTasks<WorldLockTasks>(
+    "world-dealloc",
+    [this.dimension, start, end],
+    [],
+    () => {
+     resolve(true);
     }
-   }, 10);
+   );
   });
  }
 }

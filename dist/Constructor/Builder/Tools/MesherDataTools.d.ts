@@ -1,6 +1,7 @@
 import type { TypedArrays } from "divine-binary-object/Types/DBO.types";
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
 import { QuadVertexData } from "../Classes/VertexData.js";
+import { MeshAttributes } from "../Types/MeshData.types.js";
 export declare class MesherDataTool {
     indicieIndex: number;
     vars: UtilMap<string, number>;
@@ -20,5 +21,5 @@ export declare class MesherDataTool {
     resetAttributes(): this;
     resetVars(): this;
     getMeshData(): [TypedArrays[], ArrayBuffer[], number[]];
-    getAllAttributes(): readonly [[id: string, data: TypedArrays, stride: number][], ArrayBuffer[]];
+    getAllAttributes(): [MeshAttributes, ArrayBuffer[]];
 }

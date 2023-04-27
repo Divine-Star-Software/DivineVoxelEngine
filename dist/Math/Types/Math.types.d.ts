@@ -29,4 +29,7 @@ export declare type DimensionsVector3 = {
     h: number;
     d: number;
 };
+export declare type Dimension2DArray = [width: number, height: number];
+export declare type Dimension3DArray = [width: number, height: number, depth: number];
+export declare type Vec2Array = [x: number, y: number];
 export declare type Vec3Array = [x: number, y: number, z: number];

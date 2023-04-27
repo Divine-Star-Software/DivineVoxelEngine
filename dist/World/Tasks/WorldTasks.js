@@ -7,9 +7,10 @@ import { RegionDataTool } from "../../Tools/Data/WorldData/RegionDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { RegionHeaderRegister } from "../../Data/World/Region/RegionHeaderRegister.js";
-import { DataLoaderTool } from "../../Tools/Data/DataLoaderTool.js";
+import { DataLoaderTool } from "../../Tools/Loader/DataLoaderTool.js";
 import { WorldSpaces } from "../../Data/World/WorldSpaces.js";
 import { BuilderTool } from "../../Tools/Build/BuilderTool.js";
+import { WorldLock } from "../Lock/WorldLock.js";
 const regionTool = new RegionDataTool();
 const columnTool = new ColumnDataTool();
 const chunkTool = new ChunkDataTool();
@@ -41,8 +42,20 @@ export const WorldTasks = {
             WorldRegister.chunk.add(location, WorldDataGenerator.chunk.create());
         }
     }),
+    worldAlloc: ThreadComm.registerTasks("world-alloc", async (data, onDone) => {
+        await WorldLock.addLock(data);
+        if (onDone)
+            onDone();
+    }, "deferred"),
+    worldDealloc: ThreadComm.registerTasks("world-dealloc", async (data, onDone) => {
+        await WorldLock.removeLock(data);
+        if (onDone)
+            onDone();
+    }, "deferred"),
     unLoad: {
-        unLoadColumn: ThreadComm.registerTasks("unload-column", (data) => {
+        unLoadColumn: ThreadComm.registerTasks("unload-column", (data, onDone) => {
+            if (WorldLock.isLocked(data))
+                return onDone ? onDone(false) : 0;
             DataSync.column.unSync(data);
             WorldRegister.column.remove(data);
             const region = WorldRegister.region.get(data);
@@ -50,7 +63,8 @@ export const WorldTasks = {
                 WorldRegister.region.remove(data);
                 DataSync.region.unSync(data);
             }
-        }),
+            return onDone ? onDone(true) : 0;
+        }, "deferred"),
     },
     load: {
         loadRegino: ThreadComm.registerTasks("load-region", (data) => {

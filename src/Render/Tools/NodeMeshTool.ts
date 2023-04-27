@@ -13,7 +13,7 @@ export class NodeMeshTool extends LocationBoundTool {
   onDone: (mesh: Mesh | false) => void
  ) {
 
-  const textureId = TextureManager.getTextureUV(textureIdData);
+  const textureId = TextureManager.getTextureIndex(textureIdData);
   if (!textureId) return onDone(false);
 
   DVER.constructorCommManager.runPromiseTasks<BuildNodeMesh>(

@@ -124,14 +124,14 @@ export class TaskTool {
         queued: {
             _s: {},
             add(location) {
-                CQ.propagation.add([location, this._s._data.queue, this._s._thread]);
+                CQ.propagation.add([location, this._s._data.queue, this._s._thread], this._s._data.queue);
             },
             run(onDone) {
                 CQ.propagation.run(this._s._data.queue);
                 CQ.propagation.onDone(this._s._data.queue, onDone);
             },
             async runAndAwait() {
-                await CQ.propagation.runAndAwait();
+                await CQ.propagation.runAndAwait(this._s._data.queue);
             },
         },
     };
@@ -145,14 +145,14 @@ export class TaskTool {
         queued: {
             _s: {},
             add(data) {
-                CQ.generate.add(data);
+                CQ.generate.add(data, this._s._data.queue);
             },
             run(onDone) {
                 CQ.generate.run(this._s._data.queue);
                 CQ.generate.onDone(this._s._data.queue, onDone);
             },
             async runAndAwait() {
-                await CQ.generate.runAndAwait();
+                await CQ.generate.runAndAwait(this._s._data.queue);
             },
         },
     };
@@ -166,14 +166,14 @@ export class TaskTool {
         queued: {
             _s: {},
             add(data) {
-                CQ.decorate.add(data);
+                CQ.decorate.add(data, this._s._data.queue);
             },
             run(onDone) {
                 CQ.decorate.run(this._s._data.queue);
                 CQ.decorate.onDone(this._s._data.queue, onDone);
             },
             async runAndAwait() {
-                await CQ.decorate.runAndAwait();
+                await CQ.decorate.runAndAwait(this._s._data.queue);
             },
         },
     };
@@ -187,7 +187,7 @@ export class TaskTool {
         queued: {
             _s: {},
             add(location) {
-                CQ.worldSun.add([location, this._s._data.queue, this._s._thread]);
+                CQ.worldSun.add([location, this._s._data.queue, this._s._thread], this._s._data.queue);
                 WorldRegister.column.fill(location);
             },
             run(onDone) {
@@ -195,7 +195,7 @@ export class TaskTool {
                 CQ.worldSun.onDone(this._s._data.queue, onDone);
             },
             async runAndAwait() {
-                await CQ.worldSun.runAndAwait();
+                await CQ.worldSun.runAndAwait(this._s._data.queue);
             },
         },
     };

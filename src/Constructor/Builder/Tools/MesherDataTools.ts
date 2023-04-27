@@ -6,6 +6,7 @@ import type {
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
 import { TypedArrayMap } from "divine-binary-object/Constants/ByteData.js";
 import { QuadVertexData } from "../Classes/VertexData.js";
+import { MeshAttributes } from "../Types/MeshData.types.js";
 
 export class MesherDataTool {
  indicieIndex = 0;
@@ -102,8 +103,8 @@ export class MesherDataTool {
   return <[TypedArrays[], ArrayBuffer[], number[]]>[arrays, trasnfers, strides];
  }
 
- getAllAttributes() {
-  const data: [id: string, data: TypedArrays, stride: number][] = [];
+ getAllAttributes(): [MeshAttributes, ArrayBuffer[]] {
+  const data: MeshAttributes = [];
   const trasnfers: ArrayBuffer[] = [];
   for (const [key, [value, stride, type]] of this.attributes._map) {
    //@ts-ignore
@@ -111,6 +112,6 @@ export class MesherDataTool {
    trasnfers.push(newArray.buffer);
    data.push([key, newArray, stride]);
   }
-  return [data,trasnfers] as const;
+  return [data, trasnfers];
  }
 }
