@@ -16,9 +16,9 @@ export async function $INITFunction(
   TextureManager.generateTextureUVMap()
  );
 
- NodeManager.$INIT();
+ NodeManager.init();
  NodeManager.materials.materials._map.forEach((m)=>{
-    m.getMaterial()!.setFloats("lightGradient",RenderManager.lightGradient)    
+    m.getMaterial()!.setFloats("lightGradient",NodeManager.materials.unifrosm.lightGradient)    
  })
  scene.registerBeforeRender(() => {
   NodeManager.materials.materials._map.forEach((_) => {

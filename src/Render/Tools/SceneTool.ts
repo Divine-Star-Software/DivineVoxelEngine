@@ -1,6 +1,6 @@
 import type { DVEFogTypes } from "Meta/Render/Render/Render.options.types";
 import { NodeManager } from "../Nodes/NodeManager.js";
-import { DVEBabylon } from "../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../Nodes/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 
 export class SceneTool {
@@ -12,25 +12,23 @@ export class SceneTool {
  };
  fog = {
   setHeightFactor: (v: number) => {
-   RenderManager.updateFogOptions({ volumetricOptions: { heightFactor: v } });
-   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+   NodeManager.materials.updateFogOptions({
+    volumetricOptions: { heightFactor: v },
+   });
    return <SceneTool>this;
   },
   setDensity: (v: number) => {
-   RenderManager.updateFogOptions({ density: v });
-   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+   NodeManager.materials.updateFogOptions({ density: v });
    return <SceneTool>this;
   },
   setMode: (mode: DVEFogTypes) => {
-   RenderManager.updateFogOptions({ mode: mode });
-   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+   NodeManager.materials.updateFogOptions({ mode: mode });
    return <SceneTool>this;
   },
   setColor: (r: number, g: number = r, b: number = r) => {
-   RenderManager.updateFogOptions({
+   NodeManager.materials.updateFogOptions({
     color: new DVEBabylon.system.Color3(r, g, b),
    });
-   NodeManager.materials.updateFogOptions(RenderManager.fogData);
    return <SceneTool>this;
   },
  };

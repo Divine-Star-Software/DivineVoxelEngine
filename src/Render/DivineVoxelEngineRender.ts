@@ -1,5 +1,5 @@
 //types
-import { DVEBabylon, DVEBabylonSystem } from "./Babylon/DVEBabylon.js";
+import { DVEBabylon, DVEBabylonSystem } from "./Nodes/DVEBabylon.js";
 import type { DVERInitData } from "Meta/Render/DVER";
 import type { Scene } from "@babylonjs/core";
 //objects

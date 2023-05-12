@@ -1,6 +1,5 @@
 import { NodeManager } from "../Nodes/NodeManager.js";
-import { DVEBabylon } from "../Babylon/DVEBabylon.js";
-import { RenderManager } from "../Render/RenderManager.js";
+import { DVEBabylon } from "../Nodes/DVEBabylon.js";
 export class SceneTool {
     constructor() { }
     sky = {
@@ -10,25 +9,23 @@ export class SceneTool {
     };
     fog = {
         setHeightFactor: (v) => {
-            RenderManager.updateFogOptions({ volumetricOptions: { heightFactor: v } });
-            NodeManager.materials.updateFogOptions(RenderManager.fogData);
+            NodeManager.materials.updateFogOptions({
+                volumetricOptions: { heightFactor: v },
+            });
             return this;
         },
         setDensity: (v) => {
-            RenderManager.updateFogOptions({ density: v });
-            NodeManager.materials.updateFogOptions(RenderManager.fogData);
+            NodeManager.materials.updateFogOptions({ density: v });
             return this;
         },
         setMode: (mode) => {
-            RenderManager.updateFogOptions({ mode: mode });
-            NodeManager.materials.updateFogOptions(RenderManager.fogData);
+            NodeManager.materials.updateFogOptions({ mode: mode });
             return this;
         },
         setColor: (r, g = r, b = r) => {
-            RenderManager.updateFogOptions({
+            NodeManager.materials.updateFogOptions({
                 color: new DVEBabylon.system.Color3(r, g, b),
             });
-            NodeManager.materials.updateFogOptions(RenderManager.fogData);
             return this;
         },
     };

@@ -1,9 +1,6 @@
-import type { RecursivePartial } from "Meta/Util.types.js";
-import type { Scene, Vector4 } from "@babylonjs/core";
-import { RenderFogOptions, DVERenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
+import type { Scene } from "@babylonjs/core";
 import { SceneTool } from "../Tools/SceneTool.js";
 export declare const RenderManager: {
-    fogOptions: RenderFogOptions;
     meshRegister: {
         _dimensions: import("../../Meta/Render/Scene/MeshRegister.types.js").MeshRegisterDimensions;
         $INIT(): void;
@@ -46,10 +43,6 @@ export declare const RenderManager: {
     meshCuller: {
         $INIT(scene: Scene): void;
     };
-    fogData: Vector4;
-    lightGradient: number[];
-    mipMapLevels: number[];
-    effectOptions: DVERenderEffectsOptions;
     fo: {
         activeCamera: import("@babylonjs/core").TransformNode | null;
         activeNode: import("@babylonjs/core").TransformNode | null;
@@ -106,9 +99,6 @@ export declare const RenderManager: {
     };
     sceneTool: SceneTool;
     scene: Scene | null;
-    updateFogOptions(options: RecursivePartial<RenderFogOptions>): void;
-    _setFogData(): void;
     $INIT(scene: Scene): void;
     getScene(): Scene | null;
-    getDefaultCamera(scene: Scene): import("@babylonjs/core").UniversalCamera;
 };

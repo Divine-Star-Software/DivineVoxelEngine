@@ -1,3 +1,4 @@
+import { DivineShaderBuilder } from "divine-shaders";
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
 export const NodeShaderManager = {
     shaders: new UtilMap(),
@@ -8,5 +9,8 @@ export const NodeShaderManager = {
     },
     get(id) {
         return this.shaders.get(id);
+    },
+    getBulder() {
+        return DivineShaderBuilder;
     }
 };

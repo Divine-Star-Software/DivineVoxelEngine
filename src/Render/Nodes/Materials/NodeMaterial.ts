@@ -2,7 +2,7 @@ import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 
 import { TextureManager } from "../../Nodes/Textures/TextureManager.js";
 
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { RenderManager } from "../../Render/RenderManager.js";
 import { NodeMaterialData } from "../types/RenderNode.types.js";
 import { NodeManager } from "../NodeManager.js";

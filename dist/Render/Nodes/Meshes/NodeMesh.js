@@ -1,4 +1,4 @@
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { NodeManager } from "../NodeManager.js";
 import { RenderManager } from "../../Render/RenderManager.js";
 import { FOManager } from "../../Render/FloatingOrigin/FoManager.js";

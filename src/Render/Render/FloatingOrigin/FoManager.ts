@@ -1,6 +1,6 @@
 import type { Scene, TransformNode, Vector3 } from "@babylonjs/core";
 
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../../Nodes/DVEBabylon.js";
 
 export const FOManager = {
  activeCamera: <TransformNode | null>null,

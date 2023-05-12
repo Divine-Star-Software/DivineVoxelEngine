@@ -9,7 +9,7 @@ import {
 import type { LocationData } from "voxelspaces";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types.js";
 import { ChunkMeshData, SetNodeMesh } from "Meta/Tasks/RenderTasks.types";
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { NodeManager } from "../NodeManager.js";
 import type { NodeMeshData } from "../types/RenderNode.types.js";
 import { RenderManager } from "../../Render/RenderManager.js";

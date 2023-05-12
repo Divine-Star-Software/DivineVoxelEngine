@@ -1,5 +1,5 @@
 import { TextureManager } from "../../Nodes/Textures/TextureManager.js";
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { RenderManager } from "../../Render/RenderManager.js";
 import { NodeManager } from "../NodeManager.js";
 export class NodeMaterial {

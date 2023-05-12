@@ -1,5 +1,5 @@
 import type { RawTexture2DArray } from "@babylonjs/core";
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { RenderManager } from "../../Render/RenderManager.js";
 
 export const TextureCreator = {

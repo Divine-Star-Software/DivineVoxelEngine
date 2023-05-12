@@ -1,5 +1,5 @@
 //types
-import { DVEBabylon } from "./Babylon/DVEBabylon.js";
+import { DVEBabylon } from "./Nodes/DVEBabylon.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";

@@ -9,11 +9,14 @@ export const NodeManager = {
     meshes: NodeMeshManager,
     materials: NodeMaterialManager,
     textures: TextureManager,
-    $INIT() {
+    _scene: {},
+    init() {
         const scene = RenderManager.scene;
         if (!scene)
             return;
         this.materials.materials._map.forEach((_) => _.createMaterial(scene));
+        this._scene = scene;
+        this.materials.init();
     },
 };
 InitDefaultNodes(NodeManager);

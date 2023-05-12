@@ -1,4 +1,4 @@
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../DVEBabylon.js";
 import { RenderManager } from "../../Render/RenderManager.js";
 export const TextureCreator = {
     context: null,

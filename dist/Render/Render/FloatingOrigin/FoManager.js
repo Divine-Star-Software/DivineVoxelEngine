@@ -1,4 +1,4 @@
-import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { DVEBabylon } from "../../Nodes/DVEBabylon.js";
 export const FOManager = {
     activeCamera: null,
     activeNode: null,
