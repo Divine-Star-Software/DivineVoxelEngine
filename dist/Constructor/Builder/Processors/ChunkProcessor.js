@@ -69,13 +69,10 @@ export const ChunkProcessor = {
                 mesher.resetAll();
                 continue;
             }
+            const [attributes, buffers] = mesher.getAllAttributes();
             const [meshData, traf] = mesher.getMeshData();
-            trasnfers.push(...traf);
-            chunks[1].push([
-                substance,
-                //@ts-ignore
-                ...meshData,
-            ]);
+            trasnfers.push(...buffers);
+            chunks[1].push([substance, [location, attributes]]);
             mesher.resetAll();
         }
         DVEC.parentComm.runTasks("set-chunk", chunks, trasnfers);

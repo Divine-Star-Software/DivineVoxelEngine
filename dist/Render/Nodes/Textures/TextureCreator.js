@@ -1,5 +1,5 @@
-import { DVEBabylon } from "../Babylon/DVEBabylon.js";
-import { RenderManager } from "../Render/RenderManager.js";
+import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
+import { RenderManager } from "../../Render/RenderManager.js";
 export const TextureCreator = {
     context: null,
     _textureSize: 16,

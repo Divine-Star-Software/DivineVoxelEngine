@@ -4,9 +4,7 @@ import type { DVERInitData } from "Meta/Render/DVER";
 import type { Scene } from "@babylonjs/core";
 //objects
 import { Util } from "../Global/Util.helper.js";
-import { TextureManager } from "./Textures/TextureManager.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
-import { MeshManager } from "./Scene/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 
 import { RenderTasks } from "./Tasks/RenderTasks.js";
@@ -46,7 +44,6 @@ export const DVER = {
 
  settings: EngineSettings,
  render: RenderManager,
- meshManager: MeshManager,
 
  data: {
   worldBounds: WorldBounds,
@@ -54,10 +51,10 @@ export const DVER = {
  },
 
  nodes : NodeManager,
- textures: TextureManager,
 
  tasks: RenderTasks,
  async $INIT(initData: DVERInitData) {
+
   await InitWorkers(this, initData);
  },
 
@@ -78,3 +75,5 @@ export const DVER = {
 };
 
 export type DivineVoxelEngineRender = typeof DVER;
+
+

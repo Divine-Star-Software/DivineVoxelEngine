@@ -669,4 +669,4 @@ export declare const DVEW: {
     getDataLoaderTool(): DataLoaderTool;
     getRichDataTool(): RichDataTool;
 };
-export declare type DivineVoxelEngineWorld = typeof DVEW;
+export type DivineVoxelEngineWorld = typeof DVEW;

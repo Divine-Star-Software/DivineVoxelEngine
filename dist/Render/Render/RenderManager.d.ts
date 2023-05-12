@@ -1,8 +1,7 @@
 import type { RecursivePartial } from "Meta/Util.types.js";
 import type { Scene, Vector4 } from "@babylonjs/core";
-import { DVEMesh } from "./Meshes/DVEMesh.js";
 import { RenderFogOptions, DVERenderEffectsOptions } from "Meta/Render/Render/Render.options.types.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
+import { SceneTool } from "../Tools/SceneTool.js";
 export declare const RenderManager: {
     fogOptions: RenderFogOptions;
     meshRegister: {
@@ -36,7 +35,6 @@ export declare const RenderManager: {
     meshManager: {
         scene: Scene;
         runningUpdate: boolean;
-        meshMakers: Record<string, DVEMesh>;
         $INIT(scene: Scene): void;
         removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
         chunks: {
@@ -106,34 +104,11 @@ export declare const RenderManager: {
         createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
         createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
     };
-    solidMaterial: DVEMaterial;
-    floraMaterial: DVEMaterial;
-    liquidMaterial: DVEMaterial;
-    solidMesh: DVEMesh;
-    floraMesh: DVEMesh;
-    liquidMesh: DVEMesh;
-    skyBoxMaterial: {
-        material: import("@babylonjs/core").ShaderMaterial | null;
-        time: number;
-        getMaterial(): import("@babylonjs/core").ShaderMaterial | null;
-        updateFogOptions(data: Vector4): void;
-        setSunLightLevel(level: number): void;
-        setBaseLevel(level: number): void;
-        updateMaterialSettings(settings: import("../../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-        createMaterial(scene: Scene): import("@babylonjs/core").ShaderMaterial;
-        overrideMaterial(material: any): void;
-        updateUniforms(): void;
-        runEffects(): void;
-    };
+    sceneTool: SceneTool;
     scene: Scene | null;
     updateFogOptions(options: RecursivePartial<RenderFogOptions>): void;
     _setFogData(): void;
     $INIT(scene: Scene): void;
-    updateShaderEffectOptions(options: RecursivePartial<DVERenderEffectsOptions>): void;
-    syncSettings(): void;
     getScene(): Scene | null;
     getDefaultCamera(scene: Scene): import("@babylonjs/core").UniversalCamera;
-    createSkyBoxMaterial(scene?: Scene): import("@babylonjs/core").ShaderMaterial | null;
-    setSunLevel(level: number): void;
-    setBaseLevel(level: number): void;
 };

@@ -3,7 +3,7 @@ import { DBO } from "divine-binary-object";
 import { RichDataSegmentTool } from "../../Tools/Classes/RichDataToolBase.js";
 import { RichColumnDataTool } from "./RichColumnDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
-export class RichDataTool extends RichDataSegmentTool {
+class RichDataTool extends RichDataSegmentTool {
     data;
     static richColumn = new RichColumnDataTool();
     static columnTool = new ColumnDataTool();
@@ -69,3 +69,4 @@ export class RichDataTool extends RichDataSegmentTool {
         return DBO.toBuffer(this.data);
     }
 }
+export { RichDataTool };

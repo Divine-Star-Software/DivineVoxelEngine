@@ -2,7 +2,7 @@ import { Distance3D } from "../../Math/Functions/Distance3d.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { WorldRegister } from "../../Data/World/WorldRegister.js";
-export class AnaylzerTool extends LocationBoundTool {
+class AnaylzerTool extends LocationBoundTool {
     static columnDataTool = new ColumnDataTool();
     runUpdate(radius, onDone) {
         const [dimension, sx, sy, sz] = this.location;
@@ -28,3 +28,4 @@ export class AnaylzerTool extends LocationBoundTool {
         }, 1);
     }
 }
+export { AnaylzerTool };

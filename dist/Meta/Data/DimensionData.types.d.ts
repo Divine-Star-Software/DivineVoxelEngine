@@ -1,9 +1,9 @@
-export declare type DimensionOptions = {
+export type DimensionOptions = {
     liquidFlowSpeed: number;
     magmaFlowSpeed: number;
     sunLight: boolean;
 };
-export declare type DimensionData = {
+export type DimensionData = {
     id: string;
     options: DimensionOptions;
 };

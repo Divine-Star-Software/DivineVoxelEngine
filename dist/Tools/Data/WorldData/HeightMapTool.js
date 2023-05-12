@@ -2,7 +2,7 @@
 import { WorldRegister } from "../../../Data/World/WorldRegister.js";
 import { ChunkDataTool } from "./ChunkDataTool.js";
 import { WorldSpaces } from "../../../Data/World/WorldSpaces.js";
-export class HeightMapTool {
+class HeightMapTool {
     static _chunkTool = new ChunkDataTool();
     _data = {
         dimension: "main",
@@ -81,3 +81,4 @@ export class HeightMapTool {
         },
     };
 }
+export { HeightMapTool };

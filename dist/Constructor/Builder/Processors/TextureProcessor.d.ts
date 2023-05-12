@@ -1,13 +1,13 @@
 import { DirectionNames } from "Meta";
 import { BuildNodeMesh, SetNodeMesh } from "Meta/Tasks/RenderTasks.types.js";
-declare type FaceData = {
+type FaceData = {
     xStart: number;
     xEnd: number;
     yStart: number;
     yEnd: number;
     type: Faces;
 };
-declare type Faces = "west" | "east" | "top" | "bottom";
+type Faces = "west" | "east" | "top" | "bottom";
 export declare const TextureProcessor: {
     visitedMap: Record<Faces, Record<string, boolean>>;
     _resetVisitedMap(): void;

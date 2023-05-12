@@ -10,60 +10,77 @@ export class NodeMesh {
     seralize = false;
     clearCachedGeometry = false;
     defaultBb;
+    scene;
+    engine;
     constructor(data) {
         this.data = data;
     }
     createMesh(data) {
-        const scene = RenderManager.scene;
-        if (!scene)
-            return false;
+        if (!this.scene) {
+            const scene = RenderManager.scene;
+            if (!scene) {
+                throw new Error(`A scene is required.`);
+            }
+            this.scene = scene;
+            this.engine = scene.getEngine();
+        }
         if (!this.defaultBb) {
             this.defaultBb = new DVEBabylon.system.BoundingInfo(DVEBabylon.system.Vector3.Zero(), new DVEBabylon.system.Vector3(16, 16, 16));
         }
-        let mesh = new DVEBabylon.system.Mesh(this.data.id, scene);
+        const mesh = new DVEBabylon.system.Mesh(this.data.id, this.scene);
         const mat = NodeManager.materials.get(this.data.materialId);
         if (!mat) {
             throw new Error(`Material: ${this.data.materialId} does not exist`);
         }
-        mesh.material = mat.getMaterial();
         if (FOManager.activeNode) {
             mesh.parent = FOManager.activeNode;
         }
-        const atrs = mat.shader.data.mesh.getAttributes();
-        for (const [id, stride] of atrs) {
-            mesh.setVerticesData(id, [0], false, stride);
-        }
-        mesh.position.x = data[0][1];
-        mesh.position.y = data[0][2];
-        mesh.position.z = data[0][3];
-        const vertexData = new DVEBabylon.system.VertexData();
-        for (const [id, attribute, stride] of data[1]) {
-            if (id == "position") {
-                vertexData.positions = attribute;
-                continue;
-            }
-            if (id == "normal") {
-                vertexData.normals = attribute;
-                continue;
-            }
-            if (id == "indices") {
-                vertexData.indices = attribute;
-                continue;
-            }
-            mesh.setVerticesData(id, attribute, false, stride);
-        }
-        vertexData.applyToMesh(mesh, false);
         if (!this.checkCollisions) {
             mesh.doNotSyncBoundingInfo = true;
         }
         mesh.isPickable = this.pickable;
         mesh.type = "node";
+        if (!mesh.geometry) {
+            const geo = new DVEBabylon.system.Geometry(DVEBabylon.system.Geometry.RandomId(), this.scene, undefined, undefined, mesh);
+            geo._boundingInfo = this.defaultBb;
+            geo.useBoundingInfoFromGeometry = true;
+        }
         mesh.checkCollisions = this.checkCollisions;
         mesh.doNotSerialize = this.seralize;
-        mesh.cullingStrategy = DVEBabylon.system.Mesh.CULLINGSTRATEGY_STANDARD;
-        mesh.isVisible = true;
+        mesh.alwaysSelectAsActiveMesh = true;
+        mesh.doNotSyncBoundingInfo = true;
+        this.updateVetexData(data, mesh);
         mesh.setEnabled(true);
+        mesh.isVisible = true;
+        mesh.material = mat.getMaterial();
         return mesh;
+    }
+    returnMesh(mesh) {
+        mesh.dispose();
+    }
+    updateVetexData(data, mesh) {
+        mesh.unfreezeWorldMatrix();
+        mesh.position.x = data[0][1];
+        mesh.position.y = data[0][2];
+        mesh.position.z = data[0][3];
+        for (const [id, attribute, stride] of data[1]) {
+            switch (id) {
+                case "position":
+                    mesh.setVerticesBuffer(new DVEBabylon.system.VertexBuffer(this.engine, attribute, id, false, undefined, stride));
+                    break;
+                case "normal":
+                    mesh.setVerticesBuffer(new DVEBabylon.system.VertexBuffer(this.engine, attribute, id, false, undefined, stride));
+                    break;
+                case "indices":
+                    mesh.setIndices(attribute);
+                    break;
+                default:
+                    mesh.setVerticesBuffer(new DVEBabylon.system.VertexBuffer(this.engine, attribute, id, false, undefined, stride));
+                    break;
+            }
+        }
+        mesh.freezeWorldMatrix();
+        this._clearCached(mesh);
     }
     syncSettings(settings) {
         if (settings.meshes.pickable) {
@@ -77,13 +94,13 @@ export class NodeMesh {
         }
     }
     _clearCached(mesh) {
-        if (this.clearCachedGeometry) {
-            if (mesh.subMeshes) {
-                for (const sm of mesh.subMeshes) {
-                    sm.setBoundingInfo(this.defaultBb);
-                }
+        if (!this.clearCachedGeometry)
+            return;
+        mesh.geometry.clearCachedData();
+        if (mesh.subMeshes) {
+            for (const sm of mesh.subMeshes) {
+                sm.setBoundingInfo(this.defaultBb);
             }
-            mesh.geometry?.clearCachedData();
         }
     }
 }

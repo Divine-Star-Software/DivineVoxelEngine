@@ -6,4 +6,5 @@ export declare const NodeMeshManager: {
     meshes: UtilMap<string, NodeMesh>;
     add(meshes: NodeMeshData[]): void;
     create(id: string, data: SetNodeMesh): false | import("@babylonjs/core").Mesh;
+    get(id: string): NodeMesh | undefined;
 };

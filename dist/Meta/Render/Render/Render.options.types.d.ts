@@ -1,6 +1,6 @@
 import type { Color3 } from "@babylonjs/core";
-export declare type DVEFogTypes = "exponential" | "volumetric" | "animated-volumetric";
-export declare type RenderFogOptions = {
+export type DVEFogTypes = "exponential" | "volumetric" | "animated-volumetric";
+export type RenderFogOptions = {
     mode: DVEFogTypes;
     color: Color3;
     density: number;
@@ -8,7 +8,7 @@ export declare type RenderFogOptions = {
         heightFactor: number;
     };
 };
-export declare type DVERenderEffectsOptions = {
+export type DVERenderEffectsOptions = {
     floraEffects: boolean;
     liquidEffects: boolean;
 };

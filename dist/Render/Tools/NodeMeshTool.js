@@ -1,5 +1,5 @@
 import { DVER } from "../DivineVoxelEngineRender.js";
-import { TextureManager } from "../Textures/TextureManager.js";
+import { TextureManager } from "../Nodes/Textures/TextureManager.js";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { NodeManager } from "../Nodes/NodeManager.js";
 export class NodeMeshTool extends LocationBoundTool {

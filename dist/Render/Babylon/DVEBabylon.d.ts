@@ -11,8 +11,9 @@ import { TransformNode } from "@babylonjs/core/Meshes/transformNode.js";
 import { ShaderMaterial } from "@babylonjs/core/Materials/shaderMaterial.js";
 import { BoundingBox } from "@babylonjs/core/Culling/boundingBox.js";
 import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo.js";
-import { VertexData } from "@babylonjs/core/Meshes/mesh.vertexData.js";
-export declare type DVEBabylonSystem = {
+import { VertexBuffer } from "@babylonjs/core/Meshes/buffer.js";
+import { Geometry } from "@babylonjs/core/Meshes/geometry.js";
+export type DVEBabylonSystem = {
     Scene: typeof Scene;
     Engine: typeof Engine;
     RawTexture2DArray: typeof RawTexture2DArray;
@@ -25,9 +26,10 @@ export declare type DVEBabylonSystem = {
     Mesh: typeof Mesh;
     BoundingBox: typeof BoundingBox;
     BoundingInfo: typeof BoundingInfo;
-    VertexData: typeof VertexData;
+    VertexBuffer: typeof VertexBuffer;
     Effect: typeof Effect;
     Color3: typeof Color3;
+    Geometry: typeof Geometry;
 };
 export declare const DVEBabylon: {
     system: DVEBabylonSystem;

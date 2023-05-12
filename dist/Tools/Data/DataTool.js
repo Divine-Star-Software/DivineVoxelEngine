@@ -10,7 +10,7 @@ import { ColumnDataTool } from "./WorldData/ColumnDataTool.js";
 import { LightData } from "../../Data/Light/LightByte.js";
 import { VoxelTagIDs } from "../../Data/Constants/Tags/VoxelTagIds.js";
 import { Register } from "../../Data/Register/Register.js";
-export class DataTool extends DataToolBase {
+class DataTool extends DataToolBase {
     static _dtutil = new DataTool();
     _chunkTool = new ChunkDataTool();
     static _heightMapTool = new HeightMapTool();
@@ -316,3 +316,4 @@ export class DataTool extends DataToolBase {
         return this.data.baseId == DataTool._dtutil.data.baseId;
     }
 }
+export { DataTool };

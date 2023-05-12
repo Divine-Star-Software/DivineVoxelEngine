@@ -310,4 +310,4 @@ export declare const DVEN: {
     getRichDataTool(): RichDataTool;
     getDataTool(): DataTool;
 };
-export declare type DivineVoxelEngineNexus = typeof DVEN;
+export type DivineVoxelEngineNexus = typeof DVEN;

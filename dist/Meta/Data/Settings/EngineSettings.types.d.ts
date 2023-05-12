@@ -1,4 +1,4 @@
-export declare type EngineSettingsData = {
+export type EngineSettingsData = {
     nexus: {
         enabled: boolean;
         autoSyncChunks: boolean;

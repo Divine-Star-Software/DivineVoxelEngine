@@ -9,4 +9,5 @@ export declare const NodeMaterialManager: {
     updateFogOptions(data: Vector4): void;
     setSunLevel(level: number): void;
     setBaseLevel(level: number): void;
+    setOption(id: string, value: boolean): void;
 };

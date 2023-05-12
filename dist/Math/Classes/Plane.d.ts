@@ -1,5 +1,5 @@
 import { Vector3 } from "./Vector3.js";
-export declare type PlaneConstrucotrData = {
+export type PlaneConstrucotrData = {
     v1: Vector3;
     v2: Vector3;
     v3: Vector3;

@@ -2,7 +2,7 @@ import type { LocationData } from "voxelspaces";
 import type { AddToRebuildQueue, BuildTasks, Priorities, PriorityTask } from "Meta/Tasks/Tasks.types";
 import { CommBase } from "threadcomm";
 import { VisitedMap } from "../../Global/Util/VisistedMap.js";
-declare type RebuildModes = "sync" | "async";
+type RebuildModes = "sync" | "async";
 declare class Request<T, Q> {
     tasksType: string;
     origin: LocationData;
@@ -34,8 +34,8 @@ declare class Request<T, Q> {
     addNeighborsToRebuildQueue(x: number, y: number, z: number): false | this | undefined;
     runRebuildQueue(): this;
 }
-declare type Vec3Array = [x: number, y: number, z: number][];
-declare type FlowVec3Array = number[][];
+type Vec3Array = [x: number, y: number, z: number][];
+type FlowVec3Array = number[][];
 export declare const TasksRequest: {
     getLightUpdateRequest(origin: LocationData, buildQueue?: string, originThread?: string): Request<any, {
         rgb: {
@@ -128,9 +128,9 @@ export declare const TasksRequest: {
         map: VisitedMap;
     }>;
 };
-export declare type ExplosionTaskRequests = ReturnType<typeof TasksRequest.getExplosionRequests>;
-export declare type VoxelUpdateTaskRequest = ReturnType<typeof TasksRequest.getVoxelUpdateRequests>;
-export declare type FlowTaskRequests = ReturnType<typeof TasksRequest.getFlowUpdateRequest>;
-export declare type LightTaskRequest = ReturnType<typeof TasksRequest.getLightUpdateRequest>;
-export declare type WorldSunTaskRequest = ReturnType<typeof TasksRequest.getWorldSunRequests>;
+export type ExplosionTaskRequests = ReturnType<typeof TasksRequest.getExplosionRequests>;
+export type VoxelUpdateTaskRequest = ReturnType<typeof TasksRequest.getVoxelUpdateRequests>;
+export type FlowTaskRequests = ReturnType<typeof TasksRequest.getFlowUpdateRequest>;
+export type LightTaskRequest = ReturnType<typeof TasksRequest.getLightUpdateRequest>;
+export type WorldSunTaskRequest = ReturnType<typeof TasksRequest.getWorldSunRequests>;
 export {};

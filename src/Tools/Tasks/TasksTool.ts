@@ -29,31 +29,6 @@ export class TaskTool {
  _thread = "";
  _priority: Priorities = 0;
  constructor() {
-  this.build.column.deferred._s = this;
-
-  this.explosion._s = this;
-
-  this.voxelUpdate.erase._s = this;
-  this.voxelUpdate.paint._s = this;
-  this.voxelUpdate.update._s = this;
-
-  this.anaylzer.update._s = this;
-
-  this.build.chunk.deferred._s = this;
-  this.build.chunk.queued._s = this;
-
-  this.worldSun.deferred._s = this;
-  this.worldSun.queued._s = this;
-
-  this.generate.deferred._s = this;
-  this.generate.queued._s = this;
-
-  this.propagation.deferred._s = this;
-  this.propagation.queued._s = this;
-
-  this.decorate.deferred._s = this;
-  this.decorate.queued._s = this;
-
   this._thread = ThreadComm.threadName;
  }
 
@@ -73,16 +48,15 @@ export class TaskTool {
 
  voxelUpdate = {
   update: {
-   _s: <TaskTool>{},
-   run(
+   run: (
     location: LocationData,
     raw: RawVoxelData,
     onDone: (data: any) => void,
     mode: TaskRunModes = "sync"
-   ) {
+   ) => {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelUpdate,
-     [location, raw, this._s._data.queue, this._s._thread],
+     [location, raw, this._data.queue, this._thread],
      [],
      onDone,
      mode == "sync" ? 0 : undefined
@@ -90,15 +64,14 @@ export class TaskTool {
    },
   },
   erase: {
-   _s: <TaskTool>{},
-   run(
+   run: (
     location: LocationData,
     onDone: (data: any) => void,
     mode: TaskRunModes = "sync"
-   ) {
+   ) => {
     CCM.runPromiseTasks<UpdateTasks>(
      ConstructorTasks.voxelErease,
-     [location, this._s._data.queue, this._s._thread],
+     [location, this._data.queue, this._thread],
      [],
      onDone,
      mode == "sync" ? 0 : undefined
@@ -106,16 +79,15 @@ export class TaskTool {
    },
   },
   paint: {
-   _s: <TaskTool>{},
-   run(
+   run: (
     location: LocationData,
     raw: RawVoxelData,
     onDone: (data: any) => void,
     mode: TaskRunModes = "sync"
-   ) {
+   ) => {
     CCM.runPromiseTasks<VoxelUpdateTasks>(
      ConstructorTasks.voxelPaint,
-     [location, raw, this._s._data.queue, this._s._thread],
+     [location, raw, this._data.queue, this._thread],
      [],
      onDone,
      mode == "sync" ? 0 : undefined
@@ -126,13 +98,12 @@ export class TaskTool {
  build = {
   chunk: {
    deferred: {
-    _s: <TaskTool>{},
-    run(buildTasks: BuildTasks, onDone: (data: any) => void) {
+    run: (buildTasks: BuildTasks, onDone: (data: any) => void) => {
      CCM.runPromiseTasks<PriorityTask<BuildTasks>>(
       ConstructorTasks.buildChunk,
       {
        data: buildTasks,
-       priority: this._s._priority,
+       priority: this._priority,
       },
       [],
       onDone,
@@ -141,32 +112,29 @@ export class TaskTool {
      );
     },
    },
-
    queued: {
-    _s: <TaskTool>{},
-    add(location: LocationData) {
+    add: (location: LocationData) => {
      CQ.build.chunk.add(
       {
        data: [location, 1],
-       priority: this._s._priority,
+       priority: this._priority,
       },
-      this._s._data.queue
+      this._data.queue
      );
     },
-    run(onDone: Function) {
-     CQ.build.chunk.run(this._s._data.queue);
-     CQ.build.chunk.onDone(this._s._data.queue, onDone);
+    run: (onDone: Function) => {
+     CQ.build.chunk.run(this._data.queue);
+     CQ.build.chunk.onDone(this._data.queue, onDone);
     },
-    async runAndAwait() {
-     await CQ.build.chunk.runAndAwait(this._s._data.queue);
+    runAndAwait: async () => {
+     await CQ.build.chunk.runAndAwait(this._data.queue);
     },
    },
   },
   column: {
    queued: {},
    deferred: {
-    _s: <TaskTool>{},
-    run(location: LocationData, onDone: (data: any) => void) {
+    run: (location: LocationData, onDone: (data: any) => void) => {
      CCM.runPromiseTasks<BuildTasks>(
       ConstructorTasks.buildColumn,
       [location, 1],
@@ -180,8 +148,11 @@ export class TaskTool {
   },
  };
  explosion = {
-  _s: <TaskTool>{},
-  run(location: LocationData, radius: number, onDone: (data: any) => void) {
+  run: (
+   location: LocationData,
+   radius: number,
+   onDone: (data: any) => void
+  ) => {
    CCM.runPromiseTasks<ExplosionTasks>(
     ConstructorTasks.explosion,
     [location, radius, "", ""],
@@ -192,14 +163,12 @@ export class TaskTool {
    );
   },
  };
-
  anaylzer = {
   update: {
-   _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void) {
+   run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<UpdateTasksO>(
      ConstructorTasks.analyzerUpdate,
-     [location, this._s._data.queue, this._s._thread],
+     [location, this._data.queue, this._thread],
      [],
      onDone,
      undefined,
@@ -208,14 +177,12 @@ export class TaskTool {
    },
   },
  };
-
  propagation = {
   deferred: {
-   _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void) {
+   run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<UpdateTasksO>(
      ConstructorTasks.analyzerPropagation,
-     [location, this._s._data.queue, this._s._thread],
+     [location, this._data.queue, this._thread],
      [],
      onDone,
      undefined,
@@ -224,26 +191,23 @@ export class TaskTool {
    },
   },
   queued: {
-   _s: <TaskTool>{},
-   add(location: LocationData) {
+   add: (location: LocationData) => {
     CQ.propagation.add(
-     [location, this._s._data.queue, this._s._thread],
-     this._s._data.queue
+     [location, this._data.queue, this._thread],
+     this._data.queue
     );
    },
-   run(onDone: Function) {
-    CQ.propagation.run(this._s._data.queue);
-    CQ.propagation.onDone(this._s._data.queue, onDone);
+   run: (onDone: Function) => {
+    CQ.propagation.run(this._data.queue);
+    CQ.propagation.onDone(this._data.queue, onDone);
    },
-   async runAndAwait() {
-    await CQ.propagation.runAndAwait(this._s._data.queue);
+   runAndAwait: async () => {
+    await CQ.propagation.runAndAwait(this._data.queue);
    },
   },
  };
-
  generate = {
   deferred: {
-   _s: <TaskTool>{},
    run(location: LocationData, data: any, onDone: (data: any) => void) {
     CCM.runPromiseTasks<GenerateTasks>(
      ConstructorTasks.generate,
@@ -255,26 +219,22 @@ export class TaskTool {
     );
    },
   },
-
   queued: {
-   _s: <TaskTool>{},
-   add(data: GenerateTasks) {
-    CQ.generate.add(data, this._s._data.queue);
+   add: (data: GenerateTasks) => {
+    CQ.generate.add(data, this._data.queue);
    },
-   run(onDone: Function) {
-    CQ.generate.run(this._s._data.queue);
-    CQ.generate.onDone(this._s._data.queue, onDone);
+   run: (onDone: Function) => {
+    CQ.generate.run(this._data.queue);
+    CQ.generate.onDone(this._data.queue, onDone);
    },
-   async runAndAwait() {
-    await CQ.generate.runAndAwait(this._s._data.queue);
+   runAndAwait: async () => {
+    await CQ.generate.runAndAwait(this._data.queue);
    },
   },
  };
-
  decorate = {
   deferred: {
-   _s: <TaskTool>{},
-   run(location: LocationData, data: any, onDone: (data: any) => void) {
+   run: (location: LocationData, data: any, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<GenerateTasks>(
      ConstructorTasks.decorate,
      [location, data],
@@ -285,29 +245,25 @@ export class TaskTool {
     );
    },
   },
-
   queued: {
-   _s: <TaskTool>{},
-   add(data: GenerateTasks) {
-    CQ.decorate.add(data, this._s._data.queue);
+   add: async (data: GenerateTasks) => {
+    CQ.decorate.add(data, this._data.queue);
    },
-   run(onDone: Function) {
-    CQ.decorate.run(this._s._data.queue);
-    CQ.decorate.onDone(this._s._data.queue, onDone);
+   run: (onDone: Function) => {
+    CQ.decorate.run(this._data.queue);
+    CQ.decorate.onDone(this._data.queue, onDone);
    },
-   async runAndAwait() {
-    await CQ.decorate.runAndAwait(this._s._data.queue);
+   runAndAwait: async () => {
+    await CQ.decorate.runAndAwait(this._data.queue);
    },
   },
  };
-
  worldSun = {
   deferred: {
-   _s: <TaskTool>{},
-   run(location: LocationData, onDone: (data: any) => void) {
+   run: (location: LocationData, onDone: (data: any) => void) => {
     CCM.runPromiseTasks<WorldSunTask>(
      ConstructorTasks.worldSun,
-     [location, this._s._thread],
+     [location, this._thread],
      [],
      onDone,
      undefined,
@@ -316,20 +272,19 @@ export class TaskTool {
    },
   },
   queued: {
-   _s: <TaskTool>{},
-   add(location: LocationData) {
+   add: (location: LocationData) => {
     CQ.worldSun.add(
-     [location, this._s._data.queue, this._s._thread],
-     this._s._data.queue
+     [location, this._data.queue, this._thread],
+     this._data.queue
     );
     WorldRegister.column.fill(location);
    },
-   run(onDone: Function) {
-    CQ.worldSun.run(this._s._data.queue);
-    CQ.worldSun.onDone(this._s._data.queue, onDone);
+   run: (onDone: Function) => {
+    CQ.worldSun.run(this._data.queue);
+    CQ.worldSun.onDone(this._data.queue, onDone);
    },
-   async runAndAwait() {
-    await CQ.worldSun.runAndAwait(this._s._data.queue);
+   runAndAwait: async () => {
+    await CQ.worldSun.runAndAwait(this._data.queue);
    },
   },
  };

@@ -9,19 +9,12 @@ export type SetChunkMeshTask = [
 
 export type ChunkMeshData = [
  substanceType: VoxelTemplateSubstanceType,
- positions: Float32Array,
- normals: Float32Array,
- indices: Uint16Array,
- voxelData: Float32Array,
- colors: Float32Array,
- uvs: Float32Array,
- overlayUVs: Float32Array
+ meshData : SetNodeMesh
 ];
 
 export type SetNodeMesh = [
  location: LocationData,
   attributes: MeshAttributes
- 
 ];
 
 export type BuildNodeMesh = [location: LocationData, type: string, data: any];

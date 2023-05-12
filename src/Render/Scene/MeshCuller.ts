@@ -54,6 +54,7 @@ export const MeshCuller = {
    for (let i = 0; i < meshesLength; i++) {
     const mesh = scene.meshes[i];
     if ((mesh as any).type == "chunk") {
+  
      const position = mesh.position;
      mesh._worldMatrix.setRow(
       3,

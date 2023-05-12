@@ -2,7 +2,7 @@ import type { ConstructorTextureData } from "Meta";
 import { VoxelMesherDataTool } from "../../../../Tools/VoxelMesherDataTool.js";
 import { VoxelConstructor } from "../VoxelConstructor.js";
 import { TextureManager } from "../../../../Textures/TextureManager.js";
-export declare type PillarBoxVoxelConstructorData = {
+export type PillarBoxVoxelConstructorData = {
     top: ConstructorTextureData;
     bottom: ConstructorTextureData;
     sideMiddle: ConstructorTextureData;

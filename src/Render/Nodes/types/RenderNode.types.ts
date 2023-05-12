@@ -5,6 +5,7 @@ export type NodeMaterialData = {
  alphaTesting: boolean;
  alphaBlending: boolean;
  hasEffects?: boolean;
+ backFaceCulling ?:boolean;
  textureTypeId?: string;
  shaderId: string;
 };

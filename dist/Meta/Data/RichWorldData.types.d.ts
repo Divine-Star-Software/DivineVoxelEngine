@@ -1,12 +1,12 @@
-export declare type RichDataSchema = Record<string, Record<string, any>>;
-export declare type RichColumn = {
+export type RichDataSchema = Record<string, Record<string, any>>;
+export type RichColumn = {
     data: RichDataSchema;
 };
-export declare type RichRegion = {
+export type RichRegion = {
     columns: Map<string, RichColumn>;
 };
-export declare type RichWorldDimensions = Map<string, Map<string, RichRegion>>;
-export declare type SetRichVoxel = [
+export type RichWorldDimensions = Map<string, Map<string, RichRegion>>;
+export type SetRichVoxel = [
     id: string,
     dimesnion: string,
     x: number,

@@ -1,6 +1,6 @@
-export declare type TextureTypes = string;
-export declare type TextureTypeUVMap = Record<string, Record<string, Record<string, number>>>;
-export declare type TextureAnimationData = {
+export type TextureTypes = string;
+export type TextureTypeUVMap = Record<string, Record<string, Record<string, number>>>;
+export type TextureAnimationData = {
     /**# Frames
      * If the texture has animation frames the number of frames must be set to the number
      * texture animatoin images. This number must be greater than 1.
@@ -31,7 +31,7 @@ export declare type TextureAnimationData = {
      */
     animKeyFrameTimes?: number[];
 };
-export declare type TextureDataBase = {
+export type TextureDataBase = {
     /**# rawData
      * Provide a base64 encoded string to use instead of fetching it from a server
      */
@@ -39,7 +39,7 @@ export declare type TextureDataBase = {
     includeInRawDataMap?: boolean;
     meshable?: boolean;
 };
-export declare type TextureData = {
+export type TextureData = {
     type: TextureTypes;
     /**# ID
      * The id of the texture.

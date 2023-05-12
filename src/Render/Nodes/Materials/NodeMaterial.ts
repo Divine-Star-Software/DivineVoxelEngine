@@ -1,6 +1,6 @@
-import type {  Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
+import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 
-import { TextureManager } from "../../Textures/TextureManager.js";
+import { TextureManager } from "../../Nodes/Textures/TextureManager.js";
 
 import { DVEBabylon } from "../../Babylon/DVEBabylon.js";
 import { RenderManager } from "../../Render/RenderManager.js";
@@ -98,6 +98,10 @@ export class NodeMaterial {
    );
    effect.setColor3("vFogColor", scene.fogColor);
   };
+
+  if (this.data.backFaceCulling !== undefined) {
+   this.material.backFaceCulling = this.data.backFaceCulling;
+  }
 
   this.afterCreate.forEach((_) => _(this.material));
  }

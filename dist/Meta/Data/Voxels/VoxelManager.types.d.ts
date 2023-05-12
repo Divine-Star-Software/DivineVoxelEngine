@@ -1,4 +1,4 @@
 import { VoxelData } from "./Voxel.types";
-export declare type VoxelManagerInterface = {
+export type VoxelManagerInterface = {
     getVoxelData(id: string): VoxelData;
 };

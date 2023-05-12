@@ -4,7 +4,7 @@ import { ThreadComm } from "threadcomm";
 import { LocationBoundTool } from "../../Tools/Classes/LocationBoundTool.js";
 import { TaskTool } from "../../Tools/Tasks/TasksTool.js";
 const parentComm = ThreadComm.parent;
-export class BuilderTool extends LocationBoundTool {
+class BuilderTool extends LocationBoundTool {
     static _chunkTool = new ChunkDataTool();
     tasks = new TaskTool();
     data = {
@@ -41,3 +41,4 @@ export class BuilderTool extends LocationBoundTool {
         parentComm.runTasks("remove-column-outside-radius", [this.location, radius]);
     }
 }
+export { BuilderTool };

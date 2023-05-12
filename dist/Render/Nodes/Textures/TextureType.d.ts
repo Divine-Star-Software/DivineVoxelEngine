@@ -1,7 +1,7 @@
 import type { RawTexture2DArray } from "@babylonjs/core";
 import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
-import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 import { DivineShader } from "divine-shaders";
+import { NodeMaterial } from "../Materials/NodeMaterial.js";
 declare class TextureSegment {
     parentID: string;
     id: string;
@@ -34,7 +34,7 @@ export declare class TextureType {
     id: string;
     extension: string;
     segments: Map<string, TextureSegment>;
-    materials: Map<string, DVEMaterial>;
+    materials: Map<string, NodeMaterial>;
     shader: DivineShader;
     constructor(id: string);
     flushAll(): void;
@@ -44,7 +44,7 @@ export declare class TextureType {
     removeSegment(id: string): false | undefined;
     addTexture(data: TextureData): false | undefined;
     addToShader(shader: DivineShader): DivineShader;
-    addToMaterial(material: DVEMaterial): void;
+    addToMaterial(material: NodeMaterial): void;
     runAnimations(): void;
     getTextureIndexMap(): Record<string, Record<string, number>>;
     _processVariations(textureData: TextureData, paths: Map<string, Uint8ClampedArray | false>, map: Record<string, number>, animations: number[][], textureAnimatioTimes: number[][], extension: string, count: number): number;

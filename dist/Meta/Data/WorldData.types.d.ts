@@ -1,19 +1,19 @@
-export declare type ChunkData = {
+export type ChunkData = {
     buffer: SharedArrayBuffer;
     data: DataView;
 };
-export declare type Column = {
+export type Column = {
     data: DataView;
     buffer: SharedArrayBuffer;
     chunks: Map<number, ChunkData>;
 };
-export declare type Region = {
+export type Region = {
     buffer: SharedArrayBuffer;
     data: DataView;
     columns: Map<number, Column>;
 };
-export declare type WorldDimensions = Map<string, Map<string, Region>>;
-export declare type AddVoxelData = {
+export type WorldDimensions = Map<string, Map<string, Region>>;
+export type AddVoxelData = {
     id: string;
     state: number;
     shapeState: number;
@@ -22,5 +22,5 @@ export declare type AddVoxelData = {
     secondaryVoxelId: string;
     secondaryState: number;
 };
-export declare type VoxelPalette = string[];
-export declare type VoxelPaletteMap = Record<string, number>;
+export type VoxelPalette = string[];
+export type VoxelPaletteMap = Record<string, number>;

@@ -274,4 +274,4 @@ export declare const DVEFX: {
     getRichDataTool(): RichDataTool;
     getDataTool(): DataTool;
 };
-export declare type DivineVoxelEngineFX = typeof DVEFX;
+export type DivineVoxelEngineFX = typeof DVEFX;

@@ -1,11 +1,10 @@
-import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 import type {
  TextureData,
  TextureTypeUVMap,
 } from "Meta/Render/Textures/Texture.types";
 import { TextureCreator } from "./TextureCreator.js";
 import { TextureType } from "./TextureType.js";
-import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { ConstructorTextureData } from "Meta/index.js";
 
 export const TextureManager = {
@@ -158,6 +157,3 @@ export const TextureManager = {
  },
 };
 
-TextureManager.addTextureType("#dve_solid");
-TextureManager.addTextureType("#dve_flora");
-TextureManager.addTextureType("#dve_liquid");

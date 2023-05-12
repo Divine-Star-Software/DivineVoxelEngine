@@ -22,4 +22,7 @@ export const NodeMaterialManager = {
     setBaseLevel(level) {
         this.materials._map.forEach((_) => _.setBaseLevel(level));
     },
+    setOption(id, value) {
+        this.materials._map.forEach((_) => _.getMaterial().setFloat(id, value ? 1 : 0));
+    },
 };

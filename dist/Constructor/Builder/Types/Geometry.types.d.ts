@@ -1,5 +1,5 @@
 import { DirectionNames, Vector3 } from "Meta/Util.types";
-export declare type GeometryBuildData = {
+export type GeometryBuildData = {
     positions: number[];
     normals: number[];
     indices: number[];
@@ -12,11 +12,11 @@ export declare type GeometryBuildData = {
     indicieIndex: number;
     position: Vector3;
 };
-export declare type UVCords = {
+export type UVCords = {
     start: number;
     end: number;
 };
-export declare type AddQuadUVsData = {
+export type AddQuadUVsData = {
     uvs: number[];
     uv: number;
     direction: DirectionNames;
@@ -25,17 +25,17 @@ export declare type AddQuadUVsData = {
     flipped: boolean;
     rotoate: TextureRotations;
 };
-export declare type TextureRotations = 0 | 90 | 180 | 270 | 360 | 45 | 315;
-export declare type QuadDimensions = {
+export type TextureRotations = 0 | 90 | 180 | 270 | 360 | 45 | 315;
+export type QuadDimensions = {
     width: number;
     height: number;
 };
-export declare type QuadVertexes = 1 | 2 | 3 | 4;
-export declare type QuadTransforms = Record<QuadVertexes, Vector3>;
-export declare type TriangleVertexes = 1 | 2 | 3;
-export declare type TriangleTransforms = Record<TriangleVertexes, Vector3>;
-export declare type CustomVertexData = [number, number, number, number] | [number];
-export declare type AdvancedUVs = {
+export type QuadVertexes = 1 | 2 | 3 | 4;
+export type QuadTransforms = Record<QuadVertexes, Vector3>;
+export type TriangleVertexes = 1 | 2 | 3;
+export type TriangleTransforms = Record<TriangleVertexes, Vector3>;
+export type CustomVertexData = [number, number, number, number] | [number];
+export type AdvancedUVs = {
     hs1: number;
     hs2: number;
     he1: number;

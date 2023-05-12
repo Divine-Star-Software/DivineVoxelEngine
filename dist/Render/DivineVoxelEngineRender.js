@@ -2,9 +2,7 @@
 import { DVEBabylon } from "./Babylon/DVEBabylon.js";
 //objects
 import { Util } from "../Global/Util.helper.js";
-import { TextureManager } from "./Textures/TextureManager.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
-import { MeshManager } from "./Scene/MeshManager.js";
 import { RenderManager } from "./Render/RenderManager.js";
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";
@@ -32,13 +30,11 @@ export const DVER = {
     babylon: DVEBabylon,
     settings: EngineSettings,
     render: RenderManager,
-    meshManager: MeshManager,
     data: {
         worldBounds: WorldBounds,
         spaces: WorldSpaces,
     },
     nodes: NodeManager,
-    textures: TextureManager,
     tasks: RenderTasks,
     async $INIT(initData) {
         await InitWorkers(this, initData);

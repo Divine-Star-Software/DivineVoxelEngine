@@ -8,7 +8,7 @@ import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldLock } from "../../World/Lock/WorldLock.js";
 import { LoaderRegister } from "./LoaderRegister.js";
-export class DataLoaderTool extends LocationBoundTool {
+class DataLoaderTool extends LocationBoundTool {
     static columnDataTool = new ColumnDataTool();
     static isEnabled() {
         const comm = ThreadComm.getComm("data-loader");
@@ -256,3 +256,4 @@ export class DataLoaderTool extends LocationBoundTool {
         }
     }
 }
+export { DataLoaderTool };

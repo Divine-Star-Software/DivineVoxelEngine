@@ -1,16 +1,12 @@
 //built in
-import { DVEMesh } from "./Meshes/DVEMesh.js";
 //objects
 import { FOManager } from "./FloatingOrigin/FoManager.js";
-import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
-//materials
-import { SkyBoxMaterial } from "./Materials/SkyBox/SkyBoxMaterial.js";
 import { MeshRegister } from "../Scene/MeshRegister.js";
 import { MeshManager } from "../Scene/MeshManager.js";
 import { MeshCuller } from "../Scene/MeshCuller.js";
-import { NodeShaders } from "../Shaders/NodeShaders.js";
-import { DVEMaterial } from "./Materials/DVEMaterial.js";
+import { NodeShaders } from "../Nodes/Shaders/NodeShaders.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
+import { SceneTool } from "../Tools/SceneTool.js";
 export const RenderManager = {
     fogOptions: {},
     meshRegister: MeshRegister,
@@ -28,13 +24,7 @@ export const RenderManager = {
     },
     fo: FOManager,
     shaders: NodeShaders,
-    solidMaterial: {},
-    floraMaterial: {},
-    liquidMaterial: {},
-    solidMesh: {},
-    floraMesh: {},
-    liquidMesh: {},
-    skyBoxMaterial: SkyBoxMaterial,
+    sceneTool: new SceneTool(),
     scene: null,
     updateFogOptions(options) {
         for (const key of Object.keys(options)) {
@@ -67,27 +57,8 @@ export const RenderManager = {
     },
     _setFogData() {
         const fogData = this.fogData;
-        this.solidMaterial.updateFogOptions(fogData);
-        this.liquidMaterial.updateFogOptions(fogData);
-        this.floraMaterial.updateFogOptions(fogData);
-        this.skyBoxMaterial.updateFogOptions(fogData);
     },
     $INIT(scene) {
-        this.solidMaterial = new DVEMaterial("#dve_solid", {
-            alphaBlending: false,
-            alphaTesting: true,
-        });
-        this.solidMesh = new DVEMesh("#dve_solid", this.solidMaterial);
-        this.floraMaterial = new DVEMaterial("#dve_flora", {
-            alphaBlending: false,
-            alphaTesting: true,
-        });
-        this.floraMesh = new DVEMesh("#dve_flora", this.floraMaterial);
-        this.liquidMaterial = new DVEMaterial("#dve_liquid", {
-            alphaBlending: true,
-            alphaTesting: false,
-        });
-        this.liquidMesh = new DVEMesh("#dve_liquid", this.liquidMaterial);
         this.fogData = new DVEBabylon.system.Vector4();
         this.fogOptions = {
             mode: "volumetric",
@@ -102,24 +73,6 @@ export const RenderManager = {
         this.scene = scene;
         this.meshManager.$INIT(scene);
         this.meshCuller.$INIT(scene);
-        this.syncSettings();
-    },
-    updateShaderEffectOptions(options) {
-        if (options.floraEffects !== undefined) {
-            this.effectOptions.floraEffects = options.floraEffects;
-        }
-        if (options.liquidEffects !== undefined) {
-            this.effectOptions.liquidEffects = options.liquidEffects;
-        }
-        this.solidMaterial.updateMaterialSettings(EngineSettings.settings);
-        this.floraMaterial.updateMaterialSettings(EngineSettings.settings);
-        this.liquidMaterial.updateMaterialSettings(EngineSettings.settings);
-    },
-    syncSettings() {
-        this.solidMesh.syncSettings(EngineSettings.getSettings());
-        this.floraMesh.syncSettings(EngineSettings.getSettings());
-        this.liquidMesh.syncSettings(EngineSettings.getSettings());
-        //this.magmaMesh.syncSettings(settings);
     },
     getScene() {
         return this.scene;
@@ -141,27 +94,5 @@ export const RenderManager = {
         scene.activeCamera = camera;
         scene.collisionsEnabled = false;
         return camera;
-    },
-    createSkyBoxMaterial(scene) {
-        if (!this.scene && !scene) {
-            throw new Error(`Must set a scene first.`);
-        }
-        if (!this.scene && scene) {
-            this.skyBoxMaterial.createMaterial(scene);
-        }
-        if (this.scene && !scene) {
-            this.skyBoxMaterial.createMaterial(this.scene);
-        }
-        return this.skyBoxMaterial.getMaterial();
-    },
-    setSunLevel(level) {
-        this.solidMaterial.setSunLightLevel(level);
-        this.liquidMaterial.setSunLightLevel(level);
-        this.floraMaterial.setSunLightLevel(level);
-    },
-    setBaseLevel(level) {
-        this.solidMaterial.setBaseLevel(level);
-        this.liquidMaterial.setBaseLevel(level);
-        this.floraMaterial.setBaseLevel(level);
     },
 };

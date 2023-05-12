@@ -1,4 +1,4 @@
-import { EngineSettings } from "../../Data/Settings/EngineSettings.js";
+import { EngineSettings } from "../../../Data/Settings/EngineSettings.js";
 import { TextureCreator } from "./TextureCreator.js";
 import { TextureType } from "./TextureType.js";
 export const TextureManager = {
@@ -123,6 +123,3 @@ export const TextureManager = {
         return map;
     },
 };
-TextureManager.addTextureType("#dve_solid");
-TextureManager.addTextureType("#dve_flora");
-TextureManager.addTextureType("#dve_liquid");

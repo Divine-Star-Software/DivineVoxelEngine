@@ -4,65 +4,66 @@ import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 
 export class SceneTool {
- constructor() {
-  this.sky._s = this;
-  this.fog._s = this;
-  this.effects._s = this;
-  this.levels._s = this;
- }
+ constructor() {}
  sky = {
-  _s: <SceneTool>{},
-  setColor(r: number, g: number, b: number) {
-   //todo
-   return this._s;
+  setColor: (r: number, g: number, b: number) => {
+   return <SceneTool>this;
   },
  };
  fog = {
-  _s: <SceneTool>{},
-  setHeightFactor(v: number) {
+  setHeightFactor: (v: number) => {
    RenderManager.updateFogOptions({ volumetricOptions: { heightFactor: v } });
-   return this._s;
+   NodeManager.materials.updateFogOptions(RenderManager.fogData);
+   return <SceneTool>this;
   },
-  setDensity(v: number) {
+  setDensity: (v: number) => {
    RenderManager.updateFogOptions({ density: v });
    NodeManager.materials.updateFogOptions(RenderManager.fogData);
-   return this._s;
+   return <SceneTool>this;
   },
-  setMode(mode: DVEFogTypes) {
+  setMode: (mode: DVEFogTypes) => {
    RenderManager.updateFogOptions({ mode: mode });
    NodeManager.materials.updateFogOptions(RenderManager.fogData);
-
-   return this._s;
+   return <SceneTool>this;
   },
-  setColor(r: number, g: number = r, b: number = r) {
-   RenderManager.updateFogOptions({ color: new DVEBabylon.system.Color3(r, g, b) });
+  setColor: (r: number, g: number = r, b: number = r) => {
+   RenderManager.updateFogOptions({
+    color: new DVEBabylon.system.Color3(r, g, b),
+   });
    NodeManager.materials.updateFogOptions(RenderManager.fogData);
-
-   return this._s;
-  },
- };
- effects = {
-  _s: <SceneTool>{},
-  setFloraEffects(enabled: boolean) {
-   RenderManager.updateShaderEffectOptions({ floraEffects: enabled });
-   return this._s;
-  },
-  setLiquidEffects(enabled: boolean) {
-   RenderManager.updateShaderEffectOptions({ liquidEffects: enabled });
-   return this._s;
+   return <SceneTool>this;
   },
  };
  levels = {
-  _s: <SceneTool>{},
-  setBase(v: number) {
-   RenderManager.setBaseLevel(v);
+  setBase: (v: number) => {
    NodeManager.materials.setBaseLevel(v);
-   return this._s;
+   return <SceneTool>this;
   },
-  setSun(v: number) {
-   RenderManager.setSunLevel(v);
+  setSun: (v: number) => {
    NodeManager.materials.setSunLevel(v);
-   return this._s;
+   return <SceneTool>this;
+  },
+ };
+ options = {
+  doColor: (v: boolean) => {
+   NodeManager.materials.setOption("doColor", v);
+   return this.options;
+  },
+  doAO: (v: boolean) => {
+   NodeManager.materials.setOption("doAO", v);
+   return this.options;
+  },
+  doSun: (v: boolean) => {
+   NodeManager.materials.setOption("doSun", v);
+   return this.options;
+  },
+  doRGB: (v: boolean) => {
+   NodeManager.materials.setOption("doRGB", v);
+   return this.options;
+  },
+  doEffects: (v: boolean) => {
+   NodeManager.materials.setOption("doEffects", v);
+   return this.options;
   },
  };
 }

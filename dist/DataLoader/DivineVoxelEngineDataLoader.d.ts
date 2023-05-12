@@ -337,4 +337,4 @@ export declare const DVEDL: {
     getRichDataTool(): RichDataTool;
     getDataTool(): DataTool;
 };
-export declare type DivineVoxelEngineData = typeof DVEDL;
+export type DivineVoxelEngineData = typeof DVEDL;

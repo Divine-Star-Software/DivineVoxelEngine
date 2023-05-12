@@ -1,7 +1,7 @@
 import { CommPortTypes } from "threadcomm";
 import type { EngineSettingsData } from "Meta/Data/Settings/EngineSettings.types";
 import type { RecursivePartial } from "Meta/Util.types";
-export declare type DVESInitData = {
+export type DVESInitData = {
     worldWorker: string | CommPortTypes;
     constructorWorker: string | CommPortTypes[];
     nexusWorker?: string | CommPortTypes | null;

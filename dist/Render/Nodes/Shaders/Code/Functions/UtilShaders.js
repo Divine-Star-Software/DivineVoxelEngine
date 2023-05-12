@@ -175,10 +175,34 @@ return 105.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),dot(p2,x2), dot(p3,x3) ) )
         },
     });
     /*
+    @TODO add these functions
    vec3 hsv2rgbSmooth( in vec3 c ) {
       vec3 rgb = clamp( abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
       rgb = rgb*rgb*(3.0-2.0*rgb);
       return c.z * mix( vec3(1.0), rgb, c.y);
    }
+   vec3 rainbow(float level)
+   {
+       float r = float(level <= 2.0) + float(level > 4.0) * 0.5;
+       float g = max(1.0 - abs(level - 2.0) * 0.5, 0.0);
+       float b = (1.0 - (level - 4.0) * 0.5) * float(level >= 4.0);
+       return vec3(r, g, b);
+   }
+   
+   vec3 smoothRainbow (float x)
+   {
+       float level1 = floor(x*6.0);
+       float level2 = min(6.0, floor(x*6.0) + 1.0);
+       
+       vec3 a = rainbow(level1);
+       vec3 b = rainbow(level2);
+       
+       return mix(a, b, fract(x*6.0));
+   }
+   
+   vec3 toLinearSpace( in vec4 c ) {
+       return vec3(pow(c.r ,2.2), pow(c.g ,2.2) , pow(c.b ,2.2) );
+   }
+   
    */
 }

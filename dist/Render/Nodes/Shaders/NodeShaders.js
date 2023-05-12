@@ -28,6 +28,7 @@ export const NodeShaders = {
         ["doSun", "float"],
         ["doRGB", "float"],
         ["doColor", "float"],
+        ["doEffects", "float"],
         ["mipMapLevels", "float", 4],
     ],
     voxelVertexUniforms: [
@@ -35,7 +36,6 @@ export const NodeShaders = {
         ["viewProjection", "mat4"],
         ["worldOrigin", "vec3"],
         ["cameraPosition", "vec3"],
-        ["doEffects", "float"],
         ["lightGradient", "float", 16],
     ],
     voxelVarying: [
@@ -322,7 +322,8 @@ c.g -= .2;
 c.b -= .2;
 vec4 skyboxColor = vec4(c.rgb,1);
 vec3 finalColor = doFog(skyboxColor);
-FragColor = vec4(finalColor.rgb,1);`);
+FragColor = vec4(finalColor.rgb,1);
+`);
         shader.compile();
         return shader;
     },

@@ -1,39 +1,39 @@
-export declare type Vector3 = {
+export type Vector3 = {
     x: number;
     y: number;
     z: number;
 };
-export declare type Vector2 = {
+export type Vector2 = {
     x: number;
     z: number;
 };
-export declare type UV3Matrix = {
+export type UV3Matrix = {
     u: number;
     v: number;
     index: number;
 };
-export declare type UV2Matrix = {
+export type UV2Matrix = {
     u: number;
     v: number;
 };
-export declare type Light4Matrix = {
+export type Light4Matrix = {
     s: number;
     r: number;
     g: number;
     b: number;
 };
-export declare type Light3Matrix = {
+export type Light3Matrix = {
     r: number;
     g: number;
     b: number;
 };
-export declare type DirectionNames = "top" | "bottom" | "west" | "east" | "north" | "south";
-export declare type MeshData = {
+export type DirectionNames = "top" | "bottom" | "west" | "east" | "north" | "south";
+export type MeshData = {
     positions: number[];
     indices: number[];
     colors: number[];
     uvs: number[];
 };
-export declare type RecursivePartial<T> = {
+export type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };

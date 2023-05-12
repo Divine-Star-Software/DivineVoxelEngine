@@ -2,63 +2,66 @@ import { NodeManager } from "../Nodes/NodeManager.js";
 import { DVEBabylon } from "../Babylon/DVEBabylon.js";
 import { RenderManager } from "../Render/RenderManager.js";
 export class SceneTool {
-    constructor() {
-        this.sky._s = this;
-        this.fog._s = this;
-        this.effects._s = this;
-        this.levels._s = this;
-    }
+    constructor() { }
     sky = {
-        _s: {},
-        setColor(r, g, b) {
-            //todo
-            return this._s;
+        setColor: (r, g, b) => {
+            return this;
         },
     };
     fog = {
-        _s: {},
-        setHeightFactor(v) {
+        setHeightFactor: (v) => {
             RenderManager.updateFogOptions({ volumetricOptions: { heightFactor: v } });
-            return this._s;
+            NodeManager.materials.updateFogOptions(RenderManager.fogData);
+            return this;
         },
-        setDensity(v) {
+        setDensity: (v) => {
             RenderManager.updateFogOptions({ density: v });
             NodeManager.materials.updateFogOptions(RenderManager.fogData);
-            return this._s;
+            return this;
         },
-        setMode(mode) {
+        setMode: (mode) => {
             RenderManager.updateFogOptions({ mode: mode });
             NodeManager.materials.updateFogOptions(RenderManager.fogData);
-            return this._s;
+            return this;
         },
-        setColor(r, g = r, b = r) {
-            RenderManager.updateFogOptions({ color: new DVEBabylon.system.Color3(r, g, b) });
+        setColor: (r, g = r, b = r) => {
+            RenderManager.updateFogOptions({
+                color: new DVEBabylon.system.Color3(r, g, b),
+            });
             NodeManager.materials.updateFogOptions(RenderManager.fogData);
-            return this._s;
-        },
-    };
-    effects = {
-        _s: {},
-        setFloraEffects(enabled) {
-            RenderManager.updateShaderEffectOptions({ floraEffects: enabled });
-            return this._s;
-        },
-        setLiquidEffects(enabled) {
-            RenderManager.updateShaderEffectOptions({ liquidEffects: enabled });
-            return this._s;
+            return this;
         },
     };
     levels = {
-        _s: {},
-        setBase(v) {
-            RenderManager.setBaseLevel(v);
+        setBase: (v) => {
             NodeManager.materials.setBaseLevel(v);
-            return this._s;
+            return this;
         },
-        setSun(v) {
-            RenderManager.setSunLevel(v);
+        setSun: (v) => {
             NodeManager.materials.setSunLevel(v);
-            return this._s;
+            return this;
+        },
+    };
+    options = {
+        doColor: (v) => {
+            NodeManager.materials.setOption("doColor", v);
+            return this.options;
+        },
+        doAO: (v) => {
+            NodeManager.materials.setOption("doAO", v);
+            return this.options;
+        },
+        doSun: (v) => {
+            NodeManager.materials.setOption("doSun", v);
+            return this.options;
+        },
+        doRGB: (v) => {
+            NodeManager.materials.setOption("doRGB", v);
+            return this.options;
+        },
+        doEffects: (v) => {
+            NodeManager.materials.setOption("doEffects", v);
+            return this.options;
         },
     };
 }

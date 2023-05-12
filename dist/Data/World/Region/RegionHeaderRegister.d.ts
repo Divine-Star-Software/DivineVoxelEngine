@@ -1,5 +1,5 @@
 import type { LocationData } from "voxelspaces";
-declare type RegionHeaderData = Map<string, Map<string, {
+type RegionHeaderData = Map<string, Map<string, {
     data: DataView;
     buffer: SharedArrayBuffer;
 }>>;

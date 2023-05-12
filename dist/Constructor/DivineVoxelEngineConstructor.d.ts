@@ -1163,4 +1163,4 @@ export declare const DVEC: {
     getDataTool(): DataTool;
     getRichDataTool(): RichDataTool;
 };
-export declare type DivineVoxelEngineConstructor = typeof DVEC;
+export type DivineVoxelEngineConstructor = typeof DVEC;

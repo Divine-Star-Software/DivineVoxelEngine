@@ -354,4 +354,4 @@ export declare const DVERW: {
     getRichDataTool(): RichDataTool;
     getDataTool(): DataTool;
 };
-export declare type DivineVoxelEngineRichWorld = typeof DVERW;
+export type DivineVoxelEngineRichWorld = typeof DVERW;

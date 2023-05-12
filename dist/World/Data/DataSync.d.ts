@@ -4,7 +4,7 @@ import type { CommBase, CommManager } from "threadcomm";
 import type { RegisterStringMapSync, WorldDataSync } from "Meta/Data/DataSync.types.js";
 import type { RemoteTagManagerInitData } from "divine-binary-tags";
 import { VoxelPalette, VoxelPaletteMap } from "Meta/Data/WorldData.types.js";
-declare type CommSyncOptions = {
+type CommSyncOptions = {
     worldData: boolean;
     worldDataTags: boolean;
     voxelPalette: boolean;

@@ -70,4 +70,4 @@ export declare const DVES: {
     __createWorker(path: string): Worker;
     syncSettingsWithWorkers(data: EngineSettingsData): void;
 };
-export declare type DivineVoxelEngineServer = typeof DVES;
+export type DivineVoxelEngineServer = typeof DVES;

@@ -1,6 +1,6 @@
 import { LocationData } from "voxelspaces";
-export declare type DataLoaderModes = "server" | "indexdb" | "both";
-export declare type DataLoaderSegments = "world-data" | "rich-data" | "dbo" | "entities";
+export type DataLoaderModes = "server" | "indexdb" | "both";
+export type DataLoaderSegments = "world-data" | "rich-data" | "dbo" | "entities";
 export declare abstract class DataHandler {
     mode: "server" | "indexdb" | "both";
     constructor();

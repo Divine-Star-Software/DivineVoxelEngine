@@ -136,7 +136,6 @@ export declare const DVER: {
         meshManager: {
             scene: Scene;
             runningUpdate: boolean;
-            meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
             $INIT(scene: Scene): void;
             removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
             chunks: {
@@ -206,48 +205,13 @@ export declare const DVER: {
             createBasicTextureShader(id: string): import("divine-shaders").DivineShader;
             createSkyBoxShader(id: string): import("divine-shaders").DivineShader;
         };
-        solidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
-        floraMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
-        liquidMaterial: import("./Render/Materials/DVEMaterial.js").DVEMaterial;
-        solidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
-        floraMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
-        liquidMesh: import("./Render/Meshes/DVEMesh.js").DVEMesh;
-        skyBoxMaterial: {
-            material: import("@babylonjs/core").ShaderMaterial | null;
-            time: number;
-            getMaterial(): import("@babylonjs/core").ShaderMaterial | null;
-            updateFogOptions(data: import("@babylonjs/core").Vector4): void;
-            setSunLightLevel(level: number): void;
-            setBaseLevel(level: number): void;
-            updateMaterialSettings(settings: import("../Meta/Data/Settings/EngineSettings.types.js").EngineSettingsData): void;
-            createMaterial(scene: Scene): import("@babylonjs/core").ShaderMaterial;
-            overrideMaterial(material: any): void;
-            updateUniforms(): void;
-            runEffects(): void;
-        };
+        sceneTool: SceneTool;
         scene: Scene | null;
         updateFogOptions(options: import("../index.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").RenderFogOptions>): void;
         _setFogData(): void;
         $INIT(scene: Scene): void;
-        updateShaderEffectOptions(options: import("../index.js").RecursivePartial<import("../Meta/Render/Render/Render.options.types.js").DVERenderEffectsOptions>): void;
-        syncSettings(): void;
         getScene(): Scene | null;
         getDefaultCamera(scene: Scene): import("@babylonjs/core").UniversalCamera;
-        createSkyBoxMaterial(scene?: Scene | undefined): import("@babylonjs/core").ShaderMaterial | null;
-        setSunLevel(level: number): void;
-        setBaseLevel(level: number): void;
-    };
-    meshManager: {
-        scene: Scene;
-        runningUpdate: boolean;
-        meshMakers: Record<string, import("./Render/Meshes/DVEMesh.js").DVEMesh>;
-        $INIT(scene: Scene): void;
-        removeColumnsOutsideRadius(origion: import("voxelspaces").LocationData, radius: number): void;
-        chunks: {
-            remove(data: import("../Meta/Tasks/RenderTasks.types.js").RemoveChunkMeshTasks): false | undefined;
-            update(data: import("../Meta/Tasks/RenderTasks.types.js").SetChunkMeshTask): void;
-            removeColumn(data: import("voxelspaces").LocationData): false | undefined;
-        };
     };
     data: {
         worldBounds: {
@@ -352,6 +316,7 @@ export declare const DVER: {
             meshes: import("../Global/Util/UtilMap.js").UtilMap<string, import("./Nodes/Meshes/NodeMesh.js").NodeMesh>;
             add(meshes: import("./Nodes/types/RenderNode.types.js").NodeMeshData[]): void;
             create(id: string, data: import("../Meta/Tasks/RenderTasks.types.js").SetNodeMesh): false | import("@babylonjs/core").Mesh;
+            get(id: string): import("./Nodes/Meshes/NodeMesh.js").NodeMesh | undefined;
         };
         materials: {
             materials: import("../Global/Util/UtilMap.js").UtilMap<string, import("./Nodes/Materials/NodeMaterial.js").NodeMaterial>;
@@ -360,25 +325,26 @@ export declare const DVER: {
             updateFogOptions(data: import("@babylonjs/core").Vector4): void;
             setSunLevel(level: number): void;
             setBaseLevel(level: number): void;
+            setOption(id: string, value: boolean): void;
+        };
+        textures: {
+            defaultTexturePath: string;
+            textureTypes: Map<string, import("./Nodes/Textures/TextureType.js").TextureType>;
+            uvMap: import("../index.js").TextureTypeUVMap;
+            getTextureIndex(data: import("../index.js").ConstructorTextureData, overlay?: boolean): number;
+            _ready: boolean;
+            isReady(): boolean;
+            $INIT(): Promise<void>;
+            $START_ANIMATIONS(): void;
+            generateTextureUVMap(): import("../index.js").TextureTypeUVMap;
+            defineDefaultTexturePath(path: string): void;
+            getTextureType(id: string): false | import("./Nodes/Textures/TextureType.js").TextureType;
+            addTextureType(id: string): import("./Nodes/Textures/TextureType.js").TextureType;
+            clearTextureData(): void;
+            registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
+            createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
         };
         $INIT(): void;
-    };
-    textures: {
-        defaultTexturePath: string;
-        textureTypes: Map<string, import("./Textures/TextureType.js").TextureType>;
-        uvMap: import("../index.js").TextureTypeUVMap;
-        getTextureIndex(data: import("../index.js").ConstructorTextureData, overlay?: boolean): number;
-        _ready: boolean;
-        isReady(): boolean;
-        $INIT(): Promise<void>;
-        $START_ANIMATIONS(): void;
-        generateTextureUVMap(): import("../index.js").TextureTypeUVMap;
-        defineDefaultTexturePath(path: string): void;
-        getTextureType(id: string): false | import("./Textures/TextureType.js").TextureType;
-        addTextureType(id: string): import("./Textures/TextureType.js").TextureType;
-        clearTextureData(): void;
-        registerTexture(textureData: import("../index.js").TextureData | import("../index.js").TextureData[]): void;
-        createRawDataMap(): Promise<Map<string, Uint8ClampedArray>>;
     };
     tasks: {
         setChunk: void;
@@ -396,4 +362,4 @@ export declare const DVER: {
     getRichDataTool(): RichDataTool;
     getNodeMeshTool(): NodeMeshTool;
 };
-export declare type DivineVoxelEngineRender = typeof DVER;
+export type DivineVoxelEngineRender = typeof DVER;

@@ -1,10 +1,10 @@
 import type { RawTexture2DArray } from "@babylonjs/core";
 import type { TextureData } from "Meta/Render/Textures/Texture.types.js";
-import type { DVEMaterial } from "Render/Render/Materials/DVEMaterial";
 import { DivineShader } from "divine-shaders";
 import { TextureManager } from "./TextureManager.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { TextureCreator } from "./TextureCreator.js";
+import { NodeMaterial } from "../Materials/NodeMaterial.js";
 
 class TextureSegment {
  totalTextures = 0;
@@ -58,7 +58,7 @@ class TextureSegment {
 export class TextureType {
  extension = "png";
  segments: Map<string, TextureSegment>;
- materials: Map<string, DVEMaterial> = new Map();
+ materials: Map<string, NodeMaterial> = new Map();
  shader: DivineShader;
  constructor(public id: string) {
   const main = new TextureSegment(id, "main", "sampler", "cuv3");
@@ -147,7 +147,7 @@ export class TextureType {
   return this.shader.merge(shader, false);
  }
 
- addToMaterial(material: DVEMaterial) {
+ addToMaterial(material: NodeMaterial) {
   const shaderMaterial = material.material!;
   for (const [key, segment] of this.segments) {
    shaderMaterial.setTextureArray(segment.textureID, segment.shaderTexture);

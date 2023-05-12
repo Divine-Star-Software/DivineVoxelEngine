@@ -13,4 +13,7 @@ export const NodeMeshManager = {
             return false;
         return nodeMesh.createMesh(data);
     },
+    get(id) {
+        return this.meshes.get(id);
+    },
 };

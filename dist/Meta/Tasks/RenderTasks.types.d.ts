@@ -1,34 +1,28 @@
 import type { LocationData } from "voxelspaces";
 import type { VoxelTemplateSubstanceType } from "Meta/Data/Voxels/Voxel.types";
 import type { MeshAttributes } from "../../Constructor/Builder/Types/MeshData.types";
-export declare type SetChunkMeshTask = [
+export type SetChunkMeshTask = [
     location: LocationData,
     meshes: (ChunkMeshData | RemoveChunkTasks)[]
 ];
-export declare type ChunkMeshData = [
+export type ChunkMeshData = [
     substanceType: VoxelTemplateSubstanceType,
-    positions: Float32Array,
-    normals: Float32Array,
-    indices: Uint16Array,
-    voxelData: Float32Array,
-    colors: Float32Array,
-    uvs: Float32Array,
-    overlayUVs: Float32Array
+    meshData: SetNodeMesh
 ];
-export declare type SetNodeMesh = [
+export type SetNodeMesh = [
     location: LocationData,
     attributes: MeshAttributes
 ];
-export declare type BuildNodeMesh = [location: LocationData, type: string, data: any];
-declare type RemoveChunkTasks = [
+export type BuildNodeMesh = [location: LocationData, type: string, data: any];
+type RemoveChunkTasks = [
     substanceType: VoxelTemplateSubstanceType,
     removeFlag: false
 ];
-export declare type RemoveChunkMeshTasks = [
+export type RemoveChunkMeshTasks = [
     location: LocationData,
     substanceType: VoxelTemplateSubstanceType
 ];
-export declare type RemoveChunksOutsideDistance = [
+export type RemoveChunksOutsideDistance = [
     location: LocationData,
     distance: number
 ];

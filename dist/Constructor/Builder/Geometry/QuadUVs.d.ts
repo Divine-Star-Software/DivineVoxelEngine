@@ -1,6 +1,6 @@
 import { AddQuadUVsData, AdvancedUVs, TextureRotations } from "../Types/Geometry.types";
 import { DirectionNames } from "Meta/Util.types";
-declare type UVFaceTypes = "top" | "side" | "bottom";
+type UVFaceTypes = "top" | "side" | "bottom";
 /**
  * |||||||||||||||||||||||||||||||||||||
  * [TOP & BOTTOM]

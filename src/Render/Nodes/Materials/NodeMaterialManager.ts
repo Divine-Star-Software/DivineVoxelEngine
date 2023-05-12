@@ -23,10 +23,15 @@ export const NodeMaterialManager = {
  },
 
  setSunLevel(level: number) {
-  
   this.materials._map.forEach((_) => _.setSunLightLevel(level));
  },
  setBaseLevel(level: number) {
   this.materials._map.forEach((_) => _.setBaseLevel(level));
+ },
+
+ setOption(id: string, value: boolean) {
+  this.materials._map.forEach((_) =>
+   _.getMaterial().setFloat(id, value ? 1 : 0)
+  );
  },
 };

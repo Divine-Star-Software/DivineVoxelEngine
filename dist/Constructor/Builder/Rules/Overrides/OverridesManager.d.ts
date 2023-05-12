@@ -1,5 +1,5 @@
 import { FaceDataOverride, OverrideTypes } from "../../Types/Override.types";
-declare type RunOverrideFunction = (data: FaceDataOverride) => boolean;
+type RunOverrideFunction = (data: FaceDataOverride) => boolean;
 export declare const OverrideManager: {
     overrides: Record<OverrideTypes, Map<string, Map<string, RunOverrideFunction>>>;
     registerOverride(type: OverrideTypes, subjectId: string, neighborShapeId: string, run: RunOverrideFunction): void;

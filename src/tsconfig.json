@@ -4,8 +4,6 @@
   "module": "esNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
   "declaration": true /* Generates corresponding '.d.ts' file. */,
   "outDir": "../dist" /* Redirect output structure to the directory. */,
-  "strict": true /* Enable all strict type-checking options. */,
-  "strictPropertyInitialization": false /* Enable strict checking of property initialization in classes. */,
   "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
   "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
   "types": [
@@ -16,8 +14,14 @@
    "divine-shaders",
    "divine-hooks"
   ] /* Type declaration files to be included in compilation. */,
-  "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-  "skipLibCheck": true /* Skip type checking of declaration files. */,
-  "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+  "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
+  // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
+  "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+  "strictPropertyInitialization": false,
+  /* Type Checking */
+  "strict": true /* Enable all strict type-checking options. */,
+
+  "skipLibCheck": true /* Skip type checking all .d.ts files. */
  }
 }
