@@ -4,9 +4,9 @@ import type { Scene, Vector4 } from "@babylonjs/core";
 //objects
 import { FOManager } from "./FloatingOrigin/FoManager.js";
 
-import { MeshRegister } from "../Scene/MeshRegister.js";
-import { MeshManager } from "../Scene/MeshManager.js";
-import { MeshCuller } from "../Scene/MeshCuller.js";
+import { MeshRegister } from "./MeshRegister.js";
+import { MeshManager } from "./MeshManager.js";
+import { MeshCuller } from "./MeshCuller.js";
 import { NodeShaders } from "../Nodes/Shaders/NodeShaders.js";
 import { SceneTool } from "../Tools/SceneTool.js";
 

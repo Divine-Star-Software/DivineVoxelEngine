@@ -1,5 +1,5 @@
 import { Scene } from "@babylonjs/core";
-import { RenderManager } from "../Render/RenderManager.js";
+import { RenderManager } from "../Scene/RenderManager.js";
 import { InitDefaultNodes } from "./InitDefaultNodes.js";
 import { NodeMaterialManager } from "./Materials/NodeMaterialManager.js";
 import { NodeMeshManager } from "./Meshes/NodeMeshManager.js";

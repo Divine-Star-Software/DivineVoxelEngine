@@ -1,6 +1,6 @@
 import { Scene } from "@babylonjs/core";
 import { DVEBabylon } from "../Nodes/DVEBabylon.js";
-import { FOManager } from "../Render/FloatingOrigin/FoManager.js";
+import { FOManager } from "./FloatingOrigin/FoManager.js";
 import { MeshRegister } from "./MeshRegister.js";
 /*    
      const dimensions = MeshRegister._dimensions;

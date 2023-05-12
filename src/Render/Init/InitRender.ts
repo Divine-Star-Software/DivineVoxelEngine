@@ -3,7 +3,7 @@ import type { DivineVoxelEngineRender } from "Render/DivineVoxelEngineRender";
 import { NodeManager } from "../../Render/Nodes/NodeManager.js";
 import { TextureCreator } from "../Nodes/Textures/TextureCreator.js";
 import { TextureManager } from "../Nodes/Textures/TextureManager.js";
-import { RenderManager } from "../../Render/Render/RenderManager.js";
+import { RenderManager } from "../Scene/RenderManager.js";
 
 export async function $INITFunction(
  DVER: DivineVoxelEngineRender,

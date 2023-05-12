@@ -1,5 +1,5 @@
 import { DVEBabylon } from "../Nodes/DVEBabylon.js";
-import { FOManager } from "../Render/FloatingOrigin/FoManager.js";
+import { FOManager } from "./FloatingOrigin/FoManager.js";
 /*
      const dimensions = MeshRegister._dimensions;
    dimensions.forEach((dimensions) => {

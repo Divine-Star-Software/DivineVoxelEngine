@@ -1,6 +1,6 @@
 import type { RawTexture2DArray } from "@babylonjs/core";
 import { DVEBabylon } from "../DVEBabylon.js";
-import { RenderManager } from "../../Render/RenderManager.js";
+import { RenderManager } from "../../Scene/RenderManager.js";
 
 export const TextureCreator = {
  context: <CanvasRenderingContext2D | null>null,

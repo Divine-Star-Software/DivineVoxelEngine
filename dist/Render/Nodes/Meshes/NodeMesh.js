@@ -1,7 +1,7 @@
 import { DVEBabylon } from "../DVEBabylon.js";
 import { NodeManager } from "../NodeManager.js";
-import { RenderManager } from "../../Render/RenderManager.js";
-import { FOManager } from "../../Render/FloatingOrigin/FoManager.js";
+import { RenderManager } from "../../Scene/RenderManager.js";
+import { FOManager } from "../../Scene/FloatingOrigin/FoManager.js";
 export class NodeMesh {
     data;
     meshes = [];

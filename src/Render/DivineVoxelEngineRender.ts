@@ -5,7 +5,7 @@ import type { Scene } from "@babylonjs/core";
 //objects
 import { Util } from "../Global/Util.helper.js";
 import { EngineSettings } from "../Data/Settings/EngineSettings.js";
-import { RenderManager } from "./Render/RenderManager.js";
+import { RenderManager } from "./Scene/RenderManager.js";
 
 import { RenderTasks } from "./Tasks/RenderTasks.js";
 import { WorldBounds } from "../Data/World/WorldBounds.js";

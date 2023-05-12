@@ -1,7 +1,7 @@
 import type { DVEFogTypes } from "Meta/Render/Render/Render.options.types";
 import { NodeManager } from "../Nodes/NodeManager.js";
 import { DVEBabylon } from "../Nodes/DVEBabylon.js";
-import { RenderManager } from "../Render/RenderManager.js";
+import { RenderManager } from "../Scene/RenderManager.js";
 
 export class SceneTool {
  constructor() {}
