@@ -14,6 +14,9 @@ class BuilderTool extends LocationBoundTool {
         this.data.LOD = lod;
         return this;
     }
+    clearAll() {
+        parentComm.runTasks("clear-all", []);
+    }
     buildChunk(runQueue = false) {
         this.tasks.build.chunk.queued.add(this.location);
         if (runQueue)

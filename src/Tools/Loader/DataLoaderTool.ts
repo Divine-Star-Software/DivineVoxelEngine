@@ -44,6 +44,7 @@ export class DataLoaderTool extends LocationBoundTool {
   });
  }
 
+
  isEnabled() {
   return this._enabled;
  }

@@ -83,15 +83,16 @@ export const WorldTasks = {
    },
    "deferred"
   ),
- },
+},
  load: {
   loadRegino: ThreadComm.registerTasks<LoadWorldDataTasks>(
    "load-region",
-   (data) => {
-    regionTool.setBuffer(data[0]);
-    const location = regionTool.getLocationData();
-    WorldRegister.region.add(location, data[0]);
-    DataSync.region.sync(location);
+   ([location, sab]) => {
+    regionTool.setBuffer(sab);
+    const sl = regionTool.getLocationData();
+    sl[0] = location[0];
+    WorldRegister.region.add(sl, sab);
+    DataSync.region.sync(sl);
    }
   ),
   loadReginoHeader: ThreadComm.registerTasks<LoadRegionHeadertasks>(
@@ -104,20 +105,22 @@ export const WorldTasks = {
   ),
   loadColumn: ThreadComm.registerTasks<LoadWorldDataTasks>(
    "load-column",
-   (data) => {
-    columnTool.setBuffer(data[0]);
-    const location = columnTool.getLocationData();
-    WorldRegister.column.add(location, data[0]);
-    DataSync.column.sync(location);
+   ([location, sab]) => {
+    columnTool.setBuffer(sab);
+    const sl = columnTool.getLocationData();
+    sl[0] = location[0];
+    WorldRegister.column.add(sl, sab);
+    DataSync.column.sync(sl);
    }
   ),
   loadChunk: ThreadComm.registerTasks<LoadWorldDataTasks>(
    "load-chunk",
-   (data) => {
-    chunkTool.setBuffer(data[0]);
-    const location = chunkTool.getLocationData();
-    WorldRegister.chunk.add(location, data[0]);
-    DataSync.chunk.sync(location);
+   ([location, sab]) => {
+    chunkTool.setBuffer(sab);
+    const sl = chunkTool.getLocationData();
+    sl[0] = location[0];
+    WorldRegister.chunk.add(sl, sab);
+    DataSync.chunk.sync(sl);
    }
   ),
  },

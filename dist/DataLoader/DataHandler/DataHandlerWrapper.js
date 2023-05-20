@@ -52,9 +52,7 @@ export const DataHanlderWrapper = {
                     throw new Error(`Could not store column at ${location.toString()}`);
                 }
                 if (this.richData._enabled) {
-                    const column = await this.richData
-                        .setLocation(location)
-                        .getColumnAsync();
+                    const column = await this.richData.setLocation(location).getColumnAsync();
                     if (column) {
                         this.handler.setDataType("rich-data");
                         const success = await this.handler.saveColumn(location, column);
@@ -81,12 +79,17 @@ export const DataHanlderWrapper = {
             const column = await this.handler.getColumn(location);
             const data = WorldDataSerialize.deSerializeColumn(column);
             columnDatatool.setBuffer(data.column);
-            DVEDL.worldComm.runTasks("load-column", [data.column]);
+            DVEDL.worldComm.runTasks("load-column", [
+                location,
+                data.column,
+            ]);
             for (const chunk of data.chunks) {
-                DVEDL.worldComm.runTasks("load-chunk", [chunk]);
+                DVEDL.worldComm.runTasks("load-chunk", [
+                    location,
+                    chunk,
+                ]);
             }
-            if (this.richData._enabled &&
-                columnDatatool.hasRichData()) {
+            if (this.richData._enabled && columnDatatool.hasRichData()) {
                 this.handler.setDataType("rich-data");
                 const richColumn = await this.handler.getColumn(location);
                 if (!richColumn)

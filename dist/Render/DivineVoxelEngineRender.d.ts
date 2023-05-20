@@ -382,6 +382,7 @@ export declare const DVER: {
         setChunk: void;
         removeChunk: void;
         removeColumn: void;
+        clearAll: void;
         removeColumnsOutsideRadius: void;
         setNodeMesh: void;
     };

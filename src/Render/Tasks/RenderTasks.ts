@@ -26,6 +26,9 @@ export const RenderTasks = {
    MeshManager.chunks.removeColumn(data);
   }
  ),
+ clearAll: ThreadComm.registerTasks<LocationData>("clear-all", (data) => {
+  MeshRegister.clearAll();
+ }),
  removeColumnsOutsideRadius:
   ThreadComm.registerTasks<RemoveChunksOutsideDistance>(
    "remove-column-outside-radius",
@@ -33,10 +36,8 @@ export const RenderTasks = {
     MeshManager.removeColumnsOutsideRadius(data[0], data[1]);
    }
   ),
-  setNodeMesh: ThreadComm.registerTasks<SetNodeMesh>(
-    "set-node-mesh",
-    (data) => {
-    
-    }
-   ),
+ setNodeMesh: ThreadComm.registerTasks<SetNodeMesh>(
+  "set-node-mesh",
+  (data) => {}
+ ),
 };

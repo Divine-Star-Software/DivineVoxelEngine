@@ -56,7 +56,7 @@ export type ExplosionTasks = [
  originThread: string
 ];
 
-export type LoadWorldDataTasks = [data: SharedArrayBuffer];
+export type LoadWorldDataTasks = [location: LocationData,data: SharedArrayBuffer];
 
 export type LoadRegionHeadertasks = [
  location: LocationData,

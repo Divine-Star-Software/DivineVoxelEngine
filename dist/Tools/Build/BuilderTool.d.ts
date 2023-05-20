@@ -8,6 +8,7 @@ export declare class BuilderTool extends LocationBoundTool {
         LOD: number;
     };
     setLOD(lod: number): this;
+    clearAll(): void;
     buildChunk(runQueue?: boolean): this;
     buildColumn(onDone?: (data: any) => void): this;
     removeColumn(): false | this;

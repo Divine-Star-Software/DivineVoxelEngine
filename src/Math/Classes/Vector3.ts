@@ -29,24 +29,28 @@ export class Vector3 {
   this.x = array[startIndex];
   this.y = array[startIndex + 1];
   this.z = array[startIndex + 2];
+  return this;
  }
 
  updateVector(x: number, y: number, z: number) {
   this.x = x;
   this.y = y;
   this.z = z;
+  return this;
  }
 
  updateFromVec3(vector: Vector3) {
   this.x = vector.x;
   this.y = vector.y;
   this.z = vector.z;
+  return this;
  }
 
  roundVector(deciamlPoints = 2) {
   this.x = Number(this.x.toFixed(deciamlPoints));
   this.y = Number(this.y.toFixed(deciamlPoints));
   this.z = Number(this.z.toFixed(deciamlPoints));
+  return this;
  }
 
  translate(x: number, y: number, z: number) {

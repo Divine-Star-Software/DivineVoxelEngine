@@ -28,7 +28,6 @@ export function RunWorldSun(tasks: WorldSunTaskRequest) {
  IM._sDataTool.setDimension(dimension);
  const RmaxY = WorldRegister.column.height.getRelative(tasks.origin);
  const AmaxY = WorldRegister.column.height.getAbsolute(tasks.origin);
-
  //fill
  for (let iy = AmaxY; iy < WorldBounds.bounds.MaxY; iy++) {
   for (let iz = cz; iz < cz + WorldSpaces.chunk._bounds.z; iz++) {

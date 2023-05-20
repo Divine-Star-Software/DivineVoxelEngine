@@ -8,7 +8,7 @@ export class NodeMesh {
     pickable = false;
     checkCollisions = false;
     seralize = false;
-    clearCachedGeometry = false;
+    clearCachedGeometry = true;
     defaultBb;
     scene;
     engine;

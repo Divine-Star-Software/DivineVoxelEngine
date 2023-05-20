@@ -24,7 +24,7 @@ export const DataHanlderWrapper = {
  },
 
  async loadRegionHeader(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   try {
    const headerBuffer = await this.handler.getRegionHeader(location);
    if (!headerBuffer) return false;
@@ -42,7 +42,7 @@ export const DataHanlderWrapper = {
   }
  },
  async saveColumn(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   if (columnDatatool.setLocation(location).loadIn()) {
    try {
     if (columnDatatool.isStored()) return true;
@@ -57,10 +57,8 @@ export const DataHanlderWrapper = {
     }
 
     if (this.richData._enabled) {
-     const column = await this.richData
-      .setLocation(location)
-      .getColumnAsync();
-    
+     const column = await this.richData.setLocation(location).getColumnAsync();
+
      if (column) {
       this.handler.setDataType("rich-data");
       const success = await this.handler.saveColumn(location, column);
@@ -73,7 +71,6 @@ export const DataHanlderWrapper = {
      }
     }
 
-
     this.handler.setDataType("world-data");
    } catch (error: any) {
     console.error(`Problem storing column at ${location.toString()}`);
@@ -83,21 +80,24 @@ export const DataHanlderWrapper = {
  },
 
  async loadColumn(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   try {
    if (WorldRegister.column.get(location)) return true;
    this.handler.setDataType("world-data");
    const column = await this.handler.getColumn(location);
    const data = WorldDataSerialize.deSerializeColumn(column);
    columnDatatool.setBuffer(data.column);
-   DVEDL.worldComm.runTasks<LoadWorldDataTasks>("load-column", [data.column]);
+   DVEDL.worldComm.runTasks<LoadWorldDataTasks>("load-column", [
+    location,
+    data.column,
+   ]);
    for (const chunk of data.chunks) {
-    DVEDL.worldComm.runTasks<LoadWorldDataTasks>("load-chunk", [chunk]);
+    DVEDL.worldComm.runTasks<LoadWorldDataTasks>("load-chunk", [
+     location,
+     chunk,
+    ]);
    }
-   if (
-    this.richData._enabled &&
-    columnDatatool.hasRichData()
-   ) {
+   if (this.richData._enabled && columnDatatool.hasRichData()) {
     this.handler.setDataType("rich-data");
     const richColumn = await this.handler.getColumn(location);
     if (!richColumn) return false;
@@ -114,13 +114,13 @@ export const DataHanlderWrapper = {
  },
 
  async unLoadColumn(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   if (columnDatatool.setLocation(location).loadIn()) {
    try {
     if (!columnDatatool.isStored()) {
      await this.saveColumn(location);
     }
-   
+
     if (
      this.richData._enabled &&
      (await this.richData.setLocation(location).columnHasDataAsync())
@@ -139,7 +139,7 @@ export const DataHanlderWrapper = {
  },
 
  async setPath(id: string) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   try {
    await this.handler.setPath(id);
    return true;
@@ -151,7 +151,7 @@ export const DataHanlderWrapper = {
  },
 
  async columnExists(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   try {
    if (WorldRegister.column.get(location)) return true;
    return await this.handler.columnExists(location);
@@ -163,7 +163,7 @@ export const DataHanlderWrapper = {
  },
 
  async columnTimestamp(location: LocationData) {
-    this.handler.setDataType("world-data");
+  this.handler.setDataType("world-data");
   try {
    return await this.handler.columnTimestamp(location);
   } catch (error: any) {

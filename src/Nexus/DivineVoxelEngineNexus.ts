@@ -41,3 +41,5 @@ export const DVEN = {
 export type DivineVoxelEngineNexus = typeof DVEN;
 
 DVEN.environment = Util.getEnviorment();
+
+
