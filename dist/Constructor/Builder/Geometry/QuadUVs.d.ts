@@ -52,6 +52,6 @@ export declare const QuadUVs: {
     advancedUVs: Record<UVFaceTypes, (uv: number, data: AdvancedUVs, uvs: number[], flipped: boolean) => void>;
     uvFunctions: Record<DirectionNames, (data: AddQuadUVsData) => void>;
     addUVs(data: AddQuadUVsData): void;
-    addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: AdvancedUVs, flipped?: boolean): void;
+    addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: AdvancedUVs, flipped: boolean): void;
 };
 export {};

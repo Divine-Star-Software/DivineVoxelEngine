@@ -1,7 +1,7 @@
 //data
 import { WorldBounds } from "../../../../Data/World/WorldBounds.js";
 import { WorldRegister } from "../../../../Data/World/WorldRegister.js";
-import { $3dCardinalNeighbors } from "../../../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../../Math/Constants/CardinalNeighbors.js";
 import { WorldSpaces } from "../../../../Data/World/WorldSpaces.js";
 import { IlluminationManager as IM } from "../IlluminationManager.js";
 const inColumnBounds = (cx, cz, x, z) => {

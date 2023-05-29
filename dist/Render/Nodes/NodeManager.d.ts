@@ -38,20 +38,20 @@ export declare const NodeManager: {
         };
     };
     meshes: {
-        meshes: import("../../Global/Util/UtilMap.js").UtilMap<string, import("./Meshes/NodeMesh.js").NodeMesh>;
+        meshes: import("../../Global/Util/UtilMap.js").UtilMap<string, import("./Meshes/NodeMesh.js").DVENodeMesh>;
         add(meshes: import("./types/RenderNode.types.js").NodeMeshData[]): void;
         create(id: string, data: import("../../Meta/Tasks/RenderTasks.types.js").SetNodeMesh): false | import("@babylonjs/core").Mesh;
-        get(id: string): import("./Meshes/NodeMesh.js").NodeMesh | undefined;
+        get(id: string): import("./Meshes/NodeMesh.js").DVENodeMesh | undefined;
     };
     materials: {
-        materials: import("../../Global/Util/UtilMap.js").UtilMap<string, import("./Materials/NodeMaterial.js").NodeMaterial>;
+        materials: import("../../Global/Util/UtilMap.js").UtilMap<string, import("./Materials/NodeMaterial.js").DVENodeMaterial>;
         fogOptions: import("../../Meta/Render/Render/Render.options.types.js").RenderFogOptions;
         fogData: import("@babylonjs/core").Vector4;
         unifrosm: {
             lightGradient: number[];
         };
         init(): void;
-        get(id: string): import("./Materials/NodeMaterial.js").NodeMaterial | null;
+        get(id: string): import("./Materials/NodeMaterial.js").DVENodeMaterial | null;
         create(materials: import("./types/RenderNode.types.js").NodeMaterialData[]): void;
         _updateFogData(data: import("@babylonjs/core").Vector4): void;
         setSunLevel(level: number): void;

@@ -1,12 +1,33 @@
-export class Vector3 {
-    x = 0;
-    y = 0;
-    z = 0;
-    _tv3 = {
-        x: 0,
-        y: 0,
-        z: 0,
-    };
+class V3 {
+    _data = [0, 0, 0];
+    get x() {
+        return this._data[0];
+    }
+    set x(x) {
+        this._data[0] = x;
+    }
+    get y() {
+        return this._data[1];
+    }
+    set y(y) {
+        this._data[1] = y;
+    }
+    get z() {
+        return this._data[2];
+    }
+    set z(z) {
+        this._data[2] = z;
+    }
+}
+class Vector3 extends V3 {
+    static Zero = new Vector3(0, 0, 0);
+    static Top = new Vector3(0, 1, 0);
+    static Bottom = new Vector3(0, -1, 0);
+    static East = new Vector3(1, 0, 0);
+    static West = new Vector3(-1, 0, 0);
+    static North = new Vector3(0, 0, 1);
+    static South = new Vector3(0, 0, -1);
+    _tv3 = new V3();
     static NaNRestore(vec3) {
         if (Number.isNaN(vec3.x))
             vec3.x = 0;
@@ -15,7 +36,8 @@ export class Vector3 {
         if (Number.isNaN(vec3.z))
             vec3.z = 0;
     }
-    constructor(x, y, z) {
+    constructor(x = 0, y = 0, z = 0) {
+        super();
         this.x = x;
         this.y = y;
         this.z = z;
@@ -26,10 +48,16 @@ export class Vector3 {
         this.z = array[startIndex + 2];
         return this;
     }
-    updateVector(x, y, z) {
+    set(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        return this;
+    }
+    setAll(value) {
+        this.x = value;
+        this.y = value;
+        this.z = value;
         return this;
     }
     updateFromVec3(vector) {
@@ -79,6 +107,12 @@ export class Vector3 {
         this._tv3.y = this.y * yScale;
         this._tv3.z = this.z * zScale;
         return this._tv3;
+    }
+    add(x, y, z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        return this;
     }
     addXYZ(add) {
         this.x = this.x + add;
@@ -200,3 +234,4 @@ export class Vector3 {
         return false;
     }
 }
+export { Vector3 };

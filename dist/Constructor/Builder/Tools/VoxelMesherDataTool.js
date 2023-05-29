@@ -7,7 +7,7 @@ import { SubstanceRules } from "../Rules/SubstanceRules.js";
 import { BuilderDataTool } from "./BuilderDataTool.js";
 import { MesherDataTool } from "./MesherDataTools.js";
 //data
-import { FaceNormals } from "../../../Data/Constants/Util/Faces.js";
+import { FaceNormals } from "../../../Math/Constants/Faces.js";
 import { QuadVertexData } from "../Classes/VertexData.js";
 export class VoxelMesherDataTool extends MesherDataTool {
     voxel = new BuilderDataTool();
@@ -40,7 +40,7 @@ export class VoxelMesherDataTool extends MesherDataTool {
         ]);
         this.vars.add([
             ["face-flipped", 0],
-            ["uv", 0],
+            ["texture-index", 0],
         ]);
     }
     calculateLight(direction, ignoreAO = false) {
@@ -62,11 +62,11 @@ export class VoxelMesherDataTool extends MesherDataTool {
         return this.quadVertexData.get("overlay-uvs");
     }
     setTexture(uv) {
-        this.vars.set("uv", uv);
+        this.vars.set("texture-index", uv);
         return this;
     }
-    getUV() {
-        return this.vars.get("uv");
+    getTexture() {
+        return this.vars.get("texture-index");
     }
     setFaceFlipped(value) {
         this.vars.set("face-flipped", value ? 1 : 0);

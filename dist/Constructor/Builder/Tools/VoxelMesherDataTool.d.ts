@@ -15,7 +15,7 @@ export declare class VoxelMesherDataTool extends MesherDataTool {
     getWorldLevel(): QuadVertexData;
     getOverlayTextures(): QuadVertexData;
     setTexture(uv: number): this;
-    getUV(): number;
+    getTexture(): number;
     setFaceFlipped(value: boolean): this;
     isFaceFlipped(): boolean;
     isFaceExposed(face: DirectionNames): boolean;

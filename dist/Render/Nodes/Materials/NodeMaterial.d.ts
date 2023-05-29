@@ -1,7 +1,7 @@
 import type { Scene, ShaderMaterial, Vector4 } from "@babylonjs/core";
 import { NodeMaterialData } from "../types/RenderNode.types.js";
 import { DivineShader } from "divine-shaders";
-export declare class NodeMaterial {
+export declare class DVENodeMaterial {
     data: NodeMaterialData;
     material: ShaderMaterial;
     scene: Scene;

@@ -4,7 +4,7 @@ import { DivineShader } from "divine-shaders";
 import { TextureManager } from "./TextureManager.js";
 import { TextureAnimationCreator } from "./TextureAnimations.js";
 import { TextureCreator } from "./TextureCreator.js";
-import { NodeMaterial } from "../Materials/NodeMaterial.js";
+import { DVENodeMaterial } from "../Materials/NodeMaterial.js";
 
 class TextureSegment {
  totalTextures = 0;
@@ -58,7 +58,7 @@ class TextureSegment {
 export class TextureType {
  extension = "png";
  segments: Map<string, TextureSegment>;
- materials: Map<string, NodeMaterial> = new Map();
+ materials: Map<string, DVENodeMaterial> = new Map();
  shader: DivineShader;
  constructor(public id: string) {
   const main = new TextureSegment(id, "main", "sampler", "cuv3");
@@ -147,7 +147,7 @@ export class TextureType {
   return this.shader.merge(shader, false);
  }
 
- addToMaterial(material: NodeMaterial) {
+ addToMaterial(material: DVENodeMaterial) {
   const shaderMaterial = material.material!;
   for (const [key, segment] of this.segments) {
    shaderMaterial.setTextureArray(segment.textureID, segment.shaderTexture);

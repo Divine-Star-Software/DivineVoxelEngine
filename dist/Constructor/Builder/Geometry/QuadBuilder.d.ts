@@ -7,5 +7,5 @@ export declare const QuadBuilder: {
     width: number;
     height: number;
     faceFunctions: Record<DirectionNames, (origin: Position3Matrix, tool: MesherDataTool, transform: QuadTransforms, flip?: boolean) => void>;
-    create(tool: MesherDataTool, direction: DirectionNames, origin: Position3Matrix, dimensions: QuadDimensions, flip?: boolean, transform?: QuadTransforms): void;
+    create(tool: MesherDataTool, direction: DirectionNames, origin: Position3Matrix, dimensions: QuadDimensions, flip: boolean, transform?: QuadTransforms): void;
 };

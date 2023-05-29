@@ -29,7 +29,7 @@ export class SimpleBoundingBox {
 
  constructor(public origin: Vector3, public dimensions: DimensionsVector3) {
   const ov = origin;
-  this.checkOrigin.updateVector(ov.x, ov.y, ov.z);
+  this.checkOrigin.set(ov.x, ov.y, ov.z);
   this._updateBounds();
   this._updateCheckBounds();
  }
@@ -55,14 +55,14 @@ export class SimpleBoundingBox {
  }
 
  updateOrigin(x: number, y: number, z: number) {
-  this.origin.updateVector(x, y, z);
+  this.origin.set(x, y, z);
   this.origin.roundVector(2);
   this._updateBounds();
  }
 
  setOriginToCheckOrigin() {
   const cv = this.checkOrigin;
-  this.origin.updateVector(cv.x, cv.y, cv.z);
+  this.origin.set(cv.x, cv.y, cv.z);
 
   this.bounds.minX = this.checkBounds.minX;
   this.bounds.maxX = this.checkBounds.maxX;
@@ -73,7 +73,7 @@ export class SimpleBoundingBox {
  }
 
  setCheckOrigin(x: number, y: number, z: number) {
-  this.checkOrigin.updateVector(x, y, z);
+  this.checkOrigin.set(x, y, z);
   this._updateCheckBounds();
  }
 

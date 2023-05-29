@@ -27,7 +27,7 @@ export class MeshBuilderTool {
 export class QuadBuilderTool {
  tool: MesherDataTool;
  builder = QuadBuilder;
- uvs = new QuadUVTool(this,"cuv3");
+ uvs = new QuadUVTool(this, "cuv3");
 
  setMesherTool(tool: MesherDataTool) {
   this.tool = tool;
@@ -121,7 +121,6 @@ export class QuadBuilderTool {
 }
 
 export class QuadUVTool<T extends QuadBuilderTool> {
-
  uvs = QuadUVs;
  _data = {
   width: [0, 1],
@@ -139,7 +138,7 @@ export class QuadUVTool<T extends QuadBuilderTool> {
   we2: 1,
  };
  _rotation: TextureRotations = 0;
- constructor(public quad: T,public attributeId : string) {}
+ constructor(public quad: T, public attributeId: string) {}
 
  resetAdvancedUVs() {
   this.advancedUVs.hs1 = 0;

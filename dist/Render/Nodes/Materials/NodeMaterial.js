@@ -2,7 +2,7 @@ import { TextureManager } from "../../Nodes/Textures/TextureManager.js";
 import { DVEBabylon } from "../DVEBabylon.js";
 import { RenderManager } from "../../Scene/RenderManager.js";
 import { NodeManager } from "../NodeManager.js";
-export class NodeMaterial {
+export class DVENodeMaterial {
     data;
     material;
     scene;
@@ -59,7 +59,6 @@ export class NodeMaterial {
             shaderMaterial.forceDepthWrite = true;
             shaderMaterial.needDepthPrePass = true;
         }
-        //@ts-ignore
         if (type)
             type.addToMaterial(this);
         shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());

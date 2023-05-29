@@ -27,7 +27,7 @@ export class SimpleBoundingBox {
         this.origin = origin;
         this.dimensions = dimensions;
         const ov = origin;
-        this.checkOrigin.updateVector(ov.x, ov.y, ov.z);
+        this.checkOrigin.set(ov.x, ov.y, ov.z);
         this._updateBounds();
         this._updateCheckBounds();
     }
@@ -50,13 +50,13 @@ export class SimpleBoundingBox {
         this.checkBounds.maxY = cv.y + this.dimensions.h / 2;
     }
     updateOrigin(x, y, z) {
-        this.origin.updateVector(x, y, z);
+        this.origin.set(x, y, z);
         this.origin.roundVector(2);
         this._updateBounds();
     }
     setOriginToCheckOrigin() {
         const cv = this.checkOrigin;
-        this.origin.updateVector(cv.x, cv.y, cv.z);
+        this.origin.set(cv.x, cv.y, cv.z);
         this.bounds.minX = this.checkBounds.minX;
         this.bounds.maxX = this.checkBounds.maxX;
         this.bounds.minZ = this.checkBounds.minZ;
@@ -65,7 +65,7 @@ export class SimpleBoundingBox {
         this.bounds.maxY = this.checkBounds.maxY;
     }
     setCheckOrigin(x, y, z) {
-        this.checkOrigin.updateVector(x, y, z);
+        this.checkOrigin.set(x, y, z);
         this._updateCheckBounds();
     }
     getCurrentOriginPoints() {

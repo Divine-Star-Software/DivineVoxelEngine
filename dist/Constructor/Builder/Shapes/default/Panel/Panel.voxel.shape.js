@@ -8,7 +8,7 @@ const addData = () => {
         .animationState.add(animationState)
         .light.add(ShapeTool.data.getWorldLight())
         .AO.add(ShapeTool.data.getWorldAO())
-        .textures.add(ShapeTool.data.getUV())
+        .textures.add(ShapeTool.data.getTexture())
         .overlayTexture.add(ShapeTool.data.getOverlayTextures());
 };
 const shapeStates = {

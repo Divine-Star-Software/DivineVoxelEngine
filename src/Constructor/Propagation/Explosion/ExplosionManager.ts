@@ -1,6 +1,6 @@
 import type { ExplosionTaskRequests } from "Constructor/Tasks/TasksRequest.js";
 //data
-import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
 //objects
 import { DataTool } from "../../../Tools/Data/DataTool.js";
 import { LightData } from "../../../Data/Light/LightByte.js";

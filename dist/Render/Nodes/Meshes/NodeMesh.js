@@ -2,7 +2,7 @@ import { DVEBabylon } from "../DVEBabylon.js";
 import { NodeManager } from "../NodeManager.js";
 import { RenderManager } from "../../Scene/RenderManager.js";
 import { FOManager } from "../../Scene/FloatingOrigin/FoManager.js";
-export class NodeMesh {
+export class DVENodeMesh {
     data;
     meshes = [];
     pickable = false;

@@ -1,8 +1,8 @@
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
-import { NodeMaterial } from "./NodeMaterial.js";
+import { DVENodeMaterial } from "./NodeMaterial.js";
 import { NodeManager } from "../NodeManager.js";
 import { DVEBabylon } from "../DVEBabylon.js";
-export const NodeMaterialManager = {
+export const DVENodeMaterialManager = {
     materials: new UtilMap(),
     fogOptions: {},
     fogData: {},
@@ -33,7 +33,7 @@ export const NodeMaterialManager = {
     },
     create(materials) {
         for (const data of materials) {
-            this.materials.add([[data.id, new NodeMaterial(data)]]);
+            this.materials.add([[data.id, new DVENodeMaterial(data)]]);
         }
     },
     _updateFogData(data) {

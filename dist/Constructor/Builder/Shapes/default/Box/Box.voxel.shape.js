@@ -10,7 +10,7 @@ export const BoxVoxelShape = {
             .setFlipped(ShapeTool.data.isFaceFlipped())
             .AO.add(ShapeTool.data.getWorldAO())
             .light.add(ShapeTool.data.getWorldLight())
-            .textures.add(ShapeTool.data.getUV())
+            .textures.add(ShapeTool.data.getTexture())
             .overlayTexture.add(ShapeTool.data.getOverlayTextures())
             .animationState.add(animationState)
             .create();

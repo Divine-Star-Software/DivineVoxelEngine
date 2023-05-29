@@ -1,22 +1,45 @@
-import { Position3Matrix } from "Math/Types/Math.types";
+import { Position3Matrix, Vec3Array } from "Math/Types/Math.types";
 
-export class Vector3 {
- x = 0;
- y = 0;
- z = 0;
+class V3 {
+ _data: Vec3Array = [0, 0, 0];
+ get x() {
+  return this._data[0];
+ }
+ set x(x: number) {
+  this._data[0] = x;
+ }
+ get y() {
+  return this._data[1];
+ }
+ set y(y: number) {
+  this._data[1] = y;
+ }
+ get z() {
+  return this._data[2];
+ }
+ set z(z: number) {
+  this._data[2] = z;
+ }
+}
 
- _tv3 = {
-  x: 0,
-  y: 0,
-  z: 0,
- };
+export class Vector3 extends V3 {
+ static Zero = new Vector3(0, 0, 0);
+ static Top = new Vector3(0, 1, 0);
+ static Bottom = new Vector3(0, -1, 0);
+ static East = new Vector3(1, 0, 0);
+ static West = new Vector3(-1, 0, 0);
+ static North = new Vector3(0, 0, 1);
+ static South = new Vector3(0, 0, -1);
+
+ _tv3 = new V3();
 
  static NaNRestore(vec3: Position3Matrix) {
   if (Number.isNaN(vec3.x)) vec3.x = 0;
   if (Number.isNaN(vec3.y)) vec3.y = 0;
   if (Number.isNaN(vec3.z)) vec3.z = 0;
  }
- constructor(x: number, y: number, z: number) {
+ constructor(x: number = 0, y: number = 0, z: number = 0) {
+  super();
   this.x = x;
   this.y = y;
   this.z = z;
@@ -32,10 +55,17 @@ export class Vector3 {
   return this;
  }
 
- updateVector(x: number, y: number, z: number) {
+ set(x: number, y: number, z: number) {
   this.x = x;
   this.y = y;
   this.z = z;
+  return this;
+ }
+
+ setAll(value: number) {
+  this.x = value;
+  this.y = value;
+  this.z = value;
   return this;
  }
 
@@ -93,6 +123,13 @@ export class Vector3 {
   this._tv3.y = this.y * yScale;
   this._tv3.z = this.z * zScale;
   return this._tv3;
+ }
+
+ add(x: number, y: number, z: number) {
+  this.x += x;
+  this.y += y;
+  this.z += z;
+  return this;
  }
 
  addXYZ(add: number) {

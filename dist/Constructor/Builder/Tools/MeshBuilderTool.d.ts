@@ -16,7 +16,7 @@ export declare class QuadBuilderTool {
         width: number;
         height: number;
         faceFunctions: Record<DirectionNames, (origin: Position3Matrix, tool: MesherDataTool, transform: QuadTransforms, flip?: boolean | undefined) => void>;
-        create(tool: MesherDataTool, direction: DirectionNames, origin: Position3Matrix, dimensions: import("../Types/Geometry.types.js").QuadDimensions, flip?: boolean, transform?: QuadTransforms | undefined): void;
+        create(tool: MesherDataTool, direction: DirectionNames, origin: Position3Matrix, dimensions: import("../Types/Geometry.types.js").QuadDimensions, flip: boolean, transform?: QuadTransforms | undefined): void;
     };
     uvs: QuadUVTool<this>;
     setMesherTool(tool: MesherDataTool): this;
@@ -45,7 +45,7 @@ export declare class QuadUVTool<T extends QuadBuilderTool> {
         advancedUVs: Record<"top" | "bottom" | "side", (uv: number, data: import("../Types/Geometry.types.js").AdvancedUVs, uvs: number[], flipped: boolean) => void>;
         uvFunctions: Record<DirectionNames, (data: import("../Types/Geometry.types.js").AddQuadUVsData) => void>;
         addUVs(data: import("../Types/Geometry.types.js").AddQuadUVsData): void;
-        addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: import("../Types/Geometry.types.js").AdvancedUVs, flipped?: boolean): void;
+        addAdvancedUVs(direction: DirectionNames, uv: number, uvs: number[], data: import("../Types/Geometry.types.js").AdvancedUVs, flipped: boolean): void;
     };
     _data: {
         width: number[];

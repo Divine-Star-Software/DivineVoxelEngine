@@ -82,9 +82,8 @@ export const ChunkProcessor = {
 
    const [attributes, buffers] = mesher.getAllAttributes();
 
-   const [meshData, traf] = mesher.getMeshData();
-   trasnfers.push(...buffers);
 
+   trasnfers.push(...buffers);
    chunks[1].push([substance, [location, attributes]]);
    mesher.resetAll();
   }

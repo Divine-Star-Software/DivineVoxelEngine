@@ -74,6 +74,7 @@ class VoxelQuadBulder extends QuadBuilderTool {
 
  setFlipped(flipped: boolean) {
   this._fliped = flipped;
+
   this.textures.setFlipped(flipped);
   return this;
  }
@@ -98,7 +99,7 @@ class VoxelQuadBulder extends QuadBuilderTool {
    return this._s;
   },
  };
- textures = new QuadUVTool(this,"cuv3");
+ textures = new QuadUVTool(this, "cuv3");
  overlayTexture = {
   _s: <VoxelQuadBulder>{},
   add(data: QuadVertexData) {

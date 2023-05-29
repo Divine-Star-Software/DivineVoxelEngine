@@ -382,7 +382,7 @@ export const QuadUVs = {
   uv: number,
   uvs: number[],
   data: AdvancedUVs,
-  flipped = false
+  flipped: boolean
  ) {
   let d: UVFaceTypes = "top";
   if (direction != "top") {

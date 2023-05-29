@@ -266,7 +266,7 @@ export const QuadUVs = {
     addUVs(data) {
         this.uvFunctions[data.direction](data);
     },
-    addAdvancedUVs(direction, uv, uvs, data, flipped = false) {
+    addAdvancedUVs(direction, uv, uvs, data, flipped) {
         let d = "top";
         if (direction != "top") {
             d = "side";

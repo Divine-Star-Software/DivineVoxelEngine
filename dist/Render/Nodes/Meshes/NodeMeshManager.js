@@ -1,10 +1,10 @@
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
-import { NodeMesh } from "./NodeMesh.js";
+import { DVENodeMesh } from "./NodeMesh.js";
 export const NodeMeshManager = {
     meshes: new UtilMap(),
     add(meshes) {
         for (const mesh of meshes) {
-            this.meshes.add([[mesh.id, new NodeMesh(mesh)]]);
+            this.meshes.add([[mesh.id, new DVENodeMesh(mesh)]]);
         }
     },
     create(id, data) {

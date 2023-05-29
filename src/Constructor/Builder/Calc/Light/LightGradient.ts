@@ -2,12 +2,13 @@ import type { VoxelMesherDataTool } from "../../Tools/VoxelMesherDataTool";
 import type { DirectionNames } from "Meta";
 
 import { OverrideManager } from "../../Rules/Overrides/OverridesManager.js";
-import { FaceNormals } from "../../../../Data/Constants/Util/Faces.js";
+
 import { LightData } from "../../../../Data/Light/LightByte.js";
 
 import { QuadVertexData } from "../../Classes/VertexData.js";
 import { QuadVertexes } from "Constructor/Builder/Types";
 import { SubstanceRules } from "../../Rules/SubstanceRules.js";
+import { FaceNormals } from "../../../../Math/Constants/Faces.js";
 
 const LD = LightData;
 const LightValue = new QuadVertexData();
@@ -75,6 +76,7 @@ const flipCheck = (face: DirectionNames) => {
   SunState.isEqualTo(0, 1, 1, 1) ||
   SunState.isEqualTo(1, 1, 0, 1) ||
   SunState.isEqualTo(0, 1, 0, 1);
+ const aoFlip = shouldAOFlip(face);
 
  if (rgbFlip && !sunFlip) {
   swapSun();
@@ -82,8 +84,6 @@ const flipCheck = (face: DirectionNames) => {
  if (!rgbFlip && sunFlip) {
   swapRGB();
  }
-
- const aoFlip = shouldAOFlip(face);
 
  if ((sunFlip || rgbFlip) && !aoFlip) {
   swapAO();
@@ -347,7 +347,7 @@ export const LightGradient = {
      totalZero = false;
      newRGBValues[3] = RGBValues.b;
     }
-    RGBState.setVertex(vertex, totalZero ? 1 : 0);
+    RGBState.setVertex(vertex, totalZero ? 0 : 1);
     LightValue.setVertex(vertex, LD.setLightValues(newRGBValues));
     zeroCheck.s = 0;
     zeroCheck.r = 0;

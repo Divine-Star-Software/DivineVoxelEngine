@@ -2,11 +2,12 @@ import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { ShapeTool } from "../../ShapeTool.js";
 import { QuadVertexData } from "../../../Classes/VertexData.js";
 //objects
-const addData = () => {
+const addData = (face) => {
     return ShapeTool.builder.quad
+        .setDirection(face)
         .setFlipped(ShapeTool.data.isFaceFlipped())
         .light.add(ShapeTool.data.getWorldLight())
-        .textures.add(ShapeTool.data.getUV())
+        .textures.add(ShapeTool.data.getTexture())
         .overlayTexture.add(ShapeTool.data.getOverlayTextures())
         .animationState.add(flowAnimationState);
 };
@@ -35,8 +36,7 @@ export const LiquidVoxelShape = {
                 .setTransform(3, 0, vertexValue.vetexes[3], 0)
                 .setTransform(4, 0, vertexValue.vetexes[4], 0)
                 .textures.setRoation(getAngle());
-            addData()
-                .setDirection("top")
+            addData("top")
                 .updatePosition(0.5, 1, 0.5)
                 .create()
                 .clearTransform()
@@ -44,8 +44,7 @@ export const LiquidVoxelShape = {
         },
         bottom() {
             flowAnimationState.setAll(0);
-            addData()
-                .setDirection("bottom")
+            addData("bottom")
                 .updatePosition(0.5, 0, 0.5)
                 .create()
                 .clearTransform()
@@ -64,10 +63,10 @@ export const LiquidVoxelShape = {
             if (topFaceExposed) {
                 ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(vertexValue.vetexes[3]);
                 ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(vertexValue.vetexes[2]);
-                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
             }
             else {
-                ShapeTool.builder.quad.textures.add(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
             }
             ShapeTool.builder.quad.create().clearTransform().textures.clear();
         },
@@ -84,10 +83,10 @@ export const LiquidVoxelShape = {
             if (topFaceExposed) {
                 ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(vertexValue.vetexes[1]);
                 ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(vertexValue.vetexes[4]);
-                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
             }
             else {
-                ShapeTool.builder.quad.textures.add(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
             }
             ShapeTool.builder.quad.create().clearTransform().textures.clear();
         },
@@ -104,10 +103,10 @@ export const LiquidVoxelShape = {
             if (topFaceExposed) {
                 ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(vertexValue.vetexes[4]);
                 ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(vertexValue.vetexes[3]);
-                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
             }
             else {
-                ShapeTool.builder.quad.textures.add(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
             }
             ShapeTool.builder.quad.create().clearTransform().textures.clear();
         },
@@ -124,10 +123,10 @@ export const LiquidVoxelShape = {
             if (topFaceExposed) {
                 ShapeTool.builder.quad.textures.advancedUVs.hs1 = Math.abs(vertexValue.vetexes[2]);
                 ShapeTool.builder.quad.textures.advancedUVs.hs2 = Math.abs(vertexValue.vetexes[1]);
-                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.addAdvancedUVs(ShapeTool.data.getTexture());
             }
             else {
-                ShapeTool.builder.quad.textures.add(ShapeTool.data.getUV());
+                ShapeTool.builder.quad.textures.add(ShapeTool.data.getTexture());
             }
             ShapeTool.builder.quad.create().clearTransform().textures.clear();
         },

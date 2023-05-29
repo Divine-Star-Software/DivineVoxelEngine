@@ -175,7 +175,7 @@ export const QuadBuilder = {
             tool.indicieIndex += 4;
         },
     },
-    create(tool, direction, origin, dimensions, flip = false, transform) {
+    create(tool, direction, origin, dimensions, flip, transform) {
         this.width = dimensions.width / 2;
         this.height = dimensions.height / 2;
         this.faceFunctions[direction](origin, tool, transform ? transform : this.defaultTransform, flip);

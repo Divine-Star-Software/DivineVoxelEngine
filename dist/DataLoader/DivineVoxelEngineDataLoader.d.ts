@@ -313,7 +313,7 @@ export declare const DVEDL: {
         chunks: import("../Tools/Data/WorldData/ChunkDataTool.js").ChunkDataTool;
         serializeRegion(location: import("voxelspaces").LocationData): false | [location: import("voxelspaces").LocationData, buffer: ArrayBuffer][];
         serializeColumn(location: import("voxelspaces").LocationData): false | Uint8Array;
-        deSerializeRegion(regionBuffers: SharedArrayBuffer[] | ArrayBuffer[]): void;
+        deSerializeRegion(regionBuffers: ArrayBuffer[] | SharedArrayBuffer[]): void;
         deSerializeColumn(columnBuffer: SharedArrayBuffer | ArrayBuffer): {
             column: SharedArrayBuffer;
             chunks: SharedArrayBuffer[];

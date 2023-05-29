@@ -23,12 +23,12 @@
   "@types/node": "^16.11.7"
  },
  "dependencies": {
-  "@babylonjs/core": "^5.47.1",
-  "divine-binary-object": "^0.0.45",
-  "divine-binary-tags": "^0.0.61",
-  "divine-hooks": "^0.0.4",
-  "divine-shaders": "^0.0.0",
-  "threadcomm": "^0.0.91",
-  "voxelspaces": "^1.0.11"
+    "@babylonjs/core": "^6.5.0",
+    "divine-binary-object": "^0.0.45",
+    "divine-binary-tags": "^0.0.61",
+    "divine-hooks": "^0.0.4",
+    "divine-shaders": "^0.0.0",
+    "threadcomm": "^0.0.91",
+    "voxelspaces": "^1.0.11"
  }
 }

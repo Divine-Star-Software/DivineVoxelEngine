@@ -15,7 +15,7 @@ import type { NodeMeshData } from "../types/RenderNode.types.js";
 import { RenderManager } from "../../Scene/RenderManager.js";
 import { FOManager } from "../../Scene/FloatingOrigin/FoManager.js";
 
-export class NodeMesh {
+export class DVENodeMesh {
  meshes: Mesh[] = [];
  pickable = false;
  checkCollisions = false;

@@ -1,7 +1,7 @@
 import { Propagation } from "../../Propagation/Propagation.js";
 import { EngineSettings as ES } from "../../../Data/Settings/EngineSettings.js";
 import { DataTool } from "../../../Tools/Data/DataTool.js";
-import { $3dCardinalNeighbors } from "../../../Data/Constants/Util/CardinalNeighbors.js";
+import { $3dCardinalNeighbors } from "../../../Math/Constants/CardinalNeighbors.js";
 import { BrushTool } from "../../../Tools/Brush/Brush.js";
 import { TasksRequest } from "../TasksRequest.js";
 const dataTool = new DataTool();

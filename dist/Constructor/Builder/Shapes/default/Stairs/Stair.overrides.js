@@ -1,6 +1,6 @@
 import { OverrideManager } from "../../../Rules/Overrides/OverridesManager.js";
 import { StairStates } from "../../../../../Data/Shapes/StairStates.js";
-import { FaceRecord } from "../../../../../Data/Constants/Util/Faces.js";
+import { FaceRecord } from "../../../../../Math/Constants/Faces.js";
 /*
  "top",
  "bottom",

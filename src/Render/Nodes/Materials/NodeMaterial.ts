@@ -8,7 +8,7 @@ import { NodeMaterialData } from "../types/RenderNode.types.js";
 import { NodeManager } from "../NodeManager.js";
 import { DivineShader } from "divine-shaders";
 
-export class NodeMaterial {
+export class DVENodeMaterial {
  material: ShaderMaterial;
  scene: Scene;
 
@@ -69,6 +69,7 @@ export class NodeMaterial {
    }
   );
 
+
   this.material = shaderMaterial;
 
   this.material.fogEnabled = true;
@@ -79,7 +80,7 @@ export class NodeMaterial {
    shaderMaterial.forceDepthWrite = true;
    shaderMaterial.needDepthPrePass = true;
   }
-  //@ts-ignore
+
   if (type) type.addToMaterial(this);
 
   shaderMaterial.setVector3("worldOrigin", DVEBabylon.system.Vector3.Zero());

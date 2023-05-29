@@ -1,13 +1,13 @@
 import { RenderManager } from "../Scene/RenderManager.js";
 import { InitDefaultNodes } from "./InitDefaultNodes.js";
-import { NodeMaterialManager } from "./Materials/NodeMaterialManager.js";
+import { DVENodeMaterialManager } from "./Materials/NodeMaterialManager.js";
 import { NodeMeshManager } from "./Meshes/NodeMeshManager.js";
 import { NodeShaderManager } from "./Shaders/NodeShaderManager.js";
 import { TextureManager } from "./Textures/TextureManager.js";
 export const NodeManager = {
     shaders: NodeShaderManager,
     meshes: NodeMeshManager,
-    materials: NodeMaterialManager,
+    materials: DVENodeMaterialManager,
     textures: TextureManager,
     _scene: {},
     init() {

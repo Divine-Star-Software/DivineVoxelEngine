@@ -1,14 +1,14 @@
 import type { NodeMaterialData } from "../types/RenderNode.types";
 import { UtilMap } from "../../../Global/Util/UtilMap.js";
-import { NodeMaterial } from "./NodeMaterial.js";
+import { DVENodeMaterial } from "./NodeMaterial.js";
 import { Color3, Vector4 } from "@babylonjs/core";
 import type { RenderFogOptions } from "Meta/Render/Render/Render.options.types";
 import { RecursivePartial } from "Meta";
 import { NodeManager } from "../NodeManager.js";
 import { DVEBabylon } from "../DVEBabylon.js";
 
-export const NodeMaterialManager = {
- materials: new UtilMap<string, NodeMaterial>(),
+export const DVENodeMaterialManager = {
+ materials: new UtilMap<string, DVENodeMaterial>(),
  fogOptions: <RenderFogOptions>{},
  fogData: <Vector4>{},
  unifrosm: {
@@ -40,7 +40,7 @@ export const NodeMaterialManager = {
 
  create(materials: NodeMaterialData[]) {
   for (const data of materials) {
-   this.materials.add([[data.id, new NodeMaterial(data)]]);
+   this.materials.add([[data.id, new DVENodeMaterial(data)]]);
   }
  },
 

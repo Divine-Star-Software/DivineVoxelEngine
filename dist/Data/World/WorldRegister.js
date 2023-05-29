@@ -1,6 +1,6 @@
 import { DataHooks } from "../../Data/DataHooks.js";
 import { WorldBounds } from "./WorldBounds.js";
-import { $2dMooreNeighborhood } from "../Constants/Util/CardinalNeighbors.js";
+import { $2dMooreNeighborhood } from "../../Math/Constants/CardinalNeighbors.js";
 import { DimensionsRegister } from "./Dimensions/DimensionsRegister.js";
 import { ChunkDataTool } from "../../Tools/Data/WorldData/ChunkDataTool.js";
 import { ColumnDataTool } from "../../Tools/Data/WorldData/ColumnDataTool.js";

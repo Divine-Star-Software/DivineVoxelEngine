@@ -346,7 +346,7 @@ export const QuadBuilder = {
   direction: DirectionNames,
   origin: Position3Matrix,
   dimensions: QuadDimensions,
-  flip = false,
+  flip: boolean,
   transform?: QuadTransforms
  ) {
   this.width = dimensions.width / 2;

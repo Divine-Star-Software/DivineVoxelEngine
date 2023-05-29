@@ -23,7 +23,7 @@
   "@types/node": "^16.11.7"
  },
  "dependencies": {
-  "@babylonjs/core": "^5.47.1",
+  "@babylonjs/core": "^6.5.0",
   "divine-binary-object": "^0.0.45",
   "divine-binary-tags": "^0.0.61",
   "divine-hooks": "^0.0.4",
